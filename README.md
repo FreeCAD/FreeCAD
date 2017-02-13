@@ -10,39 +10,35 @@ such as architecture or other engineering specialties. It is 100% Open
 Source (LGPL2+ license) and extremely modular, allowing for very 
 advanced extension and customization.
 
-FreeCAD is based on OpenCasCade, a powerful geometry kernel, features an 
+FreeCAD is based on OpenCASCADE, a powerful geometry kernel, features an 
 Open Inventor-compliant 3D scene representation model provided by the 
 Coin 3D library, and a broad Python API. The interface is built with Qt. 
 FreeCAD runs exactly the same way on Windows, Mac OSX, BSD and Linux 
 platforms.
 
-Home page:          http://www.freecadweb.org
-
-Documentation wiki: http://www.freecadweb.org/wiki/
-
-Forum:              http://forum.freecadweb.org/
-
-Bug tracker:        http://www.freecadweb.org/tracker/
-
-Git repository:     https://github.com/FreeCAD/FreeCAD
+- [Home page](http://www.freecadweb.org)
+- [Documentation wiki](http://www.freecadweb.org/wiki/)
+- [Forum](http://forum.freecadweb.org/)
+- [Bug tracker](http://www.freecadweb.org/tracker/)
+- [Git repository](https://github.com/FreeCAD/FreeCAD)
 
 Installing
 ----------
 
 Precompiled (installable) packages are available for Windows and Mac on the
-releases page at https://github.com/FreeCAD/FreeCAD/releases
+[Releases page](https://github.com/FreeCAD/FreeCAD/releases).
 
 On most Linux distributions, FreeCAD is directly installable from the 
 software center application.
 
-Other options are described at http://www.freecadweb.org/wiki/index.php?title=Download
+Other options are described at the [wiki Download page](http://www.freecadweb.org/wiki/Download).
 
-Build Status <img src="https://cdn.travis-ci.org/images/travis-mascot-150-3791701416eeee8479e23fe4bb7edf4f.png" height="30"/>
+Build Status <img src="https://blog.travis-ci.com/images/travis-mascot-200px.png" height="30"/>
 ------------
 
-| Master | 0.16 |
-|:------:|:----:|
-|[![Master][freecad-master-status]][travis-branches]|[![0.16][freecad-0.16-status]][travis-branches]|
+| Master | 0.16 | Translation |
+|:------:|:----:|:-----------:|
+|[![Master][freecad-master-status]][travis-branches]|[![0.16][freecad-0.16-status]][travis-branches]|[![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)|
 
 [freecad-0.16-status]: https://travis-ci.org/FreeCAD/FreeCAD.svg?branch=0.16
 [freecad-master-status]: https://travis-ci.org/FreeCAD/FreeCAD.svg?branch=master
@@ -53,44 +49,37 @@ Compiling
 ---------
 
 Compiling FreeCAD requires installation of several libraries and their 
-development files such as OpenCasCADe, Coin and Qt, listed in the 
+development files such as OpenCASCADe, Coin and Qt, listed in the 
 pages below. Once this is done, FreeCAD can be simply compiled with 
 cMake. On Windows, these libraries are bundled and offered by the 
-FreeCAD team in a convenience package, on Linux they are usually found 
-in your distribution's repositories and on Mac OSX and other platforms 
+FreeCAD team in a convenient package. On Linux, they are usually found 
+in your distribution's repositories, and on Mac OSX and other platforms 
 you will usually need to compile them yourself.
 
 The pages below contain up-to-date build instructions:
 
-For Linux:   http://www.freecadweb.org/wiki/?title=CompileOnUnix
-
-For Windows: http://www.freecadweb.org/wiki/?title=CompileOnWindows
-
-For Mac OSX: http://www.freecadweb.org/wiki/?title=CompileOnMac
-
-For Cygwin:  http://www.freecadweb.org/wiki/?title=CompileOnCygwin
-
-For MinGW:   http://www.freecadweb.org/wiki/?title=CompileOnMinGW
+- [Linux](http://www.freecadweb.org/wiki/CompileOnUnix)
+- [Windows](http://www.freecadweb.org/wiki/CompileOnWindows)
+- [Mac OSX](http://www.freecadweb.org/wiki/CompileOnMac)
+- [Cygwin](http://www.freecadweb.org/wiki/CompileOnCygwin)
+- [MinGW](http://www.freecadweb.org/wiki/CompileOnMinGW)
 
 Usage & Getting help
 --------------------
 
-The FreeCAD documentation wiki contains a lot of documentation on 
-general FreeCAD usage, python scripting, and development. The following
+[![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+The FreeCAD wiki contains documentation on 
+general FreeCAD usage, Python scripting, and development. These 
 pages might help you get started:
 
-Getting started:    http://www.freecadweb.org/wiki/?title=Getting_started
+- [Getting started](http://www.freecadweb.org/wiki/Getting_started)
+- [Features list](http://www.freecadweb.org/wiki/Feature_list)
+- [Frequent questions](http://www.freecadweb.org/wiki/FAQ)
+- [Workbenches](http://www.freecadweb.org/wiki/Workbench_Concept)
+- [Scripting](http://www.freecadweb.org/wiki/Power_users_hub)
+- [Development](http://www.freecadweb.org/wiki/Developer_hub)
 
-Features list:      http://www.freecadweb.org/wiki/?title=Feature_list
-
-Frequent questions: http://www.freecadweb.org/wiki/?title=FAQ
-
-Workbenches:        http://www.freecadweb.org/wiki/?title=Workbench_Concept
-
-Scripting:          http://www.freecadweb.org/wiki/?title=Power_users_hub
-
-Development:        http://www.freecadweb.org/wiki/?title=Developer_hub
-
-The FreeCAD forum at http://forum.freecadweb.org is also a great place
+The [FreeCAD forum](http://forum.freecadweb.org) is also a great place
 to find help and solve specific problems you might encounter when
 learning to use FreeCAD.

@@ -65,7 +65,7 @@ class SMESHDS_EXPORT SMESHDS_GroupOnFilter: public SMESHDS_GroupBase
 
   virtual SMDS_ElemIteratorPtr GetElements() const;
 
-  virtual int  GetTic() const;
+  virtual VTK_MTIME_TYPE GetTic() const;
 
   bool         IsUpToDate() const;
 
@@ -86,7 +86,7 @@ class SMESHDS_EXPORT SMESHDS_GroupOnFilter: public SMESHDS_GroupBase
   std::vector< int >                    myMeshInfo;
   std::vector< const SMDS_MeshElement*> myElements;
   bool                                  myElementsOK;
-  size_t                                myMeshModifTime; // when myMeshInfo was updated
+  VTK_MTIME_TYPE                        myMeshModifTime; // when myMeshInfo was updated
   int                                   myPredicateTic;
   size_t                                myNbElemToSkip;
 };

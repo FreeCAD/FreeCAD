@@ -24,7 +24,7 @@ __title__ = "FreeCAD Z88 Disp Reader"
 __author__ = "Bernd Hahnebach "
 __url__ = "http://www.freecadweb.org"
 
-## @package z88DispReader
+## @package importZ88Results
 #  \ingroup FEM
 
 import FreeCAD
@@ -57,6 +57,8 @@ def insert(filename, docname):
 def import_z88_disp(filename, analysis=None, result_name_prefix=None):
     '''insert a FreeCAD FEM Result object in the ActiveDocument
     '''
+    if result_name_prefix is None:
+        result_name_prefix = ''
     m = read_z88_disp(filename)
     if(len(m['Nodes']) > 0):
         if analysis is None:
@@ -141,9 +143,9 @@ def read_z88_disp(z88_disp_input):
     pure usage:
     import FemToolsZ88
     fea = FemToolsZ88.FemToolsZ88()
-    import z88dispReader
+    import importZ88Results
     disp_file = '/pathtofile/z88o2.txt'
-    z88DispReader.import_z88_disp(disp_file , fea.analysis)
+    importZ88Results.import_z88_disp(disp_file , fea.analysis)
 
     The FreeCAD file needs to have an Analysis and an appropiate FEM Mesh
     '''

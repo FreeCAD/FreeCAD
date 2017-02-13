@@ -106,6 +106,7 @@
 #include <App/Document.h>
 
 #include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/SoFCSelectionAction.h>
 #include <Gui/Selection.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Utilities.h>
@@ -324,8 +325,8 @@ ViewProviderPartExt::~ViewProviderPartExt()
 
 void ViewProviderPartExt::onChanged(const App::Property* prop)
 {
-    Part::Feature* feature = dynamic_cast<Part::Feature*>(pcObject);
     
+    Part::Feature* feature = dynamic_cast<Part::Feature*>(pcObject);
     if (prop == &Deviation) {
         if(Visibility.getValue() && feature && !feature->Shape.getValue().IsNull()) 
             updateVisual(feature->Shape.getValue());
@@ -800,6 +801,9 @@ void ViewProviderPartExt::reload()
 void ViewProviderPartExt::updateData(const App::Property* prop)
 {
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
+        Gui::SoUpdateVBOAction action;
+        action.apply(this->faceset);
+
         // get the shape to show
         const TopoDS_Shape &cShape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
 

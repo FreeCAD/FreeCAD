@@ -102,6 +102,12 @@ public:
 
         const Sketcher::Constraint * constraint = sketch->Constraints[ConstraintNbr];
 
+        // it can happen that the geometry of the sketch is tmp. invalid and thus
+        // the index operator returns null.
+        if (!constraint) {
+            return QVariant();
+        }
+
         if (role == Qt::EditRole) {
             if (value.isValid())
                 return value;
@@ -314,7 +320,11 @@ protected:
     }
 
     void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const {
+#if QT_VERSION >= 0x050000
+        QStyleOptionViewItem options = option;
+#else
         QStyleOptionViewItemV4 options = option;
+#endif
         initStyleOption(&options, index);
 
         options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);

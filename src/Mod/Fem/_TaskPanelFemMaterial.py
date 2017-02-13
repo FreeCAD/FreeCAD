@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 __title__ = "_TaskPanelFemMaterial"
-__author__ = "Juergen Riegel, Bernd Hahnebach"
+__author__ = "Juergen Riegel, Bernd Hahnebach, Qingfeng Xia"
 __url__ = "http://www.freecadweb.org"
 
 ## @package TaskPanelFemMaterial
@@ -30,6 +30,8 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 from PySide import QtGui
+from PySide.QtGui import QFileDialog
+# from PySide.QtGui import QMessageBox
 from PySide import QtCore
 import Units
 
@@ -51,17 +53,35 @@ class _TaskPanelFemMaterial:
         self.references_shape_type = None
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemMaterial.ui")
-        QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
+        QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goto_MatWeb)
+        QtCore.QObject.connect(self.form.pushButton_saveas, QtCore.SIGNAL("clicked()"), self.export_material)
         QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.choose_material)
-        QtCore.QObject.connect(self.form.input_fd_young_modulus, QtCore.SIGNAL("valueChanged(double)"), self.ym_changed)
-        QtCore.QObject.connect(self.form.spinBox_poisson_ratio, QtCore.SIGNAL("valueChanged(double)"), self.pr_changed)
-        QtCore.QObject.connect(self.form.input_fd_density, QtCore.SIGNAL("valueChanged(double)"), self.density_changed)
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
         QtCore.QObject.connect(self.form.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard)
         QtCore.QObject.connect(self.form.rb_solid, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_solid)
+        # basic properties must be provided
+        QtCore.QObject.connect(self.form.input_fd_density, QtCore.SIGNAL("valueChanged(double)"), self.density_changed)
+        # mechanical properties
+        QtCore.QObject.connect(self.form.input_fd_young_modulus, QtCore.SIGNAL("valueChanged(double)"), self.ym_changed)
+        QtCore.QObject.connect(self.form.spinBox_poisson_ratio, QtCore.SIGNAL("valueChanged(double)"), self.pr_changed)
+        # thermal properties
         QtCore.QObject.connect(self.form.input_fd_thermal_conductivity, QtCore.SIGNAL("valueChanged(double)"), self.tc_changed)
         QtCore.QObject.connect(self.form.input_fd_expansion_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.tec_changed)
         QtCore.QObject.connect(self.form.input_fd_specific_heat, QtCore.SIGNAL("valueChanged(double)"), self.sh_changed)
+        # fluidic properties, only volumetric thermal expansion coeff makes sense
+        QtCore.QObject.connect(self.form.input_fd_kinematic_viscosity, QtCore.SIGNAL("valueChanged(double)"), self.kinematic_viscosity_changed)
+        QtCore.QObject.connect(self.form.input_fd_vol_expansion_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.vtec_changed)
+
+        # hide some groupBox according to material category
+        self.form.label_category.setText(self.obj.Category)
+        if self.obj.Category == 'Fluid':
+            self.form.groupBox_mechanical.setVisible(0)
+            self.form.label_expansion_coefficient.setVisible(0)
+            self.form.input_fd_expansion_coefficient.setVisible(0)
+        else:
+            self.form.groupBox_fluidic.setVisible(0)
+            self.form.label_vol_expansion_coefficient.setVisible(0)
+            self.form.input_fd_vol_expansion_coefficient.setVisible(0)
 
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
@@ -136,20 +156,31 @@ class _TaskPanelFemMaterial:
                 return False
         return True
 
-    def goMatWeb(self):
+    def goto_MatWeb(self):
         import webbrowser
         webbrowser.open("http://matweb.com")
 
     def check_material_keys(self):
-        if 'YoungsModulus' not in self.material:
-            print('YoungsModulus not found in material data of: ' + self.material['Name'])
-            self.material['YoungsModulus'] = '0 MPa'
         if 'Density' not in self.material:
             print('Density not found in material data of: ' + self.material['Name'])
             self.material['Density'] = '0 kg/m^3'
-        if 'PoissonRatio' not in self.material:
-            print('PoissonRatio not found in material data of: ' + self.material['Name'])
-            self.material['PoissonRatio'] = '0'
+        if self.obj.Category == 'Solid':
+            # mechanical properties
+            if 'YoungsModulus' not in self.material:
+                print('YoungsModulus not found in material data of: ' + self.material['Name'])
+                self.material['YoungsModulus'] = '0 MPa'
+            if 'PoissonRatio' not in self.material:
+                print('PoissonRatio not found in material data of: ' + self.material['Name'])
+                self.material['PoissonRatio'] = '0'
+        if self.obj.Category == 'Fluid':
+            # Fluidic properties
+            if 'KinematicViscosity' not in self.material:
+                print('KinematicViscosity not found in material data of: ' + self.material['Name'])
+                self.material['KineticViscosity'] = '0 m^2/s'
+            if 'VolumetricThermalExpansionCoefficient' not in self.material:
+                print('VolumetricThermalExpansionCoefficient not found in material data of: ' + self.material['Name'])
+                self.material['VolumetricThermalExpansionCoefficient'] = '0 m/m/K'
+        # Thermal properties
         if 'ThermalConductivity' not in self.material:
             print('ThermalConductivity not found in material data of: ' + self.material['Name'])
             self.material['ThermalConductivity'] = '0 W/m/K'
@@ -159,6 +190,7 @@ class _TaskPanelFemMaterial:
         if 'SpecificHeat' not in self.material:
             print('SpecificHeat not found in material data of: ' + self.material['Name'])
             self.material['SpecificHeat'] = '0 J/kg/K'
+        # Electromagnetic properties
 
     def ym_changed(self, value):
         # FreeCADs standard unit for stress is kPa
@@ -226,6 +258,29 @@ class _TaskPanelFemMaterial:
                 material['SpecificHeat'] = unicode(value_in_J_per_kgK) + " J/kg/K"
                 self.material = material
 
+    ################ fluidic #########################
+    def vtec_changed(self, value):
+        old_vtec = Units.Quantity(self.material['VolumetricThermalExpansionCoefficient']).getValueAs("m/m/K")
+        variation = 0.001
+        if value:
+            if not (1 - variation < float(old_vtec) / value < 1 + variation):
+                # VolumetricThermalExpansionCoefficient has changed
+                material = self.material
+                value_in_one_per_K = value
+                material['VolumetricThermalExpansionCoefficient'] = unicode(value_in_one_per_K) + " m/m/K"
+                self.material = material
+
+    def kinematic_viscosity_changed(self, value):
+        old_nu = Units.Quantity(self.material['KinematicViscosity']).getValueAs("m^2/s")
+        variation = 0.000001
+        if value:
+            if not (1 - variation < float(old_nu) / value < 1 + variation):
+                # KinematicViscosity has changed
+                material = self.material
+                value_in_m2_per_second = value
+                material['KinematicViscosity'] = unicode(value_in_m2_per_second) + " m^2/s"
+                self.material = material
+
     def choose_material(self, index):
         if index < 0:
             return
@@ -260,17 +315,31 @@ class _TaskPanelFemMaterial:
             self.form.input_fd_young_modulus.setText("{} {}".format(ym_with_new_unit, ym_new_unit))
         if 'PoissonRatio' in matmap:
             self.form.spinBox_poisson_ratio.setValue(float(matmap['PoissonRatio']))
+        # Fluidic properties
+        if 'KinematicViscosity' in matmap:
+            nu_new_unit = "m^2/s"
+            nu = FreeCAD.Units.Quantity(matmap['KinematicViscosity'])
+            nu_with_new_unit = nu.getValueAs(nu_new_unit)
+            self.form.input_fd_kinematic_viscosity.setText("{} {}".format(nu_with_new_unit, nu_new_unit))
+        # For isotropic materials the volumetric thermal expansion coefficient is three times the linear coefficient:
+        if 'VolumetricThermalExpansionCoefficient' in matmap:  # linear, only for solid
+            vtec_new_unit = "m/m/K"
+            vtec = FreeCAD.Units.Quantity(matmap['VolumetricThermalExpansionCoefficient'])
+            vtec_with_new_unit = vtec.getValueAs(vtec_new_unit)
+            self.form.input_fd_vol_expansion_coefficient.setText("{} {}".format(vtec_with_new_unit, vtec_new_unit))
+
         if 'Density' in matmap:
             density_new_unit = "kg/m^3"
             density = FreeCAD.Units.Quantity(matmap['Density'])
             density_with_new_unit = density.getValueAs(density_new_unit)
             self.form.input_fd_density.setText("{} {}".format(density_with_new_unit, density_new_unit))
+        # thermal properties
         if 'ThermalConductivity' in matmap:
             tc_new_unit = "W/m/K"
             tc = FreeCAD.Units.Quantity(matmap['ThermalConductivity'])
             tc_with_new_unit = tc.getValueAs(tc_new_unit)
             self.form.input_fd_thermal_conductivity.setText("{} {}".format(tc_with_new_unit, tc_new_unit))
-        if 'ThermalExpansionCoefficient' in matmap:
+        if 'ThermalExpansionCoefficient' in matmap:  # linear, only for solid
             tec_new_unit = "um/m/K"
             tec = FreeCAD.Units.Quantity(matmap['ThermalExpansionCoefficient'])
             tec_with_new_unit = tec.getValueAs(tec_new_unit)
@@ -285,6 +354,50 @@ class _TaskPanelFemMaterial:
         material_name = self.get_material_name(material)
         self.form.cb_materials.addItem(QtGui.QIcon(":/icons/help-browser.svg"), material_name, material_name)
         self.materials[material_name] = material
+
+    ######################## material import and export ###################
+    def import_materials(self):
+        self.materials = {}
+        self.pathList = []
+        self.form.cb_materials.clear()
+
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        if self.obj.Category == 'Fluid':
+            self.import_fluid_materials()
+        else:
+            self.import_solid_materials()
+
+    def import_solid_materials(self):
+        use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
+        if use_built_in_materials:
+            system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/StandardMaterial"
+            self.add_mat_dir(system_mat_dir, ":/icons/freecad.svg")
+
+        use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
+        if use_mat_from_config_dir:
+            user_mat_dirname = FreeCAD.getUserAppDataDir() + "Materials"
+            self.add_mat_dir(user_mat_dirname, ":/icons/preferences-general.svg")
+
+        use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
+        if use_mat_from_custom_dir:
+            custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
+            self.add_mat_dir(custom_mat_dir, ":/icons/user.svg")
+
+    def import_fluid_materials(self):
+        #use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
+        #if use_built_in_materials:
+        system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/FluidMaterial"
+        self.add_mat_dir(system_mat_dir, ":/icons/freecad.svg")
+
+        use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
+        if use_mat_from_config_dir:
+            user_mat_dirname = FreeCAD.getUserAppDataDir() + "FluidMaterial"
+            self.add_mat_dir(user_mat_dirname, ":/icons/preferences-general.svg")
+
+        use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
+        if use_mat_from_custom_dir:
+            custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
+            self.add_mat_dir(custom_mat_dir, ":/icons/user.svg")
 
     def add_mat_dir(self, mat_dir, icon):
         import glob
@@ -303,26 +416,73 @@ class _TaskPanelFemMaterial:
         for mat in material_name_list:
             self.form.cb_materials.addItem(QtGui.QIcon(icon), mat[0], mat[1])
 
-    def import_materials(self):
-        self.materials = {}
-        self.pathList = []
-        self.form.cb_materials.clear()
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
-        use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
-        if use_built_in_materials:
-            system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/StandardMaterial"
-            self.add_mat_dir(system_mat_dir, ":/icons/freecad.svg")
+    def export_FCMat(self, fileName, matDict):
+        """
+        Write a material dictionary to a FCMat file, a version without group support, with Python3
+        <https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Material/Material.py>
+        """
+        try:
+            import ConfigParser as configparser
+        except:
+            import configparser  # Python 3
+        # himport string
+        Config = configparser.ConfigParser()
+        Config.optionxform = str  # disable conversion all uppercase leter in key into lower case
 
-        use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
-        if use_mat_from_config_dir:
-            user_mat_dirname = FreeCAD.getUserAppDataDir() + "Materials"
-            self.add_mat_dir(user_mat_dirname, ":/icons/preferences-general.svg")
+        # ignore creating group, just fill all into group 'FCMat'
+        grp = 'FCMat'
+        if not Config.has_section(grp):
+            Config.add_section(grp)
+        for x in matDict.keys():
+            Config.set(grp, x, matDict[x])
 
-        use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
-        if use_mat_from_custom_dir:
-            custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
-            self.add_mat_dir(custom_mat_dir, ":/icons/user.svg")
+        Preamble = "# This is a FreeCAD material-card file\n\n"
+        # Writing our configuration file to 'example.cfg'
+        with open(fileName, 'wb') as configfile:
+            configfile.write(Preamble)
+            Config.write(configfile)
 
+    def export_material(self):
+        import os
+        if self.obj.Category == 'Fluid':
+            MaterialDir = 'FluidMaterial'
+        else:
+            MaterialDir = 'Material'
+        _UseMaterialsFromCustomDir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
+        _dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
+        if _UseMaterialsFromCustomDir and _dir != "" and os.path.isdir(_dir):
+            TargetDir = self.fem_prefs.GetString("CustomMaterialsDir", "")
+        elif self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True):
+            TargetDir = FreeCAD.getUserAppDataDir() + os.path.sep + MaterialDir  # $HOME/.FreeCAD
+        else:
+            FreeCAD.Console.PrintMessage("Customed material saving directory is not setup in Fem preference")
+        if not os.path.exists(TargetDir):
+            os.mkdir(TargetDir)
+
+        saveName, Filter = QFileDialog.getSaveFileName(None, "Save a Material property file", TargetDir, "*.FCMat")
+        if not saveName == "":
+            print(saveName)
+            knownMaterials = [self.form.cb_materials.itemText(i) for i in range(self.form.cb_materials.count())]
+            material_name = os.path.basename(saveName[:-len('.FCMat')])
+            if material_name not in knownMaterials:
+                self.export_FCMat(saveName, self.obj.Material)
+                FreeCAD.Console.PrintMessage("Sucessfully save the Material property file: " + saveName + "\n")
+            else:
+                self.export_FCMat(saveName, self.obj.Material)
+                FreeCAD.Console.PrintMessage("Sucessfully overwritren the Material property file: " + saveName + "\n")
+                """
+                msgBox = QMessageBox()
+                msgBox.setText("FcMat file name {} has existed in {} or system folder, overwriting?\n".format(saveName, TargetDir))
+                msgBox.addButton(QMessageBox.Yes)
+                msgBox.addButton(QMessageBox.No)
+                msgBox.setDefaultButton(QMessageBox.No)
+                ret = msgBox.exec_()
+                if ret == QMessageBox.Yes:
+                    self.export_FCMat(saveName, self.obj.Material)
+                    FreeCAD.Console.PrintMessage("Sucessfully overwritren the Material property file: "+ saveName + "\n")
+                """
+
+    ###################geometry reference selection #################
     def references_list_right_clicked(self, QPos):
         self.form.contextMenu = QtGui.QMenu()
         menu_item = self.form.contextMenu.addAction("Remove Reference")

@@ -37,10 +37,15 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 
 #include <Mod/TechDraw/App/DrawTemplate.h>
+#include "QGITemplate.h"
+#include "QGVPage.h"
+#include "MDIViewPage.h"
 #include "ViewProviderTemplate.h"
 
 using namespace TechDrawGui;
@@ -53,6 +58,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderTemplate, Gui::ViewProviderDocumentObje
 ViewProviderTemplate::ViewProviderTemplate()
 {
     sPixmap = "TechDraw_Tree_PageTemplate";
+    DisplayMode.setStatus(App::Property::ReadOnly,true);
 }
 
 ViewProviderTemplate::~ViewProviderTemplate()
@@ -82,6 +88,65 @@ void ViewProviderTemplate::updateData(const App::Property* prop)
 {
     //Base::Console().Log("ViewProviderTemplate::updateData(%s)/n",prop->getName());
     Gui::ViewProviderDocumentObject::updateData(prop);
+}
+
+void ViewProviderTemplate::onChanged(const App::Property *prop)
+{
+    App::DocumentObject* obj = getObject();
+    if (!obj || obj->isRestoring()) {
+        Gui::ViewProviderDocumentObject::onChanged(prop);
+        return;
+    }
+
+    if (prop == &Visibility) {
+        if(Visibility.getValue()) {
+            show();
+        } else {
+            hide();
+        }
+    }
+    Gui::ViewProviderDocumentObject::onChanged(prop);
+}
+
+void ViewProviderTemplate::show(void)
+{
+    QGITemplate* qTemplate = getQTemplate();
+    if (qTemplate != nullptr) {
+        qTemplate->show();
+    }
+
+    ViewProviderDocumentObject::show();
+}
+
+void ViewProviderTemplate::hide(void)
+{
+    QGITemplate* qTemplate = getQTemplate();
+    if (qTemplate != nullptr) {
+        qTemplate->hide();
+    }
+    
+    ViewProviderDocumentObject::hide();
+}
+
+bool ViewProviderTemplate::isShow(void) const
+{
+    return Visibility.getValue();
+}
+
+QGITemplate* ViewProviderTemplate::getQTemplate(void)
+{
+    QGITemplate *result = nullptr;
+    TechDraw::DrawTemplate* dt = getTemplate();
+    if (dt) {
+        Gui::MDIView* gmdi = getActiveView();
+        if (gmdi != nullptr) {
+            MDIViewPage*  mdi = dynamic_cast<MDIViewPage*>(gmdi);
+            if (mdi != nullptr) {
+             result = mdi->getQGVPage()->getTemplate();
+            }
+        }
+    }
+    return result;
 }
 
 TechDraw::DrawTemplate* ViewProviderTemplate::getTemplate() const

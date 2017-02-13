@@ -22,6 +22,10 @@ if (BUILD_VR)
     add_definitions(-DBUILD_VR )
 endif(BUILD_VR)
 
+if (BUILD_ADDONMGR)
+    add_definitions(-DBUILD_ADDONMGR )
+endif(BUILD_ADDONMGR)
+
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -1070,6 +1074,7 @@ SET(FreeCADGui_CPP_SRCS
     Document.cpp
     DocumentModel.cpp
     DocumentPyImp.cpp
+    DocumentObserver.cpp
     ExpressionBinding.cpp
     GraphicsViewZoom.cpp
     ExpressionCompleter.cpp
@@ -1094,6 +1099,7 @@ SET(FreeCADGui_SRCS
     BitmapFactory.h
     Document.h
     DocumentModel.h
+    DocumentObserver.h
     ExpressionBinding.cpp
     ExpressionCompleter.h
     FreeCADGuiInit.py

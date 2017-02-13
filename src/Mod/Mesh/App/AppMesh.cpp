@@ -49,7 +49,7 @@ extern PyObject* initModule();
 }
 
 /* Python entry */
-PyMODINIT_FUNC initMesh() 
+PyMOD_INIT_FUNC(Mesh)
 {
     PyObject* meshModule = Mesh::initModule();
     Base::Console().Log("Loading Mesh module... done\n");
@@ -99,4 +99,6 @@ PyMODINIT_FUNC initMesh()
     Mesh::Cone                  ::init();
     Mesh::Torus                 ::init();
     Mesh::Cube                  ::init();
+
+    PyMOD_Return(meshModule);
 }

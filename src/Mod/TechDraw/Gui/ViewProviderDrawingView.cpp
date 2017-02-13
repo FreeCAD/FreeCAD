@@ -37,11 +37,9 @@
 #include <App/DocumentObject.h>
 
 #include <Gui/Application.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/MainWindow.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -94,7 +92,7 @@ void ViewProviderDrawingView::onChanged(const App::Property *prop)
     }
 
     if (prop == &Visibility) {
-        if(Visibility.getValue()) {
+       if(Visibility.getValue()) {
             show();
         } else {
             hide();
@@ -139,15 +137,22 @@ void ViewProviderDrawingView::hide(void)
 
 QGIView* ViewProviderDrawingView::getQView(void)
 {
+    //TODO: vp can get its MDIView with 1 call getActiveView()?
+    //      instead of going back to App side an up tree and back to Gui?
+    //MDIVPage* mdivp = static_cast<MDIVPage*>(getActiveView());
+    //qView = mdivp->getQGVPage()->findQViewForDocObj(getViewObject());
     QGIView *qView = nullptr;
     if (m_docReady){
-        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-        Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
-        ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
-        if (dvp) {
-            if (dvp->getMDIViewPage()) {
-                if (dvp->getMDIViewPage()->getQGVPage()) {
-                    qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->getQGVPage()->findView(getViewObject()));
+        TechDraw::DrawView* dv = getViewObject();
+        if (dv) {
+            Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
+            Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
+            ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+            if (dvp) {
+                if (dvp->getMDIViewPage()) {
+                    if (dvp->getMDIViewPage()->getQGVPage()) {
+                        qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->getQGVPage()->findQViewForDocObj(getViewObject()));
+                    }
                 }
             }
         }
@@ -186,8 +191,17 @@ void ViewProviderDrawingView::updateData(const App::Property* prop)
             qgiv->updateView(true);
         }
      }
-
     Gui::ViewProviderDocumentObject::updateData(prop);
+}
+
+void ViewProviderDrawingView::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        Gui::ViewProviderDocumentObject::unsetEdit(ModNum);
+    }
 }
 
 MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const

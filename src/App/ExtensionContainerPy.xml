@@ -21,7 +21,7 @@
                   used to check for overridden functions (most likely self)</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="hasExtension">
+    <Methode Name="hasExtension" Const="true">
       <Documentation>
         <UserDocu>Returns if this object has the specified extension</UserDocu>
       </Documentation>

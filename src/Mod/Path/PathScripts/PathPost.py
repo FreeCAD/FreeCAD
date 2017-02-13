@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 ''' Post Process command that will make use of the Output File and Post Processor entries in PathJob '''
+from __future__ import print_function
 import FreeCAD
 import FreeCADGui
 from PySide import QtCore, QtGui
@@ -79,7 +80,6 @@ class DlgSelectPostProcessor:
 class CommandPathPost:
 
     def resolveFileName(self, job):
-        #print("resolveFileName(%s)" % job.Label)
         path = PathPreferences.defaultOutputFile()
         if job.OutputFile:
             path = job.OutputFile
@@ -134,7 +134,6 @@ class CommandPathPost:
             else:
                 filename = None
 
-        #print("resolveFileName(%s, %s) -> '%s'" % (path, policy, filename))
         return filename
 
     def resolvePostProcessor(self, job):
@@ -190,7 +189,7 @@ class CommandPathPost:
         FreeCADGui.addModule("PathScripts.PathPost")
         # select the Path Job that you want to post output from
         selected = FreeCADGui.Selection.getCompleteSelection()
-        print "in activated %s" %(selected)
+        print("in activated %s" %(selected))
 
         # try to find the job, if it's not directly selected ...
         jobs = set()

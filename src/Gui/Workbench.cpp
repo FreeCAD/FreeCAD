@@ -560,6 +560,9 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ExportGraphviz" << "Std_ProjectUtil" << "Separator"
           << "Std_MeasureDistance" << "Separator" 
           << "Std_DemoMode" << "Std_UnitsCalculator" << "Separator" << "Std_DlgCustomize";
+#ifdef BUILD_ADDONMGR
+    *tool << "Std_AddonMgr";
+#endif
 
     // Macro
     MenuItem* macro = new MenuItem( menuBar );

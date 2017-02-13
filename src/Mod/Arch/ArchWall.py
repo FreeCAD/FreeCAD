@@ -135,11 +135,11 @@ def mergeShapes(w1,w2):
     import DraftGeomUtils
     w = DraftGeomUtils.findWires(eds)
     if len(w) == 1:
-        #print "found common wire"
+        #print("found common wire")
         normal,length,width,height = w1.Proxy.getDefaultValues(w1)
-        print w[0].Edges
+        print(w[0].Edges)
         sh = w1.Proxy.getBase(w1,w[0],normal,width,height)
-        print sh
+        print(sh)
         return sh
     return None
 
@@ -198,12 +198,14 @@ class _CommandWall:
                         if selobj.HasSubObjects:
                             if "Face" in selobj.SubElementNames[0]:
                                 idx = int(selobj.SubElementNames[0][4:])
-                                FreeCADGui.doCommand("Arch.makeWall(FreeCAD.ActiveDocument."+selobj.Object.Name+",face="+str(idx)+")")
+                                FreeCADGui.doCommand("obj = Arch.makeWall(FreeCAD.ActiveDocument."+selobj.Object.Name+",face="+str(idx)+")")
                                 spacedone = True
                         if not spacedone:
-                            FreeCADGui.doCommand('Arch.makeWall(FreeCAD.ActiveDocument.'+selobj.Object.Name+')')
+                            FreeCADGui.doCommand('obj = Arch.makeWall(FreeCAD.ActiveDocument.'+selobj.Object.Name+')')
                     else:
-                        FreeCADGui.doCommand('Arch.makeWall(FreeCAD.ActiveDocument.'+selobj.Object.Name+')')
+                        FreeCADGui.doCommand('obj = Arch.makeWall(FreeCAD.ActiveDocument.'+selobj.Object.Name+')')
+                FreeCADGui.addModule("Draft")
+                FreeCADGui.doCommand("Draft.autogroup(obj)")
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
                 done = True
@@ -273,6 +275,8 @@ class _CommandWall:
         FreeCADGui.doCommand('base.addGeometry(trace)')
         FreeCADGui.doCommand('wall = Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
         FreeCADGui.doCommand('wall.Normal = FreeCAD.DraftWorkingPlane.axis')
+        FreeCADGui.addModule("Draft")
+        FreeCADGui.doCommand("Draft.autogroup(wall)")
 
     def update(self,point,info):
         "this function is called by the Snapper when the mouse is moved"

@@ -36,9 +36,7 @@
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 
-#if 0
-#define RENDER_GLARRAYS
-#endif
+// #define RENDER_GLARRAYS
 
 namespace PartGui {
 
@@ -114,7 +112,9 @@ private:
     };
     Binding findMaterialBinding(SoState * const state) const;
     Binding findNormalBinding(SoState * const state) const;
-    void renderShape(const SoGLCoordinateElement * const vertexlist,
+    void renderShape(SoGLRenderAction * action,
+                     SbBool hasVBO,
+                     const SoGLCoordinateElement * const vertexlist,
                      const int32_t *vertexindices,
                      int num_vertexindices,
                      const int32_t *partindices,
@@ -141,6 +141,14 @@ private:
     std::vector<int32_t> index_array;
     std::vector<float> vertex_array;
 #endif
+
+    // Define some VBO pointer for the current mesh
+    static SbBool vboAvailable;
+    SbBool updateVbo;
+    uint32_t myvbo[2];
+    SbBool vboLoaded;
+    uint32_t indice_array;
+
     SbColor selectionColor;
     SbColor highlightColor;
     SoColorPacker colorpacker;

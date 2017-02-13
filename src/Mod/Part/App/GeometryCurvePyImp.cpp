@@ -587,11 +587,33 @@ PyObject* GeometryCurvePy::toBSpline(PyObject * args)
             v=c->LastParameter();
             if (!PyArg_ParseTuple(args, "|dd", &u,&v))
                 return 0;
-            ShapeConstruct_Curve scc;
-            Handle_Geom_BSplineCurve spline = scc.ConvertToBSpline(c, u, v, Precision::Confusion());
-            if (spline.IsNull())
-                Standard_NullValue::Raise("Conversion to B-Spline failed");
-            return new BSplineCurvePy(new GeomBSplineCurve(spline));
+            GeomBSplineCurve* spline = getGeomCurvePtr()->toBSpline(u, v);
+            return new BSplineCurvePy(spline);
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return 0;
+}
+
+PyObject* GeometryCurvePy::toNurbs(PyObject * args)
+{
+    Handle_Geom_Geometry g = getGeometryPtr()->handle();
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u,v;
+            u=c->FirstParameter();
+            v=c->LastParameter();
+            if (!PyArg_ParseTuple(args, "|dd", &u,&v))
+                return 0;
+            GeomBSplineCurve* spline = getGeomCurvePtr()->toNurbs(u, v);
+            return new BSplineCurvePy(spline);
         }
     }
     catch (Standard_Failure) {

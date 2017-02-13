@@ -24,6 +24,7 @@
 
 import TestApp
 
+from PathTests.TestPathLog  import TestPathLog
 from PathTests.TestPathCore import TestPathCore
 from PathTests.TestPathPost import PathPostTestCases
 

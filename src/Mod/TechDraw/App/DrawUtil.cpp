@@ -277,11 +277,21 @@ std::string DrawUtil::formatVector(const Base::Vector3d& v)
     return result;
 }
 
+std::string DrawUtil::formatVector(const Base::Vector2d& v)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << std::fixed << std::setprecision(3) ;
+    builder << " (" << v.x  << "," << v.y << ") ";
+    result = builder.str();
+    return result;
+}
+
 //! compare 2 vectors for sorting - true if v1 < v2
 bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)  
 {
     bool result = false;
-    if (v1 != v2) {
+    if ((v1 - v2).Length() > Precision::Confusion()) {      //ie v1 != v2
         if (!DrawUtil::fpCompare(v1.x,v2.x)) {
             result = v1.x < v2.x;
         } else if (!DrawUtil::fpCompare(v1.y,v2.y)) {
@@ -292,7 +302,6 @@ bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)
     }
     return result;
 }  
-
 
 //!convert fromPoint in coordinate system fromSystem to reference coordinate system
 Base::Vector3d DrawUtil::toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint)

@@ -46,6 +46,7 @@ TODO
 Many other OpenSBP commands not handled
 
 '''
+from __future__ import print_function
 import FreeCAD
 import os, Path
 
@@ -81,7 +82,7 @@ def insert(filename,docname):
 
 def parse(inputstring):
     "parse(inputstring): returns a list of parsed output string"
-    print "preprocessing..."
+    print("preprocessing...")
     # split the input by line
     lines = inputstring.split("\n")
     return_output = []
@@ -92,7 +93,6 @@ def parse(inputstring):
     movecommand = ['G1', 'G0', 'G02', 'G03']
 
     for l in lines:
-        # print l
         # remove any leftover trailing and preceding spaces
         l = l.strip()
         if not l:
@@ -182,7 +182,7 @@ def parse(inputstring):
 
         if words[0] in ["CG"]: #Gcode circle/arc
             if words[1] != "": # diameter mode
-                print "diameter mode not supported"
+                print("diameter mode not supported")
                 continue
 
             else:
@@ -201,9 +201,9 @@ def parse(inputstring):
     #Make sure all appended paths have at least one move command.
     if any (x in output for x in movecommand):
         return_output.append(output)
-        print "done preprocessing."
+        print("done preprocessing.")
 
     return return_output
 
-print __name__ + " gcode preprocessor loaded."
+print(__name__ + " gcode preprocessor loaded.")
 

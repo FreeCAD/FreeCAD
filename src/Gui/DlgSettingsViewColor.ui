@@ -198,10 +198,10 @@
            <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <string>PickRadius</string>
+           <cstring>PickRadius</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <string>View</string>
+           <cstring>View</cstring>
           </property>
          </widget>
         </item>

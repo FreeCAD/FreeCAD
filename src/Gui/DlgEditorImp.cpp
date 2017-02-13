@@ -221,7 +221,7 @@ void DlgSettingsEditorImp::loadSettings()
     int index = familyNames.indexOf(QString::fromLatin1(hGrp->GetASCII("Font", "Courier").c_str()));
     if (index < 0) index = 0;
     fontFamily->setCurrentIndex(index);
-    on_fontFamily_activated();
+    on_fontFamily_activated(this->fontFamily->currentText());
 
     displayItems->setCurrentItem(displayItems->topLevelItem(0));
 }
@@ -241,17 +241,16 @@ void DlgSettingsEditorImp::changeEvent(QEvent *e)
     }
 }
 
-void DlgSettingsEditorImp::on_fontFamily_activated()
+void DlgSettingsEditorImp::on_fontFamily_activated(const QString& fontFamily)
 {
-    const QString& fontFamily = this->fontFamily->currentText();
     int fontSize = this->fontSize->value();
     QFont ft(fontFamily, fontSize);
     textEdit1->setFont(ft);
 }
 
-void DlgSettingsEditorImp::on_fontSize_valueChanged()
+void DlgSettingsEditorImp::on_fontSize_valueChanged(const QString&)
 {
-    on_fontFamily_activated();
+    on_fontFamily_activated(this->fontFamily->currentText());
 }
 
 #include "moc_DlgEditorImp.cpp"

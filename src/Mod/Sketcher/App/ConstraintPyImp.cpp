@@ -290,6 +290,28 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) intArg4;
                 return 0;
             }
+            else if (strstr(ConstraintType,"InternalAlignment") != NULL) { // InteralAlignment with InternalElementIndex argument
+                this->getConstraintPtr()->Type = InternalAlignment;
+
+                valid = true;
+
+                if(strstr(ConstraintType,"BSplineControlPoint") != NULL) {
+                    this->getConstraintPtr()->AlignmentType=BSplineControlPoint; 
+                }
+                else {
+                    this->getConstraintPtr()->AlignmentType=Undef;
+                    valid = false;
+                }
+                
+                if (valid) {
+                    this->getConstraintPtr()->First     = intArg1;
+                    this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) intArg2;
+                    this->getConstraintPtr()->Second    = intArg3;
+                    this->getConstraintPtr()->InternalAlignmentIndex = intArg4;
+                    return 0;
+                }
+                
+            }
             if (valid) {
                 this->getConstraintPtr()->First     = intArg1;
                 this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) intArg2;

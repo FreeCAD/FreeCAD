@@ -46,7 +46,7 @@ namespace Fem
         /*!
          FemMesh import from vtkUnstructuredGrid instance
          */
-        static void importVTKMesh(vtkSmartPointer<vtkDataSet> grid, FemMesh* mesh);
+        static void importVTKMesh(vtkSmartPointer<vtkDataSet> grid, FemMesh* mesh, float scale = 1.0);
         /*!
          FemMesh read from vtkUnstructuredGrid data file
          */        

@@ -93,9 +93,9 @@ public:
         ShowCoord=1,       /**< Enables the Coordinate system in the corner. */
         ShowFPS  =2,       /**< Enables the Frams per Second counter. */
         SimpleBackground=4,/**< switch to a simple background. */
-        DisallowRotation=8,/**< switch of the rotation. */
-        DisallowPanning=16,/**< switch of the panning. */
-        DisallowZooming=32,/**< switch of the zooming. */
+        DisallowRotation=8,/**< switch off the rotation. */
+        DisallowPanning=16,/**< switch off the panning. */
+        DisallowZooming=32,/**< switch off the zooming. */
     };
     //@}
     
@@ -339,6 +339,8 @@ public:
     bool hasAxisCross(void);
     
     void setEnabledFPSCounter(bool b);
+    void setEnabledVBO(bool b);
+    bool isEnabledVBO() const;
 
     NavigationStyle* navigationStyle() const;
 
@@ -419,7 +421,7 @@ private:
     
     //stuff needed to draw the fps counter
     bool fpsEnabled;
-    SoSeparator* fpsRoot;
+    bool vboEnabled;
 
     SbBool editing;
     QCursor editCursor, zoomCursor, panCursor, spinCursor;

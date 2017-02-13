@@ -37,9 +37,14 @@
 #include <Base/BoundBox.h>
 
 #include "DrawView.h"
-#include "DrawProjectSplit.h"
 
 class gp_Pnt;
+class gp_Pln;
+class gp_Ax2;
+//class TopoDS_Edge;
+//class TopoDS_Vertex;
+//class TopoDS_Wire;
+//class TopoDS_Shape;
 
 namespace TechDrawGeometry
 {
@@ -51,6 +56,10 @@ class Face;
 
 namespace TechDraw {
 class DrawHatch;
+class DrawGeomHatch;
+class DrawViewDimension;
+class DrawProjectSplit;
+class DrawViewSection;
 }
 
 namespace TechDraw
@@ -91,6 +100,8 @@ public:
 
 
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
+    std::vector<TechDraw::DrawGeomHatch*> getGeomHatches(void) const;
+    std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
 
     //TODO: are there use-cases for Python access to TechDrawGeometry???
 
@@ -135,12 +146,19 @@ public:
     }
     //return PyObject as DrawViewPartPy
     virtual PyObject *getPyObject(void);
+    bool isDeleting(void) { return nowDeleting; }
+    
+    gp_Pln getProjPlane(void) const;
+    virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
+
 
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
 
     void onChanged(const App::Property* prop);
+    virtual void unsetupObject();
+
     virtual TechDrawGeometry::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis);
     void extractFaces();
 
@@ -156,6 +174,7 @@ protected:
     bool m_handleFaces;
 
 private:
+    bool nowDeleting;
 
 };
 

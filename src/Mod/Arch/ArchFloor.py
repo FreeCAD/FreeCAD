@@ -103,7 +103,9 @@ Floor creation aborted.\n" )
             ss += "]"
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Floor"))
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("Arch.makeFloor("+ss+")")
+            FreeCADGui.doCommand("obj = Arch.makeFloor("+ss+")")
+            FreeCADGui.addModule("Draft")
+            FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
@@ -147,7 +149,7 @@ class _Floor:
             else:
                 pl = obj.Placement.copy()
                 if not DraftVecUtils.equals(pl.Base,self.OldPlacement.Base):
-                    print "placement moved"
+                    print("placement moved")
                     delta = pl.Base.sub(self.OldPlacement.Base)
                     for o in obj.Group:
                         if hasattr(o,"Placement"):

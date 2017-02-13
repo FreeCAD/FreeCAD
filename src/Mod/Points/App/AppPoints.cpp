@@ -40,7 +40,7 @@ namespace Points {
 }
 
 /* Python entry */
-PyMODINIT_FUNC initPoints()
+PyMOD_INIT_FUNC(Points)
 {
     PyObject* pointsModule = Points::initModule();
     Base::Console().Log("Loading Points module... done\n");

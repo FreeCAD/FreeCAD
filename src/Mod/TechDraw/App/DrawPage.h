@@ -43,7 +43,7 @@ public:
     App::PropertyLinkList Views;
     App::PropertyLink Template;
 
-    App::PropertyFloat Scale;
+    App::PropertyFloatConstraint Scale;
     App::PropertyEnumeration ProjectionType; // First or Third Angle
 
     /** @name methods overide Feature */
@@ -51,6 +51,7 @@ public:
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
     //@}
+    void Restore(Base::XMLReader &reader);
 
     int addView(App::DocumentObject *docObj);
     int removeView(App::DocumentObject* docObj);
@@ -81,14 +82,21 @@ public:
      */
     double getPageHeight() const;
     const char* getPageOrientation() const;
+    bool isDeleting(void) { return nowDeleting; }
+
 
 protected:
     void onBeforeChange(const App::Property* prop);
     void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
+    virtual void unsetupObject();
+
 
 private:
     static const char* ProjectionTypeEnums[];
+    bool nowDeleting;
+    static App::PropertyFloatConstraint::Constraints scaleRange;
+
 };
 
 } //namespace TechDraw

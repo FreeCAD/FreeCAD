@@ -91,9 +91,11 @@ class _CommandStairs:
         FreeCADGui.addModule("Arch")
         if len(FreeCADGui.Selection.getSelection()) == 1:
             n = FreeCADGui.Selection.getSelection()[0].Name
-            FreeCADGui.doCommand("Arch.makeStairs(baseobj=FreeCAD.ActiveDocument."+n+")")
+            FreeCADGui.doCommand("obj = Arch.makeStairs(baseobj=FreeCAD.ActiveDocument."+n+")")
         else:
-            FreeCADGui.doCommand("Arch.makeStairs(steps="+str(p.GetInt("StairsSteps",17))+")")
+            FreeCADGui.doCommand("obj = Arch.makeStairs(steps="+str(p.GetInt("StairsSteps",17))+")")
+        FreeCADGui.addModule("Draft")
+        FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
@@ -258,7 +260,7 @@ class _Stairs(ArchComponent.Component):
         fLength = float(l-obj.Width.Value)/(numberofsteps-2)
         fHeight = float(h)/numberofsteps
         a = math.atan(fHeight/fLength)
-        print "landing data:",fLength,":",fHeight
+        print("landing data:",fLength,":",fHeight)
 
         # step
         p1 = self.align(vBase,obj.Align,vWidth)
@@ -365,7 +367,7 @@ class _Stairs(ArchComponent.Component):
         vBase = edge.Vertexes[0].Point
         vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
         a = math.atan(vHeight.Length/vLength.Length)
-        #print "stair data:",vLength.Length,":",vHeight.Length
+        #print("stair data:",vLength.Length,":",vHeight.Length)
 
         # steps
         for i in range(numberofsteps-1):
@@ -402,7 +404,7 @@ class _Stairs(ArchComponent.Component):
                 h = DraftVecUtils.scaleTo(vLength,-resLength)
                 lProfile.append(lProfile[-1].add(Vector(h.x,h.y,-resHeight2)))
                 lProfile.append(vBase)
-                #print lProfile
+                #print(lProfile)
                 pol = Part.makePolygon(lProfile)
                 struct = Part.Face(pol)
                 evec = vWidth
@@ -429,7 +431,7 @@ class _Stairs(ArchComponent.Component):
                 v4 = DraftVecUtils.scaleTo(vLength,-l4)
                 lProfile.append(lProfile[-1].add(v4))
                 lProfile.append(lProfile[0])
-                #print lProfile
+                #print(lProfile)
                 pol = Part.makePolygon(lProfile)
                 pol = Part.Face(pol)
                 evec = DraftVecUtils.scaleTo(vWidth,obj.StringerWidth.Value)
@@ -484,11 +486,10 @@ class _Stairs(ArchComponent.Component):
 
 
     def makeCurvedStairs(self,obj,edge):
-        print "Not yet implemented!"
+        print("Not yet implemented!")
 
     def makeCurvedStairsWithLanding(self,obj,edge):
-        print "Not yet implemented!"
-
+        print("Not yet implemented!")
 
 
 class _ViewProviderStairs(ArchComponent.ViewProviderComponent):

@@ -48,7 +48,7 @@ public:
 	const Point operator-(const Point& p)const{return Point(x - p.x, y - p.y);}
 	const Point operator*(double d)const{return Point(x * d, y * d);}
 	const Point operator/(double d)const{return Point(x / d, y / d);}
-	bool operator==(const Point& p)const{return fabs(x-p.x)<tolerance && fabs(y-p.y)<tolerance;}
+	bool operator==(const Point& p)const;
 	bool operator!=(const Point &p)const{ return !(*this == p);}
 	double dist(const Point &p)const{double dx = p.x - x; double dy = p.y - y; return sqrt(dx*dx + dy*dy);}
     double length()const;

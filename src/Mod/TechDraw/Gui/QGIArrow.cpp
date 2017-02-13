@@ -32,6 +32,11 @@
 #include <QPainter>
 #endif
 
+#include <App/Application.h>
+#include <Base/Parameter.h>
+#include <Base/Console.h>
+
+#include "Rez.h"
 #include "QGIArrow.h"
 
 using namespace TechDrawGui;
@@ -56,39 +61,102 @@ void QGIArrow::flip(bool state) {
 }
 
 void QGIArrow::draw() {
-    // the center is the end point on a dimension
     QPainterPath path;
-    //QPen pen(Qt::black);
-    //pen.setWidth(1);
-
-    //QBrush brush(Qt::black);
-    //setPen(pen);
-    //setBrush(brush);
-
-    float length = -m_size;           //TODO: Arrow heads sb preference? size & type?
-
-    if(isFlipped)
-        length *= -1;
-    path.moveTo(QPointF(0.,0.));
-    path.lineTo(QPointF(length,-0.6));
-    path.lineTo(QPointF(length, 0.6));
-
-    path.closeSubpath();
-//     path.moveTo(QPointF(-1,1));
-//     path.lineTo(QPointF(1,-1));
+    if (m_style == 0) {
+        path = makeFilledTriangle(m_size,m_size/6.0,isFlipped);     //"arrow l/w sb 3/1" ??
+    } else if (m_style == 1) {
+        path = makeOpenArrow(m_size,m_size/3.0,isFlipped);          //broad arrow?
+    } else if (m_style == 2) {
+        path = makeHashMark(m_size/2.0,m_size/2.0,isFlipped);       //big enough?
+    } else if (m_style == 3) {
+        path = makeDot(m_size/2.0,m_size/2.0,isFlipped);
+    } else if (m_style == 4) {
+        path = makeOpenDot(m_size/2.0,m_size/2.0,isFlipped);
+    } else {
+        path = makeFilledTriangle(m_size,m_size/6.0,isFlipped);     //sb a question mark or ???
+    }
     setPath(path);
 }
 
 void QGIArrow::setSize(double s)
 {
     m_size = s;
-    //???
 }
 
-void QGIArrow::setStyle(int s)
+
+QPainterPath QGIArrow::makeFilledTriangle(double length, double width, bool flipped)
 {
-    m_style = s;
-    //???
+//(0,0) is tip of arrow
+    if (!flipped) {
+        length *= -1;
+    }
+    
+    QPainterPath path;
+    path.moveTo(QPointF(0.,0.));
+    path.lineTo(QPointF(Rez::guiX(length),Rez::guiX(-width)));
+    path.lineTo(QPointF(Rez::guiX(length),Rez::guiX(width)));
+    path.closeSubpath();
+    m_fill = Qt::SolidPattern;
+    return path;
+}
+
+QPainterPath QGIArrow::makeOpenArrow(double length, double width, bool flipped)
+{
+//(0,0) is tip of arrow
+    if (!flipped) {
+        length *= -1;
+    }
+    
+    QPainterPath path;
+    path.moveTo(QPointF(Rez::guiX(length),Rez::guiX(-width)));
+    path.lineTo(QPointF(0.,0.));
+    path.lineTo(QPointF(Rez::guiX(length),Rez::guiX(width)));
+    m_fill = Qt::NoBrush;
+    return path;
+}
+
+QPainterPath QGIArrow::makeHashMark(double length, double width, bool flipped)   //Arch tick
+{
+    double adjWidth = 1.0;
+//(0,0) is tip of arrow
+    if (!flipped) {
+        length *= -1;
+        adjWidth *= -1;
+    }
+    QPainterPath path;
+    path.moveTo(QPointF(Rez::guiX(length),Rez::guiX(adjWidth * (-width))));
+    path.lineTo(QPointF(Rez::guiX(-length),Rez::guiX(adjWidth * width)));
+    m_fill = Qt::NoBrush;
+    return path;
+}
+
+QPainterPath QGIArrow::makeDot(double length, double width, bool flipped)   //closed dot
+{
+    Q_UNUSED(flipped);
+    QPainterPath path;
+    path.moveTo(0.0,0.0);                                  ////(0,0) is Center of dot
+    path.addEllipse(Rez::guiX(-length/2.0), Rez::guiX(-width/2.0), Rez::guiX(length), Rez::guiX(width));
+    m_fill = Qt::SolidPattern;
+    return path;
+}
+
+QPainterPath QGIArrow::makeOpenDot(double length, double width, bool flipped)
+{
+    Q_UNUSED(flipped);
+    QPainterPath path;
+    path.moveTo(0.0,0.0);                                  ////(0,0) is Center of dot
+    path.addEllipse(Rez::guiX(-length/2.0), Rez::guiX(-width/2.0), Rez::guiX(length), Rez::guiX(width));
+    m_fill = Qt::NoBrush;
+    return path;
+}
+
+
+int QGIArrow::getPrefArrowStyle()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    int style = hGrp->GetInt("ArrowStyle", 0);
+    return style;
 }
 
 void QGIArrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -96,6 +164,7 @@ void QGIArrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
+    setPen(m_pen);
     m_brush.setColor(m_colCurrent);
     m_brush.setStyle(m_fill);
     setBrush(m_brush);

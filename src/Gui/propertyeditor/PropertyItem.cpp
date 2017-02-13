@@ -32,6 +32,8 @@
 # include <QPixmap>
 # include <QTextStream>
 # include <QTimer>
+# include <QApplication>
+# include <QPalette>
 #endif
 
 #include <Base/Tools.h>
@@ -3369,20 +3371,22 @@ LinkLabel::~LinkLabel()
 void LinkLabel::setPropertyLink(const QStringList& o)
 {
     link = o;
-
+    QString linkcolor = QApplication::palette().color(QPalette::Link).name();
     QString text = QString::fromLatin1(
         "<html><head><style type=\"text/css\">"
         "p, li { white-space: pre-wrap; }"
         "</style></head><body>"
         "<p>"
-        "<a href=\"%1.%2\"><span style=\" text-decoration: underline; color:#0000ff;\">%3</span></a>"
+        "<a href=\"%1.%2\"><span style=\" text-decoration: underline; color:%3;\">%4</span></a>"
         "<span>	</span>"
-        "<a href=\"@__edit_link_prop__@\"><span style=\" text-decoration: underline; color:#0000ff;\">%4</span></a>"
+        "<a href=\"@__edit_link_prop__@\"><span style=\" text-decoration: underline; color:%5;\">%6</span></a>"
         "</p></body></html>"
     )
     .arg(link[0])
     .arg(link[1])
+    .arg(linkcolor)
     .arg(link[2])
+    .arg(linkcolor)
     .arg(tr("Edit..."));
     setText(text);
 }

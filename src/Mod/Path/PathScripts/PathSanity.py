@@ -25,6 +25,7 @@
 Path projects.  Ideally, the user could execute these utilities from an icon
 to make sure tools are selected and configured and defaults have been revised'''
 
+from __future__ import print_function
 from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
@@ -50,7 +51,7 @@ def review(obj):
         FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
 
     for item in obj.Group:
-        print "Checking: " + item.Label
+        print("Checking: " + item.Label)
         if item.Name[:2] == "TC":
             toolcontrolcount += 1
             if item.ToolNumber == 0:

@@ -44,6 +44,7 @@ public:
     App::PropertyLinkSub     Source;                                   //the dvp & face this hatch belongs to
     App::PropertyFile        HatchPattern;
     App::PropertyColor       HatchColor;
+    App::PropertyFloatConstraint HatchScale;
 
     //short mustExecute() const;
 
@@ -61,6 +62,8 @@ protected:
     void onChanged(const App::Property* prop);
 
 private:
+    static App::PropertyFloatConstraint::Constraints scaleRange;
+
 };
 
 typedef App::FeaturePythonT<DrawHatch> DrawHatchPython;

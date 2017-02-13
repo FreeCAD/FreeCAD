@@ -63,6 +63,8 @@
 
 
 #include "PrimitiveFeature.h"
+#include <Mod/Part/App/PartFeaturePy.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
@@ -105,6 +107,19 @@ App::DocumentObjectExecReturn* Primitive::execute(void) {
     return Part::Feature::execute();
 }
 
+namespace Part {
+    PYTHON_TYPE_DEF(PrimitivePy, PartFeaturePy)
+    PYTHON_TYPE_IMP(PrimitivePy, PartFeaturePy)
+}
+
+PyObject* Primitive::getPyObject()
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new PrimitivePy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
 
 void Primitive::Restore(Base::XMLReader &reader)
 {
@@ -1081,6 +1096,11 @@ short Ellipse::mustExecute() const
 
 App::DocumentObjectExecReturn *Ellipse::execute(void)
 {
+    if (this->MinorRadius.getValue() > this->MajorRadius.getValue())
+        return new App::DocumentObjectExecReturn("Minor radius greater than major radius");
+    if (this->MinorRadius.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Minor radius of ellipse too small");
+
     gp_Elips ellipse;
     ellipse.SetMajorRadius(this->MajorRadius.getValue());
     ellipse.SetMinorRadius(this->MinorRadius.getValue());

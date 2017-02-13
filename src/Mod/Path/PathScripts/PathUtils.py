@@ -569,7 +569,7 @@ def findParentJob(obj):
     for i in obj.InList:
         if isinstance(i.Proxy, PathScripts.PathJob.ObjectPathJob):
             return i
-        if i.TypeId == "Path::FeaturePython":
+        if i.TypeId == "Path::FeaturePython" or i.TypeId == "Path::FeatureCompoundPython":
             grandParent = findParentJob(i)
             if grandParent is not None:
                 return grandParent
@@ -620,7 +620,7 @@ def addToJob(obj, jobname = None):
             if r is False:
                 return None
             else:
-                print form.cboProject.currentText()
+                print(form.cboProject.currentText())
                 job = [i for i in jobs if i.Name == form.cboProject.currentText()][0]
 
     g = job.Group
@@ -690,7 +690,7 @@ def arc(cx, cy, sx, sy, ex, ey, horizFeed=0, ez=None, ccw=False):
 
     eps = 0.01
     if (math.sqrt((cx - sx)**2 + (cy - sy)**2) - math.sqrt((cx - ex)**2 + (cy - ey)**2)) >= eps:
-        print "ERROR: Illegal arc: Start and end radii not equal"
+        print("ERROR: Illegal arc: Start and end radii not equal")
         return ""
 
     retstr = ""

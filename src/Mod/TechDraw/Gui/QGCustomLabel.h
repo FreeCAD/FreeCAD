@@ -54,6 +54,6 @@ private:
 
 };
 
-} // namespace MDIViewPageGui
+}
 
 #endif // DRAWINGGUI_QGCUSTOMLABEL_H

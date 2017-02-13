@@ -1,86 +1,62 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="32px"
-   height="32px"
-   id="svg2816"
-   version="1.1"
-   inkscape:version="0.47 r22583"
-   sodipodi:docname="Sketcher_ConstrainParallel.svg">
-  <defs
-     id="defs2818">
-    <inkscape:perspective
-       sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 16 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="32 : 16 : 1"
-       inkscape:persp3d-origin="16 : 10.666667 : 1"
-       id="perspective2824" />
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="64" height="64" id="svg2816" version="1.1" inkscape:version="0.48.5 r10040" sodipodi:docname="Sketcher_ConstrainDistance.svg">
+  <defs id="defs2818">
+    <inkscape:perspective sodipodi:type="inkscape:persp3d" inkscape:vp_x="0 : 16 : 1" inkscape:vp_y="0 : 1000 : 0" inkscape:vp_z="32 : 16 : 1" inkscape:persp3d-origin="16 : 10.666667 : 1" id="perspective2824"/>
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="11.197802"
-     inkscape:cx="27.637404"
-     inkscape:cy="22.621488"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     inkscape:grid-bbox="true"
-     inkscape:document-units="px"
-     inkscape:window-width="1280"
-     inkscape:window-height="952"
-     inkscape:window-x="-4"
-     inkscape:window-y="-4"
-     inkscape:window-maximized="1" />
-  <metadata
-     id="metadata2821">
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="11.197802" inkscape:cx="15.103858" inkscape:cy="40.838466" inkscape:current-layer="layer1" showgrid="true" inkscape:grid-bbox="true" inkscape:document-units="px" inkscape:window-width="1920" inkscape:window-height="1137" inkscape:window-x="0" inkscape:window-y="27" inkscape:window-maximized="1">
+    <inkscape:grid type="xygrid" id="grid2988" empspacing="2" visible="true" enabled="true" snapvisiblegridlinesonly="true"/>
+  </sodipodi:namedview>
+  <metadata id="metadata2821">
     <rdf:RDF>
-      <cc:Work
-         rdf:about="">
+      <cc:Work rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>Sketcher_ConstrainDistance</dc:title>
+        <dc:date>2011-10-10</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Sketcher/Gui/Resources/icons/Sketcher_ConstrainDistance.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     id="layer1"
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer">
-    <path
-       style="fill:none;stroke:#00ff00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 5.1795879,4.7625118 0,23.7546622"
-       id="path2826" />
-    <path
-       style="fill:none;stroke:#00ff00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 28.041217,4.3159956 0.0893,24.5583914"
-       id="path2828" />
-    <path
-       style="fill:none;stroke:#00ff00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 5.2688912,13.013739 22.8616298,-0.178607 0,0"
-       id="path3610" />
-    <text
-       xml:space="preserve"
-       style="font-size:9px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       x="8.1265955"
-       y="10.691854"
-       id="text3612"><tspan
-         sodipodi:role="line"
-         id="tspan3614"
-         x="8.1265955"
-         y="10.691854">12.1</tspan></text>
+  <g id="layer1" inkscape:label="Layer 1" inkscape:groupmode="layer" transform="translate(0,32)">
+    <g id="g3785" transform="matrix(2.4545455,0,0,2.4545455,90.909091,-39.272727)">
+      <path sodipodi:nodetypes="cc" inkscape:connector-curvature="0" id="path2990" d="m -34.592592,5.4074068 0,21.1851852" style="fill:none;stroke:#172a04;stroke-width:3.25925922;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"/>
+      <path sodipodi:nodetypes="cc" inkscape:connector-curvature="0" id="path2990-3" d="m -13.407407,5.4074068 0,21.1851852" style="fill:none;stroke:#172a04;stroke-width:3.25925922;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"/>
+      <path sodipodi:nodetypes="cc" inkscape:connector-curvature="0" id="path2990-6" d="m -13.407407,14.407407 -21.185185,0" style="fill:none;stroke:#172a04;stroke-width:3.25925922;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"/>
+    </g>
+    <g id="g3785-7" style="stroke:#73d216;stroke-width:0.81481481" transform="matrix(2.4545455,0,0,2.4545455,90.909091,-39.272727)">
+      <path sodipodi:nodetypes="cc" inkscape:connector-curvature="0" id="path2990-5" d="m -34.592592,5.4074072 0,21.1851848" style="fill:none;stroke:#73d216;stroke-width:1.62962961;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"/>
+      <path sodipodi:nodetypes="cc" inkscape:connector-curvature="0" id="path2990-3-3" d="m -13.407407,5.4074072 0,21.1851848" style="fill:none;stroke:#73d216;stroke-width:1.62962961;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"/>
+      <path sodipodi:nodetypes="cc" inkscape:connector-curvature="0" id="path2990-6-5" d="m -13.407407,14.37037 -21.185185,0" style="fill:none;stroke:#73d216;stroke-width:1.62962961;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"/>
+      <path sodipodi:nodetypes="cc" inkscape:connector-curvature="0" id="path2990-6-5-6" d="m -14.629629,13.962963 -18.740741,0" style="fill:none;stroke:#8ae234;stroke-width:0.81481481;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"/>
+      <path sodipodi:nodetypes="cc" inkscape:connector-curvature="0" id="path2990-5-2" d="m -34.999999,5.4074072 0,21.1851848" style="fill:none;stroke:#8ae234;stroke-width:0.81481481;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"/>
+      <path sodipodi:nodetypes="cc" inkscape:connector-curvature="0" id="path2990-5-2-9" d="m -13.814814,5.4074072 0,21.1851848" style="fill:none;stroke:#8ae234;stroke-width:0.81481481;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"/>
+    </g>
+    <path d="m 15.999997,-15 3,0 0,-10.000002 -1.999997,0 0,-2 1.999997,-2 4.000003,0 L 23,-15 l 1.999997,0 0,4 L 17,-11 l 0,-4" style="font-size:22.51535797px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:#2e3436;stroke-width:1.99999988;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial Black;-inkscape-font-specification:'Arial Black, Bold'" id="path3049" inkscape:connector-curvature="0" sodipodi:nodetypes="cccccccccccc"/>
+    <path d="m 27.999996,-15 5.000006,0 0,4 -4.000003,0 0,-4" style="font-size:22.51535797px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:#2e3436;stroke-width:1.99999988;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial Black;-inkscape-font-specification:'Arial Black, Bold'" id="path3051" inkscape:connector-curvature="0" sodipodi:nodetypes="ccccc"/>
+    <path d="m 43.414056,-20.02905 c -9e-6,-2.16913 -0.164555,-3.695277 -0.493648,-4.57844 -0.322899,-0.890883 -0.869328,-1.336331 -1.639295,-1.336346 -0.769975,1.5e-5 -1.319504,0.445463 -1.648597,1.336346 -0.329109,0.883163 -0.493656,2.40931 -0.493656,4.57844 0,2.19239 0.164547,3.737902 0.493656,4.636541 0.329093,0.898647 0.878622,1.347969 1.648597,1.347966 0.763757,3e-6 1.310186,-0.449319 1.639295,-1.347966 0.329093,-0.898639 0.493639,-2.444151 0.493648,-4.636541 m 3.585942,0.03486 c -8e-6,2.874118 -0.496765,5.093613 -1.490261,6.65849 -0.993521,1.557133 -2.40306,2.335699 -4.228624,2.335699 -1.831782,0 -3.24443,-0.778566 -4.237934,-2.3357 -0.993505,-1.564877 -1.490262,-3.784372 -1.490262,-6.65849 0,-2.88185 0.496757,-5.101345 1.490262,-6.658492 0.993504,-1.564864 2.406152,-2.347303 4.237934,-2.347321 1.825564,1.8e-5 3.235103,0.782457 4.228624,2.347321 0.993496,1.557147 1.490253,3.776642 1.490261,6.658492" style="font-size:22.51535797px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:#2e3436;stroke-width:1.99999988;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial Black;-inkscape-font-specification:'Arial Black, Bold'" id="path3053" inkscape:connector-curvature="0"/>
   </g>
 </svg>

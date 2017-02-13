@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <Mod/Part/App/BodyBasePy.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Placement.h>
@@ -96,6 +97,15 @@ void BodyBase::onChanged (const App::Property* prop) {
         Tip.setValue( BaseFeature.getValue () );
     }
     Part::Feature::onChanged ( prop );
+}
+
+PyObject* BodyBase::getPyObject()
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new BodyBasePy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 
 } /* Part */

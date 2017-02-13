@@ -136,7 +136,7 @@ class _CommandRebar:
                         if len(obj.Support) != 0:
                             sup = obj.Support[0][0]
                         else:
-                            print "Arch: error: couldn't extract a base object"
+                            print("Arch: error: couldn't extract a base object")
                             return
                         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
                         FreeCADGui.addModule("Arch")
@@ -145,7 +145,7 @@ class _CommandRebar:
                         FreeCAD.ActiveDocument.recompute()
                         return
                     else:
-                        print "Arch: error: couldn't extract a base object"
+                        print("Arch: error: couldn't extract a base object")
                         return
 
         FreeCAD.Console.PrintMessage(translate("Arch","Please select a base face on a structural object\n"))
@@ -183,6 +183,56 @@ class _Rebar(ArchComponent.Component):
                     v = DraftGeomUtils.vec(e).normalize()
                     return e.Vertexes[0].Point,v
         return None,None
+        
+    def getRebarData(self,obj):
+        if len(obj.InList) != 1:
+            return
+        if Draft.getType(obj.InList[0]) != "Structure":
+            return
+        if not obj.InList[0].Shape:
+            return
+        if not obj.Base:
+            return
+        if not obj.Base.Shape:
+            return
+        if not obj.Base.Shape.Wires:
+            return
+        if not obj.Diameter.Value:
+            return
+        if not obj.Amount:
+            return
+        father = obj.InList[0]
+        wire = obj.Base.Shape.Wires[0]
+        axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
+        size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
+        if hasattr(obj,"Rounding"):
+            if obj.Rounding:
+                radius = obj.Rounding * obj.Diameter.Value
+                import DraftGeomUtils
+                wire = DraftGeomUtils.filletWire(wire,radius)
+        wires = []
+        if obj.Amount == 1:
+            offset = DraftVecUtils.scaleTo(axis,size/2)
+            wire.translate(offset)
+            wires.append(wire)
+        else:
+            if obj.OffsetStart.Value:
+                baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
+            else:
+                baseoffset = None
+            interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
+            interval = interval / (obj.Amount - 1)
+            vinterval = DraftVecUtils.scaleTo(axis,interval)
+            for i in range(obj.Amount):
+                if i == 0:
+                    if baseoffset:
+                        wire.translate(baseoffset)
+                    wires.append(wire)
+                else:
+                    wire = wire.copy()
+                    wire.translate(vinterval)
+                    wires.append(wire)
+        return [wires,obj.Diameter.Value/2]
 
     def execute(self,obj):
         
@@ -208,7 +258,7 @@ class _Rebar(ArchComponent.Component):
         father = obj.InList[0]
         wire = obj.Base.Shape.Wires[0]
         if hasattr(obj,"Rounding"):
-            #print obj.Rounding
+            #print(obj.Rounding)
             if obj.Rounding:
                 radius = obj.Rounding * obj.Diameter.Value
                 import DraftGeomUtils
@@ -223,8 +273,8 @@ class _Rebar(ArchComponent.Component):
                 axis = FreeCAD.Vector(obj.Direction) #.normalize()
                 # don't normalize so the vector can also be used to determine the distance
                 size = axis.Length
-        #print axis
-        #print size
+        #print(axis)
+        #print(size)
         if (obj.OffsetStart.Value + obj.OffsetEnd.Value) > size:
             return
 
@@ -236,7 +286,7 @@ class _Rebar(ArchComponent.Component):
         try:
             bar = wire.makePipeShell([circle],True,False,2)
         except Part.OCCError:
-            print "Arch: error sweeping rebar profile along the base sketch"
+            print("Arch: error sweeping rebar profile along the base sketch")
             return
         # building final shape
         shapes = []

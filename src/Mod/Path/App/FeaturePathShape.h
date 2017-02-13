@@ -19,6 +19,9 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+/* 
+ *  Copyright (c) 2017 Zheng, Lei <realthunder.dev@gmail.com> 
+ */
 
 
 #ifndef PATH_FeaturePathShape_H
@@ -26,14 +29,13 @@
 
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
 #include <App/PropertyGeo.h>
 #include <App/FeaturePython.h>
 #include "Mod/Part/App/PropertyTopoShape.h"
 
-#include "Path.h"
 #include "PropertyPath.h"
 #include "FeaturePath.h"
+#include "Area.h"
 
 namespace Path
 {
@@ -47,12 +49,14 @@ public:
     FeatureShape(void);
     virtual ~FeatureShape();
     
-    Part::PropertyPartShape Shape;
+    // Part::PropertyPartShape Shape;
+    App::PropertyLinkList Sources;
+    App::PropertyVector StartPoint;
+    PARAM_PROP_DECLARE(AREA_PARAMS_PATH_CONF)
 
     //@{
     /// recalculate the feature
     virtual App::DocumentObjectExecReturn *execute(void);
-    virtual short mustExecute(void) const;
     //@}
 
     /// returns the type name of the ViewProvider

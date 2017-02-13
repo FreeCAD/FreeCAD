@@ -351,6 +351,9 @@ View3DInventorViewer::View3DInventorViewer(const QGLFormat& format, QWidget* par
 
 void View3DInventorViewer::init()
 {
+    fpsEnabled = false;
+    vboEnabled = false;
+
     Gui::Selection().Attach(this);
 
     // Coin should not clear the pixel-buffer, so the background image
@@ -785,6 +788,16 @@ void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
 void View3DInventorViewer::setEnabledFPSCounter(bool on)
 {
     fpsEnabled = on;
+}
+
+void View3DInventorViewer::setEnabledVBO(bool on)
+{
+    vboEnabled = on;
+}
+
+bool View3DInventorViewer::isEnabledVBO() const
+{
+    return vboEnabled;
 }
 
 void View3DInventorViewer::setAxisCross(bool on)
@@ -1408,7 +1421,7 @@ void View3DInventorViewer::renderGLImage()
     glEnable(GL_DEPTH_TEST);
 }
 
-//#define ENABLE_GL_DEPTH_RANGE
+// #define ENABLE_GL_DEPTH_RANGE
 // The calls of glDepthRange inside renderScene() causes problems with transparent objects
 // so that's why it is disabled now: http://forum.freecadweb.org/viewtopic.php?f=3&t=6037&hilit=transparency
 
@@ -1440,6 +1453,7 @@ void View3DInventorViewer::renderScene(void)
     SoGLRenderAction* glra = this->getSoRenderManager()->getGLRenderAction();
     SoGLWidgetElement::set(glra->getState(), qobject_cast<QGLWidget*>(this->getGLWidget()));
     SoGLRenderActionElement::set(glra->getState(), glra);
+    SoGLVBOActivatedElement::set(glra->getState(), this->vboEnabled);
     glra->apply(this->backgroundroot);
 
     navigation->updateAnimation();

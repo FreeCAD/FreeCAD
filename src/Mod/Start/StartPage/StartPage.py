@@ -23,9 +23,14 @@
 
 # This is the start page template
 
-import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,cStringIO
+import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,sys
 from PySide import QtGui
 from xml.etree.ElementTree import parse
+
+try:
+    import io as cStringIO
+except:
+    import cStringIO
 
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
@@ -35,19 +40,30 @@ def translate(context,text):
     # return str(QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).toUtf8())
     try:
         _encoding = QtGui.QApplication.UnicodeUTF8
-        u = QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
+        u = QtGui.QApplication.translate(context, text, None, _encoding)
     except AttributeError:
-        u = QtGui.QApplication.translate(context, text, None).encode("utf8")
-        
-    s = cStringIO.StringIO()
-    for i in u:
-        if ord(i) == 39:
-            s.write("\\'")
-        else:
-            s.write(i)
-    t = s.getvalue()
-    s.close()
-    return t
+        u = QtGui.QApplication.translate(context, text, None)
+
+    if sys.version_info.major < 3:
+        u = u.encode("utf8")
+
+    # s = cStringIO.StringIO()
+    # for i in u:
+    #     if sys.version_info.major > 2: #below only works correctly in python3
+    #         if i == 39:
+    #             s.write("\\'")
+    #         else:
+    #             s.write(chr(i))
+    #     else:
+    #         if ord(i) == 39:
+    #             s.write(unicode("\\'"))
+    #         else:
+    #             s.write(unicode(i))
+    # t = s.getvalue()
+    # s.close()
+    # return t
+    
+    return u.replace(chr(39), "\\'")
 
 # texts to be translated
 
@@ -88,7 +104,7 @@ text34 = translate("StartPage","creation time:")
 text35 = translate("StartPage","last modified:")
 text36 = translate("StartPage","location:")
 text37 = translate("StartPage","User manual")
-text38 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc")
+text38 = translate("StartPage","http://www.freecadweb.org/wiki/Online_Help_Toc")
 text39 = translate("StartPage","Tutorials")
 text40 = translate("StartPage","Python resources")
 text41 = translate("StartPage","File not found")
@@ -101,13 +117,13 @@ text47 = translate("StartPage","The section of the FreeCAD website dedicated to 
 text48 = translate("StartPage","A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community")
 text49 = translate("StartPage","Getting started")
 text50 = translate("StartPage","The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.")
-text51 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=Workbenches")
+text51 = translate("StartPage","http://www.freecadweb.org/wiki/Workbenches")
 text52 = translate("StartPage","Ship Design")
 text53 = translate("StartPage","Designing and calculating ships")
 text54 = translate("StartPage","The <b>Ship Design</b> module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.")
 text55 = translate("StartPage","Load an Architectural example model")
-text56 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=Tutorials")
-text57 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=Power_users_hub")
+text56 = translate("StartPage","http://www.freecadweb.org/wiki/Tutorials")
+text57 = translate("StartPage","http://www.freecadweb.org/wiki/Power_users_hub")
 text58 = translate("StartPage","Your version of FreeCAD is up to date.")
 text59 = translate("StartPage","There is a new release of FreeCAD available.")
 text60 = translate("StartPage","Load an FEM 3D example analysis")
@@ -115,6 +131,10 @@ text61 = translate("StartPage","Obtain a development version")
 text62 = translate("StartPage","<b>Development versions</b> are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.")
 text63 = translate("StartPage","See all commits")
 text64 = translate("StartPage","Load an FEM 2D example analysis")
+text65 = translate("StartPage","FreeCAD Standard File")
+text66 = translate("StartPage","Author")
+text67 = translate("StartPage","Company")
+text68 = translate("StartPage","License")
 
 # get FreeCAD version
 
@@ -356,6 +376,14 @@ page = """
             max-width: 300px;
             clear: both;
         }
+        
+        #description p span {
+            text-align: left;
+        }
+        
+        .disabled {
+            opacity: 0.5;
+        }
 
         pre {
             width: 300px !important;
@@ -543,8 +571,19 @@ def getInfo(filename):
             files=zfile.namelist()
             # check for meta-file if it's really a FreeCAD document
             if files[0] == "Document.xml":
-                html += "<p>FreeCAD Standard File</p>"
+                html += "<p><b>" + text65 + "</b></p>"
                 image="thumbnails/Thumbnail.png"
+                doc = zfile.read(files[0])
+                doc = doc.replace("\n"," ")
+                author = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"\/>",doc)
+                if author: 
+                    html += "<p>" + text66 + ": " + author[0] + "</p>"
+                company = re.findall("Property name=\"Company.*?String value=\"(.*?)\"\/>",doc)
+                if company: 
+                    html += "<p>" + text67 + ": " + company[0] + "</p>"
+                lic = re.findall("Property name=\"License.*?String value=\"(.*?)\"\/>",doc)
+                if lic: 
+                    html += "<p>" + text68 + ": " + lic[0] + "</p>"
                 if image in files:
                     image=zfile.read(image)
                     thumbfile = tempfile.mkstemp(suffix='.png')[1]
@@ -552,8 +591,9 @@ def getInfo(filename):
                     thumb.write(image)
                     thumb.close()
                     html += '<img src=file://'
-
                     html += thumbfile + '><br/>'
+        else:
+            print ("not a freecad file: "+os.path.splitext(filename)[1].upper())
     else:
         html += "<p>" + text41 + "</p>"
             
@@ -564,7 +604,7 @@ def getRecentFiles():
     rf = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
     ct = rf.GetInt("RecentFiles")
     html = '<ul>'
-    for i in range(3):
+    for i in range(4):
         if i < ct:
             mr = rf.GetString("MRU%d" % (i))
             if os.path.exists(mr):
@@ -575,11 +615,22 @@ def getRecentFiles():
                 else:
                     html += '<img src="blank.png" style="width: 16px">&nbsp;'
                 html += '<a '
-                html += 'onMouseover="show(\''+getInfo(mr)+'\')" '
+                html += 'onMouseover="show(\''+getInfo(mr).replace("'","&rsquo;")+'\')" '
                 html += 'onMouseout="show(\'\')" '
                 html += 'href="LoadMRU'+str(i)+'.py">'
                 html += fn
                 html += '</a></li>'
+            else:
+                fn = os.path.basename(mr)
+                html += '<li>'
+                if mr[-5:].upper() == "FCSTD":
+                    html += '<img src="freecad-doc.png" style="width: 16px">&nbsp;'
+                else:
+                    html += '<img src="blank.png" style="width: 16px">&nbsp;'
+                html += '<span class="disabled">'
+                html += fn
+                html += '</span></li>'
+                
     html += '</ul>'
     return html
 
@@ -612,7 +663,7 @@ def getFeed(url,numitems=3):
         resp += item['title']
         resp += '</a></li>'
     resp += '</ul>'
-    print resp
+    print(resp)
     return resp
 
 def getCustomBlocks():
@@ -638,7 +689,7 @@ def setColors(html):
         defaults["#textcolor"] = palette.text().color().name()
         defaults["#windowcolor"] = palette.window().color().name()
         defaults["#windowtextcolor"] = palette.windowText().color().name()
-    for k,v in defaults.iteritems():
+    for k,v in defaults.items():
         html = html.replace(k,str(v))
     return html
 

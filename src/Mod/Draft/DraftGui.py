@@ -251,10 +251,12 @@ class DraftToolBar:
         self.mask = None
         self.alock = False
         self.angle = None
+        self.avalue = None
         self.x = 0
         self.y = 0
         self.z = 0
         self.uiloader = FreeCADGui.UiLoader()
+        self.autogroup = None
         
         if self.taskmode:
             # add only a dummy widget, since widgets are created on demand
@@ -333,13 +335,14 @@ class DraftToolBar:
         return lineedit
 
     def _inputfield (self,name, layout, hide=True, width=None):
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
-        bsize = p.GetInt("ToolbarIconSize",24)-2
         inputfield = self.uiloader.createWidget("Gui::InputField")
         inputfield.setObjectName(name)
         if hide: inputfield.hide()
-        if not width: width = 800
-        inputfield.setMaximumSize(QtCore.QSize(width,bsize))
+        if not width:
+            sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+            inputfield.setSizePolicy(sizePolicy)
+        else:
+            inputfield.setMaximumWidth(width)
         layout.addWidget(inputfield)
         return inputfield
 
@@ -602,6 +605,8 @@ class DraftToolBar:
         self.widthButton.setSuffix("px")
         self.fontsizeButton = self._spinbox("fontsizeButton",self.bottomtray, val=self.fontsize,vmax=999, hide=False,double=True,size=(bsize * 3,bsize))
         self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',width=22)
+        self.autoGroupButton = self._pushbutton("autoGroup",self.bottomtray,icon="Draft_AutoGroup_off",hide=False,width=120)
+        self.autoGroupButton.setText("None")
 
         QtCore.QObject.connect(self.wplabel,QtCore.SIGNAL("pressed()"),self.selectplane)
         QtCore.QObject.connect(self.colorButton,QtCore.SIGNAL("pressed()"),self.getcol)
@@ -610,6 +615,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.fontsizeButton,QtCore.SIGNAL("valueChanged(double)"),self.setfontsize)
         QtCore.QObject.connect(self.applyButton,QtCore.SIGNAL("pressed()"),self.apply)
         QtCore.QObject.connect(self.constrButton,QtCore.SIGNAL("toggled(bool)"),self.toggleConstrMode)
+        QtCore.QObject.connect(self.autoGroupButton,QtCore.SIGNAL("pressed()"),self.runAutoGroup)
 
     def setupStyle(self):
         style = "#constrButton:Checked {background-color: "
@@ -723,6 +729,7 @@ class DraftToolBar:
             self.fontsizeButton.setToolTip(translate("draft", "Font Size"))
             self.applyButton.setToolTip(translate("draft", "Apply to selected objects"))
             self.constrButton.setToolTip(translate("draft", "Toggles Construction Mode"))
+            self.autoGroupButton.setToolTip(translate("draft", "Sets/unsets auto-grouping"))
 
 #---------------------------------------------------------------------------
 # Interface modes
@@ -1726,6 +1733,27 @@ class DraftToolBar:
         self.radiusValue.setText(t)
         self.radiusValue.setFocus()
         
+    def runAutoGroup(self):
+        FreeCADGui.runCommand("Draft_AutoGroup")
+        
+    def setAutoGroup(self,value=None):
+        if value == None:
+            self.autogroup = None
+            self.autoGroupButton.setText("None")
+            self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg'))
+            self.autoGroupButton.setDown(False)
+        else:
+            obj = FreeCAD.ActiveDocument.getObject(value)
+            if obj:
+                self.autogroup = value
+                self.autoGroupButton.setText(obj.Label)
+                self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_on.svg'))
+                self.autoGroupButton.setDown(False)
+            else:
+                self.autogroup = None
+                self.autoGroupButton.setText("None")
+                self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg'))
+                self.autoGroupButton.setDown(False)
 
     def show(self):
         if not self.taskmode:
@@ -1791,16 +1819,24 @@ class DraftToolBar:
         
     def changeLengthValue(self,d):
         v = FreeCAD.Vector(self.x,self.y,self.z)
+        if not v.Length:
+            if self.angle:
+                v = FreeCAD.Vector(self.angle)
+            else:
+                v = FreeCAD.Vector(FreeCAD.DraftWorkingPlane.u)
+                if self.avalue:
+                    v = DraftVecUtils.rotate(v,math.radians(d),FreeCAD.DraftWorkingPlane.axis)
         v = DraftVecUtils.scaleTo(v,d)
         self.xValue.setText(displayExternal(v.x,None,'Length'))
         self.yValue.setText(displayExternal(v.y,None,'Length'))
         self.zValue.setText(displayExternal(v.z,None,'Length'))
         
     def changeAngleValue(self,d):
+        self.avalue = d
         v = FreeCAD.Vector(self.x,self.y,self.z)
         a = DraftVecUtils.angle(v,FreeCAD.DraftWorkingPlane.u,FreeCAD.DraftWorkingPlane.axis)
         a = math.radians(d)+a
-        v=DraftVecUtils.rotate(v,a,FreeCAD.DraftWorkingPlane.axis)
+        v = DraftVecUtils.rotate(v,a,FreeCAD.DraftWorkingPlane.axis)
         self.angle = v
         self.xValue.setText(displayExternal(v.x,None,'Length'))
         self.yValue.setText(displayExternal(v.y,None,'Length'))
@@ -1939,10 +1975,17 @@ class FacebinderTaskPanel:
         self.tree.clear()
         if self.obj:
             for f in self.obj.Faces:
-                item = QtGui.QTreeWidgetItem(self.tree)
-                item.setText(0,f[0].Name)
-                item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
-                item.setText(1,f[1])
+                if isinstance(f[1],tuple):
+                    for subf in f[1]:
+                        item = QtGui.QTreeWidgetItem(self.tree)
+                        item.setText(0,f[0].Name)
+                        item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+                        item.setText(1,subf)  
+                else:
+                    item = QtGui.QTreeWidgetItem(self.tree)
+                    item.setText(0,f[0].Name)
+                    item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+                    item.setText(1,f[1])
         self.retranslateUi(self.form)
 
     def addElement(self):
@@ -1955,8 +1998,14 @@ class FacebinderTaskPanel:
                             flist = self.obj.Faces
                             found = False
                             for face in flist:
-                                if (face[0] == obj.Name) and (face[1] == elt):
-                                    found = True
+                                if (face[0] == obj.Name):
+                                    if isinstance(face[1],tuple):
+                                        for subf in face[1]:
+                                            if subf == elt:
+                                                found = True
+                                    else:
+                                        if (face[1] == elt):
+                                            found = True
                             if not found:
                                 flist.append((obj,elt))
                                 self.obj.Faces = flist
@@ -1971,8 +2020,16 @@ class FacebinderTaskPanel:
                 elt = str(it.text(1))
                 flist = []
                 for face in self.obj.Faces:
-                    if (face[0].Name != obj.Name) or (face[1] != elt):
+                    if (face[0].Name != obj.Name):
                         flist.append(face)
+                    else:
+                        if isinstance(face[1],tuple):
+                            for subf in face[1]:
+                                if subf != elt:
+                                    flist.append((obj,subf))
+                        else:
+                            if (face[1] != elt):
+                                flist.append(face)
                 self.obj.Faces = flist
                 FreeCAD.ActiveDocument.recompute()
             self.update()

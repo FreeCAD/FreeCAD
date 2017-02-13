@@ -701,7 +701,7 @@ Py::Object TopoShapeEdgePy::getCurve() const
                 Base::Reference<ParameterGrp> hPartGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
                 Base::Reference<ParameterGrp> hGenPGrp = hPartGrp->GetGroup("General");
-                LineOld = hGenPGrp->GetBool("LineOld", true);
+                LineOld = hGenPGrp->GetBool("LineOld", false);
             }
 
             if (LineOld) {

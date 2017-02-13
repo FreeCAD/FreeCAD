@@ -29,7 +29,11 @@
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 # include <QFile>
+# include <QFileInfo>
+# include <QFont>
+# include <QFontMetrics>
 # include <QMessageBox>
+# include <QPainter>
 # include <QTextStream>
 # include <boost/bind.hpp>
 #endif
@@ -582,22 +586,27 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
     a0->setIcon(BitmapFactory().iconFromTheme("DrawStyleAsIs"));
     a0->setChecked(true);
     a0->setObjectName(QString::fromLatin1("Std_DrawStyleAsIs"));
+    a0->setShortcut(QKeySequence(QString::fromUtf8("V,1")));
     QAction* a1 = pcAction->addAction(QString());
     a1->setCheckable(true);
     a1->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
     a1->setObjectName(QString::fromLatin1("Std_DrawStyleFlatLines"));
+    a1->setShortcut(QKeySequence(QString::fromUtf8("V,2")));
     QAction* a2 = pcAction->addAction(QString());
     a2->setCheckable(true);
     a2->setIcon(BitmapFactory().iconFromTheme("DrawStyleShaded"));
     a2->setObjectName(QString::fromLatin1("Std_DrawStyleShaded"));
+    a2->setShortcut(QKeySequence(QString::fromUtf8("V,3")));
     QAction* a3 = pcAction->addAction(QString());
     a3->setCheckable(true);
     a3->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
     a3->setObjectName(QString::fromLatin1("Std_DrawStyleWireframe"));
+    a3->setShortcut(QKeySequence(QString::fromUtf8("V,4")));
     QAction* a4 = pcAction->addAction(QString());
     a4->setCheckable(true);
     a4->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
     a4->setObjectName(QString::fromLatin1("Std_DrawStylePoints"));
+    a4->setShortcut(QKeySequence(QString::fromUtf8("V,5")));
     pcAction->setIcon(a0->icon());
 
     _pcAction = pcAction;
@@ -1680,6 +1689,42 @@ void StdViewScreenShot::activated(int iMsg)
                 doCommand(Gui,"Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s')",
                             fn.toUtf8().constData(),w,h,background);
             }
+
+            // When adding a watermark check if the image could be created
+            if (opt->addWatermark()) {
+                QFileInfo fi(fn);
+                QPixmap pixmap;
+                if (fi.exists() && pixmap.load(fn)) {
+                    QString name = qApp->applicationName();
+                    std::map<std::string, std::string>& config = App::Application::Config();
+                    QString url  = QString::fromLatin1(config["MaintainerUrl"].c_str());
+                    url = QUrl(url).host();
+
+                    QPixmap appicon = Gui::BitmapFactory().pixmap(config["AppIcon"].c_str());
+
+                    QPainter painter;
+                    painter.begin(&pixmap);
+
+                    painter.drawPixmap(8, h-15-appicon.height(), appicon);
+
+                    QFont font = painter.font();
+                    font.setPointSize(20);
+
+                    int n = QFontMetrics(font).width(name);
+                    int h = pixmap.height();
+
+                    painter.setFont(font);
+                    painter.drawText(8+appicon.width(), h-24, name);
+
+                    font.setPointSize(12);
+                    int u = QFontMetrics(font).width(url);
+                    painter.setFont(font);
+                    painter.drawText(8+appicon.width()+n-u, h-9, url);
+
+                    painter.end();
+                    pixmap.save(fn);
+                }
+            }
         }
     }
 }
@@ -2519,13 +2564,12 @@ StdCmdSceneInspector::StdCmdSceneInspector()
 void StdCmdSceneInspector::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    View3DInventor* child = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (child) {
-        View3DInventorViewer* viewer = child->getViewer();
+    Gui::Document* doc = Application::Instance->activeDocument();
+    if (doc) {
         static QPointer<Gui::Dialog::DlgInspector> dlg = 0;
         if (!dlg)
             dlg = new Gui::Dialog::DlgInspector(getMainWindow());
-        dlg->setNode(viewer->getSceneGraph());
+        dlg->setDocument(doc);
         dlg->setAttribute(Qt::WA_DeleteOnClose);
         dlg->show();
     }

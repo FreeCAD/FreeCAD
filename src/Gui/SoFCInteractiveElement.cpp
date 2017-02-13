@@ -214,3 +214,58 @@ void SoGLWidgetNode::GLRender(SoGLRenderAction * action)
 {
     SoGLWidgetNode::doAction(action);
 }
+
+// ---------------------------------
+
+SO_ELEMENT_SOURCE(SoGLVBOActivatedElement);
+
+void SoGLVBOActivatedElement::initClass(void)
+{
+  SO_ELEMENT_INIT_CLASS(SoGLVBOActivatedElement, inherited);
+  SO_ENABLE(SoGLRenderAction, SoGLVBOActivatedElement);
+  SO_ENABLE(SoHandleEventAction, SoGLVBOActivatedElement);
+}
+
+void SoGLVBOActivatedElement::init(SoState * state)
+{
+  inherited::init(state);
+  this->active = false;
+}
+
+SoGLVBOActivatedElement::~SoGLVBOActivatedElement()
+{
+}
+
+void SoGLVBOActivatedElement::set(SoState * state, SbBool active)
+{
+  SoGLVBOActivatedElement * elem = static_cast<SoGLVBOActivatedElement *>
+        (SoElement::getElement(state, classStackIndex));
+  elem->active = active;
+}
+
+void SoGLVBOActivatedElement::get(SoState * state, SbBool& active)
+{
+    const SoGLVBOActivatedElement* self =  static_cast<const SoGLVBOActivatedElement *>
+        (SoElement::getConstElement(state, classStackIndex));
+    active = self->active;
+}
+
+void SoGLVBOActivatedElement::push(SoState * state)
+{
+    inherited::push(state);
+}
+
+void SoGLVBOActivatedElement::pop(SoState * state, const SoElement * prevTopElement)
+{
+    inherited::pop(state, prevTopElement);
+}
+
+SbBool SoGLVBOActivatedElement::matches(const SoElement * /*element*/) const
+{
+    return true;
+}
+
+SoElement * SoGLVBOActivatedElement::copyMatchInfo(void) const
+{
+    return 0;
+}

@@ -50,14 +50,13 @@ public:
     int addView(DrawView *view);
     int removeView(DrawView *view);
     void rebuildViewList(void);
+    bool isDeleting(void) { return nowDeleting; }
 
     int countChildren();
-    /** @name methods overide Feature */
-    //@{
-    /// recalculate the Feature
+
     virtual void onDocumentRestored();
     virtual App::DocumentObjectExecReturn *execute(void);
-    //@}
+    virtual void unsetupObject();
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
@@ -67,6 +66,7 @@ public:
 
 protected:
     void onChanged(const App::Property* prop);
+    bool nowDeleting;
 };
 
 } //namespace TechDraw

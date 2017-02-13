@@ -4,7 +4,7 @@ set(PACKAGE_NAME "FreeCAD")
 set(PACKAGE_VERSION_NAME "Vulcan")
 set(PACKAGE_VERSION_MAJOR "0")
 set(PACKAGE_VERSION_MINOR "17")
-set(PACKAGE_VERSION_PATCH "6700")
+set(PACKAGE_VERSION_PATCH "10000")
 
 set(FREECAD_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}")
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
@@ -97,6 +97,13 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
         set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
     endif()
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
+
+if(CMAKE_COMPILER_IS_CLANGXX)
+    # older boost.preprocessor turn off variadics for clang
+    add_definitions(-DBOOST_PP_VARIADICS=1)
+    message(STATUS "Force BOOST_PP_VARIADICS=1 for clang")
+endif()
+
 
 # ================================================================================
 # Output directories for install target
@@ -194,6 +201,7 @@ endif(APPLE)
 OPTION(BUILD_FEM "Build the FreeCAD FEM module" ON)
 OPTION(BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
 OPTION(BUILD_TEMPLATE "Build the FreeCAD template module which is only for testing purposes" OFF)
+OPTION(BUILD_ADDONMGR "Build the FreeCAD addon manager module" ON)
 OPTION(BUILD_ARCH "Build the FreeCAD Architecture module" ON)
 OPTION(BUILD_ASSEMBLY "Build the FreeCAD Assembly module" OFF)
 OPTION(BUILD_COMPLETE "Build the FreeCAD complete module" ON)
@@ -252,6 +260,12 @@ if (FREECAD_BUILD_DEBIAN)
 endif (FREECAD_BUILD_DEBIAN)
 if(BUILD_FEM)
     set(BUILD_SMESH ON)
+endif()
+
+# for Windows the minimum required cmake version is 3.4.3 to build the Path module
+if(WIN32 AND CMAKE_VERSION VERSION_LESS 3.4.3)
+    message(WARNING "Disable Path, requires cmake >= 3.4.3 in order to build this module")
+    set(BUILD_PATH OFF)
 endif()
 
 # ==============================================================================

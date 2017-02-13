@@ -34,6 +34,7 @@ namespace TechDraw {
 class DrawViewPart;
 class DrawViewSection;
 class DrawHatch;
+class DrawGeomHatch;
 }
 
 namespace TechDrawGui
@@ -89,9 +90,11 @@ protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     TechDraw::DrawHatch* faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const;
+    TechDraw::DrawGeomHatch* faceIsGeomHatched(int i,std::vector<TechDraw::DrawGeomHatch*> geomObjs) const;
     void dumpPath(const char* text,QPainterPath path);
     void removePrimitives(void);
     void removeDecorations(void);
+    bool getFaceEdgesPref(void);
 
 private:
     QList<QGraphicsItem*> deleteItems;

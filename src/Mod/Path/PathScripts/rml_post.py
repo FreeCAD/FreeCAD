@@ -72,7 +72,7 @@ def setjog():
    return ""
 
 def addheader():
-    return [ "PA;PA;" ] # absolute positioning 
+    return [ "PA;PA;" ] # absolute positioning
 def addfooter():
     return []
 
@@ -103,7 +103,7 @@ def feed(x=None, y=None, z=None, state={}):
         pass # XXX: is this used?
     return c
 
-def jog(x=None, y=None, z=None, state={}):        
+def jog(x=None, y=None, z=None, state={}):
     c = []
     if x is not None and y is not None:
       x, y = float(x), float(y)
@@ -135,15 +135,14 @@ def xyarc(args, state):
     steps = 64 # TODO: specify max error instead
     points = arc.discretize(steps)
     # TODO: consider direction
-    #print 'p = Part.ArcOfCircle(Part.Circle(FreeCAD.Vector(%f, %f), FreeCAD.Vector(0, 0, 1), %f), %f, %f)' % (center.x, center.y, radius, p0, p1)
+    #print('p = Part.ArcOfCircle(Part.Circle(FreeCAD.Vector(%f, %f), FreeCAD.Vector(0, 0, 1), %f), %f, %f)' % (center.x, center.y, radius, p0, p1))
     for p in points:
-        #print 'p', p.x, p.y
         c += feed(p.x, p.y, state['Z'], state)
     return c
 
 def speed(xy=None, z=None, state={}):
     c = []
-    print xy, z, state
+    print(xy, z, state)
     if xy is not None:
         xy = float(xy)
         if xy > 0.0 and xy != state['XYspeed']:
@@ -216,18 +215,18 @@ def convertgcode(cmd, args, state):
 
 def parse(inputstring):
     "parse(inputstring): returns a parsed output string"
-    
+
     state = { 'X': 0.0, 'Y': 0.0, 'Z': 0.0, 'XYspeed': -1.0, 'Zspeed': -1.0 }
     output = []
 
     # header
     output += addheader()
     output += motoron()
-    
+
     output += speed(2.0, 1.0, state) # defaults
 
     # TODO: respect clearance height
-    
+
     # treat the input line by line
     lines = inputstring.split("\n")
     for line in lines:
@@ -235,7 +234,7 @@ def parse(inputstring):
             continue
         parsed = PostUtils.stringsplit(line)
         command = parsed['command']
-        print 'cmd', line
+        print('cmd', line)
         try:
             if command:
                 code = convertgcode(command, parsed, state)
@@ -243,8 +242,8 @@ def parse(inputstring):
                     code = [ code ]
                 if len(code) and code[0]:
                     output += code
-        except NotImplementedError, e:
-            print e
+        except NotImplementedError as e:
+            print(e)
 
     # footer
     output += motoroff()
@@ -253,5 +252,5 @@ def parse(inputstring):
 
     return '\n'.join(output)
 
-print __name__ + " gcode postprocessor loaded."
+print (__name__ + " gcode postprocessor loaded.")
 

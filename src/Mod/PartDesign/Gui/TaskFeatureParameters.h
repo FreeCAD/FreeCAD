@@ -26,31 +26,37 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/DocumentObserver.h>
 
 #include "ViewProvider.h"
 
 namespace PartDesignGui {
 
 /// Convenience class to collect common methods for all SketchBased features
-class TaskFeatureParameters : public Gui::TaskView::TaskBox
+class TaskFeatureParameters : public Gui::TaskView::TaskBox,
+                              public Gui::DocumentObserver
 {
     Q_OBJECT
 
 public:
     TaskFeatureParameters(PartDesignGui::ViewProvider* vp, QWidget *parent,
                               const std::string& pixmapname, const QString& parname);
-    virtual ~TaskFeatureParameters() {};
+    virtual ~TaskFeatureParameters() {}
 
     /// save field history
-    virtual void saveHistory(void) {};
+    virtual void saveHistory(void) {}
     /// apply changes made in the parameters input to the model via commands
-    virtual void apply() {};
+    virtual void apply() {}
 
     void recomputeFeature();
 
 protected Q_SLOTS:
     // TODO Add update view to all dialogs (2015-12-05, Fat-Zer)
     void onUpdateView(bool on);
+
+private:
+    /** Notifies when the object is about to be removed. */
+    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
 
 protected:
     PartDesignGui::ViewProvider *vp;

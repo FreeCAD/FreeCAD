@@ -50,6 +50,19 @@
        </widget>
       </item>
       <item>
+       <widget class="Gui::PrefCheckBox" name="CheckBox_useVBO">
+        <property name="text">
+         <string>Use OpenGL Vertex Buffer Object (experimental)</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseVBO</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_UseAutoRotation">
         <property name="enabled">
          <bool>true</bool>
@@ -515,6 +528,7 @@
  <tabstops>
   <tabstop>CheckBox_CornerCoordSystem</tabstop>
   <tabstop>CheckBox_ShowFPS</tabstop>
+  <tabstop>CheckBox_useVBO</tabstop>
   <tabstop>CheckBox_UseAutoRotation</tabstop>
   <tabstop>comboNavigationStyle</tabstop>
   <tabstop>mouseButton</tabstop>

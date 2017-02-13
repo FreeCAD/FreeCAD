@@ -23,15 +23,18 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Inventor/nodes/SoGroup.h>
+# include <Inventor/nodes/SoSeparator.h>
 # include <QHeaderView>
 #endif
 
 #include "SceneInspector.h"
 #include "ui_SceneInspector.h"
-#include "MainWindow.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "ViewProviderDocumentObject.h"
+#include "Document.h"
+#include "Application.h"
+#include <App/Document.h>
 
 using namespace Gui::Dialog;
 
@@ -97,13 +100,19 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
         for (int i=0; i<group->getNumChildren();i++) {
             SoNode* child = group->getChild(i);
             setNode(this->index(i, 0, index), child);
-            // See ViewProviderDocumentObject::updateData
-            QByteArray name(child->getName());
-            name = QByteArray::fromPercentEncoding(name);
-            this->setData(this->index(i, 1, index), QVariant(QString::fromUtf8(name)));
+
+            QMap<SoNode*, QString>::iterator it = nodeNames.find(child);
+            if (it != nodeNames.end()) {
+                this->setData(this->index(i, 1, index), QVariant(it.value()));
+            }
         }
     }
     // insert icon
+}
+
+void SceneModel::setNodeNames(const QMap<SoNode*, QString>& names)
+{
+    nodeNames = names;
 }
 
 // --------------------------------------------------------
@@ -130,6 +139,18 @@ DlgInspector::~DlgInspector()
     delete ui;
 }
 
+void DlgInspector::setDocument(Gui::Document* doc)
+{
+    setNodeNames(doc);
+
+    View3DInventor* view = qobject_cast<View3DInventor*>(doc->getActiveView());
+    if (view) {
+        View3DInventorViewer* viewer = view->getViewer();
+        setNode(viewer->getSceneGraph());
+        ui->treeView->expandToDepth(3);
+    }
+}
+
 void DlgInspector::setNode(SoNode* node)
 {
     SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());
@@ -145,6 +166,32 @@ void DlgInspector::setNode(SoNode* node)
 #endif
 }
 
+void DlgInspector::setNodeNames(Gui::Document* doc)
+{
+    std::vector<Gui::ViewProvider*> vps = doc->getViewProvidersOfType
+            (Gui::ViewProviderDocumentObject::getClassTypeId());
+    QMap<SoNode*, QString> nodeNames;
+    for (std::vector<Gui::ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
+        Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(*it);
+        App::DocumentObject* obj = vp->getObject();
+        if (obj) {
+            QString label = QString::fromUtf8(obj->Label.getValue());
+            nodeNames[vp->getRoot()] = label;
+        }
+
+        std::vector<std::string> modes = vp->getDisplayMaskModes();
+        for (std::vector<std::string>::iterator jt = modes.begin(); jt != modes.end(); ++jt) {
+            SoNode* node = vp->getDisplayMaskMode(jt->c_str());
+            if (node) {
+                nodeNames[node] = QString::fromStdString(*jt);
+            }
+        }
+    }
+
+    SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());
+    model->setNodeNames(nodeNames);
+}
+
 void DlgInspector::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
@@ -156,11 +203,16 @@ void DlgInspector::changeEvent(QEvent *e)
 
 void DlgInspector::on_refreshButton_clicked()
 {
-    View3DInventor* child = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (child) {
-        View3DInventorViewer* viewer = child->getViewer();
-        setNode(viewer->getSceneGraph());
-        ui->treeView->expandToDepth(3);
+    Gui::Document* doc = Application::Instance->activeDocument();
+    if (doc) {
+        setNodeNames(doc);
+
+        View3DInventor* view = qobject_cast<View3DInventor*>(doc->getActiveView());
+        if (view) {
+            View3DInventorViewer* viewer = view->getViewer();
+            setNode(viewer->getSceneGraph());
+            ui->treeView->expandToDepth(3);
+        }
     }
     else {
         SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());

@@ -190,14 +190,6 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
 
 void ViewProviderDocumentObject::updateData(const App::Property* prop)
 {
-    if (pcObject && prop == &pcObject->Label) {
-        // SoBase::setName() replaces characters that according to the
-        // VRML standard are invalid. To avoid the replacement we use
-        // the percent encoding.
-        QByteArray ba(pcObject->Label.getValue());
-        QByteArray name = ba.toPercentEncoding();
-        pcRoot->setName(name.constData());
-    }
     ViewProvider::updateData(prop);
 }
 

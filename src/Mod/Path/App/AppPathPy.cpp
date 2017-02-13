@@ -37,6 +37,7 @@
 #include <App/DocumentObjectPy.h>
 #include <App/Application.h>
 
+#include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <TopoDS.hxx>
@@ -57,7 +58,45 @@
 #include "Path.h"
 #include "FeaturePath.h"
 #include "FeaturePathCompound.h"
+#include "Area.h"
 
+#define PATH_CATCH catch (Standard_Failure &e)                      \
+    {                                                               \
+        std::string str;                                            \
+        Standard_CString msg = e.GetMessageString();                \
+        str += typeid(e).name();                                    \
+        str += " ";                                                 \
+        if (msg) {str += msg;}                                      \
+        else     {str += "No OCCT Exception Message";}              \
+        Base::Console().Error(str.c_str());                         \
+        PyErr_SetString(Part::PartExceptionOCCError,str.c_str());   \
+    }                                                               \
+    catch(Base::Exception &e)                                       \
+    {                                                               \
+        std::string str;                                            \
+        str += "FreeCAD exception thrown (";                        \
+        str += e.what();                                            \
+        str += ")";                                                 \
+        e.ReportException();                                        \
+        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());\
+    }                                                               \
+    catch(std::exception &e)                                        \
+    {                                                               \
+        std::string str;                                            \
+        str += "STL exception thrown (";                            \
+        str += e.what();                                            \
+        str += ")";                                                 \
+        Base::Console().Error(str.c_str());                         \
+        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());\
+    }                                                               \
+    catch(const char *e)                                            \
+    {                                                               \
+        PyErr_SetString(Base::BaseExceptionFreeCADError,e);         \
+    } throw Py::Exception();                                                               
+
+namespace Part {
+extern PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
+}
 
 namespace Path {
 class Module : public Py::ExtensionModule<Module>
@@ -78,6 +117,23 @@ public:
         );
         add_varargs_method("fromShape",&Module::fromShape,
             "fromShape(Shape): Returns a Path object from a Part Shape"
+        );
+        add_keyword_method("fromShapes",&Module::fromShapes,
+            "fromShapes(shapes, start=Vector(), " PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ", key=value...)\n"
+            "\nReturns a Path object from a list of shapes\n"
+            "\n* shapes: input list of shapes.\n"
+            "\n* start (Vector()): optional start position.\n"
+            PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)
+            "\n* <key>: any key supported by Path.Area, see Path.Area.getParamDesc() for description"
+        );
+        add_keyword_method("sortWires",&Module::sortWires,
+            "sortWires(shapes, start=Vector(), "  PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) ", key=value...)\n"
+            "\nReturns (wires,end), where 'wires' is sorted accross Z value and with optimized travel distance,\n"
+            "and 'end' is the ending position of the whole wires\n"
+            "\n* shapes: input shape list\n"
+            "\n* start (Vector()): optional start position.\n"
+            PARAM_PY_DOC(ARG, AREA_PARAMS_SORT)
+            "\n* <key>: any key supported by Path.Area, see Path.Area.getParamDesc() for description"
         );
         initialize("This module is the Path module."); // register with Python
     }
@@ -261,7 +317,115 @@ private:
             throw Py::RuntimeError(e.what());
         }
     }
-    
+
+    Py::Object fromShapes(const Py::Tuple& args, const Py::Dict &kwds)
+    {
+        PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_PATH)
+        PARAM_PY_DECLARE_INIT(PARAM_FNAME,AREA_PARAMS_CONF)
+        PyObject *pShapes=NULL;
+        PyObject *start=NULL;
+        static char* kwd_list[] = {"shapes", "start", 
+                PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_PATH), 
+                PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF), NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), 
+                "O|O!" PARAM_PY_KWDS(AREA_PARAMS_PATH) PARAM_PY_KWDS(AREA_PARAMS_CONF), 
+                kwd_list, &pShapes, &(Base::VectorPy::Type), &start, 
+                PARAM_REF(PARAM_FARG,AREA_PARAMS_PATH),
+                PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
+            throw Py::Exception();
+
+        std::list<TopoDS_Shape> shapes;
+        if (PyObject_TypeCheck(pShapes, &(Part::TopoShapePy::Type)))
+            shapes.push_back(static_cast<Part::TopoShapePy*>(pShapes)->getTopoShapePtr()->getShape());
+        else if (PyObject_TypeCheck(pShapes, &(PyList_Type)) ||
+                PyObject_TypeCheck(pShapes, &(PyTuple_Type))) 
+        {
+            Py::Sequence shapeSeq(pShapes);
+            for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
+                PyObject* item = (*it).ptr();
+                if(!PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+                    PyErr_SetString(PyExc_TypeError, "non-shape object in sequence");
+                    throw Py::Exception();
+                }
+                shapes.push_back(static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape());
+            }
+        }
+
+#define AREA_GET(_param) \
+        params.PARAM_FNAME(_param) = \
+            PARAM_TYPED(PARAM_CAST_PY_,_param)(PARAM_FNAME(_param));
+        AreaParams params;
+        PARAM_FOREACH(AREA_GET,AREA_PARAMS_CONF)
+
+        gp_Pnt pstart;
+        if(start) {
+            Base::Vector3d vec = static_cast<Base::VectorPy*>(start)->value();
+            pstart.SetCoord(vec.x, vec.y, vec.z);
+        }
+
+        try {
+            std::unique_ptr<Toolpath> path(new Toolpath);
+            Area::toPath(*path,shapes,&params, &pstart, NULL,
+                    PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_PATH));
+            return Py::asObject(new PathPy(path.release()));
+        } PATH_CATCH
+    }
+
+    Py::Object sortWires(const Py::Tuple& args, const Py::Dict &kwds)
+    {
+        PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_SORT)
+        PARAM_PY_DECLARE_INIT(PARAM_FNAME,AREA_PARAMS_CONF)
+        PyObject *pShapes=NULL;
+        PyObject *start=NULL;
+        static char* kwd_list[] = {"shapes", "start", 
+                PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_SORT), 
+                PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF), NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), 
+                "O|O!" PARAM_PY_KWDS(AREA_PARAMS_SORT) PARAM_PY_KWDS(AREA_PARAMS_CONF), 
+                kwd_list, &pShapes, &(Base::VectorPy::Type), &start, 
+                PARAM_REF(PARAM_FARG,AREA_PARAMS_SORT),
+                PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
+            throw Py::Exception();
+
+        std::list<TopoDS_Shape> shapes;
+        if (PyObject_TypeCheck(pShapes, &(Part::TopoShapePy::Type)))
+            shapes.push_back(static_cast<Part::TopoShapePy*>(pShapes)->getTopoShapePtr()->getShape());
+        else if (PyObject_TypeCheck(pShapes, &(PyList_Type)) ||
+                PyObject_TypeCheck(pShapes, &(PyTuple_Type))) {
+            Py::Sequence shapeSeq(pShapes);
+            for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
+                PyObject* item = (*it).ptr();
+                if(!PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+                    PyErr_SetString(PyExc_TypeError, "non-shape object in sequence");
+                    throw Py::Exception();
+                }
+                shapes.push_back(static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape());
+            }
+        }
+
+        AreaParams params;
+        PARAM_FOREACH(AREA_GET,AREA_PARAMS_CONF)
+
+        gp_Pnt pstart,pend;
+        if(start) {
+            Base::Vector3d vec = static_cast<Base::VectorPy*>(start)->value();
+            pstart.SetCoord(vec.x, vec.y, vec.z);
+        }
+        
+        try {
+            std::list<TopoDS_Shape> wires = Area::sortWires(shapes,&params,&pstart,
+                    &pend, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
+            PyObject *list = PyList_New(0);
+            for(auto &wire : wires)
+                PyList_Append(list,Py::new_reference_to(
+                            Part::shape2pyshape(TopoDS::Wire(wire))));
+            PyObject *ret = PyTuple_New(2);
+            PyTuple_SetItem(ret,0,list);
+            PyTuple_SetItem(ret,1,new Base::VectorPy(
+                        Base::Vector3d(pend.X(),pend.Y(),pend.Z())));
+            return Py::asObject(ret);
+        } PATH_CATCH
+    }
 };
 
 PyObject* initModule()

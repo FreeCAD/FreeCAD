@@ -36,6 +36,7 @@ set(TechDrawGui_MOC_HDRS
     TaskLinkDim.h
     DlgTemplateField.h
     TaskSectionView.h
+    TaskGeomHatch.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -54,6 +55,7 @@ set(TechDrawGui_UIC_SRCS
     TaskLinkDim.ui
     DlgTemplateField.ui
     TaskSectionView.ui
+    TaskGeomHatch.ui
 )
 
 if(BUILD_QT5)
@@ -92,8 +94,13 @@ SET(TechDrawGui_SRCS
     TaskSectionView.ui
     TaskSectionView.cpp
     TaskSectionView.h
+    TaskGeomHatch.ui
+    TaskGeomHatch.cpp
+    TaskGeomHatch.h
     DrawGuiUtil.cpp
     DrawGuiUtil.h
+    Rez.cpp
+    Rez.h
 )
 SET(TechDrawGuiView_SRCS
     MDIViewPage.cpp
@@ -197,6 +204,8 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderViewClip.h
     ViewProviderHatch.cpp
     ViewProviderHatch.h
+    ViewProviderGeomHatch.cpp
+    ViewProviderGeomHatch.h
     ViewProviderImage.cpp
     ViewProviderImage.h
 )
@@ -209,6 +218,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskProjGroup.ui
     TaskLinkDim.ui
     TaskSectionView.ui
+    TaskGeomHatch.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 
