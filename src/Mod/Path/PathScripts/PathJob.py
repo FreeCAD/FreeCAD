@@ -67,7 +67,7 @@ class ObjectPathJob:
         obj.PostProcessorArgs = PathPreferences.defaultPostProcessorArgs()
         obj.addProperty("App::PropertyString",    "MachineName", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Name of the Machine that will use the CNC program"))
 
-        obj.addProperty("Path::PropertyTooltable", "Tooltable", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property","The tooltable used for this CNC program"))
+        #obj.addProperty("Path::PropertyTooltable", "Tooltable", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property","The tooltable used for this CNC program"))
 
         obj.addProperty("App::PropertyEnumeration", "MachineUnits", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Units that the machine works in, ie Metric or Inch"))
         obj.MachineUnits = ['Metric', 'Inch']
@@ -206,15 +206,6 @@ import PathScripts.PathLoadTool as PathLoadTool
 obj = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")
 PathScripts.PathJob.ObjectPathJob(obj)
 PathLoadTool.CommandPathLoadTool.Create(obj.Name)
-tl = obj.Group[0]
-tool = Path.Tool()
-tool.Diameter = 5.0
-tool.Name = "Default Tool"
-tool.CuttingEdgeHeight = 15.0
-tool.ToolType = "EndMill"
-tool.Material = "HighSpeedSteel"
-obj.Tooltable.addTools(tool)
-tl.ToolNumber = 1
 obj.ViewObject.Proxy.deleteOnReject = True
 obj.ViewObject.startEditing()
 '''

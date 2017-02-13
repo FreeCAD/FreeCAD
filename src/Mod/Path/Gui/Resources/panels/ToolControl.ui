@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>308</width>
-    <height>389</height>
+    <height>352</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,10 +15,25 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLineEdit" name="tcoName">
-     <property name="readOnly">
-      <bool>true</bool>
+    <widget class="QFrame" name="frame_4">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
      </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLineEdit" name="tcoName">
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="uiToolNum"/>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -30,16 +45,6 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="3" column="0">
-       <widget class="QLabel" name="txtToolDiameter">
-        <property name="text">
-         <string>Unknown</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QComboBox" name="cboToolSelect"/>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="txtToolType">
         <property name="text">
@@ -47,8 +52,22 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="txtToolDiameter">
+        <property name="text">
+         <string>Unknown</string>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="txtToolMaterial">
+        <property name="text">
+         <string>Unknown</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="txtToolName">
         <property name="text">
          <string>Unknown</string>
         </property>
@@ -73,9 +92,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="horizFeed"/>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
@@ -83,20 +99,10 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="vertFeed"/>
-      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
          <string>Horiz Rapid</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="horizRapid">
-        <property name="text">
-         <string/>
         </property>
        </widget>
       </item>
@@ -107,10 +113,43 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="1">
+       <widget class="Gui::InputField" name="horizFeed">
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">mm/s</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::InputField" name="vertFeed">
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">mm/s</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::InputField" name="horizRapid">
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">mm/s</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="1">
-       <widget class="QLineEdit" name="vertRapid">
-        <property name="text">
-         <string/>
+       <widget class="Gui::InputField" name="vertRapid">
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">mm/s</string>
         </property>
        </widget>
       </item>
@@ -159,6 +198,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
