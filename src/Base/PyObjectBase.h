@@ -196,6 +196,7 @@ class BaseExport PyObjectBase : public PyObject
 protected:
     /// destructor
     virtual ~PyObjectBase();
+    void resetAttribute();
 
 public:  
     /** Constructor

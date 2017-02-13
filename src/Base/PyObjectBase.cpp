@@ -181,6 +181,17 @@ int PyObjectBase::__setattr(PyObject *obj, char *attr, PyObject *value)
         return -1;
     }
 
+    // If an attribute references this as parent then reset it
+    // before setting the new attribute
+    PyObject* cur = static_cast<PyObjectBase*>(obj)->_getattr(attr);
+    if (cur) {
+        if (PyObject_TypeCheck(cur, &(PyObjectBase::Type))) {
+            PyObjectBase* base = static_cast<PyObjectBase*>(cur);
+            base->resetAttribute();
+        }
+        Py_DECREF(cur);
+    }
+
     int ret = static_cast<PyObjectBase*>(obj)->_setattr(attr, value);
 #if 1
     if (ret == 0) {
@@ -263,6 +274,18 @@ PyObject *PyObjectBase::_repr(void)
     Console().Log("PyObjectBase::_repr() not overwritten representation!");
 # endif
     return Py_BuildValue("s", a.str().c_str());
+}
+
+void PyObjectBase::resetAttribute()
+{
+    if (this->attribute) {
+        free(this->attribute);
+        this->attribute = 0;
+    }
+    if (this->parent) {
+        Py_DECREF(this->parent);
+        this->parent = 0;
+    }
 }
 
 void PyObjectBase::setAttributeOf(const char* attr, const PyObjectBase* par)
