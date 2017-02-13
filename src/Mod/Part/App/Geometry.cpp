@@ -1286,6 +1286,53 @@ Geometry *GeomCircle::clone(void) const
     return newCirc;
 }
 
+GeomBSplineCurve* GeomCircle::toNurbs(double first, double last) const
+{
+    double radius = getRadius();
+    Handle_Geom_Conic conic =  Handle_Geom_Conic::DownCast(handle());
+    gp_Ax1 axis = conic->Axis();
+  //gp_Dir xdir = conic->XAxis().Direction();
+  //Standard_Real angle = gp_Dir(1,0,0).Angle(xdir) + first;
+    Standard_Real angle = first;
+    const gp_Pnt& loc = axis.Location();
+    //Note: If the matching this way doesn't work reliably then we must compute the
+    //angle so that the point of the curve for 'first' matches the first pole
+    //gp_Pnt pnt = conic->Value(first);
+
+    TColgp_Array1OfPnt poles(1, 7);
+    poles(1) = loc.Translated(gp_Vec(radius, 0, 0));
+    poles(2) = loc.Translated(gp_Vec(radius, 2*radius, 0));
+    poles(3) = loc.Translated(gp_Vec(-radius, 2*radius, 0));
+    poles(4) = loc.Translated(gp_Vec(-radius, 0, 0));
+    poles(5) = loc.Translated(gp_Vec(-radius, -2*radius, 0));
+    poles(6) = loc.Translated(gp_Vec(radius, -2*radius, 0));
+    poles(7) = loc.Translated(gp_Vec(radius, 0, 0));
+
+    TColStd_Array1OfReal weights(1,7);
+    for (int i=1; i<=7; i++) {
+        poles(i).Rotate(axis, angle);
+        weights(i) = 1;
+    }
+    weights(1) = 3;
+    weights(4) = 3;
+    weights(7) = 3;
+
+    TColStd_Array1OfInteger mults(1, 3);
+    mults(1) = 4;
+    mults(2) = 3;
+    mults(3) = 4;
+
+    TColStd_Array1OfReal knots(1, 3);
+    knots(1) = 0;
+    knots(2) = M_PI;
+    knots(3) = 2*M_PI;
+
+    Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(poles, weights,knots, mults, 3,
+        Standard_False, Standard_True);
+    spline->Segment(0, last-first);
+    return new GeomBSplineCurve(spline);
+}
+
 double GeomCircle::getRadius(void) const
 {
     Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(handle());
@@ -1410,6 +1457,13 @@ Geometry *GeomArcOfCircle::clone(void) const
     copy->setHandle(this->myCurve);
     copy->Construction = this->Construction;
     return copy;
+}
+
+GeomBSplineCurve* GeomArcOfCircle::toNurbs(double first, double last) const
+{
+    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
+    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(curve->BasisCurve());
+    return GeomCircle(circle).toNurbs(first, last);
 }
 
 double GeomArcOfCircle::getRadius(void) const
