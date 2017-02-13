@@ -95,7 +95,7 @@
 # include <GC_MakeSegment.hxx>
 # include <Precision.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
-
+# include <ShapeConstruct_Curve.hxx>
 #endif
 
 #include <Base/VectorPy.h>
@@ -316,6 +316,21 @@ TopoDS_Shape GeomCurve::toShape() const
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
     BRepBuilderAPI_MakeEdge mkBuilder(c, c->FirstParameter(), c->LastParameter());
     return mkBuilder.Shape();
+}
+
+GeomBSplineCurve* GeomCurve::toBSpline(double first, double last) const
+{
+    ShapeConstruct_Curve scc;
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle_Geom_BSplineCurve spline = scc.ConvertToBSpline(c, first, last, Precision::Confusion());
+    if (spline.IsNull())
+        throw Base::RuntimeError("Conversion to B-Spline failed");
+    return new GeomBSplineCurve(spline);
+}
+
+GeomBSplineCurve* GeomCurve::toNurbs(double first, double last) const
+{
+    return toBSpline(first, last);
 }
 
 bool GeomCurve::tangent(double u, gp_Dir& dir) const
