@@ -29,6 +29,8 @@ import FreeCADGui
 import Path
 import os
 from PySide import QtCore, QtGui
+import PathScripts
+import PathUtils
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
@@ -561,19 +563,25 @@ class EditorPanel():
                 targetlist = form.cboTarget.currentText()
                 for toolnum in tools:
                     tool = self.TLM.getTool(currList, int(toolnum))
-                    newtoolid = self.TLM.addnew(targetlist, tool.copy(), int(toolnum))
-                    if form.chkMakeController.checkState() == QtCore.Qt.CheckState.Checked and targetlist != "<Main>":
-                        snippet = '''
-import Path, PathScripts
-from PathScripts import PathUtils, PathLoadTool
-obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","TC")
-PathScripts.PathLoadTool.LoadTool(obj)
-PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
-obj.ToolNumber = %d
-PathUtils.addToJob(obj, "%s")
-App.activeDocument().recompute()
-''' % (newtoolid, targetlist)
-                        FreeCADGui.doCommand(snippet)
+                    for i in FreeCAD.ActiveDocument.findObjects("Path::Feature"):
+                        if isinstance(i.Proxy, PathScripts.PathJob.ObjectPathJob) and i.Label == targetlist:
+
+                    #if form.chkMakeController.checkState() == QtCore.Qt.CheckState.Checked and targetlist != "<Main>":
+                    #    snippet = '''
+#import Path, PathScripts
+#from PathScripts import PathUtils, PathLoadTool
+                            obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","TC")
+                            PathScripts.PathLoadTool.LoadTool(obj)
+                            PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
+                    #obj.ToolNumber = %d
+                            PathUtils.addToJob(obj, targetlist)
+                            FreeCAD.activeDocument().recompute()
+                            obj.tooltable.setTool(tool.copy(), int(toolnum))
+                        else:
+                            newtoolid = self.TLM.addnew(targetlist, tool.copy(), int(toolnum))
+
+#''' % (newtoolid, targetlist)
+   #                     FreeCADGui.doCommand(snippet)
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok)
