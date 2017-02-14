@@ -652,6 +652,7 @@ class _Window(ArchComponent.Component):
         obj.addProperty("App::PropertyArea","Area","Arch",QT_TRANSLATE_NOOP("App::Property","The area of this window"))
         obj.addProperty("App::PropertyLength","LouvreWidth","Louvres",QT_TRANSLATE_NOOP("App::Property","the width of louvre elements"))
         obj.addProperty("App::PropertyLength","LouvreSpacing","Louvres",QT_TRANSLATE_NOOP("App::Property","the space between louvre elements"))
+        obj.addProperty("App::PropertyPercent","Opening","Arch",QT_TRANSLATE_NOOP("App::Property","Opens the subcomponents that have a hinge defined"))
         obj.setEditorMode("Preset",2)
         obj.setEditorMode("WindowParts",2)
         self.Type = "Window"
@@ -708,6 +709,7 @@ class _Window(ArchComponent.Component):
                 if hasattr(obj,"WindowParts"):
                     if obj.WindowParts and (len(obj.WindowParts)%5 == 0):
                         shapes = []
+                        rotdata = None
                         for i in range(len(obj.WindowParts)/5):
                             wires = []
                             hinge = None
@@ -739,6 +741,10 @@ class _Window(ArchComponent.Component):
                                         if not DraftVecUtils.isNull(obj.Normal):
                                             norm = obj.Normal
                                 if hinge and omode:
+                                    opening = None
+                                    if hasattr(obj,"Opening"):
+                                        if obj.Opening:
+                                            opening = obj.Opening/100.0
                                     e = obj.Base.Shape.Edges[hinge]
                                     ev1 = e.Vertexes[0].Point
                                     ev2 = e.Vertexes[-1].Point
@@ -759,15 +765,17 @@ class _Window(ArchComponent.Component):
                                             v1 = ev1.add(proj)
                                             chord = p.sub(v1)
                                         else:
-                                            v1 = e.Vertexes[0].Point
+                                            v1 = ev1
                                         v4 = p.add(DraftVecUtils.scale(enorm,0.5))
-                                        if omode == 1: # Arc 90,"Arc 90 inv","Arc 45","Arc 45 inv","Arc 180","Arc 180 inv","Triangle","Triangle inv","Sliding","Sliding inv"
+                                        if omode == 1: # Arc 90
                                             v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/4,enorm))
                                             v3 = v1.add(DraftVecUtils.rotate(chord,math.pi/2,enorm))
                                             ssymbols.append(Part.Arc(p,v2,v3).toShape())
                                             ssymbols.append(Part.LineSegment(v3,v1).toShape())
                                             vsymbols.append(Part.LineSegment(v1,v4).toShape())
                                             vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                                            if opening:
+                                                rotdata = [v1,ev2.sub(ev1),90*opening]
                                         elif omode == 2: # Arc -90
                                             v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/4,enorm))
                                             v3 = v1.add(DraftVecUtils.rotate(chord,-math.pi/2,enorm))
@@ -775,6 +783,8 @@ class _Window(ArchComponent.Component):
                                             ssymbols.append(Part.LineSegment(v3,v1).toShape())
                                             vsymbols.append(Part.LineSegment(v1,v4).toShape())
                                             vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                                            if opening:
+                                                rotdata = [v1,ev2.sub(ev1),-90*opening]
                                         elif omode == 3: # Arc 45
                                             v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/8,enorm))
                                             v3 = v1.add(DraftVecUtils.rotate(chord,math.pi/4,enorm))
@@ -782,6 +792,8 @@ class _Window(ArchComponent.Component):
                                             ssymbols.append(Part.LineSegment(v3,v1).toShape())
                                             vsymbols.append(Part.LineSegment(v1,v4).toShape())
                                             vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                                            if opening:
+                                                rotdata = [v1,ev2.sub(ev1),45*opening]
                                         elif omode == 4: # Arc -45
                                             v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/8,enorm))
                                             v3 = v1.add(DraftVecUtils.rotate(chord,-math.pi/4,enorm))
@@ -789,6 +801,8 @@ class _Window(ArchComponent.Component):
                                             ssymbols.append(Part.LineSegment(v3,v1).toShape())
                                             vsymbols.append(Part.LineSegment(v1,v4).toShape())
                                             vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                                            if opening:
+                                                rotdata = [v1,ev2.sub(ev1),-45*opening]
                                         elif omode == 5: # Arc 180
                                             v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/2,enorm))
                                             v3 = v1.add(DraftVecUtils.rotate(chord,math.pi,enorm))
@@ -796,6 +810,8 @@ class _Window(ArchComponent.Component):
                                             ssymbols.append(Part.LineSegment(v3,v1).toShape())
                                             vsymbols.append(Part.LineSegment(v1,v4).toShape())
                                             vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                                            if opening:
+                                                rotdata = [v1,ev2.sub(ev1),180*opening]
                                         elif omode == 6: # Arc -180
                                             v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/2,enorm))
                                             v3 = v1.add(DraftVecUtils.rotate(chord,-math.pi,enorm))
@@ -803,18 +819,24 @@ class _Window(ArchComponent.Component):
                                             ssymbols.append(Part.LineSegment(v3,v1).toShape())
                                             vsymbols.append(Part.LineSegment(v1,v4).toShape())
                                             vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                                            if opening:
+                                                rotdata = [ev1,ev2.sub(ev1),-180*opening]
                                         elif omode == 7: # tri
                                             v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/2,enorm))
                                             ssymbols.append(Part.LineSegment(p,v2).toShape())
                                             ssymbols.append(Part.LineSegment(v2,v1).toShape())
                                             vsymbols.append(Part.LineSegment(v1,v4).toShape())
                                             vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                                            if opening:
+                                                rotdata = [v1,ev2.sub(ev1),90*opening]
                                         elif omode == 8: # -tri
                                             v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/2,enorm))
                                             ssymbols.append(Part.LineSegment(p,v2).toShape())
                                             ssymbols.append(Part.LineSegment(v2,v1).toShape())
                                             vsymbols.append(Part.LineSegment(v1,v4).toShape())
                                             vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                                            if opening:
+                                                rotdata = [v1,ev2.sub(ev1),-90*opening]
                                         elif omode == 9: # sliding
                                             pass
                                         elif omode == 10: # -sliding
@@ -837,6 +859,8 @@ class _Window(ArchComponent.Component):
                                             symb.translate(zov)
                                         for symb in vsymbols:
                                             symb.translate(zov)
+                                        if rotdata and hinge and omode:
+                                            rotdata[0] = rotdata[0].add(zov)
                                 if obj.WindowParts[(i*5)+1] == "Louvre":
                                     if hasattr(obj,"LouvreWidth"):
                                         if obj.LouvreWidth and obj.LouvreSpacing:
@@ -855,6 +879,8 @@ class _Window(ArchComponent.Component):
                                                 self.boxes.rotate(self.boxes.BoundBox.Center,rot.Axis,math.degrees(rot.Angle))
                                                 self.boxes.translate(shape.BoundBox.Center.sub(self.boxes.BoundBox.Center))
                                                 shape = shape.common(self.boxes)
+                                if rotdata:
+                                    shape.rotate(rotdata[0],rotdata[1],rotdata[2])
                                 shapes.append(shape)
                                 self.sshapes.extend(ssymbols)
                                 self.vshapes.extend(vsymbols)

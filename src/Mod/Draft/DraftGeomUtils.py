@@ -408,6 +408,10 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
         rad1 , rad2  = edge1.Curve.Radius, edge2.Curve.Radius
         axis1, axis2 = edge1.Curve.Axis  , edge2.Curve.Axis
         c2c          = cent2.sub(cent1)
+        
+        if cent1.sub(cent2).Length == 0:
+            # circles are concentric
+            return []
 
         if DraftVecUtils.isNull(axis1.cross(axis2)) :
             if round(c2c.dot(axis1),precision()) == 0 :
