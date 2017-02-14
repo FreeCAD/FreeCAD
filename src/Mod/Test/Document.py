@@ -342,7 +342,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.Doc.removeObject(L7.Name)
     self.Doc.removeObject(L8.Name)
     
-  def testPropertyLink(self):
+  def testPropertyLink_Issue2902Part1(self):
     o1 = self.Doc.addObject("App::FeatureTest","test1")
     o2 = self.Doc.addObject("App::FeatureTest","test2")
     o3 = self.Doc.addObject("App::FeatureTest","test3")
@@ -353,6 +353,16 @@ class DocumentBasicCases(unittest.TestCase):
     self.assertEqual(o1.Link, o3)
     o2.Placement = FreeCAD.Placement()
     self.assertEqual(o1.Link, o3)
+
+  def testNotification_Issue2902Part2(self):
+    o = self.Doc.addObject("App::FeatureTest","test")
+
+    plm = o.Placement
+    o.Placement = FreeCAD.Placement()
+    plm.Base.x = 5
+    self.assertEqual(o.Placement.Base.x, 0)
+    o.Placement.Base.x=5
+    self.assertEqual(o.Placement.Base.x, 5)
 
   def tearDown(self):
     #closing doc
