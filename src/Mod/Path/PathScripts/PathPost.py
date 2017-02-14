@@ -27,10 +27,15 @@ import FreeCAD
 import FreeCADGui
 from PySide import QtCore, QtGui
 from PathScripts import PathUtils
+from PathScripts import PathJob
+from PathScripts import PathLoadTool
 from PathScripts.PathPreferences import PathPreferences
 from PathScripts.PathPostProcessor import PostProcessor
 import os
-import sys
+import PathScripts.PathLog as PathLog
+LOG_MODULE = 'PathPost'
+PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+PathLog.trackModule('PathPost')
 
 # Qt tanslation handling
 try:
@@ -159,9 +164,11 @@ class CommandPathPost:
                 for o in FreeCAD.ActiveDocument.Objects:
                     if o.Name[:3] == "Job":
                         return True
+
         return False
 
     def exportObjectsWith(self, objs, job, needFilename = True):
+        PathLog.track()
         # check if the user has a project and has set the default post and
         # output filename
         postArgs = PathPreferences.defaultPostProcessorArgs()
@@ -184,38 +191,73 @@ class CommandPathPost:
             return (True, '')
 
     def Activated(self):
+        PathLog.track()
         FreeCAD.ActiveDocument.openTransaction(
             translate("Path_Post", "Post Process the Selected path(s)"))
         FreeCADGui.addModule("PathScripts.PathPost")
-        # select the Path Job that you want to post output from
-        selected = FreeCADGui.Selection.getCompleteSelection()
-        print("in activated %s" %(selected))
 
-        # try to find the job, if it's not directly selected ...
-        jobs = set()
-        for obj in selected:
-            if hasattr(obj, 'OutputFile') or hasattr(obj, 'PostProcessor'):
-                jobs.add(obj)
-            elif hasattr(obj, 'Path') or hasattr(obj, 'ToolNumber'):
-                job = PathUtils.findParentJob(obj)
-                if job:
-                    jobs.add(job)
+        # Attempt to figure out what the user wants to post-process
+        # If a job is selected, post that.
+        # If there's only one job in a document, post it.
+        # If a user has selected a subobject of a job, post the job.
+        # If multiple jobs and can't guess, ask them.
+
+        selected = FreeCADGui.Selection.getSelectionEx()
+        if len(selected) > 1:
+            FreeCAD.Console.PrintError("Please select a single job or other path object\n")
+            return
+        elif len(selected) == 1:
+            sel = selected[0].Object
+            if sel.Name[:3] == "Job":
+                job = sel
+            elif hasattr(sel, "Path"):
+                try:
+                    job = PathUtils.findParentJob(sel)
+                except:
+                    job = None
+            else:
+                job = None
+        if job is None:
+            targetlist = []
+            for o in FreeCAD.ActiveDocument.Objects:
+                if hasattr(o, "Proxy"):
+                    if isinstance(o.Proxy, PathJob.ObjectPathJob):
+                        targetlist.append(o.Label)
+            PathLog.debug("Possible post objects: {}".format(targetlist))
+            if len(targetlist) > 1:
+                form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
+                form.cboProject.addItems(targetlist)
+                r = form.exec_()
+                if r is False:
+                    return
+                else:
+                    jobname = form.cboProject.currentText()
+            else:
+                jobname = targetlist[0]
+            job = FreeCAD.ActiveDocument.getObject(jobname)
+
+        PathLog.debug("about to postprocess job: {}".format(job.Name))
+
+        # Build up an ordered list of operations and tool changes.
+        # Then post-the ordered list
+        postlist = []
+        currTool = None
+        for obj in job.Group:
+            PathLog.debug("obj: {}".format(obj.Name))
+            if not isinstance(obj.Proxy, PathLoadTool.LoadTool):
+                if obj.ToolController.ToolNumber != currTool:
+                    postlist.append(obj.ToolController)
+                postlist.append(obj)
 
         fail = True
         rc = ''
-        if len(jobs) != 1:
-            FreeCAD.Console.PrintError("Please select a single job or other path object\n")
-        else:
-            job = jobs.pop()
-            print("Job for selected objects = %s" % job.Name)
-            (fail, rc) = self.exportObjectsWith(selected, job)
+        (fail, rc) = self.exportObjectsWith(postlist, job)
 
         if fail:
             FreeCAD.ActiveDocument.abortTransaction()
         else:
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-
 
 
 if FreeCAD.GuiUp:
