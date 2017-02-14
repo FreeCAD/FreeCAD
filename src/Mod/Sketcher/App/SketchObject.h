@@ -196,6 +196,8 @@ public:
      \retval int - returns -1 on error, otherwise the number of deleted elements
      */
     int DeleteUnusedInternalGeometry(int GeoId, bool delgeoid=false);
+    
+    bool ConvertToNURBS(int GeoId);
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
     void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const;

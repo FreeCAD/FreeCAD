@@ -296,7 +296,63 @@ bool CmdSketcherCompBSplineShowHideGeometryInformation::isActive(void)
     return isSketcherBSplineActive( getActiveGuiDocument(), false );
 }
 
+// Convert to NURB
+DEF_STD_CMD_A(CmdSketcherConvertToNURB);
 
+CmdSketcherConvertToNURB::CmdSketcherConvertToNURB()
+:Command("Sketcher_BSplineConvertToNURB")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Convert Geometry to B-Spline");
+    sToolTipText    = QT_TR_NOOP("Converts the given Geometry to a B-Spline");
+    sWhatsThis      = "Sketcher_ConvertToNURB";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_ConvertToNURB";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherConvertToNURB::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    
+    // get the selection
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        return;
+    }
+    
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    
+    for (unsigned int i=0; i<SubNames.size(); i++ ) {
+        // only handle edges
+        if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge") {
+            
+            int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
+    
+            Obj->ConvertToNURBS(GeoId);
+        }
+    }
+    
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+    
+    if (autoRecompute)
+        Gui::Command::updateActive();
+    else
+        Obj->solve();
+    
+}
+
+bool CmdSketcherConvertToNURB::isActive(void)
+{
+    return isSketcherBSplineActive( getActiveGuiDocument(), false );
+}
 
 
 void CreateSketcherCommandsBSpline(void)
@@ -307,4 +363,5 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherBSplinePolygon());
     rcCmdMgr.addCommand(new CmdSketcherBSplineComb());
     rcCmdMgr.addCommand(new CmdSketcherCompBSplineShowHideGeometryInformation());
+    rcCmdMgr.addCommand(new CmdSketcherConvertToNURB());
 }
