@@ -37,7 +37,7 @@ PyObject* Base::BaseExceptionFreeCADError = 0;
 
 // Constructor
 PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
-  : _pcTwinPointer(p), parent(0), attribute(0)
+  : _pcTwinPointer(p), attrDict(0)
 {
     this->ob_type = T;
     _Py_NewReference(this);
@@ -53,10 +53,7 @@ PyObjectBase::~PyObjectBase()
 #ifdef FC_LOGPYOBJECTS
     Base::Console().Log("PyO-: %s (%p)\n",this->ob_type->tp_name, this);
 #endif
-    if (this->parent)
-        this->parent->DecRef();
-    if (this->attribute)
-        free(this->attribute); /* it's a strdup */
+    Py_XDECREF(attrDict);
 }
 
 /*------------------------------
@@ -278,48 +275,51 @@ PyObject *PyObjectBase::_repr(void)
 
 void PyObjectBase::resetAttribute()
 {
-    if (this->attribute) {
-        free(this->attribute);
-        this->attribute = 0;
-    }
-    if (this->parent) {
-        Py_DECREF(this->parent);
-        this->parent = 0;
+    if (attrDict) {
+        // This is the attribute name to the parent structure
+        // which we search for in the dict
+        PyObject* key = PyString_FromString("__attribute_of_parent__");
+        PyObject* attr = PyDict_GetItem(attrDict, key);
+        if (attr) {
+            PyObject* parent = PyDict_GetItem(attrDict, attr);
+            if (parent) {
+                PyDict_DelItem(attrDict, attr);
+            }
+            PyDict_DelItem(attrDict, key);
+        }
+        Py_DECREF(key);
     }
 }
 
 void PyObjectBase::setAttributeOf(const char* attr, const PyObjectBase* par)
 {
-    if (this->parent != par) {
-        Py_XDECREF(this->parent);
-        this->parent = const_cast<PyObjectBase*>(par);
-        Py_XINCREF(this->parent);
+    if (!attrDict) {
+        attrDict = PyDict_New();
     }
 
-    if (this->attribute) {
-        if (strcmp(this->attribute, attr) != 0) {
-            free(this->attribute);
-#if defined (__GNUC__)
-            this->attribute =  strdup(attr);
-#else
-            this->attribute = _strdup(attr);
-#endif
-        }
-    }
-    else {
-#if defined (__GNUC__)
-        this->attribute =  strdup(attr);
-#else
-        this->attribute = _strdup(attr);
-#endif
-    }
+    PyObject* key = PyString_FromString("__attribute_of_parent__");
+    PyObject* attro = PyString_FromString(attr);
+    PyDict_SetItem(attrDict, key, attro);
+    PyDict_SetItem(attrDict, attro, const_cast<PyObjectBase*>(par));
+    Py_DECREF(attro);
+    Py_DECREF(key);
 }
 
 void PyObjectBase::startNotify()
 {
-    if (this->attribute && this->parent) {
-        __setattr(this->parent, this->attribute, this);
-        if (PyErr_Occurred())
-            PyErr_Clear();
+    if (attrDict) {
+        // This is the attribute name to the parent structure
+        // which we search for in the dict
+        PyObject* key = PyString_FromString("__attribute_of_parent__");
+        PyObject* attr = PyDict_GetItem(attrDict, key);
+        if (attr) {
+            PyObject* parent = PyDict_GetItem(attrDict, attr);
+            if (parent) {
+                __setattr(parent, PyString_AsString(attr), this);
+                if (PyErr_Occurred())
+                    PyErr_Clear();
+            }
+        }
+        Py_DECREF(key);
     }
 }
