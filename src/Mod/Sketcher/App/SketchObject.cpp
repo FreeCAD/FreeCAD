@@ -3766,6 +3766,43 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId, bool delgeoid)
     }
 }
 
+bool SketchObject::ConvertToNURBS(int GeoId)
+{
+    if (GeoId < 0 || GeoId > getHighestCurveIndex())
+        return -1;
+
+    const Part::Geometry *geo = getGeometry(GeoId);
+
+    if(geo->getTypeId() == Part::GeomPoint::getClassTypeId())
+        return -1;
+
+    const Part::GeomCurve *geo1 = static_cast<const Part::GeomCurve *>(geo);
+
+    Part::GeomBSplineCurve* bspline;
+    
+    try {
+         bspline = geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter());
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+        // revert to original values
+        return false;
+    }
+
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+    std::vector< Part::Geometry * > newVals(vals);
+
+    newVals[GeoId] = bspline;
+
+    Geometry.setValues(newVals);
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+    
+    return true;
+
+}
+
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 {
     // so far only externals to the support of the sketch and datum features
