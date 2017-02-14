@@ -196,7 +196,6 @@ class BaseExport PyObjectBase : public PyObject
 protected:
     /// destructor
     virtual ~PyObjectBase();
-    void resetAttribute();
 
 public:  
     /** Constructor
@@ -292,17 +291,21 @@ public:
         return StatusBits.test(1);
     }
 
-    void setAttributeOf(const char* attr, const PyObjectBase* par);
     void startNotify();
 
-    typedef void* PointerType ;
+    typedef void* PointerType;
+
+private:
+    void setAttributeOf(const char* attr, const PyObjectBase* par);
+    void resetAttribute();
 
 protected:
     std::bitset<32> StatusBits;
     /// pointer to the handled class
     void * _pcTwinPointer;
-    PyObjectBase* parent;
-    char* attribute;
+
+private:
+    PyObject* attrDict;
 };
 
 
