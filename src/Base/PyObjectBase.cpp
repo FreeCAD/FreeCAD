@@ -139,11 +139,23 @@ PyObject* PyObjectBase::__getattr(PyObject * obj, char *attr)
         return NULL;
     }
 
+    // If an attribute references this as parent then reset it (bug #0002902)
+    PyObject* cur = pyObj->getTrackedAttribute(attr);
+    if (cur) {
+        if (PyObject_TypeCheck(cur, &(PyObjectBase::Type))) {
+            PyObjectBase* base = static_cast<PyObjectBase*>(cur);
+            base->resetAttribute();
+            pyObj->untrackAttribute(attr);
+        }
+    }
+
     PyObject* value = pyObj->_getattr(attr);
 #if 1
     if (value && PyObject_TypeCheck(value, &(PyObjectBase::Type))) {
-        if (!static_cast<PyObjectBase*>(value)->isConst())
+        if (!static_cast<PyObjectBase*>(value)->isConst()) {
             static_cast<PyObjectBase*>(value)->setAttributeOf(attr, pyObj);
+            pyObj->trackAttribute(attr, value);
+        }
     }
     else if (value && PyCFunction_Check(value)) {
         // ExtensionContainerPy::initialization() transfers the methods of an
@@ -180,13 +192,13 @@ int PyObjectBase::__setattr(PyObject *obj, char *attr, PyObject *value)
 
     // If an attribute references this as parent then reset it
     // before setting the new attribute
-    PyObject* cur = static_cast<PyObjectBase*>(obj)->_getattr(attr);
+    PyObject* cur = static_cast<PyObjectBase*>(obj)->getTrackedAttribute(attr);
     if (cur) {
         if (PyObject_TypeCheck(cur, &(PyObjectBase::Type))) {
             PyObjectBase* base = static_cast<PyObjectBase*>(cur);
             base->resetAttribute();
+            static_cast<PyObjectBase*>(obj)->untrackAttribute(attr);
         }
-        Py_DECREF(cur);
     }
 
     int ret = static_cast<PyObjectBase*>(obj)->_setattr(attr, value);
@@ -291,7 +303,7 @@ void PyObjectBase::resetAttribute()
     }
 }
 
-void PyObjectBase::setAttributeOf(const char* attr, const PyObjectBase* par)
+void PyObjectBase::setAttributeOf(const char* attr, PyObject* par)
 {
     if (!attrDict) {
         attrDict = PyDict_New();
@@ -300,7 +312,7 @@ void PyObjectBase::setAttributeOf(const char* attr, const PyObjectBase* par)
     PyObject* key = PyString_FromString("__attribute_of_parent__");
     PyObject* attro = PyString_FromString(attr);
     PyDict_SetItem(attrDict, key, attro);
-    PyDict_SetItem(attrDict, attro, const_cast<PyObjectBase*>(par));
+    PyDict_SetItem(attrDict, attro, par);
     Py_DECREF(attro);
     Py_DECREF(key);
 }
@@ -315,11 +327,49 @@ void PyObjectBase::startNotify()
         if (attr) {
             PyObject* parent = PyDict_GetItem(attrDict, attr);
             if (parent) {
+                // Inside __setattr of the parent structure the 'attr'
+                // is being removed from the dict and thus its reference
+                // counter will be decremented. To avoid to be deleted we
+                // must tmp. increment it and afterwards decrement it again.
+                Py_INCREF(parent);
+                Py_INCREF(attr);
+                Py_INCREF(this);
+
                 __setattr(parent, PyString_AsString(attr), this);
+
+                Py_DECREF(parent); // might be destroyed now
+                Py_DECREF(attr); // might be destroyed now
+                Py_DECREF(this); // might be destroyed now
+
                 if (PyErr_Occurred())
                     PyErr_Clear();
             }
         }
         Py_DECREF(key);
+    }
+}
+
+PyObject* PyObjectBase::getTrackedAttribute(const char* attr)
+{
+    PyObject* obj = 0;
+    if (attrDict) {
+        obj = PyDict_GetItemString(attrDict, attr);
+    }
+    return obj;
+}
+
+void PyObjectBase::trackAttribute(const char* attr, PyObject* obj)
+{
+    if (!attrDict) {
+        attrDict = PyDict_New();
+    }
+
+    PyDict_SetItemString(attrDict, attr, obj);
+}
+
+void PyObjectBase::untrackAttribute(const char* attr)
+{
+    if (attrDict) {
+        PyDict_DelItemString(attrDict, attr);
     }
 }

@@ -296,8 +296,11 @@ public:
     typedef void* PointerType;
 
 private:
-    void setAttributeOf(const char* attr, const PyObjectBase* par);
+    void setAttributeOf(const char* attr, PyObject* par);
     void resetAttribute();
+    PyObject* getTrackedAttribute(const char* attr);
+    void trackAttribute(const char* attr, PyObject* obj);
+    void untrackAttribute(const char* attr);
 
 protected:
     std::bitset<32> StatusBits;
