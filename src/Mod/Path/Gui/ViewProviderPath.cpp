@@ -230,10 +230,11 @@ void ViewProviderPath::updateData(const App::Property* prop)
 
     if (prop == &pcPathObj->Path) {
 
+        pcLineCoords->point.deleteValues(0);
+        pcMarkerCoords->point.deleteValues(0);
+
         const Toolpath &tp = pcPathObj->Path.getValue();
         if(tp.getSize()==0) {
-            pcLineCoords->point.deleteValues(0);
-            pcMarkerCoords->point.deleteValues(0);
             return;
         }
 
