@@ -36,7 +36,7 @@ namespace Import {
     extern PyObject* initModule();
 }
 
-PyMODINIT_FUNC initImport()
+PyMOD_INIT_FUNC(Import)
 {
     PyObject* importModule = Import::initModule();
 
@@ -45,7 +45,7 @@ PyMODINIT_FUNC initImport()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
     // add mesh elements
@@ -55,4 +55,5 @@ PyMODINIT_FUNC initImport()
     //Import::StepShape       ::init();
 
     Base::Console().Log("Loading Import module... done\n");
+    PyMOD_Return(importModule);
 }
