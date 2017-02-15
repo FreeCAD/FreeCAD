@@ -27,6 +27,7 @@ __date__ = "04/08/2016"
 
 ## @package importInpMesh
 #  \ingroup FEM
+#  \brief FreeCAD INP file reader for FEM workbench
 
 import FemMeshTools
 import FreeCAD
