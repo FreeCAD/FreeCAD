@@ -43,23 +43,26 @@ namespace ImportGui {
 extern PyObject* initModule();
 }
 
-PyMODINIT_FUNC initImportGui()
+PyMOD_INIT_FUNC(ImportGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
-    (void)ImportGui::initModule();
-    Base::Console().Log("Loading GUI of Import module... done\n");
 
     try {
         Base::Interpreter().loadModule("PartGui");
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
+
+    PyObject* mod = ImportGui::initModule();
+    Base::Console().Log("Loading GUI of Import module... done\n");
 
     CreateImportCommands();
     ImportGui::Workbench::init();
+
+    PyMOD_Return(mod);
 }
