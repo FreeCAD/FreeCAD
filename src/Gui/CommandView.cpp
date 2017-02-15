@@ -99,7 +99,7 @@ StdOrthographicCamera::StdOrthographicCamera()
     sWhatsThis    = "Std_OrthographicCamera";
     sStatusTip    = QT_TR_NOOP("Switches to orthographic view mode");
     sPixmap       = "view-isometric";
-    sAccel        = "O";
+    sAccel        = "V, O";
     eType         = Alter3DView;
 }
 
@@ -149,7 +149,7 @@ StdPerspectiveCamera::StdPerspectiveCamera()
     sWhatsThis    = "Std_PerspectiveCamera";
     sStatusTip    = QT_TR_NOOP("Switches to perspective view mode");
     sPixmap       = "view-perspective";
-    sAccel        = "P";
+    sAccel        = "V, P";
     eType         = Alter3DView;
 }
 
@@ -1334,6 +1334,7 @@ StdCmdViewFitAll::StdCmdViewFitAll()
     sWhatsThis    = "Std_ViewFitAll";
     sStatusTip    = QT_TR_NOOP("Fits the whole content on the screen");
     sPixmap       = "zoom-all";
+    sAccel        = "V, F";
     eType         = Alter3DView;
 }
 
@@ -1363,6 +1364,7 @@ StdCmdViewFitSelection::StdCmdViewFitSelection()
     sToolTipText  = QT_TR_NOOP("Fits the selected content on the screen");
     sWhatsThis    = "Std_ViewFitSelection";
     sStatusTip    = QT_TR_NOOP("Fits the selected content on the screen");
+    sAccel        = "V, S";
 #if QT_VERSION >= 0x040200
     sPixmap       = "zoom-selection";
 #endif
@@ -1395,7 +1397,7 @@ StdViewDock::StdViewDock()
     sToolTipText = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
     sWhatsThis   = "Std_ViewDockUndockFullscreen";
     sStatusTip   = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
-    sAccel       = "Shift+D";
+    sAccel       = "V, D";
     eType        = Alter3DView;
 }
 
@@ -1423,7 +1425,7 @@ StdViewUndock::StdViewUndock()
     sToolTipText = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
     sWhatsThis   = "Std_ViewDockUndockFullscreen";
     sStatusTip   = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
-    sAccel       = "Shift+U";
+    sAccel       = "V, U";
     eType        = Alter3DView;
 }
 
