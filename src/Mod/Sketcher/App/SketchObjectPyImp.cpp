@@ -1015,6 +1015,23 @@ PyObject* SketchObjectPy::ConvertToNURBS(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::IncreaseBSplineDegree(PyObject *args)
+{
+    int GeoId;
+    int incr = 1;
+    
+    if (!PyArg_ParseTuple(args, "i|i", &GeoId, &incr))
+        return 0;
+    
+    if (this->getSketchObjectPtr()->IncreaseBSplineDegree(GeoId, incr)==false) {
+        std::stringstream str;
+        str << "Degree increase failed for: " << GeoId;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+    
+    Py_Return;
+}
 
 Py::Int SketchObjectPy::getConstraintCount(void) const
 {
