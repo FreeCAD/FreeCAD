@@ -71,6 +71,11 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
     result_obj = makeFemMechanicalResult(results_name)
     # result_obj = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
     Fem.readResult(filename, result_obj.Name)  # readResult always creates a new femmesh named ResultMesh
+
+    # workaround for the DisplacementLengths (They should have been calculated by Fem.readResult)
+    if not result_obj.DisplacementLengths:
+        result_obj.DisplacementLengths = calculate_disp_abs(result_obj.DisplacementVectors)
+
     analysis_object.Member = analysis_object.Member + [result_obj]
     # FIXME move the ResultMesh in the analysis
 
@@ -93,3 +98,12 @@ def export(objectslist, filename):
         FreeCAD.Console.PrintError("object selcted is not FemResultObject.\n")
         return
     Fem.writeResult(filename, obj)
+
+
+# helper
+def calculate_disp_abs(displacements):
+    from math import sqrt
+    disp_abs = []
+    for d in displacements:
+        disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
+    return disp_abs
