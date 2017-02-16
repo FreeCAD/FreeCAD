@@ -32,7 +32,7 @@ from PySide import QtCore
 import TechDraw
 
 LOG_MODULE = 'PathContour'
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 PathLog.trackModule('PathContour')
 
 if FreeCAD.GuiUp:
@@ -221,7 +221,10 @@ class ObjectContour:
             self.horizRapid = toolLoad.HorizRapid.Value
             tool = toolLoad.Proxy.getTool(toolLoad) #PathUtils.getTool(obj, toolLoad.ToolNumber)
             if not tool or tool.Diameter == 0:
-                self.radius = 0.25
+                FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
+                return
+
+                #self.radius = 0.25
             else:
                 self.radius = tool.Diameter/2
             # obj.ToolNumber = toolLoad.ToolNumber
@@ -441,7 +444,7 @@ class TaskPanel:
         labels = [c.Label for c in controllers]
         self.form.uiToolController.addItems(labels)
         if self.obj.ToolController is not None:
-            index = self.form.direction.findText(
+            index = self.form.uiToolController.findText(
                 self.obj.ToolController.Label, QtCore.Qt.MatchFixedString)
             if index >= 0:
                 self.form.uiToolController.setCurrentIndex(index)
