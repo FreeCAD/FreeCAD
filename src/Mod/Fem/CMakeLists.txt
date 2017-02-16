@@ -119,7 +119,7 @@ INSTALL(
 
         # solver Z88
         importZ88Mesh.py
-        importZ88Results.py
+        importZ88O2Results.py
         FemInputWriterZ88.py
         FemToolsZ88.py
         FemSolverZ88.py
