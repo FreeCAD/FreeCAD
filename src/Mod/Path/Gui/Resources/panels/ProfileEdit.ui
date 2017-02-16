@@ -23,7 +23,7 @@
    <item row="0" column="0">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="Geometry">
       <property name="enabled">
@@ -239,107 +239,44 @@
       <attribute name="label">
        <string>Operation</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout_2">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-       </property>
-       <item row="4" column="0" colspan="2">
-        <widget class="QWidget" name="widget_2" native="true">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="2" column="0">
-           <widget class="QCheckBox" name="useEndPoint">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QFrame" name="frame">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_7">
             <property name="text">
-             <string>Use End Point</string>
+             <string>ToolController</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="useStartPoint">
-            <property name="text">
-             <string>Use Start Point</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QCheckBox" name="useCompensation">
-            <property name="text">
-             <string>Use Compensation</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QCheckBox" name="processHoles">
-            <property name="text">
-             <string>Process Holes</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QCheckBox" name="processPerimeter">
-            <property name="text">
-             <string>Process Perimeter</string>
-            </property>
-           </widget>
+          <item>
+           <widget class="QComboBox" name="uiToolController"/>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2">
-        <widget class="QWidget" name="widget_4" native="true">
-         <layout class="QGridLayout" name="gridLayout_6">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Extra Offset</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string>Roll Radius</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="Gui::InputField" name="extraOffset">
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="Gui::InputField" name="rollRadius">
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="1">
+       <item>
         <widget class="QWidget" name="widget_3" native="true">
          <layout class="QGridLayout" name="gridLayout_5">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label_9">
             <property name="text">
@@ -389,6 +326,112 @@
           </item>
          </layout>
         </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_2" native="true">
+         <layout class="QGridLayout" name="gridLayout_4">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="useEndPoint">
+            <property name="text">
+             <string>Use End Point</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="useStartPoint">
+            <property name="text">
+             <string>Use Start Point</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QCheckBox" name="useCompensation">
+            <property name="text">
+             <string>Use Compensation</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QCheckBox" name="processHoles">
+            <property name="text">
+             <string>Process Holes</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QCheckBox" name="processPerimeter">
+            <property name="text">
+             <string>Process Perimeter</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_4" native="true">
+         <layout class="QGridLayout" name="gridLayout_6">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Extra Offset</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Roll Radius</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="Gui::InputField" name="extraOffset">
+            <property name="minimum">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="Gui::InputField" name="rollRadius">
+            <property name="minimum">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
