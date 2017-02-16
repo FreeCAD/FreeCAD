@@ -197,10 +197,13 @@ class FemGmshTools():
                     gmsh_path = p1.stdout.read().split('\n')[0]
                 elif p1.wait() == 1:
                     error_message = "GMSH binary gmsh not found in standard system binary path. Please install gmsh or set path to binary in FEM preferences tab GMSH.\n"
-                    # if FreeCAD.GuiUp:
-                    #     QtGui.QMessageBox.critical(None, "No GMSH binary ccx", error_message)
+                    FreeCAD.Console.PrintError(error_message)
                     raise Exception(error_message)
                 self.gmsh_bin = gmsh_path
+            else:
+                error_message = "No standard location implemented for your operating system. Set GMHS binary path in FEM preferences.\n"
+                FreeCAD.Console.PrintError(error_message)
+                raise Exception(error_message)
         else:
             if not self.gmsh_bin:
                 self.gmsh_bin = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetString("gmshBinaryPath", "")
@@ -211,7 +214,6 @@ class FemGmshTools():
                     self.gmsh_bin = FreeCAD.getHomePath() + "bin/gmsh.exe"
                 else:
                     self.gmsh_bin = "gmsh"
-            self.gmsh_bin = self.gmsh_bin
         print('  ' + self.gmsh_bin)
 
     def get_group_data(self):
