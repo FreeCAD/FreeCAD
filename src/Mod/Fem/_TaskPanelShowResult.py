@@ -28,7 +28,6 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 
 import FreeCAD
-import FemTools
 import numpy as np
 
 import FreeCADGui
@@ -42,6 +41,10 @@ class _TaskPanelShowResult:
     '''The task panel for the post-processing'''
     def __init__(self, obj):
         self.result_object = obj
+        self.MeshObject = self.result_object.Mesh
+        # task panel should be started by use of setEdit of view provider
+        # in setEdit check for, Mesh, active analysis and if Mesh and result are in active analysis
+
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelShowResult.ui")
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         self.restore_result_settings_in_dialog = self.fem_prefs.GetBool("RestoreResultDialog", True)
@@ -67,8 +70,6 @@ class _TaskPanelShowResult:
         QtCore.QObject.connect(self.form.sb_displacement_factor_max, QtCore.SIGNAL("valueChanged(int)"), self.sb_disp_factor_max_changed)
 
         self.update()
-        if not FemGui.getActiveAnalysis():
-            FreeCAD.Console.PrintError('FEM Result task panel, no active analysis. This will cause problems later ...\n')
         if self.restore_result_settings_in_dialog:
             self.restore_result_dialog()
         else:
@@ -124,9 +125,8 @@ class _TaskPanelShowResult:
     def restore_initial_result_dialog(self):
         FreeCAD.FEM_dialog = {"results_type": "None", "show_disp": False,
                               "disp_factor": 0, "disp_factor_max": 100}
-        fea = FemTools.FemTools()
-        fea.reset_mesh_color()
-        fea.reset_mesh_deformation()
+        self.reset_mesh_deformation()
+        self.reset_mesh_color()
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
@@ -150,8 +150,7 @@ class _TaskPanelShowResult:
     def none_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "None"
         self.set_result_stats("mm", 0.0, 0.0, 0.0)
-        fea = FemTools.FemTools()
-        fea.reset_mesh_color()
+        self.reset_mesh_color()
 
     def abs_displacement_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "Uabs"
@@ -341,6 +340,14 @@ class _TaskPanelShowResult:
             error_message = 'FEM: Result task panel, no result object to display results for.\n'
             FreeCAD.Console.PrintError(error_message)
             QtGui.QMessageBox.critical(None, 'No result object', error_message)
+
+    def reset_mesh_deformation(self):
+        self.MeshObject.ViewObject.applyDisplacement(0.0)
+
+    def reset_mesh_color(self):
+        self.MeshObject.ViewObject.NodeColor = {}
+        self.MeshObject.ViewObject.ElementColor = {}
+        self.MeshObject.ViewObject.setNodeColorByScalars()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()  # if the taks panell is called from Command obj is not in edit mode thus reset edit does not cleses the dialog, may be do not call but set in edit instead
