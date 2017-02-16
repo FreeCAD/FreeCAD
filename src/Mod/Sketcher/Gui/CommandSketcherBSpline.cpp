@@ -406,7 +406,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
                                     selection[0].getFeatName(),GeoId);
         }
     }
-    
+
     commitCommand();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
