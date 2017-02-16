@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 
 ## @package importCcxFrdResults
 #  \ingroup FEM
+#  \brief FreeCAD Calculix FRD Reader for FEM workbench
 
 import FreeCAD
 import os

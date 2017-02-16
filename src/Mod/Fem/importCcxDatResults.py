@@ -26,6 +26,7 @@ __url__ = "http://www.freecadweb.org"
 
 ## @package importCcxDatResults
 #  \ingroup FEM
+#  \brief FreeCAD Calculix DAT reader for FEM workbench
 
 import FreeCAD
 import os
