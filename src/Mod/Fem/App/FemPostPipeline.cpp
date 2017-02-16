@@ -258,7 +258,7 @@ void FemPostPipeline::load(FemResultObject* res) {
 
     //Now copy the point data over
     //############################
-    if(res->getPropertyByName("Velocity")){  // consider better way to detect result type, res->Type == "CfdResult"
+    if(res->getPropertyByName("Velocity")){  // TODO: consider better way to detect result type, res->Type == "CfdResult"
         FemVTKTools::exportFluidicResult(res, grid);
     }
     else{

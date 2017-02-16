@@ -128,7 +128,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
     meshds->ClearMesh();
 
     for(vtkIdType i=0; i<nPoints; i++)
-    {   
+    {
         double* p = dataset->GetPoint(i);
         meshds->AddNodeWithID(p[0]*scale, p[1]*scale, p[2]*scale, i+1);
     }
@@ -491,7 +491,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     Base::TimeInfo Start;
     Base::Console().Log("Start: read FemResult with FemMesh from VTK file ======================\n");
     Base::FileInfo f(filename);
-    
+
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
     int unitSchema = hGrp->GetInt("UserSchema",0);
     float scale = 1.0;
@@ -544,7 +544,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->setValue(*fmesh);
     static_cast<App::PropertyLink*>(result->getPropertyByName("Mesh"))->setValue(mesh);
     // PropertyLink is the property type to store DocumentObject pointer
-    
+
     vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
     vtkSmartPointer<vtkDataArray> displ = pd->GetArray("Displacement");  // name in vtk file, not the property name 
     vtkSmartPointer<vtkDataArray> vel = pd->GetArray("U"); // name in vtk file, not the property name 
@@ -638,14 +638,14 @@ void _calcStat(const std::vector<Base::Vector3d>& vel, std::vector<double>& stat
             double vmag = std::sqrt(p[0]*p[0] + p[1]*p[1] + p[2]*p[2]);
             for(int ii=0; ii<3; ii++) {
                 vmeans[ii] += p[ii];
-                if(p[ii] > vmaxs[ii]) vmaxs[ii] = p[ii]; 
-                if(p[ii] < vmins[ii]) vmins[ii] = p[ii];                
+                if(p[ii] > vmaxs[ii]) vmaxs[ii] = p[ii];
+                if(p[ii] < vmins[ii]) vmins[ii] = p[ii];
             }
             vmean += vmag;
             if(vmag > vmax) vmax = vmag;
             if(vmag < vmin) vmin = vmag;
         }
-        
+
         for(int ii=0; ii<3; ii++) {
             stats[ii*3] = vmins[ii];
             stats[ii*3 + 2] = vmaxs[ii];
@@ -657,7 +657,7 @@ void _calcStat(const std::vector<Base::Vector3d>& vel, std::vector<double>& stat
         stats[index*3 + 1] = vmean/nPoints;
 }
 
-void _importResult(const vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res, 
+void _importResult(const vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res,
                              const std::map<std::string, std::string>& vectors, const std::map<std::string, std::string> scalers,
                             const std::map<std::string, int> varids, const std::string& essential_property){
     const int max_var_index = 11;
@@ -715,7 +715,7 @@ void _importResult(const vtkSmartPointer<vtkDataSet> dataset, App::DocumentObjec
                 }
                 else {
                     Base::Console().Error("static_cast<App::PropertyVectorList*>((res->getPropertyByName(\"%s\")) failed \n", kv.first.c_str());
-                    continue;           
+                    continue;
                 }
             }
 

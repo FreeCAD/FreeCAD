@@ -266,11 +266,11 @@ private:
             FemVTKTools::readResult(EncodedName.c_str(), obj);
         }
         else
-            FemVTKTools::readResult(EncodedName.c_str());  //assuming activeObject can hold Result
+            FemVTKTools::readResult(EncodedName.c_str());  // assuming activeObject can hold Result
 
         return Py::None();
     }
-    
+
     Py::Object writeResult(const Py::Tuple& args)
     {
         char* fileName = NULL;
