@@ -308,7 +308,7 @@ CmdSketcherConvertToNURB::CmdSketcherConvertToNURB()
     sToolTipText    = QT_TR_NOOP("Converts the given Geometry to a B-Spline");
     sWhatsThis      = "Sketcher_ConvertToNURB";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_ConvertToNURB";
+    sPixmap         = "Sketcher_BSplineApproximate";
     sAccel          = "";
     eType           = ForEdit;
 }
@@ -364,9 +364,9 @@ CmdSketcherIncreaseDegree::CmdSketcherIncreaseDegree()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Increase degree");
     sToolTipText    = QT_TR_NOOP("Increases the degree of the B-Spline");
-    sWhatsThis      = "Sketcher_IncreaseDegree";
+    sWhatsThis      = "Sketcher_BSplineIncreaseDegree";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_IncreaseDegree";
+    sPixmap         = "Sketcher_BSplineIncreaseDegree";
     sAccel          = "";
     eType           = ForEdit;
 }
