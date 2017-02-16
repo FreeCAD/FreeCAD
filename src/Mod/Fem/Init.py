@@ -32,7 +32,7 @@ FreeCAD.addImportType("FEM formats (*.unv *.med *.dat *.bdf)", "Fem")
 if("BUILD_FEM_VTK" in FreeCAD.__cmake__):
     FreeCAD.addImportType("FEM CFD Unstructure Mesh (*.vtk *.vtu)", "Fem")
     FreeCAD.addExportType("FEM CFD Unstructure Mesh (*.vtk *.vtu)", "Fem")
-    # FreeCAD.addImportType("FEM results (*.vtk *.vtp *.vts *.vtr *.vtu *.vti)", "importVTKResults")  # not implemented yet
+    FreeCAD.addImportType("FEM results (*.vtk *.vtu)", "importVTKResults")
     FreeCAD.addExportType("FEM CFD Result in VTK format (*.vtk *.vtu)", "importVTKResults")
 
 FreeCAD.addExportType("FEM formats (*.unv *.med *.dat *.inp)", "Fem")
