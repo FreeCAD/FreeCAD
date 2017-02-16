@@ -3619,7 +3619,12 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 if(curvaturelist[i] > maxcurv)
                     maxcurv = curvaturelist[i];
 
-                spline->normalAt(paramlist[i],normallist[i]);
+                try {
+                    spline->normalAt(paramlist[i],normallist[i]);
+                }
+                catch(Base::Exception) {
+                    normallist[i] = Base::Vector3d(0,0,0);
+                }
 
                 double temp = ( pointatcurvelist[i] - midp ).Length();
 
