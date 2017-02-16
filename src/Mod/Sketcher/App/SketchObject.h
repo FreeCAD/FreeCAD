@@ -196,8 +196,21 @@ public:
      \retval int - returns -1 on error, otherwise the number of deleted elements
      */
     int DeleteUnusedInternalGeometry(int GeoId, bool delgeoid=false);
-    
+    /*!
+     \brief Approximates the given geometry with a B-Spline
+     \param GeoId - the geometry to approximate
+     \param delgeoid - if true in addition to the unused internal geometry also deletes the GeoId geometry
+     \retval bool - returns true if the approximation succeeded, or false if it did not succeed.
+     */
     bool ConvertToNURBS(int GeoId);
+    
+    /*!
+     \brief Increases the degree of a BSpline by degreeincrement, which defaults to 1
+     \param GeoId - the geometry of type bspline to increase the degree
+     \param degreeincrement - the increment in number of degrees to effect
+     \retval bool - returns true if the increase in degree succeeded, or false if it did not succeed.
+     */
+    bool IncreaseBSplineDegree(int GeoId, int degreeincrement = 1);
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
     void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const;

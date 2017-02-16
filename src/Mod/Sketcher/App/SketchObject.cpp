@@ -3803,6 +3803,47 @@ bool SketchObject::ConvertToNURBS(int GeoId)
 
 }
 
+bool SketchObject::IncreaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
+{
+    if (GeoId < 0 || GeoId > getHighestCurveIndex())
+        return -1;
+
+    const Part::Geometry *geo = getGeometry(GeoId);
+
+    if(geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+        return -1;
+
+    const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
+
+    const Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(bsp->handle());
+
+    Part::GeomBSplineCurve *bspline = new Part::GeomBSplineCurve(curve);
+
+
+    try {
+        int cdegree = bspline->getDegree();
+
+        bspline->increaseDegree(cdegree+degreeincrement);
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+        return false;
+    }
+
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+    std::vector< Part::Geometry * > newVals(vals);
+
+    newVals[GeoId] = bspline;
+    
+    Geometry.setValues(newVals);
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+    
+    return true;
+    
+}
+
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 {
     // so far only externals to the support of the sketch and datum features

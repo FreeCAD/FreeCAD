@@ -351,7 +351,65 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
 
 bool CmdSketcherConvertToNURB::isActive(void)
 {
-    return isSketcherBSplineActive( getActiveGuiDocument(), false );
+    return isSketcherBSplineActive( getActiveGuiDocument(), true );
+}
+
+// Convert to NURB
+DEF_STD_CMD_A(CmdSketcherIncreaseDegree);
+
+CmdSketcherIncreaseDegree::CmdSketcherIncreaseDegree()
+:Command("Sketcher_BSplineIncreaseDegree")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Increase degree");
+    sToolTipText    = QT_TR_NOOP("Increases the degree of the B-Spline");
+    sWhatsThis      = "Sketcher_IncreaseDegree";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_IncreaseDegree";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherIncreaseDegree::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    // get the selection
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+    for (unsigned int i=0; i<SubNames.size(); i++ ) {
+        // only handle edges
+        if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge") {
+
+            int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
+
+            Obj->IncreaseBSplineDegree(GeoId);
+        }
+    }
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+    if (autoRecompute)
+        Gui::Command::updateActive();
+    else
+        Obj->solve();
+
+}
+
+bool CmdSketcherIncreaseDegree::isActive(void)
+{
+    return isSketcherBSplineActive( getActiveGuiDocument(), true );
 }
 
 
@@ -364,4 +422,5 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherBSplineComb());
     rcCmdMgr.addCommand(new CmdSketcherCompBSplineShowHideGeometryInformation());
     rcCmdMgr.addCommand(new CmdSketcherConvertToNURB());
+    rcCmdMgr.addCommand(new CmdSketcherIncreaseDegree());
 }
