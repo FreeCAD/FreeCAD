@@ -36,6 +36,9 @@ INSTALL(
         _CommandRunSolver.py
         _CommandControlSolver.py
 
+        FemMechanicalResult.py
+        _FemMechanicalResult.py
+        _ViewProviderFemMechanicalResult.py
         _CommandShowResult.py
         _TaskPanelShowResult.py
         TaskPanelShowResult.ui
@@ -126,8 +129,6 @@ INSTALL(
 
         # additional imports and exports
         importVTKResults.py
-	FemResult.py
-	_ViewProviderFemResult.py
 
     DESTINATION
         Mod/Fem

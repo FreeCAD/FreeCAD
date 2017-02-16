@@ -71,8 +71,8 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
 
         for result_set in m['Results']:
             results_name = result_name_prefix + 'results'
-            import FemResult
-            results = FemResult.makeFemResult(results_name)
+            import FemMechanicalResult
+            results = FemMechanicalResult.makeFemMechanicalResult(results_name)
             #results = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
             for m in analysis_object.Member:
                 if m.isDerivedFrom("Fem::FemMeshObject"):
@@ -97,7 +97,7 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
 
             # set stats of not imported values to 0
             s_max = s_min = s_avg = 0
-            p1_min = p1_avg = p1_max = p2_min =  p2_avg = p2_max = p3_min = p3_avg = p3_max = 0
+            p1_min = p1_avg = p1_max = p2_min = p2_avg = p2_max = p3_min = p3_avg = p3_max = 0
             ms_min = ms_avg = ms_max = 0
             # s_max = max(results.StressValues)
             # s_min = min(results.StressValues)

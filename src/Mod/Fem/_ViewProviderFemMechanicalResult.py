@@ -20,15 +20,19 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__ = "ViewProvider for Fem ResultObjectPython"
-__author__ = "Qingfeng Xia"
+__title__ = "ViewProvider for FEM mechanical ResultObjectPython"
+__author__ = "Qingfeng Xia, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
+
+## @package _ViewProviderFemMechanicalResult
+#  \ingroup FEM
+#  \brief FreeCAD ViewProvider for mechanical ResultObjectPython in FEM workbench
 
 import FreeCAD
 import FreeCADGui
-import FemGui
 
-class _ViewProviderFemResult:
+
+class _ViewProviderFemMechanicalResult:
     """A View Provider for the FemResultObject Python dervied FemResult class
     """
 
@@ -48,7 +52,7 @@ class _ViewProviderFemResult:
 
     def onChanged(self, vobj, prop):
         return
-        
+
     def doubleClicked(self, vobj):
         if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
             FreeCADGui.activateWorkbench("FemWorkbench")
@@ -58,11 +62,11 @@ class _ViewProviderFemResult:
         else:
             FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
         return True
-        
+
     def setEdit(self, vobj, mode):
         #if FemGui.getActiveAnalysis():
-        from _TaskPanelShowResult import _TaskPanelShowResult
-        taskd = _TaskPanelShowResult()
+        import _TaskPanelShowResult
+        taskd = _TaskPanelShowResult._TaskPanelShowResult(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True
