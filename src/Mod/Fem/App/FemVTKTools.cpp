@@ -529,7 +529,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     else
     {
         Base::Console().Log("FemResultObject pointer is NULL, trying to get the active object\n");
-        if(obj->getTypeId() == Base::Type::fromName("Fem::FemResultObject"))
+        if(obj->getTypeId() == Base::Type::fromName("Fem::FemResultObjectPython"))
             result = obj;
         else
         {
