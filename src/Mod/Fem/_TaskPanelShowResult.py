@@ -40,8 +40,8 @@ from PySide.QtGui import QApplication
 class _TaskPanelShowResult:
     '''The task panel for the post-processing'''
     def __init__(self, obj):
-        self.result_object = obj
-        self.MeshObject = self.result_object.Mesh
+        self.result_obj = obj
+        self.mesh_obj = self.result_obj.Mesh
         # task panel should be started by use of setEdit of view provider
         # in view provider checks: Mesh, active analysis and if Mesh and result are in active analysis
 
@@ -132,8 +132,8 @@ class _TaskPanelShowResult:
         return int(QtGui.QDialogButtonBox.Close)
 
     def get_result_stats(self, type_name, analysis=None):
-        if "Stats" in self.result_object.PropertiesList:
-                Stats = self.result_object.Stats
+        if "Stats" in self.result_obj.PropertiesList:
+                Stats = self.result_obj.Stats
                 match_table = {"U1": (Stats[0], Stats[1], Stats[2]),
                                "U2": (Stats[3], Stats[4], Stats[5]),
                                "U3": (Stats[6], Stats[7], Stats[8]),
@@ -172,7 +172,7 @@ class _TaskPanelShowResult:
         FreeCAD.FEM_dialog["results_type"] = "Sabs"
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
-            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, self.result_object.StressValues)
+            self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.StressValues)
         (minm, avg, maxm) = self.get_result_stats("Sabs")
         self.set_result_stats("MPa", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
@@ -181,7 +181,7 @@ class _TaskPanelShowResult:
         FreeCAD.FEM_dialog["results_type"] = "MaxShear"
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
-            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, self.result_object.MaxShear)
+            self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.MaxShear)
         (minm, avg, maxm) = self.get_result_stats("MaxShear")
         self.set_result_stats("MPa", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
@@ -190,7 +190,7 @@ class _TaskPanelShowResult:
         FreeCAD.FEM_dialog["results_type"] = "MaxPrin"
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
-            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, self.result_object.PrincipalMax)
+            self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.PrincipalMax)
         (minm, avg, maxm) = self.get_result_stats("MaxPrin")
         self.set_result_stats("MPa", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
@@ -199,10 +199,10 @@ class _TaskPanelShowResult:
         FreeCAD.FEM_dialog["results_type"] = "Temp"
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
-            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, self.result_object.Temperature)
-        minm = min(self.result_object.Temperature)
-        avg = sum(self.result_object.Temperature) / len(self.result_object.Temperature)
-        maxm = max(self.result_object.Temperature)
+            self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.Temperature)
+        minm = min(self.result_obj.Temperature)
+        avg = sum(self.result_obj.Temperature) / len(self.result_obj.Temperature)
+        maxm = max(self.result_obj.Temperature)
         self.set_result_stats("K", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
 
@@ -210,7 +210,7 @@ class _TaskPanelShowResult:
         FreeCAD.FEM_dialog["results_type"] = "MinPrin"
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
-            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, self.result_object.PrincipalMin)
+            self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.PrincipalMin)
         (minm, avg, maxm) = self.get_result_stats("MinPrin")
         self.set_result_stats("MPa", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
@@ -224,33 +224,33 @@ class _TaskPanelShowResult:
         self.update()
         self.restore_result_dialog()
         # Convert existing values to numpy array
-        P1 = np.array(self.result_object.PrincipalMax)
-        P2 = np.array(self.result_object.PrincipalMed)
-        P3 = np.array(self.result_object.PrincipalMin)
-        Von = np.array(self.result_object.StressValues)
-        T = np.array(self.result_object.Temperature)
-        dispvectors = np.array(self.result_object.DisplacementVectors)
+        P1 = np.array(self.result_obj.PrincipalMax)
+        P2 = np.array(self.result_obj.PrincipalMed)
+        P3 = np.array(self.result_obj.PrincipalMin)
+        Von = np.array(self.result_obj.StressValues)
+        T = np.array(self.result_obj.Temperature)
+        dispvectors = np.array(self.result_obj.DisplacementVectors)
         x = np.array(dispvectors[:, 0])
         y = np.array(dispvectors[:, 1])
         z = np.array(dispvectors[:, 2])
-        stressvectors = np.array(self.result_object.StressVectors)
+        stressvectors = np.array(self.result_obj.StressVectors)
         sx = np.array(stressvectors[:, 0])
         sy = np.array(stressvectors[:, 1])
         sz = np.array(stressvectors[:, 2])
-        strainvectors = np.array(self.result_object.StrainVectors)
+        strainvectors = np.array(self.result_obj.StrainVectors)
         ex = np.array(strainvectors[:, 0])
         ey = np.array(strainvectors[:, 1])
         ez = np.array(strainvectors[:, 2])
         userdefined_eq = self.form.user_def_eq.toPlainText()  # Get equation to be used
         UserDefinedFormula = eval(userdefined_eq).tolist()
-        self.result_object.UserDefined = UserDefinedFormula
+        self.result_obj.UserDefined = UserDefinedFormula
         minm = min(UserDefinedFormula)
         avg = sum(UserDefinedFormula) / len(UserDefinedFormula)
         maxm = max(UserDefinedFormula)
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
-            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, UserDefinedFormula)
+            self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, UserDefinedFormula)
         self.set_result_stats("", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
         del x, y, z, T, Von, P1, P2, P3, sx, sy, sz, ex, ey, ez  # Dummy use to get around flake8, varibles not being used
@@ -259,13 +259,13 @@ class _TaskPanelShowResult:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if disp_type == "Uabs":
             if self.suitable_results:
-                self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, self.result_object.DisplacementLengths)
+                self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.DisplacementLengths)
         else:
             match = {"U1": 0, "U2": 1, "U3": 2}
-            d = zip(*self.result_object.DisplacementVectors)
+            d = zip(*self.result_obj.DisplacementVectors)
             displacements = list(d[match[disp_type]])
             if self.suitable_results:
-                self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, displacements)
+                self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, displacements)
         (minm, avg, maxm) = self.get_result_stats(disp_type)
         self.set_result_stats("mm", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
@@ -284,17 +284,17 @@ class _TaskPanelShowResult:
                 factor = self.form.hsb_displacement_factor.value()
             else:
                 factor = 0.0
-        self.MeshObject.ViewObject.applyDisplacement(factor)
+        self.mesh_obj.ViewObject.applyDisplacement(factor)
 
     def show_displacement(self, checked):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         FreeCAD.FEM_dialog["show_disp"] = checked
-        if "result_object" in FreeCAD.FEM_dialog:
-            if FreeCAD.FEM_dialog["result_object"] != self.result_object:
+        if "result_obj" in FreeCAD.FEM_dialog:
+            if FreeCAD.FEM_dialog["result_obj"] != self.result_obj:
                 self.update_displacement()
-        FreeCAD.FEM_dialog["result_object"] = self.result_object
+        FreeCAD.FEM_dialog["result_obj"] = self.result_obj
         if self.suitable_results:
-            self.MeshObject.ViewObject.setNodeDisplacementByVectors(self.result_object.NodeNumbers, self.result_object.DisplacementVectors)
+            self.mesh_obj.ViewObject.setNodeDisplacementByVectors(self.result_obj.NodeNumbers, self.result_obj.DisplacementVectors)
         self.update_displacement()
         QtGui.qApp.restoreOverrideCursor()
 
@@ -312,15 +312,15 @@ class _TaskPanelShowResult:
 
     def update(self):
         self.suitable_results = False
-        if len(self.result_object.Temperature) == 0:  # Disable temperature radio button if it does ot exist in results
+        if len(self.result_obj.Temperature) == 0:  # Disable temperature radio button if it does ot exist in results
             self.form.rb_temperature.setEnabled(0)
 
-        if (self.MeshObject.FemMesh.NodeCount == len(self.result_object.NodeNumbers)):
+        if (self.mesh_obj.FemMesh.NodeCount == len(self.result_obj.NodeNumbers)):
             self.suitable_results = True
-            self.MeshObject.ViewObject.Visibility = True
+            self.mesh_obj.ViewObject.Visibility = True
             hide_parts_constraints()
         else:
-            if not self.MeshObject.FemMesh.VolumeCount:
+            if not self.mesh_obj.FemMesh.VolumeCount:
                 error_message = 'FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.\n'
                 FreeCAD.Console.PrintError(error_message)
                 QtGui.QMessageBox.critical(None, 'No result object', error_message)
@@ -330,12 +330,12 @@ class _TaskPanelShowResult:
                 QtGui.QMessageBox.critical(None, 'No result object', error_message)
 
     def reset_mesh_deformation(self):
-        self.MeshObject.ViewObject.applyDisplacement(0.0)
+        self.mesh_obj.ViewObject.applyDisplacement(0.0)
 
     def reset_mesh_color(self):
-        self.MeshObject.ViewObject.NodeColor = {}
-        self.MeshObject.ViewObject.ElementColor = {}
-        self.MeshObject.ViewObject.setNodeColorByScalars()
+        self.mesh_obj.ViewObject.NodeColor = {}
+        self.mesh_obj.ViewObject.ElementColor = {}
+        self.mesh_obj.ViewObject.setNodeColorByScalars()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()  # if the taks panell is called from Command obj is not in edit mode thus reset edit does not cleses the dialog, may be do not call but set in edit instead
