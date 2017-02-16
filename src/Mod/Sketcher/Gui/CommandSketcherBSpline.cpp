@@ -387,15 +387,21 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
+    openCommand("IncreaseBSplineDegree");
+
     for (unsigned int i=0; i<SubNames.size(); i++ ) {
         // only handle edges
         if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge") {
 
             int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
 
-            Obj->IncreaseBSplineDegree(GeoId);
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.IncreaseBSplineDegree(%d) ",
+                                    selection[0].getFeatName(),GeoId);
         }
     }
+    
+    commitCommand();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
