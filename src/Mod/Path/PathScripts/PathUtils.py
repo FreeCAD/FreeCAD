@@ -31,6 +31,8 @@ import PathScripts
 from PathScripts import PathJob
 import numpy
 import PathLog
+#from math import pi
+from FreeCAD import Vector
 
 LOG_MODULE = 'PathUtils'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
@@ -84,6 +86,44 @@ def curvetowire(obj, steps):
         p0 = p
     return edgelist
 
+def isDrillable(obj, candidate):
+    PathLog.track()
+    PathLog.debug('obj: {} candidate {}')
+    drillable = False
+    if candidate.ShapeType == 'Face':
+        face = candidate
+        # eliminate flat faces
+        if (round(face.ParameterRange[0], 8) == 0.0) and (round(face.ParameterRange[1], 8) == round(math.pi * 2, 8)):
+            for edge in face.Edges:  # Find seam edge and check if aligned to Z axis.
+                if (isinstance(edge.Curve, Part.Line)):
+                    v0 = edge.Vertexes[0].Point
+                    v1 = edge.Vertexes[1].Point
+                    if (v1.sub(v0).x == 0) and (v1.sub(v0).y == 0):
+                        # vector of top center
+                        lsp = Vector(face.BoundBox.Center.x,
+                                        face.BoundBox.Center.y, face.BoundBox.ZMax)
+                        # vector of bottom center
+                        lep = Vector(face.BoundBox.Center.x,
+                                        face.BoundBox.Center.y, face.BoundBox.ZMin)
+                        if obj.isInside(lsp, 0, False) or obj.isInside(lep, 0, False):
+                            drillable = False
+                        # eliminate elliptical holes
+                        elif abs(face.BoundBox.XLength - face.BoundBox.YLength) > 0.05:
+                            drillable = False
+                        else:
+                            drillable = True
+        else:
+            print('here')
+            drillable = False
+    else:
+        print ('looking at edges')
+        for edge in candidate.Edges:
+            if (isinstance(edge.Curve, Part.Circle)):
+                if abs(edge.BoundBox.XLength - edge.BoundBox.YLength) > 0.05:
+                    drillable = False
+                else:
+                    drillable = True
+    return drillable
 
 # fixme set at 4 decimal places for testing
 def fmt(val): return format(val, '.4f')
