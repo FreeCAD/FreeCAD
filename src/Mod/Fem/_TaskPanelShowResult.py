@@ -238,8 +238,7 @@ class _TaskPanelShowResult:
         strainvectors = np.array(self.result_object.StrainVectors)
         ex = np.array(strainvectors[:, 0])
         ey = np.array(strainvectors[:, 1])
-        ez = np.array(strainvectors[:, 2])
-        userdefined_eq = x + y + z + T + Von + P1 + P2 + P3 + sx + sy + sz + ex + ey + ez  # Dummy equation to get around flake8, varibles not being used
+        ez = np.array(strainvectors[:, 2])        
         userdefined_eq = self.form.user_def_eq.toPlainText()  # Get equation to be used
         UserDefinedFormula = eval(userdefined_eq).tolist()
         self.result_object.UserDefined = UserDefinedFormula
@@ -252,6 +251,7 @@ class _TaskPanelShowResult:
             self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, UserDefinedFormula)
         self.set_result_stats("", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
+        del x,y,z,T,Von,P1,P2,P3,sx,sy,sz,ex,ey,ez
 
     def select_displacement_type(self, disp_type):
         QApplication.setOverrideCursor(Qt.WaitCursor)
