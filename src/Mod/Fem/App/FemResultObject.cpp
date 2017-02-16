@@ -42,7 +42,7 @@ FemResultObject::FemResultObject()
     ADD_PROPERTY_TYPE(NodeNumbers,(0), "Data",Prop_None,"Numbers of the result nodes");
     ADD_PROPERTY_TYPE(Stats,(0), "Fem",Prop_None,"Statistics of the results");
     ADD_PROPERTY_TYPE(Time,(0), "Fem",Prop_None,"Time of analysis incement");
-    
+
     /*
     ADD_PROPERTY_TYPE(DisplacementVectors,(), "Fem",Prop_None,"List of displacement vectors");
     ADD_PROPERTY_TYPE(DisplacementLengths,(0), "Fem",Prop_None,"List of displacement lengths");
@@ -77,7 +77,7 @@ FemResultObject::FemResultObject()
     Eigenmode.setStatus(App::Property::ReadOnly, true);
     EigenmodeFrequency.setStatus(App::Property::ReadOnly, true);
     UserDefined.setStatus(App::Property::ReadOnly, false);
-     * */
+    */
 }
 
 FemResultObject::~FemResultObject()
