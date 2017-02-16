@@ -46,8 +46,6 @@ class _CommandRunSolver(FemCommands):
         def load_results(ret_code):
             if ret_code == 0:
                 self.fea.load_results()
-                self.show_results_on_mesh()
-                self.hide_parts_constraints_show_meshes()
             else:
                 print ("CalculiX failed ccx finished with error {}".format(ret_code))
 
@@ -77,14 +75,6 @@ class _CommandRunSolver(FemCommands):
             # QtCore.QThreadPool.globalInstance().start(self.fea)
         else:
             QtGui.QMessageBox.critical(None, "Not known solver type", message)
-
-    def show_results_on_mesh(self):
-        # FIXME proprer mesh refreshing as per FreeCAD.FEM_dialog settings required
-        # or confirmation that it's safe to call restore_result_dialog
-        # FIXME if an analysis has multiple results (frequence) the first result object found is restored
-        import _TaskPanelShowResult
-        tp = _TaskPanelShowResult._TaskPanelShowResult()
-        tp.restore_result_dialog()
 
 
 FreeCADGui.addCommand('Fem_RunSolver', _CommandRunSolver())

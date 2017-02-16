@@ -40,7 +40,8 @@ from PySide.QtGui import QApplication
 
 class _TaskPanelShowResult:
     '''The task panel for the post-processing'''
-    def __init__(self):
+    def __init__(self, obj):
+        self.result_object = obj
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelShowResult.ui")
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         self.restore_result_settings_in_dialog = self.fem_prefs.GetBool("RestoreResultDialog", True)
@@ -66,6 +67,8 @@ class _TaskPanelShowResult:
         QtCore.QObject.connect(self.form.sb_displacement_factor_max, QtCore.SIGNAL("valueChanged(int)"), self.sb_disp_factor_max_changed)
 
         self.update()
+        if not FemGui.getActiveAnalysis():
+            FreeCAD.Console.PrintError('FEM Result task panel, no active analysis. This will cause problems later ...\n')
         if self.restore_result_settings_in_dialog:
             self.restore_result_dialog()
         else:
@@ -310,44 +313,34 @@ class _TaskPanelShowResult:
 
     def update(self):
         self.MeshObject = None
-        self.result_object = get_results_object(FreeCADGui.Selection.getSelection())
-        for i in FemGui.getActiveAnalysis().Member:
-            if i.isDerivedFrom("Fem::FemMeshObject"):
-                self.MeshObject = i
-                break
-
         self.suitable_results = False
         if self.result_object:
-            # Disable temperature radio button if it does ot exist in results
-            if len(self.result_object.Temperature) == 0:
+            if len(self.result_object.Temperature) == 0:  # Disable temperature radio button if it does ot exist in results
                 self.form.rb_temperature.setEnabled(0)
 
-            if (self.MeshObject.FemMesh.NodeCount == len(self.result_object.NodeNumbers)):
-                self.suitable_results = True
-            else:
-                if not self.MeshObject.FemMesh.VolumeCount:
-                    FreeCAD.Console.PrintError('FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.\n')
+            if hasattr(self.result_object, "Mesh") and self.result_object.Mesh:
+                self.MeshObject = self.result_object.Mesh
+                self.MeshObject.ViewObject.Visibility = True
+                if (self.MeshObject.FemMesh.NodeCount == len(self.result_object.NodeNumbers)):
+                    self.suitable_results = True
                 else:
-                    FreeCAD.Console.PrintError('FEM: Result node numbers are not equal to FEM Mesh NodeCount.\n')
+                    if not self.MeshObject.FemMesh.VolumeCount:
+                        error_message = 'FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.\n'
+                        FreeCAD.Console.PrintError(error_message)
+                        QtGui.QMessageBox.critical(None, 'No result object', error_message)
+                    else:
+                        error_message = 'FEM: Result node numbers are not equal to FEM Mesh NodeCount.\n'
+                        FreeCAD.Console.PrintError(error_message)
+                        QtGui.QMessageBox.critical(None, 'No result object', error_message)
+            else:
+                error_message = 'FEM: Result object has no appropriate FEM mesh.\n'
+                FreeCAD.Console.PrintError(error_message)
+                QtGui.QMessageBox.critical(None, 'No result object', error_message)
         else:
             error_message = 'FEM: Result task panel, no result object to display results for.\n'
             FreeCAD.Console.PrintError(error_message)
             QtGui.QMessageBox.critical(None, 'No result object', error_message)
 
-    def accept(self):
-        FreeCADGui.Control.closeDialog()
-
     def reject(self):
-        FreeCADGui.Control.closeDialog()
-
-
-# It's code duplication that should be removes wher we migrate to FemTools.py
-def get_results_object(sel):
-    if (len(sel) == 1):
-        if sel[0].isDerivedFrom("Fem::FemResultObject"):
-            return sel[0]
-
-    for i in FemGui.getActiveAnalysis().Member:
-        if(i.isDerivedFrom("Fem::FemResultObject")):
-            return i
-    return None
+        FreeCADGui.Control.closeDialog()  # if the taks panell is called from Command obj is not in edit mode thus reset edit does not cleses the dialog, may be do not call but set in edit instead
+        FreeCADGui.ActiveDocument.resetEdit()
