@@ -116,11 +116,12 @@ DocumentObjectExecReturn* FemPostPipeline::execute(void) {
 bool FemPostPipeline::canRead(Base::FileInfo File) {
 
     if (File.hasExtension("vtk") ||
+        // from FemResult only unstructural mesh is supported in femvtktoools.cpp
         File.hasExtension("vtp") ||
         File.hasExtension("vts") ||
         File.hasExtension("vtr") ||
-        File.hasExtension("vtu") ||
-        File.hasExtension("vti"))
+        File.hasExtension("vti") ||
+        File.hasExtension("vtu"))
         return true;
 
     return false;
@@ -244,9 +245,10 @@ bool FemPostPipeline::holdsPostObject(FemPostObject* obj) {
 }
 
 void FemPostPipeline::load(FemResultObject* res) {
-
-    if(!res->Mesh.getValue() || !res->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId()))
+    if(!res->Mesh.getValue() || !res->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
+        Base::Console().Warning("Mesh of result object is empty or not derived from Fem::FemMeshObject\n");
         return;
+    }
 
     //first copy the mesh over
     //########################
@@ -256,7 +258,7 @@ void FemPostPipeline::load(FemResultObject* res) {
 
     //Now copy the point data over
     //############################
-    if(res->getPropertyByName("Velocity")){
+    if(res->getPropertyByName("Velocity")){  // consider better way to detect result type, res->Type == "CfdResult"
         FemVTKTools::exportFluidicResult(res, grid);
     }
     else{
