@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>322</width>
-    <height>505</height>
+    <height>457</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,8 +19,8 @@
   <property name="windowTitle">
    <string>Drilling</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
       <number>0</number>
@@ -34,7 +34,7 @@
         <x>0</x>
         <y>0</y>
         <width>304</width>
-        <height>375</height>
+        <height>319</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -111,8 +111,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>109</width>
-        <height>82</height>
+        <width>304</width>
+        <height>319</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -167,13 +167,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page">
+     <widget class="QWidget" name="Heights">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>144</width>
-        <height>82</height>
+        <width>304</width>
+        <height>319</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -228,13 +228,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_3">
+     <widget class="QWidget" name="Operation">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>223</width>
-        <height>31</height>
+        <width>304</width>
+        <height>319</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -244,22 +244,47 @@
       <attribute name="label">
        <string>Operation</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout_5">
-       <item row="0" column="0">
-        <widget class="QComboBox" name="algorithmSelect">
-         <item>
-          <property name="text">
-           <string>OCC Native Outline</string>
-          </property>
-         </item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QFrame" name="frame">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>ToolController</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="uiToolController"/>
+          </item>
+         </layout>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Algorithm</string>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-        </widget>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
