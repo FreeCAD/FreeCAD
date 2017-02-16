@@ -82,12 +82,12 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QPushButton" name="reorderBase">
+        <widget class="QPushButton" name="uiFindAllHoles">
          <property name="toolTip">
           <string>Update the path with the removed and reordered items.</string>
          </property>
          <property name="text">
-          <string>Update</string>
+          <string>Find All</string>
          </property>
         </widget>
        </item>
