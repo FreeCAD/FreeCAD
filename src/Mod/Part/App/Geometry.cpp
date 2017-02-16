@@ -892,6 +892,19 @@ void GeomBSplineCurve::makeC1Continuous(double tol, double ang_tol)
     GeomConvert::C0BSplineToC1BSplineCurve(this->myCurve, tol, ang_tol);
 }
 
+void GeomBSplineCurve::increaseDegree(const double Degree)
+{
+    try {
+        Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(this->handle());
+        curve->IncreaseDegree(Degree);
+        return;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::RuntimeError(e->GetMessageString());
+    }
+}
+
 // Persistence implementer 
 unsigned int GeomBSplineCurve::getMemSize (void) const
 {
