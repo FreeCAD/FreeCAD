@@ -117,7 +117,7 @@ SET(FemScripts_SRCS
     importInpMesh.py
     importVTKResults.py
     importZ88Mesh.py
-    importZ88Results.py
+    importZ88O2Results.py
     Init.py
     InitGui.py
     FemAnalysis.py
