@@ -123,16 +123,12 @@ Nall,300.0
 *SOLID SECTION, ELSET=MechanicalMaterialSolid, MATERIAL=MechanicalMaterial
 
 ***********************************************************
-** One step is needed to run the thermomechanical analysis of FreeCAD
-** written by write_step_begin_thermomech function
+** At least one step is needed to run an CalculiX analysis of FreeCAD
+** written by write_step_begin function
 *STEP, INC=2000
 *CONTROLS, PARAMETERS=TIME INCREMENTATION
 4,8,9,200,10,400,,200,,
 0.25,0.5,0.75,0.85,,,1.5,
-
-***********************************************************
-** Coupled temperature displacement analysis
-** written by write_analysis_thermomech function
 *COUPLED TEMPERATURE-DISPLACEMENT, STEADY STATE
 1.0,1.0
 

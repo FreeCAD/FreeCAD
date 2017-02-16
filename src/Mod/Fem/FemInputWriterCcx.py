@@ -109,14 +109,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_constraints_transform(inpfile)
 
         # step begin
-        if self.analysis_type == "frequency":
-            self.write_step_begin_static_frequency(inpfile)
-            self.write_analysis_frequency(inpfile)
-        elif self.analysis_type == "static":
-            self.write_step_begin_static_frequency(inpfile)
-        elif self.analysis_type == "thermomech":
-            self.write_step_begin_thermomech(inpfile)
-            self.write_analysis_thermomech(inpfile)
+        self.write_step_begin(inpfile)
 
         # constraints depend on step used in all analysis types
         if self.fixed_objects:
@@ -254,14 +247,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_constraints_transform(inpfileMain)
 
         # step begin
-        if self.analysis_type == "frequency":
-            self.write_step_begin_static_frequency(inpfileMain)
-            self.write_analysis_frequency(inpfileMain)
-        elif self.analysis_type == "static":
-            self.write_step_begin_static_frequency(inpfileMain)
-        elif self.analysis_type == "thermomech":
-            self.write_step_begin_thermomech(inpfileMain)
-            self.write_analysis_thermomech(inpfileMain)
+        self.write_step_begin(inpfileMain)
 
         # constraints depend on step used in all analysis types
         if self.fixed_objects:
@@ -576,77 +562,75 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                     setion_def = '*SOLID SECTION, ' + elsetdef + material + '\n'
                     f.write(setion_def)
 
-    def write_step_begin_static_frequency(self, f):
+    def write_step_begin(self, f):
         f.write('\n***********************************************************\n')
-        f.write('** One step is needed to run the mechanical analysis of FreeCAD\n')
+        f.write('** At least one step is needed to run an CalculiX analysis of FreeCAD\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        static_frequency_step = '*STEP'
-        if self.solver_obj.GeometricalNonlinearity == "nonlinear" and self.analysis_type == 'static':
-            static_frequency_step += ', NLGEOM'   # https://www.comsol.com/blogs/what-is-geometric-nonlinearity/
-        elif self.solver_obj.GeometricalNonlinearity == "nonlinear" and self.analysis_type == 'frequency':
-            print('Analysis type frequency and geometrical nonlinear analyis are not allowed together, linear is used instead!')
-        f.write(static_frequency_step + '\n')
-        if self.solver_obj.IterationsControlParameterTimeUse:
-            f.write('*CONTROLS, PARAMETERS=TIME INCREMENTATION\n')
-            f.write(self.solver_obj.IterationsControlParameterIter + '\n')
-            f.write(self.solver_obj.IterationsControlParameterCutb + '\n')
-        analysis_static = '*STATIC'
-        if self.solver_obj.MatrixSolverType == "default":
-            pass
-        elif self.solver_obj.MatrixSolverType == "spooles":
-            analysis_static += ', SOLVER=SPOOLES'
-        elif self.solver_obj.MatrixSolverType == "iterativescaling":
-            analysis_static += ', SOLVER=ITERATIVE SCALING'
-        elif self.solver_obj.MatrixSolverType == "iterativecholesky":
-            analysis_static += ', SOLVER=ITERATIVE CHOLESKY'
-        if self.solver_obj.IterationsUserDefinedIncrementations:
-            analysis_static += ', DIRECT'
-        f.write(analysis_static + '\n')
-        if self.solver_obj.IterationsUserDefinedIncrementations:
-            f.write(self.solver_obj.IterationsUserDefinedTimeStepLength + '\n')
-
-    def write_step_begin_thermomech(self, f):
-        f.write('\n***********************************************************\n')
-        f.write('** One step is needed to run the thermomechanical analysis of FreeCAD\n')
-        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        thermomech_step = '*STEP'
+        # STEP line
+        step = '*STEP'
         if self.solver_obj.GeometricalNonlinearity == "nonlinear":
-            thermomech_step += ', NLGEOM'
+            if self.analysis_type == 'static' or self.analysis_type == 'thermomech':
+                step += ', NLGEOM'   # https://www.comsol.com/blogs/what-is-geometric-nonlinearity/
+            elif self.analysis_type == 'frequency':
+                print('Analysis type frequency and geometrical nonlinear analyis are not allowed together, linear is used instead!')
         if self.solver_obj.IterationsThermoMechMaximum:
-            thermomech_step += ', INC=' + str(self.solver_obj.IterationsThermoMechMaximum)
-        f.write(thermomech_step + '\n')
+            if self.analysis_type == 'thermomech':
+                step += ', INC=' + str(self.solver_obj.IterationsThermoMechMaximum)
+            elif self.analysis_type == 'static' or self.analysis_type == 'frequency':
+                pass  # not supported for stati and frequency,  ... really ?
+        # write step line
+        f.write(step + '\n')
+        # CONTROLS line
+        # all analyis types, ... really in frequency too?!?
         if self.solver_obj.IterationsControlParameterTimeUse:
             f.write('*CONTROLS, PARAMETERS=TIME INCREMENTATION\n')
             f.write(self.solver_obj.IterationsControlParameterIter + '\n')
             f.write(self.solver_obj.IterationsControlParameterCutb + '\n')
-
-    def write_analysis_frequency(self, f):
-        f.write('\n***********************************************************\n')
-        f.write('** Frequency analysis\n')
-        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        f.write('*FREQUENCY\n')
-        f.write('{},{},{}\n'.format(self.solver_obj.EigenmodesCount, self.solver_obj.EigenmodeLowLimit, self.solver_obj.EigenmodeHighLimit))
-
-    def write_analysis_thermomech(self, f):
-        f.write('\n***********************************************************\n')
-        f.write('** Coupled temperature displacement analysis\n')
-        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        thermomech_analysis = '*COUPLED TEMPERATURE-DISPLACEMENT'
+        # ANALYSIS type line
+        # analysis line --> analysis type
+        if self.analysis_type == 'static':
+            analysis_type = '*STATIC'
+        elif self.analysis_type == 'frequency':
+            analysis_type = '*FREQUENCY'
+        elif self.analysis_type == 'thermomech':
+            analysis_type = '*COUPLED TEMPERATURE-DISPLACEMENT'
+        # analysis line --> solver type
         if self.solver_obj.MatrixSolverType == "default":
             pass
         elif self.solver_obj.MatrixSolverType == "spooles":
-            thermomech_analysis += ', SOLVER=SPOOLES'
+            analysis_type += ', SOLVER=SPOOLES'
         elif self.solver_obj.MatrixSolverType == "iterativescaling":
-            thermomech_analysis += ', SOLVER=ITERATIVE SCALING'
+            analysis_type += ', SOLVER=ITERATIVE SCALING'
         elif self.solver_obj.MatrixSolverType == "iterativecholesky":
-            thermomech_analysis += ', SOLVER=ITERATIVE CHOLESKY'
+            analysis_type += ', SOLVER=ITERATIVE CHOLESKY'
+        # analysis line --> user defined incrementations --> parameter DIRECT
+        if self.solver_obj.IterationsUserDefinedIncrementations:
+            if self.analysis_type == 'static':  # it would be possible in thermomech too IMHO (bernd)
+                analysis_type += ', DIRECT'
+            elif self.analysis_type == 'thermomech':
+                print('IterationsUserDefinedIncrementations not implemented for thermomech at the moment')
+            elif self.analysis_type == 'frequency':
+                print('Analysis type frequency and IterationsUserDefinedIncrementations are not allowed together, it is ignored')
+        # analysis line --> steadystate --> thermomech only
         if self.solver_obj.ThermoMechSteadyState:
-            thermomech_analysis += ', STEADY STATE'
-            self.solver_obj.TimeInitialStep = 1.0  # Set time to 1 and ignore user inputs for steady state
-            self.solver_obj.TimeEnd = 1.0
-        thermomech_time = '{},{}'.format(self.solver_obj.TimeInitialStep, self.solver_obj.TimeEnd)  # OvG: 1.0 increment, total time 1 for steady state will cut back automatically
-        f.write(thermomech_analysis + '\n')
-        f.write(thermomech_time + '\n')
+            if self.analysis_type == 'thermomech':
+                analysis_type += ', STEADY STATE'
+                self.solver_obj.TimeInitialStep = 1.0  # Set time to 1 and ignore user inputs for steady state
+                self.solver_obj.TimeEnd = 1.0
+            elif self.analysis_type == 'static' or self.analysis_type == 'frequency':
+                pass  # not supported for static and frequency!
+        # ANALYSIS paramter line
+        analysis_parameter = ''
+        if self.analysis_type == 'static':
+            if self.solver_obj.IterationsUserDefinedIncrementations:
+                analysis_parameter = self.solver_obj.IterationsUserDefinedTimeStepLength
+        elif self.analysis_type == 'frequency':
+            analysis_parameter = '{},{},{}\n'.format(self.solver_obj.EigenmodesCount, self.solver_obj.EigenmodeLowLimit, self.solver_obj.EigenmodeHighLimit)
+        elif self.analysis_type == 'thermomech':
+            analysis_parameter = '{},{}'.format(self.solver_obj.TimeInitialStep, self.solver_obj.TimeEnd)  # OvG: 1.0 increment, total time 1 for steady state will cut back automatically
+        # write analysis type line, analysis parameter line
+        f.write(analysis_type + '\n')
+        f.write(analysis_parameter + '\n')
 
     def write_constraints_fixed(self, f):
         f.write('\n***********************************************************\n')
