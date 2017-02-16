@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 
 ## @package importVTKResults
 #  \ingroup FEM
+#  \brief FreeCAD Result import and export VTK file library
 
 import os
 import FreeCAD

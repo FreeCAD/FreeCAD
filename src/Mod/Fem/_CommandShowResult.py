@@ -26,6 +26,7 @@ __url__ = "http://www.freecadweb.org"
 
 ## @package CommandShowResult
 #  \ingroup FEM
+#  \brief FreeCAD Command show results for FEM workbench
 
 from FemCommands import FemCommands
 import FreeCADGui

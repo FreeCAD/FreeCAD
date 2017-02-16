@@ -26,6 +26,7 @@ __url__ = "http://www.freecadweb.org"
 
 ## @package importZ88Mesh
 #  \ingroup FEM
+#  \brief FreeCAD Z88 Mesh reader and writer for FEM workbench
 
 import FreeCAD
 import os
