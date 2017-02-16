@@ -316,37 +316,43 @@ CmdSketcherConvertToNURB::CmdSketcherConvertToNURB()
 void CmdSketcherConvertToNURB::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    
+
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    
+
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         return;
     }
-    
+
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    
+
+    openCommand("IncreaseBSplineDegree");
+
     for (unsigned int i=0; i<SubNames.size(); i++ ) {
         // only handle edges
         if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge") {
-            
+
             int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
-    
-            Obj->ConvertToNURBS(GeoId);
+
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.ConvertToNURBS(%d) ",
+                                    selection[0].getFeatName(),GeoId);
         }
     }
-    
+
+    commitCommand();
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-    
+
     if (autoRecompute)
         Gui::Command::updateActive();
     else
         Obj->solve();
-    
+
 }
 
 bool CmdSketcherConvertToNURB::isActive(void)
