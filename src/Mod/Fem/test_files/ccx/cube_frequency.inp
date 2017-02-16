@@ -482,16 +482,12 @@ Eall
 *SOLID SECTION, ELSET=MechanicalMaterialSolid, MATERIAL=MechanicalMaterial
 
 ***********************************************************
-** One step is needed to run the mechanical analysis of FreeCAD
-** written by write_step_begin_static_frequency function
+** At least one step is needed to run an CalculiX analysis of FreeCAD
+** written by write_step_begin function
 *STEP
-*STATIC
-
-***********************************************************
-** Frequency analysis
-** written by write_analysis_frequency function
 *FREQUENCY
 10,0.0,1000000.0
+
 
 ***********************************************************
 ** Fixed Constraints
