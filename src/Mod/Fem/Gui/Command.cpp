@@ -1525,13 +1525,25 @@ CmdFemPostPipelineFromResult::CmdFemPostPipelineFromResult()
 
 void CmdFemPostPipelineFromResult::activated(int)
 {
+    /*
     Gui::SelectionFilter ResultFilter("SELECT Fem::FemResultObject COUNT 1");
-
     if (ResultFilter.match()) {
-
+        Base::Console().Message("Debug: `SELECT Fem::FemResultObject COUNT 1` has matched obj");
         Fem::FemResultObject* result = static_cast<Fem::FemResultObject*>(ResultFilter.Result[0][0].getObject());
+        //static_cast failed here
+        Base::Console().Message("Debug: FemResultObject pointer = %p", result );
+        
+    */
+    App::Document* pcDoc = App::GetApplication().getActiveDocument();
+    if(!pcDoc)
+    {
+        Base::Console().Message("No active document is found thus do nothing and return\n");
+        return;
+    }
+    Fem::FemResultObject* result= static_cast<Fem::FemResultObject*>(pcDoc->getActiveObject());
+    if(result)
+    {
         std::string FeatName = getUniqueObjectName("Pipeline");
-
         openCommand("Create pipeline from result");
         doCommand(Doc,"App.activeDocument().addObject('Fem::FemPostPipeline','%s')",FeatName.c_str());
 
@@ -1543,8 +1555,8 @@ void CmdFemPostPipelineFromResult::activated(int)
     }
     else {
         QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdFemPostCreateClipFilter", "Wrong selection"),
-            qApp->translate("CmdFemPostCreateClipFilter", "Select a result, please."));
+            qApp->translate("CmdFemPostPipelineFromResult", "Wrong selection type"),
+            qApp->translate("CmdFemPostPipelineFromResult", "Select a result object, please."));
     }
 }
 

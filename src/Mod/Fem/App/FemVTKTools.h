@@ -54,7 +54,7 @@ namespace Fem
         /*!
          FemMesh export to vtkUnstructuredGrid instance
          */        
-        static void exportVTKMesh(const FemMesh* mesh, vtkSmartPointer<vtkUnstructuredGrid> grid);
+        static void exportVTKMesh(const FemMesh* mesh, vtkSmartPointer<vtkUnstructuredGrid> grid, float scale = 1.0);
         /*!
          FemMesh write to vtkUnstructuredGrid data file
          */   
@@ -64,7 +64,7 @@ namespace Fem
          * FemResult import from vtkUnstructuredGrid object
          */
         static void importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res);
-        // importMechanicalResult can be defined if necessary in the future
+        static void importMechanicalResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res);
         
         /*!
          * FemResult export to vtkUnstructuredGrid object
@@ -73,9 +73,9 @@ namespace Fem
         static void exportMechanicalResult(const App::DocumentObject* res, vtkSmartPointer<vtkDataSet> grid);
 
         /*!
-         * FemResult (active or created if res= NULL) read from vtkUnstructuredGrid dataset file
+         * FemResult (activeObject or created if res= NULL) read from vtkUnstructuredGrid dataset file
          */
-        static App::DocumentObject* readFluidicResult(const char* Filename, App::DocumentObject* res = NULL);
+        static App::DocumentObject* readResult(const char* Filename, App::DocumentObject* res = NULL);
        
         /*!
          * write FemResult (activeObject if res= NULL) to vtkUnstructuredGrid dataset file
