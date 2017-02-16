@@ -48,9 +48,6 @@ class _CommandShowResult(FemCommands):
         if (len(sel) == 1):
             if sel[0].isDerivedFrom("Fem::FemResultObject"):
                 self.result_object = sel[0]
-
-        self.hide_parts_constraints_show_meshes()
-
         import _TaskPanelShowResult
         taskd = _TaskPanelShowResult._TaskPanelShowResult(self.result_object)
         FreeCADGui.Control.showDialog(taskd)

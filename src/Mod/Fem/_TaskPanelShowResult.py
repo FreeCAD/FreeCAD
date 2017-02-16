@@ -320,9 +320,10 @@ class _TaskPanelShowResult:
 
             if hasattr(self.result_object, "Mesh") and self.result_object.Mesh:
                 self.MeshObject = self.result_object.Mesh
-                self.MeshObject.ViewObject.Visibility = True
                 if (self.MeshObject.FemMesh.NodeCount == len(self.result_object.NodeNumbers)):
                     self.suitable_results = True
+                    self.MeshObject.ViewObject.Visibility = True
+                    hide_parts_constraints()
                 else:
                     if not self.MeshObject.FemMesh.VolumeCount:
                         error_message = 'FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.\n'
@@ -344,3 +345,18 @@ class _TaskPanelShowResult:
     def reject(self):
         FreeCADGui.Control.closeDialog()  # if the taks panell is called from Command obj is not in edit mode thus reset edit does not cleses the dialog, may be do not call but set in edit instead
         FreeCADGui.ActiveDocument.resetEdit()
+
+
+# helper
+def hide_parts_constraints():
+    fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+    hide_constraints = fem_prefs.GetBool("HideConstraint", False)
+    if hide_constraints:
+        for acnstrmesh in FemGui.getActiveAnalysis().Member:
+            if "Constraint" in acnstrmesh.TypeId:
+                acnstrmesh.ViewObject.Visibility = False
+            if "Mesh" in acnstrmesh.TypeId:
+                aparttoshow = acnstrmesh.Name.replace("_Mesh", "")
+                for apart in FreeCAD.activeDocument().Objects:
+                    if aparttoshow == apart.Name:
+                        apart.ViewObject.Visibility = False
