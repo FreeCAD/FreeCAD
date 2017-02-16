@@ -109,6 +109,7 @@ SET(FemScripts_SRCS
     _ViewProviderFemSolverCalculix.py
     _ViewProviderFemSolverZ88.py
     _ViewProviderFemMaterial.py
+    _ViewProviderFemResult.py
     ccxDatReader.py
     ccxFrdReader.py
     convert2TetGen.py
@@ -139,6 +140,7 @@ SET(FemScripts_SRCS
     FemToolsCcx.py
     FemToolsZ88.py
     FemMaterial.py
+    FemResult.py
     FemSelectionObserver.py
     TestFem.py
     TaskPanelFemBeamSection.ui

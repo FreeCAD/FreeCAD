@@ -46,35 +46,12 @@ public:
     /// Link to the corresponding  mesh
     App::PropertyLink Mesh;
     /// Stats of analysis
-    App::PropertyFloatList Stats;
-    /// Displacement vectors of analysis
-    App::PropertyVectorList DisplacementVectors;
-    /// Lengths of displacement vectors of analysis
-    App::PropertyFloatList DisplacementLengths;
-    /// Stress vectors of analysis
-    App::PropertyVectorList StressVectors;
-    /// Strain vectors of analysis
-    App::PropertyVectorList StrainVectors;
-    /// Von Mises Stress values of analysis
-    App::PropertyFloatList StressValues;
-    /// First principal Stress values of analysis
-    App::PropertyFloatList PrincipalMax;
-    /// Second principal Stress values of analysis
-    App::PropertyFloatList PrincipalMed;
-    /// Third principal Stress values of analysis
-    App::PropertyFloatList PrincipalMin;
-    /// Shear Stress values of analysis
-    App::PropertyFloatList MaxShear;
-    /// Temperature
-    App::PropertyFloatList Temperature;
-    /// Eigenmode
-    App::PropertyInteger Eigenmode;
-    /// Eigenmode frequency
-    App::PropertyFloat EigenmodeFrequency;
-    /// Increment time
     App::PropertyFloat Time;
     /// User defined results
-    App::PropertyFloatList UserDefined;
+    App::PropertyFloatList Stats;
+    /// Displacement vectors of analysis
+    
+
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
