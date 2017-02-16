@@ -126,6 +126,8 @@ INSTALL(
 
         # additional imports and exports
         importVTKResults.py
+	FemResult.py
+	_ViewProviderFemResult.py
 
     DESTINATION
         Mod/Fem

@@ -45,12 +45,13 @@ ViewProviderResult::~ViewProviderResult()
 
 }
 
+/* not needed since  _ViewProviderFemResult.py is made 
 bool ViewProviderResult::doubleClicked(void)
 {
     Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand('Fem_ShowResult')");
     return true;
 }
-
+*/
 
 // Python feature -----------------------------------------------------------------------
 
