@@ -48,9 +48,10 @@ class _CommandShowResult(FemCommands):
         if (len(sel) == 1):
             if sel[0].isDerivedFrom("Fem::FemResultObject"):
                 self.result_object = sel[0]
-        import _TaskPanelShowResult
-        taskd = _TaskPanelShowResult._TaskPanelShowResult(self.result_object)
-        FreeCADGui.Control.showDialog(taskd)
+
+        import _ViewProviderFemMechanicalResult
+        if _ViewProviderFemMechanicalResult.is_result_obj_valid(self.result_object):
+            self.result_object.ViewObject.startEditing()
 
 
 FreeCADGui.addCommand('Fem_ShowResult', _CommandShowResult())
