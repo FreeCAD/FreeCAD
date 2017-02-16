@@ -286,13 +286,15 @@ inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline){
     bspline << "Sketcher_BSplineDegree"
         << "Sketcher_BSplinePolygon"
         << "Sketcher_BSplineComb"
-        << "Sketcher_BSplineConvertToNURB";
+        << "Sketcher_BSplineConvertToNURB"
+        << "Sketcher_BSplineIncreaseDegree";
 }
 
 template <>
 inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bspline){
     bspline << "Sketcher_CompBSplineShowHideGeometryInformation"
-    << "Sketcher_BSplineConvertToNURB";
+    << "Sketcher_BSplineConvertToNURB"
+    << "Sketcher_BSplineIncreaseDegree";
 }
 
 template <typename T>

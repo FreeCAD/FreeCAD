@@ -228,6 +228,8 @@ public:
     bool join(const Handle_Geom_BSplineCurve&);
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
+    
+    void increaseDegree(const double Degree);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
