@@ -43,7 +43,7 @@ class _TaskPanelShowResult:
         self.result_object = obj
         self.MeshObject = self.result_object.Mesh
         # task panel should be started by use of setEdit of view provider
-        # in setEdit check for, Mesh, active analysis and if Mesh and result are in active analysis
+        # in view provider checks: Mesh, active analysis and if Mesh and result are in active analysis
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelShowResult.ui")
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
@@ -311,35 +311,23 @@ class _TaskPanelShowResult:
         self.form.hsb_displacement_factor.setValue(value)
 
     def update(self):
-        self.MeshObject = None
         self.suitable_results = False
-        if self.result_object:
-            if len(self.result_object.Temperature) == 0:  # Disable temperature radio button if it does ot exist in results
-                self.form.rb_temperature.setEnabled(0)
+        if len(self.result_object.Temperature) == 0:  # Disable temperature radio button if it does ot exist in results
+            self.form.rb_temperature.setEnabled(0)
 
-            if hasattr(self.result_object, "Mesh") and self.result_object.Mesh:
-                self.MeshObject = self.result_object.Mesh
-                if (self.MeshObject.FemMesh.NodeCount == len(self.result_object.NodeNumbers)):
-                    self.suitable_results = True
-                    self.MeshObject.ViewObject.Visibility = True
-                    hide_parts_constraints()
-                else:
-                    if not self.MeshObject.FemMesh.VolumeCount:
-                        error_message = 'FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.\n'
-                        FreeCAD.Console.PrintError(error_message)
-                        QtGui.QMessageBox.critical(None, 'No result object', error_message)
-                    else:
-                        error_message = 'FEM: Result node numbers are not equal to FEM Mesh NodeCount.\n'
-                        FreeCAD.Console.PrintError(error_message)
-                        QtGui.QMessageBox.critical(None, 'No result object', error_message)
-            else:
-                error_message = 'FEM: Result object has no appropriate FEM mesh.\n'
+        if (self.MeshObject.FemMesh.NodeCount == len(self.result_object.NodeNumbers)):
+            self.suitable_results = True
+            self.MeshObject.ViewObject.Visibility = True
+            hide_parts_constraints()
+        else:
+            if not self.MeshObject.FemMesh.VolumeCount:
+                error_message = 'FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.\n'
                 FreeCAD.Console.PrintError(error_message)
                 QtGui.QMessageBox.critical(None, 'No result object', error_message)
-        else:
-            error_message = 'FEM: Result task panel, no result object to display results for.\n'
-            FreeCAD.Console.PrintError(error_message)
-            QtGui.QMessageBox.critical(None, 'No result object', error_message)
+            else:
+                error_message = 'FEM: Result node numbers are not equal to FEM Mesh NodeCount.\n'
+                FreeCAD.Console.PrintError(error_message)
+                QtGui.QMessageBox.critical(None, 'No result object', error_message)
 
     def reset_mesh_deformation(self):
         self.MeshObject.ViewObject.applyDisplacement(0.0)

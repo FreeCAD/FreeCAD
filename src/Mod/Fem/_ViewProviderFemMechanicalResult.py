@@ -30,6 +30,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
+import FemGui
 
 
 class _ViewProviderFemMechanicalResult:
@@ -58,20 +59,20 @@ class _ViewProviderFemMechanicalResult:
             FreeCADGui.activateWorkbench("FemWorkbench")
         doc = FreeCADGui.getDocument(vobj.Object.Document)
         if not doc.getInEdit():
-            doc.setEdit(vobj.Object.Name)
+            if is_result_obj_valid(self.Object):
+                doc.setEdit(vobj.Object.Name)
         else:
             FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
         return True
 
-    def setEdit(self, vobj, mode):
-        #if FemGui.getActiveAnalysis():
+    def setEdit(self, vobj, mode=0):
         import _TaskPanelShowResult
         taskd = _TaskPanelShowResult._TaskPanelShowResult(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self, vobj, mode):
+    def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
         return
 
@@ -80,3 +81,35 @@ class _ViewProviderFemMechanicalResult:
 
     def __setstate__(self, state):
         return None
+
+
+# helper
+# I tried to do this inside the setEdit def but I was not able to unset the edit mode from within the setEdit def
+def is_result_obj_valid(result_obj):
+    from PySide import QtGui
+    if FemGui.getActiveAnalysis() is not None:
+        if hasattr(result_obj, "Mesh") and result_obj.Mesh:
+            mem = FemGui.getActiveAnalysis().Member
+            if result_obj in mem:
+                if result_obj.Mesh in mem:
+                    return True
+                else:
+                    error_message = 'FEM: Result mesh object is not in active analysis.\n'
+                    FreeCAD.Console.PrintError(error_message)
+                    QtGui.QMessageBox.critical(None, 'Not in activate analysis', error_message)
+                    return False
+            else:
+                error_message = 'FEM: Result object is not in active analysis.\n'
+                FreeCAD.Console.PrintError(error_message)
+                QtGui.QMessageBox.critical(None, 'Not in activate analysis', error_message)
+                return False
+        else:
+            error_message = 'FEM: Result object has no appropriate FEM mesh.\n'
+            FreeCAD.Console.PrintError(error_message)
+            QtGui.QMessageBox.critical(None, 'No result object', error_message)
+            return False
+    else:
+        error_message = 'FEM: No active analysis found! Please activate the analysis you would like to view results for.\n'
+        FreeCAD.Console.PrintError(error_message)
+        QtGui.QMessageBox.critical(None, 'No activate analysis', error_message)
+        return False
