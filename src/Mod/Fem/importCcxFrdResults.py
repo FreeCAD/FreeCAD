@@ -26,7 +26,7 @@ __title__ = "FreeCAD Calculix library"
 __author__ = "Juergen Riegel , Michael Hindley, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ccxFrdReader
+## @package importCcxFrdResults
 #  \ingroup FEM
 
 import FreeCAD

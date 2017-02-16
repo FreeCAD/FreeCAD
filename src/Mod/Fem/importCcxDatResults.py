@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "ccxDatReader"
+__title__ = "importCcxDatResults"
 __author__ = "Przemo Firszt"
 __url__ = "http://www.freecadweb.org"
 
-## @package ccxDatReader
+## @package importCcxDatResults
 #  \ingroup FEM
 
 import FreeCAD
