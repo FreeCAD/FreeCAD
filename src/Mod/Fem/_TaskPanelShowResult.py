@@ -319,7 +319,7 @@ class _TaskPanelShowResult:
         self.suitable_results = False
         if self.result_object:
             # Disable temperature radio button if it does ot exist in results
-            if len(self.result_object.Temperature) == 1:
+            if len(self.result_object.Temperature) == 0:
                 self.form.rb_temperature.setEnabled(0)
 
             if (self.MeshObject.FemMesh.NodeCount == len(self.result_object.NodeNumbers)):
