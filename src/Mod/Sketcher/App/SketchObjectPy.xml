@@ -162,6 +162,11 @@
             <UserDocu>Approximates the given geometry with a B-Spline</UserDocu>
         </Documentation>    
     </Methode>
+    <Methode Name="IncreaseBSplineDegree">
+        <Documentation>
+            <UserDocu>Increases the given BSpline Degree by a number of degrees</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="calculateAngleViaPoint">
       <Documentation>
         <UserDocu>
