@@ -380,6 +380,8 @@ SET(Part_Scripts
     BOPTools/SplitAPI.py
     BOPTools/SplitFeatures.py
     BOPTools/Utils.py
+    CompoundTools/__init__.py
+    CompoundTools/CompoundFilter.py
 )
 
 add_library(Part SHARED ${Part_SRCS})
