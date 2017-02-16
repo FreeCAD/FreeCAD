@@ -106,8 +106,8 @@ INSTALL(
 
         # solver CalculiX ccx
         importInpMesh.py
-        ccxDatReader.py
-        ccxFrdReader.py
+        importCcxDatResults.py
+        importCcxFrdResults.py
         FemInputWriterCcx.py
         FemToolsCcx.py
         FemSolverCalculix.py

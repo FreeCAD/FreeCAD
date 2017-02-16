@@ -1078,7 +1078,7 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
     static std::map<int, std::string> faceTypeMap;
     static std::map<int, std::string> volTypeMap;
     if (elemOrderMap.empty()) {
-        // node order fits with node order in ccxFrdReader.py module to import CalculiX result meshes
+        // node order fits with node order in importCcxFrdResults.py module to import CalculiX result meshes
 
         // dimension 1
         //

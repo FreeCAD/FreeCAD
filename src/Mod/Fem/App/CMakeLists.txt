@@ -111,9 +111,9 @@ SET(FemScripts_SRCS
     _ViewProviderFemSolverCalculix.py
     _ViewProviderFemSolverZ88.py
     _ViewProviderFemMaterial.py
-    ccxDatReader.py
-    ccxFrdReader.py
     convert2TetGen.py
+    importCcxDatResults.py
+    importCcxFrdResults.py
     importInpMesh.py
     importVTKResults.py
     importZ88Mesh.py
