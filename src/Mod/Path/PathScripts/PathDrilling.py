@@ -24,14 +24,14 @@
 
 from __future__ import print_function
 import FreeCAD
-from FreeCAD import Vector
+#from FreeCAD import Vector
 import Path
 import PathScripts.PathLog as PathLog
-import Part
+#import Part
 from PySide import QtCore, QtGui
 from PathScripts import PathUtils
 from PathScripts.PathUtils import fmt
-from math import pi
+#from math import pi
 
 
 LOG_MODULE = 'PathDrilling'
@@ -193,40 +193,6 @@ class ObjectDrilling:
             obj.Path = path
             obj.ViewObject.Visibility = False
 
-    def _isDrillable(self, obj, candidate):
-        PathLog.track()
-        drillable = False
-        if candidate.BoundBox.ZLength > 0:
-            face = candidate
-            # eliminate flat faces
-            if (round(face.ParameterRange[0], 8) == 0.0) and (round(face.ParameterRange[1], 8) == round(pi * 2, 8)):
-                for edge in face.Edges:  # Find seam edge and check if aligned to Z axis.
-                    if (isinstance(edge.Curve, Part.Line)):
-                        v0 = edge.Vertexes[0].Point
-                        v1 = edge.Vertexes[1].Point
-                        if (v1.sub(v0).x == 0) and (v1.sub(v0).y == 0):
-                            # vector of top center
-                            lsp = Vector(face.BoundBox.Center.x,
-                                            face.BoundBox.Center.y, face.BoundBox.ZMax)
-                            # vector of bottom center
-                            lep = Vector(face.BoundBox.Center.x,
-                                            face.BoundBox.Center.y, face.BoundBox.ZMin)
-                            if obj.isInside(lsp, 0, False) or obj.isInside(lep, 0, False):
-                                drillable = False
-                            # eliminate elliptical holes
-                            elif abs(face.BoundBox.XLength - face.BoundBox.YLength) > 0.05:
-                                drillable = False
-                            else:
-                                drillable = True
-        else:
-            for edge in candidate.Edges:
-                if (isinstance(edge.Curve, Part.Circle)):
-                    if abs(edge.BoundBox.XLength - edge.BoundBox.YLength) > 0.05:
-                        drillable = False
-                    else:
-                        drillable = True
-        return drillable
-
     def findHoles(self, obj):
         PathLog.track()
         holelist = []
@@ -234,7 +200,7 @@ class ObjectDrilling:
             for i in range(len(obj.Edges)):
                 candidateEdgeName = "Edge" + str(i +1)
                 e = obj.getElement(candidateEdgeName)
-                if self._isDrillable(obj, e):
+                if PathUtils.isDrillable(obj, e):
                     x = e.BoundBox.Center.x
                     y = e.BoundBox.Center.y
                     diameter = e.BoundBox.XLength
@@ -243,7 +209,7 @@ class ObjectDrilling:
             for i in range(len(obj.Faces)):
                 candidateFaceName = "Face" + str(i + 1)
                 f = obj.getElement(candidateFaceName)
-                if self._isDrillable(obj, f):
+                if PathUtils.isDrillable(obj, f):
                     x = f.BoundBox.Center.x
                     y = f.BoundBox.Center.y
                     diameter = f.BoundBox.XLength
@@ -415,38 +381,38 @@ class TaskPanel:
         self.s = SelObserver()
         FreeCADGui.Selection.addObserver(self.s)
 
-    def addBase(self):
-        # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelectionEx()
+    # def addBase(self):
+    #     # check that the selection contains exactly what we want
+    #     selection = FreeCADGui.Selection.getSelectionEx()
 
-        if not len(selection) >= 1:
-            FreeCAD.Console.PrintError(translate("PathProject", "Please select at least one Drillable Location\n"))
-            return
-        for s in selection:
-            if s.HasSubObjects:
-                for i in s.SubElementNames:
-                    self.obj.Proxy.addDrillableLocation(self.obj, s.Object, i)
-            else:
-                self.obj.Proxy.addDrillableLocation(self.obj, s.Object)
+    #     if not len(selection) >= 1:
+    #         FreeCAD.Console.PrintError(translate("PathProject", "Please select at least one Drillable Location\n"))
+    #         return
+    #     for s in selection:
+    #         if s.HasSubObjects:
+    #             for i in s.SubElementNames:
+    #                 self.obj.Proxy.addDrillableLocation(self.obj, s.Object, i)
+    #         else:
+    #             self.obj.Proxy.addDrillableLocation(self.obj, s.Object)
 
-        self.setFields()  # defaults may have changed.  Reload.
-        self.form.baseList.clear()
+    #     self.setFields()  # defaults may have changed.  Reload.
+    #     self.form.baseList.clear()
 
-        for i in self.obj.Base:
-            for sub in i[1]:
-                self.form.baseList.addItem(i[0].Name + "." + sub)
+    #     for i in self.obj.Base:
+    #         for sub in i[1]:
+    #             self.form.baseList.addItem(i[0].Name + "." + sub)
 
-    def deleteBase(self):
-        dlist = self.form.baseList.selectedItems()
-        for d in dlist:
-            newlist = []
-            for i in self.obj.Base:
-                if not i[0].Name == d.text().partition(".")[0]:
-                    newlist.append(i)
-            self.obj.Base = newlist
-        self.form.baseList.takeItem(self.form.baseList.row(d))
-        # self.obj.Proxy.execute(self.obj)
-        # FreeCAD.ActiveDocument.recompute()
+    # def deleteBase(self):
+    #     dlist = self.form.baseList.selectedItems()
+    #     for d in dlist:
+    #         newlist = []
+    #         for i in self.obj.Base:
+    #             if not i[0].Name == d.text().partition(".")[0]:
+    #                 newlist.append(i)
+    #         self.obj.Base = newlist
+    #     self.form.baseList.takeItem(self.form.baseList.row(d))
+    #     # self.obj.Proxy.execute(self.obj)
+    #     # FreeCAD.ActiveDocument.recompute()
 
     def itemActivated(self):
         FreeCADGui.Selection.clearSelection()
@@ -462,19 +428,19 @@ class TaskPanel:
 
         FreeCADGui.updateGui()
 
-    def reorderBase(self):
-        newlist = []
-        for i in range(self.form.baseList.count()):
-            s = self.form.baseList.item(i).text()
-            objstring = s.partition(".")
+    # def reorderBase(self):
+    #     newlist = []
+    #     for i in range(self.form.baseList.count()):
+    #         s = self.form.baseList.item(i).text()
+    #         objstring = s.partition(".")
 
-            obj = FreeCAD.ActiveDocument.getObject(objstring[0])
-            item = (obj, str(objstring[2]))
-            newlist.append(item)
-        self.obj.Base = newlist
+    #         obj = FreeCAD.ActiveDocument.getObject(objstring[0])
+    #         item = (obj, str(objstring[2]))
+    #         newlist.append(item)
+    #     self.obj.Base = newlist
 
-        self.obj.Proxy.execute(self.obj)
-        FreeCAD.ActiveDocument.recompute()
+    #     self.obj.Proxy.execute(self.obj)
+    #     FreeCAD.ActiveDocument.recompute()
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok)
@@ -487,16 +453,16 @@ class TaskPanel:
         self.form.safeHeight.editingFinished.connect(self.getFields)
         self.form.clearanceHeight.editingFinished.connect(self.getFields)
 
-        self.form.addBase.clicked.connect(self.addBase)
-        self.form.deleteBase.clicked.connect(self.deleteBase)
-        self.form.reorderBase.clicked.connect(self.reorderBase)
+        #self.form.addBase.clicked.connect(self.addBase)
+        #self.form.deleteBase.clicked.connect(self.deleteBase)
+        #self.form.reorderBase.clicked.connect(self.reorderBase)
 
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
         self.form.uiToolController.currentIndexChanged.connect(self.getFields)
 
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if len(sel) != 0 and sel[0].HasSubObjects:
-                self.addBase()
+        # sel = FreeCADGui.Selection.getSelectionEx()
+        # if len(sel) != 0 and sel[0].HasSubObjects:
+        #         self.addBase()
 
         self.setFields()
 
@@ -510,7 +476,7 @@ class SelObserver:
         PST.clear()
 
     def addSelection(self, doc, obj, sub, pnt):
-        FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
+        FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ',"' + sub + '")')
         FreeCADGui.updateGui()
 
 
