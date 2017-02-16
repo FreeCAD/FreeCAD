@@ -443,9 +443,8 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                 results_name = result_name_prefix + 'time_' + str(step_time) + '_results'
             else:
                 results_name = result_name_prefix + 'results'
-            import FemResult
-            results = FemResult.makeFemResult(results_name)
-            #results = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
+            import FemMechanicalResult
+            results = FemMechanicalResult.makeFemMechanicalResult(results_name)
             for m in analysis_object.Member:
                 if m.isDerivedFrom("Fem::FemMeshObject"):
                     results.Mesh = m
