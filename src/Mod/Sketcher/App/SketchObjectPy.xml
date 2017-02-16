@@ -156,7 +156,12 @@
       <Documentation>
         <UserDocu>Deletes all unused (not further constrained) internal geometry</UserDocu>
       </Documentation>    
-    </Methode>    
+    </Methode>
+    <Methode Name="ConvertToNURBS">
+        <Documentation>
+            <UserDocu>Approximates the given geometry with a B-Spline</UserDocu>
+        </Documentation>    
+    </Methode>
     <Methode Name="calculateAngleViaPoint">
       <Documentation>
         <UserDocu>

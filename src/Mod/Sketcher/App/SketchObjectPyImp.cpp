@@ -998,6 +998,24 @@ PyObject* SketchObjectPy::DeleteUnusedInternalGeometry(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::ConvertToNURBS(PyObject *args)
+{
+    int GeoId;
+
+    if (!PyArg_ParseTuple(args, "i", &GeoId))
+        return 0;
+
+    if (this->getSketchObjectPtr()->ConvertToNURBS(GeoId)==false) {
+        std::stringstream str;
+        str << "Object does not support NURBS conversion: " << GeoId;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+
 Py::Int SketchObjectPy::getConstraintCount(void) const
 {
     return Py::Int(this->getSketchObjectPtr()->Constraints.getSize());
