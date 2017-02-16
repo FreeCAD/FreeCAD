@@ -56,6 +56,8 @@ class FemCommands(object):
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc()
             elif self.is_active == 'with_results':
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.results_present()
+            elif self.is_active == 'with_selresult':
+                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.result_selected()
             elif self.is_active == 'with_part_feature':
                 active = FreeCADGui.ActiveDocument is not None and self.part_feature_selected()
             elif self.is_active == 'with_femmesh':
@@ -79,6 +81,19 @@ class FemCommands(object):
                 if o.isDerivedFrom('Fem::FemResultObject'):
                     results = True
             return results
+
+        def result_selected(self):
+            result_is_in_active_analysis = False
+            sel = FreeCADGui.Selection.getSelection()
+            if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemResultObject"):
+                for o in FemGui.getActiveAnalysis().Member:
+                    if o == sel[0]:
+                        result_is_in_active_analysis = True
+                        break
+            if result_is_in_active_analysis:
+                return True
+            else:
+                return False
 
         def part_feature_selected(self):
             sel = FreeCADGui.Selection.getSelection()
