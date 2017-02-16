@@ -75,6 +75,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     split->setCommand("Split");
     *split << "Part_BooleanFragments" << "Part_Slice" << "Part_XOR";
 
+    Gui::MenuItem* compound = new Gui::MenuItem;
+    compound->setCommand("Compound");
+    *compound << "Part_Compound" << "Part_CompoundFilter";
+
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part");
@@ -82,8 +86,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *part << prim << "Part_Primitives" << "Part_Builder" << "Separator"
           << "Part_ShapeFromMesh" << "Part_MakeSolid" << "Part_ReverseShape"
           << "Part_SimpleCopy" << "Part_RefineShape" << "Part_CheckGeometry"
-          << "Separator" << bop << join << split << "Separator"
-          << "Part_CrossSections" << "Part_Compound" << "Part_MakeFace" << "Part_Extrude"
+          << "Separator" << bop << join << split << compound << "Separator"
+          << "Part_CrossSections" << "Part_MakeFace" << "Part_Extrude"
           << "Part_Revolve" << "Part_Mirror" << "Part_Fillet" << "Part_Chamfer"
           << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep"
           << "Part_Offset" << "Part_Offset2D" << "Part_Thickness" << "Separator" << "Part_EditAttachment";
@@ -129,7 +133,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *boolop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common"
             << "Part_CompJoinFeatures" << "Part_CompSplitFeatures" << "Part_CheckGeometry" << "Part_Section"
             << "Part_CrossSections";
-	     
+
     Gui::ToolBarItem* measure = new Gui::ToolBarItem(root);
     measure->setCommand("Measure");
     *measure << "Part_Measure_Linear" << "Part_Measure_Angular"  << "Separator" << "Part_Measure_Clear_All" << "Part_Measure_Toggle_All"
