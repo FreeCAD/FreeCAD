@@ -323,6 +323,9 @@ def readResult(frd_input):
             if mode_stress_found:
                 mode_stress_found = False
 
+            if mode_strain_found:
+                mode_strain_found = False
+
             if mode_temp_found:
                 mode_temp_found = False
 
