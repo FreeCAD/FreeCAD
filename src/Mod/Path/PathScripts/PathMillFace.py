@@ -32,6 +32,11 @@ import PathScripts.PathKurveUtils
 import area
 import TechDraw
 from FreeCAD import Vector
+import PathScripts.PathLog as PathLog
+
+LOG_MODULE = 'PathMillFace'
+PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+PathLog.trackModule()
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -58,12 +63,14 @@ class ObjectFace:
         obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional comment for this profile"))
         obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","User Assigned Label"))
 
+        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
+
         # Tool Properties
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The tool number in use"))
-        obj.ToolNumber = (0, 0, 1000, 0)
-        obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The description of the tool "))
-        obj.setEditorMode('ToolDescription', 1)  # make this read only
+        # obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The tool number in use"))
+        # obj.ToolNumber = (0, 0, 1000, 0)
+        # obj.setEditorMode('ToolNumber', 1)  # make this read only
+        # obj.addProperty("App::PropertyString", "ToolDescription", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The description of the tool "))
+        # obj.setEditorMode('ToolDescription', 1)  # make this read only
 
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","The height needed to clear clamps and obstructions"))
@@ -99,7 +106,9 @@ class ObjectFace:
     def onChanged(self, obj, prop):
 
         if prop == "UserLabel":
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+            #obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+            self.setLabel(obj)
+
         if prop == "StepOver":
             if obj.StepOver == 0:
                 obj.StepOver = 1
@@ -166,10 +175,15 @@ class ObjectFace:
 
     def buildpathlibarea(self, obj, a):
         """Build the face path using libarea algorithm"""
+
         import PathScripts.PathAreaUtils as PathAreaUtils
         from PathScripts.PathUtils import depth_params
 
-        FreeCAD.Console.PrintMessage(translate("PathFace", "Generating toolpath with libarea offsets.\n"))
+        PathLog.track()
+        for p in a.getCurves():
+            PathLog.debug(p.text())
+
+        FreeCAD.Console.PrintMessage(translate("PathMillFace", "Generating toolpath with libarea offsets.\n"))
 
         depthparams = depth_params(
                 obj.ClearanceHeight.Value,
@@ -210,26 +224,32 @@ class ObjectFace:
                 cut_mode)
         return PathAreaUtils.retrieve_gcode()
 
-    # To reload this from FreeCAD, use: import PathScripts.PathFace; reload(PathScripts.PathFace)
     def execute(self, obj):
-        print("in execute")
+        PathLog.track()
+        output = ""
 
-        if not obj.Active:
-            path = Path.Path("(inactive operation)")
-            obj.Path = path
-            obj.ViewObject.Visibility = False
+        toolLoad = obj.ToolController
+
+        if toolLoad is None or toolLoad.ToolNumber == 0:
+            FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
             return
 
-        #Tool may have changed.  Refresh data
-        toolLoad = PathUtils.getLastToolLoad(obj)
-        if toolLoad is None or toolLoad.ToolNumber == 0:
-            self.vertFeed = 100
-            self.horizFeed = 100
-            self.vertRapid = 100
-            self.horizRrapid = 100
-            self.radius = 0.25
-            obj.ToolNumber = 0
-            obj.ToolDescription = "UNDEFINED"
+        # if not obj.Active:
+        #     path = Path.Path("(inactive operation)")
+        #     obj.Path = path
+        #     obj.ViewObject.Visibility = False
+        #     return
+
+        # #Tool may have changed.  Refresh data
+        # toolLoad = PathUtils.getLastToolLoad(obj)
+        # if toolLoad is None or toolLoad.ToolNumber == 0:
+        #     self.vertFeed = 100
+        #     self.horizFeed = 100
+        #     self.vertRapid = 100
+        #     self.horizRrapid = 100
+        #     self.radius = 0.25
+        #     obj.ToolNumber = 0
+        #     obj.ToolDescription = "UNDEFINED"
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
@@ -237,23 +257,27 @@ class ObjectFace:
             self.horizRapid = toolLoad.HorizRapid.Value
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
             if tool.Diameter == 0:
-                self.radius = 0.25
+                #self.radius = 0.25
+                FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
+                return
+
             else:
                 self.radius = tool.Diameter/2
-            obj.ToolNumber = toolLoad.ToolNumber
-            obj.ToolDescription = toolLoad.Name
+            #obj.ToolNumber = toolLoad.ToolNumber
+            #obj.ToolDescription = toolLoad.Name
 
         #Build preliminary comments
         output = ""
         output += "(" + obj.Label + ")"
 
-        if obj.UserLabel == "":
-            obj.Label = obj.Name + " :" + obj.ToolDescription
-        else:
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+        # if obj.UserLabel == "":
+        #     obj.Label = obj.Name + " :" + obj.ToolDescription
+        # else:
+        #     obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
         #Facing is done either against base objects
         if obj.Base:
+            PathLog.debug("obj.Base: {}".format (obj.Base))
             faces = []
             for b in obj.Base:
                 for sub in b[1]:
@@ -261,21 +285,26 @@ class ObjectFace:
                     if isinstance (shape, Part.Face):
                         faces.append(shape)
                     else:
-                        print('falling out')
+                        PathLog.debug('The base subobject is not a face')
                         return
             planeshape = Part.makeCompound(faces)
+            PathLog.info("Working on a collection of faces {}".format(faces))
 
         #If no base object, do planing of top surface of entire model
         else:
             parentJob = PathUtils.findParentJob(obj)
             if parentJob is None:
+                PathLog.debug("No base object. No parent job found")
                 return
             baseobject = parentJob.Base
             if baseobject is None:
+                PathLog.debug("Parent job exists but no Base Object")
                 return
             planeshape = baseobject.Shape
+            PathLog.info("Working on a shape {}".format(baseobject.Name))
 
         #if user wants the boundbox, calculate that
+        PathLog.info("Boundary Shape: {}".format(obj.BoundaryShape))
         if obj.BoundaryShape == 'Boundbox':
             bb = planeshape.BoundBox
             bbperim = Part.makeBox(bb.XLength, bb.YLength, 1, Vector(bb.XMin, bb.YMin, bb.ZMin), Vector(0,0,1))
@@ -283,17 +312,30 @@ class ObjectFace:
         else:
             contourwire = TechDraw.findShapeOutline(planeshape, 1, Vector(0,0,1))
 
-        edgelist = contourwire.Edges
-        edgelist = Part.__sortEdges__(edgelist)
+        #zHeight = contourwire.BoundBox.ZMin
 
-        #use libarea to build the pattern
-        a = area.Area()
-        c = PathScripts.PathKurveUtils.makeAreaCurve(edgelist, 'CW')
-        a.append(c)
-        a.Reorder()
-        output += self.buildpathlibarea(obj, a)
+        pocket = Path.Area(PocketMode=4,SectionCount=-1,SectionMode=1,Stepdown=0.499)
+        pocket.setParams(PocketExtraOffset = obj.PassExtension.Value, ToolRadius = self.radius)
+        pocket.add(planeshape, op=1)
+        #Part.show(contourwire)
+        path = Path.fromShapes(pocket.getShape())
 
-        path = Path.Path(output)
+
+        # edgelist = contourwire.Edges
+        # edgelist = Part.__sortEdges__(edgelist)
+
+        # #use libarea to build the pattern
+        # a = area.Area()
+        # c = PathScripts.PathKurveUtils.makeAreaCurve(edgelist, 'CW')
+        # PathLog.debug(c.text())
+        # a.append(c)
+        # a.Reorder()
+        # output += self.buildpathlibarea(obj, a)
+
+        # path = Path.Path(output)
+        if len(path.Commands) == 0:
+            FreeCAD.Console.PrintMessage(translate("PathMillFace", "The selected settings did not produce a valid path.\n"))
+
         obj.Path = path
         obj.ViewObject.Visibility = True
 
@@ -451,6 +493,9 @@ class TaskPanel:
                 self.obj.StepOver = self.form.stepOverPercent.value()
             if hasattr(self.obj, "BoundaryShape"):
                 self.obj.BoundaryShape = str(self.form.boundaryShape.currentText())
+            if hasattr(self.obj, "ToolController"):
+                tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
+                self.obj.ToolController = tc
 
         self.obj.Proxy.execute(self.obj)
 
@@ -485,10 +530,18 @@ class TaskPanel:
             self.form.boundaryShape.setCurrentIndex(index)
             self.form.boundaryShape.blockSignals(False)
 
-
         for i in self.obj.Base:
             for sub in i[1]:
                 self.form.baseList.addItem(i[0].Name + "." + sub)
+
+        controllers = PathUtils.getToolControllers(self.obj)
+        labels = [c.Label for c in controllers]
+        self.form.uiToolController.addItems(labels)
+        if self.obj.ToolController is not None:
+            index = self.form.direction.findText(
+                self.obj.ToolController.Label, QtCore.Qt.MatchFixedString)
+            if index >= 0:
+                self.form.uiToolController.setCurrentIndex(index)
 
     def open(self):
         self.s = SelObserver()
@@ -613,6 +666,7 @@ class TaskPanel:
         self.form.useZigZag.clicked.connect(self.getFields)
         self.form.zigZagUnidirectional.clicked.connect(self.getFields)
         self.form.zigZagAngle.editingFinished.connect(self.getFields)
+        self.form.uiToolController.currentIndexChanged.connect(self.getFields)
 
         self.setFields()
 
