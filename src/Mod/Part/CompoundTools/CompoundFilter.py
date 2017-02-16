@@ -29,6 +29,27 @@ __doc__ = "Compound Filter: remove some children from a compound (features)."
 import FreeCAD
 import Part
 import math
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui
+
+
+#-------------------------- translation-related code ----------------------------------------
+#(see forum thread "A new Part tool is being born... JoinFeatures!"
+#http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239 )
+    try:
+        _fromUtf8 = QtCore.QString.fromUtf8
+    except Exception:
+        def _fromUtf8(s):
+            return s
+    try:
+        _encoding = QtGui.QApplication.UnicodeUTF8
+        def _translate(context, text, disambig):
+            return QtGui.QApplication.translate(context, text, disambig, _encoding)
+    except AttributeError:
+        def _translate(context, text, disambig):
+            return QtGui.QApplication.translate(context, text, disambig)
+#--------------------------/translation-related code ----------------------------------------
 
 
 # OCC's Precision::Confusion; should have taken this from FreeCAD but haven't found; unlikely to ever change (DeepSOIC)
@@ -211,6 +232,46 @@ class _ViewProviderCompoundFilter:
                 FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
         return True
 # -------------------------- /common stuff --------------------------------------------------
+
+
+# -------------------------- GUI command  --------------------------------------------------
+def cmdCreateCompoundFilter(name):
+    sel = FreeCADGui.Selection.getSelection()
+    FreeCAD.ActiveDocument.openTransaction("Create CompoundFilter")
+    FreeCADGui.addModule("CompoundTools.CompoundFilter")
+    FreeCADGui.doCommand("f = CompoundTools.CompoundFilter.makeCompoundFilter(name = '" + name + "')")
+    FreeCADGui.doCommand("f.Base = App.ActiveDocument." + sel[0].Name)
+    if len(sel) == 2:
+        FreeCADGui.doCommand("f.Stencil = App.ActiveDocument." + sel[1].Name)
+        FreeCADGui.doCommand("f.Stencil.ViewObject.hide()")
+        FreeCADGui.doCommand("f.FilterType = 'collision-pass'")
+    else:
+        FreeCADGui.doCommand("f.FilterType = 'window-volume'")
+
+    try:
+        FreeCADGui.doCommand("f.Proxy.execute(f)")
+        FreeCADGui.doCommand("f.purgeTouched()")
+    except Exception as err:
+        mb = QtGui.QMessageBox()
+        mb.setIcon(mb.Icon.Warning)
+        mb.setText(_translate("Part_CompoundFilter", "Computing the result failed with an error: \n\n{err}\n\nClick 'Continue' to create the feature anyway, or 'Abort' to cancel.", None)
+                   .format(err=err.message))
+        mb.setWindowTitle(_translate("Part_CompoundFilter", "Bad selection", None))
+        btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
+        btnOK = mb.addButton(_translate("Part_SplitFeatures", "Continue", None), QtGui.QMessageBox.ButtonRole.ActionRole)
+        mb.setDefaultButton(btnOK)
+
+        mb.exec_()
+
+        if mb.clickedButton() is btnAbort:
+            FreeCAD.ActiveDocument.abortTransaction()
+            return
+
+    FreeCADGui.doCommand("f.Base.ViewObject.hide()")
+    FreeCADGui.doCommand("f = None")
+
+    FreeCAD.ActiveDocument.commitTransaction()
+# -------------------------- /GUI command  --------------------------------------------------
 
 
 # helper
