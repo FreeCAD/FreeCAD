@@ -54,7 +54,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 # Possible roles for structural elements
-Roles = ["Beam","Column","Slab","Wall","Curtain Wall","Roof","Foundation","Pile","Tendon"]
+Roles = ["Undefined","Beam","Column","Slab","Wall","Curtain Wall","Roof","Foundation","Pile","Tendon"]
 
 #Reads preset profiles and categorizes them
 Categories=[]

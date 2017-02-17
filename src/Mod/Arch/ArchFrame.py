@@ -49,7 +49,7 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 # Possible roles for frames
-Roles = ['Covering','Member','Railing','Shading Device','Tendon']
+Roles = ['Undefined','Covering','Member','Railing','Shading Device','Tendon']
 
 def makeFrame(baseobj,profile,name=translate("Arch","Frame")):
     """makeFrame(baseobj,profile,[name]): creates a frame object from a base sketch (or any other object

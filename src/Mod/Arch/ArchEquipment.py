@@ -52,7 +52,7 @@ else:
 #  or hydraulic appliances in a building
 
 # presets
-Roles = ["Furniture", "Hydro Equipment", "Electric Equipment"]
+Roles = ["Undefined","Furniture", "Hydro Equipment", "Electric Equipment"]
 
 
 def makeEquipment(baseobj=None,placement=None,name="Equipment"):
