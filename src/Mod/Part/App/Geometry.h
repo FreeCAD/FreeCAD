@@ -400,6 +400,7 @@ public:
     virtual void Restore(Base::XMLReader &/*reader*/);
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
+    virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     void setHandle(const Handle_Geom_Ellipse &e);
     const Handle_Geom_Geometry& handle() const;
@@ -433,6 +434,7 @@ public:
     virtual void Restore(Base::XMLReader &/*reader*/);
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
+    virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     void setHandle(const Handle_Geom_TrimmedCurve&);
     const Handle_Geom_Geometry& handle() const;
@@ -462,6 +464,7 @@ public:
     virtual void Restore(Base::XMLReader &/*reader*/);
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
+    virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     const Handle_Geom_Geometry& handle() const;
 
@@ -494,6 +497,7 @@ public:
     virtual void Restore(Base::XMLReader &/*reader*/);
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
+    virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     void setHandle(const Handle_Geom_TrimmedCurve&);
     const Handle_Geom_Geometry& handle() const;
@@ -520,6 +524,7 @@ public:
     virtual void Restore(Base::XMLReader &/*reader*/);
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
+    virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     const Handle_Geom_Geometry& handle() const;
 
@@ -550,6 +555,7 @@ public:
     virtual void Restore(Base::XMLReader &/*reader*/);
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
+    virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     void setHandle(const Handle_Geom_TrimmedCurve&);
     const Handle_Geom_Geometry& handle() const;
