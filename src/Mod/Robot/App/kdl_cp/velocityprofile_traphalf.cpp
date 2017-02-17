@@ -106,7 +106,7 @@ void VelocityProfile_TrapHalf::SetProfileDuration(
     if ( factor > 1 )
         return;
 
-	double s        = sign(endpos-startpos);
+    double s        = sign(endpos-startpos);
 	double tmp      = 2.0*s*(endpos-startpos)/maxvel;
 	double v        = s*maxvel;
 	duration        = newduration;
