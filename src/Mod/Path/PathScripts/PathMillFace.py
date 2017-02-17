@@ -62,6 +62,8 @@ class ObjectFace:
         obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this profile"))
         obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
+
+        # Tool Properties
         obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
         # Depth Properties
@@ -94,10 +96,6 @@ class ObjectFace:
         obj.Proxy = self
 
     def onChanged(self, obj, prop):
-
-        if prop == "UserLabel":
-            self.setLabel(obj)
-
         if prop == "StepOver":
             if obj.StepOver == 0:
                 obj.StepOver = 1
@@ -380,6 +378,7 @@ class CommandPathMillFace:
         FreeCADGui.doCommand('obj.ZigZagAngle = 0.0')
         FreeCADGui.doCommand('obj.UseZigZag = True')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
+        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
         snippet = '''
 parentJob = PathUtils.findParentJob(obj)
 if parentJob is None:
@@ -450,7 +449,6 @@ class TaskPanel:
             if hasattr(self.obj, "ToolController"):
                 tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
                 self.obj.ToolController = tc
-
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
@@ -488,12 +486,20 @@ class TaskPanel:
 
         controllers = PathUtils.getToolControllers(self.obj)
         labels = [c.Label for c in controllers]
+        self.form.uiToolController.blockSignals(True)
         self.form.uiToolController.addItems(labels)
+        self.form.uiToolController.blockSignals(False)
+
+        if self.obj.ToolController is None:
+            self.obj.ToolController = PathUtils.findToolController(self.obj)
+
         if self.obj.ToolController is not None:
             index = self.form.uiToolController.findText(
                 self.obj.ToolController.Label, QtCore.Qt.MatchFixedString)
             if index >= 0:
+                self.form.uiToolController.blockSignals(True)
                 self.form.uiToolController.setCurrentIndex(index)
+                self.form.uiToolController.blockSignals(False)
 
     def open(self):
         self.s = SelObserver()
