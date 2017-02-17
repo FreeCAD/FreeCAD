@@ -534,7 +534,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
         else
         {
             Base::Console().Log("the active object is not the correct type, do nothing\n");
-            return NULL;  
+            return NULL;
         }
     }
 
@@ -546,8 +546,8 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     // PropertyLink is the property type to store DocumentObject pointer
 
     vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
-    vtkSmartPointer<vtkDataArray> displ = pd->GetArray("Displacement");  // name in vtk file, not the property name 
-    vtkSmartPointer<vtkDataArray> vel = pd->GetArray("U"); // name in vtk file, not the property name 
+    vtkSmartPointer<vtkDataArray> displ = pd->GetArray("Displacement");  // name in vtk file, not the property name
+    vtkSmartPointer<vtkDataArray> vel = pd->GetArray("U"); // name in vtk file, not the property name
     if(vel)
     {
         importFluidicResult(dataset, result);
@@ -568,7 +568,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
 
 
 void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* res) {
-    if (!res) 
+    if (!res)
     {
         App::Document* pcDoc = App::GetApplication().getActiveDocument();
         if(!pcDoc)
@@ -631,7 +631,7 @@ void _calcStat(const std::vector<Base::Vector3d>& vel, std::vector<double>& stat
         double vmin=1.0e100, vmean=0.0, vmax=-1.0e100;
         //stat of Vx, Vy, Vz is not necessary
         double vmins[3] = {1.0e100, 1.0e100, 1.0e100};  // set up a very big positive float then reduce it
-        double vmeans[3] = {0.0, 0.0, 0.0}; 
+        double vmeans[3] = {0.0, 0.0, 0.0};
         double vmaxs[3] = {-1.0e100, -1.0e100, -1.0e100};
         for(std::vector<Base::Vector3d>::const_iterator it=vel.begin(); it!=vel.end(); ++it) {
             double p[] = {it->x, it->y, it->z};
@@ -734,7 +734,7 @@ void _importResult(const vtkSmartPointer<vtkDataSet> dataset, App::DocumentObjec
         vtkDataArray* vec = vtkDataArray::SafeDownCast(pd->GetArray(kv.second.c_str()));  // name from OpenFOAM/Fem solver export
         if(!vec)
             vec = vtkDataArray::SafeDownCast(pd->GetArray(kv.first.c_str()));  // name from FreeCAD export
-        if(nPoints && vec && vec->GetNumberOfComponents() == 1) {  
+        if(nPoints && vec && vec->GetNumberOfComponents() == 1) {
             App::PropertyFloatList* field = static_cast<App::PropertyFloatList*>(res->getPropertyByName(kv.first.c_str()));
             if (!field) {
                 Base::Console().Error("static_cast<App::PropertyFloatList*>((res->getPropertyByName(\"%s\")) failed \n", kv.first.c_str());
@@ -766,7 +766,7 @@ void _importResult(const vtkSmartPointer<vtkDataSet> dataset, App::DocumentObjec
 
 }
 
-void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet> grid, 
+void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet> grid,
                              const std::map<std::string, std::string>& vectors, const std::map<std::string, std::string> scalers,
                              const std::string& essential_property){
 
@@ -788,7 +788,7 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
             field = static_cast<App::PropertyVectorList*>(res->getPropertyByName(kv.first.c_str()));
         else
             Base::Console().Error("PropertyVectorList %s not found \n", kv.first.c_str());
-        if(field && field->getValues().size()>1) {  // FreeCAD property list 
+        if(field && field->getValues().size()>1) {  // FreeCAD property list
             const std::vector<Base::Vector3d>& vel = field->getValues();
             vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
             if(nPoints != field->getSize())
@@ -905,7 +905,7 @@ void FemVTKTools::importMechanicalResult(vtkSmartPointer<vtkDataSet> dataset, Ap
     vectors["DisplacementVectors"] = "Displacement";
     vectors["StrainVectors"] = "Strain vectors";
     vectors["StressVectors"] = "Stress vectors";
-    std::map<std::string, std::string> scalers;  // App::FloatListProperty name -> vtk name 
+    std::map<std::string, std::string> scalers;  // App::FloatListProperty name -> vtk name
     scalers["UserDefined"] = "User Defined Results";
     scalers["Temperature"] = "Temperature";
     scalers["PrincipalMax"] = "Maximum Principal stress";
@@ -943,7 +943,7 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* res, vtkSmar
     vectors["DisplacementVectors"] = "Displacement";
     vectors["StrainVectors"] = "Strain vectors";
     vectors["StressVectors"] = "Stress vectors";
-    std::map<std::string, std::string> scalers;  // App::FloatListProperty name -> vtk name 
+    std::map<std::string, std::string> scalers;  // App::FloatListProperty name -> vtk name
     scalers["UserDefined"] = "User Defined Results";
     scalers["Temperature"] = "Temperature";
     scalers["PrincipalMax"] = "Maximum Principal stress";

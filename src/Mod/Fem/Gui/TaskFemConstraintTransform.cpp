@@ -243,8 +243,8 @@ void TaskFemConstraintTransform::addToSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Only one face for rectangular transform constraint!"));
         Gui::Selection().clearSelection();
         return;
-    } 
-        
+    }
+
     if ((rows==0) && (selection.size()>=2)){
         QMessageBox::warning(this, tr("Selection error"), tr("Only one face for rectangular transform constraint!"));
         Gui::Selection().clearSelection();
@@ -254,7 +254,7 @@ void TaskFemConstraintTransform::addToSelection()
     Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    
+
     std::vector<App::DocumentObject*> ObjDispl = pcConstraint->RefDispl.getValues();
     std::vector<std::string> SubElemDispl = pcConstraint->RefDispl.getSubValues();
     for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
@@ -300,7 +300,7 @@ void TaskFemConstraintTransform::addToSelection()
                     this, SLOT(setSelection(QListWidgetItem*)));
                 for (std::size_t i = 0; i < ObjDispl.size(); i++) {
                     if ((makeRefText(ObjDispl[i], SubElemDispl[i]))==(makeRefText(obj, subNames[subIt]))){
-                        Objects.push_back(obj);  
+                        Objects.push_back(obj);
                         SubElements.push_back(subNames[subIt]);
                         ui->lw_Rect->addItem(makeRefText(obj, subNames[subIt]));
                         connect(ui->lw_Rect, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
@@ -310,7 +310,7 @@ void TaskFemConstraintTransform::addToSelection()
                 if (Objects.size() == 0){
                     QMessageBox::warning(this, tr("Selection error"), tr("Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface"));
                     Gui::Selection().clearSelection();
-                    return;    
+                    return;
                 }
             }
         }
@@ -521,7 +521,7 @@ bool TaskDlgFemConstraintTransform::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y_rot = %f",
             name.c_str(), parameters->get_Y_rot());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Z_rot = %f",
-            name.c_str(), parameters->get_Z_rot());     
+            name.c_str(), parameters->get_Z_rot());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.TransformType = %s",
             name.c_str(), parameters->get_transform_type().c_str());
         std::string scale = parameters->getScale();  //OvG: determine modified scale

@@ -50,7 +50,7 @@ public:
     /// User defined results
     App::PropertyFloatList Stats;
     /// Displacement vectors of analysis
-    
+
 
 
     /// returns the type name of the ViewProvider
