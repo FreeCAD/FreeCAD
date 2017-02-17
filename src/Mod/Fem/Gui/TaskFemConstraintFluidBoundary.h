@@ -55,18 +55,18 @@ public:
     std::string getBoundaryType(void) const;
     std::string getSubtype(void) const;
     double getBoundaryValue(void) const;
-    
+
     std::string getTurbulenceModel(void) const;
     std::string getTurbulenceSpecification(void) const;
     double getTurbulentIntensityValue(void) const;
     double getTurbulentLengthValue(void) const;
-    
+
     bool getHeatTransfering(void) const;
     std::string getThermalBoundaryType(void) const;
     double getTemperatureValue(void) const;
     double getHeatFluxValue(void) const;
     double getHTCoeffValue(void) const;
-    
+
     virtual const std::string getReferences() const;
     const std::string getDirectionName(void) const;
     const std::string getDirectionObject(void) const;

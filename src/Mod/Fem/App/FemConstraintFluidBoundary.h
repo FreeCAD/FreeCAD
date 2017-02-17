@@ -45,12 +45,12 @@ public:
     App::PropertyEnumeration BoundaryType;
     App::PropertyEnumeration Subtype;
     App::PropertyFloat BoundaryValue;
-    App::PropertyLinkSub Direction; 
-   
+    App::PropertyLinkSub Direction;
+
     App::PropertyEnumeration TurbulenceSpecification;
     App::PropertyFloat TurbulentIntensityValue;
     App::PropertyFloat TurbulentLengthValue;
-    
+
     App::PropertyEnumeration ThermalBoundaryType;
     App::PropertyFloat TemperatureValue;
     App::PropertyFloat HeatFluxValue;

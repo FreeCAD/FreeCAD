@@ -1532,7 +1532,7 @@ void CmdFemPostPipelineFromResult::activated(int)
         Fem::FemResultObject* result = static_cast<Fem::FemResultObject*>(ResultFilter.Result[0][0].getObject());
         //static_cast failed here
         Base::Console().Message("Debug: FemResultObject pointer = %p", result );
-        
+
     */
     App::Document* pcDoc = App::GetApplication().getActiveDocument();
     if(!pcDoc)

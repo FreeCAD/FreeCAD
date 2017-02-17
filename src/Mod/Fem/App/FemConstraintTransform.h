@@ -35,7 +35,7 @@ class AppFemExport ConstraintTransform : public Fem::Constraint
 public:
     /// Constructor
     ConstraintTransform(void);
-    
+
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyLinkSubList RefDispl;
     App::PropertyLinkList NameDispl;
