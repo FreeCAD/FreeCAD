@@ -924,7 +924,7 @@ public:
             Gui::Selection().clearSelection();
         }
         else {
-            // TODO: If mouse is released on something allowed, select it and move forward
+            // If mouse is released on something allowed, select it and move forward
             selSeq.push_back(selIdPair);
             Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
                                           sketchgui->getSketchObject()->getNameInDocument(),
@@ -938,8 +938,8 @@ public:
                  token != ongoingSequences.end(); ++token) {
                 if ((cmd->allowedSelSequences).at(*token).at(seqIndex) == newSelType) {
                     if (seqIndex == (cmd->allowedSelSequences).at(*token).size()-1) {
-                        // TODO: One of the sequences is completed. Pass to cmd->applyConstraint
-                        cmd->applyConstraint(selSeq, *token); // TODO: replace arg 2 by ongoingToken
+                        // One of the sequences is completed. Pass to cmd->applyConstraint
+                        cmd->applyConstraint(selSeq, *token); // replace arg 2 by ongoingToken
 
                         selSeq.clear();
                         resetOngoingSequences();
@@ -951,7 +951,7 @@ public:
                 }
             }
 
-            // TODO: Progress to next seqIndex
+            // Progress to next seqIndex
             std::swap(_tempOnSequences, ongoingSequences);
             seqIndex++;
             selFilterGate->setAllowedSelTypes(allowedSelTypes);
@@ -1196,7 +1196,7 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
 {
     switch (seqIndex) {
     case 0: // {Edge}
-        // TODO: create the constraint
+        // create the constraint
         SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
@@ -1402,7 +1402,7 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
 {
     switch (seqIndex) {
     case 0: // {Edge}
-        // TODO: create the constraint
+        // create the constraint
         SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
@@ -1897,7 +1897,7 @@ void CmdSketcherConstrainCoincident::applyConstraint(std::vector<SelIdPair> &sel
     switch (seqIndex) {
     case 0: // {SelVertex, SelVertexOrRoot}
     case 1: // {SelRoot, SelVertex}
-        // TODO: create the constraint
+        // create the constraint
         SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
@@ -3098,7 +3098,7 @@ void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair> &selSe
     switch (seqIndex) {
     case 0: // {SelEdge, SelEdgeOrAxis}
     case 1: // {SelEdgeOrAxis, SelEdge}
-        // TODO: create the constraint
+        // create the constraint
         SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
@@ -4913,10 +4913,21 @@ void CmdSketcherConstrainRadius::updateAction(int mode)
 
 // ======================================================================================
 
-DEF_STD_CMD_AU(CmdSketcherConstrainAngle);
+class CmdSketcherConstrainAngle : public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainAngle();
+    virtual ~CmdSketcherConstrainAngle(){}
+    virtual void updateAction(int mode);
+    virtual const char* className() const
+    { return "CmdSketcherConstrainAngle"; }
+protected:
+    virtual void activated(int iMsg);
+    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+};
 
 CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
-    :Command("Sketcher_ConstrainAngle")
+    :CmdSketcherConstraint("Sketcher_ConstrainAngle")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -4927,6 +4938,13 @@ CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
     sPixmap         = "Constraint_InternalAngle";
     sAccel          = "A";
     eType           = ForEdit;
+
+    allowedSelSequences = {{SelEdge, SelEdgeOrAxis}, {SelEdgeOrAxis, SelEdge},
+                           {SelEdge, SelVertexOrRoot, SelEdgeOrAxis},
+                           {SelEdgeOrAxis, SelVertexOrRoot, SelEdge},
+                           {SelVertexOrRoot, SelEdge, SelEdgeOrAxis},
+                           {SelVertexOrRoot, SelEdgeOrAxis, SelEdge}};
+    constraintCursor = cursor_genericconstraint;
 }
 
 
@@ -4939,8 +4957,12 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select only entities from the sketch."));
+        //        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+        //            QObject::tr("Select two edges from the sketch."));
+
+        ActivateHandler(getActiveGuiDocument(),
+                        new DrawSketchHandlerGenConstraint(constraintCursor, this));
+        getSelection().clearSelection();
         return;
     }
 
@@ -5031,7 +5053,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
     } else if (SubNames.size() < 3) {
 
-        bool bothexternal=checkBothExternal(GeoId1, GeoId2);
+        bool bothexternal = checkBothExternal(GeoId1, GeoId2);
         
         if (isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) {
             std::swap(GeoId1,GeoId2);
@@ -5191,6 +5213,182 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
     return;
 }
 
+void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
+{
+    SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+
+    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
+    Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
+
+    switch (seqIndex) {
+    case 0: //{SelEdge, SelEdgeOrAxis}
+    case 1: //{SelEdgeOrAxis, SelEdge}
+    {
+        GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
+
+        const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+        const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+        if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
+            geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment*>(geom1);
+            const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment*>(geom2);
+
+            // find the two closest line ends
+            Sketcher::PointPos PosId1 = Sketcher::none;
+            Sketcher::PointPos PosId2 = Sketcher::none;
+            Base::Vector3d p1[2], p2[2];
+            p1[0] = lineSeg1->getStartPoint();
+            p1[1] = lineSeg1->getEndPoint();
+            p2[0] = lineSeg2->getStartPoint();
+            p2[1] = lineSeg2->getEndPoint();
+
+            // Get the intersection point in 2d of the two lines if possible
+            Base::Line2d line1(Base::Vector2d(p1[0].x, p1[0].y), Base::Vector2d(p1[1].x, p1[1].y));
+            Base::Line2d line2(Base::Vector2d(p2[0].x, p2[0].y), Base::Vector2d(p2[1].x, p2[1].y));
+            Base::Vector2d s;
+            if (line1.Intersect(line2, s)) {
+                // get the end points of the line segments that are closest to the intersection point
+                Base::Vector3d s3d(s.x, s.y, p1[0].z);
+                if (Base::DistanceP2(s3d, p1[0]) < Base::DistanceP2(s3d, p1[1]))
+                    PosId1 = Sketcher::start;
+                else
+                    PosId1 = Sketcher::end;
+                if (Base::DistanceP2(s3d, p2[0]) < Base::DistanceP2(s3d, p2[1]))
+                    PosId2 = Sketcher::start;
+                else
+                    PosId2 = Sketcher::end;
+            }
+            else {
+                // if all points are collinear
+                double length = DBL_MAX;
+                for (int i=0; i <= 1; i++) {
+                    for (int j=0; j <= 1; j++) {
+                        double tmp = Base::DistanceP2(p2[j], p1[i]);
+                        if (tmp < length) {
+                            length = tmp;
+                            PosId1 = i ? Sketcher::end : Sketcher::start;
+                            PosId2 = j ? Sketcher::end : Sketcher::start;
+                        }
+                    }
+                }
+            }
+
+            Base::Vector3d dir1 = ((PosId1 == Sketcher::start) ? 1. : -1.) *
+                                  (lineSeg1->getEndPoint()-lineSeg1->getStartPoint());
+            Base::Vector3d dir2 = ((PosId2 == Sketcher::start) ? 1. : -1.) *
+                                  (lineSeg2->getEndPoint()-lineSeg2->getStartPoint());
+
+            // check if the two lines are parallel, in this case an angle is not possible
+            Base::Vector3d dir3 = dir1 % dir2;
+            if (dir3.Length() < Precision::Intersection()) {
+                Base::Vector3d dist = (p1[0] - p2[0]) % dir1;
+                if (dist.Sqr() > Precision::Intersection()) {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Parallel lines"),
+                        QObject::tr("An angle constraint cannot be set for two parallel lines."));
+                    return;
+                }
+            }
+
+            double ActAngle = atan2(dir1.x*dir2.y-dir1.y*dir2.x,
+                                    dir1.y*dir2.y+dir1.x*dir2.x);
+            if (ActAngle < 0) {
+                ActAngle *= -1;
+                std::swap(GeoId1,GeoId2);
+                std::swap(PosId1,PosId2);
+            }
+
+            openCommand("Add angle constraint");
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
+                Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2,ActAngle);
+
+            if (checkBothExternal(GeoId1, GeoId2) || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+                const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+
+                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                Obj->getNameInDocument(),ConStr.size()-1,"False");
+                finishDistanceConstraint(this, Obj,false);
+            }
+            else
+                finishDistanceConstraint(this, Obj,true);
+
+            return;
+        }
+        return;
+    }
+    case 2: //{SelEdge, SelVertexOrRoot, SelEdgeOrAxis}
+    case 3: //{SelEdgeOrAxis, SelVertexOrRoot, SelEdge}
+    {
+        GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
+        PosId3 = selSeq.at(1).PosId;
+        break;
+    }
+    case 4: //{SelVertexOrRoot, SelEdge, SelEdgeOrAxis}
+    case 5: //{SelVertexOrRoot, SelEdgeOrAxis, SelEdge}}
+    {
+        GeoId1 = selSeq.at(1).GeoId; GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(0).GeoId;
+        PosId3 = selSeq.at(0).PosId;
+        break;
+    }
+    }
+
+
+    bool bothexternal=checkBothExternal(GeoId1, GeoId2);
+
+    if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
+        double ActAngle = 0.0;
+
+        openCommand("Add angle constraint");
+
+        //add missing point-on-object constraints
+        if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                Obj->getNameInDocument(),GeoId3,PosId3,GeoId1);
+        };
+        if(! IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)){
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                Obj->getNameInDocument(),GeoId3,PosId3,GeoId2);
+        };
+        if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){//FIXME: it's a good idea to add a check if the sketch is solved
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                Obj->getNameInDocument(),GeoId3,PosId3,GeoId1);
+        };
+
+        //assuming point-on-curves have been solved, calculate the angle.
+        //DeepSOIC: this may be slow, but I wanted to reuse the conversion from Geometry to GCS shapes that is done in Sketch
+        Base::Vector3d p = Obj->getPoint(GeoId3, PosId3 );
+        ActAngle = Obj->calculateAngleViaPoint(GeoId1,GeoId2,p.x,p.y);
+
+        //negative constraint value avoidance
+        if (ActAngle < -Precision::Angular()){
+            std::swap(GeoId1, GeoId2);
+            std::swap(PosId1, PosId2);
+            ActAngle = -ActAngle;
+        }
+
+        Gui::Command::doCommand(
+            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('AngleViaPoint',%d,%d,%d,%d,%f)) ",
+            Obj->getNameInDocument(),GeoId1,GeoId2,GeoId3,PosId3,ActAngle);
+
+        if (bothexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+            const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+
+            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+            Obj->getNameInDocument(),ConStr.size()-1,"False");
+            finishDistanceConstraint(this, Obj,false);
+        }
+        else
+            finishDistanceConstraint(this, Obj,true);
+
+        return;
+    };
+
+}
+
 void CmdSketcherConstrainAngle::updateAction(int mode)
 {
     switch (mode) {
@@ -5203,11 +5401,6 @@ void CmdSketcherConstrainAngle::updateAction(int mode)
             getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle"));
         break;
     }
-}
-
-bool CmdSketcherConstrainAngle::isActive(void)
-{
-    return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
 // ======================================================================================
@@ -5413,7 +5606,7 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
 
     allowedSelSequences = {{SelEdge, SelVertexOrRoot},
                            {SelVertex, SelEdge, SelVertexOrRoot},
-                           {SelVertexOrRoot, SelEdge, SelVertex},
+                           {SelRoot, SelEdge, SelVertex},
                            {SelVertex, SelEdgeOrAxis, SelVertex},
                            {SelVertex, SelVertexOrRoot, SelVertex},
                            {SelVertex, SelVertex, SelVertexOrRoot},
@@ -5584,7 +5777,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
 
     switch (seqIndex) {
-    case 0: //{{SelEdge, SelVertexOrRoot}
+    case 0: // {SelEdge, SelVertexOrRoot}
     {
         GeoId1 = GeoId2 = selSeq.at(0).GeoId; GeoId3 = selSeq.at(1).GeoId;
         PosId1 = Sketcher::start; PosId2 = Sketcher::end; PosId3 = selSeq.at(1).PosId;
@@ -5596,9 +5789,9 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
         }
         break;
     }
-    case 1: //{SelVertex, SelEdge, SelVertexOrRoot}
-    case 2: //{SelVertexOrRoot, SelEdge, SelVertex}
-    case 3: //{SelVertex, SelEdgeOrAxis, SelVertex}
+    case 1: // {SelVertex, SelEdge, SelVertexOrRoot}
+    case 2: // {SelRoot, SelEdge, SelVertex}
+    case 3: // {SelVertex, SelEdgeOrAxis, SelVertex}
     {
         GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
         PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(2).PosId;
@@ -5633,10 +5826,10 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
         }
 
         return;
-    }
-    case 4: //{SelVertex, SelVertexOrRoot, SelVertex}
-    case 5: //{SelVertex, SelVertex, SelVertexOrRoot}
-    case 6: //{SelVertexOrRoot, SelVertex, SelVertex}
+    }   
+    case 4: // {SelVertex, SelVertexOrRoot, SelVertex}
+    case 5: // {SelVertex, SelVertex, SelVertexOrRoot}
+    case 6: // {SelVertexOrRoot, SelVertex, SelVertex}
     {
         GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
         PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(2).PosId; PosId3 = selSeq.at(1).PosId;
