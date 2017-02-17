@@ -249,7 +249,7 @@ private:
 #ifdef FC_USE_VTK
     Py::Object readResult(const Py::Tuple& args)
     {
-        char* fileName = NULL; 
+        char* fileName = NULL;
         char* objName = NULL;
 
         if (!PyArg_ParseTuple(args.ptr(), "et|et","utf-8", &fileName, "utf-8", &objName))

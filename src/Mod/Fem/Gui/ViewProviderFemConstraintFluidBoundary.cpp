@@ -145,7 +145,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             FaceColor.setValue(0.0,0.0,1.0);
         }
     }
-        
+
     if (boundaryType == "inlet" || boundaryType == "outlet"){
 #ifdef USE_MULTIPLE_COPY
         //OvG: need access to cp for scaling
