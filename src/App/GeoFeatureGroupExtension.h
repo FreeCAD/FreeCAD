@@ -96,8 +96,8 @@ public:
                !obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
     }
     
-    virtual std::vector<DocumentObject*> addObject(DocumentObject* obj) override;
-    virtual std::vector<DocumentObject*> removeObject(DocumentObject* obj) override;
+    virtual std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
+    virtual std::vector< DocumentObject* > removeObjects(std::vector< DocumentObject* > obj) override;
     
     /// returns GeoFeatureGroup relevant objects that are linked from the given one. That meas all linked objects
     /// including their linkes (recursively) except GeoFeatureGroups, where the recursion stops. Expressions 

@@ -62,35 +62,46 @@ DocumentObject* GroupExtension::addObject(const char* sType, const char* pObject
 
 std::vector<DocumentObject*> GroupExtension::addObject(DocumentObject* obj)
 {
-    if(!allowObject(obj))
-        return std::vector<DocumentObject*>();
+    std::vector<DocumentObject*> vec = {obj};
+    return addObjects(vec);
+}
+
+std::vector< DocumentObject* > GroupExtension::addObjects(std::vector< DocumentObject* > objs) {
     
-    if (hasObject(obj))
-        return std::vector<DocumentObject*>();
+    std::vector<DocumentObject*> added;
+    std::vector<DocumentObject*> grp = Group.getValues();
+    for(auto obj : objs) {
+            
+        if(!allowObject(obj))
+            continue;
         
-    //only one group per object. Note that it is allowed to be in a group and geofeaturegroup. However,
-    //getGroupOfObject() returns only normal groups, no GeoFeatureGroups. Hence this works.
-    auto *group = App::GroupExtension::getGroupOfObject(obj);
-    if(group && group != getExtendedObject())
-        group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
-    
-    //if we are on a geofeaturegroup we need to ensure the object is too
-    auto geogrp = GeoFeatureGroupExtension::getGroupOfObject(getExtendedObject());
-    auto objgrp = GeoFeatureGroupExtension::getGroupOfObject(obj);
-    if( geogrp != objgrp ) {
-        //what to doo depends on if we are in  geofeature group or not
-        if(geogrp)
-            geogrp->getExtensionByType<GeoFeatureGroupExtension>()->addObject(obj);
-        else 
-            objgrp->getExtensionByType<GeoFeatureGroupExtension>()->removeObject(obj);
+        if (hasObject(obj))
+            continue;
+            
+        //only one group per object. Note that it is allowed to be in a group and geofeaturegroup. However,
+        //getGroupOfObject() returns only normal groups, no GeoFeatureGroups. Hence this works.
+        auto *group = App::GroupExtension::getGroupOfObject(obj);
+        if(group && group != getExtendedObject())
+            group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
+        
+        //if we are in a geofeaturegroup we need to ensure the object is too
+        auto geogrp = GeoFeatureGroupExtension::getGroupOfObject(getExtendedObject());
+        auto objgrp = GeoFeatureGroupExtension::getGroupOfObject(obj);
+        if( geogrp != objgrp ) {
+            //what to doo depends on if we are in  geofeature group or not
+            if(geogrp)
+                geogrp->getExtensionByType<GeoFeatureGroupExtension>()->addObject(obj);
+            else 
+                objgrp->getExtensionByType<GeoFeatureGroupExtension>()->removeObject(obj);
+        }
+        
+        grp.push_back(obj);
+        added.push_back(obj);
     }
     
-    std::vector<DocumentObject*> grp = Group.getValues();
-    grp.push_back(obj);
     Group.setValues(grp);
     
-    std::vector<DocumentObject*> vec = {obj};
-    return vec;
+    return added;
 }
 
 void GroupExtension::addObjects(const std::vector<App::DocumentObject*>& objs)
@@ -118,17 +129,33 @@ void GroupExtension::addObjects(const std::vector<App::DocumentObject*>& objs)
 
 std::vector<DocumentObject*> GroupExtension::removeObject(DocumentObject* obj)
 {
-    const std::vector<DocumentObject*> & grp = Group.getValues();
-    std::vector<DocumentObject*> newGrp;
+    std::vector<DocumentObject*> vec = {obj};
+    return removeObjects(vec);
+}
 
-    std::remove_copy (grp.begin(), grp.end(), std::back_inserter (newGrp), obj);
+std::vector< DocumentObject* > GroupExtension::removeObjects(std::vector< DocumentObject* > objs) {
+
+    const std::vector<DocumentObject*> & grp = Group.getValues();
+    std::vector<DocumentObject*> newGrp = grp;
+    std::vector<DocumentObject*> removed;
+
+    std::vector<DocumentObject*>::iterator end = newGrp.end();
+    for(auto obj : objs) {       
+       auto res = std::remove(newGrp.begin(), end, obj);
+       if(res != end) {
+           end = res;
+           removed.push_back(obj);
+       }
+    }
+    
+    newGrp.erase(end, newGrp.end());
     if (grp.size() != newGrp.size()) {
         Group.setValues (newGrp);
     }
     
-    std::vector<DocumentObject*> vec = {obj};
-    return vec;
+    return removed;
 }
+
 
 void GroupExtension::removeObjectsFromDocument()
 {
