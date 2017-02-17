@@ -93,21 +93,21 @@ class _TaskPanelShowResult:
             elif rt == "U3":
                 self.form.rb_z_displacement.setChecked(True)
                 self.z_displacement_selected(True)
+            elif rt == "Temp":
+                self.form.rb_temperature.setChecked(True)
+                self.temperature_selected(True)
             elif rt == "Sabs":
                 self.form.rb_vm_stress.setChecked(True)
                 self.vm_stress_selected(True)
-            elif rt == "MaxShear":
-                self.form.rb_max_shear.setChecked(True)
-                self.rb_max_shear(True)
             elif rt == "MaxPrin":
                 self.form.rb_maxprin.setChecked(True)
-                self.rb_maxprin(True)
-            elif rt == "Temp":
-                self.form.rb_temperature.setChecked(True)
-                self.rb_temperature(True)
+                self.max_prin_selected(True)
             elif rt == "MinPrin":
                 self.form.rb_minprin.setChecked(True)
-                self.rb_minprin(True)
+                self.min_prin_selected(True)
+            elif rt == "MaxShear":
+                self.form.rb_max_shear_stress.setChecked(True)
+                self.max_shear_selected(True)
 
             sd = FreeCAD.FEM_dialog["show_disp"]
             self.form.cb_show_displacement.setChecked(sd)
