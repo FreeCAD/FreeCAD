@@ -313,13 +313,38 @@ class _TaskPanelShowResult:
         FreeCAD.FEM_dialog["disp_factor"] = value
         self.form.hsb_displacement_factor.setValue(value)
 
+    def disable_empty_result_buttons(self):
+        ''' disable radio buttons if result does not exists in result object'''
+        '''assignments
+        DisplacementLengths --> rb_abs_displacement
+        DisplacementVectors --> rb_x_displacement, rb_y_displacement, rb_z_displacement
+        Temperature         --> rb_temperature
+        StressValues        --> rb_vm_stress
+        PrincipalMax        --> rb_maxprin
+        PrincipalMin        --> rb_minprin
+        MaxShear            --> rb_max_shear_stress'''
+        if len(self.result_obj.DisplacementLengths) == 0:
+            self.form.rb_abs_displacement.setEnabled(0)
+        if len(self.result_obj.DisplacementVectors) == 0:
+            self.form.rb_x_displacement.setEnabled(0)
+            self.form.rb_y_displacement.setEnabled(0)
+            self.form.rb_z_displacement.setEnabled(0)
+        if len(self.result_obj.Temperature) == 0:
+            self.form.rb_temperature.setEnabled(0)
+        if len(self.result_obj.StressValues) == 0:
+            self.form.rb_vm_stress.setEnabled(0)
+        if len(self.result_obj.PrincipalMax) == 0:
+            self.form.rb_maxprin.setEnabled(0)
+        if len(self.result_obj.PrincipalMin) == 0:
+            self.form.rb_minprin.setEnabled(0)
+        if len(self.result_obj.MaxShear) == 0:
+            self.form.rb_max_shear_stress.setEnabled(0)
+
     def update(self):
         self.suitable_results = False
-        if len(self.result_obj.Temperature) == 0:  # Disable temperature radio button if it does ot exist in results
-            self.form.rb_temperature.setEnabled(0)
-
         if (self.mesh_obj.FemMesh.NodeCount == len(self.result_obj.NodeNumbers)):
             self.suitable_results = True
+            self.disable_empty_result_buttons()
             self.mesh_obj.ViewObject.Visibility = True
             hide_parts_constraints()
         else:
