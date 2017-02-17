@@ -42,6 +42,9 @@ class PartWorkbench ( Workbench ):
         # load the module
         import PartGui
         import Part
+
+        import CompoundTools._CommandCompoundFilter
+
         try:
             Part.BOPTools.addCommands()
         except Exception as err:
