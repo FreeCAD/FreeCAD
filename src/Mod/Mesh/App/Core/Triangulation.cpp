@@ -377,7 +377,10 @@ bool EarClippingTriangulator::Triangulate::Process(const std::vector<Base::Vecto
             m++;
 
             /* remove v from remaining polygon */
-            for(s=v,t=v+1;t<nv;s++,t++) V[s] = V[t]; nv--;
+            for(s=v,t=v+1;t<nv;s++,t++)
+                V[s] = V[t];
+
+            nv--;
 
             /* resest error detection counter */
             count = 2*nv;
@@ -536,8 +539,10 @@ struct Vertex2d_EqualTo  : public std::binary_function<const Base::Vector3f&, co
     bool operator()(const Base::Vector3f& p, const Base::Vector3f& q) const
     {
         if (fabs(p.x - q.x) < MeshDefinitions::_fMinPointDistanceD1
-        &&  fabs(p.y - q.y) < MeshDefinitions::_fMinPointDistanceD1)
-        return true; return false;
+                &&  fabs(p.y - q.y) < MeshDefinitions::_fMinPointDistanceD1)
+            return true;
+
+        return false;
     }
 };
 }

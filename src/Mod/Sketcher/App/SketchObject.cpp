@@ -3217,15 +3217,15 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         this->addConstraints(icon);
         
         for (std::vector<Part::Geometry *>::iterator it=igeo.begin(); it != igeo.end(); ++it)
-            if (*it) 
+            if (*it)
                 delete *it;
-            
-            for (std::vector<Constraint *>::iterator it=icon.begin(); it != icon.end(); ++it)
-                if (*it) 
-                    delete *it;
-                
-                icon.clear();
-            igeo.clear();
+
+        for (std::vector<Constraint *>::iterator it=icon.begin(); it != icon.end(); ++it)
+            if (*it)
+                delete *it;
+
+        icon.clear();
+        igeo.clear();
         
         return incrgeo; //number of added elements
     }

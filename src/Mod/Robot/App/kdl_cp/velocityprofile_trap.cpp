@@ -97,7 +97,8 @@ void VelocityProfile_Trap::SetProfileDuration(
 	double factor = duration/newduration;
     if (factor > 1)
         return; // do not exceed max
-	a2*=factor;
+
+    a2*=factor;
 	a3*=factor*factor;
 	b2*=factor;
 	b3*=factor*factor;
