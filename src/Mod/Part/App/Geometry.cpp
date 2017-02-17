@@ -1670,6 +1670,54 @@ Geometry *GeomEllipse::clone(void) const
     return newEllipse;
 }
 
+GeomBSplineCurve* GeomEllipse::toNurbs(double first, double last) const
+{
+    // for an arc of ellipse use the generic method
+    if (first != 0 || last != 2*M_PI) {
+        return GeomCurve::toNurbs(first, last);
+    }
+
+    Handle_Geom_Ellipse conic =  Handle_Geom_Ellipse::DownCast(handle());
+    gp_Ax1 axis = conic->Axis();
+    Standard_Real majorRadius = conic->MajorRadius();
+    Standard_Real minorRadius = conic->MinorRadius();
+    gp_Dir xdir = conic->XAxis().Direction();
+    Standard_Real angle = atan2(xdir.Y(), xdir.X());
+    const gp_Pnt& loc = axis.Location();
+
+    TColgp_Array1OfPnt poles(1, 7);
+    poles(1) = loc.Translated(gp_Vec(majorRadius, 0, 0));
+    poles(2) = loc.Translated(gp_Vec(majorRadius, 2*minorRadius, 0));
+    poles(3) = loc.Translated(gp_Vec(-majorRadius, 2*minorRadius, 0));
+    poles(4) = loc.Translated(gp_Vec(-majorRadius, 0, 0));
+    poles(5) = loc.Translated(gp_Vec(-majorRadius, -2*minorRadius, 0));
+    poles(6) = loc.Translated(gp_Vec(majorRadius, -2*minorRadius, 0));
+    poles(7) = loc.Translated(gp_Vec(majorRadius, 0, 0));
+
+    TColStd_Array1OfReal weights(1,7);
+    for (int i=1; i<=7; i++) {
+        poles(i).Rotate(axis, angle);
+        weights(i) = 1;
+    }
+    weights(1) = 3;
+    weights(4) = 3;
+    weights(7) = 3;
+
+    TColStd_Array1OfInteger mults(1, 3);
+    mults(1) = 4;
+    mults(2) = 3;
+    mults(3) = 4;
+
+    TColStd_Array1OfReal knots(1, 3);
+    knots(1) = 0;
+    knots(2) = 1;
+    knots(3) = 2;
+
+    Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(poles, weights,knots, mults, 3,
+        Standard_False, Standard_True);
+    return new GeomBSplineCurve(spline);
+}
+
 double GeomEllipse::getMajorRadius(void) const
 {
     Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
@@ -1876,6 +1924,13 @@ Geometry *GeomArcOfEllipse::clone(void) const
     copy->setHandle(this->myCurve);
     copy->Construction = this->Construction;
     return copy;
+}
+
+GeomBSplineCurve* GeomArcOfEllipse::toNurbs(double first, double last) const
+{
+    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(curve->BasisCurve());
+    return GeomEllipse(ellipse).toNurbs(first, last);
 }
 
 double GeomArcOfEllipse::getMajorRadius(void) const
@@ -2134,6 +2189,11 @@ Geometry *GeomHyperbola::clone(void) const
     return newHyp;
 }
 
+GeomBSplineCurve* GeomHyperbola::toNurbs(double first, double last) const
+{
+    return GeomCurve::toNurbs(first, last);
+}
+
 double GeomHyperbola::getMajorRadius(void) const
 {
     Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(handle());
@@ -2291,6 +2351,13 @@ Geometry *GeomArcOfHyperbola::clone(void) const
     copy->setHandle(this->myCurve);
     copy->Construction = this->Construction;
     return copy;
+}
+
+GeomBSplineCurve* GeomArcOfHyperbola::toNurbs(double first, double last) const
+{
+    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
+    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(curve->BasisCurve());
+    return GeomHyperbola(hyperbola).toNurbs(first, last);
 }
 
 double GeomArcOfHyperbola::getMajorRadius(void) const
@@ -2540,6 +2607,13 @@ Geometry *GeomParabola::clone(void) const
     return newPar;
 }
 
+GeomBSplineCurve* GeomParabola::toNurbs(double first, double last) const
+{
+    // the default implementation suffices because a non-rational B-spline with
+    // one segment is a parabola
+    return GeomCurve::toNurbs(first, last);
+}
+
 double GeomParabola::getFocal(void) const
 {
     Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(handle());
@@ -2676,6 +2750,13 @@ Geometry *GeomArcOfParabola::clone(void) const
     copy->setHandle(this->myCurve);
     copy->Construction = this->Construction;
     return copy;
+}
+
+GeomBSplineCurve* GeomArcOfParabola::toNurbs(double first, double last) const
+{
+    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
+    Handle_Geom_Parabola parabola = Handle_Geom_Parabola::DownCast(curve->BasisCurve());
+    return GeomParabola(parabola).toNurbs(first, last);
 }
 
 double GeomArcOfParabola::getFocal(void) const
