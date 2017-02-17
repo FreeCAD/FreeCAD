@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD Z88 Disp Reader"
-__author__ = "Bernd Hahnebach "
+__author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package importZ88O2Results
@@ -35,6 +35,8 @@ from math import pow, sqrt
 
 Debug = False
 
+
+########## generic FreeCAD import and export methods ##########
 if open.__module__ == '__builtin__':
     pyopen = open  # because we'll redefine open below
 
@@ -55,6 +57,7 @@ def insert(filename, docname):
     import_z88_disp(filename)
 
 
+########## module specific methods ##########
 def import_z88_disp(filename, analysis=None, result_name_prefix=None):
     '''insert a FreeCAD FEM Result object in the ActiveDocument
     '''

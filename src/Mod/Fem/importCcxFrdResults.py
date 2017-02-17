@@ -36,8 +36,201 @@ from math import pow, sqrt
 import numpy as np
 
 
+########## generic FreeCAD import and export methods ##########
 if open.__module__ == '__builtin__':
     pyopen = open  # because we'll redefine open below
+
+
+def open(filename):
+    "called when freecad opens a file"
+    docname = os.path.splitext(os.path.basename(filename))[0]
+    insert(filename, docname)
+
+
+def insert(filename, docname):
+    "called when freecad wants to import a file"
+    try:
+        doc = FreeCAD.getDocument(docname)
+    except NameError:
+        doc = FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
+    importFrd(filename)
+
+
+########## module specific methods ##########
+def importFrd(filename, analysis=None, result_name_prefix=None):
+    if result_name_prefix is None:
+        result_name_prefix = ''
+    m = readResult(filename)
+    mesh_object = None
+    if(len(m['Nodes']) > 0):
+        if analysis is None:
+            analysis_name = os.path.splitext(os.path.basename(filename))[0]
+            import FemAnalysis
+            analysis_object = FemAnalysis.makeFemAnalysis('Analysis')
+            analysis_object.Label = analysis_name
+        else:
+            analysis_object = analysis  # see if statement few lines later, if not analysis -> no FemMesh object is created !
+
+        if 'Nodes' in m:
+            positions = []
+            for k, v in m['Nodes'].items():
+                positions.append(v)
+            p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
+            p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
+
+            x_span = abs(p_x_max - p_x_min)
+            y_span = abs(p_y_max - p_y_min)
+            z_span = abs(p_z_max - p_z_min)
+            span = max(x_span, y_span, z_span)
+
+        if (not analysis):
+            import FemMeshTools
+            mesh = FemMeshTools.make_femmesh(m)
+
+            if len(m['Nodes']) > 0:
+                mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', 'ResultMesh')
+                mesh_object.FemMesh = mesh
+                analysis_object.Member = analysis_object.Member + [mesh_object]
+
+        number_of_increments = len(m['Results'])
+        for result_set in m['Results']:
+            eigenmode_number = result_set['number']
+            step_time = result_set['time']
+            step_time = round(step_time, 2)
+            if eigenmode_number > 0:
+                results_name = result_name_prefix + 'mode_' + str(eigenmode_number) + '_results'
+            elif number_of_increments > 1:
+                results_name = result_name_prefix + 'time_' + str(step_time) + '_results'
+            else:
+                results_name = result_name_prefix + 'results'
+            import FemMechanicalResult
+            results = FemMechanicalResult.makeFemMechanicalResult(results_name)
+            for m in analysis_object.Member:
+                if m.isDerivedFrom("Fem::FemMeshObject"):
+                    results.Mesh = m
+                    break
+
+            disp = result_set['disp']
+            stressv = result_set['stressv']
+            strainv = result_set['strainv']
+            no_of_values = len(disp)
+            displacement = []
+            for k, v in disp.items():
+                displacement.append(v)
+
+            x_max, y_max, z_max = map(max, zip(*displacement))
+            if eigenmode_number > 0:
+                max_disp = max(x_max, y_max, z_max)
+                # Allow for max displacement to be 0.1% of the span
+                # FIXME - add to Preferences
+                max_allowed_disp = 0.001 * span
+                scale = max_allowed_disp / max_disp
+            else:
+                scale = 1.0
+
+            if len(disp) > 0:
+                results.DisplacementVectors = map((lambda x: x * scale), disp.values())
+                results.StressVectors = map((lambda x: x * scale), stressv.values())
+                results.StrainVectors = map((lambda x: x * scale), strainv.values())
+                results.NodeNumbers = disp.keys()
+                if(mesh_object):
+                    results.Mesh = mesh_object
+
+            # Read temperatures if they exist
+            try:
+                Temperature = result_set['temp']
+                if len(Temperature) > 0:
+                    if len(Temperature.values()) != len(disp.values()):
+                        Temp = []
+                        Temp_extra_nodes = Temperature.values()
+                        nodes = len(disp.values())
+                        for i in range(nodes):
+                            Temp_value = Temp_extra_nodes[i]
+                            Temp.append(Temp_value)
+                        results.Temperature = map((lambda x: x), Temp)
+                    else:
+                        results.Temperature = map((lambda x: x), Temperature.values())
+                    results.Time = step_time
+            except:
+                pass
+
+            stress = result_set['stress']
+            if len(stress) > 0:
+                mstress = []
+                prinstress1 = []
+                prinstress2 = []
+                prinstress3 = []
+                shearstress = []
+                for i in stress.values():
+                    mstress.append(calculate_von_mises(i))
+                    prin1, prin2, prin3, shear = calculate_principal_stress(i)
+                    prinstress1.append(prin1)
+                    prinstress2.append(prin2)
+                    prinstress3.append(prin3)
+                    shearstress.append(shear)
+                if eigenmode_number > 0:
+                    results.StressValues = map((lambda x: x * scale), mstress)
+                    results.PrincipalMax = map((lambda x: x * scale), prinstress1)
+                    results.PrincipalMed = map((lambda x: x * scale), prinstress2)
+                    results.PrincipalMin = map((lambda x: x * scale), prinstress3)
+                    results.MaxShear = map((lambda x: x * scale), shearstress)
+                    results.Eigenmode = eigenmode_number
+                else:
+                    results.StressValues = mstress
+                    results.PrincipalMax = prinstress1
+                    results.PrincipalMed = prinstress2
+                    results.PrincipalMin = prinstress3
+                    results.MaxShear = shearstress
+
+            if (results.NodeNumbers != 0 and results.NodeNumbers != stress.keys()):
+                print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
+                      .format(results.NodeNumbers, len(results.StressValues)))
+                results.NodeNumbers = stress.keys()
+
+            x_min, y_min, z_min = map(min, zip(*displacement))
+            sum_list = map(sum, zip(*displacement))
+            x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
+
+            s_max = max(results.StressValues)
+            s_min = min(results.StressValues)
+            s_avg = sum(results.StressValues) / no_of_values
+            p1_min = min(results.PrincipalMax)
+            p1_avg = sum(results.PrincipalMax) / no_of_values
+            p1_max = max(results.PrincipalMax)
+            p2_min = min(results.PrincipalMed)
+            p2_avg = sum(results.PrincipalMed) / no_of_values
+            p2_max = max(results.PrincipalMed)
+            p3_min = min(results.PrincipalMin)
+            p3_avg = sum(results.PrincipalMin) / no_of_values
+            p3_max = max(results.PrincipalMin)
+            ms_min = min(results.MaxShear)
+            ms_avg = sum(results.MaxShear) / no_of_values
+            ms_max = max(results.MaxShear)
+
+            disp_abs = []
+            for d in displacement:
+                disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
+            results.DisplacementLengths = disp_abs
+
+            a_max = max(disp_abs)
+            a_min = min(disp_abs)
+            a_avg = sum(disp_abs) / no_of_values
+
+            results.Stats = [x_min, x_avg, x_max,
+                             y_min, y_avg, y_max,
+                             z_min, z_avg, z_max,
+                             a_min, a_avg, a_max,
+                             s_min, s_avg, s_max,
+                             p1_min, p1_avg, p1_max,
+                             p2_min, p2_avg, p2_max,
+                             p3_min, p3_avg, p3_max,
+                             ms_min, ms_avg, ms_max]
+            analysis_object.Member = analysis_object.Member + [results]
+
+        if(FreeCAD.GuiUp):
+            import FemGui
+            FemGui.setActiveAnalysis(analysis_object)
 
 
 # read a calculix result file and extract the nodes, displacement vectores and stress values.
@@ -373,6 +566,7 @@ def readResult(frd_input):
             'Results': results}
 
 
+# helper
 def calculate_von_mises(i):
     # Von mises stress (http://en.wikipedia.org/wiki/Von_Mises_yield_criterion)
     s11 = i[0]
@@ -399,195 +593,3 @@ def calculate_principal_stress(i):
     eigvals.reverse()
     maxshear = (eigvals[0] - eigvals[2]) / 2.0
     return (eigvals[0], eigvals[1], eigvals[2], maxshear)
-
-
-def importFrd(filename, analysis=None, result_name_prefix=None):
-    if result_name_prefix is None:
-        result_name_prefix = ''
-    m = readResult(filename)
-    mesh_object = None
-    if(len(m['Nodes']) > 0):
-        if analysis is None:
-            analysis_name = os.path.splitext(os.path.basename(filename))[0]
-            import FemAnalysis
-            analysis_object = FemAnalysis.makeFemAnalysis('Analysis')
-            analysis_object.Label = analysis_name
-        else:
-            analysis_object = analysis  # see if statement few lines later, if not analysis -> no FemMesh object is created !
-
-        if 'Nodes' in m:
-            positions = []
-            for k, v in m['Nodes'].items():
-                positions.append(v)
-            p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
-            p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
-
-            x_span = abs(p_x_max - p_x_min)
-            y_span = abs(p_y_max - p_y_min)
-            z_span = abs(p_z_max - p_z_min)
-            span = max(x_span, y_span, z_span)
-
-        if (not analysis):
-            import FemMeshTools
-            mesh = FemMeshTools.make_femmesh(m)
-
-            if len(m['Nodes']) > 0:
-                mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', 'ResultMesh')
-                mesh_object.FemMesh = mesh
-                analysis_object.Member = analysis_object.Member + [mesh_object]
-
-        number_of_increments = len(m['Results'])
-        for result_set in m['Results']:
-            eigenmode_number = result_set['number']
-            step_time = result_set['time']
-            step_time = round(step_time, 2)
-            if eigenmode_number > 0:
-                results_name = result_name_prefix + 'mode_' + str(eigenmode_number) + '_results'
-            elif number_of_increments > 1:
-                results_name = result_name_prefix + 'time_' + str(step_time) + '_results'
-            else:
-                results_name = result_name_prefix + 'results'
-            import FemMechanicalResult
-            results = FemMechanicalResult.makeFemMechanicalResult(results_name)
-            for m in analysis_object.Member:
-                if m.isDerivedFrom("Fem::FemMeshObject"):
-                    results.Mesh = m
-                    break
-
-            disp = result_set['disp']
-            stressv = result_set['stressv']
-            strainv = result_set['strainv']
-            no_of_values = len(disp)
-            displacement = []
-            for k, v in disp.items():
-                displacement.append(v)
-
-            x_max, y_max, z_max = map(max, zip(*displacement))
-            if eigenmode_number > 0:
-                max_disp = max(x_max, y_max, z_max)
-                # Allow for max displacement to be 0.1% of the span
-                # FIXME - add to Preferences
-                max_allowed_disp = 0.001 * span
-                scale = max_allowed_disp / max_disp
-            else:
-                scale = 1.0
-
-            if len(disp) > 0:
-                results.DisplacementVectors = map((lambda x: x * scale), disp.values())
-                results.StressVectors = map((lambda x: x * scale), stressv.values())
-                results.StrainVectors = map((lambda x: x * scale), strainv.values())
-                results.NodeNumbers = disp.keys()
-                if(mesh_object):
-                    results.Mesh = mesh_object
-
-            # Read temperatures if they exist
-            try:
-                Temperature = result_set['temp']
-                if len(Temperature) > 0:
-                    if len(Temperature.values()) != len(disp.values()):
-                        Temp = []
-                        Temp_extra_nodes = Temperature.values()
-                        nodes = len(disp.values())
-                        for i in range(nodes):
-                            Temp_value = Temp_extra_nodes[i]
-                            Temp.append(Temp_value)
-                        results.Temperature = map((lambda x: x), Temp)
-                    else:
-                        results.Temperature = map((lambda x: x), Temperature.values())
-                    results.Time = step_time
-            except:
-                pass
-
-            stress = result_set['stress']
-            if len(stress) > 0:
-                mstress = []
-                prinstress1 = []
-                prinstress2 = []
-                prinstress3 = []
-                shearstress = []
-                for i in stress.values():
-                    mstress.append(calculate_von_mises(i))
-                    prin1, prin2, prin3, shear = calculate_principal_stress(i)
-                    prinstress1.append(prin1)
-                    prinstress2.append(prin2)
-                    prinstress3.append(prin3)
-                    shearstress.append(shear)
-                if eigenmode_number > 0:
-                    results.StressValues = map((lambda x: x * scale), mstress)
-                    results.PrincipalMax = map((lambda x: x * scale), prinstress1)
-                    results.PrincipalMed = map((lambda x: x * scale), prinstress2)
-                    results.PrincipalMin = map((lambda x: x * scale), prinstress3)
-                    results.MaxShear = map((lambda x: x * scale), shearstress)
-                    results.Eigenmode = eigenmode_number
-                else:
-                    results.StressValues = mstress
-                    results.PrincipalMax = prinstress1
-                    results.PrincipalMed = prinstress2
-                    results.PrincipalMin = prinstress3
-                    results.MaxShear = shearstress
-
-            if (results.NodeNumbers != 0 and results.NodeNumbers != stress.keys()):
-                print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
-                      .format(results.NodeNumbers, len(results.StressValues)))
-                results.NodeNumbers = stress.keys()
-
-            x_min, y_min, z_min = map(min, zip(*displacement))
-            sum_list = map(sum, zip(*displacement))
-            x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
-
-            s_max = max(results.StressValues)
-            s_min = min(results.StressValues)
-            s_avg = sum(results.StressValues) / no_of_values
-            p1_min = min(results.PrincipalMax)
-            p1_avg = sum(results.PrincipalMax) / no_of_values
-            p1_max = max(results.PrincipalMax)
-            p2_min = min(results.PrincipalMed)
-            p2_avg = sum(results.PrincipalMed) / no_of_values
-            p2_max = max(results.PrincipalMed)
-            p3_min = min(results.PrincipalMin)
-            p3_avg = sum(results.PrincipalMin) / no_of_values
-            p3_max = max(results.PrincipalMin)
-            ms_min = min(results.MaxShear)
-            ms_avg = sum(results.MaxShear) / no_of_values
-            ms_max = max(results.MaxShear)
-
-            disp_abs = []
-            for d in displacement:
-                disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
-            results.DisplacementLengths = disp_abs
-
-            a_max = max(disp_abs)
-            a_min = min(disp_abs)
-            a_avg = sum(disp_abs) / no_of_values
-
-            results.Stats = [x_min, x_avg, x_max,
-                             y_min, y_avg, y_max,
-                             z_min, z_avg, z_max,
-                             a_min, a_avg, a_max,
-                             s_min, s_avg, s_max,
-                             p1_min, p1_avg, p1_max,
-                             p2_min, p2_avg, p2_max,
-                             p3_min, p3_avg, p3_max,
-                             ms_min, ms_avg, ms_max]
-            analysis_object.Member = analysis_object.Member + [results]
-
-        if(FreeCAD.GuiUp):
-            import FemGui
-            FemGui.setActiveAnalysis(analysis_object)
-
-
-def insert(filename, docname):
-    "called when freecad wants to import a file"
-    try:
-        doc = FreeCAD.getDocument(docname)
-    except NameError:
-        doc = FreeCAD.newDocument(docname)
-    FreeCAD.ActiveDocument = doc
-
-    importFrd(filename)
-
-
-def open(filename):
-    "called when freecad opens a file"
-    docname = os.path.splitext(os.path.basename(filename))[0]
-    insert(filename, docname)
