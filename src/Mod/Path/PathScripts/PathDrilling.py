@@ -35,8 +35,8 @@ from PathScripts.PathUtils import fmt
 
 
 LOG_MODULE = 'PathDrilling'
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-PathLog.trackModule('PathDrilling')
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+#PathLog.trackModule('PathDrilling')
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -83,6 +83,10 @@ class ObjectDrilling:
         obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
         obj.Proxy = self
+        self.vertFeed = 0.0
+        self.horizFeed = 0.0
+        self.vertRapid = 0.0
+        self.horizRapid = 0.0
 
     def __getstate__(self):
         return None
@@ -91,8 +95,9 @@ class ObjectDrilling:
         return None
 
     def onChanged(self, obj, prop):
-        if prop == "UserLabel":
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+        pass
+        # if prop == "UserLabel":
+        #     obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
     def execute(self, obj):
         PathLog.track()
@@ -244,7 +249,7 @@ class ObjectDrilling:
         baselist.append(item)
 
         obj.Base = baselist
-        self.execute(obj)
+        #self.execute(obj)
 
 
 class _ViewProviderDrill:
@@ -312,7 +317,6 @@ class CommandPathDrilling:
         FreeCADGui.doCommand('obj.RetractHeight= ' + str(ztop))
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
-        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -324,7 +328,7 @@ class TaskPanel:
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DrillingEdit.ui")
 
     def accept(self):
-        self.getFields()
+        #self.getFields()
 
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
@@ -337,6 +341,7 @@ class TaskPanel:
         FreeCADGui.Selection.removeObserver(self.s)
 
     def getFields(self):
+        PathLog.track()
         if self.obj:
             if hasattr(self.obj, "StartDepth"):
                 self.obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
@@ -351,11 +356,13 @@ class TaskPanel:
             if hasattr(self.obj, "RetractHeight"):
                 self.obj.RetractHeight = FreeCAD.Units.Quantity(self.form.retractHeight.text()).Value
             if hasattr(self.obj, "ToolController"):
+                PathLog.debug("name: {}".format(self.form.uiToolController.currentText()))
                 tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
                 self.obj.ToolController = tc
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
+        PathLog.track()
         self.form.startDepth.setText(FreeCAD.Units.Quantity(self.obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.finalDepth.setText(FreeCAD.Units.Quantity(self.obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.peckDepth.setText(FreeCAD.Units.Quantity(self.obj.PeckDepth.Value, FreeCAD.Units.Length).UserString)
@@ -370,12 +377,20 @@ class TaskPanel:
 
         controllers = PathUtils.getToolControllers(self.obj)
         labels = [c.Label for c in controllers]
+        self.form.uiToolController.blockSignals(True)
         self.form.uiToolController.addItems(labels)
+        self.form.uiToolController.blockSignals(False)
         if self.obj.ToolController is not None:
             index = self.form.uiToolController.findText(
                 self.obj.ToolController.Label, QtCore.Qt.MatchFixedString)
+            PathLog.debug("searching for TC label {}. Found Index: {}".format(self.obj.ToolController.Label, index))
             if index >= 0:
+                self.form.uiToolController.blockSignals(True)
                 self.form.uiToolController.setCurrentIndex(index)
+                self.form.uiToolController.blockSignals(False)
+        else:
+            self.obj.ToolController = PathUtils.findToolController(self.obj)
+
 
     def open(self):
         self.s = SelObserver()
@@ -446,6 +461,7 @@ class TaskPanel:
         return int(QtGui.QDialogButtonBox.Ok)
 
     def setupUi(self):
+        PathLog.track()
 
         # Connect Signals and Slots
         self.form.startDepth.editingFinished.connect(self.getFields)
