@@ -381,6 +381,7 @@ SET(Part_Scripts
     BOPTools/SplitFeatures.py
     BOPTools/Utils.py
     CompoundTools/__init__.py
+    CompoundTools/_CommandCompoundFilter.py
     CompoundTools/CompoundFilter.py
 )
 
