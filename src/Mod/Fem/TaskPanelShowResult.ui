@@ -24,49 +24,28 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="3" column="0">
-           <widget class="QRadioButton" name="rb_max_shear_stress">
-            <property name="text">
-             <string>Max shear stress(Tresca)</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QRadioButton" name="rb_y_displacement">
-            <property name="text">
-             <string>Y displacement</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QRadioButton" name="rb_x_displacement">
-            <property name="text">
-             <string>X displacement</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
+          <item row="4" column="0">
            <widget class="QRadioButton" name="rb_z_displacement">
             <property name="text">
              <string>Z displacement</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QRadioButton" name="rb_vm_stress">
+          <item row="3" column="0">
+           <widget class="QRadioButton" name="rb_y_displacement">
             <property name="text">
-             <string>Von Mises stress</string>
+             <string>Y displacement</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QRadioButton" name="rb_maxprin">
+          <item row="2" column="0">
+           <widget class="QRadioButton" name="rb_x_displacement">
             <property name="text">
-             <string>Max Principal stress</string>
+             <string>X displacement</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="0" column="0">
            <widget class="QRadioButton" name="rb_none">
             <property name="text">
              <string>None</string>
@@ -76,10 +55,17 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
+          <item row="1" column="0">
            <widget class="QRadioButton" name="rb_abs_displacement">
             <property name="text">
              <string>Abs displacement</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QRadioButton" name="rb_max_shear_stress">
+            <property name="text">
+             <string>Max shear stress(Tresca)</string>
             </property>
            </widget>
           </item>
@@ -90,7 +76,21 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="2" column="1">
+           <widget class="QRadioButton" name="rb_maxprin">
+            <property name="text">
+             <string>Max Principal stress</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QRadioButton" name="rb_vm_stress">
+            <property name="text">
+             <string>Von Mises stress</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
            <widget class="QRadioButton" name="rb_temperature">
             <property name="text">
              <string>Temperature</string>
@@ -311,8 +311,8 @@
              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format.  Calculation np.funtion can be used on available values. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format.  Calculation np.funtion can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
