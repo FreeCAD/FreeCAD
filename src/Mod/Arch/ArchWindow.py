@@ -56,7 +56,7 @@ AllowedHosts =    ["Wall","Structure","Roof"]
 WindowPresets =   ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
                    "Sliding 2-pane", "Simple door", "Glass door"]
 WindowOpeningModes = ["None","Arc 90","Arc 90 inv","Arc 45","Arc 45 inv","Arc 180","Arc 180 inv","Triangle","Triangle inv","Sliding","Sliding inv"]
-Roles =           ["Window","Door"]
+Roles =           ["Undefined","Window","Door"]
 
 
 def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
