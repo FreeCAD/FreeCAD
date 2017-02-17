@@ -72,12 +72,12 @@ class LoadTool():
         toolnum = obj.Tooltable.Tools.keys()[0]
         commands = ""
         commands += "(" + obj.Label + ")"+'\n'
-        commands += 'M6T'+str(toolnum)+'\n'
+        commands += 'M6 T'+str(toolnum)+'\n'
 
         if obj.SpindleDir == 'Forward':
-            commands += 'M3S' + str(obj.SpindleSpeed) + '\n'
+            commands += 'M3 S' + str(obj.SpindleSpeed) + '\n'
         else:
-            commands += 'M4S' + str(obj.SpindleSpeed) + '\n'
+            commands += 'M4 S' + str(obj.SpindleSpeed) + '\n'
 
         if commands == "":
             commands += "(No commands processed)"
@@ -245,7 +245,6 @@ class TaskPanel:
 
     def getFields(self):
         if self.obj:
-
             if hasattr(self.obj, "Label"):
                 self.obj.Label = self.form.tcoName.text()
             if hasattr(self.obj, "VertFeed"):

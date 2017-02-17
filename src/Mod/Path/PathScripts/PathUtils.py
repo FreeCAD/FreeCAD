@@ -36,10 +36,9 @@ from FreeCAD import Vector
 
 LOG_MODULE = 'PathUtils'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-PathLog.trackModule('PathUtils')
+#PathLog.trackModule('PathUtils')
 
 def cleanedges(splines, precision):
-    PathLog.track()
     '''cleanedges([splines],precision). Convert BSpline curves, Beziers, to arcs that can be used for cnc paths.
     Returns Lines as is. Filters Circle and Arcs for over 180 degrees. Discretizes Ellipses. Ignores other geometry. '''
     edges = []
@@ -76,7 +75,6 @@ def cleanedges(splines, precision):
 
 def curvetowire(obj, steps):
     '''adapted from DraftGeomUtils, because the discretize function changed a bit '''
-    PathLog.track()
     points = obj.copy().discretize(Distance=eval('steps'))
     p0 = points[0]
     edgelist = []
@@ -87,7 +85,6 @@ def curvetowire(obj, steps):
     return edgelist
 
 def isDrillable(obj, candidate):
-    PathLog.track()
     PathLog.debug('obj: {} candidate {}')
     drillable = False
     if candidate.ShapeType == 'Face':
@@ -100,11 +97,9 @@ def isDrillable(obj, candidate):
                     v1 = edge.Vertexes[1].Point
                     if (v1.sub(v0).x == 0) and (v1.sub(v0).y == 0):
                         # vector of top center
-                        lsp = Vector(face.BoundBox.Center.x,
-                                        face.BoundBox.Center.y, face.BoundBox.ZMax)
+                        lsp = Vector(face.BoundBox.Center.x,face.BoundBox.Center.y, face.BoundBox.ZMax)
                         # vector of bottom center
-                        lep = Vector(face.BoundBox.Center.x,
-                                        face.BoundBox.Center.y, face.BoundBox.ZMin)
+                        lep = Vector(face.BoundBox.Center.x,face.BoundBox.Center.y, face.BoundBox.ZMin)
                         if obj.isInside(lsp, 0, False) or obj.isInside(lep, 0, False):
                             drillable = False
                         # eliminate elliptical holes
@@ -112,11 +107,7 @@ def isDrillable(obj, candidate):
                             drillable = False
                         else:
                             drillable = True
-        else:
-            print('here')
-            drillable = False
     else:
-        print ('looking at edges')
         for edge in candidate.Edges:
             if (isinstance(edge.Curve, Part.Circle)):
                 if abs(edge.BoundBox.XLength - edge.BoundBox.YLength) > 0.05:
@@ -223,8 +214,6 @@ def changeTool(obj, job):
 
 def getToolControllers(obj):
     '''returns all the tool controllers'''
-
-    PathLog.track()
     controllers = []
     try:
         parent = obj.InList[0]
@@ -238,20 +227,40 @@ def getToolControllers(obj):
                 controllers.append(g)
     return controllers
 
-def findToolController(obj, name=""):
+def findToolController(obj, name=None):
     '''returns a tool controller with a given name.
     If no name is specified, returns the first controller.
     if no controller is found, returns None'''
 
-    PathLog.track()
+    PathLog.track('name: {}'.format(name))
     controllers = getToolControllers(obj)
-    for c in controllers:
-        if c.Label == name:
-            return c
-    if len(controllers) > 0:
-        return controllers[0]
+
+    if len(controllers) == 1:
+        if name is None or name == controllers[0].Label:
+            tc = controllers[0]
+        else:
+            tc = None
+    elif name is not None:
+        tc = [i for i in controllers if i.Label == name][0]
     else:
-        return None
+        #form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgTCChooser.ui")
+        form = FreeCADGui.PySideUic.loadUi(":/panels/DlgTCChooser.ui")
+        mylist = [i.Label for i in controllers]
+        form.uiToolController.addItems(mylist)
+        r = form.exec_()
+        if r is False:
+            tc = None
+        else:
+            tc = [i for i in controllers if i.Label == form.uiToolController.currentText()][0]
+    return tc
+
+    # for c in controllers:
+    #     if c.Label == name:
+    #         return c
+    # if len(controllers) > 0:
+    #     return controllers[0]
+    # else:
+    #     return None
 
 def findParentJob(obj):
     '''retrieves a parent job object for an operation or other Path object'''
