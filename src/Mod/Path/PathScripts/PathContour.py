@@ -65,13 +65,8 @@ class ObjectContour:
         obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Contour"))
         obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
 
+        # Tool Properties
         obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
- 
-        # obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool number in use"))
-        # obj.ToolNumber = (0, 0, 1000, 1)
-        # obj.setEditorMode('ToolNumber', 1)  # make this read only
-        # obj.addProperty("App::PropertyString", "ToolDescription", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The description of the tool "))
-        # obj.setEditorMode('ToolDescription', 1)  # make this read only
 
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
@@ -111,15 +106,8 @@ class ObjectContour:
     def __setstate__(self, state):
         return None
 
-    # def setLabel(self, obj):
-    #     if not obj.UserLabel:
-    #         obj.Label = obj.Name + " :" + obj.ToolDescription
-    #     else:
-    #         obj.Label = obj.UserLabel + " :" + obj.ToolDescription
-
     def onChanged(self, obj, prop):
-        if prop == "UserLabel":
-            self.setLabel(obj)
+        pass
 
     def setDepths(proxy, obj):
         PathLog.track()
@@ -206,14 +194,6 @@ class ObjectContour:
         if toolLoad is None or toolLoad.ToolNumber == 0:
             FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
             return
-
-            # self.vertFeed = 100
-            # self.horizFeed = 100
-            # self.vertRapid = 100
-            # self.horizRapid = 100
-            # self.radius = 0.25
-            # obj.ToolNumber = 0
-            # obj.ToolDescription = "UNDEFINED"
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
@@ -227,10 +207,6 @@ class ObjectContour:
                 #self.radius = 0.25
             else:
                 self.radius = tool.Diameter/2
-            # obj.ToolNumber = toolLoad.ToolNumber
-            # obj.ToolDescription = toolLoad.Name
-
-        #self.setLabel(obj)
 
         output += "(" + obj.Label + ")"
         if not obj.UseComp:
@@ -257,7 +233,6 @@ class ObjectContour:
             obj.Path = path
             if obj.ViewObject:
                 obj.ViewObject.Visibility = True
-
         else:
             path = Path.Path("(inactive operation)")
             obj.Path = path
@@ -367,6 +342,7 @@ class CommandPathContour:
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
 
         FreeCADGui.doCommand('PathScripts.PathContour.ObjectContour.setDepths(obj.Proxy, obj)')
+        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -444,7 +420,13 @@ class TaskPanel:
 
         controllers = PathUtils.getToolControllers(self.obj)
         labels = [c.Label for c in controllers]
+        self.form.uiToolController.blockSignals(True)
         self.form.uiToolController.addItems(labels)
+        self.form.uiToolController.blockSignals(False)
+
+        if self.obj.ToolController is None:
+            self.obj.ToolController = PathUtils.findToolController(self.obj)
+
         if self.obj.ToolController is not None:
             index = self.form.uiToolController.findText(
                 self.obj.ToolController.Label, QtCore.Qt.MatchFixedString)
@@ -452,6 +434,8 @@ class TaskPanel:
                 self.form.uiToolController.blockSignals(True)
                 self.form.uiToolController.setCurrentIndex(index)
                 self.form.uiToolController.blockSignals(False)
+        else:
+            self.obj.ToolController = PathUtils.findToolController(self.obj)
 
     def open(self):
         self.s = SelObserver()
