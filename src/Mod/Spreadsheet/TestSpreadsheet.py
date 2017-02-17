@@ -11,7 +11,7 @@ import Part
 import Sketcher
 import tempfile
 from FreeCAD import Base
-from Units import Unit,Quantity
+from FreeCAD import Units
 
 v = Base.Vector
 
@@ -125,12 +125,12 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.F4, (1.0 + 2 + 3 + 4) / 4)
         self.assertEqual(sheet.F5, (1.0 + 2 + 3 + 4 + 5 + 6) / 6)
 
-        self.assertEqual(sheet.G1, Quantity('5 mm'))
-        self.assertEqual(sheet.G2, Quantity('4 mm'))
-        self.assertEqual(sheet.G3, Quantity('6 mm'))
+        self.assertEqual(sheet.G1, Units.Quantity('5 mm'))
+        self.assertEqual(sheet.G2, Units.Quantity('4 mm'))
+        self.assertEqual(sheet.G3, Units.Quantity('6 mm'))
         self.assertEqual(sheet.G4, 3)
-        self.assertEqual(sheet.G5, Quantity('1 mm'))
-        self.assertEqual(sheet.G6, Quantity('15 mm'))
+        self.assertEqual(sheet.G5, Units.Quantity('1 mm'))
+        self.assertEqual(sheet.G6, Units.Quantity('15 mm'))
 
         self.assertEqual(sheet.H1, u'ERR: Quantity::operator +=(): Unit mismatch in plus operation')
         self.assertEqual(sheet.H2, u'ERR: Quantity::operator <(): quantities need to have same unit to compare')
@@ -140,7 +140,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.H6, u'ERR: Quantity::operator +=(): Unit mismatch in plus operation')
 
     def assertMostlyEqual(self, a, b):
-        if type(a) is Quantity:
+        if type(a) is Units.Quantity:
             self.assertTrue( math.fabs(a.Value - b.Value) < 1e-14)
             self.assertTrue( a.Unit == b.Unit)
         else:
@@ -241,7 +241,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.C3,  1 )
         self.assertMostlyEqual(sheet.A4,  3)    # Abs
         self.assertMostlyEqual(sheet.B4,  3)
-        self.assertMostlyEqual(sheet.C4,  Quantity('3 mm'))
+        self.assertMostlyEqual(sheet.C4,  Units.Quantity('3 mm'))
         self.assertMostlyEqual(sheet.A5,  math.exp(3))  # Exp
         self.assertMostlyEqual(sheet.B5,  math.exp(-3))
         self.assertEqual(sheet.C5,  u'ERR: Unit must be empty.')
@@ -255,39 +255,39 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.B8,  4)
         self.assertMostlyEqual(sheet.C8,  -3)
         self.assertMostlyEqual(sheet.D8,  -4)
-        self.assertEqual(sheet.E8,  Quantity('3 mm'))
-        self.assertEqual(sheet.F8,  Quantity('4 mm'))
-        self.assertEqual(sheet.G8,  Quantity('-3 mm'))
-        self.assertEqual(sheet.H8,  Quantity('-4 mm'))
+        self.assertEqual(sheet.E8,  Units.Quantity('3 mm'))
+        self.assertEqual(sheet.F8,  Units.Quantity('4 mm'))
+        self.assertEqual(sheet.G8,  Units.Quantity('-3 mm'))
+        self.assertEqual(sheet.H8,  Units.Quantity('-4 mm'))
         self.assertMostlyEqual(sheet.A9,  3)# Trunc
         self.assertMostlyEqual(sheet.B9,  3)
         self.assertMostlyEqual(sheet.C9,  -3)
         self.assertMostlyEqual(sheet.D9,  -3)
-        self.assertEqual(sheet.E9,  Quantity('3 mm'))
-        self.assertEqual(sheet.F9,  Quantity('3 mm'))
-        self.assertEqual(sheet.G9,  Quantity('-3 mm'))
-        self.assertEqual(sheet.H9,  Quantity('-3 mm'))
+        self.assertEqual(sheet.E9,  Units.Quantity('3 mm'))
+        self.assertEqual(sheet.F9,  Units.Quantity('3 mm'))
+        self.assertEqual(sheet.G9,  Units.Quantity('-3 mm'))
+        self.assertEqual(sheet.H9,  Units.Quantity('-3 mm'))
         self.assertMostlyEqual(sheet.A10, 4) # Ceil
         self.assertMostlyEqual(sheet.B10, 4)
         self.assertMostlyEqual(sheet.C10, -3)
         self.assertMostlyEqual(sheet.D10, -3)
-        self.assertMostlyEqual(sheet.E10, Quantity('4 mm'))
-        self.assertMostlyEqual(sheet.F10, Quantity('4 mm'))
-        self.assertMostlyEqual(sheet.G10, Quantity('-3 mm'))
-        self.assertMostlyEqual(sheet.H10, Quantity('-3 mm'))
+        self.assertMostlyEqual(sheet.E10, Units.Quantity('4 mm'))
+        self.assertMostlyEqual(sheet.F10, Units.Quantity('4 mm'))
+        self.assertMostlyEqual(sheet.G10, Units.Quantity('-3 mm'))
+        self.assertMostlyEqual(sheet.H10, Units.Quantity('-3 mm'))
         self.assertMostlyEqual(sheet.A11, 3)# Floor
         self.assertMostlyEqual(sheet.B11, 3)
         self.assertMostlyEqual(sheet.C11, -4)
         self.assertMostlyEqual(sheet.D11, -4)
-        self.assertMostlyEqual(sheet.E11, Quantity('3 mm'))
-        self.assertMostlyEqual(sheet.F11, Quantity('3 mm'))
-        self.assertMostlyEqual(sheet.G11, Quantity('-4 mm'))
-        self.assertMostlyEqual(sheet.H11, Quantity('-4 mm'))
-        self.assertMostlyEqual(sheet.A12, Quantity('30 deg')) # Asin
+        self.assertMostlyEqual(sheet.E11, Units.Quantity('3 mm'))
+        self.assertMostlyEqual(sheet.F11, Units.Quantity('3 mm'))
+        self.assertMostlyEqual(sheet.G11, Units.Quantity('-4 mm'))
+        self.assertMostlyEqual(sheet.H11, Units.Quantity('-4 mm'))
+        self.assertMostlyEqual(sheet.A12, Units.Quantity('30 deg')) # Asin
         self.assertEqual(sheet.B12, u'ERR: Unit must be empty.')
-        self.assertMostlyEqual(sheet.A13, Quantity('60 deg')) # Acos
+        self.assertMostlyEqual(sheet.A13, Units.Quantity('60 deg')) # Acos
         self.assertEqual(sheet.B13, u'ERR: Unit must be empty.')
-        self.assertMostlyEqual(sheet.A14, Quantity('60 deg')) # Atan
+        self.assertMostlyEqual(sheet.A14, Units.Quantity('60 deg')) # Atan
         self.assertEqual(sheet.B14, u'ERR: Unit must be empty.')
         self.assertMostlyEqual(sheet.A15, math.sinh(0.5)) # Sinh
         self.assertEqual(sheet.B15, u'ERR: Unit must be empty.')
@@ -296,18 +296,18 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.A17, math.tanh(0.5)) # Tanh
         self.assertEqual(sheet.B17, u'ERR: Unit must be empty.')
         self.assertMostlyEqual(sheet.A18, 2)   # Sqrt
-        self.assertMostlyEqual(sheet.B18, Quantity('2 mm'))
+        self.assertMostlyEqual(sheet.B18, Units.Quantity('2 mm'))
         self.assertMostlyEqual(sheet.A19, 3) # Mod
         self.assertMostlyEqual(sheet.B19, -3)
-        self.assertMostlyEqual(sheet.C19, Quantity('3 mm'))
+        self.assertMostlyEqual(sheet.C19, Units.Quantity('3 mm'))
         self.assertEqual(sheet.D19, u'ERR: Second argument must have empty unit.')
-        self.assertMostlyEqual(sheet.A20, Quantity('45 deg'))       # Atan2
-        self.assertMostlyEqual(sheet.B20, Quantity('-45 deg'))
+        self.assertMostlyEqual(sheet.A20, Units.Quantity('45 deg'))       # Atan2
+        self.assertMostlyEqual(sheet.B20, Units.Quantity('-45 deg'))
         self.assertEqual(sheet.C20, u'ERR: Units must be equal')
-        self.assertMostlyEqual(sheet.D20, Quantity('45 deg'))
+        self.assertMostlyEqual(sheet.D20, Units.Quantity('45 deg'))
         self.assertMostlyEqual(sheet.A21, 2401) # Pow
         self.assertMostlyEqual(sheet.B21, 2401)
-        self.assertMostlyEqual(sheet.C21, Quantity('2401mm^4'))
+        self.assertMostlyEqual(sheet.C21, Units.Quantity('2401mm^4'))
         self.assertEqual(sheet.D21, u'ERR: Exponent is not allowed to have a unit.')
         
     def testRelationalOperators(self):
@@ -381,17 +381,17 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('A11', '=9.8 m/s^2') # Currently fails
         sheet.setDisplayUnit('A8', '1/K')
         self.doc.recompute()
-        self.assertEqual(sheet.A1, Quantity('5mm'))
-        self.assertEqual(sheet.A2, Quantity('-1 mm'))
-        self.assertEqual(sheet.A3, Quantity('6 mm^2'))
-        self.assertEqual(sheet.A4, Quantity('2'))
-        self.assertEqual(sheet.A5, Quantity('16 mm^2'))
-        self.assertEqual(sheet.A6, Quantity('5 mm^2'))
-        self.assertEqual(sheet.A7, Quantity('5 mm^2'))
-        self.assertEqual(sheet.A8, Quantity('5'))
-        self.assertEqual(sheet.A9, Quantity('5 K^-1'))
-        self.assertEqual(sheet.A10, Quantity('5 K^-1'))
-        self.assertEqual(sheet.A11, Quantity('9.8 m/s^2'))
+        self.assertEqual(sheet.A1, Units.Quantity('5mm'))
+        self.assertEqual(sheet.A2, Units.Quantity('-1 mm'))
+        self.assertEqual(sheet.A3, Units.Quantity('6 mm^2'))
+        self.assertEqual(sheet.A4, Units.Quantity('2'))
+        self.assertEqual(sheet.A5, Units.Quantity('16 mm^2'))
+        self.assertEqual(sheet.A6, Units.Quantity('5 mm^2'))
+        self.assertEqual(sheet.A7, Units.Quantity('5 mm^2'))
+        self.assertEqual(sheet.A8, Units.Quantity('5'))
+        self.assertEqual(sheet.A9, Units.Quantity('5 K^-1'))
+        self.assertEqual(sheet.A10, Units.Quantity('5 K^-1'))
+        self.assertEqual(sheet.A11, Units.Quantity('9.8 m/s^2'))
 
     def testPrecedence(self):
         """ Precedence -- test precedence for relational operators and conditional operator. """
@@ -508,7 +508,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.A51, 0)
         self.assertEqual(sheet.A52, -2)
         self.assertEqual(sheet.A53, 50)
-        self.assertEqual(sheet.A54, Quantity('9.7mm'))
+        self.assertEqual(sheet.A54, Units.Quantity('9.7mm'))
         self.assertEqual(sheet.getContents('A1'), '=1 < 2 ? 3 : 4')
         self.assertEqual(sheet.getContents('A2'), '=1 + 2 < 3 + 4 ? 5 + 6 : 7 + 8')
         self.assertEqual(sheet.getContents('A3'), '=1 + 2 * 1 < 3 + 4 ? 5 * 2 + 6 * 3 + 2 ^ 4 : 7 * 2 + 8 * 3 + 2 ^ 3')
