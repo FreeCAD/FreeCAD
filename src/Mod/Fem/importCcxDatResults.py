@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 __title__ = "importCcxDatResults"
-__author__ = "Przemo Firszt"
+__author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package importCcxDatResults
@@ -32,11 +32,36 @@ import FreeCAD
 import os
 
 
+EIGENVALUE_OUTPUT_SECTION = "     E I G E N V A L U E   O U T P U T"
+
+
+########## generic FreeCAD import and export methods ##########
 if open.__module__ == '__builtin__':
     # because we'll redefine open below
     pyopen = open
 
-EIGENVALUE_OUTPUT_SECTION = "     E I G E N V A L U E   O U T P U T"
+
+def open(filename):
+    "called when freecad opens a file"
+    docname = os.path.splitext(os.path.basename(filename))[0]
+    insert(filename, docname)
+
+
+def insert(filename, docname):
+    "called when freecad wants to import a file"
+    try:
+        doc = FreeCAD.getDocument(docname)
+    except NameError:
+        doc = FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
+    import_dat(filename)
+
+
+########## module specific methods ##########
+def import_dat(filename, Analysis=None):
+    r = readResult(filename)
+    # print ("Results {}".format(r))
+    return r
 
 
 # read a calculix result file and extract the data
@@ -67,26 +92,3 @@ def readResult(dat_input):
 
     dat_file.close()
     return results
-
-
-def import_dat(filename, Analysis=None):
-    r = readResult(filename)
-    # print ("Results {}".format(r))
-    return r
-
-
-def insert(filename, docname):
-    "called when freecad wants to import a file"
-    try:
-        doc = FreeCAD.getDocument(docname)
-    except NameError:
-        doc = FreeCAD.newDocument(docname)
-    FreeCAD.ActiveDocument = doc
-
-    import_dat(filename)
-
-
-def open(filename):
-    "called when freecad opens a file"
-    docname = os.path.splitext(os.path.basename(filename))[0]
-    insert(filename, docname)

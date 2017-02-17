@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD Z88 Mesh reader and writer"
-__author__ = "Bernd Hahnebach "
+__author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package importZ88Mesh
@@ -35,6 +35,8 @@ import FemMeshTools
 
 Debug = False
 
+
+########## generic FreeCAD import and export methods ##########
 if open.__module__ == '__builtin__':
     pyopen = open  # because we'll redefine open below
 
@@ -55,6 +57,24 @@ def insert(filename, docname):
     import_z88_mesh(filename)
 
 
+def export(objectslist, filename):
+    "called when freecad exports a file"
+    if len(objectslist) != 1:
+        FreeCAD.Console.PrintError("This exporter can only export one object.\n")
+        return
+    obj = objectslist[0]
+    if not obj.isDerivedFrom("Fem::FemMeshObject"):
+        FreeCAD.Console.PrintError("No FEM mesh object selected.\n")
+        return
+    femnodes_mesh = obj.FemMesh.Nodes
+    femelement_table = FemMeshTools.get_femelement_table(obj.FemMesh)
+    z88_element_type = get_z88_element_type(obj.FemMesh, femelement_table)
+    f = pyopen(filename, "wb")
+    write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
+    f.close()
+
+
+########## module specific methods ##########
 def import_z88_mesh(filename, analysis=None):
     '''insert a FreeCAD FEM Mesh object in the ActiveDocument
     '''
@@ -282,24 +302,7 @@ def read_z88_mesh(z88_mesh_input):
             }
 
 
-# export z88 Mesh
-def export(objectslist, filename):
-    "called when freecad exports a file"
-    if len(objectslist) != 1:
-        FreeCAD.Console.PrintError("This exporter can only export one object.\n")
-        return
-    obj = objectslist[0]
-    if not obj.isDerivedFrom("Fem::FemMeshObject"):
-        FreeCAD.Console.PrintError("No FEM mesh object selected.\n")
-        return
-    femnodes_mesh = obj.FemMesh.Nodes
-    femelement_table = FemMeshTools.get_femelement_table(obj.FemMesh)
-    z88_element_type = get_z88_element_type(obj.FemMesh, femelement_table)
-    f = pyopen(filename, "wb")
-    write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
-    f.close()
-
-
+# write z88 Mesh
 def write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f):
     node_dimension = 3  # 2 for 2D not supported
     if (z88_element_type == 4 or

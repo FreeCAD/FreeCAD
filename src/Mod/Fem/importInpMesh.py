@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD .inp file reader"
-__author__ = "Frantisek Loeffelmann "
+__author__ = "Frantisek Loeffelmann, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 __date__ = "04/08/2016"
 
@@ -35,8 +35,36 @@ import os
 import string
 
 
+########## generic FreeCAD import and export methods ##########
 if open.__module__ == '__builtin__':
     pyopen = open  # because we'll redefine open below
+
+
+def open(filename):
+    "called when freecad opens a file"
+    docname = os.path.splitext(os.path.basename(filename))[0]
+    insert(filename, docname)
+
+
+def insert(filename, docname):
+    "called when freecad wants to import a file"
+    try:
+        doc = FreeCAD.getDocument(docname)
+    except NameError:
+        doc = FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
+    import_inp(filename)
+
+
+########## module specific methods ##########
+def import_inp(filename):
+    "create imported objects in FreeCAD, currently only FemMesh"
+
+    m = read_inp(filename)
+    mesh = FemMeshTools.make_femmesh(m)
+    mesh_name = os.path.splitext(os.path.basename(filename))[0]
+    mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
+    mesh_object.FemMesh = mesh
 
 
 def read_inp(file_name):
@@ -208,29 +236,3 @@ def read_inp(file_name):
             'Tetra10Elem': elements.tetra10, 'Penta15Elem': elements.penta15, 'Hexa20Elem': elements.hexa20,
             'Tria3Elem': elements.tria3, 'Tria6Elem': elements.tria6, 'Quad4Elem': elements.quad4,
             'Quad8Elem': elements.quad8, 'Seg2Elem': elements.seg2}  # , 'Seg3Elem': elements.seg3}
-
-
-def import_inp(filename):
-    "create imported objects in FreeCAD, currently only FemMesh"
-
-    m = read_inp(filename)
-    mesh = FemMeshTools.make_femmesh(m)
-    mesh_name = os.path.splitext(os.path.basename(filename))[0]
-    mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
-    mesh_object.FemMesh = mesh
-
-
-def insert(filename, docname):
-    "called when freecad wants to import a file"
-    try:
-        doc = FreeCAD.getDocument(docname)
-    except NameError:
-        doc = FreeCAD.newDocument(docname)
-    FreeCAD.ActiveDocument = doc
-    import_inp(filename)
-
-
-def open(filename):
-    "called when freecad opens a file"
-    docname = os.path.splitext(os.path.basename(filename))[0]
-    insert(filename, docname)

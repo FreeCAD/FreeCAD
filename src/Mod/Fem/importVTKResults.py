@@ -35,8 +35,15 @@ import FreeCAD
 import Fem
 
 
+########## generic FreeCAD import and export methods ##########
 if open.__module__ == '__builtin__':
     pyopen = open  # because we'll redefine open below
+
+
+def open(filename):
+    "called when freecad opens a file"
+    docname = os.path.splitext(os.path.basename(filename))[0]
+    insert(filename, docname)
 
 
 def insert(filename, docname):
@@ -49,12 +56,19 @@ def insert(filename, docname):
     importVTK(filename)
 
 
-def open(filename):
-    "called when freecad opens a file"
-    docname = os.path.splitext(os.path.basename(filename))[0]
-    insert(filename, docname)
+def export(objectslist, filename):
+    "called when freecad exports a fem result object"
+    if len(objectslist) != 1:
+        FreeCAD.Console.PrintError("This exporter can only export one object at once\n")
+        return
+    obj = objectslist[0]
+    if not obj.isDerivedFrom("Fem::FemResultObject"):
+        FreeCAD.Console.PrintError("object selcted is not FemResultObject.\n")
+        return
+    Fem.writeResult(filename, obj)
 
 
+########## module specific methods ##########
 def importVTK(filename, analysis=None, result_name_prefix=None):
     if result_name_prefix is None:
         result_name_prefix = ''
@@ -87,18 +101,6 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
     except:
         time_step = 0.0
     # Stats has been setup in C++ function FemVTKTools importCfdResult()
-
-
-def export(objectslist, filename):
-    "called when freecad exports a fem result object"
-    if len(objectslist) != 1:
-        FreeCAD.Console.PrintError("This exporter can only export one object at once\n")
-        return
-    obj = objectslist[0]
-    if not obj.isDerivedFrom("Fem::FemResultObject"):
-        FreeCAD.Console.PrintError("object selcted is not FemResultObject.\n")
-        return
-    Fem.writeResult(filename, obj)
 
 
 # helper
