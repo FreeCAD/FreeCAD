@@ -1,4 +1,4 @@
-# Part gui init module  
+# Part gui init module
 # (c) 2003 Juergen Riegel
 #
 # Gathering all the information to start FreeCAD
@@ -48,7 +48,7 @@ class PartWorkbench ( Workbench ):
         try:
             Part.BOPTools.addCommands()
         except Exception as err:
-            FreeCAD.Console.PrintError("Features from BOPTools package cannot be loaded. {err}\n".format(err= err.message))        
+            FreeCAD.Console.PrintError("Features from BOPTools package cannot be loaded. {err}\n".format(err= err.message))
 
     def GetClassName(self):
         return "PartGui::Workbench"
