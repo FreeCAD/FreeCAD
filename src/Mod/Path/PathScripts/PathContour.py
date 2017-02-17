@@ -438,7 +438,9 @@ class TaskPanel:
         index = self.form.direction.findText(
                 self.obj.Direction, QtCore.Qt.MatchFixedString)
         if index >= 0:
+            self.form.direction.blockSignals(True)
             self.form.direction.setCurrentIndex(index)
+            self.form.direction.blockSignals(False)
 
         controllers = PathUtils.getToolControllers(self.obj)
         labels = [c.Label for c in controllers]
@@ -447,7 +449,9 @@ class TaskPanel:
             index = self.form.uiToolController.findText(
                 self.obj.ToolController.Label, QtCore.Qt.MatchFixedString)
             if index >= 0:
+                self.form.uiToolController.blockSignals(True)
                 self.form.uiToolController.setCurrentIndex(index)
+                self.form.uiToolController.blockSignals(False)
 
     def open(self):
         self.s = SelObserver()
