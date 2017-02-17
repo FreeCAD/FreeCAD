@@ -347,19 +347,19 @@ static void SetFromResult( CCurve& curve, TPolygon& p, bool reverse = true )
     if(CArea::m_clipper_clean_distance >= Point::tolerance)
         CleanPolygon(p,CArea::m_clipper_clean_distance);
 
-	for(unsigned int j = 0; j < p.size(); j++)
-	{
-		const IntPoint &pt = p[j];
-		DoubleAreaPoint dp(pt);
-		CVertex vertex(0, Point(dp.X / CArea::m_units, dp.Y / CArea::m_units), Point(0.0, 0.0));
-		if(reverse)curve.m_vertices.push_front(vertex);
-		else curve.m_vertices.push_back(vertex);
-	}
-	// make a copy of the first point at the end
-	if(reverse)curve.m_vertices.push_front(curve.m_vertices.back());
-	else curve.m_vertices.push_back(curve.m_vertices.front());
+    for(unsigned int j = 0; j < p.size(); j++)
+    {
+        const IntPoint &pt = p[j];
+        DoubleAreaPoint dp(pt);
+        CVertex vertex(0, Point(dp.X / CArea::m_units, dp.Y / CArea::m_units), Point(0.0, 0.0));
+        if(reverse)curve.m_vertices.push_front(vertex);
+        else curve.m_vertices.push_back(vertex);
+    }
+    // make a copy of the first point at the end
+    if(reverse)curve.m_vertices.push_front(curve.m_vertices.back());
+    else curve.m_vertices.push_back(curve.m_vertices.front());
 
-	if(CArea::m_fit_arcs)curve.FitArcs();
+    if(CArea::m_fit_arcs)curve.FitArcs();
 }
 
 static void SetFromResult( CArea& area, TPolyPolygon& pp, bool reverse = true )

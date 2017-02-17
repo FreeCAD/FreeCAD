@@ -1307,7 +1307,7 @@ int SMDS_VolumeTool::GetOppFaceIndex( int faceIndex ) const
     case 15:
       if ( faceIndex == 0 || faceIndex == 1 )
         ind = 1 - faceIndex;
-        break;
+      break;
     case 8:
     case 12:
       if ( faceIndex <= 1 ) // top or bottom
