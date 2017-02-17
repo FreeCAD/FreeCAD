@@ -119,47 +119,61 @@ Base::Placement GeoFeatureGroupExtension::recursiveGroupPlacement(GeoFeatureGrou
     return group->placement().getValue();
 }
 
-std::vector<DocumentObject*> GeoFeatureGroupExtension::addObject(App::DocumentObject* object)  {
+std::vector<DocumentObject*> GeoFeatureGroupExtension::addObjects(std::vector<App::DocumentObject*> objects)  {
     
-    if(!allowObject(object))
-        return std::vector<DocumentObject*>();
-    
-    //cross CoordinateSystem links are not allowed, so we need to move the whole link group 
-    auto links = getCSRelevantLinks(object);
-    links.push_back(object);
-    
-    auto ret = links;
     std::vector<DocumentObject*> grp = Group.getValues();
-    for( auto obj : links) {
-        //only one geofeaturegroup per object. 
-        auto *group = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
-        if(group && group != getExtendedObject())
-            group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
+    std::vector<DocumentObject*> ret;
+    
+    for(auto object : objects) {
         
-        if (!hasObject(obj))
-            grp.push_back(obj);
-        else 
-            ret.erase(std::remove(ret.begin(), ret.end(), obj), ret.end());
+        if(!allowObject(object))
+            continue;
+        
+        //cross CoordinateSystem links are not allowed, so we need to move the whole link group 
+        auto links = getCSRelevantLinks(object);
+        links.push_back(object);
+        
+        for( auto obj : links) {
+            //only one geofeaturegroup per object. 
+            auto *group = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+            if(group && group != getExtendedObject())
+                group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
+            
+            if (!hasObject(obj)) {
+                grp.push_back(obj);
+                ret.push_back(obj);
+            }
+        }
     }
     
     Group.setValues(grp);
     return ret;
 }
 
-
-std::vector<DocumentObject*> GeoFeatureGroupExtension::removeObject(App::DocumentObject* object)  {
-       
-    //cross CoordinateSystem links are not allowed, so we need to remove the whole link group 
-    auto links = getCSRelevantLinks(object);
-    links.push_back(object);
+std::vector<DocumentObject*> GeoFeatureGroupExtension::removeObjects(std::vector<App::DocumentObject*> objects)  {
     
-    //remove all links out of group
+    std::vector<DocumentObject*> removed;
     std::vector<DocumentObject*> grp = Group.getValues();
-    for(auto link : links)
-        grp.erase(std::remove(grp.begin(), grp.end(), link), grp.end());
     
-    Group.setValues(grp);
-    return links;
+    for(auto object : objects) {
+        //cross CoordinateSystem links are not allowed, so we need to remove the whole link group 
+        auto links = getCSRelevantLinks(object);
+        links.push_back(object);
+        
+        //remove all links out of group       
+        for(auto link : links) {
+            auto end = std::remove(grp.begin(), grp.end(), link);
+            if(end != grp.end()) {
+                grp.erase(end, grp.end());
+                removed.push_back(link);
+            }
+        }
+    }
+    
+    if(!removed.empty())
+        Group.setValues(grp);
+    
+    return removed;
 }
 
 std::vector< DocumentObject* > GeoFeatureGroupExtension::getObjectsFromLinks(DocumentObject* obj) {

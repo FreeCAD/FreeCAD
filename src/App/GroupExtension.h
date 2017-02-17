@@ -53,9 +53,9 @@ public:
     /* Adds the object \a obj to this group. Returns all objects that have been added.
      */
     virtual std::vector<DocumentObject*> addObject(DocumentObject* obj);
-    /* Adds an array of object \a objs to this group.
+    /* Adds the objects \a objs to this group. Returns all objects that have been added.
      */
-    virtual void addObjects(const std::vector<App::DocumentObject*>& objs);
+    virtual std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj);
     /*override this function if you want only special objects
      */
     virtual bool allowObject(DocumentObject* ) {return true;}
@@ -63,6 +63,9 @@ public:
     /** Removes an object from this group. Returns all objects that have been removed.
      */
     virtual std::vector<DocumentObject*> removeObject(DocumentObject* obj);
+    /** Removes objects from this group. Returns all objects that have been removed.
+     */
+    virtual std::vector<DocumentObject*> removeObjects(std::vector<DocumentObject*> obj);
     /** Removes all children objects from this group and the document.
      */
     virtual void removeObjectsFromDocument();

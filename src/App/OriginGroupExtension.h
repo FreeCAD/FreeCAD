@@ -66,7 +66,7 @@ public:
     //changes all links of obj to a origin to point to this groupes origin
     void relinkToOrigin(App::DocumentObject* obj);
     
-    virtual std::vector<DocumentObject*> addObject(DocumentObject* obj) override;
+    virtual std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj) override;
 
 protected:
     /// Checks integrity of the Origin
