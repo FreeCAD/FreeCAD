@@ -133,7 +133,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *boolop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common"
             << "Part_CompJoinFeatures" << "Part_CompSplitFeatures" << "Part_CheckGeometry" << "Part_Section"
             << "Part_CrossSections";
-	     
+
     Gui::ToolBarItem* measure = new Gui::ToolBarItem(root);
     measure->setCommand("Measure");
     *measure << "Part_Measure_Linear" << "Part_Measure_Angular"  << "Separator" << "Part_Measure_Clear_All" << "Part_Measure_Toggle_All"
