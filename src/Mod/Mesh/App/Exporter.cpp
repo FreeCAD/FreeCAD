@@ -37,6 +37,8 @@
 #include "Base/Stream.h"
 #include "Base/Tools.h"
 
+#include "App/Part.h"
+
 #include <zipios++/zipoutputstream.h>
 
 using namespace Mesh;
@@ -54,7 +56,32 @@ std::string Exporter::xmlEscape(const std::string &input)
     return out;
 }
 
-MergeExporter::MergeExporter(std::string fileName, MeshIO::Format fmt)
+bool Exporter::addAppGroup(App::DocumentObject *obj, float tol)
+{
+    const auto meshFeatId( Base::Type::fromName("Mesh::Feature") );
+    const auto partFeatId( Base::Type::fromName("Part::Feature") );
+    const auto appPartId( Base::Type::fromName("App::Part") );
+    const auto appDOGId( Base::Type::fromName("App::DocumentObjectGroup") );
+
+    auto ret(true);
+
+    for (auto it : static_cast<App::Part *>(obj)->getOutList()) {
+        if (it->getTypeId().isDerivedFrom(meshFeatId)) {
+            ret &= addMeshFeat(it);
+        } else if (it->getTypeId().isDerivedFrom(partFeatId)) {
+            ret &= addPartFeat(it, tol);
+        } else if ( it->getTypeId().isDerivedFrom(appPartId) ||
+                    it->getTypeId().isDerivedFrom(appDOGId) ) {
+            // Recurse
+            ret &= addAppGroup(it, tol);
+        }
+    }
+
+    return ret;
+}
+
+
+MergeExporter::MergeExporter(std::string fileName, MeshIO::Format)
     :fName(fileName)
 {
 }
@@ -72,9 +99,9 @@ MergeExporter::~MergeExporter()
 }
 
 
-bool MergeExporter::addMesh(Mesh::Feature *meshFeat)
+bool MergeExporter::addMeshFeat(App::DocumentObject *obj)
 {
-    const MeshObject &mesh( meshFeat->Mesh.getValue() );
+    const MeshObject &mesh( static_cast<Mesh::Feature *>(obj)->Mesh.getValue() );
 
     MeshCore::MeshKernel kernel( mesh.getKernel() );
     kernel.Transform(mesh.getTransform());
@@ -114,14 +141,14 @@ bool MergeExporter::addMesh(Mesh::Feature *meshFeat)
         indices.resize(mergingMesh.countFacets() - countFacets);
         std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
         Segment segm(&mergingMesh, indices, true);
-        segm.setName(meshFeat->Label.getValue());
+        segm.setName(obj->Label.getValue());
         mergingMesh.addSegment(segm);
     }
 
     return true;
 }
 
-bool MergeExporter::addPart(App::DocumentObject *obj, float tol)
+bool MergeExporter::addPartFeat(App::DocumentObject *obj, float tol)
 {
     auto *shape(obj->getPropertyByName("Shape"));
     if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
@@ -211,7 +238,7 @@ AmfExporter::~AmfExporter()
     }
 }
 
-bool AmfExporter::addPart(App::DocumentObject *obj, float tol)
+bool AmfExporter::addPartFeat(App::DocumentObject *obj, float tol)
 {
     auto *shape(obj->getPropertyByName("Shape"));
     // TODO: Look into a different way to extract mesh with vertex normals
@@ -240,15 +267,15 @@ bool AmfExporter::addPart(App::DocumentObject *obj, float tol)
     return false;
 }
 
-bool AmfExporter::addMesh(Mesh::Feature *meshFeat)
+bool AmfExporter::addMeshFeat(App::DocumentObject *obj)
 {
     // TODO: Add name, colour, etc. from the mesh feature
-    const MeshObject &mesh( meshFeat->Mesh.getValue() );
+    const MeshObject &mesh( static_cast<Mesh::Feature *>(obj)->Mesh.getValue() );
     MeshCore::MeshKernel kernel( mesh.getKernel() );
     kernel.Transform(mesh.getTransform());
 
     std::map<std::string, std::string> meta;
-    meta["name"] = xmlEscape(meshFeat->Label.getStrValue());
+    meta["name"] = xmlEscape(obj->Label.getStrValue());
 
     return addMesh(kernel, meta);
 }
