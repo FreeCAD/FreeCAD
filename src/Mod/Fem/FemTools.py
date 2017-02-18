@@ -307,7 +307,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 self.shell_thicknesses.append(shell_thickness_dict)
 
     def check_prerequisites(self):
-        import Units
+        from FreeCAD import Units
         message = ""
         # analysis
         if not self.analysis:
