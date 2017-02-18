@@ -74,7 +74,7 @@ extern PyObject* initModule();
 }
 
 /* Python entry */
-PyMODINIT_FUNC initFem()
+PyMOD_INIT_FUNC(Fem)
 {
     // load dependend module
     try {
@@ -83,7 +83,7 @@ PyMODINIT_FUNC initFem()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
     PyObject* femModule = Fem::initModule();
     Base::Console().Log("Loading Fem module... done\n");
@@ -183,4 +183,6 @@ PyMODINIT_FUNC initFem()
     Fem::FemPostSphereFunction      ::init();
     Fem::PropertyPostDataObject     ::init();
 #endif
+
+    PyMOD_Return(femModule);
 }
