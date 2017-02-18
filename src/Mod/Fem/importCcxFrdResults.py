@@ -38,9 +38,11 @@ import numpy as np
 
 ########## generic FreeCAD import and export methods ##########
 if open.__module__ == '__builtin__':
-    pyopen = open  # because we'll redefine open below
-elif open.__module__ == 'io': # Python3
-    pyopen = open  # because we'll redefine open below
+    # because we'll redefine open below (Python2)
+    pyopen = open
+elif open.__module__ == 'io':
+    # because we'll redefine open below (Python3)
+    pyopen = open
 
 
 def open(filename):
