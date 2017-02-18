@@ -82,7 +82,7 @@ class PartTestBSplineCurve(unittest.TestCase):
         self.spline.getWeights()
 
     def testSetters(self):
-        spline = copy.deepcopy(self.spline)
+        spline = copy.copy(self.spline)
         spline.setKnot(1, 0.1)
         spline.setPeriodic()
         spline.setNotPeriodic()
