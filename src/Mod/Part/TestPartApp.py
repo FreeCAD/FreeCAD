@@ -89,3 +89,7 @@ class PartTestBSplineCurve(unittest.TestCase):
         # spline.setKnots()
         # spline.setOrigin(2)   # not working?
         self.spline.setPole(1, App.Vector([1, 0, 0])) # first parameter 0 gives occ error
+
+    def tearDown(self):
+        #closing doc
+        FreeCAD.closeDocument("PartTest")
