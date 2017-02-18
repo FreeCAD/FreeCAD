@@ -30,6 +30,7 @@
 
 #include "PyObjectBase.h"
 #include "Console.h"
+#include "Interpreter.h"
 
 using namespace Base;
 
@@ -50,6 +51,7 @@ PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
 /// destructor
 PyObjectBase::~PyObjectBase() 
 {
+    PyGILStateLocker lock;
 #ifdef FC_LOGPYOBJECTS
     Base::Console().Log("PyO-: %s (%p)\n",this->ob_type->tp_name, this);
 #endif
