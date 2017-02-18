@@ -538,8 +538,8 @@ struct Vertex2d_EqualTo  : public std::binary_function<const Base::Vector3f&, co
 {
     bool operator()(const Base::Vector3f& p, const Base::Vector3f& q) const
     {
-        if (fabs(p.x - q.x) < MeshDefinitions::_fMinPointDistanceD1
-                &&  fabs(p.y - q.y) < MeshDefinitions::_fMinPointDistanceD1)
+        if (fabs(p.x - q.x) < MeshDefinitions::_fMinPointDistanceD1 &&
+            fabs(p.y - q.y) < MeshDefinitions::_fMinPointDistanceD1)
             return true;
 
         return false;
