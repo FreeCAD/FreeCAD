@@ -152,9 +152,9 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                         for i in range(nodes):
                             Temp_value = Temp_extra_nodes[i]
                             Temp.append(Temp_value)
-                        results.Temperature = map((lambda x: x), Temp)
+                        results.Temperature = list(map((lambda x: x), Temp))
                     else:
-                        results.Temperature = map((lambda x: x), Temperature.values())
+                        results.Temperature = list(map((lambda x: x), Temperature.values()))
                     results.Time = step_time
             except:
                 pass
@@ -178,7 +178,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                     results.PrincipalMax = list(map((lambda x: x * scale), prinstress1))
                     results.PrincipalMed = list(map((lambda x: x * scale), prinstress2))
                     results.PrincipalMin = list(map((lambda x: x * scale), prinstress3))
-                    results.MaxShear = map((lambda x: x * scale), shearstress)
+                    results.MaxShear = list(map((lambda x: x * scale), shearstress))
                     results.Eigenmode = eigenmode_number
                 else:
                     results.StressValues = mstress
