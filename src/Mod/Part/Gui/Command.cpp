@@ -756,6 +756,88 @@ bool CmdPartCompSplitFeatures::isActive(void)
 }
 
 //===========================================================================
+// Part_CompoundFilter (dropdown toolbar button for CompoundTools, CompoundFilter)
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdPartCompFilterFeatures);
+
+CmdPartCompFilterFeatures::CmdPartCompFilterFeatures()
+  : Command("Part_CompoundFilter")
+{
+    sAppModule      = "Part";
+    sGroup          = QT_TR_NOOP("Part");
+    sMenuText       = QT_TR_NOOP("Compound Filter");
+    sToolTipText    = QT_TR_NOOP("Compound Filter: remove some childs from a compound");
+    sWhatsThis      = "Part_CompoundFilter";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdPartCompFilterFeatures::activated(int iMsg)
+{
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    if (iMsg==0)
+        rcCmdMgr.runCommandByName("Part_CompoundFilter");
+    else
+        return;
+
+    // Since the default icon is reset when enabing/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdPartCompFilterFeatures::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* cmd0 = pcAction->addAction(QString());
+    cmd0->setIcon(Gui::BitmapFactory().pixmap("Part_CompoundFilter"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(cmd0->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdPartCompFilterFeatures::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    Gui::Command* makeCompoundFilter = rcCmdMgr.getCommandByName("Part_CompoundFilter");
+    if (makeCompoundFilter) {
+        QAction* cmd0 = a[0];
+        cmd0->setText(QApplication::translate("Part_CompoundFilter", makeCompoundFilter->getMenuText()));
+        cmd0->setToolTip(QApplication::translate("Part_CompoundFilter", makeCompoundFilter->getToolTipText()));
+        cmd0->setStatusTip(QApplication::translate("Part_CompoundFilter", makeCompoundFilter->getStatusTip()));
+    }
+}
+
+bool CmdPartCompFilterFeatures::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
+//===========================================================================
 // Part_Compound
 //===========================================================================
 DEF_STD_CMD_A(CmdPartCompound);
@@ -2238,6 +2320,7 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartFuse());
     rcCmdMgr.addCommand(new CmdPartCompJoinFeatures());
     rcCmdMgr.addCommand(new CmdPartCompSplitFeatures());
+    rcCmdMgr.addCommand(new CmdPartCompFilterFeatures());
     rcCmdMgr.addCommand(new CmdPartCompound());
     rcCmdMgr.addCommand(new CmdPartSection());
     //rcCmdMgr.addCommand(new CmdPartBox2());

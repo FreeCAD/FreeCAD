@@ -380,6 +380,19 @@ PyMODINIT_FUNC initPart()
         err.ReportException();
     }
 
+    try {
+        //import all submodules of CompoundTools, to make them easy to browse in Py console.
+        //It's done in this weird manner instead of bt.caMemberFunction("importAll"),
+        //because the latter crashed when importAll failed with exception.
+        Base::Interpreter().runString("__import__('CompoundTools').importAll()");
+
+        Py::Object bt = Base::Interpreter().runStringObject("__import__('CompoundTools')");
+        module.setAttr(std::string("CompoundTools"),bt);
+    } catch (Base::PyException &err){
+        Base::Console().Error("Failed to import CompoundTools package:\n");
+        err.ReportException();
+    }
+
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();
     Part::PropertyGeometryList  ::init();
