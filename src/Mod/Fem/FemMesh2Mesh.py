@@ -20,6 +20,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+from __future__ import print_function
+
 __title__ = "FemMesh to Mesh converter"
 __author__ = "Frantisek Loeffelmann, Ulrich Brammer, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
@@ -131,7 +133,7 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                 singleFaces.append(faceCodeList[actFaceIdx])
                 actFaceIdx += 1
         else:
-            print 'found a last Face: ', faceCodeList[actFaceIdx]
+            print('found a last Face: ', faceCodeList[actFaceIdx])
             singleFaces.append(faceCodeList[actFaceIdx])
             actFaceIdx += 1
 
@@ -172,5 +174,5 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                 # print 'my 2. triangle: ', triangle
 
     end_time = time.clock()
-    print 'Mesh by surface search method: ', end_time - start_time
+    print('Mesh by surface search method: ', end_time - start_time)
     return output_mesh
