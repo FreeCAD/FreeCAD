@@ -331,21 +331,28 @@ private:
             exporter.reset( new MergeExporter(outputFileName, exportFormat) );
         }
 
-        Base::Type meshId = Base::Type::fromName("Mesh::Feature");
-        Base::Type partId = Base::Type::fromName("Part::Feature");
+        const auto meshFeatId( Base::Type::fromName("Mesh::Feature") );
+        const auto partFeatId( Base::Type::fromName("Part::Feature") );
+        const auto appPartId( Base::Type::fromName("App::Part") );
+        const auto appDOGId( Base::Type::fromName("App::DocumentObjectGroup") );
 
         Py::Sequence list(objects);
         for (auto it : list) {
-            PyObject* item = it.ptr();
+            PyObject *item = it.ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
-                App::DocumentObject* obj( static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr() );
+                auto obj( static_cast<App::DocumentObjectPy *>(item)->getDocumentObjectPtr() );
 
-                if (obj->getTypeId().isDerivedFrom(meshId)) {
-                    exporter->addMesh( static_cast<Mesh::Feature*>(obj) );
-                } else if (obj->getTypeId().isDerivedFrom(partId)) {
-                    exporter->addPart( obj, fTolerance );
+                if (obj->getTypeId().isDerivedFrom(meshFeatId)) {
+                    exporter->addMeshFeat( obj );
+                } else if (obj->getTypeId().isDerivedFrom(partFeatId)) {
+                    exporter->addPartFeat( obj, fTolerance );
+                } else if ( obj->getTypeId().isDerivedFrom(appPartId) ||
+                            obj->getTypeId().isDerivedFrom(appDOGId) ) {
+                    exporter->addAppGroup( obj, fTolerance );
                 } else {
-                    Base::Console().Message("'%s' is not a mesh or shape, export will be ignored.\n", obj->Label.getValue());
+                    Base::Console().Message(
+                            "'%s' is of type %s, and can not be exported as a mesh.\n",
+                            obj->Label.getValue(), obj->getTypeId().getName() );
                 }
             }
         }
