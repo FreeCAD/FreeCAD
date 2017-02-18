@@ -139,3 +139,6 @@ if(BUILD_ADDONMGR)
   add_subdirectory(AddonManager)
 endif(BUILD_ADDONMGR)
 
+if(BUILD_TUX)
+    add_subdirectory(Tux)
+endif(BUILD_TUX)
