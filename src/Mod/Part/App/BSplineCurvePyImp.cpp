@@ -71,21 +71,21 @@ int BSplineCurvePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-   PyObject* obj;
-   // poles, [ periodic, degree, interpolate ]
-
-   obj = buildFromPoles(args);
+    PyErr_Clear();
+    PyObject* obj;
+    // poles, [ periodic, degree, interpolate ]
+    obj = buildFromPoles(args);
    
-   if (obj) {
-       Py_DECREF(obj);
-       return 0;
-   }
-   else if (PyErr_ExceptionMatches(PartExceptionOCCError)) {
-       return -1;
-   }
+    if (obj) {
+        Py_DECREF(obj);
+        return 0;
+    }
+    else if (PyErr_ExceptionMatches(PartExceptionOCCError)) {
+        return -1;
+    }
 
     PyErr_SetString(PyExc_TypeError, "B-Spline constructor accepts:\n"
-	"-- poles, [ periodic, degree, interpolate ]\n"
+        "-- poles, [ periodic, degree, interpolate ]\n"
         "-- empty parameter list\n");
     return -1;
 }
