@@ -19,6 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+from __future__ import print_function
 
 __title__ = "FreeCAD Z88 Mesh reader and writer"
 __author__ = "Bernd Hahnebach"
@@ -390,7 +391,7 @@ def get_z88_element_type(femmesh, femelement_table=None):
     # in some cases lowest key in femelement_table is not [1]
     for elem in sorted(femelement_table):
         elem_length = len(femelement_table[elem])
-        print elem_length
+        print(elem_length)
         break  # break after the first elem
     if FemMeshTools.is_solid_femmesh(femmesh):
         if femmesh.TetraCount == femmesh.VolumeCount:
