@@ -30,7 +30,6 @@
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
-#include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
@@ -302,10 +301,13 @@ private:
         static char *kwList[] = {"objectList", "filename", "tolerance",
                                  "exportAmfCompressed", NULL};
 
-        // NOTE FOR PYTHON 3: Should switch exportAmfCompressed from using integer 'i' to bool 'p'
-        // TODO Deal with above nicely, and double check that the docstring is correct with regards to tol's default
-        if (!PyArg_ParseTupleAndKeywords( args.ptr(), keywds.ptr(), "Oet|fi", kwList, &objects,
-                                          "utf-8", &fileNamePy,
+        if (!PyArg_ParseTupleAndKeywords( args.ptr(), keywds.ptr(),
+#if PY_MAJOR_VERSION >= 3
+                                          "Oet|fp",
+#else
+                                          "Oet|fi",
+#endif // Python version switch
+                                          kwList, &objects, "utf-8", &fileNamePy,
                                           &fTolerance, &exportAmfCompressed )) {
             throw Py::Exception();
         }
@@ -331,29 +333,13 @@ private:
             exporter.reset( new MergeExporter(outputFileName, exportFormat) );
         }
 
-        const auto meshFeatId( Base::Type::fromName("Mesh::Feature") );
-        const auto partFeatId( Base::Type::fromName("Part::Feature") );
-        const auto appPartId( Base::Type::fromName("App::Part") );
-        const auto appDOGId( Base::Type::fromName("App::DocumentObjectGroup") );
-
         Py::Sequence list(objects);
         for (auto it : list) {
             PyObject *item = it.ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 auto obj( static_cast<App::DocumentObjectPy *>(item)->getDocumentObjectPtr() );
 
-                if (obj->getTypeId().isDerivedFrom(meshFeatId)) {
-                    exporter->addMeshFeat( obj );
-                } else if (obj->getTypeId().isDerivedFrom(partFeatId)) {
-                    exporter->addPartFeat( obj, fTolerance );
-                } else if ( obj->getTypeId().isDerivedFrom(appPartId) ||
-                            obj->getTypeId().isDerivedFrom(appDOGId) ) {
-                    exporter->addAppGroup( obj, fTolerance );
-                } else {
-                    Base::Console().Message(
-                            "'%s' is of type %s, and can not be exported as a mesh.\n",
-                            obj->Label.getValue(), obj->getTypeId().getName() );
-                }
+                exporter->addObject(obj, fTolerance);
             }
         }
         exporter.reset();   // deletes Exporter, mesh file is written by destructor

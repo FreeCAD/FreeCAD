@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Ian Rees                  <ian.rees@gmail.com>          *
+ *   Copyright (c) 2017 Ian Rees                  <ian.rees@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,6 +31,7 @@
 
 #include "Core/Iterator.h"
 
+#include "Base/Console.h"
 #include "Base/Exception.h"
 #include "Base/FileInfo.h"
 #include "Base/Sequencer.h"
@@ -43,6 +44,13 @@
 
 using namespace Mesh;
 using namespace MeshCore;
+
+Exporter::Exporter() :
+    meshFeatId( Base::Type::fromName("Mesh::Feature") ),
+    partFeatId( Base::Type::fromName("Part::Feature") ),
+    appPartId( Base::Type::fromName("App::Part") ),
+    appDOGId( Base::Type::fromName("App::DocumentObjectGroup") )
+{ }
 
 //static
 std::string Exporter::xmlEscape(const std::string &input)
@@ -58,11 +66,6 @@ std::string Exporter::xmlEscape(const std::string &input)
 
 bool Exporter::addAppGroup(App::DocumentObject *obj, float tol)
 {
-    const auto meshFeatId( Base::Type::fromName("Mesh::Feature") );
-    const auto partFeatId( Base::Type::fromName("Part::Feature") );
-    const auto appPartId( Base::Type::fromName("App::Part") );
-    const auto appDOGId( Base::Type::fromName("App::DocumentObjectGroup") );
-
     auto ret(true);
 
     for (auto it : static_cast<App::Part *>(obj)->getOutList()) {
@@ -80,6 +83,22 @@ bool Exporter::addAppGroup(App::DocumentObject *obj, float tol)
     return ret;
 }
 
+bool Exporter::addObject(App::DocumentObject *obj, float tol)
+{
+    if (obj->getTypeId().isDerivedFrom(meshFeatId)) {
+        return addMeshFeat( obj );
+    } else if (obj->getTypeId().isDerivedFrom(partFeatId)) {
+        return addPartFeat( obj, tol );
+    } else if ( obj->getTypeId().isDerivedFrom(appPartId) ||
+                obj->getTypeId().isDerivedFrom(appDOGId) ) {
+        return addAppGroup( obj, tol );
+    } else {
+        Base::Console().Message(
+            "'%s' is of type %s, and can not be exported as a mesh.\n",
+            obj->Label.getValue(), obj->getTypeId().getName() );
+        return false;
+    }
+}
 
 MergeExporter::MergeExporter(std::string fileName, MeshIO::Format)
     :fName(fileName)
@@ -241,7 +260,7 @@ AmfExporter::~AmfExporter()
 bool AmfExporter::addPartFeat(App::DocumentObject *obj, float tol)
 {
     auto *shape(obj->getPropertyByName("Shape"));
-    // TODO: Look into a different way to extract mesh with vertex normals
+
     if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
         Base::Reference<MeshObject> mesh(new MeshObject());
 
@@ -269,7 +288,6 @@ bool AmfExporter::addPartFeat(App::DocumentObject *obj, float tol)
 
 bool AmfExporter::addMeshFeat(App::DocumentObject *obj)
 {
-    // TODO: Add name, colour, etc. from the mesh feature
     const MeshObject &mesh( static_cast<Mesh::Feature *>(obj)->Mesh.getValue() );
     MeshCore::MeshKernel kernel( mesh.getKernel() );
     kernel.Transform(mesh.getTransform());
