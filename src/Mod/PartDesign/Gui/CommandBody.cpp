@@ -614,10 +614,7 @@ CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
 }
 
 void CmdPartDesignMoveFeature::activated(int iMsg)
-{
-    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Features moving is diabled"),
-            QObject::tr("Moving features is currently disabled as there is no way of handling origin connected moves"));
-    /*
+{    
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     if (features.empty()) return;
@@ -644,6 +641,15 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         PartDesign::Body* source = PartDesign::Body::findBodyOf(feat);
         source_bodies.insert(static_cast<App::DocumentObject*>(source));
     }
+    
+    if(source_bodies.size() != 1) {
+        //show messagebox and cancel
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Features cannot be moved"),
+            QObject::tr("Only features of a single source Body can be moved"));
+        return;
+    }
+     
+    auto source_body = *source_bodies.begin();
 
     std::vector<App::DocumentObject*> target_bodies;
     for (auto body : bodies) {
@@ -675,8 +681,20 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     PartDesign::Body* target = static_cast<PartDesign::Body*>(target_bodies[index]);
 
     openCommand("Move an object");
-
-    for (auto feat: features) {
+    
+    std::stringstream stream;
+    stream << "features_ = [App.ActiveDocument." << features.back()->getNameInDocument();
+    features.pop_back();
+    
+    for (auto feat: features)        
+        stream << ", App.ActiveDocument." << feat->getNameInDocument();
+    
+    stream << "]";
+    doCommand(Doc, stream.str().c_str());
+    doCommand(Doc, "App.ActiveDocument.%s.removeObjects(features_)", source_body->getNameInDocument());
+    doCommand(Doc, "App.ActiveDocument.%s.addObjects(features_)", target->getNameInDocument());
+    /*
+        
         // Find body of this feature
         Part::BodyBase* source = PartDesign::Body::findBodyOf(feat);
         bool featureWasTip = false;
@@ -732,9 +750,9 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 
         //relink origin for sketches and datums (coordinates)
         PartDesignGui::relinkToOrigin(feat, target);
-    }
+    }*/
 
-    updateActive();*/
+    updateActive();
 }
 
 bool CmdPartDesignMoveFeature::isActive(void)
