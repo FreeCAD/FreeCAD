@@ -3806,6 +3806,21 @@ bool SketchObject::ConvertToNURBS(int GeoId)
     else { // normal geometry
 
         newVals[GeoId] = bspline;
+
+        const std::vector< Sketcher::Constraint * > &cvals = Constraints.getValues();
+        
+        std::vector< Constraint * > newcVals(cvals);
+        
+        int index = cvals.size()-1;
+        // delete constraints on this elements other than coincident constraints (bspline does not support them currently)
+        for (; index >= 0; index--) {
+            if (cvals[index]->Type != Sketcher::Coincident && ( cvals[index]->First == GeoId || cvals[index]->Second == GeoId || cvals[index]->Third == GeoId)) {
+                
+                newcVals.erase(newcVals.begin()+index);
+                
+            }
+        }
+        this->Constraints.setValues(newcVals);
     }
 
     Geometry.setValues(newVals);
