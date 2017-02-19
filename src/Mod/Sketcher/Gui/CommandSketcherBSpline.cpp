@@ -329,7 +329,9 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand("IncreaseBSplineDegree");
+    bool nurbsized = false;
+    
+    openCommand("Convert to NURBS");
 
     for (unsigned int i=0; i<SubNames.size(); i++ ) {
         // only handle edges
@@ -340,10 +342,19 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.ConvertToNURBS(%d) ",
                                     selection[0].getFeatName(),GeoId);
+            
+            nurbsized = true;
         }
     }
-
-    commitCommand();
+    
+    if(!nurbsized) {
+        abortCommand();
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("None of the selected elements is an edge."));
+    }
+    else {
+        commitCommand();
+    }
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
