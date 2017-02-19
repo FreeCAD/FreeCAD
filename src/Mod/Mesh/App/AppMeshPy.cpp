@@ -315,7 +315,12 @@ private:
         std::string outputFileName(fileNamePy);
         PyMem_Free(fileNamePy);
 
-        MeshObject global_mesh;
+        // Construct list of objects to export before making the Exporter, so
+        // we don't get empty exports if the list can't be constructed.
+        Py::Sequence list(objects);
+        if (list.length() == 0) {
+            return Py::None();
+        }
 
         auto exportFormat( MeshOutput::GetFormat(outputFileName.c_str()) );
 
@@ -338,7 +343,6 @@ private:
             throw Py::Exception(Base::BaseExceptionFreeCADError, exStr.c_str());
         }
 
-        Py::Sequence list(objects);
         for (auto it : list) {
             PyObject *item = it.ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
