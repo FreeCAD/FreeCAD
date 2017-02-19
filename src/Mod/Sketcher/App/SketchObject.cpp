@@ -3438,14 +3438,14 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
 
                 if(it != controlpointgeoids.begin()) {
                     // if pole-weight newly created make it equal to first weight by default
-                    Sketcher::Constraint *newConstr2 = new Sketcher::Constraint();
+                    /*Sketcher::Constraint *newConstr2 = new Sketcher::Constraint();
                     newConstr2->Type = Sketcher::Equal;
                     newConstr2->First = currentgeoid+incrgeo+1;
                     newConstr2->FirstPos = Sketcher::none;
                     newConstr2->Second = controlpointgeoids[0];
                     newConstr2->SecondPos = Sketcher::none;
 
-                    icon.push_back(newConstr2);
+                    icon.push_back(newConstr2);*/
                 }
                 else {
                     controlpointgeoids[0] = currentgeoid+incrgeo+1;
@@ -3456,7 +3456,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         }
 
         // constraint the first weight to allow for seamless weight modification and proper visualization
-        if(!isfirstweightconstrained) {
+        /*if(!isfirstweightconstrained) {
             
             Sketcher::Constraint *newConstr = new Sketcher::Constraint();
             newConstr->Type = Sketcher::Radius;
@@ -3466,7 +3466,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
 
             icon.push_back(newConstr);
 
-        }
+        }*/
 
         this->addGeometry(igeo,true);
         this->addConstraints(icon);
@@ -3781,7 +3781,14 @@ bool SketchObject::ConvertToNURBS(int GeoId)
     Part::GeomBSplineCurve* bspline;
     
     try {
-         bspline = geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter());
+        bspline = geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter());
+
+        if(geo1->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())){
+            const Part::GeomArcOfConic * geoaoc = static_cast<const Part::GeomArcOfConic *>(geo1);
+
+            if(geoaoc->isReversed())
+                bspline->Reverse();
+        }
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
