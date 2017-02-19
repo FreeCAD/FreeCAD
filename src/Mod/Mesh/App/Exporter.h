@@ -71,9 +71,8 @@ class Exporter
         static std::string xmlEscape(const std::string &input);
 
         const Base::Type meshFeatId;
-        const Base::Type partFeatId;
         const Base::Type appPartId;
-        const Base::Type appDOGId;
+        const Base::Type groupExtensionId;
 };
 
 /// Creates a single mesh, in a file, from one or more objects
