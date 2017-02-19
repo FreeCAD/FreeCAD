@@ -328,9 +328,14 @@ private:
                           App::Application::Config()["BuildRevisionHash"];
 
             exporter.reset( new AmfExporter(outputFileName, meta, exportAmfCompressed) );
-        } else {
-            // TODO: How do we handle unknown exportFormats?
+
+        } else if (exportFormat != MeshIO::Undefined) {
             exporter.reset( new MergeExporter(outputFileName, exportFormat) );
+
+        } else {
+            std::string exStr("Can't determine mesh format from file name: '");
+            exStr += outputFileName + "'";
+            throw Py::Exception(Base::BaseExceptionFreeCADError, exStr.c_str());
         }
 
         Py::Sequence list(objects);
