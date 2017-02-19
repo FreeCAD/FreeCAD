@@ -345,6 +345,18 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
             
             nurbsized = true;
         }
+        else if (SubNames[i].size() > 12 && SubNames[i].substr(0,12) == "ExternalEdge") {
+            
+            int GeoId = - (std::atoi(SubNames[i].substr(12,4000).c_str()) + 2);
+            
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.ConvertToNURBS(%d) ",
+                                    selection[0].getFeatName(),GeoId);
+            
+            nurbsized = true;
+        }
+        
+        
     }
     
     if(!nurbsized) {
