@@ -19,6 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+from __future__ import print_function
 
 __title__ = "FemToolsZ88"
 __author__ = "Bernd Hahnebach"
@@ -101,7 +102,7 @@ class FemToolsZ88(FemTools.FemTools):
     def setup_z88(self, z88_binary=None):
         from platform import system
         z88_std_location = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88").GetBool("UseStandardZ88Location")
-        print z88_std_location
+        print(z88_std_location)
         if z88_std_location:
             if system() == "Windows":
                 z88_path = FreeCAD.getHomePath() + "bin/z88r.exe"
