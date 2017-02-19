@@ -47,9 +47,8 @@ using namespace MeshCore;
 
 Exporter::Exporter() :
     meshFeatId( Base::Type::fromName("Mesh::Feature") ),
-    partFeatId( Base::Type::fromName("Part::Feature") ),
-    appPartId( Base::Type::fromName("App::Part") ),
-    appDOGId( Base::Type::fromName("App::DocumentObjectGroup") )
+    appPartId( Base::Type::fromName("Part::Feature") ),
+    groupExtensionId( App::GroupExtension::getExtensionClassTypeId() )
 { }
 
 //static
@@ -68,13 +67,13 @@ bool Exporter::addAppGroup(App::DocumentObject *obj, float tol)
 {
     auto ret(true);
 
-    for (auto it : static_cast<App::Part *>(obj)->getOutList()) {
+    auto groupEx( obj->getExtensionByType<App::GroupExtension>() );
+    for (auto it : groupEx->Group.getValues()) {
         if (it->getTypeId().isDerivedFrom(meshFeatId)) {
             ret &= addMeshFeat(it);
-        } else if (it->getTypeId().isDerivedFrom(partFeatId)) {
+        } else if (it->getTypeId().isDerivedFrom(appPartId)) {
             ret &= addPartFeat(it, tol);
-        } else if ( it->getTypeId().isDerivedFrom(appPartId) ||
-                    it->getTypeId().isDerivedFrom(appDOGId) ) {
+        } else if (it->hasExtension(groupExtensionId)) {
             // Recurse
             ret &= addAppGroup(it, tol);
         }
@@ -87,10 +86,9 @@ bool Exporter::addObject(App::DocumentObject *obj, float tol)
 {
     if (obj->getTypeId().isDerivedFrom(meshFeatId)) {
         return addMeshFeat( obj );
-    } else if (obj->getTypeId().isDerivedFrom(partFeatId)) {
+    } else if (obj->getTypeId().isDerivedFrom(appPartId)) {
         return addPartFeat( obj, tol );
-    } else if ( obj->getTypeId().isDerivedFrom(appPartId) ||
-                obj->getTypeId().isDerivedFrom(appDOGId) ) {
+    } else if (obj->hasExtension(groupExtensionId)) {
         return addAppGroup( obj, tol );
     } else {
         Base::Console().Message(
