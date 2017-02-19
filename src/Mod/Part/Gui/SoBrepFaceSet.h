@@ -32,6 +32,7 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoReplacedElement.h>
 #include <vector>
+#include <memory>
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
@@ -141,17 +142,13 @@ private:
     std::vector<int32_t> index_array;
     std::vector<float> vertex_array;
 #endif
-
-    // Define some VBO pointer for the current mesh
-    static SbBool vboAvailable;
-    SbBool updateVbo;
-    uint32_t myvbo[2];
-    SbBool vboLoaded;
-    uint32_t indice_array;
-
     SbColor selectionColor;
     SbColor highlightColor;
     SoColorPacker colorpacker;
+
+    // Define some VBO pointer for the current mesh
+    class VBO;
+    std::unique_ptr<VBO> pimpl;
 };
 
 } // namespace PartGui
