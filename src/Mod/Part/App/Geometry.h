@@ -146,6 +146,8 @@ public:
     double curvatureAt(double u) const;
     double length(double u, double v) const;
     bool normalAt(double u, Base::Vector3d& dir) const;
+    
+    void Reverse(void);
 };
 
 class PartExport GeomBoundedCurve : public GeomCurve

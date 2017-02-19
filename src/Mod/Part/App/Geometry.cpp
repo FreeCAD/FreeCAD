@@ -511,6 +511,21 @@ double GeomCurve::length(double u, double v) const
     }
 }
 
+void GeomCurve::Reverse(void)
+{
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+
+    try {
+        if (!c.IsNull()) {
+            c->Reverse();
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::RuntimeError(e->GetMessageString());
+    }
+}
+
 
 // -------------------------------------------------
 
