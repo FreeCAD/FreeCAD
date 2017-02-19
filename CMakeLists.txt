@@ -196,6 +196,7 @@ if(APPLE)
             ${CMAKE_INSTALL_PREFIX}/${PACKAGE_NAME}.app/Contents)
         set(CMAKE_INSTALL_LIBDIR ${CMAKE_INSTALL_PREFIX}/lib)
     endif(FREECAD_CREATE_MAC_APP)
+    set(CMAKE_MACOSX_RPATH 1)
 endif(APPLE)
 
 OPTION(BUILD_FEM "Build the FreeCAD FEM module" ON)
