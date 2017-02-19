@@ -3768,18 +3768,18 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
 bool SketchObject::ConvertToNURBS(int GeoId)
 {
-    if (GeoId < 0 || GeoId > getHighestCurveIndex())
-        return -1;
+    if ( GeoId > getHighestCurveIndex() || ( GeoId < 0 && -GeoId > int(ExternalGeo.size())) || GeoId == -1 || GeoId == -2)
+        return false;
 
     const Part::Geometry *geo = getGeometry(GeoId);
 
     if(geo->getTypeId() == Part::GeomPoint::getClassTypeId())
-        return -1;
+        return false;
 
     const Part::GeomCurve *geo1 = static_cast<const Part::GeomCurve *>(geo);
 
     Part::GeomBSplineCurve* bspline;
-    
+
     try {
         bspline = geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter());
 
@@ -3798,14 +3798,22 @@ bool SketchObject::ConvertToNURBS(int GeoId)
 
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
-    std::vector< Part::Geometry * > newVals(vals);
+    std::vector< Part::Geometry * > newVals(vals);    
 
-    newVals[GeoId] = bspline;
+    if (GeoId < 0) { // external geometry
+        newVals.push_back(bspline);
+    }
+    else { // normal geometry
+
+        newVals[GeoId] = bspline;
+    }
 
     Geometry.setValues(newVals);
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
     
+    delete bspline;
+
     return true;
 
 }
