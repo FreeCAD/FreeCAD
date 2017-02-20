@@ -134,7 +134,6 @@ SET(FemScripts_SRCS
     FemTools.py
     FemToolsCcx.py
     FemToolsZ88.py
-    FemMaterial.py
     FemSelectionObserver.py
     ObjectsFem.py
     TestFem.py
