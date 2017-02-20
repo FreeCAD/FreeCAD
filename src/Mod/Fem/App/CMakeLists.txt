@@ -120,7 +120,6 @@ SET(FemScripts_SRCS
     importZ88O2Results.py
     Init.py
     InitGui.py
-    FemAnalysis.py
     FemBeamSection.py
     FemCommands.py
     FemConstraintSelfWeight.py

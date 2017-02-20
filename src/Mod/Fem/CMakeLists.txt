@@ -44,7 +44,6 @@ INSTALL(
         _TaskPanelShowResult.py
         TaskPanelShowResult.ui
 
-        FemAnalysis.py
         _CommandAnalysis.py
 
         FemMeshGmsh.py
