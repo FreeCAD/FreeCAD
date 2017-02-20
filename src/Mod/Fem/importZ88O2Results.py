@@ -79,8 +79,8 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
 
         for result_set in m['Results']:
             results_name = result_name_prefix + 'results'
-            import FemMechanicalResult
-            results = FemMechanicalResult.makeFemMechanicalResult(results_name)
+            import ObjectsFem
+            results = ObjectsFem.makeMechanicalResult(results_name)
             #results = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
             for m in analysis_object.Member:
                 if m.isDerivedFrom("Fem::FemMeshObject"):

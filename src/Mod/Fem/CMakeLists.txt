@@ -37,7 +37,6 @@ INSTALL(
         _CommandRunSolver.py
         _CommandControlSolver.py
 
-        FemMechanicalResult.py
         _FemMechanicalResult.py
         _ViewProviderFemMechanicalResult.py
         _CommandShowResult.py

@@ -86,8 +86,8 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
 
     # if properties can be added in FemVTKTools importCfdResult(), this file can be used for CFD workbench
     results_name = result_name_prefix + 'results'
-    from FemMechanicalResult import makeFemMechanicalResult
-    result_obj = makeFemMechanicalResult(results_name)
+    import ObjectsFem
+    result_obj = ObjectsFem.makeMechanicalResult(results_name)
     # result_obj = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
     Fem.readResult(filename, result_obj.Name)  # readResult always creates a new femmesh named ResultMesh
 

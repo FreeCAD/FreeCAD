@@ -108,8 +108,8 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                 results_name = result_name_prefix + 'time_' + str(step_time) + '_results'
             else:
                 results_name = result_name_prefix + 'results'
-            import FemMechanicalResult
-            results = FemMechanicalResult.makeFemMechanicalResult(results_name)
+            import ObjectsFem
+            results = ObjectsFem.makeMechanicalResult(results_name)
             for m in analysis_object.Member:
                 if m.isDerivedFrom("Fem::FemMeshObject"):
                     results.Mesh = m
