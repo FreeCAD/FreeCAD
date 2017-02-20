@@ -121,7 +121,6 @@ SET(FemScripts_SRCS
     Init.py
     InitGui.py
     FemCommands.py
-    FemConstraintSelfWeight.py
     FemGmshTools.py
     FemInputWriter.py
     FemInputWriterCcx.py
