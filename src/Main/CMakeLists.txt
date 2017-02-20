@@ -49,11 +49,16 @@ if(BUILD_GUI)
             RUNTIME DESTINATION bin
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         )
-    else(WIN32)
+    elseif(APPLE)
+        INSTALL(TARGETS FreeCADMain
+	    RUNTIME DESTINATION MacOS
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        )
+    else()
         INSTALL(TARGETS FreeCADMain 
             RUNTIME DESTINATION bin
         )
-    endif(WIN32)
+    endif()
 endif(BUILD_GUI)
 ######################## FreeCADMainCmd ########################
 
