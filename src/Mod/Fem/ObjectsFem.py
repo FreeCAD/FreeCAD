@@ -37,6 +37,29 @@ def makeAnalysis(name):
     return obj
 
 
+########## element geometry definitions ##########
+def makeBeamSection(sectiontype='Rectangular', width=10.0, height=25.0, name="BeamSection"):
+    '''makeBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    import _FemBeamSection
+    _FemBeamSection._FemBeamSection(obj)
+    sec_types = _FemBeamSection._FemBeamSection.known_beam_types
+    if sectiontype not in sec_types:
+        FreeCAD.Console.PrintError("Section type is not known. Set to " + sec_types[0] + " \n")
+        obj.SectionType = sec_types[0]
+    else:
+        obj.SectionType = sectiontype
+    obj.RectWidth = width
+    obj.RectHeight = height
+    obj.CircDiameter = height
+    obj.PipeDiameter = height
+    obj.PipeThickness = width
+    if FreeCAD.GuiUp:
+        import _ViewProviderFemBeamSection
+        _ViewProviderFemBeamSection._ViewProviderFemBeamSection(obj.ViewObject)
+    return obj
+
+
 ########## constraints ##########
 def makeConstraintBearing(name):
     '''makeConstraintBearing(name): makes a Fem ConstraintBearing object'''
