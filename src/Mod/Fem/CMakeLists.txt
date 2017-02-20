@@ -56,7 +56,6 @@ INSTALL(
         FemMesh2Mesh.py
         _CommandFEMMesh2Mesh.py
 
-        FemMeshGroup.py
         _FemMeshGroup.py
         _ViewProviderFemMeshGroup.py
         _CommandMeshGroup.py
