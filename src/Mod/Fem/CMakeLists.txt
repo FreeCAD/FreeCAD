@@ -45,7 +45,6 @@ INSTALL(
 
         _CommandAnalysis.py
 
-        FemMeshGmsh.py
         _FemMeshGmsh.py
         _ViewProviderFemMeshGmsh.py
         _CommandMeshGmshFromShape.py
