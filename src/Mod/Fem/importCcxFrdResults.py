@@ -192,6 +192,25 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                       .format(results.NodeNumbers, len(results.StressValues)))
                 results.NodeNumbers = list(stress.keys())
 
+            # Read Equivalent Plastic strain if they exist
+            try:
+                Peeq = result_set['peeq']
+                if len(Peeq) > 0:
+                    if len(Peeq.values()) != len(disp.values()):
+
+                        Pe = []
+                        Pe_extra_nodes = Peeq.values()
+                        nodes = len(disp.values())
+                        for i in range(nodes):
+                            Pe_value = Pe_extra_nodes[i]
+                            Pe.append(Pe_value)
+                        results.Peeq = Pe
+                    else:
+                        results.Peeq = Peeq.values()
+                    results.Time = step_time
+            except:
+                pass
+
             x_min, y_min, z_min = map(min, zip(*displacement))
             sum_list = map(sum, zip(*displacement))
             x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
@@ -259,12 +278,14 @@ def readResult(frd_input):
     mode_stress = {}
     mode_stressv = {}
     mode_strain = {}
+    mode_peeq = {}
     mode_temp = {}
 
     mode_disp_found = False
     nodes_found = False
     mode_stress_found = False
     mode_strain_found = False
+    mode_peeq_found = False
     mode_temp_found = False
     mode_time_found = False
     elements_found = False
@@ -499,6 +520,14 @@ def readResult(frd_input):
 #            strain_5 = float(line[61:73])
 #            strain_6 = float(line[73:85])
             mode_strain[elem] = FreeCAD.Vector(strain_1, strain_2, strain_3)
+
+        if line[5:7] == "PE":
+            mode_peeq_found = True
+        # we found an equivalent plastic strain line in the frd file
+        if mode_peeq_found and (line[1:3] == "-1"):
+            elem = int(line[4:13])
+            peeq = float(line[13:25])
+            mode_peeq[elem] = (peeq)
         # Check if we found a time step
         if line[4:10] == "1PSTEP":
             mode_time_found = True
@@ -524,6 +553,9 @@ def readResult(frd_input):
             if mode_strain_found:
                 mode_strain_found = False
 
+            if mode_peeq_found:
+                mode_peeq_found = False
+
             if mode_temp_found:
                 mode_temp_found = False
 
@@ -537,6 +569,7 @@ def readResult(frd_input):
                 mode_results['stress'] = mode_stress
                 mode_results['stressv'] = mode_stressv
                 mode_results['strainv'] = mode_strain
+                mode_results['peeq'] = mode_peeq
                 mode_results['temp'] = mode_temp
                 mode_results['time'] = timestep
                 results.append(mode_results)
@@ -552,6 +585,7 @@ def readResult(frd_input):
                 mode_results['stress'] = mode_stress
                 mode_results['stressv'] = mode_stressv
                 mode_results['strainv'] = mode_strain
+                mode_results['peeq'] = mode_peeq
                 mode_results['time'] = 0  # Dont return time if static
                 results.append(mode_results)
                 mode_disp = {}
