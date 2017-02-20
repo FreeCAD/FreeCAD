@@ -1612,6 +1612,14 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
 void CmdPartDesignMirrored::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+		App::Document *doc = getDocument();
+		PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
+			/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+
+		// No PartDesign feature without Body past FreeCAD 0.16
+		if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+			return;
+
     Gui::Command* cmd = this;
     auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
@@ -1666,6 +1674,14 @@ CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
 void CmdPartDesignLinearPattern::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+		App::Document *doc = getDocument();
+		PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
+			/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+
+		// No PartDesign feature without Body past FreeCAD 0.16
+		if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+			return;
+
     Gui::Command* cmd = this;
     auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
@@ -1722,6 +1738,14 @@ CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
 void CmdPartDesignPolarPattern::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+		App::Document *doc = getDocument();
+		PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
+			/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+
+		// No PartDesign feature without Body past FreeCAD 0.16
+		if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+			return;
+
     Gui::Command* cmd = this;
     auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
@@ -1819,8 +1843,13 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
 void CmdPartDesignMultiTransform::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
-    //if (!pcActiveBody) return;
+		App::Document *doc = getDocument();
+		PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
+			/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+
+		// No PartDesign feature without Body past FreeCAD 0.16
+		if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+			return;
 
     std::vector<App::DocumentObject*> features;
 
