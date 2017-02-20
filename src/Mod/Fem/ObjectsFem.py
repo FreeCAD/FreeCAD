@@ -37,6 +37,18 @@ def makeAnalysis(name):
     return obj
 
 
+########## solvers ##########
+def makeSolverCalculix(name="CalculiX"):
+    '''makeSolverCalculix(name): makes a Calculix solver object'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", name)
+    import _FemSolverCalculix
+    _FemSolverCalculix._FemSolverCalculix(obj)
+    if FreeCAD.GuiUp:
+        import _ViewProviderFemSolverCalculix
+        _ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix(obj.ViewObject)
+    return obj
+
+
 ########## element geometry definitions ##########
 def makeBeamSection(sectiontype='Rectangular', width=10.0, height=25.0, name="BeamSection"):
     '''makeBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''

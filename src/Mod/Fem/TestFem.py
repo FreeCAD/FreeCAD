@@ -28,7 +28,6 @@ import Fem
 import FemToolsCcx
 import FreeCAD
 import ObjectsFem
-import FemSolverCalculix
 import FemMaterial
 import csv
 import tempfile
@@ -86,7 +85,7 @@ class FemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_solver(self):
-        self.solver_object = FemSolverCalculix.makeFemSolverCalculix('CalculiX')
+        self.solver_object = ObjectsFem.makeSolverCalculix('CalculiX')
         self.solver_object.GeometricalNonlinearity = 'linear'
         self.solver_object.ThermoMechSteadyState = False
         self.solver_object.MatrixSolverType = 'default'
@@ -308,7 +307,7 @@ class TherMechFemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_solver(self):
-        self.solver_object = FemSolverCalculix.makeFemSolverCalculix('CalculiX')
+        self.solver_object = ObjectsFem.makeSolverCalculix('CalculiX')
         self.solver_object.AnalysisType = 'thermomech'
         self.solver_object.GeometricalNonlinearity = 'linear'
         self.solver_object.ThermoMechSteadyState = True
