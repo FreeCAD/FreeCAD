@@ -108,7 +108,6 @@ INSTALL(
         importCcxFrdResults.py
         FemInputWriterCcx.py
         FemToolsCcx.py
-        FemSolverCalculix.py
         _FemSolverCalculix.py
         _ViewProviderFemSolverCalculix.py
         _CommandSolverCalculix.py

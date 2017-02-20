@@ -133,7 +133,6 @@ SET(FemScripts_SRCS
     FemMeshGroup.py
     FemMeshRegion.py
     FemMeshTools.py
-    FemSolverCalculix.py
     FemSolverZ88.py
     FemTools.py
     FemToolsCcx.py

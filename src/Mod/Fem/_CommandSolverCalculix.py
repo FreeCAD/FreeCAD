@@ -50,13 +50,13 @@ class _CommandSolverCalculix(FemCommands):
             if hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
                 has_nonlinear_material_obj = True
         FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
-        FreeCADGui.addModule("FemSolverCalculix")
+        FreeCADGui.addModule("ObjectsFem")
         if has_nonlinear_material_obj:
-            FreeCADGui.doCommand("solver = FemSolverCalculix.makeFemSolverCalculix()")
+            FreeCADGui.doCommand("solver = ObjectsFem.makeSolverCalculix()")
             FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
             FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [solver]")
         else:
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemSolverCalculix.makeFemSolverCalculix()]")
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeSolverCalculix()]")
 
 
 FreeCADGui.addCommand('Fem_SolverCalculix', _CommandSolverCalculix())
