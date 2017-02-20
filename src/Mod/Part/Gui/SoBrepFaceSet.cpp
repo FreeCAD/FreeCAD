@@ -209,10 +209,12 @@ void SoBrepFaceSet::doAction(SoAction* action)
             for (int i=0; i<num;i++)
                 v[i] = i;
             this->selectionIndex.finishEditing();
+            PRIVATE(this)->updateVbo = true;
             return;
         }
         else if (selaction->getType() == Gui::SoSelectionElementAction::None) {
             this->selectionIndex.setNum(0);
+            PRIVATE(this)->updateVbo = true;
             return;
         }
 
