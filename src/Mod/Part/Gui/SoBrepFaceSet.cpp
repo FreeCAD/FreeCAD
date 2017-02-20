@@ -29,6 +29,7 @@
 #ifndef _PreComp_
 #include <float.h>
 #include <algorithm>
+#include <map>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -44,6 +45,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoPointSizeElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -51,6 +53,7 @@
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoContextHandler.h>
 #endif
 
 #include "SoBrepFaceSet.h"
@@ -75,21 +78,9 @@
 // Should come after glext.h to avoid warnings
 #include <Inventor/C/glue/gl.h>
 
-#if QT_VERSION < 0x50000
-#include <QGLContext>
-#else
-#include <QOpenGLContext>
-#endif
-
 
 using namespace PartGui;
 
-
-#if QT_VERSION < 0x50000
-#define _PROC(addr) QString::fromLatin1(addr)
-#else
-#define _PROC(addr) QByteArray(addr)
-#endif
 
 SO_NODE_SOURCE(SoBrepFaceSet);
 
@@ -97,48 +88,70 @@ SO_NODE_SOURCE(SoBrepFaceSet);
 
 class SoBrepFaceSet::VBO {
 public:
+    struct Buffer {
+        uint32_t myvbo[2];
+    };
+
     static SbBool vboAvailable;
     SbBool updateVbo;
-    uint32_t myvbo[2];
     SbBool vboLoaded;
     uint32_t indice_array;
+    std::map<uint32_t, Buffer> vbomap;
 
-    VBO() {
+    VBO()
+    {
+        SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
+
+        //SoBase::staticDataLock();
         static bool init = false;
         if (!init) {
             std::string ext = (const char*)(glGetString(GL_EXTENSIONS));
             vboAvailable = (ext.find("GL_ARB_vertex_buffer_object") != std::string::npos);
             init = true;
         }
-
-#ifdef FC_OS_WIN32
-#if QT_VERSION < 0x50000
-        const QGLContext* gl = QGLContext::currentContext();
-#else
-        QOpenGLContext* gl = QOpenGLContext::currentContext();
-#endif
-        PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)gl->getProcAddress(_PROC("glGenBuffersARB"));
-#endif
+        //SoBase::staticDataUnlock();
 
         updateVbo = false;
         vboLoaded = false;
         indice_array = 0;
-        if (vboAvailable) {
-            glGenBuffersARB(2, &myvbo[0]);
+    }
+    ~VBO()
+    {
+        SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
+
+        // schedule delete for all allocated GL resources
+        std::map<uint32_t, Buffer>::iterator it;
+        for (it = vbomap.begin(); it != vbomap.end(); ++it) {
+            void * ptr0 = (void*) ((uintptr_t) it->second.myvbo[0]);
+            SoGLCacheContextElement::scheduleDeleteCallback(it->first, VBO::vbo_delete, ptr0);
+            void * ptr1 = (void*) ((uintptr_t) it->second.myvbo[1]);
+            SoGLCacheContextElement::scheduleDeleteCallback(it->first, VBO::vbo_delete, ptr1);
         }
     }
-    ~VBO() {
+
+    static void context_destruction_cb(uint32_t context, void * userdata)
+    {
+        Buffer buffer;
+        VBO * self = static_cast<VBO*>(userdata);
+
+        std::map<uint32_t, Buffer>::iterator it = self->vbomap.find(context);
+        if (it != self->vbomap.end()) {
 #ifdef FC_OS_WIN32
-#if QT_VERSION < 0x50000
-        const QGLContext* gl = QGLContext::currentContext();
-#else
-        QOpenGLContext* gl = QOpenGLContext::currentContext();
+            const cc_glglue * glue = cc_glglue_instance((int) context);
+            PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
 #endif
-        if (!gl)
-            return;
-        PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)gl->getProcAddress(_PROC("glDeleteBuffersARB"));
-#endif
-        glDeleteBuffersARB(2, &myvbo[0]);
+            //cc_glglue_glDeleteBuffers(glue, buffer.size(), buffer.data());
+            buffer = it->second;
+            glDeleteBuffersARB(2, buffer.myvbo);
+            self->vbomap.erase(it);
+        }
+    }
+
+    static void vbo_delete(void * closure, uint32_t contextid)
+    {
+        const cc_glglue * glue = cc_glglue_instance((int) contextid);
+        GLuint id = (GLuint) ((uintptr_t) closure);
+        cc_glglue_glDeleteBuffers(glue, 1, &id);
     }
 };
 
@@ -469,6 +482,10 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if (hasVBO) {
         // get the VBO status of the viewer
         Gui::SoGLVBOActivatedElement::get(state, hasVBO);
+        //
+        //if (SoGLVBOElement::shouldCreateVBO(state, numindices)) {
+        //    this->startVertexArray(action, coords, normals, false, false);
+        //}
     }
     renderShape(action, hasVBO, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
         pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
@@ -972,6 +989,21 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
         uint32_t RGBA,R,G,B,A;
         float Rf,Gf,Bf,Af;
 
+        VBO::Buffer buf;
+        uint32_t contextId = action->getCacheContext();
+        std::map<uint32_t, VBO::Buffer>::iterator it = PRIVATE(this)->vbomap.find(contextId);
+        if (it == PRIVATE(this)->vbomap.end()) {
+#ifdef FC_OS_WIN32
+            const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
+            PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
+#endif
+            glGenBuffersARB(2, buf.myvbo);
+            PRIVATE(this)->vbomap[contextId] = buf;
+        }
+        else {
+            buf = it->second;
+        }
+
         // vbo loaded is defining if we must pre-load data into the VBO. When the variable is set to 0
         // it means that the VBO has not been initialized
         // updateVbo is tracking the need to update the content of the VBO which act as a buffer within
@@ -988,8 +1020,8 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
                 PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glBindBufferARB");
                 PFNGLMAPBUFFERARBPROC glMapBufferARB = (PFNGLMAPBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glMapBufferARB");
 #endif
-                glBindBufferARB(GL_ARRAY_BUFFER_ARB, PRIVATE(this)->myvbo[0]);
-                glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, PRIVATE(this)->myvbo[1]);
+                glBindBufferARB(GL_ARRAY_BUFFER_ARB, buf.myvbo[0]);
+                glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, buf.myvbo[1]);
 
                 vertex_array=(float*)glMapBufferARB(GL_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
                 index_array=(GLuint *)glMapBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
@@ -1198,10 +1230,10 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
                 PFNGLBUFFERDATAARBPROC glBufferDataARB = (PFNGLBUFFERDATAARBPROC)cc_glglue_getprocaddress(glue, "glBufferDataARB");
 #endif
 
-                glBindBufferARB(GL_ARRAY_BUFFER_ARB, PRIVATE(this)->myvbo[0]);
+                glBindBufferARB(GL_ARRAY_BUFFER_ARB, buf.myvbo[0]);
                 glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float) * indice , vertex_array, GL_DYNAMIC_DRAW_ARB);
 
-                glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, PRIVATE(this)->myvbo[1]);
+                glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, buf.myvbo[1]);
                 glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER_ARB, sizeof(GLuint) * PRIVATE(this)->indice_array , &index_array[0], GL_DYNAMIC_DRAW_ARB);
 
                 glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
@@ -1228,8 +1260,8 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
         PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
 #endif
 
-        glBindBufferARB(GL_ARRAY_BUFFER_ARB, PRIVATE(this)->myvbo[0]);
-        glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, PRIVATE(this)->myvbo[1]);
+        glBindBufferARB(GL_ARRAY_BUFFER_ARB, buf.myvbo[0]);
+        glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, buf.myvbo[1]);
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_COLOR_ARRAY);
