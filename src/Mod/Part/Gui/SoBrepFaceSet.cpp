@@ -173,16 +173,19 @@ void SoBrepFaceSet::doAction(SoAction* action)
         Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
         this->selectionColor = selaction->getColor();
         if (selaction->getType() == Gui::SoSelectionElementAction::All) {
+	    puts("Color edited");
             int num = this->partIndex.getNum();
             this->selectionIndex.setNum(num);
             int32_t* v = this->selectionIndex.startEditing();
             for (int i=0; i<num;i++)
                 v[i] = i;
             this->selectionIndex.finishEditing();
+	    this->updateVbo=true;
             return;
         }
         else if (selaction->getType() == Gui::SoSelectionElementAction::None) {
             this->selectionIndex.setNum(0);
+	    this->updateVbo=true;
             return;
         }
 
