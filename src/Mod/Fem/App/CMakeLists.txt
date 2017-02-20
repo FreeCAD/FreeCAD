@@ -126,7 +126,6 @@ SET(FemScripts_SRCS
     FemInputWriterCcx.py
     FemInputWriterZ88.py
     FemMesh2Mesh.py
-    FemMeshRegion.py
     FemMeshTools.py
     FemTools.py
     FemToolsCcx.py

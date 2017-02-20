@@ -277,6 +277,23 @@ def makeMeshGroup(base_mesh, use_label=False, name="FEMMeshGroup"):
     return obj
 
 
+def makeMeshRegion(base_mesh, element_length=0.0, name="FEMMeshRegion"):
+    '''makeMeshRegion([length], [name]): creates a  FEM mesh region object to define properties for a regon of a FEM mesh'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    import _FemMeshRegion
+    _FemMeshRegion._FemMeshRegion(obj)
+    obj.CharacteristicLength = element_length
+    # obj.BaseMesh = base_mesh
+    # App::PropertyLinkList does not support append, we will use a temporary list to append the mesh region obj. to the list
+    tmplist = base_mesh.MeshRegionList
+    tmplist.append(obj)
+    base_mesh.MeshRegionList = tmplist
+    if FreeCAD.GuiUp:
+        import _ViewProviderFemMeshRegion
+        _ViewProviderFemMeshRegion._ViewProviderFemMeshRegion(obj.ViewObject)
+    return obj
+
+
 '''
 # print supportedTypes
 App.newDocument()
