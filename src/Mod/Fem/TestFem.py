@@ -27,7 +27,7 @@
 import Fem
 import FemToolsCcx
 import FreeCAD
-import FemAnalysis
+import ObjectsFem
 import FemSolverCalculix
 import FemMaterial
 import csv
@@ -82,7 +82,7 @@ class FemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_analysis(self):
-        self.analysis = FemAnalysis.makeFemAnalysis('Analysis')
+        self.analysis = ObjectsFem.makeAnalysis('Analysis')
         self.active_doc.recompute()
 
     def create_new_solver(self):
@@ -304,7 +304,7 @@ class TherMechFemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_analysis(self):
-        self.analysis = FemAnalysis.makeFemAnalysis('Analysis')
+        self.analysis = ObjectsFem.makeAnalysis('Analysis')
         self.active_doc.recompute()
 
     def create_new_solver(self):
