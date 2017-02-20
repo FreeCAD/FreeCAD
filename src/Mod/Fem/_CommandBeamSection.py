@@ -45,8 +45,8 @@ class _CommandBeamSection(FemCommands):
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FemBeamSection")
-        FreeCADGui.addModule("FemBeamSection")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemBeamSection.makeFemBeamSection()]")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeBeamSection()]")
 
 
 FreeCADGui.addCommand('Fem_BeamSection', _CommandBeamSection())
