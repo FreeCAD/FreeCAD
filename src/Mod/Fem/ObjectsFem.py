@@ -31,7 +31,7 @@ import FreeCAD
 
 
 ########## analysis ##########
-def makeAnalysis(name):
+def makeAnalysis(name="Analysis"):
     '''makeAnalysis(name): makes a Fem Analysis object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
     return obj
@@ -96,7 +96,7 @@ def makeShellThickness(thickness=20.0, name="ShellThickness"):
 
 
 ########## materials ##########
-def makeMaterialSolid(name):
+def makeMaterialSolid(name="MechanicalSolidMaterial"):
     '''makeMaterialSolid(name): makes an FEM Material for solid'''
     obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
     import _FemMaterial
@@ -109,7 +109,7 @@ def makeMaterialSolid(name):
     return obj
 
 
-def makeMaterialFluid(name):
+def makeMaterialFluid(name="FluidMaterial"):
     '''makeMaterialFluid(name): makes an FEM Material for fluid'''
     obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
     import _FemMaterial
@@ -147,79 +147,79 @@ def makeMechanicalResult(name="MechanicalResult"):
 
 
 ########## constraints ##########
-def makeConstraintBearing(name):
+def makeConstraintBearing(name="ConstraintBearing"):
     '''makeConstraintBearing(name): makes a Fem ConstraintBearing object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintBearing", name)
     return obj
 
 
-def makeConstraintContact(name):
+def makeConstraintContact(name="ConstraintContact"):
     '''makeConstraintContact(name): makes a Fem ConstraintContact object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintContact", name)
     return obj
 
 
-def makeConstraintDisplacement(name):
+def makeConstraintDisplacement(name="ConstraintDisplacement"):
     '''makeConstraintDisplacement(name): makes a Fem ConstraintDisplacement object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintDisplacement", name)
     return obj
 
 
-def makeConstraintFixed(name):
+def makeConstraintFixed(name="ConstraintFixed"):
     '''makeConstraintFixed(name): makes a Fem ConstraintFixed object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintFixed", name)
     return obj
 
 
-def makeConstraintFluidBoundary(name):
+def makeConstraintFluidBoundary(name="ConstraintFluidBoundary"):
     '''makeConstraintFluidBoundary(name): makes a Fem ConstraintForce object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintForce", name)
     return obj
 
 
-def makeConstraintForce(name):
+def makeConstraintForce(name="ConstraintForce"):
     '''makeConstraintForce(name): makes a Fem ConstraintForce object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintForce", name)
     return obj
 
 
-def makeConstraintGear(name):
+def makeConstraintGear(name="ConstraintGear"):
     '''makeConstraintGear(name): makes a Fem ConstraintGear object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintGear", name)
     return obj
 
 
-def makeConstraintHeatflux(name):
+def makeConstraintHeatflux(name="ConstraintHeatflux"):
     '''makeConstraintHeatflux(name): makes a Fem ConstraintHeatflux object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintHeatflux", name)
     return obj
 
 
-def makeConstraintInitialTemperature(name):
+def makeConstraintInitialTemperature(name="ConstraintInitialTemperature"):
     '''makeConstraintInitialTemperature(name): makes a Fem ConstraintInitialTemperature object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintInitialTemperature", name)
     return obj
 
 
-def makeConstraintPlaneRotation(name):
+def makeConstraintPlaneRotation(name="ConstraintPlaneRotation"):
     '''makeConstraintPlaneRotation(name): makes a Fem ConstraintPlaneRotation object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintPlaneRotation", name)
     return obj
 
 
-def makeConstraintPressure(name):
+def makeConstraintPressure(name="ConstraintPressure"):
     '''makeConstraintPressure(name): makes a Fem ConstraintPressure object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintPressure", name)
     return obj
 
 
-def makeConstraintPulley(name):
+def makeConstraintPulley(name="ConstraintPulley"):
     '''makeConstraintPulley(name): makes a Fem ConstraintPulley object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintPulley", name)
     return obj
 
 
-def makeConstraintSelfWeight(name="FemConstraintSelfWeight"):
+def makeConstraintSelfWeight(name="ConstraintSelfWeight"):
     '''makeConstraintSelfWeight([name]): creates an self weight object to define a gravity load'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
     import _FemConstraintSelfWeight
@@ -230,20 +230,20 @@ def makeConstraintSelfWeight(name="FemConstraintSelfWeight"):
     return obj
 
 
-def makeConstraintTemperature(name):
+def makeConstraintTemperature(name="ConstraintTemperature"):
     '''makeConstraintTemperature(name): makes a Fem ConstraintTemperature object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintTemperature", name)
     return obj
 
 
-def makeConstraintTransform(name):
+def makeConstraintTransform(name="ConstraintTransform"):
     '''makeConstraintTransform(name): makes a Fem ConstraintTransform object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintTransform", name)
     return obj
 
 
 ########## meshes ##########
-def makeMeshShapeNetgenObject(name):
+def makeMeshShapeNetgenObject(name="MeshShapeNetgenObject"):
     '''makeMeshShapeNetgenObject(name): makes a Fem MeshShapeNetgenObject object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshShapeNetgenObject", name)
     return obj
