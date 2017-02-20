@@ -218,7 +218,7 @@ void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch,
         sf = vp->getScaleFactor();
 
         constr->LabelDistance = 2. * sf;
-        vp->draw(); // Redraw
+        vp->draw(false,false); // Redraw
     }
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -4565,7 +4565,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                 Sketcher::Constraint *constr = ConStr[indexConstr + i];
                 constr->LabelDistance = 2. * sf;
             }
-            vp->draw(); // Redraw
+            vp->draw(false,false); // Redraw
         }
         
         commitNeeded=true;
@@ -4643,7 +4643,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                 Sketcher::Constraint *constr = ConStr[indexConstr + i];
                 constr->LabelDistance = 2. * sf;
             }
-            vp->draw(); // Redraw
+            vp->draw(false,false); // Redraw
         }
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");

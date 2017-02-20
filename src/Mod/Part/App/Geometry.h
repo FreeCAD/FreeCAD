@@ -139,9 +139,15 @@ public:
     Base::Vector3d pointAtParameter(double u) const;
     Base::Vector3d firstDerivativeAtParameter(double u) const;
     Base::Vector3d secondDerivativeAtParameter(double u) const;
-    bool normal(double u, gp_Dir& dir) const;
     bool closestParameter(const Base::Vector3d& point, double &u) const;
     bool closestParameterToBasicCurve(const Base::Vector3d& point, double &u) const;
+    double getFirstParameter() const;
+    double getLastParameter() const;
+    double curvatureAt(double u) const;
+    double length(double u, double v) const;
+    bool normalAt(double u, Base::Vector3d& dir) const;
+    
+    void Reverse(void);
 };
 
 class PartExport GeomBoundedCurve : public GeomCurve
@@ -224,6 +230,8 @@ public:
     bool join(const Handle_Geom_BSplineCurve&);
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
+    
+    void increaseDegree(const double Degree);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;

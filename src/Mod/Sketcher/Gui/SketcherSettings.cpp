@@ -122,6 +122,7 @@ void SketcherSettings::saveSettings()
 
     // Sketch editing
     ui->EditSketcherFontSize->onSave();
+    ui->SegmentsPerGeometry->onSave();
     ui->dialogOnDistanceConstraint->onSave();
     ui->continueMode->onSave();
     ui->checkBoxAdvancedSolverTaskBox->onSave();
@@ -164,6 +165,7 @@ void SketcherSettings::loadSettings()
 
     // Sketch editing
     ui->EditSketcherFontSize->onRestore();
+    ui->SegmentsPerGeometry->onRestore();
     ui->dialogOnDistanceConstraint->onRestore();
     ui->continueMode->onRestore();
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
