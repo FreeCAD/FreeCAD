@@ -51,6 +51,9 @@ class _FemMechanicalResult():
         # does not show up in propertyEditor of combiView
         obj.addProperty("App::PropertyVectorList", "StrainVectors", "Fem", "List of strain vectors", True)
 
+        # does not show up in propertyEditor of combiView
+        obj.addProperty("App::PropertyFloatList", "Peeq", "Fem", "List of equivalent plastic strain values", True)
+
         # readonly in propertyEditor of combiView
         obj.addProperty("App::PropertyFloatList", "DisplacementLengths", "Fem", "List of displacement lengths", True)
 
