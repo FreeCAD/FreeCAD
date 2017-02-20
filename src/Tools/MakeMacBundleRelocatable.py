@@ -160,7 +160,8 @@ def create_dep_nodes(install_names, search_paths):
                 path = install_path
 
         if not path:
-            raise LibraryNotFound(lib_name + "not found in given paths")
+            logging.error("Unable to find LC_DYLD_LOAD entry: " + lib)
+            raise LibraryNotFound(lib_name + " not found in given search paths")
 
         nodes.append(Node(lib_name, path))
 
@@ -190,9 +191,9 @@ def should_visit(prefix, path_filters, path):
         s_filter = pf.strip('/').split('/')
         length = len(s_filter)
         matched = 0
-	for i in range(len(s_path)):
-	    if s_path[i] == s_filter[i]:
-		matched += 1
+        for i in range(len(s_path)):
+            if s_path[i] == s_filter[i]:
+                matched += 1
             if matched == length or matched == len(s_path):
                 return True
 
@@ -234,7 +235,12 @@ def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
                 if not graph.in_graph(node):
                     graph.add_node(node)
 
-                deps = create_dep_nodes(list_install_names(k2), s_paths)
+                try:
+                   deps = create_dep_nodes(list_install_names(k2), s_paths)
+                except:
+                   logging.error("Failed to resolve dependency in " + k2)
+                   raise
+
                 for d in deps:
                     if d.name not in node.children:
                         node.children.append(d.name)
@@ -256,15 +262,12 @@ def copy_into_bundle(graph, node, bundle_path):
         target = os.path.join(bundle_path, "lib", node.name)
         logging.info("Bundling {}".format(source))
 
-        check_output([ "cp", "-L", source, target ])
+        check_call([ "cp", "-L", source, target ])
 
         node.path = os.path.dirname(target)
 
         #fix permissions
-        check_output([ "chmod", "a+w", target ])
-
-        #Change the loader ID_DYLIB to a bundle-local name (i.e. non-absolute)
-        check_output([ "install_name_tool", "-id", node.name, target ])
+        check_call([ "chmod", "a+w", target ])
 
 def get_rpaths(library):
     "Returns a list of rpaths specified within library"
@@ -290,47 +293,53 @@ def get_rpaths(library):
     return rpaths
 
 def add_rpaths(graph, node, bundle_path):
-    if node.children:
-        lib = os.path.join(node.path, node.name)
-        if in_bundle(lib, bundle_path):
-            install_names = list_install_names(lib)
-            rpaths = []
+    lib = os.path.join(node.path, node.name)
 
-            logging.debug(lib)
-            for install_name in install_names:
-                name = os.path.basename(install_name)
-                #change install names to use rpaths
-                logging.debug(" ~ " + name + " => @rpath/" + name)
-                check_call([ "install_name_tool", "-change",
-                    install_name, "@rpath/" + name, lib ])
+    if in_bundle(lib, bundle_path):
+       logging.debug(lib)
 
-                dep_node = node.children[node.children.index(name)]
-                rel_path = os.path.relpath(graph.get_node(dep_node).path,
+       # Remove existing rpaths that could take precedence
+       for rpath in get_rpaths(lib):
+           logging.debug(" - rpath: " + rpath)
+           check_call(["install_name_tool", "-delete_rpath", rpath, lib])
+
+       if node.children:
+          install_names = list_install_names(lib)
+          rpaths = []
+
+
+          for install_name in install_names:
+              name = os.path.basename(install_name)
+              #change install names to use rpaths
+              logging.debug(" ~ rpath: " + name + " => @rpath/" + name)
+              check_call([ "install_name_tool", "-change",
+                           install_name, "@rpath/" + name, lib ])
+
+              dep_node = node.children[node.children.index(name)]
+              rel_path = os.path.relpath(graph.get_node(dep_node).path,
                                            node.path)
-                rpath = ""
-                if rel_path == ".":
-                    rpath = "@loader_path/"
-                else:
-                    rpath = "@loader_path/" + rel_path + "/"
-                if rpath not in rpaths:
-                    rpaths.append(rpath)
+              rpath = ""
+              if rel_path == ".":
+                 rpath = "@loader_path/"
+              else:
+                 rpath = "@loader_path/" + rel_path + "/"
+              if rpath not in rpaths:
+                 rpaths.append(rpath)
 
-            for rpath in get_rpaths(lib):
-                # Remove existing rpaths because the libraries copied into the
-                # bundle will point to a location outside the bundle
-                logging.debug(" - rpath: " + rpath)
-                check_output(["install_name_tool", "-delete_rpath", rpath, lib])
+          for rpath in rpaths:
+              # Ensure that lib has rpath set
+              if not rpath in get_rpaths(lib):
+                 logging.debug(" + rpath: " + rpath)
+                 check_call([ "install_name_tool", "-add_rpath", rpath, lib ])
 
-            for rpath in rpaths:
-                # Ensure that lib has rpath set
-                if not rpath in get_rpaths(lib):
-                    logging.debug(" + rpath: " + rpath + " to library " + lib)
-                    check_output([ "install_name_tool",
-                                   "-add_rpath", rpath, lib ])
+def change_libid(graph, node, bundle_path):
+    lib = os.path.join(node.path, node.name)
 
-            #Change the loader ID_DYLIB to a bundle-local name (i.e. non-absolute)
-            logging.debug(" ~ id: " + node.name)
-            check_output([ "install_name_tool", "-id", node.name, lib ])
+    logging.debug(lib)
+
+    if in_bundle(lib, bundle_path):
+       logging.debug(" ~ id: " + node.name)
+       check_call([ "install_name_tool", "-id", node.name, lib ])
 
 def print_child(graph, node, path):
     logging.debug("  >" + str(node))
@@ -354,7 +363,7 @@ def main():
 
     #change to level to logging.DEBUG for diagnostic messages
     logging.basicConfig(stream=sys.stdout, level=logging.INFO,
-                        format="%(asctime)s %(levelname)s: %(message)s" )
+                        format="-- %(message)s" )
 
     logging.info("Analyzing bundle dependencies...")
     build_deps_graph(graph, bundle_path, dir_filter, search_paths)
@@ -367,6 +376,9 @@ def main():
 
     logging.info("Updating dynamic loader paths...")
     graph.visit(add_rpaths, [bundle_path])
+
+    logging.info("Setting bundled library IDs...")
+    graph.visit(change_libid, [bundle_path])
 
     logging.info("Done.")
 

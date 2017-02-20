@@ -144,7 +144,7 @@ before_install:
        fi
 
        export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON -DFREECAD_USE_EXTERNAL_PIVY=ON -DFREECAD_CREATE_MAC_APP=ON"
-       export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/bin/FreeCAD"
+       export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/MacOS/FreeCAD"
        ;;
 
    *)
