@@ -95,6 +95,33 @@ def makeShellThickness(thickness=20.0, name="ShellThickness"):
     return obj
 
 
+########## materials ##########
+def makeMaterialSolid(name):
+    '''makeMaterialSolid(name): makes an FEM Material for solid'''
+    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
+    import _FemMaterial
+    _FemMaterial._FemMaterial(obj)
+    obj.Category = 'Solid'
+    if FreeCAD.GuiUp:
+        import _ViewProviderFemMaterial
+        _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
+    # FreeCAD.ActiveDocument.recompute()
+    return obj
+
+
+def makeMaterialFluid(name):
+    '''makeMaterialFluid(name): makes an FEM Material for fluid'''
+    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
+    import _FemMaterial
+    _FemMaterial._FemMaterial(obj)
+    obj.Category = 'Fluid'
+    if FreeCAD.GuiUp:
+        import _ViewProviderFemMaterial
+        _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
+    # FreeCAD.ActiveDocument.recompute()
+    return obj
+
+
 ########## results ##########
 def makeMechanicalResult(name="MechanicalResult"):
     '''makeMechanicalResult(name): creates an mechanical object result to hold FEM results'''

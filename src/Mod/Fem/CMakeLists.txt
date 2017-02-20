@@ -87,7 +87,6 @@ INSTALL(
         _ViewProviderFemConstraintSelfWeight.py
         _CommandConstraintSelfWeight.py
 
-        FemMaterial.py
         _FemMaterial.py
         _ViewProviderFemMaterial.py
         _CommandMaterialSolid.py
