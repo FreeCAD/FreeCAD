@@ -119,7 +119,6 @@ INSTALL(
         importZ88O2Results.py
         FemInputWriterZ88.py
         FemToolsZ88.py
-        FemSolverZ88.py
         _FemSolverZ88.py
         _ViewProviderFemSolverZ88.py
         _CommandSolverZ88.py
