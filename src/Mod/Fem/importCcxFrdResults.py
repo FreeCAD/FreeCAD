@@ -70,8 +70,8 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
     if(len(m['Nodes']) > 0):
         if analysis is None:
             analysis_name = os.path.splitext(os.path.basename(filename))[0]
-            import FemAnalysis
-            analysis_object = FemAnalysis.makeFemAnalysis('Analysis')
+            import ObjectsFem
+            analysis_object = ObjectsFem.makeAnalysis('Analysis')
             analysis_object.Label = analysis_name
         else:
             analysis_object = analysis  # see if statement few lines later, if not analysis -> no FemMesh object is created !

@@ -30,6 +30,13 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 
 
+########## analysis ##########
+def makeAnalysis(name):
+    '''makeAnalysis(name): makes a Fem Analysis object'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
+    return obj
+
+
 ########## constraints ##########
 def makeConstraintBearing(name):
     '''makeConstraintBearing(name): makes a Fem ConstraintBearing object'''
