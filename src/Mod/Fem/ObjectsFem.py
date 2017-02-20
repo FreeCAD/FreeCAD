@@ -95,6 +95,18 @@ def makeShellThickness(thickness=20.0, name="ShellThickness"):
     return obj
 
 
+########## results ##########
+def makeMechanicalResult(name="MechanicalResult"):
+    '''makeMechanicalResult(name): creates an mechanical object result to hold FEM results'''
+    obj = FreeCAD.ActiveDocument.addObject('Fem::FemResultObjectPython', name)
+    import _FemMechanicalResult
+    _FemMechanicalResult._FemMechanicalResult(obj)
+    if FreeCAD.GuiUp:
+        from _ViewProviderFemMechanicalResult import _ViewProviderFemMechanicalResult
+        _ViewProviderFemMechanicalResult(obj.ViewObject)
+    return obj
+
+
 ########## constraints ##########
 def makeConstraintBearing(name):
     '''makeConstraintBearing(name): makes a Fem ConstraintBearing object'''
