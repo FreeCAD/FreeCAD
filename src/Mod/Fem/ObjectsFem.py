@@ -249,6 +249,17 @@ def makeMeshShapeNetgenObject(name):
     return obj
 
 
+def makeMeshGmsh(name="FEMMeshGMSH"):
+    '''makeMeshGmsh(name): makes a GMSH FEM mesh object'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshObjectPython", name)
+    import _FemMeshGmsh
+    _FemMeshGmsh._FemMeshGmsh(obj)
+    if FreeCAD.GuiUp:
+        import _ViewProviderFemMeshGmsh
+        _ViewProviderFemMeshGmsh._ViewProviderFemMeshGmsh(obj.ViewObject)
+    return obj
+
+
 '''
 # print supportedTypes
 App.newDocument()

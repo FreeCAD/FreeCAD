@@ -50,8 +50,8 @@ class _CommandMeshGmshFromShape(FemCommands):
         if (len(sel) == 1):
             if(sel[0].isDerivedFrom("Part::Feature")):
                 mesh_obj_name = sel[0].Name + "_Mesh"
-                FreeCADGui.addModule("FemMeshGmsh")
-                FreeCADGui.doCommand("FemMeshGmsh.makeFemMeshGmsh('" + mesh_obj_name + "')")
+                FreeCADGui.addModule("ObjectsFem")
+                FreeCADGui.doCommand("ObjectsFem.makeMeshGmsh('" + mesh_obj_name + "')")
                 FreeCADGui.doCommand("App.ActiveDocument.ActiveObject.Part = App.ActiveDocument." + sel[0].Name)
                 if FemGui.getActiveAnalysis():
                     FreeCADGui.addModule("FemGui")
