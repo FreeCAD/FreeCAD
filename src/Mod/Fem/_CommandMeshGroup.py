@@ -45,12 +45,12 @@ class _CommandMeshGroup(FemCommands):
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FemMeshGroup")
-        FreeCADGui.addModule("FemMeshGroup")
+        FreeCADGui.addModule("ObjectsFem")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
             sobj = sel[0]
             if len(sel) == 1 and hasattr(sobj, "Proxy") and sobj.Proxy.Type == "FemMeshGmsh":
-                FreeCADGui.doCommand("FemMeshGroup.makeFemMeshGroup(App.ActiveDocument." + sobj.Name + ")")
+                FreeCADGui.doCommand("ObjectsFem.makeMeshGroup(App.ActiveDocument." + sobj.Name + ")")
 
         FreeCADGui.Selection.clearSelection()
 

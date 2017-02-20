@@ -260,6 +260,23 @@ def makeMeshGmsh(name="FEMMeshGMSH"):
     return obj
 
 
+def makeMeshGroup(base_mesh, use_label=False, name="FEMMeshGroup"):
+    '''makeMeshGroup([length], [name]): creates a  FEM mesh region object to define properties for a regon of a FEM mesh'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    import _FemMeshGroup
+    _FemMeshGroup._FemMeshGroup(obj)
+    obj.UseLabel = use_label
+    # obj.BaseMesh = base_mesh
+    # App::PropertyLinkList does not support append, we will use a temporary list to append the mesh group obj. to the list
+    tmplist = base_mesh.MeshGroupList
+    tmplist.append(obj)
+    base_mesh.MeshGroupList = tmplist
+    if FreeCAD.GuiUp:
+        import _ViewProviderFemMeshGroup
+        _ViewProviderFemMeshGroup._ViewProviderFemMeshGroup(obj.ViewObject)
+    return obj
+
+
 '''
 # print supportedTypes
 App.newDocument()
