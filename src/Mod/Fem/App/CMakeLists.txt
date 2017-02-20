@@ -125,7 +125,6 @@ SET(FemScripts_SRCS
     FemInputWriter.py
     FemInputWriterCcx.py
     FemInputWriterZ88.py
-    FemMaterialMechanicalNonlinear.py
     FemMesh2Mesh.py
     FemMeshGmsh.py
     FemMeshGroup.py
