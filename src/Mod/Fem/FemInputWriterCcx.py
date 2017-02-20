@@ -844,7 +844,10 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         else:
             f.write('U\n')
         f.write('*EL FILE\n')
-        f.write('S, E\n')
+        if self.solver_obj.MaterialNonlinearity == 'nonlinear':
+            f.write('S, E, PEEQ\n')
+        else:
+            f.write('S, E\n')
         f.write('** outputs --> dat file\n')
         f.write('*NODE PRINT , NSET=Nall \n')
         f.write('U \n')
