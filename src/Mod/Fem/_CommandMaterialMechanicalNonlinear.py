@@ -57,9 +57,9 @@ class _CommandMaterialMechanicalNonlinear(FemCommands):
                     break
             if allow_nonlinear_material:
                 string_lin_mat_obj = "App.ActiveDocument.getObject('" + lin_mat_obj.Name + "')"
-                command_to_run = "FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemMaterialMechanicalNonlinear.makeFemMaterialMechanicalNonlinear(" + string_lin_mat_obj + ")]"
+                command_to_run = "FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeMaterialMechanicalNonlinear(" + string_lin_mat_obj + ")]"
                 FreeCAD.ActiveDocument.openTransaction("Create FemMaterialMechanicalNonlinear")
-                FreeCADGui.addModule("FemMaterialMechanicalNonlinear")
+                FreeCADGui.addModule("ObjectsFem")
                 FreeCADGui.doCommand(command_to_run)
             # set the material nonlinear property of the solver to nonlinear if only one solver is available and if this solver is a CalculiX solver
             solver_object = None

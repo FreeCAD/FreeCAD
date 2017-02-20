@@ -122,6 +122,18 @@ def makeMaterialFluid(name):
     return obj
 
 
+def makeMaterialMechanicalNonlinear(base_material, name="MechanicalMaterialNonlinear"):
+    '''makeMaterialMechanicalNonlinear(base_material, [name]): creates an nonlinear material object'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    import _FemMaterialMechanicalNonlinear
+    _FemMaterialMechanicalNonlinear._FemMaterialMechanicalNonlinear(obj)
+    obj.LinearBaseMaterial = base_material
+    if FreeCAD.GuiUp:
+        import _ViewProviderFemMaterialMechanicalNonlinear
+        _ViewProviderFemMaterialMechanicalNonlinear._ViewProviderFemMaterialMechanicalNonlinear(obj.ViewObject)
+    return obj
+
+
 ########## results ##########
 def makeMechanicalResult(name="MechanicalResult"):
     '''makeMechanicalResult(name): creates an mechanical object result to hold FEM results'''

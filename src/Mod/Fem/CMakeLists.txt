@@ -94,7 +94,6 @@ INSTALL(
         _TaskPanelFemMaterial.py
         TaskPanelFemMaterial.ui
 
-        FemMaterialMechanicalNonlinear.py
         _FemMaterialMechanicalNonlinear.py
         _ViewProviderFemMaterialMechanicalNonlinear.py
         _CommandMaterialMechanicalNonlinear.py
