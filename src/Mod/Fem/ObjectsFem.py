@@ -168,6 +168,17 @@ def makeConstraintPulley(name):
     return obj
 
 
+def makeConstraintSelfWeight(name="FemConstraintSelfWeight"):
+    '''makeConstraintSelfWeight([name]): creates an self weight object to define a gravity load'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    import _FemConstraintSelfWeight
+    _FemConstraintSelfWeight._FemConstraintSelfWeight(obj)
+    if FreeCAD.GuiUp:
+        import _ViewProviderFemConstraintSelfWeight
+        _ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight(obj.ViewObject)
+    return obj
+
+
 def makeConstraintTemperature(name):
     '''makeConstraintTemperature(name): makes a Fem ConstraintTemperature object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintTemperature", name)

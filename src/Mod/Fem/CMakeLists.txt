@@ -84,7 +84,6 @@ INSTALL(
         _TaskPanelFemShellThickness.py
         TaskPanelFemShellThickness.ui
 
-        FemConstraintSelfWeight.py
         _FemConstraintSelfWeight.py
         _ViewProviderFemConstraintSelfWeight.py
         _CommandConstraintSelfWeight.py
