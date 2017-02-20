@@ -45,8 +45,8 @@ class _CommandShellThickness(FemCommands):
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FemShellThickness")
-        FreeCADGui.addModule("FemShellThickness")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemShellThickness.makeFemShellThickness()]")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeShellThickness()]")
 
 
 FreeCADGui.addCommand('Fem_ShellThickness', _CommandShellThickness())

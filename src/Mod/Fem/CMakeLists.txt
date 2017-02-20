@@ -78,7 +78,6 @@ INSTALL(
         _TaskPanelFemBeamSection.py
         TaskPanelFemBeamSection.ui
 
-        FemShellThickness.py
         _FemShellThickness.py
         _ViewProviderFemShellThickness.py
         _CommandShellThickness.py
