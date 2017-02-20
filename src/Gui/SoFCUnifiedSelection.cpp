@@ -395,6 +395,11 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                             currenthighlight = 0;
                             //old_state = !highlighted;
                         }
+                        else if (currenthighlight) {
+                            // clean-up the highlight path before assigning a new path
+                            currenthighlight->unref();
+                            currenthighlight = 0;
+                        }
 
                         currenthighlight = static_cast<SoFullPath*>(sa.getPath()->copy());
                         currenthighlight->ref();
