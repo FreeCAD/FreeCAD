@@ -143,6 +143,7 @@ SET(FemScripts_SRCS
     FemToolsZ88.py
     FemMaterial.py
     FemSelectionObserver.py
+    ObjectsFem.py
     TestFem.py
     TaskPanelFemBeamSection.ui
     TaskPanelFemMeshGmsh.ui

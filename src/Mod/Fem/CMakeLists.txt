@@ -19,6 +19,7 @@ INSTALL(
         # changes on the file list here needs to be made in App/CMakeLists.txt as well
         Init.py
         InitGui.py
+        ObjectsFem.py
 
         convert2TetGen.py
 
