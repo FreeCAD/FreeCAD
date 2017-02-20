@@ -60,6 +60,18 @@ def makeBeamSection(sectiontype='Rectangular', width=10.0, height=25.0, name="Be
     return obj
 
 
+def makeShellThickness(thickness=20.0, name="ShellThickness"):
+    '''makeShellThickness([thickness], [name]): creates an shellthickness object to define a plate thickness'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    import _FemShellThickness
+    _FemShellThickness._FemShellThickness(obj)
+    obj.Thickness = thickness
+    if FreeCAD.GuiUp:
+        import _ViewProviderFemShellThickness
+        _ViewProviderFemShellThickness._ViewProviderFemShellThickness(obj.ViewObject)
+    return obj
+
+
 ########## constraints ##########
 def makeConstraintBearing(name):
     '''makeConstraintBearing(name): makes a Fem ConstraintBearing object'''
