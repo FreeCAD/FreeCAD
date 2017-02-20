@@ -127,10 +127,10 @@ SET(FemScripts_SRCS
     FemInputWriterZ88.py
     FemMesh2Mesh.py
     FemMeshTools.py
+    FemSelectionObserver.py
     FemTools.py
     FemToolsCcx.py
     FemToolsZ88.py
-    FemSelectionObserver.py
     ObjectsFem.py
     TestFem.py
     TaskPanelFemBeamSection.ui
