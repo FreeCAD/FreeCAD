@@ -480,7 +480,7 @@ void MainWindow::tile()
         mb.setIcon(QMessageBox::Warning);
         mb.setTextFormat(Qt::RichText);
         mb.setText(tr("There is a rendering issue on MacOS."));
-        mb.setInformativeText(tr("See <a href=\"http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS\"> the wiki</a> for more information"));
+        mb.setInformativeText(tr("See <a href=\"http://www.freecadweb.org/wiki/OpenGL_on_MacOS\"> the wiki</a> for more information"));
 
         QAbstractButton *suppressBtn;
         suppressBtn = mb.addButton(tr("Don't show again"), QMessageBox::DestructiveRole);
@@ -508,7 +508,7 @@ void MainWindow::cascade()
         mb.setIcon(QMessageBox::Warning);
         mb.setTextFormat(Qt::RichText);
         mb.setText(tr("There is a rendering issue on MacOS."));
-        mb.setInformativeText(tr("See <a href=\"http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS\"> the wiki</a> for more information"));
+        mb.setInformativeText(tr("See <a href=\"http://www.freecadweb.org/wiki/OpenGL_on_MacOS\"> the wiki</a> for more information"));
 
         QAbstractButton *suppressBtn;
         suppressBtn = mb.addButton(tr("Don't show again"), QMessageBox::DestructiveRole);
