@@ -74,11 +74,11 @@ def export(objectslist, filename):
 
 ########## module specific methods ##########
 def importVTK(filename, analysis=None, result_name_prefix=None):
+    import ObjectsFem
     if result_name_prefix is None:
         result_name_prefix = ''
     if analysis is None:
         analysis_name = os.path.splitext(os.path.basename(filename))[0]
-        import ObjectsFem
         analysis_object = ObjectsFem.makeAnalysis('Analysis')
         analysis_object.Label = analysis_name
     else:
@@ -86,8 +86,7 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
 
     # if properties can be added in FemVTKTools importCfdResult(), this file can be used for CFD workbench
     results_name = result_name_prefix + 'results'
-    import ObjectsFem
-    result_obj = ObjectsFem.makeMechanicalResult(results_name)
+    result_obj = ObjectsFem.makeResultMechanical(results_name)
     # result_obj = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
     Fem.readResult(filename, result_obj.Name)  # readResult always creates a new femmesh named ResultMesh
 

@@ -49,8 +49,8 @@ class _CommandShowResult(FemCommands):
             if sel[0].isDerivedFrom("Fem::FemResultObject"):
                 self.result_object = sel[0]
 
-        import _ViewProviderFemMechanicalResult
-        if _ViewProviderFemMechanicalResult.is_result_obj_valid(self.result_object):
+        import _ViewProviderFemResultMechanical
+        if _ViewProviderFemResultMechanical.is_result_obj_valid(self.result_object):
             self.result_object.ViewObject.startEditing()
 
 

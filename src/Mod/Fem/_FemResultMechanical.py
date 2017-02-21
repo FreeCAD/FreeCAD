@@ -24,16 +24,16 @@ __title__ = "DocumentOject Class to hold mechanical FEM results"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemMechanicalResult
+## @package FemResultMechanical
 #  \ingroup FEM
 #  \brief FreeCAD DocumentObject class to hold mechanical results in FEM workbench
 
 
-class _FemMechanicalResult():
-    """The Fem::_FemMechanicalResult's Proxy python type, add result specific properties
+class _FemResultMechanical():
+    """The Fem::_FemResultMechanical's Proxy python type, add result specific properties
     """
     def __init__(self, obj):
-        self.Type = "FemMechanicalResult"
+        self.Type = "FemResultMechanical"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to  this object
 

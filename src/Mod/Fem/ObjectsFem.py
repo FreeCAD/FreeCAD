@@ -135,14 +135,14 @@ def makeMaterialMechanicalNonlinear(base_material, name="MechanicalMaterialNonli
 
 
 ########## results ##########
-def makeMechanicalResult(name="MechanicalResult"):
-    '''makeMechanicalResult(name): creates an mechanical object result to hold FEM results'''
+def makeResultMechanical(name="MechanicalResult"):
+    '''makeResultMechanical(name): creates an mechanical result object to hold FEM results'''
     obj = FreeCAD.ActiveDocument.addObject('Fem::FemResultObjectPython', name)
-    import _FemMechanicalResult
-    _FemMechanicalResult._FemMechanicalResult(obj)
+    import _FemResultMechanical
+    _FemResultMechanical._FemResultMechanical(obj)
     if FreeCAD.GuiUp:
-        from _ViewProviderFemMechanicalResult import _ViewProviderFemMechanicalResult
-        _ViewProviderFemMechanicalResult(obj.ViewObject)
+        from _ViewProviderFemResultMechanical import _ViewProviderFemResultMechanical
+        _ViewProviderFemResultMechanical(obj.ViewObject)
     return obj
 
 
