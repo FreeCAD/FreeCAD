@@ -90,7 +90,7 @@ def errorDXFLib(gui):
                     message = translate("Draft","""Download of dxf libraries failed.
 Please download and install them manually.
 See complete instructions at
-http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install""")
+http://www.freecadweb.org/wiki/Dxf_Importer_Install""")
                     QtGui.QMessageBox.information(None,"",message)
                 else:
                     FreeCAD.Console.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
