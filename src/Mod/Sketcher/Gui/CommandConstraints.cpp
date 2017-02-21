@@ -3866,12 +3866,17 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
     sAccel          = "T";
     eType           = ForEdit;
 
-    allowedSelSequences = {{SelEdge, SelEdgeOrAxis}, {SelEdgeOrAxis, SelEdge}, /* Two Curves */
+    allowedSelSequences = {{SelEdge, SelEdgeOrAxis}, {SelEdgeOrAxis, SelEdge},
+                           {SelEdge, SelExternalEdge}, {SelExternalEdge, SelEdge},/* Two Curves */
                            {SelVertexOrRoot, SelEdge, SelEdgeOrAxis},
                            {SelVertexOrRoot, SelEdgeOrAxis, SelEdge},
+                           {SelVertexOrRoot, SelEdge, SelExternalEdge},
+                           {SelVertexOrRoot, SelExternalEdge, SelEdge},
                            {SelEdge, SelVertexOrRoot, SelEdgeOrAxis},
-                           {SelEdgeOrAxis, SelVertexOrRoot, SelEdge}, /* Two Curves and a Point */
-                           {SelVertexOrRoot, SelVertex} /*Two Endpoints*/ /*No Place One Endpoint and One Curve*/};
+                           {SelEdgeOrAxis, SelVertexOrRoot, SelEdge},
+                           {SelEdge, SelVertexOrRoot, SelExternalEdge},
+                           {SelExternalEdge, SelVertexOrRoot, SelEdge}, /* Two Curves and a Point */
+                           {SelVertexOrRoot, SelVertex} /*Two Endpoints*/ /*No Place for One Endpoint and One Curve*/};
     constraintCursor = cursor_genericconstraint;
 }
 
@@ -4212,6 +4217,8 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
     switch (seqIndex) {
     case 0: // {SelEdge, SelEdgeOrAxis}
     case 1: // {SelEdgeOrAxis, SelEdge}
+    case 2: // {SelEdge, SelExternalEdge}
+    case 3: // {SelExternalEdge, SelEdge}
     {
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
 
@@ -4332,8 +4339,10 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
 
         return;
     }
-    case 2: // {SelVertexOrRoot, SelEdge, SelEdgeOrAxis}
-    case 3: // {SelVertexOrRoot, SelEdgeOrAxis, SelEdge}
+    case 4: // {SelVertexOrRoot, SelEdge, SelEdgeOrAxis}
+    case 5: // {SelVertexOrRoot, SelEdgeOrAxis, SelEdge}
+    case 6: // {SelVertexOrRoot, SelEdge, SelExternalEdge}
+    case 7: // {SelVertexOrRoot, SelExternalEdge, SelEdge}
     {
         //let's sink the point to be GeoId3.
         GeoId1 = selSeq.at(1).GeoId; GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(0).GeoId;
@@ -4341,8 +4350,10 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
 
         break;
     }
-    case 4: // {SelEdge, SelVertexOrRoot, SelEdgeOrAxis}
-    case 5: // {SelEdgeOrAxis, SelVertexOrRoot, SelEdge}
+    case 8: // {SelEdge, SelVertexOrRoot, SelEdgeOrAxis}
+    case 9: // {SelEdgeOrAxis, SelVertexOrRoot, SelEdge}
+    case 10: // {SelEdge, SelVertexOrRoot, SelExternalEdge}
+    case 11: // {SelExternalEdge, SelVertexOrRoot, SelEdge}
     {
         //let's sink the point to be GeoId3.
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
@@ -4350,7 +4361,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
 
         break;
     }
-    case 6: // {SelVertexOrRoot, SelVertex}
+    case 12: // {SelVertexOrRoot, SelVertex}
     {
         // Different notation than the previous places
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
