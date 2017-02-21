@@ -890,14 +890,14 @@ public:
             newSelType = (allowedSelTypes & SelRoot) ? SelRoot : SelVertexOrRoot;
             ss << "RootPoint";
         }
-        else if (allowedSelTypes & (SelVertex | SelVertexOrRoot) && VtId != -1) {
+        else if (allowedSelTypes & (SelVertex | SelVertexOrRoot) && VtId >= 0) {
             sketchgui->getSketchObject()->getGeoVertexIndex(VtId,
                                                             selIdPair.GeoId,
                                                             selIdPair.PosId);
             newSelType = (allowedSelTypes & SelVertex) ? SelVertex : SelVertexOrRoot;
             ss << "Vertex" << VtId + 1;
         }
-        else if (allowedSelTypes & (SelEdge | SelEdgeOrAxis) && CrvId != -1) {
+        else if (allowedSelTypes & (SelEdge | SelEdgeOrAxis) && CrvId >= 0) {
             selIdPair.GeoId = CrvId;
             newSelType = (allowedSelTypes & SelEdge) ? SelEdge : SelEdgeOrAxis;
             ss << "Edge" << CrvId + 1;
@@ -3207,10 +3207,15 @@ CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
 
     // TODO: there are two more combos: endpoint then curve and endpoint then endpoint
     allowedSelSequences = {{SelEdge, SelEdgeOrAxis}, {SelEdgeOrAxis, SelEdge},
+                           {SelEdge, SelExternalEdge}, {SelExternalEdge, SelEdge},
                            {SelVertexOrRoot, SelEdge, SelEdgeOrAxis},
                            {SelVertexOrRoot, SelEdgeOrAxis, SelEdge},
+                           {SelVertexOrRoot, SelEdge, SelExternalEdge},
+                           {SelVertexOrRoot, SelExternalEdge, SelEdge},
                            {SelEdge, SelVertexOrRoot, SelEdgeOrAxis},
-                           {SelEdgeOrAxis, SelVertexOrRoot, SelEdge}};
+                           {SelEdgeOrAxis, SelVertexOrRoot, SelEdge},
+                           {SelEdge, SelVertexOrRoot, SelExternalEdge},
+                           {SelExternalEdge, SelVertexOrRoot, SelEdge}};
 ;
     constraintCursor = cursor_createperpconstraint;
 }
@@ -3592,6 +3597,8 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
     switch (seqIndex) {
     case 0: // {SelEdge, SelEdgeOrAxis}
     case 1: // {SelEdgeOrAxis, SelEdge}
+    case 2: // {SelEdge, SelExternalEdge}
+    case 3: // {SelExternalEdge, SelEdge}
     {
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
 
@@ -3746,8 +3753,10 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
 
         return;
     }
-    case 2: // {SelVertexOrRoot, SelEdge, SelEdgeOrAxis}
-    case 3: // {SelVertexOrRoot, SelEdgeOrAxis, SelEdge}
+    case 4: // {SelVertexOrRoot, SelEdge, SelEdgeOrAxis}
+    case 5: // {SelVertexOrRoot, SelEdgeOrAxis, SelEdge}
+    case 6: // {SelVertexOrRoot, SelEdge, SelExternalEdge}
+    case 7: // {SelVertexOrRoot, SelExternalEdge, SelEdge}
     {
         //let's sink the point to be GeoId3.
         GeoId1 = selSeq.at(1).GeoId; GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(0).GeoId;
@@ -3755,8 +3764,10 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
 
         break;
     }
-    case 4: // {SelEdge, SelVertexOrRoot, SelEdgeOrAxis}
-    case 5: // {SelEdgeOrAxis, SelVertexOrRoot, SelEdge}
+    case 8: // {SelEdge, SelVertexOrRoot, SelEdgeOrAxis}
+    case 9: // {SelEdgeOrAxis, SelVertexOrRoot, SelEdge}
+    case 10: // {SelEdge, SelVertexOrRoot, SelExternalEdge}
+    case 11: // {SelExternalEdge, SelVertexOrRoot, SelEdge}
     {
         //let's sink the point to be GeoId3.
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
