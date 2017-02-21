@@ -24,7 +24,7 @@ __title__ = "ViewProvider for FEM mechanical ResultObjectPython"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package _ViewProviderFemMechanicalResult
+## @package _ViewProviderFemResultMechanical
 #  \ingroup FEM
 #  \brief FreeCAD ViewProvider for mechanical ResultObjectPython in FEM workbench
 
@@ -33,7 +33,7 @@ import FreeCADGui
 import FemGui
 
 
-class _ViewProviderFemMechanicalResult:
+class _ViewProviderFemResultMechanical:
     """A View Provider for the FemResultObject Python dervied FemResult class
     """
 
