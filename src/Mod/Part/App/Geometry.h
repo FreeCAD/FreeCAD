@@ -147,7 +147,7 @@ public:
     double length(double u, double v) const;
     bool normalAt(double u, Base::Vector3d& dir) const;
     
-    void Reverse(void);
+    void reverse(void);
 };
 
 class PartExport GeomBoundedCurve : public GeomCurve
@@ -231,7 +231,7 @@ public:
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
     
-    void increaseDegree(const double Degree);
+    void increaseDegree(double degree);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;

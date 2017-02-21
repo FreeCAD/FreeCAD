@@ -187,24 +187,24 @@ Geometry::~Geometry()
 {
 }
 
-// Persistence implementer 
-unsigned int Geometry::getMemSize (void) const               
+// Persistence implementer
+unsigned int Geometry::getMemSize (void) const
 {
     return 1;
 }
 
-void Geometry::Save(Base::Writer &writer) const 
+void Geometry::Save(Base::Writer &writer) const
 {
     const char c = Construction?'1':'0';
     writer.Stream() << writer.ind() << "<Construction value=\"" <<  c << "\"/>" << endl;
 }
 
-void Geometry::Restore(Base::XMLReader &reader)    
+void Geometry::Restore(Base::XMLReader &reader)
 {
     // read my Element
     reader.readElement("Construction");
     // get the value of my Attribute
-    Construction = (int)reader.getAttributeAsInteger("value")==0?false:true;   
+    Construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
 }
 
 // -------------------------------------------------
@@ -257,28 +257,28 @@ void GeomPoint::setPoint(const Base::Vector3d& p)
     this->myPoint->SetCoord(p.x,p.y,p.z);
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomPoint::getMemSize (void) const
 {
     return sizeof(Geom_CartesianPoint);
 }
 
-void GeomPoint::Save(Base::Writer &writer) const 
+void GeomPoint::Save(Base::Writer &writer) const
 {
     // save the attributes of the father class
     Geometry::Save(writer);
 
     Base::Vector3d Point   =  getPoint();
-    writer.Stream() 
-         << writer.ind() 
-             << "<GeomPoint " 
-                << "X=\"" <<  Point.x << 
-                "\" Y=\"" <<  Point.y << 
-                "\" Z=\"" <<  Point.z << 
+    writer.Stream()
+         << writer.ind()
+             << "<GeomPoint "
+                << "X=\"" <<  Point.x <<
+                "\" Y=\"" <<  Point.y <<
+                "\" Z=\"" <<  Point.z <<
              "\"/>" << endl;
 }
 
-void GeomPoint::Restore(Base::XMLReader &reader) 
+void GeomPoint::Restore(Base::XMLReader &reader)
 {
     // read the attributes of the father class
     Geometry::Restore(reader);
@@ -290,7 +290,7 @@ void GeomPoint::Restore(Base::XMLReader &reader)
     X = reader.getAttributeAsFloat("X");
     Y = reader.getAttributeAsFloat("Y");
     Z = reader.getAttributeAsFloat("Z");
- 
+
     // set the read geometry
     setPoint(Base::Vector3d(X,Y,Z) );
 }
@@ -350,9 +350,9 @@ Base::Vector3d GeomCurve::pointAtParameter(double u) const
 {
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
     GeomLProp_CLProps prop(c,u,0,Precision::Confusion());
-    
+
     const gp_Pnt &point=prop.Value();
-    
+
     return Base::Vector3d(point.X(),point.Y(),point.Z());
 }
 
@@ -360,9 +360,9 @@ Base::Vector3d GeomCurve::firstDerivativeAtParameter(double u) const
 {
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
     GeomLProp_CLProps prop(c,u,1,Precision::Confusion());
-    
+
     const gp_Vec &vec=prop.D1();
-    
+
     return Base::Vector3d(vec.X(),vec.Y(),vec.Z());
 }
 
@@ -370,23 +370,23 @@ Base::Vector3d GeomCurve::secondDerivativeAtParameter(double u) const
 {
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
     GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
-    
+
     const gp_Vec &vec=prop.D2();
-    
+
     return Base::Vector3d(vec.X(),vec.Y(),vec.Z());
 }
 
 bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
 {
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
-    
+
     try {
         if (!c.IsNull()) {
             GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
             gp_Dir gdir;
             prop.Normal(gdir);
             dir = Base::Vector3d(gdir.X(), gdir.Y(), gdir.Z());
-            
+
             return true;
         }
     }
@@ -394,7 +394,7 @@ bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
         Handle_Standard_Failure e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
-    
+
     return false;
 }
 
@@ -420,7 +420,7 @@ bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
 bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double &u) const
 {
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
-    
+
     if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))){
         Handle_Geom_TrimmedCurve tc = Handle_Geom_TrimmedCurve::DownCast(handle());
         Handle_Geom_Curve bc = tc->BasisCurve();
@@ -437,8 +437,8 @@ bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double
             throw Base::RuntimeError(e->GetMessageString());
         }
 
-        return false;        
-    } 
+        return false;
+    }
     else {
         return this->closestParameter(point, u);
     }
@@ -446,31 +446,26 @@ bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double
 
 double GeomCurve::getFirstParameter() const
 {
-
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
-    
+
     try {
-        if (!c.IsNull()) {
-            // pending check for RealFirst RealLast in case of infinite curve
-            return c->FirstParameter();
-        }
+        // pending check for RealFirst RealLast in case of infinite curve
+        return c->FirstParameter();
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
-    
+
 }
+
 double GeomCurve::getLastParameter() const
 {
-    
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
 
     try {
-        if (!c.IsNull()) {
-            // pending check for RealFirst RealLast in case of infinite curve
-            return c->LastParameter();
-        }
+        // pending check for RealFirst RealLast in case of infinite curve
+        return c->LastParameter();
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -478,15 +473,13 @@ double GeomCurve::getLastParameter() const
     }
 }
 
-double GeomCurve::curvatureAt(double u) const 
+double GeomCurve::curvatureAt(double u) const
 {
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
-    
+
     try {
-        if (!c.IsNull()) {
-            GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
-            return prop.Curvature();
-        }
+        GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
+        return prop.Curvature();
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -500,10 +493,8 @@ double GeomCurve::length(double u, double v) const
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
 
     try {
-        if (!c.IsNull()) {
-            GeomAdaptor_Curve adaptor(c);
-            return GCPnts_AbscissaPoint::Length(adaptor,u,v,Precision::Confusion());
-        }
+        GeomAdaptor_Curve adaptor(c);
+        return GCPnts_AbscissaPoint::Length(adaptor,u,v,Precision::Confusion());
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -511,14 +502,12 @@ double GeomCurve::length(double u, double v) const
     }
 }
 
-void GeomCurve::Reverse(void)
+void GeomCurve::reverse(void)
 {
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
 
     try {
-        if (!c.IsNull()) {
-            c->Reverse();
-        }
+        c->Reverse();
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -595,7 +584,7 @@ Geometry *GeomBezierCurve::clone(void) const
     return newCurve;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomBezierCurve::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomBezierCurve::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomBezierCurve::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
@@ -907,11 +896,11 @@ void GeomBSplineCurve::makeC1Continuous(double tol, double ang_tol)
     GeomConvert::C0BSplineToC1BSplineCurve(this->myCurve, tol, ang_tol);
 }
 
-void GeomBSplineCurve::increaseDegree(const double Degree)
+void GeomBSplineCurve::increaseDegree(double degree)
 {
     try {
         Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(this->handle());
-        curve->IncreaseDegree(Degree);
+        curve->IncreaseDegree(degree);
         return;
     }
     catch (Standard_Failure) {
@@ -920,7 +909,7 @@ void GeomBSplineCurve::increaseDegree(const double Degree)
     }
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomBSplineCurve::getMemSize (void) const
 {
     return sizeof(Geom_BSplineCurve);
@@ -948,10 +937,10 @@ void GeomBSplineCurve::Save(Base::Writer& writer) const
              "\">" << endl;
 
     writer.incInd();
-    
+
     std::vector<Base::Vector3d>::const_iterator itp;
     std::vector<double>::const_iterator itw;
-    
+
     for (itp = poles.begin(), itw = weights.begin(); itp != poles.end() && itw != weights.end(); ++itp, ++itw) {
         writer.Stream()
             << writer.ind()
@@ -991,10 +980,10 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
     int degree = reader.getAttributeAsInteger("Degree");
     bool isperiodic = (bool) reader.getAttributeAsInteger("IsPeriodic");
 
-    // Handle_Geom_BSplineCurve spline = new 
+    // Handle_Geom_BSplineCurve spline = new
     // Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,
     // PyObject_IsTrue(periodic) ? Standard_True : Standard_False,
-    // PyObject_IsTrue(CheckRational) ? Standard_True : Standard_False);    
+    // PyObject_IsTrue(CheckRational) ? Standard_True : Standard_False);
 
     TColgp_Array1OfPnt p(1,polescount);
     TColStd_Array1OfReal w(1,polescount);
@@ -1461,7 +1450,7 @@ void GeomCircle::setRadius(double Radius)
     }
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomCircle::getMemSize (void) const
 {
     return sizeof(Geom_Circle);
@@ -1667,13 +1656,13 @@ void GeomArcOfCircle::setRange(double u, double v, bool emulateCCWXY)
     }
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomArcOfCircle::getMemSize (void) const
 {
     return sizeof(Geom_Circle) + 2 *sizeof(double);
 }
 
-void GeomArcOfCircle::Save(Base::Writer &writer) const 
+void GeomArcOfCircle::Save(Base::Writer &writer) const
 {
     // save the attributes of the father class
     Geometry::Save(writer);
@@ -1698,7 +1687,7 @@ void GeomArcOfCircle::Save(Base::Writer &writer) const
              "\"/>" << endl;
 }
 
-void GeomArcOfCircle::Restore(Base::XMLReader &reader)    
+void GeomArcOfCircle::Restore(Base::XMLReader &reader)
 {
     // read the attributes of the father class
     Geometry::Restore(reader);
@@ -1731,7 +1720,7 @@ void GeomArcOfCircle::Restore(Base::XMLReader &reader)
         Handle_Geom_TrimmedCurve tmpcurve = ma.Value();
         Handle_Geom_Circle tmpcircle = Handle_Geom_Circle::DownCast(tmpcurve->BasisCurve());
         Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(this->myCurve->BasisCurve());
- 
+
         circle->SetCirc(tmpcircle->Circ());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
@@ -1901,7 +1890,7 @@ void GeomEllipse::setMajorAxisDir(Base::Vector3d newdir)
     }
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomEllipse::getMemSize (void) const
 {
     return sizeof(Geom_Ellipse);
@@ -1915,12 +1904,12 @@ void GeomEllipse::Save(Base::Writer& writer) const
     gp_Pnt center = this->myCurve->Axis().Location();
     gp_Dir normal = this->myCurve->Axis().Direction();
     gp_Dir xdir = this->myCurve->XAxis().Direction();
-    
+
     gp_Ax2 xdirref(center, normal); // this is a reference XY for the ellipse
-    
+
     double AngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
-    
-    
+
+
     writer.Stream()
          << writer.ind()
             << "<Ellipse "
@@ -1953,7 +1942,7 @@ void GeomEllipse::Restore(Base::XMLReader& reader)
     NormalZ = reader.getAttributeAsFloat("NormalZ");
     MajorRadius = reader.getAttributeAsFloat("MajorRadius");
     MinorRadius = reader.getAttributeAsFloat("MinorRadius");
-    
+
     // This is for backwards compatibility
     if(reader.hasAttribute("AngleXU"))
         AngleXU = reader.getAttributeAsFloat("AngleXU");
@@ -1963,13 +1952,13 @@ void GeomEllipse::Restore(Base::XMLReader& reader)
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
     gp_Dir norm(NormalX,NormalY,NormalZ);
-    
+
     gp_Ax1 normaxis(p1,norm);
-    
+
     gp_Ax2 xdir(p1, norm);
-    
-    xdir.Rotate(normaxis,AngleXU); 
-    
+
+    xdir.Rotate(normaxis,AngleXU);
+
     try {
         GC_MakeEllipse mc(xdir, MajorRadius, MinorRadius);
         if (!mc.IsDone())
@@ -2167,28 +2156,28 @@ void GeomArcOfEllipse::setRange(double u, double v, bool emulateCCWXY)
     }
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomArcOfEllipse::getMemSize (void) const
 {
     return sizeof(Geom_Ellipse) + 2 *sizeof(double);
 }
 
-void GeomArcOfEllipse::Save(Base::Writer &writer) const 
+void GeomArcOfEllipse::Save(Base::Writer &writer) const
 {
     // save the attributes of the father class
     GeomCurve::Save(writer);
-    
+
     Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(this->myCurve->BasisCurve());
 
     gp_Pnt center = ellipse->Axis().Location();
     gp_Dir normal = ellipse->Axis().Direction();
     gp_Dir xdir = ellipse->XAxis().Direction();
-    
+
     gp_Ax2 xdirref(center, normal); // this is a reference XY for the ellipse
-    
+
     double AngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
-    
-    
+
+
     writer.Stream()
          << writer.ind()
             << "<ArcOfEllipse "
@@ -2202,11 +2191,11 @@ void GeomArcOfEllipse::Save(Base::Writer &writer) const
             << "MinorRadius=\"" <<  ellipse->MinorRadius() << "\" "
             << "AngleXU=\"" << AngleXU << "\" "
             << "StartAngle=\"" <<  this->myCurve->FirstParameter() << "\" "
-            << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "           
+            << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "
             << "/>" << endl;
 }
 
-void GeomArcOfEllipse::Restore(Base::XMLReader &reader)    
+void GeomArcOfEllipse::Restore(Base::XMLReader &reader)
 {
     // read the attributes of the father class
     GeomCurve::Restore(reader);
@@ -2226,31 +2215,31 @@ void GeomArcOfEllipse::Restore(Base::XMLReader &reader)
     AngleXU = reader.getAttributeAsFloat("AngleXU");
     StartAngle = reader.getAttributeAsFloat("StartAngle");
     EndAngle = reader.getAttributeAsFloat("EndAngle");
-    
-    
+
+
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
     gp_Dir norm(NormalX,NormalY,NormalZ);
-    
+
     gp_Ax1 normaxis(p1,norm);
-    
+
     gp_Ax2 xdir(p1, norm);
-    
-    xdir.Rotate(normaxis,AngleXU); 
-    
+
+    xdir.Rotate(normaxis,AngleXU);
+
     try {
         GC_MakeEllipse mc(xdir, MajorRadius, MinorRadius);
         if (!mc.IsDone())
             throw Base::Exception(gce_ErrorStatusText(mc.Status()));
-        
+
         GC_MakeArcOfEllipse ma(mc.Value()->Elips(), StartAngle, EndAngle, 1);
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
-        
+
         Handle_Geom_TrimmedCurve tmpcurve = ma.Value();
         Handle_Geom_Ellipse tmpellipse = Handle_Geom_Ellipse::DownCast(tmpcurve->BasisCurve());
         Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(this->myCurve->BasisCurve());
- 
+
         ellipse->SetElips(tmpellipse->Elips());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
@@ -2339,7 +2328,7 @@ void GeomHyperbola::setMinorRadius(double Radius)
     }
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomHyperbola::getMemSize (void) const
 {
     return sizeof(Geom_Hyperbola);
@@ -2353,11 +2342,11 @@ void GeomHyperbola::Save(Base::Writer& writer) const
     gp_Pnt center = this->myCurve->Axis().Location();
     gp_Dir normal = this->myCurve->Axis().Direction();
     gp_Dir xdir = this->myCurve->XAxis().Direction();
-    
+
     gp_Ax2 xdirref(center, normal); // this is a reference XY for the ellipse
-    
+
     double AngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
-    
+
     writer.Stream()
          << writer.ind()
             << "<Hyperbola "
@@ -2395,13 +2384,13 @@ void GeomHyperbola::Restore(Base::XMLReader& reader)
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
     gp_Dir norm(NormalX,NormalY,NormalZ);
-    
+
     gp_Ax1 normaxis(p1,norm);
-    
+
     gp_Ax2 xdir(p1, norm);
-    
-    xdir.Rotate(normaxis,AngleXU); 
-    
+
+    xdir.Rotate(normaxis,AngleXU);
+
     try {
         GC_MakeHyperbola mc(xdir, MajorRadius, MinorRadius);
         if (!mc.IsDone())
@@ -2536,7 +2525,7 @@ void GeomArcOfHyperbola::setMajorAxisDir(Base::Vector3d newdir)
     if (newdir.Length() < Precision::Confusion())
     #endif
         return;//zero vector was passed. Keep the old orientation.
-    
+
     try {
         gp_Ax2 pos = c->Position();
         pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accomodate the new XDirection.
@@ -2587,27 +2576,27 @@ void GeomArcOfHyperbola::setRange(double u, double v, bool emulateCCWXY)
     }
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomArcOfHyperbola::getMemSize (void) const
 {
     return sizeof(Geom_Hyperbola) + 2 *sizeof(double);
 }
 
-void GeomArcOfHyperbola::Save(Base::Writer &writer) const 
+void GeomArcOfHyperbola::Save(Base::Writer &writer) const
 {
     // save the attributes of the father class
     GeomCurve::Save(writer);
-    
+
     Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(this->myCurve->BasisCurve());
 
     gp_Pnt center = h->Axis().Location();
     gp_Dir normal = h->Axis().Direction();
     gp_Dir xdir = h->XAxis().Direction();
-    
+
     gp_Ax2 xdirref(center, normal); // this is a reference XY for the ellipse
-    
+
     double AngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
-     
+
     writer.Stream()
          << writer.ind()
             << "<ArcOfHyperbola "
@@ -2621,11 +2610,11 @@ void GeomArcOfHyperbola::Save(Base::Writer &writer) const
             << "MinorRadius=\"" <<  h->MinorRadius() << "\" "
             << "AngleXU=\"" << AngleXU << "\" "
             << "StartAngle=\"" <<  this->myCurve->FirstParameter() << "\" "
-            << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "           
+            << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "
             << "/>" << endl;
 }
 
-void GeomArcOfHyperbola::Restore(Base::XMLReader &reader)    
+void GeomArcOfHyperbola::Restore(Base::XMLReader &reader)
 {
     // read the attributes of the father class
     GeomCurve::Restore(reader);
@@ -2645,31 +2634,31 @@ void GeomArcOfHyperbola::Restore(Base::XMLReader &reader)
     AngleXU = reader.getAttributeAsFloat("AngleXU");
     StartAngle = reader.getAttributeAsFloat("StartAngle");
     EndAngle = reader.getAttributeAsFloat("EndAngle");
-    
-    
+
+
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
     gp_Dir norm(NormalX,NormalY,NormalZ);
-    
+
     gp_Ax1 normaxis(p1,norm);
-    
+
     gp_Ax2 xdir(p1, norm);
-    
-    xdir.Rotate(normaxis,AngleXU); 
-    
+
+    xdir.Rotate(normaxis,AngleXU);
+
     try {
         GC_MakeHyperbola mc(xdir, MajorRadius, MinorRadius);
         if (!mc.IsDone())
             throw Base::Exception(gce_ErrorStatusText(mc.Status()));
-        
+
         GC_MakeArcOfHyperbola ma(mc.Value()->Hypr(), StartAngle, EndAngle, 1);
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
-        
+
         Handle_Geom_TrimmedCurve tmpcurve = ma.Value();
         Handle_Geom_Hyperbola tmphyperbola = Handle_Geom_Hyperbola::DownCast(tmpcurve->BasisCurve());
         Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(this->myCurve->BasisCurve());
- 
+
         hyperbola->SetHypr(tmphyperbola->Hypr());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
@@ -2740,7 +2729,7 @@ void GeomParabola::setFocal(double length)
     }
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomParabola::getMemSize (void) const
 {
     return sizeof(Geom_Parabola);
@@ -2754,11 +2743,11 @@ void GeomParabola::Save(Base::Writer& writer) const
     gp_Pnt center = this->myCurve->Axis().Location();
     gp_Dir normal = this->myCurve->Axis().Direction();
     gp_Dir xdir = this->myCurve->XAxis().Direction();
-    
+
     gp_Ax2 xdirref(center, normal); // this is a reference XY for the ellipse
-    
+
     double AngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
-    
+
     writer.Stream()
          << writer.ind()
             << "<Parabola "
@@ -2794,13 +2783,13 @@ void GeomParabola::Restore(Base::XMLReader& reader)
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
     gp_Dir norm(NormalX,NormalY,NormalZ);
-    
+
     gp_Ax1 normaxis(p1,norm);
-    
+
     gp_Ax2 xdir(p1, norm);
-    
-    xdir.Rotate(normaxis,AngleXU); 
-    
+
+    xdir.Rotate(normaxis,AngleXU);
+
     try {
         gce_MakeParab mc(xdir, Focal);
         if (!mc.IsDone())
@@ -2889,7 +2878,7 @@ Base::Vector3d GeomArcOfParabola::getFocus(void) const
 {
     Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
     gp_Pnt gp = p->Focus();
-    
+
     return Base::Vector3d(gp.X(),gp.Y(),gp.Z());
 }
 
@@ -2931,27 +2920,27 @@ void GeomArcOfParabola::setRange(double u, double v, bool emulateCCWXY)
     }
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomArcOfParabola::getMemSize (void) const
 {
     return sizeof(Geom_Parabola) + 2 *sizeof(double);
 }
 
-void GeomArcOfParabola::Save(Base::Writer &writer) const 
+void GeomArcOfParabola::Save(Base::Writer &writer) const
 {
     // save the attributes of the father class
     GeomCurve::Save(writer);
-    
+
     Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(this->myCurve->BasisCurve());
 
     gp_Pnt center = p->Axis().Location();
     gp_Dir normal = p->Axis().Direction();
     gp_Dir xdir = p->XAxis().Direction();
-    
+
     gp_Ax2 xdirref(center, normal); // this is a reference XY for the ellipse
-    
+
     double AngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
-     
+
     writer.Stream()
          << writer.ind()
             << "<ArcOfParabola "
@@ -2964,11 +2953,11 @@ void GeomArcOfParabola::Save(Base::Writer &writer) const
             << "Focal=\"" <<  p->Focal() << "\" "
             << "AngleXU=\"" << AngleXU << "\" "
             << "StartAngle=\"" <<  this->myCurve->FirstParameter() << "\" "
-            << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "           
+            << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "
             << "/>" << endl;
 }
 
-void GeomArcOfParabola::Restore(Base::XMLReader &reader)    
+void GeomArcOfParabola::Restore(Base::XMLReader &reader)
 {
     // read the attributes of the father class
     GeomCurve::Restore(reader);
@@ -2987,31 +2976,31 @@ void GeomArcOfParabola::Restore(Base::XMLReader &reader)
     AngleXU = reader.getAttributeAsFloat("AngleXU");
     StartAngle = reader.getAttributeAsFloat("StartAngle");
     EndAngle = reader.getAttributeAsFloat("EndAngle");
-    
-    
+
+
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
     gp_Dir norm(NormalX,NormalY,NormalZ);
-    
+
     gp_Ax1 normaxis(p1,norm);
-    
+
     gp_Ax2 xdir(p1, norm);
-    
-    xdir.Rotate(normaxis,AngleXU); 
-    
+
+    xdir.Rotate(normaxis,AngleXU);
+
     try {
         gce_MakeParab mc(xdir, Focal);
         if (!mc.IsDone())
             throw Base::Exception(gce_ErrorStatusText(mc.Status()));
-        
+
         GC_MakeArcOfParabola ma(mc.Value(), StartAngle, EndAngle, 1);
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
-        
+
         Handle_Geom_TrimmedCurve tmpcurve = ma.Value();
         Handle_Geom_Parabola tmpparabola = Handle_Geom_Parabola::DownCast(tmpcurve->BasisCurve());
         Handle_Geom_Parabola parabola = Handle_Geom_Parabola::DownCast(this->myCurve->BasisCurve());
- 
+
         parabola->SetParab(tmpparabola->Parab());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
@@ -3081,13 +3070,13 @@ Geometry *GeomLine::clone(void) const
     return newLine;
 }
 
-// Persistence implementer 
-unsigned int GeomLine::getMemSize (void) const 
+// Persistence implementer
+unsigned int GeomLine::getMemSize (void) const
 {
     return sizeof(Geom_Line);
 }
 
-void GeomLine::Save(Base::Writer &writer) const 
+void GeomLine::Save(Base::Writer &writer) const
 {
     // save the attributes of the father class
     Geometry::Save(writer);
@@ -3095,14 +3084,14 @@ void GeomLine::Save(Base::Writer &writer) const
     Base::Vector3d Pos   =  getPos();
     Base::Vector3d Dir   =  getDir();
 
-    writer.Stream() 
-         << writer.ind() 
-             << "<GeomLine " 
-                << "PosX=\"" <<  Pos.x << 
-                "\" PosY=\"" <<  Pos.y << 
-                "\" PosZ=\"" <<  Pos.z << 
-                "\" DirX=\"" <<  Dir.x << 
-                "\" DirY=\"" <<  Dir.y << 
+    writer.Stream()
+         << writer.ind()
+             << "<GeomLine "
+                << "PosX=\"" <<  Pos.x <<
+                "\" PosY=\"" <<  Pos.y <<
+                "\" PosZ=\"" <<  Pos.z <<
+                "\" DirX=\"" <<  Dir.x <<
+                "\" DirY=\"" <<  Dir.y <<
                 "\" DirZ=\"" <<  Dir.z <<
              "\"/>" << endl;
 }
@@ -3121,7 +3110,7 @@ void GeomLine::Restore(Base::XMLReader &reader)
     DirX = reader.getAttributeAsFloat("DirX");
     DirY = reader.getAttributeAsFloat("DirY");
     DirZ = reader.getAttributeAsFloat("DirZ");
- 
+
     // set the read geometry
     setLine(Base::Vector3d(PosX,PosY,PosZ),Base::Vector3d(DirX,DirY,DirZ) );
 }
@@ -3211,13 +3200,13 @@ void GeomLineSegment::setPoints(const Base::Vector3d& Start, const Base::Vector3
     }
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomLineSegment::getMemSize (void) const
 {
     return sizeof(Geom_TrimmedCurve) + sizeof(Geom_Line);
 }
 
-void GeomLineSegment::Save       (Base::Writer &writer) const 
+void GeomLineSegment::Save       (Base::Writer &writer) const
 {
     // save the attributes of the father class
     Geometry::Save(writer);
@@ -3225,19 +3214,19 @@ void GeomLineSegment::Save       (Base::Writer &writer) const
     Base::Vector3d End   =  getEndPoint();
     Base::Vector3d Start =  getStartPoint();
 
-    writer.Stream() 
-         << writer.ind() 
-             << "<LineSegment " 
-                << "StartX=\"" <<  Start.x << 
-                "\" StartY=\"" <<  Start.y << 
-                "\" StartZ=\"" <<  Start.z << 
-                "\" EndX=\"" <<  End.x << 
-                "\" EndY=\"" <<  End.y << 
+    writer.Stream()
+         << writer.ind()
+             << "<LineSegment "
+                << "StartX=\"" <<  Start.x <<
+                "\" StartY=\"" <<  Start.y <<
+                "\" StartZ=\"" <<  Start.z <<
+                "\" EndX=\"" <<  End.x <<
+                "\" EndY=\"" <<  End.y <<
                 "\" EndZ=\"" <<  End.z <<
              "\"/>" << endl;
 }
 
-void GeomLineSegment::Restore    (Base::XMLReader &reader)    
+void GeomLineSegment::Restore    (Base::XMLReader &reader)
 {
     // read the attributes of the father class
     Geometry::Restore(reader);
@@ -3252,7 +3241,7 @@ void GeomLineSegment::Restore    (Base::XMLReader &reader)
     EndX   = reader.getAttributeAsFloat("EndX");
     EndY   = reader.getAttributeAsFloat("EndY");
     EndZ   = reader.getAttributeAsFloat("EndZ");
- 
+
     // set the read geometry
     setPoints(Base::Vector3d(StartX,StartY,StartZ),Base::Vector3d(EndX,EndY,EndZ) );
 }
@@ -3301,7 +3290,7 @@ const Handle_Geom_Geometry& GeomOffsetCurve::handle() const
     return this->myCurve;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomOffsetCurve::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomOffsetCurve::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomOffsetCurve::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
@@ -3345,7 +3334,7 @@ Geometry *GeomTrimmedCurve::clone(void) const
     return newCurve;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomTrimmedCurve::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomTrimmedCurve::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomTrimmedCurve::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
@@ -3439,7 +3428,7 @@ Geometry *GeomBezierSurface::clone(void) const
     return newSurf;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomBezierSurface::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomBezierSurface::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomBezierSurface::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
@@ -3498,7 +3487,7 @@ Geometry *GeomBSplineSurface::clone(void) const
     return newSurf;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomBSplineSurface::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomBSplineSurface::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomBSplineSurface::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
@@ -3545,7 +3534,7 @@ Geometry *GeomCylinder::clone(void) const
     return tempCurve;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomCylinder::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomCylinder::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomCylinder::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
@@ -3592,7 +3581,7 @@ Geometry *GeomCone::clone(void) const
     return tempCurve;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomCone::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomCone::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomCone::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
@@ -3639,7 +3628,7 @@ Geometry *GeomToroid::clone(void) const
     return tempCurve;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomToroid::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomToroid::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomToroid::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
@@ -3686,7 +3675,7 @@ Geometry *GeomSphere::clone(void) const
     return tempCurve;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomSphere::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomSphere::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomSphere::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
@@ -3733,7 +3722,7 @@ Geometry *GeomPlane::clone(void) const
     return tempCurve;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomPlane::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomPlane::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomPlane::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
@@ -3782,7 +3771,7 @@ Geometry *GeomOffsetSurface::clone(void) const
     return newSurf;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomOffsetSurface::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomOffsetSurface::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomOffsetSurface::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
@@ -3837,7 +3826,7 @@ Geometry *GeomPlateSurface::clone(void) const
     return newSurf;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomPlateSurface::getMemSize (void) const
 {
     throw Base::NotImplementedError("GeomPlateSurface::getMemSize");
@@ -3892,7 +3881,7 @@ Geometry *GeomTrimmedSurface::clone(void) const
     return newSurf;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomTrimmedSurface::getMemSize (void) const {assert(0); return 0;/* not implemented yet */}
 void         GeomTrimmedSurface::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomTrimmedSurface::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
@@ -3941,7 +3930,7 @@ Geometry *GeomSurfaceOfRevolution::clone(void) const
     return newSurf;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomSurfaceOfRevolution::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomSurfaceOfRevolution::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomSurfaceOfRevolution::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
@@ -3990,7 +3979,7 @@ Geometry *GeomSurfaceOfExtrusion::clone(void) const
     return newSurf;
 }
 
-// Persistence implementer 
+// Persistence implementer
 unsigned int GeomSurfaceOfExtrusion::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomSurfaceOfExtrusion::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
 void         GeomSurfaceOfExtrusion::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
