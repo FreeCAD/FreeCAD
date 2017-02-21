@@ -37,8 +37,8 @@ INSTALL(
         _CommandRunSolver.py
         _CommandControlSolver.py
 
-        _FemMechanicalResult.py
-        _ViewProviderFemMechanicalResult.py
+        _FemResultMechanical.py
+        _ViewProviderFemResultMechanical.py
         _CommandShowResult.py
         _TaskPanelShowResult.py
         TaskPanelShowResult.ui

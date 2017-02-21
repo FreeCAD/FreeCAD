@@ -63,6 +63,7 @@ def insert(filename, docname):
 
 ########## module specific methods ##########
 def importFrd(filename, analysis=None, result_name_prefix=None):
+    import ObjectsFem
     if result_name_prefix is None:
         result_name_prefix = ''
     m = readResult(filename)
@@ -70,7 +71,6 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
     if(len(m['Nodes']) > 0):
         if analysis is None:
             analysis_name = os.path.splitext(os.path.basename(filename))[0]
-            import ObjectsFem
             analysis_object = ObjectsFem.makeAnalysis('Analysis')
             analysis_object.Label = analysis_name
         else:
@@ -108,8 +108,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                 results_name = result_name_prefix + 'time_' + str(step_time) + '_results'
             else:
                 results_name = result_name_prefix + 'results'
-            import ObjectsFem
-            results = ObjectsFem.makeMechanicalResult(results_name)
+            results = ObjectsFem.makeResultMechanical(results_name)
             for m in analysis_object.Member:
                 if m.isDerivedFrom("Fem::FemMeshObject"):
                     results.Mesh = m
