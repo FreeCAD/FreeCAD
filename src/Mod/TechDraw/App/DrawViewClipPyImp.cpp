@@ -82,7 +82,11 @@ PyObject* DrawViewClipPy::getChildViewNames(PyObject* args)
 
     std::vector<std::string>::iterator it = strings.begin();
     for( ; it != strings.end(); it++) {
+#if PY_MAJOR_VERSION < 3
         PyObject* pString = PyString_FromString(it->c_str());           //TODO: unicode & py3
+#else
+        PyObject* pString = PyUnicode_FromString(it->c_str());
+#endif
         //int rc =
         static_cast<void> (PyList_Append(result, pString));
     }

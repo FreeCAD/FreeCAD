@@ -80,8 +80,8 @@ PyObject* DrawParametricTemplatePy::drawLine(PyObject *args)
 
 }
 
-Py::Int DrawParametricTemplatePy::getGeometryCount(void) const
+Py::Long DrawParametricTemplatePy::getGeometryCount(void) const
 {
     int size = getDrawParametricTemplatePtr()->getGeometry().size();
-    return Py::Int(size);
+    return Py::Long(size);
 }
