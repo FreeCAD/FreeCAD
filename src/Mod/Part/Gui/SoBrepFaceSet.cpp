@@ -1013,7 +1013,9 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
         // TODO FINISHING THE COLOR SUPPORT !
 
         if (!PRIVATE(this)->vboLoaded || PRIVATE(this)->updateVbo) {
+#ifdef FC_OS_WIN32
             const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
+#endif
             if (PRIVATE(this)->updateVbo && PRIVATE(this)->vboLoaded) {
                 // TODO
                 // We must remember the buffer size ... If it has to be extended we must
