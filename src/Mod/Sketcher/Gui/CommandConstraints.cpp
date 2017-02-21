@@ -912,7 +912,7 @@ public:
             newSelType = (allowedSelTypes & SelVAxis) ? SelVAxis : SelEdgeOrAxis;
             ss << "V_Axis";
         }
-        else if (allowedSelTypes & SelExternalEdge) {
+        else if (allowedSelTypes & SelExternalEdge && CrvId <= Sketcher::GeoEnum::RefExt) {
             //TODO: Figure out how this works
             selIdPair.GeoId = CrvId;
             newSelType = SelExternalEdge;
@@ -2506,7 +2506,7 @@ CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex},
-                           {SelEdge}}; // Can't do single vertex because its a prefix for 2 vertices
+                           {SelEdge}, {SelExternalEdge}}; // Can't do single vertex because its a prefix for 2 vertices
     constraintCursor = cursor_genericconstraint;
 }
 
@@ -2654,6 +2654,7 @@ void CmdSketcherConstrainDistanceX::applyConstraint(std::vector<SelIdPair> &selS
         break;
     }
     case 2: // {SelEdge}
+    case 4: // {SelExternalEdge}
     {
         GeoId1 = GeoId2 = selSeq.at(0).GeoId;
         PosId1 = Sketcher::start; PosId2 = Sketcher::end;
@@ -2745,7 +2746,7 @@ CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex},
-                           {SelEdge}}; // Can't do single vertex because its a prefix for 2 vertices
+                           {SelEdge}, {SelExternalEdge}}; // Can't do single vertex because its a prefix for 2 vertices
     constraintCursor = cursor_genericconstraint;
 }
 
@@ -2892,6 +2893,7 @@ void CmdSketcherConstrainDistanceY::applyConstraint(std::vector<SelIdPair> &selS
         break;
     }
     case 2: // {SelEdge}
+    case 3: // {SelExternalEdge}
     {
         GeoId1 = GeoId2 = selSeq.at(0).GeoId;
         PosId1 = Sketcher::start; PosId2 = Sketcher::end;
