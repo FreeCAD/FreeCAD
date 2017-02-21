@@ -3455,6 +3455,7 @@ int SketchObject::exposeInternalGeometry(int GeoId)
             }
         }
 
+        Q_UNUSED(isfirstweightconstrained);
         // constraint the first weight to allow for seamless weight modification and proper visualization
         /*if(!isfirstweightconstrained) {
             
