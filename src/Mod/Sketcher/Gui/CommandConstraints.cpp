@@ -2477,8 +2477,6 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
 
 // ======================================================================================
 
-//DEF_STD_CMD_AU(CmdSketcherConstrainDistanceX);
-
 class CmdSketcherConstrainDistanceX : public CmdSketcherConstraint
 {
 public:
@@ -2716,8 +2714,6 @@ void CmdSketcherConstrainDistanceX::updateAction(int mode)
 
 
 // ======================================================================================
-
-//DEF_STD_CMD_AU(CmdSketcherConstrainDistanceY);
 
 class CmdSketcherConstrainDistanceY : public CmdSketcherConstraint
 {
@@ -3020,7 +3016,8 @@ CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
     eType           = ForEdit;
 
     // TODO: Also needed: ExternalEdges
-    allowedSelSequences = {{SelEdge, SelEdgeOrAxis}, {SelEdgeOrAxis, SelEdge}};
+    allowedSelSequences = {{SelEdge, SelEdgeOrAxis}, {SelEdgeOrAxis, SelEdge},
+                           {SelEdge, SelExternalEdge}, {SelExternalEdge, SelEdge}};
     constraintCursor = cursor_createparallel;
 }
 
@@ -3110,6 +3107,8 @@ void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair> &selSe
     switch (seqIndex) {
     case 0: // {SelEdge, SelEdgeOrAxis}
     case 1: // {SelEdgeOrAxis, SelEdge}
+    case 2: // {SelEdge, SelExternalEdge}
+    case 3: // {SelExternalEdge, SelEdge}
         // create the constraint
         SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
