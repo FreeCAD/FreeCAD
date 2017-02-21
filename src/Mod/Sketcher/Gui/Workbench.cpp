@@ -81,7 +81,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     addSketcherWorkbenchTools(*consaccel);
     
     Gui::MenuItem* bsplines = new Gui::MenuItem();
-    bsplines->setCommand("Sketcher B-Spline tools");
+    bsplines->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines(*bsplines);
 
     addSketcherWorkbenchSketchActions( *sketch );
@@ -114,7 +114,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     addSketcherWorkbenchTools( *consaccel );
     
     Gui::ToolBarItem* bspline = new Gui::ToolBarItem(root);
-    bspline->setCommand("Sketcher B-Spline tools");
+    bspline->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines( *bspline );
 
      return root;
@@ -324,9 +324,11 @@ inline void Sketcher_addWorkbenchSketchActions(T& sketch){
 void addSketcherWorkbenchConstraints( Gui::MenuItem& cons ){
     SketcherAddWorkbenchConstraints( cons );
 }
+
 void addSketcherWorkbenchTools( Gui::MenuItem& consaccel ){
     SketcherAddWorkbenchTools( consaccel );
 }
+
 void addSketcherWorkbenchBSplines( Gui::MenuItem& bspline ){
     SketcherAddWorkbenchBSplines( bspline );
 }

@@ -149,20 +149,30 @@
     </Methode>
     <Methode Name="ExposeInternalGeometry">
       <Documentation>
-        <UserDocu>Exposes all internal geometry of an object supporting internal geometry</UserDocu>
+        <UserDocu>Deprecated -- use exposeInternalGeometry</UserDocu>
       </Documentation>    
     </Methode>
     <Methode Name="DeleteUnusedInternalGeometry">
       <Documentation>
-        <UserDocu>Deletes all unused (not further constrained) internal geometry</UserDocu>
+        <UserDocu>Deprecated -- use deleteUnusedInternalGeometry</UserDocu>
       </Documentation>    
     </Methode>
-    <Methode Name="ConvertToNURBS">
+    <Methode Name="exposeInternalGeometry">
+      <Documentation>
+        <UserDocu>Exposes all internal geometry of an object supporting internal geometry</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="deleteUnusedInternalGeometry">
+      <Documentation>
+        <UserDocu>Deletes all unused (not further constrained) internal geometry</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="convertToNURBS">
         <Documentation>
             <UserDocu>Approximates the given geometry with a B-Spline</UserDocu>
         </Documentation>    
     </Methode>
-    <Methode Name="IncreaseBSplineDegree">
+    <Methode Name="increaseBSplineDegree">
         <Documentation>
             <UserDocu>Increases the given BSpline Degree by a number of degrees</UserDocu>
         </Documentation>

@@ -105,8 +105,8 @@ CmdSketcherBSplineDegree::CmdSketcherBSplineDegree()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Show/Hide B-Spline degree");
-    sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the degree for all B-Splines");
+    sMenuText       = QT_TR_NOOP("Show/Hide B-spline degree");
+    sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the degree for all B-splines");
     sWhatsThis      = "Sketcher_BSplineDegree";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplineDegree";
@@ -139,8 +139,8 @@ CmdSketcherBSplinePolygon::CmdSketcherBSplinePolygon()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Show/Hide B-Spline control polygon");
-    sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the control polygons for all B-Splines");
+    sMenuText       = QT_TR_NOOP("Show/Hide B-spline control polygon");
+    sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the control polygons for all B-splines");
     sWhatsThis      = "Sketcher_BSplinePolygon";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplinePolygon";
@@ -173,8 +173,8 @@ CmdSketcherBSplineComb::CmdSketcherBSplineComb()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Show/Hide B-Spline curvature comb");
-    sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the curvature comb for all B-Splines");
+    sMenuText       = QT_TR_NOOP("Show/Hide B-spline curvature comb");
+    sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the curvature comb for all B-splines");
     sWhatsThis      = "Sketcher_BSplineComb";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplineComb";
@@ -207,8 +207,8 @@ CmdSketcherCompBSplineShowHideGeometryInformation::CmdSketcherCompBSplineShowHid
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Show/hide B-Spline information layer");
-    sToolTipText    = QT_TR_NOOP("Show/hide B-Spline information layer");
+    sMenuText       = QT_TR_NOOP("Show/hide B-spline information layer");
+    sToolTipText    = QT_TR_NOOP("Show/hide B-spline information layer");
     sWhatsThis      = "Sketcher_CompBSplineShowHideGeometryInformation";
     sStatusTip      = sToolTipText;
     eType           = ForEdit;
@@ -273,17 +273,17 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::languageChange()
     QList<QAction*> a = pcAction->actions();
     
     QAction* c1 = a[0];
-    c1->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-Spline degree"));
-    c1->setToolTip(QApplication::translate("Sketcher_BSplineDegree","Switches between showing and hiding the degree for all B-Splines"));
-    c1->setStatusTip(QApplication::translate("Sketcher_BSplineDegree","Switches between showing and hiding the degree for all B-Splines"));
+    c1->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-spline degree"));
+    c1->setToolTip(QApplication::translate("Sketcher_BSplineDegree","Switches between showing and hiding the degree for all B-splines"));
+    c1->setStatusTip(QApplication::translate("Sketcher_BSplineDegree","Switches between showing and hiding the degree for all B-splines"));
     QAction* c2 = a[1];
-    c2->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-Spline control polygon"));
-    c2->setToolTip(QApplication::translate("Sketcher_BSplinePolygon","Switches between showing and hiding the control polygons for all B-Splines"));
-    c2->setStatusTip(QApplication::translate("Sketcher_BSplinePolygon","Switches between showing and hiding the control polygons for all B-Splines"));
+    c2->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-spline control polygon"));
+    c2->setToolTip(QApplication::translate("Sketcher_BSplinePolygon","Switches between showing and hiding the control polygons for all B-splines"));
+    c2->setStatusTip(QApplication::translate("Sketcher_BSplinePolygon","Switches between showing and hiding the control polygons for all B-splines"));
     QAction* c3 = a[2];
-    c3->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-Spline curvature comb"));
-    c3->setToolTip(QApplication::translate("Sketcher_BSplineComb","Switches between showing and hiding the curvature comb for all B-Splines"));
-    c3->setStatusTip(QApplication::translate("Sketcher_BSplineComb","Switches between showing and hiding the curvature comb for all B-Splines"));
+    c3->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-spline curvature comb"));
+    c3->setToolTip(QApplication::translate("Sketcher_BSplineComb","Switches between showing and hiding the curvature comb for all B-splines"));
+    c3->setStatusTip(QApplication::translate("Sketcher_BSplineComb","Switches between showing and hiding the curvature comb for all B-splines"));
 
 }
 
@@ -304,8 +304,8 @@ CmdSketcherConvertToNURB::CmdSketcherConvertToNURB()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Convert Geometry to B-Spline");
-    sToolTipText    = QT_TR_NOOP("Converts the given Geometry to a B-Spline");
+    sMenuText       = QT_TR_NOOP("Convert Geometry to B-spline");
+    sToolTipText    = QT_TR_NOOP("Converts the given Geometry to a B-spline");
     sWhatsThis      = "Sketcher_ConvertToNURB";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplineApproximate";
@@ -340,7 +340,7 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
             int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
 
             Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.ConvertToNURBS(%d) ",
+                Doc,"App.ActiveDocument.%s.convertToNURBS(%d) ",
                                     selection[0].getFeatName(),GeoId);
             
             nurbsized = true;
@@ -350,7 +350,7 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
             int GeoId = - (std::atoi(SubNames[i].substr(12,4000).c_str()) + 2);
             
             Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.ConvertToNURBS(%d) ",
+                Doc,"App.ActiveDocument.%s.convertToNURBS(%d) ",
                                     selection[0].getFeatName(),GeoId);
             
             nurbsized = true;
@@ -392,7 +392,7 @@ CmdSketcherIncreaseDegree::CmdSketcherIncreaseDegree()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Increase degree");
-    sToolTipText    = QT_TR_NOOP("Increases the degree of the B-Spline");
+    sToolTipText    = QT_TR_NOOP("Increases the degree of the B-spline");
     sWhatsThis      = "Sketcher_BSplineIncreaseDegree";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplineIncreaseDegree";
@@ -416,7 +416,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand("IncreaseBSplineDegree");
+    openCommand("Increase degree");
 
     for (unsigned int i=0; i<SubNames.size(); i++ ) {
         // only handle edges
@@ -425,7 +425,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
             int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
 
             Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.IncreaseBSplineDegree(%d) ",
+                Doc,"App.ActiveDocument.%s.increaseBSplineDegree(%d) ",
                                     selection[0].getFeatName(),GeoId);
         }
     }

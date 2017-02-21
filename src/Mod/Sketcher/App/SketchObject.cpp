@@ -659,7 +659,7 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
         geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())) {
     
         if(deleteinternalgeo) {
-            this->DeleteUnusedInternalGeometry(GeoId, true);
+            this->deleteUnusedInternalGeometry(GeoId, true);
             return 0;
         }
     }
@@ -2950,7 +2950,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
     
 }
 
-int SketchObject::ExposeInternalGeometry(int GeoId)
+int SketchObject::exposeInternalGeometry(int GeoId)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return -1;
@@ -3488,7 +3488,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         return -1; // not supported type
 }
 
-int SketchObject::DeleteUnusedInternalGeometry(int GeoId, bool delgeoid)
+int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 {
    if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return -1;
@@ -3766,9 +3766,11 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId, bool delgeoid)
     }
 }
 
-bool SketchObject::ConvertToNURBS(int GeoId)
+bool SketchObject::convertToNURBS(int GeoId)
 {
-    if ( GeoId > getHighestCurveIndex() || ( GeoId < 0 && -GeoId > int(ExternalGeo.size())) || GeoId == -1 || GeoId == -2)
+    if (GeoId > getHighestCurveIndex() ||
+        (GeoId < 0 && -GeoId > static_cast<int>(ExternalGeo.size())) ||
+        GeoId == -1 || GeoId == -2)
         return false;
 
     const Part::Geometry *geo = getGeometry(GeoId);
@@ -3787,7 +3789,7 @@ bool SketchObject::ConvertToNURBS(int GeoId)
             const Part::GeomArcOfConic * geoaoc = static_cast<const Part::GeomArcOfConic *>(geo1);
 
             if(geoaoc->isReversed())
-                bspline->Reverse();
+                bspline->reverse();
         }
     }
     catch (const Base::Exception& e) {
@@ -3833,7 +3835,7 @@ bool SketchObject::ConvertToNURBS(int GeoId)
 
 }
 
-bool SketchObject::IncreaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
+bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return -1;
