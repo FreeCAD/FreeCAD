@@ -2320,7 +2320,9 @@ CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelVertex, SelEdgeOrAxis}, {SelRoot, SelEdge},
-                           {SelEdge, SelVertexOrRoot}, {SelEdgeOrAxis, SelVertex}};
+                           {SelVertex, SelExternalEdge},
+                           {SelEdge, SelVertexOrRoot}, {SelEdgeOrAxis, SelVertex},
+                           {SelExternalEdge, SelVertex}};
     constraintCursor = cursor_createpointonobj;
 
 }
@@ -2412,12 +2414,14 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
     switch (seqIndex) {
     case 0: // {SelVertex, SelEdgeOrAxis}
     case 1: // {SelRoot, SelEdge}
+    case 2: // {SelVertex, SelExternalEdge}
         GeoIdVt = selSeq.at(0).GeoId; GeoIdCrv = selSeq.at(1).GeoId;
         PosIdVt = selSeq.at(0).PosId;
 
         break;
-    case 2: // {SelEdge, SelVertexOrRoot}
-    case 3: // {SelEdgeOrAxis, SelVertex}
+    case 3: // {SelEdge, SelVertexOrRoot}
+    case 4: // {SelEdgeOrAxis, SelVertex}
+    case 5: // {SelExternalEdge, SelVertex}
         GeoIdVt = selSeq.at(1).GeoId; GeoIdCrv = selSeq.at(0).GeoId;
         PosIdVt = selSeq.at(1).PosId;
 
