@@ -784,7 +784,7 @@ namespace SketcherGui {
                     (allowedSelTypes & (SelEdge | SelEdgeOrAxis) && element.substr(0,4) == "Edge") ||
                     (allowedSelTypes & (SelHAxis | SelEdgeOrAxis) && element.substr(0,6) == "H_Axis") ||
                     (allowedSelTypes & (SelVAxis | SelEdgeOrAxis) && element.substr(0,6) == "V_Axis") ||
-                    (allowedSelTypes & SketcherGui::SelExternalEdge && element.substr(0,12) == "ExternalEdge"))
+                    (allowedSelTypes & SelExternalEdge && element.substr(0,12) == "ExternalEdge"))
                 return true;
 
             return false;
@@ -914,7 +914,9 @@ public:
         }
         else if (allowedSelTypes & SelExternalEdge) {
             //TODO: Figure out how this works
+            selIdPair.GeoId = CrvId;
             newSelType = SelExternalEdge;
+            ss << "ExternalEdge" << Sketcher::GeoEnum::RefExt + 1 - CrvId;
         }
 
         if (selIdPair.GeoId == Constraint::GeoUndef) {
@@ -1952,8 +1954,9 @@ CmdSketcherConstrainDistance::CmdSketcherConstrainDistance()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex},
-                           {SelEdge},
-                           {SelVertex, SelEdgeOrAxis}, {SelRoot, SelEdge}};
+                           {SelEdge}, {SelExternalEdge},
+                           {SelVertex, SelEdgeOrAxis}, {SelRoot, SelEdge},
+                           {SelVertex, SelExternalEdge}, {SelRoot, SelExternalEdge}};
     constraintCursor = cursor_genericconstraint;
 }
 
@@ -2116,8 +2119,8 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none;
 
     switch (seqIndex) {
-    case 0: //{SelVertex, SelVertexOrRoot}
-    case 1: //{SelRoot, SelVertex}
+    case 0: // {SelVertex, SelVertexOrRoot}
+    case 1: // {SelRoot, SelVertex}
     {
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
         PosId1 = selSeq.at(0).PosId; PosId2 = selSeq.at(1).PosId;
@@ -2159,7 +2162,8 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
 
         return;
     }
-    case 2: //{SelEdge}
+    case 2: // {SelEdge}
+    case 3: // {SelExternalEdge}
     {
         GeoId1 = GeoId2 = selSeq.at(0).GeoId;
         PosId1 = Sketcher::start; PosId2 = Sketcher::end;
@@ -2192,8 +2196,10 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
 
         return;
     }
-    case 3: //{SelVertex, SelEdgeOrAxis}
-    case 4: //{SelRoot, SelEdge}
+    case 4: // {SelVertex, SelEdgeOrAxis}
+    case 5: // {SelRoot, SelEdge}
+    case 6: // {SelVertex, SelExternalEdge}
+    case 7: // {SelRoot, SelExternalEdge}
     {
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
         PosId1 = selSeq.at(0).PosId; PosId2 = selSeq.at(1).PosId;
