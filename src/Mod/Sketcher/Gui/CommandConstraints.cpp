@@ -762,7 +762,7 @@ namespace SketcherGui {
      * SelectionFilterGate with changeable filters. In a constraint creation mode
      * like point on object, if the first selection object can be a point, the next
      * has to be a curve for the constraint to make sense. Thus filters are
-     * changeable so taht same filter can be kept on while in one mode.
+     * changeable so that same filter can be kept on while in one mode.
      */
     class GenericConstraintSelection : public Gui::SelectionFilterGate
     {
@@ -1122,12 +1122,17 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("Select an edge from the sketch."));
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+
+        if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
                 new DrawSketchHandlerGenConstraint(constraintCursor, this));
         getSelection().clearSelection();
-
+        } else {    
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select an edge from the sketch."));
+        }
         return;
     }
 
@@ -1326,11 +1331,17 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("Select an edge from the sketch."));
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+
+        if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
                 new DrawSketchHandlerGenConstraint(constraintCursor, this));
         getSelection().clearSelection();
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select an edge from the sketch."));
+        }
         return;
     }
 
@@ -1532,9 +1543,17 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+
+        if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
                 new DrawSketchHandlerGenConstraint(constraintCursor, this));
         getSelection().clearSelection();
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select vertices from the sketch."));
+        }
         return;
     }
 
@@ -1830,9 +1849,18 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+
+        if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
                 new DrawSketchHandlerGenConstraint(constraintCursor, this));
         getSelection().clearSelection();
+        } else {
+            // TODO: Get the exact message from git history and put it here
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select two or more from the sketch."));
+        }
         return;
     }
 
@@ -1968,12 +1996,17 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("Select vertexes from the sketch."));
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
 
+        if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
                 new DrawSketchHandlerGenConstraint(constraintCursor, this));
         getSelection().clearSelection();
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select vertexes from the sketch."));
+        }
         return;
     }
 
@@ -2335,11 +2368,18 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("Select vertexes from the sketch."));
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
 
+        if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
                 new DrawSketchHandlerGenConstraint(constraintCursor, this));
+        getSelection().clearSelection();
+        } else {
+            // TODO: Get the exact message from git history and put it here
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select the right things from the sketch."));
+        }
         return;
     }
 
@@ -2516,12 +2556,18 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("Select vertexes from the sketch."));
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
 
+        if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
                 new DrawSketchHandlerGenConstraint(constraintCursor, this));
         getSelection().clearSelection();
+        } else {
+            // TODO: Get the exact message from git history and put it here
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select the right things from the sketch."));
+        }
         return;
     }
 
@@ -2754,12 +2800,18 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("Select vertexes from the sketch."));
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
 
+        if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
                 new DrawSketchHandlerGenConstraint(constraintCursor, this));
         getSelection().clearSelection();
+        } else {
+            // TODO: Get the exact message from git history and put it here
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select the right things from the sketch."));
+        }
         return;
     }
 
@@ -3029,11 +3081,18 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("Select two or more lines from the sketch."));
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+
+        if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
                 new DrawSketchHandlerGenConstraint(constraintCursor, this));
         getSelection().clearSelection();
+        } else {
+            // TODO: Get the exact message from git history and put it here
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select two or more lines from the sketch."));
+        }
         return;
     }
 
@@ -3235,14 +3294,20 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-//        strError = QObject::tr("Select some geometry from the sketch.", "perpendicular constraint");
-//        if (!strError.isEmpty()) strError.append(QString::fromLatin1("\n\n"));
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            strError+strBasicHelp);
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
 
+        if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
                 new DrawSketchHandlerGenConstraint(constraintCursor, this));
         getSelection().clearSelection();
+        } else {
+            // TODO: Get the exact message from git history and put it here
+            strError = QObject::tr("Select some geometry from the sketch.", "perpendicular constraint");
+            if (!strError.isEmpty()) strError.append(QString::fromLatin1("\n\n"));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 strError+strBasicHelp);
+        }
         return;
     }
 
@@ -3893,15 +3958,19 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-//        strError = QObject::tr("Select some geometry from the sketch.", "tangent constraint");
-//        if (!strError.isEmpty()) strError.append(QString::fromLatin1("\n\n"));
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            strError+strBasicHelp);
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
 
+        if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
                 new DrawSketchHandlerGenConstraint(constraintCursor, this));
         getSelection().clearSelection();
-
+        } else {
+            strError = QObject::tr("Select some geometry from the sketch.", "tangent constraint");
+            if (!strError.isEmpty()) strError.append(QString::fromLatin1("\n\n"));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 strError+strBasicHelp);
+        }
         return;
     }
 
@@ -4502,9 +4571,18 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+
+        if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
-                        new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                new DrawSketchHandlerGenConstraint(constraintCursor, this));
         getSelection().clearSelection();
+        } else {
+            // TODO: Get the exact message from git history and put it here
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select the right things from the sketch."));
+        }
         return;
     }
 
@@ -4989,7 +5067,6 @@ CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
     constraintCursor = cursor_genericconstraint;
 }
 
-
 void CmdSketcherConstrainAngle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -4999,12 +5076,18 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        //        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        //            QObject::tr("Select two edges from the sketch."));
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
 
+        if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
-                        new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                new DrawSketchHandlerGenConstraint(constraintCursor, this));
         getSelection().clearSelection();
+        } else {
+            // TODO: Get the exact message from git history and put it here
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select the right things from the sketch."));
+        }
         return;
     }
 
@@ -5494,12 +5577,17 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("Select two edges from the sketch."));
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
 
-        ActivateHandler(getActiveGuiDocument(),
-                new DrawSketchHandlerGenConstraint(constraintCursor, this));
-        getSelection().clearSelection();
+        if (constraintMode) {
+            ActivateHandler(getActiveGuiDocument(),
+                            new DrawSketchHandlerGenConstraint(constraintCursor, this));
+            getSelection().clearSelection();
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select two edges from the sketch."));
+        }
         return;
     }
 
@@ -5679,12 +5767,18 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("Select two points and a symmetry line, two points and a symmetry point "
-//                        "or a line and a symmetry point from the sketch."));
-        ActivateHandler(getActiveGuiDocument(),
-                        new DrawSketchHandlerGenConstraint(constraintCursor, this));
-        getSelection().clearSelection();
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+
+        if (constraintMode) {
+            ActivateHandler(getActiveGuiDocument(),
+                            new DrawSketchHandlerGenConstraint(constraintCursor, this));
+            getSelection().clearSelection();
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select two points and a symmetry line, two points and a symmetry point "
+                                             "or a line and a symmetry point from the sketch."));
+        }
         return;
     }
 
