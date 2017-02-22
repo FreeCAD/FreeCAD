@@ -26,6 +26,7 @@
 # include <cfloat>
 # include <QMessageBox>
 # include <Precision.hxx>
+# include <QPainter>
 #endif
 
 #include <Base/Tools.h>
@@ -841,6 +842,45 @@ protected:
     { return isCreateGeoActive(getActiveGuiDocument()); }
 };
 
+/* XPM */
+static const char *cursor_genericconstraint[]={
+"32 32 3 1",
+"  c None",
+". c #FFFFFF",
+"+ c #FF0000",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"                                ",
+".....   .....                   ",
+"                                ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",};
+
 class DrawSketchHandlerGenConstraint: public DrawSketchHandler
 {
 public:
@@ -862,7 +902,15 @@ public:
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(selFilterGate);
 
-        setCursor(QPixmap(constraintCursor), 7, 7);
+        // Constrait icon size in px
+        int iconSize = 16;
+        QPixmap cursorPixmap(cursor_genericconstraint),
+                icon = Gui::BitmapFactory().pixmap(cmd->sPixmap).scaledToWidth(iconSize);
+        QPainter cursorPainter;
+        cursorPainter.begin(&cursorPixmap);
+        cursorPainter.drawPixmap(16, 16, icon);
+        cursorPainter.end();
+        setCursor(cursorPixmap, 7, 7);
     }
 
     virtual void mouseMove(Base::Vector2d /*onSketchPos*/) {}
@@ -994,46 +1042,6 @@ protected:
         Gui::Selection().clearSelection();
     }
 };
-
-
-/* XPM */
-static const char *cursor_genericconstraint[]={
-"32 32 3 1",
-"  c None",
-". c #FFFFFF",
-"+ c #FF0000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-".....   .....                   ",
-"                                ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",};
 
 void CmdSketcherConstraint::activated(int /*iMsg*/)
 {
