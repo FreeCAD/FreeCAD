@@ -125,6 +125,7 @@ void SketcherSettings::saveSettings()
     ui->SegmentsPerGeometry->onSave();
     ui->dialogOnDistanceConstraint->onSave();
     ui->continueMode->onSave();
+    ui->constraintMode->onSave();
     ui->checkBoxAdvancedSolverTaskBox->onSave();
     ui->checkBoxTVHideDependent->onSave();
     ui->checkBoxTVShowLinks->onSave();
@@ -168,6 +169,7 @@ void SketcherSettings::loadSettings()
     ui->SegmentsPerGeometry->onRestore();
     ui->dialogOnDistanceConstraint->onRestore();
     ui->continueMode->onRestore();
+    ui->constraintMode->onRestore();
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
     ui->checkBoxTVHideDependent->onRestore();
     ui->checkBoxTVShowLinks->onRestore();
