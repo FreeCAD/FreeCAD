@@ -5464,7 +5464,8 @@ CmdSketcherConstrainEqual::CmdSketcherConstrainEqual()
     sAccel          = "E";
     eType           = ForEdit;
 
-    allowedSelSequences = {{SelEdge, SelEdge}}; // Only option for equal constraint
+    allowedSelSequences = {{SelEdge, SelEdge}, {SelEdge, SelExternalEdge},
+                           {SelExternalEdge, SelEdge}}; // Only option for equal constraint
     constraintCursor = cursor_genericconstraint;
 }
 
@@ -5588,6 +5589,8 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair> &selSeq, 
 
     switch (seqIndex) {
     case 0: // {SelEdge, SelEdge}
+    case 1: // {SelEdge, SelExternalEdge}
+    case 2: // {SelExternalEdge, SelEdge}
     {
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
 
