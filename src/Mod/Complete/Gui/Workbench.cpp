@@ -51,7 +51,7 @@ using namespace CompleteGui;
     qApp->translate("Workbench", "&Drafting");
     qApp->translate("Workbench", "Sketch based");
     qApp->translate("Workbench", "Primitives");
-    qApp->translate("Workbench", "Object appearence");
+    qApp->translate("Workbench", "Object appearance");
     qApp->translate("Workbench", "Wire Tools");
     // taken from TestGui.py
     qApp->translate("Test_Test", "Self-test...");
@@ -373,7 +373,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         Drafting->setCommand("&Drafting");
 
         Gui::MenuItem* DraftContext = new Gui::MenuItem();
-        DraftContext->setCommand("Object appearence");
+        DraftContext->setCommand("Object appearance");
 
         *DraftContext << "Draft_ApplyStyle" << "Draft_ToggleDisplayMode";
 

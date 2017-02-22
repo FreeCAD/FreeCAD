@@ -186,7 +186,7 @@ namespace geoff_geometry {
 			sp0.dir = k.Get(kinVertex, sp0.p0, sp0.pc);
 			sp0.ID = k.GetSpanID(kinVertex++);
 			if (kinVertex == 1)	{
-				ko.Start(sp0.p0);							// start point mustn't dissappear for this simple method
+				ko.Start(sp0.p0);							// start point mustn't disappear for this simple method
 				ko.AddSpanID(sp0.ID);
 			}
 			if (kinVertex <= k.nSpans()) {   // any more?

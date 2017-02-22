@@ -34,7 +34,7 @@ class Plot(object):
         @param x X coordinates.
         @param y Transversal computed areas.
         @param disp Ship displacement.
-        @param xcb Bouyancy center length.
+        @param xcb Buoyancy center length.
         @param ship Active ship instance.
         """
         self.plot(x, y, disp, xcb, ship)
@@ -45,7 +45,7 @@ class Plot(object):
         @param x X coordinates.
         @param y Transversal areas.
         @param disp Ship displacement.
-        @param xcb Bouyancy center length.
+        @param xcb Buoyancy center length.
         @param ship Active ship instance.
         @return True if error happens.
         """

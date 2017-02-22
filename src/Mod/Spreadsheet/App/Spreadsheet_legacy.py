@@ -102,7 +102,7 @@ class MathParser:
                 denominator = self.parseParenthesis()
                 if denominator == 0:
                     raise ZeroDivisionError(
-                        "Division by 0 kills baby whales (occured at index " +
+                        "Division by 0 kills baby whales (occurred at index " +
                         str(div_index) +
                         ")")
                 values.append(1.0 / denominator)
@@ -1007,7 +1007,7 @@ def makeSpreadsheetController(spreadsheet,cell=None,direction=None):
 
 def makeSpreadsheetPropertyController(spreadsheet,object=None,prop=None,cell=None):
     """makeSpreadsheetPropertyController(spreadsheet,[object,prop,cell]): adds a 
-    property controller, targetting the given object if any, to the given spreadsheet.
+    property controller, targeting the given object if any, to the given spreadsheet.
     You can give a property (such as "Length" or "Proxy.Length") and a cell address
     (such as "B6")."""
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","PropertyController")

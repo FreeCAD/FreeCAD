@@ -528,7 +528,7 @@ def loadSvgPatterns():
                     FreeCAD.svgpatterns.update(p)
 
 def svgpatterns():
-    """svgpatterns(): returns a dictionnary with installed SVG patterns"""
+    """svgpatterns(): returns a dictionary with installed SVG patterns"""
     if hasattr(FreeCAD,"svgpatterns"):
         return FreeCAD.svgpatterns
     else:
@@ -1940,7 +1940,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                                 rot -=180
                             if rot < -90:
                                 rot += 180
-                            #be carefull with the sweep flag
+                            #be careful with the sweep flag
                         flag_large_arc = (((e.ParameterRange[1] - \
                                 e.ParameterRange[0]) / math.pi) % 2) > 1
                         #flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
@@ -3006,7 +3006,7 @@ def upgrade(objects,delete=False,force=None):
     force a certain way of upgrading. It can be: makeCompound, closeGroupWires,
     makeSolid, closeWire, turnToParts, makeFusion, makeShell, makeFaces, draftify,
     joinFaces, makeSketchFace, makeWires
-    Returns a dictionnary containing two lists, a list of new objects and a list
+    Returns a dictionary containing two lists, a list of new objects and a list
     of objects to be deleted"""
 
     import Part, DraftGeomUtils
@@ -3366,7 +3366,7 @@ def downgrade(objects,delete=False,force=None):
     The force attribute can be used to
     force a certain way of downgrading. It can be: explode, shapify, subtr,
     splitFaces, cut2, getWire, splitWires, splitCompounds.
-    Returns a dictionnary containing two lists, a list of new objects and a list
+    Returns a dictionary containing two lists, a list of new objects and a list
     of objects to be deleted"""
 
     import Part, DraftGeomUtils

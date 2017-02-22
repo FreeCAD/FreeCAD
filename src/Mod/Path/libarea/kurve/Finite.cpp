@@ -510,7 +510,7 @@ namespace geoff_geometry {
 	// Triangle3d methods
 	bool    Triangle3d::Intof(const Line& l, Point3d& intof)const {
 	 // returns intersection triangle to line in intof
-	// funtion returns true for intersection, false for no intersection
+	// function returns true for intersection, false for no intersection
 	// method based on Möller & Trumbore(1997) (Barycentric coordinates)
 	// based on incorrect Pseudo code from "Geometric Tools for Computer Graphics" p.487
 		if(box.outside(l.box) == true) return false;

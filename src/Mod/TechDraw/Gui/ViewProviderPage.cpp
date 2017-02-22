@@ -276,7 +276,7 @@ void ViewProviderPage::onSelectionChanged(const Gui::SelectionChanges& msg)
                     continue;
 
                 std::string str = msg.pSubName;
-                // If it's a subfeature, dont select feature
+                // If it's a subfeature, don't select feature
                 if (!str.empty()) {
                     if (TechDraw::DrawUtil::getGeomTypeFromName(str) == "Face" ||
                         TechDraw::DrawUtil::getGeomTypeFromName(str) == "Edge" ||
@@ -293,7 +293,7 @@ void ViewProviderPage::onSelectionChanged(const Gui::SelectionChanges& msg)
             App::DocumentObject *obj = doc->getDocument()->getObject(msg.pObjectName);
             if(obj) {
                 std::string str = msg.pSubName;
-                // If it's a subfeature, dont select feature
+                // If it's a subfeature, don't select feature
                 if (!str.empty()) {
                     if (TechDraw::DrawUtil::getGeomTypeFromName(str) == "Face" ||
                         TechDraw::DrawUtil::getGeomTypeFromName(str) == "Edge" ||

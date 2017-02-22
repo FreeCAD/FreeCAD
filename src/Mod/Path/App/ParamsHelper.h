@@ -29,7 +29,7 @@
  * \section Motivation 
  *
  * For an application like FreeCAD, there are often cases where the same set of
- * parameters are refered in dozons of different places. The macros here is
+ * parameters are referred in dozons of different places. The macros here is
  * designed to help managing those parameters, so that you can define groups of
  * parameters once, and refer them everywhere in groups with simple macro calls for
  * all kinds of purposes. Any changing, adding and removing of parameters in the
@@ -44,7 +44,7 @@
  *
  * \section Debugging
  *
- * Extensive use of macros has one noticable disadvantage, though. If some thing
+ * Extensive use of macros has one noticeable disadvantage, though. If some thing
  * goes wrong, the compiler error message is kind of cryptic. If so, first
  * double check your macro definition of the parameter is correctly, not missing
  * or having extra parathesis or comma.  Then, you can use the CMake
@@ -145,7 +145,7 @@
  *
  * See struct AreaDoc for an example of doc string generation.
  * 
- * Each field of the parameter can be refered to with various 
+ * Each field of the parameter can be referred to with various 
  * \ref ParamAccessor "various accessor macros", and can be easily 
  * \ref ParamStringizer "stringified".
  *
@@ -154,14 +154,14 @@
  * And #PARAM_FIELD_STR to stringify.
  *
  * Here \a _param is the parameter definition described above in the form of a
- * Boost.PP tuple, and is usally supplied by various \ref ParamLooper "looper macros"
+ * Boost.PP tuple, and is usually supplied by various \ref ParamLooper "looper macros"
  *
  * You can of course directly use various Boost.PP sequence looper to pass
  * aditional arguments to the operation macro. See #PARAM_PY_DICT_SET_VALUE for
  * an example of using tuple, and the more complex example #PARAM_ENUM_CONVERT
  *
  * Note that when generating comma separated list, the first and last comma are
- * conveniently ommited, so that the macros can be mixed with others intuitively
+ * conveniently omited, so that the macros can be mixed with others intuitively
  */
 
 #include <boost/preprocessor/cat.hpp>
