@@ -3839,8 +3839,6 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
 
 // ======================================================================================
 
-//DEF_STD_CMD_A(CmdSketcherConstrainTangent);
-
 class CmdSketcherConstrainTangent : public CmdSketcherConstraint
 {
 public:
@@ -4492,7 +4490,7 @@ CmdSketcherConstrainRadius::CmdSketcherConstrainRadius()
     sAccel          = "SHIFT+R";
     eType           = ForEdit;
 
-    allowedSelSequences = {{SelEdge}};
+    allowedSelSequences = {{SelEdge}, {SelExternalEdge}};
     constraintCursor = cursor_genericconstraint;
 }
 
@@ -4798,6 +4796,8 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
 
     switch (seqIndex) {
     case 0: // {SelEdge}
+    case 1: // {SelExternalEdge}
+    {
         const Part::Geometry *geom = Obj->getGeometry(GeoId);
         if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geom);
@@ -4822,7 +4822,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
 
         int indexConstr = ConStr.size() - 1;
 
-        if(constraintCreationMode==Reference) {
+        if(GeoId <= Sketcher::GeoEnum::RefExt || constraintCreationMode==Reference) {
             Gui::Command::doCommand(Doc, "App.ActiveDocument.%s.setDriving(%i,%s)",
                                     Obj->getNameInDocument(), ConStr.size()-1, "False");
         }
@@ -4842,7 +4842,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
         bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
         // Ask for the value of the radius immediately
-        if (show && constraintCreationMode==Driving) {
+        if (show && constraintCreationMode==Driving && GeoId >= 0) {
             QDialog dlg(Gui::getMainWindow());
             Ui::InsertDatum ui_Datum;
             ui_Datum.setupUi(&dlg);
@@ -4927,6 +4927,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
             else
                 Obj->solve();
         }
+    }
     }
 }
 
