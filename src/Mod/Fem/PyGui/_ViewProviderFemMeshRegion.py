@@ -64,8 +64,8 @@ class _ViewProviderFemMeshRegion:
             if o.isDerivedFrom("Fem::FemMeshObject"):
                 o.ViewObject.hide()
         # show task panel
-        import _TaskPanelFemMeshRegion
-        taskd = _TaskPanelFemMeshRegion._TaskPanelFemMeshRegion(self.Object)
+        import PyGui._TaskPanelFemMeshRegion
+        taskd = PyGui._TaskPanelFemMeshRegion._TaskPanelFemMeshRegion(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True

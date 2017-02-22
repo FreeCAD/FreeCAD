@@ -41,22 +41,22 @@ def makeAnalysis(name="Analysis"):
 def makeSolverCalculix(name="CalculiX"):
     '''makeSolverCalculix(name): makes a Calculix solver object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", name)
-    import _FemSolverCalculix
-    _FemSolverCalculix._FemSolverCalculix(obj)
+    import PyObjects._FemSolverCalculix
+    PyObjects._FemSolverCalculix._FemSolverCalculix(obj)
     if FreeCAD.GuiUp:
-        import _ViewProviderFemSolverCalculix
-        _ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix(obj.ViewObject)
+        import PyGui._ViewProviderFemSolverCalculix
+        PyGui._ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix(obj.ViewObject)
     return obj
 
 
 def makeSolverZ88(name="Z88"):
     '''makeSolverZ88(name): makes a Z88 solver object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", name)
-    import _FemSolverZ88
-    _FemSolverZ88._FemSolverZ88(obj)
+    import PyObjects._FemSolverZ88
+    PyObjects._FemSolverZ88._FemSolverZ88(obj)
     if FreeCAD.GuiUp:
-        import _ViewProviderFemSolverZ88
-        _ViewProviderFemSolverZ88._ViewProviderFemSolverZ88(obj.ViewObject)
+        import PyGui._ViewProviderFemSolverZ88
+        PyGui._ViewProviderFemSolverZ88._ViewProviderFemSolverZ88(obj.ViewObject)
     return obj
 
 
@@ -64,9 +64,9 @@ def makeSolverZ88(name="Z88"):
 def makeBeamSection(sectiontype='Rectangular', width=10.0, height=25.0, name="BeamSection"):
     '''makeBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
-    import _FemBeamSection
-    _FemBeamSection._FemBeamSection(obj)
-    sec_types = _FemBeamSection._FemBeamSection.known_beam_types
+    import PyObjects._FemBeamSection
+    PyObjects._FemBeamSection._FemBeamSection(obj)
+    sec_types = PyObjects._FemBeamSection._FemBeamSection.known_beam_types
     if sectiontype not in sec_types:
         FreeCAD.Console.PrintError("Section type is not known. Set to " + sec_types[0] + " \n")
         obj.SectionType = sec_types[0]
@@ -78,20 +78,20 @@ def makeBeamSection(sectiontype='Rectangular', width=10.0, height=25.0, name="Be
     obj.PipeDiameter = height
     obj.PipeThickness = width
     if FreeCAD.GuiUp:
-        import _ViewProviderFemBeamSection
-        _ViewProviderFemBeamSection._ViewProviderFemBeamSection(obj.ViewObject)
+        import PyGui._ViewProviderFemBeamSection
+        PyGui._ViewProviderFemBeamSection._ViewProviderFemBeamSection(obj.ViewObject)
     return obj
 
 
 def makeShellThickness(thickness=20.0, name="ShellThickness"):
     '''makeShellThickness([thickness], [name]): creates an shellthickness object to define a plate thickness'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
-    import _FemShellThickness
-    _FemShellThickness._FemShellThickness(obj)
+    import PyObjects._FemShellThickness
+    PyObjects._FemShellThickness._FemShellThickness(obj)
     obj.Thickness = thickness
     if FreeCAD.GuiUp:
-        import _ViewProviderFemShellThickness
-        _ViewProviderFemShellThickness._ViewProviderFemShellThickness(obj.ViewObject)
+        import PyGui._ViewProviderFemShellThickness
+        PyGui._ViewProviderFemShellThickness._ViewProviderFemShellThickness(obj.ViewObject)
     return obj
 
 
@@ -99,12 +99,12 @@ def makeShellThickness(thickness=20.0, name="ShellThickness"):
 def makeMaterialSolid(name="MechanicalSolidMaterial"):
     '''makeMaterialSolid(name): makes an FEM Material for solid'''
     obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
-    import _FemMaterial
-    _FemMaterial._FemMaterial(obj)
+    import PyObjects._FemMaterial
+    PyObjects._FemMaterial._FemMaterial(obj)
     obj.Category = 'Solid'
     if FreeCAD.GuiUp:
-        import _ViewProviderFemMaterial
-        _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
+        import PyGui._ViewProviderFemMaterial
+        PyGui._ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
     # FreeCAD.ActiveDocument.recompute()
     return obj
 
@@ -112,12 +112,12 @@ def makeMaterialSolid(name="MechanicalSolidMaterial"):
 def makeMaterialFluid(name="FluidMaterial"):
     '''makeMaterialFluid(name): makes an FEM Material for fluid'''
     obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
-    import _FemMaterial
-    _FemMaterial._FemMaterial(obj)
+    import PyObjects._FemMaterial
+    PyObjects._FemMaterial._FemMaterial(obj)
     obj.Category = 'Fluid'
     if FreeCAD.GuiUp:
-        import _ViewProviderFemMaterial
-        _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
+        import PyGui._ViewProviderFemMaterial
+        PyGui._ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
     # FreeCAD.ActiveDocument.recompute()
     return obj
 
@@ -125,12 +125,12 @@ def makeMaterialFluid(name="FluidMaterial"):
 def makeMaterialMechanicalNonlinear(base_material, name="MechanicalMaterialNonlinear"):
     '''makeMaterialMechanicalNonlinear(base_material, [name]): creates an nonlinear material object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
-    import _FemMaterialMechanicalNonlinear
-    _FemMaterialMechanicalNonlinear._FemMaterialMechanicalNonlinear(obj)
+    import PyObjects._FemMaterialMechanicalNonlinear
+    PyObjects._FemMaterialMechanicalNonlinear._FemMaterialMechanicalNonlinear(obj)
     obj.LinearBaseMaterial = base_material
     if FreeCAD.GuiUp:
-        import _ViewProviderFemMaterialMechanicalNonlinear
-        _ViewProviderFemMaterialMechanicalNonlinear._ViewProviderFemMaterialMechanicalNonlinear(obj.ViewObject)
+        import PyGui._ViewProviderFemMaterialMechanicalNonlinear
+        PyGui._ViewProviderFemMaterialMechanicalNonlinear._ViewProviderFemMaterialMechanicalNonlinear(obj.ViewObject)
     return obj
 
 
@@ -138,11 +138,11 @@ def makeMaterialMechanicalNonlinear(base_material, name="MechanicalMaterialNonli
 def makeResultMechanical(name="MechanicalResult"):
     '''makeResultMechanical(name): creates an mechanical result object to hold FEM results'''
     obj = FreeCAD.ActiveDocument.addObject('Fem::FemResultObjectPython', name)
-    import _FemResultMechanical
-    _FemResultMechanical._FemResultMechanical(obj)
+    import PyObjects._FemResultMechanical
+    PyObjects._FemResultMechanical._FemResultMechanical(obj)
     if FreeCAD.GuiUp:
-        from _ViewProviderFemResultMechanical import _ViewProviderFemResultMechanical
-        _ViewProviderFemResultMechanical(obj.ViewObject)
+        import PyGui._ViewProviderFemResultMechanical
+        PyGui._ViewProviderFemResultMechanical._ViewProviderFemResultMechanical(obj.ViewObject)
     return obj
 
 
@@ -222,11 +222,11 @@ def makeConstraintPulley(name="ConstraintPulley"):
 def makeConstraintSelfWeight(name="ConstraintSelfWeight"):
     '''makeConstraintSelfWeight([name]): creates an self weight object to define a gravity load'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
-    import _FemConstraintSelfWeight
-    _FemConstraintSelfWeight._FemConstraintSelfWeight(obj)
+    import PyObjects._FemConstraintSelfWeight
+    PyObjects._FemConstraintSelfWeight._FemConstraintSelfWeight(obj)
     if FreeCAD.GuiUp:
-        import _ViewProviderFemConstraintSelfWeight
-        _ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight(obj.ViewObject)
+        import PyGui._ViewProviderFemConstraintSelfWeight
+        PyGui._ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight(obj.ViewObject)
     return obj
 
 
@@ -252,19 +252,19 @@ def makeMeshShapeNetgenObject(name="MeshShapeNetgenObject"):
 def makeMeshGmsh(name="FEMMeshGMSH"):
     '''makeMeshGmsh(name): makes a GMSH FEM mesh object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshObjectPython", name)
-    import _FemMeshGmsh
-    _FemMeshGmsh._FemMeshGmsh(obj)
+    import PyObjects._FemMeshGmsh
+    PyObjects._FemMeshGmsh._FemMeshGmsh(obj)
     if FreeCAD.GuiUp:
-        import _ViewProviderFemMeshGmsh
-        _ViewProviderFemMeshGmsh._ViewProviderFemMeshGmsh(obj.ViewObject)
+        import PyGui._ViewProviderFemMeshGmsh
+        PyGui._ViewProviderFemMeshGmsh._ViewProviderFemMeshGmsh(obj.ViewObject)
     return obj
 
 
 def makeMeshGroup(base_mesh, use_label=False, name="FEMMeshGroup"):
     '''makeMeshGroup([length], [name]): creates a  FEM mesh region object to define properties for a regon of a FEM mesh'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
-    import _FemMeshGroup
-    _FemMeshGroup._FemMeshGroup(obj)
+    import PyObjects._FemMeshGroup
+    PyObjects._FemMeshGroup._FemMeshGroup(obj)
     obj.UseLabel = use_label
     # obj.BaseMesh = base_mesh
     # App::PropertyLinkList does not support append, we will use a temporary list to append the mesh group obj. to the list
@@ -272,16 +272,16 @@ def makeMeshGroup(base_mesh, use_label=False, name="FEMMeshGroup"):
     tmplist.append(obj)
     base_mesh.MeshGroupList = tmplist
     if FreeCAD.GuiUp:
-        import _ViewProviderFemMeshGroup
-        _ViewProviderFemMeshGroup._ViewProviderFemMeshGroup(obj.ViewObject)
+        import PyGui._ViewProviderFemMeshGroup
+        PyGui._ViewProviderFemMeshGroup._ViewProviderFemMeshGroup(obj.ViewObject)
     return obj
 
 
 def makeMeshRegion(base_mesh, element_length=0.0, name="FEMMeshRegion"):
     '''makeMeshRegion([length], [name]): creates a  FEM mesh region object to define properties for a regon of a FEM mesh'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
-    import _FemMeshRegion
-    _FemMeshRegion._FemMeshRegion(obj)
+    import PyObjects._FemMeshRegion
+    PyObjects._FemMeshRegion._FemMeshRegion(obj)
     obj.CharacteristicLength = element_length
     # obj.BaseMesh = base_mesh
     # App::PropertyLinkList does not support append, we will use a temporary list to append the mesh region obj. to the list
@@ -289,8 +289,8 @@ def makeMeshRegion(base_mesh, element_length=0.0, name="FEMMeshRegion"):
     tmplist.append(obj)
     base_mesh.MeshRegionList = tmplist
     if FreeCAD.GuiUp:
-        import _ViewProviderFemMeshRegion
-        _ViewProviderFemMeshRegion._ViewProviderFemMeshRegion(obj.ViewObject)
+        import PyGui._ViewProviderFemMeshRegion
+        PyGui._ViewProviderFemMeshRegion._ViewProviderFemMeshRegion(obj.ViewObject)
     return obj
 
 

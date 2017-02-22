@@ -51,8 +51,8 @@ class _ViewProviderFemMaterial:
         return
 
     def setEdit(self, vobj, mode):
-        import _TaskPanelFemMaterial
-        taskd = _TaskPanelFemMaterial._TaskPanelFemMaterial(self.Object)
+        import PyGui._TaskPanelFemMaterial
+        taskd = PyGui._TaskPanelFemMaterial._TaskPanelFemMaterial(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True

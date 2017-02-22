@@ -31,7 +31,7 @@ import FreeCAD
 import FreeCADGui
 from PySide import QtGui
 from PySide import QtCore
-import _FemBeamSection
+import PyObjects._FemBeamSection
 
 
 class _TaskPanelFemBeamSection:
@@ -41,7 +41,7 @@ class _TaskPanelFemBeamSection:
         self.sel_server = None
         self.obj = obj
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemBeamSection.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemBeamSection.ui")
         QtCore.QObject.connect(self.form.cb_crosssectiontype, QtCore.SIGNAL("activated(int)"), self.sectiontype_changed)
         QtCore.QObject.connect(self.form.if_rec_height, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.rec_height_changed)
         QtCore.QObject.connect(self.form.if_rec_width, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.rec_width_changed)
@@ -52,7 +52,7 @@ class _TaskPanelFemBeamSection:
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
 
-        self.form.cb_crosssectiontype.addItems(_FemBeamSection._FemBeamSection.known_beam_types)
+        self.form.cb_crosssectiontype.addItems(PyObjects._FemBeamSection._FemBeamSection.known_beam_types)  # it is inside the class thus double _FemBeamSection
 
         self.get_beamsection_props()
         self.update()

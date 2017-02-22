@@ -59,8 +59,8 @@ class _ViewProviderFemShellThickness:
         return
 
     def setEdit(self, vobj, mode=0):
-        import _TaskPanelFemShellThickness
-        taskd = _TaskPanelFemShellThickness._TaskPanelFemShellThickness(self.Object)
+        import PyGui._TaskPanelFemShellThickness
+        taskd = PyGui._TaskPanelFemShellThickness._TaskPanelFemShellThickness(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True
