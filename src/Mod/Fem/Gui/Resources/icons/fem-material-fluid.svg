@@ -14,10 +14,33 @@
    height="64px"
    id="svg2816"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="fem-material-fluid.svg">
   <defs
      id="defs2818">
+    <linearGradient
+       id="linearGradient3876">
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1"
+         offset="0"
+         id="stop3878" />
+      <stop
+         style="stop-color:#3465a4;stop-opacity:1"
+         offset="1"
+         id="stop3880" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3844">
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1;"
+         offset="0"
+         id="stop3846" />
+      <stop
+         style="stop-color:#204a87;stop-opacity:1"
+         offset="1"
+         id="stop3848" />
+    </linearGradient>
     <linearGradient
        inkscape:collect="always"
        id="linearGradient4044">
@@ -467,6 +490,38 @@
          result="result3"
          id="feBlend3443" />
     </filter>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3844"
+       id="radialGradient3850"
+       cx="56.88583"
+       cy="20.735109"
+       fx="56.88583"
+       fy="20.735109"
+       r="7"
+       gradientTransform="matrix(0.85714269,0.71428547,-0.98499951,1.1819996,29.664801,-44.141611)"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3844"
+       id="radialGradient3856"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.93686282,0.60595824,-1.478506,2.2858957,35.362767,-60.868733)"
+       cx="56.88583"
+       cy="20.735109"
+       fx="56.88583"
+       fy="20.735109"
+       r="7" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3876"
+       id="linearGradient3884"
+       x1="25.626812"
+       y1="42.536713"
+       x2="29.664934"
+       y2="58.064484"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="pad" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -475,25 +530,34 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.8890872"
-     inkscape:cx="-18.452064"
-     inkscape:cy="14.197821"
+     inkscape:zoom="7.7781744"
+     inkscape:cx="40.725702"
+     inkscape:cy="33.042367"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      inkscape:snap-bbox="true"
-     inkscape:bbox-paths="true"
-     inkscape:bbox-nodes="true"
-     inkscape:snap-bbox-edge-midpoints="true"
-     inkscape:snap-bbox-midpoints="true"
+     inkscape:bbox-paths="false"
+     inkscape:bbox-nodes="false"
+     inkscape:snap-bbox-edge-midpoints="false"
+     inkscape:snap-bbox-midpoints="false"
      inkscape:object-paths="true"
      inkscape:object-nodes="true"
-     inkscape:window-width="1280"
-     inkscape:window-height="758"
-     inkscape:window-x="65"
-     inkscape:window-y="24"
-     inkscape:window-maximized="0" />
+     inkscape:window-width="1600"
+     inkscape:window-height="837"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:snap-nodes="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3822"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
   <metadata
      id="metadata2821">
     <rdf:RDF>
@@ -511,22 +575,44 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <ellipse
-       style="fill:#000080;fill-opacity:1;stroke:url(#linearGradient4060);stroke-width:1.48421645;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter3435)"
+       style="fill:#729fcf;fill-opacity:1;stroke:#0b1521;stroke-width:1.82645166;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
        id="path4042"
        cx="31.683996"
        cy="50.300598"
        rx="27.257332"
        ry="8.8730106"
-       transform="matrix(0.99177198,0,0,1.1723755,0.26069664,-7.1278108)" />
+       transform="matrix(1.0639339,0,0,1.1270131,-1.7096784,-5.6894328)"
+       sodipodi:cx="31.683996"
+       sodipodi:cy="50.300598"
+       sodipodi:rx="27.257332"
+       sodipodi:ry="8.8730106" />
+    <g
+       id="g3852"
+       transform="translate(-29,-1)">
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path3824"
+         d="m 62,4 c -4,14 -8,12 -8,20 0,2 2,8 8,8 6,0 8,-6 8,-8 0,-8 -4,-6 -8,-20 z"
+         style="fill:#729fcf;stroke:#0b1521;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path3824-3"
+         d="m 62,10 c -3,8 -6,8 -6,14 0,2 2,6 6,6 4,0 6,-4 6,-6 0,-6 -3,-6 -6,-14 z"
+         style="fill:url(#radialGradient3856);fill-opacity:1;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
     <ellipse
-       style="color:#000000;display:block;visibility:visible;fill:#000080;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.25000024;marker:none;filter:url(#filter3399)"
-       id="path12511"
-       inkscape:export-filename="/home/jimmac/ximian_art/icons/nautilus/suse93/stock_new-16.png"
-       inkscape:export-xdpi="33.852203"
-       inkscape:export-ydpi="33.852203"
-       cx="32.326824"
-       cy="18.083538"
-       rx="11.117324"
-       ry="14.425747" />
+       style="fill:url(#linearGradient3884);fill-opacity:1;stroke:#729fcf;stroke-width:2.11631512999999982;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="path4042-6"
+       cx="31.683996"
+       cy="50.300598"
+       rx="27.257332"
+       ry="8.8730106"
+       transform="matrix(0.99055917,0,0,0.90161055,0.61512713,5.64845)"
+       sodipodi:cx="31.683996"
+       sodipodi:cy="50.300598"
+       sodipodi:rx="27.257332"
+       sodipodi:ry="8.8730106" />
   </g>
 </svg>

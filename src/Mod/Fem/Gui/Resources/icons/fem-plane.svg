@@ -14,8 +14,8 @@
    height="64px"
    id="svg2860"
    sodipodi:version="0.32"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="Tree_Part_Plane_Parametric.svg"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="fem-plane.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
   <defs
@@ -23,11 +23,11 @@
     <linearGradient
        id="linearGradient4387">
       <stop
-         style="stop-color:#71b2f8;stop-opacity:1;"
+         style="stop-color:#3465a4;stop-opacity:1"
          offset="0"
          id="stop4389" />
       <stop
-         style="stop-color:#002795;stop-opacity:1;"
+         style="stop-color:#729fcf;stop-opacity:1"
          offset="1"
          id="stop4391" />
     </linearGradient>
@@ -71,17 +71,15 @@
          offset="1"
          style="stop-color:#ffaa00;stop-opacity:1;" />
     </linearGradient>
-    <radialGradient
+    <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient4387"
-       id="radialGradient3778"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.1746797,-1.0157673,0.42603685,1.7732396,-199.07629,36.243544)"
-       cx="147.05713"
-       cy="83.989143"
-       fx="147.05713"
-       fy="83.989143"
-       r="19.467436" />
+       id="linearGradient3767"
+       x1="34"
+       y1="55"
+       x2="33"
+       y2="7"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -91,17 +89,25 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="6.171875"
-     inkscape:cx="21.544457"
-     inkscape:cy="31.654445"
+     inkscape:cx="9.6147339"
+     inkscape:cy="47.102756"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1848"
-     inkscape:window-height="1043"
-     inkscape:window-x="72"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1" />
+     inkscape:window-width="1600"
+     inkscape:window-height="834"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2995"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
   <metadata
      id="metadata2865">
     <rdf:RDF>
@@ -122,7 +128,13 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc"
        id="rect3522"
-       d="M 30.904045,4.4429014 3.9982948,46.244892 C 17.030651,53.721735 19.815417,53.643413 32.225577,59.748561 L 60.763765,18.662336 C 43.75642,10.943562 46.824989,12.01837 30.904045,4.4429014 Z"
-       style="display:inline;overflow:visible;visibility:visible;fill:url(#radialGradient3778);fill-opacity:1;fill-rule:evenodd;stroke:#000137;stroke-width:4.75559235;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+       d="M 31,3 3,45 33,61 61,17 z"
+       style="fill:url(#linearGradient3767);fill-opacity:1;fill-rule:evenodd;stroke:#000137;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 31.7,5.5 5.9,44.3 32.3,58.4 58.1,17.8 z"
+       id="path2997"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
   </g>
 </svg>
