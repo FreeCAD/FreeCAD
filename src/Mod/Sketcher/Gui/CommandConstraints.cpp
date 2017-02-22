@@ -4974,10 +4974,18 @@ CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge, SelEdgeOrAxis}, {SelEdgeOrAxis, SelEdge},
+                           {SelEdge, SelExternalEdge}, {SelExternalEdge, SelEdge},
+                           {SelExternalEdge, SelExternalEdge},
                            {SelEdge, SelVertexOrRoot, SelEdgeOrAxis},
                            {SelEdgeOrAxis, SelVertexOrRoot, SelEdge},
+                           {SelEdge, SelVertexOrRoot, SelExternalEdge},
+                           {SelExternalEdge, SelVertexOrRoot, SelEdge},
+                           {SelExternalEdge, SelVertexOrRoot, SelExternalEdge},
                            {SelVertexOrRoot, SelEdge, SelEdgeOrAxis},
-                           {SelVertexOrRoot, SelEdgeOrAxis, SelEdge}};
+                           {SelVertexOrRoot, SelEdgeOrAxis, SelEdge},
+                           {SelVertexOrRoot, SelEdge, SelExternalEdge},
+                           {SelVertexOrRoot, SelExternalEdge, SelEdge},
+                           {SelVertexOrRoot, SelExternalEdge, SelExternalEdge}};
     constraintCursor = cursor_genericconstraint;
 }
 
@@ -5256,8 +5264,11 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair> &selSeq, 
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
 
     switch (seqIndex) {
-    case 0: //{SelEdge, SelEdgeOrAxis}
-    case 1: //{SelEdgeOrAxis, SelEdge}
+    case 0: // {SelEdge, SelEdgeOrAxis}
+    case 1: // {SelEdgeOrAxis, SelEdge}
+    case 2: // {SelEdge, SelExternalEdge}
+    case 3: // {SelExternalEdge, SelEdge}
+    case 4: // {SelExternalEdge, SelExternalEdge}
     {
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
 
@@ -5351,15 +5362,21 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair> &selSeq, 
         }
         return;
     }
-    case 2: //{SelEdge, SelVertexOrRoot, SelEdgeOrAxis}
-    case 3: //{SelEdgeOrAxis, SelVertexOrRoot, SelEdge}
+    case 5: // {SelEdge, SelVertexOrRoot, SelEdgeOrAxis}
+    case 6: // {SelEdgeOrAxis, SelVertexOrRoot, SelEdge}
+    case 7: // {SelEdge, SelVertexOrRoot, SelExternalEdge}
+    case 8: // {SelExternalEdge, SelVertexOrRoot, SelEdge}
+    case 9: // {SelExternalEdge, SelVertexOrRoot, SelExternalEdge}
     {
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
         PosId3 = selSeq.at(1).PosId;
         break;
     }
-    case 4: //{SelVertexOrRoot, SelEdge, SelEdgeOrAxis}
-    case 5: //{SelVertexOrRoot, SelEdgeOrAxis, SelEdge}}
+    case 10: // {SelVertexOrRoot, SelEdge, SelEdgeOrAxis}
+    case 11: // {SelVertexOrRoot, SelEdgeOrAxis, SelEdge}
+    case 12: // {SelVertexOrRoot, SelEdge, SelExternalEdge}
+    case 13: // {SelVertexOrRoot, SelExternalEdge, SelEdge}
+    case 14: // {SelVertexOrRoot, SelExternalEdge, SelExternalEdge}
     {
         GeoId1 = selSeq.at(1).GeoId; GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(0).GeoId;
         PosId3 = selSeq.at(0).PosId;
