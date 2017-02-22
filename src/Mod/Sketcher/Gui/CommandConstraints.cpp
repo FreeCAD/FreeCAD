@@ -5659,8 +5659,11 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge, SelVertexOrRoot},
+                           {SelExternalEdge, SelVertex},
                            {SelVertex, SelEdge, SelVertexOrRoot},
                            {SelRoot, SelEdge, SelVertex},
+                           {SelVertex, SelExternalEdge, SelVertexOrRoot},
+                           {SelRoot, SelExternalEdge, SelVertex},
                            {SelVertex, SelEdgeOrAxis, SelVertex},
                            {SelVertex, SelVertexOrRoot, SelVertex},
                            {SelVertex, SelVertex, SelVertexOrRoot},
@@ -5832,6 +5835,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
 
     switch (seqIndex) {
     case 0: // {SelEdge, SelVertexOrRoot}
+    case 1: // {SelExternalEdge, SelVertex}
     {
         GeoId1 = GeoId2 = selSeq.at(0).GeoId; GeoId3 = selSeq.at(1).GeoId;
         PosId1 = Sketcher::start; PosId2 = Sketcher::end; PosId3 = selSeq.at(1).PosId;
@@ -5843,9 +5847,11 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
         }
         break;
     }
-    case 1: // {SelVertex, SelEdge, SelVertexOrRoot}
-    case 2: // {SelRoot, SelEdge, SelVertex}
-    case 3: // {SelVertex, SelEdgeOrAxis, SelVertex}
+    case 2: // {SelVertex, SelEdge, SelVertexOrRoot}
+    case 3: // {SelRoot, SelEdge, SelVertex}
+    case 4: // {SelVertex, SelExternalEdge, SelVertexOrRoot}
+    case 5: // {SelRoot, SelExternalEdge, SelVertex}
+    case 6: // {SelVertex, SelEdgeOrAxis, SelVertex}
     {
         GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
         PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(2).PosId;
@@ -5881,16 +5887,15 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
 
         return;
     }   
-    case 4: // {SelVertex, SelVertexOrRoot, SelVertex}
-    case 5: // {SelVertex, SelVertex, SelVertexOrRoot}
-    case 6: // {SelVertexOrRoot, SelVertex, SelVertex}
+    case 7: // {SelVertex, SelVertexOrRoot, SelVertex}
+    case 8: // {SelVertex, SelVertex, SelVertexOrRoot}
+    case 9: // {SelVertexOrRoot, SelVertex, SelVertex}
     {
         GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
         PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(2).PosId; PosId3 = selSeq.at(1).PosId;
 
         break;
     }
-
     default:
         break;
     }
