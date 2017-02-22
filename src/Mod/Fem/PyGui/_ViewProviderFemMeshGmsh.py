@@ -52,8 +52,8 @@ class _ViewProviderFemMeshGmsh:
 
     def setEdit(self, vobj, mode):
         self.ViewObject.show()  # show the mesh on edit if it is hided
-        import _TaskPanelFemMeshGmsh
-        taskd = _TaskPanelFemMeshGmsh._TaskPanelFemMeshGmsh(self.Object)
+        import PyGui._TaskPanelFemMeshGmsh
+        taskd = PyGui._TaskPanelFemMeshGmsh._TaskPanelFemMeshGmsh(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True

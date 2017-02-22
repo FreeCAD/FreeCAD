@@ -51,8 +51,8 @@ class _ViewProviderFemSolverCalculix:
         return
 
     def setEdit(self, vobj, mode=0):
-        import _TaskPanelFemSolverCalculix
-        taskd = _TaskPanelFemSolverCalculix._TaskPanelFemSolverCalculix(self.Object)
+        import PyGui._TaskPanelFemSolverCalculix
+        taskd = PyGui._TaskPanelFemSolverCalculix._TaskPanelFemSolverCalculix(self.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 

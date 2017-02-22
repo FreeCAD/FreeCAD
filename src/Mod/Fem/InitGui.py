@@ -45,26 +45,26 @@ class FemWorkbench (Workbench):
         import Fem
         import FemGui
 
-        import _CommandShowResult
-        import _CommandRunSolver
-        import _CommandPurgeResults
-        import _CommandClearMesh
-        import _CommandPrintMeshInfo
-        import _CommandControlSolver
-        import _CommandFEMMesh2Mesh
-        import _CommandMeshGmshFromShape
-        import _CommandMeshNetgenFromShape
-        import _CommandMeshGroup
-        import _CommandMeshRegion
-        import _CommandAnalysis
-        import _CommandShellThickness
-        import _CommandBeamSection
-        import _CommandMaterialSolid
-        import _CommandMaterialFluid
-        import _CommandMaterialMechanicalNonlinear
-        import _CommandSolverCalculix
-        import _CommandSolverZ88
-        import _CommandConstraintSelfWeight
+        import PyGui._CommandShowResult
+        import PyGui._CommandRunSolver
+        import PyGui._CommandPurgeResults
+        import PyGui._CommandClearMesh
+        import PyGui._CommandPrintMeshInfo
+        import PyGui._CommandControlSolver
+        import PyGui._CommandFEMMesh2Mesh
+        import PyGui._CommandMeshGmshFromShape
+        import PyGui._CommandMeshNetgenFromShape
+        import PyGui._CommandMeshGroup
+        import PyGui._CommandMeshRegion
+        import PyGui._CommandAnalysis
+        import PyGui._CommandShellThickness
+        import PyGui._CommandBeamSection
+        import PyGui._CommandMaterialSolid
+        import PyGui._CommandMaterialFluid
+        import PyGui._CommandMaterialMechanicalNonlinear
+        import PyGui._CommandSolverCalculix
+        import PyGui._CommandSolverZ88
+        import PyGui._CommandConstraintSelfWeight
 
     def GetClassName(self):
         return "FemGui::Workbench"
