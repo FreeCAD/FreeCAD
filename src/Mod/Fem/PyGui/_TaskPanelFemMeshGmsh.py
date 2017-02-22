@@ -41,7 +41,7 @@ class _TaskPanelFemMeshGmsh:
     '''The TaskPanel for editing References property of FemMeshGmsh objects and creation of new FEM mesh'''
     def __init__(self, obj):
         self.mesh_obj = obj
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemMeshGmsh.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemMeshGmsh.ui")
 
         self.Timer = QtCore.QTimer()
         self.Timer.start(100)  # 100 milli seconds

@@ -59,8 +59,8 @@ class _ViewProviderFemBeamSection:
         return
 
     def setEdit(self, vobj, mode=0):
-        import _TaskPanelFemBeamSection
-        taskd = _TaskPanelFemBeamSection._TaskPanelFemBeamSection(self.Object)
+        import PyGui._TaskPanelFemBeamSection
+        taskd = PyGui._TaskPanelFemBeamSection._TaskPanelFemBeamSection(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True

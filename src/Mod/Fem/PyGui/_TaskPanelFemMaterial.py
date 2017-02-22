@@ -52,7 +52,7 @@ class _TaskPanelFemMaterial:
             self.get_references()
         self.references_shape_type = None
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemMaterial.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemMaterial.ui")
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goto_MatWeb)
         QtCore.QObject.connect(self.form.pushButton_saveas, QtCore.SIGNAL("clicked()"), self.export_material)
         QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.choose_material)

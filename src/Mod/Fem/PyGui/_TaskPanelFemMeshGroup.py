@@ -43,7 +43,7 @@ class _TaskPanelFemMeshGroup:
         self.selection_mode_std_print_message = "Select Faces, Edges and Vertices by single click on them to add them to the list."
         self.selection_mode_solid_print_message = "Select Solids by single click on a Face or Edge which belongs to the Solid, to add the Solid to the list."
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemMeshGroup.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemMeshGroup.ui")
         QtCore.QObject.connect(self.form.rb_name, QtCore.SIGNAL("toggled(bool)"), self.choose_exportidentifier_name)
         QtCore.QObject.connect(self.form.rb_label, QtCore.SIGNAL("toggled(bool)"), self.choose_exportidentifier_label)
         QtCore.QObject.connect(self.form.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard)
