@@ -1244,6 +1244,8 @@ int Sketch::addConstraint(const Constraint *constraint)
                 break;
             case BSplineControlPoint:
                 rtn = addInternalAlignmentBSplineControlPoint(constraint->First,constraint->Second, constraint->InternalAlignmentIndex);
+            case BSplineKnotPoint:
+                rtn = addInternalAlignmentKnotPoint(constraint->First,constraint->Second, constraint->InternalAlignmentIndex);
             default:
                 break;
         }
@@ -2464,6 +2466,32 @@ int Sketch::addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int 
 
         int tag = ++ConstraintsCounter;
         GCSsys.addConstraintInternalAlignmentBSplineControlPoint(b, c, poleindex, tag);
+        return ConstraintsCounter;
+    }
+    return -1;
+}
+
+int Sketch::addInternalAlignmentKnotPoint(int geoId1, int geoId2, int knotindex)
+{
+    std::swap(geoId1, geoId2);
+
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId1].type != BSpline)
+        return -1;
+    if (Geoms[geoId2].type != Point)
+        return -1;
+
+    int pointId1 = getPointId(geoId2, start);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size())) {
+        GCS::Point &p = Points[pointId1];
+
+        GCS::BSpline &b = BSplines[Geoms[geoId1].index];
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintInternalAlignmentBSplineKnot(b, p, knotindex, tag);
         return ConstraintsCounter;
     }
     return -1;
