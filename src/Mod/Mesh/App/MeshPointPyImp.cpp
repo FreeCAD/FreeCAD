@@ -100,15 +100,9 @@ PyObject*  MeshPointPy::move(PyObject *args)
     Py_Return;
 }
 
-#if PY_MAJOR_VERSION >= 3
 Py::Long MeshPointPy::getIndex(void) const
 {
     return Py::Long((long) getMeshPointPtr()->Index);
-#else
-Py::Int MeshPointPy::getIndex(void) const
-{
-    return Py::Int((long) getMeshPointPtr()->Index);
-#endif
 }
 
 Py::Boolean MeshPointPy::getBound(void) const

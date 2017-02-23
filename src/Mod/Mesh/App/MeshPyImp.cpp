@@ -1766,7 +1766,7 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
 
     return Py::new_reference_to(list);
 }
-#if PY_MAJOR_VERSION >= 3
+
 Py::Long MeshPy::getCountPoints(void) const
 {
     return Py::Long((long)getMeshObjectPtr()->countPoints());
@@ -1781,22 +1781,6 @@ Py::Long MeshPy::getCountFacets(void) const
 {
     return Py::Long((long)getMeshObjectPtr()->countFacets());
 }
-#else
-Py::Int MeshPy::getCountPoints(void) const
-{
-    return Py::Int((long)getMeshObjectPtr()->countPoints());
-}
-
-Py::Int MeshPy::getCountEdges(void) const
-{
-    return Py::Int((long)getMeshObjectPtr()->countEdges());
-}
-
-Py::Int MeshPy::getCountFacets(void) const
-{
-    return Py::Int((long)getMeshObjectPtr()->countFacets());
-}
-#endif
 
 Py::Float MeshPy::getArea(void) const
 {
