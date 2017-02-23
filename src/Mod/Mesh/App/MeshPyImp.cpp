@@ -1473,28 +1473,25 @@ PyObject*  MeshPy::collapseFacets(PyObject *args)
         return 0;                             // NULL triggers exception
 
     // if no mesh is given
-    if (PyList_Check(pcObj)) {
+    try {
+        Py::Sequence list(pcObj);
         std::vector<unsigned long> facets;
-        for (int i = 0; i < PyList_Size(pcObj); i++) {
-            PyObject *idx = PyList_GetItem(pcObj, i);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
 #if PY_MAJOR_VERSION >= 3
-            if (PyLong_Check(idx)){
-                unsigned long iIdx = PyLong_AsLong(idx);
+            Py::Long idx(*it);
+            unsigned long iIdx = static_cast<unsigned long>(idx);
+            facets.push_back(iIdx);
 #else
-            if (PyInt_Check(idx)){
-                unsigned long iIdx = PyInt_AsLong(idx);
+            Py::Int idx(*it);
+            unsigned long iIdx = static_cast<unsigned long>(idx);
+            facets.push_back(iIdx);
 #endif
-                facets.push_back(iIdx);
-            }
-            else {
-                Py_Error(Base::BaseExceptionFreeCADError, "list of integers needed");
-            }
         }
 
         getMeshObjectPtr()->collapseFacets(facets);
     }
-    else {
-        Py_Error(Base::BaseExceptionFreeCADError, "List of Integers needed");
+    catch (const Py::Exception&) {
+        return 0;
     }
 
     Py_Return; 
