@@ -646,6 +646,11 @@ int GeomBSplineCurve::countPoles() const
     return myCurve->NbPoles();
 }
 
+int GeomBSplineCurve::countKnots() const
+{
+    return myCurve->NbKnots();
+}
+
 void GeomBSplineCurve::setPole(int index, const Base::Vector3d& pole, double weight)
 {
     try {
