@@ -3366,12 +3366,20 @@ int SketchObject::exposeInternalGeometry(int GeoId)
         std::vector<bool> controlpoints(bsp->countPoles());
         std::vector<int> controlpointgeoids(bsp->countPoles());
         
+        std::vector<bool> knotpoints(bsp->countKnots());
+        std::vector<int> knotgeoids(bsp->countKnots());
+        
         bool isfirstweightconstrained = false;
         
         std::vector<bool>::iterator itb;
         std::vector<int>::iterator it;
         
         for(it=controlpointgeoids.begin(), itb=controlpoints.begin(); it!=controlpointgeoids.end() && itb!=controlpoints.end(); ++it, ++itb) {
+            (*it)=-1;
+            (*itb)=false;
+        }
+        
+        for(it=knotgeoids.begin(), itb=knotpoints.begin(); it!=knotgeoids.end() && itb!=knotpoints.end(); ++it, ++itb) {
             (*it)=-1;
             (*itb)=false;
         }
@@ -3388,6 +3396,9 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                         controlpoints[(*it)->InternalAlignmentIndex] = true;
                         controlpointgeoids[(*it)->InternalAlignmentIndex] = (*it)->First;
                         break;
+                    case Sketcher::BSplineKnotPoint:
+                        knotpoints[(*it)->InternalAlignmentIndex] = true;
+                        knotgeoids[(*it)->InternalAlignmentIndex] = (*it)->First;
                     default:
                         return -1;
                 }
@@ -3411,6 +3422,7 @@ int SketchObject::exposeInternalGeometry(int GeoId)
         std::vector<Constraint *> icon;
         
         std::vector<Base::Vector3d> poles = bsp->getPoles();
+        std::vector<double> knots = bsp->getKnots();
         
         double distance_p0_p1 = (poles[1]-poles[0]).Length(); // for visual purposes only
         
@@ -3454,6 +3466,37 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 incrgeo++;
             }
         }
+        
+        index=0;
+        
+        for(it=knotgeoids.begin(), itb=knotpoints.begin(); it!=knotgeoids.end() && itb!=knotpoints.end(); ++it, ++itb, index++) {
+            
+            if(!(*itb)) // if knot point not existing
+            {
+                Part::GeomPoint *kp = new Part::GeomPoint();
+
+                kp->setPoint(bsp->pointAtParameter(knots[index]));
+                
+                // a construction point, for now on, is a point that is not handled by the solver and does not contribute to the dofs
+                // This is done so as to avoid having to add another data member to GeomPoint that is specific for the sketcher.
+                kp->Construction=true; 
+
+                igeo.push_back(kp);
+
+                Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+                newConstr->Type = Sketcher::InternalAlignment;
+                newConstr->AlignmentType = Sketcher::BSplineKnotPoint;
+                newConstr->First = currentgeoid+incrgeo+1;
+                newConstr->FirstPos = Sketcher::mid;
+                newConstr->Second = GeoId;
+                newConstr->InternalAlignmentIndex = index;
+
+                icon.push_back(newConstr);
+
+                incrgeo++;
+            }
+        }
+        
 
         Q_UNUSED(isfirstweightconstrained);
         // constraint the first weight to allow for seamless weight modification and proper visualization
