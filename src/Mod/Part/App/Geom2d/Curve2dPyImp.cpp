@@ -37,6 +37,7 @@
 # include <Geom2d_Curve.hxx>
 # include <Geom2dAdaptor_Curve.hxx>
 # include <Geom2dLProp_CLProps2d.hxx>
+# include <GeomAdaptor_Surface.hxx>
 # include <Precision.hxx>
 # include <Geom2dAPI_ProjectPointOnCurve.hxx>
 # include <Geom2dConvert_ApproxCurve.hxx>
@@ -46,6 +47,8 @@
 # include <Geom2dAPI_ExtremaCurveCurve.hxx>
 # include <BRepBuilderAPI_MakeEdge2d.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -60,6 +63,7 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeFacePy.h>
 
 namespace Part {
 extern const Py::Object makeGeometryCurvePy(const Handle_Geom_Curve& c);
@@ -170,6 +174,42 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             Handle_Geom2d_Curve curv = Handle_Geom2d_Curve::DownCast(getGeometry2dPtr()->handle());
 
             BRepBuilderAPI_MakeEdge mkBuilder(curv, surf, u1, u2);
+            TopoDS_Shape edge =  mkBuilder.Shape();
+            return Py::new_reference_to(shape2pyshape(edge));
+        }
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return 0;
+        }
+    }
+
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapeFacePy::Type), &p)) {
+        try {
+            const TopoDS_Face& face = TopoDS::Face(static_cast<TopoShapeFacePy*>(p)->getTopoShapePtr()->getShape());
+            Handle_Geom2d_Curve curv = Handle_Geom2d_Curve::DownCast(getGeometry2dPtr()->handle());
+
+            BRepAdaptor_Surface adapt(face);
+            BRepBuilderAPI_MakeEdge mkBuilder(curv, adapt.Surface().Surface());
+            TopoDS_Shape edge =  mkBuilder.Shape();
+            return Py::new_reference_to(shape2pyshape(edge));
+        }
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return 0;
+        }
+    }
+
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "O!dd", &(Part::TopoShapeFacePy::Type), &p, &u1, &u2)) {
+        try {
+            const TopoDS_Face& face = TopoDS::Face(static_cast<TopoShapeFacePy*>(p)->getTopoShapePtr()->getShape());
+            Handle_Geom2d_Curve curv = Handle_Geom2d_Curve::DownCast(getGeometry2dPtr()->handle());
+
+            BRepAdaptor_Surface adapt(face);
+            BRepBuilderAPI_MakeEdge mkBuilder(curv, adapt.Surface().Surface(), u1, u2);
             TopoDS_Shape edge =  mkBuilder.Shape();
             return Py::new_reference_to(shape2pyshape(edge));
         }
