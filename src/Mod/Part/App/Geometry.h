@@ -214,6 +214,7 @@ public:
                                    std::vector<gp_Vec>&) const;
 
     int countPoles() const;
+    int countKnots() const;
     void setPole(int index, const Base::Vector3d&, double weight=-1);
     void setPoles(const std::vector<Base::Vector3d>& poles, const std::vector<double>& weights);
     void setPoles(const std::vector<Base::Vector3d>& poles);
