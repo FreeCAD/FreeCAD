@@ -68,7 +68,8 @@ enum InternalAlignmentType {
     HyperbolaMinor          = 6,
     HyperbolaFocus          = 7,
     ParabolaFocus           = 8,
-    BSplineControlPoint     = 9 // in this constraint "Third" is used to indicate the index of the control point (0-poles), it is not a GeoId
+    BSplineControlPoint     = 9,
+    BSplineKnotPoint        = 10,
 };
 
 /// define if you want to use the end or start point
