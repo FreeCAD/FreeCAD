@@ -150,7 +150,7 @@ private:
         std::vector<unsigned long> segm;
         segm.reserve(list.size());
         for (unsigned int i=0; i<list.size(); i++) {
-            segm.push_back((int)Py::Long(list[i]));
+            segm.push_back((long)Py::Long(list[i]));
         }
 
         std::list<std::vector<Base::Vector3f> > bounds;
