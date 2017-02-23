@@ -199,7 +199,12 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
     if (geo->getTypeId() == GeomPoint::getClassTypeId()) { // add a point
         const GeomPoint *point = static_cast<const GeomPoint*>(geo);
         // create the definition struct for that geom
-        return addPoint(*point, fixed);
+        if( point->Construction == false ) {
+            return addPoint(*point, fixed);
+        }
+        else {
+            return addPoint(*point, true);
+        }
     } else if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
         const GeomLineSegment *lineSeg = static_cast<const GeomLineSegment*>(geo);
         // create the definition struct for that geom
@@ -252,8 +257,6 @@ int Sketch::addPoint(const Part::GeomPoint &point, bool fixed)
 
     // create our own copy
     GeomPoint *p = static_cast<GeomPoint*>(point.clone());
-    // points in a sketch are always construction elements
-    p->Construction = true;
     // create the definition struct for that geom
     GeoDef def;
     def.geo  = p;
