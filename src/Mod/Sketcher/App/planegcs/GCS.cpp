@@ -1014,13 +1014,6 @@ int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle
     return addConstraintEqual(b.weights[poleindex], c.rad, tagId);
 }
 
-int System::addConstraintInternalAlignmentBSplineKnot(BSpline &b, Point &p, int knotindex, int tagId)
-{
-    // not yet implemented
-    return 0;
-    
-}
-
 //calculates angle between two curves at point of their intersection p. If two
 //points are supplied, p is used for first curve and p2 for second, yielding a
 //remote angle computation (this is useful when the endpoints haven't) been
