@@ -26,6 +26,11 @@
 # include <sstream>
 # include <gp_Dir2d.hxx>
 # include <gp_Vec2d.hxx>
+# include <gp_Lin.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Elips.hxx>
+# include <gp_Hypr.hxx>
+# include <gp_Parab.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
 # include <GCPnts_UniformDeflection.hxx>
 # include <GCPnts_TangentialDeflection.hxx>
