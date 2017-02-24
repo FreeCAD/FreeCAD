@@ -22,21 +22,21 @@ if(BUILD_GUI)
         LoadFemExample3D.py
         Mesh.py
         PartDesign.py
-        Background.jpg
-        FreeCAD.png
-        PartDesign.png
-        ArchDesign.png
-        Mesh.png
-        Complete.png
-        PartDesignExample.png
-        ArchExample.png
-        web.png
-        blank.png
-        freecad-doc.png
-        complete.jpg
+        images/Background.jpg
+        images/FreeCAD.png
+        images/PartDesign.png
+        images/ArchDesign.png
+        images/Mesh.png
+        images/Complete.png
+        images/PartDesignExample.png
+        images/ArchExample.png
+        images/web.png
+        images/blank.png
+        images/freecad-doc.png
+        images/complete.jpg
         Ship.py
-        Ship.png
-        ShipExample.png
+        images/Ship.png
+        images/ShipExample.png
     )
 
     add_subdirectory(Gui)

@@ -32,11 +32,6 @@ try:
 except:
     import cStringIO
 
-try:
-    import io as cStringIO
-except:
-    import cStringIO
-
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
 
@@ -246,7 +241,7 @@ page = """
             ddiv.innerHTML = "Received";
             var html = ['<ul>'];
             for (var i = 0; i < 15; i++) {
-                html.push('<li><img src="web.png">&nbsp;<a href="ext', data.data[i].commit.url, '" onMouseOver="showDescr(', i+1, ')" onMouseOut="showDescr()">', data.data[i].commit.message, '</a></li>');
+                html.push('<li><img src="images/web.png">&nbsp;<a href="ext', data.data[i].commit.url, '" onMouseOver="showDescr(', i+1, ')" onMouseOut="showDescr()">', data.data[i].commit.message, '</a></li>');
                 if ("message" in data.data[i].commit) {
                     linkDescriptions.push(stripTags(data.data[i].commit.message)+'<br/>'+data.data[i].commit.author.name+'<br/>'+data.data[i].commit.author.date);
                 } else {
@@ -407,7 +402,7 @@ page = """
 
   <body onload="load()">
 
-    <h1><img src="FreeCAD.png">&nbsp;""" + text01 + """<div id=versionbox>&nbsp</div></h1>
+    <h1><img src="images/FreeCAD.png">&nbsp;""" + text01 + """<div id=versionbox>&nbsp</div></h1>
 
     <div id="description">
       &nbsp;
@@ -467,39 +462,39 @@ def getWebExamples():
 def getExamples():
     return """
     <ul>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadSchenkel.py">""" + text10 + """</a></li>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadPartDesignExample.py">""" + text11 + """</a></li>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadDrawingExample.py">""" + text12 + """</a></li>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadRobotExample.py">""" + text13 + """</a></li>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadArchExample.py">""" + text55 + """</a></li>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample2D.py">""" + text64 + """</a></li>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample3D.py">""" + text60 + """</a></li>
+        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadSchenkel.py">""" + text10 + """</a></li>
+        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadPartDesignExample.py">""" + text11 + """</a></li>
+        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadDrawingExample.py">""" + text12 + """</a></li>
+        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadRobotExample.py">""" + text13 + """</a></li>
+        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadArchExample.py">""" + text55 + """</a></li>
+        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample2D.py">""" + text64 + """</a></li>
+        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample3D.py">""" + text60 + """</a></li>
     </ul>"""
       
 def getLinks():
     return """
     <ul>
-        <li><img src="web.png">&nbsp;
+        <li><img src="images/web.png">&nbsp;
             <a onMouseover="show('<p>""" + text07 + """</p>')" 
                 onMouseout="show('')"
                 href="exthttp://www.freecadweb.org/">""" + text08 + """</a></li>
-        <li><img src="web.png">&nbsp;
+        <li><img src="images/web.png">&nbsp;
             <a onMouseover="show('<p>""" + text45 + """</p>')" 
                 onMouseout="show('')"
                 href=ext""" + text38 + """>""" + text37 + """</a></li>
-        <li><img src="web.png">&nbsp;
+        <li><img src="images/web.png">&nbsp;
             <a onMouseover="show('<p>""" + text46 + """</p>')" 
                 onMouseout="show('')"
                 href=ext""" + text56 + """>""" + text39 + """</a></li>
-        <li><img src="web.png">&nbsp;
+        <li><img src="images/web.png">&nbsp;
             <a onMouseover="show('<p>""" + text47 + """</p>')" 
                 onMouseout="show('')"
                 href=ext""" + text57 + """>""" + text40 + """</a></li>
-        <li><img src="web.png">&nbsp;
+        <li><img src="images/web.png">&nbsp;
             <a onMouseover="show('<p>""" + text48 + """</p>')" 
                 onMouseout="show('')"
                 href="exthttp://freecad-tutorial.blogspot.com/">""" + text43 + """</a></li>
-        <li><img src="web.png">&nbsp;
+        <li><img src="images/web.png">&nbsp;
             <a href="exthttp://github.com/FreeCAD/FreeCAD/releases" 
                onMouseOver="show('<p>""" + text62 + """</p>')" 
                onMouseOut="show('')">""" + text61 + """</a></li>
@@ -509,34 +504,34 @@ def getLinks():
 def getWorkbenches():
     return """
     <ul>
-        <li><img src="blank.png">&nbsp;
+        <li><img src="images/blank.png">&nbsp;
             <a onMouseover="show('<h3>""" + text49 + """</h3> \
             <p>""" + text50 + """</p>')" 
             onMouseout="show('')" 
             href=""" + text51 + """>""" + text49 + """</a>
         </li>
-        <li><img src="PartDesign.png">&nbsp;
+        <li><img src="images/PartDesign.png">&nbsp;
             <a onMouseover="show('<h3>""" + text19 + """</h3> \
             <p>""" + text20 + """</p><p><small>""" + text21 + """ \
-            :</small></p><img src=PartDesignExample.png>')" 
+            :</small></p><img src=images/PartDesignExample.png>')" 
             onMouseout="show('')" 
             href="PartDesign.py">""" + text22 + """</a>
         </li>
-        <li><img src="ArchDesign.png">&nbsp;
+        <li><img src="images/ArchDesign.png">&nbsp;
           <a onMouseover="show('<h3>""" + text23 + """</h3> \
             <p>""" + text24 + """</p><p><small>""" + text21 + """ \
-            :</small></p><img src=ArchExample.png>')" 
+            :</small></p><img src=images/ArchExample.png>')" 
             onMouseout="show('')"
             href="ArchDesign.py">""" + text25 + """</a>
         </li>
-        <li><img src="Ship.png">&nbsp;
+        <li><img src="images/Ship.png">&nbsp;
           <a onMouseover="show('<h3>""" + text53 + """</h3> \
             <p>""" + text54 + """</p><p><small>""" + text21 + """ \
-            :</small></p><img src=ShipExample.png>')" 
+            :</small></p><img src=images/ShipExample.png>')" 
             onMouseout="show('')"
             href="Ship.py">""" + text52 + """</a>
         </li>
-        <li><img src="Mesh.png">&nbsp;
+        <li><img src="images/Mesh.png">&nbsp;
             <a onMouseover="show('<h3>""" + text26 + """</h3> \
             <p>""" + text27 + """</p><p>""" + text28 + """</p>')" 
             onMouseout="show('')" 
@@ -578,7 +573,7 @@ def getInfo(filename):
             if files[0] == "Document.xml":
                 html += "<p><b>" + text65 + "</b></p>"
                 image="thumbnails/Thumbnail.png"
-                doc = str(zfile.read(files[0]))
+                doc = zfile.read(files[0])
                 doc = doc.replace("\n"," ")
                 author = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"\/>",doc)
                 if author: 
@@ -616,9 +611,9 @@ def getRecentFiles():
                 fn = os.path.basename(mr)
                 html += '<li>'
                 if mr[-5:].upper() == "FCSTD":
-                    html += '<img src="freecad-doc.png" style="width: 16px">&nbsp;'
+                    html += '<img src="images/freecad-doc.png" style="width: 16px">&nbsp;'
                 else:
-                    html += '<img src="blank.png" style="width: 16px">&nbsp;'
+                    html += '<img src="images/blank.png" style="width: 16px">&nbsp;'
                 html += '<a '
                 html += 'onMouseover="show(\''+getInfo(mr).replace("'","&rsquo;")+'\')" '
                 html += 'onMouseout="show(\'\')" '
@@ -629,9 +624,9 @@ def getRecentFiles():
                 fn = os.path.basename(mr)
                 html += '<li>'
                 if mr[-5:].upper() == "FCSTD":
-                    html += '<img src="freecad-doc.png" style="width: 16px">&nbsp;'
+                    html += '<img src="images/freecad-doc.png" style="width: 16px">&nbsp;'
                 else:
-                    html += '<img src="blank.png" style="width: 16px">&nbsp;'
+                    html += '<img src="images/blank.png" style="width: 16px">&nbsp;'
                 html += '<span class="disabled">'
                 html += fn
                 html += '</span></li>'
