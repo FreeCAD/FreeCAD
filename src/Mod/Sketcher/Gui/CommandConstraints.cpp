@@ -1861,13 +1861,13 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
 
         if (constraintMode) {
-        ActivateHandler(getActiveGuiDocument(),
+            ActivateHandler(getActiveGuiDocument(),
                 new DrawSketchHandlerGenConstraint(constraintCursor, this));
-        getSelection().clearSelection();
+            getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Select two or more from the sketch."));
+                                 QObject::tr("Select two or more points from the sketch."));
         }
         return;
     }
