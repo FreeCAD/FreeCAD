@@ -713,6 +713,9 @@ int SketchObject::toggleConstruction(int GeoId)
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
     if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
+    
+    if(vals[GeoId]->getTypeId() == Part::GeomPoint::getClassTypeId())
+        return -1;
 
     std::vector< Part::Geometry * > newVals(vals);
 
@@ -730,6 +733,9 @@ int SketchObject::setConstruction(int GeoId, bool on)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
     if (GeoId < 0 || GeoId >= int(vals.size()))
+        return -1;
+    
+    if(vals[GeoId]->getTypeId() == Part::GeomPoint::getClassTypeId())
         return -1;
 
     std::vector< Part::Geometry * > newVals(vals);
