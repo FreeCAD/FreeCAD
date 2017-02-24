@@ -3726,6 +3726,83 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             }
 
             currentInfoNode++; // switch to next node
+            
+            // knot multiplicity --------------------------------------------------------
+            std::vector<double> knots = spline->getKnots();
+            std::vector<int> mult = spline->getMultiplicities();
+            
+            std::vector<double>::const_iterator itk;
+            std::vector<int>::const_iterator itm;
+            
+            
+            if(rebuildinformationlayer) {
+                
+                for( itk = knots.begin(), itm = mult.begin(); itk != knots.end() && itm != mult.end(); ++itk, ++itm) {
+                
+                    SoSwitch *sw = new SoSwitch();
+                    
+                    sw->whichChild = hGrpsk->GetBool("BSplineKnotMultiplicityVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
+                    
+                    SoSeparator *sep = new SoSeparator();
+                    sep->ref();
+                    // no caching for fluctuand data structures
+                    sep->renderCaching = SoSeparator::OFF;
+                    
+                    // every information visual node gets its own material for to-be-implemented preselection and selection
+                    SoMaterial *mat = new SoMaterial;
+                    mat->ref();
+                    mat->diffuseColor = InformationColor;
+                    
+                    SoTranslation *translate = new SoTranslation;
+                    
+                    Base::Vector3d knotposition = spline->pointAtParameter(*itk);
+
+                    translate->translation.setValue(knotposition.x,knotposition.y,zInfo);
+                    
+                    SoFont *font = new SoFont;
+                    font->name.setValue("Helvetica");
+                    font->size.setValue(fontSize);
+                    
+                    SoText2 *degreetext = new SoText2;
+                    degreetext->string = SbString("(")+SbString(*itm)+SbString(")");
+                    
+                    sep->addChild(translate);
+                    sep->addChild(mat);
+                    sep->addChild(font);
+                    sep->addChild(degreetext);
+                    
+                    sw->addChild(sep);
+                    
+                    edit->infoGroup->addChild(sw);
+                    sep->unref();
+                    mat->unref();
+                    
+                    currentInfoNode++; // switch to next node
+                }
+            }
+            else {
+                for( itk = knots.begin(), itm = mult.begin(); itk != knots.end() && itm != mult.end(); ++itk, ++itm) {                
+                    SoSwitch *sw = static_cast<SoSwitch *>(edit->infoGroup->getChild(currentInfoNode));
+                    
+                    if(visibleInformationChanged)
+                        sw->whichChild = hGrpsk->GetBool("BSplineKnotMultiplicityVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
+                    
+                    SoSeparator *sep = static_cast<SoSeparator *>(sw->getChild(0));
+                    
+                    Base::Vector3d knotposition = spline->pointAtParameter(*itk);
+                    
+                    static_cast<SoTranslation *>(sep->getChild(GEOINFO_BSPLINE_DEGREE_POS))->translation.setValue(knotposition.x,knotposition.y,zInfo);
+                    
+                    static_cast<SoText2 *>(sep->getChild(GEOINFO_BSPLINE_DEGREE_TEXT))->string = SbString("(")+SbString(*itm)+SbString(")");
+                    
+                    currentInfoNode++; // switch to next node
+                }
+            }
+            
+            // End of knot multiplicity 
+            
+            
+            
         }
         else {
         }
