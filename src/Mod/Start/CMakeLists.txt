@@ -3,6 +3,7 @@ add_subdirectory(App)
 if(BUILD_GUI)
     SET(StartPage_Scripts
         StartPage.py
+        TranslationTexts.py
         __init__.py
     )
 
