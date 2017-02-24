@@ -23,11 +23,22 @@
 
 # This is the start page template
 
-import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,sys
+import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
 from PySide import QtGui
 from xml.etree.ElementTree import parse
 
-from translation_texts import *
+from TranslationTexts import (text01, text02, text03, text04, text05, text06,
+                              text07, text08, text09, text10, text11, text12,
+                              text13, text14, text15, text16, text17, text18,
+                              text19, text20, text21, text22, text23, text24,
+                              text25, text26, text27, text28, text29, text30,
+                              text31, text32, text33, text34, text35, text36,
+                              text37, text38, text39, text40, text41, text42,
+                              text43, text44, text45, text46, text47, text48,
+                              text49, text50, text51, text52, text53, text54,
+                              text55, text56, text57, text58, text59, text60,
+                              text61, text62, text63, text64, text65, text66,
+                              text67, text68)
 
 try:
     import io as cStringIO
@@ -37,210 +48,25 @@ except:
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
 
-
-
 # get FreeCAD version
-
 v = FreeCAD.Version()
 vmajor, vminor = v[0], v[1]
 vbuild = v[2].split(" ")[0]
 
 # here is the html page skeleton
+resources_dir = os.path.join(FreeCAD.getResourceDir(), "Mod", "Start", "StartPage")
+html_filename = os.path.join(resources_dir, "StartPage.html")
+js_filename = os.path.join(resources_dir, "StartPage.js")
+css_filename = os.path.join(resources_dir, "StartPage.css")
 
-css_filename = os.path.join(FreeCAD.getResourceDir(),
-                            "Mod", "Start", "StartPage", "StartPage.css")
+with open(html_filename, 'r') as f:
+    startpage_html = f.read()
+
+with open(js_filename, 'r') as f:
+    startpage_js = f.read()
 
 with open(css_filename, 'r') as f:
     startpage_css = f.read()
-
-page = """
-<html>
-  <head>
-    <title>FreeCAD - Start page</title>
-
-    <script language="javascript">
-
-        var linkDescriptions = [];
-
-        function JSONscriptRequest(fullUrl) {
-            // REST request path
-            this.fullUrl = fullUrl; 
-            // Get the DOM location to put the script tag
-            this.headLoc = document.getElementsByTagName("head").item(0);
-            // Generate a unique script tag id
-            this.scriptId = 'JscriptId' + JSONscriptRequest.scriptCounter++;
-        }
-
-        // Static script ID counter
-        JSONscriptRequest.scriptCounter = 1;
-
-        JSONscriptRequest.prototype.buildScriptTag = function () {
-            // Create the script tag
-            this.scriptObj = document.createElement("script");
-            // Add script object attributes
-            this.scriptObj.setAttribute("type", "text/javascript");
-            this.scriptObj.setAttribute("charset", "utf-8");
-            this.scriptObj.setAttribute("src", this.fullUrl);
-            this.scriptObj.setAttribute("id", this.scriptId);
-        }
- 
-        JSONscriptRequest.prototype.removeScriptTag = function () {
-            // Destroy the script tag
-            this.headLoc.removeChild(this.scriptObj);  
-        }
-
-        JSONscriptRequest.prototype.addScriptTag = function () {
-            // Create the script tag
-            this.headLoc.appendChild(this.scriptObj);
-        }
-
-        function show(theText) {
-            ddiv = document.getElementById("description");
-            if (theText == "") theText = "&nbsp;";
-            ddiv.innerHTML = theText;
-        }
-        
-        function checkVersion(data) {
-            vdiv = document.getElementById("versionbox");
-            var cmajor = """ + vmajor + """;
-            var cminor = """ + vminor + """;
-            var cbuild = """ + vbuild + """;
-            var amajor = data[0]['major'];
-            var aminor = data[0]['minor'];
-            var abuild = data[0]['build'];
-            if (cmajor >= amajor && cminor >= aminor && cbuild >= abuild) {
-                vdiv.innerHTML=" """ + text58 + """: """ + vmajor + """.""" + vminor + """.""" + vbuild + """";
-            } else {
-                vdiv.innerHTML="<a href=exthttp://github.com/FreeCAD/FreeCAD/releases/latest> """ + text59 + """:"+amajor+"."+aminor+"."+abuild+"</a>";
-            }
-        }
-
-        function load() {
-            // load latest news
-            ddiv = document.getElementById("news");
-            ddiv.innerHTML = "Connecting...";
-            var tobj=new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=showTweets');
-            tobj.buildScriptTag(); // Build the script tag
-            tobj.addScriptTag(); // Execute (add) the script tag
-            ddiv.innerHTML = "Downloading latest news...";
-            
-            // load version
-            var script = document.createElement('script');
-            script.src = 'http://www.freecadweb.org/version.php?callback=checkVersion';
-            document.body.appendChild(script);
-        }
-
-        function stripTags(text) {
-            // from http://www.pagecolumn.com/tool/all_about_html_tags.htm /<\s*\/?\s*span\s*.*?>/g
-            stripped = text.replace("<table", "<div");
-            stripped = stripped.replace("</table", "</div");
-            stripped = stripped.replace("<tr", "<tr");
-            stripped = stripped.replace("</tr", "</tr");
-            stripped = stripped.replace("<td", "<td");
-            stripped = stripped.replace("</td", "</td");
-            stripped = stripped.replace("555px", "auto");
-            stripped = stripped.replace("border:1px", "border:0px");
-            stripped = stripped.replace("color:#000000;","");
-            return stripped;
-        }
-
-        function showTweets(data) {
-            ddiv = document.getElementById('news');
-            ddiv.innerHTML = "Received";
-            var html = ['<ul>'];
-            for (var i = 0; i < 15; i++) {
-                html.push('<li><img src="images/web.png">&nbsp;<a href="ext', data.data[i].commit.url, '" onMouseOver="showDescr(', i+1, ')" onMouseOut="showDescr()">', data.data[i].commit.message, '</a></li>');
-                if ("message" in data.data[i].commit) {
-                    linkDescriptions.push(stripTags(data.data[i].commit.message)+'<br/>'+data.data[i].commit.author.name+'<br/>'+data.data[i].commit.author.date);
-                } else {
-                    linkDescriptions.push("");
-                }
-                
-            }
-            html.push('</ul>');
-            html.push('<a href="exthttp://github.com/FreeCAD/FreeCAD/commits/master">""" + text63 + """<a/>');
-            ddiv.innerHTML = html.join('');
-        }
-
-        function showDescr(d) {
-            if (d) {
-                show(linkDescriptions[d-1]);
-            } else {
-                show("");
-            }
-        }
-
-        function scroller() {
-            desc = document.getElementById("description");
-            base = document.getElementById("column").offsetTop;
-            scro = window.scrollY;
-            if (scro > base) {
-                desc.className = "stick";
-            } else {
-                desc.className = "";
-            }
-        }
-
-        document.onmousemove=scroller;
-
-    </script>
-
-    <style type="text/css">""" + startpage_css + """
-    </style>
-
-  </head>
-
-  <body onload="load()">
-
-    <h1><img src="images/FreeCAD.png">&nbsp;""" + text01 + """<div id=versionbox>&nbsp</div></h1>
-
-    <div id="description">
-      &nbsp;
-    </div>
-
-    <div id="column">
-
-      <div class="block">
-        <h2>""" + text02 + """</h2>
-          defaultworkbenches
-      </div>
-
-      <div class="block">
-        <h2>""" + text03 + """</h2>
-          recentfiles
-      </div>
-
-      <div class="block">
-        <h2>""" + text05 + """</h2>
-        <div id="news">news feed</div>
-      </div>
-
-      <div class="block">
-        <h2>""" + text06 + """</h2>
-            defaultlinks
-      </div>
-
-      <div class="block">
-        <h2>""" + text09 + """</h2>
-            defaultexamples
-      </div>
-
-      customblocks
-
-    </div>
-
-    <!--
-    <form class="options">
-      <input type="checkbox" name="closeThisDialog">
-      """ + text17 + """<br/>
-      <input type="checkbox" name="dontShowAgain">
-      """ + text18 + """
-    </form>
-    -->
-
-  </body>
-</html>
-"""
 
 def getWebExamples():
     return """
@@ -386,7 +212,6 @@ def getInfo(filename):
             print ("not a freecad file: "+os.path.splitext(filename)[1].upper())
     else:
         html += "<p>" + text41 + "</p>"
-            
     return html
 
 def getRecentFiles():
@@ -483,12 +308,37 @@ def setColors(html):
         html = html.replace(k,str(v))
     return html
 
+def replace_html(html):
+    html = html.replace("startpage_js", startpage_js)
+    html = html.replace("startpage_css", startpage_css)
+    html = html.replace("text01", text01)
+    html = html.replace("text02", text02)
+    html = html.replace("text03", text03)
+    html = html.replace("text05", text05)
+    html = html.replace("text06", text06)
+    html = html.replace("text09", text09)
+    html = html.replace("text17", text17)
+    html = html.replace("text18", text18)
+    return html
+
+def replace_js(html):
+    html = html.replace("vmajor", vmajor)
+    html = html.replace("vminor", vminor)
+    html = html.replace("vbuild", vbuild)
+    html = html.replace("text58", text58)
+    html = html.replace("text59", text59)
+    html = html.replace("text63", text63)
+    return html
+
 def handle():
     "returns the complete html startpage"
+    # add strings into files
+    html = replace_html(startpage_html)
+    html = replace_js(html)
     
     # add recent files
     recentfiles = getRecentFiles()
-    html = page.replace("recentfiles",recentfiles)
+    html = html.replace("recentfiles",recentfiles)
 
     # add default workbenches
     html = html.replace("defaultworkbenches",getWorkbenches())
