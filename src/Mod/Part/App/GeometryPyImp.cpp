@@ -217,7 +217,8 @@ Py::Boolean GeometryPy::getConstruction(void) const
 
 void  GeometryPy::setConstruction(Py::Boolean arg)
 {
-    getGeometryPtr()->Construction = arg;
+    if(getGeometryPtr()->getClassTypeId() != Part::GeomPoint::getClassTypeId())
+        getGeometryPtr()->Construction = arg;
 }
 
 PyObject *GeometryPy::getCustomAttributes(const char* /*attr*/) const
