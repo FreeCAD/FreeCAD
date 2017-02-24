@@ -50,6 +50,12 @@ def open(filename):
     insert(filename, docname)
 
 
+def open(filename):
+    "called when freecad opens a file"
+    docname = os.path.splitext(os.path.basename(filename))[0]
+    insert(filename, docname)
+
+
 def insert(filename, docname):
     "called when freecad wants to import a file"
     try:

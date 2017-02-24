@@ -71,6 +71,33 @@ def import_inp(filename):
     mesh_object.FemMesh = mesh
 
 
+def open(filename):
+    "called when freecad opens a file"
+    docname = os.path.splitext(os.path.basename(filename))[0]
+    insert(filename, docname)
+
+
+def insert(filename, docname):
+    "called when freecad wants to import a file"
+    try:
+        doc = FreeCAD.getDocument(docname)
+    except NameError:
+        doc = FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
+    import_inp(filename)
+
+
+########## module specific methods ##########
+def import_inp(filename):
+    "create imported objects in FreeCAD, currently only FemMesh"
+
+    m = read_inp(filename)
+    mesh = FemMeshTools.make_femmesh(m)
+    mesh_name = os.path.splitext(os.path.basename(filename))[0]
+    mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
+    mesh_object.FemMesh = mesh
+
+
 def read_inp(file_name):
     "read .inp file, currently only the mesh"
 
