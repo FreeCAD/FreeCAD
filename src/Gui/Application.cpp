@@ -1526,7 +1526,9 @@ void Application::runApplication(void)
     else {
         mainApp.setApplicationName(QString::fromUtf8(App::GetApplication().getExecutableName()));
     }
+#ifndef Q_OS_MACX
     mainApp.setWindowIcon(Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
+#endif
     QString plugin;
     plugin = QString::fromUtf8(App::GetApplication().getHomePath());
     plugin += QLatin1String("/plugins");
