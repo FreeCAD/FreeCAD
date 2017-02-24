@@ -40,7 +40,7 @@ from PySide.QtGui import QApplication
 
 class _TaskPanelFemSolverCalculix:
     def __init__(self, solver_object):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemSolverCalculix.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemSolverCalculix.ui")
         self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
         ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
         if ccx_binary:

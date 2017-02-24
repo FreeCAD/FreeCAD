@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,45 +20,43 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_TaskPanelFemBeamSection"
+__title__ = "_TaskPanelFemMeshGroup"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package TaskPanelFemBeamSection
+## @package TaskPanelFemMeshGroup
 #  \ingroup FEM
 
 import FreeCAD
 import FreeCADGui
 from PySide import QtGui
 from PySide import QtCore
-import _FemBeamSection
 
 
-class _TaskPanelFemBeamSection:
-    '''The TaskPanel for editing References property of FemBeamSection objects'''
+class _TaskPanelFemMeshGroup:
+    '''The TaskPanel for editing References property of FemMeshGroup objects'''
     def __init__(self, obj):
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
         self.obj = obj
+        self.selection_mode_solid = False
+        self.selection_mode_std_print_message = "Select Faces, Edges and Vertices by single click on them to add them to the list."
+        self.selection_mode_solid_print_message = "Select Solids by single click on a Face or Edge which belongs to the Solid, to add the Solid to the list."
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemBeamSection.ui")
-        QtCore.QObject.connect(self.form.cb_crosssectiontype, QtCore.SIGNAL("activated(int)"), self.sectiontype_changed)
-        QtCore.QObject.connect(self.form.if_rec_height, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.rec_height_changed)
-        QtCore.QObject.connect(self.form.if_rec_width, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.rec_width_changed)
-        QtCore.QObject.connect(self.form.if_circ_diameter, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.circ_diameter_changed)
-        QtCore.QObject.connect(self.form.if_pipe_diameter, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.pipe_diameter_changed)
-        QtCore.QObject.connect(self.form.if_pipe_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.pipe_thickness_changed)
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemMeshGroup.ui")
+        QtCore.QObject.connect(self.form.rb_name, QtCore.SIGNAL("toggled(bool)"), self.choose_exportidentifier_name)
+        QtCore.QObject.connect(self.form.rb_label, QtCore.SIGNAL("toggled(bool)"), self.choose_exportidentifier_label)
+        QtCore.QObject.connect(self.form.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard)
+        QtCore.QObject.connect(self.form.rb_solid, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_solid)
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
 
-        self.form.cb_crosssectiontype.addItems(_FemBeamSection._FemBeamSection.known_beam_types)
-
-        self.get_beamsection_props()
+        self.get_meshgroup_props()
         self.update()
 
     def accept(self):
-        self.set_beamsection_props()
+        self.set_meshgroup_props()
         if self.sel_server:
             FreeCADGui.Selection.removeObserver(self.sel_server)
         FreeCADGui.ActiveDocument.resetEdit()
@@ -71,58 +69,38 @@ class _TaskPanelFemBeamSection:
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
-    def get_beamsection_props(self):
+    def get_meshgroup_props(self):
+        self.use_label = self.obj.UseLabel
         self.references = []
         if self.obj.References:
             self.tuplereferences = self.obj.References
             self.get_references()
-        self.SectionType = self.obj.SectionType
-        self.RectHeight = self.obj.RectHeight
-        self.RectWidth = self.obj.RectWidth
-        self.CircDiameter = self.obj.CircDiameter
-        self.PipeDiameter = self.obj.PipeDiameter
-        self.PipeThickness = self.obj.PipeThickness
 
-    def set_beamsection_props(self):
+    def set_meshgroup_props(self):
         self.obj.References = self.references
-        self.obj.SectionType = self.SectionType
-        self.obj.RectHeight = self.RectHeight
-        self.obj.RectWidth = self.RectWidth
-        self.obj.CircDiameter = self.CircDiameter
-        self.obj.PipeDiameter = self.PipeDiameter
-        self.obj.PipeThickness = self.PipeThickness
+        self.obj.UseLabel = self.use_label
 
     def update(self):
         'fills the widgets'
-        index_crosssectiontype = self.form.cb_crosssectiontype.findText(self.SectionType)
-        self.form.cb_crosssectiontype.setCurrentIndex(index_crosssectiontype)
-        self.form.if_rec_height.setText(self.RectHeight.UserString)
-        self.form.if_rec_width.setText(self.RectWidth.UserString)
-        self.form.if_circ_diameter.setText(self.CircDiameter.UserString)
-        self.form.if_pipe_diameter.setText(self.PipeDiameter.UserString)
-        self.form.if_pipe_thickness.setText(self.PipeThickness.UserString)
+        self.form.rb_name.setChecked(not self.use_label)
+        self.form.rb_label.setChecked(self.use_label)
         self.rebuild_list_References()
 
-    def sectiontype_changed(self, index):
-        if index < 0:
-            return
-        self.form.cb_crosssectiontype.setCurrentIndex(index)
-        self.SectionType = str(self.form.cb_crosssectiontype.itemText(index))  # form returns unicode
+    def choose_exportidentifier_name(self, state):
+        self.use_label = not state
 
-    def rec_height_changed(self, base_quantity_value):
-        self.RectHeight = base_quantity_value
+    def choose_exportidentifier_label(self, state):
+        self.use_label = state
 
-    def rec_width_changed(self, base_quantity_value):
-        self.RectWidth = base_quantity_value
+    def choose_selection_mode_standard(self, state):
+        self.selection_mode_solid = not state
+        if self.sel_server and not self.selection_mode_solid:
+            print(self.selection_mode_std_print_message)
 
-    def circ_diameter_changed(self, base_quantity_value):
-        self.CircDiameter = base_quantity_value
-
-    def pipe_diameter_changed(self, base_quantity_value):
-        self.PipeDiameter = base_quantity_value
-
-    def pipe_thickness_changed(self, base_quantity_value):
-        self.PipeThickness = base_quantity_value
+    def choose_selection_mode_solid(self, state):
+        self.selection_mode_solid = state
+        if self.sel_server and self.selection_mode_solid:
+            print(self.selection_mode_solid_print_message)
 
     def get_references(self):
         for ref in self.tuplereferences:
@@ -155,21 +133,52 @@ class _TaskPanelFemBeamSection:
         # here the addReference button EditTaskPanel has to be triggered to start selection mode
         FreeCADGui.Selection.clearSelection()
         # start SelectionObserver and parse the function to add the References to the widget
-        print_message = "Select Edges by single click on them to add them to the list"
+        if self.selection_mode_solid:  # print message on button click
+            print_message = self.selection_mode_solid_print_message
+        else:
+            print_message = self.selection_mode_std_print_message
         import FemSelectionObserver
         self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
-        # print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
-        if hasattr(selection[0], "Shape"):
-            if selection[1]:
-                elt = selection[0].Shape.getElement(selection[1])
+        print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
+        if hasattr(selection[0], "Shape") and selection[1]:
+            elt = selection[0].Shape.getElement(selection[1])
+            if self.selection_mode_solid:
+                # in solid selection mode use edges and faces for selection of a solid
+                solid_to_add = None
                 if elt.ShapeType == 'Edge':
-                    if selection not in self.references:
-                        self.references.append(selection)
-                        self.rebuild_list_References()
-                    else:
-                        FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
+                    found_edge = False
+                    for i, s in enumerate(selection[0].Shape.Solids):
+                        for e in s.Edges:
+                            if elt.isSame(e):
+                                if not found_edge:
+                                    solid_to_add = str(i + 1)
+                                else:
+                                    FreeCAD.Console.PrintMessage('Edge belongs to more than one solid\n')
+                                    solid_to_add = None
+                                found_edge = True
+                elif elt.ShapeType == 'Face':
+                    found_face = False
+                    for i, s in enumerate(selection[0].Shape.Solids):
+                        for e in s.Faces:
+                            if elt.isSame(e):
+                                if not found_face:
+                                    solid_to_add = str(i + 1)
+                                else:
+                                    FreeCAD.Console.PrintMessage('Face belongs to more than one solid\n')
+                                    solid_to_add = None
+                                found_edge = True
+                if solid_to_add:
+                    selection = (selection[0], 'Solid' + solid_to_add)
+                    print('selection element changed to Solid: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
+                else:
+                    return
+            if selection not in self.references:
+                self.references.append(selection)
+                self.rebuild_list_References()
+            else:
+                FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
 
     def rebuild_list_References(self):
         self.form.list_References.clear()

@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,25 +20,25 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemSolverCalculix"
-__author__ = "Bernd Hahnebach"
+__title__ = "_ViewProviderFemMaterial"
+__author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemSolverCalculix
+## @package _ViewProviderFemMaterial
 #  \ingroup FEM
 
 import FreeCAD
 import FreeCADGui
-import FemGui
 
 
-class _ViewProviderFemSolverCalculix:
-    "A View Provider for the FemSolverCalculix object"
+class _ViewProviderFemMaterial:
+    "A View Provider for the FemMaterial object"
+
     def __init__(self, vobj):
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/fem-solver.svg"
+        return ":/icons/fem-material.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
@@ -50,30 +50,22 @@ class _ViewProviderFemSolverCalculix:
     def onChanged(self, vobj, prop):
         return
 
-    def setEdit(self, vobj, mode=0):
-        import _TaskPanelFemSolverCalculix
-        taskd = _TaskPanelFemSolverCalculix._TaskPanelFemSolverCalculix(self.Object)
+    def setEdit(self, vobj, mode):
+        import PyGui._TaskPanelFemMaterial
+        taskd = PyGui._TaskPanelFemMaterial._TaskPanelFemMaterial(self.Object)
+        taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self, vobj, mode=0):
+    def unsetEdit(self, vobj, mode):
         FreeCADGui.Control.closeDialog()
         return
 
+    # overwrite the doubleClicked to make sure no other Material taskd (and thus no selection observer) is still active
     def doubleClicked(self, vobj):
         doc = FreeCADGui.getDocument(vobj.Object.Document)
         if not doc.getInEdit():
-            # may be go the other way around and just activate the analysis the user has doubleClicked on ?!
-            if FemGui.getActiveAnalysis() is not None:
-                if FemGui.getActiveAnalysis().Document is FreeCAD.ActiveDocument:
-                    if self.Object in FemGui.getActiveAnalysis().Member:
-                        doc.setEdit(vobj.Object.Name)
-                    else:
-                        FreeCAD.Console.PrintError('Activate the analysis this solver belongs to!\n')
-                else:
-                    FreeCAD.Console.PrintError('Active Analysis is not in active Document!\n')
-            else:
-                FreeCAD.Console.PrintError('No active Analysis found!\n')
+            doc.setEdit(vobj.Object.Name)
         else:
             FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
         return True

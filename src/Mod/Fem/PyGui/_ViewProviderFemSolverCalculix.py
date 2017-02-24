@@ -20,37 +20,29 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemBeamSection"
+__title__ = "_ViewProviderFemSolverCalculix"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemBeamSection
+## @package ViewProviderFemSolverCalculix
 #  \ingroup FEM
 
 import FreeCAD
 import FreeCADGui
-from pivy import coin
+import FemGui
 
 
-class _ViewProviderFemBeamSection:
-    "A View Provider for the FemBeamSection object"
+class _ViewProviderFemSolverCalculix:
+    "A View Provider for the FemSolverCalculix object"
     def __init__(self, vobj):
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/fem-beam-section.svg"
+        return ":/icons/fem-solver.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
         self.Object = vobj.Object
-        self.standard = coin.SoGroup()
-        vobj.addDisplayMode(self.standard, "Standard")
-
-    def getDisplayModes(self, obj):
-        return ["Standard"]
-
-    def getDefaultDisplayMode(self):
-        return "Standard"
 
     def updateData(self, obj, prop):
         return
@@ -59,9 +51,8 @@ class _ViewProviderFemBeamSection:
         return
 
     def setEdit(self, vobj, mode=0):
-        import _TaskPanelFemBeamSection
-        taskd = _TaskPanelFemBeamSection._TaskPanelFemBeamSection(self.Object)
-        taskd.obj = vobj.Object
+        import PyGui._TaskPanelFemSolverCalculix
+        taskd = PyGui._TaskPanelFemSolverCalculix._TaskPanelFemSolverCalculix(self.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
@@ -72,7 +63,17 @@ class _ViewProviderFemBeamSection:
     def doubleClicked(self, vobj):
         doc = FreeCADGui.getDocument(vobj.Object.Document)
         if not doc.getInEdit():
-            doc.setEdit(vobj.Object.Name)
+            # may be go the other way around and just activate the analysis the user has doubleClicked on ?!
+            if FemGui.getActiveAnalysis() is not None:
+                if FemGui.getActiveAnalysis().Document is FreeCAD.ActiveDocument:
+                    if self.Object in FemGui.getActiveAnalysis().Member:
+                        doc.setEdit(vobj.Object.Name)
+                    else:
+                        FreeCAD.Console.PrintError('Activate the analysis this solver belongs to!\n')
+                else:
+                    FreeCAD.Console.PrintError('Active Analysis is not in active Document!\n')
+            else:
+                FreeCAD.Console.PrintError('No active Analysis found!\n')
         else:
             FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
         return True

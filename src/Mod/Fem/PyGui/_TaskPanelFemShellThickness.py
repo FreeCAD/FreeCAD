@@ -40,7 +40,7 @@ class _TaskPanelFemShellThickness:
         self.sel_server = None
         self.obj = obj
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemShellThickness.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemShellThickness.ui")
         QtCore.QObject.connect(self.form.if_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.thickness_changed)
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)

@@ -66,8 +66,8 @@ class _ViewProviderFemResultMechanical:
         return True
 
     def setEdit(self, vobj, mode=0):
-        import _TaskPanelShowResult
-        taskd = _TaskPanelShowResult._TaskPanelShowResult(self.Object)
+        import PyGui._TaskPanelShowResult
+        taskd = PyGui._TaskPanelShowResult._TaskPanelShowResult(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True
