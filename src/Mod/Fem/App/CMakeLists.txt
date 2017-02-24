@@ -86,7 +86,7 @@ SET(FemScripts_SRCS
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
 SET(FemObjectsScripts_SRCS
-    #PyObjects/__init__.py
+    PyObjects/__init__.py
     PyObjects/_FemBeamSection.py
     PyObjects/_FemConstraintSelfWeight.py
     PyObjects/_FemMaterialMechanicalNonlinear.py
@@ -102,7 +102,7 @@ SET(FemObjectsScripts_SRCS
 
 SET(FemGuiScripts_SRCS
     PyGui/FemCommands.py
-    #PyGui/__init__.py
+    PyGui/__init__.py
     PyGui/_CommandAnalysis.py
     PyGui/_CommandBeamSection.py
     PyGui/_CommandClearMesh.py
