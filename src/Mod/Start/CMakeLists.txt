@@ -39,6 +39,8 @@ if(BUILD_GUI)
         images/Ship.png
         images/ShipExample.png
         StartPage.css
+        StartPage.js
+        StartPage.html
     )
 
     add_subdirectory(Gui)
