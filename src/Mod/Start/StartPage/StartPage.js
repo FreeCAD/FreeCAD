@@ -40,9 +40,10 @@ function show(theText) {
 
 function checkVersion(data) {
     vdiv = document.getElementById("versionbox");
-    var cmajor = "vmajor";
-    var cminor = "vminor";
-    var cbuild = "vbuild";
+    console.log('test');
+    var cmajor = vmajor;
+    var cminor = vminor;
+    var cbuild = vbuild;
     var amajor = data[0]['major'];
     var aminor = data[0]['minor'];
     var abuild = data[0]['build'];
@@ -54,14 +55,6 @@ function checkVersion(data) {
 }
 
 function load() {
-    // load latest news
-    ddiv = document.getElementById("news");
-    ddiv.innerHTML = "Connecting...";
-    var tobj=new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=showTweets');
-    tobj.buildScriptTag(); // Build the script tag
-    tobj.addScriptTag(); // Execute (add) the script tag
-    ddiv.innerHTML = "Downloading latest news...";
-    
     // load version
     var script = document.createElement('script');
     script.src = 'http://www.freecadweb.org/version.php?callback=checkVersion';

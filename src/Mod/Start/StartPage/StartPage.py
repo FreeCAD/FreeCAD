@@ -68,93 +68,6 @@ with open(js_filename, 'r') as f:
 with open(css_filename, 'r') as f:
     startpage_css = f.read()
 
-def getWebExamples():
-    return """
-    <ul>
-        <li><a href="http://freecad-project.de/svn/ExampleData/FileFormates/Schenkel.stp">""" + text15 + """</a></li>
-        <li><a href="http://freecad-project.de/svn/ExampleData/Examples/CAD/Complex.FCStd">""" + text16 + """</a></li>
-    </ul>"""
-      
-def getExamples():
-    return """
-    <ul>
-        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadSchenkel.py">""" + text10 + """</a></li>
-        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadPartDesignExample.py">""" + text11 + """</a></li>
-        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadDrawingExample.py">""" + text12 + """</a></li>
-        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadRobotExample.py">""" + text13 + """</a></li>
-        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadArchExample.py">""" + text55 + """</a></li>
-        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample2D.py">""" + text64 + """</a></li>
-        <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample3D.py">""" + text60 + """</a></li>
-    </ul>"""
-      
-def getLinks():
-    return """
-    <ul>
-        <li><img src="images/web.png">&nbsp;
-            <a onMouseover="show('<p>""" + text07 + """</p>')" 
-                onMouseout="show('')"
-                href="exthttp://www.freecadweb.org/">""" + text08 + """</a></li>
-        <li><img src="images/web.png">&nbsp;
-            <a onMouseover="show('<p>""" + text45 + """</p>')" 
-                onMouseout="show('')"
-                href=ext""" + text38 + """>""" + text37 + """</a></li>
-        <li><img src="images/web.png">&nbsp;
-            <a onMouseover="show('<p>""" + text46 + """</p>')" 
-                onMouseout="show('')"
-                href=ext""" + text56 + """>""" + text39 + """</a></li>
-        <li><img src="images/web.png">&nbsp;
-            <a onMouseover="show('<p>""" + text47 + """</p>')" 
-                onMouseout="show('')"
-                href=ext""" + text57 + """>""" + text40 + """</a></li>
-        <li><img src="images/web.png">&nbsp;
-            <a onMouseover="show('<p>""" + text48 + """</p>')" 
-                onMouseout="show('')"
-                href="exthttp://freecad-tutorial.blogspot.com/">""" + text43 + """</a></li>
-        <li><img src="images/web.png">&nbsp;
-            <a href="exthttp://github.com/FreeCAD/FreeCAD/releases" 
-               onMouseOver="show('<p>""" + text62 + """</p>')" 
-               onMouseOut="show('')">""" + text61 + """</a></li>
-
-    </ul>"""
-
-def getWorkbenches():
-    return """
-    <ul>
-        <li><img src="images/blank.png">&nbsp;
-            <a onMouseover="show('<h3>""" + text49 + """</h3> \
-            <p>""" + text50 + """</p>')" 
-            onMouseout="show('')" 
-            href=""" + text51 + """>""" + text49 + """</a>
-        </li>
-        <li><img src="images/PartDesign.png">&nbsp;
-            <a onMouseover="show('<h3>""" + text19 + """</h3> \
-            <p>""" + text20 + """</p><p><small>""" + text21 + """ \
-            :</small></p><img src=images/PartDesignExample.png>')" 
-            onMouseout="show('')" 
-            href="PartDesign.py">""" + text22 + """</a>
-        </li>
-        <li><img src="images/ArchDesign.png">&nbsp;
-          <a onMouseover="show('<h3>""" + text23 + """</h3> \
-            <p>""" + text24 + """</p><p><small>""" + text21 + """ \
-            :</small></p><img src=images/ArchExample.png>')" 
-            onMouseout="show('')"
-            href="ArchDesign.py">""" + text25 + """</a>
-        </li>
-        <li><img src="images/Ship.png">&nbsp;
-          <a onMouseover="show('<h3>""" + text53 + """</h3> \
-            <p>""" + text54 + """</p><p><small>""" + text21 + """ \
-            :</small></p><img src=images/ShipExample.png>')" 
-            onMouseout="show('')"
-            href="Ship.py">""" + text52 + """</a>
-        </li>
-        <li><img src="images/Mesh.png">&nbsp;
-            <a onMouseover="show('<h3>""" + text26 + """</h3> \
-            <p>""" + text27 + """</p><p>""" + text28 + """</p>')" 
-            onMouseout="show('')" 
-            href="Mesh.py">""" + text29 + """</a>
-        </li>
-    </ul>"""
-
 def getInfo(filename):
     "returns available file information"
 
@@ -308,20 +221,62 @@ def setColors(html):
         html = html.replace(k,str(v))
     return html
 
-def replace_html(html):
+def insert_page_resources(html):
     html = html.replace("startpage_js", startpage_js)
     html = html.replace("startpage_css", startpage_css)
+    return html
+
+def replace_html_text(html):
     html = html.replace("text01", text01)
     html = html.replace("text02", text02)
     html = html.replace("text03", text03)
     html = html.replace("text05", text05)
     html = html.replace("text06", text06)
+    html = html.replace("text07", text07)
+    html = html.replace("text08", text08)
     html = html.replace("text09", text09)
+    html = html.replace("text10", text10)
+    html = html.replace("text11", text11)
+    html = html.replace("text12", text12)
+    html = html.replace("text13", text13)
     html = html.replace("text17", text17)
     html = html.replace("text18", text18)
+    html = html.replace("text19", text19)
+    html = html.replace("text20", text20)
+    html = html.replace("text21", text21)
+    html = html.replace("text22", text22)
+    html = html.replace("text23", text23)
+    html = html.replace("text24", text24)
+    html = html.replace("text25", text25)
+    html = html.replace("text26", text26)
+    html = html.replace("text27", text27)
+    html = html.replace("text28", text28)
+    html = html.replace("text29", text29)
+    html = html.replace("text37", text37)
+    html = html.replace("text38", text38)
+    html = html.replace("text39", text39)
+    html = html.replace("text40", text40)
+    html = html.replace("text43", text43)
+    html = html.replace("text45", text45)
+    html = html.replace("text46", text46)
+    html = html.replace("text47", text47)
+    html = html.replace("text48", text48)
+    html = html.replace("text49", text49)
+    html = html.replace("text50", text50)
+    html = html.replace("text51", text51)
+    html = html.replace("text52", text52)
+    html = html.replace("text53", text53)
+    html = html.replace("text54", text54)
+    html = html.replace("text55", text55)
+    html = html.replace("text56", text56)
+    html = html.replace("text57", text57)
+    html = html.replace("text60", text60)
+    html = html.replace("text61", text61)
+    html = html.replace("text62", text62)
+    html = html.replace("text64", text64)
     return html
 
-def replace_js(html):
+def replace_js_text(html):
     html = html.replace("vmajor", vmajor)
     html = html.replace("vminor", vminor)
     html = html.replace("vbuild", vbuild)
@@ -333,34 +288,23 @@ def replace_js(html):
 def handle():
     "returns the complete html startpage"
     # add strings into files
-    html = replace_html(startpage_html)
-    html = replace_js(html)
+    html = insert_page_resources(startpage_html)
+    html = replace_js_text(html)
     
     # add recent files
     recentfiles = getRecentFiles()
     html = html.replace("recentfiles",recentfiles)
-
-    # add default workbenches
-    html = html.replace("defaultworkbenches",getWorkbenches())
-
-    # add default web links
-    html = html.replace("defaultlinks",getLinks())
-
-    # add default examples
-    html = html.replace("defaultexamples",getExamples())
-
-    # add web examples
-    #html = html.replace("webexamples",getWebExamples())
-
+        
     # add custom blocks
     html = html.replace("customblocks",getCustomBlocks())
 
+    html = replace_html_text(html)
     # fetches system colors
     html = setColors(html)
-    
     return html
 
 def exportTestFile():
     f = open(os.path.expanduser("~")+os.sep+"freecad-startpage.html","wb")
     f.write(handle())
     f.close()
+
