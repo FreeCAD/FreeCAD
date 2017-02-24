@@ -37,6 +37,7 @@ if(BUILD_GUI)
         Ship.py
         images/Ship.png
         images/ShipExample.png
+        StartPage.css
     )
 
     add_subdirectory(Gui)
