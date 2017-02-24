@@ -429,12 +429,18 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     * The scale calculation is based on knowledge of SbViewVolume::getWorldToScreenScale
     * implementation internals. The factor returned from this function is calculated from the view frustums
     * nearplane width, height is not taken into account, and hence we divide it with the viewport width
-    * to get the exact pixel scale faktor.
+    * to get the exact pixel scale factor.
     * This is not documented and therefore may change on later coin versions!
     */
     const SbViewVolume & vv = SoViewVolumeElement::get(state);
-    float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.f);
-    SbVec2s vp_size = action->getViewportRegion().getViewportSizePixels();
+    // As reference use the center point the camera is looking at on the near plane
+    // because then independent of the camera we get a constant scale factor when panning.
+    // If we used (0,0,0) instead then the scale factor would change heavily in perspective
+    // rendering mode. See #0002921 and #0002922.
+    SbVec3f center = vv.getSightPoint(vv.getNearDist());
+    float scale = vv.getWorldToScreenScale(center, 1.f);
+    const SbViewportRegion & vp = SoViewportRegionElement::get(state);
+    SbVec2s vp_size = vp.getViewportSizePixels();
     scale /= float(vp_size[0]);
 
     const SbString* s = string.getValues(0);
