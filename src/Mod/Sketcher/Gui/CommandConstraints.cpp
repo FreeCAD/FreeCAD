@@ -1131,7 +1131,7 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
@@ -1340,7 +1340,7 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
@@ -1552,7 +1552,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
@@ -1858,7 +1858,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
@@ -2005,7 +2005,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
@@ -2377,7 +2377,7 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
@@ -2565,7 +2565,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
@@ -2809,7 +2809,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
@@ -3090,7 +3090,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
@@ -3303,7 +3303,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
@@ -3967,7 +3967,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
@@ -4580,7 +4580,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
@@ -5085,7 +5085,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
         ActivateHandler(getActiveGuiDocument(),
@@ -5586,7 +5586,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
@@ -5776,7 +5776,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", false);
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
