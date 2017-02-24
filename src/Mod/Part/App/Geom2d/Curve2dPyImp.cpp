@@ -48,6 +48,7 @@
 # include <BRepBuilderAPI_MakeEdge2d.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <BRepLib.hxx>
 # include <TopoDS.hxx>
 #endif
 
@@ -157,6 +158,7 @@ PyObject* Curve2dPy::toShape(PyObject *args)
 
             BRepBuilderAPI_MakeEdge mkBuilder(curv, surf);
             TopoDS_Shape edge =  mkBuilder.Shape();
+            BRepLib::BuildCurves3d(edge);
             return Py::new_reference_to(shape2pyshape(edge));
         }
         catch (Standard_Failure) {
@@ -175,6 +177,7 @@ PyObject* Curve2dPy::toShape(PyObject *args)
 
             BRepBuilderAPI_MakeEdge mkBuilder(curv, surf, u1, u2);
             TopoDS_Shape edge =  mkBuilder.Shape();
+            BRepLib::BuildCurves3d(edge);
             return Py::new_reference_to(shape2pyshape(edge));
         }
         catch (Standard_Failure) {
@@ -193,6 +196,7 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             BRepAdaptor_Surface adapt(face);
             BRepBuilderAPI_MakeEdge mkBuilder(curv, adapt.Surface().Surface());
             TopoDS_Shape edge =  mkBuilder.Shape();
+            BRepLib::BuildCurves3d(edge);
             return Py::new_reference_to(shape2pyshape(edge));
         }
         catch (Standard_Failure) {
@@ -211,6 +215,7 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             BRepAdaptor_Surface adapt(face);
             BRepBuilderAPI_MakeEdge mkBuilder(curv, adapt.Surface().Surface(), u1, u2);
             TopoDS_Shape edge =  mkBuilder.Shape();
+            BRepLib::BuildCurves3d(edge);
             return Py::new_reference_to(shape2pyshape(edge));
         }
         catch (Standard_Failure) {
