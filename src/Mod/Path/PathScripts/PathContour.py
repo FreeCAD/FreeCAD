@@ -222,19 +222,20 @@ class ObjectContour:
         if baseobject is None:
             return
 
-        if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
-            baseobject.Proxy.execute(baseobject)
-            for subobj in baseobject.Group:  # process the group of panels
-                if isinstance(subobj.Proxy, ArchPanel.PanelCut):
-                    subobj.Proxy.execute(subobj)
-                contourwire = TechDraw.findOuterWire(subobj.Shape.Edges)
-                if contourwire is not None:
-                    edgelist = contourwire.Edges
-                    edgelist = Part.__sortEdges__(edgelist)
-                    try:
-                        output += self._buildPathLibarea(obj, edgelist)
-                    except:
-                        FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+        if hasattr(baseobject, "Proxy"):
+            if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+                baseobject.Proxy.execute(baseobject)
+                for subobj in baseobject.Group:  # process the group of panels
+                    if isinstance(subobj.Proxy, ArchPanel.PanelCut):
+                        subobj.Proxy.execute(subobj)
+                    contourwire = TechDraw.findOuterWire(subobj.Shape.Edges)
+                    if contourwire is not None:
+                        edgelist = contourwire.Edges
+                        edgelist = Part.__sortEdges__(edgelist)
+                        try:
+                            output += self._buildPathLibarea(obj, edgelist)
+                        except:
+                            FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
         else:
             contourwire = TechDraw.findShapeOutline(baseobject.Shape, 1, Vector(0, 0, 1))
 
