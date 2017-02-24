@@ -234,7 +234,6 @@ namespace GCS
         int addConstraintInternalAlignmentHyperbolaFocus(Hyperbola &e, Point &p1, int tagId=0);
         int addConstraintInternalAlignmentParabolaFocus(Parabola &e, Point &p1, int tagId=0);
         int addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle &c, int poleindex, int tag=0);
-        int addConstraintInternalAlignmentBSplineKnot(BSpline &b, Point &p, int knotindex, int tagId=0);
 
         double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p);
         double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p1, Point &p2);
