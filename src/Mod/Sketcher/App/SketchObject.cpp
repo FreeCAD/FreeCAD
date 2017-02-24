@@ -3839,12 +3839,12 @@ bool SketchObject::convertToNURBS(int GeoId)
 bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
-        return -1;
+        return false;
 
     const Part::Geometry *geo = getGeometry(GeoId);
 
-    if(geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
-        return -1;
+    if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+        return false;
 
     const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
 
@@ -3868,13 +3868,12 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
     std::vector< Part::Geometry * > newVals(vals);
 
     newVals[GeoId] = bspline;
-    
+
     Geometry.setValues(newVals);
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
-    
+
     return true;
-    
 }
 
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
