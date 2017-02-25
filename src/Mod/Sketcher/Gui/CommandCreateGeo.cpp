@@ -4599,6 +4599,12 @@ public:
                 
                 Gui::Command::doCommand(Gui::Command::Doc, cstream.str().c_str());
                 
+                // for showing the knots on creation
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
+                                        sketchgui->getObject()->getNameInDocument(),
+                                        currentgeoid);
+                
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
