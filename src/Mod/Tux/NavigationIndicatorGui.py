@@ -321,11 +321,9 @@ def onCompact():
     """Enable or disable compact mode."""
     if aCompact.isChecked():
         indicator.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-        indicator.setStyleSheet("QToolButton::menu-indicator {image: none}")
         p.SetBool("Compact", 1)
     else:
         indicator.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
-        indicator.setStyleSheet("QToolButton::menu-indicator {}")
         p.SetBool("Compact", 0)
 
 
