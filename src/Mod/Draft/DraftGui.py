@@ -610,6 +610,15 @@ class DraftToolBar:
         self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',width=22)
         self.autoGroupButton = self._pushbutton("autoGroup",self.bottomtray,icon="Draft_AutoGroup_off",hide=False,width=120)
         self.autoGroupButton.setText("None")
+        
+        self.wplabel.setToolTip(translate("draft", "Current working plane:")+self.wplabel.text())
+        self.constrButton.setToolTip(translate("draft", "Toggle construction mode"))
+        self.colorButton.setToolTip(translate("draft", "Curreont line color"))
+        self.facecolorButton.setToolTip(translate("draft", "Current face color"))
+        self.widthButton.setToolTip(translate("draft", "Current line width"))
+        self.fontsizeButton.setToolTip(translate("draft", "Current font size"))
+        self.applyButton.setToolTip(translate("draft", "Apply to selected objects"))
+        self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
 
         QtCore.QObject.connect(self.wplabel,QtCore.SIGNAL("pressed()"),self.selectplane)
         QtCore.QObject.connect(self.colorButton,QtCore.SIGNAL("pressed()"),self.getcol)
@@ -1750,6 +1759,7 @@ class DraftToolBar:
             self.autogroup = None
             self.autoGroupButton.setText("None")
             self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg'))
+            self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
             self.autoGroupButton.setDown(False)
         else:
             obj = FreeCAD.ActiveDocument.getObject(value)
@@ -1757,11 +1767,13 @@ class DraftToolBar:
                 self.autogroup = value
                 self.autoGroupButton.setText(obj.Label)
                 self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_on.svg'))
+                self.autoGroupButton.setToolTip(translate("draft", "Autogroup: ")+obj.Label)
                 self.autoGroupButton.setDown(False)
             else:
                 self.autogroup = None
                 self.autoGroupButton.setText("None")
                 self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg'))
+                self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
                 self.autoGroupButton.setDown(False)
 
     def show(self):
