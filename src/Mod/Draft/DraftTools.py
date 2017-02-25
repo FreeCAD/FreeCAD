@@ -344,6 +344,11 @@ class SelectPlane(DraftTool):
                     self.display(plane.axis)
                     self.finish()
                     return
+                elif Draft.getType(sel.Object) == "WorkingPlaneProxy":
+                    plane.setFromPlacement(sel.Object.Placement,rebase=True)
+                    self.display(plane.axis)
+                    self.finish()
+                    return
                 elif sel.HasSubObjects:
                     if len(sel.SubElementNames) == 1:
                         if "Face" in sel.SubElementNames[0]:
@@ -432,10 +437,10 @@ class SelectPlane(DraftTool):
         else: suffix = ''
         if type(arg).__name__  == 'str':
             self.ui.wplabel.setText(arg+suffix)
-            self.ui.wplabel.setToolTip(translate("draft", "Current working plane:")+arg+suffix)
         elif type(arg).__name__ == 'Vector':
             plv = 'd('+str(arg.x)+','+str(arg.y)+','+str(arg.z)+')'
             self.ui.wplabel.setText(plv+suffix)
+        self.ui.wplabel.setToolTip(translate("draft", "Current working plane:")+self.ui.wplabel.text())
         FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid()")
 
 #---------------------------------------------------------------------------
@@ -5056,6 +5061,28 @@ class SetAutoGroup():
                 self.ui.setAutoGroup(self.groups[i])
 
 
+class SetWorkingPlaneProxy():
+    "The SetWorkingPlaneProxy FreeCAD command definition"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_SelectPlane',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy", "Create WP Proxy"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy", "Creates a proxy object from the current working plane")}
+
+    def IsActive(self):
+        if FreeCADGui.ActiveDocument:
+            return True
+        else:
+            return False
+
+    def Activated(self):
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            FreeCAD.ActiveDocument.openTransaction("Create WP proxy")
+            FreeCADGui.addModule("Draft")
+            FreeCADGui.doCommand("Draft.makeWorkingPlaneProxy(FreeCAD.DraftWorkingPlane.getPlacement())")
+            FreeCAD.ActiveDocument.recompute()
+            FreeCAD.ActiveDocument.commitTransaction()
+
 #---------------------------------------------------------------------------
 # Snap tools
 #---------------------------------------------------------------------------
@@ -5298,6 +5325,7 @@ FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
 FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
 FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
 FreeCADGui.addCommand('Draft_AutoGroup',SetAutoGroup())
+FreeCADGui.addCommand('Draft_SetWorkingPlaneProxy',SetWorkingPlaneProxy())
 
 # snap commands
 FreeCADGui.addCommand('Draft_Snap_Lock',Draft_Snap_Lock())
