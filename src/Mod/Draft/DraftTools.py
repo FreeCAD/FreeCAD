@@ -432,6 +432,7 @@ class SelectPlane(DraftTool):
         else: suffix = ''
         if type(arg).__name__  == 'str':
             self.ui.wplabel.setText(arg+suffix)
+            self.ui.wplabel.setToolTip(translate("draft", "Current working plane:")+arg+suffix)
         elif type(arg).__name__ == 'Vector':
             plv = 'd('+str(arg.x)+','+str(arg.y)+','+str(arg.z)+')'
             self.ui.wplabel.setText(plv+suffix)
