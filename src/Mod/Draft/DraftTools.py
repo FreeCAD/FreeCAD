@@ -378,6 +378,22 @@ class SelectPlane(DraftTool):
                             self.finish()
                     except:
                         pass
+                        
+    def getCenterPoint(self,x,y,z):
+        if not self.ui.isCenterPlane:
+            return "0,0,0"
+        v = FreeCAD.Vector(x,y,z)
+        cam1 = FreeCAD.Vector(FreeCADGui.ActiveDocument.ActiveView.getCameraNode().position.getValue().getValue())
+        cam2 = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
+        vcam1 = DraftVecUtils.project(cam1,v)
+        a = vcam1.getAngle(cam2)
+        if a < 0.0001:
+            return "0,0,0"
+        d = vcam1.Length
+        L = d/math.cos(a)
+        vcam2 = DraftVecUtils.scaleTo(cam2,L)
+        cp = cam1.add(vcam2)
+        return str(cp.x)+","+str(cp.y)+","+str(cp.z)
 
     def selectHandler(self, arg):
         try:
@@ -385,20 +401,20 @@ class SelectPlane(DraftTool):
         except:
             self.offset = 0
         if arg == "XY":
-            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), "+str(self.offset)+")")
+            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector("+self.getCenterPoint(0,0,1)+"), FreeCAD.Vector(0,0,1), "+str(self.offset)+")")
             self.display('Top')
             self.finish()
         elif arg == "XZ":
-            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,-1,0), "+str(self.offset)+")")
+            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector("+self.getCenterPoint(0,-1,0)+"), FreeCAD.Vector(0,-1,0), "+str(self.offset)+")")
             self.display('Front')
             self.finish()
         elif arg == "YZ":
-            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector(0,0,0), FreeCAD.Vector(1,0,0), "+str(self.offset)+")")
+            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector("+self.getCenterPoint(1,0,0)+"), FreeCAD.Vector(1,0,0), "+str(self.offset)+")")
             self.display('Side')
             self.finish()
         elif arg == "currentView":
             d = self.view.getViewDirection().negative()
-            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector(0,0,0), FreeCAD.Vector("+str(d.x)+","+str(d.y)+","+str(d.z)+"), "+str(self.offset)+")")
+            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector("+self.getCenterPoint(d.x,d.y,d.z)+"), FreeCAD.Vector("+str(d.x)+","+str(d.y)+","+str(d.z)+"), "+str(self.offset)+")")
             self.display(d)
             self.finish()
         elif arg == "reset":
@@ -2810,9 +2826,11 @@ class Stretch(Modifier):
             # first point of displacement line
             msg(translate("draft", "Pick end point of displacement:\n"))
             self.displacement = point
+            #print "first point:",point
             self.node = [point]
             self.step = 4
         elif self.step == 4:
+            #print "second point:",point
             self.displacement = point.sub(self.displacement)
             self.doStretch()
         if self.point:
@@ -2836,16 +2854,17 @@ class Stretch(Modifier):
         commitops = []
         if self.displacement:
             if self.displacement.Length > 0:
-
+                #print "displacement: ",self.displacement
                 for ops in self.ops:
                     tp = Draft.getType(ops[0])
+                    localdisp = ops[0].Placement.Rotation.inverted().multVec(self.displacement)
                     if tp in ["Wire","BSpline","BezCurve"]:
                         pts = []
                         for i in range(len(ops[1])):
                             if ops[1][i] == False:
                                 pts.append(ops[0].Points[i])
                             else:
-                                pts.append(ops[0].Points[i].add(self.displacement))
+                                pts.append(ops[0].Points[i].add(localdisp))
                         pts = str(pts).replace("Vector","FreeCAD.Vector")
                         commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Points="+pts)
                     elif tp in ["Rectangle"]:
@@ -4254,8 +4273,8 @@ class AddToGroup():
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_AddToGroup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AddToGroup", "Add to group..."),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddToGroup", "Adds the selected object(s) to an existing group")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AddToGroup", "Move to group..."),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddToGroup", "Moves the selected object(s) to an existing group")}
 
     def IsActive(self):
         if FreeCADGui.Selection.getSelection():

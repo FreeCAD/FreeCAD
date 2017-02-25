@@ -257,6 +257,7 @@ class DraftToolBar:
         self.z = 0
         self.uiloader = FreeCADGui.UiLoader()
         self.autogroup = None
+        self.isCenterPlane = False
         
         if self.taskmode:
             # add only a dummy widget, since widgets are created on demand
@@ -491,6 +492,7 @@ class DraftToolBar:
         self.layout.addLayout(ml)
         self.mainlineLabel = self._label("mainlineLabel", ml)
         self.mainlineValue = self._spinbox("mainlineValue", ml)
+        self.centerPlane = self._checkbox("centerPlane",self.layout,checked = self.isCenterPlane)
 
         # spacer
         if not self.taskmode:
@@ -560,6 +562,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.FFileValue,QtCore.SIGNAL("returnPressed()"),self.validateFile)
         QtCore.QObject.connect(self.gridValue,QtCore.SIGNAL("textEdited(QString)"),self.setGridSize)
         QtCore.QObject.connect(self.mainlineValue,QtCore.SIGNAL("valueChanged(int)"),self.setMainline)
+        QtCore.QObject.connect(self.centerPlane,QtCore.SIGNAL("stateChanged(int)"),self.setCenterPlane) 
         
         # following lines can cause a crash and are not needed anymore when using the task panel
         # http://forum.freecadweb.org/viewtopic.php?f=3&t=6952
@@ -703,6 +706,7 @@ class DraftToolBar:
         self.gridValue.setToolTip(translate("draft", "The spacing between the grid lines"))
         self.mainlineLabel.setText(translate("draft", "Main line every"))
         self.mainlineValue.setToolTip(translate("draft", "The number of lines between main lines"))
+        self.centerPlane.setText(translate("draft", "Center plane on view"))
         
         # Update the maximum width of the push buttons
         maxwidth = 66 # that's the default
@@ -791,6 +795,7 @@ class DraftToolBar:
         self.mainlineValue.show()
         p = Draft.getParam("gridEvery",10)
         self.mainlineValue.setValue(p)
+        self.centerPlane.show()
         
     def extraLineUi(self):
         '''shows length and angle controls'''
@@ -938,6 +943,7 @@ class DraftToolBar:
             self.gridValue.hide()
             self.mainlineLabel.hide()
             self.mainlineValue.hide()
+            self.centerPlane.hide()
             
     def trimUi(self,title=translate("draft","Trim")):
         self.taskUi(title)
@@ -1160,6 +1166,9 @@ class DraftToolBar:
             Draft.setParam("gridEvery",val)
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.setGrid()
+                
+    def setCenterPlane(self,val):
+        self.isCenterPlane = bool(val)
 
 #---------------------------------------------------------------------------
 # Processing functions
