@@ -174,6 +174,7 @@ class _ArchMaterialTaskPanel:
     '''The editmode TaskPanel for MechanicalMaterial objects'''
     def __init__(self,obj=None):
         self.cards = None
+        self.existingmaterials = []
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchMaterial.ui")
         self.color = QtGui.QColor(128,128,128)
@@ -181,10 +182,12 @@ class _ArchMaterialTaskPanel:
         colorPix.fill(self.color)
         self.form.ButtonColor.setIcon(QtGui.QIcon(colorPix))
         QtCore.QObject.connect(self.form.comboBox_MaterialsInDir, QtCore.SIGNAL("currentIndexChanged(QString)"), self.chooseMat)
+        QtCore.QObject.connect(self.form.comboBox_FromExisting, QtCore.SIGNAL("currentIndexChanged(int)"), self.fromExisting)
         QtCore.QObject.connect(self.form.ButtonColor,QtCore.SIGNAL("pressed()"),self.getColor)
         QtCore.QObject.connect(self.form.ButtonUrl,QtCore.SIGNAL("pressed()"),self.openUrl)
         QtCore.QObject.connect(self.form.ButtonEditor,QtCore.SIGNAL("pressed()"),self.openEditor)
         self.fillMaterialCombo()
+        self.fillExistingCombo()
         if self.obj:
             if hasattr(self.obj,"Material"):
                 self.material = self.obj.Material
@@ -234,6 +237,15 @@ class _ArchMaterialTaskPanel:
             import importFCMat
             self.material = importFCMat.read(self.cards[card])
             self.setFields()
+            
+    def fromExisting(self,index):
+        "sets the contents from an existing material"
+        if index > 0:
+            if index <= len(self.existingmaterials):
+                m = self.existingmaterials[index-1]
+                if m.Material:
+                    self.material = m.Material
+                    self.setFields()
 
     def getColor(self):
         "opens a color picker dialog"
@@ -259,6 +271,17 @@ class _ArchMaterialTaskPanel:
         if self.cards:
             for k in sorted(self.cards.keys()):
                 self.form.comboBox_MaterialsInDir.addItem(k)
+                
+    def fillExistingCombo(self):
+        "fills the existing materials combo"
+        self.existingmaterials = []
+        for obj in FreeCAD.ActiveDocument.Objects:
+            if obj.isDerivedFrom("App::MaterialObject"):
+                if obj != self.obj:
+                    self.existingmaterials.append(obj)
+        for m in self.existingmaterials:
+            self.form.comboBox_FromExisting.addItem(m.Label)
+        
 
     def openEditor(self):
         "opens the full material editor from the material module"
