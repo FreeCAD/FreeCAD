@@ -286,6 +286,7 @@ inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline){
     bspline << "Sketcher_BSplineDegree"
         << "Sketcher_BSplinePolygon"
         << "Sketcher_BSplineComb"
+        << "Sketcher_BSplineKnotMultiplicity"
         << "Sketcher_BSplineConvertToNURB"
         << "Sketcher_BSplineIncreaseDegree";
 }
