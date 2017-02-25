@@ -733,16 +733,6 @@ class DraftToolBar:
         maxwidth = maxwidth + 16 +10 # add icon width and a margin
         for i in pb:
             i.setMaximumWidth(maxwidth)
-        
-        if (not self.taskmode) or self.tray:
-            self.wplabel.setToolTip(translate("draft", "Set/unset a working plane"))
-            self.colorButton.setToolTip(translate("draft", "Line Color"))
-            self.facecolorButton.setToolTip(translate("draft", "Face Color"))
-            self.widthButton.setToolTip(translate("draft", "Line Width"))
-            self.fontsizeButton.setToolTip(translate("draft", "Font Size"))
-            self.applyButton.setToolTip(translate("draft", "Apply to selected objects"))
-            self.constrButton.setToolTip(translate("draft", "Toggles Construction Mode"))
-            self.autoGroupButton.setToolTip(translate("draft", "Sets/unsets auto-grouping"))
 
 #---------------------------------------------------------------------------
 # Interface modes

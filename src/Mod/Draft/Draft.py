@@ -3561,6 +3561,16 @@ def downgrade(objects,delete=False,force=None):
     return [addList,deleteList]
 
 
+def makeWorkingPlaneProxy(placement):
+    "creates a Working Plane proxy object in the current document"
+    if FreeCAD.ActiveDocument:
+        obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","WPProxy")
+        WorkingPlaneProxy(obj)
+        if FreeCAD.GuiUp:
+            ViewProviderWorkingPlaneProxy(obj.ViewObject)
+        obj.Placement = placement
+
+
 #---------------------------------------------------------------------------
 # Python Features definitions
 #---------------------------------------------------------------------------
@@ -6046,5 +6056,175 @@ class _ViewProviderVisGroup:
                                     # touch the page if something was changed
                                     if vobj.Object.InList[0].isDerivedFrom("Drawing::FeaturePage"):
                                         vobj.Object.InList[0].touch()
+
+
+class WorkingPlaneProxy:
+    
+    "The Draft working plane proxy object"
+    
+    def __init__(self,obj):
+        obj.Proxy = self
+        obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
+        obj.addProperty("Part::PropertyPartShape","Shape","Base","")
+        self.Type = "WorkingPlaneProxy"
+
+    def execute(self,obj):
+        import Part
+        l = 1
+        if obj.ViewObject:
+            if hasattr(obj.ViewObject,"DisplaySize"):
+                l = obj.ViewObject.DisplaySize.Value
+        p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
+        # make sure the normal direction is pointing outwards, you never know what OCC will decide...
+        if p.normalAt(0,0).getAngle(obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))) > 1:
+            p.reverse()
+        p.Placement = obj.Placement
+        obj.Shape = p
+
+    def onChanged(self,obj,prop):
+        pass
+
+    def getNormal(self,obj):
+        return obj.Shape.Faces[0].normalAt(0,0)
+
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
+
+
+class ViewProviderWorkingPlaneProxy:
+
+    "A View Provider for working plane proxies"
+
+    def __init__(self,vobj):
+        vobj.addProperty("App::PropertyLength","DisplaySize","Arch",QT_TRANSLATE_NOOP("App::Property","The display length of this section plane"))
+        vobj.addProperty("App::PropertyLength","ArrowSize","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the arrows of this section plane"))
+        vobj.addProperty("App::PropertyPercent","Transparency","Base","")
+        vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
+        vobj.addProperty("App::PropertyColor","LineColor","Base","")
+        vobj.DisplaySize = 100
+        vobj.ArrowSize = 5
+        vobj.Transparency = 70
+        vobj.LineWidth = 1
+        vobj.LineColor = (0.0,0.25,0.25,1.0)
+        vobj.Proxy = self
+        self.Object = vobj.Object
+
+    def getIcon(self):
+        import Draft_rc
+        return ":/icons/Draft_SelectPlane.svg"
+
+    def claimChildren(self):
+        return []
+
+    def attach(self,vobj):
+        from pivy import coin
+        self.clip = None
+        self.mat1 = coin.SoMaterial()
+        self.mat2 = coin.SoMaterial()
+        self.fcoords = coin.SoCoordinate3()
+        fs = coin.SoIndexedFaceSet()
+        fs.coordIndex.setValues(0,7,[0,1,2,-1,0,2,3])
+        self.drawstyle = coin.SoDrawStyle()
+        self.drawstyle.style = coin.SoDrawStyle.LINES
+        self.lcoords = coin.SoCoordinate3()
+        ls = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
+        ls.coordIndex.setValues(0,28,[0,1,-1,2,3,4,5,-1,6,7,-1,8,9,10,11,-1,12,13,-1,14,15,16,17,-1,18,19,20,21])
+        sep = coin.SoSeparator()
+        psep = coin.SoSeparator()
+        fsep = coin.SoSeparator()
+        fsep.addChild(self.mat2)
+        fsep.addChild(self.fcoords)
+        fsep.addChild(fs)
+        psep.addChild(self.mat1)
+        psep.addChild(self.drawstyle)
+        psep.addChild(self.lcoords)
+        psep.addChild(ls)
+        sep.addChild(fsep)
+        sep.addChild(psep)
+        vobj.addDisplayMode(sep,"Default")
+        self.onChanged(vobj,"DisplaySize")
+        self.onChanged(vobj,"LineColor")
+        self.onChanged(vobj,"Transparency")
+
+    def getDisplayModes(self,vobj):
+        return ["Default"]
+
+    def getDefaultDisplayMode(self):
+        return "Default"
+
+    def setDisplayMode(self,mode):
+        return mode
+
+    def updateData(self,obj,prop):
+        if prop in ["Placement"]:
+            self.onChanged(obj.ViewObject,"DisplaySize")
+        return
+
+    def onChanged(self,vobj,prop):
+        if prop == "LineColor":
+            l = vobj.LineColor
+            self.mat1.diffuseColor.setValue([l[0],l[1],l[2]])
+            self.mat2.diffuseColor.setValue([l[0],l[1],l[2]])
+        elif prop == "Transparency":
+            if hasattr(vobj,"Transparency"):
+                self.mat2.transparency.setValue(vobj.Transparency/100.0)
+        elif prop in ["DisplaySize","ArrowSize"]:
+            if hasattr(vobj,"DisplaySize"):
+                l = vobj.DisplaySize.Value/2
+            else:
+                l = 1
+            verts = []
+            fverts = []
+            l1 = 0.1
+            if hasattr(vobj,"ArrowSize"):
+                l1 = vobj.ArrowSize.Value if vobj.ArrowSize.Value > 0 else 0.1
+            l2 = l1/3
+            pl = FreeCAD.Placement(vobj.Object.Placement)
+            fverts.append(pl.multVec(Vector(-l,-l,0)))
+            fverts.append(pl.multVec(Vector(l,-l,0)))
+            fverts.append(pl.multVec(Vector(l,l,0)))
+            fverts.append(pl.multVec(Vector(-l,l,0)))
+
+            verts.append(pl.multVec(Vector(0,0,0)))
+            verts.append(pl.multVec(Vector(l-l1,0,0)))
+            verts.append(pl.multVec(Vector(l-l1,l2,0)))
+            verts.append(pl.multVec(Vector(l,0,0)))
+            verts.append(pl.multVec(Vector(l-l1,-l2,0)))
+            verts.append(pl.multVec(Vector(l-l1,l2,0)))
+
+            verts.append(pl.multVec(Vector(0,0,0)))
+            verts.append(pl.multVec(Vector(0,l-l1,0)))
+            verts.append(pl.multVec(Vector(-l2,l-l1,0)))
+            verts.append(pl.multVec(Vector(0,l,0)))
+            verts.append(pl.multVec(Vector(l2,l-l1,0)))
+            verts.append(pl.multVec(Vector(-l2,l-l1,0)))
+
+            verts.append(pl.multVec(Vector(0,0,0)))
+            verts.append(pl.multVec(Vector(0,0,l-l1)))
+            verts.append(pl.multVec(Vector(-l2,0,l-l1)))
+            verts.append(pl.multVec(Vector(0,0,l)))
+            verts.append(pl.multVec(Vector(l2,0,l-l1)))
+            verts.append(pl.multVec(Vector(-l2,0,l-l1)))
+            verts.append(pl.multVec(Vector(0,-l2,l-l1)))
+            verts.append(pl.multVec(Vector(0,0,l)))
+            verts.append(pl.multVec(Vector(0,l2,l-l1)))
+            verts.append(pl.multVec(Vector(0,-l2,l-l1)))
+
+            self.lcoords.point.setValues(verts)
+            self.fcoords.point.setValues(fverts)
+        elif prop == "LineWidth":
+            self.drawstyle.lineWidth = vobj.LineWidth
+        return
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+
 
 # @}
