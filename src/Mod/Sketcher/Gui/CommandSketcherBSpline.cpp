@@ -199,6 +199,40 @@ bool CmdSketcherBSplineComb::isActive(void)
     return isSketcherBSplineActive( getActiveGuiDocument(), false );
 }
 
+//
+DEF_STD_CMD_A(CmdSketcherBSplineKnotMultiplicity);
+
+CmdSketcherBSplineKnotMultiplicity::CmdSketcherBSplineKnotMultiplicity()
+:Command("Sketcher_BSplineKnotMultiplicity")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Show/Hide B-spline knot multiplicity");
+    sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the knot multiplicity for all B-splines");
+    sWhatsThis      = "Sketcher_BSplineKnotMultiplicity";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_BSplineKnotMultiplicity";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherBSplineKnotMultiplicity::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    
+    Gui::Document * doc= getActiveGuiDocument();
+    
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    
+    ShowRestoreInformationLayer(vp, "BSplineKnotMultiplicityVisible");
+    
+}
+
+bool CmdSketcherBSplineKnotMultiplicity::isActive(void)
+{
+    return isSketcherBSplineActive( getActiveGuiDocument(), false );
+}
+
 // Composite drop down menu for show/hide geometry information layer
 DEF_STD_CMD_ACLU(CmdSketcherCompBSplineShowHideGeometryInformation);
 
@@ -224,8 +258,10 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::activated(int iMsg)
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineDegree");
     else if (iMsg==1)
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplinePolygon");
-    else if (iMsg==2) 
+    else if (iMsg==2)
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineComb");
+    else if (iMsg==3)
+        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineKnotMultiplicity");
     else
         return;
     
@@ -252,7 +288,9 @@ Gui::Action * CmdSketcherCompBSplineShowHideGeometryInformation::createAction(vo
     c2->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplinePolygon"));
     QAction* c3 = pcAction->addAction(QString());
     c3->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplineComb"));
-    
+    QAction* c4 = pcAction->addAction(QString());
+    c4->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplineKnotMultiplicity"));
+
     _pcAction = pcAction;
     languageChange();
     
@@ -284,7 +322,10 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::languageChange()
     c3->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-spline curvature comb"));
     c3->setToolTip(QApplication::translate("Sketcher_BSplineComb","Switches between showing and hiding the curvature comb for all B-splines"));
     c3->setStatusTip(QApplication::translate("Sketcher_BSplineComb","Switches between showing and hiding the curvature comb for all B-splines"));
-
+    QAction* c4 = a[3];
+    c4->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-spline knot multiplicity"));
+    c4->setToolTip(QApplication::translate("Sketcher_BSplineKnotMultiplicity","Switches between showing and hiding the knot multiplicity for all B-splines"));
+    c4->setStatusTip(QApplication::translate("Sketcher_BSplineKnotMultiplicity","Switches between showing and hiding the knot multiplicity for all B-splines"));
 }
 
 void CmdSketcherCompBSplineShowHideGeometryInformation::updateAction(int /*mode*/)
@@ -447,7 +488,6 @@ bool CmdSketcherIncreaseDegree::isActive(void)
     return isSketcherBSplineActive( getActiveGuiDocument(), true );
 }
 
-
 void CreateSketcherCommandsBSpline(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -455,6 +495,7 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherBSplineDegree());
     rcCmdMgr.addCommand(new CmdSketcherBSplinePolygon());
     rcCmdMgr.addCommand(new CmdSketcherBSplineComb());
+    rcCmdMgr.addCommand(new CmdSketcherBSplineKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherCompBSplineShowHideGeometryInformation());
     rcCmdMgr.addCommand(new CmdSketcherConvertToNURB());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseDegree());
