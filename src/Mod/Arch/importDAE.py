@@ -125,13 +125,13 @@ def read(filename):
             if "}" in node.xmlnode.tag:
                 bt = node.xmlnode.tag.split("}")[0]+"}"
                 gnode = node.xmlnode.find(bt+"instance_geometry")
-                if gnode is not None:
+                if gnode != None:
                     bnode = gnode.find(bt+"bind_material")
-                    if bnode is not None:
+                    if bnode != None:
                         tnode = bnode.find(bt+"technique_common")
-                        if tnode is not None:
+                        if tnode != None:
                             mnode = tnode.find(bt+"instance_material")
-                            if mnode is not None:
+                            if mnode != None:
                                 if "target" in mnode.keys():
                                     mname = mnode.get("target").strip("#")
                                     for m in col.materials:
