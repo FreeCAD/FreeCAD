@@ -339,7 +339,10 @@ def change_libid(graph, node, bundle_path):
 
     if in_bundle(lib, bundle_path):
        logging.debug(" ~ id: " + node.name)
-       check_call([ "install_name_tool", "-id", node.name, lib ])
+       try:
+          check_call([ "install_name_tool", "-id", node.name, lib ])
+       except:
+          logging.warning("Failed to change bundle id {} in lib {}".format(node.name, lib))
 
 def print_child(graph, node, path):
     logging.debug("  >" + str(node))
@@ -363,7 +366,7 @@ def main():
 
     #change to level to logging.DEBUG for diagnostic messages
     logging.basicConfig(stream=sys.stdout, level=logging.INFO,
-                        format="-- %(message)s" )
+                        format="-- %(levelname)s: %(message)s" )
 
     logging.info("Analyzing bundle dependencies...")
     build_deps_graph(graph, bundle_path, dir_filter, search_paths)
