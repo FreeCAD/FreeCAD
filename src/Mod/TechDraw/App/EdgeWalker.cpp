@@ -594,7 +594,7 @@ std::vector<incidenceItem> embedItem::sortIncidenceList (std::vector<incidenceIt
 
 /*static*/bool incidenceItem::iiEqual(const incidenceItem& i1, const incidenceItem& i2)
 {
-    //TODO: this should compare edges also but eDesc comparision is by address
+    //TODO: this should compare edges also but eDesc comparison is by address
     bool result = false;
     if (i1.angle == i2.angle) {
     }

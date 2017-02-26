@@ -1,7 +1,7 @@
 # - Try to find Windows Installer XML
 # See http://wix.sourceforge.net
 #
-# The follwoing variables are optionally searched for defaults
+# The following variables are optionally searched for defaults
 #  WIX_ROOT_DIR:            Base directory of WIX2 tree to use.
 #
 # The following are set after configuration is done: 

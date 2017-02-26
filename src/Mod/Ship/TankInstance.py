@@ -157,7 +157,7 @@ class Tank:
         """Return the fluid volume center of gravity, provided the volume of
         fluid inside the tank.
 
-        The returned center of gravity is refered to the untransformed ship.
+        The returned center of gravity is referred to the untransformed ship.
 
         Keyword arguments:
         fp -- Part::FeaturePython object affected.

@@ -258,14 +258,14 @@
         </dc:contributor>
         <dc:subject>
           <rdf:Bag>
-            <rdf:li>perpindicular</rdf:li>
+            <rdf:li>perpendicular</rdf:li>
             <rdf:li>point</rdf:li>
             <rdf:li>line</rdf:li>
             <rdf:li>dot</rdf:li>
             <rdf:li>circle</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>The perpindicular symbol above and to the left of a dot at the midpoint of a line</dc:description>
+        <dc:description>The perpendicular symbol above and to the left of a dot at the midpoint of a line</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>

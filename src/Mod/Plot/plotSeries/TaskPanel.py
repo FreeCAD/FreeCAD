@@ -291,7 +291,7 @@ class TaskPanel:
             self.skip = False
 
     def onColor(self):
-        """ Executed when color pallete is requested. """
+        """ Executed when color palette is requested. """
         plt = Plot.getPlot()
         if not plt:
             self.updateUI()

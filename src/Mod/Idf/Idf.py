@@ -383,7 +383,7 @@ def place_steps(doc,placement,board_thickness):
             model_file.writelines(str(place_item[0])+" "+str(place_item[2])+"\n")
             model_file.close() 
     
-def toQuaternion(heading, attitude,bank): # rotation heading=arround Y, attitude =arround Z,  bank attitude =arround X
+def toQuaternion(heading, attitude,bank): # rotation heading=around Y, attitude =around Z,  bank attitude =around X
     """toQuaternion(heading, attitude,bank)->FreeCAD.Base.Rotation(Quternion)"""
     c1 = cos(heading/2)
     s1 = sin(heading/2)

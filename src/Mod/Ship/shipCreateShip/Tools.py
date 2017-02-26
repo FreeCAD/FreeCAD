@@ -44,7 +44,7 @@ def createShip(solids, L, B, T):
 
     solids = Gui.ActiveDocument.ActiveObject.Object.Shape.Solids
 
-    Regarding the Lenght, Breadth, and Draft, it is strongly recommended to use
+    Regarding the Length, Breadth, and Draft, it is strongly recommended to use
     Units.parseQuantity method, e.g. The following obfuscated code snippet build
     such variables:
 

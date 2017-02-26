@@ -83,7 +83,7 @@
     ((double,clipper_clean_distance,CleanDistance,0.0,\
         "Clean polygon smaller than this distance. See https://goo.gl/jox3JY"))\
     ((double,accuracy,Accuracy,0.01,"Arc fitting accuracy"))\
-    ((double,units,Unit,1.0,"Scaling factor for convertion to inch"))\
+    ((double,units,Unit,1.0,"Scaling factor for conversion to inch"))\
     ((short,min_arc_points,MinArcPoints,4,"Minimum segments for arc discretization"))\
     ((short,max_arc_points,MaxArcPoints,100,"Maximum segments for arc discretization"))\
     ((double,clipper_scale,ClipperScale,10000.0,\
@@ -123,7 +123,7 @@
         "'Absolute' means the absolute Z height to start section.\n"\
         "'BoundBox' means relative Z height to the bounding box of all the children shape. Only\n"\
         "positive value is allowed, which specifies the offset below the top Z of the bounding box.\n"\
-        "Note that OCC has trouble getting the minimumi bounding box of some solids, particually\n"\
+        "Note that OCC has trouble getting the minimumi bounding box of some solids, particularly\n"\
         "those with non-planar surface.\n"\
         "'Workplane' means relative to workplane.",\
         (Absolute)(BoundBox)(Workplane)))
