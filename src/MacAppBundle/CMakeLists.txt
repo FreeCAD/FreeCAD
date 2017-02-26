@@ -47,7 +47,7 @@ if(BUILD_QT5)
 		 )
   string(STRIP ${XCODE_PATH} XCODE_PATH)
 
-  set(XCTEST_PATH "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework/Versions/A")
+  set(XCTEST_PATH "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework/Versions/Current")
 endif(BUILD_QT5)
 
 install(DIRECTORY ${QT_PLUGINS_DIR}/ DESTINATION ${CMAKE_INSTALL_LIBDIR}/qtplugins )

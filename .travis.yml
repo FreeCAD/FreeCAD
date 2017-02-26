@@ -20,27 +20,32 @@ env:
     - DEPLOY_RELEASE=${DEPLOY_RELEASE:-$FREECAD_RELEASE}
     - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
     - OSX_PORTS_CACHE=${OSX_PORTS_CACHE:-FreeCAD/FreeCAD-ports-cache}
-  matrix:
-    - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
 
 cache:
     ccache: true
 
 language: cpp
 python: 2.7
-os: linux
-dist: trusty
-sudo: required
-compiler:
-    - clang
-    - gcc
 
 # Inject osx build into matrix - needed to specify image/dist
 matrix:
     include:
+      - os: linux
+        dist: trusty
+        compiler: clang
+        env: CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
+      - os: linux
+        dist: trusty
+        compiler: gcc
+        env: CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
       - os: osx
         osx_image: xcode6.4
         compiler: clang
+        env: CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt5
+      - os: osx
+        osx_image: xcode6.4
+        compiler: clang
+        env: CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt4
 
 git:
   depth: 5000
@@ -131,9 +136,38 @@ before_install:
        brew update >/dev/null
        brew --config
 
-       brew tap FreeCAD/freecad
-       brew install --verbose --only-dependencies freecad --with-freecad-bottles --with-packaging-utils
-       brew install --verbose --only-dependencies freecad --with-freecad-bottles --with-packaging-utils #Ensure all dependencies are satisfied
+       if [ "${QT}" == "Qt4" ]; then
+          brew tap FreeCAD/freecad
+          brew tap cartr/qt4
+
+          brew install --verbose --only-dependencies freecad --with-packaging-utils
+          brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
+
+       elif [ "${QT}" == "Qt5" ]; then
+          # >>> Qt5 Build Testing - THIS ASSUMES A PORTS-CACHE IS INSTALLED WIHT QT4<<<
+          # Qt5: Replace Qt4 with Qt5
+          brew uninstall --ignore-dependencies cartr/qt4/shiboken cartr/qt4/pyside cartr/qt4/pyside-tools cartr/qt4/qt FreeCAD/freecad/coin
+          brew untap cartr/qt4
+
+          # Qt5: Configure homebrew to build using Qt dependencies formulae on FreeCAD/homebrew-freecad Qt5 branch
+          brew tap-info FreeCAD/freecad && brew untap FreeCAD/freecad
+          brew tap --full FreeCAD/freecad
+          pushd $(brew --prefix)/HomeBrew/Library/Taps/freecad/homebrew-freecad
+          git checkout -b qt56 origin/qt56
+          popd
+          export HOMEBREW_DEVELOPER="1"
+
+          brew install --verbose --only-dependencies freecad --with-packaging-utils
+          brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
+
+          # Qt5: Update and patch the Qt 5 symlinks
+          brew link --force qt@5.6
+          sudo ln -f -s /usr/local/Cellar/qt\@5.*/*/mkspecs /usr/local/mkspecs
+          sudo ln -f -s /usr/local/Cellar/qt\@5.*/*/plugins /usr/local/plugins
+
+          # Qt5:  Set Qt5 build flag
+          export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON"
+       fi
 
        #Install the 3DConnexion frameworks
        if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
@@ -143,7 +177,7 @@ before_install:
           diskutil eject /Volumes/3Dconnexion\ Software
        fi
 
-       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON -DFREECAD_USE_EXTERNAL_PIVY=ON -DFREECAD_CREATE_MAC_APP=ON"
+       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON -DFREECAD_CREATE_MAC_APP=ON"
        export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/MacOS/FreeCAD"
        ;;
 
@@ -182,9 +216,9 @@ after_success:
      brew ls --versions jq || brew install jq
      npm install -g appdmg
      export VSN=$(python ${TRAVIS_BUILD_DIR}/src/Tools/ArchiveNameFromVersionHeader.py ${TRAVIS_BUILD_DIR}/build/src/Build/Version.h)
-     export DEPLOYMENT_ARCHIVE=${VSN}.dmg
+     export DEPLOYMENT_ARCHIVE=${VSN}-${QT}.dmg
      appdmg ${TRAVIS_BUILD_DIR}/src/MacAppBundle/DiskImage/layout.json "${DEPLOYMENT_ARCHIVE}"
      deployContext=$(create_helper_context repo=${TRAVIS_REPO_SLUG} auth_token=${GH_TOKEN} release=${DEPLOY_RELEASE})
      gitHub_deploy_asset_to_release_named $deployContext ${DEPLOYMENT_ARCHIVE}
-     gitHub_prune_assets_for_release_named $deployContext "-OSX-" 1
+     gitHub_prune_assets_for_release_named $deployContext "-${QT}" 1
   fi
