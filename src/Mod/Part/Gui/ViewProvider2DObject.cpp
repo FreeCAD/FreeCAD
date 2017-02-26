@@ -143,7 +143,6 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
 
     // gridlines
     mycolor = new SoBaseColor;
-
     mycolor->rgb.setValue(0.7f, 0.7f ,0.7f);
     parent->addChild(mycolor);
 
@@ -189,19 +188,17 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     SbVec3f* coords = vts->vertex.startEditing();
 
     // vertical lines
-    float vx = MiX;
+    int i_offset_x = static_cast<int>(MiX / Step);
     for (int i=0; i<vlines; i++) {
-        coords[2*i].setValue(vx, MiY, zGrid);
-        coords[2*i+1].setValue(vx, MaY, zGrid);
-        vx += Step;
+        coords[2*i].setValue((i+i_offset_x)*Step, MiY, zGrid);
+        coords[2*i+1].setValue((i+i_offset_x)*Step, MaY, zGrid);
     }
 
     // horizontal lines
-    float vy = MiY;
+    int i_offset_y = static_cast<int>(MiY / Step);
     for (int i=vlines; i<lines; i++) {
-        coords[2*i].setValue(MiX, vy, zGrid);
-        coords[2*i+1].setValue(MaX, vy, zGrid);
-        vy += Step;
+        coords[2*i].setValue(MiX, (i-vlines+i_offset_y)*Step, zGrid);
+        coords[2*i+1].setValue(MaX, (i-vlines+i_offset_y)*Step, zGrid);
     }
     vts->vertex.finishEditing();
 
