@@ -77,116 +77,111 @@ def export(objectslist, filename):
 # Helper
 
 def get_FemMeshObjectDimension(fem_mesh_obj):
-	""" Count all entities in an abstract sense, to distinguish which dimension the mesh is
-		(i.e. linemesh, facemesh, volumemesh)
-	"""
-	probable_dim = 0
+    """ Count all entities in an abstract sense, to distinguish which dimension the mesh is
+        (i.e. linemesh, facemesh, volumemesh)
+    """
+    dim = None
 
-	#[eval("comp_mesh.FemMesh." + s + "Count") for s in ["Volume", "Face", "Edge", "Node"]]
+    if fem_mesh_obj.FemMesh.Nodes != ():
+        dim = 0
+    if fem_mesh_obj.FemMesh.Edges != ():
+        dim = 1
+    if fem_mesh_obj.FemMesh.Faces != ():
+        dim = 2
+    if fem_mesh_obj.FemMesh.Volumes != ():
+        dim = 3
 
-	there_are_volumes = (fem_mesh_obj.FemMesh.Volumes != ())
-	there_are_faces = (fem_mesh_obj.FemMesh.Faces != ())
-	there_are_edges = (fem_mesh_obj.FemMesh.Edges != ())
-	there_are_points = (fem_mesh_obj.FemMesh.Nodes != ())
-	if there_are_volumes:
-		probable_dim = 3
-	if there_are_faces and not there_are_volumes:
-		probable_dim = 2
-	if there_are_edges and not there_are_volumes and not there_are_faces:
-		probable_dim = 1
-	if there_are_points and not there_are_volumes and not there_are_faces and not there_are_edges:
-		probable_dim = 0
-	return probable_dim
+    return dim
 
 def get_FemMeshObjectElementTypes(fem_mesh_obj, remove_zero_element_entries=True):
-	"""
-		Spit out all elements in the mesh with their appropriate dimension.
-	"""
-	FreeCAD_element_names = ["Node", "Edge", "Hexa", "Polygon", "Polyhedron",
-			"Prism", "Pyramid", "Quadrangle", "Tetra", "Triangle"]
-	FreeCAD_element_dims = [0, 1, 3, 2, 3, 3, 3, 2, 3, 2]
+    """
+        Spit out all elements in the mesh with their appropriate dimension.
+    """
+    FreeCAD_element_names = ["Node", "Edge", "Hexa", "Polygon", "Polyhedron",
+            "Prism", "Pyramid", "Quadrangle", "Tetra", "Triangle"]
+    FreeCAD_element_dims = [0, 1, 3, 2, 3, 3, 3, 2, 3, 2]
 
-	elements_list_with_zero = [(eval("fem_mesh_obj.FemMesh." + s + "Count"), s, d) for (s, d) in zip(FreeCAD_element_names, FreeCAD_element_dims)]
-	# ugly but necessary
-	if remove_zero_element_entries:
-		elements_list = [(num, s, d) for (num, s, d) in elements_list_with_zero if num > 0]
-	else:
-		elements_list = elements_list_with_zero
+    elements_list_with_zero = [(eval("fem_mesh_obj.FemMesh." + s + "Count"), s, d) for (s, d) in zip(FreeCAD_element_names, FreeCAD_element_dims)]
+    # ugly but necessary
+    if remove_zero_element_entries:
+        elements_list = [(num, s, d) for (num, s, d) in elements_list_with_zero if num > 0]
+    else:
+        elements_list = elements_list_with_zero
 
 
-	return elements_list
+    return elements_list
 
 def get_MaxDimElementFromList(elem_list):
-	"""
-		Gets element with the maximal dimension in the mesh to determine cells.
-	"""
-	elem_list.sort(key = lambda (num, s, d): d)
-	return elem_list[-1]
+    """
+        Gets element with the maximal dimension in the mesh to determine cells.
+    """
+    elem_list.sort(key=lambda (num, s, d): d)
+    return elem_list[-1]
 
 def write_fenics_mesh(fem_mesh_obj, outputfile):
-	"""
-		For the export, we only have to use the highest dimensional entities and their
-		vertices to be exported. (For second order elements, we have to delete the mid element nodes.)
-	"""
-	# TODO: check for second order elements
-	# TODO: export mesh functions (to be defined, cell functions, vertex functions, facet functions)
+    """
+        For the export, we only have to use the highest dimensional entities and their
+        vertices to be exported. (For second order elements, we have to delete the mid element nodes.)
+    """
+    # TODO: check for second order elements
+    # TODO: export mesh functions (to be defined, cell functions, vertex functions, facet functions)
 
 
-	FreeCAD_to_Fenics_dict = {
-			"Triangle": "triangle",
-			"Tetra": "tetrahedron",
-			"Hexa": "hexahedron",
-			"Edge": "interval",
-			"Node": "point",
-			"Quadrangle": "quadrilateral",
+    FreeCAD_to_Fenics_dict = {
+            "Triangle": "triangle",
+            "Tetra": "tetrahedron",
+            "Hexa": "hexahedron",
+            "Edge": "interval",
+            "Node": "point",
+            "Quadrangle": "quadrilateral",
 
-			"Polygon": "unknown", "Polyhedron": "unknown",
-			"Prism": "unknown", "Pyramid": "unknown",
-			}
+            "Polygon": "unknown", "Polyhedron": "unknown",
+            "Prism": "unknown", "Pyramid": "unknown",
+            }
 
 
-	print("Converting " + fem_mesh_obj.Label + " to fenics XML File")
-	print("Dimension of mesh: %d" % (get_FemMeshObjectDimension(fem_mesh_obj),))
+    print("Converting " + fem_mesh_obj.Label + " to fenics XML File")
+    print("Dimension of mesh: %d" % (get_FemMeshObjectDimension(fem_mesh_obj),))
 
-	elements_in_mesh = get_FemMeshObjectElementTypes(fem_mesh_obj)
-	print("Elements appearing in mesh: %s" % (str(elements_in_mesh),))
-	celltype_in_mesh = get_MaxDimElementFromList(elements_in_mesh)
-	(num_cells, cellname_fc, dim_cell) = celltype_in_mesh
-	cellname_fenics = FreeCAD_to_Fenics_dict[cellname_fc]
-	print("Celltype in mesh -> %s and its Fenics name: %s" % (str(celltype_in_mesh),cellname_fenics))
+    elements_in_mesh = get_FemMeshObjectElementTypes(fem_mesh_obj)
+    print("Elements appearing in mesh: %s" % (str(elements_in_mesh),))
+    celltype_in_mesh = get_MaxDimElementFromList(elements_in_mesh)
+    (num_cells, cellname_fc, dim_cell) = celltype_in_mesh
+    cellname_fenics = FreeCAD_to_Fenics_dict[cellname_fc]
+    print("Celltype in mesh -> %s and its Fenics name: %s" % (str(celltype_in_mesh),cellname_fenics))
 
-	root = etree.Element("dolfin", dolfin="http://fenicsproject.org")
-	meshchild = etree.SubElement(root, "mesh", celltype=cellname_fenics, dim=str(dim_cell))
-	vertices = etree.SubElement(meshchild, "vertices", size=str(fem_mesh_obj.FemMesh.NodeCount))
+    root = etree.Element("dolfin", dolfin="http://fenicsproject.org")
+    meshchild = etree.SubElement(root, "mesh", celltype=cellname_fenics, dim=str(dim_cell))
+    vertices = etree.SubElement(meshchild, "vertices", size=str(fem_mesh_obj.FemMesh.NodeCount))
 
-	for (nodeind, fc_vec) in fem_mesh_obj.FemMesh.Nodes.iteritems(): # python2
-		etree.SubElement(vertices, "vertex", index=str(nodeind-1),
-				# FC starts from 1, fenics starts from 0 to size-1
-				x=str(fc_vec[0]), y=str(fc_vec[1]), z=str(fc_vec[2]))
+    for (nodeind, fc_vec) in fem_mesh_obj.FemMesh.Nodes.iteritems(): # python2
+        etree.SubElement(vertices, "vertex", index=str(nodeind-1),
+                # FC starts from 1, fenics starts from 0 to size-1
+                x=str(fc_vec[0]), y=str(fc_vec[1]), z=str(fc_vec[2]))
 
-	cells = etree.SubElement(meshchild, "cells", size=str(num_cells))
-	if dim_cell == 3:
-		fc_cells = fem_mesh_obj.FemMesh.Volumes
-	elif dim_cell == 2:
-		fc_cells = fem_mesh_obj.FemMesh.Faces
-	elif dim_cell == 1:
-		fc_cells = fem_mesh_obj.FemMesh.Edges
-	else:
-		fc_cells = ()
+    cells = etree.SubElement(meshchild, "cells", size=str(num_cells))
+    if dim_cell == 3:
+        fc_cells = fem_mesh_obj.FemMesh.Volumes
+    elif dim_cell == 2:
+        fc_cells = fem_mesh_obj.FemMesh.Faces
+    elif dim_cell == 1:
+        fc_cells = fem_mesh_obj.FemMesh.Edges
+    else:
+        fc_cells = ()
 
-	for (fen_ind, fc_volume_ind) in enumerate(fc_cells):
-		# FC starts after all other entities, fenics start from 0 to size-1
-		nodeindices = fem_mesh_obj.FemMesh.getElementNodes(fc_volume_ind)
+    for (fen_ind, fc_volume_ind) in enumerate(fc_cells):
+        # FC starts after all other entities, fenics start from 0 to size-1
+        nodeindices = fem_mesh_obj.FemMesh.getElementNodes(fc_volume_ind)
 
-		cell_args = {}
-		for (vi, ni) in enumerate(nodeindices):
-			cell_args["v" + str(vi)] = str(ni - 1)
-		# generate as many v entries in dict as nodes are listed in cell (works only for first order elements)
+        cell_args = {}
+        for (vi, ni) in enumerate(nodeindices):
+            cell_args["v" + str(vi)] = str(ni - 1)
+        # generate as many v entries in dict as nodes are listed in cell (works only for first order elements)
 
-		etree.SubElement(cells, cellname_fenics, index=str(fen_ind), **cell_args)
+        etree.SubElement(cells, cellname_fenics, index=str(fen_ind), **cell_args)
 
-	data = etree.SubElement(meshchild, "data")
+    etree.SubElement(meshchild, "data")
 
-	fp = pyopen(outputfile, "w")
-	fp.write(etree.tostring(root, pretty_print=True))
-	fp.close()
+    fp = pyopen(outputfile, "w")
+    fp.write(etree.tostring(root, pretty_print=True))
+    fp.close()
