@@ -220,7 +220,7 @@ def p_anymodifier(p):
     '''
     #just return the plain modifier for now
     #has to be changed when the modifiers are inplemented
-    #please note that disabled objects usualy are stript of the CSG ouput during compilation
+    #please note that disabled objects usually are stript of the CSG ouput during compilation
     p[0] = p[1]
 
 def p_statementwithmod(p):
@@ -1140,7 +1140,7 @@ def p_projection_action(p) :
     if printverbose: print('Projection')
     if p[3]['cut']=='true' :
         planedim=1e9 # large but finite
-        #inifinite planes look bad in the GUI
+        #infinite planes look bad in the GUI
         planename='xy_plane_used_for_project_cut'
         obj=doc.addObject('Part::MultiCommon','projection_cut')
         plane = doc.getObject(planename)

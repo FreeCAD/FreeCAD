@@ -171,7 +171,7 @@ DrawProjGroup::~DrawProjGroup()
 
 void DrawProjGroup::onChanged(const App::Property* prop)
 {
-    //TODO: For some reason, when the projection type is changed, the isometric views show change appropriately, but the orthographic ones dont... Or vice-versa.  WF: why would you change from 1st to 3rd in mid drawing?
+    //TODO: For some reason, when the projection type is changed, the isometric views show change appropriately, but the orthographic ones don't... Or vice-versa.  WF: why would you change from 1st to 3rd in mid drawing?
     //if group hasn't been added to page yet, can't scale or distribute projItems
     TechDraw::DrawPage *page = getPage();
     if (!isRestoring() && page) {
@@ -280,7 +280,7 @@ Base::BoundBox3d DrawProjGroup::getBoundingBox() const
             bb.ScaleX(1. / part->Scale.getValue());
             bb.ScaleY(1. / part->Scale.getValue());
 
-            // X and Y of dependant views are relative to the anchorView
+            // X and Y of dependent views are relative to the anchorView
             if (part != anchorView) {
                 bb.MoveX(part->X.getValue());
                 bb.MoveY(part->Y.getValue());

@@ -711,7 +711,7 @@ void Sheet::recomputeCell(CellAddress p)
         if (cell)
             cell->setException(e.what());
 
-        // Mark as erronous
+        // Mark as erroneous
         cellErrors.insert(p);
     }
 
@@ -800,7 +800,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
             while (i != VertexList.end()) {
                 Cell * cell = cells.getValue(i->first);
 
-                // Mark as erronous
+                // Mark as erroneous
                 cellErrors.insert(i->first);
 
                 if (cell)
@@ -1164,7 +1164,7 @@ std::string Sheet::getAddressFromAlias(const std::string &alias) const
 }
 
 /**
- * @brief Determine whether a given alias candiate is valid or not.
+ * @brief Determine whether a given alias candidate is valid or not.
  *
  * A candidate is valid is the string is syntactically correct,
  * and the alias does not conflict with an existing property.

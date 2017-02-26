@@ -189,7 +189,7 @@ SPINDLE_DECIMALS = 0
 # The header is divided into two parts, one is dynamic, the other is a static GCode header.
 # If the current selection and the current time should be included in the header,
 # it has to be generated at execution time, and thus it cannot be held in constant values.
-# The last linefeed should be ommitted, it is inserted automatically
+# The last linefeed should be omitted, it is inserted automatically
 # linenumbers are inserted automatically if LINENUMBERS is True
 # if you don't want to use this header you have to provide a minimal function
 # def mkHeader(selection):

@@ -736,7 +736,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertIn('Up-to-date',sketch.State)
 
     def testCrossDocumentLinks(self):
-        """ Expressions accross files are not saved (bug #2442) """
+        """ Expressions across files are not saved (bug #2442) """
 
         # Create a box
         box = self.doc.addObject('Part::Box', 'Box')
