@@ -154,10 +154,10 @@
             <dc:title>[agryson] Alexander Gryson</dc:title>
           </cc:Agent>
         </dc:contributor>
-        <dc:description>Perpindicular symbol</dc:description>
+        <dc:description>Perpendicular symbol</dc:description>
         <dc:subject>
           <rdf:Bag>
-            <rdf:li>perpindicular</rdf:li>
+            <rdf:li>perpendicular</rdf:li>
           </rdf:Bag>
         </dc:subject>
       </cc:Work>

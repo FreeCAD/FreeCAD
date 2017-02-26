@@ -312,13 +312,13 @@ def endpointdistancedebuglist(debuglist):
 def edgestowires(edgelist,eps=0.001):
     '''takes list of edges and returns a list of wires'''
     import Part, Draft
-    # todo remove double edges
+    # TODO remove double edges
     wirelist=[]
     #for path in findConnectedEdges(edgelist,eps=eps):
     for path,debug in zip(*findConnectedEdges(edgelist,eps=eps,debug=True)):
         maxd,mind,outerd = endpointdistancedebuglist(debug)
         assert(maxd <= eps*2) # Assume the input to be broken
-        if maxd < eps*2 and maxd > 0.000001: #OCC wont like it if maxd > 0.02:
+        if maxd < eps*2 and maxd > 0.000001: # OCC won't like it if maxd > 0.02:
             print('endpointdistance max:%f min:%f, ends:%f' %(maxd,mind,outerd))
 
             if True:

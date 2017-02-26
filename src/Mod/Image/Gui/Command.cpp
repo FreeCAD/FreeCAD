@@ -121,8 +121,8 @@ void CmdCreateImagePlane::activated(int iMsg)
 
         QImage impQ(s);
         if (impQ.isNull()) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error open image"),
-                QObject::tr("Could not load the choosen image"));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error opening image"),
+                QObject::tr("Could not load the chosen image"));
             return;
         }
 

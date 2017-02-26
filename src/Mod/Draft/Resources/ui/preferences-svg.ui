@@ -44,7 +44,7 @@
         <item>
          <widget class="Gui::PrefComboBox" name="gui::prefcombobox_3">
           <property name="toolTip">
-           <string>This is the method choosed for importing SVG object color into FreeCAD.</string>
+           <string>This is the method chosen for importing SVG object color into FreeCAD.</string>
           </property>
           <property name="currentIndex">
            <number>0</number>

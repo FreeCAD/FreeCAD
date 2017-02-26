@@ -128,7 +128,7 @@ public:
         );
         add_keyword_method("sortWires",&Module::sortWires,
             "sortWires(shapes, start=Vector(), "  PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) ", key=value...)\n"
-            "\nReturns (wires,end), where 'wires' is sorted accross Z value and with optimized travel distance,\n"
+            "\nReturns (wires,end), where 'wires' is sorted across Z value and with optimized travel distance,\n"
             "and 'end' is the ending position of the whole wires\n"
             "\n* shapes: input shape list\n"
             "\n* start (Vector()): optional start position.\n"

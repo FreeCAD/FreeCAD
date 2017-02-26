@@ -1683,7 +1683,7 @@ def fillet(lEdges,r,chamfer=False):
     Returns a list of sorted edges describing a round corner'''
 
     def getCurveType(edge,existingCurveType = None):
-            '''Builds or completes a dictionnary containing edges with keys "Arc" and "Line"'''
+            '''Builds or completes a dictionary containing edges with keys "Arc" and "Line"'''
             if not existingCurveType :
                     existingCurveType = { 'Line' : [], 'Arc' : [] }
             if issubclass(type(edge.Curve),Part.LineSegment) :
@@ -2541,7 +2541,7 @@ def circleFrom3CircleTangents(circle1, circle2, circle3):
             # @todo Calc. the intersection points (max. 8) of 4 lines (trough each inversion pole and the radical center) with the circle.
             #       This gives us all the tangent points.
         else:
-            # Some circles are inside each other or an error has occured.
+            # Some circles are inside each other or an error has occurred.
             return None
 
     else:

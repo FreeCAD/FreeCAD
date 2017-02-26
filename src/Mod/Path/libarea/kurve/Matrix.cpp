@@ -546,7 +546,7 @@ namespace geoff_geometry {
 
 	 void Vector3d::arbitrary_axes(Vector3d& x, Vector3d& y){
 		// arbitrary axis algorithm - acad method of generating an arbitrary but
-		// consistant set of axes from a single normal ( z )
+		// consistent set of axes from a single normal ( z )
 		// arbitrary x & y axes
 
 		if ( ( fabs ( this->getx() ) < 1.0/64.0 ) && (fabs(this->gety()) < 1.0/64.0))

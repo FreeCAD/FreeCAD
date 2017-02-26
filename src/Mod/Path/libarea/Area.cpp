@@ -808,11 +808,11 @@ void CArea::InsideCurves(const CCurve& curve, std::list<CCurve> &curves_inside)c
 	std::list<Point> pts;
 	CurveIntersections(curve, pts);
 
-	//2.seperate curve2 in multiple curves between these intersections.
+	//2.separate curve2 in multiple curves between these intersections.
 	std::list<CCurve> separate_curves;
 	curve.ExtractSeparateCurves(pts, separate_curves);
 
-	//3. if the midpoint of a seperate curve lies in a1, then we return it.
+	//3. if the midpoint of a separate curve lies in a1, then we return it.
 	for(std::list<CCurve>::iterator It = separate_curves.begin(); It != separate_curves.end(); It++)
 	{
 		CCurve &curve = *It;
