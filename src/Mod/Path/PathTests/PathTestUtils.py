@@ -31,7 +31,7 @@ from FreeCAD import Vector
 from PathScripts.PathGeom import Side
 
 class PathTestBase(unittest.TestCase):
-    """Base test class with some addtional asserts."""
+    """Base test class with some additional asserts."""
 
     def assertRoughly(self, f1, f2):
         """Verify that two float values are approximately the same."""

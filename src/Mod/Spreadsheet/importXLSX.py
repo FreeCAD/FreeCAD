@@ -339,7 +339,7 @@ def handleCells(cellList, actCellSheet, sList):
     if refType:
       cellType = getText(refType.childNodes)
     else:
-      cellType = 'n'   # fix me some cells dont have t and s attributes
+      cellType = 'n'   # FIXME: some cells don't have t and s attributes
 
     #print("reference: ", ref, ' Cell type: ', cellType)
     

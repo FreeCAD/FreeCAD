@@ -3976,7 +3976,7 @@ class Edit(Modifier):
                             self.editing == len(pts)-1: #last pole
                         knot = 0
                         changep = 1
-                    if knot is not None: # we need to modify the oposite pole
+                    if knot is not None: # we need to modify the opposite pole
                         segment = knot / self.obj.Degree -1
                         cont=self.obj.Continuity[segment] if \
                             len(self.obj.Continuity) > segment else 0
@@ -4223,7 +4223,7 @@ class Edit(Modifier):
                 msg(translate("draft", "Endpoint of BezCurve can't be smoothed\n"),'warning')
                 return
         segment = knot // deg #segment index
-        newcont=self.obj.Continuity[:] #dont edit a property inplace !!!
+        newcont=self.obj.Continuity[:] #don't edit a property inplace !!!
         if not self.obj.Closed and (len(self.obj.Continuity) == segment -1 or \
                 segment == 0) : pass # open curve
         elif len(self.obj.Continuity) >= segment or \
