@@ -226,13 +226,17 @@ public:
     std::vector<double> getWeights() const;
     std::vector<double> getKnots() const;
     std::vector<int> getMultiplicities() const;
+    int getMultiplicity(int index) const;
     int getDegree() const;
     bool isPeriodic() const;
     bool join(const Handle_Geom_BSplineCurve&);
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
-    
+
     void increaseDegree(double degree);
+
+    void increaseMultiplicity(int index, int multiplicity);
+    bool removeKnot(int index, int multiplicity, double tolerance = Precision::PConfusion());
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;

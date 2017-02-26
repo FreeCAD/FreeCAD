@@ -793,6 +793,17 @@ std::vector<int> GeomBSplineCurve::getMultiplicities() const
     return mults;
 }
 
+int GeomBSplineCurve::getMultiplicity(int index) const
+{
+    try {
+        return myCurve->Multiplicity(index);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::RuntimeError(e->GetMessageString());
+    }
+}
+
 int GeomBSplineCurve::getDegree() const
 {
     return myCurve->Degree();
@@ -913,6 +924,32 @@ void GeomBSplineCurve::increaseDegree(double degree)
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
+
+void GeomBSplineCurve::increaseMultiplicity(int index, int multiplicity)
+{
+    try {
+        Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(this->handle());
+        curve->IncreaseMultiplicity(index, multiplicity);
+        return;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::RuntimeError(e->GetMessageString());
+    }
+}
+
+bool GeomBSplineCurve::removeKnot(int index, int multiplicity, double tolerance)
+{
+    try {
+        Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(this->handle());
+        return curve->RemoveKnot(index, multiplicity, tolerance) == Standard_True;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::RuntimeError(e->GetMessageString());
+    }
+}
+
 
 // Persistence implementer
 unsigned int GeomBSplineCurve::getMemSize (void) const
