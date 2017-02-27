@@ -72,7 +72,7 @@ const int Cell::ALIGNMENT_VERTICAL   = 0xf0;
 
 /**
   * Construct a CellContent object.
-  * @param _address  The adress of the caell
+  * @param _address  The adress of the cell (i.e. row and column)
   * @param _owner    The spreadsheet that owns this cell.
   *
   */
