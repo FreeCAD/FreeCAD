@@ -361,7 +361,9 @@ def onMenu(action):
     if action.data() != "Undefined":
         s = True
         menu.setDefaultAction(action)
-        indicator.setDefaultAction(action)
+        indicator.setText(action.text())
+        indicator.setIcon(action.icon())
+        indicator.setToolTip(action.toolTip())
         pView.SetString("NavigationStyle", action.data())
     else:
         pass
@@ -372,7 +374,9 @@ def onMenu(action):
         a0.setVisible(True)
         a0.setEnabled(True)
         menu.setDefaultAction(a0)
-        indicator.setDefaultAction(a0)
+        indicator.setText(a0.text())
+        indicator.setIcon(a0.icon())
+        indicator.setToolTip(a0.toolTip())
 
 
 def setCurrent():
@@ -389,13 +393,17 @@ def setCurrent():
             if i.data() == current:
                 s = True
                 menu.setDefaultAction(i)
-                indicator.setDefaultAction(i)
+                indicator.setText(i.text())
+                indicator.setIcon(i.icon())
+                indicator.setToolTip(i.toolTip())
             else:
                 pass
     else:
         s = True
         menu.setDefaultAction(a2)
-        indicator.setDefaultAction(a2)
+        indicator.setText(a2.text())
+        indicator.setIcon(a2.icon())
+        indicator.setToolTip(a2.toolTip())
         pView.SetString("NavigationStyle", a2.data())
 
     if s:
@@ -404,7 +412,9 @@ def setCurrent():
         a0.setVisible(True)
         a0.setEnabled(True)
         menu.setDefaultAction(a0)
-        indicator.setDefaultAction(a0)
+        indicator.setText(a0.text())
+        indicator.setIcon(a0.icon())
+        indicator.setToolTip(a0.toolTip())
 
     gStyle.blockSignals(False)
 
