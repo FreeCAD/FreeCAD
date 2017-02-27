@@ -211,6 +211,15 @@ public:
      \retval bool - returns true if the increase in degree succeeded, or false if it did not succeed.
      */
     bool increaseBSplineDegree(int GeoId, int degreeincrement = 1);
+    
+    /*!
+     \ brief Increases or Decreases the multiplicity of a BSpline knot by the multiplicityincr param, which defaults to 1, if the result is multiplicity zero, the knot is removed
+     \param GeoId - the geometry of type bspline to increase the degree
+     \param knotIndex - the index of the knot to modify (note that index is OCC consistent, so 1<=knotindex<=knots)
+     \param multiplicityincr - the increment (positive value) or decrement (negative value) of multiplicity of the knot
+     \retval bool - returns true if the operation succeeded, or false if it did not succeed.
+     */
+    bool modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr = 1);
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
     void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const;
