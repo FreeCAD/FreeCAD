@@ -24,7 +24,23 @@
 #ifndef SKETCHERGUI_CommandConstraints_H
 #define SKETCHERGUI_CommandConstraints_H
 
+#include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/App/Constraint.h>
+
 namespace SketcherGui {
+
+bool checkBothExternal(int GeoId1, int GeoId2);
+
+void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj, int &GeoId, Sketcher::PointPos &PosId);
+
+bool inline isVertex(int GeoId, Sketcher::PointPos PosId);
+
+bool inline isEdge(int GeoId, Sketcher::PointPos PosId);
+
+bool isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, Sketcher::PointPos PosId);
+
+bool IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj);
+
 
 // These functions are declared here to promote code reuse from other modules
     

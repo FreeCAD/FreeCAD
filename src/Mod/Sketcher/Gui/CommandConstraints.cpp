@@ -249,7 +249,7 @@ void showNoConstraintBetweenExternal()
                          QObject::tr("Cannot add a constraint between two external geometries!"));    
 }
 
-bool checkBothExternal(int GeoId1, int GeoId2)
+bool SketcherGui::checkBothExternal(int GeoId1, int GeoId2)
 {
     if (GeoId1 == Constraint::GeoUndef || GeoId2 == Constraint::GeoUndef)
         return false;
@@ -257,7 +257,7 @@ bool checkBothExternal(int GeoId1, int GeoId2)
         return (GeoId1 < 0 && GeoId2 < 0);
 }
 
-void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj,
+void SketcherGui::getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj,
                     int &GeoId, PointPos &PosId)
 {
     GeoId = Constraint::GeoUndef;
@@ -282,17 +282,17 @@ void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj,
     }
 }
 
-bool inline isVertex(int GeoId, PointPos PosId)
+bool inline SketcherGui::isVertex(int GeoId, PointPos PosId)
 {
     return (GeoId != Constraint::GeoUndef && PosId != Sketcher::none);
 }
 
-bool inline isEdge(int GeoId, PointPos PosId)
+bool inline SketcherGui::isEdge(int GeoId, PointPos PosId)
 {
     return (GeoId != Constraint::GeoUndef && PosId == Sketcher::none);
 }
 
-bool isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, PointPos PosId)
+bool SketcherGui::isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, PointPos PosId)
 {
     if (PosId == Sketcher::start && (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis))
         return true;
@@ -305,7 +305,7 @@ bool isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, PointPos PosId
         return false;
 }
 
-bool IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj)
+bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj)
 {
     //This func is a "smartness" behind three-element tangent-, perp.- and angle-via-point.
     //We want to find out, if the point supplied by user is already on
