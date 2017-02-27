@@ -2815,4 +2815,4 @@ def circleInversion(circle, circle2):
         FreeCAD.Console.PrintMessage("debug: circleInversion bad parameters!\n")
         return None
 
-#  @}
+##  @}

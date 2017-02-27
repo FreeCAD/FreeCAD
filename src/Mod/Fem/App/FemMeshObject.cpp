@@ -92,4 +92,6 @@ template<> PyObject* Fem::FemMeshObjectPython::getPyObject(void) {
 // explicit template instantiation
 template class AppFemExport FeaturePythonT<Fem::FemMeshObject>;
 
+/// @endcond
+
 }
