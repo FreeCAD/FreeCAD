@@ -197,9 +197,7 @@ int App::validColumn(const std::string &colstr)
   *
   * This function will throw an exception if the specified \a address is invalid.
   *
-  * @param address Address to parse.
-  * @param row     Reference to integer where row position is stored.
-  * @param col     Reference to integer where col position is stored.
+  * @param strAddress Address to parse.
   *
   */
 
