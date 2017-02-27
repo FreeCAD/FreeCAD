@@ -144,7 +144,7 @@ before_install:
           brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
 
        elif [ "${QT}" == "Qt5" ]; then
-          # >>> Qt5 Build Testing - THIS ASSUMES A PORTS-CACHE IS INSTALLED WIHT QT4<<<
+          # >>> Qt5 Build Testing - THIS ASSUMES A PORTS-CACHE IS INSTALLED WITH QT4<<<
           # Qt5: Replace Qt4 with Qt5
           brew uninstall --ignore-dependencies cartr/qt4/shiboken cartr/qt4/pyside cartr/qt4/pyside-tools cartr/qt4/qt FreeCAD/freecad/coin
           brew untap cartr/qt4
