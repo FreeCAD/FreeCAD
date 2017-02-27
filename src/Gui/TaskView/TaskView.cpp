@@ -663,7 +663,6 @@ void TaskView::addTaskWatcher(void)
         std::vector<QWidget*> &cont = (*it)->getWatcherContent();
         for (std::vector<QWidget*>::iterator it2=cont.begin();it2!=cont.end();++it2){
            taskPanel->addWidget(*it2);
-           (*it2)->show();
         }
     }
 
