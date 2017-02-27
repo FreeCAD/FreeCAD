@@ -121,22 +121,23 @@
   \subpage examples
 */
 
-/*!
-  \page examples More Examples
-
-  The examples code is included in Quarter and can be found in the
-  src/examples subdirectory.
-
-  \subpage directui
-
-  \subpage dynamicui
-
-  \subpage inheritui
-
-  \subpage mdi
-
-  \subpage examiner
-*/
+// These pages are not exitant in this copy of Quarter
+// /*!
+//  \page examples More Examples
+//
+//  The examples code is included in Quarter and can be found in the
+//  src/examples subdirectory.
+//
+//  \subpage directui
+//
+//  \subpage dynamicui
+//
+//  \subpage inheritui
+//
+//  \subpage mdi
+//
+//  \subpage examiner
+//*/
 
 #include <cstdio>
 #include <Inventor/SoDB.h>
