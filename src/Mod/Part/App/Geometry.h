@@ -191,6 +191,11 @@ class PartExport GeomBSplineCurve : public GeomBoundedCurve
 public:
     GeomBSplineCurve();
     GeomBSplineCurve(const Handle_Geom_BSplineCurve&);
+    
+    GeomBSplineCurve( const std::vector<Base::Vector3d>& poles, const std::vector<double>& weights,
+                      const std::vector<double>& knots, const std::vector<int>& multiplicities,
+                      int degree, bool periodic=false, bool checkrational = true);
+    
     virtual ~GeomBSplineCurve();
     virtual Geometry *clone(void) const;
 
