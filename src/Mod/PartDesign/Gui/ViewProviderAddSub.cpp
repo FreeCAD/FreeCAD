@@ -131,7 +131,7 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
         // create or use the mesh on the data structure
 #if OCC_VERSION_HEX >= 0x060600
         BRepMesh_IncrementalMesh(cShape,deflection,Standard_False,
-                AngDeflectionRads,Standard_True);
+                deflection,Standard_True);
 #else
         BRepMesh_IncrementalMesh(cShape,deflection);
 #endif
