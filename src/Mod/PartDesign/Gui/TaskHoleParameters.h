@@ -97,12 +97,13 @@ private Q_SLOTS:
     void taperedAngleChanged(double value);
 
 private:
-    class Observer : public App::DocumentObjectObserver {
+    class Observer : public App::DocumentObserver {
     public:
-        Observer(TaskHoleParameters * _owner, PartDesign::Hole * hole);
+        Observer(TaskHoleParameters * _owner, PartDesign::Hole * _hole);
     private:
         virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
         TaskHoleParameters * owner;
+        PartDesign::Hole * hole;
     };
 
 protected:

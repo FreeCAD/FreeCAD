@@ -55,6 +55,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <App/Document.h>
+#include <Base/Reader.h>
 
 #include "FeatureHole.h"
 
@@ -501,10 +502,37 @@ void Hole::updateHoleCutParams()
     }
 }
 
+void Hole::updateDiameterParam()
+{
+    // Diameter parameter depends on Threaded, ThreadType, ThreadSize, and ThreadFit
+
+    int threadType = ThreadType.getValue();
+    int threadSize = ThreadSize.getValue();
+    double diameter = threadDescription[threadType][threadSize].diameter;
+    double pitch = threadDescription[threadType][threadSize].pitch;
+
+    if (Threaded.getValue()) {
+        /* Threads are always given with tap diameter. For 60 degrees threads, the formula is D' = D - pitch */
+
+        diameter = diameter - pitch;
+    }
+    else {
+        switch ( ThreadFit.getValue() ) {
+        case 0: /* standard */
+            diameter = ( 5 * ( (int)( ( diameter * 110 ) / 5 ) ) ) / 100.0;
+            break;
+        case 1: /* close */
+            diameter = ( 5 * ( (int)( ( diameter * 105 ) / 5 ) ) ) / 100.0;
+            break;
+        default:
+            assert( 0 );
+        }
+    }
+    Diameter.setValue(diameter);
+}
 
 void Hole::onChanged(const App::Property *prop)
 {
-    ProfileBased::onChanged(prop);
     if (prop == &ThreadType) {
         std::string type(ThreadType.getValueAsString());
         std::string holeCutType(HoleCutType.getValueAsString());
@@ -636,7 +664,6 @@ void Hole::onChanged(const App::Property *prop)
                 HoleCutDepth.setReadOnly(true);
                 HoleCutCountersinkAngle.setReadOnly(false);
             }
-
         }
 
         if (type == "ISOMetricProfile" || type == "ISOMetricFineProfile")
@@ -644,8 +671,13 @@ void Hole::onChanged(const App::Property *prop)
         else if (type == "UNC" || type == "UNF" || type == "UNEF")
             HoleCutCountersinkAngle.setValue(82.0);
 
-        // Reset thread size when thread type has changed
-        ThreadSize.setValue((long)0);
+        // Signal changes to these
+        ProfileBased::onChanged(&ThreadSize);
+        ProfileBased::onChanged(&ThreadClass);
+        ProfileBased::onChanged(&HoleCutType);
+
+        // Diameter parameter depends on this
+        updateDiameterParam();
     }
     else if (prop == &Threaded) {
         if (Threaded.getValue())
@@ -653,8 +685,8 @@ void Hole::onChanged(const App::Property *prop)
         else
             ThreadDirection.setReadOnly(true);
 
-        // Force recomputation
-        ThreadSize.setValue(ThreadSize.getValue());
+        // Diameter parameter depends on this
+        updateDiameterParam();
     }
     else if (prop == &DrillPoint) {
         if (DrillPoint.getValue() == 1)
@@ -669,30 +701,11 @@ void Hole::onChanged(const App::Property *prop)
             TaperedAngle.setReadOnly(true);
     }
     else if (prop == &ThreadSize) {
-        int threadType = ThreadType.getValue();
-        int threadSize = ThreadSize.getValue();
-        double diameter = threadDescription[threadType][threadSize].diameter;
-        double pitch = threadDescription[threadType][threadSize].pitch;
-
-        if (Threaded.getValue()) {
-            /* Threads are always given with tap diameter. For 60 degrees threads, the formula is D' = D - pitch */
-
-            diameter = diameter - pitch;
-        }
-        else {
-            switch ( ThreadFit.getValue() ) {
-            case 0: /* standard */
-                diameter = ( 5 * ( (int)( ( diameter * 110 ) / 5 ) ) ) / 100.0;
-                break;
-            case 1: /* close */
-                diameter = ( 5 * ( (int)( ( diameter * 105 ) / 5 ) ) ) / 100.0;
-                break;
-            default:
-                assert( 0 );
-            }
-        }
-        Diameter.setValue(diameter);
+        updateDiameterParam();
         updateHoleCutParams();
+    }
+    else if (prop == &ThreadFit) {
+        updateDiameterParam();
     }
     else if (prop == &HoleCutType) {
         std::string threadType = ThreadType.getValueAsString();
@@ -718,6 +731,7 @@ void Hole::onChanged(const App::Property *prop)
     else if (prop == &DepthType) {
         Depth.setReadOnly((std::string(DepthType.getValueAsString()) != "Dimension"));
     }
+    ProfileBased::onChanged(prop);
 }
 
 /**
@@ -772,8 +786,7 @@ static void computeIntersection(gp_Pnt pa1, gp_Pnt pa2, gp_Pnt pb1, gp_Pnt pb2, 
 
 short Hole::mustExecute() const
 {
-    if ( Profile.isTouched() ||
-         ThreadType.isTouched() ||
+    if ( ThreadType.isTouched() ||
          ThreadSize.isTouched() ||
          ThreadClass.isTouched() ||
          ThreadFit.isTouched() ||
@@ -791,6 +804,28 @@ short Hole::mustExecute() const
          TaperedAngle.isTouched() )
         return 1;
     return ProfileBased::mustExecute();
+}
+
+void Hole::Restore(Base::XMLReader &reader)
+{
+    ProfileBased::Restore(reader);
+
+    onChanged(&ThreadType);
+    onChanged(&ThreadSize);
+    onChanged(&ThreadClass);
+    onChanged(&ThreadFit);
+    onChanged(&Diameter);
+    onChanged(&ThreadDirection);
+    onChanged(&HoleCutType);
+    onChanged(&HoleCutDiameter);
+    onChanged(&HoleCutDepth);
+    onChanged(&HoleCutCountersinkAngle);
+    onChanged(&DepthType);
+    onChanged(&Depth);
+    onChanged(&DrillPoint);
+    onChanged(&DrillPointAngle);
+    onChanged(&Tapered);
+    onChanged(&TaperedAngle);
 }
 
 static gp_Pnt toPnt(gp_Vec dir)

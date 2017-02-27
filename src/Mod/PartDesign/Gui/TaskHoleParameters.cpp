@@ -83,41 +83,25 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
 
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
-    ui->Threaded->setChecked(pcHole->Threaded.getValue());
-    ui->ThreadType->setCurrentIndex( -1 );
-    ui->ThreadType->setCurrentIndex( pcHole->ThreadType.getValue() );
-    ui->ThreadSize->blockSignals(true);
-    ui->ThreadSize->setCurrentIndex( pcHole->ThreadSize.getValue() );
-    ui->ThreadSize->blockSignals(false);
-    ui->ThreadClass->setCurrentIndex( pcHole->ThreadClass.getValue() );
-    ui->Diameter->setValue( pcHole->Diameter.getValue() );
-    ui->ThreadFit->setCurrentIndex( pcHole->ThreadFit.getValue() );
+    changedObject(pcHole->Threaded);
+    changedObject(pcHole->ThreadType);
+    changedObject(pcHole->ThreadSize);
+    changedObject(pcHole->ThreadClass);
+    changedObject(pcHole->ThreadFit);
+    changedObject(pcHole->Diameter);
+    changedObject(pcHole->ThreadDirection);
+    changedObject(pcHole->HoleCutType);
+    changedObject(pcHole->HoleCutDiameter);
+    changedObject(pcHole->HoleCutDepth);
+    changedObject(pcHole->HoleCutCountersinkAngle);
+    changedObject(pcHole->DepthType);
+    changedObject(pcHole->Depth);
+    changedObject(pcHole->DrillPoint);
+    changedObject(pcHole->DrillPointAngle);
+    changedObject(pcHole->Tapered);
+    changedObject(pcHole->TaperedAngle);
 
-    if (pcHole->ThreadDirection.getValue() == 0)
-        ui->directionRightHand->setChecked(true);
-    else
-        ui->directionLeftHand->setChecked(true);
-
-    ui->HoleCutType->setCurrentIndex(pcHole->HoleCutType.getValue());
-    ui->HoleCutDiameter->setValue(pcHole->HoleCutDiameter.getValue());
-    ui->HoleCutDepth->setValue(pcHole->HoleCutDepth.getValue());
-    ui->HoleCutCountersinkAngle->setValue(pcHole->HoleCutCountersinkAngle.getValue());
-
-    ui->DepthType->setCurrentIndex(pcHole->DepthType.getValue());
-    ui->Depth->setValue(pcHole->Depth.getValue());
-
-    std::string drillPoint(pcHole->DrillPoint.getValueAsString());
-    if (drillPoint == "Flat")
-        ui->drillPointFlat->setChecked(true);
-    else if (drillPoint == "Angled")
-        ui->drillPointAngled->setChecked(true);
-
-    ui->DrillPointAngle->setValue(pcHole->DrillPointAngle.getValue());
-
-    ui->Tapered->setChecked(pcHole->Tapered.getValue());
-    ui->TaperedAngle->setValue(pcHole->TaperedAngle.getValue());
-
-    updateUi();
+//    updateUi();
 
     connectPropChanged = App::GetApplication().signalChangePropertyEditor.connect(boost::bind(&TaskHoleParameters::changedObject, this, _1));
 
@@ -152,16 +136,7 @@ void TaskHoleParameters::threadedChanged()
 {
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
-    // Set new value in feature object
     pcHole->Threaded.setValue(ui->Threaded->isChecked());
-
-    // Force recomputation of diameter
-    //threadSizeChanged(pcHole->ThreadSize.getValue());
-
-    // Update ui
-    //updateUi();
-
-    // Recompute feature
     recomputeFeature();
 }
 
@@ -205,7 +180,6 @@ void TaskHoleParameters::depthChanged(int index)
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
     pcHole->DepthType.setValue(index);
-    //ui->Depth->setEnabled( (std::string(pcHole->DepthType.getValueAsString()) == "Dimension") );
     recomputeFeature();
 }
 
@@ -260,42 +234,7 @@ void TaskHoleParameters::threadTypeChanged(int index)
         return;
 
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
-
     pcHole->ThreadType.setValue(index);
-
-    /* Update sizes */
-    ui->ThreadSize->blockSignals(true);
-    ui->ThreadClass->blockSignals(true);
-    ui->HoleCutType->blockSignals(true);
-    ui->ThreadSize->clear();
-    const char ** cursor = pcHole->ThreadSize.getEnums();
-    while (*cursor) {
-        ui->ThreadSize->addItem(tr(*cursor));
-        ++cursor;
-    }
-
-    /* Update classes */
-    ui->ThreadClass->clear();
-    cursor = pcHole->ThreadClass.getEnums();
-    while (*cursor) {
-        ui->ThreadClass->addItem(tr(*cursor));
-        ++cursor;
-    }
-
-    /* Update hole cut type */
-    ui->HoleCutType->clear();
-    cursor = pcHole->HoleCutType.getEnums();
-    while (*cursor) {
-        ui->HoleCutType->addItem(tr(*cursor));
-        ++cursor;
-    }
-
-    ui->HoleCutType->blockSignals(false);
-    ui->ThreadClass->blockSignals(false);
-    ui->ThreadSize->blockSignals(false);
-
-    // Update the UI
-    //updateUi();
 }
 
 void TaskHoleParameters::threadSizeChanged(int index)
@@ -306,8 +245,6 @@ void TaskHoleParameters::threadSizeChanged(int index)
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
     pcHole->ThreadSize.setValue(index);
-
-    //ui->Diameter->setValue( pcHole->Diameter.getValue() );
     recomputeFeature();
 }
 
@@ -335,7 +272,6 @@ void TaskHoleParameters::threadFitChanged(int index)
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
     pcHole->ThreadFit.setValue(index);
-    //threadSizeChanged( pcHole->ThreadSize.getValue() );
     recomputeFeature();
 }
 
@@ -363,96 +299,205 @@ void TaskHoleParameters::changedObject(const App::Property &Prop)
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
     bool ro = Prop.isReadOnly();
 
+    Base::Console().Log("Parameter %s was updated\n", Prop.getName());
+
     if (&Prop == &pcHole->Threaded) {
-        ui->Threaded->setDisabled(ro);
-        if (ui->Threaded->isChecked() && !pcHole->Threaded.getValue())
+        ui->Threaded->setEnabled(true);
+        if (ui->Threaded->isChecked() && !pcHole->Threaded.getValue()) {
+            ui->Threaded->blockSignals(true);
             ui->Threaded->setChecked(pcHole->Threaded.getValue());
+            ui->Threaded->blockSignals(false);
+        }
+        ui->Threaded->setDisabled(ro);
     }
     else if (&Prop == &pcHole->ThreadType) {
-        ui->ThreadType->setDisabled(ro);
-        if (ui->ThreadType->currentIndex() != pcHole->ThreadType.getValue())
+        ui->ThreadType->setEnabled(true);
+
+        ui->ThreadSize->blockSignals(true);
+        ui->ThreadSize->clear();
+        const char ** cursor = pcHole->ThreadSize.getEnums();
+        while (*cursor) {
+            ui->ThreadSize->addItem(tr(*cursor));
+            ++cursor;
+        }
+        ui->ThreadSize->blockSignals(false);
+
+        // Thread type also updates HoleCutType and ThreadClass
+        ui->HoleCutType->blockSignals(true);
+        ui->HoleCutType->clear();
+        cursor = pcHole->HoleCutType.getEnums();
+        while (*cursor) {
+            ui->HoleCutType->addItem(tr(*cursor));
+            ++cursor;
+        }
+        ui->HoleCutType->blockSignals(false);
+
+        ui->ThreadClass->blockSignals(true);
+        ui->ThreadClass->clear();
+        cursor = pcHole->ThreadClass.getEnums();
+        while (*cursor) {
+            ui->ThreadClass->addItem(tr(*cursor));
+            ++cursor;
+        }
+        ui->ThreadClass->blockSignals(false);
+
+        if (ui->ThreadType->currentIndex() != pcHole->ThreadType.getValue()) {
+            ui->ThreadType->blockSignals(true);
             ui->ThreadType->setCurrentIndex(pcHole->ThreadType.getValue());
+            ui->ThreadType->blockSignals(false);
+        }
+        ui->ThreadType->setDisabled(ro);
     }
     else if (&Prop == &pcHole->ThreadSize) {
-        ui->ThreadSize->setDisabled(ro);
-        if (ui->ThreadSize->currentIndex() != pcHole->ThreadSize.getValue())
+        ui->ThreadSize->setEnabled(true);
+        if (ui->ThreadSize->currentIndex() != pcHole->ThreadSize.getValue()) {
+            ui->ThreadSize->blockSignals(true);
             ui->ThreadSize->setCurrentIndex(pcHole->ThreadSize.getValue());
+            ui->ThreadSize->blockSignals(false);
+        }
+        ui->ThreadSize->setDisabled(ro);
     }
     else if (&Prop == &pcHole->ThreadClass) {
-        ui->ThreadClass->setDisabled(ro);
-        if (ui->ThreadClass->currentIndex() != pcHole->ThreadClass.getValue())
+        ui->ThreadClass->setEnabled(true);
+        if (ui->ThreadClass->currentIndex() != pcHole->ThreadClass.getValue()) {
+            ui->ThreadClass->blockSignals(true);
             ui->ThreadClass->setCurrentIndex(pcHole->ThreadClass.getValue());
+            ui->ThreadClass->blockSignals(false);
+        }
+        ui->ThreadClass->setDisabled(ro);
     }
     else if (&Prop == &pcHole->ThreadFit) {
-        ui->ThreadFit->setDisabled(ro);
-        if (ui->ThreadFit->currentIndex() != pcHole->ThreadFit.getValue())
+        ui->ThreadFit->setEnabled(true);
+        if (ui->ThreadFit->currentIndex() != pcHole->ThreadFit.getValue()) {
+            ui->ThreadFit->blockSignals(true);
             ui->ThreadFit->setCurrentIndex(pcHole->ThreadFit.getValue());
+            ui->ThreadFit->blockSignals(false);
+        }
+        ui->ThreadFit->setDisabled(ro);
     }
     else if (&Prop == &pcHole->Diameter) {
-        ui->Diameter->setDisabled(ro);
-        if (ui->Diameter->value().getValue() != pcHole->Diameter.getValue())
+        ui->Diameter->setEnabled(true);
+        if (ui->Diameter->value().getValue() != pcHole->Diameter.getValue()) {
+            ui->Diameter->blockSignals(true);
             ui->Diameter->setValue(pcHole->Diameter.getValue());
+            ui->Diameter->blockSignals(false);
+        }
+        ui->Diameter->setDisabled(ro);
     }
     else if (&Prop == &pcHole->ThreadDirection) {
+        ui->directionRightHand->setEnabled(true);
+        ui->directionLeftHand->setEnabled(true);
+        std::string direction(pcHole->ThreadDirection.getValueAsString());
+        if (direction == "Right" && !ui->directionRightHand->isChecked()) {
+            ui->directionRightHand->blockSignals(true);
+            ui->directionRightHand->setChecked(true);
+            ui->directionRightHand->blockSignals(false);
+        }
+        if (direction == "Left"  && !ui->directionLeftHand->isChecked()) {
+            ui->directionLeftHand->blockSignals(true);
+            ui->directionLeftHand->setChecked(true);
+            ui->directionLeftHand->blockSignals(false);
+        }
         ui->directionRightHand->setDisabled(ro);
         ui->directionLeftHand->setDisabled(ro);
-        if (pcHole->ThreadDirection.getValue() == 0 && !ui->directionRightHand->isChecked())
-            ui->directionRightHand->setChecked(true);
-        if (pcHole->ThreadDirection.getValue() == 1 && !ui->directionLeftHand->isChecked())
-            ui->directionLeftHand->setChecked(true);
     }
     else if (&Prop == &pcHole->HoleCutType) {
-        ui->HoleCutType->setDisabled(ro);
-        if (ui->HoleCutType->currentIndex() != pcHole->HoleCutType.getValue())
+        ui->HoleCutType->setEnabled(true);
+        if (ui->HoleCutType->currentIndex() != pcHole->HoleCutType.getValue()) {
+            ui->HoleCutType->blockSignals(true);
             ui->HoleCutType->setCurrentIndex(pcHole->HoleCutType.getValue());
+            ui->HoleCutType->blockSignals(false);
+        }
+        ui->HoleCutType->setDisabled(ro);
     }
     else if (&Prop == &pcHole->HoleCutDiameter) {
-        ui->HoleCutDiameter->setDisabled(ro);
-        if (ui->HoleCutDiameter->value().getValue() != pcHole->HoleCutDiameter.getValue())
+        ui->HoleCutDiameter->setEnabled(true);
+        if (ui->HoleCutDiameter->value().getValue() != pcHole->HoleCutDiameter.getValue()) {
+            ui->HoleCutDiameter->blockSignals(true);
             ui->HoleCutDiameter->setValue(pcHole->HoleCutDiameter.getValue());
+            ui->HoleCutDiameter->blockSignals(false);
+        }
+        ui->HoleCutDiameter->setDisabled(ro);
     }
     else if (&Prop == &pcHole->HoleCutDepth) {
-        ui->HoleCutDepth->setDisabled(ro);
-        if (ui->HoleCutDepth->value().getValue() != pcHole->HoleCutDepth.getValue())
+        ui->HoleCutDepth->setEnabled(true);
+        if (ui->HoleCutDepth->value().getValue() != pcHole->HoleCutDepth.getValue()) {
+            ui->HoleCutDepth->blockSignals(true);
             ui->HoleCutDepth->setValue(pcHole->HoleCutDepth.getValue());
+            ui->HoleCutDepth->blockSignals(false);
+        }
+        ui->HoleCutDepth->setDisabled(ro);
     }
     else if (&Prop == &pcHole->HoleCutCountersinkAngle) {
-        ui->HoleCutCountersinkAngle->setDisabled(ro);
-        if (ui->HoleCutCountersinkAngle->value().getValue() != pcHole->HoleCutCountersinkAngle.getValue())
+        ui->HoleCutCountersinkAngle->setEnabled(true);
+        if (ui->HoleCutCountersinkAngle->value().getValue() != pcHole->HoleCutCountersinkAngle.getValue()) {
+            ui->HoleCutCountersinkAngle->blockSignals(true);
             ui->HoleCutCountersinkAngle->setValue(pcHole->HoleCutCountersinkAngle.getValue());
+            ui->HoleCutCountersinkAngle->blockSignals(false);
+        }
+        ui->HoleCutCountersinkAngle->setDisabled(ro);
     }
     else if (&Prop == &pcHole->DepthType) {
-        ui->DepthType->setDisabled(ro);
-        if (ui->DepthType->currentIndex() != pcHole->DepthType.getValue())
+        ui->DepthType->setEnabled(true);
+        if (ui->DepthType->currentIndex() != pcHole->DepthType.getValue()) {
+            ui->DepthType->blockSignals(true);
             ui->DepthType->setCurrentIndex(pcHole->DepthType.getValue());
+            ui->DepthType->blockSignals(false);
+        }
+        ui->DepthType->setDisabled(ro);
     }
     else if (&Prop == &pcHole->Depth) {
-        ui->Depth->setDisabled(ro);
-        if (ui->Depth->value().getValue() != pcHole->Depth.getValue())
+        ui->Depth->setEnabled(true);
+        if (ui->Depth->value().getValue() != pcHole->Depth.getValue()) {
+            ui->Depth->blockSignals(true);
             ui->Depth->setValue(pcHole->Depth.getValue());
+            ui->Depth->blockSignals(false);
+        }
+        ui->Depth->setDisabled(ro);
     }
     else if (&Prop == &pcHole->DrillPoint) {
+        ui->drillPointFlat->setEnabled(true);
+        ui->drillPointAngled->setEnabled(true);
+        std::string drillPoint(pcHole->DrillPoint.getValueAsString());
+        if (drillPoint == "Flat" && !ui->drillPointFlat->isChecked()) {
+            ui->drillPointFlat->blockSignals(true);
+            ui->drillPointFlat->setChecked(true);
+            ui->drillPointFlat->blockSignals(false);
+        }
+        if (drillPoint == "Angled" && !ui->drillPointAngled->isChecked()) {
+            ui->drillPointAngled->blockSignals(true);
+            ui->drillPointAngled->setChecked(true);
+            ui->drillPointAngled->blockSignals(false);
+        }
         ui->drillPointFlat->setDisabled(ro);
         ui->drillPointAngled->setDisabled(ro);
-        if (pcHole->DrillPoint.getValue() == 0 && !ui->drillPointFlat->isChecked())
-            ui->drillPointFlat->setChecked(true);
-        if (pcHole->DrillPoint.getValue() == 1 && !ui->drillPointAngled->isChecked())
-            ui->drillPointAngled->setChecked(true);
     }
     else if (&Prop == &pcHole->DrillPointAngle) {
-        ui->DrillPointAngle->setDisabled(ro);
-        if (ui->DrillPointAngle->value().getValue() != pcHole->DrillPointAngle.getValue())
+        ui->DrillPointAngle->setEnabled(true);
+        if (ui->DrillPointAngle->value().getValue() != pcHole->DrillPointAngle.getValue()) {
+            ui->DrillPointAngle->blockSignals(true);
             ui->DrillPointAngle->setValue(pcHole->DrillPointAngle.getValue());
+            ui->DrillPointAngle->blockSignals(false);
+        }
+        ui->DrillPointAngle->setDisabled(ro);
     }
     else if (&Prop == &pcHole->Tapered) {
-        ui->Tapered->setDisabled(ro);
-        if (ui->Tapered->isChecked() && !pcHole->Tapered.getValue())
+        ui->Tapered->setEnabled(true);
+        if (ui->Tapered->isChecked() && !pcHole->Tapered.getValue()) {
+            ui->Tapered->blockSignals(true);
             ui->Tapered->setChecked(pcHole->Tapered.getValue());
+            ui->Tapered->blockSignals(false);
+        }
+        ui->Tapered->setDisabled(ro);
     }
     else if (&Prop == &pcHole->TaperedAngle) {
-        ui->TaperedAngle->setDisabled(ro);
-        if (ui->TaperedAngle->value().getValue() != pcHole->TaperedAngle.getValue())
+        ui->TaperedAngle->setEnabled(true);
+        if (ui->TaperedAngle->value().getValue() != pcHole->TaperedAngle.getValue()) {
+            ui->TaperedAngle->blockSignals(true);
             ui->TaperedAngle->setValue(pcHole->TaperedAngle.getValue());
+            ui->TaperedAngle->blockSignals(false);
+        }
+        ui->TaperedAngle->setDisabled(ro);
     }
 }
 
@@ -620,13 +665,17 @@ bool TaskDlgHoleParameters::accept()
 
 #include "moc_TaskHoleParameters.cpp"
 
-TaskHoleParameters::Observer::Observer(TaskHoleParameters *_owner, PartDesign::Hole * hole)
-    : owner(_owner)
+TaskHoleParameters::Observer::Observer(TaskHoleParameters *_owner, PartDesign::Hole * _hole)
+    : DocumentObserver(_hole->getDocument())
+    , owner(_owner)
+    , hole(_hole)
 {
-    addToObservation(hole);
 }
 
 void TaskHoleParameters::Observer::slotChangedObject(const App::DocumentObject &Obj, const App::Property &Prop)
 {
-    owner->changedObject(Prop);
+    if (&Obj == hole) {
+        Base::Console().Log("Parameter %s was updated with a new value\n", Prop.getName());
+        owner->changedObject(Prop);
+    }
 }

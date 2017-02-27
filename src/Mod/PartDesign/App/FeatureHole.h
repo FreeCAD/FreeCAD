@@ -29,6 +29,10 @@
 
 class Property;
 
+namespace Base {
+class XMLReader;
+}
+
 namespace PartDesign
 {
 
@@ -77,6 +81,8 @@ public:
 
     static const ThreadDescription threadDescription[][171];
 
+    virtual void Restore(Base::XMLReader & reader);
+
 protected:
     void onChanged(const App::Property* prop);
 private:
@@ -118,6 +124,7 @@ private:
     static const char* ThreadClass_UNEF_Enums[];
 
     void updateHoleCutParams();
+    void updateDiameterParam();
 };
 
 } //namespace PartDesign
