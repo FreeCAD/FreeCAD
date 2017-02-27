@@ -177,6 +177,11 @@
             <UserDocu>Increases the given BSpline Degree by a number of degrees</UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="modifyBSplineKnotMultiplicity">
+        <Documentation>
+            <UserDocu>Increases or reduces the given BSpline knot multiplicity</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="calculateAngleViaPoint">
       <Documentation>
         <UserDocu>

@@ -1084,6 +1084,25 @@ PyObject* SketchObjectPy::increaseBSplineDegree(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::modifyBSplineKnotMultiplicity(PyObject *args)
+{
+    int GeoId;
+    int knotIndex;
+    int multiplicity = 1;
+
+    if (!PyArg_ParseTuple(args, "ii|i", &GeoId, &knotIndex, &multiplicity))
+        return 0;
+
+    if (this->getSketchObjectPtr()->modifyBSplineKnotMultiplicity(GeoId, knotIndex, multiplicity)==false) {
+        std::stringstream str;
+        str << "Multiplicity modification failed for: " << GeoId;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+    
+    Py_Return;
+}
+
 Py::Long SketchObjectPy::getConstraintCount(void) const
 {
     return Py::Long(this->getSketchObjectPtr()->Constraints.getSize());
