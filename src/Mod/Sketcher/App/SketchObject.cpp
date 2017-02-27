@@ -3953,6 +3953,130 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
     return true;
 }
 
+bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr)
+{
+    if (GeoId < 0 || GeoId > getHighestCurveIndex())
+        return false;
+    
+    if (multiplicityincr == 0) // no change in multiplicity
+        return true;
+    
+    const Part::Geometry *geo = getGeometry(GeoId);
+    
+    if(geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+        return false;
+    
+    const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
+    
+    int degree = bsp->getDegree();
+    
+    if( knotIndex > bsp->countKnots() || knotIndex < 1 ) // knotindex in OCC 1 -> countKnots
+        return false;
+
+    Part::GeomBSplineCurve *bspline;
+
+    try {
+        int curmult = bsp->getMultiplicity(knotIndex);
+        
+        if ( (curmult + multiplicityincr) > degree || (curmult + multiplicityincr) < 0) // zero is removing the knot, degree is just positional continuity
+            return false;
+
+        const Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(bsp->handle());
+
+        bspline = new Part::GeomBSplineCurve(curve);
+
+        if(multiplicityincr > 0) { // increase multiplicity
+            bspline->increaseMultiplicity(knotIndex, curmult + multiplicityincr);
+        }
+        else { // decrease multiplicity
+            bool result = bspline->removeKnot(knotIndex, curmult + multiplicityincr);
+
+            if(!result)
+                return false;
+        }
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+        return false;
+    }
+    
+    // we succeeded with the multiplicity modification, so aligment geometry may be invalid/inconsistent for the new bspline
+    // If multiplicity is increased, the number of poles is increased. An increase of 1 degree generates one pole extra
+    
+    if(multiplicityincr > 0) {
+
+        std::vector<Base::Vector3d> poles = bsp->getPoles();
+        std::vector<Base::Vector3d> newpoles = bspline->getPoles();
+        std::vector<int> prevpole(bsp->countPoles());
+        
+        for(int i = 0; i < int(poles.size()); i++)
+            prevpole[i] = -1;
+
+        int taken = 0;
+        for(int j = 0; j < int(poles.size()); j++){
+            for(int i = taken; i < int(newpoles.size()); i++){
+                if( newpoles[i] == poles[j] ) {
+                    prevpole[j] = i;
+                    taken++;
+                    break;
+                }
+            }
+        }
+        
+        const std::vector< Sketcher::Constraint * > &cvals = Constraints.getValues();
+        
+        std::vector< Constraint * > newcVals(cvals);
+        
+        // modify pole constraints
+        for (std::vector< Sketcher::Constraint * >::iterator it= newcVals.begin(); it != newcVals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+            {
+                if((*it)->AlignmentType == Sketcher::BSplineControlPoint && prevpole[(*it)->InternalAlignmentIndex]!=-1) {
+                    (*it)->InternalAlignmentIndex = prevpole[(*it)->InternalAlignmentIndex];
+                }
+            }
+        }
+
+        this->Constraints.setValues(newcVals);
+    }
+    else {
+        return false;
+    }
+    
+    // * DOCUMENTING OCC ISSUE
+    // When bspline is assigned below in  newVals[GeoId] = bspline, when sketch.cpp updateGeometry executes this:
+    //
+    // point->setPoint(bsp->pointAtParameter(knots[index]));
+    //
+    // A segmentation fault is generated:
+    //Program received signal SIGSEGV, Segmentation fault.
+    //#0 /lib/x86_64-linux-gnu/libc.so.6(+0x36cb0) [0x7f4b933bbcb0]
+    //#1  0x7f4b0300ea14 in BSplCLib::BuildCache(double, double, bool, int, TColStd_Array1OfReal const&, TColgp_Array1OfPnt const&, TColStd_Array1OfReal const&, TColgp_Array1OfPnt&, TColStd_Array1OfReal&) from /usr/lib/x86_64-linux-gnu/libTKMath.so.10+0x484
+    //#2  0x7f4b033f9582 in Geom_BSplineCurve::ValidateCache(double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x202
+    //#3  0x7f4b033f2a7e in Geom_BSplineCurve::D0(double, gp_Pnt&) const from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xde
+    //#4  0x7f4b033de1b5 in Geom_Curve::Value(double) const from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x25
+    //#5  0x7f4b03423d73 in GeomLProp_CurveTool::Value(Handle_Geom_Curve const&, double, gp_Pnt&) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x13
+    //#6  0x7f4b03427175 in GeomLProp_CLProps::SetParameter(double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x75
+    //#7  0x7f4b0342727d in GeomLProp_CLProps::GeomLProp_CLProps(Handle_Geom_Curve const&, double, int, double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xcd
+    //#8  0x7f4b11924b53 in Part::GeomCurve::pointAtParameter(double) const from /home/abdullah/github/freecad-build/Mod/Part/Part.so+0xa7
+    
+    Part::GeomBSplineCurve * tbspline = new  Part::GeomBSplineCurve( bspline->getPoles(), bspline->getWeights(), bspline->getKnots(), bspline->getMultiplicities(),
+                                                  bspline->getDegree(), bspline->isPeriodic());
+
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+    
+    std::vector< Part::Geometry * > newVals(vals);
+    
+    newVals[GeoId] = tbspline;
+    
+    Geometry.setValues(newVals);
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+    
+    return true;
+    
+}
+
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 {
     // so far only externals to the support of the sketch and datum features
