@@ -34,13 +34,13 @@ from PySide import QtCore
 
 
 class _CommandMeshRegion(FemCommands):
-    "The Fem_MeshRegion command definition"
+    "The FEM_MeshRegion command definition"
     def __init__(self):
         super(_CommandMeshRegion, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-region',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MeshRegion", "FEM mesh region"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshRegion", "FEM mesh region"),
                           'Accel': "M, R",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MeshRegion", "Creates a FEM mesh region")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshRegion", "Creates a FEM mesh region")}
         self.is_active = 'with_gmsh_femmesh'
 
     def Activated(self):
@@ -54,4 +54,4 @@ class _CommandMeshRegion(FemCommands):
 
         FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('Fem_MeshRegion', _CommandMeshRegion())
+FreeCADGui.addCommand('FEM_MeshRegion', _CommandMeshRegion())

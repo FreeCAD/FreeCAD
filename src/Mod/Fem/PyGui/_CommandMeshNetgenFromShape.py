@@ -35,12 +35,12 @@ from PySide import QtCore
 
 
 class _CommandMeshNetgenFromShape(FemCommands):
-    # the Fem_MeshNetgenFromShape command definition
+    # the FEM_MeshNetgenFromShape command definition
     def __init__(self):
         super(_CommandMeshNetgenFromShape, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-netgen-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MeshFromShape", "FEM mesh from shape by Netgen"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MeshFromShape", "Create a FEM volume mesh from a solid or face shape by Netgen internal mesher")}
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshFromShape", "FEM mesh from shape by Netgen"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshFromShape", "Create a FEM volume mesh from a solid or face shape by Netgen internal mesher")}
         self.is_active = 'with_part_feature'
 
     def Activated(self):
@@ -59,4 +59,4 @@ class _CommandMeshNetgenFromShape(FemCommands):
         FreeCADGui.Selection.clearSelection()
 
 
-FreeCADGui.addCommand('Fem_MeshNetgenFromShape', _CommandMeshNetgenFromShape())
+FreeCADGui.addCommand('FEM_MeshNetgenFromShape', _CommandMeshNetgenFromShape())

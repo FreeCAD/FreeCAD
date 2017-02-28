@@ -34,13 +34,13 @@ from PySide import QtCore
 
 
 class _CommandMeshGroup(FemCommands):
-    "The Fem_MeshGroup command definition"
+    "The FEM_MeshGroup command definition"
     def __init__(self):
         super(_CommandMeshGroup, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MeshGroup", "FEM mesh group"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGroup", "FEM mesh group"),
                           'Accel': "M, G",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MeshGroup", "Creates a FEM mesh group")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGroup", "Creates a FEM mesh group")}
         self.is_active = 'with_gmsh_femmesh'
 
     def Activated(self):
@@ -54,4 +54,4 @@ class _CommandMeshGroup(FemCommands):
 
         FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('Fem_MeshGroup', _CommandMeshGroup())
+FreeCADGui.addCommand('FEM_MeshGroup', _CommandMeshGroup())

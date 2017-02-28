@@ -34,13 +34,13 @@ from PySide import QtCore
 
 
 class _CommandAnalysis(FemCommands):
-    "the Fem_Analysis command definition"
+    "the FEM_Analysis command definition"
     def __init__(self):
         super(_CommandAnalysis, self).__init__()
         self.resources = {'Pixmap': 'fem-analysis',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Analysis container"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_Analysis", "Analysis container"),
                           'Accel': "N, A",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Creates a analysis container with standard solver CalculiX")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_Analysis", "Creates a analysis container with standard solver CalculiX")}
         self.is_active = 'with_document'
 
     def Activated(self):
@@ -57,4 +57,4 @@ class _CommandAnalysis(FemCommands):
                 FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument()." + sel[0].Name + "]")
         FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('Fem_Analysis', _CommandAnalysis())
+FreeCADGui.addCommand('FEM_Analysis', _CommandAnalysis())
