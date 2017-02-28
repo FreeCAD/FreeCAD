@@ -1346,7 +1346,7 @@ def liquid_section_def(obj, section_type):
         bend_radius_diameter = str(obj.BendRadiusDiameter)
         bend_angle = str(obj.BendAngle)
         bend_loss_coefficient = str(obj.BendLossCoefficient)
-        section_geo = bend_pipe_area + ',' + bend_radius_diameter + ',' + bend_angle +',' + bend_loss_coefficient + '\n'
+        section_geo = bend_pipe_area + ',' + bend_radius_diameter + ',' + bend_angle + ',' + bend_loss_coefficient + '\n'
         return section_geo
     elif section_type == 'PIPE GATE VALVE':
         gatevalve_pipe_area = str(obj.GateValvePipeArea.getValueAs('mm^2').Value)
