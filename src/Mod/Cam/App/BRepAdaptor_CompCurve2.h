@@ -92,7 +92,7 @@ class Geom_BSplineCurve;
 
 //! The Curve from BRepAdaptor allows to use a Wire of the BRep topology
 //! like a 3D curve. <br>
-//!  Warning: With this  class of curve,  C0 and C1 continuities
+//!  Warning: With this class of curve, C0 and C1 continuities
 //!           are not assumed. So be careful with some algorithm!
 class BRepAdaptor_CompCurve2  : public Adaptor3d_Curve
 {
@@ -120,7 +120,7 @@ public:
 
     Standard_EXPORT BRepAdaptor_CompCurve2(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbcissa = Standard_False);
 
-//! Creates a Curve  to  acces to the geometry of edge \p W.
+//! Creates a Curve  to  access to the geometry of edge \p W.
     Standard_EXPORT BRepAdaptor_CompCurve2(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbcissa,const Standard_Real First,const Standard_Real Last,const Standard_Real Tol);
 
 //! Sets the  wire \p W.
@@ -153,9 +153,9 @@ public:
 //! May be one if Continuity(me) >= \<S\>
     Standard_EXPORT   Standard_Integer NbIntervals(const GeomAbs_Shape S) ;
 
-//! Stores in \<T\> the  parameters bounding the intervals of continuity \<S\>. <br>
+//! Stores in \<T\> the parameters bounding the intervals of continuity \<S\>. <br>
 
-//! The array must provide  enough room to  accomodate for the parameters.
+//! The array must provide enough room to  accommodate for the parameters.
 //! i.e. T.Length() > NbIntervals()
     Standard_EXPORT   void Intervals(TColStd_Array1OfReal& T,const GeomAbs_Shape S) ;
 

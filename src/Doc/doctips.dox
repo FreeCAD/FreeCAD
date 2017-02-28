@@ -5,7 +5,7 @@ gathered after examining and removing most of the warnings emitted
 by Doxygen.  For information on (re)building the source docs, see
 \ref makingdocs
 
-- Pay attention to warnings emited by doxygen when building the doc.
+- Pay attention to warnings emitted by doxygen when building the doc.
   The item giving rise to the warning will be skipped and will not be
   documented !
 

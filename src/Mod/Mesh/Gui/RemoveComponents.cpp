@@ -87,7 +87,7 @@ void RemoveComponents::on_deselectAll_clicked()
 
 void RemoveComponents::on_selectComponents_clicked()
 {
-    // select components upto a certain size
+    // select components up to a certain size
     int size = ui->spSelectComp->value();
     meshSel.selectComponent(size);
 }

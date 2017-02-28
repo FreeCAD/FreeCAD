@@ -27,7 +27,7 @@ Usage:
    Material [Options] card-file-name
 
 Options:
- -c, --output-csv=file-name     write a comma seperated grid with the material data
+ -c, --output-csv=file-name     write a comma separated grid with the material data
 
 Exit:
  0      No Error or Warning found
@@ -39,7 +39,7 @@ Examples:
 
    Material  "StandardMaterial/Steel.FCMat"
 
-Autor:
+Author:
   (c) 2013 Juergen Riegel
   mail@juergen-riegel.net
   Licence: LGPL
@@ -104,7 +104,7 @@ if __name__ == '__main__':
             print("writing file: " + a + "\n")
             OutPath = a
 
-    # runing through the files
+    # running through the files
     FileName = args[0]
 
     kv_map = importFCMat(FileName)

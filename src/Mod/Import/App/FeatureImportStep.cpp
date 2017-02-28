@@ -97,7 +97,7 @@ Standard_Integer FeatureImportStep::Execute(void)
     //aReader.PrintCheckTransfer (failsonly, IFSelect_ItemsByEntity);
     for ( Standard_Integer n = 1; n<= nbr; n++)
     {
-      printf("STEP: Transfering Root %d\n",n);
+      printf("STEP: Transferring Root %d\n",n);
       aReader.TransferRoot(n);
       // Collecting resulting entities
       Standard_Integer nbs = aReader.NbShapes();
@@ -107,7 +107,7 @@ Standard_Integer FeatureImportStep::Execute(void)
       } else {
         for (Standard_Integer i =1; i<=nbs; i++) 
         {
-          printf("STEP:   Transfering Shape %d\n",n);
+          printf("STEP:   Transferring Shape %d\n",n);
           aShape=aReader.Shape(i);
           aHSequenceOfShape->Append(aShape);
         }

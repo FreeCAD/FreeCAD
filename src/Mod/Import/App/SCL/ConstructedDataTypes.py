@@ -127,7 +127,7 @@ class SELECT(object):
 
     def get_allowed_basic_types(self):
         ''' if a select contains some subselect, goes down through the different
-        sublayers untill there is no more '''
+        sublayers until there is no more '''
         b = []
         _auth_types = self.get_allowed_types()
         for _auth_type in _auth_types:
