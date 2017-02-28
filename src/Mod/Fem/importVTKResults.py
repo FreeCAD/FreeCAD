@@ -97,6 +97,7 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
     analysis_object.Member = analysis_object.Member + [result_obj]
     # FIXME move the ResultMesh in the analysis
 
+    ''' seams not used at the moment
     filenamebase = '.'.join(filename.split('.')[:-1])  # pattern: filebase_timestamp.vtk
     ts = filenamebase.split('_')[-1]
     try:
@@ -104,6 +105,7 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
     except:
         time_step = 0.0
     # Stats has been setup in C++ function FemVTKTools importCfdResult()
+    '''
 
 
 # helper
