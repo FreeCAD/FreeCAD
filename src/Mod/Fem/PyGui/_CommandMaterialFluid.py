@@ -35,13 +35,13 @@ from PySide import QtCore
 
 
 class _CommandMaterialFluid(FemCommands):
-    "the Fem_MaterialFluid command definition"
+    "the FEM_MaterialFluid command definition"
     def __init__(self):
         super(_CommandMaterialFluid, self).__init__()
         self.resources = {'Pixmap': 'fem-material-fluid',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialFluid", "FEM material for Fluid"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "FEM material for Fluid"),
                           'Accel': "M, M",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialFluid", "Creates a FEM material for Fluid")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Creates a FEM material for Fluid")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
@@ -55,4 +55,4 @@ class _CommandMaterialFluid(FemCommands):
         FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
 
 
-FreeCADGui.addCommand('Fem_MaterialFluid', _CommandMaterialFluid())
+FreeCADGui.addCommand('FEM_MaterialFluid', _CommandMaterialFluid())

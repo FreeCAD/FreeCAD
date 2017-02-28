@@ -33,13 +33,13 @@ from PySide import QtCore, QtGui
 
 
 class _CommandRunSolver(FemCommands):
-    # the Fem_RunSolver command definition
+    # the FEM_RunSolver command definition
     def __init__(self):
         super(_CommandRunSolver, self).__init__()
         self.resources = {'Pixmap': 'fem-run-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_RunAnalysis", "Run solver calculations"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_RunAnalysis", "Run solver calculations"),
                           'Accel': "R, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_RunAnalysis", "Runs the calculations for the selected solver")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_RunAnalysis", "Runs the calculations for the selected solver")}
         self.is_active = 'with_solver'
 
     def Activated(self):
@@ -77,4 +77,4 @@ class _CommandRunSolver(FemCommands):
             QtGui.QMessageBox.critical(None, "Not known solver type", message)
 
 
-FreeCADGui.addCommand('Fem_RunSolver', _CommandRunSolver())
+FreeCADGui.addCommand('FEM_RunSolver', _CommandRunSolver())

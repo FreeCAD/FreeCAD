@@ -34,13 +34,13 @@ from PySide import QtCore
 
 
 class _CommandClearMesh(FemCommands):
-    "clear the FEM mesh"
+    "the FEM_ClearMesh command definition"
     def __init__(self):
         super(_CommandClearMesh, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-clear-mesh',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ClearMesh", "Clear FEM mesh"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ClearMesh", "Clear FEM mesh"),
                           # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ClearMesh", "Clear the Mesh of a FEM mesh object")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ClearMesh", "Clear the Mesh of a FEM mesh object")}
         self.is_active = 'with_femmesh'
 
     def Activated(self):
@@ -53,4 +53,4 @@ class _CommandClearMesh(FemCommands):
 
         FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('Fem_ClearMesh', _CommandClearMesh())
+FreeCADGui.addCommand('FEM_ClearMesh', _CommandClearMesh())

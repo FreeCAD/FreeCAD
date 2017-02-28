@@ -34,13 +34,13 @@ from PySide import QtCore
 
 
 class _CommandShellThickness(FemCommands):
-    "The Fem_ShellThickness command definition"
+    "The FEM_ShellThickness command definition"
     def __init__(self):
         super(_CommandShellThickness, self).__init__()
         self.resources = {'Pixmap': 'fem-shell-thickness',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ShellThickness", "Shell plate thickness"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ShellThickness", "Shell plate thickness"),
                           'Accel': "C, S",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ShellThickness", "Creates a FEM shell plate thickness")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ShellThickness", "Creates a FEM shell plate thickness")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
@@ -49,4 +49,4 @@ class _CommandShellThickness(FemCommands):
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeShellThickness()]")
 
 
-FreeCADGui.addCommand('Fem_ShellThickness', _CommandShellThickness())
+FreeCADGui.addCommand('FEM_ShellThickness', _CommandShellThickness())

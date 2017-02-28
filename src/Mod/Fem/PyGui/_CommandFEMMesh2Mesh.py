@@ -35,12 +35,12 @@ from PySide import QtCore
 
 
 class _CommandFemMesh2Mesh(FemCommands):
-    # the Fem_FemMesh2Mesh command definition
+    # the FEM_FemMesh2Mesh command definition
     def __init__(self):
         super(_CommandFemMesh2Mesh, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-to-mesh',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_FemMesh2Mesh", "FEM mesh to mesh"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_FemMesh2Mesh", "Convert the surface of a FEM mesh to a mesh")}
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_FemMesh2Mesh", "FEM mesh to mesh"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_FemMesh2Mesh", "Convert the surface of a FEM mesh to a mesh")}
         self.is_active = 'with_femmesh_andor_res'
 
     def Activated(self):
@@ -77,4 +77,4 @@ class _CommandFemMesh2Mesh(FemCommands):
         FreeCADGui.Selection.clearSelection()
 
 
-FreeCADGui.addCommand('Fem_FemMesh2Mesh', _CommandFemMesh2Mesh())
+FreeCADGui.addCommand('FEM_FemMesh2Mesh', _CommandFemMesh2Mesh())

@@ -35,13 +35,13 @@ from PySide import QtCore
 
 
 class _CommandFluidSection(FemCommands):
-    "The Fem_FluidSection command definition"
+    "The FEM_FluidSection command definition"
     def __init__(self):
         super(_CommandFluidSection, self).__init__()
         self.resources = {'Pixmap': 'fem-fluid-section',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_FluidSection", "Fluid section for 1D flow"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_FluidSection", "Fluid section for 1D flow"),
                           'Accel': "C, B",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_FluidSection", "Creates a FEM Fluid section for 1D flow")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_FluidSection", "Creates a FEM Fluid section for 1D flow")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
@@ -50,4 +50,4 @@ class _CommandFluidSection(FemCommands):
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeFemFluidSection()]")
 
 
-FreeCADGui.addCommand('Fem_FluidSection', _CommandFluidSection())
+FreeCADGui.addCommand('FEM_FluidSection', _CommandFluidSection())

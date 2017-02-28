@@ -35,12 +35,12 @@ from PySide import QtCore
 
 
 class _CommandMeshGmshFromShape(FemCommands):
-    # the Fem_MeshGmshFromShape command definition
+    # the FEM_MeshGmshFromShape command definition
     def __init__(self):
         super(_CommandMeshGmshFromShape, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-gmsh-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MeshGmshFromShape", "FEM mesh from shape by GMSH"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MeshGmshFromShape", "Create a FEM mesh from a shape by GMSH mesher")}
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGmshFromShape", "FEM mesh from shape by GMSH"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGmshFromShape", "Create a FEM mesh from a shape by GMSH mesher")}
         self.is_active = 'with_part_feature'
 
     def Activated(self):
@@ -61,4 +61,4 @@ class _CommandMeshGmshFromShape(FemCommands):
         FreeCADGui.Selection.clearSelection()
 
 
-FreeCADGui.addCommand('Fem_MeshGmshFromShape', _CommandMeshGmshFromShape())
+FreeCADGui.addCommand('FEM_MeshGmshFromShape', _CommandMeshGmshFromShape())

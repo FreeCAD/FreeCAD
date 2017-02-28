@@ -34,13 +34,13 @@ from PySide import QtCore
 
 
 class _CommandPrintMeshInfo(FemCommands):
-    "Print FEM mesh info"
+    "the FEM_PrintMeshInfo command definition"
     def __init__(self):
         super(_CommandPrintMeshInfo, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-print-info',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_PrintMeshInfo", "Print FEM mesh info"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_PrintMeshInfo", "Print FEM mesh info"),
                           # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_PrintMeshInfo", "Print FEM mesh info")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_PrintMeshInfo", "Print FEM mesh info")}
         self.is_active = 'with_femmesh'
 
     def Activated(self):
@@ -55,4 +55,4 @@ class _CommandPrintMeshInfo(FemCommands):
 
         FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('Fem_PrintMeshInfo', _CommandPrintMeshInfo())
+FreeCADGui.addCommand('FEM_PrintMeshInfo', _CommandPrintMeshInfo())
