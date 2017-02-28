@@ -1286,7 +1286,7 @@ def get_ccx_elset_fluid_name(mat_name, fluidsec_name, mat_short_name=None, fluid
         mat_short_name = 'Mat0'
     if not fluidsec_short_name:
         fluidsec_short_name = 'Fluid0'
-    if len(mat_name + fluidsec_name) > 20:   # max identifier lenght in CalculiX for beam elsets
+    if len(mat_name + fluidsec_name) > 20:   # max identifier length in CalculiX for beam elsets
         return mat_short_name + fluidsec_short_name
     else:
         return mat_name + fluidsec_name
