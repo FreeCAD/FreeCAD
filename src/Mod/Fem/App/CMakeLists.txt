@@ -89,6 +89,7 @@ SET(FemObjectsScripts_SRCS
     PyObjects/__init__.py
     PyObjects/_FemBeamSection.py
     PyObjects/_FemConstraintSelfWeight.py
+    PyObjects/_FemFluidSection.py
     PyObjects/_FemMaterialMechanicalNonlinear.py
     PyObjects/_FemMeshGmsh.py
     PyObjects/_FemMeshGroup.py
@@ -124,6 +125,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_CommandSolverCalculix.py
     PyGui/_CommandSolverZ88.py
     PyGui/_TaskPanelFemBeamSection.py
+    PyGui/_TaskPanelFemFluidSection.py
     PyGui/_TaskPanelFemMeshGmsh.py
     PyGui/_TaskPanelFemMeshGroup.py
     PyGui/_TaskPanelFemMeshRegion.py
@@ -133,6 +135,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_TaskPanelShowResult.py
     PyGui/_ViewProviderFemBeamSection.py
     PyGui/_ViewProviderFemConstraintSelfWeight.py
+    PyGui/_ViewProviderFemFluidSection.py
     PyGui/_ViewProviderFemMaterialMechanicalNonlinear.py
     PyGui/_ViewProviderFemMeshGmsh.py
     PyGui/_ViewProviderFemMeshGroup.py
@@ -143,6 +146,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_ViewProviderFemSolverZ88.py
     PyGui/_ViewProviderFemMaterial.py
     PyGui/TaskPanelFemBeamSection.ui
+    PyGui/TaskPanelFemFluidSection.ui
     PyGui/TaskPanelFemMeshGmsh.ui
     PyGui/TaskPanelFemMeshGroup.ui
     PyGui/TaskPanelFemMeshRegion.ui

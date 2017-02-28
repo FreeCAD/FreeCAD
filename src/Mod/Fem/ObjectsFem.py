@@ -83,6 +83,17 @@ def makeBeamSection(sectiontype='Rectangular', width=10.0, height=25.0, name="Be
     return obj
 
 
+def makeFemFluidSection(name="FluidSection"):
+    '''makeFemFluidSection([name]): creates an Fluid section object to define 1D flow'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    import PyObjects._FemFluidSection
+    PyObjects._FemFluidSection._FemFluidSection(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemFluidSection
+        PyGui._ViewProviderFemFluidSection._ViewProviderFemFluidSection(obj.ViewObject)
+    return obj
+
+
 def makeShellThickness(thickness=20.0, name="ShellThickness"):
     '''makeShellThickness([thickness], [name]): creates an shellthickness object to define a plate thickness'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)

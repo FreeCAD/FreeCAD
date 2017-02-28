@@ -47,6 +47,7 @@ INSTALL(
         PyObjects/__init__.py
         PyObjects/_FemBeamSection.py
         PyObjects/_FemConstraintSelfWeight.py
+        PyObjects/_FemFluidSection.py
         PyObjects/_FemMaterialMechanicalNonlinear.py
         PyObjects/_FemMeshGmsh.py
         PyObjects/_FemMeshGroup.py
@@ -85,6 +86,7 @@ INSTALL(
         PyGui/_CommandSolverCalculix.py
         PyGui/_CommandSolverZ88.py
         PyGui/_TaskPanelFemBeamSection.py
+        PyGui/_TaskPanelFemFluidSection.py
         PyGui/_TaskPanelFemMeshGmsh.py
         PyGui/_TaskPanelFemMeshGroup.py
         PyGui/_TaskPanelFemMeshRegion.py
@@ -94,6 +96,7 @@ INSTALL(
         PyGui/_TaskPanelShowResult.py
         PyGui/_ViewProviderFemBeamSection.py
         PyGui/_ViewProviderFemConstraintSelfWeight.py
+        PyGui/_ViewProviderFemFluidSection.py
         PyGui/_ViewProviderFemMaterialMechanicalNonlinear.py
         PyGui/_ViewProviderFemMeshGmsh.py
         PyGui/_ViewProviderFemMeshGroup.py
@@ -104,12 +107,13 @@ INSTALL(
         PyGui/_ViewProviderFemSolverZ88.py
         PyGui/_ViewProviderFemMaterial.py
         PyGui/TaskPanelFemBeamSection.ui
+        PyGui/TaskPanelFemFluidSection.ui
+        PyGui/TaskPanelFemMaterial.ui
         PyGui/TaskPanelFemMeshGmsh.ui
         PyGui/TaskPanelFemMeshGroup.ui
         PyGui/TaskPanelFemMeshRegion.ui
         PyGui/TaskPanelFemShellThickness.ui
         PyGui/TaskPanelFemSolverCalculix.ui
-        PyGui/TaskPanelFemMaterial.ui
         PyGui/TaskPanelShowResult.ui
     DESTINATION
         Mod/Fem/PyGui
