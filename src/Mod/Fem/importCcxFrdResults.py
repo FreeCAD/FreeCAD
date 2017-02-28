@@ -663,7 +663,7 @@ def readResult(frd_input):
                 mode_results['stressv'] = mode_stressv
                 mode_results['strainv'] = mode_strain
                 mode_results['peeq'] = mode_peeq
-                mode_results['time'] = 0  # Dont return time if static
+                mode_results['time'] = 0  # Don't return time if static
                 results.append(mode_results)
                 mode_disp = {}
                 mode_stress = {}

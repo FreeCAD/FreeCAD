@@ -989,7 +989,7 @@ PyObject* FemMeshPy::getGroupElements(PyObject *args)
     return Py::new_reference_to(tuple);
 }
 
-// ===== Atributes ============================================================
+// ===== Attributes ============================================================
 
 Py::Dict FemMeshPy::getNodes(void) const
 {

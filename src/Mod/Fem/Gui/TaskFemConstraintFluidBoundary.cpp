@@ -376,7 +376,7 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
 
 }
 
-/// hide/disable UI only happend in constructor, update helptext and valuetext here
+/// hide/disable UI only happened in constructor, update helptext and valuetext here
 void TaskFemConstraintFluidBoundary::updateTurbulenceUI()
 {
     ui->labelHelpText->setText(tr(TurbulenceSpecificationHelpTexts[ui->comboTurbulenceSpecification->currentIndex()]));

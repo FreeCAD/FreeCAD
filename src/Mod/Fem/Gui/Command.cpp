@@ -856,7 +856,7 @@ void CmdFemConstraintInitialTemperature::activated(int)
 
     std::string FeatName = getUniqueObjectName("FemConstraintInitialTemperature");
 
-    openCommand("Make FEM constraint intial temperature on body");
+    openCommand("Make FEM constraint initial temperature on body");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintInitialTemperature\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",
@@ -1446,7 +1446,7 @@ void CmdFemPostFunctions::languageChange()
 
     QAction* cmd = a[0];
     cmd->setText(QApplication::translate("CmdFemPostFunctions","Plane"));
-    cmd->setToolTip(QApplication::translate("Fem_PostCreateFunctions","Create a plane function, defined by its orgin and normal"));
+    cmd->setToolTip(QApplication::translate("Fem_PostCreateFunctions","Create a plane function, defined by its origin and normal"));
     cmd->setStatusTip(cmd->toolTip());
 
     cmd = a[1];

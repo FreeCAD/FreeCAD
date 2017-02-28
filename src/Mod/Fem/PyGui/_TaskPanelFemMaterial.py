@@ -466,10 +466,10 @@ class _TaskPanelFemMaterial:
             material_name = os.path.basename(saveName[:-len('.FCMat')])
             if material_name not in knownMaterials:
                 self.export_FCMat(saveName, self.obj.Material)
-                FreeCAD.Console.PrintMessage("Sucessfully save the Material property file: " + saveName + "\n")
+                FreeCAD.Console.PrintMessage("Successfully save the Material property file: " + saveName + "\n")
             else:
                 self.export_FCMat(saveName, self.obj.Material)
-                FreeCAD.Console.PrintMessage("Sucessfully overwritren the Material property file: " + saveName + "\n")
+                FreeCAD.Console.PrintMessage("Successfully overwritren the Material property file: " + saveName + "\n")
                 """
                 msgBox = QMessageBox()
                 msgBox.setText("FcMat file name {} has existed in {} or system folder, overwriting?\n".format(saveName, TargetDir))
@@ -479,7 +479,7 @@ class _TaskPanelFemMaterial:
                 ret = msgBox.exec_()
                 if ret == QMessageBox.Yes:
                     self.export_FCMat(saveName, self.obj.Material)
-                    FreeCAD.Console.PrintMessage("Sucessfully overwritren the Material property file: "+ saveName + "\n")
+                    FreeCAD.Console.PrintMessage("Successfully overwritren the Material property file: "+ saveName + "\n")
                 """
 
     ###################geometry reference selection #################

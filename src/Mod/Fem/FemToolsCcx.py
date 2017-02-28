@@ -42,7 +42,7 @@ class FemToolsCcx(FemTools.FemTools):
 
     ## The constructor
     #  @param analysis - analysis object to be used as the core object.
-    #  @param test_mode - True indicates that no real calculations will take place, so ccx bianry is not required. Used by test module.
+    #  @param test_mode - True indicates that no real calculations will take place, so ccx binary is not required. Used by test module.
     #  "__init__" tries to use current active analysis in analysis is left empty.
     #  Rises exception if analysis is not set and there is no active analysis
     def __init__(self, analysis=None, solver=None, test_mode=False):
