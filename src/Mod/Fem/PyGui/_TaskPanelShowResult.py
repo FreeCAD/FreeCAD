@@ -63,8 +63,7 @@ class _TaskPanelShowResult:
         QtCore.QObject.connect(self.form.rb_max_shear_stress, QtCore.SIGNAL("toggled(bool)"), self.max_shear_selected)
         QtCore.QObject.connect(self.form.rb_massflowrate, QtCore.SIGNAL("toggled(bool)"), self.massflowrate_selected)
         QtCore.QObject.connect(self.form.rb_networkpressure, QtCore.SIGNAL("toggled(bool)"), self.networkpressure_selected)
-        QtCore.QObject.connect(self.form.user_def_eq, QtCore.SIGNAL("textchanged()"), self.user_defined_text)
-        QtCore.QObject.connect(self.form.calculate, QtCore.SIGNAL("clicked()"), self.calculate)
+        QtCore.QObject.connect(self.form.rb_peeq, QtCore.SIGNAL("toggled(bool)"), self.peeq_selected)
 
         # displacement
         QtCore.QObject.connect(self.form.cb_show_displacement, QtCore.SIGNAL("clicked(bool)"), self.show_displacement)
@@ -121,6 +120,9 @@ class _TaskPanelShowResult:
             elif rt == "NPress":
                 self.form.rb_networkpressure.setChecked(True)
                 self.networkpressure_selected(True)
+            elif rt == "Peeq":
+                self.form.rb_peeq.setChecked(True)
+                self.peeq_selected(True)
 
             sd = FreeCAD.FEM_dialog["show_disp"]
             self.form.cb_show_displacement.setChecked(sd)
@@ -156,6 +158,7 @@ class _TaskPanelShowResult:
                                "MidPrin": (Stats[18], Stats[19], Stats[20]),
                                "MinPrin": (Stats[21], Stats[22], Stats[23]),
                                "MaxShear": (Stats[24], Stats[25], Stats[26]),
+                               "Peeq": (Stats[27], Stats[28], Stats[29]),
                                "None": (0.0, 0.0, 0.0)}
                 return match_table[type_name]
         return (0.0, 0.0, 0.0)
@@ -250,6 +253,15 @@ class _TaskPanelShowResult:
         self.set_result_stats("MPa", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
 
+    def peeq_selected(self, state):
+        FreeCAD.FEM_dialog["results_type"] = "Peeq"
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        if self.suitable_results:
+            self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.Peeq)
+        (minm, avg, maxm) = self.get_result_stats("Peeq")
+        self.set_result_stats("", minm, avg, maxm)
+        QtGui.qApp.restoreOverrideCursor()
+
     def user_defined_text(self, equation):
         FreeCAD.FEM_dialog["results_type"] = "user"
         self.form.user_def_eq.toPlainText()
@@ -263,6 +275,7 @@ class _TaskPanelShowResult:
         P2 = np.array(self.result_obj.PrincipalMed)
         P3 = np.array(self.result_obj.PrincipalMin)
         Von = np.array(self.result_obj.StressValues)
+        Peeq = np.array(self.result_obj.Peeq)
         T = np.array(self.result_obj.Temperature)
         MF = np.array(self.result_obj.MassFlowRate)
         NP = np.array(self.result_obj.NetworkPressure)
@@ -290,7 +303,7 @@ class _TaskPanelShowResult:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, UserDefinedFormula)
         self.set_result_stats("", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
-        del x, y, z, T, Von, P1, P2, P3, sx, sy, sz, ex, ey, ez, MF, NP  # Dummy use to get around flake8, varibles not being used
+        del x, y, z, T, Von, Peeq, P1, P2, P3, sx, sy, sz, ex, ey, ez, MF, NP  # Dummy use to get around flake8, varibles not being used
 
     def select_displacement_type(self, disp_type):
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -358,7 +371,8 @@ class _TaskPanelShowResult:
         PrincipalMin        --> rb_minprin
         MaxShear            --> rb_max_shear_stress
         MassFlowRate        --> rb_massflowrate
-        NetworkPressure     --> rb_networkpressure'''
+        NetworkPressure     --> rb_networkpressure
+        Peeq                --> rb_peeq'''
         if len(self.result_obj.DisplacementLengths) == 0:
             self.form.rb_abs_displacement.setEnabled(0)
         if len(self.result_obj.DisplacementVectors) == 0:
@@ -379,6 +393,8 @@ class _TaskPanelShowResult:
             self.form.rb_massflowrate.setEnabled(0)
         if len(self.result_obj.NetworkPressure) == 0:
             self.form.rb_networkpressure.setEnabled(0)
+        if len(self.result_obj.Peeq) == 0:
+            self.form.rb_peeq.setEnabled(0)
 
     def update(self):
         self.suitable_results = False
