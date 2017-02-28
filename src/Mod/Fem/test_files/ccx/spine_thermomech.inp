@@ -67,8 +67,9 @@
 Eall
 
 ***********************************************************
-** Node set for fixed constraint
+** Node sets for fixed constraint
 ** written by write_node_sets_constraints_fixed function
+** FemConstraintFixed
 *NSET,NSET=FemConstraintFixed
 5,
 6,
@@ -83,6 +84,7 @@ Eall
 ***********************************************************
 ** Node sets for temperature constraints
 ** written by write_node_sets_constraints_temperature function
+** FemConstraintTemperature
 *NSET,NSET=FemConstraintTemperature
 5,
 6,
@@ -101,6 +103,7 @@ Eall
 ** Thermal conductivity unit is kW/mm/K = t*mm/K*s^3
 ** Specific Heat unit is kJ/t/K = mm^2/s^2/K
 ** FreeCAD material name: Steel-Generic
+** MechanicalMaterial
 *MATERIAL, NAME=MechanicalMaterial
 *ELASTIC
 200000, 0.300
@@ -135,6 +138,7 @@ Nall,300.0
 ***********************************************************
 ** Fixed Constraints
 ** written by write_constraints_fixed function
+** FemConstraintFixed
 *BOUNDARY
 FemConstraintFixed,1
 FemConstraintFixed,2
@@ -144,6 +148,7 @@ FemConstraintFixed,3
 ***********************************************************
 ** Fixed temperature constraint applied
 ** written by write_constraints_temperature function
+** FemConstraintTemperature
 *BOUNDARY
 FemConstraintTemperature,11,11,310.93
 
@@ -151,6 +156,7 @@ FemConstraintTemperature,11,11,310.93
 ***********************************************************
 ** Heatflux constraints
 ** written by write_constraints_heatflux function
+** FemConstraintHeatflux
 *FILM
 ** Heat flux on face Face3
 3,F2,255.3722,0.005678
