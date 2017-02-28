@@ -415,7 +415,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.get_constraints_fixed_nodes()
         # write nodes to file
         f.write('\n***********************************************************\n')
-        f.write('** Node set for fixed constraint\n')
+        f.write('** Node sets for fixed constraint\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             f.write('*NSET,NSET=' + femobj['Object'].Name + '\n')
@@ -441,7 +441,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
         f.write('\n***********************************************************\n')
-        f.write('** Node set for plane rotation constraint\n')
+        f.write('** Node sets for plane rotation constraint\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         # info about self.constraint_conflict_nodes:
         # is used to check if MPC and constraint fixed and constraint displacement share same nodes,
