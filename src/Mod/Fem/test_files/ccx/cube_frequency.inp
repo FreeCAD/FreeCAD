@@ -413,7 +413,7 @@
 
 
 ***********************************************************
-** Element sets for materials and FEM element type (solid, shell, beam)
+** Element sets for materials and FEM element type (solid, shell, beam, fluid)
 ** written by write_element_sets_material_and_femelement_type function
 *ELSET,ELSET=MechanicalMaterialSolid
 Eall
