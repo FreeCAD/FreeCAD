@@ -51,7 +51,7 @@ def get_femelements_by_references(femmesh, femelement_table, references, femnode
             # blind fast binary search, works for volumes only
             references_femelements += get_femelements_by_femnodes_bin(femelement_table, femnodes_ele_table, ref_femnodes)  # femelements for all references
         else:
-            # standars search
+            # standard search
             references_femelements += get_femelements_by_femnodes_std(femelement_table, ref_femnodes)  # femelements for all references
     return references_femelements
 
@@ -652,7 +652,7 @@ def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
 
 
 def get_ref_edgenodes_lengths(femnodes_mesh, edge_table):
-    # calulate the appropriate node_length for every node of every mesh edge (me)
+    # calculate the appropriate node_length for every node of every mesh edge (me)
     # G. Lakshmi Narasaiah, Finite Element Analysis, p206ff
 
     #  [ (nodeID, length), ... , (nodeID, length) ]  some nodes will have more than one entry
@@ -848,7 +848,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
 
 
 def get_ref_facenodes_areas(femnodes_mesh, face_table):
-    # calulate the appropriate node_areas for every node of every mesh face (mf)
+    # calculate the appropriate node_areas for every node of every mesh face (mf)
     # G. Lakshmi Narasaiah, Finite Element Analysis, p206ff
     # FIXME only gives exact results in case of a real triangle. If for S6 or C3D10 elements
     # the midnodes are not on the line between the end nodes the area will not be a triangle
@@ -985,7 +985,7 @@ def get_ref_facenodes_areas(femnodes_mesh, face_table):
 
 
 def get_ref_shape_node_sum_geom_table(node_geom_table):
-    # shape could be Edge or Face, geom could be lenght or area
+    # shape could be Edge or Face, geom could be length or area
     # summ of legth or area for each node of the ref_shape
     node_sum_geom_table = {}
     for n, A in node_geom_table:
@@ -1076,7 +1076,7 @@ def get_reference_group_elements(obj, aPart):
 def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShape):
     '''get the elementIDs if the Reference shape is empty
     see get_analysis_group_elements() for more informatations
-    on solid meshes only material objects could have an empty reference without beeing something wrong!
+    on solid meshes only material objects could have an empty reference without being something wrong!
     face meshes could have empty ShellThickness and edge meshes could have empty BeamSection/FluidSection
     '''
     # print(group_elements)

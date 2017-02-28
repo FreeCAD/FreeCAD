@@ -131,7 +131,7 @@ void ViewProviderFemConstraintContact::updateData(const App::Property* prop)
             //define separator
             SoSeparator* sep = new SoSeparator();
 
-            //first move to correct postion
+            //first move to correct position
             SoTranslation* trans = new SoTranslation();
             SbVec3f newPos=base+scaledheight*dir*0.12f;
             trans->translation.setValue(newPos);
@@ -154,7 +154,7 @@ void ViewProviderFemConstraintContact::updateData(const App::Property* prop)
             cbe->height.setValue(scaledheight*0.25);
             cbe->width.setValue(scaledwidth*0.75);
             sep->addChild(cbe);
-            //translate postion
+            //translate position
             SoTranslation* trans2 = new SoTranslation();
             trans2->translation.setValue(SbVec3f(0,0,0));
             sep->addChild(trans2);
