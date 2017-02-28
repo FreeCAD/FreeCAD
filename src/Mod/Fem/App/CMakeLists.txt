@@ -65,6 +65,7 @@ SET(FemScripts_SRCS
     importCcxDatResults.py
     importCcxFrdResults.py
     importInpMesh.py
+    importToolsFem.py
     importVTKResults.py
     importZ88Mesh.py
     importZ88O2Results.py
