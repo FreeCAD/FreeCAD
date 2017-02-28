@@ -301,6 +301,9 @@ class FemGmshTools():
 
     def write_geo(self):
         geo = open(self.temp_file_geo, "w")
+        geo.write("// geo file for meshing with GMSH meshing software created by FreeCAD\n")
+        geo.write("\n")
+        geo.write("// open brep geometry\n")
         geo.write('Merge "' + self.temp_file_geometry + '";\n')
         geo.write("\n")
         if self.group_elements:
@@ -328,6 +331,7 @@ class FemGmshTools():
                     # print(ele_nr)
                     geo.write('Physical ' + physical_type + '("' + group + '") = {' + ele_nr + '};\n')
             geo.write("\n")
+        geo.write("// Characteristic Length\n")
         if self.ele_length_map:
             # we use the index FreeCAD which starts with 0, we need to add 1 for the index in GMSH
             geo.write("// Characteristic Length according CharacteristicLengthMap\n")
@@ -336,11 +340,15 @@ class FemGmshTools():
                 geo.write("// " + e + "\n")
                 geo.write("Characteristic Length { " + ele_nodes + " } = " + str(self.ele_length_map[e]) + ";\n")
             geo.write("\n")
+        geo.write("// min, max Characteristic Length\n")
         geo.write("Mesh.CharacteristicLengthMax = " + str(self.clmax) + ";\n")
         geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")
-        geo.write("Mesh.ElementOrder = " + self.order + ";\n")
         geo.write("\n")
-        geo.write("//optimize the mesh\n")
+        if hasattr(self.mesh_obj, 'RecombineAll') and self.mesh_obj.RecombineAll is True:
+            geo.write("// other mesh options\n")
+            geo.write("Mesh.RecombineAll = 1;\n")
+            geo.write("\n")
+        geo.write("// optimize the mesh\n")
         # GMSH tetra optimizer
         if hasattr(self.mesh_obj, 'OptimizeStd') and self.mesh_obj.OptimizeStd is True:
             geo.write("Mesh.Optimize = 1;\n")
@@ -357,16 +365,19 @@ class FemGmshTools():
         else:
             geo.write("Mesh.HighOrderOptimize = 0;  //probably needs more lines off adjustment in geo file\n")
         geo.write("\n")
-        if hasattr(self.mesh_obj, 'RecombineAll') and self.mesh_obj.RecombineAll is True:
-            geo.write("//recombine\n")
-            geo.write("Mesh.RecombineAll = 1;\n")
-            geo.write("\n")
-        geo.write("//mesh algorithm\n")
+        geo.write("// mesh order\n")
+        geo.write("Mesh.ElementOrder = " + self.order + ";\n")
+        geo.write("\n")
+        geo.write("// mesh algorithm\n")
+        geo.write("// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)\n")
         geo.write("Mesh.Algorithm = " + self.algorithm2D + ";\n")
+        geo.write("// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 5=Frontal Delaunay, 6=Frontal Hex, 7=MMG3D, 9=R-tree)\n")
         geo.write("Mesh.Algorithm3D = " + self.algorithm3D + ";\n")
         geo.write("\n")
-        geo.write("//more\n")
+        geo.write("// meshing\n")
         geo.write("Mesh  " + self.dimension + ";\n")
+        geo.write("\n")
+        geo.write("// save\n")
         geo.write("Mesh.Format = 2;\n")  # unv
         if self.analysis and self.group_elements:
             geo.write("// For each group save not only the elements but the nodes too.;\n")
@@ -374,7 +385,6 @@ class FemGmshTools():
             geo.write("// Needed for Group meshing too, because for one material there is no group defined;\n")  # belongs to Mesh.SaveAll but anly needed if there are groups
         geo.write("// Ignore Physical definitions and save all elements;\n")
         geo.write("Mesh.SaveAll = 1;\n")
-        geo.write("\n")
         geo.write('Save "' + self.temp_file_mesh + '";\n')
         geo.write("\n\n")
         geo.write("//////////////////////////////////////////////////////////////////////\n")
