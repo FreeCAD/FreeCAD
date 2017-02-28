@@ -218,7 +218,6 @@ void WaypointPy::setCont(Py::Boolean arg)
     getWaypointPtr()->Cont = (bool)arg;
 }
 
-#if PY_MAJOR_VERSION >= 3
 Py::Long WaypointPy::getTool(void) const
 {
     return Py::Long((long)getWaypointPtr()->Tool);
@@ -246,35 +245,6 @@ void WaypointPy::setBase(Py::Long arg)
     else 
         throw Py::ValueError("negative base not allowed!");
 }
-#else
-Py::Int WaypointPy::getTool(void) const
-{
-    return Py::Int((long)getWaypointPtr()->Tool);
-}
-
-void WaypointPy::setTool(Py::Int arg)
-{
-    long value = static_cast<long>(arg);
-    if (value >= 0)
-        getWaypointPtr()->Tool = value;
-    else 
-        throw Py::ValueError("negative tool not allowed!");
-}
-
-Py::Int WaypointPy::getBase(void) const
-{
-    return Py::Int((long)getWaypointPtr()->Base);
-}
-
-void WaypointPy::setBase(Py::Int arg)
-{
-    long value = static_cast<long>(arg);
-    if (value >= 0)
-        getWaypointPtr()->Base = value;
-    else 
-        throw Py::ValueError("negative base not allowed!");
-}
-#endif
 
 PyObject *WaypointPy::getCustomAttributes(const char* /*attr*/) const
 {
