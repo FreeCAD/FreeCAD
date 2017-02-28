@@ -59,6 +59,7 @@ class FemWorkbench (Workbench):
         import PyGui._CommandAnalysis
         import PyGui._CommandShellThickness
         import PyGui._CommandBeamSection
+        import PyGui._CommandFluidSection
         import PyGui._CommandMaterialSolid
         import PyGui._CommandMaterialFluid
         import PyGui._CommandMaterialMechanicalNonlinear

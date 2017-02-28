@@ -110,6 +110,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_CommandControlSolver.py
     PyGui/_CommandConstraintSelfWeight.py
     PyGui/_CommandFEMMesh2Mesh.py
+    PyGui/_CommandFluidSection.py
     PyGui/_CommandMaterialMechanicalNonlinear.py
     PyGui/_CommandMaterialSolid.py
     PyGui/_CommandMaterialFluid.py
