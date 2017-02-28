@@ -53,7 +53,8 @@ public:
                     std::vector<unsigned long>&,
                     std::vector<unsigned long>&,
                     bool &edgeOnly,
-                    bool ShowInner
+                    bool ShowInner,
+                    int MaxFacesShowInner
                    ) const;
 };
 
@@ -74,6 +75,7 @@ public:
     App::PropertyFloatConstraint LineWidth;
     App::PropertyBool     BackfaceCulling;
     App::PropertyBool     ShowInner;
+    App::PropertyInteger  MaxFacesShowInner;
 
     void attach(App::DocumentObject *pcObject);
     void setDisplayMode(const char* ModeName);
