@@ -72,7 +72,7 @@ public:
         numFacets = new QLabel();
 
         labelMin = new QLabel();
-        labelMin->setText(QString::fromLatin1("Minumum bound:"));
+        labelMin->setText(QString::fromLatin1("Minimum bound:"));
 
         labelMax = new QLabel();
         labelMax->setText(QString::fromLatin1("Maximum bound:"));

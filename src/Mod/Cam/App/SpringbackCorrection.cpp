@@ -2184,8 +2184,8 @@ std::vector<double> SpringbackCorrection::MeshCurvature(const TopoDS_Face& aFace
 bool SpringbackCorrection::MirrorMesh(std::vector<double> error)
 {
     // Flags: 0 - not yet checked
-    //       1 - no correction applied, but neccessary
-    //        2 - first correction applied and still neccessary
+    //       1 - no correction applied, but necessary
+    //        2 - first correction applied and still necessary
     //        3 - done successfully
     //        4 - done without success
     //        5 - boundary point

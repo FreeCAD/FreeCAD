@@ -95,7 +95,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
   //Mesh1.clear();
   //Mesh2.clear();
 
-  // check that the surfaces are orientable manifolds 
+  // check that the surfaces are orientable manifolds
   if (!gts_surface_is_orientable (s1)) {
     gts_object_destroy (GTS_OBJECT (s1));
     gts_object_destroy (GTS_OBJECT (s2));
@@ -107,7 +107,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
     throw Base::Exception("surface 2 is not an orientable manifold\n");
   }
 
-  // check that the surfaces are not self-intersecting 
+  // check that the surfaces are not self-intersecting
   if (check_self_intersection) {
     GtsSurface * self_intersects;
 
@@ -133,7 +133,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
     }
   }
 
-  // build bounding box tree for first surface 
+  // build bounding box tree for first surface
   tree1 = gts_bb_tree_surface (s1);
   is_open1 = gts_surface_volume (s1) < 0. ? TRUE : FALSE;
 
@@ -177,7 +177,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
     gts_surface_inter_boolean (si, s3, GTS_1_OUT_2);
   }
    
-  // check that the resulting surface is not self-intersecting 
+  // check that the resulting surface is not self-intersecting
   if (check_self_intersection) {
     GtsSurface * self_intersects;
 
@@ -192,14 +192,14 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
       gts_object_destroy (GTS_OBJECT (s3));
       gts_object_destroy (GTS_OBJECT (si));
       gts_bb_tree_destroy (tree1, TRUE);
-      gts_bb_tree_destroy (tree2, TRUE);  
+      gts_bb_tree_destroy (tree2, TRUE);
       throw Base::Exception("the resulting surface is self-intersecting\n");
     }
   }
-  // display summary information about the resulting surface 
+  // display summary information about the resulting surface
   //  if (verbose)
   //    gts_surface_print_stats (s3, stderr);
-  // write resulting surface to standard output 
+  // write resulting surface to standard output
 
   // get the standard mesh
   _Mesh.clear();
@@ -212,9 +212,9 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
   gts_object_destroy (GTS_OBJECT (s3));
   gts_object_destroy (GTS_OBJECT (si));
 
-  // destroy bounding box trees (including bounding boxes) 
+  // destroy bounding box trees (including bounding boxes)
   gts_bb_tree_destroy (tree1, TRUE);
-  gts_bb_tree_destroy (tree2, TRUE);  
+  gts_bb_tree_destroy (tree2, TRUE);
   
 
 }
@@ -223,7 +223,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
 
 
 
-/// helper function - construct a Edge out of two Vertexes if not allready there
+/// helper function - construct a Edge out of two Vertexes if not already there
 static GtsEdge * new_edge (GtsVertex * v1, GtsVertex * v2)
 {
   GtsSegment * s = gts_vertices_are_connected (v1, v2);
@@ -258,7 +258,7 @@ GtsSurface* GTSAlgos::createGTSSurface(const Mesh::MeshObject& Mesh)
     // cycling through the facets
   for (unsigned int pFIter = 0;pFIter < Mesh.getKernel().CountFacets(); pFIter++)
   {
-    // geting the three points of the facet
+    // getting the three points of the facet
     Mesh.getKernel().GetFacetPoints(pFIter,p1,p2,p3);
     
     // creating the edges and add the face to the surface
@@ -273,7 +273,7 @@ GtsSurface* GTSAlgos::createGTSSurface(const Mesh::MeshObject& Mesh)
                                                                      gts_surface_vertex_number(Surf),
                                                                      gts_surface_edge_number(Surf),
                                                                      gts_surface_is_orientable (Surf)?"orientable":"not orientable",
-                                                                     gts_surface_is_self_intersecting(Surf)?"self-intersections":"no self-intersection" ); 
+                                                                     gts_surface_is_self_intersecting(Surf)?"self-intersections":"no self-intersection" );
 
   return Surf;
 }
@@ -302,7 +302,7 @@ void GTSAlgos::fillMeshFromGTSSurface(Mesh::MeshObject& Mesh, GtsSurface* pSurfa
 //  gts_surface_foreach_vertex(pSurface,(GtsFunc) onVertices,&MeshK);
   gts_surface_foreach_face (pSurface, (GtsFunc) onFaces,&VAry);
 
-  // destroy surfaces 
+  // destroy surfaces
   //gts_object_destroy (GTS_OBJECT (pSurface));
 
   // put the facets the simple way in the mesh, totp is recalculated!

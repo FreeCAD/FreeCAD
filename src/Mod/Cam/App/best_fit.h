@@ -46,7 +46,7 @@
  It takes a mesh and a Topo_Shape as it's input parameter.
 
  As output, it gives a transformed mesh (rotation + translation)
- based on a weighted ICP-Algorithm (ICP: Iterative Closed Point) wich fits the
+ based on a weighted ICP-Algorithm (ICP: Iterative Closed Point) which fits the
  Topo_Shape
 */
 
@@ -110,7 +110,7 @@ public:
 
         \param shape      specifies the shape to be tesselated
         \param mesh       output-mesh to store the computed triangulation
-        \param deflection parameter wich determines the accuracy of the
+        \param deflection parameter which determines the accuracy of the
                           triangulation
     */
     static bool Tesselate_Shape(const TopoDS_Shape &shape, MeshCore::MeshKernel &mesh, float deflection);
@@ -119,7 +119,7 @@ public:
 
         \param aface      specifies the face to be tesselated
         \param mesh       output-mesh to store the computed triangulation
-        \param deflection parameter wich determines the accuracy of the
+        \param deflection parameter which determines the accuracy of the
                           triangulation
     */
     static bool Tesselate_Face (const TopoDS_Face  &aface, MeshCore::MeshKernel &mesh, float deflection);

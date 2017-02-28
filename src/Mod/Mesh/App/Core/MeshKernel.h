@@ -103,7 +103,7 @@ public:
     void RecalcBoundBox (void);
 
     /** Returns the point at the given index. This method is rather slow and should be
-     * called occassionally only. For fast access the MeshPointIterator interfsce should
+     * called occasionally only. For fast access the MeshPointIterator interfsce should
      * be used.
      */
     inline MeshPoint GetPoint (unsigned long ulIndex) const;
@@ -114,7 +114,7 @@ public:
     std::vector<Base::Vector3f> CalcVertexNormals() const;
 
     /** Returns the facet at the given index. This method is rather slow and should be
-     * called occassionally only. For fast access the MeshFacetIterator interface should
+     * called occasionally only. For fast access the MeshFacetIterator interface should
      * be used.
      */
     inline MeshGeomFacet GetFacet (unsigned long ulIndex) const;
@@ -130,7 +130,7 @@ public:
                                     unsigned long &rulNIdx1, unsigned long &rulNIdx2) const;
 
     /** Determines all facets that are associated to this point. This method is very
-     * slow and should be called occassionally only.
+     * slow and should be called occasionally only.
      */
     std::vector<unsigned long> HasFacets (const MeshPointIterator &rclIter) const;
 
@@ -267,11 +267,11 @@ public:
     /** @name Modification */
     //@{
     /** Adds a single facet to the data structure. This method is very slow and should
-     * be called occassionally only.
+     * be called occasionally only.
      */
     MeshKernel& operator += (const MeshGeomFacet &rclSFacet);
     /** Adds a single facet to the data structure. This method is very slow and should
-     * be called occassionally only. This does the same as the += operator above.
+     * be called occasionally only. This does the same as the += operator above.
      */
     void AddFacet(const MeshGeomFacet &rclSFacet);
     /** Adds an array of facets to the data structure. This method keeps temporarily 
@@ -300,7 +300,7 @@ public:
      *
      * Example:
      * We have a mesh with p points and f facets where we want append new points and facets to.
-     * Let's assume that the first facet of \a rclFAry refereneces the 1st, 2nd and 3rd points
+     * Let's assume that the first facet of \a rclFAry references the 1st, 2nd and 3rd points
      * of \a rclPAry then its indices must be p, p+1, p+2 -- not 0,1,2. This is due to the fact
      * that facets of \a rclFAry can also reference point indices of the internal point array.
      * @note This method is quite expensive and should be rarely used.
@@ -330,7 +330,7 @@ public:
      * \li Adjust the indices of the neighbour facets of all facets.
      * \li If there is no neighbour facet check if the points can be deleted.
      * True is returned if the facet could be deleted.
-     * @note This method is very slow and should only be called occassionally.
+     * @note This method is very slow and should only be called occasionally.
      * @note After deletion of the facet \a rclIter becomes invalid and must not 
      * be used before setting to a new position.
      */
@@ -343,14 +343,14 @@ public:
      * @note This method overwrites the free usable property of each mesh point.
      * @note This method also removes points from the structure that are no longer
      * referenced by the facets.
-     * @note This method is very slow and should only be called occassionally.
+     * @note This method is very slow and should only be called occasionally.
      */
     void DeleteFacets (const std::vector<unsigned long> &raulFacets);
     /** Deletes the point the iterator points to. The deletion of a point requires the following step:
      * \li Find all associated facets to this point.
      * \li Delete these facets.
      * True is returned if the point could be deleted.
-     * @note This method is very slow and should only be called occassionally.
+     * @note This method is very slow and should only be called occasionally.
      * @note After deletion of the point \a rclIter becomes invalid and must not 
      * be used before setting to a new position.
      */

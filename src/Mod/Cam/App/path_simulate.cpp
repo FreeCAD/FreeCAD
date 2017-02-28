@@ -56,7 +56,7 @@ path_simulate::path_simulate(const std::vector<Handle_Geom_BSplineCurve> &BSplin
     m_it1 = m_BSplineTop.begin();
     m_it2 = m_BSplineBottom.begin();
 
-    //Initalise some vars
+    //Initialise some vars
     gp_Pnt p(0,0,0);
     gp_Pnt q(0,0,0);
 
@@ -117,7 +117,7 @@ double path_simulate::GetLength(GeomAdaptor_Curve& curve, const Standard_Real st
 
     if ( eParam > lastParameter )
     {
-        //get the first part of the lenght
+        //get the first part of the length
         Standard_Real l1 = GetLength(curve,firstParameter,eParam-lastParameter);
         Standard_Real l2 = GetLength(curve,sParam,lastParameter);
         return l1 + l2;
