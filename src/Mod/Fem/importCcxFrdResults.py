@@ -89,8 +89,8 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
             span = max(x_span, y_span, z_span)
 
         if (not analysis):
-            import FemMeshTools
-            mesh = FemMeshTools.make_femmesh(m)
+            import importToolsFem
+            mesh = importToolsFem.make_femmesh(m)
 
             if len(m['Nodes']) > 0:
                 mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', 'ResultMesh')
