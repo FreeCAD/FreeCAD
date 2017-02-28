@@ -214,8 +214,8 @@ class _TaskPanelFemFluidSection:
         self.form.if_colebrooke_grain_diameter.setText(self.ColebrookeGrainDiameter.UserString)
         self.form.sb_colebrooke_form_factor.setValue(self.ColebrookeFormFactor)
         for i in range(len(self.PumpFlowRate)):
-            self.form.tw_pump_characteristics.setItem(i,0,QtGui.QTableWidgetItem(str(self.PumpFlowRate[i])))
-            self.form.tw_pump_characteristics.setItem(i,1,QtGui.QTableWidgetItem(str(self.PumpHeadLoss[i])))
+            self.form.tw_pump_characteristics.setItem(i, 0, QtGui.QTableWidgetItem(str(self.PumpFlowRate[i])))
+            self.form.tw_pump_characteristics.setItem(i, 1, QtGui.QTableWidgetItem(str(self.PumpHeadLoss[i])))
         self.rebuild_list_References()
 
     def sectiontype_changed(self, index):
