@@ -47,11 +47,8 @@ class _CommandShowResult(FemCommands):
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
             if sel[0].isDerivedFrom("Fem::FemResultObject"):
-                self.result_object = sel[0]
-
-        import _ViewProviderFemResultMechanical
-        if _ViewProviderFemResultMechanical.is_result_obj_valid(self.result_object):
-            self.result_object.ViewObject.startEditing()
+                result_object = sel[0]
+                result_object.ViewObject.startEditing()
 
 
 FreeCADGui.addCommand('Fem_ShowResult', _CommandShowResult())
