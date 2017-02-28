@@ -418,7 +418,9 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** Node sets for fixed constraint\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            f.write('*NSET,NSET=' + femobj['Object'].Name + '\n')
+            fix_obj = femobj['Object']
+            f.write('** ' + fix_obj.Label + '\n')
+            f.write('*NSET,NSET=' + fix_obj.Name + '\n')
             for n in femobj['Nodes']:
                 f.write(str(n) + ',\n')
 
@@ -430,7 +432,9 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** Node sets for prescribed displacement constraint\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.displacement_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            f.write('*NSET,NSET=' + femobj['Object'].Name + '\n')
+            disp_obj = femobj['Object']
+            f.write('** ' + disp_obj.Label + '\n')
+            f.write('*NSET,NSET=' + disp_obj.Name + '\n')
             for n in femobj['Nodes']:
                 f.write(str(n) + ',\n')
 
@@ -450,6 +454,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         for femobj in self.planerotation_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             l_nodes = femobj['Nodes']
             fric_obj = femobj['Object']
+            f.write('** ' + fric_obj.Label + '\n')
             f.write('*NSET,NSET=' + fric_obj.Name + '\n')
             # Code to extract nodes and coordinates on the PlaneRotation support face
             nodes_coords = []
@@ -479,6 +484,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         obj = 0
         for femobj in self.contact_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             contact_obj = femobj['Object']
+            f.write('** ' + contact_obj.Label + '\n')
             cnt = 0
             obj = obj + 1
             for o, elem_tup in contact_obj.References:
@@ -504,6 +510,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.transform_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             trans_obj = femobj['Object']
+            f.write('** ' + trans_obj.Label + '\n')
             if trans_obj.TransformType == "Rectangular":
                 f.write('*NSET,NSET=Rect' + trans_obj.Name + '\n')
             elif trans_obj.TransformType == "Cylindrical":
@@ -519,7 +526,9 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** Node sets for temperature constraints\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.temperature_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            f.write('*NSET,NSET=' + femobj['Object'].Name + '\n')
+            temp_obj = femobj['Object']
+            f.write('** ' + temp_obj.Label + '\n')
+            f.write('*NSET,NSET=' + temp_obj.Name + '\n')
             for n in femobj['Nodes']:
                 f.write(str(n) + ',\n')
 
@@ -537,6 +546,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             mat_obj = femobj['Object']
             mat_info_name = mat_obj.Material['Name']
             mat_name = mat_obj.Name
+            mat_label = mat_obj.Label
             # get material properties of solid material, Currently in SI units: M/kg/s/Kelvin
             if mat_obj.Category == 'Solid':
                 YM = FreeCAD.Units.Quantity(mat_obj.Material['YoungsModulus'])
@@ -558,6 +568,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                     DV_in_tmms = float(DV.getValueAs('t/mm/s'))
             # write material properties
             f.write('** FreeCAD material name: ' + mat_info_name + '\n')
+            f.write('** ' + mat_label + '\n')
             f.write('*MATERIAL, NAME=' + mat_name + '\n')
             if mat_obj.Category == 'Solid':
                 f.write('*ELASTIC\n')
@@ -732,6 +743,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** Fixed Constraints\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            f.write('** ' + femobj['Object'].Label + '\n')
             fix_obj_name = femobj['Object'].Name
             f.write('*BOUNDARY\n')
             f.write(fix_obj_name + ',1\n')
@@ -748,6 +760,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** Displacement constraint applied\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.displacement_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            f.write('** ' + femobj['Object'].Label + '\n')
             disp_obj = femobj['Object']
             disp_obj_name = disp_obj.Name
             f.write('*BOUNDARY\n')
@@ -787,6 +800,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         for femobj in self.contact_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             obj = obj + 1
             contact_obj = femobj['Object']
+            f.write('** ' + contact_obj.Label + '\n')
             f.write('*CONTACT PAIR, INTERACTION=INT' + str(obj) + ',TYPE=SURFACE TO SURFACE\n')
             ind_surf = "IND" + str(obj)
             dep_surf = "DEP" + str(obj)
@@ -806,6 +820,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** PlaneRotation Constraints\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.planerotation_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            f.write('** ' + femobj['Object'].Label + '\n')
             fric_obj_name = femobj['Object'].Name
             f.write('*MPC\n')
             f.write('PLANE,' + fric_obj_name + '\n')
@@ -816,6 +831,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for trans_object in self.transform_objects:
             trans_obj = trans_object['Object']
+            f.write('** ' + trans_obj.Label + '\n')
             if trans_obj.TransformType == "Rectangular":
                 f.write('*TRANSFORM, NSET=Rect' + trans_obj.Name + ', TYPE=R\n')
                 coords = FemMeshTools.get_rectangular_coords(trans_obj)
@@ -831,7 +847,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.selfweight_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             selwei_obj = femobj['Object']
-            f.write('** ' + selwei_obj.Name + '\n')
+            f.write('** ' + selwei_obj.Label + '\n')
             f.write('*DLOAD\n')
             f.write('Eall,GRAV,9810,' + str(selwei_obj.Gravity_x) + ',' + str(selwei_obj.Gravity_y) + ',' + str(selwei_obj.Gravity_z) + '\n')
             f.write('\n')
@@ -848,9 +864,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         f.write('*CLOAD\n')
         for femobj in self.force_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            frc_obj_name = femobj['Object'].Name
+            f.write('** ' + femobj['Object'].Label + '\n')
             direction_vec = femobj['Object'].DirectionVector
-            f.write('** ' + frc_obj_name + '\n')
             for ref_shape in femobj['NodeLoadTable']:
                 f.write('** ' + ref_shape[0] + '\n')
                 for n in sorted(ref_shape[1]):
@@ -876,6 +891,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             prs_obj = femobj['Object']
+            f.write('** ' + prs_obj.Label + '\n')
             rev = -1 if prs_obj.Reversed else 1
             f.write('*DLOAD\n')
             for ref_shape in femobj['PressureFaces']:
@@ -889,6 +905,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for ftobj in self.temperature_objects:
             fixedtemp_obj = ftobj['Object']
+            f.write('** ' + fixedtemp_obj.Label + '\n')
             NumberOfNodes = len(ftobj['Nodes'])
             if fixedtemp_obj.ConstraintType == "Temperature":
                 f.write('*BOUNDARY\n')
@@ -905,6 +922,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for hfobj in self.heatflux_objects:
             heatflux_obj = hfobj['Object']
+            f.write('** ' + heatflux_obj.Label + '\n')
             if heatflux_obj.ConstraintType == "Convection":
                 f.write('*FILM\n')
                 for o, elem_tup in heatflux_obj.References:
@@ -938,6 +956,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.get_constraints_fluidsection_nodes()
         for femobj in self.fluidsection_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             fluidsection_obj = femobj['Object']
+            f.write('** ' + fluidsection_obj.Label + '\n')
             if fluidsection_obj.SectionType == 'Liquid':
                 if fluidsection_obj.LiquidSectionType == 'PIPE INLET':
                     f.write('**Fluid Section Inlet \n')
