@@ -1313,6 +1313,7 @@ def get_ccx_elset_solid_name(mat_name, solid_name=None, mat_short_name=None):
     else:
         return mat_name + solid_name
 
+<<<<<<< 1a4385e0a55ef98c44bf11d4a4f63366a705416a
 
 def liquid_section_def(obj, section_type):
     if section_type == 'PIPE MANNING':
@@ -1370,4 +1371,4 @@ def liquid_section_def(obj, section_type):
         return section_geo
     else:
         return ''
-#  @}
+##  @}
