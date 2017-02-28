@@ -86,7 +86,7 @@ class _FemFluidSection:
         obj.ChannelSectionType = 'NONE'
         obj.ManningArea = 10.0
         obj.ManningRadius = 1.0
-        obj.ManningCoefficient = 0.0015 # has units of s/mm^(1/3)
+        obj.ManningCoefficient = 0.0015  # has units of s/mm^(1/3)
         obj.EnlargeArea1 = 10.0
         obj.EnlargeArea2 = 20.0
         obj.ContractArea1 = 20.0

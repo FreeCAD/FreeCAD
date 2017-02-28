@@ -595,12 +595,12 @@ def readResult(frd_input):
         if mode_massflow_found and (line[1:3] == "-1"):
             elem = int(line[4:13])
             massflow = float(line[13:25])
-            mode_massflow[elem] = (massflow * 1000) # convert units to kg/s from t/s
+            mode_massflow[elem] = (massflow * 1000)  # convert units to kg/s from t/s
             if inout_nodes_exist:
                 for i in range(len(inout_nodes)):
                     if elem == int(inout_nodes[i][1]):
                         node = int(inout_nodes[i][2])
-                        mode_massflow[node] = (massflow * 1000) # convert units to kg/s from t/s
+                        mode_massflow[node] = (massflow * 1000)  # convert units to kg/s from t/s
         if line[5:11] == "STPRES":
             mode_networkpressure_found = True
         # we found a network pressure line in the frd file

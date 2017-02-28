@@ -1453,7 +1453,6 @@ def use_correct_fluidinout_ele_def(FluidInletoutlet_ele, fileName):
     line = f.readline()
     cnt = cnt + 1
 
-
     # obtain element line numbers for inlet and outlet
     while (len(line) > 1):
         ind = line.find(',')
