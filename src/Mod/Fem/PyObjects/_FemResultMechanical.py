@@ -67,6 +67,10 @@ class _FemResultMechanical():
 
         obj.addProperty("App::PropertyFloatList", "MaxShear", "Fem", "List of Maximum Shear stress values", True)
 
+        obj.addProperty("App::PropertyFloatList", "MassFlowRate", "Fem", "List of mass flow rate values", True)
+
+        obj.addProperty("App::PropertyFloatList", "NetworkPressure", "Fem", "List of network pressure values", True)
+
         obj.addProperty("App::PropertyFloatList", "UserDefined", "Fem", "User Defined Results", True)
 
         # temperature field is needed in the thermal stress analysis
