@@ -419,8 +419,9 @@
 Eall
 
 ***********************************************************
-** Node set for fixed constraint
+** Node sets for fixed constraint
 ** written by write_node_sets_constraints_fixed function
+** FemConstraintFixed
 *NSET,NSET=FemConstraintFixed
 1,
 2,
@@ -469,6 +470,7 @@ Eall
 ** written by write_materials function
 ** Young's modulus unit is MPa = N/mm2
 ** FreeCAD material name: Steel-Generic
+** MechanicalMaterial
 *MATERIAL, NAME=MechanicalMaterial
 *ELASTIC
 200000, 0.300
@@ -488,6 +490,7 @@ Eall
 ***********************************************************
 ** Fixed Constraints
 ** written by write_constraints_fixed function
+** FemConstraintFixed
 *BOUNDARY
 FemConstraintFixed,1
 FemConstraintFixed,2
@@ -547,6 +550,7 @@ FemConstraintFixed,3
 ***********************************************************
 ** Element + CalculiX face + load in [MPa]
 ** written by write_constraints_pressure function
+** FemConstraintPressure
 *DLOAD
 ** FemConstraintPressure: face load
 3,P1,1000.0
