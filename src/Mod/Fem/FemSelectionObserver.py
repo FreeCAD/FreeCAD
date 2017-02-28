@@ -44,4 +44,4 @@ class FemSelectionObserver:
         # on double click on a vertex of a solid sub is None and obj is the solid
         self.parseSelectionFunction(self.added_obj)
 
-#  @}
+##  @}

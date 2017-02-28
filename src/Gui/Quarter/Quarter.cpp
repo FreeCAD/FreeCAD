@@ -121,22 +121,24 @@
   \subpage examples
 */
 
-/*!
-  \page examples More Examples
-
-  The examples code is included in Quarter and can be found in the
-  src/examples subdirectory.
-
-  \subpage directui
-
-  \subpage dynamicui
-
-  \subpage inheritui
-
-  \subpage mdi
-
-  \subpage examiner
-*/
+// The subsequent doxygen referenced page/subpages do not exis in the copy of Quarter used within FreeCad.
+// To preserve the history and their origin the doxygen commands have been disabled but left in the file.
+// /*!
+//  \page examples More Examples
+//
+//  The examples code is included in Quarter and can be found in the
+//  src/examples subdirectory.
+//
+//  \subpage directui
+//
+//  \subpage dynamicui
+//
+//  \subpage inheritui
+//
+//  \subpage mdi
+//
+//  \subpage examiner
+//*/
 
 #include <cstdio>
 #include <Inventor/SoDB.h>
