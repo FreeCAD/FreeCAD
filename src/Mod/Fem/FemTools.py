@@ -157,6 +157,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # [{'Object':heatflux_constraints, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':initialtemperature_constraints, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':beam_sections, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':fluid_sections, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':contact_constraints, 'xxxxxxxx':value}, {}, ...]
 
@@ -191,6 +192,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # set of beam sections from the analysis. Updated with update_objects
         # Individual beam sections are Proxy.Type "FemBeamSection"
         self.beam_sections = []
+        ## @var fluid_sections
+        # set of fluid sections from the analysis. Updated with update_objects
+        # Individual fluid sections are Proxy.Type "FemFluidSection"
+        self.fluid_sections = []
         ## @var shell_thicknesses
         # set of shell thicknesses from the analysis. Updated with update_objects
         # Individual shell thicknesses are Proxy.Type "FemShellThickness"
@@ -301,6 +306,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
                 self.beam_sections.append(beam_section_dict)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemFluidSection":
+                fluid_section_dict = {}
+                fluid_section_dict['Object'] = m
+                self.fluid_sections.append(fluid_section_dict)
             elif hasattr(m, "Proxy") and m.Proxy.Type == "FemShellThickness":
                 shell_thickness_dict = {}
                 shell_thickness_dict['Object'] = m
@@ -338,8 +347,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if self.mesh:
             if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount > 0 and not self.shell_thicknesses:
                 message += "FEM mesh has no volume elements, either define a shell thicknesses or provide a FEM mesh with volume elements.\n"
-            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount > 0 and not self.beam_sections:
-                message += "FEM mesh has no volume and no shell elements, either define a beam section or provide a FEM mesh with volume elements.\n"
+            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount > 0 and not self.beam_sections and not self.fluid_sections:
+                message += "FEM mesh has no volume and no shell elements, either define a beam/fluid section or provide a FEM mesh with volume elements.\n"
             if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount == 0:
                 message += "FEM mesh has neither volume nor shell or edge elements. Provide a FEM mesh with elements!\n"
         # materials linear and nonlinear
@@ -353,14 +362,16 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 has_no_references = True
         for m in self.materials_linear:
             mat_map = m['Object'].Material
-            if 'YoungsModulus' in mat_map:
-                # print Units.Quantity(mat_map['YoungsModulus']).Value
-                if not Units.Quantity(mat_map['YoungsModulus']).Value:
-                    message += "Value of YoungsModulus is set to 0.0.\n"
-            else:
-                message += "No YoungsModulus defined for at least one material.\n"
-            if 'PoissonRatio' not in mat_map:
-                message += "No PoissonRatio defined for at least one material.\n"  # PoissonRatio is allowed to be 0.0 (in ccx), but it should be set anyway.
+            mat_obj = m['Object']
+            if mat_obj.Category == 'Solid':
+                if 'YoungsModulus' in mat_map:
+                    # print Units.Quantity(mat_map['YoungsModulus']).Value
+                    if not Units.Quantity(mat_map['YoungsModulus']).Value:
+                        message += "Value of YoungsModulus is set to 0.0.\n"
+                else:
+                    message += "No YoungsModulus defined for at least one material.\n"
+                if 'PoissonRatio' not in mat_map:
+                    message += "No PoissonRatio defined for at least one material.\n"  # PoissonRatio is allowed to be 0.0 (in ccx), but it should be set anyway.
             if self.analysis_type == "frequency" or self.selfweight_constraints:
                 if 'Density' not in mat_map:
                     message += "No Density defined for at least one material.\n"
@@ -389,14 +400,18 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # no check in the regard of loads (constraint force, pressure, self weight) is done because an analysis without loads at all is an valid analysis too
         if self.analysis_type == "thermomech":
             if not self.initialtemperature_constraints:
-                message += "Thermomechanical analysis: No initial temperature defined.\n"
+                if not self.fluid_sections:
+                    message += "Thermomechanical analysis: No initial temperature defined.\n"
             if len(self.initialtemperature_constraints) > 1:
                 message += "Thermomechanical analysis: Only one initial temperature is allowed.\n"
-        # beam sections and shell thicknesses
+        # beam sections, fluid sections and shell thicknesses
         if self.beam_sections:
             if self.shell_thicknesses:
                 # this needs to be checked only once either here or in shell_thicknesses
                 message += "Beam Sections and shell thicknesses in one analysis is not supported at the moment.\n"
+            if self.fluid_sections:
+                # this needs to be checked only once either here or in shell_thicknesses
+                message += "Beam Sections and Fluid Sections in one analysis is not supported at the moment.\n"
             has_no_references = False
             for b in self.beam_sections:
                 if len(b['Object'].References) == 0:
@@ -420,6 +435,22 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                     message += "Shell thicknesses defined but FEM mesh has volume elements.\n"
                 if self.mesh.FemMesh.FaceCount == 0:
                     message += "Shell thicknesses defined but FEM mesh has no shell elements.\n"
+        if self.fluid_sections:
+            if not self.selfweight_constraints:
+                message += "A fluid network analysis requires self weight constraint to be applied"
+            if self.analysis_type != "thermomech":
+                message += "A fluid network analysis can only be done in a thermomech analysis"
+            has_no_references = False
+            for f in self.fluid_sections:
+                if len(f['Object'].References) == 0:
+                    if has_no_references is True:
+                        message += "More than one fluid section has an empty references list (Only one empty references list is allowed!).\n"
+                    has_no_references = True
+            if self.mesh:
+                if self.mesh.FemMesh.FaceCount > 0 or self.mesh.FemMesh.VolumeCount > 0:
+                    message += "Fluid sections defined but FEM mesh has volume or shell elements.\n"
+                if self.mesh.FemMesh.EdgeCount == 0:
+                    message += "Fluid sections defined but FEM mesh has no edge elements.\n"
         return message
 
     ## Sets base_name
