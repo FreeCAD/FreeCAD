@@ -43,7 +43,7 @@ class MeshFacet;
 # define cMin    15.0
 # define toolRad  5.0
 
-/** @brief a struct refering to the edges of the input-shape
+/** @brief a struct referring to the edges of the input-shape
  
     @param anEdge    edge
     @param aFace     vector of faces limited by edge
@@ -60,7 +60,7 @@ struct EdgeStruct
     double MinOffset;
 };
 
-/** @brief a struct refering to the mesh-points of the input-shape 
+/** @brief a struct referring to the mesh-points of the input-shape 
 
     @param index   index of the mesh-point
     @param minCurv minimum curvature-radius
@@ -196,7 +196,7 @@ public:
     //bool InsideCheck(Base::Vector3f pnt, Base::Vector3f normal, std::vector<Base::Vector3f> Neib);
 
     //MeshCore::MeshKernel BuildMesh(Handle_Poly_Triangulation aTri, std::vector<Base::Vector3f> TrPoints);
-    /** @brief returns index-value wich specifies the boundary-points of the
+    /** @brief returns index-value which specifies the boundary-points of the
                input-mesh
 
         @param mesh     input-mesh
@@ -207,7 +207,7 @@ public:
     /** @brief smooths input-mesh 
 
         @param mesh           input-mesh
-        @param maxTranslation value wich stands for the maximum deviation
+        @param maxTranslation value which stands for the maximum deviation
                               from the initial-mesh
     */
     bool SmoothMesh(MeshCore::MeshKernel &mesh, double maxTranslation);
@@ -216,7 +216,7 @@ public:
         @param mesh           input-mesh
         @param indicies       vector of indicies of the mesh-points for
                               smoothing
-        @param maxTranslation value wich stands for the maximum deviation
+        @param maxTranslation value which stands for the maximum deviation
                               from the initial-mesh
     */
     bool SmoothMesh(MeshCore::MeshKernel &mesh, std::vector<int> indicies, double maxTranslation);
@@ -305,7 +305,7 @@ private:
     //std::vector<MeshCore::MeshFacet> m_RegionBounds;
     /** @brief external setting-parameters*/
     CuttingToolsSettings m_set;
-    /** @brief index wich specifies the current ring-neighbourhood for the
+    /** @brief index which specifies the current ring-neighbourhood for the
                region-growing-algorithm*/
     int m_RingCurrent;
 private:
@@ -328,12 +328,12 @@ private:
                points */
     std::vector<double> m_Offset;
 public:
-    /** @brief map wich links mesh-point to mesh-index*/
+    /** @brief map which links mesh-point to mesh-index*/
     std::map<Base::Vector3f,MeshPnt,MeshPntLess > MeshMap;
     /** @brief map over all edges*/
     std::map<TopoDS_Edge, std::vector<double>, Edge_Less> EdgeMap;
 
-    /** @brief vector containing the user-specified faces wich stands fix
+    /** @brief vector containing the user-specified faces which stands fix
                during the springback-correction*/
     std::vector<TopoDS_Face> m_FixFaces;
 };

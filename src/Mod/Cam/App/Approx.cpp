@@ -849,7 +849,7 @@ void Approximate::ErrorApprox()
     
 	anOutputFile << "Constructing" << std::endl;
     ublas::matrix<double> C_Temp(NumOfPoints,3);
-    anOutputFile << "C_Temp succesfully constructed" << std::endl;
+    anOutputFile << "C_Temp successfully constructed" << std::endl;
     //Time saving... C_Temp matrix is constant for all time
 
 	anOutputFile << "number of points: " << NumOfPoints << std::endl;
@@ -868,7 +868,7 @@ void Approximate::ErrorApprox()
 		anOutputFile << "size(B_Matrix): " <<  NumOfPoints << " x " << (MainNurb.MaxU+1)*(MainNurb.MaxV+1) << std::endl;
         ublas::matrix<double> B_Matrix(NumOfPoints,(MainNurb.MaxU+1)*(MainNurb.MaxV+1));
 		anOutputFile << "********************************" << endl;
-        anOutputFile << "B_Matrix succesfully constructed" << std::endl;
+        anOutputFile << "B_Matrix successfully constructed" << std::endl;
         anOutputFile << "Preparing B-Matrix..." << std::endl;
 
         std::vector<double> N_u(MainNurb.MaxU+1, 0.0);
@@ -941,7 +941,7 @@ void Approximate::ErrorApprox()
         G_Matrix.resize(1,1, false);
         G_Matrix.clear();
         ublas::compressed_matrix<double> E_Matrix((MainNurb.MaxU+1)*(MainNurb.MaxV+1), (MainNurb.MaxU+1)*(MainNurb.MaxV+1));
-        anOutputFile << "E_Matrix succesfully constructed" << std::endl;
+        anOutputFile << "E_Matrix successfully constructed" << std::endl;
         anOutputFile << "Smoothing..." << std::endl;
         eFair2(E_Matrix);
 		

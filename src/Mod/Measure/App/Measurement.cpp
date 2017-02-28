@@ -370,7 +370,7 @@ Base::Vector3d Measurement::delta() const
 
     if(measureType == Points) {
         if(numRefs == 2) {
-            // Keep Seperate case for two points to reduce need for complex algorithm
+            // Keep separate case for two points to reduce need for complex algorithm
             TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str());
             TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(1).c_str());
 

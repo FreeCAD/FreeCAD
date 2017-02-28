@@ -206,7 +206,7 @@ public:
   /** Searches for the nearest facet in a given grid element and returns the facet index and the actual distance. */
   void SearchNearestFacetInGrid(unsigned long ulX, unsigned long ulY, unsigned long ulZ, const Base::Vector3f &rclPt,
                                 float &rfMinDist, unsigned long &rulFacetInd) const;
-  /** Does basically the same as the method above unless that grid neighbours upto the order of \a ulDistance
+  /** Does basically the same as the method above unless that grid neighbours up to the order of \a ulDistance
    * are introduced into the search. */
   void SearchNearestFacetInHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ, unsigned long ulDistance, 
                                  const Base::Vector3f &rclPt, unsigned long &rulFacetInd, float &rfMinDist) const;

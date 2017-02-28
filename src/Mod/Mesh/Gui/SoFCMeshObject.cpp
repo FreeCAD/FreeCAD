@@ -682,7 +682,7 @@ SoFCMeshObjectShape::Binding SoFCMeshObjectShape::findMaterialBinding(SoState * 
 
 /**
  * Renders the triangles of the complete mesh.
- * FIXME: Do it the same way as Coin did to have only one implementation which is controled by defines
+ * FIXME: Do it the same way as Coin did to have only one implementation which is controlled by defines
  * FIXME: Implement using different values of transparency for each vertex or face
  */
 void SoFCMeshObjectShape::drawFaces(const Mesh::MeshObject * mesh, SoMaterialBundle* mb,
@@ -1219,7 +1219,7 @@ SoFCMeshSegmentShape::Binding SoFCMeshSegmentShape::findMaterialBinding(SoState 
 
 /**
  * Renders the triangles of the complete mesh.
- * FIXME: Do it the same way as Coin did to have only one implementation which is controled by defines
+ * FIXME: Do it the same way as Coin did to have only one implementation which is controlled by defines
  * FIXME: Implement using different values of transparency for each vertex or face
  */
 void SoFCMeshSegmentShape::drawFaces(const Mesh::MeshObject * mesh, SoMaterialBundle* mb,

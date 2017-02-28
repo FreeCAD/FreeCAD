@@ -135,7 +135,7 @@ void SoFCMeshNode::setMesh(const Mesh::MeshObject* mesh)
  * If \a simplest is true then the model is built from the bounding box instead.
  *
  * For every move event the complete data set must be iterated to refresh internal Inventor data @see generatePrimitives(). 
- * Doing this very often for very huge data sets slows down the system noticable. Using a rough model as proxy instead of the orignal 
+ * Doing this very often for very huge data sets slows down the system noticeably. Using a rough model as proxy instead of the orignal 
  * data set can speed up the user interaction extremely. 
  * @note The proxy will never be displayed. It's just used for the picking mechanism.
  * @note The usage of the proxy might be confusing a little bit due to the fact that some details get lost. So it'll be possible

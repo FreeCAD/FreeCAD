@@ -209,7 +209,7 @@ void CmdMeshUnion::activated(int)
         if (found) {
             QMessageBox::critical(Gui::getMainWindow(),
                 qApp->translate("Mesh_Union", "OpenSCAD"),
-                qApp->translate("Mesh_Union", "Unknwon error occured while running OpenSCAD."));
+                qApp->translate("Mesh_Union", "Unknown error occurred while running OpenSCAD."));
         }
         else {
             QMessageBox::warning(Gui::getMainWindow(),
@@ -279,7 +279,7 @@ void CmdMeshDifference::activated(int)
         if (found) {
             QMessageBox::critical(Gui::getMainWindow(),
                 qApp->translate("Mesh_Union", "OpenSCAD"),
-                qApp->translate("Mesh_Union", "Unknwon error occured while running OpenSCAD."));
+                qApp->translate("Mesh_Union", "Unknown error occurred while running OpenSCAD."));
         }
         else {
             QMessageBox::warning(Gui::getMainWindow(),
@@ -349,7 +349,7 @@ void CmdMeshIntersection::activated(int)
         if (found) {
             QMessageBox::critical(Gui::getMainWindow(),
                 qApp->translate("Mesh_Union", "OpenSCAD"),
-                qApp->translate("Mesh_Union", "Unknwon error occured while running OpenSCAD."));
+                qApp->translate("Mesh_Union", "Unknown error occurred while running OpenSCAD."));
         }
         else {
             QMessageBox::warning(Gui::getMainWindow(),

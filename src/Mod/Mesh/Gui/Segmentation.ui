@@ -60,7 +60,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Minumum number of faces</string>
+         <string>Minimum number of faces</string>
         </property>
        </widget>
       </item>
