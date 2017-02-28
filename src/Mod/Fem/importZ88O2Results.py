@@ -146,7 +146,7 @@ def read_z88_disp(z88_disp_input):
     disp_file = '/pathtofile/z88o2.txt'
     importZ88O2Results.import_z88_disp(disp_file , fea.analysis)
 
-    The FreeCAD file needs to have an Analysis and an appropiate FEM Mesh
+    The FreeCAD file needs to have an Analysis and an appropriate FEM Mesh
     '''
     nodes = {}
     mode_disp = {}

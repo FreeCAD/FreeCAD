@@ -200,7 +200,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         inpfileMain.write('** written by femmesh.writeABAQUS\n')
         inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_Elem_sets.inp \n")
 
-        # create seperate inputfiles for each node set or constraint
+        # create separate inputfiles for each node set or constraint
         if self.fixed_objects or self.displacement_objects or self.planerotation_objects:
             inpfileNodes = open(name + "_Node_sets.inp", 'w')
         if self.analysis_type == "thermomech" and self.temperature_objects:
@@ -253,7 +253,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         if self.analysis_type == "thermomech" and self.temperature_objects:
             self.write_node_sets_constraints_temperature(inpfileNodeTemp)
 
-        # include seperately written temperature constraint in input file
+        # include separately written temperature constraint in input file
         if self.analysis_type == "thermomech":
             inpfileMain.write('\n***********************************************************\n')
             inpfileMain.write('**Node sets for temperature constraint\n')
@@ -321,7 +321,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             if self.fluidsection_objects:
                 self.write_constraints_fluidsection(inpfileMain)
 
-        # include seperately written constraints in input file
+        # include separately written constraints in input file
         inpfileMain.write('\n***********************************************************\n')
         inpfileMain.write('** Node loads\n')
         inpfileMain.write('** written by write_constraints_force\n')
@@ -725,7 +725,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 self.solver_obj.TimeEnd = 1.0
             elif self.analysis_type == 'static' or self.analysis_type == 'frequency':
                 pass  # not supported for static and frequency!
-        # ANALYSIS paramter line
+        # ANALYSIS parameter line
         analysis_parameter = ''
         if self.analysis_type == 'static':
             if self.solver_obj.IterationsUserDefinedIncrementations:
@@ -827,7 +827,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
 
     def write_constraints_transform(self, f):
         f.write('\n***********************************************************\n')
-        f.write('** Transform Constaints\n')
+        f.write('** Transform Constraints\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for trans_object in self.transform_objects:
             trans_obj = trans_object['Object']
@@ -853,7 +853,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             f.write('\n')
         # grav (erdbeschleunigung) is equal for all elements
         # should be only one constraint
-        # different elment sets for different density are written in the material element sets allready
+        # different elment sets for different density are written in the material element sets already
 
     def write_constraints_force(self, f):
         # check shape type of reference shape and get node loads
@@ -1275,7 +1275,7 @@ def get_ccx_elset_beam_name(mat_name, beamsec_name, mat_short_name=None, beamsec
         mat_short_name = 'Mat0'
     if not beamsec_short_name:
         beamsec_short_name = 'Beam0'
-    if len(mat_name + beamsec_name) > 20:   # max identifier lenght in CalculiX for beam elsets
+    if len(mat_name + beamsec_name) > 20:   # max identifier length in CalculiX for beam elsets
         return mat_short_name + beamsec_short_name
     else:
         return mat_name + beamsec_name
@@ -1297,7 +1297,7 @@ def get_ccx_elset_shell_name(mat_name, shellth_name, mat_short_name=None, shellt
         mat_short_name = 'Mat0'
     if not shellth_short_name:
         shellth_short_name = 'Shell0'
-    if len(mat_name + shellth_name) > 80:   # standard max identifier lenght in CalculiX
+    if len(mat_name + shellth_name) > 80:   # standard max identifier length in CalculiX
         return mat_short_name + shellth_short_name
     else:
         return mat_name + shellth_name
@@ -1308,7 +1308,7 @@ def get_ccx_elset_solid_name(mat_name, solid_name=None, mat_short_name=None):
         solid_name = 'Solid'
     if not mat_short_name:
         mat_short_name = 'Mat0'
-    if len(mat_name + solid_name) > 80:   # standard max identifier lenght in CalculiX
+    if len(mat_name + solid_name) > 80:   # standard max identifier length in CalculiX
         return mat_short_name + solid_name
     else:
         return mat_name + solid_name

@@ -137,7 +137,7 @@ void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* pro
             SoSeparator* sep = new SoSeparator();
 
             ///draw a temp gauge,with sphere and a cylinder
-            //first move to correct postion
+            //first move to correct position
             SoTranslation* trans = new SoTranslation();
             SbVec3f newPos=base+scaledradius*dir*0.08f;
             trans->translation.setValue(newPos);
@@ -158,7 +158,7 @@ void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* pro
             //SoSphere* sph = new SoSphere();
             //sph->radius.setValue(scaledradius*0.75);
             //sep->addChild(sph);
-            //translate postion
+            //translate position
             //SoTranslation* trans2 = new SoTranslation();
             //trans2->translation.setValue(SbVec3f(0,scaledheight*0.375,0));
             //sep->addChild(trans2);
@@ -167,7 +167,7 @@ void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* pro
             cyl->height.setValue(scaledheight*0.5);
             cyl->radius.setValue(scaledradius*0.375);
             sep->addChild(cyl);
-            //translate postion
+            //translate position
             //SoTranslation* trans3 = new SoTranslation();
             //trans3->translation.setValue(SbVec3f(0,scaledheight*0.05,0));
             //sep->addChild(trans3);

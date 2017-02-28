@@ -129,7 +129,7 @@ class FemGmshTools():
     def get_dimension(self):
         # Dimension
         # known_element_dimensions = ['From Shape', '1D', '2D', '3D']
-        # if not given, GMSH uses the hightest availabe.
+        # if not given, GMSH uses the hightest available.
         # A use case for not "From Shape" would be a surface (2D) mesh of a solid
         if self.dimension == 'From Shape':
             shty = self.part_obj.Shape.ShapeType

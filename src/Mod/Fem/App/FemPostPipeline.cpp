@@ -60,7 +60,7 @@ FemPostPipeline::FemPostPipeline()
     ADD_PROPERTY_TYPE(Filter, (0), "Pipeline", App::Prop_None, "The filter used in in this pipeline");
     ADD_PROPERTY_TYPE(Functions, (0), "Pipeline", App::Prop_Hidden, "The function provider which groups all pipeline functions");
     ADD_PROPERTY_TYPE(Mode,(long(0)), "Pipeline", App::Prop_None, "Selects the pipeline data transition mode. In serial every filter"
-                                                              "gets the output of the previous one as input, in parrallel every"
+                                                              "gets the output of the previous one as input, in parallel every"
                                                               "filter gets the pipelien source as input.");
     Mode.setEnums(ModeEnums);
 }

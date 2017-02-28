@@ -93,7 +93,7 @@ TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence);
 FemMesh::FemMesh()
 {
     //Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
-    // create a mesh allways with new StudyId to avoid overlapping destruction
+    // create a mesh always with new StudyId to avoid overlapping destruction
     myMesh = getGenerator()->CreateMesh(StatCount++,false);
 }
 
@@ -1126,7 +1126,7 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
         //
         // tetras
         // master 0.14 release
-        // changed to this in August 2013, commited by juergen (jriedel)
+        // changed to this in August 2013, committed by juergen (jriedel)
         // https://github.com/FreeCAD/FreeCAD/commit/af56b324b9566b20f3b6e7880c29354c1dbe7a99
         //std::vector<int> c3d4  = boost::assign::list_of(0)(3)(1)(2);
         //std::vector<int> c3d10 = boost::assign::list_of(0)(2)(1)(3)(6)(5)(4)(7)(9)(8);

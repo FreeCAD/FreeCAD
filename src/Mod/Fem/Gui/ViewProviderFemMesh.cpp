@@ -1099,7 +1099,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     vFaceElementIdx.resize(triangleCount);
     int index=0,indexIdx=0;
     int32_t* indices = faces->coordIndex.startEditing();
-    // iterate all not hided element faces, allways assure CLOCKWISE triangle ordering to allow backface culling
+    // iterate all not hided element faces, always assure CLOCKWISE triangle ordering to allow backface culling
     for(int l=0; l< FaceSize;l++){
         if(! facesHelper[l].hide){
             switch( facesHelper[l].Element->NbNodes()){
