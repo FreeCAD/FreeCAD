@@ -53,13 +53,13 @@ In Case of WAIT s wait time
 		  <Documentation>
 			  <UserDocu>descripe which tool frame to use for that point</UserDocu>
 		  </Documentation>
-		  <Parameter Name="Tool" Type="Int"/>
+		  <Parameter Name="Tool" Type="Long"/>
 	  </Attribute>
 	  <Attribute Name="Base" ReadOnly="false">
 		  <Documentation>
 			  <UserDocu>descripe which Base frame to use for that point</UserDocu>
 		  </Documentation>
-		  <Parameter Name="Base" Type="Int"/>
+		  <Parameter Name="Base" Type="Long"/>
 	  </Attribute>
   </PythonExport>
 </GenerateModel>

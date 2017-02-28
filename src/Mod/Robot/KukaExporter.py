@@ -26,7 +26,7 @@ HeaderSrc = """&ACCESS RVP
 
 
 def ExportCompactSub(Rob,Trak,FileName):
-	print Rob,Trak,FileName
+	print(Rob,Trak,FileName)
 	Traj = Trak.Trajectory
 	# open the output file
 	SrcFile = open(FileName,'w')
@@ -65,5 +65,5 @@ def ExportCompactSub(Rob,Trak,FileName):
 	#DatFile.close()
 	
 def ExportFullSub(Rob,Trak,FileName):
-	print Trak,FileName
+	print(Trak,FileName)
 
