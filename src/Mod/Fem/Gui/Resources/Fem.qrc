@@ -5,6 +5,7 @@
         <file>icons/fem-add-part.svg</file>
         <file>icons/fem-analysis.svg</file>
         <file>icons/fem-beam-section.svg</file>
+        <file>icons/fem-fluid-section.svg</file>
         <file>icons/fem-box.svg</file>
         <file>icons/fem-cfd-analysis.svg</file>
         <file>icons/fem-constraint-bearing.svg</file>
