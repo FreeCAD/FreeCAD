@@ -35,7 +35,7 @@ print(rob.Axis2)
 w = Waypoint(Placement(),name="Pt",type="LIN")
 print(w.Name,w.Type,w.Pos,w.Cont,w.Velocity,w.Base,w.Tool)
 
-# generate more. The Trajectory find allways outomatically a unique name for the waypoints
+# generate more. The Trajectory find always outomatically a unique name for the waypoints
 l = [w]
 for i in range(5):
   l.append(Waypoint(Placement(Vector(0,0,i*100),Vector(1,0,0),0),"LIN","Pt"))
@@ -61,7 +61,7 @@ App.activeDocument().addObject("Robot::RobotObject","Robot")
 # Define the visual representation and the kinematic definition (see [[6-Axis Robot]] for details about that)
 App.activeDocument().Robot.RobotVrmlFile = App.getResourceDir()+"Mod/Robot/Lib/Kuka/kr500_1.wrl"
 App.activeDocument().Robot.RobotKinematicFile = App.getResourceDir()+"Mod/Robot/Lib/Kuka/kr500_1.csv"
-# start positon of the Axis (only that which differ from 0)
+# start position of the Axis (only that which differ from 0)
 App.activeDocument().Robot.Axis2 = -90
 App.activeDocument().Robot.Axis3 = 90
 

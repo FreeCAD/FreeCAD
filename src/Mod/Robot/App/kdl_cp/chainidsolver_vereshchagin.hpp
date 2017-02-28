@@ -76,7 +76,7 @@ public:
     void getLinkCartesianVelocity(Twists& xDot_base);
     //Returns cartesian acceleration of links in base coordinates
     void getLinkCartesianAcceleration(Twists& xDotDot_base);
-    //Returns cartesian postions of links in link tip coordinates
+    //Returns cartesian positions of links in link tip coordinates
     void getLinkPose(Frames& x_local);
     //Returns cartesian velocities of links in link tip coordinates
     void getLinkVelocity(Twists& xDot_local);
