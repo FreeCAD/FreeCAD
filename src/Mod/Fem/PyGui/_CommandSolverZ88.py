@@ -34,13 +34,13 @@ from PySide import QtCore
 
 
 class _CommandSolverZ88(FemCommands):
-    "The Fem_SolverZ88 command definition"
+    "The FEM_SolverZ88 command definition"
     def __init__(self):
         super(_CommandSolverZ88, self).__init__()
         self.resources = {'Pixmap': 'fem-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_SolverZ88", "Solver Z88"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverZ88", "Solver Z88"),
                           'Accel': "S, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_SolverZ88", "Creates a FEM solver Z88")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverZ88", "Creates a FEM solver Z88")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
@@ -49,4 +49,4 @@ class _CommandSolverZ88(FemCommands):
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeSolverZ88()]")
 
 
-FreeCADGui.addCommand('Fem_SolverZ88', _CommandSolverZ88())
+FreeCADGui.addCommand('FEM_SolverZ88', _CommandSolverZ88())

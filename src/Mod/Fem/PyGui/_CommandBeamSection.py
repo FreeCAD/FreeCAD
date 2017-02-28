@@ -34,13 +34,13 @@ from PySide import QtCore
 
 
 class _CommandBeamSection(FemCommands):
-    "The Fem_BeamSection command definition"
+    "The FEM_BeamSection command definition"
     def __init__(self):
         super(_CommandBeamSection, self).__init__()
         self.resources = {'Pixmap': 'fem-beam-section',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_BeamSection", "Beam cross section"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_BeamSection", "Beam cross section"),
                           'Accel': "C, B",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_BeamSection", "Creates a FEM beam cross section")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_BeamSection", "Creates a FEM beam cross section")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
@@ -49,4 +49,4 @@ class _CommandBeamSection(FemCommands):
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeBeamSection()]")
 
 
-FreeCADGui.addCommand('Fem_BeamSection', _CommandBeamSection())
+FreeCADGui.addCommand('FEM_BeamSection', _CommandBeamSection())

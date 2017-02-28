@@ -35,13 +35,13 @@ from PySide import QtCore
 
 
 class _CommandMaterialMechanicalNonlinear(FemCommands):
-    "The Fem_MaterialMechanicalNonlinear command definition"
+    "The FEM_MaterialMechanicalNonlinear command definition"
     def __init__(self):
         super(_CommandMaterialMechanicalNonlinear, self).__init__()
         self.resources = {'Pixmap': 'fem-material-nonlinear',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialMechanicalNonlinear", "Nonlinear mechanical material"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialMechanicalNonlinear", "Nonlinear mechanical material"),
                           'Accel': "C, W",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialMechanicalNonlinear", "Creates a nonlinear mechanical material")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialMechanicalNonlinear", "Creates a nonlinear mechanical material")}
         self.is_active = 'with_material'
 
     def Activated(self):
@@ -74,4 +74,4 @@ class _CommandMaterialMechanicalNonlinear(FemCommands):
             if solver_object and solver_object.SolverType == 'FemSolverCalculix':
                 solver_object.MaterialNonlinearity = "nonlinear"
 
-FreeCADGui.addCommand('Fem_MaterialMechanicalNonlinear', _CommandMaterialMechanicalNonlinear())
+FreeCADGui.addCommand('FEM_MaterialMechanicalNonlinear', _CommandMaterialMechanicalNonlinear())

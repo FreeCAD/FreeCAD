@@ -33,13 +33,13 @@ from PySide import QtCore
 
 
 class _CommandControlSolver(FemCommands):
-    "the Fem_ControlSolver command definition"
+    "the FEM_ControlSolver command definition"
     def __init__(self):
         super(_CommandControlSolver, self).__init__()
         self.resources = {'Pixmap': 'fem-control-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ControlSolver", "Solver job control"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ControlSolver", "Solver job control"),
                           'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ControlSolver", "Changes solver attributes and runs the calculations for the selected solver")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ControlSolver", "Changes solver attributes and runs the calculations for the selected solver")}
         self.is_active = 'with_solver'
 
     def Activated(self):
@@ -47,4 +47,4 @@ class _CommandControlSolver(FemCommands):
         FreeCADGui.ActiveDocument.setEdit(solver_obj, 0)
 
 
-FreeCADGui.addCommand('Fem_ControlSolver', _CommandControlSolver())
+FreeCADGui.addCommand('FEM_ControlSolver', _CommandControlSolver())

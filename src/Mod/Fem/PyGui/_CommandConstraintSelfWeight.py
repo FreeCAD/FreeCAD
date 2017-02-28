@@ -34,13 +34,13 @@ from PySide import QtCore
 
 
 class _CommandConstraintSelfWeight(FemCommands):
-    "The Fem_ConstraintSelfWeight command definition"
+    "The FEM_ConstraintSelfWeight command definition"
     def __init__(self):
         super(_CommandConstraintSelfWeight, self).__init__()
         self.resources = {'Pixmap': 'fem-constraint-selfweight',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ConstraintSelfWeight", "Constraint self weigt"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Constraint self weigt"),
                           'Accel': "C, W",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ConstraintSelfWeight", "Creates a FEM constraint self weigt")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Creates a FEM constraint self weigt")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
@@ -49,4 +49,4 @@ class _CommandConstraintSelfWeight(FemCommands):
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeConstraintSelfWeight()]")
 
 
-FreeCADGui.addCommand('Fem_ConstraintSelfWeight', _CommandConstraintSelfWeight())
+FreeCADGui.addCommand('FEM_ConstraintSelfWeight', _CommandConstraintSelfWeight())

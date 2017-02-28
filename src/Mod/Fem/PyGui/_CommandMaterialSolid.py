@@ -35,13 +35,13 @@ from PySide import QtCore
 
 
 class _CommandMaterialSolid(FemCommands):
-    "the Fem_MaterialSolid command definition"
+    "the FEM_MaterialSolid command definition"
     def __init__(self):
         super(_CommandMaterialSolid, self).__init__()
         self.resources = {'Pixmap': 'fem-material',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialSolid", "FEM material for solid"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "FEM material for solid"),
                           'Accel': "M, M",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialSolid", "Creates a FEM material for solid")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Creates a FEM material for solid")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
@@ -55,4 +55,4 @@ class _CommandMaterialSolid(FemCommands):
         FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
 
 
-FreeCADGui.addCommand('Fem_MaterialSolid', _CommandMaterialSolid())
+FreeCADGui.addCommand('FEM_MaterialSolid', _CommandMaterialSolid())

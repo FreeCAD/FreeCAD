@@ -35,13 +35,13 @@ from PySide import QtCore
 
 
 class _CommandSolverCalculix(FemCommands):
-    "The Fem_SolverCalculix command definition"
+    "The FEM_SolverCalculix command definition"
     def __init__(self):
         super(_CommandSolverCalculix, self).__init__()
         self.resources = {'Pixmap': 'fem-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_SolverCalculix", "Solver CalculiX"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Solver CalculiX"),
                           'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_SolverCalculix", "Creates a FEM solver CalculiX")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Creates a FEM solver CalculiX")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
@@ -59,4 +59,4 @@ class _CommandSolverCalculix(FemCommands):
             FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeSolverCalculix()]")
 
 
-FreeCADGui.addCommand('Fem_SolverCalculix', _CommandSolverCalculix())
+FreeCADGui.addCommand('FEM_SolverCalculix', _CommandSolverCalculix())

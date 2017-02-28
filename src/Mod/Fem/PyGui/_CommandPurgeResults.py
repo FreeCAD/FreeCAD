@@ -34,13 +34,13 @@ from PySide import QtCore
 
 
 class _CommandPurgeResults(FemCommands):
-    # the Fem_PurgeResults command definition
+    # the FEM_PurgeResults command definition
     def __init__(self):
         super(_CommandPurgeResults, self).__init__()
         self.resources = {'Pixmap': 'fem-purge-results',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_PurgeResults", "Purge results"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_PurgeResults", "Purge results"),
                           'Accel': "S, S",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_PurgeResults", "Purges all results from active analysis")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_PurgeResults", "Purges all results from active analysis")}
         self.is_active = 'with_results'
 
     def Activated(self):
@@ -49,4 +49,4 @@ class _CommandPurgeResults(FemCommands):
         self.hide_meshes_show_parts_constraints()
 
 
-FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeResults())
+FreeCADGui.addCommand('FEM_PurgeResults', _CommandPurgeResults())

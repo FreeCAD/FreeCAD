@@ -103,13 +103,13 @@ std::string gethideMeshShowPartStr(std::string showConstr="")
 DEF_STD_CMD_A(CmdFemCreateAnalysis);
 
 CmdFemCreateAnalysis::CmdFemCreateAnalysis()
-  : Command("Fem_CreateAnalysis")
+  : Command("FEM_CreateAnalysis")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Create a FEM analysis");
     sToolTipText    = QT_TR_NOOP("Create a FEM analysis");
-    sWhatsThis      = "Fem_CreateAnalysis";
+    sWhatsThis      = "FEM_CreateAnalysis";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-analysis";
 }
@@ -165,13 +165,13 @@ bool CmdFemCreateAnalysis::isActive(void)
 DEF_STD_CMD_A(CmdFemAddPart);
 
 CmdFemAddPart::CmdFemAddPart()
-  : Command("Fem_FemAddPart")
+  : Command("FEM_FemAddPart")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Add a part to the Analysis");
     sToolTipText    = QT_TR_NOOP("Add a part to the Analysis");
-    sWhatsThis      = "Fem_FemAddPart";
+    sWhatsThis      = "FEM_FemAddPart";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-add-fem-mesh";
 }
@@ -228,13 +228,13 @@ bool CmdFemAddPart::isActive(void)
 DEF_STD_CMD_A(CmdFemCreateSolver);
 
 CmdFemCreateSolver::CmdFemCreateSolver()
-  : Command("Fem_CreateSolver")
+  : Command("FEM_CreateSolver")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Add a solver to the Analysis");
     sToolTipText    = QT_TR_NOOP("Add a solver to the Analysis");
-    sWhatsThis      = "Fem_CreateSolver";
+    sWhatsThis      = "FEM_CreateSolver";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-solver";
 }
@@ -273,13 +273,13 @@ bool CmdFemCreateSolver::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintBearing);
 
 CmdFemConstraintBearing::CmdFemConstraintBearing()
-  : Command("Fem_ConstraintBearing")
+  : Command("FEM_ConstraintBearing")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint bearing");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a bearing");
-    sWhatsThis      = "Fem_ConstraintBearing";
+    sWhatsThis      = "FEM_ConstraintBearing";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-bearing";
 }
@@ -314,13 +314,13 @@ bool CmdFemConstraintBearing::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintFixed);
 
 CmdFemConstraintFixed::CmdFemConstraintFixed()
-  : Command("Fem_ConstraintFixed")
+  : Command("FEM_ConstraintFixed")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint fixed");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a fixed geometric entity");
-    sWhatsThis      = "Fem_ConstraintFixed";
+    sWhatsThis      = "FEM_ConstraintFixed";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-fixed";
 }
@@ -356,13 +356,13 @@ bool CmdFemConstraintFixed::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintPlaneRotation);
 
 CmdFemConstraintPlaneRotation::CmdFemConstraintPlaneRotation()
-  : Command("Fem_ConstraintPlaneRotation")
+  : Command("FEM_ConstraintPlaneRotation")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint plane rotation");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for plane rotation face");
-    sWhatsThis      = "Fem_ConstraintPlaneRotation";
+    sWhatsThis      = "FEM_ConstraintPlaneRotation";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-planerotation";
 }
@@ -397,13 +397,13 @@ bool CmdFemConstraintPlaneRotation::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintContact);
 
 CmdFemConstraintContact::CmdFemConstraintContact()
-  : Command("Fem_ConstraintContact")
+  : Command("FEM_ConstraintContact")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint contact ");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for contact between faces");
-    sWhatsThis      = "Fem_ConstraintContact";
+    sWhatsThis      = "FEM_ConstraintContact";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-contact";
 }
@@ -441,13 +441,13 @@ bool CmdFemConstraintContact::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintTransform);
 
 CmdFemConstraintTransform::CmdFemConstraintTransform()
-  : Command("Fem_ConstraintTransform")
+  : Command("FEM_ConstraintTransform")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Create FEM transform constraint");
     sToolTipText    = QT_TR_NOOP("Create FEM constraint for transforming a face");
-    sWhatsThis      = "Fem_ConstraintTransform";
+    sWhatsThis      = "FEM_ConstraintTransform";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-transform";
 }
@@ -485,13 +485,13 @@ bool CmdFemConstraintTransform::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintHeatflux);
 
 CmdFemConstraintHeatflux::CmdFemConstraintHeatflux()
-  : Command("Fem_ConstraintHeatflux")
+  : Command("FEM_ConstraintHeatflux")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint heatflux ");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a heatflux acting on a face");
-    sWhatsThis      = "Fem_ConstraintHeatflux";
+    sWhatsThis      = "FEM_ConstraintHeatflux";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-heatflux";
 }
@@ -529,13 +529,13 @@ bool CmdFemConstraintHeatflux::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintForce);
 
 CmdFemConstraintForce::CmdFemConstraintForce()
-  : Command("Fem_ConstraintForce")
+  : Command("FEM_ConstraintForce")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint force");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a force acting on a geometric entity");
-    sWhatsThis      = "Fem_ConstraintForce";
+    sWhatsThis      = "FEM_ConstraintForce";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-force";
 }
@@ -575,13 +575,13 @@ bool CmdFemConstraintForce::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintFluidBoundary);
 
 CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
-  : Command("Fem_ConstraintFluidBoundary")
+  : Command("FEM_ConstraintFluidBoundary")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Create fluid boundary condition");
     sToolTipText    = QT_TR_NOOP("Create fluid boundary condition on face entity for Computional Fluid Dynamics");
-    sWhatsThis      = "Fem_ConstraintFluidBoundary";
+    sWhatsThis      = "FEM_ConstraintFluidBoundary";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-fluid-boundary";
 }
@@ -619,13 +619,13 @@ bool CmdFemConstraintFluidBoundary::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintPressure);
 
 CmdFemConstraintPressure::CmdFemConstraintPressure()
-  : Command("Fem_ConstraintPressure")
+  : Command("FEM_ConstraintPressure")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint pressure");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a pressure acting on a face");
-    sWhatsThis      = "Fem_ConstraintPressure";
+    sWhatsThis      = "FEM_ConstraintPressure";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-pressure";
 }
@@ -664,13 +664,13 @@ bool CmdFemConstraintPressure::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintGear);
 
 CmdFemConstraintGear::CmdFemConstraintGear()
-  : Command("Fem_ConstraintGear")
+  : Command("FEM_ConstraintGear")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint gear");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a gear");
-    sWhatsThis      = "Fem_ConstraintGear";
+    sWhatsThis      = "FEM_ConstraintGear";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-gear";
 }
@@ -705,13 +705,13 @@ bool CmdFemConstraintGear::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintPulley);
 
 CmdFemConstraintPulley::CmdFemConstraintPulley()
-  : Command("Fem_ConstraintPulley")
+  : Command("FEM_ConstraintPulley")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint pulley");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a pulley");
-    sWhatsThis      = "Fem_ConstraintPulley";
+    sWhatsThis      = "FEM_ConstraintPulley";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-pulley";
 }
@@ -750,13 +750,13 @@ bool CmdFemConstraintPulley::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintDisplacement);
 
 CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
-  : Command("Fem_ConstraintDisplacement")
+  : Command("FEM_ConstraintDisplacement")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint displacement");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a displacement acting on a geometric entity");
-    sWhatsThis      = "Fem_ConstraintDisplacement";
+    sWhatsThis      = "FEM_ConstraintDisplacement";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-displacement";
 }
@@ -793,13 +793,13 @@ bool CmdFemConstraintDisplacement::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintTemperature);
 
 CmdFemConstraintTemperature::CmdFemConstraintTemperature()
-  : Command("Fem_ConstraintTemperature")
+  : Command("FEM_ConstraintTemperature")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint temperature ");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a temperature/concentrated heat flux acting on a face");
-    sWhatsThis      = "Fem_ConstraintTemperature";
+    sWhatsThis      = "FEM_ConstraintTemperature";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-temperature";
 }
@@ -836,13 +836,13 @@ bool CmdFemConstraintTemperature::isActive(void)
 DEF_STD_CMD_A(CmdFemConstraintInitialTemperature);
 
 CmdFemConstraintInitialTemperature::CmdFemConstraintInitialTemperature()
-  : Command("Fem_ConstraintInitialTemperature")
+  : Command("FEM_ConstraintInitialTemperature")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint initial temperature");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for initial temperature acting on a body");
-    sWhatsThis      = "Fem_ConstraintInitialTemperature";
+    sWhatsThis      = "FEM_ConstraintInitialTemperature";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-InitialTemperature";
 }
@@ -967,7 +967,7 @@ void DefineNodesCallback(void * ud, SoEventCallback * n)
 
 
 CmdFemDefineNodesSet::CmdFemDefineNodesSet()
-  : Command("Fem_DefineNodesSet")
+  : Command("FEM_DefineNodesSet")
 {
     sAppModule    = "Fem";
     sGroup        = QT_TR_NOOP("Fem");
@@ -1024,13 +1024,13 @@ bool CmdFemDefineNodesSet::isActive(void)
 DEF_STD_CMD_A(CmdFemCreateNodesSet);
 
 CmdFemCreateNodesSet::CmdFemCreateNodesSet()
-  : Command("Fem_CreateNodesSet")
+  : Command("FEM_CreateNodesSet")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Nodes set");
     sToolTipText    = QT_TR_NOOP("Creates a FEM mesh nodes set");
-    sWhatsThis      = "Fem_CreateNodesSet";
+    sWhatsThis      = "FEM_CreateNodesSet";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-femmesh-create-node-by-poly";
 }
@@ -1159,13 +1159,13 @@ plt.show()\n";
 DEF_STD_CMD_A(CmdFemPostCreateClipFilter);
 
 CmdFemPostCreateClipFilter::CmdFemPostCreateClipFilter()
-  : Command("Fem_PostCreateClipFilter")
+  : Command("FEM_PostCreateClipFilter")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Define/create a clip filter which uses functions to define the cliped region");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which uses functions to define the cliped region");
-    sWhatsThis      = "Fem_PostCreateClipFilter";
+    sWhatsThis      = "FEM_PostCreateClipFilter";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-clip";
 }
@@ -1183,13 +1183,13 @@ bool CmdFemPostCreateClipFilter::isActive(void)
 DEF_STD_CMD_A(CmdFemPostCreateDataAlongLineFilter);
 
 CmdFemPostCreateDataAlongLineFilter::CmdFemPostCreateDataAlongLineFilter()
-  : Command("Fem_PostCreateDataAlongLineFilter")
+  : Command("FEM_PostCreateDataAlongLineFilter")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
-    sWhatsThis      = "Fem_PostCreateDataAlongLineFilter";
+    sWhatsThis      = "FEM_PostCreateDataAlongLineFilter";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-DataAlongLine";
 }
@@ -1207,13 +1207,13 @@ bool CmdFemPostCreateDataAlongLineFilter::isActive(void)
 DEF_STD_CMD_A(CmdFemPostCreateLinearizedStressesFilter);
 
 CmdFemPostCreateLinearizedStressesFilter::CmdFemPostCreateLinearizedStressesFilter()
-  : Command("Fem_PostCreateLinearizedStressesFilter")
+  : Command("FEM_PostCreateLinearizedStressesFilter")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Create stress linearization plots");
     sToolTipText    = QT_TR_NOOP("Create stress linearization plots");
-    sWhatsThis      = "Fem_PostCreateLinearizedStressesFilter";
+    sWhatsThis      = "FEM_PostCreateLinearizedStressesFilter";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-linearizedstresses";
 }
@@ -1252,13 +1252,13 @@ bool CmdFemPostCreateLinearizedStressesFilter::isActive(void)
 DEF_STD_CMD_A(CmdFemPostCreateScalarClipFilter);
 
 CmdFemPostCreateScalarClipFilter::CmdFemPostCreateScalarClipFilter()
-  : Command("Fem_PostCreateScalarClipFilter")
+  : Command("FEM_PostCreateScalarClipFilter")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Define/create a clip filter which clips a field with a scalar value");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field with a scalar value");
-    sWhatsThis      = "Fem_PostCreateScalarClipFilter";
+    sWhatsThis      = "FEM_PostCreateScalarClipFilter";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-clip-scalar";
 }
@@ -1278,13 +1278,13 @@ bool CmdFemPostCreateScalarClipFilter::isActive(void)
 DEF_STD_CMD_A(CmdFemPostWarpVectorFilter);
 
 CmdFemPostWarpVectorFilter::CmdFemPostWarpVectorFilter()
-  : Command("Fem_PostCreateWarpVectorFilter")
+  : Command("FEM_PostCreateWarpVectorFilter")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Warp the geometry along a vector field by a certain factor");
     sToolTipText    = QT_TR_NOOP("Warp the geometry along a vector field by a certain factor");
-    sWhatsThis      = "Fem_PostCreateWarpVectorFilter";
+    sWhatsThis      = "FEM_PostCreateWarpVectorFilter";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-warp";
 }
@@ -1302,13 +1302,13 @@ bool CmdFemPostWarpVectorFilter::isActive(void)
 DEF_STD_CMD_A(CmdFemPostCutFilter);
 
 CmdFemPostCutFilter::CmdFemPostCutFilter()
-  : Command("Fem_PostCreateCutFilter")
+  : Command("FEM_PostCreateCutFilter")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Cut the data along an implicit function");
     sToolTipText    = QT_TR_NOOP("Cut the data along an implicit function");
-    sWhatsThis      = "Fem_PostCreateCutFilter";
+    sWhatsThis      = "FEM_PostCreateCutFilter";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-cut";
 }
@@ -1329,13 +1329,13 @@ bool CmdFemPostCutFilter::isActive(void)
 DEF_STD_CMD_ACL(CmdFemPostFunctions);
 
 CmdFemPostFunctions::CmdFemPostFunctions()
-  : Command("Fem_PostCreateFunctions")
+  : Command("FEM_PostCreateFunctions")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Functions for use in postprocessing filter...");
     sToolTipText    = QT_TR_NOOP("Functions for use in postprocessing filter...");
-    sWhatsThis      = "Fem_PostCreateFunctions";
+    sWhatsThis      = "FEM_PostCreateFunctions";
     sStatusTip      = sToolTipText;
     eType           = eType|ForEdit;
 }
@@ -1446,12 +1446,12 @@ void CmdFemPostFunctions::languageChange()
 
     QAction* cmd = a[0];
     cmd->setText(QApplication::translate("CmdFemPostFunctions","Plane"));
-    cmd->setToolTip(QApplication::translate("Fem_PostCreateFunctions","Create a plane function, defined by its origin and normal"));
+    cmd->setToolTip(QApplication::translate("FEM_PostCreateFunctions","Create a plane function, defined by its origin and normal"));
     cmd->setStatusTip(cmd->toolTip());
 
     cmd = a[1];
     cmd->setText(QApplication::translate("CmdFemPostFunctions","Sphere"));
-    cmd->setToolTip(QApplication::translate("Fem_PostCreateFunctions","Create a phere function, defined by its center and radius"));
+    cmd->setToolTip(QApplication::translate("FEM_PostCreateFunctions","Create a phere function, defined by its center and radius"));
     cmd->setStatusTip(cmd->toolTip());
 
 }
@@ -1468,13 +1468,13 @@ bool CmdFemPostFunctions::isActive(void)
 DEF_STD_CMD_AC(CmdFemPostApllyChanges);
 
 CmdFemPostApllyChanges::CmdFemPostApllyChanges()
-  : Command("Fem_PostApplyChanges")
+  : Command("FEM_PostApplyChanges")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Apply changes to parameters directly and not on recompute only...");
     sToolTipText    = QT_TR_NOOP("Apply changes to parameters directly and not on recompute only...");
-    sWhatsThis      = "Fem_PostApplyChanges";
+    sWhatsThis      = "FEM_PostApplyChanges";
     sStatusTip      = sToolTipText;
     sPixmap         = "view-refresh";
     eType           = eType|ForEdit;
@@ -1512,13 +1512,13 @@ Gui::Action * CmdFemPostApllyChanges::createAction(void)
 DEF_STD_CMD_A(CmdFemPostPipelineFromResult);
 
 CmdFemPostPipelineFromResult::CmdFemPostPipelineFromResult()
-  : Command("Fem_PostPipelineFromResult")
+  : Command("FEM_PostPipelineFromResult")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Creates a post processing pipeline from a result object");
     sToolTipText    = QT_TR_NOOP("Creates a post processing pipeline from a result object");
-    sWhatsThis      = "Fem_PostPipelineFromResult";
+    sWhatsThis      = "FEM_PostPipelineFromResult";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-data";
 }
