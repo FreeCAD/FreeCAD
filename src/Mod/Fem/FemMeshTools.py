@@ -406,6 +406,8 @@ def get_elset_short_name(obj, i):
         return 'Mat' + str(i)
     elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemBeamSection':
         return 'Beam' + str(i)
+    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemFluidSection':
+        return 'Fluid' + str(i)
     elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemShellThickness':
         return 'Shell' + str(i)
     else:
@@ -1028,7 +1030,7 @@ def get_analysis_group_elements(aAnalysis, aPart):
         else:
             FreeCAD.Console.PrintError('Problem: more than one object with empty references.\n')
             print('We gone try to get the empty material references anyway.\n')
-            # ShellThickness and BeamSection could have empty references, but on solid meshes only materials should have empty references
+            # ShellThickness, BeamSection and FluidSection could have empty references, but on solid meshes only materials should have empty references
             for er in empty_references:
                 print(er.Name)
             group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aPart.Shape)
@@ -1075,7 +1077,7 @@ def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShap
     '''get the elementIDs if the Reference shape is empty
     see get_analysis_group_elements() for more informatations
     on solid meshes only material objects could have an empty reference without beeing something wrong!
-    face meshes could have empty ShellThickness and edge meshes could have empty BeamSection
+    face meshes could have empty ShellThickness and edge meshes could have empty BeamSection/FluidSection
     '''
     # print(group_elements)
     material_ref_shapes = []
@@ -1422,6 +1424,89 @@ def get_cylindrical_coords(obj):
     B_coords = str(B[0]) + ',' + str(B[1]) + ',' + str(B[2])
     coords = A_coords + ',' + B_coords
     return coords
+
+
+def write_D_network_element_to_inputfile(fileName):
+    # replace B32 elements with D elements for fluid section
+    f = open(fileName, 'r+')
+    lines = f.readlines()
+    f.seek(0)
+    for line in lines:
+        if line.find("B32") == -1:
+            f.write(line)
+        else:
+            dummy = line.replace("B32", "D")
+            f.write(dummy)
+    f.truncate()
+    f.close()
+
+
+def use_correct_fluidinout_ele_def(FluidInletoutlet_ele, fileName):
+    f = open(fileName, 'r')
+    cnt = 0
+    line = f.readline()
+
+    # start reading from *ELEMENT
+    while line.find("Element") == -1:
+        line = f.readline()
+        cnt = cnt + 1
+    line = f.readline()
+    cnt = cnt + 1
+
+
+    # obtain element line numbers for inlet and outlet
+    while (len(line) > 1):
+        ind = line.find(',')
+        elem = line[0:ind]
+        for i in range(len(FluidInletoutlet_ele)):
+            if (elem == FluidInletoutlet_ele[i][0]):
+                FluidInletoutlet_ele[i][2] = cnt
+        line = f.readline()
+        cnt = cnt + 1
+    f.close()
+
+    # re-define elements for INLET and OUTLET
+    f = open(fileName, 'r+')
+    lines = f.readlines()
+    f.seek(0)
+    cnt = 0
+    elem_counter = 0
+    inout_nodes_file = open("inout_nodes.txt", "w")
+    for line in lines:
+        new_line = ''
+        for i in range(len(FluidInletoutlet_ele)):
+            if (cnt == FluidInletoutlet_ele[i][2]):
+                elem_counter = elem_counter + 1
+                a = line.split(',')
+                for j in range(len(a)):
+                    if elem_counter == 1:
+                        if j == 1:
+                            new_line = new_line + ' 0,'
+                            node1 = int(a[j + 2])
+                            node2 = int(a[j + 1])
+                            node3 = int(a[j])
+                            inout_nodes_file.write(str(node1) + ',' + str(node2) + ',' + str(node3) + ',' + FluidInletoutlet_ele[i][1] + '\n')
+                        elif j == 3:
+                            new_line = new_line + a[j]
+                        else:
+                            new_line = new_line + a[j] + ','
+                    else:
+                        if j == 3:
+                            new_line = new_line + ' 0\n'
+                            node1 = int(a[j - 2])
+                            node2 = int(a[j - 1])
+                            node3 = int(a[j])
+                            inout_nodes_file.write(str(node1) + ',' + str(node2) + ',' + str(node3) + ',' + FluidInletoutlet_ele[i][1] + '\n')
+                        else:
+                            new_line = new_line + a[j] + ','
+        if new_line == '':
+            f.write(line)
+        else:
+            f.write(new_line)
+        cnt = cnt + 1
+    f.truncate()
+    f.close()
+    inout_nodes_file.close()
 
 
 def make_femmesh(mesh_data):
