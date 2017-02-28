@@ -119,9 +119,13 @@ def fill_femresult_mechanical(results, result_set, span):
     ''' fills  an FreeCAD FEM mechanical result object with result data
     '''
 
-    eigenmode_number = result_set['number']
-    step_time = result_set['time']
-    step_time = round(step_time, 2)
+    if 'number' in result_set:
+        eigenmode_number = result_set['number']
+    else:
+        eigenmode_number = 0
+    if 'time' in result_set:
+        step_time = result_set['time']
+        step_time = round(step_time, 2)
 
     if 'disp' in result_set:
         disp = result_set['disp']
