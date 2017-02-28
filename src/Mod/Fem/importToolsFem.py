@@ -247,7 +247,7 @@ def fill_femresult_mechanical(results, result_set, span):
         pass
 
     # Read temperatures if they exist
-    try:
+    if 'temp' in result_set:
         Temperature = result_set['temp']
         if len(Temperature) > 0:
             if len(Temperature.values()) != len(disp.values()):
@@ -261,24 +261,18 @@ def fill_femresult_mechanical(results, result_set, span):
             else:
                 results.Temperature = list(map((lambda x: x), Temperature.values()))
             results.Time = step_time
-    except:
-        pass
 
-    try:
+    if 'mflow' in result_set:
         MassFlow = result_set['mflow']
         if len(MassFlow) > 0:
             results.MassFlowRate = list(map((lambda x: x), MassFlow.values()))
             results.Time = step_time
-    except:
-        pass
 
-    try:
+    if 'npressure' in result_set:
         NetworkPressure = result_set['npressure']
         if len(NetworkPressure) > 0:
             results.NetworkPressure = list(map((lambda x: x), NetworkPressure.values()))
             results.Time = step_time
-    except:
-        pass
 
     return results
 
