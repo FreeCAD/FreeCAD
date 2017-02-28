@@ -81,7 +81,7 @@ CmdRaytracingWriteCamera::CmdRaytracingWriteCamera()
     sAppModule    = "Raytracing";
     sGroup        = QT_TR_NOOP("Raytracing");
     sMenuText     = QT_TR_NOOP("Export camera to POV-Ray...");
-    sToolTipText  = QT_TR_NOOP("Export the camera positon of the active 3D view in POV-Ray format to a file");
+    sToolTipText  = QT_TR_NOOP("Export the camera position of the active 3D view in POV-Ray format to a file");
     sWhatsThis    = "Raytracing_WriteCamera";
     sStatusTip    = sToolTipText;
     sPixmap       = "Raytrace_Camera";
