@@ -123,10 +123,8 @@ def fill_femresult_mechanical(results, result_set, span):
     step_time = result_set['time']
     step_time = round(step_time, 2)
 
-    try:
+    if 'disp' in result_set:
         disp = result_set['disp']
-        stressv = result_set['stressv']
-        strainv = result_set['strainv']
         no_of_values = len(disp)
         displacement = []
         for k, v in disp.items():
@@ -142,43 +140,54 @@ def fill_femresult_mechanical(results, result_set, span):
         else:
             scale = 1.0
 
-        if len(disp) > 0:
-            results.DisplacementVectors = list(map((lambda x: x * scale), disp.values()))
+        results.DisplacementVectors = list(map((lambda x: x * scale), disp.values()))
+
+        results.NodeNumbers = disp.keys()
+
+        disp_abs = []
+        for d in displacement:
+            disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
+        results.DisplacementLengths = disp_abs
+
+        if 'stressv' in result_set:
+            stressv = result_set['stressv']
             results.StressVectors = list(map((lambda x: x * scale), stressv.values()))
+
+        if 'strainv' in result_set:
+            strainv = result_set['strainv']
             results.StrainVectors = list(map((lambda x: x * scale), strainv.values()))
-            results.NodeNumbers = disp.keys()
 
-        stress = result_set['stress']
-        if len(stress) > 0:
-            mstress = []
-            prinstress1 = []
-            prinstress2 = []
-            prinstress3 = []
-            shearstress = []
-            for i in stress.values():
-                mstress.append(calculate_von_mises(i))
-                prin1, prin2, prin3, shear = calculate_principal_stress(i)
-                prinstress1.append(prin1)
-                prinstress2.append(prin2)
-                prinstress3.append(prin3)
-                shearstress.append(shear)
-            if eigenmode_number > 0:
-                results.StressValues = list(map((lambda x: x * scale), mstress))
-                results.PrincipalMax = list(map((lambda x: x * scale), prinstress1))
-                results.PrincipalMed = list(map((lambda x: x * scale), prinstress2))
-                results.PrincipalMin = list(map((lambda x: x * scale), prinstress3))
-                results.MaxShear = list(map((lambda x: x * scale), shearstress))
-                results.Eigenmode = eigenmode_number
-            else:
-                results.StressValues = mstress
-                results.PrincipalMax = prinstress1
-                results.PrincipalMed = prinstress2
-                results.PrincipalMin = prinstress3
-                results.MaxShear = shearstress
-
-        if (results.NodeNumbers != 0 and results.NodeNumbers != stress.keys()):
-            print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
-                  .format(results.NodeNumbers, len(results.StressValues)))
+        if 'stress' in result_set:
+            stress = result_set['stress']
+            if len(stress) > 0:
+                mstress = []
+                prinstress1 = []
+                prinstress2 = []
+                prinstress3 = []
+                shearstress = []
+                for i in stress.values():
+                    mstress.append(calculate_von_mises(i))
+                    prin1, prin2, prin3, shear = calculate_principal_stress(i)
+                    prinstress1.append(prin1)
+                    prinstress2.append(prin2)
+                    prinstress3.append(prin3)
+                    shearstress.append(shear)
+                if eigenmode_number > 0:
+                    results.StressValues = list(map((lambda x: x * scale), mstress))
+                    results.PrincipalMax = list(map((lambda x: x * scale), prinstress1))
+                    results.PrincipalMed = list(map((lambda x: x * scale), prinstress2))
+                    results.PrincipalMin = list(map((lambda x: x * scale), prinstress3))
+                    results.MaxShear = list(map((lambda x: x * scale), shearstress))
+                    results.Eigenmode = eigenmode_number
+                else:
+                    results.StressValues = mstress
+                    results.PrincipalMax = prinstress1
+                    results.PrincipalMed = prinstress2
+                    results.PrincipalMin = prinstress3
+                    results.MaxShear = shearstress
+            if (results.NodeNumbers != 0 and results.NodeNumbers != stress.keys()):
+                print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
+                      .format(results.NodeNumbers, len(results.StressValues)))
             results.NodeNumbers = stress.keys()
 
         # Read Equivalent Plastic strain if they exist
@@ -195,56 +204,6 @@ def fill_femresult_mechanical(results, result_set, span):
                     results.Peeq = Pe
                 else:
                     results.Peeq = Peeq.values()
-
-        x_min, y_min, z_min = map(min, zip(*displacement))
-        sum_list = map(sum, zip(*displacement))
-        x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
-
-        s_max = max(results.StressValues)
-        s_min = min(results.StressValues)
-        s_avg = sum(results.StressValues) / no_of_values
-        p1_min = min(results.PrincipalMax)
-        p1_avg = sum(results.PrincipalMax) / no_of_values
-        p1_max = max(results.PrincipalMax)
-        p2_min = min(results.PrincipalMed)
-        p2_avg = sum(results.PrincipalMed) / no_of_values
-        p2_max = max(results.PrincipalMed)
-        p3_min = min(results.PrincipalMin)
-        p3_avg = sum(results.PrincipalMin) / no_of_values
-        p3_max = max(results.PrincipalMin)
-        ms_min = min(results.MaxShear)
-        ms_avg = sum(results.MaxShear) / no_of_values
-        ms_max = max(results.MaxShear)
-        if results.Peeq:
-            peeq_max = max(results.Peeq)
-            peeq_min = min(results.Peeq)
-            peeq_avg = sum(results.Peeq) / no_of_values
-        else:
-            peeq_max = 0
-            peeq_min = 0
-            peeq_avg = 0
-
-        disp_abs = []
-        for d in displacement:
-            disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
-        results.DisplacementLengths = disp_abs
-
-        a_max = max(disp_abs)
-        a_min = min(disp_abs)
-        a_avg = sum(disp_abs) / no_of_values
-
-        results.Stats = [x_min, x_avg, x_max,
-                         y_min, y_avg, y_max,
-                         z_min, z_avg, z_max,
-                         a_min, a_avg, a_max,
-                         s_min, s_avg, s_max,
-                         p1_min, p1_avg, p1_max,
-                         p2_min, p2_avg, p2_max,
-                         p3_min, p3_avg, p3_max,
-                         ms_min, ms_avg, ms_max,
-                         peeq_min, peeq_avg, peeq_max]
-    except:
-        pass
 
     # Read temperatures if they exist
     if 'temp' in result_set:
@@ -273,6 +232,56 @@ def fill_femresult_mechanical(results, result_set, span):
         if len(NetworkPressure) > 0:
             results.NetworkPressure = list(map((lambda x: x), NetworkPressure.values()))
             results.Time = step_time
+
+    # result stats, set stats values to 0, they may not exist
+    x_min = y_min = z_min = x_max = y_max = z_max = x_avg = y_avg = z_avg = 0
+    a_max = a_min = a_avg = s_max = s_min = s_avg = 0
+    p1_min = p1_avg = p1_max = p2_min = p2_avg = p2_max = p3_min = p3_avg = p3_max = 0
+    ms_min = ms_avg = ms_max = peeq_min = peeq_avg = peeq_max = 0
+
+    if results.DisplacementVectors:
+        x_max, y_max, z_max = map(max, zip(*displacement))
+        x_min, y_min, z_min = map(min, zip(*displacement))
+        sum_list = map(sum, zip(*displacement))
+        x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
+        a_max = max(disp_abs)
+        a_min = min(disp_abs)
+        a_avg = sum(disp_abs) / no_of_values
+    if results.StressValues:
+        s_max = max(results.StressValues)
+        s_min = min(results.StressValues)
+        s_avg = sum(results.StressValues) / no_of_values
+    if results.PrincipalMax:
+        p1_min = min(results.PrincipalMax)
+        p1_avg = sum(results.PrincipalMax) / no_of_values
+        p1_max = max(results.PrincipalMax)
+    if results.PrincipalMed:
+        p2_min = min(results.PrincipalMed)
+        p2_avg = sum(results.PrincipalMed) / no_of_values
+        p2_max = max(results.PrincipalMed)
+    if results.PrincipalMin:
+        p3_min = min(results.PrincipalMin)
+        p3_avg = sum(results.PrincipalMin) / no_of_values
+        p3_max = max(results.PrincipalMin)
+    if results.MaxShear:
+        ms_min = min(results.MaxShear)
+        ms_avg = sum(results.MaxShear) / no_of_values
+        ms_max = max(results.MaxShear)
+    if results.Peeq:
+        peeq_max = max(results.Peeq)
+        peeq_min = min(results.Peeq)
+        peeq_avg = sum(results.Peeq) / no_of_values
+
+    results.Stats = [x_min, x_avg, x_max,
+                     y_min, y_avg, y_max,
+                     z_min, z_avg, z_max,
+                     a_min, a_avg, a_max,
+                     s_min, s_avg, s_max,
+                     p1_min, p1_avg, p1_max,
+                     p2_min, p2_avg, p2_max,
+                     p3_min, p3_avg, p3_max,
+                     ms_min, ms_avg, ms_max,
+                     peeq_min, peeq_avg, peeq_max]
 
     return results
 
