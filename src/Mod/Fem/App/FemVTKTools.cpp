@@ -915,6 +915,7 @@ void FemVTKTools::importMechanicalResult(vtkSmartPointer<vtkDataSet> dataset, Ap
     scalers["StressValues"] = "Von Mises stress";
     scalers["MassFlowRate"] = "Mass Flow Rate";
     scalers["NetworkPressure"] = "Network Pressure";
+    scalers["Peeq"] = "Peeq";
     //scalers["DisplacementLengths"] = "";  // not yet exported in exportMechanicalResult()
 
     std::map<std::string, int> varids;
@@ -955,6 +956,7 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* res, vtkSmar
     scalers["StressValues"] = "Von Mises stress";
     scalers["MassFlowRate"] = "Mass Flow Rate";
     scalers["NetworkPressure"] = "Network Pressure";
+    scalers["Peeq"] = "Peeq";
     //scalers["DisplacementLengths"] = "";  // not yet exported in exportMechanicalResult()
 
     std::string essential_property = std::string("DisplacementVectors");
