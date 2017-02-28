@@ -174,6 +174,21 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                           .format(results.NodeNumbers, len(results.StressValues)))
                     results.NodeNumbers = stress.keys()
 
+                # Read Equivalent Plastic strain if they exist
+                if 'peeq' in result_set:
+                    Peeq = result_set['peeq']
+                    if len(Peeq) > 0:
+                        if len(Peeq.values()) != len(disp.values()):
+                            Pe = []
+                            Pe_extra_nodes = Peeq.values()
+                            nodes = len(disp.values())
+                            for i in range(nodes):
+                                Pe_value = Pe_extra_nodes[i]
+                                Pe.append(Pe_value)
+                            results.Peeq = Pe
+                        else:
+                            results.Peeq = Peeq.values()
+
                 x_min, y_min, z_min = map(min, zip(*displacement))
                 sum_list = map(sum, zip(*displacement))
                 x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
@@ -193,6 +208,14 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                 ms_min = min(results.MaxShear)
                 ms_avg = sum(results.MaxShear) / no_of_values
                 ms_max = max(results.MaxShear)
+                if results.Peeq:
+                    peeq_max = max(results.Peeq)
+                    peeq_min = min(results.Peeq)
+                    peeq_avg = sum(results.Peeq) / no_of_values
+                else:
+                    peeq_max = 0
+                    peeq_min = 0
+                    peeq_avg = 0
 
                 disp_abs = []
                 for d in displacement:
@@ -211,24 +234,8 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                                  p1_min, p1_avg, p1_max,
                                  p2_min, p2_avg, p2_max,
                                  p3_min, p3_avg, p3_max,
-                                 ms_min, ms_avg, ms_max]
-            except:
-                pass
-
-            # Read Equivalent Plastic strain if they exist
-            try:
-                Peeq = result_set['peeq']
-                if len(Peeq) > 0:
-                    if len(Peeq.values()) != len(disp.values()):
-                        Pe = []
-                        Pe_extra_nodes = Peeq.values()
-                        nodes = len(disp.values())
-                        for i in range(nodes):
-                            Pe_value = Pe_extra_nodes[i]
-                            Pe.append(Pe_value)
-                        results.Peeq = Pe
-                    else:
-                        results.Peeq = Peeq.values()
+                                 ms_min, ms_avg, ms_max,
+                                 peeq_min, peeq_avg, peeq_max]
             except:
                 pass
 
