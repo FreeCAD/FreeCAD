@@ -1870,9 +1870,15 @@ PyObject* TopoShapePy::makeShapeFromMesh(PyObject *args)
         for (Py::Sequence::iterator it = facets.begin(); it != facets.end(); ++it) {
             Data::ComplexGeoData::Facet face;
             Py::Tuple f(*it);
+#if PY_MAJOR_VERSION >= 3
             face.I1 = (int)Py::Long(f[0]);
             face.I2 = (int)Py::Long(f[1]);
             face.I3 = (int)Py::Long(f[2]);
+#else
+            face.I1 = (int)Py::Int(f[0]);
+            face.I2 = (int)Py::Int(f[1]);
+            face.I3 = (int)Py::Int(f[2]);
+#endif
             Facets.push_back(face);
         }
 
@@ -2290,11 +2296,19 @@ PyObject* TopoShapePy::proximity(PyObject *args)
 
     for (BRepExtrema_OverlappedSubShapes::Iterator anIt1 (proximity.OverlapSubShapes1()); anIt1.More(); anIt1.Next()) {
         //PyList_Append(overlappss1, new TopoShapeFacePy(new TopoShape(proximity.GetSubShape1 (anIt1.Key()))));
+#if PY_MAJOR_VERSION >= 3
+        PyList_Append(overlappssindex1,PyLong_FromLong(anIt1.Key()+1));
+#else
         PyList_Append(overlappssindex1,PyInt_FromLong(anIt1.Key()+1));
+#endif
     }
     for (BRepExtrema_OverlappedSubShapes::Iterator anIt2 (proximity.OverlapSubShapes2()); anIt2.More(); anIt2.Next()) {
         //PyList_Append(overlappss2, new TopoShapeFacePy(new TopoShape(proximity.GetSubShape2 (anIt2.Key()))));
+#if PY_MAJOR_VERSION >= 3
+        PyList_Append(overlappssindex2,PyLong_FromLong(anIt2.Key()+1));
+#else
         PyList_Append(overlappssindex2,PyInt_FromLong(anIt2.Key()+1));
+#endif
     }
     //return Py_BuildValue("OO", overlappss1, overlappss2); //subshapes
     return Py_BuildValue("OO", overlappssindex1, overlappssindex2); //face indexes

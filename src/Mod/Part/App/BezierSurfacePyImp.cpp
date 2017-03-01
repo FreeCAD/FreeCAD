@@ -728,7 +728,6 @@ PyObject* BezierSurfacePy::vIso(PyObject * args)
         return 0;
     }
 }
-
 Py::Long BezierSurfacePy::getUDegree(void) const
 {
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast

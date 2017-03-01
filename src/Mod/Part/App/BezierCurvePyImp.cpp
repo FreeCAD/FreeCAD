@@ -355,7 +355,6 @@ PyObject* BezierCurvePy::getResolution(PyObject* args)
         return 0;
     }
 }
-
 Py::Long BezierCurvePy::getDegree(void) const
 {
     Handle_Geom_BezierCurve curve = Handle_Geom_BezierCurve::DownCast
