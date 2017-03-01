@@ -124,7 +124,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
             PyErr_SetString(PyExc_TypeError, str.str().c_str());
             return 0;
         }
-        return Py::new_reference_to(Py::Int(ret));
+        return Py::new_reference_to(Py::Long(ret));
     }
     else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
              PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
@@ -186,7 +186,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
         Py::Tuple tuple(numGeo);
         for (std::size_t i=0; i<numGeo; ++i) {
             int geoId = ret - int(numGeo - i);
-            tuple.setItem(i, Py::Int(geoId));
+            tuple.setItem(i, Py::Long(geoId));
         }
 
         return Py::new_reference_to(tuple);
@@ -278,7 +278,7 @@ PyObject* SketchObjectPy::addConstraint(PyObject *args)
         // this forces recalculation of the initial solution (not a full solve)
         if(this->getSketchObjectPtr()->noRecomputes)
             this->getSketchObjectPtr()->setUpSketch(); 
-        return Py::new_reference_to(Py::Int(ret));
+        return Py::new_reference_to(Py::Long(ret));
     }
     else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
              PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
@@ -302,7 +302,7 @@ PyObject* SketchObjectPy::addConstraint(PyObject *args)
         Py::Tuple tuple(numCon);
         for (std::size_t i=0; i<numCon; ++i) {
             int conId = ret - int(numCon - i);
-            tuple.setItem(i, Py::Int(conId));
+            tuple.setItem(i, Py::Long(conId));
         }
         return Py::new_reference_to(tuple);
     }
@@ -802,8 +802,13 @@ PyObject* SketchObjectPy::addSymmetric(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+#if PY_MAJOR_VERSION >= 3
+            if (PyLong_Check((*it).ptr()))
+                geoIdList.push_back(PyLong_AsLong((*it).ptr()));
+#else
             if (PyInt_Check((*it).ptr()))
                 geoIdList.push_back(PyInt_AsLong((*it).ptr()));
+#endif
         }
 
         int ret = this->getSketchObjectPtr()->addSymmetric(geoIdList,refGeoId,(Sketcher::PointPos) refPosId) + 1;
@@ -815,7 +820,7 @@ PyObject* SketchObjectPy::addSymmetric(PyObject *args)
         Py::Tuple tuple(numGeo);
         for (std::size_t i=0; i<numGeo; ++i) {
             int geoId = ret - int(numGeo - i);
-            tuple.setItem(i, Py::Int(geoId));
+            tuple.setItem(i, Py::Long(geoId));
         }
 
         return Py::new_reference_to(tuple);
@@ -841,8 +846,13 @@ PyObject* SketchObjectPy::addCopy(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+#if PY_MAJOR_VERSION >= 3
+            if (PyLong_Check((*it).ptr()))
+                geoIdList.push_back(PyLong_AsLong((*it).ptr()));
+#else
             if (PyInt_Check((*it).ptr()))
                 geoIdList.push_back(PyInt_AsLong((*it).ptr()));
+#endif
         }
 
         int ret = this->getSketchObjectPtr()->addCopy(geoIdList, vect, PyObject_IsTrue(clone) ? true : false) + 1;
@@ -854,7 +864,7 @@ PyObject* SketchObjectPy::addCopy(PyObject *args)
         Py::Tuple tuple(numGeo);
         for (std::size_t i=0; i<numGeo; ++i) {
             int geoId = ret - int(numGeo - i);
-            tuple.setItem(i, Py::Int(geoId));
+            tuple.setItem(i, Py::Long(geoId));
         }
 
         return Py::new_reference_to(tuple);
@@ -884,8 +894,13 @@ PyObject* SketchObjectPy::addRectangularArray(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+#if PY_MAJOR_VERSION >= 3
+	    if (PyLong_Check((*it).ptr()))
+		geoIdList.push_back(PyLong_AsLong((*it).ptr()));
+#else
             if (PyInt_Check((*it).ptr()))
                 geoIdList.push_back(PyInt_AsLong((*it).ptr()));
+#endif
         }
 
         int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect, PyObject_IsTrue(clone) ? true : false, 
@@ -961,7 +976,7 @@ PyObject* SketchObjectPy::changeConstraintsLocking(PyObject *args)
 
     int naff = obj->changeConstraintsLocking((bool)bLock);
 
-    return Py::new_reference_to(Py::Int(naff));
+    return Py::new_reference_to(Py::Long(naff));
 }
 
 //Deprecated
@@ -1069,19 +1084,19 @@ PyObject* SketchObjectPy::increaseBSplineDegree(PyObject *args)
     Py_Return;
 }
 
-Py::Int SketchObjectPy::getConstraintCount(void) const
+Py::Long SketchObjectPy::getConstraintCount(void) const
 {
-    return Py::Int(this->getSketchObjectPtr()->Constraints.getSize());
+    return Py::Long(this->getSketchObjectPtr()->Constraints.getSize());
 }
 
-Py::Int SketchObjectPy::getGeometryCount(void) const
+Py::Long SketchObjectPy::getGeometryCount(void) const
 {
-    return Py::Int(this->getSketchObjectPtr()->Geometry.getSize());
+    return Py::Long(this->getSketchObjectPtr()->Geometry.getSize());
 }
 
-Py::Int SketchObjectPy::getAxisCount(void) const
+Py::Long SketchObjectPy::getAxisCount(void) const
 {
-    return Py::Int(this->getSketchObjectPtr()->getAxisCount());
+    return Py::Long(this->getSketchObjectPtr()->getAxisCount());
 }
 
 PyObject *SketchObjectPy::getCustomAttributes(const char* /*attr*/) const

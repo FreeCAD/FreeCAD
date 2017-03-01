@@ -77,8 +77,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     if (PyArg_ParseTuple(args, "siO", &ConstraintType, &FirstIndex, &index_or_value)) {
         // ConstraintType, GeoIndex1, GeoIndex2
+#if PY_MAJOR_VERSION >= 3
+        if (PyLong_Check(index_or_value)) {
+            SecondIndex = PyLong_AsLong(index_or_value);
+#else
         if (PyInt_Check(index_or_value)) {
             SecondIndex = PyInt_AsLong(index_or_value);
+#endif
             bool valid = false;
             if (strcmp("Tangent",ConstraintType) == 0) {
                 this->getConstraintPtr()->Type = Tangent;
@@ -159,9 +164,15 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     if (PyArg_ParseTuple(args, "siiO", &ConstraintType, &FirstIndex, &any_index, &index_or_value)) {
         // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2
+#if PY_MAJOR_VERSION >= 3
+        if (PyLong_Check(index_or_value)) {
+            FirstPos = any_index;
+            SecondIndex = PyLong_AsLong(index_or_value);
+#else
         if (PyInt_Check(index_or_value)) {
             FirstPos = any_index;
             SecondIndex = PyInt_AsLong(index_or_value);
+#endif
             bool valid = false;
             if (strcmp("Perpendicular", ConstraintType) == 0) {
                 this->getConstraintPtr()->Type = Perpendicular;
@@ -245,8 +256,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     if (PyArg_ParseTuple(args, "siiiO", &ConstraintType, &intArg1, &intArg2, &intArg3, &oNumArg4)) {
         // Value, ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2
+#if PY_MAJOR_VERSION >= 3
+        if (PyLong_Check(oNumArg4)) {
+            intArg4 = PyLong_AsLong(oNumArg4);
+#else
         if (PyInt_Check(oNumArg4)) {
             intArg4 = PyInt_AsLong(oNumArg4);
+#endif
             bool valid = false;
             if (strcmp("Coincident", ConstraintType) == 0) {
                 this->getConstraintPtr()->Type = Coincident;
@@ -337,8 +353,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     if (PyArg_ParseTuple(args, "siiiiO", &ConstraintType, &intArg1, &intArg2, &intArg3, &intArg4, &oNumArg5)) {
         // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, GeoIndex3
+#if PY_MAJOR_VERSION >= 3
+        if (PyLong_Check(oNumArg5)) {
+            intArg5 = PyLong_AsLong(oNumArg5);
+#else
         if (PyInt_Check(oNumArg5)) {
             intArg5 = PyInt_AsLong(oNumArg5);
+#endif
             if (strcmp("Symmetric",ConstraintType) == 0 ) {
                 this->getConstraintPtr()->Type = Symmetric;
                 this->getConstraintPtr()->First     = intArg1;
@@ -404,8 +425,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
 
     if (PyArg_ParseTuple(args, "siiiiiO", &ConstraintType, &FirstIndex, &FirstPos, &SecondIndex, &SecondPos, &ThirdIndex, &index_or_value)) {
+#if PY_MAJOR_VERSION >= 3
+        if (PyLong_Check(index_or_value)) {
+            ThirdPos = PyLong_AsLong(index_or_value);
+#else
         if (PyInt_Check(index_or_value)) {
             ThirdPos = PyInt_AsLong(index_or_value);
+#endif
             // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, GeoIndex3, PosIndex3
             if (strcmp("Symmetric",ConstraintType) == 0 ) {
                 this->getConstraintPtr()->Type = Symmetric;
@@ -495,24 +521,32 @@ std::string ConstraintPy::representation(void) const
     return result.str();
 }
 
-Py::Int ConstraintPy::getFirst(void) const
+Py::Long ConstraintPy::getFirst(void) const
 {
-    return Py::Int(this->getConstraintPtr()->First);
+    return Py::Long(this->getConstraintPtr()->First);
 }
 
-void  ConstraintPy::setFirst(Py::Int arg)
+void  ConstraintPy::setFirst(Py::Long arg)
 {
+#if PY_MAJOR_VERSION < 3
+    this->getConstraintPtr()->First = Py::Int(arg);
+#else
     this->getConstraintPtr()->First = arg;
+#endif
 }
 
-Py::Int ConstraintPy::getSecond(void) const
+Py::Long ConstraintPy::getSecond(void) const
 {
-    return Py::Int(this->getConstraintPtr()->Second);
+    return Py::Long(this->getConstraintPtr()->Second);
 }
 
-void  ConstraintPy::setSecond(Py::Int arg)
+void  ConstraintPy::setSecond(Py::Long arg)
 {
+#if PY_MAJOR_VERSION < 3
+    this->getConstraintPtr()->Second = Py::Int(arg);
+#else
     this->getConstraintPtr()->Second = arg;
+#endif
 }
 
 Py::String ConstraintPy::getName(void) const

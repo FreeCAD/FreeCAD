@@ -117,7 +117,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setAuxiliarySpine(PyObject *args)
     PyObject *spine, *curv, *keep;
     if (!PyArg_ParseTuple(args, "O!O!O!",&Part::TopoShapePy::Type,&spine
                                         ,&PyBool_Type,&curv
-                                        ,&PyInt_Type,&keep))
+                                        ,&PyLong_Type,&keep))
         return 0;
     const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(spine)->getTopoShapePtr()->getShape();
     if (s.IsNull() || s.ShapeType() != TopAbs_WIRE) {
@@ -199,7 +199,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::getStatus(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     Standard_Integer val = this->getBRepOffsetAPI_MakePipeShellPtr()->GetStatus();
-    return Py::new_reference_to(Py::Int(val));
+    return Py::new_reference_to(Py::Long(val));
 }
 
 PyObject* BRepOffsetAPI_MakePipeShellPy::makeSolid(PyObject *args)

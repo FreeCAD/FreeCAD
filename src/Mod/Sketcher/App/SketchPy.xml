@@ -54,7 +54,7 @@
       <Documentation>
         <UserDocu>0: exactly constraint, -1 under-constraint, 1 over-constraint</UserDocu>
       </Documentation>
-      <Parameter Name="Constraint" Type="Int"/>
+      <Parameter Name="Constraint" Type="Long"/>
     </Attribute>
     <Attribute Name="Conflicts" ReadOnly="true">
       <Documentation>
