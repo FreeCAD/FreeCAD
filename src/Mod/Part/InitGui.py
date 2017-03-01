@@ -41,13 +41,14 @@ class PartWorkbench ( Workbench ):
     def Initialize(self):
         # load the module
         import PartGui
-        import BOPTools
 
         import CompoundTools._CommandCompoundFilter
 
         try:
-            BOPTools.importAll()
-            BOPTools.addCommands()
+            bop = __import__("BOPTools")
+            bop.importAll()
+            bop.addCommands()
+            PartGui.BOPTools = bop
         except Exception as err:
             FreeCAD.Console.PrintError("Features from BOPTools package cannot be loaded. {err}\n".format(err= str(err)))        
 
