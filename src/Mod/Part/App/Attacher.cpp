@@ -563,7 +563,7 @@ int AttachEngine::getTypeRank(eRefType type)
     while (type != rtAnything) {
         type = downgradeType(type);
         rank++;
-        assert(rank<8);//downgrading never yeilds rtAnything, something's wrong with downgrader.
+        assert(rank<8);//downgrading never yields rtAnything, something's wrong with downgrader.
     }
     return rank;
 }
@@ -1157,7 +1157,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
 
         gp_Dir dirX;
         prop.TangentU(dirX); //if normal is defined, this should be defined too
-        SketchXAxis = gp_Vec(dirX).Reversed();//yeilds upside-down sketches less often.
+        SketchXAxis = gp_Vec(dirX).Reversed();//yields upside-down sketches less often.
 
         if (face.Orientation() == TopAbs_REVERSED) {
             SketchNormal.Reverse();
@@ -1732,7 +1732,7 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
                 throw Base::Exception("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
             const TopoDS_Edge &e = TopoDS::Edge(*(shapes[0]));
             BRepAdaptor_Curve adapt (e);
-            gp_Ax1 dx1, dx2;//vars to recieve directrices
+            gp_Ax1 dx1, dx2;//vars to receive directrices
             switch(adapt.GetType()){
             case GeomAbs_Ellipse:{
                 gp_Elips cc = adapt.Ellipse();

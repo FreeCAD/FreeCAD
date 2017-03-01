@@ -91,7 +91,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     Gui::Document* doc = PipeView->getDocument();
 
     //make sure the user sees all important things: the
-    //spine/auxilliary spine he already selected
+    //spine/auxiliary spine he already selected
     if (pipe->Spine.getValue()) {
         auto* svp = doc->getViewProvider(pipe->Spine.getValue());
         spineShow = svp->isShow();
@@ -156,7 +156,7 @@ TaskPipeParameters::~TaskPipeParameters()
         Gui::Document* doc = vp->getDocument();
 
         //make sure the user sees all important things: the
-        //spine/auxilliary spine he already selected
+        //spine/auxiliary spine he already selected
         if (pipe->Spine.getValue()) {
             auto* svp = doc->getViewProvider(pipe->Spine.getValue());
             svp->setVisible(spineShow);
@@ -350,7 +350,7 @@ TaskPipeOrientation::~TaskPipeOrientation()
         Gui::Document* doc = vp->getDocument();
 
         //make sure the user sees al important things: the base feature to select edges and the
-        //spine/auxilliary spine he already selected
+        //spine/auxiliary spine he already selected
         if (pipe->AuxillerySpine.getValue()) {
             auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
             svp->setVisible(auxSpineShow);

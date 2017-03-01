@@ -264,7 +264,7 @@ PyObject* SketchObjectPy::addConstraint(PyObject *args)
         // 2. This solve happens before the command is committed
         // 3. A constraint, may effect a geometry change (think of coincident,
         // a line's point moves to meet the other line's point
-        // 4. The transaction is comitted before any other solve, for example
+        // 4. The transaction is committed before any other solve, for example
         // the one of execute() triggered by a recompute (UpdateActive) is generated.
         // 5. Upon "undo", the constraint is removed (it was before the command was committed)
         //    however, the geometry changed after the command was committed, so the point that

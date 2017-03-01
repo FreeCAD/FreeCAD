@@ -1341,7 +1341,7 @@ void GeomArcOfConic::setXAxisDir(const Base::Vector3d& newdir)
 
     try {
         gp_Ax2 pos = c->Position();
-        //OCC should keep the old main Direction (Z), and change YDirection to accomodate the new XDirection.
+        //OCC should keep the old main Direction (Z), and change YDirection to accommodate the new XDirection.
         pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));
         c->SetPosition(pos);
     }
@@ -1881,7 +1881,7 @@ void GeomEllipse::setMajorAxisDir(Base::Vector3d newdir)
         return;//zero vector was passed. Keep the old orientation.
     try {
         gp_Ax2 pos = myCurve->Position();
-        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accomodate the new XDirection.
+        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accommodate the new XDirection.
         myCurve->SetPosition(pos);
     }
     catch (Standard_Failure) {
@@ -2100,7 +2100,7 @@ void GeomArcOfEllipse::setMajorAxisDir(Base::Vector3d newdir)
         return;//zero vector was passed. Keep the old orientation.
     try {
         gp_Ax2 pos = c->Position();
-        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accomodate the new XDirection.
+        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accommodate the new XDirection.
         c->SetPosition(pos);
     }
     catch (Standard_Failure) {
@@ -2528,7 +2528,7 @@ void GeomArcOfHyperbola::setMajorAxisDir(Base::Vector3d newdir)
 
     try {
         gp_Ax2 pos = c->Position();
-        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accomodate the new XDirection.
+        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accommodate the new XDirection.
         c->SetPosition(pos);
     }
     catch (Standard_Failure) {

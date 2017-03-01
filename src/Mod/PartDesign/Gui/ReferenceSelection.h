@@ -64,7 +64,7 @@ public:
     {
     }
     /**
-    * Allow the user to pick only objects wich are not in objs getDependencyList
+    * Allow the user to pick only objects which are not in objs getDependencyList
     */
     bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override;
 };

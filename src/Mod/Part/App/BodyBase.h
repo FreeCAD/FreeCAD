@@ -32,7 +32,7 @@
 namespace Part
 {
 /** Base class of all body objects in FreeCAD
- * A body is used, e.g. in PartDesign, to agregate
+ * A body is used, e.g. in PartDesign, to aggregate
  * some modeling features to one shape. As long as not
  * in edit or active on a workbench, the body shows only the
  * resulting shape to the outside (Tip link).
@@ -81,9 +81,9 @@ public:
     virtual PyObject* getPyObject();
 
 protected:
-    /// If BaseFeature is getting changed and Tip points to it resets the Tip
+    /// If BaseFeature is getting changed and Tip points to it reset the Tip
     virtual void onBeforeChange (const App::Property* prop);
-    /// If BaseFeature is setted and Tip is null sets the Tip to it
+    /// If BaseFeature is set and Tip is null set the Tip to it
     virtual void onChanged (const App::Property* prop);
 
 };
