@@ -44,7 +44,7 @@ namespace Part
  */
 class PartExport FaceMakerBullseye: public FaceMakerPublic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     FaceMakerBullseye()
         :planeSupplied(false){}
