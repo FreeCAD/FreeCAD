@@ -300,7 +300,7 @@ public:
         rlOtherBody,
     };
     /// Return true if this object is allowed as external geometry for the
-    /// sketch. rsn argument recieves the reason for disallowing.
+    /// sketch. rsn argument receives the reason for disallowing.
     bool isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj, eReasonList* rsn = 0) const;
 
 protected:

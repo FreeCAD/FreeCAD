@@ -169,7 +169,7 @@ void TaskMirroredParameters::updateUI()
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
 
     if (planeLinks.setCurrentLink(pcMirrored->MirrorPlane) == -1){
-        //failed to set current, because the link isnt in the list yet
+        //failed to set current, because the link isn't in the list yet
         planeLinks.addLink(pcMirrored->MirrorPlane, getRefStr(pcMirrored->MirrorPlane.getValue(),pcMirrored->MirrorPlane.getSubValues()));
         planeLinks.setCurrentLink(pcMirrored->MirrorPlane);
     }

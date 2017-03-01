@@ -345,7 +345,7 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
       NULL 
       )) 
     { 
-      bFailed = false;  // suceeded 
+      bFailed = false;  // succeeded 
     } 
     CloseHandle(hFile); 
   } 
@@ -372,7 +372,7 @@ void InitMiniDumpWriter(const std::string& filename)
     return;
   s_szMiniDumpFileName = filename;
 
-  // Initialize the member, so we do not load the dll after the exception has occured
+  // Initialize the member, so we do not load the dll after the exception has occurred
   // which might be not possible anymore...
   s_hDbgHelpMod = LoadLibrary(("dbghelp.dll"));
   if (s_hDbgHelpMod != NULL)

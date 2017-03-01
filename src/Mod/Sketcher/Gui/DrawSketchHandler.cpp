@@ -188,7 +188,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             double cosangle=dir3d.Normalize()*hitShapeDir.Normalize();
             
             // the angle between the line and the hitting direction are over around 6 degrees (it is substantially parallel)
-            // or if it is an sketch axis (that can not move to accomodate to the shape), then only if it is around 6 degrees with the normal (around 84 degrees)
+            // or if it is an sketch axis (that can not move to accommodate to the shape), then only if it is around 6 degrees with the normal (around 84 degrees)
             if (fabs(cosangle) < 0.995f || ((GeoId==Sketcher::GeoEnum::HAxis || GeoId==Sketcher::GeoEnum::VAxis) && fabs(cosangle) < 0.1))
                 suggestedConstraints.push_back(constr);
             

@@ -191,7 +191,7 @@
       <Documentation>
         <UserDocu>
           isPointOnObject(GeoIdCurve, float x, float y) - tests if the point (x,y)
-          geometrically lies on a curve (e.g. ellipse). It treats lines as infinte,
+          geometrically lies on a curve (e.g. ellipse). It treats lines as infinite,
           arcs as full circles/ellipses/etc. Returns boolean value.
         </UserDocu>
       </Documentation>
