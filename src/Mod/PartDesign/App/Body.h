@@ -40,7 +40,7 @@ class Feature;
 
 class PartDesignExport Body : public Part::BodyBase
 {
-    PROPERTY_HEADER(PartDesign::Body);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Body);
 
 public:
 
@@ -52,11 +52,11 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderBody";
     }
     //@}
@@ -107,7 +107,7 @@ public:
       * all features derived from PartDesign::Feature and Part::Datum and sketches
       */
     static bool isAllowed(const App::DocumentObject* f);
-    virtual bool allowObject(DocumentObject* f) {return isAllowed(f);};
+    virtual bool allowObject(DocumentObject* f) override {return isAllowed(f);};
 
     /**
      * Return the body which this feature belongs too, or NULL
@@ -115,14 +115,14 @@ public:
      */
     static Body *findBodyOf(const App::DocumentObject* feature);
 
-    PyObject *getPyObject(void);
+    PyObject *getPyObject(void) override;
 
 
 protected:
-    virtual void onSettingDocument();
+    virtual void onSettingDocument() override;
 
     /// Adjusts the first solid's feature's base on on BaseFeature getting setted
-    virtual void onChanged (const App::Property* prop);
+    virtual void onChanged (const App::Property* prop) override;
 
     /**
       * Return the solid feature before the given feature, or before the Tip feature
@@ -137,9 +137,9 @@ protected:
     App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL);
 
     /// Creates the corresponding Origin object
-    virtual void setupObject ();
+    virtual void setupObject () override;
     /// Removes all planes and axis if they are still linked to the document
-    virtual void unsetupObject ();
+    virtual void unsetupObject () override;
 
 private:
     boost::signals::scoped_connection connection;

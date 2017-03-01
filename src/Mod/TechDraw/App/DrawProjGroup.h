@@ -47,7 +47,7 @@ class Cube;
  */
 class TechDrawExport DrawProjGroup : public TechDraw::DrawViewCollection
 {
-    PROPERTY_HEADER(TechDraw::DrawProjGroup);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawProjGroup);
 
 public:
     /// Constructor
@@ -66,7 +66,7 @@ public:
 
     Base::BoundBox3d getBoundingBox() const;
     double calculateAutomaticScale() const;
-    virtual QRectF getRect(void) const;
+    virtual QRectF getRect(void) const override;
     virtual bool checkFit(TechDraw::DrawPage* p) const override;
     /// Check if container has a view of a specific type
     bool hasProjection(const char *viewProjType) const;
@@ -91,20 +91,20 @@ public:
     bool distributeProjections(void);
     void resetPositions(void);
 
-    short mustExecute() const;
+    short mustExecute() const override;
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
-    virtual void onDocumentRestored();
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual void onDocumentRestored() override;
+    virtual App::DocumentObjectExecReturn *execute(void) override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderProjGroup";
     }
     //return PyObject as DrawProjGroupPy
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     /// Determines either "First Angle" or "Third Angle".
     App::Enumeration usedProjectionType(void);
@@ -132,7 +132,7 @@ public:
     void dumpISO(char * title);
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
     //! Moves anchor view to keep our bounding box centre on the origin
     void moveToCentre();
