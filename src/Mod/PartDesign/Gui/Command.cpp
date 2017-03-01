@@ -1264,6 +1264,14 @@ bool CmdPartDesignSubtractiveLoft::isActive(void)
 bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
         Gui::SelectionObject &selected)
 {
+    App::Document *doc = cmd->getDocument();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
+        /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+
+    // No PartDesign feature without Body past FreeCAD 0.16
+    if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+        return false;
+
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     selection = cmd->getSelection().getSelectionEx();
 
