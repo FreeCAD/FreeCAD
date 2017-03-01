@@ -44,7 +44,7 @@
     #debug concat("T=",str(T,5,2),"  T0=",str(T0,5,2),"  T1=",str(T1,5,2),"  T2=",str(T2,5,2),"  T1Sin=",str(T1Sin,5,2),"\n")
   #end
   
-  // Current time is allways zero based
+  // Current time is always zero based
   #declare T = clock;
 
   // Compute Scene number: One scene less than camera positions

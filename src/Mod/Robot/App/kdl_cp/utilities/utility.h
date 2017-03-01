@@ -16,7 +16,7 @@
  *    functions and macro definitions.
  *  
  *  \par history
- *   - changed layout of the comments to accomodate doxygen
+ *   - changed layout of the comments to accommodate doxygen
  */
 
 
