@@ -119,7 +119,7 @@ class ViewProviderBooleanFragments:
             for obj in self.claimChildren():
                 obj.ViewObject.show()
         except Exception as err:
-            FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
+            FreeCAD.Console.PrintError("Error in onDelete: " + str(err))
         return True
 
 def cmdCreateBooleanFragmentsFeature(name, mode):
@@ -141,7 +141,7 @@ def cmdCreateBooleanFragmentsFeature(name, mode):
         mb = QtGui.QMessageBox()
         mb.setIcon(mb.Icon.Warning)
         mb.setText(_translate("Part_SplitFeatures","Computing the result failed with an error: \n\n{err}\n\nClick 'Continue' to create the feature anyway, or 'Abort' to cancel.", None)
-                   .format(err= err.message))
+                   .format(err= str(err)))
         mb.setWindowTitle(_translate("Part_SplitFeatures","Bad selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
         btnOK = mb.addButton(_translate("Part_SplitFeatures","Continue",None), QtGui.QMessageBox.ButtonRole.ActionRole)
@@ -246,7 +246,7 @@ class ViewProviderSlice:
             for obj in self.claimChildren():
                 obj.ViewObject.show()
         except Exception as err:
-            FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
+            FreeCAD.Console.PrintError("Error in onDelete: " + str(err))
         return True
 
 def cmdCreateSliceFeature(name, mode):
@@ -269,7 +269,7 @@ def cmdCreateSliceFeature(name, mode):
         mb = QtGui.QMessageBox()
         mb.setIcon(mb.Icon.Warning)
         mb.setText(_translate("Part_SplitFeatures","Computing the result failed with an error: \n\n{err}\n\nClick 'Continue' to create the feature anyway, or 'Abort' to cancel.", None)
-                   .format(err= err.message))
+                   .format(err= str(err)))
         mb.setWindowTitle(_translate("Part_SplitFeatures","Bad selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
         btnOK = mb.addButton(_translate("Part_SplitFeatures","Continue",None), QtGui.QMessageBox.ButtonRole.ActionRole)
@@ -374,7 +374,7 @@ class ViewProviderXOR:
             for obj in self.claimChildren():
                 obj.ViewObject.show()
         except Exception as err:
-            FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
+            FreeCAD.Console.PrintError("Error in onDelete: " + str(err))
         return True
 
 def cmdCreateXORFeature(name):
@@ -395,7 +395,7 @@ def cmdCreateXORFeature(name):
         mb = QtGui.QMessageBox()
         mb.setIcon(mb.Icon.Warning)
         mb.setText(_translate("Part_SplitFeatures","Computing the result failed with an error: \n\n{err}\n\nClick 'Continue' to create the feature anyway, or 'Abort' to cancel.", None)
-                   .format(err= err.message))
+                   .format(err= str(err)))
         mb.setWindowTitle(_translate("Part_SplitFeatures","Bad selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
         btnOK = mb.addButton(_translate("Part_SplitFeatures","Continue",None), QtGui.QMessageBox.ButtonRole.ActionRole)
