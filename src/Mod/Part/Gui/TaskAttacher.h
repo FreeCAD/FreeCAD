@@ -87,7 +87,7 @@ private Q_SLOTS:
     void visibilityAutomation(bool opening_not_closing);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 private:
     void objectDeleted(const Gui::ViewProviderDocumentObject&);
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
