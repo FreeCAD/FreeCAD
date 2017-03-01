@@ -880,15 +880,21 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                                                             "from PySide2.QtWidgets import *\n")
         file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
 
-        INSTALL(
-            FILES
-                ${CMAKE_BINARY_DIR}/bin/PySide/__init__.py
-                ${CMAKE_BINARY_DIR}/bin/PySide/QtCore.py
-                ${CMAKE_BINARY_DIR}/bin/PySide/QtGui.py
-                ${CMAKE_BINARY_DIR}/bin/PySide/QtSvg.py
-            DESTINATION
-                bin/PySide
-        )
+	if(APPLE)
+	    INSTALL(
+	        DIRECTORY	
+                    ${CMAKE_BINARY_DIR}/bin/PySide
+		DESTINATION
+                    MacOS
+            )
+	else()
+            INSTALL(
+	        DIRECTORY	
+                    ${CMAKE_BINARY_DIR}/bin/PySide
+                DESTINATION
+                    bin
+            )
+	endif()
     else()
         # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
         SET(PYTHON_SUFFIX -python2.7) # for shiboken
