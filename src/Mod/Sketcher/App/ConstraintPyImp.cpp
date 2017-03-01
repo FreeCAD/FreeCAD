@@ -528,7 +528,11 @@ Py::Long ConstraintPy::getFirst(void) const
 
 void  ConstraintPy::setFirst(Py::Long arg)
 {
+#if PY_MAJOR_VERSION < 3
+    this->getConstraintPtr()->First = Py::Int(arg);
+#else
     this->getConstraintPtr()->First = arg;
+#endif
 }
 
 Py::Long ConstraintPy::getSecond(void) const
@@ -538,7 +542,11 @@ Py::Long ConstraintPy::getSecond(void) const
 
 void  ConstraintPy::setSecond(Py::Long arg)
 {
+#if PY_MAJOR_VERSION < 3
+    this->getConstraintPtr()->Second = Py::Int(arg);
+#else
     this->getConstraintPtr()->Second = arg;
+#endif
 }
 
 Py::String ConstraintPy::getName(void) const
