@@ -568,7 +568,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         bool flipTriang = false;
 
         if ((par3-par1).dot(dir) > (par4 - par1).length()) {
-            // Increase Margin to improve visability
+            // Increase Margin to improve visibility
             float tmpMargin = this->imgHeight /0.75;
             par3 = par4;
             if((par2-par1).dot(dir) > (par4 - par1).length()) {

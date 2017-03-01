@@ -381,7 +381,7 @@ shape.
 * join: method of offsetting non-tangent joints. 0 = arcs, 1 = tangent, 2 =
 intersection
 
-* fill: if true, offsetting a shell is to yeild a solid
+* fill: if true, offsetting a shell is to yield a solid
 
 Returns: result of offsetting.</UserDocu>
       </Documentation>

@@ -37,7 +37,7 @@ namespace PartDesignGui {
  * Legacy mode provides a free PartDesign features but forbids bodies and parts
  */
 enum class Workflow {
-    Undetermined = 0, ///< No workflow was choosen yet
+    Undetermined = 0, ///< No workflow was chosen yet
     Legacy = 1<<0,    ///< Old-style workflow with free features and no bodies
     Modern = 1<<1,    ///< New-style workflow with bodies, parts etc
 };
@@ -60,7 +60,7 @@ public:
     /**
      * Asserts the workflow of the document to be determined and prompt user to migrate if it is not modern.
      *
-     * If workflow was already choosen return it.
+     * If workflow was already chosen return it.
      * If the guesed workflow is Workflow::Legacy or Workflow::Mixed the user will be prompted to migrate.
      * If the user agrees the file will be migrated and the workflow will be set as modern.
      * If the user refuses to migrate use the old workflow.

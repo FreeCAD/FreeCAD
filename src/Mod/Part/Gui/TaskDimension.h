@@ -99,7 +99,7 @@ namespace PartGui
   void toggle3d();
   /*!toggles the display status of the delta dimensions*/
   void toggleDelta();
-  /*!make sure measure command isn't working with everthing invisible. Confusing the user*/
+  /*!make sure measure command isn't working with everything invisible. Confusing the user*/
   void ensureSomeDimensionVisible();
   /*!make sure angle measure command isn't working with 3d off. Confusing the user*/
   void ensure3dDimensionVisible();

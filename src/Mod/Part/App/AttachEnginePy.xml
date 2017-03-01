@@ -89,7 +89,7 @@
     </Methode>
     <Methode Name="downgradeRefType">
       <Documentation>
-        <UserDocu>downgradeRefType(type): returns next more general type. E.g. downgradeType('Circle') yeilds 'Curve'.</UserDocu>
+        <UserDocu>downgradeRefType(type): returns next more general type. E.g. downgradeType('Circle') yields 'Curve'.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getRefTypeInfo">

@@ -16,7 +16,7 @@
 		</Documentation>
 		<Methode Name="makeOffset" Const="true">
 			<Documentation>
-				<UserDocu>Offset the face by a given ammount. Returns Compound of Wires. Deprecated - use makeOffset2D instead.</UserDocu>
+				<UserDocu>Offset the face by a given amount. Returns Compound of Wires. Deprecated - use makeOffset2D instead.</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="tangentAt" Const="true">

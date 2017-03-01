@@ -88,7 +88,7 @@ private:
         double cc = 2.0 * r2 * (b * v - r1);
         double d = uv * uv - uu * cc;
         if (d < 0) {
-            throw Py::RuntimeError("Unable to caluclate intersection points");
+            throw Py::RuntimeError("Unable to calculate intersection points");
         }
 
         double t;

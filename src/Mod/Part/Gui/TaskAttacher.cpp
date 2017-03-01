@@ -247,7 +247,7 @@ void TaskAttacher::updateReferencesUI()
 
     // Get hints for further required references...
     // DeepSOIC: hint system became useless since inertial system attachment
-    // modes have been introduced, becuase they accept any number of references
+    // modes have been introduced, because they accept any number of references
     // of any type, so the hint will always be 'Any'. I keep the logic
     // nevertheless, in case it is decided to resurrect hint system.
 

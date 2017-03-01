@@ -106,7 +106,7 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
         err = "Base property not set";
     }
 
-    // If the funtion not in silent mode throw the exception discribing the error
+    // If the function not in silent mode throw the exception describing the error
     if (!silent && err) {
         throw Base::Exception(err);
     }
