@@ -7,7 +7,7 @@ Coding standards :
 Directories:
 ============
 
-utilities: utility classes for KDL, should not be included seperatly
+utilities: utility classes for KDL, should not be included separately
 	   by a user
 
 experimental: preliminary code snippets.
