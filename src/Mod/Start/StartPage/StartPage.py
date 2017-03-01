@@ -212,7 +212,7 @@ def setColors(html):
         pass
     else:
         #defaults["#basecolor"] = palette.base().color().name()
-        defaults["#basecolor"] = "#171A2B url(Background.jpg)"
+        defaults["#basecolor"] = "#171A2B url(images/Background.jpg)"
         #defaults["#linkcolor"] = palette.link().color().name() # UGLY!!
         defaults["#textcolor"] = palette.text().color().name()
         defaults["#windowcolor"] = palette.window().color().name()
