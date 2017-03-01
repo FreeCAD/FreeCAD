@@ -43,7 +43,7 @@ extern PyObject* initModule();
 }
 
 /* Python entry */
-PyMODINIT_FUNC initSketcher()
+PyMOD_INIT_FUNC(Sketcher)
 {
     // load dependent module
     try {
@@ -51,7 +51,7 @@ PyMODINIT_FUNC initSketcher()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
     PyObject* sketcherModule = Sketcher::initModule();
@@ -73,4 +73,6 @@ PyMODINIT_FUNC initSketcher()
     Sketcher::PropertyConstraintList::init();
 
     Base::Console().Log("Loading Sketcher module... done\n");
+
+    PyMOD_Return(sketcherModule);
 }

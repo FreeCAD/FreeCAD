@@ -19,21 +19,21 @@
 			<Documentation>
 				<UserDocu>Returns the polynomial degree of this B-Spline curve.</UserDocu>
 			</Documentation>
-			<Parameter Name="Degree" Type="Int"/>
+			<Parameter Name="Degree" Type="Long"/>
 		</Attribute>
 		<Attribute Name="MaxDegree" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Returns the value of the maximum polynomial degree of any
 B-Spline curve curve. This value is 25.</UserDocu>
 			</Documentation>
-			<Parameter Name="MaxDegree" Type="Int"/>
+			<Parameter Name="MaxDegree" Type="Long"/>
 		</Attribute>
 		<Attribute Name="NbPoles" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Returns the number of poles of this B-Spline curve.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="NbPoles" Type="Int"/>
+			<Parameter Name="NbPoles" Type="Long"/>
 		</Attribute>
 		<Attribute Name="NbKnots" ReadOnly="true">
 			<Documentation>
@@ -41,7 +41,7 @@ B-Spline curve curve. This value is 25.</UserDocu>
 					Returns the number of knots of this B-Spline curve.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="NbPoles" Type="Int"/>
+			<Parameter Name="NbPoles" Type="Long"/>
 		</Attribute>
 		<Attribute Name="StartPoint" ReadOnly="true">
 			<Documentation>

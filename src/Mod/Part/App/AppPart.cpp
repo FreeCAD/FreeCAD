@@ -163,8 +163,9 @@ public:
 
 /// Type structure of LinePyOld
 PyTypeObject LinePyOld::Type = {
-    PyObject_HEAD_INIT(&PyType_Type)
-    0,                                                /*ob_size*/
+    // PyObject_HEAD_INIT(&PyType_Type)
+    // 0,                                                /*ob_size*/
+    PyVarObject_HEAD_INIT(&PyType_Type,0)
     "Part.Line",     /*tp_name*/
     sizeof(LinePyOld),                       /*tp_basicsize*/
     0,                                                /*tp_itemsize*/
@@ -186,7 +187,11 @@ PyTypeObject LinePyOld::Type = {
     /* --- Functions to access object as input/output buffer ---------*/
     0,                                                /* tp_as_buffer */
     /* --- Flags to define presence of optional/expanded features */
-    Py_TPFLAGS_HAVE_CLASS,        /*tp_flags */
+#if PY_MAJOR_VERSION >= 3
+    Py_TPFLAGS_DEFAULT,                               /*tp_flags */
+#else
+    Py_TPFLAGS_HAVE_CLASS,                            /*tp_flags */
+#endif
     "",
     0,                                                /*tp_traverse */
     0,                                                /*tp_clear */
@@ -214,12 +219,15 @@ PyTypeObject LinePyOld::Type = {
     0,                                                /*tp_weaklist */
     0,                                                /*tp_del */
     0                                                 /*tp_version_tag */
+#if PY_MAJOR_VERSION >=3
+    ,0                                                /*tp_finalize */
+#endif
 };
 
 }
 // --->
 
-PyMODINIT_FUNC initPart()
+PyMOD_INIT_FUNC(Part)
 {
     Base::Console().Log("Module: Part\n");
 
@@ -337,16 +345,25 @@ PyMODINIT_FUNC initPart()
                                                             ::Type,partModule,"RectangularTrimmedSurface");
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
-
     Base::Interpreter().addType(&Attacher::AttachEnginePy   ::Type,partModule,"AttachEngine");
 
+#if PY_MAJOR_VERSION >= 3
+    static struct PyModuleDef BRepOffsetAPIDef = {PyModuleDef_HEAD_INIT,"BRepOffsetAPI", "BRepOffsetAPI", -1, 0};
+    PyObject* brepModule = PyModule_Create(&BRepOffsetAPIDef);
+#else
     PyObject* brepModule = Py_InitModule3("BRepOffsetAPI", 0, "BrepOffsetAPI");
+#endif
     Py_INCREF(brepModule);
     PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
     Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
 
     // Geom2d package
-    PyObject* geom2dModule = Py_InitModule3("Geom2d", 0, "Geom2d");
+#if PY_MAJOR_VERSION >= 3
+    static struct PyModuleDef geom2dDef = {PyModuleDef_HEAD_INIT,"Geom2dD", "Geom2d", -1, 0};
+    PyObject* geom2dModule = PyModule_Create(&geom2dDef);
+#else
+     PyObject* geom2dModule = Py_InitModule3("Geom2d", 0, "Geom2d");
+#endif
     Py_INCREF(geom2dModule);
     PyModule_AddObject(partModule, "Geom2d", geom2dModule);
     Base::Interpreter().addType(&Part::Geometry2dPy::Type,geom2dModule,"Geometry2d");
@@ -366,7 +383,9 @@ PyMODINIT_FUNC initPart()
     Base::Interpreter().addType(&Part::Line2dSegmentPy::Type,geom2dModule,"Line2dSegment");
     Base::Interpreter().addType(&Part::Line2dPy::Type,geom2dModule,"Line2d");
     Base::Interpreter().addType(&Part::OffsetCurve2dPy::Type,geom2dModule,"OffsetCurve2d");
-
+#if 0 /* for python3 this isn't working anymore, it's solved by importing the BOPTools
+         directly. (import BOPTools) */
+// this causes double initialisation of the part modul with python3.
     try {
         //import all submodules of BOPTools, to make them easy to browse in Py console.
         //It's done in this weird manner instead of bt.caMemberFunction("importAll"),
@@ -379,6 +398,7 @@ PyMODINIT_FUNC initPart()
         Base::Console().Error("Failed to import BOPTools package:\n");
         err.ReportException();
     }
+#endif
 
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();
@@ -588,4 +608,6 @@ PyMODINIT_FUNC initPart()
     Interface_Static::SetCVal("write.step.schema", ap.c_str());
     Interface_Static::SetCVal("write.step.product.name", hStepGrp->GetASCII("Product",
        Interface_Static::CVal("write.step.product.name")).c_str());
+
+    PyMOD_Return(partModule);
 }

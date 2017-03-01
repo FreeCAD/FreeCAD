@@ -228,13 +228,13 @@
       <Documentation>
         <UserDocu>Number of Constraints in this sketch</UserDocu>
       </Documentation>
-      <Parameter Name="ConstraintCount" Type="Int"/>
+      <Parameter Name="ConstraintCount" Type="Long"/>
     </Attribute>
     <Attribute Name="GeometryCount" ReadOnly="true">
       <Documentation>
         <UserDocu>Number of geometric objects in this sketch</UserDocu>
       </Documentation>
-      <Parameter Name="GeometryCount" Type="Int"/>
+      <Parameter Name="GeometryCount" Type="Long"/>
     </Attribute>
     <Attribute Name="AxisCount" ReadOnly="true">
       <Documentation>
@@ -242,7 +242,7 @@
           return the the number of construction lines in the sketch which can be used as axes
         </UserDocu>
       </Documentation>
-      <Parameter Name="AxisCount" Type="Int"/>
+      <Parameter Name="AxisCount" Type="Long"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>
