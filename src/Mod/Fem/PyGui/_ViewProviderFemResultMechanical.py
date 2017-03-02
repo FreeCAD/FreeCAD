@@ -72,8 +72,8 @@ class _ViewProviderFemResultMechanical:
                 mem = FemGui.getActiveAnalysis().Member
                 if self.Object in mem:
                     if self.Object.Mesh in mem:
-                        import PyGui._TaskPanelResultShow
-                        taskd = PyGui._TaskPanelResultShow._TaskPanelResultShow(self.Object)
+                        import PyGui._TaskPanelFemResultShow
+                        taskd = PyGui._TaskPanelFemResultShow._TaskPanelFemResultShow(self.Object)
                         taskd.obj = vobj.Object
                         FreeCADGui.Control.showDialog(taskd)
                         return True
