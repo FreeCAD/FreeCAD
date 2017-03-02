@@ -45,7 +45,6 @@ class FemWorkbench (Workbench):
         import Fem
         import FemGui
 
-        import PyGui._CommandClearMesh
         import PyGui._CommandFEMMesh2Mesh
         import PyGui._CommandAnalysis
         import PyGui._CommandShellThickness
@@ -54,6 +53,7 @@ class FemWorkbench (Workbench):
         import PyGui._CommandMaterialSolid
         import PyGui._CommandMaterialFluid
         import PyGui._CommandMaterialMechanicalNonlinear
+        import PyGui._CommandMeshClear
         import PyGui._CommandMeshGmshFromShape
         import PyGui._CommandMeshGroup
         import PyGui._CommandMeshNetgenFromShape
