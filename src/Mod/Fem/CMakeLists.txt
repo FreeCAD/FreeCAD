@@ -79,8 +79,8 @@ INSTALL(
         PyGui/_CommandMeshGmshFromShape.py
         PyGui/_CommandMeshNetgenFromShape.py
         PyGui/_CommandMeshGroup.py
+        PyGui/_CommandMeshPrintInfo.py
         PyGui/_CommandMeshRegion.py
-        PyGui/_CommandPrintMeshInfo.py
         PyGui/_CommandResultShow.py
         PyGui/_CommandResultsPurge.py
         PyGui/_CommandShellThickness.py

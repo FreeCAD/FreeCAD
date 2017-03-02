@@ -24,7 +24,7 @@ __title__ = "Print info of FEM mesh object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandPrintMeshInfo
+## @package CommandMeshPrintInfo
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,14 +33,14 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandPrintMeshInfo(FemCommands):
-    "the FEM_PrintMeshInfo command definition"
+class _CommandMeshPrintInfo(FemCommands):
+    "the FEM_MeshPrintInfo command definition"
     def __init__(self):
-        super(_CommandPrintMeshInfo, self).__init__()
+        super(_CommandMeshPrintInfo, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-print-info',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_PrintMeshInfo", "Print FEM mesh info"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshPrintInfo", "Print FEM mesh info"),
                           # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_PrintMeshInfo", "Print FEM mesh info")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshPrintInfo", "Print FEM mesh info")}
         self.is_active = 'with_femmesh'
 
     def Activated(self):
@@ -55,4 +55,4 @@ class _CommandPrintMeshInfo(FemCommands):
 
         FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('FEM_PrintMeshInfo', _CommandPrintMeshInfo())
+FreeCADGui.addCommand('FEM_MeshPrintInfo', _CommandMeshPrintInfo())
