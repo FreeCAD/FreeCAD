@@ -32,6 +32,11 @@ try:
 except:
     import cStringIO
 
+try:
+    import io as cStringIO
+except:
+    import cStringIO
+
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
 
