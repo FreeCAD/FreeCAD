@@ -83,10 +83,10 @@ INSTALL(
         PyGui/_CommandMeshRegion.py
         PyGui/_CommandPrintMeshInfo.py
         PyGui/_CommandPurgeResults.py
-        PyGui/_CommandRunSolver.py
         PyGui/_CommandShellThickness.py
         PyGui/_CommandShowResult.py
         PyGui/_CommandSolverCalculix.py
+        PyGui/_CommandSolverRun.py
         PyGui/_CommandSolverZ88.py
         PyGui/_TaskPanelFemBeamSection.py
         PyGui/_TaskPanelFemFluidSection.py

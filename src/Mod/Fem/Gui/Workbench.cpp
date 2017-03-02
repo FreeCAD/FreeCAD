@@ -101,7 +101,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
          << "FEM_ConstraintInitialTemperature"
          << "Separator"
          << "FEM_ControlSolver"
-         << "FEM_RunSolver"
+         << "FEM_SolverRun"
          << "Separator"
          << "FEM_PurgeResults"
          << "FEM_ShowResult";
@@ -177,7 +177,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
          << "FEM_ConstraintInitialTemperature"
          << "Separator"
          << "FEM_ControlSolver"
-         << "FEM_RunSolver"
+         << "FEM_SolverRun"
          << "Separator"
          << "FEM_PurgeResults"
          << "FEM_ShowResult";
