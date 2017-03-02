@@ -121,7 +121,7 @@ public:
 protected:
     virtual void onSettingDocument() override;
 
-    /// Adjusts the first solid's feature's base on on BaseFeature getting setted
+    /// Adjusts the first solid's feature's base on BaseFeature getting set
     virtual void onChanged (const App::Property* prop) override;
 
     /**
