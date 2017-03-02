@@ -81,7 +81,7 @@ INSTALL(
         PyGui/_CommandMeshGroup.py
         PyGui/_CommandMeshRegion.py
         PyGui/_CommandPrintMeshInfo.py
-        PyGui/_CommandPurgeResults.py
+        PyGui/_CommandResultsPurge.py
         PyGui/_CommandShellThickness.py
         PyGui/_CommandShowResult.py
         PyGui/_CommandSolverCalculix.py
