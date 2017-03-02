@@ -24,7 +24,7 @@ __title__ = "Clear the FemMesh of a FEM mesh object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandClearMesh
+## @package CommandMeshClear
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,14 +33,14 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandClearMesh(FemCommands):
-    "the FEM_ClearMesh command definition"
+class _CommandMeshClear(FemCommands):
+    "the FEM_MeshClear command definition"
     def __init__(self):
-        super(_CommandClearMesh, self).__init__()
+        super(_CommandMeshClear, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-clear-mesh',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ClearMesh", "Clear FEM mesh"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clear FEM mesh"),
                           # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ClearMesh", "Clear the Mesh of a FEM mesh object")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clear the Mesh of a FEM mesh object")}
         self.is_active = 'with_femmesh'
 
     def Activated(self):
@@ -53,4 +53,4 @@ class _CommandClearMesh(FemCommands):
 
         FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('FEM_ClearMesh', _CommandClearMesh())
+FreeCADGui.addCommand('FEM_MeshClear', _CommandMeshClear())

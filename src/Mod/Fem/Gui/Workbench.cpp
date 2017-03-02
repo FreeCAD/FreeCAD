@@ -54,7 +54,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 {
      StdWorkbench::setupContextMenu( recipient, item );
      *item << "Separator"
-           << "FEM_ClearMesh"
+           << "FEM_MeshClear"
            << "FEM_MeshPrintInfo";
 }
 
