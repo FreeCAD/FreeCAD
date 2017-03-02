@@ -290,7 +290,7 @@ public:
      * This method might be useful to close gaps or fill up holes in a mesh.
      * @note This method is quite expensive and should be rarely used.
      */
-    unsigned long AddFacets(const std::vector<MeshFacet> &rclFAry);
+    unsigned long AddFacets(const std::vector<MeshFacet> &rclFAry, bool checkManifolds);
     /**
      * Adds new points and facets to the data structure. The client programmer must make sure
      * that all new points are referenced by the new facets.
@@ -306,7 +306,8 @@ public:
      * @note This method is quite expensive and should be rarely used.
      */
     unsigned long AddFacets(const std::vector<MeshFacet> &rclFAry,
-                            const std::vector<Base::Vector3f>& rclPAry);
+                            const std::vector<Base::Vector3f>& rclPAry,
+                            bool checkManifolds);
     /**
      * Adds all facets and referenced points to the underlying mesh structure. The client programmer
      * must be sure that both meshes don't have geometric overlaps, otherwise the resulting mesh might

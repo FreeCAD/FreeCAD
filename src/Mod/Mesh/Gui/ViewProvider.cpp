@@ -1609,7 +1609,7 @@ void ViewProviderMesh::fillHole(unsigned long uFacet)
     //add the facets to the mesh and open a transaction object for the undo/redo stuff
     Gui::Application::Instance->activeDocument()->openCommand("Fill hole");
     Mesh::MeshObject* kernel = fea->Mesh.startEditing();
-    kernel->addFacets(newFacets, newPoints);
+    kernel->addFacets(newFacets, newPoints, true);
     fea->Mesh.finishEditing();
     Gui::Application::Instance->activeDocument()->commitCommand();
 }
