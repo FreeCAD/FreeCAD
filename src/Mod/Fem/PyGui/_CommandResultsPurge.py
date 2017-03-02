@@ -24,7 +24,7 @@ __title__ = "Command Purge Fem Results"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandPurgeResults
+## @package CommandResultsPurge
 #  \ingroup FEM
 
 from FemCommands import FemCommands
@@ -33,14 +33,14 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandPurgeResults(FemCommands):
-    # the FEM_PurgeResults command definition
+class _CommandResultsPurge(FemCommands):
+    # the FEM_ResultsPurge command definition
     def __init__(self):
-        super(_CommandPurgeResults, self).__init__()
+        super(_CommandResultsPurge, self).__init__()
         self.resources = {'Pixmap': 'fem-purge-results',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_PurgeResults", "Purge results"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purge results"),
                           'Accel': "S, S",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_PurgeResults", "Purges all results from active analysis")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purges all results from active analysis")}
         self.is_active = 'with_results'
 
     def Activated(self):
@@ -49,4 +49,4 @@ class _CommandPurgeResults(FemCommands):
         self.hide_meshes_show_parts_constraints()
 
 
-FreeCADGui.addCommand('FEM_PurgeResults', _CommandPurgeResults())
+FreeCADGui.addCommand('FEM_ResultsPurge', _CommandResultsPurge())
