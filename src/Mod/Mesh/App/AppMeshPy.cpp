@@ -69,7 +69,7 @@ public:
         );
         add_varargs_method("open",&Module::open,
             "open(string)\n"
-            "Create a new document and a Mesh::Import feature to load the file into\n"
+            "Create a new document and a Mesh feature to load the file into\n"
             "the document."
         );
         add_varargs_method("insert",&Module::importer,
@@ -127,11 +127,11 @@ public:
         );
         initialize("The functions in this module allow working with mesh objects.\n"
                    "A set of functions are provided for reading in registered mesh\n"
-                   "file formats to either an new or exising document.\n"
+                   "file formats to either a new or exising document.\n"
                    "\n"
-                   "open(string) -- Create a new document and a Mesh::Import feature\n"
+                   "open(string) -- Create a new document and a Mesh feature\n"
                    "                to load the file into the document.\n"
-                   "insert(string, string) -- Create a Mesh::Import feature to load\n"
+                   "insert(string, string) -- Create a Mesh feature to load\n"
                    "                          the file into the given document.\n"
                    "Mesh() -- Create an empty mesh object.\n"
                    "\n");

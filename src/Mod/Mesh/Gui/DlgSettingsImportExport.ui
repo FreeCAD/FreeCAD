@@ -14,19 +14,6 @@
    <string>Mesh Formats</string>
   </property>
   <layout class="QGridLayout">
-   <item row="1" column="0">
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>61</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="GroupBox12">
      <property name="title">
@@ -68,16 +55,9 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="textLabel2">
-          <property name="text">
-           <string>Export AMF files using compression</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
          <widget class="Gui::PrefCheckBox" name="exportAmfCompressed">
           <property name="text">
-           <string/>
+           <string>Export AMF files using compression</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -95,20 +75,33 @@
      </layout>
     </widget>
    </item>
+   <item row="1" column="0">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>61</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
-   <customwidget>
-     <class>Gui::QuantitySpinBox</class>
-     <extends>QWidget</extends>
-   <header>Gui/PrefWidgets.h</header>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
-     <header>Gui/PrefWidgets.h</header>
-   </customwidget>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections/>
