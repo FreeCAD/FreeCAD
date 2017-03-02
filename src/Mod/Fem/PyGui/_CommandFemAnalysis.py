@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Clear the FemMesh of a FEM mesh object"
-__author__ = "Bernd Hahnebach"
+__title__ = "Command New Analysis"
+__author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMeshClear
+## @package CommandFemAnalysis
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,24 +33,28 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandMeshClear(FemCommands):
-    "the FEM_MeshClear command definition"
+class _CommandFemAnalysis(FemCommands):
+    "the FEM_Analysis command definition"
     def __init__(self):
-        super(_CommandMeshClear, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-clear-mesh',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clear FEM mesh"),
-                          # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clear the Mesh of a FEM mesh object")}
-        self.is_active = 'with_femmesh'
+        super(_CommandFemAnalysis, self).__init__()
+        self.resources = {'Pixmap': 'fem-analysis',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_Analysis", "Analysis container"),
+                          'Accel': "N, A",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_Analysis", "Creates a analysis container with standard solver CalculiX")}
+        self.is_active = 'with_document'
 
     def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create Analysis")
+        FreeCADGui.addModule("FemGui")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("ObjectsFem.makeAnalysis('Analysis')")
+        FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
+        FreeCADGui.doCommand("ObjectsFem.makeSolverCalculix('CalculiX')")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
         sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
-            FreeCAD.ActiveDocument.openTransaction("Clear FEM mesh")
-            FreeCADGui.addModule("Fem")
-            FreeCADGui.doCommand("App.ActiveDocument." + sel[0].Name + ".FemMesh = Fem.FemMesh()")
-            FreeCADGui.doCommand("App.ActiveDocument.recompute()")
-
+        if (len(sel) == 1):
+            if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
+                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument()." + sel[0].Name + "]")
         FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('FEM_MeshClear', _CommandMeshClear())
+FreeCADGui.addCommand('FEM_Analysis', _CommandFemAnalysis())

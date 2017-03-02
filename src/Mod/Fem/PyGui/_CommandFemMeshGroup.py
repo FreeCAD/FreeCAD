@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,43 +20,38 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandSolverCalculix"
+__title__ = "_CommandMeshGroup"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandSolverCalculix
+## @package CommandFemMeshGroup
 #  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
-import FemGui
 from PySide import QtCore
 
 
-class _CommandSolverCalculix(FemCommands):
-    "The FEM_SolverCalculix command definition"
+class _CommandFemMeshGroup(FemCommands):
+    "The FEM_MeshGroup command definition"
     def __init__(self):
-        super(_CommandSolverCalculix, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Solver CalculiX"),
-                          'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Creates a FEM solver CalculiX")}
-        self.is_active = 'with_analysis'
+        super(_CommandFemMeshGroup, self).__init__()
+        self.resources = {'Pixmap': 'fem-femmesh-from-shape',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGroup", "FEM mesh group"),
+                          'Accel': "M, G",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGroup", "Creates a FEM mesh group")}
+        self.is_active = 'with_gmsh_femmesh'
 
     def Activated(self):
-        has_nonlinear_material_obj = False
-        for m in FemGui.getActiveAnalysis().Member:
-            if hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
-                has_nonlinear_material_obj = True
-        FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
+        FreeCAD.ActiveDocument.openTransaction("Create FemMeshGroup")
         FreeCADGui.addModule("ObjectsFem")
-        if has_nonlinear_material_obj:
-            FreeCADGui.doCommand("solver = ObjectsFem.makeSolverCalculix()")
-            FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [solver]")
-        else:
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeSolverCalculix()]")
+        sel = FreeCADGui.Selection.getSelection()
+        if (len(sel) == 1):
+            sobj = sel[0]
+            if len(sel) == 1 and hasattr(sobj, "Proxy") and sobj.Proxy.Type == "FemMeshGmsh":
+                FreeCADGui.doCommand("ObjectsFem.makeMeshGroup(App.ActiveDocument." + sobj.Name + ")")
 
+        FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('FEM_SolverCalculix', _CommandSolverCalculix())
+FreeCADGui.addCommand('FEM_MeshGroup', _CommandFemMeshGroup())

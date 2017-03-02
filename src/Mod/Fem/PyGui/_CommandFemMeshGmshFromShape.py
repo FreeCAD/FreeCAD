@@ -24,7 +24,7 @@ __title__ = "Command GMSH Mesh From Shape"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMeshGmshFromShape
+## @package CommandFemMeshGmshFromShape
 #  \ingroup FEM
 
 import FreeCAD
@@ -34,10 +34,10 @@ import FemGui
 from PySide import QtCore
 
 
-class _CommandMeshGmshFromShape(FemCommands):
+class _CommandFemMeshGmshFromShape(FemCommands):
     # the FEM_MeshGmshFromShape command definition
     def __init__(self):
-        super(_CommandMeshGmshFromShape, self).__init__()
+        super(_CommandFemMeshGmshFromShape, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-gmsh-from-shape',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGmshFromShape", "FEM mesh from shape by GMSH"),
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGmshFromShape", "Create a FEM mesh from a shape by GMSH mesher")}
@@ -61,4 +61,4 @@ class _CommandMeshGmshFromShape(FemCommands):
         FreeCADGui.Selection.clearSelection()
 
 
-FreeCADGui.addCommand('FEM_MeshGmshFromShape', _CommandMeshGmshFromShape())
+FreeCADGui.addCommand('FEM_MeshGmshFromShape', _CommandFemMeshGmshFromShape())

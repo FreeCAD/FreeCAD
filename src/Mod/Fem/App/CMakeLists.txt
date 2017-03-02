@@ -106,27 +106,27 @@ SET(FemObjectsScripts_SRCS
 SET(FemGuiScripts_SRCS
     PyGui/FemCommands.py
     PyGui/__init__.py
-    PyGui/_CommandAnalysis.py
-    PyGui/_CommandBeamSection.py
-    PyGui/_CommandConstraintSelfWeight.py
-    PyGui/_CommandFEMMesh2Mesh.py
-    PyGui/_CommandFluidSection.py
-    PyGui/_CommandMaterialMechanicalNonlinear.py
-    PyGui/_CommandMaterialSolid.py
-    PyGui/_CommandMaterialFluid.py
-    PyGui/_CommandMeshGmshFromShape.py
-    PyGui/_CommandMeshNetgenFromShape.py
-    PyGui/_CommandMeshClear.py
-    PyGui/_CommandMeshGroup.py
-    PyGui/_CommandMeshPrintInfo.py
-    PyGui/_CommandMeshRegion.py
-    PyGui/_CommandResultShow.py
-    PyGui/_CommandResultsPurge.py
-    PyGui/_CommandShellThickness.py
-    PyGui/_CommandSolverCalculix.py
-    PyGui/_CommandSolverControl.py
-    PyGui/_CommandSolverRun.py
-    PyGui/_CommandSolverZ88.py
+    PyGui/_CommandFemAnalysis.py
+    PyGui/_CommandFemBeamSection.py
+    PyGui/_CommandFemConstraintSelfWeight.py
+    PyGui/_CommandFemFluidSection.py
+    PyGui/_CommandFemMaterialMechanicalNonlinear.py
+    PyGui/_CommandFemMaterialSolid.py
+    PyGui/_CommandFemMaterialFluid.py
+    PyGui/_CommandFemMesh2Mesh.py
+    PyGui/_CommandFemMeshGmshFromShape.py
+    PyGui/_CommandFemMeshNetgenFromShape.py
+    PyGui/_CommandFemMeshClear.py
+    PyGui/_CommandFemMeshGroup.py
+    PyGui/_CommandFemMeshPrintInfo.py
+    PyGui/_CommandFemMeshRegion.py
+    PyGui/_CommandFemResultShow.py
+    PyGui/_CommandFemResultsPurge.py
+    PyGui/_CommandFemShellThickness.py
+    PyGui/_CommandFemSolverCalculix.py
+    PyGui/_CommandFemSolverControl.py
+    PyGui/_CommandFemSolverRun.py
+    PyGui/_CommandFemSolverZ88.py
     PyGui/_TaskPanelFemBeamSection.py
     PyGui/_TaskPanelFemFluidSection.py
     PyGui/_TaskPanelFemMeshGmsh.py

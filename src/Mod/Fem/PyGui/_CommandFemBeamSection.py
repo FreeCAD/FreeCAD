@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Command New Analysis"
-__author__ = "Juergen Riegel"
+__title__ = "_CommandBeamSection"
+__author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandAnalysis
+## @package CommandFemBeamSection
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,28 +33,20 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandAnalysis(FemCommands):
-    "the FEM_Analysis command definition"
+class _CommandFemBeamSection(FemCommands):
+    "The FEM_BeamSection command definition"
     def __init__(self):
-        super(_CommandAnalysis, self).__init__()
-        self.resources = {'Pixmap': 'fem-analysis',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_Analysis", "Analysis container"),
-                          'Accel': "N, A",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_Analysis", "Creates a analysis container with standard solver CalculiX")}
-        self.is_active = 'with_document'
+        super(_CommandFemBeamSection, self).__init__()
+        self.resources = {'Pixmap': 'fem-beam-section',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_BeamSection", "Beam cross section"),
+                          'Accel': "C, B",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_BeamSection", "Creates a FEM beam cross section")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create Analysis")
-        FreeCADGui.addModule("FemGui")
+        FreeCAD.ActiveDocument.openTransaction("Create FemBeamSection")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeAnalysis('Analysis')")
-        FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
-        FreeCADGui.doCommand("ObjectsFem.makeSolverCalculix('CalculiX')")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
-        sel = FreeCADGui.Selection.getSelection()
-        if (len(sel) == 1):
-            if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
-                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument()." + sel[0].Name + "]")
-        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeBeamSection()]")
 
-FreeCADGui.addCommand('FEM_Analysis', _CommandAnalysis())
+
+FreeCADGui.addCommand('FEM_BeamSection', _CommandFemBeamSection())
