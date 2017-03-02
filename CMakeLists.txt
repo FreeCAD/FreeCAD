@@ -589,7 +589,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     # Salome SMESH sources are under src/3rdParty now
     IF(BUILD_SMESH)
-        #if we use smesh we definitly also need vtk, no matter of external or internal smesh
+        #if we use smesh we definitely also need vtk, no matter of external or internal smesh
         set (VTK_COMPONENTS
             vtkCommonCore
             vtkCommonDataModel

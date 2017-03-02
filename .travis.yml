@@ -56,7 +56,7 @@ notifications:
     urls:
       - https://webhooks.gitter.im/e/479456663cdf5c84e4d8
     on_success: always
-    on_failure: always 
+    on_failure: always
     on_start:   change
 
 before_install:
@@ -77,7 +77,6 @@ before_install:
                                libboost-thread1.55-dev          \
                                libcoin80                        \
                                libcoin80-dev                    \
-                               libeigen3-dev                    \
                                liboce-foundation-dev            \
                                liboce-modeling-dev              \
                                liboce-ocaf-dev                  \
@@ -108,17 +107,23 @@ before_install:
                                libmedc-dev			\
                                asciidoc
 
+       #Install Eigen 3.3.3 to reduce compiler warnings
+       curl -L "http://bitbucket.org/eigen/eigen/get/3.3.3.tar.gz" | tar xvz && cd eigen-*
+       mkdir build && cd build
+       cmake -DCMAKE_C_FLAGS_RELEASE=-DNDEBUG -DCMAKE_CXX_FLAGS_RELEASE=-DNDEBUG -DCMAKE_BUILD_TYPE=Release -DCMAKE_VERBOSE_MAKEFILE=ON ..
+       sudo make -j2 install
+       cd ${TRAVIS_BUILD_DIR}
+
+       #Install ccache to reduce successive build times (use 3.2.5+ to avoid spurious warnings)
+       curl -L "https://codeload.github.com/ccache/ccache/tar.gz/v3.2.5" | tar xvz && cd ccache-*
+       ./autogen.sh && ./configure CC=gcc && sudo make install
+       cd ${TRAVIS_BUILD_DIR}
+
        #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
        sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
        sudo find /usr/lib -name libpq.so -exec ln -s {} /usr/lib/libpq.so ';'
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start
-
-       #Install ccache to reduce successive build times (use 3.2.5+ to avoid spurious warnings)
-       curl -L -o ccache.tgz "https://codeload.github.com/ccache/ccache/tar.gz/v3.2.5"
-       tar xvzf ccache.tgz && rm ccache.tgz && cd ccache-*
-       ./autogen.sh && ./configure CC=gcc && sudo make install
-       cd ..
 
        export CCACHE_CPP2=YES
        export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python"
@@ -144,7 +149,7 @@ before_install:
           brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
 
        elif [ "${QT}" == "Qt5" ]; then
-          # >>> Qt5 Build Testing - THIS ASSUMES A PORTS-CACHE IS INSTALLED WIHT QT4<<<
+          # >>> Qt5 Build Testing - THIS ASSUMES A PORTS-CACHE IS INSTALLED WITH QT4<<<
           # Qt5: Replace Qt4 with Qt5
           brew uninstall --ignore-dependencies cartr/qt4/shiboken cartr/qt4/pyside cartr/qt4/pyside-tools cartr/qt4/qt FreeCAD/freecad/coin
           brew untap cartr/qt4
