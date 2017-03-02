@@ -24,7 +24,7 @@ __title__ = "Command Run Solver"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandRunSolver
+## @package CommandSolverRun
 #  \ingroup FEM
 
 from FemCommands import FemCommands
@@ -32,14 +32,14 @@ import FreeCADGui
 from PySide import QtCore, QtGui
 
 
-class _CommandRunSolver(FemCommands):
-    # the FEM_RunSolver command definition
+class _CommandSolverRun(FemCommands):
+    # the FEM_SolverRun command definition
     def __init__(self):
-        super(_CommandRunSolver, self).__init__()
+        super(_CommandSolverRun, self).__init__()
         self.resources = {'Pixmap': 'fem-run-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_RunAnalysis", "Run solver calculations"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverRun", "Run solver calculations"),
                           'Accel': "R, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_RunAnalysis", "Runs the calculations for the selected solver")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverRun", "Runs the calculations for the selected solver")}
         self.is_active = 'with_solver'
 
     def Activated(self):
@@ -77,4 +77,4 @@ class _CommandRunSolver(FemCommands):
             QtGui.QMessageBox.critical(None, "Not known solver type", message)
 
 
-FreeCADGui.addCommand('FEM_RunSolver', _CommandRunSolver())
+FreeCADGui.addCommand('FEM_SolverRun', _CommandSolverRun))
