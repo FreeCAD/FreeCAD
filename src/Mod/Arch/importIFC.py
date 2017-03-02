@@ -623,7 +623,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                     obj.Placement.Rotation = r
                                     obj.Placement.move(v)
                             else:
-                                print ("failed to compute placement ",)
+                                print("failed to compute placement ",)
                     else:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                         if store:
@@ -793,7 +793,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         Arch.addComponents(cobs,objects[host])
                         if DEBUG: FreeCAD.ActiveDocument.recompute()
 
-        if DEBUG: print ("done")
+        if DEBUG: print("done")
 
         if MERGE_MODE_ARCH > 2:  # if ArchObj is compound or ArchObj not imported
             FreeCAD.ActiveDocument.recompute()
@@ -810,7 +810,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if ifcfile[host].Name:
                 grp_name = ifcfile[host].Name
             else:
-                if DEBUG: print ("no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!")
+                if DEBUG: print("no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!")
                 grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
             grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",grp_name.encode("utf8"))
             objects[host] = grp
@@ -846,7 +846,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             obj = FreeCAD.ActiveDocument.addObject("Part::Feature","UnclaimedArch")
             obj.Shape = Part.makeCompound(shapes.values())
 
-        if DEBUG: print ("done")
+        if DEBUG: print("done")
 
     else:
 
@@ -952,7 +952,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     if hasattr(objects[o],"BaseMaterial"):
                         objects[o].BaseMaterial = mat
 
-    if DEBUG and materials: print ("done")
+    if DEBUG and materials: print("done")
 
     FreeCAD.ActiveDocument.recompute()
 
@@ -1288,11 +1288,11 @@ def export(exportList,filename):
         if not defaulthost:
             defaulthost = products[site.Name]
     if not sites:
-        if DEBUG: print ("No site found. Adding default site")
+        if DEBUG: print("No site found. Adding default site")
         sites = [ifcfile.createIfcSite(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Site",'',None,None,None,None,"ELEMENT",None,None,None,None,None)]
     ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'ProjectLink','',project,sites)
     if not buildings:
-        if DEBUG: print ("No building found. Adding default building")
+        if DEBUG: print("No building found. Adding default building")
         buildings = [ifcfile.createIfcBuilding(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Building",'',None,None,None,None,"ELEMENT",None,None,None)]
     ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'SiteLink','',sites[0],buildings)
     untreated = []
@@ -1371,7 +1371,7 @@ def export(exportList,filename):
     if EXPORT_2D:
         annos = []
         curvestyles = {}
-        if annotations and DEBUG: print ("exporting 2D objects...")
+        if annotations and DEBUG: print("exporting 2D objects...")
         for anno in annotations:
             xvc = ifcfile.createIfcDirection((1.0,0.0,0.0))
             zvc = ifcfile.createIfcDirection((0.0,0.0,1.0))
