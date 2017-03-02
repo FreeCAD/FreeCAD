@@ -70,7 +70,6 @@ INSTALL(
         PyGui/_CommandAnalysis.py
         PyGui/_CommandBeamSection.py
         PyGui/_CommandClearMesh.py
-        PyGui/_CommandControlSolver.py
         PyGui/_CommandConstraintSelfWeight.py
         PyGui/_CommandFEMMesh2Mesh.py
         PyGui/_CommandFluidSection.py
@@ -86,6 +85,7 @@ INSTALL(
         PyGui/_CommandShellThickness.py
         PyGui/_CommandShowResult.py
         PyGui/_CommandSolverCalculix.py
+        PyGui/_CommandSolverControl.py
         PyGui/_CommandSolverRun.py
         PyGui/_CommandSolverZ88.py
         PyGui/_TaskPanelFemBeamSection.py
