@@ -1,7 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Ofentse Kgoa <kgoaot@eskom.co.za>                *
-# *   Based on the FemBeamSection by Bernd Hahnebach                        *
+# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,33 +20,33 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandFluidSection"
-__author__ = "Ofentse Kgoa"
+__title__ = "Command Purge Fem Results"
+__author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandFluidSection
+## @package CommandFemResultsPurge
 #  \ingroup FEM
 
-import FreeCAD
 from FemCommands import FemCommands
+import FemTools
 import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandFluidSection(FemCommands):
-    "The FEM_FluidSection command definition"
+class _CommandFemResultsPurge(FemCommands):
+    # the FEM_ResultsPurge command definition
     def __init__(self):
-        super(_CommandFluidSection, self).__init__()
-        self.resources = {'Pixmap': 'fem-fluid-section',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_FluidSection", "Fluid section for 1D flow"),
-                          'Accel': "C, B",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_FluidSection", "Creates a FEM Fluid section for 1D flow")}
-        self.is_active = 'with_analysis'
+        super(_CommandFemResultsPurge, self).__init__()
+        self.resources = {'Pixmap': 'fem-purge-results',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purge results"),
+                          'Accel': "S, S",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purges all results from active analysis")}
+        self.is_active = 'with_results'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemFluidSection")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeFemFluidSection()]")
+        fea = FemTools.FemTools()
+        fea.reset_all()
+        self.hide_meshes_show_parts_constraints()
 
 
-FreeCADGui.addCommand('FEM_FluidSection', _CommandFluidSection())
+FreeCADGui.addCommand('FEM_ResultsPurge', _CommandFemResultsPurge())

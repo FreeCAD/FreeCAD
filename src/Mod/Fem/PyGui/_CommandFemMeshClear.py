@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,31 +20,37 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Command Control Solver"
-__author__ = "Juergen Riegel"
+__title__ = "Clear the FemMesh of a FEM mesh object"
+__author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandSolverControl
+## @package CommandFemMeshClear
 #  \ingroup FEM
 
+import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandSolverControl(FemCommands):
-    "the FEM_SolverControl command definition"
+class _CommandFemMeshClear(FemCommands):
+    "the FEM_MeshClear command definition"
     def __init__(self):
-        super(_CommandSolverControl, self).__init__()
-        self.resources = {'Pixmap': 'fem-control-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverControl", "Solver job control"),
-                          'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverControl", "Changes solver attributes and runs the calculations for the selected solver")}
-        self.is_active = 'with_solver'
+        super(_CommandFemMeshClear, self).__init__()
+        self.resources = {'Pixmap': 'fem-femmesh-clear-mesh',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clear FEM mesh"),
+                          # 'Accel': "Z, Z",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clear the Mesh of a FEM mesh object")}
+        self.is_active = 'with_femmesh'
 
     def Activated(self):
-        solver_obj = FreeCADGui.Selection.getSelection()[0]
-        FreeCADGui.ActiveDocument.setEdit(solver_obj, 0)
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
+            FreeCAD.ActiveDocument.openTransaction("Clear FEM mesh")
+            FreeCADGui.addModule("Fem")
+            FreeCADGui.doCommand("App.ActiveDocument." + sel[0].Name + ".FemMesh = Fem.FemMesh()")
+            FreeCADGui.doCommand("App.ActiveDocument.recompute()")
 
+        FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('FEM_SolverControl', _CommandSolverControl())
+FreeCADGui.addCommand('FEM_MeshClear', _CommandFemMeshClear())

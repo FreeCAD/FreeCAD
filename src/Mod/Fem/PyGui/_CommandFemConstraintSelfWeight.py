@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Print info of FEM mesh object"
+__title__ = "Command constraint self weight"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMeshPrintInfo
+## @package CommandFemConstraintSelfWeight
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,26 +33,20 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandMeshPrintInfo(FemCommands):
-    "the FEM_MeshPrintInfo command definition"
+class _CommandFemConstraintSelfWeight(FemCommands):
+    "The FEM_ConstraintSelfWeight command definition"
     def __init__(self):
-        super(_CommandMeshPrintInfo, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-print-info',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshPrintInfo", "Print FEM mesh info"),
-                          # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshPrintInfo", "Print FEM mesh info")}
-        self.is_active = 'with_femmesh'
+        super(_CommandFemConstraintSelfWeight, self).__init__()
+        self.resources = {'Pixmap': 'fem-constraint-selfweight',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Constraint self weigt"),
+                          'Accel': "C, W",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Creates a FEM constraint self weigt")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
-        sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
-            FreeCAD.ActiveDocument.openTransaction("Print FEM mesh info")
-            FreeCADGui.doCommand("print(App.ActiveDocument." + sel[0].Name + ".FemMesh)")
+        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintSelfWeight")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeConstraintSelfWeight()]")
 
-            FreeCADGui.addModule("PySide")
-            FreeCADGui.doCommand("mesh_info = str(App.ActiveDocument." + sel[0].Name + ".FemMesh)")
-            FreeCADGui.doCommand("PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)")
 
-        FreeCADGui.Selection.clearSelection()
-
-FreeCADGui.addCommand('FEM_MeshPrintInfo', _CommandMeshPrintInfo())
+FreeCADGui.addCommand('FEM_ConstraintSelfWeight', _CommandFemConstraintSelfWeight())

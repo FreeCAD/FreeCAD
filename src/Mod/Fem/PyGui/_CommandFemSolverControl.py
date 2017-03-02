@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,38 +20,31 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandMeshRegion"
-__author__ = "Bernd Hahnebach"
+__title__ = "Command Control Solver"
+__author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMeshRegion
+## @package CommandFemSolverControl
 #  \ingroup FEM
 
-import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandMeshRegion(FemCommands):
-    "The FEM_MeshRegion command definition"
+class _CommandFemSolverControl(FemCommands):
+    "the FEM_SolverControl command definition"
     def __init__(self):
-        super(_CommandMeshRegion, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-region',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshRegion", "FEM mesh region"),
-                          'Accel': "M, R",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshRegion", "Creates a FEM mesh region")}
-        self.is_active = 'with_gmsh_femmesh'
+        super(_CommandFemSolverControl, self).__init__()
+        self.resources = {'Pixmap': 'fem-control-solver',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverControl", "Solver job control"),
+                          'Accel': "S, C",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverControl", "Changes solver attributes and runs the calculations for the selected solver")}
+        self.is_active = 'with_solver'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemMeshRegion")
-        FreeCADGui.addModule("ObjectsFem")
-        sel = FreeCADGui.Selection.getSelection()
-        if (len(sel) == 1):
-            sobj = sel[0]
-            if len(sel) == 1 and hasattr(sobj, "Proxy") and sobj.Proxy.Type == "FemMeshGmsh":
-                FreeCADGui.doCommand("ObjectsFem.makeMeshRegion(App.ActiveDocument." + sobj.Name + ")")
+        solver_obj = FreeCADGui.Selection.getSelection()[0]
+        FreeCADGui.ActiveDocument.setEdit(solver_obj, 0)
 
-        FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('FEM_MeshRegion', _CommandMeshRegion())
+FreeCADGui.addCommand('FEM_SolverControl', _CommandFemSolverControl())

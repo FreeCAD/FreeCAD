@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandFluidMaterial"
+__title__ = "_CommandSolidMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMaterial
+## @package CommandFemMaterialSolid
 #  \ingroup FEM
 
 import FreeCAD
@@ -34,25 +34,25 @@ import FemGui
 from PySide import QtCore
 
 
-class _CommandMaterialFluid(FemCommands):
-    "the FEM_MaterialFluid command definition"
+class _CommandFemMaterialSolid(FemCommands):
+    "the FEM_MaterialSolid command definition"
     def __init__(self):
-        super(_CommandMaterialFluid, self).__init__()
-        self.resources = {'Pixmap': 'fem-material-fluid',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "FEM material for Fluid"),
+        super(_CommandFemMaterialSolid, self).__init__()
+        self.resources = {'Pixmap': 'fem-material',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "FEM material for solid"),
                           'Accel': "M, M",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Creates a FEM material for Fluid")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Creates a FEM material for solid")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
         femDoc = FemGui.getActiveAnalysis().Document
         if FreeCAD.ActiveDocument is not femDoc:
             FreeCADGui.setActiveDocument(femDoc)
-        FreeCAD.ActiveDocument.openTransaction("Create Fluid Material")
-        FreeCADGui.addModule("FemMaterial")
-        FreeCADGui.doCommand("FemMaterial.makeFluidMaterial('FluidMaterial')")
+        FreeCAD.ActiveDocument.openTransaction("Create Solid Material")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("ObjectsFem.makeMaterialSolid('SolidMaterial')")
         FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
         FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
 
 
-FreeCADGui.addCommand('FEM_MaterialFluid', _CommandMaterialFluid())
+FreeCADGui.addCommand('FEM_MaterialSolid', _CommandFemMaterialSolid())

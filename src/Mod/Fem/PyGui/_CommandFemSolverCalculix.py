@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Command Mesh Netgen From Shape"
-__author__ = "Juergen Riegel"
+__title__ = "_CommandSolverCalculix"
+__author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMeshNetgenFromShape
+## @package CommandFemSolverCalculix
 #  \ingroup FEM
 
 import FreeCAD
@@ -34,29 +34,29 @@ import FemGui
 from PySide import QtCore
 
 
-class _CommandMeshNetgenFromShape(FemCommands):
-    # the FEM_MeshNetgenFromShape command definition
+class _CommandFemSolverCalculix(FemCommands):
+    "The FEM_SolverCalculix command definition"
     def __init__(self):
-        super(_CommandMeshNetgenFromShape, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-netgen-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshFromShape", "FEM mesh from shape by Netgen"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshFromShape", "Create a FEM volume mesh from a solid or face shape by Netgen internal mesher")}
-        self.is_active = 'with_part_feature'
+        super(_CommandFemSolverCalculix, self).__init__()
+        self.resources = {'Pixmap': 'fem-solver',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Solver CalculiX"),
+                          'Accel': "S, C",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Creates a FEM solver CalculiX")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FEM mesh Netgen")
-        FreeCADGui.addModule("FemGui")
-        sel = FreeCADGui.Selection.getSelection()
-        if (len(sel) == 1):
-            if(sel[0].isDerivedFrom("Part::Feature")):
-                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
-                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
-                if FemGui.getActiveAnalysis():
-                    FreeCADGui.addModule("FemGui")
-                    FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.ActiveDocument.ActiveObject]")
-                FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
+        has_nonlinear_material_obj = False
+        for m in FemGui.getActiveAnalysis().Member:
+            if hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
+                has_nonlinear_material_obj = True
+        FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
+        FreeCADGui.addModule("ObjectsFem")
+        if has_nonlinear_material_obj:
+            FreeCADGui.doCommand("solver = ObjectsFem.makeSolverCalculix()")
+            FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [solver]")
+        else:
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeSolverCalculix()]")
 
-        FreeCADGui.Selection.clearSelection()
 
-
-FreeCADGui.addCommand('FEM_MeshNetgenFromShape', _CommandMeshNetgenFromShape())
+FreeCADGui.addCommand('FEM_SolverCalculix', _CommandFemSolverCalculix())
