@@ -110,7 +110,7 @@ PyObject* initModule()
 
 
 /* Python entry */
-PyMODINIT_FUNC initWebGui()
+PyMOD_INIT_FUNC(WebGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
