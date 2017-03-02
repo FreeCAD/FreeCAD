@@ -179,7 +179,7 @@ bool MergeExporter::addPartFeat(App::DocumentObject *obj, float tol)
             std::vector<Data::ComplexGeoData::Facet> aTopo;
             geoData->getFaces(aPoints, aTopo, tol);
 
-            mesh->addFacets(aTopo, aPoints);
+            mesh->addFacets(aTopo, aPoints, false);
             if (countFacets == 0)
                 mergingMesh = *mesh;
             else
@@ -268,7 +268,7 @@ bool AmfExporter::addPartFeat(App::DocumentObject *obj, float tol)
             std::vector<Data::ComplexGeoData::Facet> aTopo;
             geoData->getFaces(aPoints, aTopo, tol);
 
-            mesh->addFacets(aTopo, aPoints);
+            mesh->addFacets(aTopo, aPoints, false);
         } else {
             return false;
         }
