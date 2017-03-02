@@ -862,7 +862,7 @@ class StructSelectionObserver:
         self.callback = callback
 
     def addSelection(self, docName, objName, sub, pos):
-        print "got ",objName
+        print("got ",objName)
         obj = FreeCAD.getDocument(docName).getObject(objName)
         self.callback(obj)
 

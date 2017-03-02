@@ -408,7 +408,7 @@ class _Site(ArchFloor._Floor):
                 except Part.OCCError:
                     # error in computing the area. Better set it to zero than show a wrong value
                     if obj.ProjectedArea.Value != 0:
-                        print "Error computing areas for ",obj.Label
+                        print("Error computing areas for ",obj.Label)
                         obj.ProjectedArea = 0
                 else:
                     pset.append(pf)
