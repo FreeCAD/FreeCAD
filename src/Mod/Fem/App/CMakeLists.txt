@@ -108,7 +108,6 @@ SET(FemGuiScripts_SRCS
     PyGui/__init__.py
     PyGui/_CommandAnalysis.py
     PyGui/_CommandBeamSection.py
-    PyGui/_CommandClearMesh.py
     PyGui/_CommandConstraintSelfWeight.py
     PyGui/_CommandFEMMesh2Mesh.py
     PyGui/_CommandFluidSection.py
@@ -117,6 +116,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_CommandMaterialFluid.py
     PyGui/_CommandMeshGmshFromShape.py
     PyGui/_CommandMeshNetgenFromShape.py
+    PyGui/_CommandMeshClear.py
     PyGui/_CommandMeshGroup.py
     PyGui/_CommandMeshPrintInfo.py
     PyGui/_CommandMeshRegion.py
