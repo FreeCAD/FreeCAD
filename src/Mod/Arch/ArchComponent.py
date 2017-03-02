@@ -351,7 +351,7 @@ class Component:
                 if obj.BaseMaterial:
                     if Draft.getType(obj.BaseMaterial) != "Material":
                         obj.BaseMaterial = None
-                        print "Removing bad BaseMaterial link in ",obj.Name
+                        print("Removing bad BaseMaterial link in ",obj.Name)
 
     def clone(self,obj):
         "if this object is a clone, sets the shape. Returns True if this is the case"
@@ -616,7 +616,7 @@ class Component:
             try:
                 ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
             except Part.OCCError:
-                print "Debug: Error computing areas for ",obj.Label,": normalAt() Face ",i
+                print("Debug: Error computing areas for ",obj.Label,": normalAt() Face ",i)
                 return
             else:
                 if (ang > 1.57) and (ang < 1.571):

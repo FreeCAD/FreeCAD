@@ -348,7 +348,7 @@ class _ArchScheduleTaskPanel:
                             for j in ["A","B","C"]:
                                 r.append(self.obj.Result.getContents(j+str(i+1)))
                             csvfile.writerow(r)
-                    print "successfully exported ",filename[0]
+                    print("successfully exported ",filename[0])
 
     def select(self):
         if self.form.list.currentRow() >= 0:
