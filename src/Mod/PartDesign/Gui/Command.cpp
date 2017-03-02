@@ -1264,12 +1264,14 @@ bool CmdPartDesignSubtractiveLoft::isActive(void)
 bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
         Gui::SelectionObject &selected)
 {
-    App::Document *doc = cmd->getDocument();
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-        /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
-
     // No PartDesign feature without Body past FreeCAD 0.16
-    if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+    App::Document *doc = cmd->getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return false;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
         return false;
 
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
@@ -1620,13 +1622,15 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
 void CmdPartDesignMirrored::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-		App::Document *doc = getDocument();
-		PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-			/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+    // No PartDesign feature without Body past FreeCAD 0.16
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-		// No PartDesign feature without Body past FreeCAD 0.16
-		if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
-			return;
+	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+	if (!pcActiveBody)
+		return;
 
     Gui::Command* cmd = this;
     auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
@@ -1682,13 +1686,15 @@ CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
 void CmdPartDesignLinearPattern::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-		App::Document *doc = getDocument();
-		PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-			/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+    // No PartDesign feature without Body past FreeCAD 0.16
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-		// No PartDesign feature without Body past FreeCAD 0.16
-		if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
-			return;
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
 
     Gui::Command* cmd = this;
     auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
@@ -1746,13 +1752,15 @@ CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
 void CmdPartDesignPolarPattern::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-		App::Document *doc = getDocument();
-		PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-			/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+    // No PartDesign feature without Body past FreeCAD 0.16
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-		// No PartDesign feature without Body past FreeCAD 0.16
-		if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
-			return;
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
 
     Gui::Command* cmd = this;
     auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {

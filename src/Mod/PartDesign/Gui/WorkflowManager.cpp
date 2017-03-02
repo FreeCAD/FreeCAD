@@ -175,7 +175,7 @@ Workflow WorkflowManager::determinWorkflow( App::Document *doc) {
             Gui::Application::Instance->commandManager().runCommandByName("PartDesign_Migrate");
             rv = Workflow::Modern;
         } else if ( msgBox.clickedButton() == manuallyBtn ) {
-            rv = Workflow::Modern;
+            rv = Workflow::Undetermined;
         } else {
             rv = Workflow::Legacy;
         }
