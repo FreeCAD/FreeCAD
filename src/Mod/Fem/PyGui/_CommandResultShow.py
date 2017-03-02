@@ -24,7 +24,7 @@ __title__ = "Command Show Result"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandShowResult
+## @package CommandResultShow
 #  \ingroup FEM
 #  \brief FreeCAD Command show results for FEM workbench
 
@@ -33,14 +33,14 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandShowResult(FemCommands):
-    "the FEM_show reslult command definition"
+class _CommandResultShow(FemCommands):
+    "the FEM_ResultShow command definition"
     def __init__(self):
-        super(_CommandShowResult, self).__init__()
+        super(_CommandResultShow, self).__init__()
         self.resources = {'Pixmap': 'fem-result',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ShowResult", "Show result"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Show result"),
                           'Accel': "S, R",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ShowResult", "Shows and visualizes selected result data")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Shows and visualizes selected result data")}
         self.is_active = 'with_selresult'
 
     def Activated(self):
@@ -51,4 +51,4 @@ class _CommandShowResult(FemCommands):
                 result_object.ViewObject.startEditing()
 
 
-FreeCADGui.addCommand('FEM_ShowResult', _CommandShowResult())
+FreeCADGui.addCommand('FEM_ResultShow', _CommandResultShow())

@@ -120,9 +120,9 @@ SET(FemGuiScripts_SRCS
     PyGui/_CommandMeshGroup.py
     PyGui/_CommandMeshRegion.py
     PyGui/_CommandPrintMeshInfo.py
+    PyGui/_CommandResultShow.py
     PyGui/_CommandResultsPurge.py
     PyGui/_CommandShellThickness.py
-    PyGui/_CommandShowResult.py
     PyGui/_CommandSolverCalculix.py
     PyGui/_CommandSolverControl.py
     PyGui/_CommandSolverRun.py
@@ -135,7 +135,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_TaskPanelFemShellThickness.py
     PyGui/_TaskPanelFemSolverCalculix.py
     PyGui/_TaskPanelFemMaterial.py
-    PyGui/_TaskPanelShowResult.py
+    PyGui/_TaskPanelResultShow.py
     PyGui/_ViewProviderFemBeamSection.py
     PyGui/_ViewProviderFemConstraintSelfWeight.py
     PyGui/_ViewProviderFemFluidSection.py
@@ -156,7 +156,7 @@ SET(FemGuiScripts_SRCS
     PyGui/TaskPanelFemShellThickness.ui
     PyGui/TaskPanelFemSolverCalculix.ui
     PyGui/TaskPanelFemMaterial.ui
-    PyGui/TaskPanelShowResult.ui
+    PyGui/TaskPanelResultShow.ui
 )
 
 SET(FemTests_SRCS

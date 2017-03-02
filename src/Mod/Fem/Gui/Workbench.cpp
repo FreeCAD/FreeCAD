@@ -104,7 +104,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
          << "FEM_SolverRun"
          << "Separator"
          << "FEM_ResultsPurge"
-         << "FEM_ShowResult";
+         << "FEM_ResultShow";
 
 #ifdef FC_USE_VTK
      Gui::ToolBarItem* post = new Gui::ToolBarItem(root);
@@ -180,7 +180,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
          << "FEM_SolverRun"
          << "Separator"
          << "FEM_ResultsPurge"
-         << "FEM_ShowResult";
+         << "FEM_ResultShow";
 
     return root;
 }
