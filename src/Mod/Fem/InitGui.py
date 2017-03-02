@@ -45,27 +45,28 @@ class FemWorkbench (Workbench):
         import Fem
         import FemGui
 
-        import PyGui._CommandFEMMesh2Mesh
-        import PyGui._CommandAnalysis
-        import PyGui._CommandShellThickness
-        import PyGui._CommandBeamSection
-        import PyGui._CommandFluidSection
-        import PyGui._CommandMaterialSolid
-        import PyGui._CommandMaterialFluid
-        import PyGui._CommandMaterialMechanicalNonlinear
-        import PyGui._CommandMeshClear
-        import PyGui._CommandMeshGmshFromShape
-        import PyGui._CommandMeshGroup
-        import PyGui._CommandMeshNetgenFromShape
-        import PyGui._CommandMeshPrintInfo
-        import PyGui._CommandMeshRegion
-        import PyGui._CommandResultShow
-        import PyGui._CommandResultsPurge
-        import PyGui._CommandSolverCalculix
-        import PyGui._CommandSolverControl
-        import PyGui._CommandSolverRun
-        import PyGui._CommandSolverZ88
-        import PyGui._CommandConstraintSelfWeight
+        import PyGui._CommandFemAnalysis
+        import PyGui._CommandFemConstraintSelfWeight
+        import PyGui._CommandFemMaterialSolid
+        import PyGui._CommandFemMaterialFluid
+        import PyGui._CommandFemMaterialMechanicalNonlinear
+        import PyGui._CommandFemMesh2Mesh
+        import PyGui._CommandFemMeshClear
+        import PyGui._CommandFemMeshGmshFromShape
+        import PyGui._CommandFemMeshGroup
+        import PyGui._CommandFemMeshNetgenFromShape
+        import PyGui._CommandFemMeshPrintInfo
+        import PyGui._CommandFemMeshRegion
+        import PyGui._CommandFemResultShow
+        import PyGui._CommandFemResultsPurge
+        import PyGui._CommandFemSolverCalculix
+        import PyGui._CommandFemSolverControl
+        import PyGui._CommandFemSolverRun
+        import PyGui._CommandFemSolverZ88
+
+        import PyGui._CommandFemShellThickness
+        import PyGui._CommandFemBeamSection
+        import PyGui._CommandFemFluidSection
 
     def GetClassName(self):
         return "FemGui::Workbench"

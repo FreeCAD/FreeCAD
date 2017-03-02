@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 - Ofentse Kgoa <kgoaot@eskom.co.za>                *
+# *   Based on the FemBeamSection by Bernd Hahnebach                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +21,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandMeshGroup"
-__author__ = "Bernd Hahnebach"
+__title__ = "_CommandFluidSection"
+__author__ = "Ofentse Kgoa"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMeshGroup
+## @package CommandFemFluidSection
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,25 +34,20 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandMeshGroup(FemCommands):
-    "The FEM_MeshGroup command definition"
+class _CommandFemFluidSection(FemCommands):
+    "The FEM_FluidSection command definition"
     def __init__(self):
-        super(_CommandMeshGroup, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGroup", "FEM mesh group"),
-                          'Accel': "M, G",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGroup", "Creates a FEM mesh group")}
-        self.is_active = 'with_gmsh_femmesh'
+        super(_CommandFemFluidSection, self).__init__()
+        self.resources = {'Pixmap': 'fem-fluid-section',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_FluidSection", "Fluid section for 1D flow"),
+                          'Accel': "C, B",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_FluidSection", "Creates a FEM Fluid section for 1D flow")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemMeshGroup")
+        FreeCAD.ActiveDocument.openTransaction("Create FemFluidSection")
         FreeCADGui.addModule("ObjectsFem")
-        sel = FreeCADGui.Selection.getSelection()
-        if (len(sel) == 1):
-            sobj = sel[0]
-            if len(sel) == 1 and hasattr(sobj, "Proxy") and sobj.Proxy.Type == "FemMeshGmsh":
-                FreeCADGui.doCommand("ObjectsFem.makeMeshGroup(App.ActiveDocument." + sobj.Name + ")")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeFemFluidSection()]")
 
-        FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('FEM_MeshGroup', _CommandMeshGroup())
+FreeCADGui.addCommand('FEM_FluidSection', _CommandFemFluidSection())

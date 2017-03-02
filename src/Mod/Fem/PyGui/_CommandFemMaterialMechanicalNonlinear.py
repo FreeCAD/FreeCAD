@@ -24,7 +24,7 @@ __title__ = "Command nonlinear mechanical material"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMaterialMechanicalNonLinear
+## @package CommandFemMaterialMechanicalNonLinear
 #  \ingroup FEM
 
 import FreeCAD
@@ -34,10 +34,10 @@ import FemGui
 from PySide import QtCore
 
 
-class _CommandMaterialMechanicalNonlinear(FemCommands):
+class _CommandFemMaterialMechanicalNonlinear(FemCommands):
     "The FEM_MaterialMechanicalNonlinear command definition"
     def __init__(self):
-        super(_CommandMaterialMechanicalNonlinear, self).__init__()
+        super(_CommandFemMaterialMechanicalNonlinear, self).__init__()
         self.resources = {'Pixmap': 'fem-material-nonlinear',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialMechanicalNonlinear", "Nonlinear mechanical material"),
                           'Accel': "C, W",
@@ -74,4 +74,4 @@ class _CommandMaterialMechanicalNonlinear(FemCommands):
             if solver_object and solver_object.SolverType == 'FemSolverCalculix':
                 solver_object.MaterialNonlinearity = "nonlinear"
 
-FreeCADGui.addCommand('FEM_MaterialMechanicalNonlinear', _CommandMaterialMechanicalNonlinear())
+FreeCADGui.addCommand('FEM_MaterialMechanicalNonlinear', _CommandFemMaterialMechanicalNonlinear())

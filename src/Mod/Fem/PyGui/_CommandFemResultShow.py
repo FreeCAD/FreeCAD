@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,33 +20,35 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandBeamSection"
-__author__ = "Bernd Hahnebach"
+__title__ = "Command Show Result"
+__author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandBeamSection
+## @package CommandFemResultShow
 #  \ingroup FEM
+#  \brief FreeCAD Command show results for FEM workbench
 
-import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandBeamSection(FemCommands):
-    "The FEM_BeamSection command definition"
+class _CommandFemResultShow(FemCommands):
+    "the FEM_ResultShow command definition"
     def __init__(self):
-        super(_CommandBeamSection, self).__init__()
-        self.resources = {'Pixmap': 'fem-beam-section',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_BeamSection", "Beam cross section"),
-                          'Accel': "C, B",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_BeamSection", "Creates a FEM beam cross section")}
-        self.is_active = 'with_analysis'
+        super(_CommandFemResultShow, self).__init__()
+        self.resources = {'Pixmap': 'fem-result',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Show result"),
+                          'Accel': "S, R",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Shows and visualizes selected result data")}
+        self.is_active = 'with_selresult'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemBeamSection")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeBeamSection()]")
+        sel = FreeCADGui.Selection.getSelection()
+        if (len(sel) == 1):
+            if sel[0].isDerivedFrom("Fem::FemResultObject"):
+                result_object = sel[0]
+                result_object.ViewObject.startEditing()
 
 
-FreeCADGui.addCommand('FEM_BeamSection', _CommandBeamSection())
+FreeCADGui.addCommand('FEM_ResultShow', _CommandFemResultShow())

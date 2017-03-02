@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,35 +20,38 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Command Show Result"
-__author__ = "Juergen Riegel, Bernd Hahnebach"
+__title__ = "_CommandMeshRegion"
+__author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandResultShow
+## @package CommandFemMeshRegion
 #  \ingroup FEM
-#  \brief FreeCAD Command show results for FEM workbench
 
+import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandResultShow(FemCommands):
-    "the FEM_ResultShow command definition"
+class _CommandFemMeshRegion(FemCommands):
+    "The FEM_MeshRegion command definition"
     def __init__(self):
-        super(_CommandResultShow, self).__init__()
-        self.resources = {'Pixmap': 'fem-result',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Show result"),
-                          'Accel': "S, R",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Shows and visualizes selected result data")}
-        self.is_active = 'with_selresult'
+        super(_CommandFemMeshRegion, self).__init__()
+        self.resources = {'Pixmap': 'fem-femmesh-region',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshRegion", "FEM mesh region"),
+                          'Accel': "M, R",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshRegion", "Creates a FEM mesh region")}
+        self.is_active = 'with_gmsh_femmesh'
 
     def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemMeshRegion")
+        FreeCADGui.addModule("ObjectsFem")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
-            if sel[0].isDerivedFrom("Fem::FemResultObject"):
-                result_object = sel[0]
-                result_object.ViewObject.startEditing()
+            sobj = sel[0]
+            if len(sel) == 1 and hasattr(sobj, "Proxy") and sobj.Proxy.Type == "FemMeshGmsh":
+                FreeCADGui.doCommand("ObjectsFem.makeMeshRegion(App.ActiveDocument." + sobj.Name + ")")
 
+        FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('FEM_ResultShow', _CommandResultShow())
+FreeCADGui.addCommand('FEM_MeshRegion', _CommandFemMeshRegion())

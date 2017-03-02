@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,39 +20,39 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandSolidMaterial"
-__author__ = "Juergen Riegel, Bernd Hahnebach"
+__title__ = "Print info of FEM mesh object"
+__author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMaterial
+## @package CommandFemMeshPrintInfo
 #  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
-import FemGui
 from PySide import QtCore
 
 
-class _CommandMaterialSolid(FemCommands):
-    "the FEM_MaterialSolid command definition"
+class _CommandFemMeshPrintInfo(FemCommands):
+    "the FEM_MeshPrintInfo command definition"
     def __init__(self):
-        super(_CommandMaterialSolid, self).__init__()
-        self.resources = {'Pixmap': 'fem-material',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "FEM material for solid"),
-                          'Accel': "M, M",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Creates a FEM material for solid")}
-        self.is_active = 'with_analysis'
+        super(_CommandFemMeshPrintInfo, self).__init__()
+        self.resources = {'Pixmap': 'fem-femmesh-print-info',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshPrintInfo", "Print FEM mesh info"),
+                          # 'Accel': "Z, Z",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshPrintInfo", "Print FEM mesh info")}
+        self.is_active = 'with_femmesh'
 
     def Activated(self):
-        femDoc = FemGui.getActiveAnalysis().Document
-        if FreeCAD.ActiveDocument is not femDoc:
-            FreeCADGui.setActiveDocument(femDoc)
-        FreeCAD.ActiveDocument.openTransaction("Create Solid Material")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeMaterialSolid('SolidMaterial')")
-        FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
-        FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
+            FreeCAD.ActiveDocument.openTransaction("Print FEM mesh info")
+            FreeCADGui.doCommand("print(App.ActiveDocument." + sel[0].Name + ".FemMesh)")
 
+            FreeCADGui.addModule("PySide")
+            FreeCADGui.doCommand("mesh_info = str(App.ActiveDocument." + sel[0].Name + ".FemMesh)")
+            FreeCADGui.doCommand("PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)")
 
-FreeCADGui.addCommand('FEM_MaterialSolid', _CommandMaterialSolid())
+        FreeCADGui.Selection.clearSelection()
+
+FreeCADGui.addCommand('FEM_MeshPrintInfo', _CommandFemMeshPrintInfo())
