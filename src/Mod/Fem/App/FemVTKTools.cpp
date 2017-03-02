@@ -919,7 +919,7 @@ void FemVTKTools::importMechanicalResult(vtkSmartPointer<vtkDataSet> dataset, Ap
     //scalers["DisplacementLengths"] = "";  // not yet exported in exportMechanicalResult()
 
     std::map<std::string, int> varids;
-    // id sequence must agree with definition in get_result_stats() of  Fem/_TaskPanelShowResult.py
+    // id sequence must agree with definition in get_result_stats() of  Fem/_TaskPanelResultShow.py
     varids["U1"] = 0;   // U1, displacement x axis
     varids["U2"] = 1;
     varids["U3"] = 2;
