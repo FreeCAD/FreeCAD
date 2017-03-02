@@ -24,7 +24,7 @@ __title__ = "Command Control Solver"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandControlSolver
+## @package CommandSolverControl
 #  \ingroup FEM
 
 from FemCommands import FemCommands
@@ -32,14 +32,14 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandControlSolver(FemCommands):
-    "the FEM_ControlSolver command definition"
+class _CommandSolverControl(FemCommands):
+    "the FEM_SolverControl command definition"
     def __init__(self):
-        super(_CommandControlSolver, self).__init__()
+        super(_CommandSolverControl, self).__init__()
         self.resources = {'Pixmap': 'fem-control-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ControlSolver", "Solver job control"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverControl", "Solver job control"),
                           'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ControlSolver", "Changes solver attributes and runs the calculations for the selected solver")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverControl", "Changes solver attributes and runs the calculations for the selected solver")}
         self.is_active = 'with_solver'
 
     def Activated(self):
@@ -47,4 +47,4 @@ class _CommandControlSolver(FemCommands):
         FreeCADGui.ActiveDocument.setEdit(solver_obj, 0)
 
 
-FreeCADGui.addCommand('FEM_ControlSolver', _CommandControlSolver())
+FreeCADGui.addCommand('FEM_SolverControl', _CommandSolverControl())
