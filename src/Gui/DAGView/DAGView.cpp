@@ -107,8 +107,8 @@ void View::onSelectionChanged(const SelectionChanges& msg)
     }
   }
   
-  //why am I getting a spontanous event with an empty name?
-  //also getting events after document has been removed from modelMap.
+  //FIXME: why am I getting a spontaneous event with an empty name?
+  //also getting events after the document has been removed from modelMap.
   //just ignore for now.
 //   std::ostringstream stream;
 //   stream << std::endl << "couldn't find document of name: " << std::string(msg.pDocName) << std::endl << std::endl;

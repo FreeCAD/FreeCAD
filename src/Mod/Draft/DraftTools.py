@@ -129,7 +129,7 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=Fals
     if mobile=True, the constraining occurs from the location of
     mouse cursor when Shift is pressed, otherwise from last entered
     point. If sym=True, x and y values stay always equal. If workingplane=False,
-    the point wont be projected on the Working Plane. if noTracker is True, the
+    the point won't be projected on the Working Plane. if noTracker is True, the
     tracking line will not be displayed
     '''
 

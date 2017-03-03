@@ -85,7 +85,7 @@ public:
     /** This method is used to save large amounts of data to a binary file.
      * Sometimes it makes no sense to write property data as XML. In case the 
      * amount of data is too big or the data type has a more effective way to 
-     * save itself. In this cases it is possible to write the data in a seperate file
+     * save itself. In this cases it is possible to write the data in a separate file
      * inside the document archive. In case you want do so you have to re-implement 
      * SaveDocFile(). First, you have to inform the framework in Save() that you want do so.
      * Here an example from the Mesh module which can save a (pontetionaly big) triangle mesh:

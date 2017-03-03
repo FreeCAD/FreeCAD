@@ -62,9 +62,9 @@ public:
         QString dummy2;
         return UnitsApi::schemaTranslate(quant, dummy1, dummy2);
     }
-    /// generate a value for a quantity with default user prefered system
+    /// generate a value for a quantity with default user preferred system
     static double toDbl(PyObject *ArgObj,const Base::Unit &u=Base::Unit());
-    /// generate a value for a quantity with default user prefered system
+    /// generate a value for a quantity with default user preferred system
     static Quantity toQuantity(PyObject *ArgObj,const Base::Unit &u=Base::Unit());
 
     // set the number of decimals

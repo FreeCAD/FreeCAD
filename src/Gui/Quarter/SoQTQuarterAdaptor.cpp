@@ -174,7 +174,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::init()
 QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getWidget()
 {
     //we keep the function from SoQt as we want to introduce the QGraphicsView and then the GLWidget
-    //is seperated from the Widget used in layouts again
+    //is separated from the Widget used in layouts again
     return this;
 }
 
@@ -186,7 +186,7 @@ QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getGLWidget()
 QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getWidget() const
 {
     //we keep the function from SoQt as we want to introduce the QGraphicsView and then the GLWidget
-    //is seperated from the Widget used in layouts again
+    //is separated from the Widget used in layouts again
     return const_cast<SoQTQuarterAdaptor*>(this);
 }
 

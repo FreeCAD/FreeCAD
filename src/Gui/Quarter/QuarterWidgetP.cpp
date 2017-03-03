@@ -316,7 +316,7 @@ QuarterWidgetP::nativeEventFilter(void * message, long * result)
 #ifdef HAVE_SPACENAV_LIB
   XEvent * event = (XEvent *) message;
   if (event->type == ClientMessage) {
-    // FIXME: I dont really like this, but the original XEvent will
+    // FIXME: I don't really like this, but the original XEvent will
     // die before reaching the destination within the Qt system. To
     // avoid this, we'll have to make a copy. We should try to find a
     // workaround for this. (20101020 handegar)

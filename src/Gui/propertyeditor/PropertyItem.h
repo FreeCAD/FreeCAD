@@ -315,7 +315,7 @@ protected:
 };
 
 /**
- * Change a Unit based floating point number withing constraints.
+ * Change a Unit based floating point number within constraints.
  * \author Stefan Troeger
  */
 class GuiExport PropertyUnitConstraintItem: public PropertyUnitItem

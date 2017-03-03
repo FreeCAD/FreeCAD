@@ -368,7 +368,7 @@ bool SelectionFilter::parse(void)
 {
     Errors = "";
     SelectionParser::YY_BUFFER_STATE my_string_buffer = SelectionParser::SelectionFilter_scan_string (Filter.c_str());
-    // be aware that this parser is not reentrant! Dont use with Threats!!!
+    // be aware that this parser is not reentrant! Don't use with Threats!!!
     assert(!ActFilter);
     ActFilter = this;
     /*int my_parse_result =*/ SelectionParser::yyparse();

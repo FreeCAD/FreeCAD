@@ -525,7 +525,7 @@ void TaskView::showDialog(TaskDialog *dlg)
     ActiveCtrl = new TaskEditControl(this);
     ActiveCtrl->buttonBox->setStandardButtons(dlg->getStandardButtons());
 
-    // make conection to the needed signals
+    // make connection to the needed signals
     connect(ActiveCtrl->buttonBox,SIGNAL(accepted()),
             this,SLOT(accept()));
     connect(ActiveCtrl->buttonBox,SIGNAL(rejected()),
