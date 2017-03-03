@@ -389,7 +389,7 @@ void View3DInventorViewer::init()
     pcBackGround = new SoFCBackgroundGradient;
     pcBackGround->ref();
 
-    // Set up foreground, overlayed scenegraph.
+    // Set up foreground, overlaid scenegraph.
     this->foregroundroot = new SoSeparator;
     this->foregroundroot->ref();
 
@@ -1531,7 +1531,7 @@ void View3DInventorViewer::renderScene(void)
     glDepthRange(0.1,1.0);
 #endif
 
-    // Immediately reschedule to get continous spin animation.
+    // Immediately reschedule to get continuous spin animation.
     if (this->isAnimating()) {
         this->getSoRenderManager()->scheduleRedraw();
     }

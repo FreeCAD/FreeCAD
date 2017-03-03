@@ -649,7 +649,7 @@ void RecentFilesAction::appendFile(const QString& filename)
     files.prepend(filename);
     setFiles(files);
 
-    // update the XML structure and save the user paramter to disk (#0001989)
+    // update the XML structure and save the user parameter to disk (#0001989)
     bool saveParameter = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/General")->GetBool("SaveUserParameter", true);
     if (saveParameter) {

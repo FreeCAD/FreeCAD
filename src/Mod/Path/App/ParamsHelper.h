@@ -161,7 +161,7 @@
  * an example of using tuple, and the more complex example #PARAM_ENUM_CONVERT
  *
  * Note that when generating comma separated list, the first and last comma are
- * conveniently omited, so that the macros can be mixed with others intuitively
+ * conveniently omitted, so that the macros can be mixed with others intuitively
  */
 
 #include <boost/preprocessor/cat.hpp>

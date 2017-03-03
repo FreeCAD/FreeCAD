@@ -87,7 +87,7 @@ public:
 
 /** The console class
  *  This class manage all the stdio stuff. This includes 
- *  Messages, Warnings, Log entries and Errors. The incomming
+ *  Messages, Warnings, Log entries and Errors. The incoming
  *  Messages are distributed with the FCConsoleObserver. The
  *  FCConsole class itself makes no IO, it's more like a manager.
  *  \par
@@ -98,7 +98,7 @@ public:
  *  Base::Console().Log("Stage: %d",i);
  *  \endcode
  *  \par
- *  ConsoleSingleton is abel to switch between several modes to, e.g. switch
+ *  ConsoleSingleton is able to switch between several modes to, e.g. switch
  *  the logging on or off, or treat Warnings as Errors, and so on...
  *  @see ConsoleObserver
  */
@@ -125,7 +125,7 @@ public:
     void DetachObserver(ConsoleObserver *pcObserver);
     /// enumaration for the console modes
     enum ConsoleMode{
-        Verbose = 1,	// supress Log messages
+        Verbose = 1,	// suppress Log messages
     };
 
     enum FreeCAD_ConsoleMsgType { 
@@ -139,9 +139,9 @@ public:
     void SetMode(ConsoleMode m);
     /// Change mode
     void UnsetMode(ConsoleMode m);
-    /// Enables or disables message types of a cetain console observer
+    /// Enables or disables message types of a certain console observer
     ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool b);
-    /// Enables or disables message types of a cetain console observer
+    /// Enables or disables message types of a certain console observer
     bool IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const;
 
     /// singleton 

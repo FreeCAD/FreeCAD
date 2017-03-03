@@ -153,13 +153,13 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
 
 /** Prints a Message
  *  This method issues a Message. 
- *  Messages are used show some non vital information. That means in the
- *  case FreeCAD running with GUI a Message in the status Bar apear. In console
- *  mode a message comes out. 
+ *  Messages are used to show some non vital information. That means when
+ *  FreeCAD is running in GUI mode a Message appears on the status bar. 
+ *  In console mode a message is printed to the console. 
  *  \par
  *  You can use a printf like interface like:
  *  \code
- *  Console().Message("Doing somthing important %d times\n",i);
+ *  Console().Message("Doing something important %d times\n",i);
  *  \endcode
  *  @see Warning
  *  @see Error
@@ -179,10 +179,10 @@ void ConsoleSingleton::Message( const char *pMsg, ... )
 
 /** Prints a Message
  *  This method issues a Warning. 
- *  Messages are used to get the users attantion. That means in the
- *  case FreeCAD running with GUI a Message Box is poping up. In console
- *  mode a colored message comes out! So dont use careless. For information
- *  purpose the Log or Message method is more aprobiated.
+ *  Messages are used to get the users attention. That means when
+ *  FreeCAD is in GUI mode a Message Box pops up. In console
+ *  mode a colored message is returned to the console! Don't use this carelessly.
+ *  For information purposes the 'Log' or 'Message' methods are more appropriate.
  *  \par
  *  You can use a printf like interface like:
  *  \code
@@ -205,15 +205,15 @@ void ConsoleSingleton::Warning( const char *pMsg, ... )
 }
 
 /** Prints a Message
- *  This method issues an Error which makes some execution imposible. 
- *  Errors are used to get the users attantion. That means in the
- *  case FreeCAD running with GUI a Error Message Box is poping up. In console
- *  mode a colored message comes out! So dont use this careless. For information
- *  purpose the Log or Message method is more aprobiated.
+ *  This method issues an Error which makes some execution impossible. 
+ *  Errors are used to get the users attention. That means when FreeCAD 
+ *  is running in GUI mode an Error Message Box pops up. In console
+ *  mode a colored message is printed to the console! Don't use this carelessly. 
+ *  For information purposes the 'Log' or 'Message' methods are more appropriate.
  *  \par
  *  You can use a printf like interface like:
  *  \code
- *  Console().Error("Somthing realy bad in %s happend\n",str);
+ *  Console().Error("Something really bad in %s happened\n",str);
  *  \endcode
  *  @see Message
  *  @see Warning
@@ -233,15 +233,14 @@ void ConsoleSingleton::Error( const char *pMsg, ... )
 
 
 /** Prints a Message
- *  this method is more for devlopment and tracking purpos.
- *  It can be used to track execution of algorithms and functions
- *  and put it in files. The normal user dont need to see it, its more
- *  for developers and experinced users. So in normal user modes the 
- *  logging is switched of.
+ *  This method is appropriate for development and tracking purposes.
+ *  It can be used to track execution of algorithms and functions.
+ *  The normal user doesn't need to see it, it's more for developers 
+ *  and experienced users. So in normal user mode the logging is switched off.
  *  \par
- *  You can use a printf like interface like:
+ *  You can use a printf-like interface for example:
  *  \code
- *  Console().Log("Exectue part %d in algorithem %s\n",i,str);
+ *  Console().Log("Execute part %d in algorithm %s\n",i,str);
  *  \endcode
  *  @see Message
  *  @see Warning
@@ -266,8 +265,8 @@ void ConsoleSingleton::Log( const char *pMsg, ... )
 
 
 /** Delivers the time/date
- *  this method give you a string with the actual time/date. You can
- *  use that for Log() calls to make time stamps.
+ *  This method gives you a string with the actual time/date. You can
+ *  use that for Log() calls to make timestamps.
  *  @return Const string with the date/time
  */
 const char* ConsoleSingleton::Time(void)
@@ -289,7 +288,7 @@ const char* ConsoleSingleton::Time(void)
 /** Attaches an Observer to Console
  *  Use this method to attach a ConsoleObserver derived class to 
  *  the Console. After the observer is attached all messages will also
- *  forwardet to it.
+ *  be forwarded to it.
  *  @see ConsoleObserver
  */
 void ConsoleSingleton::AttachObserver(ConsoleObserver *pcObserver)
@@ -391,9 +390,9 @@ PyMethodDef ConsoleSingleton::Methods[] = {
     {"PrintWarning",         (PyCFunction) ConsoleSingleton::sPyWarning, 1,
      "PrintWarning -- Print a warning to the output"},
     {"SetStatus",            (PyCFunction) ConsoleSingleton::sPySetStatus, 1,
-     "Set the status for either Log, Msg, Wrn or Error for an observer"},
+     "Set the status for either Log, Msg, Wrn, or Error for an observer"},
     {"GetStatus",            (PyCFunction) ConsoleSingleton::sPyGetStatus, 1,
-     "Get the status for either Log, Msg, Wrn or Error for an observer"},
+     "Get the status for either Log, Msg, Wrn, or Error for an observer"},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -580,7 +579,7 @@ PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args, Py
             else if(strcmp(pstr2,"Err") == 0)
                 pObs->bErr = (Bool==0)?false:true;
             else
-                Py_Error(Base::BaseExceptionFreeCADError,"Unknown Message Type (use Log,Err,Msg or Wrn)");
+                Py_Error(Base::BaseExceptionFreeCADError,"Unknown Message Type (use Log, Err, Msg, or Wrn)");
 
             Py_INCREF(Py_None);
             return Py_None;

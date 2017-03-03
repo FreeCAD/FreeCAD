@@ -79,7 +79,7 @@ private:
 // ----------------------------------------------------------------------
 
 /**
- * The FileOptionsDialog class provides an extensible file dialog with an additonal widget either at the right 
+ * The FileOptionsDialog class provides an extensible file dialog with an additional widget either at the right 
  * or at the bottom, that can be shown or hidden with the 'Extended' button.
  * @author Werner Mayer
  */

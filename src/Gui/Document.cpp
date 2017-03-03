@@ -427,7 +427,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             d->_ViewProviderMap[&Obj] = pcProvider;
 
             try {
-                // if succesfully created set the right name and calculate the view
+                // if successfully created set the right name and calculate the view
                 //FIXME: Consider to change argument of attach() to const pointer
                 pcProvider->attach(const_cast<App::DocumentObject*>(&Obj));
                 pcProvider->updateView();
@@ -1243,7 +1243,7 @@ bool Document::canClose ()
     }
 
     if (ok) {
-        // If a tsk dialog is open that doesn't allow other commands to modify
+        // If a task dialog is open that doesn't allow other commands to modify
         // the document it must be closed by resetting the edit mode of the
         // corresponding view provider.
         if (!Gui::Control().isAllowedAlterDocument()) {
@@ -1399,7 +1399,7 @@ void Document::openCommand(const char* sName)
 
 void Document::commitCommand(void)
 {
-    getDocument()->commitTransaction();	
+    getDocument()->commitTransaction();
 }
 
 void Document::abortCommand(void)
@@ -1468,10 +1468,10 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
                     for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
                         View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
                         if (activeView && activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
-                            // Note about hasViewProvider()
-                            //remove the viewprovider serves the purpose of detaching the inventor nodes from the
-                            //top level root in the viewer. However, if some of the children were grouped beneath the object
-                            //earlier they are not anymore part of the toplevel inventor node. we need to check for that.
+                            // @Note hasViewProvider()
+                            // remove the viewprovider serves the purpose of detaching the inventor nodes from the
+                            // top level root in the viewer. However, if some of the children were grouped beneath the object
+                            // earlier they are not anymore part of the toplevel inventor node. we need to check for that.
                             if (d->_editViewProvider == ChildViewProvider)
                                 resetEdit();
                             activeView->getViewer()->removeViewProvider(ChildViewProvider);
