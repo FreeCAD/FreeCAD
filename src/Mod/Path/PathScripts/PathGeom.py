@@ -26,10 +26,13 @@ import FreeCAD
 import math
 import Part
 import Path
+import PathScripts.PathLog as PathLog
 
 from FreeCAD import Vector
 
 PathGeomTolerance = 0.000001
+
+#PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class Side:
     """Class to determine and define the side a Path is on, or Vectors are in relation to each other."""
@@ -222,7 +225,8 @@ class PathGeom:
             B = cls.xy(endPoint - center)
             d = -B.x * A.y + B.y * A.x
 
-            if d == 0:
+            if cls.isRoughly(d, 0, 0.005):
+                PathLog.info("Half circle arc at: (%.2f, %.2f, %.2f)" % (center.x, center.y, center.z))
                 # we're dealing with half a circle here
                 angle = cls.getAngle(A) + math.pi/2
                 if cmd.Name in cls.CmdMoveCW:
@@ -230,13 +234,15 @@ class PathGeom:
             else:
                 C = A + B
                 angle = cls.getAngle(C)
+                PathLog.info("Arc (%8f) at: (%.2f, %.2f, %.2f) -> angle=%f" % (d, center.x, center.y, center.z, angle / math.pi))
 
             R = A.Length
-            #print("arc: p1=(%.2f, %.2f) p2=(%.2f, %.2f) -> center=(%.2f, %.2f)" % (startPoint.x, startPoint.y, endPoint.x, endPoint.y, center.x, center.y))
-            #print("arc: A=(%.2f, %.2f) B=(%.2f, %.2f) -> d=%.2f" % (A.x, A.y, B.x, B.y, d))
-            #print("arc: R=%.2f angle=%.2f" % (R, angle/math.pi))
-            if startPoint.z == endPoint.z:
+            PathLog.debug("arc: p1=(%.2f, %.2f) p2=(%.2f, %.2f) -> center=(%.2f, %.2f)" % (startPoint.x, startPoint.y, endPoint.x, endPoint.y, center.x, center.y))
+            PathLog.debug("arc: A=(%.2f, %.2f) B=(%.2f, %.2f) -> d=%.2f" % (A.x, A.y, B.x, B.y, d))
+            PathLog.debug("arc: R=%.2f angle=%.2f" % (R, angle/math.pi))
+            if cls.isRoughly(startPoint.z, endPoint.z):
                 midPoint = center + Vector(math.cos(angle), math.sin(angle), 0) * R
+                PathLog.debug("arc: (%.2f, %.2f) -> (%.2f, %.2f) -> (%.2f, %.2f)" % (startPoint.x, startPoint.y, midPoint.x, midPoint.y, endPoint.x, endPoint.y))
                 return Part.Edge(Part.Arc(startPoint, midPoint, endPoint))
 
             # It's a Helix
