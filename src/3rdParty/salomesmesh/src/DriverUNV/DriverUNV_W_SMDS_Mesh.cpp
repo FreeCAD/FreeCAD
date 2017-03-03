@@ -170,7 +170,11 @@ Driver_Mesh::Status DriverUNV_W_SMDS_Mesh::Perform()
           case 6:  anId = 112; break;
           case 8:  anId = 115; break;
           case 10: anId = 118; break;
-          case 13: anId = 114; break;
+	  // Quadratic Pyramid are not properly supported into UNV file and
+	  // shouldn't be part of the output only wedge are supported
+	  // http://www.sdrl.uc.edu/sdrl/referenceinfo/universalfileformats/
+          // file-format-storehouse/universal-dataset-number-2412
+          // case 13: anId = 114; break;
           case 15: anId = 113; break;
           case 20:
           case 27: anId = 116; aNbNodes = 20; break;
