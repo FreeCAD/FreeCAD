@@ -531,6 +531,13 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         MESSAGE(FATAL_ERROR "=================================\n"
                             "Python not found, install Python!\n"
                             "=================================\n")
+    ELSE(NOT PYTHONLIBS_FOUND)
+        # prevent python3 lower than 3.3 (not enough utf8<->unicode tools)
+        IF(PYTHON_VERSION_MAJOR GREATER 3)
+            IF(PYTHON_VERSION_MINOR LESS 5)
+                MESSAGE(FATAL_ERROR "To build FreeCAD with Python3, you need at least version 3.5\n")
+            ENDIF(PYTHON_VERSION_MINOR LESS 5)
+        ENDIF(PYTHON_VERSION_MAJOR GREATER 3)
     ENDIF(NOT PYTHONLIBS_FOUND)
 
 # -------------------------------- pcl ----------------------------------
@@ -589,7 +596,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     # Salome SMESH sources are under src/3rdParty now
     IF(BUILD_SMESH)
-        #if we use smesh we definitely also need vtk, no matter of external or internal smesh
+        #if we use smesh we definitly also need vtk, no matter of external or internal smesh
         set (VTK_COMPONENTS
             vtkCommonCore
             vtkCommonDataModel
@@ -897,8 +904,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	endif()
     else()
         # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
-        SET(PYTHON_SUFFIX -python2.7) # for shiboken
-        SET(PYTHON_BASENAME -python2.7) # for PySide
+        # below are two variables that can be left empty for standard python, but must be set by the user for different python versions such as 3.5
+        SET(PYTHON_SUFFIX "" CACHE STRING "Shiboken cmake file sufix. If left empty, system default python version will be used: <ShibokenConfigPYTHON_SUFFIX.cmake>")
+        SET(PYTHON_BASENAME "" CACHE STRING "Same as PYTHON_SUFFIX but for PySide. if left empty, PYTHON_SUFFIX will be used: <PySideConfigPYTHON_BASENAME.cmake>")
 
         if(DEFINED MACPORTS_PREFIX)
             find_package(Shiboken REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
