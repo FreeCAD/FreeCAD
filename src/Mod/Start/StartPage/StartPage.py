@@ -301,6 +301,9 @@ def handle():
     html = replace_html_text(html)
     # fetches system colors
     html = setColors(html)
+    f = open(os.path.expanduser("~")+os.sep+"freecad-startpage.html","wb")
+    f.write(html)
+    f.close()
     return html
 
 def exportTestFile():
