@@ -122,6 +122,25 @@ class TestPathGeom(PathTestBase):
                     Path.Command('G3', {'X': p2.x, 'Y': p2.y, 'Z': p2.z, 'I': 1, 'J': 0, 'K': -1}), p1),
                 p1, Vector(-1/math.sqrt(2), -1/math.sqrt(2), 1), p2)
 
+    def test40(self):
+        """Verify arc results in proper G2/3 command."""
+        p1 = Vector(  0, -10, 0)
+        p2 = Vector(-10,   0, 0)
+        p3 = Vector(  0, +10, 0)
+        p4 = Vector(+10,   0, 0)
+
+        def cmds(pa, pb, pc, flip):
+            return PathGeom.cmdsForEdge(Part.Edge(Part.Arc(pa, pb, pc)), flip)[0]
+        def cmd(c, end, off):
+            return Path.Command(c, {'X': end.x, 'Y': end.y, 'Z': end.z, 'I': off.x, 'J': off.y, 'K': off.z})
+
+        self.assertCommandEqual(cmds(p1, p2, p3, False), cmd('G2', p3, Vector(0,  10, 0)))
+        self.assertCommandEqual(cmds(p1, p4, p3, False), cmd('G3', p3, Vector(0,  10, 0)))
+
+        self.assertCommandEqual(cmds(p1, p2, p3,  True), cmd('G3', p1, Vector(0, -10, 0)))
+        self.assertCommandEqual(cmds(p1, p4, p3,  True), cmd('G2', p1, Vector(0, -10, 0)))
+
+
     def test50(self):
         """Verify proper wire(s) aggregation from a Path."""
         commands = []

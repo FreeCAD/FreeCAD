@@ -110,3 +110,14 @@ class PathTestBase(unittest.TestCase):
         self.assertLine(hull, Vector(pt.x+r1, pt.y, pt.z), Vector(pt.x+r2, pt.y, pt.z+h))
         self.assertCircle(base, Vector(pt.x, pt.y, pt.z), r1)
 
+    def assertCommandEqual(self, c1, c2):
+        """Verify that the 2 commands are equivalent."""
+        self.assertEqual(c1.Name, c2.Name)
+
+        self.assertRoughly(c1.Parameters.get('X', 0), c2.Parameters.get('X', 0))
+        self.assertRoughly(c1.Parameters.get('Y', 0), c2.Parameters.get('Y', 0))
+        self.assertRoughly(c1.Parameters.get('Z', 0), c2.Parameters.get('Z', 0))
+
+        self.assertRoughly(c1.Parameters.get('I', 0), c2.Parameters.get('I', 0))
+        self.assertRoughly(c1.Parameters.get('J', 0), c2.Parameters.get('J', 0))
+        self.assertRoughly(c1.Parameters.get('K', 0), c2.Parameters.get('K', 0))
