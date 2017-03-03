@@ -32,7 +32,7 @@ from FreeCAD import Vector
 
 PathGeomTolerance = 0.000001
 
-#PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 
 class Side:
     """Class to determine and define the side a Path is on, or Vectors are in relation to each other."""
@@ -162,31 +162,35 @@ class PathGeom:
         if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
             commands =  [Path.Command('G1', params)]
         else:
-            if not flip:
-                p1 = edge.valueAt(edge.FirstParameter)
-                p3 = pt
-            else:
-                p1 = pt
-                p3 = edge.valueAt(edge.LastParameter)
+            p1 = edge.valueAt(edge.FirstParameter) if not flip else edge.valueAt(edge.LastParameter)
             p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
-            if (type(edge.Curve) == Part.Circle and cls.isRoughly(edge.Curve.Axis.x, 0) and cls.isRoughly(edge.Curve.Axis.y, 0)) or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve):
-                if Side.Left == Side.of(p2 - p1, p3 - p2):
-                    cmd = 'G3'
-                else:
-                    cmd = 'G2'
-                #print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z))
-                pd = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center
+            p3 = pt
 
+            if (type(edge.Curve) == Part.Circle and cls.isRoughly(edge.Curve.Axis.x, 0) and cls.isRoughly(edge.Curve.Axis.y, 0)) or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve):
+                # This is an arc or a helix and it should be represented by a simple G2/G3 command
+                if edge.Curve.Axis.z < 0:
+                    cmd = 'G2' if not flip else 'G3'
+                else:
+                    cmd = 'G3' if not flip else 'G2'
+                pd = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center
+                PathLog.info("**** %s.%d: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) -> center=(%.2f, %.2f)" % (cmd, flip, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z, pd.x, pd.y))
+
+                # Have to calculate the center in the XY plane, using pd leads to an error if this is a helix
                 pa = PathGeom.xy(p1)
                 pb = PathGeom.xy(p2)
                 pc = PathGeom.xy(p3)
-                #print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pa.x, pa.y, pa.z, pc.x, pc.y, pc.z))
-                #print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pb.x, pb.y, pb.z, pd.x, pd.y, pd.z))
-                offset = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center - p1
-                #print("**** (%.2f, %.2f, %.2f)" % (offset.x, offset.y, offset.z))
+                offset = Part.Circle(pa, pb, pc).Center - pa
+
+                PathLog.debug("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pa.x, pa.y, pa.z, pc.x, pc.y, pc.z))
+                PathLog.debug("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pb.x, pb.y, pb.z, pd.x, pd.y, pd.z))
+                PathLog.debug("**** (%.2f, %.2f, %.2f)" % (offset.x, offset.y, offset.z))
+
                 params.update({'I': offset.x, 'J': offset.y, 'K': (p3.z - p1.z)/2})
                 commands = [ Path.Command(cmd, params) ]
+
             else:
+                # We're dealing with a helix or a more complex shape and it has to get approximated
+                # by a number of straight segments
                 eStraight = Part.Edge(Part.LineSegment(p1, p3))
                 esP2 = eStraight.valueAt((eStraight.FirstParameter + eStraight.LastParameter)/2)
                 deviation = (p2 - esP2).Length
