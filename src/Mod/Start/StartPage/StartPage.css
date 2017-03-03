@@ -52,12 +52,22 @@ ul {
 }
 
 .block {
-    background: #windowcolor;
+    background: #windowcolor !important;
     border-radius: 5px;
     padding: 8px;
     margin-bottom: 10px;
     color: #windowtextcolor;
     width: auto;
+    clear: left;
+}
+
+.half-block {
+    background: #windowcolor !important;
+    border-radius: 5px;
+    padding: 8px;
+    margin-bottom: 10px;
+    color: #windowtextcolor;
+    width: 47% !important;
 }
 
 .options {

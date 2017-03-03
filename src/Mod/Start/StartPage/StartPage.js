@@ -55,10 +55,19 @@ function checkVersion(data) {
 }
 
 function load() {
+    // load latest news
+    ddiv = document.getElementById("news");
+    ddiv.innerHTML = "Connecting...";
+    var tobj=new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=showTweets');
+    tobj.buildScriptTag(); // Build the script tag
+    tobj.addScriptTag(); // Execute (add) the script tag
+    ddiv.innerHTML = "Downloading latest news...";
+
     // load version
     var script = document.createElement('script');
     script.src = 'http://www.freecadweb.org/version.php?callback=checkVersion';
     document.body.appendChild(script);
+
 }
 
 function stripTags(text) {
@@ -79,7 +88,7 @@ function showTweets(data) {
     ddiv = document.getElementById('news');
     ddiv.innerHTML = "Received";
     var html = ['<ul>'];
-    for (var i = 0; i < 15; i++) {
+    for (var i = 0; i < 5; i++) {
         html.push('<li><img src="images/web.png">&nbsp;<a href="ext', data.data[i].commit.url, '" onMouseOver="showDescr(', i+1, ')" onMouseOut="showDescr()">', data.data[i].commit.message, '</a></li>');
         if ("message" in data.data[i].commit) {
             linkDescriptions.push(stripTags(data.data[i].commit.message)+'<br/>'+data.data[i].commit.author.name+'<br/>'+data.data[i].commit.author.date);
@@ -91,6 +100,21 @@ function showTweets(data) {
     html.push('</ul>');
     html.push('<a href="exthttp://github.com/FreeCAD/FreeCAD/commits/master">text63<a/>');
     ddiv.innerHTML = html.join('');
+    var commits = document.getElementById("commits");
+    var examples = document.getElementById("examples");
+    var files = document.getElementById("files");
+    var description = document.getElementById("description");
+
+    var commitsHeight = commits.offsetHeight;
+    var examplesHeight = examples.offsetHeight;
+    var filesHeight = files.offsetHeight;
+
+    var biggerHeight = commitsHeight > examplesHeight ? commitsHeight : examplesHeight;
+
+    var totalHeight = biggerHeight + filesHeight + 145 + 36;
+    commits.style.height = biggerHeight + 'px';
+    examples.style.height = biggerHeight + 'px';
+    description.style.height = totalHeight + 'px';
 }
 
 function showDescr(d) {
