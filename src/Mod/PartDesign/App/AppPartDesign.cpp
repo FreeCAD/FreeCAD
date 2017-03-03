@@ -85,6 +85,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     // This function is responsible for adding inherited slots from a type's base class.
 
     PartDesign::Feature            ::init();
+    PartDesign::FeaturePython      ::init();
     PartDesign::Solid              ::init();
     PartDesign::DressUp            ::init();
     PartDesign::FeatureAddSub      ::init();
