@@ -5200,8 +5200,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     CoordTextMaterials->diffuseColor = cursorTextColor;
     Coordsep->addChild(CoordTextMaterials);
 
+    int fontSize = hGrp->GetInt("EditSketcherFontSize", 17);
+
     SoFont *font = new SoFont();
-    font->size = 10.0;
+    font->size.setValue(fontSize);
     Coordsep->addChild(font);
 
     edit->textPos = new SoTranslation();
