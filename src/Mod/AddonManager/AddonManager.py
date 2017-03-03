@@ -352,7 +352,7 @@ class MacroWorker(QtCore.QThread):
         self.info_label.emit("Downloading list of macros...")
         self.progressbar_show.emit(True)
         macropath = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
-        u = urllib2.urlopen("http://www.freecadweb.org/wiki/index.php?title=Macros_recipes")
+        u = urllib2.urlopen("http://www.freecadweb.org/wiki/Macros_recipes")
         p = u.read()
         u.close()
         macros = re.findall("title=\"(Macro.*?)\"",p)
@@ -428,7 +428,7 @@ class ShowMacroWorker(QtCore.QThread):
             mac = self.macros[self.idx][0].replace(" ","_")
             mac = mac.replace("&","%26")
             mac = mac.replace("+","%2B")
-            url = "http://www.freecadweb.org/wiki/index.php?title=Macro_"+mac
+            url = "http://www.freecadweb.org/wiki/Macro_"+mac
             self.info_label.emit("Retrieving info from " + str(url))
             u = urllib2.urlopen(url)
             p = u.read()

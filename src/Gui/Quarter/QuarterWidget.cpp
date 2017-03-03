@@ -275,7 +275,7 @@ QuarterWidget::stateCursor(const SbName & state)
 */
 
 /*!
-  Enable/disable the headlight. This wille toggle the SoDirectionalLight::on
+  Enable/disable the headlight. This will toggle the SoDirectionalLight::on
   field (returned from getHeadlight()).
 */
 void
@@ -502,7 +502,7 @@ QuarterWidget::stereoMode(void) const
 
 /*!
   The ratio between logical and physical pixel sizes -- obtained from the window that
-the widget is located within, and updated whenver any change occurs, emitting a devicePixelRatioChanged signal.  Only available for version Qt 5.6 and above (will be 1.0 for all previous versions)
+the widget is located within, and updated whenever any change occurs, emitting a devicePixelRatioChanged signal.  Only available for version Qt 5.6 and above (will be 1.0 for all previous versions)
  */
 
 qreal

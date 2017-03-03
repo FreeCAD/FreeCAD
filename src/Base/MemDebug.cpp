@@ -28,8 +28,8 @@
  * \section Overview
  * In C++ applications there are a lot of ways to handle memory allocation and deallocation.
  * As many ways to do it wrong or simply forget to free memory. One way to overcome
- * this problem is e.g. usage of handle classes (like OpenCASCADE it does) or use a lot of factories.
- * But all of them has drawbacks or performance penalties. One good way to get memory
+ * this problem is e.g. usage of handle classes (like OpenCASCADE does) or use a lot of factories.
+ * But all of them have drawbacks or performance penalties. One good way to get memory
  * problems hunted down is the MSCRT Heap debugging facility. This set of functions
  * opens the possibility to track and locate all kind of memory problems, e.g.
  * memory leaks.
@@ -61,11 +61,10 @@ using namespace Base;
 /** Memory debugging class
  * This class is an interface to the Windows CRT debugging
  * facility. If the define MemDebugOn in the src/FCConfig.h is 
- * set the class get intatiated 
- * globally and tracks all memory allocations on the heap. The 
- * result get written in the MemLog.txt in the active directory.
+ * set the class gets instantiated globally and tracks all memory allocations on the heap. 
+ * The result gets written in the MemLog.txt in the active directory.
  *  \par
- * NOTE: you must not instaciate this class! 
+ * NOTE: you must not instantiate this class! 
  *  
  *
  * \author Juergen Riegel
@@ -124,17 +123,17 @@ MemDebug::MemDebug()
 
    // Open a log file for the hook functions to use 
    if ( logFile != NULL )
-     throw "Base::MemDebug::MemDebug():38: Dont call the constructor by your self!";
+     throw "Base::MemDebug::MemDebug():38: Don't call the constructor by your self!";
 #if (_MSC_VER >= 1400)
    fopen_s( &logFile, "MemLog.txt", "w" );
    if ( logFile == NULL )
-     throw "Base::MemDebug::MemDebug():41: File IO Error. Canot open log file...";
+     throw "Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...";
    _strtime_s( timeStr, 15 );
    _strdate_s( dateStr, 15 );
 #elif (_MSC_VER >= 1200)
    logFile = fopen( "MemLog.txt", "w" );
    if ( logFile == NULL )
-     throw "Base::MemDebug::MemDebug():41: File IO Error. Canot open log file...";
+     throw "Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...";
    _strtime( timeStr );
    _strdate( dateStr );
 #endif

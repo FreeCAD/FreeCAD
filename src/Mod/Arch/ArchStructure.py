@@ -91,7 +91,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
         obj.Length = length
     else:
         if not baseobj:
-            # don't set the length if we have a base object, otherwise the lenght X height calc
+            # don't set the length if we have a base object, otherwise the length X height calc
             # gets wrong
             obj.Length = p.GetFloat("StructureLength",100)
     if obj.Height > obj.Length:

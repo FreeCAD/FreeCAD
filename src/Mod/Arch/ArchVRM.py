@@ -356,7 +356,7 @@ class Renderer:
             return 0
         if DEBUG: print("failed, faces bboxes are not distinct")
 
-        # test 2: if Z bounds dont overlap, it's easy to know the closest
+        # test 2: if Z bounds don't overlap, it's easy to know the closest
         if DEBUG: print("doing test 2")
         if b1.ZMax < b2.ZMin:
             return 2

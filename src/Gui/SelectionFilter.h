@@ -92,7 +92,7 @@ protected:
  * This object is a link between the selection 
  * filter class and the selection singleton. Created with a 
  * filter string and registered in the selection it will only 
- * allow the descibed object types to be selected.
+ * allow the described object types to be selected.
  * @see SelectionFilter
  * @see SelectionSingleton
  */
