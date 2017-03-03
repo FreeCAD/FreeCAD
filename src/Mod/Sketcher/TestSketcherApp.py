@@ -21,6 +21,8 @@
 
 
 import FreeCAD, os, sys, unittest, Part, Sketcher
+import ProfileLib.RegularPolygon
+
 App = FreeCAD
 
 def CreateBoxSketchSet(SketchFeature):
@@ -81,8 +83,10 @@ def CreateSlotPlateInnerSet(SketchFeature):
 	SketchFeature.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(192.422913,38.216347,0),App.Vector(0,0,1),45.315174),2.635158,3.602228))
 	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',7,2,8,1)) 
 	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',8,2,5,1))
-	
 
+
+def CreateHexagonSketch(SketchFeature):
+	ProfileLib.RegularPolygon.makeRegularPolygon(SketchFeature.Name,6,App.Vector(0,0,0),App.Vector(10.0,10.0,0),False)
 
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Sketcher module
@@ -113,6 +117,13 @@ class SketcherSolverTestCases(unittest.TestCase):
 		CreateSlotPlateInnerSet(self.Slot)
 		self.Doc.recompute()
 		self.failUnless(len(self.Slot.Shape.Edges) == 9)
+
+
+	def testHexagonCase(self):
+		self.Hexagon = self.Doc.addObject('Sketcher::SketchObject', 'SketchHexagon')
+		CreateHexagonSketch(self.Hexagon)
+		self.Doc.recompute()
+		self.failUnless(len(self.Hexagon.Shape.Edges) == 6)
 	
 	
 	def tearDown(self):

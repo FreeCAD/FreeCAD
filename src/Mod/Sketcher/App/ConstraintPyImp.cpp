@@ -81,7 +81,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         if (PyLong_Check(index_or_value)) {
             SecondIndex = PyLong_AsLong(index_or_value);
 #else
-        if (PyInt_Check(index_or_value)) {
+        if (PyLong_Check(index_or_value) || PyInt_Check(index_or_value)) {
             SecondIndex = PyInt_AsLong(index_or_value);
 #endif
             bool valid = false;
@@ -169,7 +169,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             FirstPos = any_index;
             SecondIndex = PyLong_AsLong(index_or_value);
 #else
-        if (PyInt_Check(index_or_value)) {
+        if (PyLong_Check(index_or_value) || PyInt_Check(index_or_value)) {
             FirstPos = any_index;
             SecondIndex = PyInt_AsLong(index_or_value);
 #endif
