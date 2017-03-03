@@ -77,6 +77,10 @@ def getLevel(module = None):
         return _moduleLogLevel.get(module, _defaultLogLevel)
     return _defaultLogLevel
 
+def thisModule():
+    """returns the module id of the caller, can be used for setLevel, getLevel and trackModule."""
+    return _caller()[0]
+
 def _caller():
     """internal function to determine the calling module."""
     file, line, func, text = traceback.extract_stack(limit=3)[0]
@@ -160,5 +164,4 @@ def track(*args):
             print(message)
         return message
     return None
-
 
