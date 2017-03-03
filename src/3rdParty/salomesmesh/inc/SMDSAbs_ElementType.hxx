@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 /// Type (node, edge, face or volume) of elements
 ///////////////////////////////////////////////////////////////////////////////
-enum SMDSAbs_ElementType
+enum SMDSAbs_ElementType : unsigned long
   {
     SMDSAbs_All,
     SMDSAbs_Node,
@@ -43,7 +43,7 @@ enum SMDSAbs_ElementType
   };
 
 /*! enumeration for element geometry type */
-enum SMDSAbs_GeometryType
+enum SMDSAbs_GeometryType : unsigned long
   {
     // 0D element
     SMDSGeom_POINT,
@@ -67,7 +67,8 @@ enum SMDSAbs_GeometryType
   };
 
 
-enum SMDSAbs_ElementOrder {
+enum SMDSAbs_ElementOrder : unsigned long
+{
   ORDER_ANY,          /*! entities of any order */
   ORDER_LINEAR,       /*! entities of 1st order */
   ORDER_QUADRATIC     /*! entities of 2nd order */
@@ -76,7 +77,8 @@ enum SMDSAbs_ElementOrder {
 /*!
  * Enumeration of entity type used in mesh info array
  */
-enum SMDSAbs_EntityType {
+enum SMDSAbs_EntityType : unsigned long
+{
   SMDSEntity_Node,
   SMDSEntity_0D,
   SMDSEntity_Edge,
