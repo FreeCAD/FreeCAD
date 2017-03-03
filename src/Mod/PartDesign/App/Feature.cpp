@@ -36,9 +36,11 @@
 // TODO Cleanup headers (2015-09-04, Fat-Zer)
 #include <Base/Exception.h>
 #include "App/Document.h"
+#include <App/FeaturePythonPyImp.h>
 #include "App/OriginFeature.h"
 #include "Body.h"
 #include "Feature.h"
+#include "FeaturePy.h"
 #include "Mod/Part/App/DatumFeature.h"
 
 #include <Base/Console.h>
@@ -137,6 +139,15 @@ const Part::TopoShape Feature::getBaseTopoShape() const {
     return result;
 }
 
+PyObject* Feature::getPyObject()
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeaturePy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+
 bool Feature::isDatum(const App::DocumentObject* feature)
 {
     return feature->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ||
@@ -165,4 +176,24 @@ TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
     return builder.Shape();
 }
 
+}//namespace PartDesign
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(PartDesign::FeaturePython, PartDesign::Feature)
+template<> const char* PartDesign::FeaturePython::getViewProviderName(void) const {
+    return "PartGui::ViewProviderPython";
 }
+template<> PyObject* PartDesign::FeaturePython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeaturePythonPyT<PartDesign::FeaturePy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+/// @endcond
+
+// explicit template instantiation
+template class PartDesignExport FeaturePythonT<PartDesign::Feature>;
+}
+
