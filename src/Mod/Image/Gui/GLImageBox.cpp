@@ -28,6 +28,7 @@
 #elif defined (FC_OS_MACOSX)
 # include <OpenGL/gl.h>
 # include <OpenGL/glu.h>
+# include <GLKit/GLKMatrix4.h>
 #elif defined (FC_OS_WIN32)
 # include <Windows.h>
 # include <GL/gl.h>
@@ -99,7 +100,12 @@ void GLImageBox::resizeGL( int w, int h )
     glViewport( 0, 0, (GLint)w, (GLint)h );
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
+#if defined (FC_OS_MACOSX)
+    GLKMatrix4 orthoMat = GLKMatrix4MakeOrtho(0, width() - 1, height() - 1, 0, -1, 1);
+    glLoadMatrixf(orthoMat.m);
+#else
     gluOrtho2D(0, width() - 1, height() - 1, 0);
+#endif
     glMatrixMode(GL_MODELVIEW);
 }
 
