@@ -338,6 +338,7 @@ public:
     void setAxisCross(bool b);
     bool hasAxisCross(void);
     
+
     void setEnabledFPSCounter(bool b);
     void setEnabledVBO(bool b);
     bool isEnabledVBO() const;
@@ -410,6 +411,7 @@ private:
     RenderType renderType;
     QGLFramebufferObject* framebuffer;
     QImage glImage;
+    SbBool shading;
     SoSwitch *dimensionRoot;
 
     // small axis cross in the corner
