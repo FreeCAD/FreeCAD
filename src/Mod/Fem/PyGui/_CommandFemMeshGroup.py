@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Clear the FemMesh of a FEM mesh object"
+__title__ = "_CommandMeshGroup"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandClearMesh
+## @package CommandFemMeshGroup
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,24 +33,25 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandClearMesh(FemCommands):
-    "clear the FEM mesh"
+class _CommandFemMeshGroup(FemCommands):
+    "The FEM_MeshGroup command definition"
     def __init__(self):
-        super(_CommandClearMesh, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-clear-mesh',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ClearMesh", "Clear FEM mesh"),
-                          # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ClearMesh", "Clear the Mesh of a FEM mesh object")}
-        self.is_active = 'with_femmesh'
+        super(_CommandFemMeshGroup, self).__init__()
+        self.resources = {'Pixmap': 'fem-femmesh-from-shape',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGroup", "FEM mesh group"),
+                          'Accel': "M, G",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGroup", "Creates a FEM mesh group")}
+        self.is_active = 'with_gmsh_femmesh'
 
     def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemMeshGroup")
+        FreeCADGui.addModule("ObjectsFem")
         sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
-            FreeCAD.ActiveDocument.openTransaction("Clear FEM mesh")
-            FreeCADGui.addModule("Fem")
-            FreeCADGui.doCommand("App.ActiveDocument." + sel[0].Name + ".FemMesh = Fem.FemMesh()")
-            FreeCADGui.doCommand("App.ActiveDocument.recompute()")
+        if (len(sel) == 1):
+            sobj = sel[0]
+            if len(sel) == 1 and hasattr(sobj, "Proxy") and sobj.Proxy.Type == "FemMeshGmsh":
+                FreeCADGui.doCommand("ObjectsFem.makeMeshGroup(App.ActiveDocument." + sobj.Name + ")")
 
         FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('Fem_ClearMesh', _CommandClearMesh())
+FreeCADGui.addCommand('FEM_MeshGroup', _CommandFemMeshGroup())

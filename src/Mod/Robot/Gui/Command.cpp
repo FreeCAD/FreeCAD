@@ -73,7 +73,7 @@ void CmdRobotSetHomePos::activated(int)
     }
     else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one Robot to set home postion"));
+            QObject::tr("Select one Robot to set home position"));
         return;
     }
 

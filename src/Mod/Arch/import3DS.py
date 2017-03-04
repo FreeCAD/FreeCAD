@@ -20,6 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
+from __future__ import print_function
 import os,FreeCAD,Mesh
 
 __title__="FreeCAD 3DS importer"
@@ -106,5 +107,5 @@ def read(filename):
             obj.Mesh = mesh
             obj.Placement = placement
         else:
-            print "Skipping object without vertices array: ",d_nobj.obj
+            print("Skipping object without vertices array: ",d_nobj.obj)
 

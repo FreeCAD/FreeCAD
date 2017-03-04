@@ -243,7 +243,7 @@ Py::List ViewProviderFemMeshPy::getVisibleElementFaces(void) const
     const std::vector<unsigned long> & visElmFc = this->getViewProviderFemMeshPtr()->getVisibleElementFaces();
     std::vector<unsigned long> trans;
 
-    // sorting out double faces through higer order elements and null entries
+    // sorting out double faces through higher order elements and null entries
     long elementOld =0, faceOld=0;
     for (std::vector<unsigned long>::const_iterator it = visElmFc.begin();it!=visElmFc.end();++it){
         if(*it == 0)

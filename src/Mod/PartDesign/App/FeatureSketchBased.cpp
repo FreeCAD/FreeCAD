@@ -566,7 +566,7 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Face &f
                 // now check if we get a change in the sign of the distances
                 Standard_Real dist_p_eps1_pnt = gp_Vec(p_eps1, pnt).Dot(gp_Vec(dir));
                 Standard_Real dist_p_eps2_pnt = gp_Vec(p_eps2, pnt).Dot(gp_Vec(dir));
-                // distance to the plane must be noticable
+                // distance to the plane must be noticeable
                 if (fabs(dist_p_eps1_pnt) > 5*Precision::Confusion() &&
                     fabs(dist_p_eps2_pnt) > 5*Precision::Confusion()) {
                     if (dist_p_eps1_pnt * dist_p_eps2_pnt < 0)
@@ -610,7 +610,7 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Face &f
                     // now check if we get a change in the sign of the distances
                     Standard_Real dist_p_eps1_pnt = gp_Vec(p_eps1, pnt).Dot(gp_Vec(dir));
                     Standard_Real dist_p_eps2_pnt = gp_Vec(p_eps2, pnt).Dot(gp_Vec(dir));
-                    // distance to the plane must be noticable
+                    // distance to the plane must be noticeable
                     if (fabs(dist_p_eps1_pnt) > Precision::Confusion() &&
                         fabs(dist_p_eps2_pnt) > Precision::Confusion()) {
                         if (dist_p_eps1_pnt * dist_p_eps2_pnt < 0)

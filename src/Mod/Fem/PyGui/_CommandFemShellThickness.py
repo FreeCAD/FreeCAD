@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandMeshGroup"
+__title__ = "_CommandShellThickness"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMeshGroup
+## @package CommandFemShellThickness
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,25 +33,20 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandMeshGroup(FemCommands):
-    "The Fem_MeshGroup command definition"
+class _CommandFemShellThickness(FemCommands):
+    "The FEM_ShellThickness command definition"
     def __init__(self):
-        super(_CommandMeshGroup, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MeshGroup", "FEM mesh group"),
-                          'Accel': "M, G",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MeshGroup", "Creates a FEM mesh group")}
-        self.is_active = 'with_gmsh_femmesh'
+        super(_CommandFemShellThickness, self).__init__()
+        self.resources = {'Pixmap': 'fem-shell-thickness',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ShellThickness", "Shell plate thickness"),
+                          'Accel': "C, S",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ShellThickness", "Creates a FEM shell plate thickness")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemMeshGroup")
+        FreeCAD.ActiveDocument.openTransaction("Create FemShellThickness")
         FreeCADGui.addModule("ObjectsFem")
-        sel = FreeCADGui.Selection.getSelection()
-        if (len(sel) == 1):
-            sobj = sel[0]
-            if len(sel) == 1 and hasattr(sobj, "Proxy") and sobj.Proxy.Type == "FemMeshGmsh":
-                FreeCADGui.doCommand("ObjectsFem.makeMeshGroup(App.ActiveDocument." + sobj.Name + ")")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeShellThickness()]")
 
-        FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('Fem_MeshGroup', _CommandMeshGroup())
+FreeCADGui.addCommand('FEM_ShellThickness', _CommandFemShellThickness())

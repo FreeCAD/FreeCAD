@@ -29,7 +29,6 @@ __date__ = "04/08/2016"
 #  \ingroup FEM
 #  \brief FreeCAD INP file reader for FEM workbench
 
-import FemMeshTools
 import FreeCAD
 import os
 import string
@@ -65,7 +64,8 @@ def import_inp(filename):
     "create imported objects in FreeCAD, currently only FemMesh"
 
     m = read_inp(filename)
-    mesh = FemMeshTools.make_femmesh(m)
+    import importToolsFem
+    mesh = importToolsFem.make_femmesh(m)
     mesh_name = os.path.splitext(os.path.basename(filename))[0]
     mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
     mesh_object.FemMesh = mesh

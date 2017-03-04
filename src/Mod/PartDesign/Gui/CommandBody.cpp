@@ -168,7 +168,7 @@ void CmdPartDesignBody::activated(int iMsg)
             else if ( baseFeature->isDerivedFrom ( Part::BodyBase::getClassTypeId() ) )  {
                 // Prevent creating bodies based on bodies
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                        QObject::tr("Body can't be based on annother body."));
+                        QObject::tr("Body can't be based on another body."));
                 baseFeature = nullptr;
             }
             else {
@@ -311,7 +311,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
             auto newChainIt = featureChains.emplace (featureChains.end());
             newChainIt->splice (newChainIt->end(), chain);
         } else {
-            // we are basing on some partdesign feature wich supposed to belong to some body
+            // we are basing on some partdesign feature which supposed to belong to some body
             PartDesign::Feature *baseFeat = static_cast <PartDesign::Feature *>( base );
 
             auto baseFeatSetIt = find ( migrateFeatures.begin (), migrateFeatures.end (), baseFeat );
@@ -360,7 +360,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
         }
         migrateFeatures.erase ( featIt );
         featIt = migrateFeatures.begin ();
-        // TODO Align visability (2015-08-17, Fat-Zer)
+        // TODO Align visibility (2015-08-17, Fat-Zer)
     } /* for */
 
     // TODO make it work without parts (2015-09-04, Fat-Zer)

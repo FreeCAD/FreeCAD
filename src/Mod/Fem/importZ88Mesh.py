@@ -31,7 +31,6 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import os
-import FemMeshTools
 
 
 Debug = False
@@ -72,6 +71,7 @@ def export(objectslist, filename):
         FreeCAD.Console.PrintError("No FEM mesh object selected.\n")
         return
     femnodes_mesh = obj.FemMesh.Nodes
+    import FemMeshTools
     femelement_table = FemMeshTools.get_femelement_table(obj.FemMesh)
     z88_element_type = get_z88_element_type(obj.FemMesh, femelement_table)
     f = pyopen(filename, "wb")
@@ -85,7 +85,8 @@ def import_z88_mesh(filename, analysis=None):
     '''
     mesh_data = read_z88_mesh(filename)
     mesh_name = os.path.basename(os.path.splitext(filename)[0])
-    femmesh = FemMeshTools.make_femmesh(mesh_data)
+    import importToolsFem
+    femmesh = importToolsFem.make_femmesh(mesh_data)
     if femmesh:
         mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
         mesh_object.FemMesh = femmesh
@@ -387,6 +388,7 @@ def write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
 
 # Helper
 def get_z88_element_type(femmesh, femelement_table=None):
+    import FemMeshTools
     if not femmesh:
         print("Error: No femmesh!")
     if not femelement_table:

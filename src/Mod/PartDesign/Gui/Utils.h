@@ -23,8 +23,8 @@
 #ifndef UTILS_H_CS5LK2ZQ
 #define UTILS_H_CS5LK2ZQ
 
-/** \file Utils.h
- *  This fiel contains some utility function used over PartDesignGui module
+/** \file PartDesign/Gui/Utils.h
+ *  This file contains some utility function used over PartDesignGui module
  */
 namespace PartDesign {
     class Body;

@@ -23,7 +23,7 @@
 
 # This is the start page template
 
-import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
+import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,sys
 from PySide import QtGui
 from xml.etree.ElementTree import parse
 
@@ -301,7 +301,4 @@ def handle():
     html = replace_html_text(html)
     # fetches system colors
     html = setColors(html)
-    f = open(os.path.expanduser("~")+os.sep+"freecad-startpage.html","wb")
-    f.write(html)
-    f.close()
     return html

@@ -30,7 +30,6 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import os
-from math import pow, sqrt
 
 
 Debug = False
@@ -63,8 +62,9 @@ def insert(filename, docname):
 
 ########## module specific methods ##########
 def import_z88_disp(filename, analysis=None, result_name_prefix=None):
-    '''insert a FreeCAD FEM Result object in the ActiveDocument
+    '''insert a FreeCAD FEM mechanical result object in the ActiveDocument
     '''
+    import importToolsFem
     import ObjectsFem
     if result_name_prefix is None:
         result_name_prefix = ''
@@ -80,66 +80,11 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
         for result_set in m['Results']:
             results_name = result_name_prefix + 'results'
             results = ObjectsFem.makeResultMechanical(results_name)
-            #results = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
-            for m in analysis_object.Member:
+            for m in analysis_object.Member:  # TODO analysis could have multiple mesh objects in the future
                 if m.isDerivedFrom("Fem::FemMeshObject"):
                     results.Mesh = m
                     break
-
-            disp = result_set['disp']
-            no_of_values = len(disp)
-            displacement = []
-            for k, v in disp.iteritems():
-                displacement.append(v)
-
-            x_max, y_max, z_max = map(max, zip(*displacement))
-            scale = 1.0
-            if len(disp) > 0:
-                results.DisplacementVectors = map((lambda x: x * scale), disp.values())
-                results.NodeNumbers = disp.keys()
-
-            x_min, y_min, z_min = map(min, zip(*displacement))
-            sum_list = map(sum, zip(*displacement))
-            x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
-
-            # set stats of not imported values to 0
-            s_max = s_min = s_avg = 0
-            p1_min = p1_avg = p1_max = p2_min = p2_avg = p2_max = p3_min = p3_avg = p3_max = 0
-            ms_min = ms_avg = ms_max = 0
-            # s_max = max(results.StressValues)
-            # s_min = min(results.StressValues)
-            # s_avg = sum(results.StressValues) / no_of_values
-            # p1_min = min(results.PrincipalMax)
-            # p1_avg = sum(results.PrincipalMax) / no_of_values
-            # p1_max = max(results.PrincipalMax)
-            # p2_min = min(results.PrincipalMed)
-            # p2_avg = sum(results.PrincipalMed) / no_of_values
-            # p2_max = max(results.PrincipalMed)
-            # p3_min = min(results.PrincipalMin)
-            # p3_avg = sum(results.PrincipalMin) / no_of_values
-            # p3_max = max(results.PrincipalMin)
-            # ms_min = min(results.MaxShear)
-            # ms_avg = sum(results.MaxShear) / no_of_values
-            # ms_max = max(results.MaxShear)
-
-            disp_abs = []
-            for d in displacement:
-                disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
-            results.DisplacementLengths = disp_abs
-
-            a_max = max(disp_abs)
-            a_min = min(disp_abs)
-            a_avg = sum(disp_abs) / no_of_values
-
-            results.Stats = [x_min, x_avg, x_max,
-                             y_min, y_avg, y_max,
-                             z_min, z_avg, z_max,
-                             a_min, a_avg, a_max,
-                             s_min, s_avg, s_max,
-                             p1_min, p1_avg, p1_max,
-                             p2_min, p2_avg, p2_max,
-                             p3_min, p3_avg, p3_max,
-                             ms_min, ms_avg, ms_max]
+            results = importToolsFem.fill_femresult_mechanical(results, result_set, 0)
             analysis_object.Member = analysis_object.Member + [results]
 
         if(FreeCAD.GuiUp):
@@ -160,7 +105,7 @@ def read_z88_disp(z88_disp_input):
     disp_file = '/pathtofile/z88o2.txt'
     importZ88O2Results.import_z88_disp(disp_file , fea.analysis)
 
-    The FreeCAD file needs to have an Analysis and an appropiate FEM Mesh
+    The FreeCAD file needs to have an Analysis and an appropriate FEM Mesh
     '''
     nodes = {}
     mode_disp = {}

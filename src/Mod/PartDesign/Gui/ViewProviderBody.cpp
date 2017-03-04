@@ -101,7 +101,7 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
 }
 
 // TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)
-// TODO differnt icon in tree if mode is Through (2015-09-05, Fat-Zer)
+// TODO different icon in tree if mode is Through (2015-09-05, Fat-Zer)
 // TODO drag&drop (2015-09-05, Fat-Zer)
 // TODO Add activate () call (2015-09-08, Fat-Zer)
 
@@ -325,7 +325,7 @@ void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj, co
 void ViewProviderBody::slotChangedObjectGui (
         const Gui::ViewProviderDocumentObject& vp, const App::Property& prop )
 {
-    if (&vp.Visibility != &prop) { // react only on visability changes
+    if (&vp.Visibility != &prop) { // react only on visibility changes
         return;
     }
 

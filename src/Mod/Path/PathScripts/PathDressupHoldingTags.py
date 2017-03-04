@@ -44,8 +44,8 @@ def translate(text, context = "PathDressup_HoldingTags", disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-LOG_MODULE = 'PathDressupHoldingTags'
-#PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+LOG_MODULE = PathLog.thisModule()
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 
 if FreeCAD.GuiUp:
     from pivy import coin

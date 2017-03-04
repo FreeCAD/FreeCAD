@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandShellThickness"
+__title__ = "Print info of FEM mesh object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandShellThickness
+## @package CommandFemMeshPrintInfo
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,20 +33,26 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandShellThickness(FemCommands):
-    "The Fem_ShellThickness command definition"
+class _CommandFemMeshPrintInfo(FemCommands):
+    "the FEM_MeshPrintInfo command definition"
     def __init__(self):
-        super(_CommandShellThickness, self).__init__()
-        self.resources = {'Pixmap': 'fem-shell-thickness',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ShellThickness", "Shell plate thickness"),
-                          'Accel': "C, S",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ShellThickness", "Creates a FEM shell plate thickness")}
-        self.is_active = 'with_analysis'
+        super(_CommandFemMeshPrintInfo, self).__init__()
+        self.resources = {'Pixmap': 'fem-femmesh-print-info',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshPrintInfo", "Print FEM mesh info"),
+                          # 'Accel': "Z, Z",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshPrintInfo", "Print FEM mesh info")}
+        self.is_active = 'with_femmesh'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemShellThickness")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeShellThickness()]")
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
+            FreeCAD.ActiveDocument.openTransaction("Print FEM mesh info")
+            FreeCADGui.doCommand("print(App.ActiveDocument." + sel[0].Name + ".FemMesh)")
 
+            FreeCADGui.addModule("PySide")
+            FreeCADGui.doCommand("mesh_info = str(App.ActiveDocument." + sel[0].Name + ".FemMesh)")
+            FreeCADGui.doCommand("PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)")
 
-FreeCADGui.addCommand('Fem_ShellThickness', _CommandShellThickness())
+        FreeCADGui.Selection.clearSelection()
+
+FreeCADGui.addCommand('FEM_MeshPrintInfo', _CommandFemMeshPrintInfo())

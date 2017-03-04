@@ -21,7 +21,7 @@
 					Returns the degree of this B-Spline surface in the u parametric direction.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="UDegree" Type="Int"/>
+			<Parameter Name="UDegree" Type="Long"/>
 		</Attribute>
 		<Attribute Name="VDegree" ReadOnly="true">
 			<Documentation>
@@ -29,7 +29,7 @@
 					Returns the degree of this B-Spline surface in the v parametric direction.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="VDegree" Type="Int"/>
+			<Parameter Name="VDegree" Type="Long"/>
 		</Attribute>
 		<Attribute Name="MaxDegree" ReadOnly="true">
 			<Documentation>
@@ -39,7 +39,7 @@
 					This value is 25.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="MaxDegree" Type="Int"/>
+			<Parameter Name="MaxDegree" Type="Long"/>
 		</Attribute>
 		<Attribute Name="NbUPoles" ReadOnly="true">
 			<Documentation>
@@ -47,7 +47,7 @@
 					Returns the number of poles of this B-Spline surface in the u parametric direction.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="NbUPoles" Type="Int"/>
+			<Parameter Name="NbUPoles" Type="Long"/>
 		</Attribute>
 		<Attribute Name="NbVPoles" ReadOnly="true">
 			<Documentation>
@@ -55,7 +55,7 @@
 					Returns the number of poles of this B-Spline surface in the v parametric direction.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="NbVPoles" Type="Int"/>
+			<Parameter Name="NbVPoles" Type="Long"/>
 		</Attribute>
 		<Attribute Name="NbUKnots" ReadOnly="true">
 			<Documentation>
@@ -63,7 +63,7 @@
 					Returns the number of knots of this B-Spline surface in the u parametric direction.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="NbUKnots" Type="Int"/>
+			<Parameter Name="NbUKnots" Type="Long"/>
 		</Attribute>
 		<Attribute Name="NbVKnots" ReadOnly="true">
 			<Documentation>
@@ -71,7 +71,7 @@
 					Returns the number of knots of this B-Spline surface in the v parametric direction.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="NbVKnots" Type="Int"/>
+			<Parameter Name="NbVKnots" Type="Long"/>
 		</Attribute>
 		<Attribute Name="FirstUKnotIndex" ReadOnly="true">
 			<Documentation>

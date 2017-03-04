@@ -880,7 +880,7 @@ class depth_params:
     def __fixed_steps(self, start, stop, size):
         '''returns a list of depths beginning with the bottom (included), ending
         with the top (not included).
-        all steps are of size 'size' except the one at the bottom wich can be
+        all steps are of size 'size' except the one at the bottom which can be
         smaller.'''
 
         fullsteps = int((start - stop) / size)

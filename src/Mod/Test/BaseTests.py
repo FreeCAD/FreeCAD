@@ -35,7 +35,11 @@ class ConsoleTestCase(unittest.TestCase):
         FreeCAD.Console.PrintLog("   Printing Log\n")
 
     def testSynchronPrintFromThread(self):
-        import thread, time
+        # http://python-kurs.eu/threads.php
+        try:
+            import _thread as thread, time
+        except:
+            import thread, time
         def adder():
             lock.acquire()
             self.count=self.count+1
@@ -52,7 +56,11 @@ class ConsoleTestCase(unittest.TestCase):
         FreeCAD.Console.PrintMessage(str(self.count)+"\n")
 
     def testAsynchronPrintFromThread(self):
-        import thread, time
+        # http://python-kurs.eu/threads.php
+        try:
+            import _thread as thread, time
+        except:
+            import thread, time
         def adder():
             self.count=self.count+1
             # call of Console method is thread-safe
@@ -191,14 +199,14 @@ class ParameterTestCase(unittest.TestCase):
         # Parameter testing
         #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testNesting\n")
         for i in range(50):
-            self.TestPar.SetFloat(`i`,4711.4711)
-            self.TestPar.SetInt(`i`,4711)
-            self.TestPar.SetBool(`i`,1)
-            Temp = self.TestPar.GetGroup(`i`)
+            self.TestPar.SetFloat(str(i),4711.4711)
+            self.TestPar.SetInt(str(i),4711)
+            self.TestPar.SetBool(str(i),1)
+            Temp = self.TestPar.GetGroup(str(i))
             for l in range(50):
-                Temp.SetFloat(`l`,4711.4711)
-                Temp.SetInt(`l`,4711)
-                Temp.SetBool(`l`,1)
+                Temp.SetFloat(str(l),4711.4711)
+                Temp.SetInt(str(l),4711)
+                Temp.SetBool(str(l),1)
         Temp = 0
         
     def testExportImport(self):

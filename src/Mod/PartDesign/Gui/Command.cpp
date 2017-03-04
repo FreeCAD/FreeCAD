@@ -779,7 +779,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
         base_worker(features.front(), "");
     };
     
-    //if there is a sketch selected which is from annother body or part we need to bring up the
+    //if there is a sketch selected which is from another body or part we need to bring up the
     //pick task dialog to decide how those are handled
     bool ext = std::find_if( status.begin(), status.end(),
             [] (const PartDesignGui::TaskFeaturePick::featureStatus& s) {

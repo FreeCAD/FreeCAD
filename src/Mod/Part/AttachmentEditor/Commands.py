@@ -1,4 +1,4 @@
-#/***************************************************************************
+# ***************************************************************************
 # *   Copyright (c) Victor Titov (DeepSOIC)                                 *
 # *                                           (vv.titov@gmail.com) 2016     *
 # *                                                                         *
@@ -83,7 +83,7 @@ class CommandEditAttachment:
             from PySide import QtGui
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(err.message)
+            mb.setText(str(err))
             mb.setWindowTitle("Error")
             mb.exec_()
         

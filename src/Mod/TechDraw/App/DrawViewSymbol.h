@@ -37,7 +37,7 @@ class DrawPage;
 
 class TechDrawExport DrawViewSymbol : public TechDraw::DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawViewSymbol);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewSymbol);
 
 public:
     /// Constructor
@@ -50,19 +50,19 @@ public:
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute(void) override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderSymbol";
     }
-    virtual QRectF getRect() const;
+    virtual QRectF getRect() const override;
     virtual bool checkFit(TechDraw::DrawPage* p) const override;
 
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop) override;
     Base::BoundBox3d bbox;
 };
 

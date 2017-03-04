@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+# *   Copyright (c) 2016 - Ofentse Kgoa <kgoaot@eskom.co.za>                *
+# *   Based on the FemBeamSection by Bernd Hahnebach                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +21,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Command New Analysis"
-__author__ = "Juergen Riegel"
+__title__ = "_CommandFluidSection"
+__author__ = "Ofentse Kgoa"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandAnalysis
+## @package CommandFemFluidSection
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,28 +34,20 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandAnalysis(FemCommands):
-    "the Fem_Analysis command definition"
+class _CommandFemFluidSection(FemCommands):
+    "The FEM_FluidSection command definition"
     def __init__(self):
-        super(_CommandAnalysis, self).__init__()
-        self.resources = {'Pixmap': 'fem-analysis',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Analysis container"),
-                          'Accel': "N, A",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Creates a analysis container with standard solver CalculiX")}
-        self.is_active = 'with_document'
+        super(_CommandFemFluidSection, self).__init__()
+        self.resources = {'Pixmap': 'fem-fluid-section',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_FluidSection", "Fluid section for 1D flow"),
+                          'Accel': "C, B",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_FluidSection", "Creates a FEM Fluid section for 1D flow")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create Analysis")
-        FreeCADGui.addModule("FemGui")
+        FreeCAD.ActiveDocument.openTransaction("Create FemFluidSection")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeAnalysis('Analysis')")
-        FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
-        FreeCADGui.doCommand("ObjectsFem.makeSolverCalculix('CalculiX')")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
-        sel = FreeCADGui.Selection.getSelection()
-        if (len(sel) == 1):
-            if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
-                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument()." + sel[0].Name + "]")
-        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeFemFluidSection()]")
 
-FreeCADGui.addCommand('Fem_Analysis', _CommandAnalysis())
+
+FreeCADGui.addCommand('FEM_FluidSection', _CommandFemFluidSection())

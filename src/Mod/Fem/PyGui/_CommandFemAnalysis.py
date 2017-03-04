@@ -20,43 +20,41 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Command Mesh Netgen From Shape"
+__title__ = "Command New Analysis"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMeshNetgenFromShape
+## @package CommandFemAnalysis
 #  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
-import FemGui
 from PySide import QtCore
 
 
-class _CommandMeshNetgenFromShape(FemCommands):
-    # the Fem_MeshNetgenFromShape command definition
+class _CommandFemAnalysis(FemCommands):
+    "the FEM_Analysis command definition"
     def __init__(self):
-        super(_CommandMeshNetgenFromShape, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-netgen-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MeshFromShape", "FEM mesh from shape by Netgen"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MeshFromShape", "Create a FEM volume mesh from a solid or face shape by Netgen internal mesher")}
-        self.is_active = 'with_part_feature'
+        super(_CommandFemAnalysis, self).__init__()
+        self.resources = {'Pixmap': 'fem-analysis',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_Analysis", "Analysis container"),
+                          'Accel': "N, A",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_Analysis", "Creates a analysis container with standard solver CalculiX")}
+        self.is_active = 'with_document'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FEM mesh Netgen")
+        FreeCAD.ActiveDocument.openTransaction("Create Analysis")
         FreeCADGui.addModule("FemGui")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("ObjectsFem.makeAnalysis('Analysis')")
+        FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
+        FreeCADGui.doCommand("ObjectsFem.makeSolverCalculix('CalculiX')")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
-            if(sel[0].isDerivedFrom("Part::Feature")):
-                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
-                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
-                if FemGui.getActiveAnalysis():
-                    FreeCADGui.addModule("FemGui")
-                    FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.ActiveDocument.ActiveObject]")
-                FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
-
+            if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
+                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument()." + sel[0].Name + "]")
         FreeCADGui.Selection.clearSelection()
 
-
-FreeCADGui.addCommand('Fem_MeshNetgenFromShape', _CommandMeshNetgenFromShape())
+FreeCADGui.addCommand('FEM_Analysis', _CommandFemAnalysis())

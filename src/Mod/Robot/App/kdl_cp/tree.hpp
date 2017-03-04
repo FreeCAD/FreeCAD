@@ -40,7 +40,7 @@ namespace KDL
     class TreeElement;
 
 #ifdef KDL_USE_NEW_TREE_INTERFACE
-    //We use smart pointers for managing tree nodes for now becuase
+    //We use smart pointers for managing tree nodes for now because
     //c++11 and unique_ptr support is not ubiquitous
     typedef boost::shared_ptr<TreeElement> TreeElementPtr;
     typedef boost::shared_ptr<const TreeElement> TreeElementConstPtr;

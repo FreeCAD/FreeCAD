@@ -519,19 +519,22 @@ void MeshObject::addFacets(const std::vector<MeshCore::MeshGeomFacet>& facets)
     _kernel.AddFacets(facets);
 }
 
-void MeshObject::addFacets(const std::vector<MeshCore::MeshFacet> &facets)
+void MeshObject::addFacets(const std::vector<MeshCore::MeshFacet> &facets,
+                           bool checkManifolds)
 {
-    _kernel.AddFacets(facets);
+    _kernel.AddFacets(facets, checkManifolds);
 }
 
 void MeshObject::addFacets(const std::vector<MeshCore::MeshFacet> &facets,
-                           const std::vector<Base::Vector3f>& points)
+                           const std::vector<Base::Vector3f>& points,
+                           bool checkManifolds)
 {
-    _kernel.AddFacets(facets, points);
+    _kernel.AddFacets(facets, points, checkManifolds);
 }
 
 void MeshObject::addFacets(const std::vector<Data::ComplexGeoData::Facet> &facets,
-                           const std::vector<Base::Vector3d>& points)
+                           const std::vector<Base::Vector3d>& points,
+                           bool checkManifolds)
 {
     std::vector<MeshCore::MeshFacet> facet_v;
     facet_v.reserve(facets.size());
@@ -550,7 +553,7 @@ void MeshObject::addFacets(const std::vector<Data::ComplexGeoData::Facet> &facet
         point_v.push_back(p);
     }
 
-    _kernel.AddFacets(facet_v, point_v);
+    _kernel.AddFacets(facet_v, point_v, checkManifolds);
 }
 
 void MeshObject::setFacets(const std::vector<MeshCore::MeshGeomFacet>& facets)

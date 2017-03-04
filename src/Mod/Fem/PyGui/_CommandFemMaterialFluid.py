@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+# *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,31 +20,39 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Command Control Solver"
-__author__ = "Juergen Riegel"
+__title__ = "_CommandFluidMaterial"
+__author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandControlSolver
+## @package CommandFemMaterialFluid
 #  \ingroup FEM
 
+import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
+import FemGui
 from PySide import QtCore
 
 
-class _CommandControlSolver(FemCommands):
-    "the Fem_ControlSolver command definition"
+class _CommandFemMaterialFluid(FemCommands):
+    "the FEM_MaterialFluid command definition"
     def __init__(self):
-        super(_CommandControlSolver, self).__init__()
-        self.resources = {'Pixmap': 'fem-control-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ControlSolver", "Solver job control"),
-                          'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ControlSolver", "Changes solver attributes and runs the calculations for the selected solver")}
-        self.is_active = 'with_solver'
+        super(_CommandFemMaterialFluid, self).__init__()
+        self.resources = {'Pixmap': 'fem-material-fluid',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "FEM material for Fluid"),
+                          'Accel': "M, M",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Creates a FEM material for Fluid")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
-        solver_obj = FreeCADGui.Selection.getSelection()[0]
-        FreeCADGui.ActiveDocument.setEdit(solver_obj, 0)
+        femDoc = FemGui.getActiveAnalysis().Document
+        if FreeCAD.ActiveDocument is not femDoc:
+            FreeCADGui.setActiveDocument(femDoc)
+        FreeCAD.ActiveDocument.openTransaction("Create Fluid Material")
+        FreeCADGui.addModule("FemMaterial")
+        FreeCADGui.doCommand("FemMaterial.makeFluidMaterial('FluidMaterial')")
+        FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
+        FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
 
 
-FreeCADGui.addCommand('Fem_ControlSolver', _CommandControlSolver())
+FreeCADGui.addCommand('FEM_MaterialFluid', _CommandFemMaterialFluid())

@@ -34,14 +34,14 @@
 
 /*! \brief The main class for the path_simulate routine
 
-    As it's input parameters it takes one respectivly two vectors of B-Spline
+    As it's input parameters it takes one respectively two vectors of B-Spline
     Curves (describing the Tool-Paths for the IBU-simulation), two values
-    a_max and v_max of type double, wich stands for the maximum allowable
+    a_max and v_max of type double, which stands for the maximum allowable
     acceleration and velocity of the tool-movement and one value m_step of
     type double, specifying the step-length of the time-output-vector.
 
-    As output, it gives one respectivly two output-files for the simulation
-    process containing a two-dimensional vector of time vs. velocity wich
+    As output, it gives one respectively two output-files for the simulation
+    process containing a two-dimensional vector of time vs. velocity which
     describes the tool-movement.
 */
 
@@ -55,7 +55,7 @@ public:
                              paths of the master-tool
         @param BSplineBottom vector of B-Spline-Curves describing the tool-
                              paths of the slave-tool
-        @param set           a struct wich also includes the parameters
+        @param set           a struct which also includes the parameters
                              a_max and v_max
     */
     path_simulate(const std::vector<Handle_Geom_BSplineCurve>& BSplineTop,
@@ -120,7 +120,7 @@ public:
         @param  c
         @param  outputstyle  false: simulation,  true: robot 
         @param  tool         false: master, true: slave
-        @param beamfl        specifies an additional outputvalue wich
+        @param beamfl        specifies an additional outputvalue which
                              determines the waiting-status of the tool
                              movement
         \todo undocumented parameter c
@@ -256,16 +256,16 @@ private:
     /** @brief flag specifying moving-direction (clockwise vs. anticlockwise)
     */
     bool m_dir;
-    /** @brief vector in wich the lengths of the seperated curve-segments for
+    /** @brief vector in which the lengths of the separated curve-segments for
                the master-tool are stored*/
     std::vector<std::vector<double> > m_length_ma;
-    /** @brief vector in wich the lengths of the seperated curve-segments for
+    /** @brief vector in which the lengths of the separated curve-segments for
                the slave-tool are stored*/
     std::vector<std::vector<double> > m_length_sl;
-    /** @brief vector of acceleration-values regarding to the seperated curve
+    /** @brief vector of acceleration-values regarding to the separated curve
                segments for the master-tool*/
     std::vector<std::vector<double> > m_accel_ma;
-    /** @brief vector of acceleration-values regarding to the seperated curve
+    /** @brief vector of acceleration-values regarding to the separated curve
                segments for the slave-tool*/
     std::vector<std::vector<double> > m_accel_sl;
 	/** @brief Matrix of three velocity-values regarding to the curves and curve-segments for the master-tool*/
@@ -277,7 +277,7 @@ private:
     double m_vmax;
     /** @brief maximum allowable resulting acceleration of the tool*/
     double m_amax;
-    /** @brief pathtolerance wich is set (in subject to m_vmax and m_amax)
+    /** @brief pathtolerance which is set (in subject to m_vmax and m_amax)
                before and after a critical region*/
     double m_boundTol;
     /** @brief acceleration-parameter used in GetVelocity() and GetDistance()
@@ -323,7 +323,7 @@ private:
     std::vector<std::vector<double> > CompBounds(bool tool, std::vector<double> knots);
     /** @brief Generates output for the current tool-path*/
     bool CompPath(bool tool);
-    /** @brief determines wich tool should wait (feature-based-stategy only)*/
+    /** @brief determines which tool should wait (feature-based-stategy only)*/
     bool StartingTool();
     /** @brief vector containing start- and end-times for the master-curves*/
     std::vector<std::pair<float,float> > m_PathTimes_Master;

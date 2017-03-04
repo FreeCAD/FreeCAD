@@ -678,7 +678,8 @@ PyObject*  MeshPy::addFacets(PyObject *args)
     }
 
     PyErr_Clear();
-    if (PyArg_ParseTuple(args, "O!", &PyTuple_Type, &list)) {
+    PyObject *check = Py_True;
+    if (PyArg_ParseTuple(args, "O!|O!", &PyTuple_Type, &list, &PyBool_Type, &check)) {
         Py::Tuple tuple(list);
         Py::List list_v(tuple.getItem(0));
         std::vector<Base::Vector3f> vertices;
@@ -708,7 +709,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
             faces.push_back(face);
         }
 
-        getMeshObjectPtr()->addFacets(faces, vertices);
+        getMeshObjectPtr()->addFacets(faces, vertices, PyObject_IsTrue(check) ? true : false);
 
         Py_Return;
     }

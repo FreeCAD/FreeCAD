@@ -38,7 +38,7 @@ using namespace boost::numeric;
 
 
 
-/*! \brief Numerical Intergration according to trapezoid rules
+/*! \brief Numerical Integration according to trapezoid rules
 
  This routine assumes that the Intergral values are already corresponding with WithRespectTo
  i.e: Intergral[i] == Intergral(WithRespectTo[i]);
@@ -135,7 +135,7 @@ void Routines::CramerSolve(std::vector< std::vector<double> > &RHS1, std::vector
 
 /*! \brief Calculate angle between two vectors
 
- Dependancies: Vector3D definitions and routines
+ Dependencies: Vector3D definitions and routines
 */
 double Routines::CalcAngle(Base::Vector3f a,Base::Vector3f  b,Base::Vector3f c)
 {

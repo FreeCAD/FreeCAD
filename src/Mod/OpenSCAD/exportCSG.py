@@ -142,7 +142,7 @@ def process_object(csg,ob):
         import math
         f = str(ob.Polygon)
 #        r = str(ob.Length/2.0/math.sin(math.pi/ob.Polygon))
-        r = str(ob.Circumradius) #length seems to be the outer radius
+        r = str(ob.Circumradius) # length seems to be the outer radius
         h = str(ob.Height.Value)
         mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
         csg.write("cylinder($fn = "+f+", "+fafs+", h = "+h+", r1 = "+r+\
@@ -199,7 +199,7 @@ def process_object(csg,ob):
         elif ob.Base.Name.startswith('this_is_a_bad_idea'):
             pass
         else:
-            pass #There should be a fallback solution
+            pass # There should be a fallback solution
 
     elif ob.TypeId == "Part::Cut" :
         print("Cut")
@@ -243,13 +243,13 @@ def process_object(csg,ob):
         if mm == 1 : csg.write("}\n")
 
 def export(exportList,filename):
-    "called when freecad exports a file"
+    "called when FreeCAD exports a file"
     
     # process Objects
     print("\nStart Export 0.1d\n")
     print("Open Output File")
     csg = pythonopen(filename,'w')
-    print("Write Inital Output")
+    print("Write Initial Output")
     # Not sure if comments as per scad are allowed in csg file              
     csg.write("// CSG file generated from FreeCAD %s\n" % \
             '.'.join(FreeCAD.Version()[0:3]))

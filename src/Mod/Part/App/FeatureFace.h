@@ -31,7 +31,7 @@ namespace Part
 
 class PartExport Face : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Face);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Face);
 
 public:
     Face();
@@ -42,10 +42,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartGui::ViewProviderFace";
     }
     void setupObject() override;

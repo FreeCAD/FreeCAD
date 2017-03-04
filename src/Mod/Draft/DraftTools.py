@@ -344,6 +344,11 @@ class SelectPlane(DraftTool):
                     self.display(plane.axis)
                     self.finish()
                     return
+                elif Draft.getType(sel.Object) == "WorkingPlaneProxy":
+                    plane.setFromPlacement(sel.Object.Placement,rebase=True)
+                    self.display(plane.axis)
+                    self.finish()
+                    return
                 elif sel.HasSubObjects:
                     if len(sel.SubElementNames) == 1:
                         if "Face" in sel.SubElementNames[0]:
@@ -378,6 +383,22 @@ class SelectPlane(DraftTool):
                             self.finish()
                     except:
                         pass
+                        
+    def getCenterPoint(self,x,y,z):
+        if not self.ui.isCenterPlane:
+            return "0,0,0"
+        v = FreeCAD.Vector(x,y,z)
+        cam1 = FreeCAD.Vector(FreeCADGui.ActiveDocument.ActiveView.getCameraNode().position.getValue().getValue())
+        cam2 = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
+        vcam1 = DraftVecUtils.project(cam1,v)
+        a = vcam1.getAngle(cam2)
+        if a < 0.0001:
+            return "0,0,0"
+        d = vcam1.Length
+        L = d/math.cos(a)
+        vcam2 = DraftVecUtils.scaleTo(cam2,L)
+        cp = cam1.add(vcam2)
+        return str(cp.x)+","+str(cp.y)+","+str(cp.z)
 
     def selectHandler(self, arg):
         try:
@@ -385,20 +406,20 @@ class SelectPlane(DraftTool):
         except:
             self.offset = 0
         if arg == "XY":
-            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), "+str(self.offset)+")")
+            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector("+self.getCenterPoint(0,0,1)+"), FreeCAD.Vector(0,0,1), "+str(self.offset)+")")
             self.display('Top')
             self.finish()
         elif arg == "XZ":
-            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,-1,0), "+str(self.offset)+")")
+            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector("+self.getCenterPoint(0,-1,0)+"), FreeCAD.Vector(0,-1,0), "+str(self.offset)+")")
             self.display('Front')
             self.finish()
         elif arg == "YZ":
-            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector(0,0,0), FreeCAD.Vector(1,0,0), "+str(self.offset)+")")
+            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector("+self.getCenterPoint(1,0,0)+"), FreeCAD.Vector(1,0,0), "+str(self.offset)+")")
             self.display('Side')
             self.finish()
         elif arg == "currentView":
             d = self.view.getViewDirection().negative()
-            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector(0,0,0), FreeCAD.Vector("+str(d.x)+","+str(d.y)+","+str(d.z)+"), "+str(self.offset)+")")
+            FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector("+self.getCenterPoint(d.x,d.y,d.z)+"), FreeCAD.Vector("+str(d.x)+","+str(d.y)+","+str(d.z)+"), "+str(self.offset)+")")
             self.display(d)
             self.finish()
         elif arg == "reset":
@@ -419,6 +440,7 @@ class SelectPlane(DraftTool):
         elif type(arg).__name__ == 'Vector':
             plv = 'd('+str(arg.x)+','+str(arg.y)+','+str(arg.z)+')'
             self.ui.wplabel.setText(plv+suffix)
+        self.ui.wplabel.setToolTip(translate("draft", "Current working plane:")+self.ui.wplabel.text())
         FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid()")
 
 #---------------------------------------------------------------------------
@@ -2810,9 +2832,11 @@ class Stretch(Modifier):
             # first point of displacement line
             msg(translate("draft", "Pick end point of displacement:\n"))
             self.displacement = point
+            #print "first point:",point
             self.node = [point]
             self.step = 4
         elif self.step == 4:
+            #print "second point:",point
             self.displacement = point.sub(self.displacement)
             self.doStretch()
         if self.point:
@@ -2836,16 +2860,17 @@ class Stretch(Modifier):
         commitops = []
         if self.displacement:
             if self.displacement.Length > 0:
-
+                #print "displacement: ",self.displacement
                 for ops in self.ops:
                     tp = Draft.getType(ops[0])
+                    localdisp = ops[0].Placement.Rotation.inverted().multVec(self.displacement)
                     if tp in ["Wire","BSpline","BezCurve"]:
                         pts = []
                         for i in range(len(ops[1])):
                             if ops[1][i] == False:
                                 pts.append(ops[0].Points[i])
                             else:
-                                pts.append(ops[0].Points[i].add(self.displacement))
+                                pts.append(ops[0].Points[i].add(localdisp))
                         pts = str(pts).replace("Vector","FreeCAD.Vector")
                         commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Points="+pts)
                     elif tp in ["Rectangle"]:
@@ -3951,7 +3976,7 @@ class Edit(Modifier):
                             self.editing == len(pts)-1: #last pole
                         knot = 0
                         changep = 1
-                    if knot is not None: # we need to modify the oposite pole
+                    if knot is not None: # we need to modify the opposite pole
                         segment = knot / self.obj.Degree -1
                         cont=self.obj.Continuity[segment] if \
                             len(self.obj.Continuity) > segment else 0
@@ -4198,7 +4223,7 @@ class Edit(Modifier):
                 msg(translate("draft", "Endpoint of BezCurve can't be smoothed\n"),'warning')
                 return
         segment = knot // deg #segment index
-        newcont=self.obj.Continuity[:] #dont edit a property inplace !!!
+        newcont=self.obj.Continuity[:] #don't edit a property inplace !!!
         if not self.obj.Closed and (len(self.obj.Continuity) == segment -1 or \
                 segment == 0) : pass # open curve
         elif len(self.obj.Continuity) >= segment or \
@@ -4254,8 +4279,8 @@ class AddToGroup():
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_AddToGroup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AddToGroup", "Add to group..."),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddToGroup", "Adds the selected object(s) to an existing group")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AddToGroup", "Move to group..."),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddToGroup", "Moves the selected object(s) to an existing group")}
 
     def IsActive(self):
         if FreeCADGui.Selection.getSelection():
@@ -5036,6 +5061,28 @@ class SetAutoGroup():
                 self.ui.setAutoGroup(self.groups[i])
 
 
+class SetWorkingPlaneProxy():
+    "The SetWorkingPlaneProxy FreeCAD command definition"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_SelectPlane',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy", "Create WP Proxy"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy", "Creates a proxy object from the current working plane")}
+
+    def IsActive(self):
+        if FreeCADGui.ActiveDocument:
+            return True
+        else:
+            return False
+
+    def Activated(self):
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            FreeCAD.ActiveDocument.openTransaction("Create WP proxy")
+            FreeCADGui.addModule("Draft")
+            FreeCADGui.doCommand("Draft.makeWorkingPlaneProxy(FreeCAD.DraftWorkingPlane.getPlacement())")
+            FreeCAD.ActiveDocument.recompute()
+            FreeCAD.ActiveDocument.commitTransaction()
+
 #---------------------------------------------------------------------------
 # Snap tools
 #---------------------------------------------------------------------------
@@ -5278,6 +5325,7 @@ FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
 FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
 FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
 FreeCADGui.addCommand('Draft_AutoGroup',SetAutoGroup())
+FreeCADGui.addCommand('Draft_SetWorkingPlaneProxy',SetWorkingPlaneProxy())
 
 # snap commands
 FreeCADGui.addCommand('Draft_Snap_Lock',Draft_Snap_Lock())

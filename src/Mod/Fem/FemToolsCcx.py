@@ -42,7 +42,7 @@ class FemToolsCcx(FemTools.FemTools):
 
     ## The constructor
     #  @param analysis - analysis object to be used as the core object.
-    #  @param test_mode - True indicates that no real calculations will take place, so ccx bianry is not required. Used by test module.
+    #  @param test_mode - True indicates that no real calculations will take place, so ccx binary is not required. Used by test module.
     #  "__init__" tries to use current active analysis in analysis is left empty.
     #  Rises exception if analysis is not set and there is no active analysis
     def __init__(self, analysis=None, solver=None, test_mode=False):
@@ -96,7 +96,7 @@ class FemToolsCcx(FemTools.FemTools):
                 self.contact_constraints, self.planerotation_constraints, self.transform_constraints,
                 self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
                 self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
-                self.beam_sections, self.shell_thicknesses,
+                self.beam_sections, self.shell_thicknesses, self.fluid_sections,
                 self.analysis_type, self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
@@ -265,4 +265,4 @@ class FemToolsCcx(FemTools.FemTools):
                         if m.Eigenmode == mf['eigenmode']:
                             m.EigenmodeFrequency = mf['frequency']
 
-#  @}
+##  @}

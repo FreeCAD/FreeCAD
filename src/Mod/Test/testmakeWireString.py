@@ -7,7 +7,7 @@ import FreeCAD
 import Part
 import PartDesign
 
-print "testWire started"
+print("testWire started")
 
 # test strings 
 # if string contains funky characters, it has to be declared as Unicode or it 
@@ -38,15 +38,15 @@ FontName = 'Arial.ttf'
 Height  = 2000                                        # out string height FCunits
 Track = 0                                             # intercharacter spacing
  
-print "testWire.py input String contains ", len(String), " characters."
+print("testWire.py input String contains ", len(String), " characters.")
   
 s = Part.makeWireString(String,FontPath,FontName,Height,Track)                
 
-print "returned from makeWireString"
-print "testWire.py output contains ", len(s), " WireChars."
+print("returned from makeWireString")
+print("testWire.py output contains ", len(s), " WireChars.")
 
 for char in s:
     for contour in char:
         Part.show(contour)
         
-print "testWire ended."
+print("testWire ended.")

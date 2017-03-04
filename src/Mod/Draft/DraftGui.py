@@ -257,6 +257,7 @@ class DraftToolBar:
         self.z = 0
         self.uiloader = FreeCADGui.UiLoader()
         self.autogroup = None
+        self.isCenterPlane = False
         
         if self.taskmode:
             # add only a dummy widget, since widgets are created on demand
@@ -491,6 +492,7 @@ class DraftToolBar:
         self.layout.addLayout(ml)
         self.mainlineLabel = self._label("mainlineLabel", ml)
         self.mainlineValue = self._spinbox("mainlineValue", ml)
+        self.centerPlane = self._checkbox("centerPlane",self.layout,checked = self.isCenterPlane)
 
         # spacer
         if not self.taskmode:
@@ -560,6 +562,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.FFileValue,QtCore.SIGNAL("returnPressed()"),self.validateFile)
         QtCore.QObject.connect(self.gridValue,QtCore.SIGNAL("textEdited(QString)"),self.setGridSize)
         QtCore.QObject.connect(self.mainlineValue,QtCore.SIGNAL("valueChanged(int)"),self.setMainline)
+        QtCore.QObject.connect(self.centerPlane,QtCore.SIGNAL("stateChanged(int)"),self.setCenterPlane) 
         
         # following lines can cause a crash and are not needed anymore when using the task panel
         # http://forum.freecadweb.org/viewtopic.php?f=3&t=6952
@@ -607,6 +610,15 @@ class DraftToolBar:
         self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',width=22)
         self.autoGroupButton = self._pushbutton("autoGroup",self.bottomtray,icon="Draft_AutoGroup_off",hide=False,width=120)
         self.autoGroupButton.setText("None")
+        
+        self.wplabel.setToolTip(translate("draft", "Current working plane:")+self.wplabel.text())
+        self.constrButton.setToolTip(translate("draft", "Toggle construction mode"))
+        self.colorButton.setToolTip(translate("draft", "Curreont line color"))
+        self.facecolorButton.setToolTip(translate("draft", "Current face color"))
+        self.widthButton.setToolTip(translate("draft", "Current line width"))
+        self.fontsizeButton.setToolTip(translate("draft", "Current font size"))
+        self.applyButton.setToolTip(translate("draft", "Apply to selected objects"))
+        self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
 
         QtCore.QObject.connect(self.wplabel,QtCore.SIGNAL("pressed()"),self.selectplane)
         QtCore.QObject.connect(self.colorButton,QtCore.SIGNAL("pressed()"),self.getcol)
@@ -703,6 +715,7 @@ class DraftToolBar:
         self.gridValue.setToolTip(translate("draft", "The spacing between the grid lines"))
         self.mainlineLabel.setText(translate("draft", "Main line every"))
         self.mainlineValue.setToolTip(translate("draft", "The number of lines between main lines"))
+        self.centerPlane.setText(translate("draft", "Center plane on view"))
         
         # Update the maximum width of the push buttons
         maxwidth = 66 # that's the default
@@ -720,16 +733,6 @@ class DraftToolBar:
         maxwidth = maxwidth + 16 +10 # add icon width and a margin
         for i in pb:
             i.setMaximumWidth(maxwidth)
-        
-        if (not self.taskmode) or self.tray:
-            self.wplabel.setToolTip(translate("draft", "Set/unset a working plane"))
-            self.colorButton.setToolTip(translate("draft", "Line Color"))
-            self.facecolorButton.setToolTip(translate("draft", "Face Color"))
-            self.widthButton.setToolTip(translate("draft", "Line Width"))
-            self.fontsizeButton.setToolTip(translate("draft", "Font Size"))
-            self.applyButton.setToolTip(translate("draft", "Apply to selected objects"))
-            self.constrButton.setToolTip(translate("draft", "Toggles Construction Mode"))
-            self.autoGroupButton.setToolTip(translate("draft", "Sets/unsets auto-grouping"))
 
 #---------------------------------------------------------------------------
 # Interface modes
@@ -791,6 +794,7 @@ class DraftToolBar:
         self.mainlineValue.show()
         p = Draft.getParam("gridEvery",10)
         self.mainlineValue.setValue(p)
+        self.centerPlane.show()
         
     def extraLineUi(self):
         '''shows length and angle controls'''
@@ -938,6 +942,7 @@ class DraftToolBar:
             self.gridValue.hide()
             self.mainlineLabel.hide()
             self.mainlineValue.hide()
+            self.centerPlane.hide()
             
     def trimUi(self,title=translate("draft","Trim")):
         self.taskUi(title)
@@ -1160,6 +1165,9 @@ class DraftToolBar:
             Draft.setParam("gridEvery",val)
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.setGrid()
+                
+    def setCenterPlane(self,val):
+        self.isCenterPlane = bool(val)
 
 #---------------------------------------------------------------------------
 # Processing functions
@@ -1741,6 +1749,7 @@ class DraftToolBar:
             self.autogroup = None
             self.autoGroupButton.setText("None")
             self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg'))
+            self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
             self.autoGroupButton.setDown(False)
         else:
             obj = FreeCAD.ActiveDocument.getObject(value)
@@ -1748,11 +1757,13 @@ class DraftToolBar:
                 self.autogroup = value
                 self.autoGroupButton.setText(obj.Label)
                 self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_on.svg'))
+                self.autoGroupButton.setToolTip(translate("draft", "Autogroup: ")+obj.Label)
                 self.autoGroupButton.setDown(False)
             else:
                 self.autogroup = None
                 self.autoGroupButton.setText("None")
                 self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg'))
+                self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
                 self.autoGroupButton.setDown(False)
 
     def show(self):

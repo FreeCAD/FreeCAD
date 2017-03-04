@@ -195,7 +195,7 @@ void TaskLinearPatternParameters::updateUI()
     unsigned occurrences = pcLinearPattern->Occurrences.getValue();
 
     if (dirLinks.setCurrentLink(pcLinearPattern->Direction) == -1){
-        //failed to set current, because the link isnt in the list yet
+        //failed to set current, because the link isn't in the list yet
         dirLinks.addLink(pcLinearPattern->Direction, getRefStr(pcLinearPattern->Direction.getValue(),pcLinearPattern->Direction.getSubValues()));
         dirLinks.setCurrentLink(pcLinearPattern->Direction);
     }

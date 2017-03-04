@@ -292,7 +292,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
         auto it = cprops.begin();
         for( App::Property* prop : props ) {
 
-            //independent copys dont have links and are not attached
+            //independent copies don't have links and are not attached
             if(independent && (
                 prop->getTypeId() == App::PropertyLink::getClassTypeId() ||
                 prop->getTypeId() == App::PropertyLinkList::getClassTypeId() ||
@@ -455,7 +455,7 @@ TaskDlgFeaturePick::TaskDlgFeaturePick(std::vector<App::DocumentObject*> &object
 TaskDlgFeaturePick::~TaskDlgFeaturePick()
 {
     //do the work now as before in accept() the dialog is still open, hence the work
-    //function could not open annother dialog
+    //function could not open another dialog
     if (accepted)
         workFunction(pick->buildFeatures());
 }

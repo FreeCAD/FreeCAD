@@ -43,6 +43,16 @@ public: \
   static void *create(void);\
 private: \
   static Base::Type classTypeId
+
+/// Like EXTENSION_TYPESYSTEM_HEADER, with getExtensionTypeId declared override
+#define EXTENSION_TYPESYSTEM_HEADER_WITH_OVERRIDE() \
+public: \
+  static Base::Type getExtensionClassTypeId(void); \
+  virtual Base::Type getExtensionTypeId(void) const override; \
+  static void init(void);\
+  static void *create(void);\
+private: \
+  static Base::Type classTypeId
     
 /// define to implement a subclass of Base::BaseClass
 #define EXTENSION_TYPESYSTEM_SOURCE_P(_class_) \
@@ -81,6 +91,15 @@ template<> void * _class_::create(void){\
 protected: \
   static const App::PropertyData * extensionGetPropertyDataPtr(void); \
   virtual const App::PropertyData &extensionGetPropertyData(void) const; \
+private: \
+  static App::PropertyData propertyData
+
+/// Like EXTENSION_PROPERTY_HEADER, but with override declarations.
+#define EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(_class_) \
+  EXTENSION_TYPESYSTEM_HEADER_WITH_OVERRIDE(); \
+protected: \
+  static const App::PropertyData * extensionGetPropertyDataPtr(void); \
+  virtual const App::PropertyData &extensionGetPropertyData(void) const override; \
 private: \
   static App::PropertyData propertyData
 

@@ -288,7 +288,7 @@ def make_smaller(curve, start=None, finish=None, end_beyond=False):
 
 '''The following procedures are copied almost directly from heekscnc
 kurve_funcs.py.  They depend on nc directory existing below PathScripts
-and have not been throughly optimized, understood, or tested for FreeCAD.'''
+and have not been thoroughly optimized, understood, or tested for FreeCAD.'''
 
 
 def profile2(curve, direction="on", radius=1.0, vertfeed=0.0,

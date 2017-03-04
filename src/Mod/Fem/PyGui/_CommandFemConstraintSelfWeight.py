@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandSolverZ88"
+__title__ = "Command constraint self weight"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandSolverZ88
+## @package CommandFemConstraintSelfWeight
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,20 +33,20 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandSolverZ88(FemCommands):
-    "The Fem_SolverZ88 command definition"
+class _CommandFemConstraintSelfWeight(FemCommands):
+    "The FEM_ConstraintSelfWeight command definition"
     def __init__(self):
-        super(_CommandSolverZ88, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_SolverZ88", "Solver Z88"),
-                          'Accel': "S, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_SolverZ88", "Creates a FEM solver Z88")}
+        super(_CommandFemConstraintSelfWeight, self).__init__()
+        self.resources = {'Pixmap': 'fem-constraint-selfweight',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Constraint self weigt"),
+                          'Accel': "C, W",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Creates a FEM constraint self weigt")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create SolverZ88")
+        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintSelfWeight")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeSolverZ88()]")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeConstraintSelfWeight()]")
 
 
-FreeCADGui.addCommand('Fem_SolverZ88', _CommandSolverZ88())
+FreeCADGui.addCommand('FEM_ConstraintSelfWeight', _CommandFemConstraintSelfWeight())

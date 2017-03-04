@@ -63,7 +63,7 @@ ViewProvider2DObject::ViewProvider2DObject()
 {
     ADD_PROPERTY_TYPE(ShowGrid,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid on/off");
     ADD_PROPERTY_TYPE(GridSize,(10),"Grid",(App::PropertyType)(App::Prop_None),"Gap size of the grid");
-    ADD_PROPERTY_TYPE(GridStyle,((long)0),"Grid",(App::PropertyType)(App::Prop_None),"Appearence style of the grid");
+    ADD_PROPERTY_TYPE(GridStyle,((long)0),"Grid",(App::PropertyType)(App::Prop_None),"Appearance style of the grid");
     ADD_PROPERTY_TYPE(TightGrid,(true),"Grid",(App::PropertyType)(App::Prop_None),"Switch the tight grid mode on/off");
     ADD_PROPERTY_TYPE(GridSnap,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid snap on/off");
 
@@ -143,7 +143,6 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
 
     // gridlines
     mycolor = new SoBaseColor;
-
     mycolor->rgb.setValue(0.7f, 0.7f ,0.7f);
     parent->addChild(mycolor);
 
@@ -189,19 +188,17 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     SbVec3f* coords = vts->vertex.startEditing();
 
     // vertical lines
-    float vx = MiX;
+    int i_offset_x = static_cast<int>(MiX / Step);
     for (int i=0; i<vlines; i++) {
-        coords[2*i].setValue(vx, MiY, zGrid);
-        coords[2*i+1].setValue(vx, MaY, zGrid);
-        vx += Step;
+        coords[2*i].setValue((i+i_offset_x)*Step, MiY, zGrid);
+        coords[2*i+1].setValue((i+i_offset_x)*Step, MaY, zGrid);
     }
 
     // horizontal lines
-    float vy = MiY;
+    int i_offset_y = static_cast<int>(MiY / Step);
     for (int i=vlines; i<lines; i++) {
-        coords[2*i].setValue(MiX, vy, zGrid);
-        coords[2*i+1].setValue(MaX, vy, zGrid);
-        vy += Step;
+        coords[2*i].setValue(MiX, (i-vlines+i_offset_y)*Step, zGrid);
+        coords[2*i+1].setValue(MaX, (i-vlines+i_offset_y)*Step, zGrid);
     }
     vts->vertex.finishEditing();
 

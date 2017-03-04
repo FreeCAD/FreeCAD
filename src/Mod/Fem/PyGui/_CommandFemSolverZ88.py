@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandBeamSection"
+__title__ = "_CommandSolverZ88"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandBeamSection
+## @package CommandFemSolverZ88
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,20 +33,20 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandBeamSection(FemCommands):
-    "The Fem_BeamSection command definition"
+class _CommandFemSolverZ88(FemCommands):
+    "The FEM_SolverZ88 command definition"
     def __init__(self):
-        super(_CommandBeamSection, self).__init__()
-        self.resources = {'Pixmap': 'fem-beam-section',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_BeamSection", "Beam cross section"),
-                          'Accel': "C, B",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_BeamSection", "Creates a FEM beam cross section")}
+        super(_CommandFemSolverZ88, self).__init__()
+        self.resources = {'Pixmap': 'fem-solver',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverZ88", "Solver Z88"),
+                          'Accel': "S, Z",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverZ88", "Creates a FEM solver Z88")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemBeamSection")
+        FreeCAD.ActiveDocument.openTransaction("Create SolverZ88")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeBeamSection()]")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeSolverZ88()]")
 
 
-FreeCADGui.addCommand('Fem_BeamSection', _CommandBeamSection())
+FreeCADGui.addCommand('FEM_SolverZ88', _CommandFemSolverZ88())

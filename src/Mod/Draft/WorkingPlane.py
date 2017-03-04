@@ -311,12 +311,14 @@ class plane:
                 0.0,0.0,0.0,1.0)
         return FreeCAD.Placement(m)
 
-    def setFromPlacement(self,pl):
-        "sets the working plane from a placement (rotaton ONLY)"
+    def setFromPlacement(self,pl,rebase=False):
+        "sets the working plane from a placement (rotaton ONLY, unless rebaee=True)"
         rot = FreeCAD.Placement(pl).Rotation
         self.u = rot.multVec(FreeCAD.Vector(1,0,0))
         self.v = rot.multVec(FreeCAD.Vector(0,1,0))
         self.axis = rot.multVec(FreeCAD.Vector(0,0,1))
+        if rebase:
+            self.position = pl.Base
         
     def inverse(self):
         "inverts the direction of the working plane"

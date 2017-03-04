@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,43 +20,33 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandSolverCalculix"
-__author__ = "Bernd Hahnebach"
+__title__ = "Command Purge Fem Results"
+__author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandSolverCalculix
+## @package CommandFemResultsPurge
 #  \ingroup FEM
 
-import FreeCAD
 from FemCommands import FemCommands
+import FemTools
 import FreeCADGui
-import FemGui
 from PySide import QtCore
 
 
-class _CommandSolverCalculix(FemCommands):
-    "The Fem_SolverCalculix command definition"
+class _CommandFemResultsPurge(FemCommands):
+    # the FEM_ResultsPurge command definition
     def __init__(self):
-        super(_CommandSolverCalculix, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_SolverCalculix", "Solver CalculiX"),
-                          'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_SolverCalculix", "Creates a FEM solver CalculiX")}
-        self.is_active = 'with_analysis'
+        super(_CommandFemResultsPurge, self).__init__()
+        self.resources = {'Pixmap': 'fem-purge-results',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purge results"),
+                          'Accel': "S, S",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purges all results from active analysis")}
+        self.is_active = 'with_results'
 
     def Activated(self):
-        has_nonlinear_material_obj = False
-        for m in FemGui.getActiveAnalysis().Member:
-            if hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
-                has_nonlinear_material_obj = True
-        FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
-        FreeCADGui.addModule("ObjectsFem")
-        if has_nonlinear_material_obj:
-            FreeCADGui.doCommand("solver = ObjectsFem.makeSolverCalculix()")
-            FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [solver]")
-        else:
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeSolverCalculix()]")
+        fea = FemTools.FemTools()
+        fea.reset_all()
+        self.hide_meshes_show_parts_constraints()
 
 
-FreeCADGui.addCommand('Fem_SolverCalculix', _CommandSolverCalculix())
+FreeCADGui.addCommand('FEM_ResultsPurge', _CommandFemResultsPurge())

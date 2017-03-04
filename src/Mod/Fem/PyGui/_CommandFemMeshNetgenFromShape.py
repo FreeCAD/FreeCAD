@@ -20,38 +20,43 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Command Show Result"
-__author__ = "Juergen Riegel, Bernd Hahnebach"
+__title__ = "Command Mesh Netgen From Shape"
+__author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandShowResult
+## @package CommandFemMeshNetgenFromShape
 #  \ingroup FEM
-#  \brief FreeCAD Command show results for FEM workbench
 
+import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
+import FemGui
 from PySide import QtCore
 
 
-class _CommandShowResult(FemCommands):
-    "the Fem show reslult command definition"
+class _CommandFemMeshNetgenFromShape(FemCommands):
+    # the FEM_MeshNetgenFromShape command definition
     def __init__(self):
-        super(_CommandShowResult, self).__init__()
-        self.resources = {'Pixmap': 'fem-result',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ShowResult", "Show result"),
-                          'Accel': "S, R",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ShowResult", "Shows and visualizes selected result data")}
-        self.is_active = 'with_selresult'
+        super(_CommandFemMeshNetgenFromShape, self).__init__()
+        self.resources = {'Pixmap': 'fem-femmesh-netgen-from-shape',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshFromShape", "FEM mesh from shape by Netgen"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshFromShape", "Create a FEM volume mesh from a solid or face shape by Netgen internal mesher")}
+        self.is_active = 'with_part_feature'
 
     def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FEM mesh Netgen")
+        FreeCADGui.addModule("FemGui")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
-            if sel[0].isDerivedFrom("Fem::FemResultObject"):
-                self.result_object = sel[0]
+            if(sel[0].isDerivedFrom("Part::Feature")):
+                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
+                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
+                if FemGui.getActiveAnalysis():
+                    FreeCADGui.addModule("FemGui")
+                    FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.ActiveDocument.ActiveObject]")
+                FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
 
-        import _ViewProviderFemResultMechanical
-        if _ViewProviderFemResultMechanical.is_result_obj_valid(self.result_object):
-            self.result_object.ViewObject.startEditing()
+        FreeCADGui.Selection.clearSelection()
 
 
-FreeCADGui.addCommand('Fem_ShowResult', _CommandShowResult())
+FreeCADGui.addCommand('FEM_MeshNetgenFromShape', _CommandFemMeshNetgenFromShape())

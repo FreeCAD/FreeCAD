@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+# *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,33 +20,39 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Command Purge Fem Results"
-__author__ = "Juergen Riegel"
+__title__ = "_CommandSolidMaterial"
+__author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandPurgeResults
+## @package CommandFemMaterialSolid
 #  \ingroup FEM
 
+import FreeCAD
 from FemCommands import FemCommands
-import FemTools
 import FreeCADGui
+import FemGui
 from PySide import QtCore
 
 
-class _CommandPurgeResults(FemCommands):
-    # the Fem_PurgeResults command definition
+class _CommandFemMaterialSolid(FemCommands):
+    "the FEM_MaterialSolid command definition"
     def __init__(self):
-        super(_CommandPurgeResults, self).__init__()
-        self.resources = {'Pixmap': 'fem-purge-results',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_PurgeResults", "Purge results"),
-                          'Accel': "S, S",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_PurgeResults", "Purges all results from active analysis")}
-        self.is_active = 'with_results'
+        super(_CommandFemMaterialSolid, self).__init__()
+        self.resources = {'Pixmap': 'fem-material',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "FEM material for solid"),
+                          'Accel': "M, M",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Creates a FEM material for solid")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
-        fea = FemTools.FemTools()
-        fea.reset_all()
-        self.hide_meshes_show_parts_constraints()
+        femDoc = FemGui.getActiveAnalysis().Document
+        if FreeCAD.ActiveDocument is not femDoc:
+            FreeCADGui.setActiveDocument(femDoc)
+        FreeCAD.ActiveDocument.openTransaction("Create Solid Material")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("ObjectsFem.makeMaterialSolid('SolidMaterial')")
+        FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
+        FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
 
 
-FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeResults())
+FreeCADGui.addCommand('FEM_MaterialSolid', _CommandFemMaterialSolid())

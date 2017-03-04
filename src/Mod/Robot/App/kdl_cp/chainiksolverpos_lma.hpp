@@ -72,7 +72,7 @@ public:
     /**
 	 * \brief constructs an ChainIkSolverPos_LMA solver.
 	 *
-	 * The default parameters are choosen to be applicable to industrial-size robots
+	 * The default parameters are chosen to be applicable to industrial-size robots
 	 * (e.g. 0.5 to 3 meters range in task space), with an accuracy that is more then
 	 * sufficient for typical industrial applications.
 	 *

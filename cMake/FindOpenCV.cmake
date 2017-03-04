@@ -1,7 +1,7 @@
 # - Try to find OpenCV library installation
 # See http://sourceforge.net/projects/opencvlibrary/
 #
-# The follwoing variables are optionally searched for defaults
+# The following variables are optionally searched for defaults
 #  OpenCV_ROOT_DIR:            Base directory of OpenCv tree to use.
 #  OpenCV_FIND_REQUIRED_COMPONENTS : FIND_PACKAGE(OpenCV COMPONENTS ..) 
 #    compatible interface. typically  CV CXCORE CVAUX HIGHGUI CVCAM .. etc.

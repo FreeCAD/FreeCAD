@@ -913,10 +913,13 @@ void FemVTKTools::importMechanicalResult(vtkSmartPointer<vtkDataSet> dataset, Ap
     scalers["PrincipalMin"] = "Minimum Principal stress";
     scalers["MaxShear"] = "Max shear stress (Tresca)";
     scalers["StressValues"] = "Von Mises stress";
+    scalers["MassFlowRate"] = "Mass Flow Rate";
+    scalers["NetworkPressure"] = "Network Pressure";
+    scalers["Peeq"] = "Peeq";
     //scalers["DisplacementLengths"] = "";  // not yet exported in exportMechanicalResult()
 
     std::map<std::string, int> varids;
-    // id sequence must agree with definition in get_result_stats() of  Fem/_TaskPanelShowResult.py
+    // id sequence must agree with definition in get_result_stats() of  Fem/_TaskPanelResultShow.py
     varids["U1"] = 0;   // U1, displacement x axis
     varids["U2"] = 1;
     varids["U3"] = 2;
@@ -951,6 +954,9 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* res, vtkSmar
     scalers["PrincipalMin"] = "Minimum Principal stress";
     scalers["MaxShear"] = "Max shear stress (Tresca)";
     scalers["StressValues"] = "Von Mises stress";
+    scalers["MassFlowRate"] = "Mass Flow Rate";
+    scalers["NetworkPressure"] = "Network Pressure";
+    scalers["Peeq"] = "Peeq";
     //scalers["DisplacementLengths"] = "";  // not yet exported in exportMechanicalResult()
 
     std::string essential_property = std::string("DisplacementVectors");

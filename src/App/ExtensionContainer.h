@@ -114,7 +114,7 @@ namespace App {
 class AppExport ExtensionContainer : public App::PropertyContainer
 {
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     
@@ -177,10 +177,10 @@ public:
     virtual const char* getPropertyDocumentation(const char *name) const override;
     //@}
     
-    virtual void onChanged(const Property*);
+    virtual void onChanged(const Property*) override;
     
-    virtual void Save(Base::Writer& writer) const;
-    virtual void Restore(Base::XMLReader& reader);
+    virtual void Save(Base::Writer& writer) const override;
+    virtual void Restore(Base::XMLReader& reader) override;
     
     //those methods save/restore the dynamic extenions without handling properties, which is something
     //done by the default Save/Restore methods.

@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,39 +20,37 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandSolidMaterial"
-__author__ = "Juergen Riegel, Bernd Hahnebach"
+__title__ = "Clear the FemMesh of a FEM mesh object"
+__author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMaterial
+## @package CommandFemMeshClear
 #  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
-import FemGui
 from PySide import QtCore
 
 
-class _CommandMaterialSolid(FemCommands):
-    "the Fem_MaterialSolid command definition"
+class _CommandFemMeshClear(FemCommands):
+    "the FEM_MeshClear command definition"
     def __init__(self):
-        super(_CommandMaterialSolid, self).__init__()
-        self.resources = {'Pixmap': 'fem-material',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialSolid", "FEM material for solid"),
-                          'Accel': "M, M",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialSolid", "Creates a FEM material for solid")}
-        self.is_active = 'with_analysis'
+        super(_CommandFemMeshClear, self).__init__()
+        self.resources = {'Pixmap': 'fem-femmesh-clear-mesh',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clear FEM mesh"),
+                          # 'Accel': "Z, Z",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clear the Mesh of a FEM mesh object")}
+        self.is_active = 'with_femmesh'
 
     def Activated(self):
-        femDoc = FemGui.getActiveAnalysis().Document
-        if FreeCAD.ActiveDocument is not femDoc:
-            FreeCADGui.setActiveDocument(femDoc)
-        FreeCAD.ActiveDocument.openTransaction("Create Solid Material")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeMaterialSolid('SolidMaterial')")
-        FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
-        FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
+            FreeCAD.ActiveDocument.openTransaction("Clear FEM mesh")
+            FreeCADGui.addModule("Fem")
+            FreeCADGui.doCommand("App.ActiveDocument." + sel[0].Name + ".FemMesh = Fem.FemMesh()")
+            FreeCADGui.doCommand("App.ActiveDocument.recompute()")
 
+        FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('Fem_MaterialSolid', _CommandMaterialSolid())
+FreeCADGui.addCommand('FEM_MeshClear', _CommandFemMeshClear())

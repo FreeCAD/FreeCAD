@@ -24,7 +24,7 @@ __title__ = "Result Control Task Panel"
 __author__ = "Juergen Riegel, Michael Hindley"
 __url__ = "http://www.freecadweb.org"
 
-## @package TaskPanelShowResult
+## @package TaskPanelFemResultShow
 #  \ingroup FEM
 
 import FreeCAD
@@ -37,7 +37,7 @@ from PySide.QtCore import Qt
 from PySide.QtGui import QApplication
 
 
-class _TaskPanelShowResult:
+class _TaskPanelFemResultShow:
     '''The task panel for the post-processing'''
     def __init__(self, obj):
         self.result_obj = obj
@@ -45,7 +45,7 @@ class _TaskPanelShowResult:
         # task panel should be started by use of setEdit of view provider
         # in view provider checks: Mesh, active analysis and if Mesh and result are in active analysis
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelShowResult.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemResultShow.ui")
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         self.restore_result_settings_in_dialog = self.fem_prefs.GetBool("RestoreResultDialog", True)
 
@@ -61,6 +61,9 @@ class _TaskPanelShowResult:
         QtCore.QObject.connect(self.form.rb_maxprin, QtCore.SIGNAL("toggled(bool)"), self.max_prin_selected)
         QtCore.QObject.connect(self.form.rb_minprin, QtCore.SIGNAL("toggled(bool)"), self.min_prin_selected)
         QtCore.QObject.connect(self.form.rb_max_shear_stress, QtCore.SIGNAL("toggled(bool)"), self.max_shear_selected)
+        QtCore.QObject.connect(self.form.rb_massflowrate, QtCore.SIGNAL("toggled(bool)"), self.massflowrate_selected)
+        QtCore.QObject.connect(self.form.rb_networkpressure, QtCore.SIGNAL("toggled(bool)"), self.networkpressure_selected)
+        QtCore.QObject.connect(self.form.rb_peeq, QtCore.SIGNAL("toggled(bool)"), self.peeq_selected)
 
         # displacement
         QtCore.QObject.connect(self.form.cb_show_displacement, QtCore.SIGNAL("clicked(bool)"), self.show_displacement)
@@ -111,6 +114,15 @@ class _TaskPanelShowResult:
             elif rt == "MaxShear":
                 self.form.rb_max_shear_stress.setChecked(True)
                 self.max_shear_selected(True)
+            elif rt == "MFlow":
+                self.form.rb_massflowrate.setChecked(True)
+                self.massflowrate_selected(True)
+            elif rt == "NPress":
+                self.form.rb_networkpressure.setChecked(True)
+                self.networkpressure_selected(True)
+            elif rt == "Peeq":
+                self.form.rb_peeq.setChecked(True)
+                self.peeq_selected(True)
 
             sd = FreeCAD.FEM_dialog["show_disp"]
             self.form.cb_show_displacement.setChecked(sd)
@@ -146,6 +158,7 @@ class _TaskPanelShowResult:
                                "MidPrin": (Stats[18], Stats[19], Stats[20]),
                                "MinPrin": (Stats[21], Stats[22], Stats[23]),
                                "MaxShear": (Stats[24], Stats[25], Stats[26]),
+                               "Peeq": (Stats[27], Stats[28], Stats[29]),
                                "None": (0.0, 0.0, 0.0)}
                 return match_table[type_name]
         return (0.0, 0.0, 0.0)
@@ -209,6 +222,28 @@ class _TaskPanelShowResult:
         self.set_result_stats("K", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
 
+    def massflowrate_selected(self, state):
+        FreeCAD.FEM_dialog["results_type"] = "MFlow"
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        if self.suitable_results:
+            self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.MassFlowRate)
+        minm = min(self.result_obj.MassFlowRate)
+        avg = sum(self.result_obj.MassFlowRate) / len(self.result_obj.MassFlowRate)
+        maxm = max(self.result_obj.MassFlowRate)
+        self.set_result_stats("kg/s", minm, avg, maxm)
+        QtGui.qApp.restoreOverrideCursor()
+
+    def networkpressure_selected(self, state):
+        FreeCAD.FEM_dialog["results_type"] = "NPress"
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        if self.suitable_results:
+            self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.NetworkPressure)
+        minm = min(self.result_obj.NetworkPressure)
+        avg = sum(self.result_obj.NetworkPressure) / len(self.result_obj.NetworkPressure)
+        maxm = max(self.result_obj.NetworkPressure)
+        self.set_result_stats("MPa", minm, avg, maxm)
+        QtGui.qApp.restoreOverrideCursor()
+
     def min_prin_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "MinPrin"
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -216,6 +251,15 @@ class _TaskPanelShowResult:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.PrincipalMin)
         (minm, avg, maxm) = self.get_result_stats("MinPrin")
         self.set_result_stats("MPa", minm, avg, maxm)
+        QtGui.qApp.restoreOverrideCursor()
+
+    def peeq_selected(self, state):
+        FreeCAD.FEM_dialog["results_type"] = "Peeq"
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        if self.suitable_results:
+            self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.Peeq)
+        (minm, avg, maxm) = self.get_result_stats("Peeq")
+        self.set_result_stats("", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
 
     def user_defined_text(self, equation):
@@ -231,7 +275,10 @@ class _TaskPanelShowResult:
         P2 = np.array(self.result_obj.PrincipalMed)
         P3 = np.array(self.result_obj.PrincipalMin)
         Von = np.array(self.result_obj.StressValues)
+        Peeq = np.array(self.result_obj.Peeq)
         T = np.array(self.result_obj.Temperature)
+        MF = np.array(self.result_obj.MassFlowRate)
+        NP = np.array(self.result_obj.NetworkPressure)
         dispvectors = np.array(self.result_obj.DisplacementVectors)
         x = np.array(dispvectors[:, 0])
         y = np.array(dispvectors[:, 1])
@@ -256,7 +303,7 @@ class _TaskPanelShowResult:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, UserDefinedFormula)
         self.set_result_stats("", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
-        del x, y, z, T, Von, P1, P2, P3, sx, sy, sz, ex, ey, ez  # Dummy use to get around flake8, varibles not being used
+        del x, y, z, T, Von, Peeq, P1, P2, P3, sx, sy, sz, ex, ey, ez, MF, NP  # Dummy use to get around flake8, varibles not being used
 
     def select_displacement_type(self, disp_type):
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -322,7 +369,10 @@ class _TaskPanelShowResult:
         StressValues        --> rb_vm_stress
         PrincipalMax        --> rb_maxprin
         PrincipalMin        --> rb_minprin
-        MaxShear            --> rb_max_shear_stress'''
+        MaxShear            --> rb_max_shear_stress
+        MassFlowRate        --> rb_massflowrate
+        NetworkPressure     --> rb_networkpressure
+        Peeq                --> rb_peeq'''
         if len(self.result_obj.DisplacementLengths) == 0:
             self.form.rb_abs_displacement.setEnabled(0)
         if len(self.result_obj.DisplacementVectors) == 0:
@@ -339,12 +389,18 @@ class _TaskPanelShowResult:
             self.form.rb_minprin.setEnabled(0)
         if len(self.result_obj.MaxShear) == 0:
             self.form.rb_max_shear_stress.setEnabled(0)
+        if len(self.result_obj.MassFlowRate) == 0:
+            self.form.rb_massflowrate.setEnabled(0)
+        if len(self.result_obj.NetworkPressure) == 0:
+            self.form.rb_networkpressure.setEnabled(0)
+        if len(self.result_obj.Peeq) == 0:
+            self.form.rb_peeq.setEnabled(0)
 
     def update(self):
         self.suitable_results = False
+        self.disable_empty_result_buttons()
         if (self.mesh_obj.FemMesh.NodeCount == len(self.result_obj.NodeNumbers)):
             self.suitable_results = True
-            self.disable_empty_result_buttons()
             self.mesh_obj.ViewObject.Visibility = True
             hide_parts_constraints()
         else:

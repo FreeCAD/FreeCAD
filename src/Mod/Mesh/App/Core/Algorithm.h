@@ -67,7 +67,7 @@ public:
    * The point \a rclRes holds the intersection point with the ray and the
    * nearest facet with index \a rulFacet.
    * \note This method tests all facets so it should only be used
-   * occassionally.
+   * occasionally.
    */
   bool NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes,
                           unsigned long &rulFacet) const;

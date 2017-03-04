@@ -158,7 +158,7 @@ class _ViewProviderPartJoinFeature:
             self.Object.Base.ViewObject.show()
             self.Object.Tool.ViewObject.show()
         except Exception as err:
-            FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
+            FreeCAD.Console.PrintError("Error in onDelete: " + str(err))
         return True
     
 #
@@ -176,7 +176,7 @@ class _ViewProviderPartJoinFeature:
 #        mb = QtGui.QMessageBox()
 #        mb.setIcon(mb.Icon.Warning)
 #        mb.setText(_translate("Part_JoinFeatures","Computing the result failed with an error: {err}. Click 'Continue' to create the feature anyway, or 'Abort' to cancel.", None)
-#                   .format(err= err.message))
+#                   .format(err= str(err)))
 #        mb.setWindowTitle(_translate("Part_JoinFeatures","Bad selection", None))
 #        btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
 #        btnOK = mb.addButton(_translate("Part_JoinFeatures","Continue",None), QtGui.QMessageBox.ButtonRole.ActionRole)

@@ -32,7 +32,7 @@ namespace Part
 
 class PartExport Offset : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Offset);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Offset);
 
 public:
     Offset();
@@ -63,7 +63,7 @@ private:
 
 class PartExport Offset2D : public Offset
 {
-    PROPERTY_HEADER(Part::Offset2D);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Offset2D);
 public:
     Offset2D();
     ~Offset2D();

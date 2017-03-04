@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
+# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,39 +20,33 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandFluidMaterial"
-__author__ = "Juergen Riegel, Bernd Hahnebach"
+__title__ = "_CommandBeamSection"
+__author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMaterial
+## @package CommandFemBeamSection
 #  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
-import FemGui
 from PySide import QtCore
 
 
-class _CommandMaterialFluid(FemCommands):
-    "the Fem_MaterialFluid command definition"
+class _CommandFemBeamSection(FemCommands):
+    "The FEM_BeamSection command definition"
     def __init__(self):
-        super(_CommandMaterialFluid, self).__init__()
-        self.resources = {'Pixmap': 'fem-material-fluid',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialFluid", "FEM material for Fluid"),
-                          'Accel': "M, M",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialFluid", "Creates a FEM material for Fluid")}
+        super(_CommandFemBeamSection, self).__init__()
+        self.resources = {'Pixmap': 'fem-beam-section',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_BeamSection", "Beam cross section"),
+                          'Accel': "C, B",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_BeamSection", "Creates a FEM beam cross section")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        femDoc = FemGui.getActiveAnalysis().Document
-        if FreeCAD.ActiveDocument is not femDoc:
-            FreeCADGui.setActiveDocument(femDoc)
-        FreeCAD.ActiveDocument.openTransaction("Create Fluid Material")
-        FreeCADGui.addModule("FemMaterial")
-        FreeCADGui.doCommand("FemMaterial.makeFluidMaterial('FluidMaterial')")
-        FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
-        FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
+        FreeCAD.ActiveDocument.openTransaction("Create FemBeamSection")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeBeamSection()]")
 
 
-FreeCADGui.addCommand('Fem_MaterialFluid', _CommandMaterialFluid())
+FreeCADGui.addCommand('FEM_BeamSection', _CommandFemBeamSection())

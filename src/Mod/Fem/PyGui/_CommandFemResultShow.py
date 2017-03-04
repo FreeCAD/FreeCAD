@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,45 +20,35 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Command GMSH Mesh From Shape"
-__author__ = "Bernd Hahnebach"
+__title__ = "Command Show Result"
+__author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMeshGmshFromShape
+## @package CommandFemResultShow
 #  \ingroup FEM
+#  \brief FreeCAD Command show results for FEM workbench
 
-import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
-import FemGui
 from PySide import QtCore
 
 
-class _CommandMeshGmshFromShape(FemCommands):
-    # the Fem_MeshGmshFromShape command definition
+class _CommandFemResultShow(FemCommands):
+    "the FEM_ResultShow command definition"
     def __init__(self):
-        super(_CommandMeshGmshFromShape, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-gmsh-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MeshGmshFromShape", "FEM mesh from shape by GMSH"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MeshGmshFromShape", "Create a FEM mesh from a shape by GMSH mesher")}
-        self.is_active = 'with_part_feature'
+        super(_CommandFemResultShow, self).__init__()
+        self.resources = {'Pixmap': 'fem-result',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Show result"),
+                          'Accel': "S, R",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Shows and visualizes selected result data")}
+        self.is_active = 'with_selresult'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FEM mesh by GMSH")
-        FreeCADGui.addModule("FemGui")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
-            if(sel[0].isDerivedFrom("Part::Feature")):
-                mesh_obj_name = sel[0].Name + "_Mesh"
-                FreeCADGui.addModule("ObjectsFem")
-                FreeCADGui.doCommand("ObjectsFem.makeMeshGmsh('" + mesh_obj_name + "')")
-                FreeCADGui.doCommand("App.ActiveDocument.ActiveObject.Part = App.ActiveDocument." + sel[0].Name)
-                if FemGui.getActiveAnalysis():
-                    FreeCADGui.addModule("FemGui")
-                    FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.ActiveDocument.ActiveObject]")
-                FreeCADGui.doCommand("Gui.ActiveDocument.setEdit(App.ActiveDocument.ActiveObject.Name)")
-
-        FreeCADGui.Selection.clearSelection()
+            if sel[0].isDerivedFrom("Fem::FemResultObject"):
+                result_object = sel[0]
+                result_object.ViewObject.startEditing()
 
 
-FreeCADGui.addCommand('Fem_MeshGmshFromShape', _CommandMeshGmshFromShape())
+FreeCADGui.addCommand('FEM_ResultShow', _CommandFemResultShow())

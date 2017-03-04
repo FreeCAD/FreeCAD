@@ -331,7 +331,7 @@ PartGui::DimensionLinear::DimensionLinear()
 
     SO_KIT_INIT_INSTANCE();
 
-    SO_NODE_ADD_FIELD(rotate, (1.0, 0.0, 0.0, 0.0));//postion orientation of the dimension.
+    SO_NODE_ADD_FIELD(rotate, (1.0, 0.0, 0.0, 0.0));//position orientation of the dimension.
     SO_NODE_ADD_FIELD(length, (1.0));//turns into dimension length
     SO_NODE_ADD_FIELD(origin, (0.0, 0.0, 0.0));//static
     SO_NODE_ADD_FIELD(text, ("test"));//dimension text

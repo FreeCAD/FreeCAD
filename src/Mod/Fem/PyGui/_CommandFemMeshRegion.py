@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Command constraint self weight"
+__title__ = "_CommandMeshRegion"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandConstraintSelfWeight
+## @package CommandFemMeshRegion
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,20 +33,25 @@ import FreeCADGui
 from PySide import QtCore
 
 
-class _CommandConstraintSelfWeight(FemCommands):
-    "The Fem_ConstraintSelfWeight command definition"
+class _CommandFemMeshRegion(FemCommands):
+    "The FEM_MeshRegion command definition"
     def __init__(self):
-        super(_CommandConstraintSelfWeight, self).__init__()
-        self.resources = {'Pixmap': 'fem-constraint-selfweight',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ConstraintSelfWeight", "Constraint self weigt"),
-                          'Accel': "C, W",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ConstraintSelfWeight", "Creates a FEM constraint self weigt")}
-        self.is_active = 'with_analysis'
+        super(_CommandFemMeshRegion, self).__init__()
+        self.resources = {'Pixmap': 'fem-femmesh-region',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshRegion", "FEM mesh region"),
+                          'Accel': "M, R",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshRegion", "Creates a FEM mesh region")}
+        self.is_active = 'with_gmsh_femmesh'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintSelfWeight")
+        FreeCAD.ActiveDocument.openTransaction("Create FemMeshRegion")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeConstraintSelfWeight()]")
+        sel = FreeCADGui.Selection.getSelection()
+        if (len(sel) == 1):
+            sobj = sel[0]
+            if len(sel) == 1 and hasattr(sobj, "Proxy") and sobj.Proxy.Type == "FemMeshGmsh":
+                FreeCADGui.doCommand("ObjectsFem.makeMeshRegion(App.ActiveDocument." + sobj.Name + ")")
 
+        FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('Fem_ConstraintSelfWeight', _CommandConstraintSelfWeight())
+FreeCADGui.addCommand('FEM_MeshRegion', _CommandFemMeshRegion())

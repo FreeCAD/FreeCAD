@@ -231,7 +231,7 @@ def displacement(ship, draft=None,
     B -- Bouyance application point, i.e. Center of mass of the underwater side
     Cb -- Block coefficient
 
-    The Bouyance center is refered to the original ship position.
+    The Bouyance center is referred to the original ship position.
     """
     if draft is None:
         draft = ship.Draft
@@ -363,7 +363,7 @@ def floatingArea(ship, draft=None,
     if draft is None:
         draft = ship.Draft
 
-    # We wanna intersect the whole ship with the free surface, so in this case
+    # We want to intersect the whole ship with the free surface, so in this case
     # we must not use the underwater side (or the tool will fail)
     shape, _ = placeShipShape(ship.Shape.copy(), draft, roll, trim)
 

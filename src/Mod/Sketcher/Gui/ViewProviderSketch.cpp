@@ -614,7 +614,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         (point - prvClickPoint).length() <  dblClickRadius &&
                         (SbTime::getTimeOfDay() - prvClickTime).getValue() < dci) {
 
-                        // Double Click Event Occured
+                        // Double Click Event Occurred
                         editDoubleClicked();
                         // Reset Double Click Static Variables
                         prvClickTime = SbTime();
@@ -3202,7 +3202,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     
     // information layer
     if(rebuildinformationlayer) {
-        // everytime we start with empty information layer
+        // every time we start with empty information layer
         edit->infoGroup->removeAllChildren();
     }
     
@@ -5200,8 +5200,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     CoordTextMaterials->diffuseColor = cursorTextColor;
     Coordsep->addChild(CoordTextMaterials);
 
+    int fontSize = hGrp->GetInt("EditSketcherFontSize", 17);
+
     SoFont *font = new SoFont();
-    font->size = 10.0;
+    font->size.setValue(fontSize);
     Coordsep->addChild(font);
 
     edit->textPos = new SoTranslation();

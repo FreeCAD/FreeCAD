@@ -37,6 +37,7 @@ if("BUILD_FEM_VTK" in FreeCAD.__cmake__):
 
 FreeCAD.addExportType("FEM formats (*.unv *.med *.dat *.inp)", "Fem")
 FreeCAD.addImportType("CalculiX result (*.frd)", "importCcxFrdResults")
+FreeCAD.addExportType("Fenics mesh file (*.xml)", "importFenicsMesh")
 FreeCAD.addImportType("Mesh from Calculix/Abaqus input file (*.inp)", "importInpMesh")
 FreeCAD.addImportType("Z88 mesh file (*.txt)", "importZ88Mesh")
 FreeCAD.addExportType("Z88 mesh file (*.txt)", "importZ88Mesh")
