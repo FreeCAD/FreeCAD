@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="ViewProviderDocumentObjectPy"
+    Name="ViewProviderPy"
+    Twin="ViewProvider"
+    TwinPointer="ViewProvider"
+    Include="Mod/PartDesign/Gui/ViewProvider.h"
+    Namespace="PartDesignGui"
+    FatherInclude="Gui/ViewProviderDocumentObjectPy.h"
+    FatherNamespace="Gui">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <UserDocu>This is the father of all PartDesign ViewProvider classes</UserDocu>
+    </Documentation>
+    <Methode Name="setBodyMode">
+            <Documentation>
+<UserDocu>setBodyMode(bool): body mode means that the object is part of a body
+and that the body is used to set the visual properties, not the features. Hence
+setting body mode to true will hide most viewprovider properties.</UserDocu>
+            </Documentation>
+    </Methode>
+    <Methode Name="makeTemporaryVisible">
+            <Documentation>
+<UserDocu>makeTemporaryVisible(bool): makes this viewprovider visible in the
+scene graph without changing any properties, not the visibility one and also not
+the display mode. This can be used to show the shape of this viewprovider from
+other viewproviders without doing anything to the document and properties.
+</UserDocu>
+            </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>
