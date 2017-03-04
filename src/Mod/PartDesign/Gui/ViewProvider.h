@@ -25,6 +25,7 @@
 #define PARTGUI_ViewProvider_H
 
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <Gui/ViewProviderPythonFeature.h>
 
 
 namespace PartDesignGui {
@@ -75,7 +76,7 @@ protected:
     App::DocumentObject* oldTip;
 };
 
-
+typedef Gui::ViewProviderPythonFeatureT<ViewProvider> ViewProviderPython;
 
 } // namespace PartDesignGui
 
