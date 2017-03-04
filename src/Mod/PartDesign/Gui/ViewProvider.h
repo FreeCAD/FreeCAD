@@ -60,6 +60,8 @@ public:
     //document and properties.
     void makeTemporaryVisible(bool);
 
+    virtual PyObject* getPyObject(void);
+
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
