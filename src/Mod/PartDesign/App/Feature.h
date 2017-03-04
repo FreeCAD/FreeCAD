@@ -70,6 +70,10 @@ public:
 
     virtual PyObject* getPyObject(void);
 
+    virtual const char* getViewProviderName() const {
+        return "PartDesignGui::ViewProvider";
+    }
+
 protected:
 
     /**

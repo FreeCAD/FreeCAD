@@ -251,3 +251,14 @@ void ViewProvider::makeTemporaryVisible(bool onoff)
     else 
         Gui::ViewProvider::hide();
 }
+
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewProvider);
+/// @endcond
+
+// explicit template instantiation
+template class PartDesignGuiExport ViewProviderPythonFeatureT<PartDesignGui::ViewProvider>;
+}
+
