@@ -182,7 +182,7 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartDesign::FeaturePython, PartDesign::Feature)
 template<> const char* PartDesign::FeaturePython::getViewProviderName(void) const {
-    return "PartGui::ViewProviderPython";
+    return "PartDesignGui::ViewProviderPython";
 }
 template<> PyObject* PartDesign::FeaturePython::getPyObject(void) {
     if (PythonObject.is(Py::_None())) {
