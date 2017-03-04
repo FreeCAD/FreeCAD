@@ -141,32 +141,29 @@ before_install:
        brew update >/dev/null
        brew --config
 
+       brew tap FreeCAD/freecad
+
        if [ "${QT}" == "Qt4" ]; then
-          brew tap FreeCAD/freecad
+          # Qt4: Replace Qt5 from ports-cache with Qt4, if necessary
+          brew ls --versions qt@5.6 > /dev/null || \
+             brew uninstall --ignore-dependencies --force shiboken pyside pyside-tools qt@5.6
+
           brew tap cartr/qt4
 
-          brew install --verbose --only-dependencies freecad --with-packaging-utils
-          brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
+          brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils
+          brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils #Ensure all dependencies are satisfied
 
        elif [ "${QT}" == "Qt5" ]; then
-          # >>> Qt5 Build Testing - THIS ASSUMES A PORTS-CACHE IS INSTALLED WITH QT4<<<
-          # Qt5: Replace Qt4 with Qt5
-          brew uninstall --ignore-dependencies cartr/qt4/shiboken cartr/qt4/pyside cartr/qt4/pyside-tools cartr/qt4/qt FreeCAD/freecad/coin
-          brew untap cartr/qt4
-
-          # Qt5: Configure homebrew to build using Qt dependencies formulae on FreeCAD/homebrew-freecad Qt5 branch
-          brew tap-info FreeCAD/freecad && brew untap FreeCAD/freecad
-          brew tap --full FreeCAD/freecad
-          pushd $(brew --prefix)/HomeBrew/Library/Taps/freecad/homebrew-freecad
-          git checkout -b qt56 origin/qt56
-          popd
-          export HOMEBREW_DEVELOPER="1"
+          # Qt5: Replace Qt4 in ports-cache with Qt5, if necessary
+          brew ls --versions cartr4/qt4/qt > /dev/null || \
+             brew uninstall --ignore-dependencies --force cartr/qt4/shiboken cartr/qt4/pyside cartr/qt4/pyside-tools cartr/qt4/qt \
+             brew untap cartr/qt4
 
           brew install --verbose --only-dependencies freecad --with-packaging-utils
           brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
 
           # Qt5: Update and patch the Qt 5 symlinks
-          brew link --force qt@5.6
+          brew link --force --overwrite qt@5.6
           sudo ln -f -s /usr/local/Cellar/qt\@5.*/*/mkspecs /usr/local/mkspecs
           sudo ln -f -s /usr/local/Cellar/qt\@5.*/*/plugins /usr/local/plugins
 
