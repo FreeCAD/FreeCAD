@@ -213,7 +213,6 @@ def read_fenics_mesh(xmlfilename):
         Returns element dictionary to be evaluated by make_femmesh later
     '''
 
-
     Fenics_to_FreeCAD_dict = {
         "triangle": "tria3",
         "tetrahedron": "tetra4",
@@ -260,7 +259,7 @@ def read_fenics_mesh(xmlfilename):
                 if vertex.tag.lower() == 'vertex':
                     [node_x, node_y, node_z] = [float(vertex.get(coord, 0.)) for coord in ["x", "y", "z"]]
 
-                    nodes_dict[ind+1] = FreeCAD.Vector(node_x, node_y, node_z)
+                    nodes_dict[ind + 1] = FreeCAD.Vector(node_x, node_y, node_z)
                     # increase node index by one, since fenics starts at 0, FreeCAD at 1
                     # print("%d %f %f %f" % (ind, node_x, node_y, node_z))
                 else:
@@ -277,11 +276,11 @@ def read_fenics_mesh(xmlfilename):
                     print("Strange mismatch between cell type %s and cell tag %s" % (cell_type, cell.tag.lower()))
                 num_vertices = cells_parts_dim[cell_type][0]
 
-                vtupel = tuple([int(cell.get("v"+str(vnum)))+1 for vnum in range(num_vertices)])
+                vtupel = tuple([int(cell.get("v" + str(vnum))) + 1 for vnum in range(num_vertices)])
                 # generate "v0", "v1", ... from dimension lookup table
                 # increase numbers by one to match FC numbering convention
 
-                cell_dict[ind+1] = vtupel
+                cell_dict[ind + 1] = vtupel
 
                 # valtupel = tuple([ind] + list(vtupel))
                 # print(("%d " + ("%d "*len(vtupel))) % valtupel)
@@ -359,9 +358,9 @@ def read_fenics_mesh(xmlfilename):
             for ld in cell_lower_dims:
                 for vertextuple in itertools.combinations(cell, num_vert_dict[ld]):
                     element_counter[ld] = addtupletodict(
-                                                        element_dict[Fenics_to_FreeCAD_dict[ld]],
-                                                        vertextuple,
-                                                        element_counter[ld])
+                        element_dict[Fenics_to_FreeCAD_dict[ld]],
+                        vertextuple,
+                        element_counter[ld])
 
         length_counter = len(nodes)
         for (key, val_dict) in element_dict.iteritems():
