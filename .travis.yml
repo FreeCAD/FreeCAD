@@ -149,7 +149,7 @@ before_install:
 
        if [ "${QT}" == "Qt4" ]; then
           # Qt4: Replace Qt5 from ports-cache with Qt4, if necessary
-          brew ls --versions qt@5.6 > /dev/null || \
+          brew ls --versions qt@5.6 > /dev/null && \
              brew uninstall --ignore-dependencies --force shiboken pyside pyside-tools qt@5.6
 
           brew tap cartr/qt4
@@ -159,9 +159,8 @@ before_install:
 
        elif [ "${QT}" == "Qt5" ]; then
           # Qt5: Replace Qt4 in ports-cache with Qt5, if necessary
-          brew ls --versions cartr4/qt4/qt > /dev/null || \
-             brew uninstall --ignore-dependencies --force cartr/qt4/shiboken cartr/qt4/pyside cartr/qt4/pyside-tools cartr/qt4/qt \
-             brew untap cartr/qt4
+          brew ls --versions cartr/qt4/qt > /dev/null && \
+             brew uninstall --ignore-dependencies --force cartr/qt4/shiboken@1.2 cartr/qt4/pyside@1.2 cartr/qt4/pyside-tools@1.2 cartr/qt4/qt
 
           brew install --verbose --only-dependencies freecad --with-packaging-utils
           brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
