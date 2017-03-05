@@ -1275,7 +1275,6 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
         return false;
 
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    selection = cmd->getSelection().getSelectionEx();
 
     if (selection.size() == 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1284,6 +1283,11 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
     } else if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select an edge, face or body from a single body."));
+        return false;
+    }
+    else if (pcActiveBody != PartDesignGui::getBodyFor(selection[0].getObject(), false)) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
+            QObject::tr("Select an edge, face or body from an active body."));
         return false;
     }
 
