@@ -27,7 +27,7 @@ __title__="FreeCAD Arch Space"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-Roles = ["Space"]
+Roles = ["Undefined","Space"]
 
 SpaceTypes = [
 "Undefined",

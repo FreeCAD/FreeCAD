@@ -855,7 +855,7 @@ class Creator(nc.Creator):
     def tap(self, x=None, y=None, z=None, zretract=None, depth=None, standoff=None, dwell_bottom=None, pitch=None, stoppos=None, spin_in=None, spin_out=None, tap_mode=None, direction=None):
         # mystery parameters: 
         # zretract=None, dwell_bottom=None,pitch=None, stoppos=None, spin_in=None, spin_out=None):
-        # I dont see how to map these to EMC Gcode
+        # I don't see how to map these to EMC Gcode
 
         if (standoff == None):		
                 # This is a bad thing.  All the drilling cycles need a retraction (and starting) height.		

@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
 #include "FeaturePad.h"
@@ -63,7 +64,7 @@ extern PyObject* initModule();
 }
 
 /* Python entry */
-PyMODINIT_FUNC init_PartDesign()
+PyMOD_INIT_FUNC(_PartDesign)
 {
     // load dependent module
     try {
@@ -72,10 +73,10 @@ PyMODINIT_FUNC init_PartDesign()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
-    (void)PartDesign::initModule();
+    PyObject* mod = PartDesign::initModule();
     Base::Console().Log("Loading PartDesign module... done\n");
 
 
@@ -84,6 +85,7 @@ PyMODINIT_FUNC init_PartDesign()
     // This function is responsible for adding inherited slots from a type's base class.
 
     PartDesign::Feature            ::init();
+    PartDesign::FeaturePython      ::init();
     PartDesign::Solid              ::init();
     PartDesign::DressUp            ::init();
     PartDesign::FeatureAddSub      ::init();
@@ -141,4 +143,6 @@ PyMODINIT_FUNC init_PartDesign()
     PartDesign::Wedge              ::init();
     PartDesign::AdditiveWedge      ::init();
     PartDesign::SubtractiveWedge   ::init();
+
+    PyMOD_Return(mod);
 }

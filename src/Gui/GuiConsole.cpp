@@ -47,7 +47,7 @@ unsigned int       GUIConsole::s_nRefCount = 0;
 /** Constructor
  *  Open a Top level Window and redirect the 
  *  stdin, stdout and stderr stream to it.
- *  Dont needet in Linux!
+ *  Not needed in Linux!
  */
 GUIConsole::GUIConsole (void)
 {

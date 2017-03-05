@@ -30,7 +30,7 @@
 #include "DatumPoint.h"
 #include "DatumCS.h"
 #include <Mod/Part/App/modelRefine.h>
-#include <Mod/Part/App/PartFeaturePy.h>
+#include "FeaturePy.h"
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <App/Document.h>
@@ -155,8 +155,8 @@ void FeaturePrimitive::onChanged(const App::Property* prop)
     FeatureAddSub::onChanged(prop);
 }
 
-PYTHON_TYPE_DEF(PrimitivePy, Part::PartFeaturePy)
-PYTHON_TYPE_IMP(PrimitivePy, Part::PartFeaturePy)
+PYTHON_TYPE_DEF(PrimitivePy, PartDesign::FeaturePy)
+PYTHON_TYPE_IMP(PrimitivePy, PartDesign::FeaturePy)
 
 PyObject* FeaturePrimitive::getPyObject()
 {

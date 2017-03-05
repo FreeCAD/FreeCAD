@@ -915,7 +915,7 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
 
     this->spinsamplecounter++;
     acc_angle /= this->spinsamplecounter;
-    // FIXME: accumulate and average axis vectors aswell? 19990501 mortene.
+    // FIXME: accumulate and average axis vectors as well? 19990501 mortene.
     this->spinincrement.setValue(newaxis, acc_angle);
 
     // Don't carry too much baggage, as that'll give unwanted results

@@ -659,7 +659,7 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
         geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())) {
     
         if(deleteinternalgeo) {
-            this->DeleteUnusedInternalGeometry(GeoId, true);
+            this->deleteUnusedInternalGeometry(GeoId, true);
             return 0;
         }
     }
@@ -2950,7 +2950,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
     
 }
 
-int SketchObject::ExposeInternalGeometry(int GeoId)
+int SketchObject::exposeInternalGeometry(int GeoId)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return -1;
@@ -3097,13 +3097,15 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         this->addGeometry(igeo,true);
         this->addConstraints(icon);
         
-        for (std::vector<Part::Geometry *>::iterator it=igeo.begin(); it != igeo.end(); ++it)
+        for (std::vector<Part::Geometry *>::iterator it=igeo.begin(); it != igeo.end(); ++it) {
             if (*it) 
                 delete *it;
+        }
             
-        for (std::vector<Constraint *>::iterator it=icon.begin(); it != icon.end(); ++it)
+        for (std::vector<Constraint *>::iterator it=icon.begin(); it != icon.end(); ++it) {
             if (*it) 
                 delete *it;
+        }
 
         icon.clear();
         igeo.clear();
@@ -3217,15 +3219,15 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         this->addConstraints(icon);
         
         for (std::vector<Part::Geometry *>::iterator it=igeo.begin(); it != igeo.end(); ++it)
-            if (*it) 
+            if (*it)
                 delete *it;
-            
-            for (std::vector<Constraint *>::iterator it=icon.begin(); it != icon.end(); ++it)
-                if (*it) 
-                    delete *it;
-                
-                icon.clear();
-            igeo.clear();
+
+        for (std::vector<Constraint *>::iterator it=icon.begin(); it != icon.end(); ++it)
+            if (*it)
+                delete *it;
+
+        icon.clear();
+        igeo.clear();
         
         return incrgeo; //number of added elements
     }
@@ -3436,14 +3438,14 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
 
                 if(it != controlpointgeoids.begin()) {
                     // if pole-weight newly created make it equal to first weight by default
-                    Sketcher::Constraint *newConstr2 = new Sketcher::Constraint();
+                    /*Sketcher::Constraint *newConstr2 = new Sketcher::Constraint();
                     newConstr2->Type = Sketcher::Equal;
                     newConstr2->First = currentgeoid+incrgeo+1;
                     newConstr2->FirstPos = Sketcher::none;
                     newConstr2->Second = controlpointgeoids[0];
                     newConstr2->SecondPos = Sketcher::none;
 
-                    icon.push_back(newConstr2);
+                    icon.push_back(newConstr2);*/
                 }
                 else {
                     controlpointgeoids[0] = currentgeoid+incrgeo+1;
@@ -3453,8 +3455,9 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
             }
         }
 
+        Q_UNUSED(isfirstweightconstrained);
         // constraint the first weight to allow for seamless weight modification and proper visualization
-        if(!isfirstweightconstrained) {
+        /*if(!isfirstweightconstrained) {
             
             Sketcher::Constraint *newConstr = new Sketcher::Constraint();
             newConstr->Type = Sketcher::Radius;
@@ -3464,7 +3467,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
 
             icon.push_back(newConstr);
 
-        }
+        }*/
 
         this->addGeometry(igeo,true);
         this->addConstraints(icon);
@@ -3486,7 +3489,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         return -1; // not supported type
 }
 
-int SketchObject::DeleteUnusedInternalGeometry(int GeoId, bool delgeoid)
+int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 {
    if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return -1;
@@ -3762,6 +3765,115 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId, bool delgeoid)
     else {
         return -1; // not supported type
     }
+}
+
+bool SketchObject::convertToNURBS(int GeoId)
+{
+    if (GeoId > getHighestCurveIndex() ||
+        (GeoId < 0 && -GeoId > static_cast<int>(ExternalGeo.size())) ||
+        GeoId == -1 || GeoId == -2)
+        return false;
+
+    const Part::Geometry *geo = getGeometry(GeoId);
+
+    if(geo->getTypeId() == Part::GeomPoint::getClassTypeId())
+        return false;
+
+    const Part::GeomCurve *geo1 = static_cast<const Part::GeomCurve *>(geo);
+
+    Part::GeomBSplineCurve* bspline;
+
+    try {
+        bspline = geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter());
+
+        if(geo1->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())){
+            const Part::GeomArcOfConic * geoaoc = static_cast<const Part::GeomArcOfConic *>(geo1);
+
+            if(geoaoc->isReversed())
+                bspline->reverse();
+        }
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+        // revert to original values
+        return false;
+    }
+
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+    std::vector< Part::Geometry * > newVals(vals);    
+
+    if (GeoId < 0) { // external geometry
+        newVals.push_back(bspline);
+    }
+    else { // normal geometry
+
+        newVals[GeoId] = bspline;
+
+        const std::vector< Sketcher::Constraint * > &cvals = Constraints.getValues();
+        
+        std::vector< Constraint * > newcVals(cvals);
+        
+        int index = cvals.size()-1;
+        // delete constraints on this elements other than coincident constraints (bspline does not support them currently)
+        for (; index >= 0; index--) {
+            if (cvals[index]->Type != Sketcher::Coincident && ( cvals[index]->First == GeoId || cvals[index]->Second == GeoId || cvals[index]->Third == GeoId)) {
+                
+                newcVals.erase(newcVals.begin()+index);
+                
+            }
+        }
+        this->Constraints.setValues(newcVals);
+    }
+
+    Geometry.setValues(newVals);
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+    
+    delete bspline;
+
+    return true;
+
+}
+
+bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
+{
+    if (GeoId < 0 || GeoId > getHighestCurveIndex())
+        return false;
+
+    const Part::Geometry *geo = getGeometry(GeoId);
+
+    if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+        return false;
+
+    const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
+
+    const Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(bsp->handle());
+
+    Part::GeomBSplineCurve *bspline = new Part::GeomBSplineCurve(curve);
+
+
+    try {
+        int cdegree = bspline->getDegree();
+
+        bspline->increaseDegree(cdegree+degreeincrement);
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+        return false;
+    }
+
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+    std::vector< Part::Geometry * > newVals(vals);
+
+    newVals[GeoId] = bspline;
+
+    Geometry.setValues(newVals);
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+
+    return true;
 }
 
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
@@ -4312,7 +4424,9 @@ void SketchObject::rebuildExternalGeometry(void)
                                         circle->Construction = true;
                                         ExternalGeo.push_back(circle);
                                     } else {
-                                        throw Base::Exception("BSpline: Not yet supported geometry for external geometry");
+                                        Part::GeomBSplineCurve* bspline = new Part::GeomBSplineCurve(projCurve.BSpline());
+                                        bspline->Construction = true;
+                                        ExternalGeo.push_back(bspline);
                                     }
                                 } else if (projCurve.GetType() == GeomAbs_Hyperbola) {
                                     gp_Hypr e = projCurve.Hyperbola();

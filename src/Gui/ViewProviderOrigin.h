@@ -38,7 +38,7 @@ class GuiExport ViewProviderOrigin : public ViewProviderDocumentObject
     PROPERTY_HEADER(Gui::ViewProviderOrigin);
 
 public:
-    /// Size of the origin as setted by the part.
+    /// Size of the origin as set by the part.
     App::PropertyVector Size;
 
     /// constructor.
@@ -46,7 +46,7 @@ public:
     /// destructor.
     virtual ~ViewProviderOrigin();
 
-    /// @name Override methodes
+    /// @name Override methods
     ///@{
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;
     virtual std::vector<App::DocumentObject*> claimChildren3D(void) const;
@@ -58,19 +58,19 @@ public:
     virtual void setDisplayMode(const char* ModeName);
     ///@}
 
-    /** @name Temporary visability mode
-     * Control the visability of origin and associated objects when needed
+    /** @name Temporary visibility mode
+     * Control the visibility of origin and associated objects when needed
      */
     ///@{
-    /// Set temporary visability of some of origin's objects e.g. while rotating or mirroring
+    /// Set temporary visibility of some of origin's objects e.g. while rotating or mirroring
     void setTemporaryVisibility (bool axis, bool planes);
-    /// Returns true if the origin in temporary visability mode
+    /// Returns true if the origin in temporary visibility mode
     bool isTemporaryVisibility ();
-    /// Reset the visability
+    /// Reset the visibility
     void resetTemporaryVisibility ();
     ///@}
 
-    /// Returns default size. Use this if it is not possible to determin apropriate size by other means
+    /// Returns default size. Use this if it is not possible to determine appropriate size by other means
     static double defaultSize() {return 10.;}
 protected:
     virtual void onChanged(const App::Property* prop);

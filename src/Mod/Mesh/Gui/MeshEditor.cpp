@@ -231,7 +231,7 @@ void MeshFaceAddition::addFace()
     f._aulPoints[2] = faceView->index[2];
     std::vector<MeshCore::MeshFacet> faces;
     faces.push_back(f);
-    mesh->addFacets(faces);
+    mesh->addFacets(faces, true);
     mf->Mesh.finishEditing();
     doc->commitTransaction();
 

@@ -36,6 +36,7 @@ import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils
 #  This module provides tools to import and export IFC files.
 
 DEBUG = False
+ADDDEFAULTSTOREY = True
 
 if open.__module__ in ['__builtin__','io']:
     pyopen = open # because we'll redefine open below
@@ -622,7 +623,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                     obj.Placement.Rotation = r
                                     obj.Placement.move(v)
                             else:
-                                print ("failed to compute placement ",)
+                                print("failed to compute placement ",)
                     else:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                         if store:
@@ -792,7 +793,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         Arch.addComponents(cobs,objects[host])
                         if DEBUG: FreeCAD.ActiveDocument.recompute()
 
-        if DEBUG: print ("done")
+        if DEBUG: print("done")
 
         if MERGE_MODE_ARCH > 2:  # if ArchObj is compound or ArchObj not imported
             FreeCAD.ActiveDocument.recompute()
@@ -809,7 +810,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if ifcfile[host].Name:
                 grp_name = ifcfile[host].Name
             else:
-                if DEBUG: print ("no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!")
+                if DEBUG: print("no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!")
                 grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
             grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",grp_name.encode("utf8"))
             objects[host] = grp
@@ -845,7 +846,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             obj = FreeCAD.ActiveDocument.addObject("Part::Feature","UnclaimedArch")
             obj.Shape = Part.makeCompound(shapes.values())
 
-        if DEBUG: print ("done")
+        if DEBUG: print("done")
 
     else:
 
@@ -951,7 +952,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     if hasattr(objects[o],"BaseMaterial"):
                         objects[o].BaseMaterial = mat
 
-    if DEBUG and materials: print ("done")
+    if DEBUG and materials: print("done")
 
     FreeCAD.ActiveDocument.recompute()
 
@@ -1017,6 +1018,7 @@ def export(exportList,filename):
             if obj.Shape:
                 if obj.Shape.Edges and (not obj.Shape.Faces):
                     annotations.append(obj)
+    objectslist = [obj for obj in objectslist if not obj in annotations]
     objectslist = Arch.pruneIncluded(objectslist)
     products = {} # { Name: IfcEntity, ... }
     surfstyles = {} # { (r,g,b): IfcEntity, ... }
@@ -1233,6 +1235,7 @@ def export(exportList,filename):
     buildings = []
     floors = []
     treated = []
+    defaulthost = []
     for floor in Draft.getObjectsOfType(objectslist,"Floor"):
         objs = Draft.getGroupContents(floor,walls=True)
         objs = Arch.pruneIncluded(objs)
@@ -1246,6 +1249,7 @@ def export(exportList,filename):
         if children:
             ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'StoreyLink','',children,f)
         floors.append(floor.Name)
+        defaulthost = f
     for building in Draft.getObjectsOfType(objectslist,"Building"):
         objs = Draft.getGroupContents(building,walls=True,addgroups=True)
         objs = Arch.pruneIncluded(objs)
@@ -1267,6 +1271,7 @@ def export(exportList,filename):
         if childfloors:
             ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',b,childfloors)
         buildings.append(b)
+        #defaulthost = b
     for site in Draft.getObjectsOfType(objectslist,"Site"):
         objs = Draft.getGroupContents(site,walls=True,addgroups=True)
         objs = Arch.pruneIncluded(objs)
@@ -1280,12 +1285,14 @@ def export(exportList,filename):
                             childbuildings.append(products[c.Name])
                             treated.append(c.Name)
         sites.append(products[site.Name])
+        if not defaulthost:
+            defaulthost = products[site.Name]
     if not sites:
-        if DEBUG: print ("No site found. Adding default site")
+        if DEBUG: print("No site found. Adding default site")
         sites = [ifcfile.createIfcSite(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Site",'',None,None,None,None,"ELEMENT",None,None,None,None,None)]
     ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'ProjectLink','',project,sites)
     if not buildings:
-        if DEBUG: print ("No building found. Adding default building")
+        if DEBUG: print("No building found. Adding default building")
         buildings = [ifcfile.createIfcBuilding(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Building",'',None,None,None,None,"ELEMENT",None,None,None)]
     ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'SiteLink','',sites[0],buildings)
     untreated = []
@@ -1295,7 +1302,10 @@ def export(exportList,filename):
                 if not(Draft.getType(FreeCAD.ActiveDocument.getObject(k)) in ["Site","Building","Floor"]):
                     untreated.append(v)
     if untreated:
-        ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLinkUnassignedObjects','',untreated,buildings[0])
+        if not defaulthost:
+            defaulthost = ifcfile.createIfcBuildingStorey(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Storey",'',None,None,None,None,"ELEMENT",None)
+            ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'DefaultStoreyLink','',buildings[0],[defaulthost])
+        ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'UnassignedObjectsLink','',untreated,defaulthost)
 
     # materials
     materials = {}
@@ -1359,8 +1369,9 @@ def export(exportList,filename):
     # 2D objects
 
     if EXPORT_2D:
+        annos = []
         curvestyles = {}
-        if annotations and DEBUG: print ("exporting 2D objects...")
+        if annotations and DEBUG: print("exporting 2D objects...")
         for anno in annotations:
             xvc = ifcfile.createIfcDirection((1.0,0.0,0.0))
             zvc = ifcfile.createIfcDirection((0.0,0.0,1.0))
@@ -1403,6 +1414,13 @@ def export(exportList,filename):
             shp = ifcfile.createIfcShapeRepresentation(context,'Annotation','Annotation2D',reps)
             rep = ifcfile.createIfcProductDefinitionShape(None,None,[shp])
             ann = ifcfile.createIfcAnnotation(ifcopenshell.guid.compress(uuid.uuid1().hex),history,anno.Label.encode('utf8'),'',None,gpl,rep)
+            annos.append(ann)
+        if annos:
+            if not defaulthost:
+                defaulthost = ifcfile.createIfcBuildingStorey(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Storey",'',None,None,None,None,"ELEMENT",None)
+                ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'DefaultStoreyLink','',buildings[0],[defaulthost])
+            ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'AnnotationsLink','',annos,defaulthost)
+ 
 
     if DEBUG: print("writing ",filename,"...")
 

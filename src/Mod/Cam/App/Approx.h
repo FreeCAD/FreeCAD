@@ -24,7 +24,7 @@
  ***************************************************************************/
 /**************APPROX.H*********************
 *Class Approximate, inheriting from Routines
-*Dependancies:- BOOST, ATLAS, UMFPACK, BLAS
+*Dependencies:- BOOST, ATLAS, UMFPACK, BLAS
 *    LAPACK
 ********************************************/
 

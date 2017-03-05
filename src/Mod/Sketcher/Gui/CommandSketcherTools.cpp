@@ -773,7 +773,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                 try {
                     Gui::Command::openCommand("Exposing Internal Geometry");
                     Gui::Command::doCommand(Gui::Command::Doc,
-                        "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+                        "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
                         Obj->getNameInDocument(),
                         GeoId);
 
@@ -781,7 +781,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 
                     if(aftergeoid == currentgeoid) { // if we did not expose anything, deleteunused
                         Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.DeleteUnusedInternalGeometry(%d)",
+                            "App.ActiveDocument.%s.deleteUnusedInternalGeometry(%d)",
                             Obj->getNameInDocument(),
                             GeoId);
                     }

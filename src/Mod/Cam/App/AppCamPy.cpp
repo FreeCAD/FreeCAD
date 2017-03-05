@@ -3145,7 +3145,7 @@ static PyObject * useMesh(PyObject *self, PyObject *args)
         // Count of Triangles
         m.CountFacets();
 
-        // Neigbour triangles
+        // Neighbour triangles
         unsigned long idx1,idx2,idx3,idx=0;
         m.GetFacetNeighbours(idx,idx1,idx2,idx3);
 

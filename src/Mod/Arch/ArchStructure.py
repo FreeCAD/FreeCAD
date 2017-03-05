@@ -54,7 +54,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 # Possible roles for structural elements
-Roles = ["Beam","Column","Slab","Wall","Curtain Wall","Roof","Foundation","Pile","Tendon"]
+Roles = ["Undefined","Beam","Column","Slab","Wall","Curtain Wall","Roof","Foundation","Pile","Tendon"]
 
 #Reads preset profiles and categorizes them
 Categories=[]
@@ -91,7 +91,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
         obj.Length = length
     else:
         if not baseobj:
-            # don't set the length if we have a base object, otherwise the lenght X height calc
+            # don't set the length if we have a base object, otherwise the length X height calc
             # gets wrong
             obj.Length = p.GetFloat("StructureLength",100)
     if obj.Height > obj.Length:
@@ -862,7 +862,7 @@ class StructSelectionObserver:
         self.callback = callback
 
     def addSelection(self, docName, objName, sub, pos):
-        print "got ",objName
+        print("got ",objName)
         obj = FreeCAD.getDocument(docName).getObject(objName)
         self.callback(obj)
 

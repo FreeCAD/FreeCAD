@@ -587,7 +587,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   //BRepAlgoAPI_Check also makes a copy of the shape.
   
   //didn't use BRepAlgoAPI_Check because it calls BRepCheck_Analyzer itself and
-  //doesnt give us access to it. so I didn't want to run BRepCheck_Analyzer twice to get invalid results.
+  //doesn't give us access to it. so I didn't want to run BRepCheck_Analyzer twice to get invalid results.
   
   //BOPAlgo_ArgumentAnalyzer can check 2 objects with respect to a boolean op.
   //this is left for another time.

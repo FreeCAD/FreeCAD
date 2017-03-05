@@ -40,7 +40,7 @@
  *		$Id: trajectory.h,v 1.1.1.1.2.5 2003/07/23 16:44:25 psoetens Exp $
  *		$Name:  $
  *  \todo
- *     Peter's remark : should seperate I/O from other routines in the
+ *     Peter's remark : should separate I/O from other routines in the
  *     motion/chain directories
  *     The problem is that the I/O uses virtual inheritance to write
  *     the trajectories/geometries/velocityprofiles/...

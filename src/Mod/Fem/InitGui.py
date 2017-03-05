@@ -45,26 +45,28 @@ class FemWorkbench (Workbench):
         import Fem
         import FemGui
 
-        import _CommandShowResult
-        import _CommandRunSolver
-        import _CommandPurgeResults
-        import _CommandClearMesh
-        import _CommandPrintMeshInfo
-        import _CommandControlSolver
-        import _CommandFEMMesh2Mesh
-        import _CommandMeshGmshFromShape
-        import _CommandMeshNetgenFromShape
-        import _CommandMeshGroup
-        import _CommandMeshRegion
-        import _CommandAnalysis
-        import _CommandShellThickness
-        import _CommandBeamSection
-        import _CommandMaterialSolid
-        import _CommandMaterialFluid
-        import _CommandMaterialMechanicalNonlinear
-        import _CommandSolverCalculix
-        import _CommandSolverZ88
-        import _CommandConstraintSelfWeight
+        import PyGui._CommandFemAnalysis
+        import PyGui._CommandFemConstraintSelfWeight
+        import PyGui._CommandFemMaterialSolid
+        import PyGui._CommandFemMaterialFluid
+        import PyGui._CommandFemMaterialMechanicalNonlinear
+        import PyGui._CommandFemMesh2Mesh
+        import PyGui._CommandFemMeshClear
+        import PyGui._CommandFemMeshGmshFromShape
+        import PyGui._CommandFemMeshGroup
+        import PyGui._CommandFemMeshNetgenFromShape
+        import PyGui._CommandFemMeshPrintInfo
+        import PyGui._CommandFemMeshRegion
+        import PyGui._CommandFemResultShow
+        import PyGui._CommandFemResultsPurge
+        import PyGui._CommandFemSolverCalculix
+        import PyGui._CommandFemSolverControl
+        import PyGui._CommandFemSolverRun
+        import PyGui._CommandFemSolverZ88
+
+        import PyGui._CommandFemShellThickness
+        import PyGui._CommandFemBeamSection
+        import PyGui._CommandFemFluidSection
 
     def GetClassName(self):
         return "FemGui::Workbench"

@@ -38,7 +38,7 @@ public:
     DressUp();
 
     /**
-     * Base feature and it's subelements to which dressup operation will be aplied to.
+     * Base feature and it's subelements to which dressup operation will be applied to.
      * Unlike Feature::BaseFeature it includes Sublinks and set not only inside a body.
      * But for consistancy if BaseFeature is nonzero this links to the same body as it.
      */
@@ -48,15 +48,15 @@ public:
     /// updates the Placement property from the Placement of the BaseFeature
     void positionByBaseFeature(void);
     /**
-     * Returns the BaseFeature property's object if it's set othervice returns Base's
-     * feature property object otherviceeature property's object (if any)
+     * Returns the BaseFeature property's object if it's set otherwise returns Base's
+     * feature property object otherwise feature property's object (if any)
      * @param silent if couldn't determine the base feature and silent == true,
-     *               silently return a nullptr, otherwice throw Base::Exception.
+     *               silently return a nullptr, otherwise throw Base::Exception.
      *               Default is false.
      */
     virtual Part::Feature* getBaseObject(bool silent=false) const;
-    /// extracts all edges from the subshapes (inkluding face edges) and furthermore adds
-    /// all C0 continius edges to the vector
+    /// extracts all edges from the subshapes (including face edges) and furthermore adds
+    /// all C0 continuos edges to the vector
     void getContiniusEdges(Part::TopoShape, std::vector< std::string >&);
 
 protected:

@@ -19,6 +19,7 @@
 #include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include "Sheet.h"
 
 namespace Spreadsheet {
@@ -34,10 +35,16 @@ public:
 
 private:
 };
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
 } // namespace Spreadsheet
 
 /* Python entry */
-PyMODINIT_FUNC initSpreadsheet() {
+PyMOD_INIT_FUNC(Spreadsheet)
+{
     Spreadsheet::PropertySpreadsheetQuantity::init();
     Spreadsheet::PropertyColumnWidths::init();
     Spreadsheet::PropertyRowHeights::init();
@@ -46,6 +53,7 @@ PyMODINIT_FUNC initSpreadsheet() {
     Spreadsheet::Sheet::init();
     Spreadsheet::SheetPython::init();
 
-    new Spreadsheet::Module();
+    PyObject* mod = Spreadsheet::initModule();
     Base::Console().Log("Loading Spreadsheet module... done\n");
+    PyMOD_Return(mod);
 }

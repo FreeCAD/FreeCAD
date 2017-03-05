@@ -26,6 +26,11 @@
 # include <sstream>
 # include <gp_Dir2d.hxx>
 # include <gp_Vec2d.hxx>
+# include <gp_Lin.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Elips.hxx>
+# include <gp_Hypr.hxx>
+# include <gp_Parab.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
 # include <GCPnts_UniformDeflection.hxx>
 # include <GCPnts_TangentialDeflection.hxx>
@@ -37,6 +42,7 @@
 # include <Geom2d_Curve.hxx>
 # include <Geom2dAdaptor_Curve.hxx>
 # include <Geom2dLProp_CLProps2d.hxx>
+# include <GeomAdaptor_Surface.hxx>
 # include <Precision.hxx>
 # include <Geom2dAPI_ProjectPointOnCurve.hxx>
 # include <Geom2dConvert_ApproxCurve.hxx>
@@ -46,6 +52,10 @@
 # include <Geom2dAPI_ExtremaCurveCurve.hxx>
 # include <BRepBuilderAPI_MakeEdge2d.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepLib.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -60,6 +70,7 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeFacePy.h>
 
 namespace Part {
 extern const Py::Object makeGeometryCurvePy(const Handle_Geom_Curve& c);
@@ -107,6 +118,69 @@ PyObject* Curve2dPy::reverse(PyObject * args)
 
 namespace Part {
 extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
+
+TopoDS_Edge create3dCurve(const TopoDS_Edge& edge)
+{
+    TopoDS_Edge edge3d;
+    BRepAdaptor_Curve adapt_curve(edge);
+    switch(adapt_curve.GetType()) {
+    case GeomAbs_Line:
+        {
+            BRepBuilderAPI_MakeEdge mkBuilder3d(adapt_curve.Line(),
+                                                adapt_curve.FirstParameter(),
+                                                adapt_curve.LastParameter());
+            edge3d =  mkBuilder3d.Edge();
+        } break;
+    case GeomAbs_Circle:
+        {
+            BRepBuilderAPI_MakeEdge mkBuilder3d(adapt_curve.Circle(),
+                                                adapt_curve.FirstParameter(),
+                                                adapt_curve.LastParameter());
+            edge3d =  mkBuilder3d.Edge();
+        } break;
+    case GeomAbs_Ellipse:
+        {
+            BRepBuilderAPI_MakeEdge mkBuilder3d(adapt_curve.Ellipse(),
+                                                adapt_curve.FirstParameter(),
+                                                adapt_curve.LastParameter());
+            edge3d =  mkBuilder3d.Edge();
+        } break;
+    case GeomAbs_Hyperbola:
+        {
+            BRepBuilderAPI_MakeEdge mkBuilder3d(adapt_curve.Hyperbola(),
+                                                adapt_curve.FirstParameter(),
+                                                adapt_curve.LastParameter());
+            edge3d =  mkBuilder3d.Edge();
+        } break;
+    case GeomAbs_Parabola:
+        {
+            BRepBuilderAPI_MakeEdge mkBuilder3d(adapt_curve.Parabola(),
+                                                adapt_curve.FirstParameter(),
+                                                adapt_curve.LastParameter());
+            edge3d =  mkBuilder3d.Edge();
+        } break;
+    case GeomAbs_BezierCurve:
+        {
+            BRepBuilderAPI_MakeEdge mkBuilder3d(adapt_curve.Bezier(),
+                                                adapt_curve.FirstParameter(),
+                                                adapt_curve.LastParameter());
+            edge3d =  mkBuilder3d.Edge();
+        } break;
+    case GeomAbs_BSplineCurve:
+        {
+            BRepBuilderAPI_MakeEdge mkBuilder3d(adapt_curve.BSpline(),
+                                                adapt_curve.FirstParameter(),
+                                                adapt_curve.LastParameter());
+            edge3d =  mkBuilder3d.Edge();
+        } break;
+    default:
+        edge3d = edge;
+        BRepLib::BuildCurves3d(edge3d);
+        break;
+    }
+
+    return edge3d;
+}
 }
 
 PyObject* Curve2dPy::toShape(PyObject *args)
@@ -152,7 +226,9 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             Handle_Geom2d_Curve curv = Handle_Geom2d_Curve::DownCast(getGeometry2dPtr()->handle());
 
             BRepBuilderAPI_MakeEdge mkBuilder(curv, surf);
-            TopoDS_Shape edge =  mkBuilder.Shape();
+            TopoDS_Edge edge =  mkBuilder.Edge();
+            edge = create3dCurve(edge);
+
             return Py::new_reference_to(shape2pyshape(edge));
         }
         catch (Standard_Failure) {
@@ -170,7 +246,49 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             Handle_Geom2d_Curve curv = Handle_Geom2d_Curve::DownCast(getGeometry2dPtr()->handle());
 
             BRepBuilderAPI_MakeEdge mkBuilder(curv, surf, u1, u2);
-            TopoDS_Shape edge =  mkBuilder.Shape();
+            TopoDS_Edge edge =  mkBuilder.Edge();
+            edge = create3dCurve(edge);
+
+            return Py::new_reference_to(shape2pyshape(edge));
+        }
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return 0;
+        }
+    }
+
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapeFacePy::Type), &p)) {
+        try {
+            const TopoDS_Face& face = TopoDS::Face(static_cast<TopoShapeFacePy*>(p)->getTopoShapePtr()->getShape());
+            Handle_Geom2d_Curve curv = Handle_Geom2d_Curve::DownCast(getGeometry2dPtr()->handle());
+
+            BRepAdaptor_Surface adapt(face);
+            BRepBuilderAPI_MakeEdge mkBuilder(curv, adapt.Surface().Surface());
+            TopoDS_Edge edge =  mkBuilder.Edge();
+            edge = create3dCurve(edge);
+
+            return Py::new_reference_to(shape2pyshape(edge));
+        }
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return 0;
+        }
+    }
+
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "O!dd", &(Part::TopoShapeFacePy::Type), &p, &u1, &u2)) {
+        try {
+            const TopoDS_Face& face = TopoDS::Face(static_cast<TopoShapeFacePy*>(p)->getTopoShapePtr()->getShape());
+            Handle_Geom2d_Curve curv = Handle_Geom2d_Curve::DownCast(getGeometry2dPtr()->handle());
+
+            BRepAdaptor_Surface adapt(face);
+            BRepBuilderAPI_MakeEdge mkBuilder(curv, adapt.Surface().Surface(), u1, u2);
+            TopoDS_Edge edge =  mkBuilder.Edge();
+            edge = create3dCurve(edge);
+
             return Py::new_reference_to(shape2pyshape(edge));
         }
         catch (Standard_Failure) {

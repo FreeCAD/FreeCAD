@@ -71,7 +71,7 @@ WorkflowManager::~WorkflowManager() {
 
 
 // Those destruction/construction is not really needed and could be done in the instance()
-// but to make things a bit more cleare better to keep them around.
+// but to make things a bit more clear, better to keep them around.
 void WorkflowManager::init() {
     if (!_instance) {
         _instance = new WorkflowManager();
@@ -122,7 +122,7 @@ Workflow WorkflowManager::getWorkflowForDocument( App::Document *doc) {
         return it->second;
     } else {
         // We haven't yet checked the file workflow
-        // May happen if e.g. file not compleatly loaded yet
+        // May happen if e.g. file not completely loaded yet
         return Workflow::Undetermined;
     }
 }
@@ -141,7 +141,7 @@ Workflow WorkflowManager::determinWorkflow( App::Document *doc) {
         QMessageBox msgBox;
 
         if ( rv == Workflow::Legacy ) { // legacy messages
-            msgBox.setText( QObject::tr( "The document \"%1\" you are editing was design with old version of "
+            msgBox.setText( QObject::tr( "The document \"%1\" you are editing was designed with an old version of "
                             "PartDesign workbench." ).arg( QString::fromStdString ( doc->getName()) ) );
             msgBox.setInformativeText (
                     QObject::tr( "Do you want to migrate in order to use modern PartDesign features?" ) );
@@ -152,8 +152,8 @@ Workflow WorkflowManager::determinWorkflow( App::Document *doc) {
             msgBox.setInformativeText (
                     QObject::tr( "Do you want to make the migration automatically?" ) );
         }
-        msgBox.setDetailedText( QObject::tr( "Note If you choose to migrate you won't be able to edit"
-                    " the file wtih old FreeCAD versions.\n"
+        msgBox.setDetailedText( QObject::tr( "Note: If you choose to migrate you won't be able to edit"
+                    " the file with an old FreeCAD versions.\n"
                     "If you refuse to migrate you won't be able to use new PartDesign features"
                     " like Bodies and Parts. As a result you also won't be able to use your parts"
                     " in the assembly workbench.\n"

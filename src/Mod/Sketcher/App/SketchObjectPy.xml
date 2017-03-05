@@ -149,14 +149,34 @@
     </Methode>
     <Methode Name="ExposeInternalGeometry">
       <Documentation>
-        <UserDocu>Exposes all internal geometry of an object supporting internal geometry</UserDocu>
+        <UserDocu>Deprecated -- use exposeInternalGeometry</UserDocu>
       </Documentation>    
     </Methode>
     <Methode Name="DeleteUnusedInternalGeometry">
       <Documentation>
-        <UserDocu>Deletes all unused (not further constrained) internal geometry</UserDocu>
+        <UserDocu>Deprecated -- use deleteUnusedInternalGeometry</UserDocu>
       </Documentation>    
-    </Methode>    
+    </Methode>
+    <Methode Name="exposeInternalGeometry">
+      <Documentation>
+        <UserDocu>Exposes all internal geometry of an object supporting internal geometry</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="deleteUnusedInternalGeometry">
+      <Documentation>
+        <UserDocu>Deletes all unused (not further constrained) internal geometry</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="convertToNURBS">
+        <Documentation>
+            <UserDocu>Approximates the given geometry with a B-Spline</UserDocu>
+        </Documentation>    
+    </Methode>
+    <Methode Name="increaseBSplineDegree">
+        <Documentation>
+            <UserDocu>Increases the given BSpline Degree by a number of degrees</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="calculateAngleViaPoint">
       <Documentation>
         <UserDocu>
@@ -171,7 +191,7 @@
       <Documentation>
         <UserDocu>
           isPointOnObject(GeoIdCurve, float x, float y) - tests if the point (x,y)
-          geometrically lies on a curve (e.g. ellipse). It treats lines as infinte,
+          geometrically lies on a curve (e.g. ellipse). It treats lines as infinite,
           arcs as full circles/ellipses/etc. Returns boolean value.
         </UserDocu>
       </Documentation>
@@ -208,13 +228,13 @@
       <Documentation>
         <UserDocu>Number of Constraints in this sketch</UserDocu>
       </Documentation>
-      <Parameter Name="ConstraintCount" Type="Int"/>
+      <Parameter Name="ConstraintCount" Type="Long"/>
     </Attribute>
     <Attribute Name="GeometryCount" ReadOnly="true">
       <Documentation>
         <UserDocu>Number of geometric objects in this sketch</UserDocu>
       </Documentation>
-      <Parameter Name="GeometryCount" Type="Int"/>
+      <Parameter Name="GeometryCount" Type="Long"/>
     </Attribute>
     <Attribute Name="AxisCount" ReadOnly="true">
       <Documentation>
@@ -222,7 +242,7 @@
           return the the number of construction lines in the sketch which can be used as axes
         </UserDocu>
       </Documentation>
-      <Parameter Name="AxisCount" Type="Int"/>
+      <Parameter Name="AxisCount" Type="Long"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

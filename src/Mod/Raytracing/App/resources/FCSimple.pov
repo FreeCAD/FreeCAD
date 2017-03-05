@@ -17,7 +17,7 @@ global_settings {
 
 // ----------------------------------------
 
-// includes the Part mesh writen from FreeCAD
+// includes the Part mesh written from FreeCAD
 #include "TempPart.inc"
 object {Part
    texture { pigment {rgb <0.3,0.8,0.3>} finish {ambient 0.2 reflection 0.2 specular 0.7} }

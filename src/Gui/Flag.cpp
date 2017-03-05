@@ -253,7 +253,7 @@ void Flag::paintEvent(QPaintEvent* e)
     painter.drawImage((width() - image.width())/2, 0, image);
     painter.end();
 #else
-    // draw the overlayed text using QPainter
+    // draw the overlaid text using QPainter
     QPainter p(this);
     p.fillRect(this->rect(), Qt::white);
     p.setPen(Qt::black);

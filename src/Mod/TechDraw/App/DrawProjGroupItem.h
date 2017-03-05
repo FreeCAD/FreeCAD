@@ -48,7 +48,7 @@ class DrawProjGroup;
 
 class TechDrawExport DrawProjGroupItem : public TechDraw::DrawViewPart
 {
-    PROPERTY_HEADER(TechDraw::DrawProjGroupItem);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawProjGroupItem);
 
 public:
     /// Constructor
@@ -58,26 +58,26 @@ public:
     App::PropertyEnumeration Type;
     App::PropertyVector      RotationVector;
 
-    short mustExecute() const;
-    virtual void onDocumentRestored();
-    virtual void unsetupObject();
+    short mustExecute() const override;
+    virtual void onDocumentRestored() override;
+    virtual void unsetupObject() override;
 
     DrawProjGroup* getGroup(void) const;
     double getRotateAngle();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderProjGroupItem";
     }
     //return PyObject as DrawProjGroupItemPy
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
                                const Base::Vector3d& direction, 
                                const bool flip=true) const override;
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 private:
     static const char* TypeEnums[];

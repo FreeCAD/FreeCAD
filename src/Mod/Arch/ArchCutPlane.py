@@ -129,7 +129,7 @@ class _CutPlaneTaskPanel:
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Cut Plane", None))
         self.title.setText(QtGui.QApplication.translate("Arch", "Cut Plane options", None))
-        self.infoText.setText(QtGui.QApplication.translate("Arch", "Wich side to cut", None))
+        self.infoText.setText(QtGui.QApplication.translate("Arch", "Which side to cut", None))
         self.combobox.addItems([QtGui.QApplication.translate("Arch", "Behind", None),
                                     QtGui.QApplication.translate("Arch", "Front", None)])
 

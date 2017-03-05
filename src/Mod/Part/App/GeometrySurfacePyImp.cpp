@@ -279,6 +279,11 @@ PyObject* GeometrySurfacePy::uIso(PyObject * args)
         Handle_Geom_Surface surf = Handle_Geom_Surface::DownCast
             (getGeometryPtr()->handle());
         Handle_Geom_Curve c = surf->UIso(v);
+        if (c.IsNull()) {
+            PyErr_SetString(PyExc_RuntimeError, "failed to create u iso curve");
+            return 0;
+        }
+
         if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
             Handle_Geom_Line aLine = Handle_Geom_Line::DownCast(c);
             GeomLine* line = new GeomLine();
@@ -308,6 +313,11 @@ PyObject* GeometrySurfacePy::vIso(PyObject * args)
         Handle_Geom_Surface surf = Handle_Geom_Surface::DownCast
             (getGeometryPtr()->handle());
         Handle_Geom_Curve c = surf->VIso(v);
+        if (c.IsNull()) {
+            PyErr_SetString(PyExc_RuntimeError, "failed to create v iso curve");
+            return 0;
+        }
+
         if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
             Handle_Geom_Line aLine = Handle_Geom_Line::DownCast(c);
             GeomLine* line = new GeomLine();

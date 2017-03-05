@@ -100,11 +100,11 @@ void VelocityProfile_TrapHalf::SetProfile(double pos1,double pos2) {
 void VelocityProfile_TrapHalf::SetProfileDuration(
 	double pos1,double pos2,double newduration)
 {
-    SetProfile(pos1,pos2);
-    double factor = duration/newduration;
+	SetProfile(pos1,pos2);
+	double factor = duration/newduration;
 
-    if ( factor > 1 )
-        return;
+	if ( factor > 1 )
+		return;
 
 	double s        = sign(endpos-startpos);
 	double tmp      = 2.0*s*(endpos-startpos)/maxvel;

@@ -44,6 +44,7 @@ if(DOXYGEN_FOUND)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/CxImage)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Mod/Arch/Dice3DS)
+    list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Doc/sphinx)
     # deprecated modules
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Mod/Assembly)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Mod/Cam)
@@ -62,6 +63,24 @@ if(DOXYGEN_FOUND)
         )
     endif( COIN3D_DOC_FOUND )
 
+    # Try to get some git information about the source tree
+    EXECUTE_PROCESS(COMMAND git rev-parse --abbrev-ref HEAD
+                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                    OUTPUT_VARIABLE GIT_DOC_REV
+                    ERROR_VARIABLE GIT_REV_FAILED
+                    RESULT_VARIABLE GIT_REV_RETURN_CODE)
+    if( GIT_REV_RETURN_CODE EQUAL 0 )
+        EXECUTE_PROCESS(COMMAND git log -n1 "--pretty=format:%h %cD '%s'"
+                        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                        OUTPUT_VARIABLE GIT_DOC_LOG
+                        ERROR_VARIABLE GIT_REV_FAILED
+                        RESULT_VARIABLE GIT_REV_RETURN_CODE)
+        set(GIT_REVISION_INFO
+            "Built from git branch ${GIT_DOC_REV}, commit ${GIT_DOC_LOG}")
+    endif()
+
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mainpage.dox.in
+                   ${CMAKE_CURRENT_BINARY_DIR}/mainpage.dox @ONLY)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildDevDoc.cfg.in  
                    ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg @ONLY)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildWebDoc.cfg.in  
@@ -71,8 +90,10 @@ if(DOXYGEN_FOUND)
         if (WIN32)
         ADD_CUSTOM_TARGET(SourceDocu 
             ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg 
-            COMMAND ${QT_HELPCOMPILER_EXECUTABLE} "\"${CMAKE_BINARY_DIR}/doc/SourceDocu/html/index.qhp\""
-            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/doc/SourceDocu/html/index.qch ${CMAKE_BINARY_DIR}/doc/FreeCADSource.qch
+            if(QT_HELPCOMPILER_EXECUTABLE)
+                COMMAND ${QT_HELPCOMPILER_EXECUTABLE} ${CMAKE_BINARY_DIR}/doc/SourceDocu/html/index.qhp
+                COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/doc/SourceDocu/html/index.qch ${CMAKE_BINARY_DIR}/doc/FreeCADSource.qch
+            endif(QT_HELPCOMPILER_EXECUTABLE)    
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg
         )
@@ -119,4 +140,3 @@ else( DOXYGEN_FOUND )
     ADD_CUSTOM_TARGET(DevDoc
                       echo "Doxygen not found.  Install it and rerun CMake")
 endif( DOXYGEN_FOUND )
-

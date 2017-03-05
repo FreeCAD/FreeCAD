@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *  
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh
+import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, os
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
@@ -31,11 +31,12 @@ else:
 
 ## @package importOBJ
 #  \ingroup ARCH
-#  \brief OBJ file format importer and exporter
+#  \brief OBJ file format exporter
 #
-#  This module provides tools to import and export OBJ files.
-#  It is an alternative tothe standard Mesh OBJ importer/exporter
-#  and supports exporting faces with more than 3 vertices.
+#  This module provides tools to import & export OBJ files.
+#  It is an alternative to the standard Mesh OBJ exporter
+#  and supports exporting faces with more than 3 vertices
+#  and supports object colors / materials
 
 p = Draft.precision()
 
@@ -119,28 +120,40 @@ def export(exportList,filename):
     offset = 1
     objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
+    filenamemtl = filename[:-4] + ".mtl"
+    materials = []
+    outfile.write("mtllib " + os.path.basename(filenamemtl) + "\n")
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Feature"):
-            mesh = None
+            hires = None
             if FreeCAD.GuiUp:
                 visible = obj.ViewObject.isVisible()
-                if obj.ViewObject.DisplayMode == "Mesh":
-                    if hasattr(obj,"Mesh"):
-                        if obj.Mesh:
-                            mesh = obj.Mesh.Mesh.copy()
-                            mesh.Placement = obj.Placement.multiply(obj.Mesh.Mesh.Placement)
-                    if not mesh:
+                if obj.ViewObject.DisplayMode == "Hires":
+                    # check if high-resolution object is available
+                    if hasattr(obj,"Hires"):
+                        if obj.Hires:
+                            if obj.Hires.isDerivedFrom("Mesh::Feature"):
+                                m = obj.Hires.Mesh
+                            else:
+                                m = obj.Hires.Shape
+                            hires = m.copy()
+                            hires.Placement = obj.Placement.multiply(m.Placement)
+                    if not hires:
                         if hasattr(obj,"CloneOf"):
                             if obj.CloneOf:
-                                if hasattr(obj.CloneOf,"Mesh"):
-                                    if obj.CloneOf.Mesh:
-                                        mesh = obj.CloneOf.Mesh.Mesh.copy()
-                                        mesh.Placement = obj.Placement.multiply(obj.CloneOf.Placement).multiply(obj.CloneOf.Mesh.Mesh.Placement)
+                                if hasattr(obj.CloneOf,"Hires"):
+                                    if obj.CloneOf.Hires:
+                                        if obj.CloneOf.Hires.isDerivedFrom("Mesh::Feature"):
+                                            m = obj.CloneOf.Hires.Mesh
+                                        else:
+                                            m = obj.CloneOf.Hires.Shape
+                                        hires = m.copy()
+                                        hires.Placement = obj.Placement.multiply(obj.CloneOf.Placement).multiply(m.Placement)
             else:
                 visible = True
             if visible:
-                if mesh:
-                    vlist,elist,flist = getIndices(mesh,offset)
+                if hires:
+                    vlist,elist,flist = getIndices(hires,offset)
                 else:
                     vlist,elist,flist = getIndices(obj.Shape,offset)
                 if vlist == None:
@@ -148,6 +161,22 @@ def export(exportList,filename):
                 else:
                     offset += len(vlist)
                     outfile.write("o " + obj.Name + "\n")
+
+                    # write material
+                    m = False
+                    if hasattr(obj,"BaseMaterial"):
+                        if obj.BaseMaterial:
+                            outfile.write("usemtl " + obj.BaseMaterial.Name + "\n")
+                            materials.append(obj.BaseMaterial)
+                            m = True
+                    if not m:
+                        if FreeCAD.GuiUp:
+                            if hasattr(obj.ViewObject,"ShapeColor") and hasattr(obj.ViewObject,"Transparency"):
+                                mn = Draft.getrgb(obj.ViewObject.ShapeColor)[1:]
+                                outfile.write("usemtl color_" + mn + "\n")
+                                materials.append(("color_" + mn,obj.ViewObject.ShapeColor,obj.ViewObject.Transparency))
+
+                    # write geometry
                     for v in vlist:
                         outfile.write("v" + v + "\n")
                     for e in elist:
@@ -156,6 +185,123 @@ def export(exportList,filename):
                         outfile.write("f" + f + "\n")
     outfile.close()
     FreeCAD.Console.PrintMessage(translate("Arch","successfully written ").decode('utf8')+filename+"\n")
-            
-            
-            
+    if materials:
+        outfile = pythonopen(filenamemtl,"wb")
+        outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
+        outfile.write("# http://www.freecadweb.org\n")
+        kinds = {"AmbientColor":"Ka ","DiffuseColor":"Kd ","SpecularColor":"Ks ","EmissiveColor":"Ke ","Transparency":"d "}
+        done = [] # store names to avoid duplicates
+        for mat in materials:
+            if isinstance(mat,tuple):
+                if not mat[0] in done:
+                    outfile.write("newmtl " + mat[0] + "\n")
+                    outfile.write("Kd " + str(mat[1][0]) + " " + str(mat[1][1]) + " " + str(mat[1][2]) + "\n")
+                    outfile.write("d " + str(mat[2]) + "\n")
+                    done.append(mat[0])
+            else:
+                if not mat.Name in done:
+                    outfile.write("newmtl " + mat.Name + "\n")
+                    for prop in kinds:
+                        if prop in mat.Material:
+                            outfile.write(kinds[prop] + mat.Material[prop].strip("()").replace(',',' ') + "\n")
+                    done.append(mat.Name)
+        outfile.write("# Material Count: " + str(len(materials)))
+        outfile.close()
+        FreeCAD.Console.PrintMessage(translate("Arch","successfully written ") + filenamemtl + "\n")
+
+
+def decode(name):
+    "decodes encoded strings"
+    try:
+        decodedName = (name.decode("utf8"))
+    except UnicodeDecodeError:
+        try:
+            decodedName = (name.decode("latin1"))
+        except UnicodeDecodeError:
+            FreeCAD.Console.PrintError(translate("Arch","Error: Couldn't determine character encoding"))
+            decodedName = name
+    return decodedName
+
+def open(filename):
+    "called when freecad wants to open a file"
+    docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
+    doc = FreeCAD.newDocument(docname)
+    doc.Label = decode(docname)
+    return insert(filename,doc.Name)
+
+def insert(filename,docname):
+    "called when freecad wants to import a file"
+    try:
+        doc = FreeCAD.getDocument(docname)
+    except NameError:
+        doc = FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
+
+    with pythonopen(filename,"rb") as infile:
+        verts = []
+        facets = []
+        activeobject = None
+        material = None
+        colortable = {}
+        for line in infile:
+            line = line.strip()
+            if line[:7] == "mtllib ":
+                matlib = os.path.join(os.path.dirname(filename),line[7:])
+                if os.path.exists(matlib):
+                    with pythonopen(matlib,"rb") as matfile:
+                        mname = None
+                        color = None
+                        trans = None
+                        for mline in matfile:
+                            mline = mline.strip()
+                            if mline[:7] == "newmtl ":
+                                if mname and color:
+                                    colortable[mname] = [color,trans]
+                                color = None
+                                trans = None
+                                mname = mline[7:]
+                            elif mline[:3] == "Kd ":
+                                color = tuple([float(i) for i in mline[3:].split()])
+                            elif mline[:2] == "d ":
+                                trans = int(float(mline[2:])*100)
+                        if mname and color:
+                            colortable[mname] = [color,trans]
+            elif line[:2] == "o ":
+                if activeobject:
+                    makeMesh(doc,activeobject,verts,facets,material,colortable)
+                material = None
+                facets = []
+                activeobject = line[2:]
+            elif line[:2] == "v ":
+                verts.append([float(i) for i in line[2:].split()])
+            elif line[:2] == "f ":
+                facets.append([int(i) for i in line[2:].split()])
+            elif line[:7] == "usemtl ":
+                material = line[7:]
+        if activeobject:
+            makeMesh(doc,activeobject,verts,facets,material,colortable)
+    FreeCAD.Console.PrintMessage(translate("Arch","successfully imported ")+filename+"\n")
+    return doc
+
+def makeMesh(doc,activeobject,verts,facets,material,colortable):
+    mfacets = []
+    if facets:
+        for facet in facets:
+            if len(facet) > 3:
+                vecs = [FreeCAD.Vector(*verts[i-1]) for i in facet]
+                vecs.append(vecs[0])
+                pol = Part.makePolygon(vecs)
+                face = Part.Face(pol)
+                tris = face.tessellate(1)
+                for tri in tris[1]:
+                    mfacet.append([tris[0][i] for i in tri])
+            else:
+                mfacets.append([verts[i-1] for i in facet])
+    if mfacets:
+        mobj = doc.addObject("Mesh::Feature",activeobject)
+        mobj.Mesh = Mesh.Mesh(mfacets)
+        if material and FreeCAD.GuiUp:
+            if material in colortable:
+                mobj.ViewObject.ShapeColor = colortable[material][0]
+                if colortable[material][1] != None:
+                    mobj.ViewObject.Transparency = colortable[material][1]

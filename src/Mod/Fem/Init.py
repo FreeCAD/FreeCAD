@@ -32,12 +32,14 @@ FreeCAD.addImportType("FEM formats (*.unv *.med *.dat *.bdf)", "Fem")
 if("BUILD_FEM_VTK" in FreeCAD.__cmake__):
     FreeCAD.addImportType("FEM CFD Unstructure Mesh (*.vtk *.vtu)", "Fem")
     FreeCAD.addExportType("FEM CFD Unstructure Mesh (*.vtk *.vtu)", "Fem")
-    # FreeCAD.addImportType("FEM results (*.vtk *.vtp *.vts *.vtr *.vtu *.vti)", "importVTKResults")  # not implemented yet
+    FreeCAD.addImportType("FEM results (*.vtk *.vtu)", "importVTKResults")
     FreeCAD.addExportType("FEM CFD Result in VTK format (*.vtk *.vtu)", "importVTKResults")
 
 FreeCAD.addExportType("FEM formats (*.unv *.med *.dat *.inp)", "Fem")
-FreeCAD.addImportType("CalculiX result (*.frd)", "ccxFrdReader")
+FreeCAD.addImportType("CalculiX result (*.frd)", "importCcxFrdResults")
+FreeCAD.addImportType("Fenics mesh file (*.xml)", "importFenicsMesh")
+FreeCAD.addExportType("Fenics mesh file (*.xml)", "importFenicsMesh")
 FreeCAD.addImportType("Mesh from Calculix/Abaqus input file (*.inp)", "importInpMesh")
 FreeCAD.addImportType("Z88 mesh file (*.txt)", "importZ88Mesh")
 FreeCAD.addExportType("Z88 mesh file (*.txt)", "importZ88Mesh")
-FreeCAD.addImportType("Z88 result file (*.txt)", "importZ88Results")
+FreeCAD.addImportType("Z88 displacement (o2) result file (*.txt)", "importZ88O2Results")

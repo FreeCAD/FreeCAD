@@ -40,3 +40,12 @@ INSTALL(
     DESTINATION
         Mod/Part/BOPTools
        )
+
+INSTALL(
+    FILES
+        CompoundTools/__init__.py
+        CompoundTools/_CommandCompoundFilter.py
+        CompoundTools/CompoundFilter.py
+    DESTINATION
+        Mod/Part/CompoundTools
+       )

@@ -514,7 +514,7 @@ DeriVector2 Parabola::CalculateNormal(Point &p, double* derivparam)
     DeriVector2 pv (p, derivparam);
     
     // the normal is the vector from the focus to the intersection of ano thru the point p and direction
-    // of the symetry axis of the parabola with the directrix.
+    // of the symmetry axis of the parabola with the directrix.
     // As both point to directrix and point to focus are of equal magnitude, we can work with unitary vectors
     // to calculate the normal, substraction of those vectors.
     
@@ -614,7 +614,7 @@ DeriVector2 BSpline::CalculateNormal(Point& p, double* derivparam)
     DeriVector2 ret;
     
     if (mult[0] > degree && mult[mult.size()-1] > degree) {
-    // if endpoints thru end poles    
+    // if endpoints through end poles    
         if(*p.x == *start.x && *p.y == *start.y) {
             // and you are asking about the normal at start point
             // then tangency is defined by first to second poles

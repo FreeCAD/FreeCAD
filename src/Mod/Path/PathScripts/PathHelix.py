@@ -53,9 +53,10 @@ else:
 
 def z_cylinder(cyl):
     """ Test if cylinder is aligned to z-Axis"""
-    if cyl.Surface.Axis.x != 0.0:
+    axis = cyl.Surface.Axis
+    if abs(axis.x) > 1e-10 * abs(axis.z):
         return False
-    if cyl.Surface.Axis.y != 0.0:
+    if abs(axis.y) > 1e-10 * abs(axis.z):
         return False
     return True
 
@@ -587,7 +588,8 @@ class TaskPanel(object):
                 label = QtGui.QLabel(labelstring)
                 label.setToolTip(self.obj.getDocumentationOfProperty(property))
 
-            widget.setText(str(getattr(self.obj, property)))
+            quantity = getattr(self.obj, property)
+            widget.setText(quantity.UserString)
             widget.setToolTip(self.obj.getDocumentationOfProperty(property))
 
             if max:

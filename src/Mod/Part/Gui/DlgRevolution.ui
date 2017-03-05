@@ -29,7 +29,7 @@
    <item row="5" column="3">
     <widget class="QCheckBox" name="checkSolid">
      <property name="toolTip">
-      <string>If checked, revolving wires will produce solids. If not, revolving a wire yeilds a shell.</string>
+      <string>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</string>
      </property>
      <property name="text">
       <string>Create Solid</string>

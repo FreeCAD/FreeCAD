@@ -45,7 +45,7 @@ public:
     virtual bool isShow(void) const
     { return true; }
 
-    bool doubleClicked(void);
+    //bool doubleClicked(void);
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProviderResult> ViewProviderResultPython;

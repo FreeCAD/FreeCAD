@@ -438,7 +438,7 @@ plane if none of its neighours is coplanar.</UserDocu>
 			<Documentation>
 				<UserDocu>getSegmentsByCurvature(list) -> list
 The argument list gives a list if tuples where it defines the preferred maximum curvature,
-the preferred minumum curvature, the tolerances and the number of minimum faces for the segment.
+the preferred minimum curvature, the tolerances and the number of minimum faces for the segment.
 Example:
 c=(1.0, 0.0, 0.1, 0.1, 500) # search for a cylinder with radius 1.0
 p=(0.0, 0.0, 0.1, 0.1, 500) # search for a plane
@@ -459,13 +459,13 @@ for p in mesh.Points:
 			<Documentation>
 				<UserDocu>Return the number of vertices of the mesh object.</UserDocu>
 			</Documentation>
-			<Parameter Name="CountPoints" Type="Int" />
+			<Parameter Name="CountPoints" Type="Long" />
 		</Attribute>
 		<Attribute Name="CountEdges" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Return the number of edges of the mesh object.</UserDocu>
 			</Documentation>
-			<Parameter Name="CountEdges" Type="Int" />
+			<Parameter Name="CountEdges" Type="Long" />
 		</Attribute>
 		<Attribute Name="Facets" ReadOnly="true">
 			<Documentation>
@@ -480,7 +480,7 @@ for p in mesh.Facets:
 			<Documentation>
 				<UserDocu>Return the number of facets of the mesh object.</UserDocu>
 			</Documentation>
-			<Parameter Name="CountFacets" Type="Int" />
+			<Parameter Name="CountFacets" Type="Long" />
 		</Attribute>
 		<Attribute Name="Topology" ReadOnly="true">
 			<Documentation>

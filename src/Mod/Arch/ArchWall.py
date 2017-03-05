@@ -50,7 +50,7 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 # Possible roles for walls
-Roles = ['Wall','Wall Layer','Beam','Column','Curtain Wall']
+Roles = ['Undefined','Wall','Wall Layer','Beam','Column','Curtain Wall']
 
 def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face=None,name="Wall"):
     '''makeWall([obj],[length],[width],[height],[align],[face],[name]): creates a wall based on the

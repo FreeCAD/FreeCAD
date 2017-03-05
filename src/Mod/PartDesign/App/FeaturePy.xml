@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="PartFeaturePy"
+    Name="FeaturePy"
+    Twin="Feature" 
+    TwinPointer="Feature" 
+    Include="Mod/PartDesign/App/Feature.h"
+    Namespace="PartDesign"
+    FatherInclude="Mod/Part/App/PartFeaturePy.h"
+    FatherNamespace="Part">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <UserDocu>This is the father of all PartDesign object classes</UserDocu>
+    </Documentation>
+    <Methode Name="getBaseObject">
+            <Documentation>
+                    <UserDocu>getBaseObject: returns feature this one fuses itself to, or None. Normally, this should be the same as BaseFeature property, except for legacy workflow. In legacy workflow, it will look up the support of referenced sketch.</UserDocu>
+            </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

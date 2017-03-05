@@ -48,6 +48,7 @@
 #include <BRep_Tool.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
+#include <Standard_Version.hxx>
 
 
 using namespace PartDesignGui;
@@ -130,8 +131,9 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
 
         // create or use the mesh on the data structure
 #if OCC_VERSION_HEX >= 0x060600
+        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
         BRepMesh_IncrementalMesh(cShape,deflection,Standard_False,
-                AngDeflectionRads,Standard_True);
+                                    AngDeflectionRads,Standard_True);
 #else
         BRepMesh_IncrementalMesh(cShape,deflection);
 #endif

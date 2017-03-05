@@ -22,7 +22,7 @@
 
 
 /*! \namespace Mesh
-    \brief The namespace of the Mesh Aplication layer library
+    \brief The namespace of the Mesh Application layer library
 */ 
 
 /*! \namespace MeshCore

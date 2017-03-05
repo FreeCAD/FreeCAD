@@ -361,6 +361,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
     //    newmode = NavigationStyle::ZOOMING;
     //    break;
     case CTRLDOWN|SHIFTDOWN|BUTTON2DOWN:
+    case CTRLDOWN|BUTTON3DOWN:
         newmode = NavigationStyle::ZOOMING;
         break;
 

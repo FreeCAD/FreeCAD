@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
  
 
@@ -35,7 +36,7 @@ extern PyObject* initModule();
 }
 
 /* Python entry */
-PyMODINIT_FUNC initMeshPart()
+PyMOD_INIT_FUNC(MeshPart)
 {
     // load dependent module
     try {
@@ -44,8 +45,9 @@ PyMODINIT_FUNC initMeshPart()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
-    (void)MeshPart::initModule();
+    PyObject* mod = MeshPart::initModule();
     Base::Console().Log("Loading MeshPart module... done\n");
+    PyMOD_Return(mod);
 }

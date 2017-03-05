@@ -56,7 +56,7 @@ namespace KDL {
 class Error {
 public:
     /** Returns a description string describing the error.
-     *  the returned pointer only garanteed to exists as long as 
+     *  the returned pointer only guaranteed to exists as long as 
      * the Error object exists.
      */
 	virtual ~Error() {}
@@ -129,7 +129,7 @@ public:
     virtual const char* Description() const {return "Unexpected identifier, expecting TRANS or ROT";}
     virtual int GetType() const {return 201;}
 };
-//! Error_Redundancy indicates an error that occured during solving for redundancy.
+//! Error_Redundancy indicates an error that occurred during solving for redundancy.
 class Error_RedundancyIO:public Error_IO  {};
 class Error_Redundancy_Illegal_Resolutiontype : public Error_RedundancyIO {
 public:

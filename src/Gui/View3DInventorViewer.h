@@ -85,8 +85,8 @@ public:
         Clip        = 4,  /**< Clip objects using a lasso. */
     };
     /** @name Modus handling of the viewer
-      * Here the you can switch on/off several features
-      * and modies of the Viewer
+      * Here you can switch several features on/off
+      * and modes of the Viewer
       */
     //@{
     enum ViewerMod {
@@ -101,7 +101,7 @@ public:
     
     /** @name Anti-Aliasing modes of the rendered 3D scene
       * Specifies Anti-Aliasing (AA) method
-      * - Smoothing enables OpenGL line and vertex smoothing (basicly depreciated)
+      * - Smoothing enables OpenGL line and vertex smoothing (basically depreciated)
       * - MSAA is hardware multi sampling (with 2, 4 or 8 passes), a quite commom and efficient AA technique
       */
     //@{
@@ -338,6 +338,7 @@ public:
     void setAxisCross(bool b);
     bool hasAxisCross(void);
     
+
     void setEnabledFPSCounter(bool b);
     void setEnabledVBO(bool b);
     bool isEnabledVBO() const;
@@ -410,6 +411,7 @@ private:
     RenderType renderType;
     QGLFramebufferObject* framebuffer;
     QImage glImage;
+    SbBool shading;
     SoSwitch *dimensionRoot;
 
     // small axis cross in the corner

@@ -1337,7 +1337,7 @@ void MeshTopoAlgorithm::FillupHoles(int level, AbstractPolygonTriangulator& cTri
                 addFacets.push_back(*it);
             }
         }
-        _rclMesh.AddFacets(addFacets);
+        _rclMesh.AddFacets(addFacets, true);
     }
 }
 

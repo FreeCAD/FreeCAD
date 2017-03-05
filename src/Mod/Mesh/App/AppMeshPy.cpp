@@ -23,12 +23,13 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
+# include <memory>
+# include <map>
 #endif
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
-#include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
@@ -50,6 +51,7 @@
 #include "WildMagic4/Wm4ContBox3.h"
 
 #include "Mesh.h"
+#include "Exporter.h"
 #include "FeatureMeshImport.h"
 #include <Mod/Mesh/App/MeshPy.h>
 
@@ -59,16 +61,6 @@ using namespace MeshCore;
 namespace Mesh {
 class Module : public Py::ExtensionModule<Module>
 {
-    struct add_offset {
-        unsigned long i;
-        add_offset(unsigned long i) : i(i)
-        {
-        }
-        void operator()(unsigned long& v)
-        {
-            v += i;
-        }
-    };
 public:
     Module() : Py::ExtensionModule<Module>("Mesh")
     {
@@ -76,14 +68,21 @@ public:
             "Read a mesh from a file and returns a Mesh object."
         );
         add_varargs_method("open",&Module::open,
-            "open(string) -- Create a new document and a Mesh::Import feature to load the file into the document."
+            "open(string)\n"
+            "Create a new document and a Mesh feature to load the file into\n"
+            "the document."
         );
         add_varargs_method("insert",&Module::importer,
-            "insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document."
+            "insert(string|mesh,[string])\n"
+            "Load or insert a mesh into the given or active document."
         );
-        add_varargs_method("export",&Module::exporter,
-            "export(list,string,[tolerance]) -- Export a list of objects into a single file.  tolerance is in mm\n"
-            "and specifies the maximum acceptable deviation between the specified objects and the exported mesh."
+        add_keyword_method("export",&Module::exporter,
+            "export(objects, filename, [tolerance=0.1, exportAmfCompressed=True])\n"
+            "Export a list of objects into a single file identified by filename.\n"
+            "tolerance is in mm and specifies the maximum acceptable deviation\n"
+            "between the specified objects and the exported mesh.\n"
+            "exportAmfCompressed specifies whether exported AMF files should be\n"
+            "compressed.\n"
         );
         add_varargs_method("show",&Module::show,
             "Put a mesh object in the active document or creates one if needed"
@@ -110,7 +109,8 @@ public:
             "Create a tessellated torus"
         );
         add_varargs_method("calculateEigenTransform",&Module::calculateEigenTransform,
-            "calculateEigenTransform(seq(Base.Vector)) -- Calculates the eigen Transformation from a list of points.\n"
+            "calculateEigenTransform(seq(Base.Vector))\n"
+            "Calculates the eigen Transformation from a list of points.\n"
             "calculate the point's local coordinate system with the center\n"
             "of gravity as origin. The local coordinate system is computed\n"
             "this way that u has minimum and w has maximum expansion.\n"
@@ -120,15 +120,19 @@ public:
             "polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit."
         );
         add_varargs_method("minimumVolumeOrientedBox",&Module::minimumVolumeOrientedBox,
-            "minimumVolumeOrientedBox(seq(Base.Vector)) -- Calculates the minimum volume oriented box containing all points.\n"
-            "The return value is a tuple of seven items: center, u, v, w directions and the lengths of the three vectors."
+            "minimumVolumeOrientedBox(seq(Base.Vector)) -- Calculates the minimum\n"
+            "volume oriented box containing all points. The return value is a\n"
+            "tuple of seven items:\n"
+            "    center, u, v, w directions and the lengths of the three vectors.\n"
         );
         initialize("The functions in this module allow working with mesh objects.\n"
-                   "A set of functions are provided that allow to read in registered mesh file formats\n"
-                   "to either an newly created or already exising document.\n"
+                   "A set of functions are provided for reading in registered mesh\n"
+                   "file formats to either a new or exising document.\n"
                    "\n"
-                   "open(string) -- Create a new document and a Mesh::Import feature to load the file into the document.\n"
-                   "insert(string, string) -- Create a Mesh::Import feature to load the file into the given document.\n"
+                   "open(string) -- Create a new document and a Mesh feature\n"
+                   "                to load the file into the document.\n"
+                   "insert(string, string) -- Create a Mesh feature to load\n"
+                   "                          the file into the given document.\n"
                    "Mesh() -- Create an empty mesh object.\n"
                    "\n");
     }
@@ -281,117 +285,77 @@ private:
 
         return Py::None();
     }
-    Py::Object exporter(const Py::Tuple& args)
+
+    Py::Object exporter(const Py::Tuple &args, const Py::Dict &keywds)
     {
-        PyObject *object;
-        char *Name;
+        PyObject *objects;
+        char *fileNamePy;
 
         // If tolerance is specified via python interface, use that.
         // If not, use the preference, if that exists, else default to 0.1mm.
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Mesh");
-        float fTolerance = hGrp->GetFloat( "MaxDeviationExport", 0.1f );
+        auto hGrp( App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Mesh") );
+        auto fTolerance( hGrp->GetFloat("MaxDeviationExport", 0.1f) );
 
-        if (!PyArg_ParseTuple(args.ptr(), "Oet|f", &object, "utf-8", &Name, &fTolerance))
+        int exportAmfCompressed( hGrp->GetBool("ExportAmfCompressed", true) );
+
+        static char *kwList[] = {"objectList", "filename", "tolerance",
+                                 "exportAmfCompressed", NULL};
+
+        if (!PyArg_ParseTupleAndKeywords( args.ptr(), keywds.ptr(),
+#if PY_MAJOR_VERSION >= 3
+                                          "Oet|fp",
+#else
+                                          "Oet|fi",
+#endif // Python version switch
+                                          kwList, &objects, "utf-8", &fileNamePy,
+                                          &fTolerance, &exportAmfCompressed )) {
             throw Py::Exception();
+        }
 
-        std::string EncodedName = std::string(Name);
-        PyMem_Free(Name);
+        std::string outputFileName(fileNamePy);
+        PyMem_Free(fileNamePy);
 
-        MeshObject global_mesh;
+        // Construct list of objects to export before making the Exporter, so
+        // we don't get empty exports if the list can't be constructed.
+        Py::Sequence list(objects);
+        if (list.length() == 0) {
+            return Py::None();
+        }
 
-        Py::Sequence list(object);
-        Base::Type meshId = Base::Type::fromName("Mesh::Feature");
-        Base::Type partId = Base::Type::fromName("Part::Feature");
-        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-            PyObject* item = (*it).ptr();
+        auto exportFormat( MeshOutput::GetFormat(outputFileName.c_str()) );
+
+        std::unique_ptr<Exporter> exporter;
+        if (exportFormat == MeshIO::AMF) {
+            std::map<std::string, std::string> meta;
+            meta["cad"] = App::Application::Config()["ExeName"] + " " +
+                          App::Application::Config()["ExeVersion"];
+            meta[App::Application::Config()["ExeName"] + "-buildRevisionHash"] =
+                          App::Application::Config()["BuildRevisionHash"];
+
+            exporter.reset( new AmfExporter(outputFileName, meta, exportAmfCompressed) );
+
+        } else if (exportFormat != MeshIO::Undefined) {
+            exporter.reset( new MergeExporter(outputFileName, exportFormat) );
+
+        } else {
+            std::string exStr("Can't determine mesh format from file name: '");
+            exStr += outputFileName + "'";
+            throw Py::Exception(Base::BaseExceptionFreeCADError, exStr.c_str());
+        }
+
+        for (auto it : list) {
+            PyObject *item = it.ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
-                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                if (obj->getTypeId().isDerivedFrom(meshId)) {
-                    const MeshObject& mesh = static_cast<Mesh::Feature*>(obj)->Mesh.getValue();
-                    MeshCore::MeshKernel kernel = mesh.getKernel();
-                    kernel.Transform(mesh.getTransform());
+                auto obj( static_cast<App::DocumentObjectPy *>(item)->getDocumentObjectPtr() );
 
-                    unsigned long countFacets = global_mesh.countFacets();
-                    if (countFacets == 0)
-                        global_mesh.setKernel(kernel);
-                    else
-                        global_mesh.addMesh(kernel);
-
-                    // if the mesh already has persistent segments then use them instead
-                    unsigned long numSegm = mesh.countSegments();
-                    unsigned long canSave = 0;
-                    for (unsigned long i=0; i<numSegm; i++) {
-                        if (mesh.getSegment(i).isSaved())
-                            canSave++;
-                    }
-
-                    if (canSave > 0) {
-                        for (unsigned long i=0; i<numSegm; i++) {
-                            const Segment& segm = mesh.getSegment(i);
-                            if (segm.isSaved()) {
-                                std::vector<unsigned long> indices = segm.getIndices();
-                                std::for_each(indices.begin(), indices.end(), add_offset(countFacets));
-                                Segment new_segm(&global_mesh, indices, true);
-                                new_segm.setName(segm.getName());
-                                global_mesh.addSegment(new_segm);
-                            }
-                        }
-
-                    }
-                    else {
-                        // now create a segment for the added mesh
-                        std::vector<unsigned long> indices;
-                        indices.resize(global_mesh.countFacets() - countFacets);
-                        std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
-                        Segment segm(&global_mesh, indices, true);
-                        segm.setName(obj->Label.getValue());
-                        global_mesh.addSegment(segm);
-                    }
-                }
-                else if (obj->getTypeId().isDerivedFrom(partId)) {
-                    App::Property* shape = obj->getPropertyByName("Shape");
-                    Base::Reference<MeshObject> mesh(new MeshObject());
-                    if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
-                        std::vector<Base::Vector3d> aPoints;
-                        std::vector<Data::ComplexGeoData::Facet> aTopo;
-                        const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(shape)->getComplexData();
-                        if (data) {
-                            data->getFaces(aPoints, aTopo, fTolerance);
-                            mesh->addFacets(aTopo, aPoints);
-
-                            unsigned long countFacets = global_mesh.countFacets();
-                            if (countFacets == 0)
-                                global_mesh = *mesh;
-                            else
-                                global_mesh.addMesh(*mesh);
-
-                            // now create a segment for the added mesh
-                            std::vector<unsigned long> indices;
-                            indices.resize(global_mesh.countFacets() - countFacets);
-                            std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
-                            Segment segm(&global_mesh, indices, true);
-                            segm.setName(obj->Label.getValue());
-                            global_mesh.addSegment(segm);
-                        }
-                    }
-                }
-                else {
-                    Base::Console().Message("'%s' is not a mesh or shape, export will be ignored.\n", obj->Label.getValue());
-                }
+                exporter->addObject(obj, fTolerance);
             }
         }
-
-        // if we have more than one segment set the 'save' flag
-        if (global_mesh.countSegments() > 1) {
-            for (unsigned long i = 0; i < global_mesh.countSegments(); ++i) {
-                global_mesh.getSegment(i).save(true);
-            }
-        }
-        // export mesh compound
-        global_mesh.save(EncodedName.c_str());
+        exporter.reset();   // deletes Exporter, mesh file is written by destructor
 
         return Py::None();
     }
+
     Py::Object show(const Py::Tuple& args)
     {
         PyObject *pcObj;

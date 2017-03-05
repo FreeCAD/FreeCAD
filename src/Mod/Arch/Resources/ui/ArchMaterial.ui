@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>193</width>
-    <height>233</height>
+    <width>216</width>
+    <height>259</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,6 +21,19 @@
        <item>
         <property name="text">
          <string>Choose preset...</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QComboBox" name="comboBox_FromExisting">
+       <item>
+        <property name="text">
+         <string>Copy existing...</string>
         </property>
        </item>
       </widget>

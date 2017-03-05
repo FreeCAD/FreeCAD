@@ -35,7 +35,7 @@ namespace Part
 
 class PartExport Extrusion : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Extrusion);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Extrusion);
 
 public:
     Extrusion();
@@ -73,10 +73,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartGui::ViewProviderExtrusion";
     }
     //@}
@@ -135,7 +135,7 @@ protected:
  */
 class FaceMakerExtrusion: public FaceMakerCheese
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     virtual std::string getUserFriendlyName() const override;
     virtual std::string getBriefExplanation() const override;

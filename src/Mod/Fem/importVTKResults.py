@@ -23,18 +23,31 @@
 # ***************************************************************************/
 
 __title__ = "FreeCAD Result import and export VTK file library"
-__author__ = "Qingfeng Xia"
+__author__ = "Qingfeng Xia, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package importVTKResults
 #  \ingroup FEM
+#  \brief FreeCAD Result import and export VTK file library
 
 import os
 import FreeCAD
+import Fem
 
 
+########## generic FreeCAD import and export methods ##########
 if open.__module__ == '__builtin__':
-    pyopen = open  # because we'll redefine open below
+    # because we'll redefine open below (Python2)
+    pyopen = open
+elif open.__module__ == 'io':
+    # because we'll redefine open below (Python3)
+    pyopen = open
+
+
+def open(filename):
+    "called when freecad opens a file"
+    docname = os.path.splitext(os.path.basename(filename))[0]
+    insert(filename, docname)
 
 
 def insert(filename, docname):
@@ -44,17 +57,7 @@ def insert(filename, docname):
     except NameError:
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
-    importFemResult(filename)
-
-
-def open(filename):
-    "called when freecad opens a file"
-    docname = os.path.splitext(os.path.basename(filename))[0]
-    insert(filename, docname)
-
-
-def importFemResult(filename):
-    FreeCAD.Console.PrintError("FemResult import is not implemented, actually not necessary\n")
+    importVTK(filename)
 
 
 def export(objectslist, filename):
@@ -66,5 +69,49 @@ def export(objectslist, filename):
     if not obj.isDerivedFrom("Fem::FemResultObject"):
         FreeCAD.Console.PrintError("object selcted is not FemResultObject.\n")
         return
-    import Fem
     Fem.writeResult(filename, obj)
+
+
+########## module specific methods ##########
+def importVTK(filename, analysis=None, result_name_prefix=None):
+    import ObjectsFem
+    if result_name_prefix is None:
+        result_name_prefix = ''
+    if analysis is None:
+        analysis_name = os.path.splitext(os.path.basename(filename))[0]
+        analysis_object = ObjectsFem.makeAnalysis('Analysis')
+        analysis_object.Label = analysis_name
+    else:
+        analysis_object = analysis
+
+    # if properties can be added in FemVTKTools importCfdResult(), this file can be used for CFD workbench
+    results_name = result_name_prefix + 'results'
+    result_obj = ObjectsFem.makeResultMechanical(results_name)
+    # result_obj = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
+    Fem.readResult(filename, result_obj.Name)  # readResult always creates a new femmesh named ResultMesh
+
+    # workaround for the DisplacementLengths (They should have been calculated by Fem.readResult)
+    if not result_obj.DisplacementLengths:
+        result_obj.DisplacementLengths = calculate_disp_abs(result_obj.DisplacementVectors)
+
+    analysis_object.Member = analysis_object.Member + [result_obj]
+    # FIXME move the ResultMesh in the analysis
+
+    ''' seams not used at the moment
+    filenamebase = '.'.join(filename.split('.')[:-1])  # pattern: filebase_timestamp.vtk
+    ts = filenamebase.split('_')[-1]
+    try:
+        time_step = float(ts)
+    except:
+        time_step = 0.0
+    # Stats has been setup in C++ function FemVTKTools importCfdResult()
+    '''
+
+
+# helper
+def calculate_disp_abs(displacements):
+    from math import sqrt
+    disp_abs = []
+    for d in displacements:
+        disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
+    return disp_abs

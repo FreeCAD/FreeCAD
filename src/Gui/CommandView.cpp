@@ -607,6 +607,18 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
     a4->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
     a4->setObjectName(QString::fromLatin1("Std_DrawStylePoints"));
     a4->setShortcut(QKeySequence(QString::fromUtf8("V,5")));
+    QAction* a5 = pcAction->addAction(QString());
+    a5->setCheckable(true);
+    a5->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
+    a5->setObjectName(QString::fromLatin1("Std_DrawStyleHiddenLine"));
+    a5->setShortcut(QKeySequence(QString::fromUtf8("V,6")));
+    QAction* a6 = pcAction->addAction(QString());
+    a6->setCheckable(true);
+    a6->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
+    a6->setObjectName(QString::fromLatin1("Std_DrawStyleNoShading"));
+    a6->setShortcut(QKeySequence(QString::fromUtf8("V,7")));
+
+
     pcAction->setIcon(a0->icon());
 
     _pcAction = pcAction;
@@ -647,6 +659,16 @@ void StdCmdDrawStyle::languageChange()
         "Std_DrawStyle", "Points"));
     a[4]->setToolTip(QCoreApplication::translate(
         "Std_DrawStyle", "Points mode"));
+
+    a[5]->setText(QCoreApplication::translate(
+        "Std_DrawStyle", "Hidden line"));
+    a[5]->setToolTip(QCoreApplication::translate(
+        "Std_DrawStyle", "Hidden line mode"));
+
+    a[6]->setText(QCoreApplication::translate(
+        "Std_DrawStyle", "No shading"));
+    a[6]->setToolTip(QCoreApplication::translate(
+        "Std_DrawStyle", "No shading mode"));
 }
 
 void StdCmdDrawStyle::updateIcon(const MDIView *view)
@@ -682,6 +704,16 @@ void StdCmdDrawStyle::updateIcon(const MDIView *view)
         actionGroup->setCheckedAction(4);
         return;
     }
+    if (mode == "Hidden Line")
+    {
+        actionGroup->setCheckedAction(5);
+        return;
+    }
+    if (mode == "No shading")
+    {
+        actionGroup->setCheckedAction(6);
+        return;
+    }
     actionGroup->setCheckedAction(0);
 }
 
@@ -713,6 +745,12 @@ void StdCmdDrawStyle::activated(int iMsg)
                     break;
                 case 4:
                     (oneChangedSignal) ? viewer->updateOverrideMode("Point") : viewer->setOverrideMode("Point");
+                    break;
+                case 5:
+                    (oneChangedSignal) ? viewer->updateOverrideMode("Hidden Line") : viewer->setOverrideMode("Hidden Line");
+                    break;
+                case 6:
+                    (oneChangedSignal) ? viewer->updateOverrideMode("No Shading") : viewer->setOverrideMode("No Shading");
                     break;
                 default:
                     (oneChangedSignal) ? viewer->updateOverrideMode("As Is") : viewer->setOverrideMode("As Is");

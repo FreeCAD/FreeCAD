@@ -94,7 +94,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
             fits = true;
         }
 
-        if (fits) { // check that it is actually belongs to the choosen body or part
+        if (fits) { // check that it is actually belongs to the chosen body or part
             try { // here are some throwers
                 if (body) {
                     if (body->getOrigin ()->hasObject (pObj) ) {

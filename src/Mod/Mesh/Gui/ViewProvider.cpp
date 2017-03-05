@@ -423,7 +423,7 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     pcFlatRoot->addChild(pcShapeMaterial);
     pcFlatRoot->addChild(pcMatBinding);
     pcFlatRoot->addChild(pcHighlight);
-    addDisplayMaskMode(pcFlatRoot, "Flat");
+    addDisplayMaskMode(pcFlatRoot, "Shaded");
 
     // points
     SoGroup* pcPointRoot = new SoGroup();
@@ -469,7 +469,7 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     pcFlatWireRoot->addChild(pcShapeMaterial);
     pcFlatWireRoot->addChild(pcMatBinding);
     pcFlatWireRoot->addChild(pcShapeGroup);
-    addDisplayMaskMode(pcFlatWireRoot, "FlatWireframe");
+    addDisplayMaskMode(pcFlatWireRoot, "Flat Lines");
 
     if (getColorProperty()) {
         Coloring.setStatus(App::Property::Hidden, false);
@@ -576,13 +576,13 @@ void ViewProviderMesh::setColorPerVertex(const App::PropertyColorList* prop)
 void ViewProviderMesh::setDisplayMode(const char* ModeName)
 {
     if (strcmp("Shaded",ModeName)==0) {
-        setDisplayMaskMode("Flat");
+        setDisplayMaskMode("Shaded");
     }
     else if (strcmp("Points",ModeName)==0) {
         setDisplayMaskMode("Point");
     }
     else if (strcmp("Flat Lines",ModeName)==0) {
-        setDisplayMaskMode("FlatWireframe");
+        setDisplayMaskMode("Flat Lines");
     }
     else if (strcmp("Wireframe",ModeName)==0) {
         setDisplayMaskMode("Wireframe");
@@ -1609,7 +1609,7 @@ void ViewProviderMesh::fillHole(unsigned long uFacet)
     //add the facets to the mesh and open a transaction object for the undo/redo stuff
     Gui::Application::Instance->activeDocument()->openCommand("Fill hole");
     Mesh::MeshObject* kernel = fea->Mesh.startEditing();
-    kernel->addFacets(newFacets, newPoints);
+    kernel->addFacets(newFacets, newPoints, true);
     fea->Mesh.finishEditing();
     Gui::Application::Instance->activeDocument()->commitCommand();
 }

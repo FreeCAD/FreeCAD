@@ -110,7 +110,9 @@ public:
     void drawConstraintIcons();
 
     /// draw the sketch in the inventor nodes
-    void draw(bool temp=false);
+    /// temp => use temporary solver solution in SketchObject
+    /// recreateinformationscenography => forces a rebuild of the information layer scenography
+    void draw(bool temp=false, bool rebuildinformationlayer=true);
 
     /// draw the edit curve
     void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
@@ -120,6 +122,9 @@ public:
     /// Observer message from the Selection
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
+    /// Show/Hide nodes from information layer
+    void showRestoreInformationLayer();
+    
     /** @name handler control */
     //@{
     /// sets an DrawSketchHandler in control
@@ -373,6 +378,7 @@ protected:
     static SbColor PreselectColor;
     static SbColor SelectColor;
     static SbColor PreselectSelectedColor;
+    static SbColor InformationColor;
 
     static SbTime prvClickTime;
     static SbVec3f prvClickPoint;
@@ -387,6 +393,7 @@ protected:
     float zText;
     float zEdit;
     float zHighLine;
+    float zInfo;
 
     // reference coordinates for relative operations
     double xInit,yInit;
@@ -397,6 +404,8 @@ protected:
     Gui::Rubberband* rubberband;
     App::Part*          parentPart = nullptr;
     Part::BodyBase*     parentBody = nullptr;
+
+    bool visibleInformationChanged;
 };
 
 } // namespace PartGui

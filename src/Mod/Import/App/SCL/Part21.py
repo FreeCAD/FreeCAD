@@ -130,7 +130,7 @@ class Part21Parser:
             line = fp.readline()
             if not line:
                 break
-            # there may be a multline definition. In this case, we read lines untill we found
+            # there may be a multline definition. In this case, we read lines until we found
             # a ;
             while (line.find(';') == -1): #its a multiline
                 line = line.replace("\n","").replace("\r","") + fp.readline()

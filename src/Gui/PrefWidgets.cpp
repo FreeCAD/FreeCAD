@@ -515,7 +515,7 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
     // call the menu and wait until its back
     QAction *userAction = menu->exec(event->globalPos());
 
-    // look what the user has choosen
+    // look what the user has chosen
     if (userAction == saveValueAction) {
         pushToHistory(this->text());
     }

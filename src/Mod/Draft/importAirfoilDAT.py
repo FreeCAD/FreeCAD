@@ -85,7 +85,7 @@ def process(doc,filename):
 
     
 
-        # Collect the data for the upper and the lower side seperately if possible     
+        # Collect the data for the upper and the lower side separately if possible     
         for lin in afile:
                 curdat = regex.match(lin)
                 if curdat != None:   

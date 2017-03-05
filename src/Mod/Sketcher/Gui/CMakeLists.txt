@@ -79,6 +79,7 @@ SET(SketcherGui_SRCS
     CommandConstraints.h
     CommandConstraints.cpp
     CommandSketcherTools.cpp
+    CommandSketcherBSpline.cpp
     CommandAlterGeometry.cpp
     Resources/Sketcher.qrc
     PreCompiled.cpp

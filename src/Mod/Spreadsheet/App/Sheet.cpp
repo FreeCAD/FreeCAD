@@ -476,7 +476,7 @@ void Sheet::onSettingDocument()
 }
 
 /**
-  * Set the property for cell \key to a PropertyFloat with the value \a value.
+  * Set the property for cell \p key to a PropertyFloat with the value \a value.
   * If the Property exists, but of wrong type, the previous Property is destroyed and recreated as the correct type.
   *
   * @param key   The address of the cell we want to create a Property for
@@ -506,7 +506,7 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
 }
 
 /**
-  * Set the property for cell \key to a PropertyQuantity with \a value and \a unit.
+  * Set the property for cell \p key to a PropertyQuantity with \a value and \a unit.
   * If the Property exists, but of wrong type, the previous Property is destroyed and recreated as the correct type.
   *
   * @param key   The address of the cell we want to create a Property for
@@ -541,7 +541,7 @@ Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base:
 }
 
 /**
-  * Set the property for cell \key to a PropertyString with \a value.
+  * Set the property for cell \p key to a PropertyString with \a value.
   * If the Property exists, but of wrong type, the previous Property is destroyed and recreated as the correct type.
   *
   * @param key   The address of the cell we want to create a Property for
@@ -711,7 +711,7 @@ void Sheet::recomputeCell(CellAddress p)
         if (cell)
             cell->setException(e.what());
 
-        // Mark as erronous
+        // Mark as erroneous
         cellErrors.insert(p);
     }
 
@@ -800,7 +800,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
             while (i != VertexList.end()) {
                 Cell * cell = cells.getValue(i->first);
 
-                // Mark as erronous
+                // Mark as erroneous
                 cellErrors.insert(i->first);
 
                 if (cell)
@@ -916,7 +916,7 @@ void Sheet::getSpans(CellAddress address, int &rows, int &cols) const
 /**
   * Determine whether this cell is merged with another or not.
   *
-  * @param adderss
+  * @param address
   *
   * @returns True if cell is merged, false if not.
   *
@@ -950,7 +950,7 @@ int Sheet::getColumnWidth(int col) const
 }
 
 /**
- * @brief Set row height of row given by index in \row to \a height.
+ * @brief Set row height of row given by index in \p row to \a height.
  * @param row Row index.
  * @param height New height of row.
  */
@@ -1164,7 +1164,7 @@ std::string Sheet::getAddressFromAlias(const std::string &alias) const
 }
 
 /**
- * @brief Determine whether a given alias candiate is valid or not.
+ * @brief Determine whether a given alias candidate is valid or not.
  *
  * A candidate is valid is the string is syntactically correct,
  * and the alias does not conflict with an existing property.

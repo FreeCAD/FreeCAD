@@ -40,6 +40,7 @@
 #include "TaskFeatureParameters.h"
 
 #include "ViewProvider.h"
+#include "ViewProviderPy.h"
 
 using namespace PartDesignGui;
 
@@ -251,3 +252,22 @@ void ViewProvider::makeTemporaryVisible(bool onoff)
     else 
         Gui::ViewProvider::hide();
 }
+
+PyObject* ViewProvider::getPyObject()
+{
+    if (!pyViewObject)
+        pyViewObject = new ViewProviderPy(this);
+    pyViewObject->IncRef();
+    return pyViewObject;
+}
+
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewProvider);
+/// @endcond
+
+// explicit template instantiation
+template class PartDesignGuiExport ViewProviderPythonFeatureT<PartDesignGui::ViewProvider>;
+}
+

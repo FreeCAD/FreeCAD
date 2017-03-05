@@ -226,7 +226,7 @@ class MaterialEditor:
 
 
     def getDict(self):
-        "returns a dictionnary from the contents of the editor"
+        "returns a dictionary from the contents of the editor"
         d = {}
         for i1 in range(self.widget.Editor.topLevelItemCount()):
             w = self.widget.Editor.topLevelItem(i1)

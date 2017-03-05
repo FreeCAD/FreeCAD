@@ -167,9 +167,9 @@ void TaskPocketParameters::updateUI(int index)
     } else if (index == 2) { // up to first
         isOffsetEditVisable = true;
         isReversedEnabled = true;       // Will change the direction it seeks for its first face?
-            // It may work not quite as expected but usefull if sketch oriented upside down.
+            // It may work not quite as expected but useful if sketch oriented upside-down.
             // (may happen in bodies)
-            // Fix probably lies somwhere in IF block on line 125 of FeaturePocket.cpp
+            // FIXME: Fix probably lies somewhere in IF block on line 125 of FeaturePocket.cpp
     } else if (index == 3) { // up to face
         isOffsetEditVisable = true;
         isFaceEditEnabled    = true;
@@ -273,7 +273,7 @@ void TaskPocketParameters::onModeChanged(int index)
             pcPocket->Type.setValue("UpToFirst");
             break;
         case 3:
-            // Because of the code at the begining of Pocket::execute() which is used to detect
+            // Because of the code at the beginning of Pocket::execute() which is used to detect
             // broken legacy parts, we must set the length to zero here!
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("UpToFace");

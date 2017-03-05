@@ -19,6 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+from __future__ import print_function
 
 __title__ = "FemToolsZ88"
 __author__ = "Bernd Hahnebach"
@@ -88,7 +89,7 @@ class FemToolsZ88(FemTools.FemTools):
                 self.contact_constraints, self.planerotation_constraints, self.transform_constraints,
                 self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
                 self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
-                self.beam_sections, self.shell_thicknesses,
+                self.beam_sections, self.shell_thicknesses, self.fluid_sections,
                 self.analysis_type, self.working_dir)
             self.inp_file_name = inp_writer.write_z88_input()
         except:
@@ -101,7 +102,7 @@ class FemToolsZ88(FemTools.FemTools):
     def setup_z88(self, z88_binary=None):
         from platform import system
         z88_std_location = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88").GetBool("UseStandardZ88Location")
-        print z88_std_location
+        print(z88_std_location)
         if z88_std_location:
             if system() == "Windows":
                 z88_path = FreeCAD.getHomePath() + "bin/z88r.exe"
@@ -190,15 +191,15 @@ class FemToolsZ88(FemTools.FemTools):
 
     def load_results_o2(self):
         import os
-        import importZ88Results
+        import importZ88O2Results
         disp_result_file = self.working_dir + '/z88o2.txt'
         if os.path.isfile(disp_result_file):
             result_name_prefix = 'Z88_' + self.solver.AnalysisType + '_'
-            importZ88Results.import_z88_disp(disp_result_file, self.analysis, result_name_prefix)
+            importZ88O2Results.import_z88_disp(disp_result_file, self.analysis, result_name_prefix)
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.results_present = True
         else:
             raise Exception('FEM: No results found at {}!'.format(disp_result_file))
 
-#  @}
+##  @}

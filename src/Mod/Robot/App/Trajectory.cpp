@@ -189,7 +189,7 @@ void Trajectory::generateTrajectory(void)
                     }
                     else if (Cont && pcRoundComp) {
                         pcRoundComp->Add(Next);
-                        // end a continous block
+                        // end a continuous block
                     }
                     else if (Cont==false && pcRoundComp) {
                         // add the last one
@@ -220,7 +220,7 @@ void Trajectory::generateTrajectory(void)
                     break;
                 }
 
-                // add the segment if no continous block is running
+                // add the segment if no continuous block is running
                 if (!pcRoundComp)
                     pcTrajectory->Add(pcTrak);
             }

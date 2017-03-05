@@ -90,7 +90,7 @@ CAreaConfig::CAreaConfig(const CAreaParams &p, bool noFitArcs)
 
     PARAM_FOREACH(AREA_CONF_SAVE_AND_APPLY,AREA_PARAMS_CAREA)
 
-    // Arc fitting is lossy. we shall reduce the number of unecessary fit
+    // Arc fitting is lossy. We shall reduce the number of unnecessary fit
     if(noFitArcs)
         CArea::set_fit_arcs(false);
 
