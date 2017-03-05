@@ -69,7 +69,7 @@ class ARRAY(BaseType.Type, BaseType.Aggregate):
     """
     EXPRESS definition:
     ==================
-    An array data type has as its domain indexed, fixed-size collections of like elements. The lower
+    An array data type has as its domain indexed, fixed-size collections of like elements. The lower
     and upper bounds, which are integer-valued expressions, define the range of index values, and
     thus the size of each array collection.
     An array data type definition may optionally specify
@@ -93,21 +93,21 @@ class ARRAY(BaseType.Type, BaseType.Aggregate):
     NOTE 1 { The bounds may be positive, negative or zero, but may not be indeterminate (?) (see
     14.2).
     Rules and restrictions:
-    a) Both expressions in the bound specication, bound_1 and bound_2, shall evaluate to
+    a) Both expressions in the bound specification, bound_1 and bound_2, shall evaluate to
     integer values. Neither shall evaluate to the indeterminate (?) value.
     b) bound_1 gives the lower bound of the array. This shall be the lowest index which is
     valid for an array value of this data type.
     c) bound_2 gives the upper bound of the array. This shall be the highest index which is
     valid for an array value of this data type.
     d) bound_1 shall be less than or equal to bound_2.
-    e) If the optional keyword is specied, an array value of this data type may have the
+    e) If the optional keyword is specified, an array value of this data type may have the
     indeterminate (?) value at one or more index positions.
-    f) If the optional keyword is not specied, an array value of this data type shall not
+    f) If the optional keyword is not specified, an array value of this data type shall not
     contain an indeterminate (?) value at any index position.
-    g) If the unique keyword is specied, each element in an array value of this data type
-    shall be dierent from (i.e., not instance equal to) every other element in the same array
+    g) If the unique keyword is specified, each element in an array value of this data type
+    shall be different from (i.e., not instance equal to) every other element in the same array
     value.
-    NOTE 2 : Both optional and unique may be specied in the same array data type definition.
+    NOTE 2 : Both optional and unique may be specified in the same array data type definition.
     This does not preclude multiple indeterminate (?) values from occurring in a single array value.
     This is because comparisons between indeterminate (?) values result in unknown so the uniqueness
     constraint is not violated.
@@ -115,7 +115,7 @@ class ARRAY(BaseType.Type, BaseType.Aggregate):
     sectors : ARRAY [ 1 : 10 ] OF -- first dimension
     ARRAY [ 11 : 14 ] OF -- second dimension
     UNIQUE something;
-    The first array has 10 elements of data type ARRAY[11:14] OF UNIQUE something. There is
+    The first array has 10 elements of data type ARRAY[11:14] OF UNIQUE something. There is
     a total of 40 elements of data type something in the attribute named sectors. Within each
     ARRAY[11:14], no duplicates may occur; however, the same something instance may occur in two
     different ARRAY[11:14] values within a single value for the attribute named sectors.
@@ -223,10 +223,10 @@ class LIST(BaseType.Type, BaseType.Aggregate):
     If this value is indeterminate (?) the number of elements in a list value of this data type is
     not bounded from above.
     c) If the bound_spec is omitted, the limits are [0:?].
-    d) If the unique keyword is specied, each element in a list value of this data type shall
-    be dierent from (i.e., not instance equal to) every other element in the same list value.
-    EXAMPLE 28 { This example denes a list of arrays. The list can contain zero to ten arrays. Each
-    array of ten integers shall be dierent from all other arrays in a particular list.
+    d) If the unique keyword is specified, each element in a list value of this data type shall
+    be different from (i.e., not instance equal to) every other element in the same list value.
+    EXAMPLE 28 { This example defines a list of arrays. The list can contain zero to ten arrays. Each
+    array of ten integers shall be different from all other arrays in a particular list.
     complex_list : LIST[0:10] OF UNIQUE ARRAY[1:10] OF INTEGER;
     
     Python definition:
@@ -374,7 +374,7 @@ class BAG(BaseType.Type, BaseType.Aggregate):
     ==================
     A bag data type has as its domain unordered collections of like elements. The optional lower
     and upper bounds, which are integer-valued expressions, define the minimum and maximum
-    number of elements that can be held in the collection dened by a bag data type.
+    number of elements that can be held in the collection defined by a bag data type.
     
     Syntax:
     170 bag_type = BAG [ bound_spec ] OF base_type .
@@ -490,8 +490,8 @@ class SET(BaseType.Type, BaseType.Aggregate):
     ==================
     A set data type has as its domain unordered collections of like elements. The set data type is
     a specialization of the bag data type. The optional lower and upper bounds, which are integer-
-    valued expressions, dene the minimum and maximum number of elements that can be held in
-    the collection dened by a set data type. The collection dened by set data type shall not
+    valued expressions, define the minimum and maximum number of elements that can be held in
+    the collection defined by a set data type. The collection defined by set data type shall not
     contain two or more elements which are instance equal.
     Syntax:
     285 set_type = SET [ bound_spec ] OF base_type .
@@ -509,14 +509,14 @@ class SET(BaseType.Type, BaseType.Aggregate):
     If this value is indeterminate (?) the number of elements in a set value of this data type is
     not be bounded from above.
     c) If the bound_spec is omitted, the limits are [0:?].
-    d) Each element in an occurrence of a set data type shall be dierent from (i.e., not
+    d) Each element in an occurrence of a set data type shall be different from (i.e., not
     instance equal to) every other element in the same set value.
-    EXAMPLE 30 { This example denes an attribute as a set of points (a named data type assumed
+    EXAMPLE 30 { This example defines an attribute as a set of points (a named data type assumed
     to have been declared elsewhere).
     a_set_of_points : SET OF point;
     The attribute named a_set_of_points can contain zero or more points. Each point instance (in
-    the set value) is required to be dierent from every other point in the set.
-    If the value is required to have no more than 15 points, the specication can provide an upper bound,
+    the set value) is required to be different from every other point in the set.
+    If the value is required to have no more than 15 points, the specification can provide an upper bound,
     as in:
     a_set_of_points : SET [0:15] OF point;
     The value of the attribute named a_set_of_points now may contain no more than 15 points.
