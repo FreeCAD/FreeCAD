@@ -1,11 +1,13 @@
 <RCC>
     <qresource>
+        <file>icons/FemWorkbench.svg</file>
+        <file>icons/preferences-fem.svg</file>
+
         <file>icons/fem-add-fem-mesh.svg</file>
         <file>icons/fem-add-material.svg</file>
         <file>icons/fem-add-part.svg</file>
         <file>icons/fem-analysis.svg</file>
         <file>icons/fem-beam-section.svg</file>
-        <file>icons/fem-fluid-section.svg</file>
         <file>icons/fem-box.svg</file>
         <file>icons/fem-cfd-analysis.svg</file>
         <file>icons/fem-constraint-bearing.svg</file>
@@ -34,8 +36,10 @@
         <file>icons/fem-femmesh-print-info.svg</file>
         <file>icons/fem-femmesh-region.svg</file>
         <file>icons/fem-femmesh-to-mesh.svg</file>
+        <file>icons/fem-fluid-section.svg</file>
         <file>icons/fem-frequency-analysis.svg</file>
         <file>icons/fem-inp-editor.svg</file>
+        <file>icons/fem-linearizedstresses.svg</file>
         <file>icons/fem-material.svg</file>
         <file>icons/fem-material-fluid.svg</file>
         <file>icons/fem-material-nonlinear.svg</file>
@@ -49,9 +53,6 @@
         <file>icons/fem-static-analysis.svg</file>
         <file>icons/fem-thermomechanical-analysis.svg</file>
 
-        <file>icons/FemWorkbench.svg</file>
-        <file>icons/preferences-fem.svg</file>
-
         <file>icons/fem-clip.png</file>
         <file>icons/fem-DataAlongLine.png</file>
         <file>icons/fem-clip-scalar.png</file>
@@ -59,7 +60,6 @@
         <file>icons/fem-isosurface.png</file>
         <file>icons/fem-warp.png</file>
 
-        <file>icons/fem-linearizedstresses.svg</file>
         <file>translations/Fem_af.qm</file>
         <file>translations/Fem_de.qm</file>
         <file>translations/Fem_fi.qm</file>
