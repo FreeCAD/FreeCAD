@@ -38,7 +38,7 @@ class NUMBER:
     EXPRESS definition:
     ===================
     The number data type has as its domain all numeric values in the language. The number data
-    type shall be used when a more specic numeric representation is not important.
+    type shall be used when a more specific numeric representation is not important.
     Syntax:
     248 number_type = NUMBER .
     EXAMPLE 15 - Since we may not know the context of size we do not know how to correctly
@@ -56,7 +56,7 @@ class REAL(float,NUMBER):
     """
     EXPRESS definition:
     ===================
-    The real data type has as its domain all rational, irrational and scientfic real numbers. It is
+    The real data type has as its domain all rational, irrational and scientific real numbers. It is
     a specialization of the number data type.
     Syntax:
     265 real_type = REAL [ '(' precision_spec ')' ] .
@@ -110,23 +110,23 @@ class INTEGER(int,NUMBER):
 class STRING(str):
     """
     The string data type has as its domain sequences of characters. The characters which are
-    permitted to form part of a string value are dened in ISO 10646.
+    permitted to form part of a string value are defined in ISO 10646.
     Syntax:
     293 string_type = STRING [ width_spec ] .
     318 width_spec = '(' width ')' [ FIXED ] .
     317 width = numeric_expression .
-    A string data type may be dened as either xed or varying width (number of characters). If
+    A string data type may be defined as either fixed or varying width (number of characters). If
     it is not specfically defined as fixed width (by using the fixed reserved word in the dfinition)
     the string has varying width.
     
-    The domain of a xed width string data type is the set of all character sequences of exactly
-    the width specied in the type denition.
+    The domain of a fixed width string data type is the set of all character sequences of exactly
+    the width specified in the type definition.
     The domain of a varying width string data type is the set of all character sequences of width
-    less than or equal to the maximum width specied in the type denition.
-    If no width is specied, the domain is the set of all character sequences, with no constraint on
+    less than or equal to the maximum width specified in the type definition.
+    If no width is specified, the domain is the set of all character sequences, with no constraint on
     the width of these sequences.
     Substrings and individual characters may be addressed using subscripts as described in 12.5.
-    The case (upper or lower) of letters within a string is signicant.
+    The case (upper or lower) of letters within a string is significant.
     
     Python mapping: INTEGER is mapped the 'str' type. An additional width_spec parameter can be passed
     to handle the FIXED length constraint
@@ -166,10 +166,10 @@ class BINARY(str):
     A binary data type may be defined as either fixed or varying width (number of bits). If it is
     not specifically defined as fixed width (by using the fixed reserved word in the definition) the
     binary data type has varying width.
-    The domain of a fixed width binary data type is the set of all bit sequences of exactly the width
-    specied in the type definition.
+    The domain of a fixed width binary data type is the set of all bit sequences of exactly the width
+    specified in the type definition.
     The domain of a varying width binary data type is the set of all bit sequences of width less
-    than or equal to the maximum width specied in the type denition. If no width is specified,
+    than or equal to the maximum width specified in the type definition. If no width is specified,
     the domain is the set of all bit sequences, with no constraint on the width of these sequences.
     Subbinaries and individual bits may be addressed using subscripts as described in 12.3.
     
@@ -180,7 +180,7 @@ class BINARY(str):
         return str.__new__(self, value)
         
     def __init__(self, value, width=-1, fixed=False):
-        """ By default, lenght is set to None"""
+        """ By default, length is set to None"""
         self._specified_width = width
         self._fixed = fixed
         # Check implicit width
