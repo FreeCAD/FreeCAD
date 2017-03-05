@@ -35,7 +35,7 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD Fenics Mesh reader and writer for FEM workbench
 
 import FreeCAD
-import FemMeshTools
+import importToolsFem
 import os
 import itertools
 from lxml import etree  # parsing xml files and exporting
@@ -202,13 +202,17 @@ def import_fenics_mesh(filename, analysis=None):
     '''
     mesh_data = read_fenics_mesh(filename)
     mesh_name = os.path.basename(os.path.splitext(filename)[0])
-    femmesh = FemMeshTools.make_femmesh(mesh_data)
+    femmesh = importToolsFem.make_femmesh(mesh_data)
     if femmesh:
         mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
         mesh_object.FemMesh = femmesh
 
 
 def read_fenics_mesh(xmlfilename):
+    '''
+        Returns element dictionary to be evaluated by make_femmesh later
+    '''
+
 
     Fenics_to_FreeCAD_dict = {
         "triangle": "tria3",
