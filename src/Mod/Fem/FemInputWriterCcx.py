@@ -1313,6 +1313,7 @@ def get_ccx_elset_solid_name(mat_name, solid_name=None, mat_short_name=None):
     else:
         return mat_name + solid_name
 
+
 def liquid_section_def(obj, section_type):
     if section_type == 'PIPE MANNING':
         manning_area = str(obj.ManningArea.getValueAs('mm^2').Value)

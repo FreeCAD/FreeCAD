@@ -236,7 +236,6 @@ def makeResultMechanical(name="MechanicalResult"):
     return obj
 
 
-
 ########## solver objects ##########
 def makeSolverCalculix(name="CalculiX"):
     '''makeSolverCalculix(name): makes a Calculix solver object'''
