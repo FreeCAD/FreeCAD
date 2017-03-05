@@ -50,8 +50,8 @@ CONST_E = REAL(math.pi)
 #14.2 Indeterminate
 #The indeterminate symbol (?) stands for an ambiguous value. It is compatible with all data
 #types.
-#NOTE - The most common use of indeterminate (?) is as the upper bound specication of a bag,
-#list or set. This usage represents the notion that the size of the aggregate value dened by the
+#NOTE - The most common use of indeterminate (?) is as the upper bound specification of a bag,
+#list or set. This usage represents the notion that the size of the aggregate value defined by the
 #aggregation data type is unbounded.
 # python note: indeterminate value is mapped to None in aggregate bounds
 
@@ -65,7 +65,7 @@ FALSE = False
 # EXPRESS definition:
 # ===================
 #14.4 Pi
-#PI is a REAL constant representing the mathematical value , the ratio of a circle's circumference
+#PI is a REAL constant representing the mathematical value π, the ratio of a circle's circumference
 #to its diameter.
 PI = REAL(math.pi)
 
@@ -74,7 +74,7 @@ PI = REAL(math.pi)
 #14.5 Self
 #SELF refers to the current entity instance or type value. self may appear within an entity
 #declaration, a type declaration or an entity constructor.
-#NOTE - sSELF is not a constant, but behaves as one in every context in which it can appear.
+#NOTE - SELF is not a constant, but behaves as one in every context in which it can appear.
 # python note: SELF is not mapped to any constant, but is mapper to self
 
 # EXPRESS definition:
@@ -87,7 +87,7 @@ TRUE = True
 # EXPRESS definition:
 # ===================
 #14.7 Unknown
-#unknown is a logical constant representing that there is insucient information available to
+#unknown is a logical constant representing that there is insufficient information available to
 #be able to evaluate a logical condition. It is compatible with the logical data type, but not
 #with the boolean data type.
 # @TODO: define UNKNOWN in python
@@ -122,7 +122,7 @@ def ABS(V):
 #FUNCTION ACOS ( V:NUMBER ) : REAL;
 #The acos function returns the angle given a cosine value.
 #Parameters : V is a number which is the cosine of an angle.
-#Result : The angle in radians (0  result  ) whose cosine is V.
+#Result : The angle in radians (0 <= result <= pi) whose cosine is V.
 #Conditions : -1.0=<V<=1.0
 #EXAMPLE 126 { ACOS ( 0.3 ) --> 1.266103...
 # Python definition:
@@ -149,7 +149,7 @@ def ASIN(V):
 #a) V1 is a number.
 #b) V2 is a number.
 #Result : The angle in radians (-pi/2<=result<=pi/2) whose tangent is V. If V2 is zero, the result
-#is pi/2 or -pi/2 depending on the sign of V1.
+#is pi/2 or -pi/2 depending on the sign of V1.
 #Conditions : Both V1 and V2 shall not be zero.
 #EXAMPLE 128 { ATAN ( -5.5, 3.0 ) --> -1.071449...
 def ATAN(V1,V2):
@@ -197,7 +197,7 @@ def BLENGTH(V):
 #FUNCTION SIN ( V:NUMBER ) : REAL;
 #The sin function returns the sine of an angle.
 #Parameters : V is a number representing an angle expressed in radians.
-#Result : The sine of V (-1.0  result  1.0).
+#Result : The sine of V (-1.0 <= result <= 1.0).
 #EXAMPLE 144 { SIN ( PI ) --> 0.0
 #
 def COS(V):
@@ -487,14 +487,14 @@ def ODD(V):
 # ===================  
 #15.20 RolesOf - general function
 #FUNCTION ROLESOF ( V:GENERIC ) : SET OF STRING;
-#The rolesof function returns a set of strings containing the fully qualied names of the roles
-#played by the specied entity instance. A fully qualied name is dened to be the name of the
-#attribute qualied by the name of the schema and entity in which this attribute is declared (i.e.
+#The rolesof function returns a set of strings containing the fully qualified names of the roles
+#played by the specified entity instance. A fully qualified name is defined to be the name of the
+#attribute qualified by the name of the schema and entity in which this attribute is declared (i.e.
 #'SCHEMA.ENTITY.ATTRIBUTE').
 #Parameters : V is any instance of an entity data type.
-#Result : A set of string values (in upper case) containing the fully qualied names of the
+#Result : A set of string values (in upper case) containing the fully qualified names of the
 #attributes of the entity instances which use the instance V.
-#When a named data type is use'd or reference'd, the schema and the name in that schema,
+#When a named data type is used or referenced, the schema and the name in that schema,
 #if renamed, are also returned. Since use statements may be chained, all the chained schema
 #names and the name in each schema are returned.
 #EXAMPLE 143 { This example shows that a point might be used as the centre of a circle. The
@@ -567,7 +567,7 @@ def SIZEOF(V):
 #The sqrt function returns the non-negative square root of a number.
 #Parameters : V is any non-negative number.
 #Result : The non-negative square root of V.
-#Conditions : V  0:0
+#Conditions : V >= 0:0
 #EXAMPLE 146 - SQRT ( 121 ) --> 11.0
 def SQRT(V):
     if not isinstance(V,NUMBER):
@@ -602,16 +602,16 @@ def TAN(V):
 #The typeof function returns a set of strings that contains the names of all the data types
 #of which the parameter is a member. Except for the simple data types (binary, boolean,
 #integer, logical, number, real, and string) and the aggregation data types (array, bag,
-#list, set) these names are qualied by the name of the schema which contains the denition of
+#list, set) these names are qualified by the name of the schema which contains the definition of
 #the type.
 #NOTE 1 { The primary purpose of this function is to check whether a given value (variable, at-
 #tribute value) can be used for a certain purpose, e.g. to ensure assignment compatibility between
-#two values. It may also be used if dierent subtypes or specializations of a given type have to be
-#treated dierently in some context.
+#two values. It may also be used if different subtypes or specializations of a given type have to be
+#treated differently in some context.
 #Parameters : V is a value of any type.
 #Result : The contents of the returned set of string values are the names (in upper case) of all
-#types the value V is a member of. Such names are qualied by the name of the schema which
-#contains the denition of the type ('SCHEMA.TYPE') if it is neither a simple data type nor an
+#types the value V is a member of. Such names are qualified by the name of the schema which
+#contains the definition of the type ('SCHEMA.TYPE') if it is neither a simple data type nor an
 #aggregation data type. It may be derived by the following algorithm (which is given here for
 #specification purposes rather than to prescribe any particular type of implementation)
 def TYPEOF(V):
@@ -636,8 +636,8 @@ def TYPEOF(V):
 # ===================  
 #15.26 UsedIn - general function
 #FUNCTION USEDIN ( T:GENERIC; R:STRING) : BAG OF GENERIC;
-#The usedin function returns each entity instance that uses a specied entity instance in a
-#specied role.
+#The usedin function returns each entity instance that uses a specified entity instance in a
+#specified role.
 def USEDIN(T,R):
     raise NotImplemented("USEDIN function not yet implemented.")
 
@@ -654,8 +654,8 @@ def USEDIN(T,R):
 #VALUE ( 'abc' ) --> ? null
 def VALUE(V):
     if not isinstance(V,STRING):
-        raise TypeError("VALULE function takes a NUMBER parameter")
-    # first try to instanciate an INTEGER from the string:
+        raise TypeError("VALUE function takes a NUMBER parameter")
+    # first try to instantiate an INTEGER from the string:
     try:
         return INTEGER(V)
     except:
@@ -691,7 +691,7 @@ def VALUE(V):
 def VALUE_IN(C,V):
     if not isinstance(C,Aggregate):
         raise TypeError("VALUE_IN method takes an aggregate as first parameter")
-    raise NotImplemented("VALUE_IN function not et implemented")
+    raise NotImplemented("VALUE_IN function not yet implemented")
 
 # EXPRESS definition:
 # ===================  
@@ -705,8 +705,8 @@ def VALUE_IN(C,V):
 #b) If any any two elements of V are value equal, false is returned.
 #c) If any element of V is indeterminate (?), unknown is returned.
 #d) Otherwise true is returned.
-#EXAMPLE 153 { The following test ensures tht each point is a set is at a dierent position, (by
-#denition they are distinct, i.e., instance unique).
+#EXAMPLE 153 { The following test ensures that each point is placed at a different position, (by
+#definition they are distinct, i.e., instance unique).
 #IF VALUE_UNIQUE(points) THEN ...
 def VALUE_UNIQUE(V):
     if not isinstance(V,Aggregate):
