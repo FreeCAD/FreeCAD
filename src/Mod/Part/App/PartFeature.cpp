@@ -238,6 +238,11 @@ const char* Feature::getViewProviderName(void) const {
     return "PartGui::ViewProviderPart";
 }
 
+const App::PropertyComplexGeoData* Feature::getPropertyOfGeometry() const
+{
+    return &Shape;
+}
+
 // ---------------------------------------------------------
 
 PROPERTY_SOURCE(Part::FilletBase, Part::Feature)

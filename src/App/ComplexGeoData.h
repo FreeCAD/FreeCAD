@@ -145,6 +145,11 @@ public:
     /** Get faces from object with given accuracy */
     virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
         float Accuracy, uint16_t flags=0) const;
+    /** Get the center of gravity
+     * If this method is implemented then true is returned and the center of gravity.
+     * The default implementation only returns false.
+     */
+    virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     //@}
 
 protected:
