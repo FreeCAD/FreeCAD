@@ -149,6 +149,9 @@ bool PropertySheet::isValidAlias(const std::string &candidate)
     if (getValueFromAlias(candidate) != 0)
         return false;
 
+    if (ExpressionParser::isTokenAUnit(candidate))
+        return false;
+
     if (boost::regex_match(candidate.c_str(), cm, gen)) {
         static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
 

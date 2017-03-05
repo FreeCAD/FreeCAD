@@ -692,6 +692,16 @@ class SpreadsheetCases(unittest.TestCase):
         else:
             self.fail("A cell address was used as alias which shouldn't be allowed")
 
+    def testSetInvalidAlias2(self):
+        """ Try to use a unit (reserved word) as alias name """
+        sheet = self.doc.addObject("Spreadsheet::Sheet","Calc")
+        try:
+            sheet.setAlias("A1","mA")
+        except:
+            self.assertEqual(sheet.getAlias("A1"), None)
+        else:
+            self.fail("A unit (reserved word) was used as alias which shouldn't be allowed")
+
     def testPlacementName(self):
         """ Object name is equal to property name (bug #2389) """
         if not FreeCAD.GuiUp:
