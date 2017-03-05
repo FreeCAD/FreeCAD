@@ -1934,3 +1934,16 @@ bool ExpressionParser::isTokenAnIndentifier(const std::string & str)
     else
         return false;
 }
+
+bool ExpressionParser::isTokenAUnit(const std::string & str)
+{
+    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
+    int token = ExpressionParserlex();
+    int status = ExpressionParserlex();
+    ExpressionParser_delete_buffer(buf);
+
+    if (status == 0 && token == UNIT)
+        return true;
+    else
+        return false;
+}
