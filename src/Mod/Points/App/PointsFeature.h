@@ -69,6 +69,10 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "PointsGui::ViewProviderScattered";
     }
+
+    virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const {
+        return &Points;
+    }
 protected:
     void onChanged(const App::Property* prop);
     //@}
