@@ -102,10 +102,10 @@ namespace App {
  *     registerExtension("App::SecondExtensionPython", self)
  * @endcode
  * 
- * Extensions can provide methods that should be overriden by the extended object for customisation
+ * Extensions can provide methods that should be overridden by the extended object for customisation
  * of the extension behaviour. In c++ this is as simple as overriding the provided virtual functions.
  * In python a class method must be provided which has the same name as the method to override. This 
- * method must not neccessarily be in the object that is extended, it must be in the object which is 
+ * method must not necessarily be in the object that is extended, it must be in the object which is 
  * provided to the "registerExtension" call as second argument. This second argument is used as a 
  * proxy and enqueired if the method to override exists in this proxy before calling it. 
  * 

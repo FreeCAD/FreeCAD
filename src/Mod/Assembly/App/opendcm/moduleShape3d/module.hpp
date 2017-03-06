@@ -392,7 +392,7 @@ struct ModuleShape3D {
 
             template<typename T>
             void set(const T& geometry, ID id);
-            //somehow the base class set funtion is not found
+            //somehow the base class set function is not found
             template<typename T>
             void set(const T& geometry);
 
@@ -638,7 +638,7 @@ template<typename Derived>
 void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(boost::shared_ptr<Geometry3D> g) {
 
     //before we delete this shape by calling the system remove function, we need to remove
-    //this geometry as this would be deleted again by the system call and we would go into infinit recoursion
+    //this geometry as this would be deleted again by the system call and we would go into infinite recursion
 
     //get the vector object where the geometry is part of
     typename GeometryVector::const_iterator it;
@@ -659,7 +659,7 @@ template<typename Derived>
 void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(boost::shared_ptr<Derived> g) {
 
     //before we delete this shape by calling the system remove function, we need to remove
-    //this geometry as this would be deleted again by the system call and we would go into infinit recoursion
+    //this geometry as this would be deleted again by the system call and we would go into infinite recursion
 
     //get the vector object where the geometry is part of
     typename ShapeVector::const_iterator it;
@@ -680,7 +680,7 @@ template<typename Derived>
 void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(boost::shared_ptr<Constraint3D> g) {
 
     //before we delete this shape by calling the system remove function, we need to remove
-    //this geometry as this would be deleted again by the system call and we would go into infinit recoursion
+    //this geometry as this would be deleted again by the system call and we would go into infinite recursion
 
     //get the vector object where the geometry is part of
     typename ConstraintVector::const_iterator it;

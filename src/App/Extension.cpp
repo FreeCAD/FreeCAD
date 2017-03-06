@@ -84,7 +84,7 @@ void Extension::initExtension(ExtensionContainer* obj) {
         throw Base::Exception("Extension: Extension type not set");
  
     //all properties are initialised without PropertyContainer father. Now that we know it we can
-    //finaly finsih the property initialisation
+    //finally finish the property initialisation
     std::vector<Property*> list;
     extensionGetPropertyData().getPropertyList(this, list);
     for(Property* prop : list)

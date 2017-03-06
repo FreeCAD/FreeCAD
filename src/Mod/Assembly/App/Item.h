@@ -41,7 +41,7 @@ public:
     Item();
 	  ~Item() {};
 
-    /// Meta descriptons
+    /// Meta descriptions
     App::PropertyMap     Meta;
 
     /** @name methods override feature */

@@ -87,8 +87,8 @@ typedef boost::adjacency_list_traits<boost::listS, boost::listS, boost::undirect
  * @brief A type to be used as identifier for vertices and edges
  *
  * Vertices and edges need to be identified in a stable(safe/load), unique(over multiple clusters) and
- * comparable manner. The bgl vertex and edge discriptors don't fullfill this need as they have a direct
- * relation to the graphs storage. Therefore they change value on moving entitiys to diffrent clusters or
+ * comparable manner. The bgl vertex and edge discriptors don't fulfill this need as they have a direct
+ * relation to the graphs storage. Therefore they change value on moving entitiys to different clusters or
  * clone actions. This class is used to overcome this problem.
  **/
 typedef int universalID;
@@ -146,7 +146,7 @@ struct IDgen {
 };
 
 /**
- * @brief Exception thrown from the graph at any occuring error
+ * @brief Exception thrown from the graph at any occurring error
  **/
 struct cluster_error : virtual boost::exception {};
 
@@ -168,7 +168,7 @@ typedef boost::shared_ptr<IDgen> IDpointer;
 typedef details::list_traits::vertex_descriptor 	LocalVertex;
 
 /**
- * @brief Indentifier for local edge
+ * @brief Identifier for local edge
  *
  * The boost graph library works with identifiers for edges which directly relate to there storage.
  * Therefore they can be used only in the relevant cluster, they are local. These are the descriptors
@@ -210,9 +210,9 @@ struct 	GlobalEdge {
 
 
 /**
- * @brief A graph that can be stacked in a tree-like manner without loosing it connections
+ * @brief A graph that can be stacked in a tree-like manner without losing it connections
  *
- * This is basicly a boost adjacency_list with single linked lists 'listS' as storage for vertices and
+ * This is basically a boost adjacency_list with single linked lists 'listS' as storage for vertices and
  * edges. The edges are undirected. This allows to use all boost graph algorithms and provides therefore
  * an comprehensive way for analysing and manipulating its content. It further extends the class with the
  * possibility to cluster its content and to add properties and objects to all entitys. For more
@@ -405,7 +405,7 @@ public:
     void copyInto(boost::shared_ptr<ClusterGraph> into, Functor& functor) const;
 
     /**
-     * @brief Compare by adress, not by content
+     * @brief Compare by address, not by content
      * @param other the cluster to compare with
      * @return bool if this is the same cluster in memory
      **/
@@ -413,7 +413,7 @@ public:
     bool operator== (const T& other) const;
 
     /**
-     * @brief Compare by adress, not by content
+     * @brief Compare by address, not by content
      * @param other the cluster to compare with
      * @return bool if this is the not same cluster in memory
      **/
@@ -421,7 +421,7 @@ public:
     bool operator!= (const T& other) const;
 
     /**
-     * @brief Set diffrent behaviour for changed markers
+     * @brief Set different behaviour for changed markers
      *
      * Some methods of the ClusterGraph set it's changed_prop to true. Thats sensible, as they change
      * the graph. However, there are situations where you want to use the methods but don't want the change
@@ -462,7 +462,7 @@ public:
      * @brief Creates a new subcluster
      *
      * As clusters can be stacked in a tree like manner, this function can be used to create new
-     * children. It automaticly adds it to the subcluster list and adds it to the graph. The new
+     * children. It automatically adds it to the subcluster list and adds it to the graph. The new
      * subcluster is fully defined by its object and the vertex descriptor which is it's position
      * in the current cluster.
      *
@@ -473,7 +473,7 @@ public:
     /**
      * @brief Returns the parent cluster
      *
-     * In the stacked cluster hirarchy most clusters have a parent whcih can be accessed with this function.
+     * In the stacked cluster hirarchy most clusters have a parent which can be accessed with this function.
      * However, the toplevel cluster dos nothave a parent and a empty shared_ptr is returned.
      *
      * @return :shared_ptr< ClusterGraph > the parent cluster or empty pointer
@@ -569,12 +569,12 @@ public:
     LocalVertex	getClusterVertex(boost::shared_ptr<ClusterGraph> g);
 
     /**
-     * @brief Convinience function for \ref removeCluster
+     * @brief Convenience function for \ref removeCluster
      **/
     template<typename Functor>
     void removeCluster(boost::shared_ptr<ClusterGraph> g, Functor& f);
     /**
-     * @brief Convinience function for \ref removeCluster
+     * @brief Convenience function for \ref removeCluster
      **/
     void removeCluster(boost::shared_ptr<ClusterGraph> g);
     /**
@@ -673,7 +673,7 @@ public:
      * Adds an edge between vertices which are not nesseccarily in this local cluster and have therefore to be
      * identified with global descriptors. The only condition for source and target vertex is that both must be
      * in the local cluster or any of its subclusters. If thats not the case, the function will fail. On success
-     * a new GlobalEdge will be created, but not neccessarily a local one. If the vertices are in different cluster
+     * a new GlobalEdge will be created, but not necessarily a local one. If the vertices are in different cluster
      * which are already connected the global edge will be added to this connecting local edge. Thats the one returned
      * in the seqence. Note that it's possible that the local edge belongs to another subcluster and therefore can't be
      * used in the local cluster. This case is indicated by the scope return value.
@@ -885,7 +885,7 @@ public:
     std::pair< object_iterator<Obj>, object_iterator<Obj> > getObjects(LocalEdge k);
 
     /**
-     * @brief Applys the functor to each occurence of an object
+     * @brief Applys the functor to each occurrence of an object
      *
      * Each valid object of the given type is extractet and passed to the function object. Vertices
      * and edges are searched for valid object pointers, it happens in this order. When a recursive
@@ -967,7 +967,7 @@ public:
     /**
      * @brief Move a vertex to a subcluster
      *
-     * Overloaded convinience function which fetches the local descriptor for the cluster reference and calls
+     * Overloaded convenience function which fetches the local descriptor for the cluster reference and calls
      * the full parameter equivalent. Both cluster and vertex must be in the local cluster.
      *
      * @param v the LocalVertex to be moved
@@ -979,7 +979,7 @@ public:
     /**
      * @brief Move a vertex to a subcluster
      *
-     * Overloaded convinience function which fetches the the cluster reference for the local descriptor and calls
+     * Overloaded convenience function which fetches the the cluster reference for the local descriptor and calls
      * the full parameter equivalent. Both cluster and vertex must be in the local cluster.
      *
      * @param v the LocalVertex to be moved
@@ -1014,7 +1014,7 @@ public:
      * stands for all edges which use the moved vertex: global descriptors stay the same, but they are moved to new
      * local edges. Note that this function is the inverse of moveToSubcluster, and doing Pseudocode:
      * moveToParent(moveToSubcluster(v)) does nothing (only the local descriptor of the moved vertex is
-     * diffrent afterwards).
+     * different afterwards).
      *
      * @param v Local vertex which should be moved to the parents cluster
      * @return LocalVertex the local descriptor of the moved vertex, valid in the parent cluster only.
@@ -1036,9 +1036,9 @@ protected:
 
 
     /* Searches the global vertex in all local vertices of this graph, and returns the local
-     * one which holds the global vertex. If not successfull the local vertex returned will be
+     * one which holds the global vertex. If not successful the local vertex returned will be
      * invalid and the bool parameter will be false. If recursive = true, all subclusters will
-     * be seached too, however, if found there the retourned local vertex will be the vertex
+     * be searched too, however, if found there the returned local vertex will be the vertex
      * representing the toplevel cluster holding the global vertex in the initial graph.
      * */
     std::pair<LocalVertex, bool> getContainingVertex(GlobalVertex id, bool recursive = true);
@@ -1049,7 +1049,7 @@ protected:
     fusion::vector<LocalVertex, boost::shared_ptr<ClusterGraph>, bool> getContainingVertexGraph(GlobalVertex id);
 
     /* Searches the global edge in all local edges of this graph, and returns the local
-     * one which holds the global edge. If not successfull the local edge returned will be
+     * one which holds the global edge. If not successful the local edge returned will be
      * invalid and the bool parameter will be false.
      * */
     std::pair<LocalEdge, bool> getContainingEdge(GlobalEdge id);

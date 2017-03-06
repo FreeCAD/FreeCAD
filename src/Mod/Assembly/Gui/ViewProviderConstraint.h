@@ -99,7 +99,7 @@ public:
     void draw();
     
 private:
-    //we need two seperate visual representations, as both constraint parts have different
+    //we need two separate visual representations, as both constraint parts have different
     //placements.
     ViewProviderConstraintInternal internal_vp;
     

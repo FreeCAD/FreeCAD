@@ -163,7 +163,7 @@ public:
 };
 
 /** Angle property
- * This is a property for representing angles. It basicly a float
+ * This is a property for representing angles. It basically a float
  * property. On the Gui it has a quantity like RAD.
  */
 class AppExport PropertyAngle: public PropertyQuantityConstraint

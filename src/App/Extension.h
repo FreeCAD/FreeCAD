@@ -156,7 +156,7 @@ template<> void _class_::init(void){\
  * can be added to an object from python. It does not work to add the c++ version directly there. 
  * 
  * Note that every method of the extension becomes part of the extendded object when added from c++. 
- * This means one should carefully design the API and make only neccessary methods public or protected.
+ * This means one should carefully design the API and make only necessary methods public or protected.
  * Every internal method should be private.
  * 
  * The automatic availibility of methods in the class does not hold for the python interface, only 
@@ -165,15 +165,15 @@ template<> void _class_::init(void){\
  * extension, which works exactly like the normal FreeCAD python object workflow. There is nothing 
  * special at all for extension python objects, the normal xml + imp.cpp approach is used. It must 
  * only be taken care that the objects father is the correct extension base class. Of course also 
- * makse sure your extension returns the correct python ojbect in its "getPyObject" call.
+ * make sure your extension returns the correct python ojbect in its "getPyObject" call.
  * Every method you create in the extensions python will be later added to an extended object. This 
  * happens automatically for both, c++ and python extension, if "getPyObject" returns the correct 
  * python object. No extra work needs to be done.
  * 
- * A special case that needs to be handled for extensions is the possibility of overriden methods. 
+ * A special case that needs to be handled for extensions is the possibility of overridden methods. 
  * Often it is desired to customise extension behaviour by allowing the user to override methods 
  * provided by the extension. On c++ side this is trival, such methods are simply marked as "virtual" 
- * and can than be overriden in any derived class. This is more involved for the python interface and
+ * and can than be overridden in any derived class. This is more involved for the python interface and
  * here special care needs to be taken. 
  * 
  * As already seen above one needs to create a special ExtensionPythonT<> object for extension from 

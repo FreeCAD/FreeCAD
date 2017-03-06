@@ -908,7 +908,7 @@ Expression * FunctionExpression::evalAggregate() const
 }
 
 /**
-  * Evaluate function. Returns a NumberExpression if evaluation is successfuly.
+  * Evaluate function. Returns a NumberExpression if evaluation is successful.
   * Throws an ExpressionError exception if something fails.
   *
   * @returns A NumberExpression with the result.

@@ -216,7 +216,7 @@ void Geometry<Kernel, Dim, TagList>::finishCalculation() {
         BOOST_LOG_SEV(log, information) << "Finish cluster calculation";
 #endif
     }
-    //TODO:non cluster paramter scaling
+    //TODO:non cluster parameter scaling
     else {
         m_global = m_parameter;
         normalize();
