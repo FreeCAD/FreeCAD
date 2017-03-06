@@ -20,33 +20,31 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandBeamSection"
+__title__ = "FemElementGeometry1D"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandFemBeamSection
+## @package FemElementGeometry1D
 #  \ingroup FEM
 
-import FreeCAD
-from FemCommands import FemCommands
-import FreeCADGui
-from PySide import QtCore
 
+class _FemElementGeometry1D:
+    "The FemElementGeometry1D object"
 
-class _CommandFemBeamSection(FemCommands):
-    "The FEM_BeamSection command definition"
-    def __init__(self):
-        super(_CommandFemBeamSection, self).__init__()
-        self.resources = {'Pixmap': 'fem-beam-section',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_BeamSection", "Beam cross section"),
-                          'Accel': "C, B",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_BeamSection", "Creates a FEM beam cross section")}
-        self.is_active = 'with_analysis'
+    known_beam_types = ['Rectangular', 'Circular', 'Pipe']
 
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemBeamSection")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeBeamSection()]")
+    def __init__(self, obj):
+        obj.addProperty("App::PropertyLength", "RectWidth", "RectBeamSection", "set width of the rectangular beam elements")
+        obj.addProperty("App::PropertyLength", "RectHeight", "RectBeamSection", "set height of therectangular beam elements")
+        obj.addProperty("App::PropertyLength", "CircDiameter", "CircBeamSection", "set diameter of the circular beam elements")
+        obj.addProperty("App::PropertyLength", "PipeDiameter", "PipeBeamSection", "set outer diameter of the pipe beam elements")
+        obj.addProperty("App::PropertyLength", "PipeThickness", "PipeBeamSection", "set thickness of the pipe beam elements")
+        obj.addProperty("App::PropertyEnumeration", "SectionType", "BeamSection", "select beam section type")
+        obj.addProperty("App::PropertyLinkSubList", "References", "BeamSection", "List of beam section shapes")
+        obj.SectionType = _FemElementGeometry1D.known_beam_types
+        obj.SectionType = 'Rectangular'
+        obj.Proxy = self
+        self.Type = "FemElementGeometry1D"
 
-
-FreeCADGui.addCommand('FEM_BeamSection', _CommandFemBeamSection())
+    def execute(self, obj):
+        return

@@ -65,7 +65,7 @@ class FemWorkbench (Workbench):
         import PyGui._CommandFemSolverZ88
 
         import PyGui._CommandFemShellThickness
-        import PyGui._CommandFemBeamSection
+        import PyGui._CommandFemElementGeometry1D
         import PyGui._CommandFemFluidSection
 
     def GetClassName(self):
