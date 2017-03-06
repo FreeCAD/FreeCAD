@@ -79,7 +79,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculater::ope
     if(!val.enabled)
         return;
 
-    //if we are not one of the accessed types we dont need to be recalculated
+    //if we are not one of the accessed types we don't need to be recalculated
     if((access==rotation && val.access!=rotation) 
 	|| (access == general && val.access != general)) {
 
@@ -110,7 +110,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculater::ope
 
         val.m_residual(0) = val.m_eq.calculate(first->m_parameter, second->m_parameter);
 
-        //now see which way we should calculate the gradient (may be diffrent for both geometries)
+        //now see which way we should calculate the gradient (may be different for both geometries)
         if(first->m_parameterCount) {
             if(first->getClusterMode()) {
                 //when the cluster is fixed no maps are set as no parameters exist.
@@ -142,7 +142,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculater::ope
                         val.m_diff_second_rot(i) = val.m_eq.calculateGradientSecond(first->m_parameter,
                                                    second->m_parameter, second->m_diffparam.col(i));
                     }
-                    //and the translation seperated
+                    //and the translation separated
                     for(int i=0; i<3; i++) {
                         val.m_diff_second(i) = val.m_eq.calculateGradientSecond(first->m_parameter,
                                                second->m_parameter, second->m_diffparam.col(i+3));
@@ -250,7 +250,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::LGZ::operator()
             //LGZ exists for rotations only
             for(int i=0; i<3; i++) {
 
-                //only treat if the gradient realy is zero
+                //only treat if the gradient really is zero
                 if(Kernel::isSame(val.m_diff_first_rot(i), 0, 1e-7)) {
 
                     //to get the approximated second derivative we need the slightly moved geometrie
@@ -277,7 +277,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::LGZ::operator()
 
             for(int i=0; i<3; i++) {
 
-                //only treat if the gradient realy is zero
+                //only treat if the gradient really is zero
                 if(Kernel::isSame(val.m_diff_second_rot(i), 0, 1e-7)) {
 
                     //to get the approximated second derivative we need the slightly moved geometrie

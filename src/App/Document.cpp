@@ -606,7 +606,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 auto uvi = in_use.begin();
                 auto uvi_end = in_use.end();
 
-                // Flag that no changes has occured so far. If the loop goes through
+                // Flag that no changes has occurred so far. If the loop goes through
                 // without this flag being set to true, we are done.
                 changed = false;
 
@@ -2318,7 +2318,7 @@ void Document::remObject(const char* sName)
     }
 #endif //USE_OLD_DAG
     
-    // Before deleting we must nullify all dependant objects
+    // Before deleting we must nullify all dependent objects
     breakDependency(pos->second, true);
 
     //and remove the tip if needed
@@ -2409,7 +2409,7 @@ void Document::_remObject(DocumentObject* pcObject)
 
 void Document::breakDependency(DocumentObject* pcObject, bool clear)
 {
-    // Nullify all dependant objects
+    // Nullify all dependent objects
     for (std::map<std::string,DocumentObject*>::iterator it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
         std::map<std::string,App::Property*> Map;
         it->second->getPropertyMap(Map);

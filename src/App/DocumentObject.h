@@ -189,11 +189,11 @@ public:
     /// get the status Message
     const char *getStatusString(void) const;
 
-    /** Called in case of loosing a link
+    /** Called in case of losing a link
      * Get called by the document when a object got deleted a link property of this
      * object ist pointing to. The standard behaviour of the DocumentObject implementation
      * is to reset the links to nothing. You may overide this method to implement
-     *additional or different behavior.
+     * additional or different behavior.
      */
     virtual void onLostLinkToObject(DocumentObject*);
     virtual PyObject *getPyObject(void);

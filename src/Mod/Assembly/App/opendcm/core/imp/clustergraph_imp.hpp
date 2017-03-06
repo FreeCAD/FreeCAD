@@ -259,7 +259,7 @@ template< typename edge_prop, typename vertex_prop, typename cluster_prop, typen
 template<typename Functor>
 void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::copyInto(boost::shared_ptr<ClusterGraph> into, Functor& functor) const {
 
-    //lists does not provide vertex index, so we have to build our own (cant use the internal
+    //lists does not provide vertex index, so we have to build our own (can't use the internal
     //vertex_index_property as we would need to reset the indices and that's not possible in const graph)
     typedef std::map<LocalVertex, int> IndexMap;
     IndexMap mapIndex;
@@ -272,7 +272,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::copyInto(boost
 
     //first copy all vertices and edges, but be aware that the objects in the new graph
     //are also copys only and point to the old graph. there is a bug in older boost version
-    //(<1.5 i belive) that breaks vertex_all propety map for bundled properties, so we
+    //(<1.5 i believe) that breaks vertex_all propety map for bundled properties, so we
     //have to create our own copie functors
     into->clear();
     vertex_copier<Graph> vc(*this, *into);
@@ -581,7 +581,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::addEdge(GlobalVerte
     if(!(d1 && d2))
         return fusion::make_vector(LocalEdge(), GlobalEdge(), false, false);
 
-    //if both vertices are in a subcluster this one must do the job as we cant access the local edge from here
+    //if both vertices are in a subcluster this one must do the job as we can't access the local edge from here
     if(v1 == v2 && isCluster(v1)) {
         fusion::vector<LocalEdge, GlobalEdge, bool, bool> res = getVertexCluster(v1)->addEdge(source, target);
         fusion::at_c<3> (res) = false;
@@ -1186,7 +1186,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::apply_to_bundle(Glo
     fusion::vector<LocalVertex, boost::shared_ptr<ClusterGraph>, bool> res = getContainingVertexGraph(k);
 
     if(!fusion::at_c<2> (res)) {
-        //TODO: Throw (propeties return reference, but cant init a reference temporarily)
+        //TODO: Throw (propeties return reference, but can't init a reference temporarily)
     }
 
     return fusion::at_c<1> (res)->template apply_to_bundle<functor> (k, f);

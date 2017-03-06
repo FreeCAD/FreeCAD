@@ -46,7 +46,7 @@
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
 
-/* Preprocessor implementation of emit signal. As we need many overloads with diffrent number of
+/* Preprocessor implementation of emit signal. As we need many overloads with different number of
  * templated parameters we use boost preprocessor to do the hard repetive work. The definition and
  * implementation are definded first as they need to be known before usage
  * */
@@ -112,7 +112,7 @@ struct SignalOwner {
     /**
      * @brief Enable or disable signal emittion
      *
-     * If you want to supress all signals emitted by a object you can do this by calling this function.
+     * If you want to suppress all signals emitted by a object you can do this by calling this function.
      * All calls to emitSignal() will be blocked until signals aer reenabled by using this function with
      * onoff = true. Note that signals are not queued, if emitting is disabled all signals are lost.
      *
@@ -167,7 +167,7 @@ struct Object : public PropertyOwner<typename details::properties_by_object<type
       *
       * Returns a new shared_ptr for the Drived type with the same properties as the initial one. If
       * the new pointer should be used in a new system the parameter \param newSys needs to be that
-      * new system. Overload this function if you have datamembers in any derived class wich are not
+      * new system. Overload this function if you have datamembers in any derived class which are not
       * copyconstructable.
       * @tparam Prop property type which should be accessed
       * @return Prop::type& a reference to the properties actual value.

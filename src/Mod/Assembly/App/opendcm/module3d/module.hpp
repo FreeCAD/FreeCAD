@@ -140,7 +140,7 @@ struct Module3D {
 
             template<typename T>
             void set(const T& geometry, Identifier id);
-            //somehow the base class set funtion is not found
+            //somehow the base class set function is not found
             template<typename T>
             void set(const T& geometry);
 

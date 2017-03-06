@@ -237,7 +237,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
     int params=0, constraints=0;
     typename Kernel::number_type scale = 1;
 
-    //get the ammount of parameters and constraint equations we need
+    //get the amount of parameters and constraint equations we need
     typedef typename boost::graph_traits<Cluster>::vertex_iterator iter;
     std::pair<iter, iter>  it = boost::vertices(*cluster);
 

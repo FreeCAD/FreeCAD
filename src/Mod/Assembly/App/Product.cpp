@@ -54,7 +54,7 @@ Product::Product() {
     // license stuff
     ADD_PROPERTY_TYPE(License,("CC BY 3.0"),0,App::Prop_None,"License string of the Item");
     ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,App::Prop_None,"URL to the license text/contract");
-    // color and apperance
+    // color and appearance
     ADD_PROPERTY(Color,(1.0,1.0,1.0,1.0)); // set transparent -> not used
     ADD_PROPERTY(Visibility,(true));
 

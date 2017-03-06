@@ -51,12 +51,12 @@ namespace dcm {
  *
  * @brief Concept and handling of properties for generic data storage and type extension.
  *
- * Properties are a basic building block of the dcm and fullfill two essential tasks: First, build a
+ * Properties are a basic building block of the dcm and fulfill two essential tasks: First, build a
  * infrastructure for storing data in any kind of object and second, make this data universally accessible.
  * Universally accessible means in this context, that it shall be possible to retrieve data only by
  * knowing some kind of identifier. No data type specific get/set functions or access to class members
  * should be needed to access the stored values. The usage of identifiers allows to design interfaces
- * for properties in a type interchangable way. Therefore no restrictions are imposed on the interface,
+ * for properties in a type interchangeable way. Therefore no restrictions are imposed on the interface,
  * no matter what or how much data is stored.
  *
  * The connection of data type and identifier is achieved through the property structs, which all follow
@@ -70,7 +70,7 @@ namespace dcm {
  * of all data-holding entitys with new data types, propertys store their own purpose. Thats
  * done by extending the property struct with a second typedef which is named kind and which specifies of which
  * kind the property is. That means, that this typedef defines when the property shall be used and for which
- * context it is designed for. Dependend on the propertys kind, it will be added to diffrent places inside the dcm.
+ * context it is designed for. Dependend on the propertys kind, it will be added to different places inside the dcm.
  * A property of kind @ref vertex_property will added to vertices, a property of kind @ref object_property to all
  * objects and so on.
  *
@@ -514,7 +514,7 @@ struct empty_prop {
  * @brief Add a type to clusters
  *
  * Allows to specify special types to ClusterGraphs and make a it possibe to distuingish between
- * diffrent purposes. The cluster types need to be int.
+ * different purposes. The cluster types need to be int.
  **/
 struct type_prop {
     //states the type of a cluster
