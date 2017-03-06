@@ -64,7 +64,7 @@ class FemWorkbench (Workbench):
         import PyGui._CommandFemSolverRun
         import PyGui._CommandFemSolverZ88
 
-        import PyGui._CommandFemShellThickness
+        import PyGui._CommandFemElementGeometry2D
         import PyGui._CommandFemElementGeometry1D
         import PyGui._CommandFemFluidSection
 

@@ -198,7 +198,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.fluid_sections = []
         ## @var shell_thicknesses
         # set of shell thicknesses from the analysis. Updated with update_objects
-        # Individual shell thicknesses are Proxy.Type "FemShellThickness"
+        # Individual shell thicknesses are Proxy.Type "FemElementGeometry2D"
         self.shell_thicknesses = []
         ## @var displacement_constraints
         # set of displacements for the analysis. Updated with update_objects
@@ -310,7 +310,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 fluid_section_dict = {}
                 fluid_section_dict['Object'] = m
                 self.fluid_sections.append(fluid_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemShellThickness":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementGeometry2D":
                 shell_thickness_dict = {}
                 shell_thickness_dict['Object'] = m
                 self.shell_thicknesses.append(shell_thickness_dict)
