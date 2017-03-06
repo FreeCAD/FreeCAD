@@ -58,9 +58,9 @@ struct AppExport PropertyData
     short Offset,Type;
   };
   
-  //purpose of this struct is to be constructible from all accepptable container types and to 
+  //purpose of this struct is to be constructible from all acceptable container types and to 
   //be able to return the offset to a property from the accepted containers. This allows to use 
-  //one function implementation for multiple container types without loosing all type safety by 
+  //one function implementation for multiple container types without losing all type safety by 
   //accepting void*
   struct OffsetBase
   {

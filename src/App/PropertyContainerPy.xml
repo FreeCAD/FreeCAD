@@ -48,7 +48,7 @@ If the list contains 'Hidden' then the item even doesn't appear in the property 
         </Methode>
       <Methode Name="getGroupOfProperty">
 		  <Documentation>
-			  <UserDocu>Return the name of the group which the property belongs to in this class. The properties sorted in differnt named groups for convenience.</UserDocu>
+			  <UserDocu>Return the name of the group which the property belongs to in this class. The properties sorted in different named groups for convenience.</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="getDocumentationOfProperty">

@@ -104,7 +104,7 @@ struct constraint_sequence : public seq {
         std::cout<<"pretty: "<<__PRETTY_FUNCTION__<<std::endl;
     };
 
-    //dont allow expression equation stacking: the compile time impact is huge if we want to allow
+    //don't allow expression equation stacking: the compile time impact is huge if we want to allow
     //text parsing
     /*
         //an equation gets added to this sequence
@@ -176,11 +176,11 @@ struct Equation : public EQ {
     };
 
     //assign complete equation (we need to override the operator= in the derived class anyway as it
-    //is automaticly created by the compiler, so we use a different name here to avoid duplicate
+    //is automatically created by the compiler, so we use a different name here to avoid duplicate
     //operator= warning on msvc)
     Derived& assign(const Derived& eq);
 
-    //dont allow expression equation stacking: the compile time impact is huge if we want to allow
+    //don't allow expression equation stacking: the compile time impact is huge if we want to allow
     //text parsing
     /*
     //an equation gets added to this equation

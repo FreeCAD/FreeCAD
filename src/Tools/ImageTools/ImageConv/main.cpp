@@ -141,7 +141,7 @@ int main( int argc, char **argv )
     }
     catch(...)
     {
-        cerr << "An unknown exception has occured!!!" << endl;
+        cerr << "An unknown exception has occurred!!!" << endl;
     }
 
     return 0;

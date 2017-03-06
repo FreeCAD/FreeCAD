@@ -93,11 +93,11 @@ public:
       * for the Creative Commons license suit.
       */
     App::PropertyString License;
-    /// License descripton/contract URL
+    /// License description/contract URL
     App::PropertyString LicenseURL;
-    /// Meta descriptons
+    /// Meta descriptions
     App::PropertyMap Meta;
-    /// Material descriptons, used and defined in the Material module.
+    /// Material descriptions, used and defined in the Material module.
     App::PropertyMap Material;
     /// read-only name of the temp dir created wen the document is opened
     PropertyString TransientDir;

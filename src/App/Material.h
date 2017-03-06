@@ -203,7 +203,7 @@ public:
      *  \li Jade
      *  \li Ruby
      *  \li Emerald
-     * Furthermore there two additional modes \a Default which defines a kind of grey metalic and user defined that
+     * Furthermore there two additional modes \a Default which defines a kind of grey metallic and user defined that
      * does nothing.
      * The Color and the other properties of the material are defined in the range [0-1].
      * If \a MatName is an unknown material name then the type USER_DEFINED is set and the material doesn't get changed.

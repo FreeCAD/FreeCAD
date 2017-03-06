@@ -124,7 +124,7 @@ public:
 
 
     /** @name Signals of the document
-     * This signals are an agregation of all document. If you only 
+     * This signals are an aggregation of all document. If you only 
      * the signal of a special document connect to the document itself
      */
     //@{
