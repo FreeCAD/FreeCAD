@@ -65,7 +65,7 @@ PyObject *BSplineCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  
 }
 
 // constructor method
-int BSplineCurvePy::PyInit(PyObject* args, PyObject* /*kwd*/)
+int BSplineCurvePy::PyInit(PyObject* args, PyObject* kwd)
 {
     if (PyArg_ParseTuple(args, "")) {
         return 0;
@@ -74,7 +74,8 @@ int BSplineCurvePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     PyObject* obj;
     // poles, [ periodic, degree, interpolate ]
-    obj = buildFromPoles(args);
+    // {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational", NULL};
+    obj = buildFromPolesMultsKnots(args,kwd);
    
     if (obj) {
         Py_DECREF(obj);
