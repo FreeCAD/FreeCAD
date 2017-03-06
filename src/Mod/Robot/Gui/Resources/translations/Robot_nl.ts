@@ -379,7 +379,12 @@
         <translation>Verkeerde selectie</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -415,7 +420,7 @@
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Alle bestanden</translation>
     </message>
     <message>
         <location line="-61"/>
@@ -439,12 +444,11 @@
         <translation>Je moet zweven boven een geometrie (Voorselectie) met de muis om dit commando te gebruiken. Zie documentatie voor details.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Selecteer een Robot om thuispositie te bepalen</translation>
+        <translation type="obsolete">Selecteer een Robot om thuispositie te bepalen</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Selecteer een Robot</translation>
     </message>

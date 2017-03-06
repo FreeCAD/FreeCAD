@@ -142,12 +142,12 @@
       <translation>Vänligen välj 3 objekt först</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Unsupported Function</source>
       <translation>Funktionen stöds ej</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Press OK</source>
       <translation>Tryck OK</translation>
     </message>
@@ -244,7 +244,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="100"/>
       <source>Explode Group</source>
-      <translation type="unfinished">Explode Group</translation>
+      <translation>Explodera grupp</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="102"/>

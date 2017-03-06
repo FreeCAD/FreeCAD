@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Add a tool shape to the robot</source>
-        <translation type="unfinished">Add a tool shape to the robot</translation>
+        <translation>Για να προσθέσετε ένα σχήμα εργαλείο για το ρομπότ</translation>
     </message>
 </context>
 <context>
@@ -29,12 +29,12 @@
     <message>
         <location line="+1"/>
         <source>Place robot...</source>
-        <translation type="unfinished">Place robot...</translation>
+        <translation>Τόπος ρομπότ...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Place a robot (experimental!)</source>
-        <translation type="unfinished">Place a robot (experimental!)</translation>
+        <translation>Τοποθετήστε ένα ρομπότ (πειραματική!)</translation>
     </message>
 </context>
 <context>
@@ -52,7 +52,7 @@
     <message>
         <location line="+1"/>
         <source>Create a new empty trajectory </source>
-        <translation type="unfinished">Create a new empty trajectory </translation>
+        <translation>Δημιουργήστε μια νέα κενή τροχιά </translation>
     </message>
 </context>
 <context>
@@ -65,7 +65,7 @@
     <message>
         <location line="+1"/>
         <source>Edge to Trajectory...</source>
-        <translation type="unfinished">Edge to Trajectory...</translation>
+        <translation>Άκρη σε τροχιά...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -106,7 +106,7 @@
     <message>
         <location line="+1"/>
         <source>Export the trajectory as a full KRL subroutine.</source>
-        <translation type="unfinished">Export the trajectory as a full KRL subroutine.</translation>
+        <translation>Μπορείτε να εξαγάγετε την τροχιά ως μια πλήρη υπορουτίνα KRL.</translation>
     </message>
 </context>
 <context>
@@ -119,12 +119,12 @@
     <message>
         <location line="+1"/>
         <source>Kuka IR125</source>
-        <translation type="unfinished">Kuka IR125</translation>
+        <translation>ΚΟΥΚΑ (KUKA) IR125</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert a Kuka IR125 into the document.</source>
-        <translation type="unfinished">Insert a Kuka IR125 into the document.</translation>
+        <translation>Εισαγάγετε μια IR125 ΚΟΥΚΑ (KUKA) στο έγγραφο.</translation>
     </message>
 </context>
 <context>
@@ -137,7 +137,7 @@
     <message>
         <location line="+1"/>
         <source>Kuka IR16</source>
-        <translation type="unfinished">Kuka IR16</translation>
+        <translation>ΚΟΥΚΑ (KUKA) IR16</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -178,7 +178,7 @@
     <message>
         <location line="+1"/>
         <source>Insert a Kuka IR500 into the document.</source>
-        <translation type="unfinished">Insert a Kuka IR500 into the document.</translation>
+        <translation>Εισαγάγετε μια IR500 ΚΟΥΚΑ (KUKA) στο έγγραφο.</translation>
     </message>
 </context>
 <context>
@@ -379,7 +379,12 @@
         <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -439,12 +444,11 @@
         <translation type="unfinished">You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation type="unfinished">Select one Robot to set home postion</translation>
+        <translation type="obsolete">Select one Robot to set home postion</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Επιλέξτε ένα ρομπότ</translation>
     </message>

@@ -398,6 +398,21 @@
     </message>
 </context>
 <context>
+    <name>CmdMeshSectionByPlane</name>
+    <message>
+        <source>Mesh</source>
+        <translation type="unfinished">Malla</translation>
+    </message>
+    <message>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdMeshSegmentation</name>
     <message>
         <source>Mesh</source>
@@ -737,30 +752,30 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation>Opciones...</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
         <source>Evaluation settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Opciones de evaluación</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Opciones</translation>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation type="unfinished"></translation>
+        <translation>Chequear puntos de no variedad</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation type="unfinished"></translation>
+        <translation>Habilitar chequeo de pliegues en superficie</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
-        <translation type="unfinished"></translation>
+        <translation>Considerar únicamente caras de área cero como degeneradas</translation>
     </message>
 </context>
 <context>
@@ -886,6 +901,10 @@ Please run the command to repair folds first</source>
     <message>
         <source>mm</source>
         <translation type="obsolete">mm</translation>
+    </message>
+    <message>
+        <source>Export AMF files using compression</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1099,7 +1118,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Minumum number of faces</source>
-        <translation>Número mínimo de caras</translation>
+        <translation type="obsolete">Número mínimo de caras</translation>
     </message>
     <message>
         <source>Cylinder</source>
@@ -1172,11 +1191,11 @@ Please run the command to repair folds first</source>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation>Seleccionar plano</translation>
+        <translation type="obsolete">Seleccionar plano</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation>Por favor seleccione el plano de corte de la malla.</translation>
+        <translation type="obsolete">Por favor seleccione el plano de corte de la malla.</translation>
     </message>
 </context>
 <context>
@@ -1187,12 +1206,16 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation>Error desconocido al ejecutar OpenSCAD.</translation>
+        <translation type="obsolete">Error desconocido al ejecutar OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
         <translation>OpenSCAD no parece instalado en su sistema. Por favor visite http://www.openscad.org/index.html para instalarlo.</translation>
+    </message>
+    <message>
+        <source>Unknown error occurred while running OpenSCAD.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

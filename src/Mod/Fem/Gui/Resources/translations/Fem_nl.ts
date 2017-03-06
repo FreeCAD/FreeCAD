@@ -2,7 +2,40 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="nl" sourcelanguage="en">
   <context>
+    <name>Fem_Analysis</name>
+    <message>
+      <location filename="_CommandAnalysis.py" line="41"/>
+      <source>Analysis container</source>
+      <translation>Analyse container</translation>
+    </message>
+    <message>
+      <location filename="_CommandAnalysis.py" line="43"/>
+      <source>Creates a analysis container with standard solver CalculiX</source>
+      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation>Nieuwe mechanische analyse</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation>Maak een nieuwe mechanische analyse</translation>
+    </message>
+  </context>
+  <context>
     <name>Fem_BeamSection</name>
+    <message>
+      <location filename="_CommandBeamSection.py" line="41"/>
+      <source>Beam cross section</source>
+      <translation type="unfinished">Beam cross section</translation>
+    </message>
+    <message>
+      <location filename="_CommandBeamSection.py" line="43"/>
+      <source>Creates a FEM beam cross section</source>
+      <translation type="unfinished">Creates a FEM beam cross section</translation>
+    </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
       <source>FEM Beam Cross Section Definition ...</source>
@@ -12,6 +45,19 @@
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM Beam Cross Section</source>
       <translation type="unfinished">Creates a FEM Beam Cross Section</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_ClearMesh</name>
+    <message>
+      <location filename="_CommandClearMesh.py" line="41"/>
+      <source>Clear FEM mesh</source>
+      <translation type="unfinished">Clear FEM mesh</translation>
+    </message>
+    <message>
+      <location filename="_CommandClearMesh.py" line="43"/>
+      <source>Clear the Mesh of a FEM mesh object</source>
+      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
     </message>
   </context>
   <context>
@@ -28,24 +74,73 @@
     </message>
   </context>
   <context>
-    <name>Fem_CreateFromShape</name>
+    <name>Fem_ConstraintSelfWeight</name>
     <message>
-      <location filename="_CommandFemFromShape.py" line="39"/>
-      <source>Create FEM mesh</source>
-      <translation>Creëer een EEM-net</translation>
+      <location filename="_CommandConstraintSelfWeight.py" line="41"/>
+      <source>Constraint self weigt</source>
+      <translation type="unfinished">Constraint self weigt</translation>
     </message>
     <message>
-      <location filename="_CommandFemFromShape.py" line="40"/>
-      <source>Create FEM mesh from shape</source>
-      <translation>Creëer een EEM-net van een vorm</translation>
+      <location filename="_CommandConstraintSelfWeight.py" line="43"/>
+      <source>Creates a FEM constraint self weigt</source>
+      <translation type="unfinished">Creates a FEM constraint self weigt</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_ControlSolver</name>
+    <message>
+      <location filename="_CommandControlSolver.py" line="40"/>
+      <source>Solver job control</source>
+      <translation type="unfinished">Solver job control</translation>
+    </message>
+    <message>
+      <location filename="_CommandControlSolver.py" line="42"/>
+      <source>Changes solver attributes and runs the calculations for the selected solver</source>
+      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_FemMesh2Mesh</name>
+    <message>
+      <location filename="_CommandFEMMesh2Mesh.py" line="42"/>
+      <source>FEM mesh to mesh</source>
+      <translation type="unfinished">FEM mesh to mesh</translation>
+    </message>
+    <message>
+      <location filename="_CommandFEMMesh2Mesh.py" line="43"/>
+      <source>Convert the surface of a FEM mesh to a mesh</source>
+      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_MaterialMechanicalNonlinear</name>
+    <message>
+      <location filename="_CommandMaterialMechanicalNonlinear.py" line="42"/>
+      <source>Nonlinear mechanical material</source>
+      <translation type="unfinished">Nonlinear mechanical material</translation>
+    </message>
+    <message>
+      <location filename="_CommandMaterialMechanicalNonlinear.py" line="44"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
     </message>
   </context>
   <context>
     <name>Fem_MechanicalMaterial</name>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
+      <source>Mechanical material</source>
+      <translation>Mechanisch materiaal</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
       <translation type="unfinished">Mechanical material...</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="44"/>
+      <source>Creates a mechanical material</source>
+      <translation type="unfinished">Creates a mechanical material</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
@@ -54,16 +149,50 @@
     </message>
   </context>
   <context>
-    <name>Fem_NewMechanicalAnalysis</name>
+    <name>Fem_MeshFromShape</name>
     <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
-      <source>New mechanical analysis</source>
-      <translation type="unfinished">New mechanical analysis</translation>
+      <location filename="_CommandMeshNetgenFromShape.py" line="41"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
     </message>
     <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
-      <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
+      <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_MeshGmshFromShape</name>
+    <message>
+      <location filename="_CommandMeshGmshFromShape.py" line="42"/>
+      <source>FEM mesh from shape by GMSH</source>
+      <translation type="unfinished">FEM mesh from shape by GMSH</translation>
+    </message>
+    <message>
+      <location filename="_CommandMeshGmshFromShape.py" line="43"/>
+      <source>Create a FEM mesh from a shape by GMSH mesher</source>
+      <translation type="unfinished">Create a FEM mesh from a shape by GMSH mesher</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_MeshRegion</name>
+    <message>
+      <location filename="_CommandMeshRegion.py" line="41"/>
+      <source>FEM mesh region</source>
+      <translation type="unfinished">FEM mesh region</translation>
+    </message>
+    <message>
+      <location filename="_CommandMeshRegion.py" line="43"/>
+      <source>Creates a FEM mesh region</source>
+      <translation type="unfinished">Creates a FEM mesh region</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_PrintMeshInfo</name>
+    <message>
+      <location filename="_CommandPrintMeshInfo.py" line="44"/>
+      <source>Print FEM mesh info</source>
+      <translation type="unfinished">Print FEM mesh info</translation>
     </message>
   </context>
   <context>
@@ -71,29 +200,44 @@
     <message>
       <location filename="_CommandPurgeFemResults.py" line="40"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Ruim resultaten op</translation>
     </message>
     <message>
       <location filename="_CommandPurgeFemResults.py" line="42"/>
       <source>Purge results from an analysis</source>
-      <translation type="unfinished">Purge results from an analysis</translation>
+      <translation>Ruim resultaten van een analyser op</translation>
+    </message>
+    <message>
+      <location filename="_CommandPurgeResults.py" line="43"/>
+      <source>Purges all results from active analysis</source>
+      <translation type="unfinished">Purges all results from active analysis</translation>
     </message>
   </context>
   <context>
-    <name>Fem_Quick_Analysis</name>
+    <name>Fem_RunAnalysis</name>
     <message>
-      <location filename="_CommandQuickAnalysis.py" line="40"/>
-      <source>Run CalculiX ccx</source>
-      <translation type="unfinished">Run CalculiX ccx</translation>
+      <location filename="_CommandRunSolver.py" line="40"/>
+      <source>Run solver calculations</source>
+      <translation type="unfinished">Run solver calculations</translation>
     </message>
     <message>
-      <location filename="_CommandQuickAnalysis.py" line="42"/>
-      <source>Write .inp file and run CalculiX ccx</source>
-      <translation type="unfinished">Write .inp file and run CalculiX ccx</translation>
+      <location filename="_CommandRunSolver.py" line="42"/>
+      <source>Runs the calculations for the selected solver</source>
+      <translation type="unfinished">Runs the calculations for the selected solver</translation>
     </message>
   </context>
   <context>
     <name>Fem_ShellThickness</name>
+    <message>
+      <location filename="_CommandShellThickness.py" line="41"/>
+      <source>Shell plate thickness</source>
+      <translation type="unfinished">Shell plate thickness</translation>
+    </message>
+    <message>
+      <location filename="_CommandShellThickness.py" line="43"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+    </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
       <source>FEM Shell Plate Thickness Definition ...</source>
@@ -110,25 +254,92 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="40"/>
       <source>Show result</source>
-      <translation type="unfinished">Show result</translation>
+      <translation>Toon resultaat</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
       <source>Show result information of an analysis</source>
       <translation type="unfinished">Show result information of an analysis</translation>
     </message>
+    <message>
+      <location filename="_CommandShowResult.py" line="42"/>
+      <source>Shows and visualizes selected result data</source>
+      <translation type="unfinished">Shows and visualizes selected result data</translation>
+    </message>
   </context>
   <context>
     <name>Fem_SolverCalculix</name>
     <message>
+      <location filename="_CommandSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation type="unfinished">Solver CalculiX</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+    </message>
+    <message>
       <location filename="_CommandFemSolverCalculix.py" line="41"/>
       <source>Create FEM Solver CalculiX ...</source>
-      <translation type="unfinished">Create FEM Solver CalculiX ...</translation>
+      <translation>Maak FEM Oplosser CalculiX...</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="43"/>
       <source>Creates FEM Solver CalculiX</source>
-      <translation type="unfinished">Creates FEM Solver CalculiX</translation>
+      <translation>Maak FEM Oplosser CalculiX</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_SolverZ88</name>
+    <message>
+      <location filename="_CommandSolverZ88.py" line="41"/>
+      <source>Solver Z88</source>
+      <translation type="unfinished">Solver Z88</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverZ88.py" line="43"/>
+      <source>Creates a FEM solver Z88</source>
+      <translation type="unfinished">Creates a FEM solver Z88</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_CreateFromShape</name>
+    <message>
+      <location filename="_CommandFemFromShape.py" line="39"/>
+      <source>Create FEM mesh</source>
+      <translation>Creëer een EEM-net</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemFromShape.py" line="40"/>
+      <source>Create FEM mesh from shape</source>
+      <translation>Creëer een EEM-net van een vorm</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_NewMechanicalAnalysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation>Nieuwe mechanische analyse</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation>Maak een nieuwe mechanische analyse</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Quick_Analysis</name>
+    <message>
+      <location filename="_CommandQuickAnalysis.py" line="40"/>
+      <source>Run CalculiX ccx</source>
+      <translation>CalculiX ccx draaien</translation>
+    </message>
+    <message>
+      <location filename="_CommandQuickAnalysis.py" line="42"/>
+      <source>Write .inp file and run CalculiX ccx</source>
+      <translation>Schrijf .inp bestand en draai CalculiX ccx</translation>
     </message>
   </context>
   <context>
@@ -142,19 +353,6 @@
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
       <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_Analysis</name>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
-      <source>New mechanical analysis</source>
-      <translation type="unfinished">New mechanical analysis</translation>
-    </message>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
-      <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
     </message>
   </context>
   <context>
@@ -188,7 +386,7 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="40"/>
       <source>Show result</source>
-      <translation type="unfinished">Show result</translation>
+      <translation>Toon resultaat</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
@@ -238,12 +436,12 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create FEM displacement constraint</source>
-      <translation type="unfinished">Create FEM displacement constraint</translation>
+      <translation>Maak FEM verplaatsing randvoorwaarde</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Create FEM constraint for a displacement acting on a face</source>
-      <translation type="unfinished">Create FEM constraint for a displacement acting on a face</translation>
+      <translation>Maak FEM randvoorwaarde voor een verplaatsing van een oppervlak</translation>
     </message>
   </context>
   <context>
@@ -256,12 +454,12 @@
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create FEM fixed constraint</source>
-      <translation type="unfinished">Create FEM fixed constraint</translation>
+      <translation>Maak FEM gefixeerd randvoorwaarde</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Create FEM constraint for a fixed geometric entity</source>
-      <translation type="unfinished">Create FEM constraint for a fixed geometric entity</translation>
+      <translation>Maak FEM randvoorwaarde voor een gefixeerde geometrische entiteit</translation>
     </message>
   </context>
   <context>
@@ -274,12 +472,12 @@
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Create FEM force constraint</source>
-      <translation type="unfinished">Create FEM force constraint</translation>
+      <translation>Maak FEM kracht randvoorwaarde</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="358"/>
       <source>Create FEM constraint for a force acting on a geometric entity</source>
-      <translation type="unfinished">Create FEM constraint for a force acting on a geometric entity</translation>
+      <translation>Maak FEM randvoorwaarde voor een kracht op geometrische entiteit</translation>
     </message>
   </context>
   <context>
@@ -292,12 +490,12 @@
     <message>
       <location filename="../../Command.cpp" line="446"/>
       <source>Create FEM gear constraint</source>
-      <translation>Maak FEM tandwiel constrain</translation>
+      <translation>Maak FEM tandwiel randvoorwaarde</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
       <source>Create FEM constraint for a gear</source>
-      <translation>Maak een FEM constraint voor een tandwiel</translation>
+      <translation>Maak een FEM randvoorwaarde voor een tandwiel</translation>
     </message>
   </context>
   <context>
@@ -310,12 +508,12 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create FEM pressure constraint</source>
-      <translation type="unfinished">Create FEM pressure constraint</translation>
+      <translation>Maak FEM druk randvoorwaarde</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create FEM constraint for a pressure acting on a face</source>
-      <translation type="unfinished">Create FEM constraint for a pressure acting on a face</translation>
+      <translation>Maak FEM randvoorwaarde voor een druk op een oppervlak</translation>
     </message>
   </context>
   <context>
@@ -347,7 +545,7 @@
       <location filename="../../Command.cpp" line="104"/>
       <location filename="../../Command.cpp" line="105"/>
       <source>Create a FEM analysis</source>
-      <translation type="unfinished">Create a FEM analysis</translation>
+      <translation>Maak een FEM-analyse</translation>
     </message>
   </context>
   <context>
@@ -428,17 +626,17 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="37"/>
       <source>CalculiX</source>
-      <translation type="unfinished">CalculiX</translation>
+      <translation>CalculiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="51"/>
       <source>Use internal editor for .inp files</source>
-      <translation type="unfinished">Use internal editor for .inp files</translation>
+      <translation>Gebruik interne editor voor .inp bestanden</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="78"/>
       <source>External editor:</source>
-      <translation type="unfinished">External editor:</translation>
+      <translation>Externe editor:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="122"/>
@@ -463,22 +661,22 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="213"/>
       <source>Default type on analysis</source>
-      <translation type="unfinished">Default type on analysis</translation>
+      <translation>Standaardtype analyse</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="223"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Statisch</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="232"/>
       <source>Frequency</source>
-      <translation type="unfinished">Frequency</translation>
+      <translation>Frequentie</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="244"/>
       <source>Eigenmode number</source>
-      <translation type="unfinished">Eigenmode number</translation>
+      <translation>Eigenmode nummer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="251"/>
@@ -488,23 +686,23 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="274"/>
       <source>High frequency limit</source>
-      <translation type="unfinished">High frequency limit</translation>
+      <translation>Top frequentie limiet</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="303"/>
       <source>Low frequency limit</source>
-      <translation type="unfinished">Low frequency limit</translation>
+      <translation>Onder frequentie limiet</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="335"/>
       <location filename="../../DlgSettingsFem.ui" line="342"/>
       <source>Hz</source>
-      <translation type="unfinished">Hz</translation>
+      <translation>Hz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="354"/>
       <source>Materials</source>
-      <translation type="unfinished">Materials</translation>
+      <translation>Materialen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="362"/>
@@ -514,12 +712,12 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="378"/>
       <source>Use materials from .FreeCAD/Materials directory</source>
-      <translation type="unfinished">Use materials from .FreeCAD/Materials directory</translation>
+      <translation>Gebruik materialen uit .FreeCAD/materialen folder</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="394"/>
       <source>Use materials from user defined directory</source>
-      <translation type="unfinished">Use materials from user defined directory</translation>
+      <translation>Gebruik van materialen uit door de gebruiker gedefinieerde folder</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="449"/>
@@ -555,7 +753,7 @@
     <message>
       <location filename="../../TaskAnalysisInfo.cpp" line="45"/>
       <source>Nodes set</source>
-      <translation type="unfinished">Nodes set</translation>
+      <translation>Verzameling knooppunten</translation>
     </message>
   </context>
   <context>
@@ -563,7 +761,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.cpp" line="63"/>
       <source>Nodes set</source>
-      <translation type="unfinished">Nodes set</translation>
+      <translation>Verzameling knooppunten</translation>
     </message>
   </context>
   <context>
@@ -607,7 +805,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="358"/>
       <source>Please specify a force greater than 0</source>
-      <translation type="unfinished">Please specify a force greater than 0</translation>
+      <translation>Specificeer een kracht groter dan 0</translation>
     </message>
   </context>
   <context>
@@ -629,7 +827,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="257"/>
       <source>Please specify a pressure greater than 0</source>
-      <translation type="unfinished">Please specify a pressure greater than 0</translation>
+      <translation>Specificeer een druk groter dan 0</translation>
     </message>
   </context>
   <context>
@@ -645,7 +843,7 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="75"/>
       <source>Edit FEM mesh</source>
-      <translation type="unfinished">Edit FEM mesh</translation>
+      <translation>Bewerken van FEM mesh</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
@@ -658,7 +856,7 @@
     <message>
       <location filename="../../TaskDriver.cpp" line="51"/>
       <source>Nodes set</source>
-      <translation type="unfinished">Nodes set</translation>
+      <translation>Verzameling knooppunten</translation>
     </message>
   </context>
   <context>
@@ -666,7 +864,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="67"/>
       <source>FEM constraint parameters</source>
-      <translation type="unfinished">FEM constraint parameters</translation>
+      <translation>FEM randvoorwaarde parameters</translation>
     </message>
   </context>
   <context>
@@ -736,7 +934,7 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="412"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
       <source>Nothing selected!</source>
-      <translation type="unfinished">Nothing selected!</translation>
+      <translation>Niets geselecteerd!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="422"/>
@@ -779,17 +977,17 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="142"/>
       <source>Point load</source>
-      <translation type="unfinished">Point load</translation>
+      <translation>Punt belasting</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
       <source>Line load</source>
-      <translation type="unfinished">Line load</translation>
+      <translation>Lijn belasting</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="146"/>
       <source>Area load</source>
-      <translation type="unfinished">Area load</translation>
+      <translation>Oppervlakte belasting</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
@@ -942,7 +1140,7 @@
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="26"/>
       <source>Cross Section</source>
-      <translation type="unfinished">Cross Section</translation>
+      <translation>Doorsnede</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="32"/>
@@ -959,7 +1157,7 @@
       <location filename="../../../TaskPanelFemBeamSection.ui" line="49"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="49"/>
       <source>References</source>
-      <translation type="unfinished">References</translation>
+      <translation>Verwijzingen</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="55"/>
@@ -1010,27 +1208,27 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="55"/>
       <source>Analysis type</source>
-      <translation type="unfinished">Analysis type</translation>
+      <translation>Soort analyse</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="67"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Statisch</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="77"/>
       <source>Frequency</source>
-      <translation type="unfinished">Frequency</translation>
+      <translation>Frequentie</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="89"/>
       <source>Write .inp file</source>
-      <translation type="unfinished">Write .inp file</translation>
+      <translation>.Inp bestand schrijven</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="99"/>
       <source>Edit .inp file</source>
-      <translation type="unfinished">Edit .inp file</translation>
+      <translation>.inp bestand wijzigen</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="109"/>
@@ -1068,12 +1266,12 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="41"/>
       <source>Material Description</source>
-      <translation type="unfinished">Material Description</translation>
+      <translation>Materiaal beschrijving</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="54"/>
       <source>References</source>
-      <translation type="unfinished">References</translation>
+      <translation>Verwijzingen</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="60"/>
@@ -1093,7 +1291,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="96"/>
       <source>Properties</source>
-      <translation type="unfinished">Properties</translation>
+      <translation>Instellingen</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="107"/>
@@ -1188,7 +1386,7 @@
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
-      <translation>Beperking bewerken</translation>
+      <translation>Randvoorwaarde bewerken</translation>
     </message>
     <message>
       <source>Combo View</source>
@@ -1236,7 +1434,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="343"/>
       <source>Constraint force</source>
-      <translation type="unfinished">Constraint force</translation>
+      <translation>Randvoorwaarde kracht</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="587"/>
@@ -1255,27 +1453,27 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="14"/>
       <source>Show result</source>
-      <translation type="unfinished">Show result</translation>
+      <translation>Toon resultaat</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="22"/>
       <source>Result type</source>
-      <translation type="unfinished">Result type</translation>
+      <translation>Resultaattype</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
       <source>Y displacement</source>
-      <translation type="unfinished">Y displacement</translation>
+      <translation>Y verplaatsing</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="37"/>
       <source>X displacement</source>
-      <translation type="unfinished">X displacement</translation>
+      <translation>X verplaatsing</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="44"/>
       <source>Z displacement</source>
-      <translation type="unfinished">Z displacement</translation>
+      <translation>Z verplaatsing</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
@@ -1285,17 +1483,17 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="61"/>
       <source>Von Mises stress</source>
-      <translation type="unfinished">Von Mises stress</translation>
+      <translation>Von Mises-spanning</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="68"/>
       <source>Abs displacement</source>
-      <translation type="unfinished">Abs displacement</translation>
+      <translation>Absolute verplaatsing</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="79"/>
       <source>Avg:</source>
-      <translation type="unfinished">Avg:</translation>
+      <translation>Gem:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="96"/>
@@ -1351,7 +1549,7 @@
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
       <source>Constraints</source>
-      <translation>Beperkingen</translation>
+      <translation>Randvoorwaarde</translation>
     </message>
   </context>
   <context>
@@ -1374,7 +1572,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="49"/>
       <source>Nodes: 0</source>
-      <translation type="unfinished">Nodes: 0</translation>
+      <translation>Knooppunten: 0</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="60"/>
@@ -1503,7 +1701,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="110"/>
       <source>Force</source>
-      <translation type="unfinished">Force</translation>
+      <translation>Kracht</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="134"/>
@@ -1523,12 +1721,12 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="192"/>
       <source>Force Direction</source>
-      <translation type="unfinished">Force Direction</translation>
+      <translation>Richting kracht</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="204"/>
       <source>Reversed direction</source>
-      <translation type="unfinished">Reversed direction</translation>
+      <translation>Omgekeerde richting</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="211"/>
@@ -1551,7 +1749,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation type="unfinished">Prescribed Displacement</translation>
+      <translation>Voorgeschreven verplaatsing</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
@@ -1571,7 +1769,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
       <source>Displacement x</source>
-      <translation type="unfinished">Displacement x</translation>
+      <translation>Verplaatsing X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
@@ -1581,7 +1779,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="288"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="330"/>
       <source>Free</source>
-      <translation type="unfinished">Free</translation>
+      <translation>Vrij</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="111"/>
@@ -1591,17 +1789,17 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Gefixeerd</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation type="unfinished">Displacement y</translation>
+      <translation>Verplaatsing Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation type="unfinished">Displacement z</translation>
+      <translation>Verplaatsing Z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
@@ -1611,17 +1809,17 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>
       <source>Rotation x</source>
-      <translation type="unfinished">Rotation x</translation>
+      <translation>X rotatie</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="279"/>
       <source>Rotation y</source>
-      <translation type="unfinished">Rotation y</translation>
+      <translation>Y rotatie</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
       <source>Rotation z</source>
-      <translation type="unfinished">Rotation z</translation>
+      <translation>Z rotatie</translation>
     </message>
   </context>
   <context>
@@ -1680,12 +1878,12 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="32"/>
       <source>Pressure</source>
-      <translation type="unfinished">Pressure</translation>
+      <translation>Druk</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="39"/>
       <source>1 MPa</source>
-      <translation type="unfinished">1 MPa</translation>
+      <translation>1 MPa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="51"/>

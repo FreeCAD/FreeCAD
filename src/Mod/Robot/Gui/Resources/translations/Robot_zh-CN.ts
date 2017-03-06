@@ -379,7 +379,12 @@
         <translation>选择错误</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -409,13 +414,13 @@
         <location filename="../../CommandExport.cpp" line="-40"/>
         <location line="+62"/>
         <source>KRL file</source>
-        <translation type="unfinished">KRL file</translation>
+        <translation>KRL 文件</translation>
     </message>
     <message>
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有文件</translation>
     </message>
     <message>
         <location line="-61"/>
@@ -439,12 +444,11 @@
         <translation>您必须悬停鼠标于(预选)几何体以使用该命令.详情请参考文档.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>选中一个机器人并设置初始位置</translation>
+        <translation type="obsolete">选中一个机器人并设置初始位置</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>选择一个机器人</translation>
     </message>

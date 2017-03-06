@@ -56,7 +56,7 @@
     <message>
         <location line="+1"/>
         <source>Poisson surface reconstruction</source>
-        <translation>Poissonova rekonstrukce plochy</translation>
+        <translation>Rekonstrukce Poissonovy plochy</translation>
     </message>
 </context>
 <context>
@@ -190,12 +190,12 @@
     <message>
         <location line="+6"/>
         <source>Octree depth</source>
-        <translation type="unfinished">Octree depth</translation>
+        <translation>Hloubka stromu</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Solver divide</source>
-        <translation type="unfinished">Solver divide</translation>
+        <translation>Rozdělení řešení</translation>
     </message>
     <message>
         <location line="+20"/>

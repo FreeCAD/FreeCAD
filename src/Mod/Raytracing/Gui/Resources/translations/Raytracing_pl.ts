@@ -159,8 +159,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation>Eksportowanie pozycji kamery aktywnego widoku 3D w formacie POV-Ray do pliku</translation>
+        <translation type="obsolete">Eksportowanie pozycji kamery aktywnego widoku 3D w formacie POV-Ray do pliku</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>

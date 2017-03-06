@@ -24,11 +24,11 @@
     </message>
     <message>
         <source>Boundings info...</source>
-        <translation type="unfinished">Boundings info...</translation>
+        <translation>Boundings πληροφορίες...</translation>
     </message>
     <message>
         <source>Shows the boundings of the selected mesh</source>
-        <translation type="unfinished">Shows the boundings of the selected mesh</translation>
+        <translation>Δείχνει το boundings της το επιλεγμένο δικτύωμα</translation>
     </message>
 </context>
 <context>
@@ -50,7 +50,7 @@
     <name>CmdMeshDemolding</name>
     <message>
         <source>Interactive demolding direction</source>
-        <translation type="unfinished">Interactive demolding direction</translation>
+        <translation>Διαδραστικό demolding κατεύθυνση</translation>
     </message>
     <message>
         <source>Mesh</source>
@@ -91,11 +91,11 @@
     </message>
     <message>
         <source>Check solid mesh</source>
-        <translation type="unfinished">Check solid mesh</translation>
+        <translation>Ελέγχου στερεών ματιών</translation>
     </message>
     <message>
         <source>Checks whether the mesh is a solid</source>
-        <translation type="unfinished">Checks whether the mesh is a solid</translation>
+        <translation>Ελέγχει εάν το πλέγμα είναι ένα στερεό</translation>
     </message>
 </context>
 <context>
@@ -106,11 +106,11 @@
     </message>
     <message>
         <source>Opens a dialog to analyze and repair a mesh</source>
-        <translation type="unfinished">Opens a dialog to analyze and repair a mesh</translation>
+        <translation>Ανοίγει ένα παράθυρο διαλόγου για να αναλύσει και να επιδιορθώσετε ένα πλέγμα</translation>
     </message>
     <message>
         <source>Evaluate &amp;&amp; Repair mesh...</source>
-        <translation type="unfinished">Evaluate &amp;&amp; Repair mesh...</translation>
+        <translation>Αξιολογήσει &amp;&amp; επισκευή ματιών...</translation>
     </message>
 </context>
 <context>
@@ -154,7 +154,7 @@
     </message>
     <message>
         <source>Export mesh...</source>
-        <translation type="unfinished">Export mesh...</translation>
+        <translation>Εξαγωγή ματιών...</translation>
     </message>
     <message>
         <source>Exports a mesh to file</source>
@@ -395,6 +395,21 @@
     <message>
         <source>Remove topologic independent components from the mesh</source>
         <translation type="unfinished">Remove topologic independent components from the mesh</translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshSectionByPlane</name>
+    <message>
+        <source>Mesh</source>
+        <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section from mesh and plane</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -738,30 +753,30 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Settings...</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
         <source>Evaluation settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Evaluation settings</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Settings</translation>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Check for non-manifold points</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enable check for folds on surface</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Only consider zero area faces as degenerated</translation>
     </message>
 </context>
 <context>
@@ -887,6 +902,10 @@ Please run the command to repair folds first</translation>
     <message>
         <source>mm</source>
         <translation type="obsolete">χιλ.</translation>
+    </message>
+    <message>
+        <source>Export AMF files using compression</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1100,7 +1119,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Minumum number of faces</source>
-        <translation type="unfinished">Minumum number of faces</translation>
+        <translation type="obsolete">Minumum number of faces</translation>
     </message>
     <message>
         <source>Cylinder</source>
@@ -1173,11 +1192,11 @@ Please run the command to repair folds first</translation>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Select plane</translation>
+        <translation type="obsolete">Select plane</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+        <translation type="obsolete">Please select a plane at which you trim the mesh.</translation>
     </message>
 </context>
 <context>
@@ -1188,13 +1207,17 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished">Unknwon error occured while running OpenSCAD.</translation>
+        <translation type="obsolete">Unknwon error occured while running OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
         <translation type="unfinished">OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</translation>
+    </message>
+    <message>
+        <source>Unknown error occurred while running OpenSCAD.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

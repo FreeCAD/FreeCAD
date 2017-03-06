@@ -46,5 +46,10 @@
         <file>translations/Mesh_sr.qm</file>
         <file>translations/Mesh_el.qm</file>
         <file>translations/Mesh_sl.qm</file>
+        <file>translations/Mesh_eu.qm</file>
+        <file>translations/Mesh_ca.qm</file>
+        <file>translations/Mesh_gl.qm</file>
+        <file>translations/Mesh_kab.qm</file>
+        <file>translations/Mesh_ko.qm</file>
     </qresource>
 </RCC> 

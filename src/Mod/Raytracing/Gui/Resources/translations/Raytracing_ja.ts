@@ -159,8 +159,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation>現在の3 D ビューでのカメラ位置をPOV-Ray フォーマットのファイルにエクスポートします。</translation>
+        <translation type="obsolete">現在の3 D ビューでのカメラ位置をPOV-Ray フォーマットのファイルにエクスポートします。</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>
@@ -328,12 +332,12 @@ Do you want to continue?</source>
     <message>
         <location line="-5"/>
         <source>Please set the path to the POV-Ray executable in the preferences.</source>
-        <translation>プリファレンスでPOV-Ray実行ファイルのパスを設定してください。</translation>
+        <translation>設定でPOV-Ray実行ファイルのパスを設定してください。</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-        <translation>フリファレンスで、POV-Ray実行ファイルのパスを修正してください。</translation>
+        <translation>設定でPOV-Ray実行ファイルのパスを修正してください。</translation>
     </message>
     <message>
         <location line="+75"/>
@@ -366,7 +370,7 @@ Do you want to continue?</source>
         <location line="+276"/>
         <location line="+109"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>すべてのファイル</translation>
     </message>
     <message>
         <location line="-29"/>
@@ -455,7 +459,7 @@ Do you want to continue?</source>
     <message>
         <location line="+53"/>
         <source>Default Project dir:</source>
-        <translation>デフォルトのプロジェクトディレクトリ：</translation>
+        <translation>デフォルトのプロジェクトディレクトリ:</translation>
     </message>
     <message>
         <location line="-26"/>

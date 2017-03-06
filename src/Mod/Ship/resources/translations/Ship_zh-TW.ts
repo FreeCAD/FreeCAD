@@ -111,7 +111,7 @@
     <message>
       <location filename="ShipGui.py" line="77"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Outline draw</translation>
+      <translation>輪廓繪製</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="80"/>
@@ -149,7 +149,7 @@
     <message>
       <location filename="TaskPanel.py" line="234"/>
       <source>Trim angle</source>
-      <translation type="unfinished">Trim angle</translation>
+      <translation>修剪角度</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="240"/>
@@ -563,7 +563,7 @@
     <message>
       <location filename="TaskPanel.py" line="227"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Outline draw</translation>
+      <translation>輪廓繪製</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="232"/>

@@ -97,5 +97,10 @@
         <file>translations/Path_uk.qm</file>
         <file>translations/Path_zh-CN.qm</file>
         <file>translations/Path_zh-TW.qm</file>
+        <file>translations/Path_eu.qm</file>
+        <file>translations/Path_ca.qm</file>
+        <file>translations/Path_gl.qm</file>
+        <file>translations/Path_kab.qm</file>
+        <file>translations/Path_ko.qm</file>
     </qresource>
 </RCC>

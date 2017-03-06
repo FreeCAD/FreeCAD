@@ -65,13 +65,17 @@
         <translation>Primitives</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Paramétrique</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Apparence d&apos;objet</translation>
+        <translation type="obsolete">Apparence d&apos;objet</translation>
     </message>
     <message>
         <location line="+1"/>

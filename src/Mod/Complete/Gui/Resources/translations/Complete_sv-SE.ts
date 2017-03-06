@@ -65,13 +65,17 @@
         <translation>Primitiver</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Parametrisk</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Objekt utseende</translation>
+        <translation type="obsolete">Objekt utseende</translation>
     </message>
     <message>
         <location line="+1"/>

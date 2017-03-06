@@ -75,7 +75,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Triangulation of structured point clouds</source>
-        <translation type="unfinished">Triangulation of structured point clouds</translation>
+        <translation>Triangulação de nuvens de pontos estruturados</translation>
     </message>
     <message>
         <source>View triangulation</source>
@@ -87,12 +87,12 @@
     <message>
         <location filename="../../FitBSplineSurface.ui" line="+14"/>
         <source>Fit B-Spline surface</source>
-        <translation type="unfinished">Fit B-Spline surface</translation>
+        <translation>Superfície B-Spline adoçada</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>u-Direction</source>
-        <translation type="unfinished">u-Direction</translation>
+        <translation>Direção-u</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -109,7 +109,7 @@
     <message>
         <location line="-35"/>
         <source>v-Direction</source>
-        <translation type="unfinished">v-Direction</translation>
+        <translation>Direção-v</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -139,22 +139,22 @@
     <message>
         <location line="+29"/>
         <source>Length of gradient</source>
-        <translation type="unfinished">Length of gradient</translation>
+        <translation>Comprimento do gradiente</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Bending energy</source>
-        <translation type="unfinished">Bending energy</translation>
+        <translation>Energia de flexão</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Curvature variation</source>
-        <translation type="unfinished">Curvature variation</translation>
+        <translation>Variação de curvatura</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>User-defined u/v directions</source>
-        <translation type="unfinished">User-defined u/v directions</translation>
+        <translation>Direções u/v definidas pelo utilizador</translation>
     </message>
 </context>
 <context>
@@ -167,7 +167,7 @@
     <message>
         <location line="+1"/>
         <source>Please select a single placement object to get local orientation.</source>
-        <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+        <translation>Por favor selecione um objeto de posição única para obter orientação local.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -190,12 +190,12 @@
     <message>
         <location line="+6"/>
         <source>Octree depth</source>
-        <translation type="unfinished">Octree depth</translation>
+        <translation>Profundidade da Octree</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Solver divide</source>
-        <translation type="unfinished">Solver divide</translation>
+        <translation>Divisão da Solução</translation>
     </message>
     <message>
         <location line="+20"/>

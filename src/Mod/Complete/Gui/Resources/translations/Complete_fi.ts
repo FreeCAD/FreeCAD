@@ -65,13 +65,17 @@
         <translation>Perusalkiot</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Parametrinen</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Kohteen ulkoasu</translation>
+        <translation type="obsolete">Kohteen ulkoasu</translation>
     </message>
     <message>
         <location line="+1"/>

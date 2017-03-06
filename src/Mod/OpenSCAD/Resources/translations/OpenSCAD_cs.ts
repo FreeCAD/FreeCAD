@@ -126,7 +126,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="73"/>
       <source>Print debug information in the Console</source>
-      <translation type="unfinished">Print debug information in the Console</translation>
+      <translation>Tisknout na konzoli ladící informace</translation>
     </message>
   </context>
   <context>
@@ -142,12 +142,12 @@
       <translation>Nejdříve prosím vyberte 3 objekty</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Unsupported Function</source>
       <translation>Nepodporovaná funkce</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Press OK</source>
       <translation>Stiskněte OK</translation>
     </message>

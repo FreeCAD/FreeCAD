@@ -285,11 +285,11 @@
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished">Merge</translation>
+        <translation>Förena</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
-        <translation type="unfinished">Merges selected meshes into one</translation>
+        <translation>Sammanfogar markerade nät till en</translation>
     </message>
 </context>
 <context>
@@ -395,6 +395,21 @@
     <message>
         <source>Remove topologic independent components from the mesh</source>
         <translation>Ta bort topologiskt oberoende komponenter från nätet</translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshSectionByPlane</name>
+    <message>
+        <source>Mesh</source>
+        <translation type="unfinished">Nät</translation>
+    </message>
+    <message>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section from mesh and plane</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -737,30 +752,30 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation>Inställningar...</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
         <source>Evaluation settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Utvärderingsinställningar</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Inställningar</translation>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrollera för icke-manifold-punkter</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktivera kontroll efter veck på ytan</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
-        <translation type="unfinished"></translation>
+        <translation>Anse endast ytor med noll area som degenererade</translation>
     </message>
 </context>
 <context>
@@ -865,7 +880,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::DlgSettingsImportExport</name>
     <message>
         <source>Mesh Formats</source>
-        <translation type="unfinished">Mesh Formats</translation>
+        <translation>Mesh-format</translation>
     </message>
     <message>
         <source>Export</source>
@@ -881,11 +896,15 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Maximum mesh deviation</source>
-        <translation type="unfinished">Maximum mesh deviation</translation>
+        <translation>Maximal nät-avvikelse</translation>
     </message>
     <message>
         <source>mm</source>
         <translation type="obsolete">mm</translation>
+    </message>
+    <message>
+        <source>Export AMF files using compression</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1099,7 +1118,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Minumum number of faces</source>
-        <translation>Minsta antal ytor</translation>
+        <translation type="obsolete">Minsta antal ytor</translation>
     </message>
     <message>
         <source>Cylinder</source>
@@ -1172,11 +1191,11 @@ Please run the command to repair folds first</source>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation>Välj plan</translation>
+        <translation type="obsolete">Välj plan</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation>Välj ett plan för vilken du önskar trimma din mesh.</translation>
+        <translation type="obsolete">Välj ett plan för vilken du önskar trimma din mesh.</translation>
     </message>
 </context>
 <context>
@@ -1187,13 +1206,17 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation>Ett okänt fel inträffade under körningen av OpenSCAD.</translation>
+        <translation type="obsolete">Ett okänt fel inträffade under körningen av OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
         <translation>OpenSCAD kunde inte hittas på datorn.
 Besök http://www.openscad.org/index.html för att installera det.</translation>
+    </message>
+    <message>
+        <source>Unknown error occurred while running OpenSCAD.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1359,27 +1382,27 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>All Mesh Files</source>
-        <translation type="unfinished">All Mesh Files</translation>
+        <translation>Alla Mesh-filer</translation>
     </message>
     <message>
         <source>Binary STL</source>
-        <translation type="unfinished">Binary STL</translation>
+        <translation>Binär STL</translation>
     </message>
     <message>
         <source>ASCII STL</source>
-        <translation type="unfinished">ASCII STL</translation>
+        <translation>ASCII STL</translation>
     </message>
     <message>
         <source>Binary Mesh</source>
-        <translation type="unfinished">Binary Mesh</translation>
+        <translation>Binärt Mesh</translation>
     </message>
     <message>
         <source>Alias Mesh</source>
-        <translation type="unfinished">Alias Mesh</translation>
+        <translation>Alias nät</translation>
     </message>
     <message>
         <source>Object File Format</source>
-        <translation type="unfinished">Object File Format</translation>
+        <translation>Object Filformat</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii</source>
@@ -1399,11 +1422,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>VRML V2.0</source>
-        <translation type="unfinished">VRML V2.0</translation>
+        <translation>VRML V2.0</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0</source>
-        <translation type="unfinished">Compressed VRML 2.0</translation>
+        <translation>Komprimerad VRML 2.0</translation>
     </message>
     <message>
         <source>Nastran</source>
@@ -1411,11 +1434,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Python module def</source>
-        <translation type="unfinished">Python module def</translation>
+        <translation>Python-modul def</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>
-        <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+        <translation>[punkter: %1, kanter: %2, sidor: %3]</translation>
     </message>
     <message>
         <source>Import-Export</source>

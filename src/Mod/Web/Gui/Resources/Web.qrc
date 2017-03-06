@@ -35,5 +35,10 @@
         <file>translations/Web_sk.qm</file>
         <file>translations/Web_tr.qm</file>
         <file>translations/Web_sl.qm</file>
+        <file>translations/Web_eu.qm</file>
+        <file>translations/Web_ca.qm</file>
+        <file>translations/Web_gl.qm</file>
+        <file>translations/Web_kab.qm</file>
+        <file>translations/Web_ko.qm</file>
     </qresource>
 </RCC>

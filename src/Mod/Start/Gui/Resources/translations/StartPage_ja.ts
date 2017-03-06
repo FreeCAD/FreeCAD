@@ -295,11 +295,6 @@
       <translation>FreeCAD の新しいリリースが利用できます。</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="109"/>
-      <source>Load an FEM example analysis</source>
-      <translation>FEMの解析例を読み込み</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="54"/>
       <source>Latest commits</source>
       <translation>最新のコミット</translation>
@@ -318,6 +313,16 @@
       <location filename="StartPage.py" line="112"/>
       <source>See all commits</source>
       <translation>全てのコミットを見る</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM 3D example analysis</source>
+      <translation>FEMの3次元解析例を読み込み</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="113"/>
+      <source>Load an FEM 2D example analysis</source>
+      <translation>FEMの2次元解析例を読み込み</translation>
     </message>
   </context>
 </TS>

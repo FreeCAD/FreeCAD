@@ -2,16 +2,62 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fi" sourcelanguage="en">
   <context>
+    <name>Fem_Analysis</name>
+    <message>
+      <location filename="_CommandAnalysis.py" line="41"/>
+      <source>Analysis container</source>
+      <translation type="unfinished">Analysis container</translation>
+    </message>
+    <message>
+      <location filename="_CommandAnalysis.py" line="43"/>
+      <source>Creates a analysis container with standard solver CalculiX</source>
+      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation>Uusi lujuusanalyysi</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation>Luo uusi lujuusanalyysi</translation>
+    </message>
+  </context>
+  <context>
     <name>Fem_BeamSection</name>
+    <message>
+      <location filename="_CommandBeamSection.py" line="41"/>
+      <source>Beam cross section</source>
+      <translation type="unfinished">Beam cross section</translation>
+    </message>
+    <message>
+      <location filename="_CommandBeamSection.py" line="43"/>
+      <source>Creates a FEM beam cross section</source>
+      <translation type="unfinished">Creates a FEM beam cross section</translation>
+    </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
       <source>FEM Beam Cross Section Definition ...</source>
-      <translation type="unfinished">FEM Beam Cross Section Definition ...</translation>
+      <translation>Palkin poikkileikkaustiedot...</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM Beam Cross Section</source>
-      <translation type="unfinished">Creates a FEM Beam Cross Section</translation>
+      <translation>Luo palkin poikkileikkaus</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_ClearMesh</name>
+    <message>
+      <location filename="_CommandClearMesh.py" line="41"/>
+      <source>Clear FEM mesh</source>
+      <translation type="unfinished">Clear FEM mesh</translation>
+    </message>
+    <message>
+      <location filename="_CommandClearMesh.py" line="43"/>
+      <source>Clear the Mesh of a FEM mesh object</source>
+      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
     </message>
   </context>
   <context>
@@ -19,12 +65,242 @@
     <message>
       <location filename="FemCommands.py" line="39"/>
       <source>Default Fem Command MenuText</source>
-      <translation type="unfinished">Default Fem Command MenuText</translation>
+      <translation>Fem-komennon oletus MenuTeksti</translation>
     </message>
     <message>
       <location filename="FemCommands.py" line="41"/>
       <source>Default Fem Command ToolTip</source>
-      <translation type="unfinished">Default Fem Command ToolTip</translation>
+      <translation>Fem-komennon oletus työkaluvihje</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_ConstraintSelfWeight</name>
+    <message>
+      <location filename="_CommandConstraintSelfWeight.py" line="41"/>
+      <source>Constraint self weigt</source>
+      <translation type="unfinished">Constraint self weigt</translation>
+    </message>
+    <message>
+      <location filename="_CommandConstraintSelfWeight.py" line="43"/>
+      <source>Creates a FEM constraint self weigt</source>
+      <translation type="unfinished">Creates a FEM constraint self weigt</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_ControlSolver</name>
+    <message>
+      <location filename="_CommandControlSolver.py" line="40"/>
+      <source>Solver job control</source>
+      <translation type="unfinished">Solver job control</translation>
+    </message>
+    <message>
+      <location filename="_CommandControlSolver.py" line="42"/>
+      <source>Changes solver attributes and runs the calculations for the selected solver</source>
+      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_FemMesh2Mesh</name>
+    <message>
+      <location filename="_CommandFEMMesh2Mesh.py" line="42"/>
+      <source>FEM mesh to mesh</source>
+      <translation type="unfinished">FEM mesh to mesh</translation>
+    </message>
+    <message>
+      <location filename="_CommandFEMMesh2Mesh.py" line="43"/>
+      <source>Convert the surface of a FEM mesh to a mesh</source>
+      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_MaterialMechanicalNonlinear</name>
+    <message>
+      <location filename="_CommandMaterialMechanicalNonlinear.py" line="42"/>
+      <source>Nonlinear mechanical material</source>
+      <translation type="unfinished">Nonlinear mechanical material</translation>
+    </message>
+    <message>
+      <location filename="_CommandMaterialMechanicalNonlinear.py" line="44"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_MechanicalMaterial</name>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="42"/>
+      <source>Mechanical material</source>
+      <translation>Mekaaninen materiaali</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="42"/>
+      <source>Mechanical material...</source>
+      <translation>Materiaalin mekaaniset ominaisuudet...</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="44"/>
+      <source>Creates a mechanical material</source>
+      <translation type="unfinished">Creates a mechanical material</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="44"/>
+      <source>Creates or edit the mechanical material definition.</source>
+      <translation>Luo tai muuta materiaalin mekaanisia ominaisuuksia.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_MeshFromShape</name>
+    <message>
+      <location filename="_CommandMeshNetgenFromShape.py" line="41"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+    </message>
+    <message>
+      <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_MeshGmshFromShape</name>
+    <message>
+      <location filename="_CommandMeshGmshFromShape.py" line="42"/>
+      <source>FEM mesh from shape by GMSH</source>
+      <translation type="unfinished">FEM mesh from shape by GMSH</translation>
+    </message>
+    <message>
+      <location filename="_CommandMeshGmshFromShape.py" line="43"/>
+      <source>Create a FEM mesh from a shape by GMSH mesher</source>
+      <translation type="unfinished">Create a FEM mesh from a shape by GMSH mesher</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_MeshRegion</name>
+    <message>
+      <location filename="_CommandMeshRegion.py" line="41"/>
+      <source>FEM mesh region</source>
+      <translation type="unfinished">FEM mesh region</translation>
+    </message>
+    <message>
+      <location filename="_CommandMeshRegion.py" line="43"/>
+      <source>Creates a FEM mesh region</source>
+      <translation type="unfinished">Creates a FEM mesh region</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_PrintMeshInfo</name>
+    <message>
+      <location filename="_CommandPrintMeshInfo.py" line="44"/>
+      <source>Print FEM mesh info</source>
+      <translation type="unfinished">Print FEM mesh info</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_PurgeResults</name>
+    <message>
+      <location filename="_CommandPurgeFemResults.py" line="40"/>
+      <source>Purge results</source>
+      <translation>Poista tulokset</translation>
+    </message>
+    <message>
+      <location filename="_CommandPurgeFemResults.py" line="42"/>
+      <source>Purge results from an analysis</source>
+      <translation>Poista analyysin tulokset</translation>
+    </message>
+    <message>
+      <location filename="_CommandPurgeResults.py" line="43"/>
+      <source>Purges all results from active analysis</source>
+      <translation type="unfinished">Purges all results from active analysis</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_RunAnalysis</name>
+    <message>
+      <location filename="_CommandRunSolver.py" line="40"/>
+      <source>Run solver calculations</source>
+      <translation type="unfinished">Run solver calculations</translation>
+    </message>
+    <message>
+      <location filename="_CommandRunSolver.py" line="42"/>
+      <source>Runs the calculations for the selected solver</source>
+      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_ShellThickness</name>
+    <message>
+      <location filename="_CommandShellThickness.py" line="41"/>
+      <source>Shell plate thickness</source>
+      <translation type="unfinished">Shell plate thickness</translation>
+    </message>
+    <message>
+      <location filename="_CommandShellThickness.py" line="43"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="41"/>
+      <source>FEM Shell Plate Thickness Definition ...</source>
+      <translation>Kuoren paksuuden määritys ...</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="43"/>
+      <source>Creates a FEM Shell Thickness</source>
+      <translation>Luo kuorenpaksuustieto</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_ShowResult</name>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="40"/>
+      <source>Show result</source>
+      <translation>Näytä tulos</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="42"/>
+      <source>Show result information of an analysis</source>
+      <translation>Näytä analyysin tuloksia</translation>
+    </message>
+    <message>
+      <location filename="_CommandShowResult.py" line="42"/>
+      <source>Shows and visualizes selected result data</source>
+      <translation type="unfinished">Shows and visualizes selected result data</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_SolverCalculix</name>
+    <message>
+      <location filename="_CommandSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation type="unfinished">Solver CalculiX</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="41"/>
+      <source>Create FEM Solver CalculiX ...</source>
+      <translation>Luo FEM Ratkaisin CalculiX...</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="43"/>
+      <source>Creates FEM Solver CalculiX</source>
+      <translation>Luo FEM Ratkaisin CalculiX</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_SolverZ88</name>
+    <message>
+      <location filename="_CommandSolverZ88.py" line="41"/>
+      <source>Solver Z88</source>
+      <translation type="unfinished">Solver Z88</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverZ88.py" line="43"/>
+      <source>Creates a FEM solver Z88</source>
+      <translation type="unfinished">Creates a FEM solver Z88</translation>
     </message>
   </context>
   <context>
@@ -41,42 +317,16 @@
     </message>
   </context>
   <context>
-    <name>Fem_MechanicalMaterial</name>
-    <message>
-      <location filename="_CommandMechanicalMaterial.py" line="42"/>
-      <source>Mechanical material...</source>
-      <translation type="unfinished">Mechanical material...</translation>
-    </message>
-    <message>
-      <location filename="_CommandMechanicalMaterial.py" line="44"/>
-      <source>Creates or edit the mechanical material definition.</source>
-      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
-    </message>
-  </context>
-  <context>
     <name>Fem_NewMechanicalAnalysis</name>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
       <source>New mechanical analysis</source>
-      <translation type="unfinished">New mechanical analysis</translation>
+      <translation>Uusi lujuusanalyysi</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
       <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_PurgeResults</name>
-    <message>
-      <location filename="_CommandPurgeFemResults.py" line="40"/>
-      <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
-    </message>
-    <message>
-      <location filename="_CommandPurgeFemResults.py" line="42"/>
-      <source>Purge results from an analysis</source>
-      <translation type="unfinished">Purge results from an analysis</translation>
+      <translation>Luo uusi lujuusanalyysi</translation>
     </message>
   </context>
   <context>
@@ -84,51 +334,12 @@
     <message>
       <location filename="_CommandQuickAnalysis.py" line="40"/>
       <source>Run CalculiX ccx</source>
-      <translation type="unfinished">Run CalculiX ccx</translation>
+      <translation>Aja CalculiX cxx analyysi</translation>
     </message>
     <message>
       <location filename="_CommandQuickAnalysis.py" line="42"/>
       <source>Write .inp file and run CalculiX ccx</source>
-      <translation type="unfinished">Write .inp file and run CalculiX ccx</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_ShellThickness</name>
-    <message>
-      <location filename="_CommandFemShellThickness.py" line="41"/>
-      <source>FEM Shell Plate Thickness Definition ...</source>
-      <translation type="unfinished">FEM Shell Plate Thickness Definition ...</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemShellThickness.py" line="43"/>
-      <source>Creates a FEM Shell Thickness</source>
-      <translation type="unfinished">Creates a FEM Shell Thickness</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_ShowResult</name>
-    <message>
-      <location filename="_CommandMechanicalShowResult.py" line="40"/>
-      <source>Show result</source>
-      <translation>Näytä tulos</translation>
-    </message>
-    <message>
-      <location filename="_CommandMechanicalShowResult.py" line="42"/>
-      <source>Show result information of an analysis</source>
-      <translation type="unfinished">Show result information of an analysis</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_SolverCalculix</name>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="41"/>
-      <source>Create FEM Solver CalculiX ...</source>
-      <translation type="unfinished">Create FEM Solver CalculiX ...</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="43"/>
-      <source>Creates FEM Solver CalculiX</source>
-      <translation type="unfinished">Creates FEM Solver CalculiX</translation>
+      <translation>Kirjoita .inp tiedosto ja aja CalculiX cxx analyysi</translation>
     </message>
   </context>
   <context>
@@ -136,25 +347,12 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
+      <translation>Aloita ratkaisijan ohjaaminen</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_Analysis</name>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
-      <source>New mechanical analysis</source>
-      <translation type="unfinished">New mechanical analysis</translation>
-    </message>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
-      <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
+      <translation>Valintaikkuna halutun ratkaisijan käynnistämiseksi</translation>
     </message>
   </context>
   <context>
@@ -162,12 +360,12 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
+      <translation>Aloita ratkaisijan ohjaaminen</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
+      <translation>Valintaikkuna halutun ratkaisijan käynnistämiseksi</translation>
     </message>
   </context>
   <context>
@@ -175,12 +373,12 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation type="unfinished">Mechanical material...</translation>
+      <translation>Materiaalin mekaaniset ominaisuudet...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+      <translation>Luo tai muuta materiaalin mekaanisia ominaisuuksia.</translation>
     </message>
   </context>
   <context>
@@ -193,7 +391,7 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
       <source>Show result information of an analysis</source>
-      <translation type="unfinished">Show result information of an analysis</translation>
+      <translation>Näytä analyysin tuloksia</translation>
     </message>
   </context>
   <context>
@@ -238,12 +436,12 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create FEM displacement constraint</source>
-      <translation type="unfinished">Create FEM displacement constraint</translation>
+      <translation>Luo siirtymäkiinnityksiä</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Create FEM constraint for a displacement acting on a face</source>
-      <translation type="unfinished">Create FEM constraint for a displacement acting on a face</translation>
+      <translation>Luo pinnan siirtymäkiinnityksiä</translation>
     </message>
   </context>
   <context>
@@ -310,12 +508,12 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create FEM pressure constraint</source>
-      <translation type="unfinished">Create FEM pressure constraint</translation>
+      <translation>Luo painekuorma</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create FEM constraint for a pressure acting on a face</source>
-      <translation type="unfinished">Create FEM constraint for a pressure acting on a face</translation>
+      <translation>Luo pinnalle painekuorma</translation>
     </message>
   </context>
   <context>
@@ -386,7 +584,7 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation type="unfinished">Select a single FEM mesh or nodes set, please.</translation>
+      <translation>Valitse yksi verkko tai solmusetti.</translation>
     </message>
   </context>
   <context>
@@ -400,7 +598,7 @@
       <location filename="../../Command.cpp" line="229"/>
       <location filename="../../Command.cpp" line="230"/>
       <source>Add a solver to the Analysis</source>
-      <translation type="unfinished">Add a solver to the Analysis</translation>
+      <translation>Lisää ratkaisija analyysiin</translation>
     </message>
   </context>
   <context>
@@ -428,57 +626,57 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="37"/>
       <source>CalculiX</source>
-      <translation type="unfinished">CalculiX</translation>
+      <translation>CalculiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="51"/>
       <source>Use internal editor for .inp files</source>
-      <translation type="unfinished">Use internal editor for .inp files</translation>
+      <translation>Käytä ohjelman sisäistä editoria .inp tiedostoille</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="78"/>
       <source>External editor:</source>
-      <translation type="unfinished">External editor:</translation>
+      <translation>Ulkoinen editori:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="122"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation type="unfinished">Leave blank to use default CalculiX ccx binary file</translation>
+      <translation>Jätä tyhjäksi käyttäessäsi CalculiX cxx oletusbinääritiedostoa</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="141"/>
       <source>ccx binary</source>
-      <translation type="unfinished">ccx binary</translation>
+      <translation>cxx binääri</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="157"/>
       <source>Working directory</source>
-      <translation type="unfinished">Working directory</translation>
+      <translation>Työhakemisto</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="199"/>
       <source>Default analysis settings</source>
-      <translation type="unfinished">Default analysis settings</translation>
+      <translation>Analyysin oletusasetukset</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="213"/>
       <source>Default type on analysis</source>
-      <translation type="unfinished">Default type on analysis</translation>
+      <translation>Oletustyypin analyysi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="223"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Staattinen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="232"/>
       <source>Frequency</source>
-      <translation type="unfinished">Frequency</translation>
+      <translation>Taajuus</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="244"/>
       <source>Eigenmode number</source>
-      <translation type="unfinished">Eigenmode number</translation>
+      <translation>Ominaisarvojen lukumäärä</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="251"/>
@@ -488,43 +686,43 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="274"/>
       <source>High frequency limit</source>
-      <translation type="unfinished">High frequency limit</translation>
+      <translation>Taajuuden yläraja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="303"/>
       <source>Low frequency limit</source>
-      <translation type="unfinished">Low frequency limit</translation>
+      <translation>Taajuuden alaraja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="335"/>
       <location filename="../../DlgSettingsFem.ui" line="342"/>
       <source>Hz</source>
-      <translation type="unfinished">Hz</translation>
+      <translation>Hz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="354"/>
       <source>Materials</source>
-      <translation type="unfinished">Materials</translation>
+      <translation>Materiaalit</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="362"/>
       <source>Use built-in materials</source>
-      <translation type="unfinished">Use built-in materials</translation>
+      <translation>Käytä ohjelman omia materiaaleja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="378"/>
       <source>Use materials from .FreeCAD/Materials directory</source>
-      <translation type="unfinished">Use materials from .FreeCAD/Materials directory</translation>
+      <translation>Käytä FreeCAD/Materials hakemiston materiaaleja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="394"/>
       <source>Use materials from user defined directory</source>
-      <translation type="unfinished">Use materials from user defined directory</translation>
+      <translation>Käytä käyttäjän oman hakemiston materiaaleja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
-      <translation type="unfinished">User directory</translation>
+      <translation>Käyttäjän hakemisto</translation>
     </message>
   </context>
   <context>
@@ -607,7 +805,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="358"/>
       <source>Please specify a force greater than 0</source>
-      <translation type="unfinished">Please specify a force greater than 0</translation>
+      <translation>Anna nollasta eroava kuorma</translation>
     </message>
   </context>
   <context>
@@ -629,7 +827,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="257"/>
       <source>Please specify a pressure greater than 0</source>
-      <translation type="unfinished">Please specify a pressure greater than 0</translation>
+      <translation>Anna nollasta eroava paine</translation>
     </message>
   </context>
   <context>
@@ -645,12 +843,12 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="75"/>
       <source>Edit FEM mesh</source>
-      <translation type="unfinished">Edit FEM mesh</translation>
+      <translation>Muokkaa verkkoa</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Verkotusvirhe</translation>
     </message>
   </context>
   <context>
@@ -736,13 +934,13 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="412"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
       <source>Nothing selected!</source>
-      <translation type="unfinished">Nothing selected!</translation>
+      <translation>Mitään ei ole valittu!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="422"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Valittu objekti ei ole osa (part)!</translation>
     </message>
   </context>
   <context>
@@ -915,7 +1113,7 @@
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="84"/>
       <source>Activate analysis</source>
-      <translation type="unfinished">Activate analysis</translation>
+      <translation>Aktivoi analyysi</translation>
     </message>
   </context>
   <context>
@@ -923,12 +1121,12 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="76"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Verkotusvirhe</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation type="unfinished">The FEM module is built without NETGEN support. Meshing will not work!!!</translation>
+      <translation>FEM-moduuli in käännetty ilman NETGEN tukea. Verkotus ei toimi!</translation>
     </message>
   </context>
   <context>
@@ -942,36 +1140,36 @@
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="26"/>
       <source>Cross Section</source>
-      <translation type="unfinished">Cross Section</translation>
+      <translation>Poikkileikkaus</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="32"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="32"/>
       <source>Use FreeCAD Property Editor</source>
-      <translation type="unfinished">Use FreeCAD Property Editor</translation>
+      <translation>Käytä FreeCAD ominaisuuseditoria</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="39"/>
       <source>to edit the cross section values</source>
-      <translation type="unfinished">to edit the cross section values</translation>
+      <translation>muokkaa poikkileikkausarvoja</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="49"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="49"/>
       <source>References</source>
-      <translation type="unfinished">References</translation>
+      <translation>Viittaukset</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="55"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="55"/>
       <source>Leave references blank </source>
-      <translation type="unfinished">Leave references blank </translation>
+      <translation>Jätä viittaukset tyhjiksi</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="62"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="62"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>valitse loput olevat muodot</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="72"/>
@@ -987,7 +1185,7 @@
     <message>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="39"/>
       <source>to edit the thickness value</source>
-      <translation type="unfinished">to edit the thickness value</translation>
+      <translation>muokkaa paksuuksia</translation>
     </message>
   </context>
   <context>
@@ -1000,7 +1198,7 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="20"/>
       <source>Working directory</source>
-      <translation type="unfinished">Working directory</translation>
+      <translation>Työhakemisto</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="45"/>
@@ -1010,27 +1208,27 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="55"/>
       <source>Analysis type</source>
-      <translation type="unfinished">Analysis type</translation>
+      <translation>Analyysityyppi</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="67"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Staattinen</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="77"/>
       <source>Frequency</source>
-      <translation type="unfinished">Frequency</translation>
+      <translation>Taajuus</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="89"/>
       <source>Write .inp file</source>
-      <translation type="unfinished">Write .inp file</translation>
+      <translation>Kirjoita .inp tiedosto</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="99"/>
       <source>Edit .inp file</source>
-      <translation type="unfinished">Edit .inp file</translation>
+      <translation>Muokkaa .inp tiedostoa</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="109"/>
@@ -1068,22 +1266,22 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="41"/>
       <source>Material Description</source>
-      <translation type="unfinished">Material Description</translation>
+      <translation>Materiaalin kuvaus</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="54"/>
       <source>References</source>
-      <translation type="unfinished">References</translation>
+      <translation>Viittaukset</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="60"/>
       <source>Leave references blank </source>
-      <translation type="unfinished">Leave references blank </translation>
+      <translation>Jätä viittaukset tyhjiksi</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="67"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>valitse loput olevat muodot</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="77"/>
@@ -1113,7 +1311,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="241"/>
       <source>External material resources</source>
-      <translation type="unfinished">External material resources</translation>
+      <translation>Ulkoiset materiaalitiedot</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="247"/>
@@ -1242,12 +1440,12 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="587"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="243"/>
       <source>Constraint normal stress</source>
-      <translation type="unfinished">Constraint normal stress</translation>
+      <translation>Rajoita normaalijännityksiä</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="98"/>
       <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</source>
-      <translation type="unfinished">[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</translation>
+      <translation>[Solmut: %1, reunat: %2, pinnat: %3, monikulmiot: %4 tilavuudet: %5, monitahokkaat: %6]</translation>
     </message>
   </context>
   <context>
@@ -1260,22 +1458,22 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="22"/>
       <source>Result type</source>
-      <translation type="unfinished">Result type</translation>
+      <translation>Tuloksen tyyppi</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
       <source>Y displacement</source>
-      <translation type="unfinished">Y displacement</translation>
+      <translation>Y-siirtymä</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="37"/>
       <source>X displacement</source>
-      <translation type="unfinished">X displacement</translation>
+      <translation>X-siirtymä</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="44"/>
       <source>Z displacement</source>
-      <translation type="unfinished">Z displacement</translation>
+      <translation>Z-siirtymä</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
@@ -1285,12 +1483,12 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="61"/>
       <source>Von Mises stress</source>
-      <translation type="unfinished">Von Mises stress</translation>
+      <translation>Von Mises vertailujännitys</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="68"/>
       <source>Abs displacement</source>
-      <translation type="unfinished">Abs displacement</translation>
+      <translation>Siirtymän resultantti</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="79"/>
@@ -1551,12 +1749,12 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation type="unfinished">Prescribed Displacement</translation>
+      <translation>Pakkosiirtymä</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation type="unfinished">Select multiple face(s), click Add or Remove</translation>
+      <translation>Valitse pintoja, klikkaa Lisää tai Poista</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="59"/>
@@ -1571,7 +1769,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
       <source>Displacement x</source>
-      <translation type="unfinished">Displacement x</translation>
+      <translation>Siirtymä x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
@@ -1581,7 +1779,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="288"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="330"/>
       <source>Free</source>
-      <translation type="unfinished">Free</translation>
+      <translation>Vapaa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="111"/>
@@ -1591,37 +1789,37 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Kiinnitetty</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation type="unfinished">Displacement y</translation>
+      <translation>Siirtymä y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation type="unfinished">Displacement z</translation>
+      <translation>Siirtymä z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
       <source>Rotations are only valid for Beam and Shell elements.</source>
-      <translation type="unfinished">Rotations are only valid for Beam and Shell elements.</translation>
+      <translation>Kiertymät koskevat vain palkki- ja kuorielementtejä.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>
       <source>Rotation x</source>
-      <translation type="unfinished">Rotation x</translation>
+      <translation>Kiertymä x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="279"/>
       <source>Rotation y</source>
-      <translation type="unfinished">Rotation y</translation>
+      <translation>Kiertymä y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
       <source>Rotation z</source>
-      <translation type="unfinished">Rotation z</translation>
+      <translation>Kiertymä z</translation>
     </message>
   </context>
   <context>
@@ -1680,12 +1878,12 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="32"/>
       <source>Pressure</source>
-      <translation type="unfinished">Pressure</translation>
+      <translation>Paine</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="39"/>
       <source>1 MPa</source>
-      <translation type="unfinished">1 MPa</translation>
+      <translation>1 MPa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="51"/>

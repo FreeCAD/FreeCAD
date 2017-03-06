@@ -11,12 +11,12 @@
     <message>
       <location filename="InitGui.py" line="68"/>
       <source>Weights</source>
-      <translation type="unfinished">Weights</translation>
+      <translation>Βάρη</translation>
     </message>
     <message>
       <location filename="Instance.py" line="44"/>
       <source>True if it is a valid ship instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid ship instance, False otherwise</translation>
+      <translation>Αλήθεια, αν είναι μια έγκυρη πλοίο παρουσία, ο ψεύτικος διαφορετικά</translation>
     </message>
     <message>
       <location filename="Instance.py" line="54"/>
@@ -26,32 +26,32 @@
     <message>
       <location filename="Instance.py" line="63"/>
       <source>Ship breadth [m]</source>
-      <translation type="unfinished">Ship breadth [m]</translation>
+      <translation>Πλάτος [m] πλοίο</translation>
     </message>
     <message>
       <location filename="Instance.py" line="72"/>
       <source>Ship draft [m]</source>
-      <translation type="unfinished">Ship draft [m]</translation>
+      <translation>Πλοίο σχέδιο [m]</translation>
     </message>
     <message>
       <location filename="Instance.py" line="83"/>
       <source>Set of external faces of the ship hull</source>
-      <translation type="unfinished">Set of external faces of the ship hull</translation>
+      <translation>Σύνολο εξωτερικών πρόσωπα της γάστρας πλοίου</translation>
     </message>
     <message>
       <location filename="Instance.py" line="92"/>
       <source>Set of weight instances</source>
-      <translation type="unfinished">Set of weight instances</translation>
+      <translation>Σύνολο βάρους εμφανίσεις</translation>
     </message>
     <message>
       <location filename="Instance.py" line="101"/>
       <source>Set of tank instances</source>
-      <translation type="unfinished">Set of tank instances</translation>
+      <translation>Σύνολο δεξαμενή εμφανίσεις</translation>
     </message>
     <message>
       <location filename="Instance.py" line="110"/>
       <source>Set of load conditions</source>
-      <translation type="unfinished">Set of load conditions</translation>
+      <translation>Σύνολο συνθήκες φορτίου</translation>
     </message>
   </context>
   <context>
@@ -85,7 +85,7 @@
     <message>
       <location filename="ShipGui.py" line="111"/>
       <source>Hydrostatics</source>
-      <translation type="unfinished">Hydrostatics</translation>
+      <translation>Υδροστατικής</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="114"/>
@@ -98,12 +98,12 @@
     <message>
       <location filename="ShipGui.py" line="43"/>
       <source>Load an example ship geometry</source>
-      <translation type="unfinished">Load an example ship geometry</translation>
+      <translation>Φορτώσετε ένα πλοίο παραδείγματος χάριν η γεωμετρία</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="46"/>
       <source>Load an example ship hull geometry.</source>
-      <translation type="unfinished">Load an example ship hull geometry.</translation>
+      <translation>Τοποθετήστε ένα παραδείγματος χάριν η γεωμετρία κύτος πλοίο.</translation>
     </message>
   </context>
   <context>
@@ -116,7 +116,7 @@
     <message>
       <location filename="ShipGui.py" line="80"/>
       <source>Plots the ship hull outline draw</source>
-      <translation type="unfinished">Plots the ship hull outline draw</translation>
+      <translation>Οικόπεδα στην κλήρωση διάρθρωσης κύτος πλοίο</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="TaskPanel.py" line="228"/>
       <source>Draft</source>
-      <translation type="unfinished">Draft</translation>
+      <translation>Πρόχειρο</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="326"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="TaskPanel.py" line="352"/>
       <source>Areas curve tool draft selected [m]</source>
-      <translation type="unfinished">Areas curve tool draft selected [m]</translation>
+      <translation>Περιοχές καμπύλη εργαλείο σχέδιο επιλεγεί [m]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="223"/>
@@ -149,7 +149,7 @@
     <message>
       <location filename="TaskPanel.py" line="234"/>
       <source>Trim angle</source>
-      <translation type="unfinished">Trim angle</translation>
+      <translation>Κόψτε τη γωνία</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="240"/>
@@ -255,7 +255,7 @@
     <message>
       <location filename="TaskPanel.py" line="213"/>
       <source>A ship instance must be selected before use this tool (novalid ships found in the selected objects)</source>
-      <translation type="unfinished">A ship instance must be selected before use this tool (novalid ships found in the selected objects)</translation>
+      <translation>Μια παρουσία του πλοίου πρέπει να επιλεγεί πριν από τη χρήση αυτού του εργαλείου (novalid πλοίων που ανακαλύφτηκαν στο τα επιλεγμένα αντικείμενα)</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="41"/>
@@ -315,7 +315,7 @@
     <message>
       <location filename="Tools.py" line="117"/>
       <source>Too much weight! The ship will never displace water enough</source>
-      <translation type="unfinished">Too much weight! The ship will never displace water enough</translation>
+      <translation>Πάρα πολύ βάρος! Το πλοίο θα ποτέ να εκτοπίσει αρκετό νερό</translation>
     </message>
     <message>
       <location filename="Tools.py" line="232"/>
@@ -398,7 +398,7 @@
     <message>
       <location filename="Preview.py" line="83"/>
       <source>Free surface</source>
-      <translation type="unfinished">Free surface</translation>
+      <translation>Ελεύθερη επιφάνεια</translation>
     </message>
     <message>
       <location filename="Preview.py" line="100"/>
@@ -428,12 +428,12 @@
     <message>
       <location filename="TaskPanel.py" line="231"/>
       <source>Breadth</source>
-      <translation type="unfinished">Breadth</translation>
+      <translation>Πλάτος</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="237"/>
       <source>Draft</source>
-      <translation type="unfinished">Draft</translation>
+      <translation>Πρόχειρο</translation>
     </message>
   </context>
   <context>
@@ -451,7 +451,7 @@
     <message>
       <location filename="TaskPanel.py" line="249"/>
       <source>Maximum angle</source>
-      <translation type="unfinished">Maximum angle</translation>
+      <translation>Μέγιστη γωνία</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="255"/>
@@ -499,12 +499,12 @@
     <message>
       <location filename="TaskPanel.py" line="290"/>
       <source>Minimum draft</source>
-      <translation type="unfinished">Minimum draft</translation>
+      <translation>Ελάχιστο σχέδιο</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="296"/>
       <source>Maximum draft</source>
-      <translation type="unfinished">Maximum draft</translation>
+      <translation>Μέγιστη ενίσχυση</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="302"/>
@@ -537,7 +537,7 @@
     <message>
       <location filename="TaskPanel.py" line="106"/>
       <source>Load example ship</source>
-      <translation type="unfinished">Load example ship</translation>
+      <translation>Φορτίο πλοίου παράδειγμα</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="111"/>
@@ -550,12 +550,12 @@
     <message>
       <location filename="ShipGui.py" line="179"/>
       <source>Create a new loading condition</source>
-      <translation type="unfinished">Create a new loading condition</translation>
+      <translation>Δημιουργήστε μια νέα κατάσταση φόρτωσης</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="182"/>
       <source>Create a new load condition spreadsheet</source>
-      <translation type="unfinished">Create a new load condition spreadsheet</translation>
+      <translation>Δημιουργήστε ένα νέο υπολογιστικό φύλλο κατάσταση φορτίου</translation>
     </message>
   </context>
   <context>
@@ -573,27 +573,27 @@
     <message>
       <location filename="TaskPanel.py" line="238"/>
       <source>Delete all sections</source>
-      <translation type="unfinished">Delete all sections</translation>
+      <translation>Διαγράψετε όλα τα τμήματα</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="244"/>
       <source>Create sections</source>
-      <translation type="unfinished">Create sections</translation>
+      <translation>Δημιουργήστε τμήματα</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="250"/>
       <source>Transversal</source>
-      <translation type="unfinished">Transversal</translation>
+      <translation>Εγκάρσιο</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="257"/>
       <source>Longitudinal</source>
-      <translation type="unfinished">Longitudinal</translation>
+      <translation>Διαμήκη</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="264"/>
       <source>Water lines</source>
-      <translation type="unfinished">Water lines</translation>
+      <translation>Γραμμές του νερού</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="479"/>
@@ -649,7 +649,7 @@
     <message>
       <location filename="ShipGui.py" line="131"/>
       <source>Create a new ship weight</source>
-      <translation type="unfinished">Create a new ship weight</translation>
+      <translation>Δημιουργήστε ένα νέο βάρος πλοίου</translation>
     </message>
     <message>
       <location filename="WeightInstance.py" line="46"/>

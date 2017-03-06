@@ -294,29 +294,34 @@
       <translation>Er is een nieuwe versie van FreeCAD beschikbaar.</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="109"/>
-      <source>Load an FEM example analysis</source>
-      <translation>Open een FEM voorbeeld analyse</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="54"/>
       <source>Latest commits</source>
-      <translation type="unfinished">Latest commits</translation>
+      <translation>Nieuwste bijdragen</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="110"/>
       <source>Obtain a development version</source>
-      <translation type="unfinished">Obtain a development version</translation>
+      <translation>Haal een ontwikkelingsversie op</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="111"/>
       <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation type="unfinished">&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</translation>
+      <translation>&lt;b&gt;Ontwikkelingsversies&lt;/b&gt; worden van tijd tot tijd beschikbaar gesteld door gemeenschapsleden en bevatten gewoonlijk de meest recente wijzigingen, ze kunnen echter fouten bevatten.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="112"/>
       <source>See all commits</source>
-      <translation type="unfinished">See all commits</translation>
+      <translation>Alle bijdragen weergeven</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM 3D example analysis</source>
+      <translation>Open een FEM 3D voorbeeld analyse</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="113"/>
+      <source>Load an FEM 2D example analysis</source>
+      <translation>Open een FEM 2D voorbeeld analyse</translation>
     </message>
   </context>
 </TS>

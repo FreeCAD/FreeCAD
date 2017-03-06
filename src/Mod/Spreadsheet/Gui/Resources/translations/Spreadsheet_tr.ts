@@ -5,22 +5,22 @@
     <name>CmdCreateSpreadsheet</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Create spreadsheet</source>
-        <translation type="unfinished">Create spreadsheet</translation>
+        <translation>Yeni hesap tablosu yarat</translation>
     </message>
     <message>
         <source>Create a new spreadsheet</source>
-        <translation type="unfinished">Create a new spreadsheet</translation>
+        <translation>Yeni bir e-tablo oluşturma</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Align bottom</source>
@@ -35,7 +35,7 @@
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Align center</source>
@@ -50,7 +50,7 @@
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Align left</source>
@@ -65,7 +65,7 @@
     <name>CmdSpreadsheetAlignRight</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Align right</source>
@@ -80,7 +80,7 @@
     <name>CmdSpreadsheetAlignTop</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Align top</source>
@@ -95,7 +95,7 @@
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Vertically center-align</source>
@@ -110,7 +110,7 @@
     <name>CmdSpreadsheetExport</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Export spreadsheet</source>
@@ -125,7 +125,7 @@
     <name>CmdSpreadsheetImport</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Import spreadsheet</source>
@@ -140,7 +140,7 @@
     <name>CmdSpreadsheetMergeCells</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Merge cells</source>
@@ -155,7 +155,7 @@
     <name>CmdSpreadsheetSetAlias</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Set alias</source>
@@ -170,7 +170,7 @@
     <name>CmdSpreadsheetSplitCell</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Split cell</source>
@@ -185,7 +185,7 @@
     <name>CmdSpreadsheetStyleBold</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Bold text</source>
@@ -200,7 +200,7 @@
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Italic text</source>
@@ -215,7 +215,7 @@
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
     <message>
         <source>Underline text</source>
@@ -459,7 +459,7 @@
     <name>Workbench</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>tablo</translation>
     </message>
 </context>
 </TS>

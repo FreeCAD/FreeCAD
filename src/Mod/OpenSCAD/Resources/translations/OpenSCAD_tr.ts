@@ -16,7 +16,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="34"/>
       <source>OpenSCAD executable</source>
-      <translation type="unfinished">OpenSCAD executable</translation>
+      <translation>OpenSCAD yürütülebilir</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="47"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="93"/>
       <source>Use ViewProvider in Tree View</source>
-      <translation type="unfinished">Use ViewProvider in Tree View</translation>
+      <translation>Use ViewProvider in Tree Viewı</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="110"/>
@@ -51,22 +51,22 @@
     <message>
       <location filename="openscadprefs-base.ui" line="133"/>
       <source>Maximum number of faces for polygons (fn)</source>
-      <translation type="unfinished">Maximum number of faces for polygons (fn)</translation>
+      <translation>Ulaşılabilecek en fazla poligon yüzeyi sayısı (fn)</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="177"/>
       <source>OpenSCAD export</source>
-      <translation type="unfinished">OpenSCAD export</translation>
+      <translation>OpenSCAD çıkart</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="185"/>
       <source>maximum fragment size</source>
-      <translation type="unfinished">maximum fragment size</translation>
+      <translation>en fazla parça boyutu</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="215"/>
       <source>minimum angle for a fragment</source>
-      <translation type="unfinished">minimum angle for a fragment</translation>
+      <translation>bir parça için en küçük açı</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="208"/>
@@ -142,12 +142,12 @@
       <translation>Lütfen öncelikle 3 nesneyi seçin</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Unsupported Function</source>
       <translation>Desteklenmeyen işlev</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Press OK</source>
       <translation>OK(okey) tuşuna bas</translation>
     </message>

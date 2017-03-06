@@ -5,243 +5,243 @@
     <name>CmdCreateSpreadsheet</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Create spreadsheet</source>
-        <translation type="unfinished">Create spreadsheet</translation>
+        <translation>创建电子表格</translation>
     </message>
     <message>
         <source>Create a new spreadsheet</source>
-        <translation type="unfinished">Create a new spreadsheet</translation>
+        <translation>创建一个新的电子表格</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Align bottom</source>
-        <translation type="unfinished">Align bottom</translation>
+        <translation>底端对齐</translation>
     </message>
     <message>
         <source>Bottom-align contents of selected cells</source>
-        <translation type="unfinished">Bottom-align contents of selected cells</translation>
+        <translation>底端对齐所选单元格的内容</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Align center</source>
-        <translation type="unfinished">Align center</translation>
+        <translation>居中对齐</translation>
     </message>
     <message>
         <source>Center-align contents of selected cells</source>
-        <translation type="unfinished">Center-align contents of selected cells</translation>
+        <translation>居中对齐所选单元格的内容</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Align left</source>
-        <translation type="unfinished">Align left</translation>
+        <translation>左对齐</translation>
     </message>
     <message>
         <source>Left-align contents of selected cells</source>
-        <translation type="unfinished">Left-align contents of selected cells</translation>
+        <translation>左对齐选定的单元格的内容</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Align right</source>
-        <translation type="unfinished">Align right</translation>
+        <translation>右对齐</translation>
     </message>
     <message>
         <source>Right-align contents of selected cells</source>
-        <translation type="unfinished">Right-align contents of selected cells</translation>
+        <translation>右对齐所选单元格内容的</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Align top</source>
-        <translation type="unfinished">Align top</translation>
+        <translation>顶部对齐</translation>
     </message>
     <message>
         <source>Top-align contents of selected cells</source>
-        <translation type="unfinished">Top-align contents of selected cells</translation>
+        <translation>顶部对齐所选单元格的内容</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Vertically center-align</source>
-        <translation type="unfinished">Vertically center-align</translation>
+        <translation>垂直居中对齐</translation>
     </message>
     <message>
         <source>Center-align contents vertically of selected cells</source>
-        <translation type="unfinished">Center-align contents vertically of selected cells</translation>
+        <translation>沿所选单元格内容垂直居中对齐</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetExport</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Export spreadsheet</source>
-        <translation type="unfinished">Export spreadsheet</translation>
+        <translation>导出的电子表格</translation>
     </message>
     <message>
         <source>Export spreadsheet to CSV file</source>
-        <translation type="unfinished">Export spreadsheet to CSV file</translation>
+        <translation>将电子表格导出到 CSV 文件</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetImport</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Import spreadsheet</source>
-        <translation type="unfinished">Import spreadsheet</translation>
+        <translation>导入电子表格</translation>
     </message>
     <message>
         <source>Import CSV file into spreadsheet</source>
-        <translation type="unfinished">Import CSV file into spreadsheet</translation>
+        <translation>CSV 文件导入到电子表格</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Merge cells</source>
-        <translation type="unfinished">Merge cells</translation>
+        <translation>合并单元格</translation>
     </message>
     <message>
         <source>Merge selected cells in spreadsheet</source>
-        <translation type="unfinished">Merge selected cells in spreadsheet</translation>
+        <translation>在电子表格中所选单元格合并</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Set alias</source>
-        <translation type="unfinished">Set alias</translation>
+        <translation>设置的别名</translation>
     </message>
     <message>
         <source>Set alias for selected cell</source>
-        <translation type="unfinished">Set alias for selected cell</translation>
+        <translation>所选单元格的设置的别名</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Split cell</source>
-        <translation type="unfinished">Split cell</translation>
+        <translation>拆分单元格</translation>
     </message>
     <message>
         <source>Split previously merged cells in spreadsheet</source>
-        <translation type="unfinished">Split previously merged cells in spreadsheet</translation>
+        <translation>将电子表格中的以前合并单元格拆分</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Bold text</source>
-        <translation type="unfinished">Bold text</translation>
+        <translation>粗体文本</translation>
     </message>
     <message>
         <source>Set bold text in selected cells</source>
-        <translation type="unfinished">Set bold text in selected cells</translation>
+        <translation>在选定的单元格设置粗体文本</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Italic text</source>
-        <translation type="unfinished">Italic text</translation>
+        <translation>斜体文本</translation>
     </message>
     <message>
         <source>Set italic text in selected cells</source>
-        <translation type="unfinished">Set italic text in selected cells</translation>
+        <translation>在选定的单元格设置斜体文本</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
     <message>
         <source>Underline text</source>
-        <translation type="unfinished">Underline text</translation>
+        <translation>给文本加下划线</translation>
     </message>
     <message>
         <source>Set underline text in selected cells</source>
-        <translation type="unfinished">Set underline text in selected cells</translation>
+        <translation>在选定的单元格设置下划线文本</translation>
     </message>
 </context>
 <context>
     <name>ColorPickerPopup</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Custom</translation>
+        <translation>自定义</translation>
     </message>
 </context>
 <context>
     <name>PropertiesDialog</name>
     <message>
         <source>Cell properties</source>
-        <translation type="unfinished">Cell properties</translation>
+        <translation>单元格属性</translation>
     </message>
     <message>
         <source>&amp;Color</source>
-        <translation type="unfinished">&amp;Color</translation>
+        <translation>颜色(&amp;C)</translation>
     </message>
     <message>
         <source>Text</source>
@@ -249,11 +249,11 @@
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished">Background</translation>
+        <translation>背景</translation>
     </message>
     <message>
         <source>&amp;Alignment</source>
-        <translation type="unfinished">&amp;Alignment</translation>
+        <translation>对齐(&amp;A)</translation>
     </message>
     <message>
         <source>Horizontal</source>
@@ -285,42 +285,42 @@
     </message>
     <message>
         <source>&amp;Style</source>
-        <translation type="unfinished">&amp;Style</translation>
+        <translation>样式(&amp;S)</translation>
     </message>
     <message>
         <source>Bold</source>
-        <translation type="unfinished">Bold</translation>
+        <translation>粗体</translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation type="unfinished">Italic</translation>
+        <translation>斜体</translation>
     </message>
     <message>
         <source>Underline</source>
-        <translation type="unfinished">Underline</translation>
+        <translation>下划线</translation>
     </message>
     <message>
         <source>&amp;Display unit</source>
-        <translation type="unfinished">&amp;Display unit</translation>
+        <translation>显示单位(&amp;D)：</translation>
     </message>
     <message>
         <source>Unit string</source>
-        <translation type="unfinished">Unit string</translation>
+        <translation>单位字符串</translation>
     </message>
     <message>
         <source>A&amp;lias</source>
-        <translation type="unfinished">A&amp;lias</translation>
+        <translation>别名(&amp;A)</translation>
     </message>
     <message>
         <source>Alias for this cell</source>
-        <translation type="unfinished">Alias for this cell</translation>
+        <translation>此单元格的别名</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>All (*)</source>
-        <translation type="unfinished">All (*)</translation>
+        <translation>所有的 (*)</translation>
     </message>
     <message>
         <source>Import file</source>
@@ -332,11 +332,11 @@
     </message>
     <message>
         <source>Cell contents</source>
-        <translation type="unfinished">Cell contents</translation>
+        <translation>单元格内容</translation>
     </message>
     <message>
         <source>Show spreadsheet</source>
-        <translation type="unfinished">Show spreadsheet</translation>
+        <translation>显示电子表格</translation>
     </message>
 </context>
 <context>
@@ -351,67 +351,67 @@
     </message>
     <message>
         <source>Red</source>
-        <translation type="unfinished">Red</translation>
+        <translation>红色</translation>
     </message>
     <message>
         <source>Dark red</source>
-        <translation type="unfinished">Dark red</translation>
+        <translation>暗红色</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation type="unfinished">Green</translation>
+        <translation>绿色</translation>
     </message>
     <message>
         <source>Dark green</source>
-        <translation type="unfinished">Dark green</translation>
+        <translation>深绿色</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation type="unfinished">Blue</translation>
+        <translation>蓝色</translation>
     </message>
     <message>
         <source>Dark blue</source>
-        <translation type="unfinished">Dark blue</translation>
+        <translation>深蓝色</translation>
     </message>
     <message>
         <source>Cyan</source>
-        <translation type="unfinished">Cyan</translation>
+        <translation>青色</translation>
     </message>
     <message>
         <source>Dark cyan</source>
-        <translation type="unfinished">Dark cyan</translation>
+        <translation>深青色</translation>
     </message>
     <message>
         <source>Magenta</source>
-        <translation type="unfinished">Magenta</translation>
+        <translation>洋红色</translation>
     </message>
     <message>
         <source>Dark magenta</source>
-        <translation type="unfinished">Dark magenta</translation>
+        <translation>深洋红色</translation>
     </message>
     <message>
         <source>Yellow</source>
-        <translation type="unfinished">Yellow</translation>
+        <translation>黄色</translation>
     </message>
     <message>
         <source>Dark yellow</source>
-        <translation type="unfinished">Dark yellow</translation>
+        <translation>暗黄色</translation>
     </message>
     <message>
         <source>Gray</source>
-        <translation type="unfinished">Gray</translation>
+        <translation>灰色</translation>
     </message>
     <message>
         <source>Dark gray</source>
-        <translation type="unfinished">Dark gray</translation>
+        <translation>暗灰色</translation>
     </message>
     <message>
         <source>Light gray</source>
-        <translation type="unfinished">Light gray</translation>
+        <translation>浅灰色</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Custom</translation>
+        <translation>自定义</translation>
     </message>
 </context>
 <context>
@@ -422,7 +422,7 @@
     </message>
     <message>
         <source>&amp;Contents</source>
-        <translation type="unfinished">&amp;Contents</translation>
+        <translation>内容(&amp;C)</translation>
     </message>
 </context>
 <context>
@@ -436,30 +436,30 @@
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
         <source>Insert rows</source>
-        <translation type="unfinished">Insert rows</translation>
+        <translation>插入行</translation>
     </message>
     <message>
         <source>Remove rows</source>
-        <translation type="unfinished">Remove rows</translation>
+        <translation>删除行</translation>
     </message>
     <message>
         <source>Insert columns</source>
-        <translation type="unfinished">Insert columns</translation>
+        <translation>插入列</translation>
     </message>
     <message>
         <source>Remove columns</source>
-        <translation type="unfinished">Remove columns</translation>
+        <translation>删除列</translation>
     </message>
     <message>
         <source>Properties...</source>
-        <translation type="unfinished">Properties...</translation>
+        <translation>属性...</translation>
     </message>
 </context>
 <context>
     <name>Workbench</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>电子表格</translation>
     </message>
 </context>
 </TS>

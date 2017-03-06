@@ -121,7 +121,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="90"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation type="unfinished">If this is checked, Features will claim their children in the tree view</translation>
+      <translation>Если этот флажок установлен, Функционал будет представлен в виде дерева</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="73"/>
@@ -142,12 +142,12 @@
       <translation>Сначала необходимо выбрать 3 объекта</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Unsupported Function</source>
       <translation>Неподдерживаемая функция</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Press OK</source>
       <translation>Нажмите кнопку OK</translation>
     </message>
@@ -179,17 +179,17 @@
     <message>
       <location filename="OpenSCADCommands.py" line="341"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>Полигональная сетка Булевого значения</translation>
     </message>
     <message>
       <location filename="OpenSCADUtils.py" line="560"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation type="unfinished">Error all shapes must be either 2D or both must be 3D</translation>
+      <translation>Ошибка: все фигуры должны быть либо каждая 2D, либо обе 3D</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="91"/>
       <source>Unable to explode %s</source>
-      <translation type="unfinished">Unable to explode %s</translation>
+      <translation>Не удалось взорвать %s</translation>
     </message>
   </context>
   <context>
@@ -215,7 +215,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="120"/>
       <source>Color Shapes by validity and type</source>
-      <translation>Цвета Фигур по действию и типу</translation>
+      <translation>Раскрасить фигуры по корректности и типу</translation>
     </message>
   </context>
   <context>
@@ -249,7 +249,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="102"/>
       <source>remove fusion, apply placement to children and color randomly</source>
-      <translation type="unfinished">remove fusion, apply placement to children and color randomly</translation>
+      <translation>удалить синтез, случайным образом применить позиционное распределение к детям и к цвету</translation>
     </message>
   </context>
   <context>
@@ -262,7 +262,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="419"/>
       <source>Perform Hull</source>
-      <translation type="unfinished">Perform Hull</translation>
+      <translation>Окаймлять</translation>
     </message>
   </context>
   <context>
@@ -270,12 +270,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="181"/>
       <source>Increase Tolerance Feature</source>
-      <translation type="unfinished">Increase Tolerance Feature</translation>
+      <translation>Увеличить допустимые функциональные возможности</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="183"/>
       <source>Create Feature that allows to increase the tolerance</source>
-      <translation type="unfinished">Create Feature that allows to increase the tolerance</translation>
+      <translation>Создать функциональную возможность, позволяющую увеличить допустимый предел</translation>
     </message>
   </context>
   <context>
@@ -283,12 +283,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="396"/>
       <source>Mesh Boolean...</source>
-      <translation type="unfinished">Mesh Boolean...</translation>
+      <translation>Полигональная сетка Булевого значения...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="398"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation.</translation>
+      <translation>Экспортировать объекты как полигональные сети и использовать OpenSCAD, чтобы осуществить булевую операцию.</translation>
     </message>
   </context>
   <context>
@@ -296,12 +296,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="438"/>
       <source>Minkowski</source>
-      <translation type="unfinished">Minkowski</translation>
+      <translation>метрика Минковского</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="440"/>
       <source>Perform Minkowski</source>
-      <translation type="unfinished">Perform Minkowski</translation>
+      <translation>Осуществить метрику Минковского</translation>
     </message>
   </context>
   <context>

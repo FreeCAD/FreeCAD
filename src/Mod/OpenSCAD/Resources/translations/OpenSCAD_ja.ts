@@ -142,12 +142,12 @@
       <translation>まず最初にオブジェクトを3つ選択してください</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Unsupported Function</source>
       <translation>サポートされていない関数です</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Press OK</source>
       <translation>OKを押してください</translation>
     </message>

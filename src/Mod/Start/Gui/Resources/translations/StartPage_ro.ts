@@ -294,19 +294,14 @@
       <translation>Există o nouă versiune de FreeCAD disponibilă.</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="109"/>
-      <source>Load an FEM example analysis</source>
-      <translation type="unfinished">Load an FEM example analysis</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="54"/>
       <source>Latest commits</source>
-      <translation type="unfinished">Latest commits</translation>
+      <translation>Cele mai recente angajează</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="110"/>
       <source>Obtain a development version</source>
-      <translation type="unfinished">Obtain a development version</translation>
+      <translation>Obţineţi o versiune de dezvoltare</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="111"/>
@@ -316,7 +311,17 @@
     <message>
       <location filename="StartPage.py" line="112"/>
       <source>See all commits</source>
-      <translation type="unfinished">See all commits</translation>
+      <translation>Vizualizează toate angajarile</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM 3D example analysis</source>
+      <translation type="unfinished">Load an FEM 3D example analysis</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="113"/>
+      <source>Load an FEM 2D example analysis</source>
+      <translation type="unfinished">Load an FEM 2D example analysis</translation>
     </message>
   </context>
 </TS>

@@ -46,5 +46,10 @@
         <file>translations/Assembly_sr.qm</file>
         <file>translations/Assembly_el.qm</file>
         <file>translations/Assembly_sl.qm</file>
+        <file>translations/Assembly_eu.qm</file>
+        <file>translations/Assembly_ca.qm</file>
+        <file>translations/Assembly_gl.qm</file>
+        <file>translations/Assembly_kab.qm</file>
+        <file>translations/Assembly_ko.qm</file>
   </qresource>
 </RCC>

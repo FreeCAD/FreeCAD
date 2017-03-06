@@ -31,7 +31,7 @@
     <message>
         <location line="+1"/>
         <source>Export points...</source>
-        <translation>Izvažanje točk...</translation>
+        <translation>Izvozi točke …</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -51,7 +51,7 @@
     <message>
         <location line="+1"/>
         <source>Import points...</source>
-        <translation>Uvažanje točk...</translation>
+        <translation>Uvozi točke …</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -98,7 +98,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Test to transform a point cloud</source>
-        <translation>Preizkusi transformacijo točkovnega oblaka</translation>
+        <translation>Preizkusite za preoblikovanje točkovnega oblaka</translation>
     </message>
 </context>
 <context>
@@ -106,7 +106,7 @@
     <message>
         <location filename="../../DlgPointsRead.ui" line="+14"/>
         <source>ASCII points import</source>
-        <translation>Uvoz ASCII točk</translation>
+        <translation>Uvoz točk ASCII</translation>
     </message>
     <message>
         <location line="+20"/>

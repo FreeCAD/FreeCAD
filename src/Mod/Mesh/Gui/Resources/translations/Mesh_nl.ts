@@ -229,7 +229,7 @@
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation>Maak mesh van vorm...</translation>
+        <translation>Maak een mesh van vorm...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
@@ -285,7 +285,7 @@
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished">Merge</translation>
+        <translation>Samenvoegen</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
@@ -395,6 +395,21 @@
     <message>
         <source>Remove topologic independent components from the mesh</source>
         <translation type="unfinished">Remove topologic independent components from the mesh</translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshSectionByPlane</name>
+    <message>
+        <source>Mesh</source>
+        <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section from mesh and plane</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -738,30 +753,30 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Settings...</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
         <source>Evaluation settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Evaluation settings</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Instellingen</translation>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Check for non-manifold points</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enable check for folds on surface</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Only consider zero area faces as degenerated</translation>
     </message>
 </context>
 <context>
@@ -887,6 +902,10 @@ Please run the command to repair folds first</source>
     <message>
         <source>mm</source>
         <translation type="obsolete">mm</translation>
+    </message>
+    <message>
+        <source>Export AMF files using compression</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1100,7 +1119,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Minumum number of faces</source>
-        <translation>Minimaal aantal vlakken</translation>
+        <translation type="obsolete">Minimaal aantal vlakken</translation>
     </message>
     <message>
         <source>Cylinder</source>
@@ -1173,11 +1192,11 @@ Please run the command to repair folds first</source>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Select plane</translation>
+        <translation type="obsolete">Select plane</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+        <translation type="obsolete">Please select a plane at which you trim the mesh.</translation>
     </message>
 </context>
 <context>
@@ -1188,13 +1207,17 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished">Unknwon error occured while running OpenSCAD.</translation>
+        <translation type="obsolete">Unknwon error occured while running OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
         <translation type="unfinished">OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</translation>
+    </message>
+    <message>
+        <source>Unknown error occurred while running OpenSCAD.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1392,7 +1415,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Alle bestanden</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>

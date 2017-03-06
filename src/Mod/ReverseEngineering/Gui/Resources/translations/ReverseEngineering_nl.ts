@@ -29,7 +29,7 @@
     <message>
         <location line="+1"/>
         <source>Approximate B-Spline surface...</source>
-        <translation type="unfinished">Approximate B-Spline surface...</translation>
+        <translation>Geschatte B-Spline oppervlak...</translation>
     </message>
     <message>
         <source>Approximate surface...</source>
@@ -92,24 +92,24 @@
     <message>
         <location line="+6"/>
         <source>u-Direction</source>
-        <translation type="unfinished">u-Direction</translation>
+        <translation>u-Richting</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+67"/>
         <source>Degree</source>
-        <translation type="unfinished">Degree</translation>
+        <translation>Graden</translation>
     </message>
     <message>
         <location line="-38"/>
         <location line="+67"/>
         <source>Control points</source>
-        <translation type="unfinished">Control points</translation>
+        <translation>Besturingspunten</translation>
     </message>
     <message>
         <location line="-35"/>
         <source>v-Direction</source>
-        <translation type="unfinished">v-Direction</translation>
+        <translation>v-Richting</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -134,7 +134,7 @@
     <message>
         <location line="+9"/>
         <source>Total Weight</source>
-        <translation type="unfinished">Total Weight</translation>
+        <translation>Totaalgewicht</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -154,7 +154,7 @@
     <message>
         <location line="+32"/>
         <source>User-defined u/v directions</source>
-        <translation type="unfinished">User-defined u/v directions</translation>
+        <translation>Gebruiker gedefinieerde u/v richtingen</translation>
     </message>
 </context>
 <context>
@@ -185,7 +185,7 @@
     <message>
         <location line="+6"/>
         <source>Parameters</source>
-        <translation type="unfinished">Parameters</translation>
+        <translation>Parameters</translation>
     </message>
     <message>
         <location line="+6"/>

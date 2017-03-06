@@ -65,13 +65,17 @@
         <translation>Primitívek</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Változós</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Az objektum megjelenése</translation>
+        <translation type="obsolete">Az objektum megjelenése</translation>
     </message>
     <message>
         <location line="+1"/>

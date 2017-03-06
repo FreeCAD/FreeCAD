@@ -29,5 +29,10 @@
         <file>translations/Points_sr.qm</file>
         <file>translations/Points_el.qm</file>
         <file>translations/Points_sl.qm</file>
+        <file>translations/Points_eu.qm</file>
+        <file>translations/Points_ca.qm</file>
+        <file>translations/Points_gl.qm</file>
+        <file>translations/Points_kab.qm</file>
+        <file>translations/Points_ko.qm</file>
     </qresource>
 </RCC>

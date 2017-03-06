@@ -196,7 +196,7 @@
     <message>
         <location line="+1"/>
         <source>Insert robot Tool location into trajectory</source>
-        <translation>Inserte la herramienta lacalización del robot en la trayectoria</translation>
+        <translation>Inserte la herramienta localización del robot en la trayectoria</translation>
     </message>
 </context>
 <context>
@@ -332,7 +332,7 @@
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation>Crear un objeto de disfraz que reemplaza a algunos aspectos de una trayectoria</translation>
+        <translation>Crear un objeto dress-up que reemplaza a algunos aspectos de una trayectoria</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -379,7 +379,12 @@
         <translation>Selección incorrecta</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -439,12 +444,11 @@
         <translation>Usted tiene que pasar el ratón por encima de una geometría (preselección) para utilizar este comando. Consulte la documentación para obtener más detalles.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Seleccione un Robot para establecer la posición de inicio</translation>
+        <translation type="obsolete">Seleccione un Robot para establecer la posición de inicio</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Seleccione un Robot</translation>
     </message>

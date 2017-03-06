@@ -220,7 +220,7 @@
         <location line="-134"/>
         <location line="+135"/>
         <source>Please select a single point cloud.</source>
-        <translation type="unfinished">Please select a single point cloud.</translation>
+        <translation>Proszę wybrać pojedynczą chmurę punktów.</translation>
     </message>
 </context>
 <context>

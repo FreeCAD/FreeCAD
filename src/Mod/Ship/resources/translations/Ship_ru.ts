@@ -16,7 +16,7 @@
     <message>
       <location filename="Instance.py" line="44"/>
       <source>True if it is a valid ship instance, False otherwise</source>
-      <translation>Истина - если это правильный экземпляр судна, Ложь - в противном случае</translation>
+      <translation>Истина — если правильный экземпляр судна, Ложь — в противном случае</translation>
     </message>
     <message>
       <location filename="Instance.py" line="54"/>
@@ -41,17 +41,17 @@
     <message>
       <location filename="Instance.py" line="92"/>
       <source>Set of weight instances</source>
-      <translation type="unfinished">Set of weight instances</translation>
+      <translation>Набор веса экземпляров</translation>
     </message>
     <message>
       <location filename="Instance.py" line="101"/>
       <source>Set of tank instances</source>
-      <translation type="unfinished">Set of tank instances</translation>
+      <translation>Набор экземпляров цистерн</translation>
     </message>
     <message>
       <location filename="Instance.py" line="110"/>
       <source>Set of load conditions</source>
-      <translation type="unfinished">Set of load conditions</translation>
+      <translation>Набор условий нагрузки</translation>
     </message>
   </context>
   <context>
@@ -149,7 +149,7 @@
     <message>
       <location filename="TaskPanel.py" line="234"/>
       <source>Trim angle</source>
-      <translation type="unfinished">Trim angle</translation>
+      <translation>Трим угол</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="240"/>
@@ -159,7 +159,7 @@
     <message>
       <location filename="TaskPanel.py" line="384"/>
       <source>Areas curve tool number of points</source>
-      <translation type="unfinished">Areas curve tool number of points</translation>
+      <translation>Области кривой инструмент количество точек</translation>
     </message>
   </context>
   <context>
@@ -172,12 +172,12 @@
     <message>
       <location filename="ShipGui.py" line="165"/>
       <source>Plot the tank capacity curve (level-volume curve)</source>
-      <translation type="unfinished">Plot the tank capacity curve (level-volume curve)</translation>
+      <translation>Участок кривой емкости бака (кривой уровня громкости)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="159"/>
       <source>Plot the tank capacity curve</source>
-      <translation type="unfinished">Plot the tank capacity curve</translation>
+      <translation>Участок кривой емкости бака</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="164"/>
@@ -215,7 +215,7 @@
     <message>
       <location filename="Preview.py" line="128"/>
       <source>Any valid ship section found</source>
-      <translation>Любая допустимая основная секция плавательного судна</translation>
+      <translation>Найдена допустимая секция судна</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="132"/>
@@ -270,7 +270,7 @@
     <message>
       <location filename="TaskPanel.py" line="118"/>
       <source>A tank instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A tank instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Экземпляр корабля должен быть выбран перед использованием этого средства (объекты не выбраны)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="135"/>
@@ -494,7 +494,7 @@
     <message>
       <location filename="TaskPanel.py" line="284"/>
       <source>Trim</source>
-      <translation>Обрезка</translation>
+      <translation>Подгонка</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="290"/>

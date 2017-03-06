@@ -86,7 +86,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="250"/>
       <source>size (fs)</source>
-      <translation type="unfinished">size (fs)</translation>
+      <translation>grootte (fs)</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="278"/>
@@ -142,12 +142,12 @@
       <translation>Selecteer eerst 3 objecten</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Unsupported Function</source>
       <translation>Niet-ondersteunde functie</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Press OK</source>
       <translation>Druk op OK</translation>
     </message>

@@ -6,12 +6,12 @@
     <message>
       <location filename="InitGui.py" line="44"/>
       <source>Plot edition tools</source>
-      <translation type="unfinished">Plot edition tools</translation>
+      <translation>Arsa düzenleme araçları</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="47"/>
       <source>Plot</source>
-      <translation type="unfinished">Plot</translation>
+      <translation>Plot</translation>
     </message>
   </context>
   <context>
@@ -125,22 +125,22 @@
     <message>
       <location filename="TaskPanel.py" line="225"/>
       <source>Dimensions</source>
-      <translation type="unfinished">Dimensions</translation>
+      <translation>Ebatlar</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="230"/>
       <source>X axis position</source>
-      <translation type="unfinished">X axis position</translation>
+      <translation>X ekseni konumu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="235"/>
       <source>Y axis position</source>
-      <translation type="unfinished">Y axis position</translation>
+      <translation>Y ekseni konumu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="205"/>
       <source>Scales</source>
-      <translation type="unfinished">Scales</translation>
+      <translation>Ölçekler</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="210"/>

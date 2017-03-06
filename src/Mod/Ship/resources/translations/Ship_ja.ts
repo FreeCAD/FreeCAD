@@ -51,7 +51,7 @@
     <message>
       <location filename="Instance.py" line="110"/>
       <source>Set of load conditions</source>
-      <translation type="unfinished">Set of load conditions</translation>
+      <translation>荷重条件の設定</translation>
     </message>
   </context>
   <context>
@@ -149,7 +149,7 @@
     <message>
       <location filename="TaskPanel.py" line="234"/>
       <source>Trim angle</source>
-      <translation type="unfinished">Trim angle</translation>
+      <translation>トリム角度</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="240"/>
@@ -441,17 +441,17 @@
     <message>
       <location filename="ShipGui.py" line="196"/>
       <source>GZ curve computation</source>
-      <translation type="unfinished">GZ curve computation</translation>
+      <translation>GZ曲線の計算</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="244"/>
       <source>Plot the GZ curve</source>
-      <translation type="unfinished">Plot the GZ curve</translation>
+      <translation>GZ曲線をプロット</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="249"/>
       <source>Maximum angle</source>
-      <translation type="unfinished">Maximum angle</translation>
+      <translation>最大角度</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="255"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="TaskPanel.py" line="261"/>
       <source>Variable trim</source>
-      <translation type="unfinished">Variable trim</translation>
+      <translation>変数トリム</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="267"/>
@@ -471,17 +471,17 @@
     <message>
       <location filename="TaskPanel.py" line="294"/>
       <source>GZ curve tool angle selected [deg]</source>
-      <translation type="unfinished">GZ curve tool angle selected [deg]</translation>
+      <translation>GZ曲線ツール 角度選択 [度]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="310"/>
       <source>GZ curve tool number of points selected</source>
-      <translation type="unfinished">GZ curve tool number of points selected</translation>
+      <translation>GZ曲線ツール 点数選択</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="326"/>
       <source>GZ curve tool variable trim angle selection</source>
-      <translation type="unfinished">GZ curve tool variable trim angle selection</translation>
+      <translation>GZ曲線ツール 変数トリム角度選択</translation>
     </message>
   </context>
   <context>
@@ -550,12 +550,12 @@
     <message>
       <location filename="ShipGui.py" line="179"/>
       <source>Create a new loading condition</source>
-      <translation type="unfinished">Create a new loading condition</translation>
+      <translation>新しい荷重条件を作成</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="182"/>
       <source>Create a new load condition spreadsheet</source>
-      <translation type="unfinished">Create a new load condition spreadsheet</translation>
+      <translation>新しい荷重条件スプレッドシートを作成</translation>
     </message>
   </context>
   <context>
@@ -724,7 +724,7 @@
     <message>
       <location filename="WeightInstance.py" line="76"/>
       <source>Area density [kg / m^2]</source>
-      <translation type="unfinished">Area density [kg / m^2]</translation>
+      <translation>面密度 [kg / m^2]</translation>
     </message>
   </context>
 </TS>

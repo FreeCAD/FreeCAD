@@ -28,5 +28,10 @@
         <file>translations/Image_sr.qm</file>
         <file>translations/Image_el.qm</file>
         <file>translations/Image_sl.qm</file>
+        <file>translations/Image_eu.qm</file>
+        <file>translations/Image_ca.qm</file>
+        <file>translations/Image_gl.qm</file>
+        <file>translations/Image_kab.qm</file>
+        <file>translations/Image_ko.qm</file>
     </qresource>
 </RCC> 

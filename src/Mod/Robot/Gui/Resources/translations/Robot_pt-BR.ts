@@ -379,7 +379,12 @@
         <translation>Seleção errada</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -439,12 +444,11 @@
         <translation>Coloque o mouse em cima de um objeto (preseleção) para usar este comando. Veja a documentação para mais detalhes.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Selecione um robô para definir a posição de origem</translation>
+        <translation type="obsolete">Selecione um robô para definir a posição de origem</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Selecione um robô</translation>
     </message>
