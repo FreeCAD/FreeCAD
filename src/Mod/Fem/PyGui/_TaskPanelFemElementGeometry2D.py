@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_TaskPanelFemShellThickness"
+__title__ = "_TaskPanelFemElementGeometry2D"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package TaskPanelFemShellThickness
+## @package FemElementGeometry2D
 #  \ingroup FEM
 
 import FreeCAD
@@ -33,14 +33,14 @@ from PySide import QtGui
 from PySide import QtCore
 
 
-class _TaskPanelFemShellThickness:
-    '''The TaskPanel for editing References property of FemShellThickness objects'''
+class _TaskPanelFemElementGeometry2D:
+    '''The TaskPanel for editing References property of FemElementGeometry2D objects'''
     def __init__(self, obj):
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
         self.obj = obj
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemShellThickness.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemElementGeometry2D.ui")
         QtCore.QObject.connect(self.form.if_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.thickness_changed)
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)

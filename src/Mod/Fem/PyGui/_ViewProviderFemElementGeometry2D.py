@@ -20,33 +20,65 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandShellThickness"
+__title__ = "_ViewProviderFemElementGeometry2D"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandFemShellThickness
+## @package ViewProviderFemElementGeometry2D
 #  \ingroup FEM
 
 import FreeCAD
-from FemCommands import FemCommands
 import FreeCADGui
-from PySide import QtCore
+from pivy import coin
 
 
-class _CommandFemShellThickness(FemCommands):
-    "The FEM_ShellThickness command definition"
-    def __init__(self):
-        super(_CommandFemShellThickness, self).__init__()
-        self.resources = {'Pixmap': 'fem-shell-thickness',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ShellThickness", "Shell plate thickness"),
-                          'Accel': "C, S",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ShellThickness", "Creates a FEM shell plate thickness")}
-        self.is_active = 'with_analysis'
+class _ViewProviderFemElementGeometry2D:
+    "A View Provider for the FemElementGeometry2D object"
+    def __init__(self, vobj):
+        vobj.Proxy = self
 
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemShellThickness")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeShellThickness()]")
+    def getIcon(self):
+        return ":/icons/fem-shell-thickness.svg"
 
+    def attach(self, vobj):
+        self.ViewObject = vobj
+        self.Object = vobj.Object
+        self.standard = coin.SoGroup()
+        vobj.addDisplayMode(self.standard, "Standard")
 
-FreeCADGui.addCommand('FEM_ShellThickness', _CommandFemShellThickness())
+    def getDisplayModes(self, obj):
+        return ["Standard"]
+
+    def getDefaultDisplayMode(self):
+        return "Standard"
+
+    def updateData(self, obj, prop):
+        return
+
+    def onChanged(self, vobj, prop):
+        return
+
+    def setEdit(self, vobj, mode=0):
+        import PyGui._TaskPanelFemElementGeometry2D
+        taskd = PyGui._TaskPanelFemElementGeometry2D._TaskPanelFemElementGeometry2D(self.Object)
+        taskd.obj = vobj.Object
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def unsetEdit(self, vobj, mode=0):
+        FreeCADGui.Control.closeDialog()
+        return
+
+    def doubleClicked(self, vobj):
+        doc = FreeCADGui.getDocument(vobj.Object.Document)
+        if not doc.getInEdit():
+            doc.setEdit(vobj.Object.Name)
+        else:
+            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+        return True
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None
