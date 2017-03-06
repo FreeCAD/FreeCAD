@@ -4573,16 +4573,28 @@ public:
 
                 //Gui::Command::openCommand("Add B-spline curve");
 
-                //Add arc of parabola
-                Gui::Command::doCommand(Gui::Command::Doc,
+                /*Gui::Command::doCommand(Gui::Command::Doc,
                     "App.ActiveDocument.%s.addGeometry(Part.BSplineCurve"
                     "(%s,%s),"
                     "%s)",
                         sketchgui->getObject()->getNameInDocument(),
                         controlpoints.c_str(),
                         ConstrMethod == 0 ?"False":"True",
-                        geometryCreationMode==Construction?"True":"False"); 
+                        geometryCreationMode==Construction?"True":"False"); */
+                
+                // {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational", NULL};
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.ActiveDocument.%s.addGeometry(Part.BSplineCurve"
+                                        "(%s,None,None,%s,3,None,False),"
+                                        "%s)",
+                                        sketchgui->getObject()->getNameInDocument(),
+                                        controlpoints.c_str(),
+                                        ConstrMethod == 0 ?"False":"True",
+                                        geometryCreationMode==Construction?"True":"False");
 
+                
+                
+                
                 currentgeoid++;
 
                 // Constraint pole circles to bspline.
