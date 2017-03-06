@@ -294,15 +294,15 @@ def makeFemFluidSection(name="FluidSection"):
     return obj
 
 
-def makeShellThickness(thickness=20.0, name="ShellThickness"):
-    '''makeShellThickness([thickness], [name]): creates an shellthickness object to define a plate thickness'''
+def makeElementGeometry2D(thickness=20.0, name="ElementGeometry2D"):
+    '''makeElementGeometry2D([thickness], [name]): creates an 2D geometry element object to define a plate thickness'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
-    import PyObjects._FemShellThickness
-    PyObjects._FemShellThickness._FemShellThickness(obj)
+    import PyObjects._FemElementGeometry2D
+    PyObjects._FemElementGeometry2D._FemElementGeometry2D(obj)
     obj.Thickness = thickness
     if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemShellThickness
-        PyGui._ViewProviderFemShellThickness._ViewProviderFemShellThickness(obj.ViewObject)
+        import PyGui._ViewProviderFemElementGeometry2D
+        PyGui._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D(obj.ViewObject)
     return obj
 
 

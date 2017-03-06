@@ -20,21 +20,33 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_FemShellThickness"
+__title__ = "_CommandFemElementGeometry2D"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemShellThickness
+## @package CommandFemElementGeometry2D
 #  \ingroup FEM
 
+import FreeCAD
+from FemCommands import FemCommands
+import FreeCADGui
+from PySide import QtCore
 
-class _FemShellThickness:
-    "The FemShellThickness object"
-    def __init__(self, obj):
-        obj.addProperty("App::PropertyLength", "Thickness", "ShellThickness", "set thickness of the shell elements")
-        obj.addProperty("App::PropertyLinkSubList", "References", "ShellThickness", "List of shell thickness shapes")
-        obj.Proxy = self
-        self.Type = "FemShellThickness"
 
-    def execute(self, obj):
-        return
+class _CommandFemElementGeometry2D(FemCommands):
+    "The FEM_ElementGeometry2D command definition"
+    def __init__(self):
+        super(_CommandFemElementGeometry2D, self).__init__()
+        self.resources = {'Pixmap': 'fem-shell-thickness',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry2D", "Shell plate thickness"),
+                          'Accel': "C, S",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry2D", "Creates a FEM shell plate thickness")}
+        self.is_active = 'with_analysis'
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemElementGeometry2D")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeElementGeometry2D()]")
+
+
+FreeCADGui.addCommand('FEM_ElementGeometry2D', _CommandFemElementGeometry2D())
