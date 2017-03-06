@@ -406,7 +406,7 @@ def get_elset_short_name(obj, i):
         return 'Mat' + str(i)
     elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemElementGeometry1D':
         return 'Beam' + str(i)
-    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemFluidSection':
+    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemElementFluid1D':
         return 'Fluid' + str(i)
     elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemElementGeometry2D':
         return 'Shell' + str(i)
@@ -1030,7 +1030,7 @@ def get_analysis_group_elements(aAnalysis, aPart):
         else:
             FreeCAD.Console.PrintError('Problem: more than one object with empty references.\n')
             print('We gone try to get the empty material references anyway.\n')
-            # FemElementGeometry2D, ElementGeometry1D and FluidSection could have empty references, but on solid meshes only materials should have empty references
+            # FemElementGeometry2D, ElementGeometry1D and FemElementFluid1D could have empty references, but on solid meshes only materials should have empty references
             for er in empty_references:
                 print(er.Name)
             group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aPart.Shape)

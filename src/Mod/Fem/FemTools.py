@@ -194,7 +194,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.beam_sections = []
         ## @var fluid_sections
         # set of fluid sections from the analysis. Updated with update_objects
-        # Individual fluid sections are Proxy.Type "FemFluidSection"
+        # Individual fluid sections are Proxy.Type "FemElementFluid1D"
         self.fluid_sections = []
         ## @var shell_thicknesses
         # set of shell thicknesses from the analysis. Updated with update_objects
@@ -306,7 +306,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
                 self.beam_sections.append(beam_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemFluidSection":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementFluid1D":
                 fluid_section_dict = {}
                 fluid_section_dict['Object'] = m
                 self.fluid_sections.append(fluid_section_dict)

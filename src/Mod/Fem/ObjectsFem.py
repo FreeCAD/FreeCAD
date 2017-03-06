@@ -283,14 +283,14 @@ def makeElementGeometry1D(sectiontype='Rectangular', width=10.0, height=25.0, na
     return obj
 
 
-def makeFemFluidSection(name="FluidSection"):
-    '''makeFemFluidSection([name]): creates an Fluid section object to define 1D flow'''
+def makeElementFluid1D(name="ElementFluid1D"):
+    '''makeElementFluid1D([name]): creates an 1D fluid element object to define 1D flow'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
-    import PyObjects._FemFluidSection
-    PyObjects._FemFluidSection._FemFluidSection(obj)
+    import PyObjects._FemElementFluid1D
+    PyObjects._FemElementFluid1D._FemElementFluid1D(obj)
     if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemFluidSection
-        PyGui._ViewProviderFemFluidSection._ViewProviderFemFluidSection(obj.ViewObject)
+        import PyGui._ViewProviderFemElementFluid1D
+        PyGui._ViewProviderFemElementFluid1D._ViewProviderFemElementFluid1D(obj.ViewObject)
     return obj
 
 
