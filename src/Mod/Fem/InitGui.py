@@ -47,6 +47,9 @@ class FemWorkbench (Workbench):
 
         import PyGui._CommandFemAnalysis
         import PyGui._CommandFemConstraintSelfWeight
+        import PyGui._CommandFemElementFluid1D
+        import PyGui._CommandFemElementGeometry1D
+        import PyGui._CommandFemElementGeometry2D
         import PyGui._CommandFemMaterialSolid
         import PyGui._CommandFemMaterialFluid
         import PyGui._CommandFemMaterialMechanicalNonlinear
@@ -63,10 +66,6 @@ class FemWorkbench (Workbench):
         import PyGui._CommandFemSolverControl
         import PyGui._CommandFemSolverRun
         import PyGui._CommandFemSolverZ88
-
-        import PyGui._CommandFemElementGeometry2D
-        import PyGui._CommandFemElementGeometry1D
-        import PyGui._CommandFemElementFluid1D
 
     def GetClassName(self):
         return "FemGui::Workbench"

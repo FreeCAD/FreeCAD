@@ -89,15 +89,15 @@ SET(FemScripts_SRCS
 
 SET(FemObjectsScripts_SRCS
     PyObjects/__init__.py
-    PyObjects/_FemElementGeometry1D.py
     PyObjects/_FemConstraintSelfWeight.py
     PyObjects/_FemElementFluid1D.py
+    PyObjects/_FemElementGeometry1D.py
+    PyObjects/_FemElementGeometry2D.py
     PyObjects/_FemMaterialMechanicalNonlinear.py
     PyObjects/_FemMeshGmsh.py
     PyObjects/_FemMeshGroup.py
     PyObjects/_FemMeshRegion.py
     PyObjects/_FemResultMechanical.py
-    PyObjects/_FemElementGeometry2D.py
     PyObjects/_FemSolverCalculix.py
     PyObjects/_FemSolverZ88.py
     PyObjects/_FemMaterial.py
@@ -107,9 +107,10 @@ SET(FemGuiScripts_SRCS
     PyGui/FemCommands.py
     PyGui/__init__.py
     PyGui/_CommandFemAnalysis.py
-    PyGui/_CommandFemElementGeometry1D.py
     PyGui/_CommandFemConstraintSelfWeight.py
     PyGui/_CommandFemElementFluid1D.py
+    PyGui/_CommandFemElementGeometry1D.py
+    PyGui/_CommandFemElementGeometry2D.py
     PyGui/_CommandFemMaterialMechanicalNonlinear.py
     PyGui/_CommandFemMaterialSolid.py
     PyGui/_CommandFemMaterialFluid.py
@@ -122,40 +123,39 @@ SET(FemGuiScripts_SRCS
     PyGui/_CommandFemMeshRegion.py
     PyGui/_CommandFemResultShow.py
     PyGui/_CommandFemResultsPurge.py
-    PyGui/_CommandFemElementGeometry2D.py
     PyGui/_CommandFemSolverCalculix.py
     PyGui/_CommandFemSolverControl.py
     PyGui/_CommandFemSolverRun.py
     PyGui/_CommandFemSolverZ88.py
-    PyGui/_TaskPanelFemElementGeometry1D.py
     PyGui/_TaskPanelFemElementFluid1D.py
+    PyGui/_TaskPanelFemElementGeometry1D.py
+    PyGui/_TaskPanelFemElementGeometry2D.py
     PyGui/_TaskPanelFemMaterial.py
     PyGui/_TaskPanelFemMeshGmsh.py
     PyGui/_TaskPanelFemMeshGroup.py
     PyGui/_TaskPanelFemMeshRegion.py
     PyGui/_TaskPanelFemResultShow.py
-    PyGui/_TaskPanelFemElementGeometry2D.py
     PyGui/_TaskPanelFemSolverCalculix.py
-    PyGui/_ViewProviderFemElementGeometry1D.py
     PyGui/_ViewProviderFemConstraintSelfWeight.py
     PyGui/_ViewProviderFemElementFluid1D.py
+    PyGui/_ViewProviderFemElementGeometry1D.py
+    PyGui/_ViewProviderFemElementGeometry2D.py
     PyGui/_ViewProviderFemMaterial.py
     PyGui/_ViewProviderFemMaterialMechanicalNonlinear.py
     PyGui/_ViewProviderFemMeshGmsh.py
     PyGui/_ViewProviderFemMeshGroup.py
     PyGui/_ViewProviderFemMeshRegion.py
     PyGui/_ViewProviderFemResultMechanical.py
-    PyGui/_ViewProviderFemElementGeometry2D.py
     PyGui/_ViewProviderFemSolverCalculix.py
     PyGui/_ViewProviderFemSolverZ88.py
-    PyGui/TaskPanelFemElementGeometry1D.ui
     PyGui/TaskPanelFemElementFluid1D.ui
+    PyGui/TaskPanelFemElementGeometry1D.ui
+    PyGui/TaskPanelFemElementGeometry2D.ui
     PyGui/TaskPanelFemMaterial.ui
     PyGui/TaskPanelFemMeshGmsh.ui
     PyGui/TaskPanelFemMeshGroup.ui
     PyGui/TaskPanelFemMeshRegion.ui
     PyGui/TaskPanelFemResultShow.ui
-    PyGui/TaskPanelFemElementGeometry2D.ui
     PyGui/TaskPanelFemSolverCalculix.ui
 )
 
