@@ -118,7 +118,8 @@ PyMOD_INIT_FUNC(SketcherGui)
     SketcherGui::SoZoomTranslation          ::initClass();
     SketcherGui::PropertyConstraintListItem ::init();
 
-    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>  ( QT_TRANSLATE_NOOP("QObject","Display") );
+    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>        ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
+    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsColors>  ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
 
      // add resources and reloads the translators
     loadSketcherResource();
