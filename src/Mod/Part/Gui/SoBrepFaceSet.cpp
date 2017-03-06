@@ -789,12 +789,11 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action)
 
     SoLazyElement::setEmissive(state, &this->highlightColor);
     SoOverrideElement::setEmissiveColorOverride(state, this, true);
-#if 0 // disables shading effect
-    // sendNormals will be false
-    SoLazyElement::setDiffuse(state, this,1, &this->highlightColor,&this->colorpacker);
-    SoOverrideElement::setDiffuseColorOverride(state, this, true);
-    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-#endif
+    // if shading is disabled then set also the diffuse color
+    if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
+        SoLazyElement::setDiffuse(state, this,1, &this->highlightColor,&this->colorpacker);
+        SoOverrideElement::setDiffuseColorOverride(state, this, true);
+    }
 
     Binding mbind = this->findMaterialBinding(state);
     Binding nbind = this->findNormalBinding(state);
@@ -870,11 +869,11 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
 
     SoLazyElement::setEmissive(state, &this->selectionColor);
     SoOverrideElement::setEmissiveColorOverride(state, this, true);
-#if 0 // disables shading effect
-    SoLazyElement::setDiffuse(state, this,1, &this->selectionColor,&this->colorpacker);
-    SoOverrideElement::setDiffuseColorOverride(state, this, true);
-    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-#endif
+    // if shading is disabled then set also the diffuse color
+    if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
+        SoLazyElement::setDiffuse(state, this,1, &this->selectionColor,&this->colorpacker);
+        SoOverrideElement::setDiffuseColorOverride(state, this, true);
+    }
 
     Binding mbind = this->findMaterialBinding(state);
     Binding nbind = this->findNormalBinding(state);
