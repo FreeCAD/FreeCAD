@@ -974,6 +974,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                                 const int mbind,
                                 const int texture)
 {
+    (void)texcoords; (void)texindices; (void)texture;
     const SbVec3f * coords3d = NULL;
     SbVec3f * cur_coords3d = NULL;
     coords3d = vertexlist->getArrayPtr3();
@@ -996,7 +997,9 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     float * vertex_array = NULL;
     GLuint * index_array = NULL;
     SbColor  mycolor1,mycolor2,mycolor3;
-    SbVec3f *mynormal1,*mynormal2,*mynormal3;
+    SbVec3f *mynormal1 = (SbVec3f *)currnormal;
+    SbVec3f *mynormal2 = (SbVec3f *)currnormal;
+    SbVec3f *mynormal3 = (SbVec3f *)currnormal;
     int indice=0;
     uint32_t RGBA,R,G,B,A;
     float Rf,Gf,Bf,Af;
@@ -1313,8 +1316,14 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
 {
     // Can we use vertex buffer objects?
     if (hasVBO) {
+        int nbinding = nbind;
+        SoState* state = action->getState();
+        if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
+            // if no shading is set then the normals are all equal
+            nbinding = static_cast<int>(OVERALL);
+        }
         PRIVATE(this)->render(action, vertexlist, vertexindices, num_indices, partindices, num_partindices, normals,
-                    normalindices, materials, matindices, texcoords, texindices, nbind, mbind, texture);
+                    normalindices, materials, matindices, texcoords, texindices, nbinding, mbind, texture);
         return;
     }
 
