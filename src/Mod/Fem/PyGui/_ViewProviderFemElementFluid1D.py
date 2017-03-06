@@ -21,33 +21,65 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandFluidSection"
+__title__ = "_ViewProviderFemElementFluid1D"
 __author__ = "Ofentse Kgoa"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandFemFluidSection
+## @package ViewProviderFemElementFluid1D
 #  \ingroup FEM
 
 import FreeCAD
-from FemCommands import FemCommands
 import FreeCADGui
-from PySide import QtCore
+from pivy import coin
 
 
-class _CommandFemFluidSection(FemCommands):
-    "The FEM_FluidSection command definition"
-    def __init__(self):
-        super(_CommandFemFluidSection, self).__init__()
-        self.resources = {'Pixmap': 'fem-fluid-section',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_FluidSection", "Fluid section for 1D flow"),
-                          'Accel': "C, B",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_FluidSection", "Creates a FEM Fluid section for 1D flow")}
-        self.is_active = 'with_analysis'
+class _ViewProviderFemElementFluid1D:
+    "A View Provider for the FemElementFluid1D object"
+    def __init__(self, vobj):
+        vobj.Proxy = self
 
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemFluidSection")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeFemFluidSection()]")
+    def getIcon(self):
+        return ":/icons/fem-fluid-section.svg"
 
+    def attach(self, vobj):
+        self.ViewObject = vobj
+        self.Object = vobj.Object
+        self.standard = coin.SoGroup()
+        vobj.addDisplayMode(self.standard, "Standard")
 
-FreeCADGui.addCommand('FEM_FluidSection', _CommandFemFluidSection())
+    def getDisplayModes(self, obj):
+        return ["Standard"]
+
+    def getDefaultDisplayMode(self):
+        return "Standard"
+
+    def updateData(self, obj, prop):
+        return
+
+    def onChanged(self, vobj, prop):
+        return
+
+    def setEdit(self, vobj, mode=0):
+        import PyGui._TaskPanelFemElementFluid1D
+        taskd = PyGui._TaskPanelFemElementFluid1D._TaskPanelFemElementFluid1D(self.Object)
+        taskd.obj = vobj.Object
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def unsetEdit(self, vobj, mode=0):
+        FreeCADGui.Control.closeDialog()
+        return
+
+    def doubleClicked(self, vobj):
+        doc = FreeCADGui.getDocument(vobj.Object.Document)
+        if not doc.getInEdit():
+            doc.setEdit(vobj.Object.Name)
+        else:
+            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+        return True
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None

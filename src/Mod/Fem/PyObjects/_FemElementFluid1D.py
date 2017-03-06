@@ -21,16 +21,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_FemFluidSection"
+__title__ = "_FemElementFluid1D"
 __author__ = "Ofentse Kgoa"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemFluidSection
+## @package FemElementFluid1D
 #  \ingroup FEM
 
 
-class _FemFluidSection:
-    "The FemFluidSection object"
+class _FemElementFluid1D:
+    "The FemElementFluid1D object"
 
     known_fluid_types = ['Liquid', 'Gas', 'Open Channel']
     known_liquid_types = ['PIPE MANNING', 'PIPE ENLARGEMENT', 'PIPE CONTRACTION', 'PIPE INLET', 'PIPE OUTLET', 'PIPE ENTRANCE', 'PIPE DIAPHRAGM', 'PIPE BEND', 'PIPE GATE VALVE', 'LIQUID PUMP', 'PIPE WHITE-COLEBROOK']
@@ -76,13 +76,13 @@ class _FemFluidSection:
         obj.addProperty("App::PropertyEnumeration", "ChannelSectionType", "ChannelSection", "select channel section type")
 
         # set property default values
-        obj.SectionType = _FemFluidSection.known_fluid_types
+        obj.SectionType = _FemElementFluid1D.known_fluid_types
         obj.SectionType = 'Liquid'
-        obj.LiquidSectionType = _FemFluidSection.known_liquid_types
+        obj.LiquidSectionType = _FemElementFluid1D.known_liquid_types
         obj.LiquidSectionType = 'PIPE INLET'
-        obj.GasSectionType = _FemFluidSection.known_gas_types
+        obj.GasSectionType = _FemElementFluid1D.known_gas_types
         obj.GasSectionType = 'NONE'
-        obj.ChannelSectionType = _FemFluidSection.known_channel_types
+        obj.ChannelSectionType = _FemElementFluid1D.known_channel_types
         obj.ChannelSectionType = 'NONE'
         obj.ManningArea = 10.0
         obj.ManningRadius = 1.0
@@ -116,7 +116,7 @@ class _FemFluidSection:
         obj.InletFlowRateActive = False
         obj.OutletFlowRateActive = False
         obj.Proxy = self
-        self.Type = "FemFluidSection"
+        self.Type = "FemElementFluid1D"
 
     def execute(self, obj):
         return
