@@ -3977,7 +3977,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
     try {
         int curmult = bsp->getMultiplicity(knotIndex);
-        
+
         if ( (curmult + multiplicityincr) > degree || (curmult + multiplicityincr) < 0) // zero is removing the knot, degree is just positional continuity
             return false;
 
@@ -3999,16 +3999,16 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         Base::Console().Error("%s\n", e.what());
         return false;
     }
-    
+
     // we succeeded with the multiplicity modification, so aligment geometry may be invalid/inconsistent for the new bspline
     // If multiplicity is increased, the number of poles is increased. An increase of 1 degree generates one pole extra
-    
+
     if(multiplicityincr > 0) {
 
         std::vector<Base::Vector3d> poles = bsp->getPoles();
         std::vector<Base::Vector3d> newpoles = bspline->getPoles();
         std::vector<int> prevpole(bsp->countPoles());
-        
+
         for(int i = 0; i < int(poles.size()); i++)
             prevpole[i] = -1;
 
@@ -4022,11 +4022,11 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
                 }
             }
         }
-        
+
         const std::vector< Sketcher::Constraint * > &cvals = Constraints.getValues();
-        
+
         std::vector< Constraint * > newcVals(cvals);
-        
+
         // modify pole constraints
         for (std::vector< Sketcher::Constraint * >::iterator it= newcVals.begin(); it != newcVals.end(); ++it) {
             if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
@@ -4043,10 +4043,8 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         return false;
     }
     
-    // * DOCUMENTING OCC ISSUE
-    // When bspline is assigned below in  newVals[GeoId] = bspline, when sketch.cpp updateGeometry executes this:
-    //
-    // point->setPoint(bsp->pointAtParameter(knots[index]));
+    // * DOCUMENTING OCC ISSUE OCC < 6.9.0
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=9364&start=330#p162528
     //
     // A segmentation fault is generated:
     //Program received signal SIGSEGV, Segmentation fault.
@@ -4059,22 +4057,18 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     //#6  0x7f4b03427175 in GeomLProp_CLProps::SetParameter(double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x75
     //#7  0x7f4b0342727d in GeomLProp_CLProps::GeomLProp_CLProps(Handle_Geom_Curve const&, double, int, double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xcd
     //#8  0x7f4b11924b53 in Part::GeomCurve::pointAtParameter(double) const from /home/abdullah/github/freecad-build/Mod/Part/Part.so+0xa7
-    
-    Part::GeomBSplineCurve * tbspline = new  Part::GeomBSplineCurve( bspline->getPoles(), bspline->getWeights(), bspline->getKnots(), bspline->getMultiplicities(),
-                                                  bspline->getDegree(), bspline->isPeriodic());
 
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
-    
+
     std::vector< Part::Geometry * > newVals(vals);
-    
-    newVals[GeoId] = tbspline;
-    
+
+    newVals[GeoId] = bspline;
+
     Geometry.setValues(newVals);
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
-    
+
     return true;
-    
 }
 
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
