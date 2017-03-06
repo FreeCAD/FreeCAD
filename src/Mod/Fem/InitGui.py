@@ -66,7 +66,7 @@ class FemWorkbench (Workbench):
 
         import PyGui._CommandFemElementGeometry2D
         import PyGui._CommandFemElementGeometry1D
-        import PyGui._CommandFemFluidSection
+        import PyGui._CommandFemElementFluid1D
 
     def GetClassName(self):
         return "FemGui::Workbench"

@@ -21,28 +21,28 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_TaskPanelFemFluidSection"
+__title__ = "_TaskPanelFemElementFluid1D"
 __author__ = "Ofentse Kgoa"
 __url__ = "http://www.freecadweb.org"
 
-## @package TaskPanelFemFluidSection
+## @package TaskPanelFemElementFluid1D
 #  \ingroup FEM
 
 import FreeCAD
 import FreeCADGui
 from PySide import QtGui
 from PySide import QtCore
-import PyObjects._FemFluidSection
+import PyObjects._FemElementFluid1D
 
 
-class _TaskPanelFemFluidSection:
-    '''The TaskPanel for editing References property of FemFluidSection objects'''
+class _TaskPanelFemElementFluid1D:
+    '''The TaskPanel for editing References property of FemElementFluid1D objects'''
     def __init__(self, obj):
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
         self.obj = obj
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemFluidSection.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemElementFluid1D.ui")
         QtCore.QObject.connect(self.form.btn_add, QtCore.SIGNAL("clicked()"), self.add_references)
         QtCore.QObject.connect(self.form.btn_remove, QtCore.SIGNAL("clicked()"), self.remove_reference)
         QtCore.QObject.connect(self.form.cb_section_type, QtCore.SIGNAL("activated(int)"), self.sectiontype_changed)
@@ -79,10 +79,10 @@ class _TaskPanelFemFluidSection:
         QtCore.QObject.connect(self.form.tw_pump_characteristics, QtCore.SIGNAL("cellChanged(int, int)"), self.pump_characteristics_changed)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
-        self.form.cb_section_type.addItems(PyObjects._FemFluidSection._FemFluidSection.known_fluid_types)
-        self.form.cb_liquid_section_type.addItems(PyObjects._FemFluidSection._FemFluidSection.known_liquid_types)
-        self.form.cb_gas_section_type.addItems(PyObjects._FemFluidSection._FemFluidSection.known_gas_types)
-        self.form.cb_channel_section_type.addItems(PyObjects._FemFluidSection._FemFluidSection.known_channel_types)
+        self.form.cb_section_type.addItems(PyObjects._FemElementFluid1D._FemElementFluid1D.known_fluid_types)
+        self.form.cb_liquid_section_type.addItems(PyObjects._FemElementFluid1D._FemElementFluid1D.known_liquid_types)
+        self.form.cb_gas_section_type.addItems(PyObjects._FemElementFluid1D._FemElementFluid1D.known_gas_types)
+        self.form.cb_channel_section_type.addItems(PyObjects._FemElementFluid1D._FemElementFluid1D.known_channel_types)
 
         self.get_fluidsection_props()
         self.update()
