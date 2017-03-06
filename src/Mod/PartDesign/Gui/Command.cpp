@@ -884,11 +884,12 @@ void CmdPartDesignPad::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-        /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.16
-    if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
         return;
 
     Gui::Command* cmd = this;
@@ -942,11 +943,12 @@ void CmdPartDesignPocket::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-        /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.16
-    if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
         return;
 
     Gui::Command* cmd = this;
@@ -988,11 +990,12 @@ void CmdPartDesignRevolution::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-        /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.16
-    if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
         return;
 
     Gui::Command* cmd = this;
@@ -1040,10 +1043,12 @@ void CmdPartDesignGroove::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-        /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
         return;
 
     Gui::Command* cmd = this;
@@ -1090,9 +1095,12 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
 void CmdPartDesignAdditivePipe::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.13
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
     if (!pcActiveBody)
         return;
 
@@ -1137,9 +1145,12 @@ CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
 void CmdPartDesignSubtractivePipe::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.13
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
     if (!pcActiveBody)
         return;
 
@@ -1184,9 +1195,12 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
 void CmdPartDesignAdditiveLoft::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.13
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
     if (!pcActiveBody)
         return;
 
@@ -1231,9 +1245,12 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
 void CmdPartDesignSubtractiveLoft::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.13
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
     if (!pcActiveBody)
         return;
 
@@ -1596,7 +1613,18 @@ void prepareTransformed(Gui::Command* cmd, const std::string& which,
             return;
         }
     }
+    else if (features.size() > 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Multiple Features Selected"),
+            QObject::tr("Please select only one subtractive or additive feature first."));
+        return;
+    }
     else {
+        PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+        if (pcActiveBody != PartDesignGui::getBodyFor(features[0], false)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
+                QObject::tr("Please select only one subtractive or additive feature in an active body."));
+            return;
+        }
         worker(features);
     }
 }
