@@ -20,28 +20,28 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_TaskPanelFemBeamSection"
+__title__ = "_TaskPanelFemElementGeometry1D"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package TaskPanelFemBeamSection
+## @package TaskPanelFemElementGeometry1D
 #  \ingroup FEM
 
 import FreeCAD
 import FreeCADGui
 from PySide import QtGui
 from PySide import QtCore
-import PyObjects._FemBeamSection
+import PyObjects._FemElementGeometry1D
 
 
-class _TaskPanelFemBeamSection:
-    '''The TaskPanel for editing References property of FemBeamSection objects'''
+class _TaskPanelFemElementGeometry1D:
+    '''The TaskPanel for editing References property of FemElementGeometry1D objects'''
     def __init__(self, obj):
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
         self.obj = obj
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemBeamSection.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemElementGeometry1D.ui")
         QtCore.QObject.connect(self.form.cb_crosssectiontype, QtCore.SIGNAL("activated(int)"), self.sectiontype_changed)
         QtCore.QObject.connect(self.form.if_rec_height, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.rec_height_changed)
         QtCore.QObject.connect(self.form.if_rec_width, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.rec_width_changed)
@@ -52,7 +52,7 @@ class _TaskPanelFemBeamSection:
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
 
-        self.form.cb_crosssectiontype.addItems(PyObjects._FemBeamSection._FemBeamSection.known_beam_types)  # it is inside the class thus double _FemBeamSection
+        self.form.cb_crosssectiontype.addItems(PyObjects._FemElementGeometry1D._FemElementGeometry1D.known_beam_types)  # it is inside the class thus double _FemElementGeometry1D
 
         self.get_beamsection_props()
         self.update()

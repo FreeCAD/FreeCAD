@@ -261,12 +261,12 @@ def makeSolverZ88(name="Z88"):
 
 ########## element geometry definition objects ##########
 # TODO object type not yet in object name, see forum topic http://forum.freecadweb.org/viewtopic.php?f=18&t=21029
-def makeBeamSection(sectiontype='Rectangular', width=10.0, height=25.0, name="BeamSection"):
-    '''makeBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''
+def makeElementGeometry1D(sectiontype='Rectangular', width=10.0, height=25.0, name="ElementGeometry1D"):
+    '''makeElementGeometry1D([width], [height], [name]): creates an 1D geometry element object to define a cross section'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
-    import PyObjects._FemBeamSection
-    PyObjects._FemBeamSection._FemBeamSection(obj)
-    sec_types = PyObjects._FemBeamSection._FemBeamSection.known_beam_types
+    import PyObjects._FemElementGeometry1D
+    PyObjects._FemElementGeometry1D._FemElementGeometry1D(obj)
+    sec_types = PyObjects._FemElementGeometry1D._FemElementGeometry1D.known_beam_types
     if sectiontype not in sec_types:
         FreeCAD.Console.PrintError("Section type is not known. Set to " + sec_types[0] + " \n")
         obj.SectionType = sec_types[0]
@@ -278,8 +278,8 @@ def makeBeamSection(sectiontype='Rectangular', width=10.0, height=25.0, name="Be
     obj.PipeDiameter = height
     obj.PipeThickness = width
     if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemBeamSection
-        PyGui._ViewProviderFemBeamSection._ViewProviderFemBeamSection(obj.ViewObject)
+        import PyGui._ViewProviderFemElementGeometry1D
+        PyGui._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D(obj.ViewObject)
     return obj
 
 
