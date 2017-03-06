@@ -272,6 +272,12 @@ const TopoDS_Face ProfileBased::getSupportFace() const {
         if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             const std::vector<std::string> &sub = Support.getSubValues();
             assert(sub.size()==1);
+
+            if (sub.at(0) == "") {
+                // This seems to happen when sketch is on a datum plane
+                return TopoDS::Face(Feature::makeShapeFromPlane(sketch));
+            }
+
             // get the selected sub shape (a Face)
             const Part::TopoShape &shape = part->Shape.getShape();
             if (shape.getShape().IsNull())
