@@ -20,65 +20,33 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemBeamSection"
+__title__ = "_CommandFemElementGeometry1D"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemBeamSection
+## @package CommandFemElementGeometry1D
 #  \ingroup FEM
 
 import FreeCAD
+from FemCommands import FemCommands
 import FreeCADGui
-from pivy import coin
+from PySide import QtCore
 
 
-class _ViewProviderFemBeamSection:
-    "A View Provider for the FemBeamSection object"
-    def __init__(self, vobj):
-        vobj.Proxy = self
+class _CommandFemElementGeometry1D(FemCommands):
+    "The Fem_ElementGeometry1D command definition"
+    def __init__(self):
+        super(_CommandFemElementGeometry1D, self).__init__()
+        self.resources = {'Pixmap': 'fem-beam-section',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry1D", "Beam cross section"),
+                          'Accel': "C, B",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry1D", "Creates a FEM beam cross section")}
+        self.is_active = 'with_analysis'
 
-    def getIcon(self):
-        return ":/icons/fem-beam-section.svg"
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemElementGeometry1D")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeElementGeometry1D()]")
 
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
-        self.standard = coin.SoGroup()
-        vobj.addDisplayMode(self.standard, "Standard")
 
-    def getDisplayModes(self, obj):
-        return ["Standard"]
-
-    def getDefaultDisplayMode(self):
-        return "Standard"
-
-    def updateData(self, obj, prop):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
-
-    def setEdit(self, vobj, mode=0):
-        import PyGui._TaskPanelFemBeamSection
-        taskd = PyGui._TaskPanelFemBeamSection._TaskPanelFemBeamSection(self.Object)
-        taskd.obj = vobj.Object
-        FreeCADGui.Control.showDialog(taskd)
-        return True
-
-    def unsetEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        return
-
-    def doubleClicked(self, vobj):
-        doc = FreeCADGui.getDocument(vobj.Object.Document)
-        if not doc.getInEdit():
-            doc.setEdit(vobj.Object.Name)
-        else:
-            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
-        return True
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+FreeCADGui.addCommand('FEM_ElementGeometry1D', _CommandFemElementGeometry1D())

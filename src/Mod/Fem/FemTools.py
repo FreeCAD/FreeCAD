@@ -190,7 +190,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.pressure_constraints = []
         ## @var beam_sections
         # set of beam sections from the analysis. Updated with update_objects
-        # Individual beam sections are Proxy.Type "FemBeamSection"
+        # Individual beam sections are Proxy.Type "FemElementGeometry1D"
         self.beam_sections = []
         ## @var fluid_sections
         # set of fluid sections from the analysis. Updated with update_objects
@@ -302,7 +302,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 transform_constraint_dict = {}
                 transform_constraint_dict['Object'] = m
                 self.transform_constraints.append(transform_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemBeamSection":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementGeometry1D":
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
                 self.beam_sections.append(beam_section_dict)

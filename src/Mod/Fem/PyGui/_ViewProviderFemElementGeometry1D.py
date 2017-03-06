@@ -20,31 +20,65 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_FemBeamSection"
+__title__ = "_ViewProviderFemElementGeometry1D"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemBeamSection
+## @package ViewProviderFemElementGeometry1D
 #  \ingroup FEM
 
+import FreeCAD
+import FreeCADGui
+from pivy import coin
 
-class _FemBeamSection:
-    "The FemBeamSection object"
 
-    known_beam_types = ['Rectangular', 'Circular', 'Pipe']
+class _ViewProviderFemElementGeometry1D:
+    "A View Provider for the FemElementGeometry1D object"
+    def __init__(self, vobj):
+        vobj.Proxy = self
 
-    def __init__(self, obj):
-        obj.addProperty("App::PropertyLength", "RectWidth", "RectBeamSection", "set width of the rectangular beam elements")
-        obj.addProperty("App::PropertyLength", "RectHeight", "RectBeamSection", "set height of therectangular beam elements")
-        obj.addProperty("App::PropertyLength", "CircDiameter", "CircBeamSection", "set diameter of the circular beam elements")
-        obj.addProperty("App::PropertyLength", "PipeDiameter", "PipeBeamSection", "set outer diameter of the pipe beam elements")
-        obj.addProperty("App::PropertyLength", "PipeThickness", "PipeBeamSection", "set thickness of the pipe beam elements")
-        obj.addProperty("App::PropertyEnumeration", "SectionType", "BeamSection", "select beam section type")
-        obj.addProperty("App::PropertyLinkSubList", "References", "BeamSection", "List of beam section shapes")
-        obj.SectionType = _FemBeamSection.known_beam_types
-        obj.SectionType = 'Rectangular'
-        obj.Proxy = self
-        self.Type = "FemBeamSection"
+    def getIcon(self):
+        return ":/icons/fem-beam-section.svg"
 
-    def execute(self, obj):
+    def attach(self, vobj):
+        self.ViewObject = vobj
+        self.Object = vobj.Object
+        self.standard = coin.SoGroup()
+        vobj.addDisplayMode(self.standard, "Standard")
+
+    def getDisplayModes(self, obj):
+        return ["Standard"]
+
+    def getDefaultDisplayMode(self):
+        return "Standard"
+
+    def updateData(self, obj, prop):
         return
+
+    def onChanged(self, vobj, prop):
+        return
+
+    def setEdit(self, vobj, mode=0):
+        import PyGui._TaskPanelFemElementGeometry1D
+        taskd = PyGui._TaskPanelFemElementGeometry1D._TaskPanelFemElementGeometry1D(self.Object)
+        taskd.obj = vobj.Object
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def unsetEdit(self, vobj, mode=0):
+        FreeCADGui.Control.closeDialog()
+        return
+
+    def doubleClicked(self, vobj):
+        doc = FreeCADGui.getDocument(vobj.Object.Document)
+        if not doc.getInEdit():
+            doc.setEdit(vobj.Object.Name)
+        else:
+            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+        return True
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None

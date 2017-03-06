@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2016 - Ofentse Kgoa <kgoaot@eskom.co.za>                *
-# *   Based on the FemBeamSection by Bernd Hahnebach                        *
+# *   Based on the FemElementGeometry1D by Bernd Hahnebach                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
