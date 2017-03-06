@@ -148,3 +148,8 @@ void ComplexGeoData::getFaces(std::vector<Base::Vector3d> &Points,
     (void)Accuracy;
     (void)flags;
 }
+
+bool ComplexGeoData::getCenterOfGravity(Base::Vector3d&) const
+{
+    return false;
+}

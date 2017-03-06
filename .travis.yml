@@ -13,6 +13,9 @@
 #  FREECAD_RELEASE: A GitHub Release with this identifier exists in the
 #           repo.  The Travis job will deploy the OS X build to this
 #           GitHub release name as a release asset.
+#
+#  DEPLOY: Repo setting to deploy (defaults to no deploy to reduce
+#          Travis build times. Set DEPLOY=1 to enable in repo settings.
 ##
 env:
   global:
@@ -20,6 +23,7 @@ env:
     - DEPLOY_RELEASE=${DEPLOY_RELEASE:-$FREECAD_RELEASE}
     - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
     - OSX_PORTS_CACHE=${OSX_PORTS_CACHE:-FreeCAD/FreeCAD-ports-cache}
+    - DEPLOY=${DEPLOY:-0}
 
 cache:
     ccache: true
@@ -145,7 +149,7 @@ before_install:
 
        if [ "${QT}" == "Qt4" ]; then
           # Qt4: Replace Qt5 from ports-cache with Qt4, if necessary
-          brew ls --versions qt@5.6 > /dev/null || \
+          brew ls --versions qt@5.6 > /dev/null && \
              brew uninstall --ignore-dependencies --force shiboken pyside pyside-tools qt@5.6
 
           brew tap cartr/qt4
@@ -155,9 +159,8 @@ before_install:
 
        elif [ "${QT}" == "Qt5" ]; then
           # Qt5: Replace Qt4 in ports-cache with Qt5, if necessary
-          brew ls --versions cartr4/qt4/qt > /dev/null || \
-             brew uninstall --ignore-dependencies --force cartr/qt4/shiboken cartr/qt4/pyside cartr/qt4/pyside-tools cartr/qt4/qt \
-             brew untap cartr/qt4
+          brew ls --versions cartr/qt4/qt > /dev/null && \
+             brew uninstall --ignore-dependencies --force cartr/qt4/shiboken@1.2 cartr/qt4/pyside@1.2 cartr/qt4/pyside-tools@1.2 cartr/qt4/qt
 
           brew install --verbose --only-dependencies freecad --with-packaging-utils
           brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
@@ -172,15 +175,20 @@ before_install:
        fi
 
        #Install the 3DConnexion frameworks
-       if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
-          curl -o /tmp/3dFW.dmg -L 'http://www.3dconnexion.com/index.php?eID=sdl&ext=tx_iccsoftware&oid=a273bdbc-c289-e10d-816b-567043331c9e&filename=3DxWareMac_v10-4-1_r2428.dmg'
-          hdiutil attach -readonly /tmp/3dFW.dmg
-          sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
-          diskutil eject /Volumes/3Dconnexion\ Software
+       if [ "${DEPLOY}" == "1" ]; then
+          if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
+             curl -o /tmp/3dFW.dmg -L 'http://www.3dconnexion.com/index.php?eID=sdl&ext=tx_iccsoftware&oid=a273bdbc-c289-e10d-816b-567043331c9e&filename=3DxWareMac_v10-4-1_r2428.dmg'
+             hdiutil attach -readonly /tmp/3dFW.dmg
+             sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
+             diskutil eject /Volumes/3Dconnexion\ Software
+          fi
+          export CMAKE_OPTS="${CMAKE_OPTS} -DFREECAD_CREATE_MAC_APP=ON"
+          export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/MacOS/FreeCAD"
+       else
+          export INSTALLED_APP_PATH="/usr/local/MacOS/FreeCAD"
        fi
 
-       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON -DFREECAD_CREATE_MAC_APP=ON"
-       export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/MacOS/FreeCAD"
+       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
        ;;
 
    *)
@@ -214,7 +222,7 @@ after_success:
 #  GH_TOKEN must be set in order to deploy releases to GitHub
 ##
 - |
-  if [ "${TRAVIS_OS_NAME}" == "osx" -a "${TRAVIS_PULL_REQUEST}" == "false" ]; then
+  if [ "${TRAVIS_OS_NAME}" == "osx" -a "${TRAVIS_PULL_REQUEST}" == "false" -a "${DEPLOY}" == "1" ]; then
      brew ls --versions jq || brew install jq
      npm install -g appdmg
      export VSN=$(python ${TRAVIS_BUILD_DIR}/src/Tools/ArchiveNameFromVersionHeader.py ${TRAVIS_BUILD_DIR}/build/src/Build/Version.h)

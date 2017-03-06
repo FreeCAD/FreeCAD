@@ -63,6 +63,7 @@
 # include <BRepCheck_Result.hxx>
 # include <BRepClass_FaceClassifier.hxx>
 # include <BRepFilletAPI_MakeFillet.hxx>
+# include <BRepGProp.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
 # include <BRepMesh_Triangle.hxx>
 # include <BRepMesh_Edge.hxx>
@@ -94,6 +95,7 @@
 # include <GeomFill_SectionLaw.hxx>
 # include <GeomFill_Sweep.hxx>
 # include <GeomLib.hxx>
+# include <GProp_GProps.hxx>
 # include <Law_BSpFunc.hxx>
 # include <Law_BSpline.hxx>
 # include <Law_BSpFunc.hxx>
@@ -926,6 +928,36 @@ Base::BoundBox3d TopoShape::getBoundBox(void) const
     }
 
     return box;
+}
+
+bool TopoShape::getCenterOfGravity(Base::Vector3d& center) const
+{
+    if (_Shape.IsNull())
+        return false;
+
+    // Computing of CentreOfMass
+    gp_Pnt pnt;
+
+    if (_Shape.ShapeType() == TopAbs_VERTEX) {
+        pnt = BRep_Tool::Pnt(TopoDS::Vertex(_Shape));
+    }
+    else {
+        GProp_GProps prop;
+        if (_Shape.ShapeType() == TopAbs_EDGE || _Shape.ShapeType() == TopAbs_WIRE) {
+            BRepGProp::LinearProperties(_Shape, prop);
+        }
+        else if (_Shape.ShapeType() == TopAbs_FACE || _Shape.ShapeType() == TopAbs_SHELL) {
+            BRepGProp::SurfaceProperties(_Shape, prop);
+        }
+        else {
+            BRepGProp::VolumeProperties(_Shape, prop);
+        }
+
+        pnt = prop.CentreOfMass();
+    }
+
+    center.Set(pnt.X(), pnt.Y(), pnt.Z());
+    return true;
 }
 
 void TopoShape::Save (Base::Writer & ) const
