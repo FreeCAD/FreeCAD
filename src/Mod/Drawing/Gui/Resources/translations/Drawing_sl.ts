@@ -4,7 +4,7 @@
 <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+476"/>
+        <location filename="../../Command.cpp" line="+474"/>
         <source>Drawing</source>
         <translation>Risba</translation>
     </message>
@@ -74,7 +74,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Export a page to an SVG file</source>
-        <translation>Izvozi v SVG datoteko</translation>
+        <translation>Izvozi v datoteko SVG</translation>
     </message>
 </context>
 <context>
@@ -94,7 +94,7 @@
 <context>
     <name>CmdDrawingNewPage</name>
     <message>
-        <location line="-181"/>
+        <location line="-179"/>
         <source>Drawing</source>
         <translation>Risba</translation>
     </message>
@@ -108,7 +108,7 @@
 <context>
     <name>CmdDrawingNewView</name>
     <message>
-        <location line="+216"/>
+        <location line="+214"/>
         <source>Drawing</source>
         <translation>Risba</translation>
     </message>
@@ -126,14 +126,14 @@
 <context>
     <name>CmdDrawingOpen</name>
     <message>
-        <location line="-252"/>
+        <location line="-250"/>
         <source>Drawing</source>
         <translation>Risba</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Open SVG...</source>
-        <translation>Odpri SVG...</translation>
+        <translation>Odpri SVG …</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -144,7 +144,7 @@
 <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-        <location line="+377"/>
+        <location line="+375"/>
         <source>Drawing</source>
         <translation>Risba</translation>
     </message>
@@ -270,7 +270,7 @@
     <message>
         <location line="+33"/>
         <source>Open SVG File</source>
-        <translation>Odpri SVG datoteko</translation>
+        <translation>Odpri datoteko SVG</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -772,8 +772,8 @@ Ali želite nadaljevati?</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location line="-171"/>
-        <location line="+519"/>
+        <location line="-169"/>
+        <location line="+517"/>
         <source>Choose an SVG file to open</source>
         <translation>Za odpiranje izberi SVG datoteko</translation>
     </message>
@@ -812,8 +812,8 @@ Ali želite nadaljevati?</translation>
         <translation type="obsolete">Ustvari stran za vstavljanje pogledov.</translation>
     </message>
     <message>
-        <location line="-251"/>
-        <location line="+519"/>
+        <location line="-249"/>
+        <location line="+517"/>
         <location line="+53"/>
         <source>Scalable Vector Graphic</source>
         <translation>Stopnjevana vektorska slika</translation>

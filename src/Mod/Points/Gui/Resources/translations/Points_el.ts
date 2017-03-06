@@ -11,14 +11,14 @@
     <message>
         <location line="+1"/>
         <source>Convert to points...</source>
-        <translation type="unfinished">Convert to points...</translation>
+        <translation>Μετατροπή σε σημεία...</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>
         <source>Convert to points</source>
-        <translation type="unfinished">Convert to points</translation>
+        <translation>Μετατροπή σε σημεία</translation>
     </message>
 </context>
 <context>
@@ -38,7 +38,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Exports a point cloud</source>
-        <translation type="unfinished">Exports a point cloud</translation>
+        <translation>Εξάγει ένα σύννεφο σημείο</translation>
     </message>
 </context>
 <context>
@@ -58,7 +58,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Imports a point cloud</source>
-        <translation type="unfinished">Imports a point cloud</translation>
+        <translation>Εισάγει ένα σύννεφο σημείο</translation>
     </message>
 </context>
 <context>
@@ -71,7 +71,7 @@
     <message>
         <location line="+1"/>
         <source>Cut point cloud</source>
-        <translation type="unfinished">Cut point cloud</translation>
+        <translation>Κόψτε το νέφος σημείων</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -131,7 +131,7 @@
     <message>
         <location line="-21"/>
         <source>Cluster by lines starting with:</source>
-        <translation type="unfinished">Cluster by lines starting with:</translation>
+        <translation>Σύμπλεγμα από τις γραμμές που αρχίζουν με:</translation>
     </message>
     <message>
         <location line="-7"/>

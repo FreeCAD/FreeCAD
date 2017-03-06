@@ -29,7 +29,7 @@
     <message>
         <location line="+1"/>
         <source>Approximate B-Spline surface...</source>
-        <translation type="unfinished">Approximate B-Spline surface...</translation>
+        <translation>B-スプライン曲面に近似</translation>
     </message>
     <message>
         <source>Approximate surface...</source>
@@ -51,12 +51,12 @@
     <message>
         <location line="+1"/>
         <source>Poisson...</source>
-        <translation type="unfinished">Poisson...</translation>
+        <translation>ポアソン</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Poisson surface reconstruction</source>
-        <translation type="unfinished">Poisson surface reconstruction</translation>
+        <translation>ポアソン曲面の再構成</translation>
     </message>
 </context>
 <context>
@@ -69,13 +69,13 @@
     <message>
         <location line="+1"/>
         <source>Structured point clouds</source>
-        <translation type="unfinished">Structured point clouds</translation>
+        <translation>構造化された点群</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Triangulation of structured point clouds</source>
-        <translation type="unfinished">Triangulation of structured point clouds</translation>
+        <translation>構造化された点群の三角形分割</translation>
     </message>
     <message>
         <source>View triangulation</source>
@@ -87,7 +87,7 @@
     <message>
         <location filename="../../FitBSplineSurface.ui" line="+14"/>
         <source>Fit B-Spline surface</source>
-        <translation type="unfinished">Fit B-Spline surface</translation>
+        <translation>B-スプライン曲面にフィット</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -98,13 +98,13 @@
         <location line="+6"/>
         <location line="+67"/>
         <source>Degree</source>
-        <translation type="unfinished">Degree</translation>
+        <translation>度</translation>
     </message>
     <message>
         <location line="-38"/>
         <location line="+67"/>
         <source>Control points</source>
-        <translation type="unfinished">Control points</translation>
+        <translation>コントロール ポイント</translation>
     </message>
     <message>
         <location line="-35"/>
@@ -119,12 +119,12 @@
     <message>
         <location line="+6"/>
         <source>Iterations</source>
-        <translation type="unfinished">Iterations</translation>
+        <translation>繰り返し</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Size factor</source>
-        <translation type="unfinished">Size factor</translation>
+        <translation>サイズ係数</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -134,27 +134,27 @@
     <message>
         <location line="+9"/>
         <source>Total Weight</source>
-        <translation type="unfinished">Total Weight</translation>
+        <translation>総重量</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Length of gradient</source>
-        <translation type="unfinished">Length of gradient</translation>
+        <translation>勾配の長さ</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Bending energy</source>
-        <translation type="unfinished">Bending energy</translation>
+        <translation>曲げエネルギー</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Curvature variation</source>
-        <translation type="unfinished">Curvature variation</translation>
+        <translation>曲率変化</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>User-defined u/v directions</source>
-        <translation type="unfinished">User-defined u/v directions</translation>
+        <translation>ユーザー定義によるUV方向</translation>
     </message>
 </context>
 <context>
@@ -167,7 +167,7 @@
     <message>
         <location line="+1"/>
         <source>Please select a single placement object to get local orientation.</source>
-        <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+        <translation>ローカル方向を取得するには単一の配置オブジェクトを選択してください</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -180,7 +180,7 @@
     <message>
         <location filename="../../Poisson.ui" line="+14"/>
         <source>Poisson</source>
-        <translation type="unfinished">Poisson</translation>
+        <translation>ポアソン</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -190,17 +190,17 @@
     <message>
         <location line="+6"/>
         <source>Octree depth</source>
-        <translation type="unfinished">Octree depth</translation>
+        <translation>八分木の深さ</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Solver divide</source>
-        <translation type="unfinished">Solver divide</translation>
+        <translation>分割ソルバー</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Samples per node</source>
-        <translation type="unfinished">Samples per node</translation>
+        <translation>ノードあたりのサンプル数</translation>
     </message>
     <message>
         <location filename="../../Poisson.cpp" line="+109"/>
@@ -220,7 +220,7 @@
         <location line="-134"/>
         <location line="+135"/>
         <source>Please select a single point cloud.</source>
-        <translation type="unfinished">Please select a single point cloud.</translation>
+        <translation>単一の点群を選択してください</translation>
     </message>
 </context>
 <context>
@@ -228,7 +228,7 @@
     <message>
         <location line="+55"/>
         <source>View triangulation failed</source>
-        <translation type="unfinished">View triangulation failed</translation>
+        <translation>ビューの三角形分割に失敗しました</translation>
     </message>
 </context>
 <context>

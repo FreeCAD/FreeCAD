@@ -4,14 +4,14 @@
 <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+476"/>
+        <location filename="../../Command.cpp" line="+474"/>
         <source>Drawing</source>
         <translation>Rajzolás</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Annotation</source>
-        <translation>M&amp;Agyarázó jesgyzet</translation>
+        <translation>&amp;Szövegmagyarázat</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -30,7 +30,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Clip</source>
-        <translation>Kivágás</translation>
+        <translation>&amp;Kivágás</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -74,7 +74,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Export a page to an SVG file</source>
-        <translation>Oldalt exportál SVG fájlba</translation>
+        <translation>Egy oldal exportálása SVG-fájlba</translation>
     </message>
 </context>
 <context>
@@ -94,7 +94,7 @@
 <context>
     <name>CmdDrawingNewPage</name>
     <message>
-        <location line="-181"/>
+        <location line="-179"/>
         <source>Drawing</source>
         <translation>Rajzolás</translation>
     </message>
@@ -102,62 +102,62 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Insert new drawing</source>
-        <translation>Helyezze be az új rajzot</translation>
+        <translation>Új rajz beszúrása</translation>
     </message>
 </context>
 <context>
     <name>CmdDrawingNewView</name>
     <message>
-        <location line="+216"/>
+        <location line="+214"/>
         <source>Drawing</source>
         <translation>Rajzolás</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert view in drawing</source>
-        <translation>A rajzba nézetet illeszt</translation>
+        <translation>Nézet beszúrása a rajzba</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert a new View of a Part in the active drawing</source>
-        <translation>A meglévő rajzba új rész nézetet illeszt</translation>
+        <translation>Egy rész új nézetének beszúrása az aktív rajzba</translation>
     </message>
 </context>
 <context>
     <name>CmdDrawingOpen</name>
     <message>
-        <location line="-252"/>
+        <location line="-250"/>
         <source>Drawing</source>
         <translation>Rajzolás</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Open SVG...</source>
-        <translation>SVG megynyitása...</translation>
+        <translation>SVG megnyitása…</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Open a scalable vector graphic</source>
-        <translation>Skálázható vektor grafikát nyit meg</translation>
+        <translation>Skálázható vektorgrafika megnyitása</translation>
     </message>
 </context>
 <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-        <location line="+377"/>
+        <location line="+375"/>
         <source>Drawing</source>
         <translation>Rajzolás</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Open &amp;browser view</source>
-        <translation>&amp;böngésző nézet megynyitása</translation>
+        <translation>&amp;Böngészőnézet megnyitása</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Opens the selected page in a browser view</source>
-        <translation>Megnyitja a kijelölt lapot egy böngésző nézetben</translation>
+        <translation>Megnyitja a kijelölt oldalt egy böngészőnézetben</translation>
     </message>
 </context>
 <context>
@@ -240,12 +240,12 @@
     <message>
         <location filename="../../DrawingView.cpp" line="+211"/>
         <source>&amp;Background</source>
-        <translation>Háttér &amp;B</translation>
+        <translation>&amp;Háttér</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>&amp;Outline</source>
-        <translation>Körv&amp;onal</translation>
+        <translation>&amp;Körvonal</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -260,27 +260,27 @@
     <message>
         <location line="+3"/>
         <source>&amp;Image</source>
-        <translation>&amp;Kép &amp;I</translation>
+        <translation>&amp;Kép</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>&amp;High Quality Antialiasing</source>
-        <translation>Magas minőségű élsimítás</translation>
+        <translation>&amp;Magas minőségű élsimítás</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Open SVG File</source>
-        <translation>SVG fájl megnyitása</translation>
+        <translation>SVG-fájl megnyitása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Could not open file &apos;%1&apos;.</source>
-        <translation>Nem tudja megnyitni a &apos;%1&apos;fájlt.</translation>
+        <translation>Nem sikerült megnyitni a(z) „%1” fájlt.</translation>
     </message>
     <message>
         <location line="+87"/>
         <source>&amp;Renderer</source>
-        <translation>&amp;Renderelő</translation>
+        <translation>&amp;Megjelenítő</translation>
     </message>
     <message>
         <location line="+105"/>
@@ -334,7 +334,7 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation>Eltérő tájolású</translation>
+        <translation>Eltérő tájolás</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -346,24 +346,25 @@ Do you want to continue?</source>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation>Eltérő méretű papír</translation>
+        <translation>Eltérő papírméret</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation>A nyomtató a rajztól eltérő méretű papír méretet használ. Szeretné fojtatni?</translation>
+        <translation>A nyomtató eltérő papírméretet használ mint a rajz.
+Szeretné folytatni?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Opening file failed</source>
-        <translation>Fájl megnyitás sikertelen</translation>
+        <translation>A fájl megnyitása sikertelen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation>Nem lehet megnyitni a &apos;%1&apos; fájlt írásra.</translation>
+        <translation>Nem lehet megnyitni a(z) „%1” fájlt írásra.</translation>
     </message>
 </context>
 <context>
@@ -371,7 +372,7 @@ Do you want to continue?</source>
     <message>
         <location filename="../../TaskOrthoViews.ui" line="+26"/>
         <source>Orthographic Projection</source>
-        <translation>A merőleges vetítés</translation>
+        <translation>Ortografikus vetítés</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -387,7 +388,7 @@ Do you want to continue?</source>
         <location line="+25"/>
         <location line="+60"/>
         <source>Right click for axonometric settings</source>
-        <translation>Jobb kattintás az axonometric beállításokhoz</translation>
+        <translation>Jobb kattintás az axonometrikus beállításokhoz</translation>
     </message>
     <message>
         <location line="+106"/>
@@ -770,10 +771,10 @@ Do you want to continue?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location line="-171"/>
-        <location line="+519"/>
+        <location line="-169"/>
+        <location line="+517"/>
         <source>Choose an SVG file to open</source>
-        <translation>SVG fájl kiválasztása megnyitáshoz</translation>
+        <translation>SVG-fájl kiválasztása megnyitáshoz</translation>
     </message>
     <message>
         <source>Drawing viewer</source>
@@ -810,11 +811,11 @@ Do you want to continue?</source>
         <translation type="obsolete">Hozzon létre egy lapot a nézet beszúrásához.</translation>
     </message>
     <message>
-        <location line="-251"/>
-        <location line="+519"/>
+        <location line="-249"/>
+        <location line="+517"/>
         <location line="+53"/>
         <source>Scalable Vector Graphic</source>
-        <translation>Méretezhető vektoros grafika</translation>
+        <translation>Méretezhető vektorgrafika</translation>
     </message>
     <message>
         <location line="-313"/>
@@ -850,7 +851,7 @@ Do you want to continue?</source>
     <message>
         <location line="+6"/>
         <source>All Files</source>
-        <translation>Minden Fájl</translation>
+        <translation>Minden fájl</translation>
     </message>
     <message>
         <location line="+113"/>

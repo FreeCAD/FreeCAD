@@ -24,7 +24,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="+57"/>
         <source>Self-test...</source>
-        <translation>Zelf-test...</translation>
+        <translation>Zelftest...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -37,12 +37,12 @@
     <message>
         <location line="-9"/>
         <source>Dr&amp;awing</source>
-        <translation>&amp;Tekening</translation>
+        <translation>Tekening</translation>
     </message>
     <message>
         <location line="-1"/>
         <source>S&amp;ketch</source>
-        <translation>S&amp;chets</translation>
+        <translation>Schetsen</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -52,7 +52,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Drafting</source>
-        <translation>&amp;Schetsen</translation>
+        <translation>Opstellen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -65,18 +65,22 @@
         <translation>Basisvormen</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Parametrisch</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Object uiterlijk</translation>
+        <translation type="obsolete">Object uiterlijk</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Wire Tools</source>
-        <translation>Lijn Gereedschap</translation>
+        <translation>Draad Gereedschap</translation>
     </message>
 </context>
 </TS>

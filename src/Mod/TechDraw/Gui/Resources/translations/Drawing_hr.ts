@@ -176,7 +176,7 @@
 <context>
     <name>CmdTechDrawAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+576"/>
+        <location filename="../../Command.cpp" line="+579"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -313,7 +313,7 @@
 <context>
     <name>CmdTechDrawImage</name>
     <message>
-        <location filename="../../CommandDecorate.cpp" line="+139"/>
+        <location filename="../../CommandDecorate.cpp" line="+209"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -444,16 +444,30 @@
     </message>
 </context>
 <context>
-    <name>CmdTechDrawNewHatch</name>
+    <name>CmdTechDrawNewGeomHatch</name>
     <message>
-        <location filename="../../CommandDecorate.cpp" line="-85"/>
+        <location filename="../../CommandDecorate.cpp" line="-90"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
-        <source>Insert a hatched area into a view</source>
+        <source>Apply geometric hatch to a Face</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawNewHatch</name>
+    <message>
+        <location line="-64"/>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Hatch a Face using image file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -496,7 +510,7 @@
 <context>
     <name>CmdTechDrawNewPage</name>
     <message>
-        <location line="-365"/>
+        <location line="-368"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -570,7 +584,7 @@
 <context>
     <name>CmdTechDrawNewViewDetail</name>
     <message>
-        <location line="+147"/>
+        <location line="+150"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -588,7 +602,7 @@
 <context>
     <name>CmdTechDrawNewViewSection</name>
     <message>
-        <location line="-76"/>
+        <location line="-79"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -606,7 +620,7 @@
 <context>
     <name>CmdTechDrawProjGroup</name>
     <message>
-        <location line="+137"/>
+        <location line="+140"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -617,7 +631,7 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Insert 2D Projections of a 3D part into the active drawing</source>
+        <source>Insert multiple views of a single part into the active drawing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -662,7 +676,7 @@
 <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-        <location filename="../../CommandDecorate.cpp" line="+112"/>
+        <location filename="../../CommandDecorate.cpp" line="+179"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -751,14 +765,14 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-564"/>
-        <location line="+283"/>
+        <location filename="../../Command.cpp" line="-567"/>
+        <location line="+286"/>
         <source>Select at least 1 Part object.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-207"/>
-        <location line="+73"/>
+        <location line="-210"/>
+        <location line="+76"/>
         <source>Select at least 1 DrawingView object.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -834,7 +848,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+193"/>
+        <location filename="../../ViewProviderPage.cpp" line="+195"/>
         <source>Drawing viewer</source>
         <translation type="unfinished">Preglednik za crtanje</translation>
     </message>
@@ -843,9 +857,9 @@
         <translation type="obsolete">Ljestvica- Vector Graphics (SVG *. *. svgz)</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-803"/>
+        <location filename="../../Command.cpp" line="-806"/>
         <location line="+76"/>
-        <location line="+73"/>
+        <location line="+76"/>
         <location line="+65"/>
         <location line="+69"/>
         <location line="+128"/>
@@ -880,7 +894,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+30"/>
         <source>Select a Face first</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1007,7 +1021,7 @@
         <translation type="obsolete">Odaberite jednu stranicu objekta</translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="+842"/>
+        <location filename="../../MDIViewPage.cpp" line="+845"/>
         <source>SVG (*.svg)</source>
         <translation type="unfinished">SVG (*.svg)</translation>
     </message>
@@ -1079,7 +1093,7 @@
         <translation type="unfinished">Make orthographic</translation>
     </message>
     <message>
-        <location filename="../../QGVPage.cpp" line="+525"/>
+        <location filename="../../QGVPage.cpp" line="+584"/>
         <source>FreeCAD SVG Export</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1092,12 +1106,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+6"/>
         <source>Dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+8"/>
         <source>Show Units</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1112,7 +1126,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+56"/>
         <source>Diameter Symbol</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1122,12 +1136,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+34"/>
         <source>Decorations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+15"/>
         <source>Round</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1201,6 +1215,51 @@
         <source>Section Line Color</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+37"/>
+        <source>Arrow Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Preferred arrowhead style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>0 - Filled Triangle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>1 - Open Arrowhead</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>2 - Tick</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>3 - Dot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>4 - Open Circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Default weight for GeomHatch lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Hatch Weight</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TechDrawGui::DlgPrefsTechDrawImp</name>
@@ -1210,12 +1269,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+349"/>
+        <source>Geom Hatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+42"/>
         <source>Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+8"/>
         <source>Template Directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1225,22 +1289,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Default Pattern File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+43"/>
+        <location line="+131"/>
         <source>Labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+37"/>
         <source>Label Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+7"/>
         <source>osifont</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1250,7 +1309,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="-588"/>
         <source>General</source>
         <translation type="unfinished">Općenito</translation>
     </message>
@@ -1271,12 +1330,12 @@
     </message>
     <message>
         <location line="+8"/>
-        <location line="+243"/>
+        <location line="+250"/>
         <source>Hidden Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-226"/>
+        <location line="-233"/>
         <source>NeverShow</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1316,7 +1375,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+31"/>
         <source>Colors</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1350,6 +1409,36 @@
         <source>Background</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+84"/>
+        <source>Hatch Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Location of default svg/png fill file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>PAT File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Default location for PAT file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Default PAT pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Pattern Name</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TechDrawGui::MDIViewPage</name>
@@ -1362,7 +1451,7 @@
         <translation type="obsolete">&amp;amp; Potez</translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="-733"/>
+        <location filename="../../MDIViewPage.cpp" line="-732"/>
         <source>&amp;Native</source>
         <translation>&amp;amp; Prirodan</translation>
     </message>
@@ -1390,12 +1479,12 @@
         <translation type="obsolete">Nije moguće otvoriti datoteku &apos;%1.</translation>
     </message>
     <message>
-        <location line="+111"/>
+        <location line="+118"/>
         <source>&amp;Renderer</source>
         <translation>&amp;; Renderer</translation>
     </message>
     <message>
-        <location line="+327"/>
+        <location line="+319"/>
         <source>Export PDF</source>
         <translation>Izvoz PDF</translation>
     </message>
@@ -1404,7 +1493,7 @@
         <translation type="obsolete">PDF datoteke (*. pdf)</translation>
     </message>
     <message>
-        <location line="-452"/>
+        <location line="-451"/>
         <source>&amp;Export SVG</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1414,7 +1503,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+420"/>
+        <location line="+419"/>
         <source>PDF file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1503,13 +1592,76 @@ Do you want to continue?</translation>
 <context>
     <name>TechDrawGui::QGVPage</name>
     <message>
-        <location filename="../../QGVPage.cpp" line="-22"/>
+        <location filename="../../QGVPage.cpp" line="-19"/>
         <source>Drawing page: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source> exported from FreeCAD document: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskGeomHatch</name>
+    <message>
+        <location filename="../../TaskGeomHatch.ui" line="+26"/>
+        <source>Apply Geometric Hatch to Face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Define your pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>The PAT file containing your pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Pattern File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Pattern Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Line Weight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Pattern Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Line Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Name of pattern within file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Color of pattern lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Enlarges/shrinks the pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Thickness of lines within the pattern</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1848,11 +2000,21 @@ Do you want to continue?</translation>
     </message>
     <message>
         <location line="+24"/>
-        <source>Set Primary Direction to match 3D</source>
+        <source>Try to match Primary Direction to 3D view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Return Primary Direction to Initial Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-31"/>
         <source>Match 3D</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1862,17 +2024,7 @@ Do you want to continue?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source>Set Primary Direction to 3D Front</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>3D Front</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+18"/>
+        <location line="+42"/>
         <source>Secondary Projections</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1932,7 +2084,7 @@ Do you want to continue?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+28"/>
         <source>Spin CCW</source>
         <translation type="unfinished"></translation>
     </message>

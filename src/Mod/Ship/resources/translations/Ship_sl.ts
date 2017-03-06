@@ -190,7 +190,7 @@
     <message>
       <location filename="TaskPanel.py" line="160"/>
       <source>Please create or load a ship hull geometry before using this tool</source>
-      <translation>Preden uporabite to orodje ustvarite ali naložite geometrijo trupa</translation>
+      <translation>Preden uporabite to orodje, ustvarite ali naložite geometrijo trupa</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="153"/>
@@ -200,7 +200,7 @@
     <message>
       <location filename="TaskPanel.py" line="95"/>
       <source>Computing hydrostatics</source>
-      <translation>Preračunavam hidrostatiko</translation>
+      <translation>Preračunavanje hidrostatike</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="500"/>

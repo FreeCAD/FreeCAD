@@ -149,7 +149,7 @@
     <message>
       <location filename="TaskPanel.py" line="234"/>
       <source>Trim angle</source>
-      <translation type="unfinished">Trim angle</translation>
+      <translation>Úhel sklonu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="240"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="TankInstance.py" line="129"/>
       <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
-      <translation type="unfinished">Tank volume operation failed. The tool is retrying that slightly moving the free surface position</translation>
+      <translation>Operace objemu nádrže se nezdařila. Nástroj se o to znovu pokouší s mírným posunem pozice volného povrchu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="133"/>
@@ -295,62 +295,62 @@
     <message>
       <location filename="Tools.py" line="197"/>
       <source>Wrong Ship label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Ship label! (no instances labeled as'{}' found)</translation>
+      <translation>Chybný popisek loďi! (žádné instance označena jako "{}" nalezena)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="206"/>
       <source>Ambiguous Ship label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Ship label! ({} instances labeled as'{}' found)</translation>
+      <translation>Nejednoznačný popisek loďi! (instance {} označené jako "{}" nalezeny)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="185"/>
       <source>More than one loading condition have been selected (the extra loading conditions will be ignored)</source>
-      <translation type="unfinished">More than one loading condition have been selected (the extra loading conditions will be ignored)</translation>
+      <translation>Vybrána více než jedna hodnota výtlaku (hodnota výtlaku, která je navíc bude ignorována)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="196"/>
       <source>A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</translation>
+      <translation>Hodnot výtlaku musí být před použitím tohoto nástroje vybrána ( nenalezena správná hodnota u vybraného objektu)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="117"/>
       <source>Too much weight! The ship will never displace water enough</source>
-      <translation type="unfinished">Too much weight! The ship will never displace water enough</translation>
+      <translation>Příliš těžké! Loď nikdy nebude mít dostatečný výtlak</translation>
     </message>
     <message>
       <location filename="Tools.py" line="232"/>
       <source>Wrong Weight label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Weight label! (no instances labeled as'{}' found)</translation>
+      <translation>Chybný popisek váhy! (žádné instance označena jako "{}" nalezena)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="241"/>
       <source>Ambiguous Weight label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Weight label! ({} instances labeled as'{}' found)</translation>
+      <translation>Nejednoznačný popisek váhy! (instance {} označené jako "{}" nalezeny)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="254"/>
       <source>Invalid Weight! (the object labeled as'{}' is not a weight)</source>
-      <translation type="unfinished">Invalid Weight! (the object labeled as'{}' is not a weight)</translation>
+      <translation>Nesprávná váha! (objekt označen jako '{}' nemá váhu)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="280"/>
       <source>Wrong Tank label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Tank label! (no instances labeled as'{}' found)</translation>
+      <translation>Chybný popisek nádrže! (žádná instance označena jako "{}" nalezena)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="289"/>
       <source>Ambiguous Tank label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Tank label! ({} instances labeled as'{}' found)</translation>
+      <translation>Nejednoznačný popisek nádrže! (instance {} označené jako "{}" nalezeny)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="302"/>
       <source>Invalid Tank! (the object labeled as'{}' is not a tank)</source>
-      <translation type="unfinished">Invalid Tank! (the object labeled as'{}' is not a tank)</translation>
+      <translation>Nesprávná Nádrž! (objekt označen jako '{}' není nádrž)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="49"/>
       <source>Computing capacity curves</source>
-      <translation type="unfinished">Computing capacity curves</translation>
+      <translation>Výpočet křivky kapacity</translation>
     </message>
     <message>
       <location filename="Tools.py" line="122"/>
@@ -446,12 +446,12 @@
     <message>
       <location filename="TaskPanel.py" line="244"/>
       <source>Plot the GZ curve</source>
-      <translation type="unfinished">Plot the GZ curve</translation>
+      <translation>Nakreslit křivku GZ</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="249"/>
       <source>Maximum angle</source>
-      <translation type="unfinished">Maximum angle</translation>
+      <translation>Maximální úhel</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="255"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="TaskPanel.py" line="261"/>
       <source>Variable trim</source>
-      <translation type="unfinished">Variable trim</translation>
+      <translation>Proměnná střihu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="267"/>

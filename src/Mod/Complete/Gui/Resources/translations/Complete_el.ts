@@ -65,13 +65,17 @@
         <translation>Πρωτόγονοι</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Parametric</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Εμφάνιση αντικειμένου</translation>
+        <translation type="obsolete">Εμφάνιση αντικειμένου</translation>
     </message>
     <message>
         <location line="+1"/>

@@ -159,8 +159,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation>Kamera helyzet aktív 3D-s nézet Nézőpont-fénysugár formátumának exportálása fájlba</translation>
+        <translation type="obsolete">Kamera helyzet aktív 3D-s nézet Nézőpont-fénysugár formátumának exportálása fájlba</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>
@@ -364,7 +368,7 @@ Do you want to continue?</source>
         <location line="+276"/>
         <location line="+109"/>
         <source>All Files</source>
-        <translation>Minden Fájl</translation>
+        <translation>Minden fájl</translation>
     </message>
     <message>
         <location line="-29"/>

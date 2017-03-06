@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+325"/>
+        <location filename="../../GLImageBox.cpp" line="+331"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>表示中の画像の色空間は未定義です</translation>
     </message>
@@ -199,13 +199,21 @@
     </message>
     <message>
         <location line="+8"/>
-        <source>Error open image</source>
-        <translation>エラー：画像を開く</translation>
+        <source>Error opening image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Could not load the chosen image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error open image</source>
+        <translation type="obsolete">エラー：画像を開く</translation>
+    </message>
+    <message>
         <source>Could not load the choosen image</source>
-        <translation>選択されたイメージが読み込めませんでした</translation>
+        <translation type="obsolete">選択されたイメージが読み込めませんでした</translation>
     </message>
 </context>
 <context>

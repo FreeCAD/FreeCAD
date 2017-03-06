@@ -16,7 +16,7 @@
     <message>
       <location filename="Instance.py" line="44"/>
       <source>True if it is a valid ship instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid ship instance, False otherwise</translation>
+      <translation>Sant om det är ett giltig fartygsobjekt, falskt annars</translation>
     </message>
     <message>
       <location filename="Instance.py" line="54"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="Instance.py" line="72"/>
       <source>Ship draft [m]</source>
-      <translation type="unfinished">Ship draft [m]</translation>
+      <translation>Fartygets djup [m]</translation>
     </message>
     <message>
       <location filename="Instance.py" line="83"/>
@@ -41,17 +41,17 @@
     <message>
       <location filename="Instance.py" line="92"/>
       <source>Set of weight instances</source>
-      <translation type="unfinished">Set of weight instances</translation>
+      <translation>Uppsättning viktobjekt</translation>
     </message>
     <message>
       <location filename="Instance.py" line="101"/>
       <source>Set of tank instances</source>
-      <translation type="unfinished">Set of tank instances</translation>
+      <translation>Uppsättning tankobjekt</translation>
     </message>
     <message>
       <location filename="Instance.py" line="110"/>
       <source>Set of load conditions</source>
-      <translation type="unfinished">Set of load conditions</translation>
+      <translation>Uppsättning av lastval</translation>
     </message>
   </context>
   <context>
@@ -64,7 +64,7 @@
     <message>
       <location filename="ShipGui.py" line="97"/>
       <source>Plot the transversal areas curve</source>
-      <translation type="unfinished">Plot the transversal areas curve</translation>
+      <translation>Plotta transversalareakurvan</translation>
     </message>
   </context>
   <context>
@@ -77,7 +77,7 @@
     <message>
       <location filename="ShipGui.py" line="63"/>
       <source>Create a new ship instance on top of the hull geometry</source>
-      <translation type="unfinished">Create a new ship instance on top of the hull geometry</translation>
+      <translation>Skapa ett nytt fartygsobjekt på skrovgeometrin</translation>
     </message>
   </context>
   <context>
@@ -90,7 +90,7 @@
     <message>
       <location filename="ShipGui.py" line="114"/>
       <source>Plot the ship hydrostatics</source>
-      <translation type="unfinished">Plot the ship hydrostatics</translation>
+      <translation>Plotta fartygets hydrostatik</translation>
     </message>
   </context>
   <context>
@@ -139,7 +139,7 @@
     <message>
       <location filename="TaskPanel.py" line="223"/>
       <source>Plot the transversal areas curve</source>
-      <translation type="unfinished">Plot the transversal areas curve</translation>
+      <translation>Plotta transversalareakurvan</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="368"/>
@@ -149,7 +149,7 @@
     <message>
       <location filename="TaskPanel.py" line="234"/>
       <source>Trim angle</source>
-      <translation type="unfinished">Trim angle</translation>
+      <translation>Trimvinkel</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="240"/>
@@ -167,7 +167,7 @@
     <message>
       <location filename="ShipGui.py" line="162"/>
       <source>Tank capacity curve</source>
-      <translation type="unfinished">Tank capacity curve</translation>
+      <translation>Kapacitetskurvan för tanken</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="165"/>
@@ -255,12 +255,12 @@
     <message>
       <location filename="TaskPanel.py" line="213"/>
       <source>A ship instance must be selected before use this tool (novalid ships found in the selected objects)</source>
-      <translation type="unfinished">A ship instance must be selected before use this tool (novalid ships found in the selected objects)</translation>
+      <translation>En instans av fartyget måste väljas innan detta verktyg används (novalid ships found in the selected objects)</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="41"/>
       <source>Plot module is disabled, tools cannot graph output curves</source>
-      <translation type="unfinished">Plot module is disabled, tools cannot graph output curves</translation>
+      <translation>Utskriftsmodulen är avaktiverad, verktygen kan inte plotta kurvorna</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="85"/>
@@ -441,17 +441,17 @@
     <message>
       <location filename="ShipGui.py" line="196"/>
       <source>GZ curve computation</source>
-      <translation type="unfinished">GZ curve computation</translation>
+      <translation>Beräkning av GZ-kurvan</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="244"/>
       <source>Plot the GZ curve</source>
-      <translation type="unfinished">Plot the GZ curve</translation>
+      <translation>Plotta GZ-kurvan</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="249"/>
       <source>Maximum angle</source>
-      <translation type="unfinished">Maximum angle</translation>
+      <translation>Maximal vinkel</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="255"/>
@@ -461,12 +461,12 @@
     <message>
       <location filename="TaskPanel.py" line="261"/>
       <source>Variable trim</source>
-      <translation type="unfinished">Variable trim</translation>
+      <translation>Variabelt trim</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="267"/>
       <source>The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</source>
-      <translation type="unfinished">The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</translation>
+      <translation>Fartyget kommer att vridas till jämviktstrim för varje krängningsvinkel. Detta kommer att avsevärt öka den nödvändiga beräkningstiden</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="294"/>
@@ -674,17 +674,17 @@
     <message>
       <location filename="TaskPanel.py" line="113"/>
       <source>Weight objects can only be created on top of its geometry (no objects selected)</source>
-      <translation type="unfinished">Weight objects can only be created on top of its geometry (no objects selected)</translation>
+      <translation>Viktobjekt kan endast skapas ovanpå skrovgeometri (inget objekt valt)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="127"/>
       <source>No geometrical shapes found in the selected objects</source>
-      <translation type="unfinished">No geometrical shapes found in the selected objects</translation>
+      <translation>Ingen geometriska former finns i markerade objekt</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="164"/>
       <source>Unknow object shapes selected</source>
-      <translation type="unfinished">Unknow object shapes selected</translation>
+      <translation>Okända objektformer valda</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="182"/>
@@ -724,7 +724,7 @@
     <message>
       <location filename="WeightInstance.py" line="76"/>
       <source>Area density [kg / m^2]</source>
-      <translation type="unfinished">Area density [kg / m^2]</translation>
+      <translation>Ytdensitet [kg / m ^ 2]</translation>
     </message>
   </context>
 </TS>
