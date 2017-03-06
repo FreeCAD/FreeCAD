@@ -25,6 +25,7 @@
 #define PARTGUI_ViewProvider_H
 
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <Gui/ViewProviderPythonFeature.h>
 
 
 namespace PartDesignGui {
@@ -59,6 +60,8 @@ public:
     //document and properties.
     void makeTemporaryVisible(bool);
 
+    virtual PyObject* getPyObject(void);
+
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
@@ -75,7 +78,7 @@ protected:
     App::DocumentObject* oldTip;
 };
 
-
+typedef Gui::ViewProviderPythonFeatureT<ViewProvider> ViewProviderPython;
 
 } // namespace PartDesignGui
 

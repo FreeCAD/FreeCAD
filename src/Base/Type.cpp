@@ -90,7 +90,7 @@ void *Type::createInstance(void)
 
 void *Type::createInstanceByName(const char* TypeName, bool bLoadModule)
 {
-  // if not allready, load the module
+  // if not already, load the module
   if(bLoadModule)
   {
     // cut out the module name 
@@ -98,7 +98,7 @@ void *Type::createInstanceByName(const char* TypeName, bool bLoadModule)
     // ignore base modules
     if(Mod != "App" && Mod != "Gui" && Mod != "Base")
     {
-      // remember allready loaded modules
+      // remember already loaded modules
       set<string>::const_iterator pos = loadModuleSet.find(Mod);
       if(pos == loadModuleSet.end())
       {

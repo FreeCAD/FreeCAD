@@ -53,3 +53,8 @@ void GeoFeature::transformPlacement(const Base::Placement &transform)
     plm = transform * plm;
     this->Placement.setValue(plm);
 }
+
+const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const
+{
+    return nullptr;
+}

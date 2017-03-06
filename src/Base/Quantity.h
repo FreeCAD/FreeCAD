@@ -105,7 +105,7 @@ public:
     void setFormat(const QuantityFormat& f) {
         _Format = f;
     }
-    /// transfer to user prefered unit/potence
+    /// transfer to user preferred unit/potence
     QString getUserString(double &factor, QString &unitString)const;
     QString getUserString(void) const { // to satisfy GCC
         double  dummy1;

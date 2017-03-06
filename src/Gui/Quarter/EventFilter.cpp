@@ -85,9 +85,6 @@ public:
       device->setMousePosition(mousepos);
     }
   }
-
-private:
-  qreal device_pixel_ratio = 1.0;
 };
 
 #define PRIVATE(obj) obj->pimpl

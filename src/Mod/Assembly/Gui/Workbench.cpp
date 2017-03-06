@@ -185,7 +185,7 @@ void Workbench::activated()
         "Use for <b>testing purpose only!</b> The object structure is still changing.<br>"
         "You might not be able to load your work in a newer Version of FreeCAD. <br><br>"
         "For further information see the Assembly project page:<br>"
-        " <a href=\"http://www.freecadweb.org/wiki/index.php?title=Assembly_project\">http://www.freecadweb.org/wiki/index.php?title=Assembly_project</a> <br>"
+        " <a href=\"http://www.freecadweb.org/wiki/Assembly_project\">http://www.freecadweb.org/wiki/Assembly_project</a> <br>"
         "Or the Assembly dedicated portion of our forum:<br>"
         " <a href=\"http://forum.freecadweb.org/viewforum.php?f=20&sid=2a1a326251c44576f450739e4a74c37d\">http://forum.freecadweb.org/</a> <br>"
                             ),

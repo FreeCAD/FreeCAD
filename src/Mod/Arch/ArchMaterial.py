@@ -26,7 +26,7 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from DraftTools import translate
 
-__title__ = "Arch Material Managment"
+__title__ = "Arch Material Management"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
     

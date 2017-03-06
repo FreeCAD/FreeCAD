@@ -533,11 +533,11 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                             "=================================\n")
     ELSE(NOT PYTHONLIBS_FOUND)
         # prevent python3 lower than 3.3 (not enough utf8<->unicode tools)
-        IF(PYTHON_VERSION_MAJOR GREATER 3)
+        IF(PYTHON_VERSION_MAJOR EQUAL 3)
             IF(PYTHON_VERSION_MINOR LESS 5)
                 MESSAGE(FATAL_ERROR "To build FreeCAD with Python3, you need at least version 3.5\n")
             ENDIF(PYTHON_VERSION_MINOR LESS 5)
-        ENDIF(PYTHON_VERSION_MAJOR GREATER 3)
+        ENDIF(PYTHON_VERSION_MAJOR EQUAL 3)
     ENDIF(NOT PYTHONLIBS_FOUND)
 
 # -------------------------------- pcl ----------------------------------

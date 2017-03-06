@@ -132,14 +132,14 @@ private:
 
 /*! @brief Coordinate System Dragger
  *
- * used to transform objects in 3d space. Set intial:
+ * used to transform objects in 3d space. Set initial:
  * translation, rotation, translationIncrement and
  * rotationIncrement. Use *IncrementCount* multiplied
  * with *Increment for full double precision output.
  *
  * Dragger can be displayed in 2 modes: static scale and auto scale.
- * for static you can set the field scale and you are done. For
- * auto scale you set the field scale and call setupAutoScale with
+ * For static you can set the field scale and you are done. 
+ * For autoscale you set the field scale & call setupAutoScale with
  * the viewer camera. @see setUpAutoScale @see scale.
  */
 class GuiExport SoFCCSysDragger : public SoDragger

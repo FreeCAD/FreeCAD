@@ -195,7 +195,7 @@ typedef BOOL ( __stdcall * ptrSetGestureConfig) (
      DWORD ,             // reserved, must be 0
      UINT ,              // count of GESTURECONFIG structures
      PGESTURECONFIG ,    // array of GESTURECONFIG structures, dwIDs will be processed in the
-                         // order specified and repeated occurances will overwrite previous ones
+                         // order specified and repeated occurrences will overwrite previous ones
      UINT );             // sizeof(GESTURECONFIG)
 
 void WinNativeGestureRecognizerPinch::TuneWindowsGestures(QWidget* target)

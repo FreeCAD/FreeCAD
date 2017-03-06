@@ -354,7 +354,7 @@ bool Gui::GUIApplicationNativeEventAware::Is3dmouseAttached()
 
 
 /*!
-	Initialize the window to recieve raw-input messages
+	Initialize the window to receive raw-input messages
 
 	This needs to be called initially so that Windows will send the messages from the 3D mouse to the window.
 */

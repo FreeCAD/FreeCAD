@@ -33,7 +33,7 @@ class Ui_DlgRunExternal;
 
 /**
  * The DlgRunExternal class implements a dialog to start and control external
- * programms to edit FreeCAD controled content.
+ * programs to edit FreeCAD controlled content.
  * \author Jürgen Riegel
  */
 class GuiExport DlgRunExternal : public QDialog

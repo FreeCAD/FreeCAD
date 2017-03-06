@@ -18,6 +18,9 @@ include_directories(
 )
 link_directories(${OCC_LIBRARY_DIR})
 
+generate_from_xml(ViewProviderPy)
+
+
 set(PartDesignGui_LIBS
     PartDesign
     SketcherGui
@@ -252,6 +255,14 @@ SET(PartDesignGuiModule_SRCS
 )
 SOURCE_GROUP("Module" FILES ${PartDesignGuiModule_SRCS})
 
+
+SET(Python_SRCS
+    ViewProviderPy.xml
+    ViewProviderPyImp.cpp
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
+
 SET(PartDesignGui_Scripts
     InitGui.py
     TestPartDesignGui.py
@@ -263,6 +274,7 @@ SET(PartDesignGui_SRCS
     ${PartDesignGuiModule_SRCS}
     ${PartDesignGuiTaskDlgs_SRCS}
     ${PartDesignGuiViewProvider_SRCS}
+	${Python_SRCS}
 )
 
 add_library(PartDesignGui SHARED ${PartDesignGui_SRCS})

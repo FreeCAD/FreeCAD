@@ -81,6 +81,7 @@ public:
     Base::Matrix4D getTransform(void) const;
     /// Bound box from the CasCade shape
     Base::BoundBox3d getBoundBox(void)const;
+    virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     static void convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf);
     static void convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx);
     //@}

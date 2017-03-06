@@ -123,6 +123,7 @@ PyMOD_INIT_FUNC(PartDesignGui)
 
     PartDesignGui::Workbench                 ::init();
     PartDesignGui::ViewProvider              ::init();
+    PartDesignGui::ViewProviderPython        ::init();
     PartDesignGui::ViewProviderBody          ::init();
     PartDesignGui::ViewProviderSketchBased   ::init();
     PartDesignGui::ViewProviderPocket        ::init();

@@ -5316,17 +5316,16 @@ class _Shape2DView(_DraftObject):
                             if sh.Volume < 0:
                                 sh.reverse()
                             c = sh.section(cutp)
+                            faces = []
                             if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
-                                try:
-                                    c = Part.Wire(Part.__sortEdges__(c.Edges))
-                                except Part.OCCError:
-                                    pass
-                                else:
-                                    try:
-                                        c = Part.Face(c)
-                                    except Part.OCCError:
-                                        pass
-                            cuts.append(c)
+                                wires = DraftGeomUtils.findWires(c.Edges)
+                                for w in wires:
+                                    if w.isClosed():
+                                        faces.append(Part.Face(w))
+                            if faces:
+                                cuts.extend(faces)
+                            else:
+                                cuts.append(c)
                         comp = Part.makeCompound(cuts)
                         opl = FreeCAD.Placement(obj.Base.Placement)
                         comp.Placement = opl.inverse()
