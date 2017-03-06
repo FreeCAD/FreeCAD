@@ -267,7 +267,12 @@ void SoFCIndexedFaceSet::startSelection(SoAction * action)
     //glGetDoublev(GL_PROJECTION_MATRIX ,mp);
     glPushMatrix();
     glLoadIdentity();
-    gluPickMatrix(x, y, w, h, viewport);
+    // See https://www.opengl.org/discussion_boards/showthread.php/184308-gluPickMatrix-Implementation?p=1259884&viewfull=1#post1259884
+    //gluPickMatrix(x, y, w, h, viewport);
+    if (w > 0 && h > 0) {
+        glTranslatef((viewport[2] - 2 * (x - viewport[0])) / w, (viewport[3] - 2 * (y - viewport[1])) / h, 0);
+        glScalef(viewport[2] / w, viewport[3] / h, 1.0);
+    }
     glMultMatrixf(/*mp*/(float*)proj);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
