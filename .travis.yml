@@ -165,13 +165,9 @@ before_install:
           brew install --verbose --only-dependencies freecad --with-packaging-utils
           brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
 
-          # Qt5: Update and patch the Qt 5 symlinks
-          brew link --force --overwrite qt@5.6
-          sudo ln -f -s /usr/local/Cellar/qt\@5.*/*/mkspecs /usr/local/mkspecs
-          sudo ln -f -s /usr/local/Cellar/qt\@5.*/*/plugins /usr/local/plugins
-
-          # Qt5:  Set Qt5 build flag
-          export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON"
+          # Qt5:  Set Qt5 build flag and CMAKE_PREFIX
+          QT5_CMAKE_PREFIX=$(ls -d $(brew list -1 | grep qt | tail -1 | xargs brew --cellar)/*/lib/cmake)
+          CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX}"
        fi
 
        #Install the 3DConnexion frameworks
