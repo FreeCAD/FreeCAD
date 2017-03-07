@@ -738,14 +738,14 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
         func(static_cast<Part::Feature*>(feature), FeatName);
     };
     
-    //if a profie is selected we can make our life easy and fast
-    auto selection = cmd->getSelection().getSelectionEx();
+    //if a profile is selected we can make our life easy and fast
+    auto selection = cmd->getSelection().getSelectionEx(0, Part::Part2DObject::getClassTypeId());
     if (!selection.empty() && selection.front().hasSubNames()) {
         base_worker(selection.front().getObject(), selection.front().getSubNames().front());
         return;
     }
 
-    //no face profile was selected, do he extended sketch logic
+    //no face profile was selected, do the extended sketch logic
 
     bool bNoSketchWasSelected = false;
     // Get a valid sketch from the user
