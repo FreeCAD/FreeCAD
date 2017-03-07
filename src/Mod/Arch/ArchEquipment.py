@@ -264,7 +264,6 @@ class _Equipment(ArchComponent.Component):
         obj.addProperty("App::PropertyString","Url","Arch",QT_TRANSLATE_NOOP("App::Property","The url of the product page of this equipment"))
         obj.addProperty("App::PropertyVectorList","SnapPoints","Arch",QT_TRANSLATE_NOOP("App::Property","Additional snap points for this equipment"))
         obj.addProperty("App::PropertyFloat","EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by this equipment in Watts"))
-        obj.addProperty("App::PropertyLink","Hires","Arch",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
         self.Type = "Equipment"
         obj.Role = Roles
         obj.Proxy = self
@@ -319,10 +318,6 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
         sep.addChild(symbol)
         rn = vobj.RootNode
         rn.addChild(sep)
-        self.hiresgroup = coin.SoGroup()
-        self.meshcolor = coin.SoBaseColor()
-        self.hiresgroup.addChild(self.meshcolor)
-        vobj.addDisplayMode(self.hiresgroup,"Hires");
         ArchComponent.ViewProviderComponent.attach(self,vobj)
         
     def updateData(self, obj, prop):
@@ -332,34 +327,6 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
                 self.coords.point.setValues([[p.x,p.y,p.z] for p in obj.SnapPoints])
             else:
                 self.coords.point.deleteValues(0)
-
-    def getDisplayModes(self,vobj):
-        modes=["Hires"]
-        return modes
-
-    def setDisplayMode(self,mode):
-        if mode == "Hires":
-            m = None
-            if hasattr(self,"Object"):
-                if hasattr(self.Object,"Hires"):
-                    if self.Object.Hires:
-                        m = self.Object.Hires.ViewObject.RootNode
-                if not m:
-                    if hasattr(self.Object,"CloneOf"):
-                        if self.Object.CloneOf:
-                            if hasattr(self.Object.CloneOf,"Hires"):
-                                if self.Object.CloneOf.Hires:
-                                    m = self.Object.CloneOf.Hires.ViewObject.RootNode
-            if m:
-                self.meshnode = m.copy()
-                self.meshnode.getChild(1).whichChild = 0
-                self.hiresgroup.addChild(self.meshnode)
-        else:
-            if hasattr(self,"meshnode"):
-                if self.meshnode:
-                    self.hiresgroup.removeChild(self.meshnode)
-                    del self.meshnode
-        return mode
 
 
 if FreeCAD.GuiUp:
