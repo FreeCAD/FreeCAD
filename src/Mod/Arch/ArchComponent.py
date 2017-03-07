@@ -323,6 +323,7 @@ class Component:
         obj.addProperty("App::PropertyArea","VerticalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
         obj.addProperty("App::PropertyArea","HorizontalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
         obj.addProperty("App::PropertyLength","PerimeterLength","Arch",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"))
+        obj.addProperty("App::PropertyLink","Hires","Arch",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
@@ -720,13 +721,58 @@ class ViewProviderComponent:
         return
 
     def attach(self,vobj):
+        from pivy import coin
         self.Object = vobj.Object
+        self.hiresgroup = coin.SoSeparator()
+        self.meshcolor = coin.SoBaseColor()
+        self.hiresgroup.addChild(self.meshcolor)
+        self.hiresgroup.setName("Hires")
+        vobj.addDisplayMode(self.hiresgroup,"Hires");
         return
 
     def getDisplayModes(self,vobj):
-        return []
+        modes=["Hires"]
+        return modes
 
     def setDisplayMode(self,mode):
+        if hasattr(self,"meshnode"):
+            if self.meshnode:
+                self.hiresgroup.removeChild(self.meshnode)
+                del self.meshnode
+        if mode == "Hires":
+            from pivy import coin
+            m = None
+            if hasattr(self,"Object"):
+                if hasattr(self.Object,"Hires"):
+                    if self.Object.Hires:
+                        # if the file was recently loaded, the node is not present yet
+                        self.Object.Hires.ViewObject.show()
+                        self.Object.Hires.ViewObject.hide()
+                        m = self.Object.Hires.ViewObject.RootNode
+                if not m:
+                    if hasattr(self.Object,"CloneOf"):
+                        if self.Object.CloneOf:
+                            if hasattr(self.Object.CloneOf,"Hires"):
+                                if self.Object.CloneOf.Hires:
+                                    # if the file was recently loaded, the node is not present yet
+                                    self.Object.CloneOf.Hires.ViewObject.show()
+                                    self.Object.CloneOf.Hires.ViewObject.hide()
+                                    m = self.Object.CloneOf.Hires.ViewObject.RootNode
+            if m:
+                self.meshnode = m.copy()
+                for c in self.meshnode.getChildren():
+                    # switch the first found SoSwitch on
+                    if isinstance(c,coin.SoSwitch):
+                        num = 0
+                        if c.getNumChildren() > 0:
+                            if c.getChild(0).getName() == "Hires":
+                                num = 1
+                        print "getting node ",num," for ",self.Object.Label
+                        c.whichChild = num
+                        break
+                self.hiresgroup.addChild(self.meshnode)
+            else:
+                return "Flat Lines"
         return mode
 
     def __getstate__(self):
