@@ -128,25 +128,25 @@ def export(exportList,filename):
             hires = None
             if FreeCAD.GuiUp:
                 visible = obj.ViewObject.isVisible()
-                if obj.ViewObject.DisplayMode == "Hires":
+                if obj.ViewObject.DisplayMode == "HiRes":
                     # check if high-resolution object is available
-                    if hasattr(obj,"Hires"):
-                        if obj.Hires:
-                            if obj.Hires.isDerivedFrom("Mesh::Feature"):
-                                m = obj.Hires.Mesh
+                    if hasattr(obj,"HiRes"):
+                        if obj.HiRes:
+                            if obj.HiRes.isDerivedFrom("Mesh::Feature"):
+                                m = obj.HiRes.Mesh
                             else:
-                                m = obj.Hires.Shape
+                                m = obj.HiRes.Shape
                             hires = m.copy()
                             hires.Placement = obj.Placement.multiply(m.Placement)
                     if not hires:
                         if hasattr(obj,"CloneOf"):
                             if obj.CloneOf:
-                                if hasattr(obj.CloneOf,"Hires"):
-                                    if obj.CloneOf.Hires:
-                                        if obj.CloneOf.Hires.isDerivedFrom("Mesh::Feature"):
-                                            m = obj.CloneOf.Hires.Mesh
+                                if hasattr(obj.CloneOf,"HiRes"):
+                                    if obj.CloneOf.HiRes:
+                                        if obj.CloneOf.HiRes.isDerivedFrom("Mesh::Feature"):
+                                            m = obj.CloneOf.HiRes.Mesh
                                         else:
-                                            m = obj.CloneOf.Hires.Shape
+                                            m = obj.CloneOf.HiRes.Shape
                                         hires = m.copy()
                                         hires.Placement = obj.Placement.multiply(obj.CloneOf.Placement).multiply(m.Placement)
             else:
