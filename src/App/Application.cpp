@@ -1012,8 +1012,60 @@ static void freecadNewHandler ()
 }
 #endif
 
+#if defined(FC_OS_LINUX)
+#include <execinfo.h>
+#include <dlfcn.h>
+#include <cxxabi.h>
+
+#include <cstdio>
+#include <cstdlib>
+#include <string>
+#include <sstream>
+
+// This function produces a stack backtrace with demangled function & method names.
+void printBacktrace(size_t skip=0)
+{
+    void *callstack[128];
+    size_t nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);
+    size_t nFrames = backtrace(callstack, nMaxFrames);
+    char **symbols = backtrace_symbols(callstack, nFrames);
+
+    for (size_t i = skip; i < nFrames; i++) {
+        char *demangled = NULL;
+        int status = -1;
+        Dl_info info;
+        if (dladdr(callstack[i], &info) && info.dli_sname && info.dli_fname) {
+            if (info.dli_sname[0] == '_') {
+                demangled = abi::__cxa_demangle(info.dli_sname, NULL, 0, &status);
+            }
+        }
+
+        std::stringstream str;
+        if (status == 0) {
+            void* offset = (void*)((char*)callstack[i] - (char*)info.dli_saddr);
+            str << "#" << (i-skip) << "  " << callstack[i] << " in " << demangled << " from " << info.dli_fname << "+" << offset << std::endl;
+            free(demangled);
+        }
+        else {
+            str << "#" << (i-skip) << "  " << symbols[i] << std::endl;
+        }
+
+        // cannot directly print to cerr when using --write-log
+        std::cerr << str.str();
+    }
+
+    free(symbols);
+}
+#endif
+
 void segmentation_fault_handler(int sig)
 {
+#if defined(FC_OS_LINUX)
+    std::cerr << "Program received signal SIGSEGV, Segmentation fault.\n";
+    printBacktrace(2);
+    exit(1);
+#endif
+
     switch (sig) {
         case SIGSEGV:
             std::cerr << "Illegal storage access..." << std::endl;
@@ -1078,12 +1130,14 @@ void Application::init(int argc, char ** argv)
 #endif
         // if an unexpected crash occurs we can install a handler function to
         // write some additional information
-#ifdef _MSC_VER // Microsoft compiler
+#if defined (_MSC_VER) // Microsoft compiler
         std::signal(SIGSEGV,segmentation_fault_handler);
         std::signal(SIGABRT,segmentation_fault_handler);
         std::set_terminate(my_terminate_handler);
         std::set_unexpected(unexpection_error_handler);
 //        _set_se_translator(my_trans_func);
+#elif defined(FC_OS_LINUX)
+        std::signal(SIGSEGV,segmentation_fault_handler);
 #endif
 
         initTypes();

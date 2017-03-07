@@ -41,6 +41,15 @@ private: \
   static Base::Type classTypeId
 
 
+/// Like TYPESYSTEM_HEADER, but declare getTypeId as 'override'
+#define TYPESYSTEM_HEADER_WITH_OVERRIDE() \
+public: \
+  static Base::Type getClassTypeId(void); \
+  virtual Base::Type getTypeId(void) const override; \
+  static void init(void);\
+  static void *create(void);\
+private: \
+  static Base::Type classTypeId
 
 
 /// define to implement a  subclass of Base::BaseClass

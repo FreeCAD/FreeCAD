@@ -111,7 +111,7 @@ void ViewProviderOrigin::setTemporaryVisibility(bool axis, bool plane) {
     bool saveState = tempVisMap.empty();
 
     try {
-        // Remember & Set axis visability
+        // Remember & Set axis visibility
         for(App::DocumentObject* obj : origin->axes()) {
             if (obj) {
                 Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
@@ -124,7 +124,7 @@ void ViewProviderOrigin::setTemporaryVisibility(bool axis, bool plane) {
             }
         }
 
-        // Remember & Set plane visability
+        // Remember & Set plane visibility
         for(App::DocumentObject* obj : origin->planes()) {
             if (obj) {
                 Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
@@ -140,7 +140,7 @@ void ViewProviderOrigin::setTemporaryVisibility(bool axis, bool plane) {
         Base::Console().Error ("%s\n", ex.what() );
     }
 
-    // Remember & Set self visability
+    // Remember & Set self visibility
     tempVisMap[this] = isVisible();
     setVisible(true);
 

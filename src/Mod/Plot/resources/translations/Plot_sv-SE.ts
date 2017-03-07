@@ -238,12 +238,12 @@
     <message>
       <location filename="PlotGui.py" line="97"/>
       <source>The grid must be activated on top of a plot document</source>
-      <translation type="unfinished">The grid must be activated on top of a plot document</translation>
+      <translation>Rutnätet måste vara aktiverat ovanpå ett plot-dokument</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="126"/>
       <source>The legend must be activated on top of a plot document</source>
-      <translation type="unfinished">The legend must be activated on top of a plot document</translation>
+      <translation>Förklaringen måste vara aktiverad ovanpå ett plot-dokument</translation>
     </message>
   </context>
   <context>
@@ -387,7 +387,7 @@
     <message>
       <location filename="TaskPanel.py" line="169"/>
       <source>Dots per point, with size will define output image resolution</source>
-      <translation type="unfinished">Dots per point, with size will define output image resolution</translation>
+      <translation>Prickar per punkt, med storlek kommer att definiera utskriftens bildupplösning</translation>
     </message>
   </context>
   <context>
@@ -455,7 +455,7 @@
     <message>
       <location filename="TaskPanel.py" line="190"/>
       <source>If checked serie will not be considered for legend</source>
-      <translation type="unfinished">If checked serie will not be considered for legend</translation>
+      <translation>Om markerad kommer serien inte att användas för förklaring</translation>
     </message>
   </context>
 </TS>

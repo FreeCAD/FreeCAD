@@ -183,40 +183,12 @@ void SpherePy::setAxis(Py::Object arg)
 
 PyObject *SpherePy::uIso(PyObject *args)
 {
-    double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
-        return 0;
-
-    try {
-        Handle_Geom_SphericalSurface sphere = Handle_Geom_SphericalSurface::DownCast
-            (getGeomSpherePtr()->handle());
-        Handle_Geom_Curve c = sphere->UIso(v);
-        return new CirclePy(new GeomCircle(Handle_Geom_Circle::DownCast(c)));
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
-        return 0;
-    }
+    return GeometrySurfacePy::uIso(args);
 }
 
 PyObject *SpherePy::vIso(PyObject *args)
 {
-    double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
-        return 0;
-
-    try {
-        Handle_Geom_SphericalSurface sphere = Handle_Geom_SphericalSurface::DownCast
-            (getGeomSpherePtr()->handle());
-        Handle_Geom_Curve c = sphere->VIso(v);
-        return new CirclePy(new GeomCircle(Handle_Geom_Circle::DownCast(c)));
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
-        return 0;
-    }
+    return GeometrySurfacePy::vIso(args);
 }
 
 PyObject *SpherePy::getCustomAttributes(const char* /*attr*/) const

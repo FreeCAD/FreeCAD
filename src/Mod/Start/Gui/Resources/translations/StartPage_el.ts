@@ -46,7 +46,7 @@
     <message>
       <location filename="StartPage.py" line="61"/>
       <source>Load a Drawing extraction</source>
-      <translation type="unfinished">Load a Drawing extraction</translation>
+      <translation>Φορτώσετε ένα σχέδιο εξόρυξης</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="62"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="StartPage.py" line="70"/>
       <source>Example workflow</source>
-      <translation type="unfinished">Example workflow</translation>
+      <translation>Παράδειγμα ροής εργασίας</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="71"/>
@@ -111,12 +111,12 @@
     <message>
       <location filename="StartPage.py" line="75"/>
       <source>Working with Meshes</source>
-      <translation type="unfinished">Working with Meshes</translation>
+      <translation>Εργασία με πλέγματα</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="76"/>
       <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation type="unfinished">The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</translation>
+      <translation>Το &lt;b&gt;Πλέγμα πάγκος εργασίας&lt;/b&gt; χρησιμοποιείται για να εργαστείτε με αντικείμενα δικτυώματος. Πλέγματα είναι απλούστερη αντικείμενα 3D από αντικείμενα μέρος, αλλά είναι συχνά ευκολότερο εισαγωγής και εξαγωγής προς/από άλλες εφαρμογές.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="77"/>
@@ -294,11 +294,6 @@
       <translation>Υπάρχει μια νέα έκδοση του FreeCAD διαθέσιμη.</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="109"/>
-      <source>Load an FEM example analysis</source>
-      <translation type="unfinished">Load an FEM example analysis</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="54"/>
       <source>Latest commits</source>
       <translation type="unfinished">Latest commits</translation>
@@ -317,6 +312,16 @@
       <location filename="StartPage.py" line="112"/>
       <source>See all commits</source>
       <translation type="unfinished">See all commits</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM 3D example analysis</source>
+      <translation type="unfinished">Load an FEM 3D example analysis</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="113"/>
+      <source>Load an FEM 2D example analysis</source>
+      <translation type="unfinished">Load an FEM 2D example analysis</translation>
     </message>
   </context>
 </TS>

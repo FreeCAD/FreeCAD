@@ -24,11 +24,11 @@
     </message>
     <message>
         <source>Align bottom</source>
-        <translation type="unfinished">Align bottom</translation>
+        <translation>Στοίχιση κάτω</translation>
     </message>
     <message>
         <source>Bottom-align contents of selected cells</source>
-        <translation type="unfinished">Bottom-align contents of selected cells</translation>
+        <translation>Στοίχιση κάτω τα περιεχόμενα του επιλεγμένου κελιού</translation>
     </message>
 </context>
 <context>
@@ -43,7 +43,7 @@
     </message>
     <message>
         <source>Center-align contents of selected cells</source>
-        <translation type="unfinished">Center-align contents of selected cells</translation>
+        <translation>Κέντρο-ευθυγράμμιση των περιεχομένων του επιλεγμένου κελιού</translation>
     </message>
 </context>
 <context>
@@ -54,7 +54,7 @@
     </message>
     <message>
         <source>Align left</source>
-        <translation type="unfinished">Align left</translation>
+        <translation>Στοίχιση Αριστερά</translation>
     </message>
     <message>
         <source>Left-align contents of selected cells</source>
@@ -69,7 +69,7 @@
     </message>
     <message>
         <source>Align right</source>
-        <translation type="unfinished">Align right</translation>
+        <translation>Στοίχιση Δεξιά</translation>
     </message>
     <message>
         <source>Right-align contents of selected cells</source>
@@ -84,11 +84,11 @@
     </message>
     <message>
         <source>Align top</source>
-        <translation type="unfinished">Align top</translation>
+        <translation>Πλήρης στοίχιση επάνω</translation>
     </message>
     <message>
         <source>Top-align contents of selected cells</source>
-        <translation type="unfinished">Top-align contents of selected cells</translation>
+        <translation>Στοίχιση επάνω περιεχόμενα του επιλεγμένου κελιού</translation>
     </message>
 </context>
 <context>
@@ -99,11 +99,11 @@
     </message>
     <message>
         <source>Vertically center-align</source>
-        <translation type="unfinished">Vertically center-align</translation>
+        <translation>Κάθετα κέντρο στοίχιση</translation>
     </message>
     <message>
         <source>Center-align contents vertically of selected cells</source>
-        <translation type="unfinished">Center-align contents vertically of selected cells</translation>
+        <translation>Περιεχόμενα κέντρο στοίχιση κατακόρυφα του επιλεγμένου κελιού</translation>
     </message>
 </context>
 <context>
@@ -114,7 +114,7 @@
     </message>
     <message>
         <source>Export spreadsheet</source>
-        <translation type="unfinished">Export spreadsheet</translation>
+        <translation>Εξαγωγή υπολογιστικού φύλλου</translation>
     </message>
     <message>
         <source>Export spreadsheet to CSV file</source>
@@ -144,11 +144,11 @@
     </message>
     <message>
         <source>Merge cells</source>
-        <translation type="unfinished">Merge cells</translation>
+        <translation>Συγχώνευση κελιών</translation>
     </message>
     <message>
         <source>Merge selected cells in spreadsheet</source>
-        <translation type="unfinished">Merge selected cells in spreadsheet</translation>
+        <translation>Συγχώνευση των επιλεγμένων κελιών σε υπολογιστικό φύλλο</translation>
     </message>
 </context>
 <context>
@@ -159,11 +159,11 @@
     </message>
     <message>
         <source>Set alias</source>
-        <translation type="unfinished">Set alias</translation>
+        <translation>Ορισμός ψευδωνύμου</translation>
     </message>
     <message>
         <source>Set alias for selected cell</source>
-        <translation type="unfinished">Set alias for selected cell</translation>
+        <translation>Ορισμός ψευδωνύμου για το επιλεγμένο κελί</translation>
     </message>
 </context>
 <context>
@@ -174,7 +174,7 @@
     </message>
     <message>
         <source>Split cell</source>
-        <translation type="unfinished">Split cell</translation>
+        <translation>Διαίρεση κελιού</translation>
     </message>
     <message>
         <source>Split previously merged cells in spreadsheet</source>
@@ -189,11 +189,11 @@
     </message>
     <message>
         <source>Bold text</source>
-        <translation type="unfinished">Bold text</translation>
+        <translation>Έντονη γραφή</translation>
     </message>
     <message>
         <source>Set bold text in selected cells</source>
-        <translation type="unfinished">Set bold text in selected cells</translation>
+        <translation>Ορίσετε τολμηρό κείμενο των επιλεγμένων κελιών</translation>
     </message>
 </context>
 <context>
@@ -204,7 +204,7 @@
     </message>
     <message>
         <source>Italic text</source>
-        <translation type="unfinished">Italic text</translation>
+        <translation>πλαγιο κειμενο</translation>
     </message>
     <message>
         <source>Set italic text in selected cells</source>
@@ -230,18 +230,18 @@
     <name>ColorPickerPopup</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Custom</translation>
+        <translation>Επιλογή</translation>
     </message>
 </context>
 <context>
     <name>PropertiesDialog</name>
     <message>
         <source>Cell properties</source>
-        <translation type="unfinished">Cell properties</translation>
+        <translation>Ιδιότητες κελιών</translation>
     </message>
     <message>
         <source>&amp;Color</source>
-        <translation type="unfinished">&amp;Color</translation>
+        <translation>&amp; Χρώμα</translation>
     </message>
     <message>
         <source>Text</source>
@@ -249,11 +249,11 @@
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished">Background</translation>
+        <translation>Φόντο</translation>
     </message>
     <message>
         <source>&amp;Alignment</source>
-        <translation type="unfinished">&amp;Alignment</translation>
+        <translation>Εναρμόνιση</translation>
     </message>
     <message>
         <source>Horizontal</source>
@@ -285,23 +285,23 @@
     </message>
     <message>
         <source>&amp;Style</source>
-        <translation type="unfinished">&amp;Style</translation>
+        <translation>&amp; Στυλ</translation>
     </message>
     <message>
         <source>Bold</source>
-        <translation type="unfinished">Bold</translation>
+        <translation>Έντονοι χαρακτήρες</translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation type="unfinished">Italic</translation>
+        <translation>Πλάγια</translation>
     </message>
     <message>
         <source>Underline</source>
-        <translation type="unfinished">Underline</translation>
+        <translation>Υπογραμμισμένοι χαρακτήρες</translation>
     </message>
     <message>
         <source>&amp;Display unit</source>
-        <translation type="unfinished">&amp;Display unit</translation>
+        <translation>Μονάδα επίδειξης</translation>
     </message>
     <message>
         <source>Unit string</source>
@@ -313,14 +313,14 @@
     </message>
     <message>
         <source>Alias for this cell</source>
-        <translation type="unfinished">Alias for this cell</translation>
+        <translation>Ψευδώνυμο για αυτό το κελί</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>All (*)</source>
-        <translation type="unfinished">All (*)</translation>
+        <translation>Όλα (*)</translation>
     </message>
     <message>
         <source>Import file</source>
@@ -332,7 +332,7 @@
     </message>
     <message>
         <source>Cell contents</source>
-        <translation type="unfinished">Cell contents</translation>
+        <translation>Περιεχόμενα του κελιού</translation>
     </message>
     <message>
         <source>Show spreadsheet</source>
@@ -351,67 +351,67 @@
     </message>
     <message>
         <source>Red</source>
-        <translation type="unfinished">Red</translation>
+        <translation>Κοκκινο</translation>
     </message>
     <message>
         <source>Dark red</source>
-        <translation type="unfinished">Dark red</translation>
+        <translation>Σκούρο κόκκινο</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation type="unfinished">Green</translation>
+        <translation>Πράσινο</translation>
     </message>
     <message>
         <source>Dark green</source>
-        <translation type="unfinished">Dark green</translation>
+        <translation>Σκούρο πράσινο</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation type="unfinished">Blue</translation>
+        <translation>Μπλε</translation>
     </message>
     <message>
         <source>Dark blue</source>
-        <translation type="unfinished">Dark blue</translation>
+        <translation>Σκούρο μπλε</translation>
     </message>
     <message>
         <source>Cyan</source>
-        <translation type="unfinished">Cyan</translation>
+        <translation>Κυανές</translation>
     </message>
     <message>
         <source>Dark cyan</source>
-        <translation type="unfinished">Dark cyan</translation>
+        <translation>Σκούρο κυανό</translation>
     </message>
     <message>
         <source>Magenta</source>
-        <translation type="unfinished">Magenta</translation>
+        <translation>Πορφυρό</translation>
     </message>
     <message>
         <source>Dark magenta</source>
-        <translation type="unfinished">Dark magenta</translation>
+        <translation>Σκούρο μαζέντα</translation>
     </message>
     <message>
         <source>Yellow</source>
-        <translation type="unfinished">Yellow</translation>
+        <translation>Κίτρινο</translation>
     </message>
     <message>
         <source>Dark yellow</source>
-        <translation type="unfinished">Dark yellow</translation>
+        <translation>Σκούρο κίτρινο</translation>
     </message>
     <message>
         <source>Gray</source>
-        <translation type="unfinished">Gray</translation>
+        <translation>Γκρί</translation>
     </message>
     <message>
         <source>Dark gray</source>
-        <translation type="unfinished">Dark gray</translation>
+        <translation>Σκούρο γκρι</translation>
     </message>
     <message>
         <source>Light gray</source>
-        <translation type="unfinished">Light gray</translation>
+        <translation>Ανοιχτό γκρι</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Custom</translation>
+        <translation>Επιλογή</translation>
     </message>
 </context>
 <context>
@@ -422,7 +422,7 @@
     </message>
     <message>
         <source>&amp;Contents</source>
-        <translation type="unfinished">&amp;Contents</translation>
+        <translation>&amp;Περιεχόμενα</translation>
     </message>
 </context>
 <context>
@@ -436,23 +436,23 @@
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
         <source>Insert rows</source>
-        <translation type="unfinished">Insert rows</translation>
+        <translation>Εισαγωγή γραμμών</translation>
     </message>
     <message>
         <source>Remove rows</source>
-        <translation type="unfinished">Remove rows</translation>
+        <translation>Καταργήσετε γραμμές</translation>
     </message>
     <message>
         <source>Insert columns</source>
-        <translation type="unfinished">Insert columns</translation>
+        <translation>Εισαγωγή στηλών</translation>
     </message>
     <message>
         <source>Remove columns</source>
-        <translation type="unfinished">Remove columns</translation>
+        <translation>Κατάργηση στηλών</translation>
     </message>
     <message>
         <source>Properties...</source>
-        <translation type="unfinished">Properties...</translation>
+        <translation>Ιδιότητες...</translation>
     </message>
 </context>
 <context>

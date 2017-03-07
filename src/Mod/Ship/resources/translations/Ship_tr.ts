@@ -6,17 +6,17 @@
     <message>
       <location filename="InitGui.py" line="65"/>
       <source>Ship design</source>
-      <translation type="unfinished">Ship design</translation>
+      <translation>Gemi tasarımı</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="68"/>
       <source>Weights</source>
-      <translation type="unfinished">Weights</translation>
+      <translation>Ağırlık</translation>
     </message>
     <message>
       <location filename="Instance.py" line="44"/>
       <source>True if it is a valid ship instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid ship instance, False otherwise</translation>
+      <translation>Bu bir geçerli gemi örneği ise True aksi takdirde ise False</translation>
     </message>
     <message>
       <location filename="Instance.py" line="54"/>

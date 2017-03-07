@@ -41,6 +41,12 @@
         <file>icons/SketcherWorkbench.svg</file>
         <file>icons/Sketcher_AlterConstruction.svg</file>
         <file>icons/Sketcher_AlterFillet.svg</file>
+        <file>icons/Sketcher_BSplineApproximate.svg</file>
+        <file>icons/Sketcher_BSplineComb.svg</file>
+        <file>icons/Sketcher_BSplineDecreaseDegree.svg</file>
+        <file>icons/Sketcher_BSplineDegree.svg</file>
+        <file>icons/Sketcher_BSplineIncreaseDegree.svg</file>
+        <file>icons/Sketcher_BSplinePolygon.svg</file>
         <file>icons/Sketcher_Clone.svg</file>
         <file>icons/Sketcher_CloseShape.svg</file>
         <file>icons/Sketcher_Conics.svg</file>
@@ -141,6 +147,7 @@
         <file>icons/Sketcher_MergeSketch.svg</file>
         <file>icons/Sketcher_MirrorSketch.svg</file>
         <file>icons/Sketcher_NewSketch.svg</file>
+        <file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
         <file>icons/Sketcher_Parabolic_Arc.svg</file>
         <file>icons/Sketcher_Parabolic_Arc_Constr.svg</file>
         <file>icons/Sketcher_ProfilesHexagon1.svg</file>
@@ -211,5 +218,10 @@
         <file>translations/Sketcher_uk.qm</file>
         <file>translations/Sketcher_zh-CN.qm</file>
         <file>translations/Sketcher_zh-TW.qm</file>
+        <file>translations/Sketcher_eu.qm</file>
+        <file>translations/Sketcher_ca.qm</file>
+        <file>translations/Sketcher_gl.qm</file>
+        <file>translations/Sketcher_kab.qm</file>
+        <file>translations/Sketcher_ko.qm</file>
     </qresource>
 </RCC> 

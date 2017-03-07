@@ -85,11 +85,17 @@ private:
         return Py::Float(0.0);
     }
 };
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
 } // namespace Robot
 
 
 /* Python entry */
-PyMODINIT_FUNC initRobot()
+PyMOD_INIT_FUNC(Robot)
 {
     // load dependent module
     try {
@@ -97,7 +103,7 @@ PyMODINIT_FUNC initRobot()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
     PyObject* robotModule = (new Robot::Module())->module().ptr();
@@ -122,4 +128,6 @@ PyMODINIT_FUNC initRobot()
     Robot::PropertyTrajectory      ::init();
     Robot::TrajectoryCompound      ::init();
     Robot::TrajectoryDressUpObject ::init();
+
+    PyMOD_Return(robotModule);
 }

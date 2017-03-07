@@ -379,7 +379,12 @@
         <translation>Selecţie greşită</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -439,12 +444,11 @@
         <translation>Va trebui să treceţi peste o formă geometrică (Preselectie) cu mouse-ul pentru a utiliza această comandă. Consultați documentaţia pentru mai multe detalii.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Selectaţi un Robot pentru a seta poziţia de acasă</translation>
+        <translation type="obsolete">Selectaţi un Robot pentru a seta poziţia de acasă</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Selectaţi un Robot</translation>
     </message>

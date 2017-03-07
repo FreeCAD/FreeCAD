@@ -77,6 +77,9 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "MeshGui::ViewProviderMeshFaceSet";
     }
+    virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const {
+        return &Mesh;
+    }
 
     /// handles the MeshPy object
     virtual PyObject* getPyObject(void);

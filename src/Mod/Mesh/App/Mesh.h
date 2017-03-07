@@ -169,11 +169,14 @@ public:
     //@{
     void addFacet(const MeshCore::MeshGeomFacet& facet);
     void addFacets(const std::vector<MeshCore::MeshGeomFacet>& facets);
-    void addFacets(const std::vector<MeshCore::MeshFacet> &facets);
     void addFacets(const std::vector<MeshCore::MeshFacet> &facets,
-                   const std::vector<Base::Vector3f>& points);
+                   bool checkManifolds);
+    void addFacets(const std::vector<MeshCore::MeshFacet> &facets,
+                   const std::vector<Base::Vector3f>& points,
+                   bool checkManifolds);
     void addFacets(const std::vector<Data::ComplexGeoData::Facet> &facets,
-                   const std::vector<Base::Vector3d>& points);
+                   const std::vector<Base::Vector3d>& points,
+                   bool checkManifolds);
     void setFacets(const std::vector<MeshCore::MeshGeomFacet>& facets);
     void setFacets(const std::vector<Data::ComplexGeoData::Facet> &facets,
                    const std::vector<Base::Vector3d>& points);

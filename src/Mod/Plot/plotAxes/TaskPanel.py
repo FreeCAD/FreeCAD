@@ -325,7 +325,7 @@ class TaskPanel:
 
     def onRemove(self):
         """Executed when axes must be deleted."""
-        # Ensure taht we can work
+        # Ensure that we can work
         plt = Plot.getPlot()
         if not plt:
             self.updateUI()

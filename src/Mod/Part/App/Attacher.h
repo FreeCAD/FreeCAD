@@ -153,13 +153,13 @@ struct SuggestResult{
         srOK, //references are valid for at least one mode
         srLinkBroken, //failed to resolve out some of current references. Exception info is stored in SuggestResult::error.
         srUnexpectedError,
-        srNoModesFit,//none of the avaliable mapping modes accepts the set of topological type
+        srNoModesFit,//none of the available mapping modes accepts the set of topological type
         srIncompatibleGeometry,//there is a mode that could fit, but geometry is wrong (e.g. a line is required, but a curve was passed).
     };
     eSuggestResult message;
 
     /**
-      * @brief allApplicableModes. Vector array that will recieve the list of
+      * @brief allApplicableModes. Vector array that will receive the list of
       * all modes that are applicable to current set of references. It doesn't
       * guarantee that all modes will work, it only checks that subelemnts are
       * of right type.

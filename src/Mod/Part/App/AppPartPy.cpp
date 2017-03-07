@@ -147,7 +147,7 @@ struct EdgePoints {
     TopoDS_Edge edge;
 };
 
-static std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges)
+PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges)
 {
     tol3d = tol3d * tol3d;
     std::list<EdgePoints>  edge_points;
@@ -1569,8 +1569,14 @@ private:
             }
         }
 
+#if PY_MAJOR_VERSION >= 3
+        //FIXME: Test this!
+        if (PyBytes_Check(intext)) {
+            PyObject *p = Base::PyAsUnicodeObject(PyBytes_AsString(intext));
+#else
         if (PyString_Check(intext)) {
-            PyObject *p = Base::PyAsUnicodeObject(PyString_AsString(intext));    
+            PyObject *p = Base::PyAsUnicodeObject(PyString_AsString(intext));
+#endif
             if (!p) {
                 throw Py::TypeError("** makeWireString can't convert PyString.");
             }
@@ -1645,8 +1651,13 @@ private:
         PyErr_Clear();
         PyObject* index_or_value;
         if (PyArg_ParseTuple(args.ptr(), "sO", &name, &index_or_value)) {
+#if PY_MAJOR_VERSION >= 3
+            if (PyLong_Check(index_or_value)) {
+                int ival = (int)PyLong_AsLong(index_or_value);
+#else
             if (PyInt_Check(index_or_value)) {
                 int ival = (int)PyInt_AsLong(index_or_value);
+#endif
                 if (!Interface_Static::SetIVal(name, ival)) {
                     std::stringstream str;
                     str << "Failed to set '" << name << "'";

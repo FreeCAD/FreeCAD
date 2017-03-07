@@ -99,7 +99,7 @@ StdOrthographicCamera::StdOrthographicCamera()
     sWhatsThis    = "Std_OrthographicCamera";
     sStatusTip    = QT_TR_NOOP("Switches to orthographic view mode");
     sPixmap       = "view-isometric";
-    sAccel        = "O";
+    sAccel        = "V, O";
     eType         = Alter3DView;
 }
 
@@ -149,7 +149,7 @@ StdPerspectiveCamera::StdPerspectiveCamera()
     sWhatsThis    = "Std_PerspectiveCamera";
     sStatusTip    = QT_TR_NOOP("Switches to perspective view mode");
     sPixmap       = "view-perspective";
-    sAccel        = "P";
+    sAccel        = "V, P";
     eType         = Alter3DView;
 }
 
@@ -586,22 +586,39 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
     a0->setIcon(BitmapFactory().iconFromTheme("DrawStyleAsIs"));
     a0->setChecked(true);
     a0->setObjectName(QString::fromLatin1("Std_DrawStyleAsIs"));
+    a0->setShortcut(QKeySequence(QString::fromUtf8("V,1")));
     QAction* a1 = pcAction->addAction(QString());
     a1->setCheckable(true);
     a1->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
     a1->setObjectName(QString::fromLatin1("Std_DrawStyleFlatLines"));
+    a1->setShortcut(QKeySequence(QString::fromUtf8("V,2")));
     QAction* a2 = pcAction->addAction(QString());
     a2->setCheckable(true);
     a2->setIcon(BitmapFactory().iconFromTheme("DrawStyleShaded"));
     a2->setObjectName(QString::fromLatin1("Std_DrawStyleShaded"));
+    a2->setShortcut(QKeySequence(QString::fromUtf8("V,3")));
     QAction* a3 = pcAction->addAction(QString());
     a3->setCheckable(true);
     a3->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
     a3->setObjectName(QString::fromLatin1("Std_DrawStyleWireframe"));
+    a3->setShortcut(QKeySequence(QString::fromUtf8("V,4")));
     QAction* a4 = pcAction->addAction(QString());
     a4->setCheckable(true);
     a4->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
     a4->setObjectName(QString::fromLatin1("Std_DrawStylePoints"));
+    a4->setShortcut(QKeySequence(QString::fromUtf8("V,5")));
+    QAction* a5 = pcAction->addAction(QString());
+    a5->setCheckable(true);
+    a5->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
+    a5->setObjectName(QString::fromLatin1("Std_DrawStyleHiddenLine"));
+    a5->setShortcut(QKeySequence(QString::fromUtf8("V,6")));
+    QAction* a6 = pcAction->addAction(QString());
+    a6->setCheckable(true);
+    a6->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
+    a6->setObjectName(QString::fromLatin1("Std_DrawStyleNoShading"));
+    a6->setShortcut(QKeySequence(QString::fromUtf8("V,7")));
+
+
     pcAction->setIcon(a0->icon());
 
     _pcAction = pcAction;
@@ -642,6 +659,16 @@ void StdCmdDrawStyle::languageChange()
         "Std_DrawStyle", "Points"));
     a[4]->setToolTip(QCoreApplication::translate(
         "Std_DrawStyle", "Points mode"));
+
+    a[5]->setText(QCoreApplication::translate(
+        "Std_DrawStyle", "Hidden line"));
+    a[5]->setToolTip(QCoreApplication::translate(
+        "Std_DrawStyle", "Hidden line mode"));
+
+    a[6]->setText(QCoreApplication::translate(
+        "Std_DrawStyle", "No shading"));
+    a[6]->setToolTip(QCoreApplication::translate(
+        "Std_DrawStyle", "No shading mode"));
 }
 
 void StdCmdDrawStyle::updateIcon(const MDIView *view)
@@ -677,6 +704,16 @@ void StdCmdDrawStyle::updateIcon(const MDIView *view)
         actionGroup->setCheckedAction(4);
         return;
     }
+    if (mode == "Hidden Line")
+    {
+        actionGroup->setCheckedAction(5);
+        return;
+    }
+    if (mode == "No shading")
+    {
+        actionGroup->setCheckedAction(6);
+        return;
+    }
     actionGroup->setCheckedAction(0);
 }
 
@@ -708,6 +745,12 @@ void StdCmdDrawStyle::activated(int iMsg)
                     break;
                 case 4:
                     (oneChangedSignal) ? viewer->updateOverrideMode("Point") : viewer->setOverrideMode("Point");
+                    break;
+                case 5:
+                    (oneChangedSignal) ? viewer->updateOverrideMode("Hidden Line") : viewer->setOverrideMode("Hidden Line");
+                    break;
+                case 6:
+                    (oneChangedSignal) ? viewer->updateOverrideMode("No Shading") : viewer->setOverrideMode("No Shading");
                     break;
                 default:
                     (oneChangedSignal) ? viewer->updateOverrideMode("As Is") : viewer->setOverrideMode("As Is");
@@ -1329,6 +1372,7 @@ StdCmdViewFitAll::StdCmdViewFitAll()
     sWhatsThis    = "Std_ViewFitAll";
     sStatusTip    = QT_TR_NOOP("Fits the whole content on the screen");
     sPixmap       = "zoom-all";
+    sAccel        = "V, F";
     eType         = Alter3DView;
 }
 
@@ -1358,6 +1402,7 @@ StdCmdViewFitSelection::StdCmdViewFitSelection()
     sToolTipText  = QT_TR_NOOP("Fits the selected content on the screen");
     sWhatsThis    = "Std_ViewFitSelection";
     sStatusTip    = QT_TR_NOOP("Fits the selected content on the screen");
+    sAccel        = "V, S";
 #if QT_VERSION >= 0x040200
     sPixmap       = "zoom-selection";
 #endif
@@ -1390,7 +1435,7 @@ StdViewDock::StdViewDock()
     sToolTipText = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
     sWhatsThis   = "Std_ViewDockUndockFullscreen";
     sStatusTip   = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
-    sAccel       = "Shift+D";
+    sAccel       = "V, D";
     eType        = Alter3DView;
 }
 
@@ -1418,7 +1463,7 @@ StdViewUndock::StdViewUndock()
     sToolTipText = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
     sWhatsThis   = "Std_ViewDockUndockFullscreen";
     sStatusTip   = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
-    sAccel       = "Shift+U";
+    sAccel       = "V, U";
     eType        = Alter3DView;
 }
 

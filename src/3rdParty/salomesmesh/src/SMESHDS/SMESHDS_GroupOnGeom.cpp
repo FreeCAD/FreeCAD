@@ -134,7 +134,7 @@ bool SMESHDS_GroupOnGeom::Contains (const SMDS_MeshElement* elem)
  */
 //================================================================================
 
-int SMESHDS_GroupOnGeom::GetTic() const
+VTK_MTIME_TYPE SMESHDS_GroupOnGeom::GetTic() const
 {
   return GetMesh()->GetMTime();
 }

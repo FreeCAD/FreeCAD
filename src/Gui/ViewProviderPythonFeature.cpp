@@ -411,7 +411,8 @@ std::vector<Base::Vector3d> ViewProviderPythonFeatureImp::getSelectionShape(cons
     return std::vector<Base::Vector3d>();
 }
 
-bool ViewProviderPythonFeatureImp::setEdit(int ModNum)
+ViewProviderPythonFeatureImp::ValueT
+ViewProviderPythonFeatureImp::setEdit(int ModNum)
 {
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -425,7 +426,8 @@ bool ViewProviderPythonFeatureImp::setEdit(int ModNum)
                     Py::Tuple args(1);
                     args.setItem(0, Py::Int(ModNum));
                     Py::Boolean ok(method.apply(args));
-                    return (bool)ok;
+                    bool value = (bool)ok;
+                    return value ? Accepted : Rejected;
                 }
                 else {
                     Py::Callable method(vp.getAttr(std::string("setEdit")));
@@ -433,7 +435,8 @@ bool ViewProviderPythonFeatureImp::setEdit(int ModNum)
                     args.setItem(0, Py::Object(object->getPyObject(), true));
                     args.setItem(1, Py::Int(ModNum));
                     Py::Boolean ok(method.apply(args));
-                    return (bool)ok;
+                    bool value = (bool)ok;
+                    return value ? Accepted : Rejected;
                 }
             }
         }
@@ -443,10 +446,11 @@ bool ViewProviderPythonFeatureImp::setEdit(int ModNum)
         e.ReportException();
     }
 
-    return false;
+    return NotImplemented;
 }
 
-bool ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
+ViewProviderPythonFeatureImp::ValueT
+ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
 {
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -460,7 +464,8 @@ bool ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
                     Py::Tuple args(1);
                     args.setItem(0, Py::Int(ModNum));
                     Py::Boolean ok(method.apply(args));
-                    return (bool)ok;
+                    bool value = (bool)ok;
+                    return value ? Accepted : Rejected;
                 }
                 else {
                     Py::Callable method(vp.getAttr(std::string("unsetEdit")));
@@ -468,7 +473,8 @@ bool ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
                     args.setItem(0, Py::Object(object->getPyObject(), true));
                     args.setItem(1, Py::Int(ModNum));
                     Py::Boolean ok(method.apply(args));
-                    return (bool)ok;
+                    bool value = (bool)ok;
+                    return value ? Accepted : Rejected;
                 }
             }
         }
@@ -478,10 +484,11 @@ bool ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
         e.ReportException();
     }
 
-    return false;
+    return NotImplemented;
 }
 
-bool ViewProviderPythonFeatureImp::doubleClicked(void)
+ViewProviderPythonFeatureImp::ValueT
+ViewProviderPythonFeatureImp::doubleClicked(void)
 {
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -495,14 +502,16 @@ bool ViewProviderPythonFeatureImp::doubleClicked(void)
                     Py::Tuple args;
                     //args.setItem(0, Py::Int(ModNum));
                     Py::Boolean ok(method.apply(args));
-                    return (bool)ok;
+                    bool value = (bool)ok;
+                    return value ? Accepted : Rejected;
                 }
                 else {
                     Py::Callable method(vp.getAttr(std::string("doubleClicked")));
                     Py::Tuple args(1);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
                     Py::Boolean ok(method.apply(args));
-                    return (bool)ok;
+                    bool value = (bool)ok;
+                    return value ? Accepted : Rejected;
                 }
             }
         }
@@ -512,7 +521,7 @@ bool ViewProviderPythonFeatureImp::doubleClicked(void)
         e.ReportException();
     }
 
-    return false;
+    return NotImplemented;
 }
 
 void ViewProviderPythonFeatureImp::setupContextMenu(QMenu* menu)

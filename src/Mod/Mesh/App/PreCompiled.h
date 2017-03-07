@@ -77,6 +77,8 @@
 //# include <windows.h>
 #endif
 
+#include <boost/algorithm/string/replace.hpp>
+
 // Python
 #include <Python.h>
 

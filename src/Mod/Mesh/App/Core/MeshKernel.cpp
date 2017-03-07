@@ -173,12 +173,29 @@ void MeshKernel::AddFacets(const std::vector<MeshGeomFacet> &rclFAry)
     Merge(tmp);
 }
 
-unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry)
+unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry,
+                                    bool checkManifolds)
 {
     // Build map of edges of the referencing facets we want to append
 #ifdef FC_DEBUG
     unsigned long countPoints = CountPoints();
 #endif
+
+    // if the manifold check shouldn't be done then just add all faces
+    if (!checkManifolds) {
+        unsigned long countFacets = CountFacets();
+        unsigned long countValid = rclFAry.size();
+        _aclFacetArray.reserve(countFacets + countValid);
+
+        // just add all faces now
+        for (std::vector<MeshFacet>::const_iterator pF = rclFAry.begin(); pF != rclFAry.end(); ++pF) {
+            _aclFacetArray.push_back(*pF);
+        }
+
+        RebuildNeighbours(countFacets);
+        return _aclFacetArray.size();
+    }
+
     this->_aclPointArray.ResetInvalid();
     unsigned long k = CountFacets();
     std::map<std::pair<unsigned long, unsigned long>, std::list<unsigned long> > edgeMap;
@@ -316,12 +333,14 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry)
     return _aclFacetArray.size();
 }
 
-unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry, const std::vector<Base::Vector3f>& rclPAry)
+unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry,
+                                    const std::vector<Base::Vector3f>& rclPAry,
+                                    bool checkManifolds)
 {
     for (std::vector<Base::Vector3f>::const_iterator it = rclPAry.begin(); it != rclPAry.end(); ++it)
         _clBoundBox.Add(*it);
     this->_aclPointArray.insert(this->_aclPointArray.end(), rclPAry.begin(), rclPAry.end());
-    return this->AddFacets(rclFAry);
+    return this->AddFacets(rclFAry, checkManifolds);
 }
 
 void MeshKernel::Merge(const MeshKernel& rKernel)

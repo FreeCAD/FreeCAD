@@ -68,7 +68,7 @@ void SoZoomTranslation::initClass()
     // * SoGetPrimitiveCountAction
     // The element SoViewportRegionElement is enabled by the
     // above listed actions.
-    // Addionally, SoViewVolumeElement is enabled for
+    // Additionally, SoViewVolumeElement is enabled for
     // * SoAudioRenderAction
     // * SoHandleEventAction
     // And SoViewportRegionElement is enabled for

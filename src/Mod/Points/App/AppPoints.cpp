@@ -40,7 +40,7 @@ namespace Points {
 }
 
 /* Python entry */
-PyMODINIT_FUNC initPoints()
+PyMOD_INIT_FUNC(Points)
 {
     PyObject* pointsModule = Points::initModule();
     Base::Console().Log("Loading Points module... done\n");
@@ -61,4 +61,5 @@ PyMODINIT_FUNC initPoints()
     Points::FeatureCustom         ::init();
     Points::StructuredCustom      ::init();
     Points::FeaturePython         ::init();
+    PyMOD_Return(pointsModule);
 }

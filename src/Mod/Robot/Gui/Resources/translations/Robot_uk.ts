@@ -379,7 +379,12 @@
         <translation>Невірний вибір</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -409,7 +414,7 @@
         <location filename="../../CommandExport.cpp" line="-40"/>
         <location line="+62"/>
         <source>KRL file</source>
-        <translation type="unfinished">KRL file</translation>
+        <translation>KRL файл</translation>
     </message>
     <message>
         <location line="-61"/>
@@ -439,12 +444,11 @@
         <translation>Щоб використовувати цю команду, курсор миші повинен знаходитися над попередньо обраною геометричною побудовою. Подробиці дивіться у документації.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Оберіть одного з роботів щоб встановити домашню позицію</translation>
+        <translation type="obsolete">Оберіть одного з роботів щоб встановити домашню позицію</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Оберіть одного Робота</translation>
     </message>

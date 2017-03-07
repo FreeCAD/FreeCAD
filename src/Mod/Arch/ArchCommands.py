@@ -241,11 +241,11 @@ def setAsSubcomponent(obj):
                 obj.ViewObject.Transparency = int(color[3]*100)
             obj.ViewObject.hide()
 
-def fixDAG(obj):
+def fixDAG(obj,force=False):
     '''fixDAG(object): Fixes non-DAG problems in windows and rebars
     by removing supports and external geometry from underlying sketches'''
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    if p.GetBool("archRemoveExternal",False):
+    if p.GetBool("archRemoveExternal",False) or force:
         if Draft.getType(obj) in ["Window","Rebar"]:
             if obj.Base:
                 if hasattr(obj.Base,"Support"):
@@ -454,7 +454,7 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
             try:
                 f = Part.Face(Part.makePolygon(pts))
             except:
-                print "getShapeFromMesh: error building face from polygon"
+                print("getShapeFromMesh: error building face from polygon")
                 #pass
             else:
                 faces.append(f)
@@ -462,12 +462,12 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
         try:
             solid = Part.Solid(shell)
         except Part.OCCError:
-            print "getShapeFromMesh: error creating solid"
+            print("getShapeFromMesh: error creating solid")
         else:
             try:
                 solid = solid.removeSplitter()
             except Part.OCCError:
-                print "getShapeFromMesh: error removing splitter"
+                print("getShapeFromMesh: error removing splitter")
                 #pass
             return solid
     
@@ -495,11 +495,11 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
         if flat:
             return se
     except Part.OCCError:
-        print "getShapeFromMesh: error removing splitter"
+        print("getShapeFromMesh: error removing splitter")
         try:
             cp = Part.makeCompound(faces)
         except Part.OCCError:
-            print "getShapeFromMesh: error creating compound"
+            print("getShapeFromMesh: error creating compound")
             return None
         else:
             return cp
@@ -507,7 +507,7 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
         try:
             solid = Part.Solid(se)
         except Part.OCCError:
-            print "getShapeFromMesh: error creating solid"
+            print("getShapeFromMesh: error creating solid")
             return se
         else:
             return solid

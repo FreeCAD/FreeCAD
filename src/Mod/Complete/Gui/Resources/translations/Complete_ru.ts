@@ -65,13 +65,17 @@
         <translation>Примитивы</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Параметрический</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Внешность объекта</translation>
+        <translation type="obsolete">Внешность объекта</translation>
     </message>
     <message>
         <location line="+1"/>

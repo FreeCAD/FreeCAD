@@ -291,12 +291,7 @@
     <message>
       <location filename="StartPage.py" line="108"/>
       <source>There is a new release of FreeCAD available.</source>
-      <translation>Une nouvelle version de FreeCAD est disponible.</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="109"/>
-      <source>Load an FEM example analysis</source>
-      <translation>Charger un exemple d'analyse MEF</translation>
+      <translation>Nouvelle version de FreeCAD disponible.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="54"/>
@@ -317,6 +312,16 @@
       <location filename="StartPage.py" line="112"/>
       <source>See all commits</source>
       <translation>Voir tous les commits</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM 3D example analysis</source>
+      <translation>Charger un exemple de simulation de MÉF 3D</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="113"/>
+      <source>Load an FEM 2D example analysis</source>
+      <translation>Charger un exemple de simulation de MÉF 2D</translation>
     </message>
   </context>
 </TS>

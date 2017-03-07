@@ -445,8 +445,15 @@ struct SMESH_ElementSearcherImpl: public SMESH_ElementSearcher
     : _mesh(&mesh),_meshPartIt(elemIt),_ebbTree(0),_nodeSearcher(0),_tolerance(tol),_outerFacesFound(false) {}
   virtual ~SMESH_ElementSearcherImpl()
   {
-    if ( _ebbTree )      delete _ebbTree;      _ebbTree      = 0;
-    if ( _nodeSearcher ) delete _nodeSearcher; _nodeSearcher = 0;
+      if ( _ebbTree )
+          delete _ebbTree;
+
+      _ebbTree = 0;
+
+      if ( _nodeSearcher )
+          delete _nodeSearcher;
+
+      _nodeSearcher = 0;
   }
   virtual int FindElementsByPoint(const gp_Pnt&                      point,
                                   SMDSAbs_ElementType                type,

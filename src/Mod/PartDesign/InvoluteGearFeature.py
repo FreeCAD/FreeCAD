@@ -29,7 +29,7 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from FreeCADGui import PySideUic as uic
 
-__title__="PartDesign InvoluteGearObject managment"
+__title__="PartDesign InvoluteGearObject management"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 

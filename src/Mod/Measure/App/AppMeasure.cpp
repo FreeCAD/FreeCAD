@@ -26,24 +26,36 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
 #include "Measurement.h"
 #include "MeasurementPy.h"
 
-struct PyMethodDef Measure_methods[] = {
-//    {"read"   , read,  1},
-    {NULL, NULL, 0, NULL}        /* end of table marker */
+namespace Measure {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("Measure")
+    {
+        initialize("This module is the Measure module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
 };
 
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
 
-PyDoc_STRVAR(module_Measure_doc,
-"This module is the Measure module.");
+} // namespace Measure
 
 
 /* Python entry */
-extern "C" {
-void MeasureExport initMeasure()
+PyMOD_INIT_FUNC(Measure)
 {
     // load dependent module
     try {
@@ -51,24 +63,18 @@ void MeasureExport initMeasure()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
-    PyObject* measureModule = Py_InitModule3("Measure", Measure_methods, module_Measure_doc);   /* mod name, table ptr */
- 
+    PyObject* mod = Measure::initModule();
     // Add Types to module
-    Base::Interpreter().addType(&Measure::MeasurementPy      ::Type,measureModule,"Measurement");
-
-    Base::Console().Log("Loading Measure module... done\n");
-    
+    Base::Interpreter().addType(&Measure::MeasurementPy      ::Type,mod,"Measurement");
+    Base::Console().Log("Loading Inspection module... done\n");
     Measure::Measurement         ::init();
+    PyMOD_Return(mod);
 }
 
-
-
-} // extern "C"
-
 // debug print for sketchsolv 
-void debugprint(std::string s)
+void debugprint(const std::string& s)
 {
-    Base::Console().Log(s.c_str());
+    Base::Console().Log("%s", s.c_str());
 }

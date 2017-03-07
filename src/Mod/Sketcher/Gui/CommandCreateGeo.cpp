@@ -2897,7 +2897,7 @@ private:
             currentgeoid++;
 
             Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+                                "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
                                 sketchgui->getObject()->getNameInDocument(),
                                 currentgeoid);
         }
@@ -3325,7 +3325,7 @@ public:
                 currentgeoid++;
 
                 Gui::Command::doCommand(Gui::Command::Doc,
-                                        "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+                                        "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
                                         sketchgui->getObject()->getNameInDocument(),
                                         currentgeoid);
             }
@@ -3718,7 +3718,7 @@ public:
             currentgeoid++;
 
             Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+                                    "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
                                     sketchgui->getObject()->getNameInDocument(),
                                     currentgeoid);
 
@@ -4071,7 +4071,7 @@ public:
                 currentgeoid++;
 
                 Gui::Command::doCommand(Gui::Command::Doc,
-                    "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+                    "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
                     sketchgui->getObject()->getNameInDocument(),
                     currentgeoid);
                     

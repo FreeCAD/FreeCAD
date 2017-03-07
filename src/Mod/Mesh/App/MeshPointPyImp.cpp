@@ -100,9 +100,9 @@ PyObject*  MeshPointPy::move(PyObject *args)
     Py_Return;
 }
 
-Py::Int MeshPointPy::getIndex(void) const
+Py::Long MeshPointPy::getIndex(void) const
 {
-    return Py::Int((long) getMeshPointPtr()->Index);
+    return Py::Long((long) getMeshPointPtr()->Index);
 }
 
 Py::Boolean MeshPointPy::getBound(void) const

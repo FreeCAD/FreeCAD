@@ -125,6 +125,8 @@
 
 #include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/annex/Profiler/SoProfiler.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
 #include <QGesture>
 
 #include "SoTouchEvents.h"
@@ -351,6 +353,10 @@ View3DInventorViewer::View3DInventorViewer(const QGLFormat& format, QWidget* par
 
 void View3DInventorViewer::init()
 {
+    shading = true;
+    fpsEnabled = false;
+    vboEnabled = false;
+
     Gui::Selection().Attach(this);
 
     // Coin should not clear the pixel-buffer, so the background image
@@ -383,7 +389,7 @@ void View3DInventorViewer::init()
     pcBackGround = new SoFCBackgroundGradient;
     pcBackGround->ref();
 
-    // Set up foreground, overlayed scenegraph.
+    // Set up foreground, overlaid scenegraph.
     this->foregroundroot = new SoSeparator;
     this->foregroundroot->ref();
 
@@ -704,8 +710,26 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode)
     overrideMode = mode;
 
     auto views = getDocument()->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
-    for (auto view : views)
-        view->setOverrideMode(mode);
+    if (mode == "No Shading") {
+        this->shading = false;
+        std::string flatLines = "Flat Lines";
+        for (auto view : views)
+            view->setOverrideMode(flatLines);
+        this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
+    }
+    else if (mode == "Hidden Line") {
+        this->shading = true;
+        std::string shaded = "Shaded";
+        for (auto view : views)
+            view->setOverrideMode(shaded);
+        this->getSoRenderManager()->setRenderMode(SoRenderManager::HIDDEN_LINE);
+    }
+    else {
+        this->shading = true;
+        for (auto view : views)
+            view->setOverrideMode(mode);
+        this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
+    }
 }
 
 /// update override mode. doesn't affect providers
@@ -785,6 +809,16 @@ void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
 void View3DInventorViewer::setEnabledFPSCounter(bool on)
 {
     fpsEnabled = on;
+}
+
+void View3DInventorViewer::setEnabledVBO(bool on)
+{
+    vboEnabled = on;
+}
+
+bool View3DInventorViewer::isEnabledVBO() const
+{
+    return vboEnabled;
 }
 
 void View3DInventorViewer::setAxisCross(bool on)
@@ -950,6 +984,12 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
     if (useBackground) {
         root->addChild(backgroundroot);
         root->addChild(cb);
+    }
+
+    if (!this->shading) {
+        SoLightModel* lm = new SoLightModel;
+        lm->model = SoLightModel::BASE_COLOR;
+        root->addChild(lm);
     }
 
     root->addChild(getHeadlight());
@@ -1314,6 +1354,10 @@ void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
     uint32_t id = this->getSoRenderManager()->getGLRenderAction()->getCacheContext();
     gl.setCacheContext(id);
     gl.setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
+    if (!this->shading) {
+        SoLightModelElement::set(gl.getState(), selectionRoot, SoLightModelElement::BASE_COLOR);
+        SoOverrideElement::setLightModelOverride(gl.getState(), selectionRoot, true);
+    }
     gl.apply(this->backgroundroot);
     gl.apply(this->getSoRenderManager()->getSceneGraph());
     gl.apply(this->foregroundroot);
@@ -1408,7 +1452,7 @@ void View3DInventorViewer::renderGLImage()
     glEnable(GL_DEPTH_TEST);
 }
 
-//#define ENABLE_GL_DEPTH_RANGE
+// #define ENABLE_GL_DEPTH_RANGE
 // The calls of glDepthRange inside renderScene() causes problems with transparent objects
 // so that's why it is disabled now: http://forum.freecadweb.org/viewtopic.php?f=3&t=6037&hilit=transparency
 
@@ -1438,11 +1482,19 @@ void View3DInventorViewer::renderScene(void)
 
     // Render our scenegraph with the image.
     SoGLRenderAction* glra = this->getSoRenderManager()->getGLRenderAction();
-    SoGLWidgetElement::set(glra->getState(), qobject_cast<QGLWidget*>(this->getGLWidget()));
-    SoGLRenderActionElement::set(glra->getState(), glra);
+    SoState* state = glra->getState();
+    SoGLWidgetElement::set(state, qobject_cast<QGLWidget*>(this->getGLWidget()));
+    SoGLRenderActionElement::set(state, glra);
+    SoGLVBOActivatedElement::set(state, this->vboEnabled);
     glra->apply(this->backgroundroot);
 
     navigation->updateAnimation();
+
+    if (!this->shading) {
+        state->push();
+        SoLightModelElement::set(state, selectionRoot, SoLightModelElement::BASE_COLOR);
+        SoOverrideElement::setLightModelOverride(state, selectionRoot, true);
+    }
 
     try {
         // Render normal scenegraph.
@@ -1456,6 +1508,10 @@ void View3DInventorViewer::renderScene(void)
         inherited::actualRedraw();
         QMessageBox::warning(parentWidget(), QObject::tr("Out of memory"),
                              QObject::tr("Not enough memory available to display the data."));
+    }
+
+    if (!this->shading) {
+        state->pop();
     }
 
 #if defined (ENABLE_GL_DEPTH_RANGE)
@@ -1475,7 +1531,7 @@ void View3DInventorViewer::renderScene(void)
     glDepthRange(0.1,1.0);
 #endif
 
-    // Immediately reschedule to get continous spin animation.
+    // Immediately reschedule to get continuous spin animation.
     if (this->isAnimating()) {
         this->getSoRenderManager()->scheduleRedraw();
     }

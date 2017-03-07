@@ -102,7 +102,7 @@ class MathParser:
                 denominator = self.parseParenthesis()
                 if denominator == 0:
                     raise ZeroDivisionError(
-                        "Division by 0 kills baby whales (occured at index " +
+                        "Division by 0 kills baby whales (occurred at index " +
                         str(div_index) +
                         ")")
                 values.append(1.0 / denominator)
@@ -232,7 +232,7 @@ class Spreadsheet:
     def __setattr__(self, key, value):
         if self.isKey(key):
             key = key.lower()
-            if DEBUG: print "Setting key ",key," to value ",value
+            if DEBUG: print("Setting key ",key," to value ",value)
             if (value == "") or (value == None):
                 # remove cell
                 if key in self._cells.keys():
@@ -261,7 +261,7 @@ class Spreadsheet:
                 try:
                     e = self.evaluate(key)
                 except:
-                    print "Spreadsheet: Error evaluating formula"
+                    print("Spreadsheet: Error evaluating formula")
                     return None
                 else:
                     return e
@@ -432,17 +432,17 @@ class Spreadsheet:
                     if self.isNumeric(e):
                         result += str(self.evaluate(e))
                     else:
-                        print "Spreadsheet: Error evaluating formula"
+                        print("Spreadsheet: Error evaluating formula")
                         return
                 elif self.isNumeric(e):
                     result += str(self._cells[e.lower()])
             else:
                 result += e
-        if DEBUG: print "Evaluating ",result
+        if DEBUG: print("Evaluating ",result)
         try:
             p = MathParser(result)
             result = p.getValue()
-        except Exception as (ex):
+        except Exception as ex:
             raise #
             #msg = ex.message
             #raise Exception(msg) #would discard the type
@@ -605,7 +605,7 @@ class SpreadsheetController:
                     try:
                         setattr(spreadsheet.Proxy,obj.BaseCell,len(dataset))
                     except:
-                        print "Spreadsheet: Error counting objects"
+                        print("Spreadsheet: Error counting objects")
             elif obj.Data:
                 for i in range(len(dataset)):
                     # get the correct cell key
@@ -618,13 +618,13 @@ class SpreadsheetController:
                     else:
                         r = int(r) + i
                     cell = c+str(r)
-                    if DEBUG: print "auto setting cell ",cell
+                    if DEBUG: print("auto setting cell ",cell)
                     if spreadsheet.Proxy.isKey(cell):
                         # get the contents
                         args = obj.Data.split(".")
                         value = dataset[i]
                         for arg in args:
-                            print arg
+                            print(arg)
                             if hasattr(value,arg):
                                 value = getattr(value,arg)
                         try:
@@ -634,9 +634,9 @@ class SpreadsheetController:
                                 value = str(value)
                                 value = ''.join([ c for c in value if c not in ('<','>',':')])
                             setattr(spreadsheet.Proxy,cell,value)
-                            if DEBUG: print "setting cell ",cell," to value ",value
+                            if DEBUG: print("setting cell ",cell," to value ",value)
                         except:
-                            print "Spreadsheet: Error retrieving property "+obj.Data+" from object "+dataset[i].Name
+                            print("Spreadsheet: Error retrieving property "+obj.Data+" from object "+dataset[i].Name)
 
 
 class ViewProviderSpreadsheetController:
@@ -671,7 +671,7 @@ class SpreadsheetPropertyController:
                 try:
                     value = getattr(sp.Proxy,obj.Cell)
                 except:
-                    if DEBUG: print "No value for cell ",obj.Cell," in spreadsheet."
+                    if DEBUG: print("No value for cell ",obj.Cell," in spreadsheet.")
                     return
                 if obj.TargetType == "Property":
                     b = obj.TargetObject
@@ -685,9 +685,9 @@ class SpreadsheetPropertyController:
                     try:
                         setattr(b,p,value)
                         FreeCAD.ActiveDocument.recompute()
-                        if DEBUG: print "setting property ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
+                        if DEBUG: print("setting property ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value)
                     except:
-                        if DEBUG: print "unable to set property ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
+                        if DEBUG: print("unable to set property ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value)
                 else:
                     if Draft.getType(obj.TargetObject) == "Sketch":
                         if obj.TargetProperty.isdigit():
@@ -696,17 +696,17 @@ class SpreadsheetPropertyController:
                                 c = int(obj.TargetProperty)
                                 obj.TargetObject.setDatum(c,float(value))
                                 FreeCAD.ActiveDocument.recompute()
-                                if DEBUG: print "setting constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
+                                if DEBUG: print("setting constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value)
                             except:
-                                if DEBUG: print "unable to set constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
+                                if DEBUG: print("unable to set constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value)
                         else:
                             # try setting by constraint name
                             try:
                                 obj.TargetObject.setDatum(obj.TargetProperty,float(value))
                                 FreeCAD.ActiveDocument.recompute()
-                                if DEBUG: print "setting constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
+                                if DEBUG: print("setting constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value)
                             except:
-                                if DEBUG: print "unable to set constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
+                                if DEBUG: print("unable to set constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value)
 
         
     def __getstate__(self):
@@ -785,7 +785,7 @@ class SpreadsheetView(QtGui.QWidget):
         QtCore.QObject.connect(self.computeButton, QtCore.SIGNAL("clicked()"), self.recompute)
 
     def closeEvent(self, event):
-        #if DEBUG: print "Closing spreadsheet view"
+        #if DEBUG: print("Closing spreadsheet view")
         if self.spreadsheet:
             # before deleting this view, we remove the reference to it in the object
             if hasattr(self.spreadsheet,"ViewObject"):
@@ -811,7 +811,7 @@ class SpreadsheetView(QtGui.QWidget):
                         self.doNotChange = True
                     if content == None:
                         content = ""
-                    if DEBUG: print "Updating ",cell," to ",content
+                    if DEBUG: print("Updating ",cell," to ",content)
                     if self.table.item(r,c):
                         self.table.item(r,c).setText(str(content))
                     else:
@@ -834,20 +834,20 @@ class SpreadsheetView(QtGui.QWidget):
     def changeCell(self,r,c,value=None):
         "changes the contens of a cell"
         if self.doNotChange:
-            if DEBUG: print "DoNotChange flag is set"
+            if DEBUG: print("DoNotChange flag is set")
             self.doNotChange = False
         elif self.spreadsheet:
             key = "abcdefghijklmnopqrstuvwxyz"[c]+str(r+1)
             if value == None:
                 value = self.table.item(r,c).text()
             if value == "":
-                if DEBUG: print "Wiping "+key
+                if DEBUG: print("Wiping "+key)
                 if self.table.item(r,c):
                     self.table.item(r,c).setText("")
                 if key in self.spreadsheet.Proxy._cells.keys():
                     del self.spreadsheet.Proxy._cells[key]
             else:
-                if DEBUG: print "Changing "+key+" to "+value
+                if DEBUG: print("Changing "+key+" to "+value)
                 # store the entry as best as possible
                 try:
                     v = int(value)
@@ -870,7 +870,7 @@ class SpreadsheetView(QtGui.QWidget):
         if self.spreadsheet:
             c = "abcdefghijklmnopqrstuvwxyz"[c]
             r = r+1
-            if DEBUG: print "Active cell "+c+str(r)
+            if DEBUG: print("Active cell "+c+str(r))
             from DraftTools import translate
             self.label.setText(str(translate("Spreadsheet","Cell"))+" "+c.upper()+str(r)+" :")
             content = self.spreadsheet.Proxy.getFunction(c+str(r))
@@ -881,13 +881,13 @@ class SpreadsheetView(QtGui.QWidget):
     def getEditLine(self):
         "called when something has been entered in the edit line"
         txt = str(self.lineEdit.text())
-        if DEBUG: print "Text edited ",txt
+        if DEBUG: print("Text edited ",txt)
         r = self.table.currentRow()
         c = self.table.currentColumn()
         self.changeCell(r,c,txt)
 
     def wipeCell(self):
-        if DEBUG: print "Wiping cell"
+        if DEBUG: print("Wiping cell")
         self.lineEdit.setText("")
         self.getEditLine()
 
@@ -1007,7 +1007,7 @@ def makeSpreadsheetController(spreadsheet,cell=None,direction=None):
 
 def makeSpreadsheetPropertyController(spreadsheet,object=None,prop=None,cell=None):
     """makeSpreadsheetPropertyController(spreadsheet,[object,prop,cell]): adds a 
-    property controller, targetting the given object if any, to the given spreadsheet.
+    property controller, targeting the given object if any, to the given spreadsheet.
     You can give a property (such as "Length" or "Proxy.Length") and a cell address
     (such as "B6")."""
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","PropertyController")
@@ -1070,7 +1070,7 @@ def read(filename):
             cn = 0
             for c in row[:26]:
                 cl = "abcdefghijklmnopqrstuvwxyz"[cn]
-                #print "setting ",cl+str(rn)," ",c
+                #print("setting ",cl+str(rn)," ",c)
                 try:
                     c = int(c)
                 except ValueError:
@@ -1081,21 +1081,21 @@ def read(filename):
                 setattr(sp.Proxy,cl+str(rn),c)
                 cn += 1
             rn += 1
-    print "successfully imported ",filename
+    print("successfully imported ",filename)
 
 
 def export(exportList,filename):
     "called when freecad exports a csv file"
     import csv, Draft
     if not exportList:
-        print "Spreadsheet: Nothing to export"
+        print("Spreadsheet: Nothing to export")
         return
     obj = exportList[0]
     if Draft.getType(obj) != "Spreadsheet":
-        print "Spreadhseet: The selected object is not a spreadsheet"
+        print("Spreadhseet: The selected object is not a spreadsheet")
         return
     if not obj.Proxy._cells:
-        print "Spreadsheet: The selected spreadsheet contains no cell"
+        print("Spreadsheet: The selected spreadsheet contains no cell")
         return
     numcols = ("abcdefghijklmnopqrstuvwxyz".index(str(obj.Proxy.cols[-1])))+1
     numrows = int(obj.Proxy.rows[-1])
@@ -1110,7 +1110,7 @@ def export(exportList,filename):
                 else:
                     r.append("")
             csvfile.writerow(r)
-    print "successfully exported ",filename
+    print("successfully exported ",filename)
 
 
 #FreeCADGui.addCommand('Spreadsheet_Create',_Command_Spreadsheet_Create())

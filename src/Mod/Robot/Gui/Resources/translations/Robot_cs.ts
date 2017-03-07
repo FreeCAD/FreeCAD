@@ -379,7 +379,12 @@
         <translation>Neplatný výběr</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -439,12 +444,11 @@
         <translation>Pro použití tohoto příkazu musíte najet myší na geometrii (předvýběr). Detaily viz dokumentace.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Vyberte jednoho robota pro nastavení výchozí pozice</translation>
+        <translation type="obsolete">Vyberte jednoho robota pro nastavení výchozí pozice</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Vyberte robota</translation>
     </message>
@@ -982,7 +986,7 @@
     <message>
         <location line="+36"/>
         <source>Don&apos;t change Cont</source>
-        <translation type="unfinished">Don&apos;t change Cont</translation>
+        <translation>Neměňte cont</translation>
     </message>
     <message>
         <location line="+5"/>

@@ -4,7 +4,7 @@
 <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+476"/>
+        <location filename="../../Command.cpp" line="+474"/>
         <source>Drawing</source>
         <translation>図面</translation>
     </message>
@@ -94,7 +94,7 @@
 <context>
     <name>CmdDrawingNewPage</name>
     <message>
-        <location line="-181"/>
+        <location line="-179"/>
         <source>Drawing</source>
         <translation>図面</translation>
     </message>
@@ -108,7 +108,7 @@
 <context>
     <name>CmdDrawingNewView</name>
     <message>
-        <location line="+216"/>
+        <location line="+214"/>
         <source>Drawing</source>
         <translation>図面</translation>
     </message>
@@ -126,7 +126,7 @@
 <context>
     <name>CmdDrawingOpen</name>
     <message>
-        <location line="-252"/>
+        <location line="-250"/>
         <source>Drawing</source>
         <translation>図面</translation>
     </message>
@@ -138,13 +138,13 @@
     <message>
         <location line="+1"/>
         <source>Open a scalable vector graphic</source>
-        <translation>ベクトルグラフィックを開きます。</translation>
+        <translation>スケーラブル・ベクター・グラフィックを開きます。</translation>
     </message>
 </context>
 <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-        <location line="+377"/>
+        <location line="+375"/>
         <source>Drawing</source>
         <translation>図面</translation>
     </message>
@@ -207,13 +207,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Spreadsheet View</source>
-        <translation type="unfinished">&amp;Spreadsheet View</translation>
+        <translation>スプレッドシートビュー(&amp;S)</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-        <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
+        <translation>アクティブな図面に選択されているスプレッドシートのビューを挿入</translation>
     </message>
 </context>
 <context>
@@ -294,7 +294,7 @@
     <message>
         <location line="+1"/>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDFファイル</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -358,12 +358,12 @@ Do you want to continue?</source>
     <message>
         <location line="+11"/>
         <source>Opening file failed</source>
-        <translation type="unfinished">Opening file failed</translation>
+        <translation>ファイルを開けませんでした。</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
+        <translation>書き込み用ファイル &apos;%1&apos; を開くことができません。</translation>
     </message>
 </context>
 <context>
@@ -673,17 +673,17 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>There is currently no active document to complete the operation</source>
-        <translation type="unfinished">There is currently no active document to complete the operation</translation>
+        <translation>操作を完了するためのアクティブなドキュメントが現在ありません。</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>No active view</source>
-        <translation type="unfinished">No active view</translation>
+        <translation>アクティブなビューがありません。</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active view to complete the operation</source>
-        <translation type="unfinished">There is currently no active view to complete the operation</translation>
+        <translation>操作を完了するためのアクティブなビューが現在ありません。</translation>
     </message>
 </context>
 <context>
@@ -771,8 +771,8 @@ Do you want to continue?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location line="-171"/>
-        <location line="+519"/>
+        <location line="-169"/>
+        <location line="+517"/>
         <source>Choose an SVG file to open</source>
         <translation>開くSVGファイルを選択</translation>
     </message>
@@ -811,11 +811,11 @@ Do you want to continue?</source>
         <translation type="obsolete">ビューを挿入するページを作成</translation>
     </message>
     <message>
-        <location line="-251"/>
-        <location line="+519"/>
+        <location line="-249"/>
+        <location line="+517"/>
         <location line="+53"/>
         <source>Scalable Vector Graphic</source>
-        <translation type="unfinished">Scalable Vector Graphic</translation>
+        <translation>スケーラブル・ベクター・グラフィック</translation>
     </message>
     <message>
         <location line="-313"/>
@@ -851,12 +851,12 @@ Do you want to continue?</source>
     <message>
         <location line="+6"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>すべてのファイル</translation>
     </message>
     <message>
         <location line="+113"/>
         <source>Select exactly one Spreadsheet object.</source>
-        <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
+        <translation>スプレッドシートオブジェクトを1 つだけ選択して下さい。</translation>
     </message>
     <message>
         <source>SVG (*.svg)</source>

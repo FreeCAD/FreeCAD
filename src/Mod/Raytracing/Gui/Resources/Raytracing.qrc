@@ -37,5 +37,10 @@
         <file>translations/Raytracing_sr.qm</file>
         <file>translations/Raytracing_el.qm</file>
         <file>translations/Raytracing_sl.qm</file>
+        <file>translations/Raytracing_eu.qm</file>
+        <file>translations/Raytracing_ca.qm</file>
+        <file>translations/Raytracing_gl.qm</file>
+        <file>translations/Raytracing_kab.qm</file>
+        <file>translations/Raytracing_ko.qm</file>
     </qresource>
 </RCC>

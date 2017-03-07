@@ -188,14 +188,29 @@ public:
     /*!
      * \return -1 on error
      */
-    int ExposeInternalGeometry(int GeoId);
+    int exposeInternalGeometry(int GeoId);
     /*!
      \brief Deletes all unused (not further constrained) internal geometry
      \param GeoId - the geometry having the internal geometry to delete
      \param delgeoid - if true in addition to the unused internal geometry also deletes the GeoId geometry
      \retval int - returns -1 on error, otherwise the number of deleted elements
      */
-    int DeleteUnusedInternalGeometry(int GeoId, bool delgeoid=false);
+    int deleteUnusedInternalGeometry(int GeoId, bool delgeoid=false);
+    /*!
+     \brief Approximates the given geometry with a B-Spline
+     \param GeoId - the geometry to approximate
+     \param delgeoid - if true in addition to the unused internal geometry also deletes the GeoId geometry
+     \retval bool - returns true if the approximation succeeded, or false if it did not succeed.
+     */
+    bool convertToNURBS(int GeoId);
+    
+    /*!
+     \brief Increases the degree of a BSpline by degreeincrement, which defaults to 1
+     \param GeoId - the geometry of type bspline to increase the degree
+     \param degreeincrement - the increment in number of degrees to effect
+     \retval bool - returns true if the increase in degree succeeded, or false if it did not succeed.
+     */
+    bool increaseBSplineDegree(int GeoId, int degreeincrement = 1);
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
     void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const;
@@ -285,7 +300,7 @@ public:
         rlOtherBody,
     };
     /// Return true if this object is allowed as external geometry for the
-    /// sketch. rsn argument recieves the reason for disallowing.
+    /// sketch. rsn argument receives the reason for disallowing.
     bool isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj, eReasonList* rsn = 0) const;
 
 protected:

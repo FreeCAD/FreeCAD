@@ -4,7 +4,7 @@
  *      Rall Algebra of (subset of) the classes defined in frames,
  *      i.e. classes that contain a set (value,derivative,2nd derivative)
  *      and define operations on that set
- *      this classes are usefull for automatic differentiation ( <-> symbolic diff ,
+ *      this classes are useful for automatic differentiation ( <-> symbolic diff ,
  *      <-> numeric diff).
  *      Defines VectorAcc, RotationAcc, FrameAcc, doubleAcc.
  *      Look at the corresponding classes Vector Rotation Frame Twist and

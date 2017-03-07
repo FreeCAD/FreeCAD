@@ -42,7 +42,7 @@ class Creator(recreator.Redirector):
         path.append(ocl.Line(ocl.Point(self.x, self.y, self.z), ocl.Point(self.x, self.y, self.z)))
         self.setPdcfIfNotSet()
         if (self.z>self.minz):
-            self.pdcf.setZ(self.z)  # Adjust Z if we have gotten a higher limit (Fix pocketing loosing steps when using attach?)
+            self.pdcf.setZ(self.z)  # Adjust Z if we have gotten a higher limit (Fix pocketing losing steps when using attach?)
         else:
             self.pdcf.setZ(self.minz/units) # Else use minz
         self.pdcf.setPath(path)
@@ -56,7 +56,7 @@ class Creator(recreator.Redirector):
         self.setPdcfIfNotSet()
         
         if (self.z>self.minz):
-            self.pdcf.setZ(self.z)  # Adjust Z if we have gotten a higher limit (Fix pocketing loosing steps when using attach?)
+            self.pdcf.setZ(self.z)  # Adjust Z if we have gotten a higher limit (Fix pocketing losing steps when using attach?)
         else:
             self.pdcf.setZ(self.minz/units) # Else use minz
             

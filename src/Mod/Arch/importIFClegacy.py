@@ -1457,7 +1457,7 @@ class IfcSchema:
             entity["supertype"] = subtypeofmatch.groups()[0].upper() if subtypeofmatch else None
 
             # find the shortest string matched from the end of the entity type header to the
-            # first occurence of a NO_ATTR string (when it occurs on a new line)
+            # first occurrence of a NO_ATTR string (when it occurs on a new line)
             inner_str = re.search(";(.*?)$", raw_entity_str, re.DOTALL).groups()[0]            
 
             attrs_str = min([inner_str.partition("\r\n "+a)[0] for a in self.NO_ATTR])

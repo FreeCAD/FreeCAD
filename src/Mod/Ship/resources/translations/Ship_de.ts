@@ -149,7 +149,7 @@
     <message>
       <location filename="TaskPanel.py" line="234"/>
       <source>Trim angle</source>
-      <translation type="unfinished">Trim angle</translation>
+      <translation>Winkel schneiden</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="240"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="TankInstance.py" line="129"/>
       <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
-      <translation type="unfinished">Tank volume operation failed. The tool is retrying that slightly moving the free surface position</translation>
+      <translation>Tankvolumenbetrieb fehlgeschlagen. Das Werkzeug versucht erneut, dass die freie Oberflächenposition sich verschiebt</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="133"/>
@@ -370,12 +370,12 @@
     <message>
       <location filename="Tools.py" line="377"/>
       <source>Part.OCCError: Floating area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Floating area cannot be computed</translation>
+      <translation>Part.OCCError: Haupt Rahmen Fläche kann nicht berechnet werden</translation>
     </message>
     <message>
       <location filename="Tools.py" line="390"/>
       <source>ZeroDivisionError: Null area found during the floating area computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the floating area computation!</translation>
+      <translation>ZeroDivisionError: Null Volumen bei der Verschiebungsberechnung gefunden!</translation>
     </message>
     <message>
       <location filename="Tools.py" line="466"/>
@@ -385,7 +385,7 @@
     <message>
       <location filename="Tools.py" line="480"/>
       <source>ZeroDivisionError: Null area found during the main frame area coefficient computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the main frame area coefficient computation!</translation>
+      <translation>ZeroDivisionError: Null Volumen bei der Verschiebungsberechnung gefunden!</translation>
     </message>
   </context>
   <context>
@@ -461,12 +461,12 @@
     <message>
       <location filename="TaskPanel.py" line="261"/>
       <source>Variable trim</source>
-      <translation type="unfinished">Variable trim</translation>
+      <translation>Variable abschneiden</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="267"/>
       <source>The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</source>
-      <translation type="unfinished">The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</translation>
+      <translation>Das Schiff wird für jeden Rollwinkel zum Gleichgewichts-Trimmwinkel gedreht. Es erhöht die benötigte Rechenzeit erheblich</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="294"/>
@@ -481,7 +481,7 @@
     <message>
       <location filename="TaskPanel.py" line="326"/>
       <source>GZ curve tool variable trim angle selection</source>
-      <translation type="unfinished">GZ curve tool variable trim angle selection</translation>
+      <translation>GZ-Kurve Werkzeug variable Trimmwinkelauswahl</translation>
     </message>
   </context>
   <context>

@@ -51,7 +51,7 @@ def get_femelements_by_references(femmesh, femelement_table, references, femnode
             # blind fast binary search, works for volumes only
             references_femelements += get_femelements_by_femnodes_bin(femelement_table, femnodes_ele_table, ref_femnodes)  # femelements for all references
         else:
-            # standars search
+            # standard search
             references_femelements += get_femelements_by_femnodes_std(femelement_table, ref_femnodes)  # femelements for all references
     return references_femelements
 
@@ -406,6 +406,8 @@ def get_elset_short_name(obj, i):
         return 'Mat' + str(i)
     elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemBeamSection':
         return 'Beam' + str(i)
+    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemFluidSection':
+        return 'Fluid' + str(i)
     elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemShellThickness':
         return 'Shell' + str(i)
     else:
@@ -650,7 +652,7 @@ def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
 
 
 def get_ref_edgenodes_lengths(femnodes_mesh, edge_table):
-    # calulate the appropriate node_length for every node of every mesh edge (me)
+    # calculate the appropriate node_length for every node of every mesh edge (me)
     # G. Lakshmi Narasaiah, Finite Element Analysis, p206ff
 
     #  [ (nodeID, length), ... , (nodeID, length) ]  some nodes will have more than one entry
@@ -846,7 +848,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
 
 
 def get_ref_facenodes_areas(femnodes_mesh, face_table):
-    # calulate the appropriate node_areas for every node of every mesh face (mf)
+    # calculate the appropriate node_areas for every node of every mesh face (mf)
     # G. Lakshmi Narasaiah, Finite Element Analysis, p206ff
     # FIXME only gives exact results in case of a real triangle. If for S6 or C3D10 elements
     # the midnodes are not on the line between the end nodes the area will not be a triangle
@@ -983,7 +985,7 @@ def get_ref_facenodes_areas(femnodes_mesh, face_table):
 
 
 def get_ref_shape_node_sum_geom_table(node_geom_table):
-    # shape could be Edge or Face, geom could be lenght or area
+    # shape could be Edge or Face, geom could be length or area
     # summ of legth or area for each node of the ref_shape
     node_sum_geom_table = {}
     for n, A in node_geom_table:
@@ -1028,7 +1030,7 @@ def get_analysis_group_elements(aAnalysis, aPart):
         else:
             FreeCAD.Console.PrintError('Problem: more than one object with empty references.\n')
             print('We gone try to get the empty material references anyway.\n')
-            # ShellThickness and BeamSection could have empty references, but on solid meshes only materials should have empty references
+            # ShellThickness, BeamSection and FluidSection could have empty references, but on solid meshes only materials should have empty references
             for er in empty_references:
                 print(er.Name)
             group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aPart.Shape)
@@ -1074,8 +1076,8 @@ def get_reference_group_elements(obj, aPart):
 def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShape):
     '''get the elementIDs if the Reference shape is empty
     see get_analysis_group_elements() for more informatations
-    on solid meshes only material objects could have an empty reference without beeing something wrong!
-    face meshes could have empty ShellThickness and edge meshes could have empty BeamSection
+    on solid meshes only material objects could have an empty reference without being something wrong!
+    face meshes could have empty ShellThickness and edge meshes could have empty BeamSection/FluidSection
     '''
     # print(group_elements)
     material_ref_shapes = []
@@ -1424,85 +1426,85 @@ def get_cylindrical_coords(obj):
     return coords
 
 
-def make_femmesh(mesh_data):
-    ''' makes an FreeCAD FEM Mesh object from FEM Mesh data
-    '''
-    import Fem
-    mesh = Fem.FemMesh()
-    m = mesh_data
-    if ('Nodes' in m) and (len(m['Nodes']) > 0):
-        print("Found: nodes")
-        if (('Seg2Elem' in m) or
-           ('Tria3Elem' in m) or
-           ('Tria6Elem' in m) or
-           ('Quad4Elem' in m) or
-           ('Quad8Elem' in m) or
-           ('Tetra4Elem' in m) or
-           ('Tetra10Elem' in m) or
-           ('Penta6Elem' in m) or
-           ('Penta15Elem' in m) or
-           ('Hexa8Elem' in m) or
-           ('Hexa20Elem' in m)):
-
-            nds = m['Nodes']
-            print("Found: elements")
-            for i in nds:
-                n = nds[i]
-                mesh.addNode(n[0], n[1], n[2], i)
-            elms_hexa8 = m['Hexa8Elem']
-            for i in elms_hexa8:
-                e = elms_hexa8[i]
-                mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]], i)
-            elms_penta6 = m['Penta6Elem']
-            for i in elms_penta6:
-                e = elms_penta6[i]
-                mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5]], i)
-            elms_tetra4 = m['Tetra4Elem']
-            for i in elms_tetra4:
-                e = elms_tetra4[i]
-                mesh.addVolume([e[0], e[1], e[2], e[3]], i)
-            elms_tetra10 = m['Tetra10Elem']
-            for i in elms_tetra10:
-                e = elms_tetra10[i]
-                mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9]], i)
-            elms_penta15 = m['Penta15Elem']
-            for i in elms_penta15:
-                e = elms_penta15[i]
-                mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9],
-                                e[10], e[11], e[12], e[13], e[14]], i)
-            elms_hexa20 = m['Hexa20Elem']
-            for i in elms_hexa20:
-                e = elms_hexa20[i]
-                mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9],
-                                e[10], e[11], e[12], e[13], e[14], e[15], e[16], e[17], e[18], e[19]], i)
-            elms_tria3 = m['Tria3Elem']
-            for i in elms_tria3:
-                e = elms_tria3[i]
-                mesh.addFace([e[0], e[1], e[2]], i)
-            elms_tria6 = m['Tria6Elem']
-            for i in elms_tria6:
-                e = elms_tria6[i]
-                mesh.addFace([e[0], e[1], e[2], e[3], e[4], e[5]], i)
-            elms_quad4 = m['Quad4Elem']
-            for i in elms_quad4:
-                e = elms_quad4[i]
-                mesh.addFace([e[0], e[1], e[2], e[3]], i)
-            elms_quad8 = m['Quad8Elem']
-            for i in elms_quad8:
-                e = elms_quad8[i]
-                mesh.addFace([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]], i)
-            elms_seg2 = m['Seg2Elem']
-            for i in elms_seg2:
-                e = elms_seg2[i]
-                mesh.addEdge(e[0], e[1])
-            print("imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15".format(
-                  len(nds), len(elms_hexa8), len(elms_penta6), len(elms_tetra4), len(elms_tetra10), len(elms_penta15)))
-            print("imported mesh: {} HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2".format(
-                  len(elms_hexa20), len(elms_tria3), len(elms_tria6), len(elms_quad4), len(elms_quad8), len(elms_seg2)))
+def write_D_network_element_to_inputfile(fileName):
+    # replace B32 elements with D elements for fluid section
+    f = open(fileName, 'r+')
+    lines = f.readlines()
+    f.seek(0)
+    for line in lines:
+        if line.find("B32") == -1:
+            f.write(line)
         else:
-            FreeCAD.Console.PrintError("No Elements found!\n")
-    else:
-        FreeCAD.Console.PrintError("No Nodes found!\n")
-    return mesh
+            dummy = line.replace("B32", "D")
+            f.write(dummy)
+    f.truncate()
+    f.close()
 
-#  @}
+
+def use_correct_fluidinout_ele_def(FluidInletoutlet_ele, fileName):
+    f = open(fileName, 'r')
+    cnt = 0
+    line = f.readline()
+
+    # start reading from *ELEMENT
+    while line.find("Element") == -1:
+        line = f.readline()
+        cnt = cnt + 1
+    line = f.readline()
+    cnt = cnt + 1
+
+    # obtain element line numbers for inlet and outlet
+    while (len(line) > 1):
+        ind = line.find(',')
+        elem = line[0:ind]
+        for i in range(len(FluidInletoutlet_ele)):
+            if (elem == FluidInletoutlet_ele[i][0]):
+                FluidInletoutlet_ele[i][2] = cnt
+        line = f.readline()
+        cnt = cnt + 1
+    f.close()
+
+    # re-define elements for INLET and OUTLET
+    f = open(fileName, 'r+')
+    lines = f.readlines()
+    f.seek(0)
+    cnt = 0
+    elem_counter = 0
+    inout_nodes_file = open("inout_nodes.txt", "w")
+    for line in lines:
+        new_line = ''
+        for i in range(len(FluidInletoutlet_ele)):
+            if (cnt == FluidInletoutlet_ele[i][2]):
+                elem_counter = elem_counter + 1
+                a = line.split(',')
+                for j in range(len(a)):
+                    if elem_counter == 1:
+                        if j == 1:
+                            new_line = new_line + ' 0,'
+                            node1 = int(a[j + 2])
+                            node2 = int(a[j + 1])
+                            node3 = int(a[j])
+                            inout_nodes_file.write(str(node1) + ',' + str(node2) + ',' + str(node3) + ',' + FluidInletoutlet_ele[i][1] + '\n')
+                        elif j == 3:
+                            new_line = new_line + a[j]
+                        else:
+                            new_line = new_line + a[j] + ','
+                    else:
+                        if j == 3:
+                            new_line = new_line + ' 0\n'
+                            node1 = int(a[j - 2])
+                            node2 = int(a[j - 1])
+                            node3 = int(a[j])
+                            inout_nodes_file.write(str(node1) + ',' + str(node2) + ',' + str(node3) + ',' + FluidInletoutlet_ele[i][1] + '\n')
+                        else:
+                            new_line = new_line + a[j] + ','
+        if new_line == '':
+            f.write(line)
+        else:
+            f.write(new_line)
+        cnt = cnt + 1
+    f.truncate()
+    f.close()
+    inout_nodes_file.close()
+
+##  @}

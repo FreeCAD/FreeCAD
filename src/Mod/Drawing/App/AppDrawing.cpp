@@ -15,6 +15,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
  
 #include "FeaturePage.h"
@@ -33,7 +34,7 @@ extern PyObject* initModule();
 }
 
 /* Python entry */
-PyMODINIT_FUNC initDrawing()
+PyMOD_INIT_FUNC(Drawing)
 {
     // load dependent module
     try {
@@ -42,9 +43,9 @@ PyMODINIT_FUNC initDrawing()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
-    (void)Drawing::initModule();
+    PyObject* mod = Drawing::initModule();
     Base::Console().Log("Loading Drawing module... done\n");
 
 
@@ -63,4 +64,6 @@ PyMODINIT_FUNC initDrawing()
     Drawing::FeatureViewSymbol      ::init();
     Drawing::FeatureClip            ::init();
     Drawing::FeatureViewSpreadsheet ::init();
+
+    PyMOD_Return(mod);
 }

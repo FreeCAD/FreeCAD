@@ -296,7 +296,7 @@ class DocumentBasicCases(unittest.TestCase):
     i = 0
     for obj in self.Doc.ToplogicalSortedObjects:
         seqDic[obj] = i
-        print obj
+        print(obj)
         i += 1
         
     self.failUnless(seqDic[L2] > seqDic[L1])
@@ -342,6 +342,28 @@ class DocumentBasicCases(unittest.TestCase):
     self.Doc.removeObject(L7.Name)
     self.Doc.removeObject(L8.Name)
     
+  def testPropertyLink_Issue2902Part1(self):
+    o1 = self.Doc.addObject("App::FeatureTest","test1")
+    o2 = self.Doc.addObject("App::FeatureTest","test2")
+    o3 = self.Doc.addObject("App::FeatureTest","test3")
+
+    o1.Link=o2
+    self.assertEqual(o1.Link, o2)
+    o1.Link=o3
+    self.assertEqual(o1.Link, o3)
+    o2.Placement = FreeCAD.Placement()
+    self.assertEqual(o1.Link, o3)
+
+  def testNotification_Issue2902Part2(self):
+    o = self.Doc.addObject("App::FeatureTest","test")
+
+    plm = o.Placement
+    o.Placement = FreeCAD.Placement()
+    plm.Base.x = 5
+    self.assertEqual(o.Placement.Base.x, 0)
+    o.Placement.Base.x=5
+    self.assertEqual(o.Placement.Base.x, 5)
+
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument("CreateTest")

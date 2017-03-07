@@ -40,7 +40,7 @@ except ImportError as err:
     def getAllDependent(feature):
         return []
     App.Console.PrintWarning("AttachmentEditor: Failed to import some code from Show module. Functionality will be limited.\n")
-    App.Console.PrintWarning(err.message)
+    App.Console.PrintWarning(str(err))
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -583,7 +583,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
                     # when entering and extiting dialog without changing anything
                     self.obj.Placement = new_plm
         except Exception as err:
-            self.form.message.setText(_translate('AttachmentEditor',"Error: {err}",None).format(err= err.message))
+            self.form.message.setText(_translate('AttachmentEditor',"Error: {err}",None).format(err= str(err)))
         
         if new_plm is not None:
             self.form.groupBox_superplacement.setTitle(_translate('AttachmentEditor',"Extra placement:",None))

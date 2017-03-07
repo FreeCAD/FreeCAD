@@ -60,6 +60,7 @@ set(SketcherGui_UIC_SRCS
     SketchOrientationDialog.ui
     SketchMirrorDialog.ui
     SketcherSettings.ui
+    SketcherSettingsColors.ui
     SketchRectangularArrayDialog.ui
 )
 
@@ -79,6 +80,7 @@ SET(SketcherGui_SRCS
     CommandConstraints.h
     CommandConstraints.cpp
     CommandSketcherTools.cpp
+    CommandSketcherBSpline.cpp
     CommandAlterGeometry.cpp
     Resources/Sketcher.qrc
     PreCompiled.cpp

@@ -53,7 +53,7 @@ class SMESHDS_EXPORT SMESHDS_GroupOnGeom: public SMESHDS_GroupBase
 
   virtual SMDS_ElemIteratorPtr GetElements() const;
 
-  virtual int GetTic() const;
+  virtual VTK_MTIME_TYPE GetTic() const;
 
  private:
 

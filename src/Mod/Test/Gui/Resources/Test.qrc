@@ -27,5 +27,10 @@
         <file>translations/Test_sr.qm</file>
         <file>translations/Test_el.qm</file>
         <file>translations/Test_sl.qm</file>
+        <file>translations/Test_eu.qm</file>
+        <file>translations/Test_ca.qm</file>
+        <file>translations/Test_gl.qm</file>
+        <file>translations/Test_kab.qm</file>
+        <file>translations/Test_ko.qm</file>
     </qresource>
 </RCC>

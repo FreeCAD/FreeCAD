@@ -46,6 +46,9 @@
         <file>icons/Path-ToolChange.svg</file>
         <file>icons/Path-Toolpath.svg</file>
         <file>icons/Path-ToolTable.svg</file>
+        <file>icons/Path-Area.svg</file>
+        <file>icons/Path-Area-View.svg</file>
+        <file>icons/Path-Area-Workplane.svg</file>
         <file>icons/preferences-path.svg</file>
         <file>panels/ContourEdit.ui</file>
         <file>panels/DlgJobChooser.ui</file>
@@ -94,5 +97,10 @@
         <file>translations/Path_uk.qm</file>
         <file>translations/Path_zh-CN.qm</file>
         <file>translations/Path_zh-TW.qm</file>
+        <file>translations/Path_eu.qm</file>
+        <file>translations/Path_ca.qm</file>
+        <file>translations/Path_gl.qm</file>
+        <file>translations/Path_kab.qm</file>
+        <file>translations/Path_ko.qm</file>
     </qresource>
 </RCC>

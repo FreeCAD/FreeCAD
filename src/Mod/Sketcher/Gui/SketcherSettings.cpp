@@ -31,6 +31,7 @@
 
 #include "SketcherSettings.h"
 #include "ui_SketcherSettings.h"
+#include "ui_SketcherSettingsColors.h"
 #include "TaskSketcherGeneral.h"
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -53,15 +54,7 @@ SketcherSettings::SketcherSettings(QWidget* parent)
     gridLayout->setMargin(0);
     form = new SketcherGeneralWidget(groupBox);
     gridLayout->addWidget(form, 0, 0, 1, 1);
-    ui->gridLayout_3->addWidget(groupBox, 2, 0, 1, 1);
-
-    // Don't need them at the moment
-    ui->label_16->hide();
-    ui->SketcherDatumWidth->hide();
-    ui->label_12->hide();
-    ui->DefaultSketcherVertexWidth->hide();
-    ui->label_13->hide();
-    ui->DefaultSketcherLineWidth->hide();
+    ui->gridLayout_3->addWidget(groupBox, 1, 0, 1, 1);
 
     QList < QPair<Qt::PenStyle, int> > styles;
     styles << qMakePair(Qt::SolidLine, 0xffff)
@@ -101,29 +94,12 @@ SketcherSettings::~SketcherSettings()
 
 void SketcherSettings::saveSettings()
 {
-    // Sketcher
-    ui->SketchEdgeColor->onSave();
-    ui->SketchVertexColor->onSave();
-    ui->EditedEdgeColor->onSave();
-    ui->EditedVertexColor->onSave();
-    ui->ConstructionColor->onSave();
-    ui->ExternalColor->onSave();
-    ui->FullyConstrainedColor->onSave();
-
-    ui->ConstrainedColor->onSave();
-    ui->NonDrivingConstraintColor->onSave();
-    ui->DatumColor->onSave();
-
-    ui->SketcherDatumWidth->onSave();
-    ui->DefaultSketcherVertexWidth->onSave();
-    ui->DefaultSketcherLineWidth->onSave();
-
-    ui->CursorTextColor->onSave();
-
     // Sketch editing
     ui->EditSketcherFontSize->onSave();
+    ui->SegmentsPerGeometry->onSave();
     ui->dialogOnDistanceConstraint->onSave();
     ui->continueMode->onSave();
+    ui->constraintMode->onSave();
     ui->checkBoxAdvancedSolverTaskBox->onSave();
     ui->checkBoxTVHideDependent->onSave();
     ui->checkBoxTVShowLinks->onSave();
@@ -143,29 +119,12 @@ void SketcherSettings::saveSettings()
 
 void SketcherSettings::loadSettings()
 {
-    // Sketcher
-    ui->SketchEdgeColor->onRestore();
-    ui->SketchVertexColor->onRestore();
-    ui->EditedEdgeColor->onRestore();
-    ui->EditedVertexColor->onRestore();
-    ui->ConstructionColor->onRestore();
-    ui->ExternalColor->onRestore();
-    ui->FullyConstrainedColor->onRestore();
-
-    ui->ConstrainedColor->onRestore();
-    ui->NonDrivingConstraintColor->onRestore();
-    ui->DatumColor->onRestore();
-
-    ui->SketcherDatumWidth->onRestore();
-    ui->DefaultSketcherVertexWidth->onRestore();
-    ui->DefaultSketcherLineWidth->onRestore();
-
-    ui->CursorTextColor->onRestore();
-
     // Sketch editing
     ui->EditSketcherFontSize->onRestore();
+    ui->SegmentsPerGeometry->onRestore();
     ui->dialogOnDistanceConstraint->onRestore();
     ui->continueMode->onRestore();
+    ui->constraintMode->onRestore();
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
     ui->checkBoxTVHideDependent->onRestore();
     ui->checkBoxTVShowLinks->onRestore();
@@ -227,6 +186,90 @@ void SketcherSettings::onBtnTVApplyClicked(bool)
     }
     if(errMsg.length()>0){
         QMessageBox::warning(this, tr("Sketcher"),errMsg);
+    }
+}
+
+
+
+/* TRANSLATOR SketcherGui::SketcherSettingsColors */
+
+SketcherSettingsColors::SketcherSettingsColors(QWidget* parent)
+    : PreferencePage(parent), ui(new Ui_SketcherSettingsColors)
+{
+    ui->setupUi(this);
+
+    // Don't need them at the moment
+    ui->label_16->hide();
+    ui->SketcherDatumWidth->hide();
+    ui->label_12->hide();
+    ui->DefaultSketcherVertexWidth->hide();
+    ui->label_13->hide();
+    ui->DefaultSketcherLineWidth->hide();
+}
+
+/**
+ *  Destroys the object and frees any allocated resources
+ */
+SketcherSettingsColors::~SketcherSettingsColors()
+{
+    // no need to delete child widgets, Qt does it all for us
+    delete ui;
+}
+
+void SketcherSettingsColors::saveSettings()
+{
+    // Sketcher
+    ui->SketchEdgeColor->onSave();
+    ui->SketchVertexColor->onSave();
+    ui->EditedEdgeColor->onSave();
+    ui->EditedVertexColor->onSave();
+    ui->ConstructionColor->onSave();
+    ui->ExternalColor->onSave();
+    ui->FullyConstrainedColor->onSave();
+
+    ui->ConstrainedColor->onSave();
+    ui->NonDrivingConstraintColor->onSave();
+    ui->DatumColor->onSave();
+
+    ui->SketcherDatumWidth->onSave();
+    ui->DefaultSketcherVertexWidth->onSave();
+    ui->DefaultSketcherLineWidth->onSave();
+
+    ui->CursorTextColor->onSave();
+}
+
+void SketcherSettingsColors::loadSettings()
+{
+    // Sketcher
+    ui->SketchEdgeColor->onRestore();
+    ui->SketchVertexColor->onRestore();
+    ui->EditedEdgeColor->onRestore();
+    ui->EditedVertexColor->onRestore();
+    ui->ConstructionColor->onRestore();
+    ui->ExternalColor->onRestore();
+    ui->FullyConstrainedColor->onRestore();
+
+    ui->ConstrainedColor->onRestore();
+    ui->NonDrivingConstraintColor->onRestore();
+    ui->DatumColor->onRestore();
+
+    ui->SketcherDatumWidth->onRestore();
+    ui->DefaultSketcherVertexWidth->onRestore();
+    ui->DefaultSketcherLineWidth->onRestore();
+
+    ui->CursorTextColor->onRestore();
+}
+
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void SketcherSettingsColors::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+    else {
+        QWidget::changeEvent(e);
     }
 }
 

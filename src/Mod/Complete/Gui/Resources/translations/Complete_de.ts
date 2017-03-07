@@ -65,13 +65,17 @@
         <translation>Grundkörper</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Parametrisch</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Objektdarstellung</translation>
+        <translation type="obsolete">Objektdarstellung</translation>
     </message>
     <message>
         <location line="+1"/>

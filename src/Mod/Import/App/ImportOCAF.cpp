@@ -110,7 +110,7 @@ void ImportOCAF::loadShapes()
 }
 
 void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
-                            const std::string& defaultname, const std::string& /*assembly*/, bool isRef,
+                            const std::string& defaultname, const std::string& assembly, bool isRef,
                             std::vector<App::DocumentObject*>& lValue)
 {
     int hash = 0;
@@ -177,6 +177,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
 
 #if defined(OCAF_KEEP_PLACEMENT)
     std::string asm_name = part_name;
+    (void)assembly;
 #else
     std::string asm_name = assembly;
     if (aShapeTool->IsAssembly(label)) {

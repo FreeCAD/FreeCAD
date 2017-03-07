@@ -40,5 +40,10 @@
         <file>translations/Ship_sr.qm</file>
         <file>translations/Ship_el.qm</file>
         <file>translations/Ship_sl.qm</file>
+        <file>translations/Ship_eu.qm</file>
+        <file>translations/Ship_ca.qm</file>
+        <file>translations/Ship_gl.qm</file>
+        <file>translations/Ship_kab.qm</file>
+        <file>translations/Ship_ko.qm</file>
     </qresource>
 </RCC>

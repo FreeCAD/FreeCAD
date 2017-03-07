@@ -28,5 +28,10 @@
         <file>translations/ReverseEngineering_sr.qm</file>
         <file>translations/ReverseEngineering_el.qm</file>
         <file>translations/ReverseEngineering_sl.qm</file>
+        <file>translations/ReverseEngineering_eu.qm</file>
+        <file>translations/ReverseEngineering_ca.qm</file>
+        <file>translations/ReverseEngineering_gl.qm</file>
+        <file>translations/ReverseEngineering_kab.qm</file>
+        <file>translations/ReverseEngineering_ko.qm</file>
     </qresource>
 </RCC>

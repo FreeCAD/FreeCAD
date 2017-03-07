@@ -90,7 +90,7 @@ void LineEdit::keyPressEvent(QKeyEvent *eventIn)
   QLineEdit::keyPressEvent(eventIn);
 }
 
-//I dont think I should have to call invalidate
+//I don't think I should have to call invalidate
 //and definitely not on the whole scene!
 //if we have performance problems, this will definitely
 //be something to re-visit. I am not wasting anymore time on
@@ -345,7 +345,7 @@ void Model::slotResetEdit(const ViewProviderDocumentObject& VPDObjectIn)
 
 void Model::selectionChanged(const SelectionChanges& msg)
 {
-  //note that treeview uses set selection which sends a message with just a document name
+  //TODO: note that treeview uses set selection which sends a message with just a document name
   //and no object name. Have to explore further.
   
   auto getAllEdges = [this](const Vertex &vertexIn)

@@ -65,13 +65,17 @@
         <translation>Základní tvary</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Parametrické</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Vzhled objektu</translation>
+        <translation type="obsolete">Vzhled objektu</translation>
     </message>
     <message>
         <location line="+1"/>

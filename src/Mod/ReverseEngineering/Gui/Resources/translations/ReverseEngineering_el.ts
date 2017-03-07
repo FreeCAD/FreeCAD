@@ -29,7 +29,7 @@
     <message>
         <location line="+1"/>
         <source>Approximate B-Spline surface...</source>
-        <translation type="unfinished">Approximate B-Spline surface...</translation>
+        <translation>Κατά προσέγγιση επιφάνεια B-Spline...</translation>
     </message>
     <message>
         <source>Approximate surface...</source>
@@ -38,7 +38,7 @@
     <message>
         <location line="+1"/>
         <source>Approximate a B-Spline surface</source>
-        <translation type="unfinished">Approximate a B-Spline surface</translation>
+        <translation>Κατά προσέγγιση ένα B-Spline επιφάνεια</translation>
     </message>
 </context>
 <context>
@@ -51,12 +51,12 @@
     <message>
         <location line="+1"/>
         <source>Poisson...</source>
-        <translation type="unfinished">Poisson...</translation>
+        <translation>Poisson...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Poisson surface reconstruction</source>
-        <translation type="unfinished">Poisson surface reconstruction</translation>
+        <translation>Poisson επιφάνειας ανασυγκρότησης</translation>
     </message>
 </context>
 <context>
@@ -104,12 +104,12 @@
         <location line="-38"/>
         <location line="+67"/>
         <source>Control points</source>
-        <translation type="unfinished">Control points</translation>
+        <translation>Σημεία ελέγχου</translation>
     </message>
     <message>
         <location line="-35"/>
         <source>v-Direction</source>
-        <translation type="unfinished">v-Direction</translation>
+        <translation>v-κατεύθυνση</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -119,12 +119,12 @@
     <message>
         <location line="+6"/>
         <source>Iterations</source>
-        <translation type="unfinished">Iterations</translation>
+        <translation>Επαναλήψεις</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Size factor</source>
-        <translation type="unfinished">Size factor</translation>
+        <translation>Μέγεθος παράγοντας</translation>
     </message>
     <message>
         <location line="+29"/>

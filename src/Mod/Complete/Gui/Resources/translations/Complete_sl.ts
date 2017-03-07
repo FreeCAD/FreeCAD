@@ -65,13 +65,17 @@
         <translation>Osnovne oblike</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Parametric</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Prikaz objekta</translation>
+        <translation type="obsolete">Prikaz objekta</translation>
     </message>
     <message>
         <location line="+1"/>

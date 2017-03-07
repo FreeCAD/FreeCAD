@@ -137,7 +137,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Reset Camera</source>
-        <translation type="unfinished">&amp;Reset Camera</translation>
+        <translation>Camera &amp;reset</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -155,12 +155,16 @@
     <message>
         <location line="+1"/>
         <source>Export camera to POV-Ray...</source>
-        <translation type="unfinished">Export camera to POV-Ray...</translation>
+        <translation>Camera exporteren naar POV-Ray...</translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation type="unfinished">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
+        <translation type="obsolete">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>
@@ -219,7 +223,7 @@ Do you want to continue?</translation>
     <message>
         <location line="-109"/>
         <source>Export view to POV-Ray...</source>
-        <translation type="unfinished">Export view to POV-Ray...</translation>
+        <translation>Weergave exporteren naar POV-Ray...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -318,7 +322,7 @@ Do you want to continue?</translation>
     <message>
         <location line="-302"/>
         <source>Luxrender</source>
-        <translation type="unfinished">Luxrender</translation>
+        <translation>Luxrender</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -367,7 +371,7 @@ Do you want to continue?</translation>
         <location line="+276"/>
         <location line="+109"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Alle bestanden</translation>
     </message>
     <message>
         <location line="-29"/>

@@ -65,13 +65,17 @@
         <translation>Примитиви</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Параметарски</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Изглед објекта</translation>
+        <translation type="obsolete">Изглед објекта</translation>
     </message>
     <message>
         <location line="+1"/>

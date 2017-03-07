@@ -59,13 +59,13 @@ namespace KDL
 
     double JntArray::operator()(unsigned int i,unsigned int j)const
     {
-        assert(j==0);
+        (void)j;assert(j==0);
         return data(i);
     }
 
     double& JntArray::operator()(unsigned int i,unsigned int j)
     {
-        assert(j==0);
+        (void)j;assert(j==0);
         return data(i);
     }
 

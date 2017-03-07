@@ -32,13 +32,12 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoReplacedElement.h>
 #include <vector>
+#include <memory>
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 
-#if 0
-#define RENDER_GLARRAYS
-#endif
+// #define RENDER_GLARRAYS
 
 namespace PartGui {
 
@@ -114,7 +113,9 @@ private:
     };
     Binding findMaterialBinding(SoState * const state) const;
     Binding findNormalBinding(SoState * const state) const;
-    void renderShape(const SoGLCoordinateElement * const vertexlist,
+    void renderShape(SoGLRenderAction * action,
+                     SbBool hasVBO,
+                     const SoGLCoordinateElement * const vertexlist,
                      const int32_t *vertexindices,
                      int num_vertexindices,
                      const int32_t *partindices,
@@ -144,6 +145,10 @@ private:
     SbColor selectionColor;
     SbColor highlightColor;
     SoColorPacker colorpacker;
+
+    // Define some VBO pointer for the current mesh
+    class VBO;
+    std::unique_ptr<VBO> pimpl;
 };
 
 } // namespace PartGui

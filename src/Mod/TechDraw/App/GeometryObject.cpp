@@ -452,7 +452,7 @@ bool GeometryObject::findVertex(Base::Vector2d v)
 }
 
 /// utility non-class member functions
-//! gets a coordinate system that matches view system used in 3D with +Z up (or +Y up if neccessary)
+//! gets a coordinate system that matches view system used in 3D with +Z up (or +Y up if necessary)
 //! used for individual views, but not secondary views in projection groups
 gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
                                      const Base::Vector3d& direction,

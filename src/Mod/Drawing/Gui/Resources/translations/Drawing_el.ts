@@ -4,7 +4,7 @@
 <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+476"/>
+        <location filename="../../Command.cpp" line="+474"/>
         <source>Drawing</source>
         <translation>Σχέδιο</translation>
     </message>
@@ -17,7 +17,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts an Annotation view in the active drawing</source>
-        <translation type="unfinished">Inserts an Annotation view in the active drawing</translation>
+        <translation>Εισάγει μια άποψη σχολιασμού στο ενεργό σχέδιο</translation>
     </message>
 </context>
 <context>
@@ -30,13 +30,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Clip</source>
-        <translation type="unfinished">&amp;Clip</translation>
+        <translation>&amp; Clip</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a clip group in the active drawing</source>
-        <translation type="unfinished">Inserts a clip group in the active drawing</translation>
+        <translation>Εισάγει μια ομάδα κλιπ στο ενεργό σχέδιο</translation>
     </message>
 </context>
 <context>
@@ -49,7 +49,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished">&amp;Draft View</translation>
+        <translation>&amp; Πρόχειρη προβολή</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -94,7 +94,7 @@
 <context>
     <name>CmdDrawingNewPage</name>
     <message>
-        <location line="-181"/>
+        <location line="-179"/>
         <source>Drawing</source>
         <translation>Σχέδιο</translation>
     </message>
@@ -108,7 +108,7 @@
 <context>
     <name>CmdDrawingNewView</name>
     <message>
-        <location line="+216"/>
+        <location line="+214"/>
         <source>Drawing</source>
         <translation>Σχέδιο</translation>
     </message>
@@ -126,7 +126,7 @@
 <context>
     <name>CmdDrawingOpen</name>
     <message>
-        <location line="-252"/>
+        <location line="-250"/>
         <source>Drawing</source>
         <translation>Σχέδιο</translation>
     </message>
@@ -144,7 +144,7 @@
 <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-        <location line="+377"/>
+        <location line="+375"/>
         <source>Drawing</source>
         <translation>Σχέδιο</translation>
     </message>
@@ -770,8 +770,8 @@ Do you want to continue?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location line="-171"/>
-        <location line="+519"/>
+        <location line="-169"/>
+        <location line="+517"/>
         <source>Choose an SVG file to open</source>
         <translation>Επιλέξτε ένα αρχείο SVG για να ανοίξει</translation>
     </message>
@@ -810,8 +810,8 @@ Do you want to continue?</source>
         <translation type="obsolete">Create a page to insert views into.</translation>
     </message>
     <message>
-        <location line="-251"/>
-        <location line="+519"/>
+        <location line="-249"/>
+        <location line="+517"/>
         <location line="+53"/>
         <source>Scalable Vector Graphic</source>
         <translation type="unfinished">Scalable Vector Graphic</translation>

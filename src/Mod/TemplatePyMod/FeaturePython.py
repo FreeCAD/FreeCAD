@@ -654,7 +654,7 @@ class ViewProviderEnumTest:
 		obj.Proxy = self
 
 	def updateData(self, fp, prop):
-		print "prop updated:",prop
+		print("prop updated:",prop)
 
 	def __getstate__(self):
 		return None

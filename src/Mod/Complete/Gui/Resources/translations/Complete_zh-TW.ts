@@ -65,13 +65,17 @@
         <translation>元件</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">參數</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>物件顯示</translation>
+        <translation type="obsolete">物件顯示</translation>
     </message>
     <message>
         <location line="+1"/>

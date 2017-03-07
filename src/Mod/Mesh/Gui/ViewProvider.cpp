@@ -249,6 +249,10 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
     if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
         Selectable.setValue(false);
 
+    pcShapeGroup = new SoGroup();
+    pcShapeGroup->ref();
+    pcHighlight->addChild(pcShapeGroup);
+
     pOpenColor = new SoBaseColor();
     setOpenEdgeColorFrom(ShapeColor.getValue());
     pOpenColor->ref();
@@ -317,6 +321,7 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
 ViewProviderMesh::~ViewProviderMesh()
 {
     pcHighlight->unref();
+    pcShapeGroup->unref();
     pOpenColor->unref();
     pcLineStyle->unref();
     pcPointStyle->unref();
@@ -418,12 +423,15 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     pcFlatRoot->addChild(pcShapeMaterial);
     pcFlatRoot->addChild(pcMatBinding);
     pcFlatRoot->addChild(pcHighlight);
-    addDisplayMaskMode(pcFlatRoot, "Flat");
+    addDisplayMaskMode(pcFlatRoot, "Shaded");
 
     // points
     SoGroup* pcPointRoot = new SoGroup();
     pcPointRoot->addChild(pcPointStyle);
-    pcPointRoot->addChild(pcFlatRoot);
+    pcPointRoot->addChild(pShapeHints);
+    pcPointRoot->addChild(pcShapeMaterial);
+    pcPointRoot->addChild(pcMatBinding);
+    pcPointRoot->addChild(pcHighlight);
     addDisplayMaskMode(pcPointRoot, "Point");
 
     // wires
@@ -440,12 +448,6 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     addDisplayMaskMode(pcWireRoot, "Wireframe");
 
     // faces+wires
-    Gui::SoFCSelection* selGroup = Gui::ViewProviderBuilder::createSelection();
-    selGroup->objectName = getObject()->getNameInDocument();
-    selGroup->documentName = getObject()->getDocument()->getName();
-    selGroup->subElementName = "Main";
-    selGroup->addChild(getShapeNode());
-
     // Avoid any Z-buffer artefacts, so that the lines always
     // appear on top of the faces
     SoPolygonOffset* offset = new SoPolygonOffset();
@@ -453,21 +455,21 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     offset->factor = 1.0f;
     offset->units = 1.0f;
 
+    SoSeparator* pcWireSep = new SoSeparator();
+    pcWireSep->addChild(pcLineStyle);
+    pcWireSep->addChild(pcLightModel);
+    pcWireSep->addChild(binding);
+    pcWireSep->addChild(pLineColor);
+    pcWireSep->addChild(pcHighlight);
+
     SoGroup* pcFlatWireRoot = new SoGroup();
-    pcFlatWireRoot->addChild(getCoordNode());
-    SoSeparator* sep = new SoSeparator();
-    sep->addChild(pcLineStyle);
-    sep->addChild(pcLightModel);
-    sep->addChild(binding);
-    sep->addChild(pLineColor);
-    sep->addChild(selGroup);
-    pcFlatWireRoot->addChild(sep);
+    pcFlatWireRoot->addChild(pcWireSep);
     pcFlatWireRoot->addChild(offset);
     pcFlatWireRoot->addChild(pShapeHints);
     pcFlatWireRoot->addChild(pcShapeMaterial);
     pcFlatWireRoot->addChild(pcMatBinding);
-    pcFlatWireRoot->addChild(getShapeNode());
-    addDisplayMaskMode(pcFlatWireRoot, "FlatWireframe");
+    pcFlatWireRoot->addChild(pcShapeGroup);
+    addDisplayMaskMode(pcFlatWireRoot, "Flat Lines");
 
     if (getColorProperty()) {
         Coloring.setStatus(App::Property::Hidden, false);
@@ -574,13 +576,13 @@ void ViewProviderMesh::setColorPerVertex(const App::PropertyColorList* prop)
 void ViewProviderMesh::setDisplayMode(const char* ModeName)
 {
     if (strcmp("Shaded",ModeName)==0) {
-        setDisplayMaskMode("Flat");
+        setDisplayMaskMode("Shaded");
     }
     else if (strcmp("Points",ModeName)==0) {
         setDisplayMaskMode("Point");
     }
     else if (strcmp("Flat Lines",ModeName)==0) {
-        setDisplayMaskMode("FlatWireframe");
+        setDisplayMaskMode("Flat Lines");
     }
     else if (strcmp("Wireframe",ModeName)==0) {
         setDisplayMaskMode("Wireframe");
@@ -1607,7 +1609,7 @@ void ViewProviderMesh::fillHole(unsigned long uFacet)
     //add the facets to the mesh and open a transaction object for the undo/redo stuff
     Gui::Application::Instance->activeDocument()->openCommand("Fill hole");
     Mesh::MeshObject* kernel = fea->Mesh.startEditing();
-    kernel->addFacets(newFacets, newPoints);
+    kernel->addFacets(newFacets, newPoints, true);
     fea->Mesh.finishEditing();
     Gui::Application::Instance->activeDocument()->commitCommand();
 }

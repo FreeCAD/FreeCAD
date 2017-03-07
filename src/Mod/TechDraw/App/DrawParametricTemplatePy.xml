@@ -22,7 +22,7 @@
       <Documentation>
         <UserDocu>Number of geometry in template</UserDocu>
       </Documentation>
-      <Parameter Name="GeometryCount" Type="Int"/>
+      <Parameter Name="GeometryCount" Type="Long"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

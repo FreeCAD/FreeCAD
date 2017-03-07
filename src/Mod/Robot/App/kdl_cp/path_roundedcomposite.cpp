@@ -189,7 +189,8 @@ void Path_RoundedComposite::GetCurrentSegmentLocation(double s,
 Path_RoundedComposite::~Path_RoundedComposite() {
     if (aggregate)
         delete orient;
-	delete comp;
+
+    delete comp;
 }
 
 

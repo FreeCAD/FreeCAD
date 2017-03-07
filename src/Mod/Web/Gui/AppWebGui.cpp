@@ -100,18 +100,24 @@ private:
         return Py::None();
     }
 };
+
+PyObject* initModule()
+{
+    return (new Module())->module().ptr();
+}
+
 } // namespace WebGui
 
 
 /* Python entry */
-PyMODINIT_FUNC initWebGui()
+PyMOD_INIT_FUNC(WebGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
-    new WebGui::Module();
+    PyObject* mod = WebGui::initModule();
     Base::Console().Log("Loading GUI of Web module... done\n");
 
     // instantiating the commands
@@ -120,4 +126,6 @@ PyMODINIT_FUNC initWebGui()
 
      // add resources and reloads the translators
     loadWebResource();
+
+    PyMOD_Return(mod);
 }

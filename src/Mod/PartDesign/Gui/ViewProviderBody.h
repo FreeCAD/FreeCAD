@@ -35,8 +35,8 @@ class SoGetBoundingBoxAction;
 namespace PartDesignGui {
 
 /** ViewProvider of the Body feature
- *  This class manage the visual apperance of the features in the
- *  Body feature. That mean while editing all visible features are shown.
+ *  This class manages the visual appearance of the features in the
+ *  Body feature. That means while editing all visible features are shown.
  *  If the Body is not active it shows only the result shape (tip).
  * \author jriegel
  */

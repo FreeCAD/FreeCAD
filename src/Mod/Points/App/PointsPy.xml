@@ -58,7 +58,7 @@ transforming and much more.
 			<Documentation>
 				<UserDocu>Return the number of vertices of the points object.</UserDocu>
 			</Documentation>
-			<Parameter Name="CountPoints" Type="Int" />
+			<Parameter Name="CountPoints" Type="Long" />
 		</Attribute>
 		<Attribute Name="Points" ReadOnly="true">
 			<Documentation>

@@ -412,10 +412,17 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
         // use no kwds
         PyObject* dist_or_num;
         if (PyArg_ParseTuple(args, "O", &dist_or_num)) {
+#if PY_MAJOR_VERSION >= 3
+            if (PyLong_Check(dist_or_num)) {
+                numPoints = PyLong_AsLong(dist_or_num);
+                uniformAbscissaPoints = true;
+            }
+#else
             if (PyInt_Check(dist_or_num)) {
                 numPoints = PyInt_AsLong(dist_or_num);
                 uniformAbscissaPoints = true;
             }
+#endif
             else if (PyFloat_Check(dist_or_num)) {
                 distance = PyFloat_AsDouble(dist_or_num);
                 uniformAbscissaDistance = true;
@@ -701,7 +708,7 @@ Py::Object TopoShapeEdgePy::getCurve() const
                 Base::Reference<ParameterGrp> hPartGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
                 Base::Reference<ParameterGrp> hGenPGrp = hPartGrp->GetGroup("General");
-                LineOld = hGenPGrp->GetBool("LineOld", true);
+                LineOld = hGenPGrp->GetBool("LineOld", false);
             }
 
             if (LineOld) {

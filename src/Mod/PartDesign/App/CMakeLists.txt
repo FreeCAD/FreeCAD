@@ -20,6 +20,7 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 generate_from_xml(BodyPy)
+generate_from_xml(FeaturePy)
 
 
 set(PartDesign_LIBS
@@ -122,6 +123,8 @@ SOURCE_GROUP("Module" FILES ${Module_SRCS})
 SET(Python_SRCS
     BodyPy.xml
     BodyPyImp.cpp
+    FeaturePy.xml
+    FeaturePyImp.cpp
 
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})

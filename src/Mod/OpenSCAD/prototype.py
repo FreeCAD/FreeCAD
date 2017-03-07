@@ -35,14 +35,14 @@ def openscadmesh(doc,scadstr,objname):
         obj.Shape=solid#.removeSplitter()
         return obj
     else:
-        print scadstr
+        print(scadstr)
 
 class Node:
-    #fnmin=12 # maximal fn for implicit polygon renderfing
+    #fnmin=12 # maximal fn for implicit polygon rendering
     fnmin= FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
         GetInt('useMaxFN')
-    planedim=1e10 #size of the sqaure used as x-y-plane
+    planedim=1e10 #size of the square used as x-y-plane
     def __init__(self,name,arguments=None,children=None,):
         pass
         self.name=name
@@ -58,7 +58,7 @@ class Node:
         return str1+')'
     
     def __nonzero__(self):
-        '''a Node is not obsolent if doesn't have children. Only if as neither name children or
+        '''a Node is not obsolete if doesn't have children. Only if as neither name children or
         arguments'''
         return bool(self.name or self.arguments or self.children)
 
@@ -67,7 +67,7 @@ class Node:
         return len(self.children)
 
     def __getitem__(self,key):
-        '''dirct access to the children'''
+        '''direct access to the children'''
         return self.children.__getitem__(key)
 
     def rlen(self,checkmultmarix=False):
@@ -365,8 +365,8 @@ class Node:
                 elif extension in ['dxf']:
                     layera = self.arguments.get('layer')
                     featname='import_dxf_%s_%s'%(objname,layera)
-                    # reusing an allready imported object does not work if the
-                    #shape in not yet calculated
+                    # reusing an already imported object does not work if the
+                    # shape in not yet calculated
                     import importDXF
                     global dxfcache
                     layers=dxfcache.get(id(doc),[])
@@ -405,7 +405,7 @@ class Node:
                 if obj: #handle origin and scale
                     if scale is not None and scale !=1:
                         if origin is not None and any([c != 0 for c in origin]):
-                            raise(NotImplementedError)# order of transformations unkown
+                            raise(NotImplementedError)# order of transformations unknown
                         child = obj
                         m1=FreeCAD.Matrix()
                         m1.scale(scale,scale,scale)
@@ -544,7 +544,7 @@ class Node:
             argstr = ' (%s)' % self.arguments
         else:
             argstr = ''
-        print '%s %s%s' %('  '*level,self.name,argstr)
+        print('%s %s%s' %('  '*level,self.name,argstr))
         for child in self.children:
             child.pprint(level+1)
 
@@ -554,7 +554,7 @@ class Node:
             argstr = ' (%s)' % self.arguments
         else:
             argstr = ''
-        print '%s %s%s' %(path.ljust(pathjust),self.name,argstr)
+        print('%s %s%s' %(path.ljust(pathjust),self.name,argstr))
         for i,child in enumerate(self.children):
             child.pprint2('%s[%d]'%(path,i),pathjust)
 
@@ -603,7 +603,7 @@ def parseargs(argstring):
             else:
                 a.append(char)
         tok.append(''.join(a).strip())
-        #print tok
+        #print(tok)
         argdict=dict(zip(tok[0::2],[parseexpression(argstring) for argstring in tok[1::2]]))
 #        argdict={}
 #        for key, value in re.findall(r"(\$?\w+)\s*=\s*(\[?\w+]?),?\s*",argstring):

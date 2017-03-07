@@ -27,9 +27,7 @@
 import Fem
 import FemToolsCcx
 import FreeCAD
-import FemAnalysis
-import FemSolverCalculix
-import FemMaterial
+import ObjectsFem
 import csv
 import tempfile
 import unittest
@@ -82,11 +80,11 @@ class FemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_analysis(self):
-        self.analysis = FemAnalysis.makeFemAnalysis('Analysis')
+        self.analysis = ObjectsFem.makeAnalysis('Analysis')
         self.active_doc.recompute()
 
     def create_new_solver(self):
-        self.solver_object = FemSolverCalculix.makeFemSolverCalculix('CalculiX')
+        self.solver_object = ObjectsFem.makeSolverCalculix('CalculiX')
         self.solver_object.GeometricalNonlinearity = 'linear'
         self.solver_object.ThermoMechSteadyState = False
         self.solver_object.MatrixSolverType = 'default'
@@ -115,7 +113,7 @@ class FemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_material(self):
-        self.new_material_object = FemMaterial.makeFemMaterial('MechanicalMaterial')
+        self.new_material_object = ObjectsFem.makeMaterialSolid('MechanicalMaterial')
         mat = self.new_material_object.Material
         mat['Name'] = "Steel-Generic"
         mat['YoungsModulus'] = "200000 MPa"
@@ -304,11 +302,11 @@ class TherMechFemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_analysis(self):
-        self.analysis = FemAnalysis.makeFemAnalysis('Analysis')
+        self.analysis = ObjectsFem.makeAnalysis('Analysis')
         self.active_doc.recompute()
 
     def create_new_solver(self):
-        self.solver_object = FemSolverCalculix.makeFemSolverCalculix('CalculiX')
+        self.solver_object = ObjectsFem.makeSolverCalculix('CalculiX')
         self.solver_object.AnalysisType = 'thermomech'
         self.solver_object.GeometricalNonlinearity = 'linear'
         self.solver_object.ThermoMechSteadyState = True
@@ -336,7 +334,7 @@ class TherMechFemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_material(self):
-        self.new_material_object = FemMaterial.makeFemMaterial('MechanicalMaterial')
+        self.new_material_object = ObjectsFem.makeMaterialSolid('MechanicalMaterial')
         mat = self.new_material_object.Material
         mat['Name'] = "Steel-Generic"
         mat['YoungsModulus'] = "200000 MPa"

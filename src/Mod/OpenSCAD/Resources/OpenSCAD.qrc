@@ -39,5 +39,10 @@
         <file>translations/OpenSCAD_sr.qm</file>
         <file>translations/OpenSCAD_el.qm</file>
         <file>translations/OpenSCAD_sl.qm</file>
+        <file>translations/OpenSCAD_eu.qm</file>
+        <file>translations/OpenSCAD_ca.qm</file>
+        <file>translations/OpenSCAD_gl.qm</file>
+        <file>translations/OpenSCAD_kab.qm</file>
+        <file>translations/OpenSCAD_ko.qm</file>
     </qresource>
 </RCC>

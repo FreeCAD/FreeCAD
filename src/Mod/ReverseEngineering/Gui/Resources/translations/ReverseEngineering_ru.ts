@@ -29,7 +29,7 @@
     <message>
         <location line="+1"/>
         <source>Approximate B-Spline surface...</source>
-        <translation type="unfinished">Approximate B-Spline surface...</translation>
+        <translation>Приблизительная B-сплайновая поверхность...</translation>
     </message>
     <message>
         <source>Approximate surface...</source>
@@ -51,12 +51,12 @@
     <message>
         <location line="+1"/>
         <source>Poisson...</source>
-        <translation type="unfinished">Poisson...</translation>
+        <translation>Poisson...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Poisson surface reconstruction</source>
-        <translation type="unfinished">Poisson surface reconstruction</translation>
+        <translation>Реконструкция поверхности Пуассона</translation>
     </message>
 </context>
 <context>
@@ -69,13 +69,13 @@
     <message>
         <location line="+1"/>
         <source>Structured point clouds</source>
-        <translation type="unfinished">Structured point clouds</translation>
+        <translation>Структурированные точки облака</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Triangulation of structured point clouds</source>
-        <translation type="unfinished">Triangulation of structured point clouds</translation>
+        <translation>Триангуляция облаков точек структурированных</translation>
     </message>
     <message>
         <source>View triangulation</source>
@@ -87,12 +87,12 @@
     <message>
         <location filename="../../FitBSplineSurface.ui" line="+14"/>
         <source>Fit B-Spline surface</source>
-        <translation type="unfinished">Fit B-Spline surface</translation>
+        <translation>Fit B-сплайновая поверхность</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>u-Direction</source>
-        <translation type="unfinished">u-Direction</translation>
+        <translation>u направление</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -109,7 +109,7 @@
     <message>
         <location line="-35"/>
         <source>v-Direction</source>
-        <translation type="unfinished">v-Direction</translation>
+        <translation>u направление</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -124,7 +124,7 @@
     <message>
         <location line="+29"/>
         <source>Size factor</source>
-        <translation type="unfinished">Size factor</translation>
+        <translation>Коэффициент размера</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -144,17 +144,17 @@
     <message>
         <location line="+29"/>
         <source>Bending energy</source>
-        <translation type="unfinished">Bending energy</translation>
+        <translation>Изгиб энергии</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Curvature variation</source>
-        <translation type="unfinished">Curvature variation</translation>
+        <translation>Вариация кривизны</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>User-defined u/v directions</source>
-        <translation type="unfinished">User-defined u/v directions</translation>
+        <translation>Определяемые пользователем u/v направления</translation>
     </message>
 </context>
 <context>
@@ -167,7 +167,7 @@
     <message>
         <location line="+1"/>
         <source>Please select a single placement object to get local orientation.</source>
-        <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+        <translation>Пожалуйста, выберите один размещение объекта для получения местной ориентации.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -180,7 +180,7 @@
     <message>
         <location filename="../../Poisson.ui" line="+14"/>
         <source>Poisson</source>
-        <translation type="unfinished">Poisson</translation>
+        <translation>Пуассона</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -190,17 +190,17 @@
     <message>
         <location line="+6"/>
         <source>Octree depth</source>
-        <translation type="unfinished">Octree depth</translation>
+        <translation>Октодерево глубина</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Solver divide</source>
-        <translation type="unfinished">Solver divide</translation>
+        <translation>Механизм расчета разрыва</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Samples per node</source>
-        <translation type="unfinished">Samples per node</translation>
+        <translation>Образцы каждого узла</translation>
     </message>
     <message>
         <location filename="../../Poisson.cpp" line="+109"/>
@@ -220,7 +220,7 @@
         <location line="-134"/>
         <location line="+135"/>
         <source>Please select a single point cloud.</source>
-        <translation type="unfinished">Please select a single point cloud.</translation>
+        <translation>Пожалуйста, выберите одну точку облака.</translation>
     </message>
 </context>
 <context>
@@ -228,7 +228,7 @@
     <message>
         <location line="+55"/>
         <source>View triangulation failed</source>
-        <translation type="unfinished">View triangulation failed</translation>
+        <translation>Просмотр триангуляции не удалось</translation>
     </message>
 </context>
 <context>

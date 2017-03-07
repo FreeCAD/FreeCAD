@@ -102,11 +102,11 @@ PyObject* initModule()
 
 } // namespace PartGui
 
-PyMODINIT_FUNC initPartGui()
+PyMOD_INIT_FUNC(PartGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     // load needed modules
@@ -115,14 +115,21 @@ PyMODINIT_FUNC initPartGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
     PyObject* partGuiModule = PartGui::initModule();
+
     Base::Console().Log("Loading GUI of Part module... done\n");
 
+#if PY_MAJOR_VERSION >= 3
+    static struct PyModuleDef pAttachEngineTextsModuleDef = {PyModuleDef_HEAD_INIT,"AttachEngineResources", "AttachEngineResources", -1, 0};
+    PyObject* pAttachEngineTextsModule = PyModule_Create(&pAttachEngineTextsModuleDef);
+#else
     PyObject* pAttachEngineTextsModule = Py_InitModule3("AttachEngineResources", AttacherGui::AttacherGuiPy::Methods,
         "AttachEngine Gui resources");
+#endif
+
     Py_INCREF(pAttachEngineTextsModule);
     PyModule_AddObject(partGuiModule, "AttachEngineResources", pAttachEngineTextsModule);
 
@@ -207,4 +214,6 @@ PyMODINIT_FUNC initPartGui()
     Gui::BitmapFactoryInst& rclBmpFactory = Gui::BitmapFactory();
     rclBmpFactory.addXPM("PartFeature",(const char**) PartFeature_xpm);
     rclBmpFactory.addXPM("PartFeatureImport",(const char**) PartFeatureImport_xpm);
+
+    PyMOD_Return(partGuiModule);
 }

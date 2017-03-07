@@ -127,12 +127,12 @@
     <name>QObject</name>
     <message>
         <location filename="../../AppWebGui.cpp" line="78"/>
-        <location filename="../../BrowserView.cpp" line="353"/>
+        <location filename="../../BrowserView.cpp" line="354"/>
         <source>Browser</source>
         <translation>Браузер</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="249"/>
+        <location filename="../../BrowserView.cpp" line="250"/>
         <source>File does not exist!</source>
         <translation>Файл не існує!</translation>
     </message>
@@ -140,12 +140,12 @@
 <context>
     <name>WebGui::BrowserView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="244"/>
+        <location filename="../../BrowserView.cpp" line="245"/>
         <source>Error</source>
         <translation>Помилка</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="324"/>
+        <location filename="../../BrowserView.cpp" line="325"/>
         <source>Loading %1...</source>
         <translation>Завантаження %1...</translation>
     </message>
@@ -160,7 +160,7 @@
     <message>
         <location filename="../../BrowserView.cpp" line="126"/>
         <source>Open in new window</source>
-        <translation type="unfinished">Open in new window</translation>
+        <translation>Відкрити у новому вікні</translation>
     </message>
 </context>
 <context>

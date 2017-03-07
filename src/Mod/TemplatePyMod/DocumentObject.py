@@ -306,7 +306,7 @@ class Box(DocumentObject):
     #---------------------------PRIVATE FUNCTIONS------------------------------
     #These function won't be present in the object (begin with '_')
     def _privateFunctionExample(self,attr):
-        FreeCAD.Console.PrintMessage("The lenght : "+str(attr)+"\n")
+        FreeCAD.Console.PrintMessage("The length : "+str(attr)+"\n")
         
     def _recomputeShape(self):
         if hasattr(self,"Length") and hasattr(self,"Width") and hasattr(self,"Height"):

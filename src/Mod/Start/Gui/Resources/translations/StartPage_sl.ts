@@ -36,7 +36,7 @@
     <message>
       <location filename="StartPage.py" line="59"/>
       <source>Schenkel STEP file</source>
-      <translation>STEP datoteka Schenkel</translation>
+      <translation>Datoteka STEP Schenkel</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="60"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="StartPage.py" line="64"/>
       <source>Schenkel STEP</source>
-      <translation>Schenkel STEP</translation>
+      <translation>STEP Schenkel</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="65"/>
@@ -121,7 +121,7 @@
     <message>
       <location filename="StartPage.py" line="77"/>
       <source>FreeCAD offers you several tools to convert between Mesh and Part objects.</source>
-      <translation>FreeCAD vam ponuja številna orodja za pretvorbo med mrežastimi objekti in Parti.</translation>
+      <translation>FreeCAD vam ponuja številna orodja za pretvorbo med objekti mreže in delov.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="78"/>
@@ -161,7 +161,7 @@
     <message>
       <location filename="StartPage.py" line="53"/>
       <source>Latest videos</source>
-      <translation>Najnovejši video posnetki</translation>
+      <translation>Najnovejši videoposnetki</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="55"/>
@@ -201,7 +201,7 @@
     <message>
       <location filename="StartPage.py" line="92"/>
       <source>The FreeCAD-tutorial blog</source>
-      <translation>FreeCAD blog z vodiči</translation>
+      <translation>Blog FreeCAD z vodiči</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="93"/>
@@ -211,7 +211,7 @@
     <message>
       <location filename="StartPage.py" line="94"/>
       <source>This is the official user manual of FreeCAD, built, maintained and translated by the FreeCAD community.</source>
-      <translation>To je uradni uporabniški priročnik za FreeCAD, sestavljen, vzdrževan in preveden s strani FreeCAD skupnosti.</translation>
+      <translation>To je uradni uporabniški priročnik za FreeCAD, sestavljen, vzdrževan in preveden s strani skupnosti FreeCAD.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="95"/>
@@ -221,7 +221,7 @@
     <message>
       <location filename="StartPage.py" line="97"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
-      <translation>Blog namenjen učenju FreeCAD-a, ki ga vzdržujejo člani FreeCAD skupnosti</translation>
+      <translation>Blog namenjen učenju FreeCADa, ki ga vzdržujejo člani skupnosti FreeCAD</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="98"/>
@@ -294,11 +294,6 @@
       <translation>Na voljo je nova izdaja FreeCADa.</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="109"/>
-      <source>Load an FEM example analysis</source>
-      <translation>Naloži primer analize MKE</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="54"/>
       <source>Latest commits</source>
       <translation>Najnovejši prispevki</translation>
@@ -306,7 +301,7 @@
     <message>
       <location filename="StartPage.py" line="110"/>
       <source>Obtain a development version</source>
-      <translation>Pridobi razvojno različico</translation>
+      <translation>Dobi razvojno različico</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="111"/>
@@ -317,6 +312,16 @@
       <location filename="StartPage.py" line="112"/>
       <source>See all commits</source>
       <translation>Pokaži vse prispevke</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM 3D example analysis</source>
+      <translation type="unfinished">Load an FEM 3D example analysis</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="113"/>
+      <source>Load an FEM 2D example analysis</source>
+      <translation type="unfinished">Load an FEM 2D example analysis</translation>
     </message>
   </context>
 </TS>

@@ -38,8 +38,11 @@ PyObject* DrawPagePy::addView(PyObject* args)
     DrawView* view = pyView->getDrawViewPtr();                 //get DrawView for pyView
 
     int rc = page->addView(view);
-
+#if PY_MAJOR_VERSION < 3
     return PyInt_FromLong((long) rc);
+#else
+    return PyLong_FromLong((long) rc);
+#endif
 }
 
 PyObject* DrawPagePy::removeView(PyObject* args)
@@ -60,7 +63,11 @@ PyObject* DrawPagePy::removeView(PyObject* args)
 
     int rc = page->removeView(view);
 
+#if PY_MAJOR_VERSION < 3
     return PyInt_FromLong((long) rc);
+#else
+    return PyLong_FromLong((long) rc);
+#endif
 }
 
 

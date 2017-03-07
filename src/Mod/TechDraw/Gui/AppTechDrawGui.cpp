@@ -28,6 +28,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include <Gui/WidgetFactory.h>
@@ -65,21 +66,38 @@ void loadTechDrawResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef TechDrawGui_Import_methods[];
+namespace TechDrawGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("TechDrawGui")
+    {
+        initialize("This module is the TechDrawGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+};
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace TechDrawGui
 
 
 /* Python entry */
-extern "C" {
-void TechDrawGuiExport initTechDrawGui()
+PyMOD_INIT_FUNC(TechDrawGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
+    PyObject* mod = TechDrawGui::initModule();
 
-    (void) Py_InitModule("TechDrawGui", TechDrawGui_Import_methods);   /* mod name, table ptr */
-    Base::Console().Log("Loading GUI of TechDraw module... done\n");
+    Base::Console().Log("Loading TechDrawGui module... done\n");
 
     // instantiating the commands
     CreateTechDrawCommands();
@@ -113,6 +131,6 @@ void TechDrawGuiExport initTechDrawGui()
 
     // add resources and reloads the translators
     loadTechDrawResource();
-}
 
-} // extern "C" {
+    PyMOD_Return(mod);
+}

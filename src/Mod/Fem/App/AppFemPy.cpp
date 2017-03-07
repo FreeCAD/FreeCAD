@@ -95,8 +95,8 @@ public:
             "Read a mesh from a file and returns a Mesh object."
         );
 #ifdef FC_USE_VTK
-        add_varargs_method("readCfdResult",&Module::readCfdResult,
-            "Read a CFD result from a file (file format detected from file suffix)"
+        add_varargs_method("readResult",&Module::readResult,
+            "Read a CFD or Mechanical result (auto detect) from a file (file format detected from file suffix)"
         );
         add_varargs_method("writeResult",&Module::writeResult,
             "write a CFD or FEM result (auto detect) to a file (file format detected from file suffix)"
@@ -247,9 +247,9 @@ private:
     }
 
 #ifdef FC_USE_VTK
-    Py::Object readCfdResult(const Py::Tuple& args)
+    Py::Object readResult(const Py::Tuple& args)
     {
-        char* fileName = NULL; 
+        char* fileName = NULL;
         char* objName = NULL;
 
         if (!PyArg_ParseTuple(args.ptr(), "et|et","utf-8", &fileName, "utf-8", &objName))
@@ -263,14 +263,14 @@ private:
         {
             App::Document* pcDoc = App::GetApplication().getActiveDocument();
             App::DocumentObject* obj = pcDoc->getObject(resName.c_str());
-            FemVTKTools::readFluidicResult(EncodedName.c_str(), obj);
+            FemVTKTools::readResult(EncodedName.c_str(), obj);
         }
         else
-            FemVTKTools::readFluidicResult(EncodedName.c_str());  //assuming activeObject can hold Result
-        
+            FemVTKTools::readResult(EncodedName.c_str());  // assuming activeObject can hold Result
+
         return Py::None();
     }
-    
+
     Py::Object writeResult(const Py::Tuple& args)
     {
         char* fileName = NULL;
@@ -291,7 +291,7 @@ private:
         }
         else
             FemVTKTools::writeResult(EncodedName.c_str());
-        
+
         return Py::None();
     }
 #endif

@@ -58,7 +58,8 @@ class BaseGUITestRunner:
         self.currentResult = None
         self.running = 0
         self.__rollbackImporter = None
-        apply(self.initGUI, args, kwargs)
+        #apply(self.initGUI, args, kwargs)
+        self.initGUI(args, kwargs)
 
     def getSelectedTestName(self):
         "Override to return the name of the test selected to be run"
@@ -82,7 +83,8 @@ class BaseGUITestRunner:
             test = unittest.defaultTestLoader.loadTestsFromName(testName)
         except:
             exc_type, exc_value, exc_tb = sys.exc_info()
-            apply(traceback.print_exception,sys.exc_info())
+            #apply(traceback.print_exception,sys.exc_info())
+            traceback.print_exception(*sys.exc_info())
             self.errorDialog("Unable to run test '%s'" % testName,
                              "Error loading specified test: %s, %s" % \
                              (exc_type, exc_value))
@@ -133,16 +135,16 @@ class GUITestResult(unittest.TestResult):
     Used by BaseGUITestRunner. Need not be created directly.
     """
     def __init__(self, callback):
-	unittest.TestResult.__init__(self)
-	self.callback = callback
+        unittest.TestResult.__init__(self)
+        self.callback = callback
 
     def addError(self, test, err):
-	unittest.TestResult.addError(self, test, err)
-	self.callback.notifyTestErrored(test, err)
+        unittest.TestResult.addError(self, test, err)
+        self.callback.notifyTestErrored(test, err)
 
     def addFailure(self, test, err):
-	unittest.TestResult.addFailure(self, test, err)
-	self.callback.notifyTestFailed(test, err)
+        unittest.TestResult.addFailure(self, test, err)
+        self.callback.notifyTestFailed(test, err)
 
     def stopTest(self, test):
         unittest.TestResult.stopTest(self, test)
@@ -220,16 +222,20 @@ class QtTestRunner(BaseGUITestRunner):
     def notifyTestFailed(self, test, err):
         self.failCountVar=self.failCountVar+1
         self.gui.setFailCount(self.failCountVar)
-        tracebackLines = apply(traceback.format_exception, err + (10,))
-        tracebackText = string.join(tracebackLines,'')
+        #tracebackLines = apply(traceback.format_exception, err + (10,))
+        tracebackLines = traceback.format_exception(*err + (10,))
+        #tracebackText = string.join(tracebackLines,'')
+        tracebackText = ''.join(tracebackLines)
         self.gui.insertError("Failure: %s" % test,tracebackText)
         self.errorInfo.append((test,err))
 
     def notifyTestErrored(self, test, err):
         self.errorCountVar=self.errorCountVar+1
         self.gui.setErrorCount(self.errorCountVar)
-        tracebackLines = apply(traceback.format_exception, err + (10,))
-        tracebackText = string.join(tracebackLines,'')
+        #tracebackLines = apply(traceback.format_exception, err + (10,))
+        tracebackLines = traceback.format_exception(*err + (10,))
+        #tracebackText = string.join(tracebackLines,'')
+        tracebackText = ''.join(tracebackLines)
         self.gui.insertError("Error: %s" % test,tracebackText)
         self.errorInfo.append((test,err))
 

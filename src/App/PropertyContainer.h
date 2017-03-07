@@ -230,6 +230,14 @@ protected: \
 private: \
   static App::PropertyData propertyData 
 
+/// Like PROPERTY_HEADER, but with overridden methods declared as such
+#define PROPERTY_HEADER_WITH_OVERRIDE(_class_) \
+  TYPESYSTEM_HEADER_WITH_OVERRIDE(); \
+protected: \
+  static const App::PropertyData * getPropertyDataPtr(void); \
+  virtual const App::PropertyData &getPropertyData(void) const override; \
+private: \
+  static App::PropertyData propertyData 
 /// 
 #define PROPERTY_SOURCE(_class_, _parentclass_) \
 TYPESYSTEM_SOURCE_P(_class_);\

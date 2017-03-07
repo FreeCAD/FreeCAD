@@ -569,7 +569,7 @@ def findParentJob(obj):
     for i in obj.InList:
         if isinstance(i.Proxy, PathScripts.PathJob.ObjectPathJob):
             return i
-        if i.TypeId == "Path::FeaturePython":
+        if i.TypeId == "Path::FeaturePython" or i.TypeId == "Path::FeatureCompoundPython":
             grandParent = findParentJob(i)
             if grandParent is not None:
                 return grandParent
@@ -880,7 +880,7 @@ class depth_params:
     def __fixed_steps(self, start, stop, size):
         '''returns a list of depths beginning with the bottom (included), ending
         with the top (not included).
-        all steps are of size 'size' except the one at the bottom wich can be
+        all steps are of size 'size' except the one at the bottom which can be
         smaller.'''
 
         fullsteps = int((start - stop) / size)

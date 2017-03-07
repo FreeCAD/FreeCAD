@@ -19,6 +19,7 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
+from __future__ import print_function
 
 import FreeCAD, FreeCADGui, os
 from PySide import QtCore, QtGui, QtUiTools, QtSvg
@@ -225,7 +226,7 @@ class MaterialEditor:
 
 
     def getDict(self):
-        "returns a dictionnary from the contents of the editor"
+        "returns a dictionary from the contents of the editor"
         d = {}
         for i1 in range(self.widget.Editor.topLevelItemCount()):
             w = self.widget.Editor.topLevelItem(i1)
@@ -248,7 +249,7 @@ class MaterialEditor:
             try:
                 import DrawingPatterns
             except:
-                print "DrawingPatterns not found"
+                print("DrawingPatterns not found")
             else:
                 pattern = DrawingPatterns.buildFileSwatch(pattern,size=96,png=True)
                 if pattern:

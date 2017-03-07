@@ -25,7 +25,7 @@
 					which is equal to the number of poles minus 1.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="UDegree" Type="Int"/>
+			<Parameter Name="UDegree" Type="Long"/>
 		</Attribute>
 		<Attribute Name="VDegree" ReadOnly="true">
 			<Documentation>
@@ -34,7 +34,7 @@
 					which is equal to the number of poles minus 1.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="VDegree" Type="Int"/>
+			<Parameter Name="VDegree" Type="Long"/>
 		</Attribute>
 		<Attribute Name="MaxDegree" ReadOnly="true">
 			<Documentation>
@@ -43,7 +43,7 @@
 					Bezier surface. This value is 25.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="MaxDegree" Type="Int"/>
+			<Parameter Name="MaxDegree" Type="Long"/>
 		</Attribute>
 		<Attribute Name="NbUPoles" ReadOnly="true">
 			<Documentation>
@@ -51,7 +51,7 @@
 					Returns the number of poles in u direction of this Bezier surface.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="NbUPoles" Type="Int"/>
+			<Parameter Name="NbUPoles" Type="Long"/>
 		</Attribute>
 		<Attribute Name="NbVPoles" ReadOnly="true">
 			<Documentation>
@@ -59,7 +59,7 @@
 					Returns the number of poles in v direction of this Bezier surface.
 				</UserDocu>
 			</Documentation>
-			<Parameter Name="NbVPoles" Type="Int"/>
+			<Parameter Name="NbVPoles" Type="Long"/>
 		</Attribute>
 		<Methode Name="bounds">
 			<Documentation>

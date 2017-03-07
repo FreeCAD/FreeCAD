@@ -443,7 +443,7 @@ void SoFCMeshFaceSet::notify(SoNotList * node)
  * If \a simplest is true then the model is built from the bounding box instead.
  *
  * For every move event the complete data set must be iterated to refresh internal Inventor data @see generatePrimitives(). 
- * Doing this very often for very huge data sets slows down the system noticable. Using a rough model as proxy instead of the orignal 
+ * Doing this very often for very huge data sets slows down the system noticeably. Using a rough model as proxy instead of the orignal 
  * data set can speed up the user interaction extremely. 
  * @note The proxy will never be displayed. It's just used for the picking mechanism.
  * @note The usage of the proxy might be confusing a little bit due to the fact that some details get lost. So it'll be possible
@@ -673,7 +673,7 @@ SoFCMeshFaceSet::Binding SoFCMeshFaceSet::findMaterialBinding(SoState * const st
 
 /**
  * Renders the triangles of the complete mesh.
- * FIXME: Do it the same way as Coin did to have only one implementation which is controled by defines
+ * FIXME: Do it the same way as Coin did to have only one implementation which is controlled by defines
  * FIXME: Implement using different values of transparency for each vertex or face
  */
 void SoFCMeshFaceSet::drawFaces(const MeshCore::MeshPointArray * rPoints, const MeshCore::MeshFacetArray* rFacets, 

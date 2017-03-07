@@ -193,7 +193,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
             if (node) pcRobotRoot->addChild(node);
             pcRobotRoot->addChild(pcTcpRoot);
         }
-		// search for the conection points +++++++++++++++++++++++++++++++++++++++++++++++++
+		// search for the connection points +++++++++++++++++++++++++++++++++++++++++++++++++
 		Axis1Node = Axis2Node = Axis3Node = Axis4Node = Axis5Node = Axis6Node = 0;
 		SoSearchAction searchAction;
 		SoPath * path;

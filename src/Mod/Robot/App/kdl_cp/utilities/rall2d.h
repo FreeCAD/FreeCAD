@@ -42,7 +42,7 @@ namespace KDL {
  *  -   S defines a scalar type that can operate on Rall1d.  This is the type that 
  *      is used to give back values of Norm() etc. 
  *
- * S is usefull when you recurse a Rall1d object into itself to create a 2nd, 3th, 4th,.. 
+ * S is useful when you recurse a Rall1d object into itself to create a 2nd, 3th, 4th,.. 
  * derivatives. (e.g. Rall1d< Rall1d<double>, Rall1d<double>, double> ).
  *
  * S is always passed by value. 

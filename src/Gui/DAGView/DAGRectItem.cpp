@@ -46,7 +46,11 @@ void RectItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
   Q_UNUSED(widget); 
   painter->save();
 
+#if QT_VERSION >= 0x050000
+  QStyleOptionViewItem styleOption;
+#else
   QStyleOptionViewItemV4 styleOption;
+#endif
 
   styleOption.backgroundBrush = backgroundBrush;
   if (editing)

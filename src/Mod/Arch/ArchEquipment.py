@@ -52,7 +52,7 @@ else:
 #  or hydraulic appliances in a building
 
 # presets
-Roles = ["Furniture", "Hydro Equipment", "Electric Equipment"]
+Roles = ["Undefined","Furniture", "Hydro Equipment", "Electric Equipment"]
 
 
 def makeEquipment(baseobj=None,placement=None,name="Equipment"):
@@ -264,23 +264,14 @@ class _Equipment(ArchComponent.Component):
         obj.addProperty("App::PropertyString","Url","Arch",QT_TRANSLATE_NOOP("App::Property","The url of the product page of this equipment"))
         obj.addProperty("App::PropertyVectorList","SnapPoints","Arch",QT_TRANSLATE_NOOP("App::Property","Additional snap points for this equipment"))
         obj.addProperty("App::PropertyFloat","EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by this equipment in Watts"))
-        obj.addProperty("App::PropertyLink","Mesh","Arch",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh representation for this object"))
-        #obj.addProperty("App::PropertyPlacement","MeshDelta","Arch",QT_TRANSLATE_NOOP("App::Property","Stores the delta between the object placement and the mesh placement"))
         self.Type = "Equipment"
         obj.Role = Roles
         obj.Proxy = self
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)
-        #obj.setEditorMode("MeshDelta",2)
 
     def onChanged(self,obj,prop):
-        #if prop == "Mesh":
-        #    if obj.Mesh:
-        #        delta = FreeCAD.Placement()
-        #        delta.Base = obj.Mesh.Placement.Base.sub(obj.Placement.Base)
-        #        delta.Rotation = FreeCAD.Rotation(obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1)),obj.Mesh.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1)))
-        #        obj.MeshDelta = delta
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
 
@@ -327,10 +318,6 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
         sep.addChild(symbol)
         rn = vobj.RootNode
         rn.addChild(sep)
-        self.hiresgroup = coin.SoGroup()
-        self.meshcolor = coin.SoBaseColor()
-        self.hiresgroup.addChild(self.meshcolor)
-        vobj.addDisplayMode(self.hiresgroup,"Mesh");
         ArchComponent.ViewProviderComponent.attach(self,vobj)
         
     def updateData(self, obj, prop):
@@ -340,34 +327,6 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
                 self.coords.point.setValues([[p.x,p.y,p.z] for p in obj.SnapPoints])
             else:
                 self.coords.point.deleteValues(0)
-
-    def getDisplayModes(self,vobj):
-        modes=["Mesh"]
-        return modes
-
-    def setDisplayMode(self,mode):
-        if mode == "Mesh":
-            m = None
-            if hasattr(self,"Object"):
-                if hasattr(self.Object,"Mesh"):
-                    if self.Object.Mesh:
-                        m = self.Object.Mesh.ViewObject.RootNode
-                if not m:
-                    if hasattr(self.Object,"CloneOf"):
-                        if self.Object.CloneOf:
-                            if hasattr(self.Object.CloneOf,"Mesh"):
-                                if self.Object.CloneOf.Mesh:
-                                    m = self.Object.CloneOf.Mesh.ViewObject.RootNode
-            if m:
-                self.meshnode = m.copy()
-                self.meshnode.getChild(1).whichChild = 0
-                self.hiresgroup.addChild(self.meshnode)
-        else:
-            if hasattr(self,"meshnode"):
-                if self.meshnode:
-                    self.hiresgroup.removeChild(self.meshnode)
-                    del self.meshnode
-        return mode
 
 
 if FreeCAD.GuiUp:

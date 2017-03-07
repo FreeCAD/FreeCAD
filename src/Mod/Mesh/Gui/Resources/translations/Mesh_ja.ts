@@ -229,7 +229,7 @@
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation>シェイプからメッシュを作成する...</translation>
+        <translation>シェイプからメッシュを作成...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
@@ -395,6 +395,21 @@
     <message>
         <source>Remove topologic independent components from the mesh</source>
         <translation>トポロジーとして独立しているコンポーネントをメッシュから削除します</translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshSectionByPlane</name>
+    <message>
+        <source>Mesh</source>
+        <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section from mesh and plane</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -738,30 +753,30 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation>設定...</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
         <source>Evaluation settings</source>
-        <translation type="unfinished"></translation>
+        <translation>評価設定</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>設定</translation>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation type="unfinished"></translation>
+        <translation>非多様体点のチェック</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation type="unfinished"></translation>
+        <translation>表面上の折り返しのチェック</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
-        <translation type="unfinished"></translation>
+        <translation>面積ゼロの面だけを縮退とみなす</translation>
     </message>
 </context>
 <context>
@@ -888,6 +903,10 @@ Please run the command to repair folds first</source>
         <source>mm</source>
         <translation type="obsolete">mm</translation>
     </message>
+    <message>
+        <source>Export AMF files using compression</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MeshGui::DlgSettingsMeshView</name>
@@ -921,7 +940,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Define normal per vertex</source>
-        <translation>頂点ごとに法線を定義します。</translation>
+        <translation>頂点ごとに法線を定義</translation>
     </message>
     <message utf8="true">
         <source> °</source>
@@ -937,7 +956,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Default line color</source>
-        <translation>デフォルトの線の色</translation>
+        <translation>線の既定色</translation>
     </message>
     <message>
         <source>Mesh transparency</source>
@@ -949,7 +968,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Show bounding-box for highlighted or selected meshes</source>
-        <translation>ハイライト、または選択されたメッシュのバウンディングボックスを表示します</translation>
+        <translation>ハイライト、または選択されたメッシュのバウンディングボックスを表示</translation>
     </message>
     <message>
         <source>Line transparency</source>
@@ -1100,7 +1119,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Minumum number of faces</source>
-        <translation>面の最小数</translation>
+        <translation type="obsolete">面の最小数</translation>
     </message>
     <message>
         <source>Cylinder</source>
@@ -1173,11 +1192,11 @@ Please run the command to repair folds first</source>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation>平面を選択</translation>
+        <translation type="obsolete">平面を選択</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation>メッシュのトリムを行う平面を選択してください。</translation>
+        <translation type="obsolete">メッシュのトリムを行う平面を選択してください。</translation>
     </message>
 </context>
 <context>
@@ -1188,13 +1207,17 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation>OpenSCAD の実行中に、不明なエラーが発生しました。</translation>
+        <translation type="obsolete">OpenSCAD の実行中に、不明なエラーが発生しました。</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
         <translation>OpenSCAD がシステムに見つかりません。
 インストール方法につて http://www.openscad.org/index.html を参照してください。</translation>
+    </message>
+    <message>
+        <source>Unknown error occurred while running OpenSCAD.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1391,7 +1414,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>すべてのファイル</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>

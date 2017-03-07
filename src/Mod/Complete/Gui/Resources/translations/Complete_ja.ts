@@ -65,13 +65,17 @@
         <translation>プリミティブ</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">パラメトリック</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>オブジェクトの外観</translation>
+        <translation type="obsolete">オブジェクトの外観</translation>
     </message>
     <message>
         <location line="+1"/>

@@ -68,7 +68,7 @@ public:
                    int               newNodeSize,
                    std::vector<int>& idCellsOldToNew,
                    int               newCellSize);
-  virtual unsigned long GetMTime();
+  virtual VTK_MTIME_TYPE GetMTime();
   // OUV_PORTING_VTK6: seems to be useless
   //virtual void Update();
   //virtual void UpdateInformation();

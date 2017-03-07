@@ -11,14 +11,14 @@
     <message>
         <location line="+1"/>
         <source>Convert to points...</source>
-        <translation type="unfinished">Convert to points...</translation>
+        <translation>Converteer naar punten...</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>
         <source>Convert to points</source>
-        <translation type="unfinished">Convert to points</translation>
+        <translation>Converteer naar punten</translation>
     </message>
 </context>
 <context>
@@ -262,7 +262,7 @@
         <location line="-51"/>
         <location line="+51"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Alle bestanden</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -272,7 +272,7 @@
     <message>
         <location line="+1"/>
         <source>Enter maximum distance:</source>
-        <translation type="unfinished">Enter maximum distance:</translation>
+        <translation>Geef maximale afstand op:</translation>
     </message>
 </context>
 <context>

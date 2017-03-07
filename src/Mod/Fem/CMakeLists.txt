@@ -14,121 +14,112 @@ if(BUILD_GUI)
     add_subdirectory(Gui)
 endif(BUILD_GUI)
 
+# changes on the file list here needs to be made in App/CMakeLists.txt as well
 INSTALL(
     FILES
-        # changes on the file list here needs to be made in App/CMakeLists.txt as well
+        convert2TetGen.py
+        importCcxDatResults.py
+        importCcxFrdResults.py
+        importFenicsMesh.py
+        importInpMesh.py
+        importToolsFem.py
+        importVTKResults.py
+        importZ88Mesh.py
+        importZ88O2Results.py
         Init.py
         InitGui.py
-
-        convert2TetGen.py
-
-        FemSelectionObserver.py
-        FemMeshTools.py
-        FemTools.py
-        FemInputWriter.py
-        TestFem.py
-
-        FemCommands.py
-        _CommandClearMesh.py
-        _CommandMeshNetgenFromShape.py
-        _CommandPrintMeshInfo.py
-        _CommandPurgeResults.py
-        _CommandRunSolver.py
-        _CommandControlSolver.py
-
-        _CommandShowResult.py
-        _TaskPanelShowResult.py
-        TaskPanelShowResult.ui
-
-        FemAnalysis.py
-        _CommandAnalysis.py
-
-        FemMeshGmsh.py
-        _FemMeshGmsh.py
-        _ViewProviderFemMeshGmsh.py
-        _CommandMeshGmshFromShape.py
-        _TaskPanelFemMeshGmsh.py
-        TaskPanelFemMeshGmsh.ui
-
         FemGmshTools.py
-
-        FemMesh2Mesh.py
-        _CommandFEMMesh2Mesh.py
-
-        FemMeshGroup.py
-        _FemMeshGroup.py
-        _ViewProviderFemMeshGroup.py
-        _CommandMeshGroup.py
-        _TaskPanelFemMeshGroup.py
-        TaskPanelFemMeshGroup.ui
-
-        FemMeshRegion.py
-        _FemMeshRegion.py
-        _ViewProviderFemMeshRegion.py
-        _CommandMeshRegion.py
-        _TaskPanelFemMeshRegion.py
-        TaskPanelFemMeshRegion.ui
-
-        FemBeamSection.py
-        _FemBeamSection.py
-        _ViewProviderFemBeamSection.py
-        _CommandBeamSection.py
-        _TaskPanelFemBeamSection.py
-        TaskPanelFemBeamSection.ui
-
-        FemShellThickness.py
-        _FemShellThickness.py
-        _ViewProviderFemShellThickness.py
-        _CommandShellThickness.py
-        _TaskPanelFemShellThickness.py
-        TaskPanelFemShellThickness.ui
-
-        FemConstraintSelfWeight.py
-        _FemConstraintSelfWeight.py
-        _ViewProviderFemConstraintSelfWeight.py
-        _CommandConstraintSelfWeight.py
-
-        FemMaterial.py
-        _FemMaterial.py
-        _ViewProviderFemMaterial.py
-        _CommandMaterialSolid.py
-        _CommandMaterialFluid.py
-        _TaskPanelFemMaterial.py
-        TaskPanelFemMaterial.ui
-
-        FemMaterialMechanicalNonlinear.py
-        _FemMaterialMechanicalNonlinear.py
-        _ViewProviderFemMaterialMechanicalNonlinear.py
-        _CommandMaterialMechanicalNonlinear.py
-
-        # solver CalculiX ccx
-        importInpMesh.py
-        ccxDatReader.py
-        ccxFrdReader.py
+        FemInputWriter.py
         FemInputWriterCcx.py
-        FemToolsCcx.py
-        FemSolverCalculix.py
-        _FemSolverCalculix.py
-        _ViewProviderFemSolverCalculix.py
-        _CommandSolverCalculix.py
-        _TaskPanelFemSolverCalculix.py
-        TaskPanelFemSolverCalculix.ui
-
-        # solver Z88
-        importZ88Mesh.py
-        importZ88Results.py
         FemInputWriterZ88.py
+        FemMesh2Mesh.py
+        FemMeshTools.py
+        FemSelectionObserver.py
+        FemTools.py
+        FemToolsCcx.py
         FemToolsZ88.py
-        FemSolverZ88.py
-        _FemSolverZ88.py
-        _ViewProviderFemSolverZ88.py
-        _CommandSolverZ88.py
-
-        # additional imports and exports
-        importVTKResults.py
-
+        ObjectsFem.py
+        TestFem.py
     DESTINATION
         Mod/Fem
+)
+
+INSTALL(
+    FILES
+        PyObjects/__init__.py
+        PyObjects/_FemBeamSection.py
+        PyObjects/_FemConstraintSelfWeight.py
+        PyObjects/_FemFluidSection.py
+        PyObjects/_FemMaterialMechanicalNonlinear.py
+        PyObjects/_FemMeshGmsh.py
+        PyObjects/_FemMeshGroup.py
+        PyObjects/_FemMeshRegion.py
+        PyObjects/_FemResultMechanical.py
+        PyObjects/_FemShellThickness.py
+        PyObjects/_FemSolverCalculix.py
+        PyObjects/_FemSolverZ88.py
+        PyObjects/_FemMaterial.py
+    DESTINATION
+        Mod/Fem/PyObjects
+)
+
+INSTALL(
+    FILES
+        PyGui/FemCommands.py
+        PyGui/__init__.py
+        PyGui/_CommandFemAnalysis.py
+        PyGui/_CommandFemBeamSection.py
+        PyGui/_CommandFemConstraintSelfWeight.py
+        PyGui/_CommandFemFluidSection.py
+        PyGui/_CommandFemMaterialMechanicalNonlinear.py
+        PyGui/_CommandFemMaterialSolid.py
+        PyGui/_CommandFemMaterialFluid.py
+        PyGui/_CommandFemMesh2Mesh.py
+        PyGui/_CommandFemMeshClear.py
+        PyGui/_CommandFemMeshGmshFromShape.py
+        PyGui/_CommandFemMeshGroup.py
+        PyGui/_CommandFemMeshNetgenFromShape.py
+        PyGui/_CommandFemMeshPrintInfo.py
+        PyGui/_CommandFemMeshRegion.py
+        PyGui/_CommandFemResultShow.py
+        PyGui/_CommandFemResultsPurge.py
+        PyGui/_CommandFemShellThickness.py
+        PyGui/_CommandFemSolverCalculix.py
+        PyGui/_CommandFemSolverControl.py
+        PyGui/_CommandFemSolverRun.py
+        PyGui/_CommandFemSolverZ88.py
+        PyGui/_TaskPanelFemBeamSection.py
+        PyGui/_TaskPanelFemFluidSection.py
+        PyGui/_TaskPanelFemMaterial.py
+        PyGui/_TaskPanelFemMeshGmsh.py
+        PyGui/_TaskPanelFemMeshGroup.py
+        PyGui/_TaskPanelFemMeshRegion.py
+        PyGui/_TaskPanelFemResultShow.py
+        PyGui/_TaskPanelFemShellThickness.py
+        PyGui/_TaskPanelFemSolverCalculix.py
+        PyGui/_ViewProviderFemBeamSection.py
+        PyGui/_ViewProviderFemConstraintSelfWeight.py
+        PyGui/_ViewProviderFemFluidSection.py
+        PyGui/_ViewProviderFemMaterial.py
+        PyGui/_ViewProviderFemMaterialMechanicalNonlinear.py
+        PyGui/_ViewProviderFemMeshGmsh.py
+        PyGui/_ViewProviderFemMeshGroup.py
+        PyGui/_ViewProviderFemMeshRegion.py
+        PyGui/_ViewProviderFemResultMechanical.py
+        PyGui/_ViewProviderFemShellThickness.py
+        PyGui/_ViewProviderFemSolverCalculix.py
+        PyGui/_ViewProviderFemSolverZ88.py
+        PyGui/TaskPanelFemBeamSection.ui
+        PyGui/TaskPanelFemFluidSection.ui
+        PyGui/TaskPanelFemMaterial.ui
+        PyGui/TaskPanelFemMeshGmsh.ui
+        PyGui/TaskPanelFemMeshGroup.ui
+        PyGui/TaskPanelFemMeshRegion.ui
+        PyGui/TaskPanelFemResultShow.ui
+        PyGui/TaskPanelFemShellThickness.ui
+        PyGui/TaskPanelFemSolverCalculix.ui
+    DESTINATION
+        Mod/Fem/PyGui
 )
 
 INSTALL(

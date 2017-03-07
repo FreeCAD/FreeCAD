@@ -50,7 +50,6 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 
-
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
 #include <CXX/Exception.hxx>
@@ -442,6 +441,15 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
 {
     Q_UNUSED(rCaller); 
     ParameterGrp::handle hPrefGrp = getWindowParameter();
+
+    bool pythonWordWrap = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General")->GetBool("PythonWordWrap", true);
+
+    if (pythonWordWrap) {
+      this->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+    } else {
+      this->setWordWrapMode(QTextOption::NoWrap);
+    }
 
     if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
         int fontSize = hPrefGrp->GetInt("FontSize", 10);
@@ -1183,12 +1191,26 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
 
     QAction* wrap = menu.addAction(tr("Word wrap"));
     wrap->setCheckable(true);
-    wrap->setChecked(this->wordWrapMode() != QTextOption::NoWrap);
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+    if (hGrp->GetBool("PythonWordWrap", true)) {
+        wrap->setChecked(true);
+        this->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+    } else {
+        wrap->setChecked(false);
+        this->setWordWrapMode(QTextOption::NoWrap);
+    }
 
     QAction* exec = menu.exec(e->globalPos());
     if (exec == wrap) {
-        this->setWordWrapMode(wrap->isChecked()
-            ? QTextOption::WrapAtWordBoundaryOrAnywhere : QTextOption::NoWrap);
+        if (wrap->isChecked()) {
+            this->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+            hGrp->SetBool("PythonWordWrap", true);
+        } else {
+            this->setWordWrapMode(QTextOption::NoWrap);
+            hGrp->SetBool("PythonWordWrap", false);
+        }
     }
 }
 

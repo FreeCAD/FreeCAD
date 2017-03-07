@@ -121,7 +121,7 @@ def export(objectslist,filename,argstring):
     gcode = ""
 
     #Find the machine.
-    #The user my have overriden post processor defaults in the GUI.  Make sure we're using the current values in the Machine Def.
+    #The user my have overridden post processor defaults in the GUI.  Make sure we're using the current values in the Machine Def.
     myMachine = None
     for pathobj in objectslist:
         if hasattr(pathobj,"MachineName"):
@@ -180,7 +180,7 @@ def export(objectslist,filename,argstring):
     print("done postprocessing.")
 
     gfile = pythonopen(filename,"wb")
-    gfile.write(gcode)
+    gfile.write(final)
     gfile.close()
 
 

@@ -519,19 +519,22 @@ void MeshObject::addFacets(const std::vector<MeshCore::MeshGeomFacet>& facets)
     _kernel.AddFacets(facets);
 }
 
-void MeshObject::addFacets(const std::vector<MeshCore::MeshFacet> &facets)
+void MeshObject::addFacets(const std::vector<MeshCore::MeshFacet> &facets,
+                           bool checkManifolds)
 {
-    _kernel.AddFacets(facets);
+    _kernel.AddFacets(facets, checkManifolds);
 }
 
 void MeshObject::addFacets(const std::vector<MeshCore::MeshFacet> &facets,
-                           const std::vector<Base::Vector3f>& points)
+                           const std::vector<Base::Vector3f>& points,
+                           bool checkManifolds)
 {
-    _kernel.AddFacets(facets, points);
+    _kernel.AddFacets(facets, points, checkManifolds);
 }
 
 void MeshObject::addFacets(const std::vector<Data::ComplexGeoData::Facet> &facets,
-                           const std::vector<Base::Vector3d>& points)
+                           const std::vector<Base::Vector3d>& points,
+                           bool checkManifolds)
 {
     std::vector<MeshCore::MeshFacet> facet_v;
     facet_v.reserve(facets.size());
@@ -550,7 +553,7 @@ void MeshObject::addFacets(const std::vector<Data::ComplexGeoData::Facet> &facet
         point_v.push_back(p);
     }
 
-    _kernel.AddFacets(facet_v, point_v);
+    _kernel.AddFacets(facet_v, point_v, checkManifolds);
 }
 
 void MeshObject::setFacets(const std::vector<MeshCore::MeshGeomFacet>& facets)
@@ -1465,7 +1468,11 @@ MeshObject* MeshObject::createSphere(float radius, int sampling)
         Py::Callable call(dict.getItem("Sphere"));
         Py::Tuple args(2);
         args.setItem(0, Py::Float(radius));
+#if PY_MAJOR_VERSION >= 3
+        args.setItem(1, Py::Long(sampling));
+#else
         args.setItem(1, Py::Int(sampling));
+#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }
@@ -1487,7 +1494,11 @@ MeshObject* MeshObject::createEllipsoid(float radius1, float radius2, int sampli
         Py::Tuple args(3);
         args.setItem(0, Py::Float(radius1));
         args.setItem(1, Py::Float(radius2));
+#if PY_MAJOR_VERSION >= 3
+        args.setItem(2, Py::Long(sampling));
+#else
         args.setItem(2, Py::Int(sampling));
+#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }
@@ -1509,9 +1520,15 @@ MeshObject* MeshObject::createCylinder(float radius, float length, int closed, f
         Py::Tuple args(5);
         args.setItem(0, Py::Float(radius));
         args.setItem(1, Py::Float(length));
+#if PY_MAJOR_VERSION >= 3
+        args.setItem(2, Py::Long(closed));
+        args.setItem(3, Py::Float(edgelen));
+        args.setItem(4, Py::Long(sampling));
+#else
         args.setItem(2, Py::Int(closed));
         args.setItem(3, Py::Float(edgelen));
         args.setItem(4, Py::Int(sampling));
+#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }
@@ -1534,9 +1551,15 @@ MeshObject* MeshObject::createCone(float radius1, float radius2, float len, int 
         args.setItem(0, Py::Float(radius1));
         args.setItem(1, Py::Float(radius2));
         args.setItem(2, Py::Float(len));
+#if PY_MAJOR_VERSION >= 3
+        args.setItem(3, Py::Long(closed));
+        args.setItem(4, Py::Float(edgelen));
+        args.setItem(5, Py::Long(sampling));
+#else
         args.setItem(3, Py::Int(closed));
         args.setItem(4, Py::Float(edgelen));
         args.setItem(5, Py::Int(sampling));
+#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }
@@ -1558,7 +1581,11 @@ MeshObject* MeshObject::createTorus(float radius1, float radius2, int sampling)
         Py::Tuple args(3);
         args.setItem(0, Py::Float(radius1));
         args.setItem(1, Py::Float(radius2));
+#if PY_MAJOR_VERSION >= 3
+        args.setItem(2, Py::Long(sampling));
+#else
         args.setItem(2, Py::Int(sampling));
+#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }

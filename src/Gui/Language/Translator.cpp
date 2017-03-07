@@ -154,6 +154,12 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovak"               )] = "sk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Turkish"              )] = "tr";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"            )] = "sl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Basque"               )] = "eu";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Catalan"              )] = "ca";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Galician"             )] = "gl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Kabyle"               )] = "kab";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Korean"               )] = "ko";
+    
     d->activatedLanguage = "English";
 
     d->paths = directories();

@@ -371,7 +371,15 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // Python console
     PythonConsole* pcPython = new PythonConsole(this);
-    pcPython->setWordWrapMode(QTextOption::NoWrap);
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+
+    if (hGrp->GetBool("PythonWordWrap", true)) {
+      pcPython->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+    } else {
+      pcPython->setWordWrapMode(QTextOption::NoWrap);
+    }
+
     pcPython->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
     pcPython->setObjectName
         (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Python console")));
@@ -472,7 +480,7 @@ void MainWindow::tile()
         mb.setIcon(QMessageBox::Warning);
         mb.setTextFormat(Qt::RichText);
         mb.setText(tr("There is a rendering issue on MacOS."));
-        mb.setInformativeText(tr("See <a href=\"http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS\"> the wiki</a> for more information"));
+        mb.setInformativeText(tr("See <a href=\"http://www.freecadweb.org/wiki/OpenGL_on_MacOS\"> the wiki</a> for more information"));
 
         QAbstractButton *suppressBtn;
         suppressBtn = mb.addButton(tr("Don't show again"), QMessageBox::DestructiveRole);
@@ -500,7 +508,7 @@ void MainWindow::cascade()
         mb.setIcon(QMessageBox::Warning);
         mb.setTextFormat(Qt::RichText);
         mb.setText(tr("There is a rendering issue on MacOS."));
-        mb.setInformativeText(tr("See <a href=\"http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS\"> the wiki</a> for more information"));
+        mb.setInformativeText(tr("See <a href=\"http://www.freecadweb.org/wiki/OpenGL_on_MacOS\"> the wiki</a> for more information"));
 
         QAbstractButton *suppressBtn;
         suppressBtn = mb.addButton(tr("Don't show again"), QMessageBox::DestructiveRole);

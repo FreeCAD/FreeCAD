@@ -1019,8 +1019,8 @@ ParameterManager::ParameterManager()
 //      Indicates whether full schema constraint checking should be done.
 //
 //  gDoCreate
-//      Indicates whether entity reference nodes needs to be created or not
-//      Defaults to false
+//      Indicates whether entity reference nodes needs to be created or not.
+//      Defaults to false.
 //
 //  gOutputEncoding
 //      The encoding we are to output in. If not set on the command line,
@@ -1191,7 +1191,7 @@ int ParameterManager::LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSou
     parser->setErrorHandler(errReporter);
 
     //
-    //  Parse the XML file, catching any XML exceptions that might propogate
+    //  Parse the XML file, catching any XML exceptions that might propagate
     //  out of it.
     //
     bool errorsOccured = false;
@@ -1444,9 +1444,9 @@ short DOMPrintFilter::acceptNode(const DOMNode* node) const
     // The DOMWriter shall call getWhatToShow() before calling
     // acceptNode(), to show nodes which are supposed to be
     // shown to this filter.
-    //
+    // TODO:
     // REVISIT: In case the DOMWriter does not follow the protocol,
-    //          Shall the filter honour, or NOT, what it claimes
+    //          Shall the filter honor, or NOT, what it claims
     //         (when it is constructed/setWhatToShow())
     //          it is interested in ?
     //

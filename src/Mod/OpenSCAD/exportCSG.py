@@ -95,40 +95,40 @@ def shape2polyhedron(shape):
 
 def process_object(csg,ob):
     
-    print "Placement"
-    print "Pos   : "+str(ob.Placement.Base)
-    print "axis  : "+str(ob.Placement.Rotation.Axis)
-    print "angle : "+str(ob.Placement.Rotation.Angle)
+    print("Placement")
+    print("Pos   : "+str(ob.Placement.Base))
+    print("axis  : "+str(ob.Placement.Rotation.Axis))
+    print("angle : "+str(ob.Placement.Rotation.Angle))
     
     if ob.TypeId == "Part::Sphere" :
-        print "Sphere Radius : "+str(ob.Radius)
+        print("Sphere Radius : "+str(ob.Radius))
         check_multmatrix(csg,ob,0,0,0)
         csg.write("sphere($fn = 0, "+fafs+", r = "+str(ob.Radius)+");\n")
            
     elif ob.TypeId == "Part::Box" :
-        print "cube : ("+ str(ob.Length)+","+str(ob.Width)+","+str(ob.Height)+")"
+        print("cube : ("+ str(ob.Length)+","+str(ob.Width)+","+str(ob.Height)+")")
         mm = check_multmatrix(csg,ob,-ob.Length/2,-ob.Width/2,-ob.Height/2)        
         csg.write("cube (size = ["+str(ob.Length.Value)+", "+str(ob.Width.Value)+", "+str(ob.Height.Value)+"], center = "+center(mm)+");\n")
         if mm == 1 : csg.write("}\n")       
 
     elif ob.TypeId == "Part::Cylinder" :
-        print "cylinder : Height "+str(ob.Height)+ " Radius "+str(ob.Radius)        
+        print("cylinder : Height "+str(ob.Height)+ " Radius "+str(ob.Radius))
         mm = check_multmatrix(csg,ob,0,0,-ob.Height/2)
         csg.write("cylinder($fn = 0, "+fafs+", h = "+str(ob.Height.Value)+ ", r1 = "+str(ob.Radius.Value)+\
                   ", r2 = " + str(ob.Radius.Value) + ", center = "+center(mm)+");\n")
         if mm == 1 : csg.write("}\n")           
             
     elif ob.TypeId == "Part::Cone" :
-        print "cone : Height "+str(ob.Height)+ " Radius1 "+str(ob.Radius1)+" Radius2 "+str(ob.Radius2)
+        print("cone : Height "+str(ob.Height)+ " Radius1 "+str(ob.Radius1)+" Radius2 "+str(ob.Radius2))
         mm = check_multmatrix(csg,ob,0,0,-ob.Height/2)
         csg.write("cylinder($fn = 0, "+fafs+", h = "+str(ob.Height.Value)+ ", r1 = "+str(ob.Radius1.Value)+\
                   ", r2 = "+str(ob.Radius2.Value)+", center = "+center(mm)+");\n")
         if mm == 1 : csg.write("}\n")
 
     elif ob.TypeId == "Part::Torus" :
-        print "Torus"
-        print ob.Radius1
-        print ob.Radius2
+        print("Torus")
+        print(ob.Radius1)
+        print(ob.Radius2)
         if ob.Angle3 == 360.00 :
             mm = check_multmatrix(csg,ob,0,0,0)
             csg.write("rotate_extrude("+convexity+", $fn = 0, "+fafs+")\n")
@@ -142,7 +142,7 @@ def process_object(csg,ob):
         import math
         f = str(ob.Polygon)
 #        r = str(ob.Length/2.0/math.sin(math.pi/ob.Polygon))
-        r = str(ob.Circumradius) #length seems to be the outer radius
+        r = str(ob.Circumradius) # length seems to be the outer radius
         h = str(ob.Height.Value)
         mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
         csg.write("cylinder($fn = "+f+", "+fafs+", h = "+h+", r1 = "+r+\
@@ -155,9 +155,9 @@ def process_object(csg,ob):
         if mm == 1: csg.write("}\n")
 
     elif ob.TypeId == "Part::Extrusion" :
-        print "Extrusion"
-        print ob.Base
-        print ob.Base.Name
+        print("Extrusion")
+        print(ob.Base)
+        print(ob.Base.Name)
         if ob.Base.isDerivedFrom('Part::Part2DObjectPython') and \
             hasattr(ob.Base,'Proxy') and hasattr(ob.Base.Proxy,'TypeId'):
             ptype=ob.Base.Proxy.TypeId
@@ -165,9 +165,9 @@ def process_object(csg,ob):
                 f = str(ob.Base.FacesNumber)
                 r = str(ob.Base.Radius)
                 h = str(ob.Dir[2])
-                print "Faces : " + f
-                print "Radius : " + r
-                print "Height : " + h
+                print("Faces : " + f)
+                print("Radius : " + r)
+                print("Height : " + h)
                 mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
                 csg.write("cylinder($fn = "+f+", "+fafs+", h = "+h+", r1 = "+r+\
                           ", r2 = "+r+", center = "+center(mm)+");\n")
@@ -176,16 +176,16 @@ def process_object(csg,ob):
             elif ptype == "Circle" :
                 r = str(ob.Base.Radius)
                 h = str(ob.Dir[2])
-                print "Radius : " + r
-                print "Height : " + h
+                print("Radius : " + r)
+                print("Height : " + h)
                 mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
                 csg.write("cylinder($fn = 0, "+fafs+", h = "+h+", r1 = "+r+\
                           ", r2 = "+r+", center = "+center(mm)+");\n")
                 if mm == 1: csg.write("}\n")
 
             elif ptype == "Wire" :
-                print "Wire extrusion"
-                print ob.Base
+                print("Wire extrusion")
+                print(ob.Base)
                 mm = check_multmatrix(csg,ob,0,0,0)
                 csg.write("linear_extrude(height = "+str(ob.Dir[2])+", center = "+center(mm)+", "+convexity+", twist = 0, slices = 2, $fn = 0, "+fafs+")\n{\n")
                 csg.write(vertexs2polygon(ob.Base.Shape.Vertexes))
@@ -199,68 +199,68 @@ def process_object(csg,ob):
         elif ob.Base.Name.startswith('this_is_a_bad_idea'):
             pass
         else:
-            pass #There should be a fallback solution
+            pass # There should be a fallback solution
 
     elif ob.TypeId == "Part::Cut" :
-        print "Cut"
+        print("Cut")
         csg.write("difference() {\n")
         process_object(csg,ob.Base)
         process_object(csg,ob.Tool)
         csg.write("}\n")
 
     elif ob.TypeId == "Part::Fuse" :
-        print "union"
+        print("union")
         csg.write("union() {\n")
         process_object(csg,ob.Base)
         process_object(csg,ob.Tool)
         csg.write("}\n")
 
     elif ob.TypeId == "Part::Common" :
-        print "intersection"
+        print("intersection")
         csg.write("intersection() {\n")
         process_object(csg,ob.Base)
         process_object(csg,ob.Tool)
         csg.write("}\n")
 
     elif ob.TypeId == "Part::MultiFuse" :
-        print "Multi Fuse / union"
+        print("Multi Fuse / union")
         csg.write("union() {\n")
         for subobj in ob.Shapes:
             process_object(csg,subobj)
         csg.write("}\n")
         
     elif ob.TypeId == "Part::MultiCommon" :
-        print "Multi Common / intersection"
+        print("Multi Common / intersection")
         csg.write("intersection() {\n")
         for subobj in ob.Shapes:
             process_object(csg,subobj)
         csg.write("}\n")
 
     elif ob.isDerivedFrom('Part::Feature') :
-        print "Part::Feature"
+        print("Part::Feature")
         mm = check_multmatrix(csg,ob,0,0,0)
         csg.write('%s\n' % shape2polyhedron(ob.Shape))
         if mm == 1 : csg.write("}\n")
 
 def export(exportList,filename):
-    "called when freecad exports a file"
+    "called when FreeCAD exports a file"
     
     # process Objects
-    print "\nStart Export 0.1d\n"
-    print "Open Output File"
+    print("\nStart Export 0.1d\n")
+    print("Open Output File")
     csg = pythonopen(filename,'w')
-    print "Write Inital Output"
+    print("Write Initial Output")
     # Not sure if comments as per scad are allowed in csg file              
     csg.write("// CSG file generated from FreeCAD %s\n" % \
             '.'.join(FreeCAD.Version()[0:3]))
     #write initial group statements - not sure if required              
     csg.write("group() {\n group(){\n")
     for ob in exportList:
-        print ob
-        print "Name : "+ob.Name
-        print "Type : "+ob.TypeId
-        print "Shape : "
-        print ob.Shape
+        print(ob)
+        print("Name : "+ob.Name)
+        print("Type : "+ob.TypeId)
+        print("Shape : ")
+        print(ob.Shape)
         process_object(csg,ob)
    
     # write closing group braces

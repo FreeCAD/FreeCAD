@@ -44,9 +44,9 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+325"/>
+        <location filename="../../GLImageBox.cpp" line="+331"/>
         <source>Undefined type of colour space for image viewing</source>
-        <translation>Nedoločen vrsta barvnega prostora za ogled slike</translation>
+        <translation>Nedoločena vrsta barvnega prostora za ogled slike</translation>
     </message>
     <message>
         <location line="-1"/>
@@ -138,7 +138,7 @@
     <message>
         <location line="+18"/>
         <source>Ready...</source>
-        <translation>Pripravljen...</translation>
+        <translation>Pripravljeni …</translation>
     </message>
     <message>
         <location line="+390"/>
@@ -199,13 +199,21 @@
     </message>
     <message>
         <location line="+8"/>
-        <source>Error open image</source>
-        <translation>Napaka pri odpiranju slike</translation>
+        <source>Error opening image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Could not load the chosen image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error open image</source>
+        <translation type="obsolete">Napaka pri odpiranju slike</translation>
+    </message>
+    <message>
         <source>Could not load the choosen image</source>
-        <translation>Izbrane slike ni bilo mogoče naložiti</translation>
+        <translation type="obsolete">Izbrane slike ni bilo mogoče naložiti</translation>
     </message>
 </context>
 <context>

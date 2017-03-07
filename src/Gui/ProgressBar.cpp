@@ -208,15 +208,16 @@ void Sequencer::setValue(int step)
         }
     }
     else {
-        if (thr != currentThread) {
-            QMetaObject::invokeMethod(d->bar, "setValue", Qt::/*Blocking*/QueuedConnection,
+        int elapsed = d->progressTime.elapsed();
+        if (elapsed > 100) {
+            d->progressTime.restart();
+            if (thr != currentThread) {
+                QMetaObject::invokeMethod(d->bar, "setValue", Qt::/*Blocking*/QueuedConnection,
                 QGenericReturnArgument(), Q_ARG(int,step));
-            if (d->bar->isVisible())
-                showRemainingTime();
-        }
-        else {
-            int elapsed = d->progressTime.restart();
-            if (elapsed > 500) {
+                if (d->bar->isVisible())
+                    showRemainingTime();
+            }
+            else {
                 d->bar->setValue(step);
                 if (d->bar->isVisible())
                     showRemainingTime();

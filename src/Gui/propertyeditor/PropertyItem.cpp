@@ -3511,6 +3511,19 @@ PropertyItemEditorFactory::~PropertyItemEditorFactory()
 {
 }
 
+#if (QT_VERSION >= 0x050300)
+QWidget * PropertyItemEditorFactory::createEditor (int /*type*/, QWidget * /*parent*/) const
+{
+    // do not allow to create any editor widgets because we do that in subclasses of PropertyItem
+    return 0;
+}
+
+QByteArray PropertyItemEditorFactory::valuePropertyName (int /*type*/) const
+{
+    // do not allow to set properties because we do that in subclasses of PropertyItem
+    return "";
+}
+#else
 QWidget * PropertyItemEditorFactory::createEditor (QVariant::Type /*type*/, QWidget * /*parent*/) const
 {
     // do not allow to create any editor widgets because we do that in subclasses of PropertyItem
@@ -3522,6 +3535,7 @@ QByteArray PropertyItemEditorFactory::valuePropertyName (QVariant::Type /*type*/
     // do not allow to set properties because we do that in subclasses of PropertyItem
     return "";
 }
+#endif
 
 #include "moc_PropertyItem.cpp"
 

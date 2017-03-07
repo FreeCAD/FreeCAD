@@ -27,7 +27,8 @@ __url__ = ["http://www.freecadweb.org"]
 
 ## \defgroup DRAFTGEOMUTILS DraftGeomUtils
 #  \ingroup DRAFT
-#
+#  \brief Shape manipulation utilities for the Draft workbench
+# 
 # Shapes manipulation utilities
 
 ## \addtogroup DRAFTGEOMUTILS
@@ -407,6 +408,10 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
         rad1 , rad2  = edge1.Curve.Radius, edge2.Curve.Radius
         axis1, axis2 = edge1.Curve.Axis  , edge2.Curve.Axis
         c2c          = cent2.sub(cent1)
+        
+        if cent1.sub(cent2).Length == 0:
+            # circles are concentric
+            return []
 
         if DraftVecUtils.isNull(axis1.cross(axis2)) :
             if round(c2c.dot(axis1),precision()) == 0 :
@@ -694,7 +699,7 @@ def sortEdges(edges):
                 edict.setdefault( e.Vertexes[-1].hashCode(),[] ).append(e)
                 nedges.append(e)
     if not nedges:
-        print "DraftGeomUtils.sortEdges: zero-length edges"
+        print("DraftGeomUtils.sortEdges: zero-length edges")
         return edges
     # Find the start of the path.  The start is the vertex that appears
     # in the sdict dictionary but not in the edict dictionary, and has
@@ -856,7 +861,7 @@ def invert(edge):
     elif geomType(edge) in ["BSplineCurve","BezierCurve"]:
         if isLine(edge.Curve):
             return Part.LineSegment(edge.Vertexes[-1].Point,edge.Vertexes[0].Point).toShape()
-    print "DraftGeomUtils.invert: unable to invert ",edge.Curve
+    print("DraftGeomUtils.invert: unable to invert ",edge.Curve)
     return edge
 
 
@@ -1176,7 +1181,7 @@ def offsetWire(wire,dvec,bind=False,occ=False):
                 v = vec(curredge)
             angle = DraftVecUtils.angle(vec(edges[0]),v,norm)
             delta = DraftVecUtils.rotate(delta,angle,norm)
-        #print "edge ",i,": ",curredge.Curve," ",curredge.Orientation," parameters:",curredge.ParameterRange," vector:",delta
+        #print("edge ",i,": ",curredge.Curve," ",curredge.Orientation," parameters:",curredge.ParameterRange," vector:",delta)
         nedge = offset(curredge,delta,trim=True)
         if not nedge:
             return None
@@ -1240,7 +1245,7 @@ def connect(edges,closed=False):
         except:
             print("DraftGeomUtils.connect: unable to connect edges")
             for e in nedges:
-                print e.Curve, " ",e.Vertexes[0].Point, " ", e.Vertexes[-1].Point
+                print(e.Curve, " ",e.Vertexes[0].Point, " ", e.Vertexes[-1].Point)
             return None
 
 def findDistance(point,edge,strict=False):
@@ -1678,7 +1683,7 @@ def fillet(lEdges,r,chamfer=False):
     Returns a list of sorted edges describing a round corner'''
 
     def getCurveType(edge,existingCurveType = None):
-            '''Builds or completes a dictionnary containing edges with keys "Arc" and "Line"'''
+            '''Builds or completes a dictionary containing edges with keys "Arc" and "Line"'''
             if not existingCurveType :
                     existingCurveType = { 'Line' : [], 'Arc' : [] }
             if issubclass(type(edge.Curve),Part.LineSegment) :
@@ -2536,7 +2541,7 @@ def circleFrom3CircleTangents(circle1, circle2, circle3):
             # @todo Calc. the intersection points (max. 8) of 4 lines (trough each inversion pole and the radical center) with the circle.
             #       This gives us all the tangent points.
         else:
-            # Some circles are inside each other or an error has occured.
+            # Some circles are inside each other or an error has occurred.
             return None
 
     else:
@@ -2810,4 +2815,4 @@ def circleInversion(circle, circle2):
         FreeCAD.Console.PrintMessage("debug: circleInversion bad parameters!\n")
         return None
 
-#  @}
+##  @}

@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+325"/>
+        <location filename="../../GLImageBox.cpp" line="+331"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>Nedefinovaný typ farebného systému pre prehliadanie obrázku</translation>
     </message>
@@ -199,13 +199,21 @@
     </message>
     <message>
         <location line="+8"/>
-        <source>Error open image</source>
-        <translation>Chyba otvoriť obrázok</translation>
+        <source>Error opening image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Could not load the chosen image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error open image</source>
+        <translation type="obsolete">Chyba otvoriť obrázok</translation>
+    </message>
+    <message>
         <source>Could not load the choosen image</source>
-        <translation>Nepodarilo sa načítať obrázok</translation>
+        <translation type="obsolete">Nepodarilo sa načítať obrázok</translation>
     </message>
 </context>
 <context>

@@ -240,7 +240,7 @@ def getcolor(color):
 
 def transformCopyShape(shape,m):
     """apply transformation matrix m on given shape
-since OCCT 6.8.0 transformShape can be used to apply certian non-orthogonal
+since OCCT 6.8.0 transformShape can be used to apply certain non-orthogonal
 transformations on shapes. This way a conversion to BSplines in
 transformGeometry can be avoided."""
     if abs(m.A11**2+m.A12**2 -m.A21**2-m.A22**2) < 1e-8 and \
@@ -1160,7 +1160,7 @@ def decodeName(name):
         return decodedName
 
 def getContents(filename,tag,stringmode=False):
-        "gets the contents of all the occurences of the given tag in the given file"
+        "gets the contents of all the occurrences of the given tag in the given file"
         result = {}
         if stringmode:
                 contents = filename

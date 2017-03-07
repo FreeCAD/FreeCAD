@@ -395,6 +395,11 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                             currenthighlight = 0;
                             //old_state = !highlighted;
                         }
+                        else if (currenthighlight) {
+                            // clean-up the highlight path before assigning a new path
+                            currenthighlight->unref();
+                            currenthighlight = 0;
+                        }
 
                         currenthighlight = static_cast<SoFullPath*>(sa.getPath()->copy());
                         currenthighlight->ref();
@@ -533,7 +538,7 @@ void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
 
     // nothing picked, so restore the arrow cursor if needed
     if (this->preSelection == 0) {
-        // this is called when a selection gate forbad to select an object
+        // this is called when a selection gate forbade to select an object
         // and the user moved the mouse to an empty area
         this->preSelection = -1;
         QGLWidget* window;

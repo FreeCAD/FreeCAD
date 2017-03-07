@@ -291,17 +291,24 @@ public:
         return StatusBits.test(1);
     }
 
-    void setAttributeOf(const char* attr, const PyObjectBase* par);
     void startNotify();
 
-    typedef void* PointerType ;
+    typedef void* PointerType;
+
+private:
+    void setAttributeOf(const char* attr, PyObject* par);
+    void resetAttribute();
+    PyObject* getTrackedAttribute(const char* attr);
+    void trackAttribute(const char* attr, PyObject* obj);
+    void untrackAttribute(const char* attr);
 
 protected:
     std::bitset<32> StatusBits;
     /// pointer to the handled class
     void * _pcTwinPointer;
-    PyObjectBase* parent;
-    char* attribute;
+
+private:
+    PyObject* attrDict;
 };
 
 

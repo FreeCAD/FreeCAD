@@ -3,6 +3,7 @@ import sys
 from subprocess import Popen, PIPE, check_call, check_output
 import pprint
 import re
+import logging
 
 # This script is intended to help copy dynamic libraries used by FreeCAD into
 # a Mac application bundle and change dyld commands as appropriate.  There are
@@ -44,13 +45,15 @@ class Node:
         return not self.__eq__(other)
     def __hash__(self):
         return hash(self.name)
-        
+    def __str__(self):
+        return self.name + " path: " + self.path  + " num children: " + str(len(self.children))
+
 class DepsGraph:
     graph = {}
 
     def in_graph(self, node):
         return node.name in self.graph.keys()
-    
+
     def add_node(self, node):
         self.graph[node.name] = node
 
@@ -65,10 +68,10 @@ class DepsGraph:
         on each node.
         """
         stack = []
-          
+
         for k in self.graph.keys():
             self.graph[k]._marked = False
-            
+
         for k in self.graph.keys():
             if not self.graph[k]._marked:
                 stack.append(k)
@@ -85,7 +88,7 @@ def is_macho(path):
     output = check_output(["file", path])
     if output.count("Mach-O") != 0:
         return True
-    
+
     return False
 
 def is_system_lib(lib):
@@ -94,8 +97,8 @@ def is_system_lib(lib):
             return True
     for p in warnPaths:
         if lib.startswith(p):
-            print "WARNING: library %s will not be bundled!" % lib
-            print "See MakeMacRelocatable.py for more information."
+            logging.warning("WARNING: library %s will not be bundled!" % lib)
+            logging.warning("See MakeMacRelocatable.py for more information.")
             return True
     return False
 
@@ -128,7 +131,7 @@ def library_paths(install_names, search_paths):
     for name in install_names:
         path = os.path.dirname(name)
         lib_name = os.path.basename(name)
-            
+
         if path == "" or name[0] == "@":
             #not absolute -- we need to find the path of this lib
             path = get_path(lib_name, search_paths)
@@ -145,22 +148,23 @@ def create_dep_nodes(install_names, search_paths):
     for lib in install_names:
         install_path = os.path.dirname(lib)
         lib_name = os.path.basename(lib)
-        
-        #even if install_path is absolute, see if library can be found by 
+
+        #even if install_path is absolute, see if library can be found by
         #searching search_paths, so that we have control over what library
-        #location to use 
+        #location to use
         path = get_path(lib_name, search_paths)
 
         if install_path != "" and lib[0] != "@":
             #we have an absolute path install name
             if not path:
                 path = install_path
-       
+
         if not path:
-            raise LibraryNotFound(lib_name + "not found in given paths")
+            logging.error("Unable to find LC_DYLD_LOAD entry: " + lib)
+            raise LibraryNotFound(lib_name + " not found in given search paths")
 
         nodes.append(Node(lib_name, path))
-    
+
     return nodes
 
 def paths_at_depth(prefix, paths, depth):
@@ -170,11 +174,11 @@ def paths_at_depth(prefix, paths, depth):
         if len(dirs) == depth:
             filtered.append(p)
     return filtered
-    
+
 def should_visit(prefix, path_filters, path):
     s_path = path.strip('/').split('/')
     filters = []
-    #we only want to use filters if they have the same parent as path 
+    #we only want to use filters if they have the same parent as path
     for rel_pf in path_filters:
         pf = os.path.join(prefix, rel_pf)
         if os.path.split(pf)[0] == os.path.split(path)[0]:
@@ -187,12 +191,12 @@ def should_visit(prefix, path_filters, path):
         s_filter = pf.strip('/').split('/')
         length = len(s_filter)
         matched = 0
-	for i in range(len(s_path)):
-	    if s_path[i] == s_filter[i]:
-		matched += 1
+        for i in range(len(s_path)):
+            if s_path[i] == s_filter[i]:
+                matched += 1
             if matched == length or matched == len(s_path):
                 return True
-        
+
     return False
 
 def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
@@ -202,7 +206,7 @@ def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
     """
     #make a local copy since we add to it
     s_paths = list(search_paths)
-    
+
     visited = {}
 
     for root, dirs, files in os.walk(bundle_path):
@@ -211,7 +215,7 @@ def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
                                                        os.path.join(root, d))]
 
         s_paths.insert(0, root)
-        
+
         for f in files:
             fpath = os.path.join(root, f)
             ext = os.path.splitext(f)[1]
@@ -230,8 +234,13 @@ def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
                 node = Node(os.path.basename(k2), os.path.dirname(k2))
                 if not graph.in_graph(node):
                     graph.add_node(node)
-                 
-                deps = create_dep_nodes(list_install_names(k2), s_paths)
+
+                try:
+                   deps = create_dep_nodes(list_install_names(k2), s_paths)
+                except:
+                   logging.error("Failed to resolve dependency in " + k2)
+                   raise
+
                 for d in deps:
                     if d.name not in node.children:
                         node.children.append(d.name)
@@ -249,14 +258,16 @@ def in_bundle(lib, bundle_path):
 
 def copy_into_bundle(graph, node, bundle_path):
     if not in_bundle(node.path, bundle_path):
-        check_call([ "cp", "-L", os.path.join(node.path, node.name),
-                                 os.path.join(bundle_path, "lib", node.name) ])
+        source = os.path.join(node.path, node.name)
+        target = os.path.join(bundle_path, "lib", node.name)
+        logging.info("Bundling {}".format(source))
 
-        node.path = os.path.join(bundle_path, "lib")
-        
+        check_call([ "cp", "-L", source, target ])
+
+        node.path = os.path.dirname(target)
+
         #fix permissions
-        check_call([ "chmod", "a+w",
-                     os.path.join(bundle_path, "lib", node.name) ])
+        check_call([ "chmod", "a+w", target ])
 
 def get_rpaths(library):
     "Returns a list of rpaths specified within library"
@@ -282,34 +293,63 @@ def get_rpaths(library):
     return rpaths
 
 def add_rpaths(graph, node, bundle_path):
-    if node.children:
-        lib = os.path.join(node.path, node.name)
-        if in_bundle(lib, bundle_path):
-            install_names = list_install_names(lib)
-            rpaths = []
+    lib = os.path.join(node.path, node.name)
 
-            for install_name in install_names:
-                name = os.path.basename(install_name)
-                #change install names to use rpaths
-                check_call([ "install_name_tool", "-change",
-                    install_name, "@rpath/" + name, lib ])
-                  
-                dep_node = node.children[node.children.index(name)]
-                rel_path = os.path.relpath(graph.get_node(dep_node).path,
+    if in_bundle(lib, bundle_path):
+       logging.debug(lib)
+
+       # Remove existing rpaths that could take precedence
+       for rpath in get_rpaths(lib):
+           logging.debug(" - rpath: " + rpath)
+           check_call(["install_name_tool", "-delete_rpath", rpath, lib])
+
+       if node.children:
+          install_names = list_install_names(lib)
+          rpaths = []
+
+
+          for install_name in install_names:
+              name = os.path.basename(install_name)
+              #change install names to use rpaths
+              logging.debug(" ~ rpath: " + name + " => @rpath/" + name)
+              check_call([ "install_name_tool", "-change",
+                           install_name, "@rpath/" + name, lib ])
+
+              dep_node = node.children[node.children.index(name)]
+              rel_path = os.path.relpath(graph.get_node(dep_node).path,
                                            node.path)
-                rpath = ""
-                if rel_path == ".":
-                    rpath = "@loader_path/"
-                else:
-                    rpath = "@loader_path/" + rel_path + "/"
-                if rpath not in rpaths:
-                    rpaths.append(rpath)
+              rpath = ""
+              if rel_path == ".":
+                 rpath = "@loader_path/"
+              else:
+                 rpath = "@loader_path/" + rel_path + "/"
+              if rpath not in rpaths:
+                 rpaths.append(rpath)
 
-            for rpath in rpaths:
-                # Ensure that lib has rpath set
-                if not rpath in get_rpaths(lib):
-                    check_output([ "install_name_tool",
-                                   "-add_rpath", rpath, lib ])
+          for rpath in rpaths:
+              # Ensure that lib has rpath set
+              if not rpath in get_rpaths(lib):
+                 logging.debug(" + rpath: " + rpath)
+                 check_call([ "install_name_tool", "-add_rpath", rpath, lib ])
+
+def change_libid(graph, node, bundle_path):
+    lib = os.path.join(node.path, node.name)
+
+    logging.debug(lib)
+
+    if in_bundle(lib, bundle_path):
+       logging.debug(" ~ id: " + node.name)
+       try:
+          check_call([ "install_name_tool", "-id", node.name, lib ])
+       except:
+          logging.warning("Failed to change bundle id {} in lib {}".format(node.name, lib))
+
+def print_child(graph, node, path):
+    logging.debug("  >" + str(node))
+
+def print_node(graph, node, path):
+    logging.debug(node)
+    graph.visit(print_child, [node])
 
 def main():
     if len(sys.argv) < 2:
@@ -319,15 +359,31 @@ def main():
     path = sys.argv[1]
     bundle_path = os.path.abspath(os.path.join(path, "Contents"))
     graph = DepsGraph()
-    dir_filter = ["bin", "lib", "Mod", "Mod/PartDesign", 
+    dir_filter = ["MacOS", "lib", "Mod", 
                   "lib/python2.7/site-packages",
                   "lib/python2.7/lib-dynload"]
     search_paths = [bundle_path + "/lib"] + sys.argv[2:]
 
+    #change to level to logging.DEBUG for diagnostic messages
+    logging.basicConfig(stream=sys.stdout, level=logging.INFO,
+                        format="-- %(levelname)s: %(message)s" )
+
+    logging.info("Analyzing bundle dependencies...")
     build_deps_graph(graph, bundle_path, dir_filter, search_paths)
 
+    if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+       graph.visit(print_node, [bundle_path])
+
+    logging.info("Copying external dependencies to bundle...")
     graph.visit(copy_into_bundle, [bundle_path])
+
+    logging.info("Updating dynamic loader paths...")
     graph.visit(add_rpaths, [bundle_path])
+
+    logging.info("Setting bundled library IDs...")
+    graph.visit(change_libid, [bundle_path])
+
+    logging.info("Done.")
 
 if __name__ == "__main__":
     main()

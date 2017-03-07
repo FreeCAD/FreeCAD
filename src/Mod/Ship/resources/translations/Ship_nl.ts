@@ -26,7 +26,7 @@
     <message>
       <location filename="Instance.py" line="63"/>
       <source>Ship breadth [m]</source>
-      <translation type="unfinished">Ship breadth [m]</translation>
+      <translation>Schip breedte [m]</translation>
     </message>
     <message>
       <location filename="Instance.py" line="72"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="TaskPanel.py" line="249"/>
       <source>Maximum angle</source>
-      <translation type="unfinished">Maximum angle</translation>
+      <translation>Maximumhoek</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="255"/>

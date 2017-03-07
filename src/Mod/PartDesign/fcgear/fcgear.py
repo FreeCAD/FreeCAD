@@ -80,7 +80,7 @@ class FCWireBuilder(object):
 
 def midpoints(p1, p2, r):
     """A very ugly function that returns the midpoint of a p1 and p2
-    on the circle which radius is r and which pass throught p1 and
+    on the circle which radius is r and which pass through p1 and
     p2
 
     Return the 2 possible solutions

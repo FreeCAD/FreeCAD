@@ -35,6 +35,7 @@
 #include "DockWindowManager.h"
 #include "MainWindow.h"
 #include "PrefWidgets.h"
+#include "PythonConsole.h"
 #include "Language/Translator.h"
 
 using namespace Gui::Dialog;
@@ -126,6 +127,17 @@ void DlgGeneralImp::saveSettings()
     AutoloadTabCombo->onSave();
     RecentFiles->onSave();
     SplashScreen->onSave();
+    PythonWordWrap->onSave();
+
+    PythonConsole* pcPython = new PythonConsole(this);
+    bool pythonWordWrap = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General")->GetBool("PythonWordWrap", true);
+
+    if (pythonWordWrap) {
+      pcPython->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+    } else {
+      pcPython->setWordWrapMode(QTextOption::NoWrap);
+    }
 
     // set new user defined style
     //(void)QApplication::setStyle(WindowStyle->currentText());
@@ -199,6 +211,7 @@ void DlgGeneralImp::loadSettings()
     AutoloadTabCombo->onRestore();
     RecentFiles->onRestore();
     SplashScreen->onRestore();
+    PythonWordWrap->onRestore();
 
     // fill up styles
     //

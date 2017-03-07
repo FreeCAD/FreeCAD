@@ -77,9 +77,9 @@ PyObject*  FacetPy::unbound(PyObject *args)
     Py_Return;
 }
 
-Py::Int FacetPy::getIndex(void) const
+Py::Long FacetPy::getIndex(void) const
 {
-    return Py::Int((long) getFacetPtr()->Index);
+    return Py::Long((long) getFacetPtr()->Index);
 }
 
 Py::Boolean FacetPy::getBound(void) const
