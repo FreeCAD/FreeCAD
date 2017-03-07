@@ -484,6 +484,7 @@ std::string ConstraintPy::representation(void) const
         case Coincident         : result << "'Coincident'>";break;
         case Horizontal         : result << "'Horizontal' (" << getConstraintPtr()->First << ")>";break;
         case Vertical           : result << "'Vertical' (" << getConstraintPtr()->First << ")>";break;
+        case Radius             : result << "'Radius'>";break;
         case Parallel           : result << "'Parallel'>";break;
         case Tangent            :
             if (this->getConstraintPtr()->Third == Constraint::GeoUndef)
