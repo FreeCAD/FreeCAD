@@ -763,14 +763,18 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     std::clock_t begin = std::clock();
 
     if(!initialized) {
+#if !defined(HAVE_QT5_OPENGL)
         glEnable(GL_DEPTH_TEST);
+#endif
         this->getSoRenderManager()->reinitialize();
         initialized = true;
     }
 
     getSoRenderManager()->activate();
 
+#if !defined(HAVE_QT5_OPENGL)
     glEnable(GL_DEPTH_TEST);
+#endif
     glMatrixMode(GL_PROJECTION);
 
     QtGLWidget* w = static_cast<QtGLWidget*>(this->viewport());
