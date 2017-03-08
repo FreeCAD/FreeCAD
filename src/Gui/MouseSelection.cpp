@@ -28,7 +28,6 @@
 # include <qevent.h>
 # include <qpainter.h>
 # include <qpixmap.h>
-# include <QGLFramebufferObject>
 # include <QMenu>
 # include <Inventor/SbBox.h>
 # include <Inventor/events/SoEvent.h>
@@ -37,6 +36,7 @@
 # include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
+#include <QtOpenGL.h>
 #include <Base/Console.h>
 
 #include "MouseSelection.h"
@@ -640,7 +640,7 @@ void RubberbandSelection::initialize()
     rubberband.setViewer(_pcView3D);
     rubberband.setWorking(false);
     _pcView3D->addGraphicsItem(&rubberband);
-    if (QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
+    if (QtGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         _pcView3D->setRenderType(View3DInventorViewer::Image);
     }
     _pcView3D->redraw();
@@ -649,7 +649,7 @@ void RubberbandSelection::initialize()
 void RubberbandSelection::terminate()
 {
     _pcView3D->removeGraphicsItem(&rubberband);
-    if (QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
+    if (QtGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         _pcView3D->setRenderType(View3DInventorViewer::Native);
     }
     _pcView3D->redraw();

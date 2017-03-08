@@ -27,10 +27,9 @@
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/SbMatrix.h>
 #include <QStringList>
+#include <QtOpenGL.h>
 
 class QImage;
-class QGLFramebufferObject;
-class QGLPixelBuffer;
 
 namespace Gui {
 
@@ -131,12 +130,16 @@ private:
     void init(const SbViewportRegion & vpr, SoGLRenderAction * glrenderaction = NULL);
     static void pre_render_cb(void * userdata, SoGLRenderAction * action);
     SbBool renderFromBase(SoBase * base);
+#if !defined(HAVE_QT5_OPENGL)
     void makePixelBuffer(int width, int height, int samples);
+#endif
     void makeFrameBuffer(int width, int height, int samples);
 
-    QGLPixelBuffer*        pixelbuffer; // the offscreen rendering supported by Qt
-    QGLFramebufferObject*  framebuffer;
-    uint32_t               cache_context; // our unique context id
+#if !defined(HAVE_QT5_OPENGL)
+    QGLPixelBuffer*         pixelbuffer; // the offscreen rendering supported by Qt
+#endif
+    QtGLFramebufferObject*  framebuffer;
+    uint32_t                cache_context; // our unique context id
 
     SbViewportRegion viewport;
     SbColor backgroundcolor;

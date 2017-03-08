@@ -138,7 +138,7 @@ void drawImage(QGLWidget* w,double x1, double y1, double x2, double y2, QImage p
 //       Embed complete widgets
 
 Flag::Flag(QWidget* parent)
-  : QGLWidget(parent), coord(0.0f, 0.0f, 0.0f)
+  : QtGLWidget(parent), coord(0.0f, 0.0f, 0.0f)
 {
     this->setFixedHeight(20);
 }
@@ -146,15 +146,28 @@ Flag::Flag(QWidget* parent)
 void Flag::initializeGL()
 {
     const QPalette& p = this->palette();
+#if !defined(HAVE_QT5_OPENGL)
     qglClearColor(/*Qt::white*/p.color(QPalette::Window));
+#else
+    QColor c(p.color(QPalette::Window));
+    QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
+    f->glClearColor(c.redF(), c.greenF(), c.blueF(), c.alphaF());
+#endif
 }
 
 void Flag::paintGL()
 {
     const QPalette& p = this->palette();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+#if !defined(HAVE_QT5_OPENGL)
     qglColor(/*Qt::black*/p.color(QPalette::Text));
     renderText(10,15,this->text);
+#else
+    QColor c(p.color(QPalette::Text));
+    QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
+    f->glBlendColor(c.redF(), c.greenF(), c.blueF(), c.alphaF());
+    //FIXME: HAVE_QT5_OPENGL
+#endif
 }
 
 void Flag::resizeGL(int width, int height)
@@ -243,7 +256,7 @@ void Flag::resizeEvent(QResizeEvent * )
 void Flag::paintEvent(QPaintEvent* e)
 {
 #if 1
-    QGLWidget::paintEvent(e);
+    QtGLWidget::paintEvent(e);
 #else
 #if 1
     QPainter painter;

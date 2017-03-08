@@ -52,7 +52,6 @@ class SbSphereSheetProjector;
 class SoEventCallback;
 class SbBox2s;
 class SoVectorizeAction;
-class QGLFramebufferObject;
 class QImage;
 class SoGroup;
 
@@ -124,8 +123,8 @@ public:
     };
     //@}
 
-    View3DInventorViewer (QWidget *parent, const QGLWidget* sharewidget = 0);
-    View3DInventorViewer (const QGLFormat& format, QWidget *parent, const QGLWidget* sharewidget = 0);
+    View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = 0);
+    View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = 0);
     virtual ~View3DInventorViewer();
     
     void init();
@@ -158,7 +157,7 @@ public:
 
     void setRenderType(const RenderType type);
     RenderType getRenderType() const;
-    void renderToFramebuffer(QGLFramebufferObject*);
+    void renderToFramebuffer(QtGLFramebufferObject*);
 
     virtual void setViewing(SbBool enable);
     virtual void setCursorEnabled(SbBool enable);
@@ -409,7 +408,7 @@ private:
     SoFCUnifiedSelection* selectionRoot;
 
     RenderType renderType;
-    QGLFramebufferObject* framebuffer;
+    QtGLFramebufferObject* framebuffer;
     QImage glImage;
     SbBool shading;
     SoSwitch *dimensionRoot;
