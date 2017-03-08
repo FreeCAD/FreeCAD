@@ -2178,6 +2178,7 @@ int Document::recompute()
                 d->vertexMap.clear();
                 return -1;
             }
+            signalRecomputedObject(*Cur);
             ++objectCount;
         }
     }
@@ -2244,6 +2245,7 @@ int Document::recompute()
 
         if ((*objIt)->isTouched() || doRecompute) {
             (*objIt)->purgeTouched();
+            signalObjectRecomputed(*(*objOt));
             // force recompute of all dependent objects
             for (auto inObjIt : (*objIt)->getInList())
                 inObjIt->enforceRecompute();
