@@ -177,6 +177,14 @@ set_property(CACHE FREECAD_USE_OCC_VARIANT PROPERTY STRINGS
              "Community Edition"
 )
 
+if (BUILD_QT5)
+  OPTION(FREECAD_USE_QTOPENGL_WIDGET "Replace QGLWidget with QOpenGLWidget." OFF)
+  if (FREECAD_USE_QTOPENGL_WIDGET)
+    set(HAVE_QT5_OPENGL 1)
+  endif()
+endif()
+configure_file(${CMAKE_SOURCE_DIR}/src/QtOpenGL.h.cmake ${CMAKE_BINARY_DIR}/src/QtOpenGL.h)
+
 if(APPLE)
     OPTION(FREECAD_CREATE_MAC_APP "Create app bundle on install" OFF)
 
