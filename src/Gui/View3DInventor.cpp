@@ -27,15 +27,11 @@
 # include <QAction>
 # include <QApplication>
 # include <QFileInfo>
-# include <QGLFramebufferObject>
 # include <QKeyEvent>
 # include <QEvent>
 # include <QDropEvent>
 # include <QDragEnterEvent>
 # include <QFileDialog>
-# include <QGLFormat>
-# include <QGLWidget>
-# include <QGLPixelBuffer>
 # include <QMessageBox>
 # include <QPainter>
 # include <QPrinter>
@@ -105,7 +101,7 @@ void GLOverlayWidget::paintEvent(QPaintEvent*)
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView);
 
 View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
-                               const QGLWidget* sharewidget, Qt::WindowFlags wflags)
+                               const QtGLWidget* sharewidget, Qt::WindowFlags wflags)
     : MDIView(pcDocument, parent, wflags), _viewerPy(0)
 {
     stack = new QStackedWidget(this);
@@ -119,23 +115,29 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     hGrp->Attach(this);
 
     //anti-aliasing settings
-    QGLFormat f;
+    QtGLFormat f;
     bool smoothing = false;
     bool glformat = false;
     switch( hGrp->GetInt("AntiAliasing",0) ) {
       case View3DInventorViewer::MSAA2x:
           glformat = true;
+#if !defined(HAVE_QT5_OPENGL)
           f.setSampleBuffers(true);
+#endif
           f.setSamples(2);
           break;
       case View3DInventorViewer::MSAA4x:
           glformat = true;
+#if !defined(HAVE_QT5_OPENGL)
           f.setSampleBuffers(true);
+#endif
           f.setSamples(4);
           break;
       case View3DInventorViewer::MSAA8x:
           glformat = true;
+#if !defined(HAVE_QT5_OPENGL)
           f.setSampleBuffers(true);
+#endif
           f.setSamples(8);
           break;
       case View3DInventorViewer::Smoothing:
@@ -552,7 +554,11 @@ void View3DInventor::print(QPrinter* printer)
     }
     QRect rect = printer->pageRect();
 
+#if !defined(HAVE_QT5_OPENGL)
     bool pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
+#else
+    bool pbuffer = QtGLFramebufferObject::hasOpenGLFramebufferObjects();
+#endif
     if (App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",!pbuffer)) {
         previewFromFramebuffer(rect, img);
@@ -574,12 +580,12 @@ void View3DInventor::print(QPrinter* printer)
 void View3DInventor::previewFromFramebuffer(const QRect& rect, QImage& img)
 {
 #if QT_VERSION >= 0x040600
-    QGLFramebufferObjectFormat format;
+    QtGLFramebufferObjectFormat format;
     format.setSamples(8);
-    format.setAttachment(QGLFramebufferObject::Depth);
-    QGLFramebufferObject fbo(rect.width(), rect.height(), format);
+    format.setAttachment(QtGLFramebufferObject::Depth);
+    QtGLFramebufferObject fbo(rect.width(), rect.height(), format);
 #else
-    QGLFramebufferObject fbo(rect.width(), rect.height(), QGLFramebufferObject::Depth);
+    QtGLFramebufferObject fbo(rect.width(), rect.height(), QtGLFramebufferObject::Depth);
 #endif
     const QColor col = _viewer->backgroundColor();
     bool on = _viewer->hasGradientBackground();

@@ -30,14 +30,11 @@
 # include <QDir>
 # include <QFileInfo>
 # include <QImage>
-# include <QGLContext>
-# include <QGLFramebufferObject>
-# include <QGLPixelBuffer>
 # include <Inventor/SbViewVolume.h>
 # include <Inventor/nodes/SoCamera.h>
 #endif
 
-
+#include <QtOpenGL.h>
 #include "View3DPy.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtern.h"
@@ -699,18 +696,18 @@ Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
 
 void View3DInventorPy::createImageFromFramebuffer(int width, int height, const QColor& bgcolor, QImage& img)
 {
-    const QGLContext* context = QGLContext::currentContext();
+    const QtGLContext* context = QtGLContext::currentContext();
     if (!context) {
         Base::Console().Warning("createImageFromFramebuffer failed because no context is active\n");
         return;
     }
 #if QT_VERSION >= 0x040600
-    QGLFramebufferObjectFormat format;
+    QtGLFramebufferObjectFormat format;
     format.setSamples(8);
-    format.setAttachment(QGLFramebufferObject::Depth);
-    QGLFramebufferObject fbo(width, height, format);
+    format.setAttachment(QtGLFramebufferObject::Depth);
+    QtGLFramebufferObject fbo(width, height, format);
 #else
-    QGLFramebufferObject fbo(width, height, QGLFramebufferObject::Depth);
+    QtGLFramebufferObject fbo(width, height, QtGLFramebufferObject::Depth);
 #endif
     const QColor col = _view->getViewer()->backgroundColor();
     bool on = _view->getViewer()->hasGradientBackground();
@@ -749,7 +746,11 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
         bg.setNamedColor(colname);
 
     QImage img;
+#if !defined(HAVE_QT5_OPENGL)
     bool pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
+#else
+    bool pbuffer = QtGLFramebufferObject::hasOpenGLFramebufferObjects();
+#endif
     if (App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",!pbuffer)) {
         createImageFromFramebuffer(w, h, bg, img);

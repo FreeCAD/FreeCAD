@@ -29,10 +29,9 @@
 # include <QByteArray>
 # include <QDateTime>
 # include <QImage>
-# include <QGLFramebufferObject>
-# include <QGLPixelBuffer>
 #endif
 
+#include <QtOpenGL.h>
 #include "Thumbnail.h"
 #include "BitmapFactory.h"
 #include "View3DInventorViewer.h"
@@ -88,7 +87,11 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     if (!this->viewer)
         return;
     QImage img;
+#if !defined(HAVE_QT5_OPENGL)
     bool pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
+#else
+    bool pbuffer = QtGLFramebufferObject::hasOpenGLFramebufferObjects();
+#endif
     if (App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",!pbuffer)) {
         this->createThumbnailFromFramebuffer(img);
@@ -131,7 +134,7 @@ void Thumbnail::RestoreDocFile(Base::Reader &reader)
 void Thumbnail::createThumbnailFromFramebuffer(QImage& img) const
 {
     // Alternative way of off-screen rendering
-    QGLFramebufferObject fbo(this->size, this->size,QGLFramebufferObject::Depth);
+    QtGLFramebufferObject fbo(this->size, this->size,QtGLFramebufferObject::Depth);
     if (this->viewer->isActiveWindow()) {
         this->viewer->renderToFramebuffer(&fbo);
         img = fbo.toImage();

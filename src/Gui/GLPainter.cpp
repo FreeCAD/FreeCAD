@@ -26,7 +26,6 @@
 #ifndef _PreComp_
 #endif
 
-#include <QGLWidget>
 #include "GLPainter.h"
 #include "View3DInventorViewer.h"
 #include <Base/Console.h>
@@ -49,7 +48,7 @@ bool GLPainter::begin(QPaintDevice * device)
     if (viewer)
         return false;
 
-    viewer = dynamic_cast<QGLWidget*>(device);
+    viewer = dynamic_cast<QtGLWidget*>(device);
     if (!viewer)
         return false;
 

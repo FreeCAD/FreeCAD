@@ -28,7 +28,7 @@
 # include "InventorAll.h"
 #endif
 
-class QGLWidget;
+#include <QtOpenGL.h>
 
 namespace Gui {
 /**
@@ -70,14 +70,14 @@ public:
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo(void) const;
 
-  static  void set(SoState * state, QGLWidget * window);
-  static  void get(SoState * state, QGLWidget *& window);
+  static  void set(SoState * state, QtGLWidget * window);
+  static  void get(SoState * state, QtGLWidget *& window);
 
 protected:
   virtual ~SoGLWidgetElement();
 
 protected:
-  QGLWidget * window;
+  QtGLWidget * window;
 };
 
 class GuiExport SoGLRenderActionElement : public SoElement {
@@ -114,7 +114,7 @@ public:
     static void initClass(void);
     SoGLWidgetNode(void);
 
-    QGLWidget * window;
+    QtGLWidget * window;
 
     virtual void doAction(SoAction * action);
     virtual void GLRender(SoGLRenderAction * action);
