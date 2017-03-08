@@ -69,6 +69,10 @@ private:
     void slotUndoDocument(const App::Document& Doc);
     /** Redoes the last undone transaction of the document */
     void slotRedoDocument(const App::Document& Doc);
+    /** Called when a given object is recomputed */
+    void slotRecomputedObject(const App::DocumentObject& Obj);
+    /** Called when a observed document is recomputed */
+    void slotRecomputedDocument(const App::Document& Doc);
 
 private:
     Py::Object inst;
@@ -84,6 +88,8 @@ private:
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
     Connection connectDocumentChangedObject;
+    Connection connectDocumentObjectRecomputed;
+    Connection connectDocumentRecomputed;
 };
 
 } //namespace App

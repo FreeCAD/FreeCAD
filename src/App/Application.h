@@ -139,6 +139,10 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     boost::signal<void (const App::DocumentObject&)> signalActivatedObject;
+    /// signal on recomputed document
+    boost::signal<void (const App::Document&)> signalRecomputed;
+    /// signal on recomputed document object
+    boost::signal<void (const App::DocumentObject&)> signalObjectRecomputed;
     //@}
 
     /** @name Signals of property changes
@@ -271,6 +275,8 @@ protected:
     void slotActivatedObject(const App::DocumentObject&);
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
+    void slotRecomputedObject(const App::DocumentObject&);
+    void slotRecomputed(const App::Document&);
     //@}
 
 private:
