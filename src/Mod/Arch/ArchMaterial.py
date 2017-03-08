@@ -25,6 +25,14 @@ if FreeCAD.GuiUp:
     import FreeCADGui, Arch_rc, os
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 __title__ = "Arch Material Management"
 __author__ = "Yorik van Havre"
@@ -76,9 +84,9 @@ class _CommandArchMaterial:
     "the Arch Material command definition"
     def GetResources(self):
         return {'Pixmap': 'Arch_Material_Group',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Material","Set material..."),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Material","Set material..."),
                 'Accel': "M, T",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Material","Creates or edits the material definition of a selected object.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Material","Creates or edits the material definition of a selected object.")}
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -124,15 +132,97 @@ class _ArchMaterial:
     def __init__(self,obj):
         self.Type = "Material"
         obj.Proxy = self
-
-    def execute(self,obj):
-        if obj.Material and FreeCAD.GuiUp:
+        obj.addProperty("App::PropertyString","Description","Arch",QT_TRANSLATE_NOOP("App::Property","A description for this material"))
+        obj.addProperty("App::PropertyString","StandardCode","Arch",QT_TRANSLATE_NOOP("App::Property","A standard code (MasterFormat, OmniClass,...)"))
+        obj.addProperty("App::PropertyString","ProductURL","Arch",QT_TRANSLATE_NOOP("App::Property","An URL where to find information about this material"))
+        obj.addProperty("App::PropertyPercent","Transparency","Arch",QT_TRANSLATE_NOOP("App::Property","The transparency value of this material"))
+        obj.addProperty("App::PropertyColor","Color","Arch",QT_TRANSLATE_NOOP("App::Property","The color of this material"))
+        
+    def onChanged(self,obj,prop):
+        d = None
+        if prop == "Material":
             if "DiffuseColor" in obj.Material:
                 c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").split(",")])
-                for p in obj.InList:
-                    if hasattr(p,"BaseMaterial"):
-                        if p.BaseMaterial.Name == obj.Name:
-                            p.ViewObject.ShapeColor = c
+                if hasattr(obj,"Color"):
+                    if obj.Color != c:
+                        obj.Color = c
+            if "Transparency" in obj.Material:
+                t = int(obj.Material['Transparency'])
+                if hasattr(obj,"Transparency"):
+                    if obj.Transparency != t:
+                        obj.Transparency = t
+            if "ProductURL" in obj.Material:
+                if hasattr(obj,"ProductURL"):
+                    if obj.ProductURL != obj.Material["ProductURL"]:
+                        obj.ProductURL = obj.Material["ProductURL"]
+            if "StandardCode" in obj.Material:
+                if hasattr(obj,"StandardCode"):
+                    if obj.StandardCode != obj.Material["StandardCode"]:
+                        obj.StandardCode = obj.Material["StandardCode"]
+            if "Description" in obj.Material:
+                if hasattr(obj,"Description"):
+                    if obj.Description != obj.Material["Description"]:
+                        obj.Description = obj.Material["Description"]
+        elif prop == "Color":
+            if hasattr(obj,"Color"):
+                if obj.Material:
+                    d = obj.Material
+                    val = str(obj.Color[:3])
+                    if "DiffuseColor" in d:
+                        if d["DiffuseColor"] == val:
+                            return
+                    d["DiffuseColor"] = val
+        elif prop == "Transparency":
+            if hasattr(obj,"Transparency"):
+                if obj.Material:
+                    d = obj.Material
+                    val = str(obj.Transparency)
+                    if "Transparency" in d:
+                        if d["Transparency"] == val:
+                            return
+                    d["Transparency"] = val
+        elif prop == "ProductURL":
+            if hasattr(obj,"ProductURL"):
+                if obj.Material:
+                    d = obj.Material
+                    val = obj.ProductURL
+                    if "ProductURL" in d:
+                        if d["ProductURL"] == val:
+                            return
+                    obj.Material["ProductURL"] = val
+        elif prop == "StandardCode":
+            if hasattr(obj,"StandardCode"):
+                if obj.Material:
+                    d = obj.Material
+                    val = obj.StandardCode
+                    if "StandardCode" in d:
+                        if d["StandardCode"] == val:
+                            return
+                    d["StandardCode"] = val
+        elif prop == "Description":
+            if hasattr(obj,"Description"):
+                if obj.Material:
+                    d = obj.Material
+                    val = obj.Description
+                    if "Description" in d:
+                        if d["Description"] == val:
+                            return
+                    d["Description"] = val
+        if d:
+            obj.Material = d
+            if FreeCADGui:
+                # not sure why this is needed, but it is...
+                FreeCADGui.ActiveDocument.resetEdit()
+        
+    def execute(self,obj):
+        if obj.Material: 
+            if FreeCAD.GuiUp:
+                if "DiffuseColor" in obj.Material:
+                    c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").split(",")])
+                    for p in obj.InList:
+                        if hasattr(p,"BaseMaterial"):
+                            if p.BaseMaterial.Name == obj.Name:
+                                p.ViewObject.ShapeColor = c
         return
 
 
@@ -186,6 +276,7 @@ class _ArchMaterialTaskPanel:
         QtCore.QObject.connect(self.form.ButtonColor,QtCore.SIGNAL("pressed()"),self.getColor)
         QtCore.QObject.connect(self.form.ButtonUrl,QtCore.SIGNAL("pressed()"),self.openUrl)
         QtCore.QObject.connect(self.form.ButtonEditor,QtCore.SIGNAL("pressed()"),self.openEditor)
+        QtCore.QObject.connect(self.form.ButtonCode,QtCore.SIGNAL("pressed()"),self.getCode)
         self.fillMaterialCombo()
         self.fillExistingCombo()
         if self.obj:
@@ -201,9 +292,16 @@ class _ArchMaterialTaskPanel:
             self.form.FieldName.setText(self.obj.Label)
         if 'Description' in self.material:
             self.form.FieldDescription.setText(self.material['Description'])
+        col = None
         if 'DiffuseColor' in self.material:
-            if "(" in self.material['DiffuseColor']:
-                c = tuple([float(f) for f in self.material['DiffuseColor'].strip("()").split(",")])
+            col = self.material["DiffuseColor"]
+        elif 'ViewColor' in self.material:
+            col = self.material["ViewColor"]
+        elif 'Color' in self.material:
+            col = self.material["Color"]
+        if col:
+            if "(" in col:
+                c = tuple([float(f) for f in col.strip("()").split(",")])
                 self.color = QtGui.QColor()
                 self.color.setRgbF(c[0],c[1],c[2])
                 colorPix = QtGui.QPixmap(16,16)
@@ -213,14 +311,19 @@ class _ArchMaterialTaskPanel:
             self.form.FieldCode.setText(self.material['StandardCode'])
         if 'ProductURL' in self.material:
             self.form.FieldUrl.setText(self.material['ProductURL'])
+        if 'Transparency' in self.material:
+            self.form.SpinBox_Transparency.setValue(int(self.material["Transparency"]))
 
     def getFields(self):
         "sets self.material from the contents of the task box"
         self.material['Name'] = self.form.FieldName.text()
         self.material['Description'] = self.form.FieldDescription.text()
         self.material['DiffuseColor'] = str(self.color.getRgbF()[:3])
+        self.material['ViewColor'] = self.material['DiffuseColor']
+        self.material['Color'] = self.material['DiffuseColor']
         self.material['StandardCode'] = self.form.FieldCode.text()
         self.material['ProductURL'] = self.form.FieldUrl.text()
+        self.material['Transparency'] = str(self.form.SpinBox_Transparency.value())
 
     def accept(self):
         self.getFields()
@@ -296,6 +399,10 @@ class _ArchMaterialTaskPanel:
         if self.material:
             if 'ProductURL' in self.material:
                 QtGui.QDesktopServices.openUrl(self.material['ProductURL'])
+
+    def getCode(self):
+        baseurl = "http://bsdd.buildingsmart.org/#concept/browse"
+        QtGui.QDesktopServices.openUrl(baseurl)
 
 
 if FreeCAD.GuiUp:

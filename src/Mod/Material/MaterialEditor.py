@@ -70,6 +70,8 @@ class MaterialEditor:
             d = FreeCAD.ActiveDocument.getObject(self.obj).getPropertyByName(self.prop)
         elif self.material:
             d = self.material
+        if d:
+            self.updateContents(d)
 
 
     def updateCards(self):

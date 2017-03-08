@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>216</width>
-    <height>259</height>
+    <height>295</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,6 +18,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QComboBox" name="comboBox_MaterialsInDir">
+       <property name="toolTip">
+        <string>Choose a preset card</string>
+       </property>
        <item>
         <property name="text">
          <string>Choose preset...</string>
@@ -31,6 +34,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout_7">
      <item>
       <widget class="QComboBox" name="comboBox_FromExisting">
+       <property name="toolTip">
+        <string>Copy values from an existing mateiral in the document</string>
+       </property>
        <item>
         <property name="text">
          <string>Copy existing...</string>
@@ -50,7 +56,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="FieldName"/>
+      <widget class="QLineEdit" name="FieldName">
+       <property name="toolTip">
+        <string>The name/label of this material</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="ButtonEditor">
@@ -82,7 +92,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="FieldDescription"/>
+      <widget class="QLineEdit" name="FieldDescription">
+       <property name="toolTip">
+        <string>An optional description for this material</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -103,8 +117,32 @@
          <height>16777215</height>
         </size>
        </property>
+       <property name="toolTip">
+        <string>The color of this material</string>
+       </property>
        <property name="text">
         <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <item>
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Transparency</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="SpinBox_Transparency">
+       <property name="toolTip">
+        <string>A transparency value for this material</string>
+       </property>
+       <property name="maximum">
+        <number>100</number>
        </property>
       </widget>
      </item>
@@ -115,12 +153,16 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Code</string>
+        <string>Standard code</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="FieldCode"/>
+      <widget class="QLineEdit" name="FieldCode">
+       <property name="toolTip">
+        <string>A standard (MasterFormat, Omniclass...) code for this material</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="ButtonCode">
@@ -129,6 +171,9 @@
          <width>30</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string>Opens the OmniClass website to pick a category</string>
        </property>
        <property name="text">
         <string/>
@@ -159,6 +204,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>An URL describing this material</string>
+       </property>
       </widget>
      </item>
      <item>
@@ -168,6 +216,9 @@
          <width>30</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string>Opens the URL in a browser</string>
        </property>
        <property name="text">
         <string/>
