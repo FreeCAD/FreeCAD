@@ -1098,7 +1098,14 @@ def export(exportList,filename):
         if ifctype in ["IfcSlab","IfcFooting","IfcRoof"]:
             args = args + ["NOTDEFINED"]
         elif ifctype in ["IfcWindow","IfcDoor"]:
-            args = args + [obj.Width.Value/1000.0, obj.Height.Value/1000.0]
+            if hasattr(obj,"Width") and hasattr(obj,"Height"):
+                args = args + [obj.Width.Value/1000.0, obj.Height.Value/1000.0]
+            else:
+                if obj.Shape.BoundBox.XLength > obj.Shape.BoundBox.YLength:
+                    l = obj.Shape.BoundBox.XLength
+                else:
+                    l = obj.Shape.BoundBox.YLength
+                args = args + [l/1000.0,obj.Shape.BoundBox.ZLength/1000.0]
         elif ifctype == "IfcSpace":
             args = args + ["ELEMENT","INTERNAL",obj.Shape.BoundBox.ZMin/1000.0]
         elif ifctype == "IfcBuildingElementProxy":
