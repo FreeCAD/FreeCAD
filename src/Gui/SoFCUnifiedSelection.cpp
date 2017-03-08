@@ -25,7 +25,6 @@
 #ifndef _PreComp_
 # include <qstatusbar.h>
 # include <qstring.h>
-# include <QGLWidget>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
 #endif
@@ -64,6 +63,8 @@
 #include <Inventor/nodes/SoNormalBinding.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/SoPickedPoint.h>
+
+#include <QtOpenGL.h>
 
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
@@ -561,7 +562,7 @@ void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
         // this is called when a selection gate forbade to select an object
         // and the user moved the mouse to an empty area
         this->preSelection = -1;
-        QGLWidget* window;
+        QtGLWidget* window;
         SoState *state = action->getState();
         SoGLWidgetElement::get(state, window);
         QWidget* parent = window ? window->parentWidget() : 0;

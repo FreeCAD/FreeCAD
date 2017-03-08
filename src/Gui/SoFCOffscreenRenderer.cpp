@@ -29,9 +29,6 @@
 # include <QBuffer>
 # include <QDateTime>
 # include <QFile>
-# include <QGLFormat>
-# include <QGLFramebufferObject>
-# include <QGLPixelBuffer>
 # include <QImage>
 # include <QImageWriter>
 #endif
@@ -403,11 +400,17 @@ void SoQtOffscreenRenderer::init(const SbViewportRegion & vpr,
     this->didallocation = glrenderaction ? false : true;
     this->viewport = vpr;
 
+#if !defined(HAVE_QT5_OPENGL)
     this->pixelbuffer = NULL;                // constructed later
+#endif
     this->framebuffer = NULL;
     this->numSamples = -1;
     this->cache_context = 0;
+#if !defined(HAVE_QT5_OPENGL)
     this->pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
+#else
+    this->pbuffer = false;
+#endif
 }
 
 /*!
@@ -434,7 +437,9 @@ SoQtOffscreenRenderer::SoQtOffscreenRenderer(SoGLRenderAction * action)
 */
 SoQtOffscreenRenderer::~SoQtOffscreenRenderer()
 {
+#if !defined(HAVE_QT5_OPENGL)
     delete pixelbuffer;
+#endif
     delete framebuffer;
 
     if (this->didallocation) {
@@ -538,6 +543,7 @@ SoQtOffscreenRenderer::pre_render_cb(void * /*userdata*/, SoGLRenderAction * act
     action->setRenderingIsRemote(false);
 }
 
+#if !defined(HAVE_QT5_OPENGL)
 void
 SoQtOffscreenRenderer::makePixelBuffer(int width, int height, int samples)
 {
@@ -560,6 +566,7 @@ SoQtOffscreenRenderer::makePixelBuffer(int width, int height, int samples)
     pixelbuffer = new QGLPixelBuffer(width, height, fmt);
     cache_context = SoGLCacheContextElement::getUniqueCacheContext(); // unique per pixel buffer object, just to be sure
 }
+#endif
 
 void
 SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
@@ -572,15 +579,15 @@ SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
     viewport.setWindowSize(width, height);
 
 #if QT_VERSION >= 0x040600
-    QGLFramebufferObjectFormat fmt;
+    QtGLFramebufferObjectFormat fmt;
     fmt.setSamples(samples);
-    fmt.setAttachment(QGLFramebufferObject::Depth);
+    fmt.setAttachment(QtGLFramebufferObject::Depth);
 #else
-    QGLFramebufferObject::Attachment fmt;
-    fmt = QGLFramebufferObject::Depth;
+    QtGLFramebufferObject::Attachment fmt;
+    fmt = QtGLFramebufferObject::Depth;
 #endif
 
-    framebuffer = new QGLFramebufferObject(width, height, fmt);
+    framebuffer = new QtGLFramebufferObject(width, height, fmt);
     cache_context = SoGLCacheContextElement::getUniqueCacheContext(); // unique per pixel buffer object, just to be sure
 }
 
@@ -589,6 +596,7 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
 {
     const SbVec2s fullsize = this->viewport.getViewportSizePixels();
 
+#if !defined(HAVE_QT5_OPENGL)
     if (PRIVATE(this)->pbuffer) {
         if (!pixelbuffer) {
             makePixelBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
@@ -600,7 +608,9 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
 
         pixelbuffer->makeCurrent();                // activate us!
     }
-    else {
+    else
+#endif
+    {
         if (!framebuffer) {
             makeFrameBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
         }
@@ -638,10 +648,13 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
 
     this->renderaction->removePreRenderCallback(pre_render_cb, NULL);
 
+#if !defined(HAVE_QT5_OPENGL)
     if (PRIVATE(this)->pbuffer) {
         pixelbuffer->doneCurrent();
     }
-    else {
+    else
+#endif
+    {
         framebuffer->release();
     }
 
@@ -712,11 +725,14 @@ SoQtOffscreenRenderer::render(SoPath * scene)
 void
 SoQtOffscreenRenderer::writeToImage (QImage& img) const
 {
+#if !defined(HAVE_QT5_OPENGL)
     if (PRIVATE(this)->pbuffer) {
         if (pixelbuffer)
             img = pixelbuffer->toImage();
     }
-    else {
+    else
+#endif
+    {
         if (framebuffer)
             img = framebuffer->toImage();
     }

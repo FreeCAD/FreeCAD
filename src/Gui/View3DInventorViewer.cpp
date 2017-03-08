@@ -75,8 +75,6 @@
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <QEventLoop>
-# include <QGLFramebufferObject>
-# include <QGLPixelBuffer>
 # include <QKeyEvent>
 # include <QWheelEvent>
 # include <QMessageBox>
@@ -335,7 +333,7 @@ public:
 
 
 // *************************************************************************
-View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QGLWidget* sharewidget)
+View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QtGLWidget* sharewidget)
     : Quarter::SoQTQuarterAdaptor(parent, sharewidget), editViewProvider(0), navigation(0),
       renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(false), redirected(false),
       allowredir(false), overrideMode("As Is"), _viewerPy(0)
@@ -343,7 +341,7 @@ View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QGLWidget* sha
     init();
 }
 
-View3DInventorViewer::View3DInventorViewer(const QGLFormat& format, QWidget* parent, const QGLWidget* sharewidget)
+View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* parent, const QtGLWidget* sharewidget)
     : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), editViewProvider(0), navigation(0),
       renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(false), redirected(false),
       allowredir(false), overrideMode("As Is"), _viewerPy(0)
@@ -767,7 +765,7 @@ void View3DInventorViewer::setGLWidgetCB(void* userdata, SoAction* action)
     // Separator (set envvar COIN_GLERROR_DEBUGGING=1 and re-run to get more information)
     if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
         QWidget* gl = reinterpret_cast<QWidget*>(userdata);
-        SoGLWidgetElement::set(action->getState(), qobject_cast<QGLWidget*>(gl));
+        SoGLWidgetElement::set(action->getState(), qobject_cast<QtGLWidget*>(gl));
     }
 }
 
@@ -777,7 +775,7 @@ void View3DInventorViewer::handleEventCB(void* ud, SoEventCallback* n)
     SoGLRenderAction* glra = that->getSoRenderManager()->getGLRenderAction();
     SoAction* action = n->getAction();
     SoGLRenderActionElement::set(action->getState(), glra);
-    SoGLWidgetElement::set(action->getState(), qobject_cast<QGLWidget*>(that->getGLWidget()));
+    SoGLWidgetElement::set(action->getState(), qobject_cast<QtGLWidget*>(that->getGLWidget()));
 }
 
 void View3DInventorViewer::setGradientBackground(bool on)
@@ -930,7 +928,11 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
     // If 'QGLPixelBuffer::hasOpenGLPbuffers()' returns false then
     // SoQtOffscreenRenderer won't work. In this case we try to use
     // Coin's implementation of the off-screen rendering.
+#if !defined(HAVE_QT5_OPENGL)
     bool useCoinOffscreenRenderer = !QGLPixelBuffer::hasOpenGLPbuffers();
+#else
+    bool useCoinOffscreenRenderer = !QtGLFramebufferObject::hasOpenGLFramebufferObjects();
+#endif
     useCoinOffscreenRenderer = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->
         GetBool("CoinOffscreenRenderer", useCoinOffscreenRenderer);
@@ -1304,15 +1306,15 @@ void View3DInventorViewer::setRenderType(const RenderType type)
             const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
             SbVec2s size = vp.getViewportSizePixels();
 
-            QGLWidget* gl = static_cast<QGLWidget*>(this->viewport());
+            QtGLWidget* gl = static_cast<QtGLWidget*>(this->viewport());
             gl->makeCurrent();
-            framebuffer = new QGLFramebufferObject(size[0],size[1],QGLFramebufferObject::Depth);
+            framebuffer = new QtGLFramebufferObject(size[0],size[1],QtGLFramebufferObject::Depth);
             renderToFramebuffer(framebuffer);
         }
         break;
     case Image:
         {
-            QGLWidget* gl = static_cast<QGLWidget*>(this->viewport());
+            QtGLWidget* gl = static_cast<QtGLWidget*>(this->viewport());
             gl->makeCurrent();
             int w = gl->width();
             int h = gl->height();
@@ -1329,9 +1331,9 @@ View3DInventorViewer::RenderType View3DInventorViewer::getRenderType() const
     return this->renderType;
 }
 
-void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
+void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)
 {
-    static_cast<QGLWidget*>(this->viewport())->makeCurrent();
+    static_cast<QtGLWidget*>(this->viewport())->makeCurrent();
     fbo->bind();
     int width = fbo->size().width();
     int height = fbo->size().height();
@@ -1483,7 +1485,7 @@ void View3DInventorViewer::renderScene(void)
     // Render our scenegraph with the image.
     SoGLRenderAction* glra = this->getSoRenderManager()->getGLRenderAction();
     SoState* state = glra->getState();
-    SoGLWidgetElement::set(state, qobject_cast<QGLWidget*>(this->getGLWidget()));
+    SoGLWidgetElement::set(state, qobject_cast<QtGLWidget*>(this->getGLWidget()));
     SoGLRenderActionElement::set(state, glra);
     SoGLVBOActivatedElement::set(state, this->vboEnabled);
     glra->apply(this->backgroundroot);

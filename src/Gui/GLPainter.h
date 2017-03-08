@@ -35,10 +35,10 @@
 #endif
 
 #include <Base/BaseClass.h>
+#include <QtOpenGL.h>
 #include <QPoint>
 
 class QPaintDevice;
-class QGLWidget;
 
 namespace Gui {
 class View3DInventorViewer;
@@ -72,7 +72,7 @@ public:
     //@}
 
 private:
-    QGLWidget* viewer;
+    QtGLWidget* viewer;
     GLfloat depthrange[2];
     GLdouble projectionmatrix[16];
     GLint width, height;

@@ -158,12 +158,6 @@
 #include <QNetworkAccessManager>
 #include <QTcpServer>
 #include <QTcpSocket>
-// QtOpenGL
-#include <qgl.h>
-#if QT_VERSION >= 0x040200
-#include <QGLFramebufferObject>
-#endif
-#include <QGLPixelBuffer>
 // QtSvg
 #include <QSvgRenderer>
 #include <QSvgWidget>

@@ -138,6 +138,19 @@ using namespace SIM::Coin3D::Quarter;
 #endif
   
 //We need to avoid buffer swaping when initializing a QPainter on this widget
+#if defined(HAVE_QT5_OPENGL)
+class CustomGLWidget : public QOpenGLWidget {
+public:
+    CustomGLWidget(const QSurfaceFormat& format, QWidget* parent = 0, const QOpenGLWidget* shareWidget = 0, Qt::WindowFlags f = 0)
+     : QOpenGLWidget(parent, f)
+    {
+        Q_UNUSED(shareWidget);
+        QSurfaceFormat surfaceFormat(format);
+        surfaceFormat.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
+        setFormat(surfaceFormat);
+    }
+  };
+#else
 class CustomGLWidget : public QGLWidget {
 public:
     CustomGLWidget(const QGLFormat& fo, QWidget* parent = 0, const QGLWidget* shareWidget = 0, Qt::WindowFlags f = 0)
@@ -146,9 +159,10 @@ public:
          setAutoBufferSwap(false);
     }
 };
+#endif
 
 /*! constructor */
-QuarterWidget::QuarterWidget(const QGLFormat & format, QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
+QuarterWidget::QuarterWidget(const QtGLFormat & format, QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
   Q_UNUSED(f); 
@@ -156,15 +170,15 @@ QuarterWidget::QuarterWidget(const QGLFormat & format, QWidget * parent, const Q
 }
 
 /*! constructor */
-QuarterWidget::QuarterWidget(QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
+QuarterWidget::QuarterWidget(QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
   Q_UNUSED(f); 
-  this->constructor(QGLFormat(), sharewidget);
+  this->constructor(QtGLFormat(), sharewidget);
 }
 
 /*! constructor */
-QuarterWidget::QuarterWidget(QGLContext * context, QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
+QuarterWidget::QuarterWidget(QtGLContext * context, QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
   Q_UNUSED(f); 
@@ -172,7 +186,7 @@ QuarterWidget::QuarterWidget(QGLContext * context, QWidget * parent, const QGLWi
 }
 
 void
-QuarterWidget::constructor(const QGLFormat & format, const QGLWidget * sharewidget)
+QuarterWidget::constructor(const QtGLFormat & format, const QtGLWidget * sharewidget)
 {
   QGraphicsScene* scene = new QGraphicsScene;
   setScene(scene);
@@ -759,7 +773,7 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     glEnable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
 
-    QGLWidget* w = static_cast<QGLWidget*>(this->viewport());
+    QtGLWidget* w = static_cast<QtGLWidget*>(this->viewport());
     assert(w->isValid() && "No valid GL context found!");
     // We might have to process the delay queue here since we don't know
     // if paintGL() is called from Qt, and we might have some sensors
@@ -785,7 +799,11 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
 
     assert(w->isValid() && "No valid GL context found!");
 
+#if defined(HAVE_QT5_OPENGL)
+    glDrawBuffer(w->format().swapBehavior() == QSurfaceFormat::DoubleBuffer ? GL_BACK : GL_FRONT);
+#else
     glDrawBuffer(w->doubleBuffer() ? GL_BACK : GL_FRONT);
+#endif
 
     w->makeCurrent();
     this->actualRedraw();
@@ -797,7 +815,12 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     inherited::paintEvent(event);
     glPopAttrib();
 
+#if defined(HAVE_QT5_OPENGL)
+    if (w->format().swapBehavior() == QSurfaceFormat::DoubleBuffer)
+        w->context()->swapBuffers(w->context()->surface());
+#else
     if (w->doubleBuffer()) { w->swapBuffers(); }
+#endif
 
     PRIVATE(this)->autoredrawenabled = true;
 

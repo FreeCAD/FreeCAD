@@ -87,14 +87,14 @@ SoGLWidgetElement::~SoGLWidgetElement()
 {
 }
 
-void SoGLWidgetElement::set(SoState * state, QGLWidget * window)
+void SoGLWidgetElement::set(SoState * state, QtGLWidget * window)
 {
   SoGLWidgetElement * elem = static_cast<SoGLWidgetElement *>
         (SoElement::getElement(state, classStackIndex));
   elem->window = window;
 }
 
-void SoGLWidgetElement::get(SoState * state, QGLWidget *& window)
+void SoGLWidgetElement::get(SoState * state, QtGLWidget *& window)
 {
     const SoGLWidgetElement* that =  static_cast<const SoGLWidgetElement *>
         (SoElement::getConstElement(state, classStackIndex));
