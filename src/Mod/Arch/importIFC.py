@@ -1750,14 +1750,17 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             for wire in fcface.Wires:
                                 if wire.hashCode() != fcface.OuterWire.hashCode():
                                     verts = [v.Point for v in wire.OrderedVertexes]
-                                    v1 = verts[0].sub(c)
-                                    v2 = verts[1].sub(c)
-                                    if DraftVecUtils.angle(v2,v1,DraftVecUtils.neg(n)) >= 0:
-                                        verts.reverse()
-                                    pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
-                                    loop =  ifcfile.createIfcPolyLoop(pts)
-                                    bound = ifcfile.createIfcFaceBound(loop,True)
-                                    loops.append(bound)
+                                    if len(verts) > 1:
+                                        v1 = verts[0].sub(c)
+                                        v2 = verts[1].sub(c)
+                                        if DraftVecUtils.angle(v2,v1,DraftVecUtils.neg(n)) >= 0:
+                                            verts.reverse()
+                                        pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
+                                        loop =  ifcfile.createIfcPolyLoop(pts)
+                                        bound = ifcfile.createIfcFaceBound(loop,True)
+                                        loops.append(bound)
+                                    else:
+                                        print ("Warning: wire with one/no vertex in ",obj.Label)
                             face =  ifcfile.createIfcFace(loops)
                             faces.append(face)
 
