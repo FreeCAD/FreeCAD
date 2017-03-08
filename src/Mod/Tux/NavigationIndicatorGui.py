@@ -217,13 +217,9 @@ t7 = str("""<p align='center'><b>OpenCascade</b> navigation style</p>
  </tr>
 </table>""")
 
-indicator = QtGui.QToolButton(statusBar)
-indicator.setAutoRaise(True)
-indicator.setObjectName("Std_NavigationIndicator")
-indicator.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
-indicator.setPopupMode(QtGui.QToolButton
-                       .ToolButtonPopupMode
-                       .InstantPopup)
+indicator = QtGui.QPushButton(statusBar)
+indicator.setFlat(True)
+indicator.setObjectName("NavigationIndicator")
 
 menu = QtGui.QMenu(indicator)
 indicator.setMenu(menu)
@@ -319,16 +315,27 @@ menu.addAction(a7)
 
 def onCompact():
     """Enable or disable compact mode."""
+
     if aCompact.isChecked():
-        indicator.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
         p.SetBool("Compact", 1)
     else:
-        indicator.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
         p.SetBool("Compact", 0)
+
+    setCurrent()
+
+
+def setCompact(action):
+    """Set compact mode."""
+
+    if p.GetBool("Compact", 0):
+        indicator.setText("")
+    else:
+        indicator.setText(action.text())
 
 
 def onTooltip():
     """Enable or disable verbose tooltips."""
+
     if aTooltip.isChecked():
         a0.setToolTip(t0)
         a1.setToolTip(t1)
@@ -344,9 +351,12 @@ def onTooltip():
             i.setToolTip("")
         p.SetBool("Tooltip", 0)
 
+    setCurrent()
+
 
 def onOrbit():
     """Use turntable or trackball orbit style."""
+
     if aTurntable.isChecked():
         pView.SetInt("OrbitStyle", 1)
     else:
@@ -358,10 +368,10 @@ def onMenu(action):
 
     s = False
 
-    if action.data() != "Undefined":
+    if action and action.data() != "Undefined":
         s = True
+        setCompact(action)
         menu.setDefaultAction(action)
-        indicator.setText(action.text())
         indicator.setIcon(action.icon())
         indicator.setToolTip(action.toolTip())
         pView.SetString("NavigationStyle", action.data())
@@ -373,8 +383,8 @@ def onMenu(action):
     else:
         a0.setVisible(True)
         a0.setEnabled(True)
+        setCompact(a0)
         menu.setDefaultAction(a0)
-        indicator.setText(a0.text())
         indicator.setIcon(a0.icon())
         indicator.setToolTip(a0.toolTip())
 
@@ -392,16 +402,16 @@ def setCurrent():
         for i in actions:
             if i.data() == current:
                 s = True
+                setCompact(i)
                 menu.setDefaultAction(i)
-                indicator.setText(i.text())
                 indicator.setIcon(i.icon())
                 indicator.setToolTip(i.toolTip())
             else:
                 pass
     else:
         s = True
+        setCompact(a2)
         menu.setDefaultAction(a2)
-        indicator.setText(a2.text())
         indicator.setIcon(a2.icon())
         indicator.setToolTip(a2.toolTip())
         pView.SetString("NavigationStyle", a2.data())
@@ -411,14 +421,14 @@ def setCurrent():
     else:
         a0.setVisible(True)
         a0.setEnabled(True)
+        setCompact(a0)
         menu.setDefaultAction(a0)
-        indicator.setText(a0.text())
         indicator.setIcon(a0.icon())
         indicator.setToolTip(a0.toolTip())
 
     gStyle.blockSignals(False)
 
-if p.GetBool("Compact"):
+if p.GetBool("Compact", 0):
     aCompact.setChecked(True)
 
 if p.GetBool("Tooltip", 1):
@@ -442,6 +452,7 @@ gStyle.triggered.connect(onMenu)
 gOrbit.triggered.connect(onOrbit)
 aCompact.triggered.connect(onCompact)
 aTooltip.triggered.connect(onTooltip)
+menu.aboutToHide.connect(indicator.clearFocus)
 
 timer.timeout.connect(setCurrent)
 timer.start(10000)
