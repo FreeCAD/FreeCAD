@@ -147,6 +147,7 @@ public:
     boost::signal<void (const std::vector<App::DocumentObject*>&, Base::Reader&,
                         const std::map<std::string, std::string>&)> signalImportViewObjects;
     boost::signal<void (const App::Document&)> signalRecomputed;
+    boost::signal<void (const App::DocumentObject&)> signalRecomputedObject;
     //@}
 
     /** @name File handling of the document */

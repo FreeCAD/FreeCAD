@@ -78,6 +78,11 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
         (&DocumentObserverPython::slotDeletedObject, this, _1));
     this->connectDocumentChangedObject = App::GetApplication().signalChangedObject.connect(boost::bind
         (&DocumentObserverPython::slotChangedObject, this, _1, _2));
+    
+    this->connectDocumentObjectRecomputed = App::GetApplication().signalObjectRecomputed.connect(boost::bind
+        (&DocumentObserverPython::slotRecomputedObject, this, _1));
+    this->connectDocumentRecomputed = App::GetApplication().signalRecomputed.connect(boost::bind
+        (&DocumentObserverPython::slotRecomputedDocument, this, _1));
 }
 
 DocumentObserverPython::~DocumentObserverPython()
@@ -92,6 +97,8 @@ DocumentObserverPython::~DocumentObserverPython()
     this->connectDocumentCreatedObject.disconnect();
     this->connectDocumentDeletedObject.disconnect();
     this->connectDocumentChangedObject.disconnect();
+    this->connectDocumentObjectRecomputed.disconnect();
+    this->connectDocumentRecomputed.disconnect();
 }
 
 void DocumentObserverPython::slotCreatedDocument(const App::Document& Doc)
@@ -246,6 +253,40 @@ void DocumentObserverPython::slotChangedObject(const App::DocumentObject& Obj,
                 args.setItem(1, Py::String(prop_name));
                 method.apply(args);
             }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotRecomputedObject(const App::DocumentObject& Obj)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotRecomputedObject"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotRecomputedObject")));
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(const_cast<App::DocumentObject&>(Obj).getPyObject(), true));
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotRecomputedDocument(const App::Document& doc)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotRecomputedDocument"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotRecomputedDocument")));
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(const_cast<App::Document&>(doc).getPyObject(), true));
+            method.apply(args);
         }
     }
     catch (Py::Exception&) {

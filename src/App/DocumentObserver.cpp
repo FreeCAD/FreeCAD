@@ -228,6 +228,10 @@ void DocumentObserver::attachDocument(Document* doc)
             (&DocumentObserver::slotDeletedObject, this, _1));
         this->connectDocumentChangedObject = _document->signalChangedObject.connect(boost::bind
             (&DocumentObserver::slotChangedObject, this, _1, _2));
+        this->connectDocumentRecomputedObject = _document->signalRecomputedObject.connect(boost::bind
+            (&DocumentObserver::slotRecomputedObject, this, _1));
+        this->connectDocumentRecomputed = _document->signalRecomputed.connect(boost::bind
+            (&DocumentObserver::slotRecomputedDocument, this, _1));
     }
 }
 
@@ -238,6 +242,8 @@ void DocumentObserver::detachDocument()
         this->connectDocumentCreatedObject.disconnect();
         this->connectDocumentDeletedObject.disconnect();
         this->connectDocumentChangedObject.disconnect();
+        this->connectDocumentRecomputedObject.disconnect();
+        this->connectDocumentRecomputed.disconnect();
     }
 }
 
@@ -260,6 +266,15 @@ void DocumentObserver::slotDeletedObject(const App::DocumentObject& /*Obj*/)
 void DocumentObserver::slotChangedObject(const App::DocumentObject& /*Obj*/, const App::Property& /*Prop*/)
 {
 }
+
+void DocumentObserver::slotRecomputedObject(const DocumentObject& /*Obj*/)
+{
+}
+
+void DocumentObserver::slotRecomputedDocument(const Document& /*doc*/)
+{
+}
+
 
 // -----------------------------------------------------------------------------
 

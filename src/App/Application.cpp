@@ -423,6 +423,8 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     _pActiveDoc->signalActivatedObject.connect(boost::bind(&App::Application::slotActivatedObject, this, _1));
     _pActiveDoc->signalUndo.connect(boost::bind(&App::Application::slotUndoDocument, this, _1));
     _pActiveDoc->signalRedo.connect(boost::bind(&App::Application::slotRedoDocument, this, _1));
+    _pActiveDoc->signalRecomputedObject.connect(boost::bind(&App::Application::slotRecomputedObject, this, _1));
+    _pActiveDoc->signalRecomputed.connect(boost::bind(&App::Application::slotRecomputed, this, _1));
 
     // make sure that the active document is set in case no GUI is up
     {
@@ -1005,6 +1007,15 @@ void Application::slotUndoDocument(const App::Document& d)
 void Application::slotRedoDocument(const App::Document& d)
 {
     this->signalRedoDocument(d);
+}
+void Application::slotRecomputedObject(const DocumentObject& obj)
+{
+    this->signalObjectRecomputed(obj);
+}
+
+void Application::slotRecomputed(const Document& doc)
+{
+    this->signalRecomputed(doc);
 }
 
 //**************************************************************************
