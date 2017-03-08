@@ -19,7 +19,12 @@
 #define ImageView_H
 
 #include <Gui/MDIView.h>
+#include <QtOpenGL.h>
+#if defined(HAVE_QT5_OPENGL)
+#include "OpenGLImageBox.h"
+#else
 #include "GLImageBox.h"
+#endif
 
 class QSlider;
 class QAction;
