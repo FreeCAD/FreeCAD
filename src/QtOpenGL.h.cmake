@@ -35,6 +35,7 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLVersionProfile>
+#include <QOpenGLFunctions>
 
 typedef QOpenGLContext QtGLContext;
 typedef QSurfaceFormat QtGLFormat;
