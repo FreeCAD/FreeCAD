@@ -724,7 +724,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
 
         Gui::Command::openCommand((std::string("Make ") + which).c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",
-                    which.c_str(), FeatName.c_str());
+            which.c_str(), FeatName.c_str());
         
         if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Profile = App.activeDocument().%s",
@@ -739,7 +739,12 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
     };
     
     //if a profile is selected we can make our life easy and fast
-    auto selection = cmd->getSelection().getSelectionEx(0, Part::Part2DObject::getClassTypeId());
+    std::vector<Gui::SelectionObject> selection;
+    std::string cmdName = cmd->getName();
+    if (cmdName == "PartDesign_Revolution" || cmdName == "PartDesign_Groove")
+        selection = cmd->getSelection().getSelectionEx(0, Part::Part2DObject::getClassTypeId());
+    else
+        selection = cmd->getSelection().getSelectionEx();
     if (!selection.empty() && selection.front().hasSubNames()) {
         base_worker(selection.front().getObject(), selection.front().getSubNames().front());
         return;
@@ -774,7 +779,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
         return true;
     };
     
-    auto sketch_worker = [&](std::vector<App::DocumentObject*> features) {
+    auto sketch_worker = [&, base_worker](std::vector<App::DocumentObject*> features) {
         
         base_worker(features.front(), "");
     };
