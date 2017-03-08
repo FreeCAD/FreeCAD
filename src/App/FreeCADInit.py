@@ -86,9 +86,24 @@ def InitApplications():
 	# add also this path so that all modules search for libraries
 	# they depend on first here
 	PathExtension = BinDir + os.pathsep
+
 	# prepend all module paths to Python search path
 	Log('Init:   Searching for modules...\n')
-	FreeCAD.__path__ = list(ModDict.values())
+
+
+	# to have all the module-paths available in FreeCADGuiInit.py:
+	FreeCAD.__ModDirs__ = list(ModDict.values())
+
+	# this allows importing with:
+	# from FreeCAD.Module import package
+	FreeCAD.__path__ = [ModDir, Lib64Dir, LibDir]
+
+	# also add these directories to the sys.path to 
+	# not change the old behaviour. once we have moved to 
+	# proper python modules this can eventuelly be removed.
+	for path in FreeCAD.__path__[::-1]:
+		sys.path.insert(0, path)
+
 	for Dir in ModDict.values():
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
 			sys.path.insert(0,Dir)
@@ -105,13 +120,12 @@ def InitApplications():
 					Log(traceback.format_exc())
 					Log('-'*100+'\n')
 					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
+					Err('Please look into the log file for further information')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:
 				Log('Init:      Initializing ' + Dir + '(Init.py not found)... ignore\n')
-	sys.path.insert(0,LibDir)
-	sys.path.insert(0,Lib64Dir)
-	sys.path.insert(0,ModDir)
+
 	Log("Using "+ModDir+" as module path!\n")
 	# new paths must be prepended to avoid to load a wrong version of a library
 	try:
