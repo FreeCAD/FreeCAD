@@ -999,10 +999,12 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
     def onChanged(self,vobj,prop):
         if (prop == "DiffuseColor") and vobj.Object:
-            if len(vobj.DiffuseColor) < 2:
-                if vobj.Object.Shape:
-                    if not vobj.Object.Shape.isNull():
-                        self.colorize(vobj.Object)
+            if vobj.Object.Base:
+                if not vobj.Object.Base.Shape.Solids:
+                    if len(vobj.DiffuseColor) < 2:
+                        if vobj.Object.Shape:
+                            if not vobj.Object.Shape.isNull():
+                                self.colorize(vobj.Object)
         ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
     def setEdit(self,vobj,mode):
