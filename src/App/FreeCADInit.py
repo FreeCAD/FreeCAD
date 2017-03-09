@@ -33,10 +33,22 @@
 # imports the one and only
 import FreeCAD
 
+def removeFromPath(module_name):
+	import sys, os
+	paths = sys.path
+	for path in paths:
+		if module_name in path:
+			sys.path.remove(path)
+			return
+	else:
+		Wrn(module_name + " not found in sys.path\n")
+
+FreeCAD._newStyleModule = removeFromPath
+
 
 def InitApplications():
 	try:
-		import sys,os,traceback
+		import sys,os,traceback,io
 	except ImportError:
 		FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
 		raise
@@ -279,7 +291,3 @@ del(InitApplications)
 del(test_ascii)
 
 Log ('Init: App::FreeCADInit.py done\n')
-
-
-
-
