@@ -300,7 +300,7 @@ from the knots table of this B-Spline curve.</UserDocu>
 					Replaces this B-Spline curve by approximating a set of points.
 					The function accepts keywords as arguments.
 
-					approximate2(Points = list_of_points) 
+					approximate(Points = list_of_points) 
 
 					Optional arguments :
 
