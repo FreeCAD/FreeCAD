@@ -114,9 +114,9 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
 
     if(myShapes.empty())
         Shape.setValue(TopoDS_Shape());
-    else if(myShapes.size()==1)
-        Shape.setValue(myShapes.front());
     else{
+        // compound is built even if there is only one shape to save the
+        // trouble of messing around with placement
         BRep_Builder builder;
         TopoDS_Compound compound;
         builder.MakeCompound(compound);

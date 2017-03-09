@@ -481,19 +481,23 @@ static int foreachSubshape(const TopoDS_Shape &shape, Func func, int type=TopAbs
 }
 
 struct FindPlane {
-    TopoDS_Shape &myShape;
+    TopoDS_Shape &myPlaneShape;
     gp_Trsf &myTrsf;
     double &myZ;
     FindPlane(TopoDS_Shape &s, gp_Trsf &t, double &z)
-        :myShape(s),myTrsf(t),myZ(z)
+        :myPlaneShape(s),myTrsf(t),myZ(z)
     {}
     void operator()(const TopoDS_Shape &shape, int) {
         gp_Trsf trsf;
+
         BRepLib_FindSurface finder(shape,-1,Standard_True);
         if (!finder.Found()) 
             return;
 
-        gp_Ax3 pos = GeomAdaptor_Surface(finder.Surface()).Plane().Position();
+        // NOTE: It seemed that FindSurface disregardge shape's transformation,
+        // so we have to transformed the found plane manually
+        gp_Ax3 pos = GeomAdaptor_Surface(finder.Surface()).Plane().Position().Transformed(
+                                    shape.Location().Transformation());
 
         //force plane to be right handed
         if(!pos.Direct())
@@ -501,34 +505,18 @@ struct FindPlane {
         gp_Dir dir(pos.Direction());
 
         trsf.SetTransformation(pos);
+
         if(fabs(dir.X())<Precision::Confusion() &&
             fabs(dir.Y())<Precision::Confusion()) 
         {
-            gp_Pnt origin = pos.Location();
-
-            // Probably another OCC bug, sometimes pos.Location().Z() for XY
-            // plane is stuck at zero, even though the plane is at above. So we
-            // double check the first vertex Z value
             TopExp_Explorer it(shape,TopAbs_VERTEX);
-            double z = BRep_Tool::Pnt(TopoDS::Vertex(it.Current())).Z();
-            if(fabs(origin.Z()-z)>Precision::Confusion()) {
-                AREA_WARN("XY plane has wrong Z height "<<origin.Z()<<", "<<z);
-                gp_Trsf trsf2;
-                trsf2.SetTranslationPart(gp_XYZ(0,0,origin.Z()-z));
-                trsf.Multiply(trsf2);
-            }
-            gp_Pnt pt = origin.Transformed(TopLoc_Location(trsf));
-            if(fabs(pt.X()) > Precision::Confusion() ||
-            fabs(pt.Y()) > Precision::Confusion() ||
-            fabs(pt.Z()) > Precision::Confusion()) {
-                AREA_WARN("wrong transformation "<<AREA_PT(pt));
-            }
-            if(!myShape.IsNull() && myZ > z)
+            const auto &pt = BRep_Tool::Pnt(TopoDS::Vertex(it.Current()));
+            if(!myPlaneShape.IsNull() && myZ > pt.Z())
                 return;
-            myZ = z;
-        }else if(!myShape.IsNull())
+            myZ = pt.Z();
+        }else if(!myPlaneShape.IsNull())
             return;
-        myShape = shape;
+        myPlaneShape = shape;
         myTrsf = trsf;
     }
 };
