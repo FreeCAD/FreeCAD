@@ -126,7 +126,7 @@ static const PyMethodDef areaOverrides[] = {
         "\n* heights ([]): a list of section heights, the meaning of the value is determined by 'mode'.\n"
         "If not specified, the current SectionCount, and SectionOffset of this Area is used.\n"
         "\n* plane (None): optional shape to specify a section plane. If not give, the current workplane\n"
-        "of this Area is used.",
+        "of this Area is used if section mode is 'Workplane'.",
     },
     {
         "sortWires",NULL,0,

@@ -41,7 +41,7 @@ PROPERTY_SOURCE(Path::FeatureArea, Part::Feature)
 PARAM_ENUM_STRING_DECLARE(static const char *Enums,AREA_PARAMS_ALL)
 
 FeatureArea::FeatureArea()
-    :myBuild(false)
+    :myInited(false)
 {
     ADD_PROPERTY(Sources,(0));
     ADD_PROPERTY(WorkPlane,(TopoDS_Shape()));
@@ -64,13 +64,14 @@ FeatureArea::~FeatureArea()
 }
 
 Area &FeatureArea::getArea() {
-    if(!myBuild)
-        execute();
+    if(!myInited) execute();
     return myArea;
 }
 
 App::DocumentObjectExecReturn *FeatureArea::execute(void)
 {
+    myInited = true;
+
     std::vector<App::DocumentObject*> links = Sources.getValues();
     if (links.empty())
         return new App::DocumentObjectExecReturn("No shapes linked");
@@ -85,7 +86,6 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
 
     TIME_INIT(t);
 
-    myBuild = true;
     AreaParams params;
 
 #define AREA_PROP_GET(_param) \
@@ -112,6 +112,7 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
             myShapes.push_back(myArea.getShape(i));
     }
 
+    bool hasShape = false;
     if(myShapes.empty())
         Shape.setValue(TopoDS_Shape());
     else{
@@ -120,13 +121,20 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
         BRep_Builder builder;
         TopoDS_Compound compound;
         builder.MakeCompound(compound);
-        for(auto &shape : myShapes) 
+        for(auto &shape : myShapes) {
+            if(shape.IsNull()) continue;
+            hasShape = true;
             builder.Add(compound,shape);
+        }
         Shape.setValue(compound);
     }
 
     TIME_PRINT(t,"feature execute");
-    return Part::Feature::execute();
+
+    if(!hasShape)
+        return new App::DocumentObjectExecReturn("no output shape");
+
+    return DocumentObject::StdReturn;
 }
 
 const std::vector<TopoDS_Shape> &FeatureArea::getShapes() {
@@ -136,7 +144,9 @@ const std::vector<TopoDS_Shape> &FeatureArea::getShapes() {
 
 short FeatureArea::mustExecute(void) const
 {
-    return !myArea.isBuilt() || Part::Feature::mustExecute();
+    if(!myArea.isBuilt())
+        return 1;
+    return Part::Feature::mustExecute();
 }
 
 PyObject *FeatureArea::getPyObject()
@@ -202,21 +212,26 @@ App::DocumentObjectExecReturn *FeatureAreaView::execute(void)
     if(!pObj->isDerivedFrom(FeatureArea::getClassTypeId()))
             return new App::DocumentObjectExecReturn("Linked object is not a FeatureArea");
 
+    bool hasShape = false;
     std::list<TopoDS_Shape> shapes = getShapes();
     if(shapes.empty())
         Shape.setValue(TopoDS_Shape());
-    else if(shapes.size()==1) {
-        Shape.setValue(shapes.front());
-    }else{
+    else{
         BRep_Builder builder;
         TopoDS_Compound compound;
         builder.MakeCompound(compound);
-        for(auto &shape : shapes) 
+        for(auto &shape : shapes) {
+            if(shape.IsNull()) continue;
+            hasShape = true;
             builder.Add(compound,shape);
+        }
         Shape.setValue(compound);
     }
 
-    return Part::Feature::execute();
+    if(!hasShape)
+        return new App::DocumentObjectExecReturn("no output shape");
+
+    return DocumentObject::StdReturn;
 }
 
 // Python feature ---------------------------------------------------------
