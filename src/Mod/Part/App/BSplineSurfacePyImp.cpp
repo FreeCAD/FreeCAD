@@ -1235,21 +1235,25 @@ PyObject* BSplineSurfacePy::reparametrize(PyObject * args)
     }
 }
 
-PyObject* BSplineSurfacePy::approximate(PyObject *args)
+PyObject* BSplineSurfacePy::approximate(PyObject *args, PyObject *kwds)
 {
     PyObject* obj;
-    Standard_Integer degMin=0;
-    Standard_Integer degMax=0;
-    Standard_Integer continuity=0;
+    Standard_Integer degMin=3;
+    Standard_Integer degMax=8;
+    Standard_Integer continuity=2;
     Standard_Real tol3d = Precision::Approximation();
+    char* parType = "None";
+    Standard_Real weight1 = 1.0;
+    Standard_Real weight2 = 1.0;
+    Standard_Real weight3 = 1.0;
     Standard_Real X0=0;
     Standard_Real dX=0;
     Standard_Real Y0=0;
     Standard_Real dY=0;
 
-    int len = PyTuple_GET_SIZE(args);
-
-    if (!PyArg_ParseTuple(args, "Oiiid|dddd", &obj, &degMin, &degMax, &continuity, &tol3d, &X0, &dX, &Y0, &dY))
+    static char* kwds_interp[] = {"Points", "DegMin", "DegMax", "Continuity", "Tolerance", "X0", "dX", "Y0", "dY", "ParamType", "LengthWeight", "CurvatureWeight", "TorsionWeight", NULL};
+    
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|iiidddddsddd", kwds_interp, &obj, &degMin, &degMax, &continuity, &tol3d, &X0, &dX, &Y0, &dY, &parType, &weight1, &weight2, &weight3))
         return 0;
     try {
         Py::Sequence list(obj);
@@ -1268,7 +1272,7 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args)
             Py::Sequence row(*it1);
             for (Py::Sequence::iterator it2 = row.begin(); it2 != row.end(); ++it2) {
                 index2++;
-                if(len == 5){
+                if ((dX == 0) || (dY == 0)){
                     Py::Vector v(*it2);
                     Base::Vector3d pnt = v.toVector();
                     gp_Pnt newPoint(pnt.x,pnt.y,pnt.z);
@@ -1281,15 +1285,15 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args)
             }
         }
 
-        if (continuity<0 || continuity>3) {
-            Standard_Failure::Raise("continuity must be between 0 and 3");
+        if (continuity<0 || continuity>2) {
+            Standard_Failure::Raise("continuity must be between 0 and 2");
         }
 
         if (interpolationPoints.RowLength() < 2 || interpolationPoints.ColLength() < 2) {
             Standard_Failure::Raise("not enough points given");
         }
 
-        GeomAbs_Shape c = GeomAbs_CN;
+        GeomAbs_Shape c = GeomAbs_C2;
         switch(continuity){
         case 0:
             c = GeomAbs_C0;
@@ -1300,17 +1304,43 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args)
         case 2:
             c = GeomAbs_C2;
             break;
-        case 3:
-            c = GeomAbs_C3;
-            break;
         }
+        
+        Approx_ParametrizationType pt;
+        std::string pstr = parType;
+        Standard_Boolean useParam = Standard_True;
+        if (pstr == "Uniform" )
+            pt = Approx_IsoParametric;
+        else if (pstr == "Centripetal" )
+            pt = Approx_Centripetal;
+        else if (pstr == "ChordLength" )
+            pt = Approx_ChordLength;
+        else
+            useParam = Standard_False;
 
         GeomAPI_PointsToBSplineSurface surInterpolation;
-        if (len == 5) {
-            surInterpolation.Init(interpolationPoints, degMin, degMax, c, tol3d);
+        if (!(dX == 0) && !(dY == 0)) {
+            // dX and dY are not null : we use the zPoints method
+            surInterpolation.Init(zPoints, X0, dX, Y0, dY, degMin, degMax, c, tol3d);
+        }
+        else if (useParam) {
+            // a parametrization type has been supplied
+            surInterpolation.Init(interpolationPoints, pt, degMin, degMax, c, tol3d);
+        }
+        else if (!(weight1 == 0) || !(weight2 == 0) || !(weight3 == 0)) {
+            // one of the weights is not null, we use the smoothing algorithm
+            // adjust continuity for low values of degMax, instead of failing
+            if (degMax < 3) {
+                c = GeomAbs_C0;
+            }
+            else if ((degMax < 5) && (c == GeomAbs_C2)) {
+                c = GeomAbs_C1;
+            }
+            surInterpolation.Init(interpolationPoints, weight1, weight2, weight3, degMax, c, tol3d);
         }
         else {
-            surInterpolation.Init(zPoints, X0, dX, Y0, dY, degMin, degMax, c, tol3d);
+            // fallback to strandard method
+            surInterpolation.Init(interpolationPoints, degMin, degMax, c, tol3d);
         }
         Handle_Geom_BSplineSurface sur(surInterpolation.Surface());
         this->getGeomBSplineSurfacePtr()->setHandle(sur);
@@ -1324,6 +1354,9 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args)
         return 0;
     }
 }
+
+
+
 
 PyObject* BSplineSurfacePy::interpolate(PyObject *args)
 {

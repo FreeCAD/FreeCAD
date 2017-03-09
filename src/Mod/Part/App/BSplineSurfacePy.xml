@@ -683,14 +683,25 @@
 				<UserDocu>Returns a reparametrized copy of this surface</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="approximate">
+		<Methode Name="approximate" Keyword="true">
 			<Documentation>
 				<UserDocu>
-					approximate(points, degMin, degMax, continuity, tol)
-					approximate(zPoints, degMin, degMax, continuity, tol, X0, dX, Y0, dY)
-					
 					Replaces this B-Spline surface by approximating a set of points.
-					continuity is an integer between 0 and 3
+					This method uses keywords :
+					- Points = 2Darray of points (or floats, in combination with X0, dX, Y0, dY)
+					- DegMin (int), DegMax (int)
+					- Continuity = 0,1 or 2 (for C0, C1, C2)
+					- Tolerance (float)
+					- X0, dX, Y0, dY (floats) with Points = 2Darray of floats
+					- ParamType = 'Uniform','Centripetal' or 'ChordLength'
+					- LengthWeight, CurvatureWeight, TorsionWeight (floats)
+					
+					Possible combinations :
+					- approximate(Points, DegMin, DegMax, Continuity, Tolerance)
+					- approximate(Points, DegMin, DegMax, Continuity, Tolerance, X0, dX, Y0, dY)
+					With explicit keywords :
+					- approximate(Points, DegMin, DegMax, Continuity, Tolerance, ParamType)
+					- approximate(Points, DegMax, Continuity, Tolerance, LengthWeight, CurvatureWeight, TorsionWeight)
 				</UserDocu>
 			</Documentation>
 		</Methode>
