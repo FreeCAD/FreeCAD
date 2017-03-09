@@ -425,6 +425,9 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     _pActiveDoc->signalRedo.connect(boost::bind(&App::Application::slotRedoDocument, this, _1));
     _pActiveDoc->signalRecomputedObject.connect(boost::bind(&App::Application::slotRecomputedObject, this, _1));
     _pActiveDoc->signalRecomputed.connect(boost::bind(&App::Application::slotRecomputed, this, _1));
+    _pActiveDoc->signalOpenTransaction.connect(boost::bind(&App::Application::slotOpenTransaction, this, _1, _2));
+    _pActiveDoc->signalCommitTransaction.connect(boost::bind(&App::Application::slotCommitTransaction, this, _1));
+    _pActiveDoc->signalAbortTransaction.connect(boost::bind(&App::Application::slotAbortTransaction, this, _1));
 
     // make sure that the active document is set in case no GUI is up
     {
@@ -1016,6 +1019,21 @@ void Application::slotRecomputedObject(const DocumentObject& obj)
 void Application::slotRecomputed(const Document& doc)
 {
     this->signalRecomputed(doc);
+}
+
+void Application::slotOpenTransaction(const Document& d, string s)
+{
+    this->signalOpenTransaction(d, s);
+}
+
+void Application::slotCommitTransaction(const Document& d)
+{
+    this->signalCommitTransaction(d);
+}
+
+void Application::slotAbortTransaction(const Document& d)
+{
+    this->signalAbortTransaction(d);
 }
 
 //**************************************************************************
