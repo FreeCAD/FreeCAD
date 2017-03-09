@@ -518,6 +518,23 @@ protected:
     const Constraints* _ConstStruct;
 };
 
+
+/** Precision properties
+ * This property fulfills the need of a floating value with many decimal points,
+ * e.g. for holding values like Precision::Confusion(). The value has a default
+ * constraint for non-negative, but can be overidden
+ */
+class AppExport PropertyPrecision: public PropertyFloatConstraint
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyPrecision(void);
+    virtual ~PropertyPrecision();
+    virtual const char* getEditorName(void) const
+    { return "Gui::PropertyEditor::PropertyPrecisionItem"; }
+};
+
+
 class AppExport PropertyFloatList: public PropertyLists
 {
     TYPESYSTEM_HEADER();
