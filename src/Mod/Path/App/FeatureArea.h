@@ -66,9 +66,9 @@ public:
     }
 
 private:
-    bool myBuild;
     Area myArea;
     std::vector<TopoDS_Shape> myShapes;
+    bool myInited;
 };
 
 typedef App::FeaturePythonT<FeatureArea> FeatureAreaPython;

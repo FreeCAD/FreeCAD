@@ -120,18 +120,19 @@
 
 #define AREA_PARAMS_SECTION_EXTRA \
     ((enum,mode,SectionMode,2,"Section offset coordinate mode.\n"\
-        "'Absolute' means the absolute Z height to start section.\n"\
-        "'BoundBox' means relative Z height to the bounding box of all the children shape. Only\n"\
-        "positive value is allowed, which specifies the offset below the top Z of the bounding box.\n"\
-        "Note that OCC has trouble getting the minimumi bounding box of some solids, particularly\n"\
-        "those with non-planar surface.\n"\
-        "'Workplane' means relative to workplane.",\
+        "'Absolute' means the absolute Z height (given in SectionOffset) to start slicing.\n"\
+        "'BoundBox' means relative Z height to the bounding box of all the children shape.\n"\
+        "'Workplane' means relative to workplane, minus SectionOffset.\n"\
+        "Note that OCC has trouble getting the minimum bounding box of some solids, particularly\n"\
+        "those with non-planar surface. It is recommended to use Workplane to specifiy the intended\n"\
+        "starting z height.",\
         (Absolute)(BoundBox)(Workplane)))
 
 /** Section parameters */
 #define AREA_PARAMS_SECTION \
     ((long,count,SectionCount,0,"Number of sections to generate. -1 means full sections."))\
-    ((double,stepdown,Stepdown,1.0,"Step down distance for each section"))\
+    ((double,stepdown,Stepdown,1.0,"Step down distance for each section.\n"\
+                "Positive value means going from top down, and negative the other way round"))\
     ((double,offset,SectionOffset,0.0,"Offset for the first section"))\
     AREA_PARAMS_SECTION_EXTRA
 

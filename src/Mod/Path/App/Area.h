@@ -303,10 +303,21 @@ public:
      */
     TopoDS_Shape makePocket(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_POCKET));
 
-
+    /** Make a pocket of the combined shape
+     *
+     * \arg \c heights: optional customized heights of each section. The
+     * meaning of each height depends on section mode. If none is given,
+     * the section heights is determined by the section settings in this
+     * Area object (configured through setParams()).
+     * \arg \c plane: the section plane if the section mode is
+     * SectionModeWorkplane, otherwise ignored
+     *
+     * See #AREA_PARAMS_EXTRA for description of the arguments. Currently, there
+     * is only one argument, namely \c mode for section mode.
+     */
     std::vector<std::shared_ptr<Area> > makeSections(
             PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_SECTION_EXTRA),
-            const std::vector<double> &_heights = std::vector<double>(),
+            const std::vector<double> &heights = std::vector<double>(),
             const TopoDS_Shape &plane = TopoDS_Shape());
 
     /** Config this Area object */
