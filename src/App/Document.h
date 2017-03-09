@@ -148,6 +148,12 @@ public:
                         const std::map<std::string, std::string>&)> signalImportViewObjects;
     boost::signal<void (const App::Document&)> signalRecomputed;
     boost::signal<void (const App::DocumentObject&)> signalRecomputedObject;
+    //signal a new opened transaction
+    boost::signal<void (const App::Document&, std::string)> signalOpenTransaction;
+    // signal a commited transaction
+    boost::signal<void (const App::Document&)> signalCommitTransaction;
+    // signal an aborted transaction
+    boost::signal<void (const App::Document&)> signalAbortTransaction;
     //@}
 
     /** @name File handling of the document */

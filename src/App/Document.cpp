@@ -961,6 +961,8 @@ void Document::openTransaction(const char* name)
             d->activeUndoTransaction->Name = name;
         else
             d->activeUndoTransaction->Name = "<empty>";
+        
+        signalOpenTransaction(*this, name);
     }
 }
 
@@ -1000,6 +1002,7 @@ void Document::commitTransaction()
             delete mUndoTransactions.front();
             mUndoTransactions.pop_front();
         }
+        signalCommitTransaction(*this);
     }
 }
 
@@ -1014,6 +1017,7 @@ void Document::abortTransaction()
         // destroy the undo
         delete d->activeUndoTransaction;
         d->activeUndoTransaction = 0;
+        signalAbortTransaction(*this);
     }
 }
 

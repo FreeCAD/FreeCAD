@@ -73,6 +73,12 @@ private:
     void slotRecomputedObject(const App::DocumentObject& Obj);
     /** Called when a observed document is recomputed */
     void slotRecomputedDocument(const App::Document& Doc);
+    /** Called when a observed document opens a transaction */
+    void slotOpenTransaction(const App::Document& Doc, std::string str);
+    /** Called when a observed document commits a transaction */
+    void slotCommitTransaction(const App::Document& Doc);
+    /** Called when a observed document aborts a transaction */
+    void slotAbortTransaction(const App::Document& Doc);
 
 private:
     Py::Object inst;
@@ -90,6 +96,9 @@ private:
     Connection connectDocumentChangedObject;
     Connection connectDocumentObjectRecomputed;
     Connection connectDocumentRecomputed;
+    Connection connectDocumentOpenTransaction;
+    Connection connectDocumentCommitTransaction;
+    Connection connectDocumentAbortTransaction;
 };
 
 } //namespace App
