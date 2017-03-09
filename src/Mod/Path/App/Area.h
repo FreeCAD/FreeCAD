@@ -34,8 +34,13 @@
 #include <gp_GTrsf.hxx>
 
 #include <Base/Console.h>
+#include <Mod/Part/App/TopoShape.h>
 #include "Path.h"
 #include "AreaParams.h"
+
+namespace Part {
+extern PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
+}
 
 #define _AREA_LOG(_l,_msg) do {\
     if(Area::_l##Enabled()){\
@@ -53,12 +58,14 @@
 #define AREA_LOG(_msg) _AREA_LOG(Log,_msg)
 #define AREA_WARN(_msg) _AREA_LOG(Warning,_msg)
 #define AREA_ERR(_msg) _AREA_LOG(Error,_msg)
-#define AREA_PT(_pt) '('<<(_pt).X()<<", " << (_pt).Y()<<", " << (_pt).Z()<<')'
-#define AREA_PT2(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
+#define AREA_XYZ(_pt) '('<<(_pt).X()<<", " << (_pt).Y()<<", " << (_pt).Z()<<')'
+#define AREA_XY(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
 
 #define AREA_TRACE(_msg) do{\
     if(Area::TraceEnabled()) AREA_LOG('('<<__LINE__<<"): " <<_msg);\
 }while(0)
+
+#define AREA_DBG AREA_WARN
 
 #define AREA_TIME_ENABLE
 
@@ -346,7 +353,7 @@ public:
      * \arg \c to_edges: if true, discretize all curves, and insert as open
      * line segments
      * */
-    static void add(CArea &area, const TopoDS_Wire &wire, const gp_Trsf *trsf=NULL, 
+    static void addWire(CArea &area, const TopoDS_Wire &wire, const gp_Trsf *trsf=NULL, 
             double deflection=0.01, bool to_edges=false); 
 
     /** Output a list or sorted wire with minimize traval distance
@@ -385,7 +392,7 @@ public:
      * \return Returns the number of non coplaner. Planar testing only happens
      * if \c plane is supplied
      * */
-    static int add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf=NULL,
+    static int addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf=NULL,
             double deflection=0.01,const TopoDS_Shape *plane = NULL,
             bool force_coplanar=true, CArea *areaOpen=NULL, bool to_edges=false, 
             bool reorient=true);
