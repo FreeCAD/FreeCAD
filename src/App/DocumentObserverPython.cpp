@@ -83,6 +83,13 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
         (&DocumentObserverPython::slotRecomputedObject, this, _1));
     this->connectDocumentRecomputed = App::GetApplication().signalRecomputed.connect(boost::bind
         (&DocumentObserverPython::slotRecomputedDocument, this, _1));
+    
+    this->connectDocumentOpenTransaction = App::GetApplication().signalOpenTransaction.connect(boost::bind
+        (&DocumentObserverPython::slotOpenTransaction, this, _1, _2));
+    this->connectDocumentCommitTransaction = App::GetApplication().signalCommitTransaction.connect(boost::bind
+        (&DocumentObserverPython::slotCommitTransaction, this, _1));
+    this->connectDocumentAbortTransaction = App::GetApplication().signalAbortTransaction.connect(boost::bind
+        (&DocumentObserverPython::slotAbortTransaction, this, _1));
 }
 
 DocumentObserverPython::~DocumentObserverPython()
@@ -99,6 +106,9 @@ DocumentObserverPython::~DocumentObserverPython()
     this->connectDocumentChangedObject.disconnect();
     this->connectDocumentObjectRecomputed.disconnect();
     this->connectDocumentRecomputed.disconnect();
+    this->connectDocumentOpenTransaction.disconnect();
+    this->connectDocumentCommitTransaction.disconnect();
+    this->connectDocumentAbortTransaction.disconnect();
 }
 
 void DocumentObserverPython::slotCreatedDocument(const App::Document& Doc)
@@ -284,6 +294,58 @@ void DocumentObserverPython::slotRecomputedDocument(const App::Document& doc)
     try {
         if (this->inst.hasAttr(std::string("slotRecomputedDocument"))) {
             Py::Callable method(this->inst.getAttr(std::string("slotRecomputedDocument")));
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(const_cast<App::Document&>(doc).getPyObject(), true));
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotOpenTransaction(const App::Document& doc, std::string str)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotOpenTransaction"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotOpenTransaction")));
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(const_cast<App::Document&>(doc).getPyObject(), true));
+            args.setItem(1, Py::String(str));
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotCommitTransaction(const App::Document& doc)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotCommitTransaction"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotCommitTransaction")));
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(const_cast<App::Document&>(doc).getPyObject(), true));
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotAbortTransaction(const App::Document& doc)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotAbortTransaction"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotAbortTransaction")));
             Py::Tuple args(1);
             args.setItem(0, Py::Object(const_cast<App::Document&>(doc).getPyObject(), true));
             method.apply(args);

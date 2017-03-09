@@ -143,6 +143,12 @@ public:
     boost::signal<void (const App::Document&)> signalRecomputed;
     /// signal on recomputed document object
     boost::signal<void (const App::DocumentObject&)> signalObjectRecomputed;
+    // signal on opened transaction
+    boost::signal<void (const App::Document&, std::string)> signalOpenTransaction;
+    // signal a commited transaction
+    boost::signal<void (const App::Document&)> signalCommitTransaction;
+    // signal an aborted transaction
+    boost::signal<void (const App::Document&)> signalAbortTransaction;
     //@}
 
     /** @name Signals of property changes
@@ -277,6 +283,9 @@ protected:
     void slotRedoDocument(const App::Document&);
     void slotRecomputedObject(const App::DocumentObject&);
     void slotRecomputed(const App::Document&);
+    void slotOpenTransaction(const App::Document&, std::string);
+    void slotCommitTransaction(const App::Document&);
+    void slotAbortTransaction(const App::Document&);
     //@}
 
 private:
