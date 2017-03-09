@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include <CXX/Objects.hxx>
+#include <Mod/Part/App/TopoShapePy.h>
 #include "FeatureArea.h"
 
 // inclusion of the generated files (generated out of FeatureAreaPy.xml)
@@ -78,6 +79,21 @@ PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
     PARAM_FOREACH(AREA_GET,AREA_PARAMS_CONF)
 
     return Py_None;
+}
+
+Py::Object FeatureAreaPy::getWorkPlane(void) const {
+    return Part::shape2pyshape(getFeatureAreaPtr()->getArea().getPlane());
+}
+
+void FeatureAreaPy::setWorkPlane(Py::Object obj) {
+    PyObject* p = obj.ptr();
+    if (!PyObject_TypeCheck(p, &(Part::TopoShapePy::Type))) {
+        std::string error = std::string("type must be 'TopoShape', not ");
+        error += p->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+    getFeatureAreaPtr()->setWorkPlane(
+            static_cast<Part::TopoShapePy*>(p)->getTopoShapePtr()->getShape());
 }
 
 PyObject *FeatureAreaPy::getCustomAttributes(const char* /*attr*/) const

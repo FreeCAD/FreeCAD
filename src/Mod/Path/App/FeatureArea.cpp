@@ -136,14 +136,7 @@ const std::vector<TopoDS_Shape> &FeatureArea::getShapes() {
 
 short FeatureArea::mustExecute(void) const
 {
-    if (Sources.isTouched())
-        return 1;
-    if (WorkPlane.isTouched())
-        return 1;
-
-    PARAM_PROP_TOUCHED(AREA_PARAMS_ALL)
-
-    return Part::Feature::mustExecute();
+    return !myArea.isBuilt() || Part::Feature::mustExecute();
 }
 
 PyObject *FeatureArea::getPyObject()
