@@ -19,11 +19,11 @@
   <property name="windowTitle">
    <string>Drilling</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="Geometry">
       <property name="enabled">
@@ -244,7 +244,7 @@
       <attribute name="label">
        <string>Operation</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QFrame" name="frame">
          <property name="sizePolicy">
@@ -269,6 +269,71 @@
           </item>
           <item>
            <widget class="QComboBox" name="uiToolController"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="drillWidget" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <property name="margin">
+           <number>0</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QCheckBox" name="checkBox">
+              <property name="text">
+               <string>Peck (using step depth value)</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>Retract Height</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="Gui::InputField" name="retractHeight_2">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QCheckBox" name="checkBox_2">
+              <property name="text">
+               <string>Dwell</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="Gui::InputField" name="retractHeight_3">
+              <property name="text">
+               <string>0 sec</string>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">sec</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
