@@ -1177,6 +1177,7 @@ void Application::initTypes(void)
     App ::PropertyFloat             ::init();
     App ::PropertyFloatList         ::init();
     App ::PropertyFloatConstraint   ::init();
+    App ::PropertyPrecision         ::init();
     App ::PropertyQuantity          ::init();
     App ::PropertyQuantityConstraint::init();
     App ::PropertyAngle             ::init();

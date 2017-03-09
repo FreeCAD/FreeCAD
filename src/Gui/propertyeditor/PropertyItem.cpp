@@ -1019,6 +1019,15 @@ QVariant PropertyFloatConstraintItem::editorData(QWidget *editor) const
 
 // --------------------------------------------------------------------
 
+PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyPrecisionItem)
+
+PropertyPrecisionItem::PropertyPrecisionItem()
+{
+    setDecimals(16);
+}
+
+// --------------------------------------------------------------------
+
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyAngleItem)
 
 PropertyAngleItem::PropertyAngleItem()
