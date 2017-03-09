@@ -60,6 +60,11 @@ public:
 
     PARAM_PROP_DECLARE(AREA_PARAMS_ALL)
 
+    void setWorkPlane(const TopoDS_Shape &shape) {
+        WorkPlane.setValue(shape);
+        myArea.setPlane(shape);
+    }
+
 private:
     bool myBuild;
     Area myArea;

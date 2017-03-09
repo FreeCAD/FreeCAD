@@ -146,6 +146,7 @@ Area::~Area() {
 }
 
 void Area::setPlane(const TopoDS_Shape &shape) {
+    clean();
     if(shape.IsNull()) {
         myWorkPlane.Nullify();
         return;
@@ -156,7 +157,6 @@ void Area::setPlane(const TopoDS_Shape &shape) {
         throw Base::ValueError("shape is not planar");
     myWorkPlane = plane;
     myTrsf = trsf;
-    clean();
 }
 
 bool Area::isCoplanar(const TopoDS_Shape &s1, const TopoDS_Shape &s2) {

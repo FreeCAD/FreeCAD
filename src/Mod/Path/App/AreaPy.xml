@@ -98,7 +98,7 @@ same algorithm</UserDocu>
         </Documentation>
         <Parameter Name="Sections" Type="List"/>
     </Attribute>
-    <Attribute Name="Workplane" ReadOnly="true">
+    <Attribute Name="Workplane" ReadOnly="false">
         <Documentation>
             <UserDocu>The current workplane. If no plane is set, it is derived from the added shapes.</UserDocu>
         </Documentation>
