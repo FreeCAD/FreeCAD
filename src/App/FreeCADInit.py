@@ -36,7 +36,7 @@ import FreeCAD
 
 def InitApplications():
 	try:
-		import sys,os,traceback,io
+		import sys,os,traceback
 	except ImportError:
 		FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
 		raise
@@ -96,7 +96,7 @@ def InitApplications():
 
 	# this allows importing with:
 	# from FreeCAD.Module import package
-	FreeCAD.__path__ = [ModDir, Lib64Dir, LibDir]
+	FreeCAD.__path__ = [ModDir, Lib64Dir, LibDir, HomeMod]
 
 	# also add these directories to the sys.path to 
 	# not change the old behaviour. once we have moved to 
@@ -112,6 +112,7 @@ def InitApplications():
 			if (os.path.exists(InstallFile)):
 				try:
 					# XXX: This looks scary securitywise...
+
 					with open(InstallFile) as f:
 						exec(f.read())
 				except Exception as inst:
