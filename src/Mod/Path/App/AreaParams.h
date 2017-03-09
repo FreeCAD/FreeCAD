@@ -48,7 +48,8 @@
 #define AREA_PARAMS_DEFLECTION \
     ((double,deflection,Deflection,0.01,\
         "Deflection for non circular curve discretization. It also also used for\n"\
-        "discretizing circular wires when you 'Explode' the shape for wire operations"))
+        "discretizing circular wires when you 'Explode' the shape for wire operations",\
+        App::PropertyPrecision))
 
 /** Base parameters */
 #define AREA_PARAMS_BASE \
@@ -76,31 +77,34 @@
 
 /** libarea algorithm option parameters */
 #define AREA_PARAMS_CAREA \
-    ((double,tolerance,Tolerance,Precision::Confusion(),"Point coincidence tolerance"))\
+    ((double,tolerance,Tolerance,Precision::Confusion(),\
+        "Point coincidence tolerance",App::PropertyPrecision))\
     AREA_PARAMS_FIT_ARCS \
     ((bool,clipper_simple,Simplify,false,\
         "Simplify polygons after operation. See https://goo.gl/Mh9XK1"))\
     ((double,clipper_clean_distance,CleanDistance,0.0,\
-        "Clean polygon smaller than this distance. See https://goo.gl/jox3JY"))\
-    ((double,accuracy,Accuracy,0.01,"Arc fitting accuracy"))\
-    ((double,units,Unit,1.0,"Scaling factor for conversion to inch"))\
+        "Clean polygon smaller than this distance. See https://goo.gl/jox3JY",App::PropertyLength))\
+    ((double,accuracy,Accuracy,0.01,"Arc fitting accuracy",App::PropertyPrecision))\
+    ((double,units,Unit,1.0,"Scaling factor for conversion to inch",App::PropertyFloat))\
     ((short,min_arc_points,MinArcPoints,4,"Minimum segments for arc discretization"))\
     ((short,max_arc_points,MaxArcPoints,100,"Maximum segments for arc discretization"))\
     ((double,clipper_scale,ClipperScale,10000.0,\
         "ClipperLib operate on intergers. This is the scale factor to convert\n"\
-        "floating points."))
+        "floating points.",App::PropertyFloat))
 
 /** Pocket parameters 
  *
  * These parameters cooresponds to CAreaPocketParams in libarea
  * */
 #define AREA_PARAMS_POCKET \
-    ((enum,mode,PocketMode,0,"Selects the pocket toolpath pattern",(None)(ZigZag)(Offset)(Spiral)(ZigZagOffset)))\
-	((double,tool_radius,ToolRadius,1.0,"Tool radius for pocketing"))\
-	((double,extra_offset,PocketExtraOffset,0.0,"Extra offset for pocketing"))\
-	((double,stepover,PocketStepover,0.0,"Cutter diameter to step over on each pass. If =0, use ToolRadius."))\
+    ((enum,mode,PocketMode,0,"Selects the pocket toolpath pattern",\
+        (None)(ZigZag)(Offset)(Spiral)(ZigZagOffset)))\
+	((double,tool_radius,ToolRadius,1.0,"Tool radius for pocketing",App::PropertyLength))\
+	((double,extra_offset,PocketExtraOffset,0.0,"Extra offset for pocketing",App::PropertyDistance))\
+	((double,stepover,PocketStepover,0.0,\
+        "Cutter diameter to step over on each pass. If =0, use ToolRadius.",App::PropertyLength))\
 	((bool,from_center,FromCenter,true,"Start pocketing from center"))\
-	((double,zig_angle,ZigAngle,45,"Zig angle in degree"))
+	((double,zig_angle,ZigAngle,45,"Zig angle in degree",App::PropertyAngle))
 
 #define AREA_PARAMS_POCKET_CONF \
     ((bool,thicken,Thicken,false,"Thicken the resulting wires with ToolRadius"))
@@ -114,9 +118,11 @@
 
 /** Offset parameters */
 #define AREA_PARAMS_OFFSET \
-    ((double,offset,Offset,0.0,"Offset value, positive for expansion, negative for shrinking"))\
+    ((double,offset,Offset,0.0,\
+        "Offset value, positive for expansion, negative for shrinking",App::PropertyDistance))\
     ((long,extra_pass,ExtraPass,0,"Number of extra offset pass to generate."))\
-    ((double,stepover,Stepover,0.0,"Cutter diameter to step over on each pass. If =0, use Offset"))
+    ((double,stepover,Stepover,0.0,\
+        "Cutter diameter to step over on each pass. If =0, use Offset",App::PropertyLength))
 
 #define AREA_PARAMS_SECTION_EXTRA \
     ((enum,mode,SectionMode,2,"Section offset coordinate mode.\n"\
@@ -132,9 +138,15 @@
 #define AREA_PARAMS_SECTION \
     ((long,count,SectionCount,0,"Number of sections to generate. -1 means full sections."))\
     ((double,stepdown,Stepdown,1.0,"Step down distance for each section.\n"\
-                "Positive value means going from top down, and negative the other way round"))\
-    ((double,offset,SectionOffset,0.0,"Offset for the first section"))\
-    AREA_PARAMS_SECTION_EXTRA
+        "Positive value means going from top down, and negative the other way round",App::PropertyLength))\
+    ((double,offset,SectionOffset,0.0,"Offset for the first section. The direction of the offset is\n"\
+        "determined by the section direction (i.e. the signess of Stepdown). If going from top down,\n"\
+        "a positive value means offset downward, and if bottom up, it means upward",App::PropertyLength))\
+    ((double,tolerance,SectionTolerance,1e-5,"Offset value added when hitting the boundary.\n"\
+        "When the section hits or over the shape boundary, a section with the height of that boundary\n"\
+        "will be created. A small offset is usually required to avoid the tagnetial cut.",\
+        App::PropertyPrecision))\
+     AREA_PARAMS_SECTION_EXTRA
 
 #ifdef AREA_OFFSET_ALGO
 #   define AREA_PARAMS_OFFSET_ALGO \
@@ -150,14 +162,16 @@
         (Round)(Square)(Miter),(ClipperLib::JoinType,ClipperLib::jt)))\
     ((enum2,end_type,EndType,0,"\nClipperOffset end type. See https://goo.gl/tj7gkX",\
         (OpenRound)(ClosedPolygon)(ClosedLine)(OpenSquare)(OpenButt),(ClipperLib::EndType,ClipperLib::et)))\
-    ((double,miter_limit,MiterLimit,2.0,"Miter limit for joint type Miter. See https://goo.gl/K8xX9h"))\
+    ((double,miter_limit,MiterLimit,2.0,\
+        "Miter limit for joint type Miter. See https://goo.gl/K8xX9h",App::PropertyFloat))\
     ((double,round_precision,RoundPreceision,0.0,\
-        "Round joint precision. If =0, it defaults to Accuracy. \nSee https://goo.gl/4odfQh"))
+        "Round joint precision. If =0, it defaults to Accuracy. \n"\
+        "See https://goo.gl/4odfQh",App::PropertyPrecision))
 
 #define AREA_PARAMS_MIN_DIST \
     ((double, min_dist, MinDistance, 0.0, \
         "minimum distance for the generated new wires. Wires maybe broken if the\n"\
-        "algorithm see fits. Set to zero to disable wire breaking."))
+        "algorithm see fits. Set to zero to disable wire breaking.",App::PropertyLength))
 
 /** Area wire sorting parameters */
 #define AREA_PARAMS_SORT \
@@ -174,14 +188,15 @@
     AREA_PARAMS_SORT \
     ((double, threshold, RetractThreshold, 0.0,\
         "If two wire's end points are separated within this threshold, they are consider\n"\
-        "as connected. You may want to set this to the tool diameter to keep the tool down."))\
-    ((double, height, RetractHeight, 0.0,"Tool retraction absolute height"))\
+        "as connected. You may want to set this to the tool diameter to keep the tool down.",\
+        App::PropertyLength))\
+    ((double, height, RetractHeight, 0.0,"Tool retraction absolute height",App::PropertyLength))\
     ((double, clearance, Clearance, 0.0,\
         "When return from last retraction, this gives the pause height relative to the Z\n"\
-        "value of the next move"))\
+        "value of the next move",App::PropertyLength))\
     ((double,segmentation,Segmentation,0.0,\
         "Break long curves into segments of this length. One use case is for PCB autolevel,\n"\
-        "so that more correction points can be inserted"))
+        "so that more correction points can be inserted",App::PropertyLength))
 
 #define AREA_PARAMS_PATH_EXTRA \
     AREA_PARAMS_DEFLECTION \

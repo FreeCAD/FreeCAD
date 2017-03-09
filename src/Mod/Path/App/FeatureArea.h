@@ -25,8 +25,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyGeo.h>
+#include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
 #include "Mod/Part/App/PartFeature.h"
 

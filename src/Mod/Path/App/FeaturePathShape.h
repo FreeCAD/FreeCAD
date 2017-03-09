@@ -35,6 +35,7 @@
 
 #include "PropertyPath.h"
 #include "FeaturePath.h"
+#include "FeatureArea.h"
 #include "Area.h"
 
 namespace Path
