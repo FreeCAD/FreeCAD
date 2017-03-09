@@ -1692,9 +1692,10 @@ static void addCommand(Toolpath &path, const gp_Pnt &p,
             path.addCommand(cmd);
             cmd.Name = "G1";
         }
-    }else
+    }else{
         cmd.Parameters["X"] = p.X();
         cmd.Parameters["Y"] = p.Y();
+    }
     cmd.Parameters["Z"] = p.Z();
     path.addCommand(cmd);
 }
