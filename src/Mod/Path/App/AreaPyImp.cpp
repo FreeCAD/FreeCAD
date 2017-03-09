@@ -178,10 +178,6 @@ struct AreaPyModifier {
 
 static AreaPyModifier mod;
 
-namespace Part {
-extern PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
-}
-
 using namespace Path;
 
 // returns a string which represents the object e.g. when printed in python
@@ -481,6 +477,15 @@ Py::Object AreaPy::getWorkplane(void) const {
     return Part::shape2pyshape(getAreaPtr()->getPlane());
 }
 
+void AreaPy::setWorkplane(Py::Object obj) {
+    PyObject* p = obj.ptr();
+    if (!PyObject_TypeCheck(p, &(Part::TopoShapePy::Type))) {
+        std::string error = std::string("type must be 'TopoShape', not ");
+        error += p->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+    getAreaPtr()->setPlane(GET_TOPOSHAPE(p));
+}
 
 // custom attributes get/set
 

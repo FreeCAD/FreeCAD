@@ -242,8 +242,6 @@ protected:
 
     void explode(const TopoDS_Shape &shape);
 
-    bool isBuilt() const;
-
     TopoDS_Shape findPlane(const TopoDS_Shape &shape, gp_Trsf &trsf);
 
 public:
@@ -253,6 +251,8 @@ public:
     Area(const AreaParams *params = NULL);
     Area(const Area &other, bool deep_copy=true);
     virtual ~Area();
+
+    bool isBuilt() const;
 
     /** Set a working plane 
      *
