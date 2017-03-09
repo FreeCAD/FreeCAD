@@ -13,3 +13,11 @@ INSTALL(
     DESTINATION
         Mod/Web
 )
+
+INSTALL(
+    FILES
+        Webscripts/__init__.py
+        Webscripts/Sketchfab.py
+    DESTINATION
+        Mod/Web/Webscripts
+       )
