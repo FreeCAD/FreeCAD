@@ -65,7 +65,6 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/FaceMakerBullseye.h>
 #include <Mod/Part/App/CrossSection.h>
@@ -172,7 +171,7 @@ bool Area::isCoplanar(const TopoDS_Shape &s1, const TopoDS_Shape &s2) {
     return planeFinder.Found();
 }
 
-int Area::add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf, 
+int Area::addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf, 
                 double deflection, const TopoDS_Shape *plane, bool force_coplanar,
                 CArea *areaOpen, bool to_edges, bool reorient) 
 {
@@ -186,7 +185,7 @@ int Area::add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
             if(force_coplanar) continue;
         }
         for (TopExp_Explorer it(face, TopAbs_WIRE); it.More(); it.Next())
-            add(area,TopoDS::Wire(it.Current()),trsf,deflection);
+            addWire(area,TopoDS::Wire(it.Current()),trsf,deflection);
     }
 
     if(haveShape) return skipped;
@@ -202,13 +201,13 @@ int Area::add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
             if(force_coplanar) continue;
         }
         if(BRep_Tool::IsClosed(wire))
-            add(_area,wire,trsf,deflection);
+            addWire(_area,wire,trsf,deflection);
         else if(to_edges) {
             for (TopExp_Explorer it(wire, TopAbs_EDGE); it.More(); it.Next())
-                add(_areaOpen,BRepBuilderAPI_MakeWire(
+                addWire(_areaOpen,BRepBuilderAPI_MakeWire(
                     TopoDS::Edge(it.Current())).Wire(),trsf,deflection,true);
         }else
-            add(_areaOpen,wire,trsf,deflection);
+            addWire(_areaOpen,wire,trsf,deflection);
     }
 
     if(!haveShape) {
@@ -219,7 +218,7 @@ int Area::add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
             }
             TopoDS_Wire wire = BRepBuilderAPI_MakeWire(
                                     TopoDS::Edge(it.Current())).Wire();
-            add(BRep_Tool::IsClosed(wire)?_area:_areaOpen,wire,trsf,deflection);
+            addWire(BRep_Tool::IsClosed(wire)?_area:_areaOpen,wire,trsf,deflection);
         }
     }
 
@@ -233,7 +232,7 @@ int Area::add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
     return skipped;
 }
 
-void Area::add(CArea &area, const TopoDS_Wire& wire,
+void Area::addWire(CArea &area, const TopoDS_Wire& wire,
         const gp_Trsf *trsf, double deflection, bool to_edges) 
 {
     CCurve ccurve;
@@ -334,33 +333,33 @@ void Area::clean(bool deleteShapes) {
     }
 }
 
-void Area::add(const TopoDS_Shape &shape,short op) {
-#define AREA_CONVERT_OP \
-    ClipperLib::ClipType Operation;\
-    switch(op){\
-    case OperationUnion:\
-        Operation = ClipperLib::ctUnion;\
-        break;\
-    case OperationDifference:\
-        Operation = ClipperLib::ctDifference;\
-        break;\
-    case OperationIntersection:\
-        Operation = ClipperLib::ctIntersection;\
-        break;\
-    case OperationXor:\
-        Operation = ClipperLib::ctXor;\
-        break;\
-    default:\
-        throw Base::ValueError("invalid Operation");\
+static inline ClipperLib::ClipType toClipperOp(short op) {
+    switch(op){
+    case Area::OperationUnion:
+        return ClipperLib::ctUnion;
+        break;
+    case Area::OperationDifference:
+        return ClipperLib::ctDifference;
+        break;
+    case Area::OperationIntersection:
+        return ClipperLib::ctIntersection;
+        break;
+    case Area::OperationXor:
+        return ClipperLib::ctXor;
+        break;
+    default:
+        throw Base::ValueError("invalid Operation");
     }
+}
+
+void Area::add(const TopoDS_Shape &shape,short op) {
 
     if(shape.IsNull())
         throw Base::ValueError("null shape");
 
-    if(op!=OperationCompound) {
-        AREA_CONVERT_OP;
-        Q_UNUSED(Operation);
-    }
+    if(op!=OperationCompound) 
+        toClipperOp(op);
+
     bool haveSolid = false;
     for(TopExp_Explorer it(shape, TopAbs_SOLID);it.More();) {
         haveSolid = true;
@@ -397,7 +396,7 @@ void Area::addToBuild(CArea &area, const TopoDS_Shape &shape) {
     }
     TopoDS_Shape plane = getPlane();
     CArea areaOpen;
-    mySkippedShapes += add(area,shape,&myTrsf,myParams.Deflection,
+    mySkippedShapes += addShape(area,shape,&myTrsf,myParams.Deflection,
             myParams.Coplanar==CoplanarNone?NULL:&plane,
             myHaveSolid||myParams.Coplanar==CoplanarForce,&areaOpen,
             myParams.OpenMode==OpenModeEdges,myParams.Reorient);
@@ -425,7 +424,7 @@ void Area::explode(const TopoDS_Shape &shape) {
         }
         for(TopExp_Explorer itw(it.Current(), TopAbs_WIRE); itw.More(); itw.Next()) {
             for(BRepTools_WireExplorer xp(TopoDS::Wire(itw.Current()));xp.More();xp.Next())
-                add(*myArea,BRepBuilderAPI_MakeWire(
+                addWire(*myArea,BRepBuilderAPI_MakeWire(
                             TopoDS::Edge(xp.Current())).Wire(),&myTrsf,myParams.Deflection,true);
         }
     }
@@ -436,7 +435,7 @@ void Area::explode(const TopoDS_Shape &shape) {
             if(myParams.Coplanar == CoplanarForce)
                 continue;
         }
-        add(*myArea,BRepBuilderAPI_MakeWire(
+        addWire(*myArea,BRepBuilderAPI_MakeWire(
                     TopoDS::Edge(it.Current())).Wire(),&myTrsf,myParams.Deflection,true);
     }
 }
@@ -759,8 +758,7 @@ void Area::build() {
                     if(op == OperationCompound)
                         myArea->m_curves.splice(myArea->m_curves.end(),areaClip.m_curves);
                     else{
-                        AREA_CONVERT_OP;
-                        myArea->Clip(Operation,&areaClip,SubjectFill,ClipFill);
+                        myArea->Clip(toClipperOp(op),&areaClip,SubjectFill,ClipFill);
                         areaClip.m_curves.clear();
                     }
                 }
@@ -779,8 +777,7 @@ void Area::build() {
             if(op == OperationCompound)
                 myArea->m_curves.splice(myArea->m_curves.end(),areaClip.m_curves);
             else{
-                AREA_CONVERT_OP;
-                myArea->Clip(Operation,&areaClip,SubjectFill,ClipFill);
+                myArea->Clip(toClipperOp(op),&areaClip,SubjectFill,ClipFill);
             }
         }
         myArea->m_curves.splice(myArea->m_curves.end(),myAreaOpen->m_curves);
@@ -1223,7 +1220,7 @@ TopoDS_Wire Area::toShape(const CCurve &c, const gp_Trsf *trsf) {
                     newCenter.SetY(y - dy);
                 }
                 AREA_WARN("Arc correction: "<<r<<", "<<r2<<", center"<<
-                        AREA_PT(center)<<"->"<<AREA_PT(newCenter));
+                        AREA_XYZ(center)<<"->"<<AREA_XYZ(newCenter));
                 center = newCenter;
             }
             gp_Ax2 axis(center, gp_Dir(0,0,v.m_type));
@@ -1242,8 +1239,8 @@ TopoDS_Wire Area::toShape(const CCurve &c, const gp_Trsf *trsf) {
         gp_Pnt p1(curve.Value(curve.FirstParameter()));
         gp_Pnt p2(curve.Value(curve.LastParameter()));
         AREA_WARN("warning: patch open wire type " << 
-            c.m_vertices.back().m_type<<endl<<AREA_PT(p1)<<endl<<
-            AREA_PT(p2)<<endl<<AREA_PT(pt)<<endl<<AREA_PT(pstart));
+            c.m_vertices.back().m_type<<endl<<AREA_XYZ(p1)<<endl<<
+            AREA_XYZ(p2)<<endl<<AREA_XYZ(pt)<<endl<<AREA_XYZ(pstart));
         mkWire.Add(BRepBuilderAPI_MakeEdge(pt,pstart).Edge());
     }
     if(trsf)
@@ -1450,12 +1447,12 @@ struct ShapeInfo{
                                 }
                                 estart = mySupport;
                                 state = 1;
-                                AREA_TRACE("edge broken "<<AREA_PT(pend)<<", " << AREA_PT(myBestPt)
-                                        << ", " << AREA_PT(pt) << ", " << d1 << ", "  << d2);
+                                AREA_TRACE("edge broken "<<AREA_XYZ(pend)<<", " << AREA_XYZ(myBestPt)
+                                        << ", " << AREA_XYZ(pt) << ", " << d1 << ", "  << d2);
                                 continue;
                             }
-                            AREA_WARN("edge break failed "<<AREA_PT(pend)<<", " << AREA_PT(myBestPt)
-                                    << ", " << AREA_PT(pt) << ", " << d1 << ", " << d2);
+                            AREA_WARN("edge break failed "<<AREA_XYZ(pend)<<", " << AREA_XYZ(myBestPt)
+                                    << ", " << AREA_XYZ(pt) << ", " << d1 << ", " << d2);
                         }
 
                         if(d1<d2) {
@@ -1491,7 +1488,7 @@ struct ShapeInfo{
     std::list<TopoDS_Shape> sortWires3D(gp_Pnt &pend,double min_dist) {
         std::list<TopoDS_Shape> wires;
         while(true) {
-            AREA_TRACE("3D sort pt " << AREA_PT(myBestPt));
+            AREA_TRACE("3D sort pt " << AREA_XYZ(myBestPt));
             if(myRebase) {
                 AREA_TRACE("3D sort rebase");
                 pend = myBestPt;
@@ -1504,7 +1501,7 @@ struct ShapeInfo{
                 wires.push_back(myBestWire->wire);
                 pend = myBestWire->pend;
             }
-            AREA_TRACE("3D sort end " << AREA_PT(pend));
+            AREA_TRACE("3D sort end " << AREA_XYZ(pend));
             myWires.erase(myBestWire);
             if(myWires.empty()) break;
             nearest(pend);
@@ -1628,7 +1625,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     }
     bool has_2d5=false,has_3d=false;
     while(shape_list.size()) {
-        AREA_TRACE("start " << shape_list.size() << ' ' << AREA_PT(pstart));
+        AREA_TRACE("start " << shape_list.size() << ' ' << AREA_XYZ(pstart));
         double best_d;
         auto best_it = shape_list.begin();
         bool first = true;
