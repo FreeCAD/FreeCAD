@@ -558,43 +558,65 @@ std::vector<shared_ptr<Area> > Area::makeSections(
     Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
     bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
 
-    bool hit_bottom = false;
     std::vector<double> heights;
     if(_heights.empty()) {
-        if(mode != SectionModeAbsolute && myParams.SectionOffset<0)
-            throw Base::ValueError("only positive section offset is allowed in non-absolute mode");
-        if(myParams.SectionCount>1 && myParams.Stepdown<Precision::Confusion())
+        double z;
+        double d = fabs(myParams.Stepdown);
+        if(myParams.SectionCount>1 && d<Precision::Confusion())
             throw Base::ValueError("invalid stepdown");
 
-        if(mode == SectionModeBoundBox)
-            zMax -= myParams.SectionOffset;
-        else if(mode == SectionModeWorkplane)
-            zMax = -myParams.SectionOffset;
-        else {
+        if(mode == SectionModeBoundBox) {
+            if(myParams.Stepdown > 0.0)
+                z = zMax-myParams.SectionOffset;
+            else
+                z = zMin+myParams.SectionOffset;
+        }else if(mode == SectionModeWorkplane){
+            // Because we've transformed the shapes using the work plane so
+            // that the work plane is aligned with xy0 plane, the starting Z
+            // value shall be 0 minus the given section offset. Note the
+            // section offset is relative to the starting Z
+            if(myParams.Stepdown > 0.0)
+                z = -myParams.SectionOffset;
+            else
+                z = myParams.SectionOffset;
+        } else {
             gp_Pnt pt(0,0,myParams.SectionOffset);
-            double z = pt.Transformed(loc).Z();
-            if(z < zMax)
-                zMax = z;
+            z = pt.Transformed(loc).Z();
         }
-        if(zMax <= zMin)
-            throw Base::ValueError("section offset too big");
+        if(z > zMax)
+            z = zMax;
+        else if(z < zMin)
+            z = zMin;
+        double dz;
+        if(myParams.Stepdown>0.0)
+            dz = z - zMin;
+        else
+            dz = zMax - z;
 
         int count = myParams.SectionCount;
-        if(count<0 || count*myParams.Stepdown > zMax-zMin) {
-            count = ceil((zMax-zMin)/myParams.Stepdown);
-            if((count-1)*myParams.Stepdown < zMax-zMin)
-                ++count;
-        }
+        if(count<0 || count*d > dz) 
+            count = floor(dz/d)+1;
         heights.reserve(count);
-        for(int i=0;i<count;++i,zMax-=myParams.Stepdown) {
-            if(zMax < zMin) {
-                hit_bottom = true;
+        for(int i=0;i<count;++i,z-=myParams.Stepdown) {
+            if(myParams.Stepdown>0.0) {
+                if(z-zMin<myParams.SectionTolerance){
+                    double zNew = zMin+myParams.SectionTolerance;
+                    AREA_TRACE("hit bottom " <<z<<','<<zMin<<','<<zNew);
+                    heights.push_back(zNew);
+                    break;
+                }
+            }else if(zMax-z<myParams.SectionTolerance) {
+                double zNew = zMax-myParams.SectionTolerance;
+                AREA_TRACE("hit top " <<z<<','<<zMin<<','<<zNew);
+                heights.push_back(zNew);
                 break;
             }
-            heights.push_back(zMax);
+            heights.push_back(z);
         }
     }else{
         heights.reserve(_heights.size());
+
+        bool hitMax = false, hitMin = false;
         for(double z : _heights) {
             switch(mode) {
             case SectionModeAbsolute: {
@@ -610,19 +632,24 @@ std::vector<shared_ptr<Area> > Area::makeSections(
             default: 
                 throw Base::ValueError("invalid section mode");
             }
-            if((zMin-z)>Precision::Confusion()) {
-                hit_bottom = true;
-                continue;
-            }else if ((z-zMax)>Precision::Confusion())
-                continue;
+            if(z-zMin<myParams.SectionTolerance) {
+                if(hitMin) continue;
+                hitMin = true;
+                double zNew = zMin+myParams.SectionTolerance;
+                AREA_TRACE("hit bottom " <<z<<','<<zMin<<','<<zNew);
+                z = zNew;
+            }else if (zMax-z<myParams.SectionTolerance) {
+                if(hitMax) continue;
+                double zNew = zMax-myParams.SectionTolerance;
+                AREA_TRACE("hit top " <<z<<','<<zMin<<','<<zNew);
+                z = zNew;
+            }
             heights.push_back(z);
         }
     }
 
-    if(hit_bottom)
-        heights.push_back(zMin);
-    else if(heights.empty())
-        heights.push_back(zMax);
+    if(heights.empty())
+        throw Base::ValueError("no sections");
 
     std::vector<shared_ptr<Area> > sections;
     sections.reserve(heights.size());
