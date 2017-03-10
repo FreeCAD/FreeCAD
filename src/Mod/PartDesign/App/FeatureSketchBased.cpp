@@ -914,19 +914,26 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
 
     App::DocumentObject* profile = Profile.getValue();
     Part::Part2DObject* sketch;
+    gp_Pln sketchplane;
+    Base::Placement SketchPlm;
+
     if (profile->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         sketch = getVerifiedSketch();
+        SketchPlm = sketch->Placement.getValue();
+        Base::Vector3d SketchPos = SketchPlm.getPosition();
+        Base::Rotation SketchOrientation = SketchPlm.getRotation();
+        Base::Vector3d SketchVector(0, 0, 1);
+        SketchOrientation.multVec(SketchVector, SketchVector);
+        sketchplane = gp_Pln(gp_Pnt(SketchPos.x, SketchPos.y, SketchPos.z), gp_Dir(SketchVector.x, SketchVector.y, SketchVector.z));
     }
     else if (profile->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        sketch = static_cast<Part::Part2DObject*>(getVerifiedObject());
+        Base::Placement SketchPos = getVerifiedObject()->Placement.getValue();
+        Base::Vector3d  SketchVector = getProfileNormal();
+        TopoDS_Shape sketchshape = getVerifiedFace();
+        gp_XYZ facePos = sketchshape.Location().Transformation().TranslationPart();
+        //sketchshape.Location().Transformation().TranslationPart())
+        sketchplane = gp_Pln(gp_Pnt(SketchPos.getPosition().x, SketchPos.getPosition().y, SketchPos.getPosition().z), gp_Dir(SketchVector.x, SketchVector.y, SketchVector.z));
     }
-
-    Base::Placement SketchPlm = sketch->Placement.getValue();
-    Base::Vector3d SketchPos = SketchPlm.getPosition();
-    Base::Rotation SketchOrientation = SketchPlm.getRotation();
-    Base::Vector3d SketchVector(0,0,1);
-    SketchOrientation.multVec(SketchVector,SketchVector);
-    gp_Pln sketchplane(gp_Pnt(SketchPos.x, SketchPos.y, SketchPos.z), gp_Dir(SketchVector.x, SketchVector.y, SketchVector.z));
 
     // get reference axis
     if (pcReferenceAxis->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
