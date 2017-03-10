@@ -138,10 +138,10 @@
 #define AREA_PARAMS_SECTION \
     ((long,count,SectionCount,0,"Number of sections to generate. -1 means full sections."))\
     ((double,stepdown,Stepdown,1.0,"Step down distance for each section.\n"\
-        "Positive value means going from top down, and negative the other way round",App::PropertyLength))\
+        "Positive value means going from top down, and negative the other way round",App::PropertyDistance))\
     ((double,offset,SectionOffset,0.0,"Offset for the first section. The direction of the offset is\n"\
         "determined by the section direction (i.e. the signess of Stepdown). If going from top down,\n"\
-        "a positive value means offset downward, and if bottom up, it means upward",App::PropertyLength))\
+        "a positive value means offset downward, and if bottom up, it means upward",App::PropertyDistance))\
     ((double,tolerance,SectionTolerance,1e-5,"Offset value added when hitting the boundary.\n"\
         "When the section hits or over the shape boundary, a section with the height of that boundary\n"\
         "will be created. A small offset is usually required to avoid the tagnetial cut.",\

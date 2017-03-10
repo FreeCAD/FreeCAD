@@ -557,6 +557,8 @@ std::vector<shared_ptr<Area> > Area::makeSections(
     bounds.SetGap(0.0);
     Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
     bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+    AREA_TRACE("section bounds X("<<xMin<<','<<xMax<<"), Y("<<
+            yMin<<','<<yMax<<"), Z("<<zMin<<','<<zMax<<')');
 
     std::vector<double> heights;
     if(_heights.empty()) {
@@ -587,31 +589,32 @@ std::vector<shared_ptr<Area> > Area::makeSections(
             z = zMax;
         else if(z < zMin)
             z = zMin;
-        double dz;
-        if(myParams.Stepdown>0.0)
+        double dz,tolerance;
+        if(myParams.Stepdown>0.0) {
             dz = z - zMin;
-        else
+            tolerance = myParams.SectionTolerance;
+        }else{
             dz = zMax - z;
-
+            tolerance = -myParams.SectionTolerance;
+        }
         int count = myParams.SectionCount;
         if(count<0 || count*d > dz) 
             count = floor(dz/d)+1;
         heights.reserve(count);
         for(int i=0;i<count;++i,z-=myParams.Stepdown) {
-            if(myParams.Stepdown>0.0) {
-                if(z-zMin<myParams.SectionTolerance){
-                    double zNew = zMin+myParams.SectionTolerance;
-                    AREA_TRACE("hit bottom " <<z<<','<<zMin<<','<<zNew);
-                    heights.push_back(zNew);
-                    break;
-                }
+            double height = z-tolerance;
+            if(z-zMin<myParams.SectionTolerance){
+                height = zMin+myParams.SectionTolerance;
+                AREA_WARN("hit bottom " <<z<<','<<zMin<<','<<height);
+                heights.push_back(height);
+                if(myParams.Stepdown>0.0) break;
             }else if(zMax-z<myParams.SectionTolerance) {
-                double zNew = zMax-myParams.SectionTolerance;
-                AREA_TRACE("hit top " <<z<<','<<zMin<<','<<zNew);
-                heights.push_back(zNew);
-                break;
-            }
-            heights.push_back(z);
+                height = zMax-myParams.SectionTolerance;
+                AREA_WARN("hit top " <<z<<','<<zMax<<','<<height);
+                heights.push_back(height);
+                if(myParams.Stepdown<0.0) break;
+            }else
+                heights.push_back(height);
         }
     }else{
         heights.reserve(_heights.size());
@@ -636,12 +639,12 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                 if(hitMin) continue;
                 hitMin = true;
                 double zNew = zMin+myParams.SectionTolerance;
-                AREA_TRACE("hit bottom " <<z<<','<<zMin<<','<<zNew);
+                AREA_WARN("hit bottom " <<z<<','<<zMin<<','<<zNew);
                 z = zNew;
             }else if (zMax-z<myParams.SectionTolerance) {
                 if(hitMax) continue;
                 double zNew = zMax-myParams.SectionTolerance;
-                AREA_TRACE("hit top " <<z<<','<<zMin<<','<<zNew);
+                AREA_WARN("hit top " <<z<<','<<zMax<<','<<zNew);
                 z = zNew;
             }
             heights.push_back(z);

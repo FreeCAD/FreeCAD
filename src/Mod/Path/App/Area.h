@@ -46,7 +46,8 @@ extern PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
     if(Area::_l##Enabled()){\
         std::stringstream str;\
         str << "Path.Area: " << _msg;\
-        Base::Console()._l("%s\n",str.str().c_str());\
+        const char *_f = strrchr(__FILE__, '/');\
+        Base::Console()._l("%s:(%d) - %s\n",_f?_f+1:__FILE__,__LINE__,str.str().c_str());\
     }\
     QCoreApplication::sendPostedEvents();\
     if(Area::aborting()) {\
@@ -62,7 +63,7 @@ extern PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
 #define AREA_XY(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
 
 #define AREA_TRACE(_msg) do{\
-    if(Area::TraceEnabled()) AREA_LOG('('<<__LINE__<<"): " <<_msg);\
+    if(Area::TraceEnabled()) AREA_LOG(_msg);\
 }while(0)
 
 #define AREA_DBG AREA_WARN
