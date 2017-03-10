@@ -1288,6 +1288,25 @@ void View3DInventorViewer::clearGraphicsItems()
     this->graphicsItems.clear();
 }
 
+int View3DInventorViewer::getNumSamples() const
+{
+    int samples = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View")->GetInt("AntiAliasing");
+
+    switch (samples) {
+    case View3DInventorViewer::MSAA2x:
+        return 2;
+    case View3DInventorViewer::MSAA4x:
+        return 4;
+    case View3DInventorViewer::MSAA8x:
+        return 8;
+    case View3DInventorViewer::Smoothing:
+        return 1;
+    default:
+        return 0;
+    }
+}
+
 void View3DInventorViewer::setRenderType(const RenderType type)
 {
     renderType = type;
@@ -1305,10 +1324,19 @@ void View3DInventorViewer::setRenderType(const RenderType type)
         if (!framebuffer) {
             const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
             SbVec2s size = vp.getViewportSizePixels();
+            int width = size[0];
+            int height = size[1];
 
             QtGLWidget* gl = static_cast<QtGLWidget*>(this->viewport());
             gl->makeCurrent();
-            framebuffer = new QtGLFramebufferObject(size[0],size[1],QtGLFramebufferObject::Depth);
+#if !defined(HAVE_QT5_OPENGL)
+            framebuffer = new QtGLFramebufferObject(width, height, QtGLFramebufferObject::Depth);
+#else
+            QOpenGLFramebufferObjectFormat fboFormat;
+            //fboFormat.setSamples(getNumSamples());
+            fboFormat.setAttachment(QtGLFramebufferObject::Depth);
+            framebuffer = new QtGLFramebufferObject(width, height, fboFormat);
+#endif
             renderToFramebuffer(framebuffer);
         }
         break;
@@ -1316,11 +1344,41 @@ void View3DInventorViewer::setRenderType(const RenderType type)
         {
             QtGLWidget* gl = static_cast<QtGLWidget*>(this->viewport());
             gl->makeCurrent();
+#if !defined(HAVE_QT5_OPENGL)
             int w = gl->width();
             int h = gl->height();
             QImage img(QSize(w,h), QImage::Format_RGB32);
             glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, img.bits());
             glImage = img;
+#else
+            const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+            SbVec2s size = vp.getViewportSizePixels();
+            int width = size[0];
+            int height = size[1];
+
+            int samples = getNumSamples();
+            if (samples == 0) {
+                // if anti-aliasing is off we can directly use glReadPixels
+                QImage img(QSize(width, height), QImage::Format_RGB32);
+                glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, img.bits());
+                glImage = img;
+            }
+            else {
+                QOpenGLFramebufferObjectFormat fboFormat;
+                fboFormat.setSamples(getNumSamples());
+                fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
+                fboFormat.setTextureTarget(GL_TEXTURE_2D);
+                fboFormat.setInternalTextureFormat(GL_RGBA32F_ARB);
+
+                QOpenGLFramebufferObject fbo(width, height, fboFormat);
+                fbo.bind();
+                //renderToFramebuffer(&fbo); // may give slightly different results than what is shown in the gl widget
+                renderScene();
+                fbo.release();
+
+                glImage = fbo.toImage(false);
+            }
+#endif
         }
         break;
     }
@@ -1348,7 +1406,8 @@ void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)
     glClearColor(col.redF(), col.greenF(), col.blueF(), col.alphaF());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glDepthRange(0.1,1.0);
+    // If on then transparent areas may shine through opaque areas
+    //glDepthRange(0.1,1.0);
 
     SoGLRenderAction gl(SbViewportRegion(width, height));
     // When creating a new GL render action we have to copy over the cache context id
@@ -1442,7 +1501,11 @@ void View3DInventorViewer::renderGLImage()
     glClear(GL_COLOR_BUFFER_BIT);
 
     glRasterPos2f(0,0);
+#if !defined(HAVE_QT5_OPENGL)
     glDrawPixels(glImage.width(),glImage.height(),GL_RGBA,GL_UNSIGNED_BYTE,glImage.bits());
+#else
+    glDrawPixels(glImage.width(),glImage.height(),GL_BGRA,GL_UNSIGNED_BYTE,glImage.bits());
+#endif
 
     printDimension();
     navigation->redraw();
