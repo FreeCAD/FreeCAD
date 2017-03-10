@@ -34,6 +34,9 @@
 import FreeCAD
 
 def removeFromPath(module_name):
+	"""removes the module from the sys.path. The entry point for imports
+		will therfor always be FreeCAD.
+		eg.: from FreeCAD.Module.submodule import function"""
 	import sys, os
 	paths = sys.path
 	for path in paths:
@@ -43,7 +46,7 @@ def removeFromPath(module_name):
 	else:
 		Wrn(module_name + " not found in sys.path\n")
 
-FreeCAD._newStyleModule = removeFromPath
+FreeCAD._importFromFreeCAD = removeFromPath
 
 
 def InitApplications():
@@ -113,8 +116,7 @@ def InitApplications():
 	# also add these directories to the sys.path to 
 	# not change the old behaviour. once we have moved to 
 	# proper python modules this can eventuelly be removed.
-	for path in FreeCAD.__path__[::-1]:
-		sys.path.insert(0, path)
+	sys.path = [ModDir, Lib64Dir, LibDir] + sys.path
 
 	for Dir in ModDict.values():
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
