@@ -912,7 +912,15 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
     if (pcReferenceAxis == NULL)
         return;
 
-    Part::Part2DObject* sketch = getVerifiedSketch();
+    App::DocumentObject* profile = Profile.getValue();
+    Part::Part2DObject* sketch;
+    if (profile->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        sketch = getVerifiedSketch();
+    }
+    else if (profile->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        sketch = static_cast<Part::Part2DObject*>(getVerifiedObject());
+    }
+
     Base::Placement SketchPlm = sketch->Placement.getValue();
     Base::Vector3d SketchPos = SketchPlm.getPosition();
     Base::Rotation SketchOrientation = SketchPlm.getRotation();
@@ -943,7 +951,8 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
         return;
     }
 
-    if (pcReferenceAxis == sketch){
+    if (pcReferenceAxis == profile) {
+        //Part::Part2DObject* sketch = getVerifiedSketch();
         bool hasValidAxis=false;
         Base::Axis axis;
         if (subReferenceAxis[0] == "V_Axis") {
