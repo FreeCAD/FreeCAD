@@ -739,12 +739,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
     };
     
     //if a profile is selected we can make our life easy and fast
-    std::vector<Gui::SelectionObject> selection;
-    std::string cmdName = cmd->getName();
-    if (cmdName == "PartDesign_Revolution" || cmdName == "PartDesign_Groove")
-        selection = cmd->getSelection().getSelectionEx(0, Part::Part2DObject::getClassTypeId());
-    else
-        selection = cmd->getSelection().getSelectionEx();
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (!selection.empty() && selection.front().hasSubNames()) {
         base_worker(selection.front().getObject(), selection.front().getSubNames().front());
         return;
@@ -1004,12 +999,19 @@ void CmdPartDesignRevolution::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [this, cmd, pcActiveBody](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
-        Gui::Command::doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
-                                                                                FeatName.c_str(), sketch->getNameInDocument());
+        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            Gui::Command::doCommand(Doc, "App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
+                FeatName.c_str(), sketch->getNameInDocument());
+        }
+        else {
+            Gui::Command::doCommand(Doc, "App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,[\"\"])",
+                FeatName.c_str(), pcActiveBody->getOrigin()->getY()->getNameInDocument());
+        }
+
         Gui::Command::doCommand(Doc,"App.activeDocument().%s.Angle = 360.0",FeatName.c_str());
         PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(cmd->getDocument()->getObject(FeatName.c_str()));
         if (pcRevolution && pcRevolution->suggestReversed())
