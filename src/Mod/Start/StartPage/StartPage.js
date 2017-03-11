@@ -67,7 +67,6 @@ function load() {
     var script = document.createElement('script');
     script.src = 'http://www.freecadweb.org/version.php?callback=checkVersion';
     document.body.appendChild(script);
-
 }
 
 function stripTags(text) {
@@ -88,7 +87,7 @@ function showTweets(data) {
     ddiv = document.getElementById('news');
     ddiv.innerHTML = "Received";
     var html = ['<ul>'];
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 4; i++) {
         html.push('<li><img src="images/web.png">&nbsp;<a href="ext', data.data[i].commit.url, '" onMouseOver="showDescr(', i+1, ')" onMouseOut="showDescr()">', data.data[i].commit.message, '</a></li>');
         if ("message" in data.data[i].commit) {
             linkDescriptions.push(stripTags(data.data[i].commit.message)+'<br/>'+data.data[i].commit.author.name+'<br/>'+data.data[i].commit.author.date);
@@ -100,21 +99,7 @@ function showTweets(data) {
     html.push('</ul>');
     html.push('<a href="exthttp://github.com/FreeCAD/FreeCAD/commits/master">text63<a/>');
     ddiv.innerHTML = html.join('');
-    var commits = document.getElementById("commits");
-    var examples = document.getElementById("examples");
-    var files = document.getElementById("files");
-    var description = document.getElementById("description");
-
-    var commitsHeight = commits.offsetHeight;
-    var examplesHeight = examples.offsetHeight;
-    var filesHeight = files.offsetHeight;
-
-    var biggerHeight = commitsHeight > examplesHeight ? commitsHeight : examplesHeight;
-
-    var totalHeight = biggerHeight + filesHeight + 145 + 36;
-    commits.style.height = biggerHeight + 'px';
-    examples.style.height = biggerHeight + 'px';
-    description.style.height = totalHeight + 'px';
+    resize();
 }
 
 function showDescr(d) {
@@ -134,6 +119,39 @@ function scroller() {
     } else {
         desc.className = "";
     }
+}
+
+function resize() {
+    var halfblocks = document.getElementsByClassName('half-block');
+    var commits = document.getElementById("commits");
+    var examples = document.getElementById("examples");
+    var files = document.getElementById("files");
+    var newproj = document.getElementById('newproject');
+    var ontheweb = document.getElementById('ontheweb');
+    var description = document.getElementById("description");
+
+    var w = files.offsetWidth;
+    var filesHeight = files.offsetHeight;
+    var h1 = newproj.getElementsByTagName('ul')[0].offsetHeight;
+    var h2 = ontheweb.getElementsByTagName('ul')[0].offsetHeight;
+    var h3 = examples.getElementsByTagName('ul')[0].offsetHeight;
+    var h4 = commits.getElementsByTagName('ul')[0].offsetHeight;
+
+    var rowTwoHeight = h1 > h2 ? h1 : h2;
+    var rowThreeHeight = h3 > h4 ? h3 : h4;
+    rowTwoHeight = rowTwoHeight + 40;
+    rowThreeHeight = rowThreeHeight + 80;
+    var totalHeight = rowTwoHeight + rowThreeHeight + filesHeight + 36;
+
+    w = w - 52;
+    for (var i = 0; i < halfblocks.length; i++) {
+        halfblocks[i].style.width = w/2 + 'px';
+    }
+    newproj.style.height = rowTwoHeight + 'px';
+    ontheweb.style.height = rowTwoHeight + 'px';
+    examples.style.height = rowThreeHeight + 'px';
+    commits.style.height =  rowThreeHeight + 'px';
+    description.style.height = totalHeight + 'px';
 }
 
 document.onmousemove=scroller;
