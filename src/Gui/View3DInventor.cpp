@@ -557,7 +557,7 @@ void View3DInventor::print(QPrinter* printer)
 #if !defined(HAVE_QT5_OPENGL)
     bool pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
 #else
-    bool pbuffer = QtGLFramebufferObject::hasOpenGLFramebufferObjects();
+    bool pbuffer = false;
 #endif
     if (App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",!pbuffer)) {
