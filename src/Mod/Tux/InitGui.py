@@ -20,7 +20,17 @@
 
 p = FreeCAD.ParamGet("User parameter:Tux")
 
+
+# Navigation indicator
 if p.GetGroup("NavigationIndicator").GetBool("Enabled", 1):
     import NavigationIndicatorGui
 else:
     pass
+
+
+# Persistent toolbars
+if p.GetGroup("PersistentToolbars").GetBool("Enabled", 1):
+    import PersistentToolbarsGui
+else:
+    pass
+

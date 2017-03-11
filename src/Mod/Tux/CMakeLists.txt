@@ -5,6 +5,8 @@ ENDIF (BUILD_GUI)
 SET(Tux_SRCS
     InitGui.py
     NavigationIndicatorGui.py
+    PersistentToolbars.py
+    PersistentToolbarsGui.py
 )
 SOURCE_GROUP("" FILES ${Tux_SRCS})
 
