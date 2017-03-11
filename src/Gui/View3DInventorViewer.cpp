@@ -1349,6 +1349,7 @@ void View3DInventorViewer::setRenderType(const RenderType type)
                 framebuffer = fbo;
             }
 #endif
+            gl->doneCurrent();
         }
         break;
     case Image:
@@ -1390,6 +1391,7 @@ void View3DInventorViewer::setRenderType(const RenderType type)
                 glImage = fbo.toImage(false);
             }
 #endif
+            gl->doneCurrent();
         }
         break;
     }

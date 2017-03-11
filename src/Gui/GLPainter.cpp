@@ -110,6 +110,7 @@ bool GLPainter::end()
     glPopAttrib();
     glPopMatrix();
 
+    viewer->doneCurrent();
     viewer = 0;
     return true;
 }
