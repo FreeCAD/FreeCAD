@@ -27,7 +27,7 @@
         <file>icons/fem-constraint-transform.svg</file>
         <file>icons/fem-control-solver.svg</file>
         <file>icons/fem-cylinder.svg</file>
-        <file>icons/fem-data.png</file>
+        <file>icons/fem-data.svg</file>
         <file>icons/fem-femmesh-clear-mesh.svg</file>
         <file>icons/fem-femmesh-create-node-by-poly.svg</file>
         <file>icons/fem-femmesh-from-shape.svg</file>
@@ -53,12 +53,12 @@
         <file>icons/fem-static-analysis.svg</file>
         <file>icons/fem-thermomechanical-analysis.svg</file>
 
-        <file>icons/fem-clip.png</file>
-        <file>icons/fem-DataAlongLine.png</file>
-        <file>icons/fem-clip-scalar.png</file>
-        <file>icons/fem-cut.png</file>
-        <file>icons/fem-isosurface.png</file>
-        <file>icons/fem-warp.png</file>
+        <file>icons/fem-clip.svg</file>
+        <file>icons/fem-DataAlongLine.svg</file>
+        <file>icons/fem-clip-scalar.svg</file>
+        <file>icons/fem-cut.svg</file>
+        <file>icons/fem-isosurface.svg</file>
+        <file>icons/fem-warp.svg</file>
 
         <file>translations/Fem_af.qm</file>
         <file>translations/Fem_de.qm</file>
