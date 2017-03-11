@@ -1383,10 +1383,7 @@ void View3DInventorViewer::setRenderType(const RenderType type)
                 fboFormat.setInternalTextureFormat(GL_RGBA32F_ARB);
 
                 QOpenGLFramebufferObject fbo(width, height, fboFormat);
-                fbo.bind();
-                //renderToFramebuffer(&fbo); // may give slightly different results than what is shown in the gl widget
-                renderScene();
-                fbo.release();
+                renderToFramebuffer(&fbo);
 
                 glImage = fbo.toImage(false);
             }
@@ -1422,17 +1419,23 @@ void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)
     // If on then transparent areas may shine through opaque areas
     //glDepthRange(0.1,1.0);
 
-    SoGLRenderAction gl(SbViewportRegion(width, height));
+    SoBoxSelectionRenderAction gl(SbViewportRegion(width, height));
     // When creating a new GL render action we have to copy over the cache context id
     // For further details see init().
     uint32_t id = this->getSoRenderManager()->getGLRenderAction()->getCacheContext();
     gl.setCacheContext(id);
     gl.setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
+
     if (!this->shading) {
         SoLightModelElement::set(gl.getState(), selectionRoot, SoLightModelElement::BASE_COLOR);
         SoOverrideElement::setLightModelOverride(gl.getState(), selectionRoot, true);
     }
+
     gl.apply(this->backgroundroot);
+    // The render action of the render manager has set the depth function to GL_LESS
+    // while creating a new render action has it set to GL_LEQUAL. So, in order to get
+    // the exact same result set it explicitly to GL_LESS.
+    glDepthFunc(GL_LESS);
     gl.apply(this->getSoRenderManager()->getSceneGraph());
     gl.apply(this->foregroundroot);
 
