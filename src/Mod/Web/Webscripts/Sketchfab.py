@@ -26,7 +26,7 @@ __title__ = "Sketchfab uploader"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-import FreeCAD, FreeCADGui, WebGui, os, zipfile, requests, tempfile
+import FreeCAD, FreeCADGui, WebGui, os, zipfile, requests, tempfile, json, time
 from PySide import QtCore, QtGui
 
 # \cond
@@ -38,7 +38,7 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 # \endcond
 
-SKETCHFAB_UPLOAD_URL = "https://api.sketchfab.com/v1/models"
+SKETCHFAB_UPLOAD_URL = "https://api.sketchfab.com/v3/models"
 SKETCHFAB_TOKEN_URL = "https://sketchfab.com/settings/password"
 SKETCHFAB_MODEL_URL = "https://sketchfab.com/show/"
 
@@ -80,6 +80,16 @@ class SketchfabTaskPanel:
         
         QtGui.QDesktopServices.openUrl(SKETCHFAB_TOKEN_URL)
         
+    def get_request_payload(self, token, data={}, files={}, json_payload=False):
+        
+        """Helper method that returns the authentication token and proper content
+        type depending on whether or not we use JSON payload."""
+        headers = {'Authorization': 'Token {}'.format(token)}
+        if json_payload:
+            headers.update({'Content-Type': 'application/json'})
+            data = json.dumps(data)
+        return {'data': data, 'files': files, 'headers': headers}
+        
     def saveFile(self):
         
         import FreeCADGui
@@ -120,7 +130,6 @@ class SketchfabTaskPanel:
 
     def packFiles(self,filename,fileslist):
         
-        originalname = os.path.basename(fileslist[0])
         for f in fileslist:
             if not os.path.exists(f):
                 return None
@@ -135,7 +144,7 @@ class SketchfabTaskPanel:
             size = str(s >> 20)+" MB"
         else:
             size = str(s >> 10)+" KB"
-        return (filename+".zip",originalname,size)
+        return (filename+".zip",size)
 
     def upload(self):
 
@@ -151,42 +160,103 @@ class SketchfabTaskPanel:
             QtGui.QMessageBox.critical(None,translate("Web","File packing error"),translate("Unable to save and zip a file for upload"))
             return
         data = {
-            "title": self.form.Text_Name.text(),
+            "name": self.form.Text_Name.text(),
             "description": self.form.Text_Description.text(),
-            "filename": pack[1],
-            "tags": "freecad,"+self.form.Text_Tags.text(),
+            "tags": ["freecad"]+[t.strip() for t in self.form.Text_Tags.text().split(",")],
             "private": self.form.Check_Private.isChecked(),
-            "token": self.form.Text_Token.text(),
-            "source": "freecad",
             }
         files = {
-            "fileModel": open(pack[0], 'rb'),
+            "modelFile": open(pack[0], 'rb')
             }
         self.form.Button_Upload.hide()
         # for now this is a fake progress bar, it won't move, just to show the user that the upload is in progress
-        self.form.ProgressBar.setFormat(translate("Web","Uploading")+" "+pack[2]+"...")
+        self.form.ProgressBar.setFormat(translate("Web","Uploading")+" "+pack[1]+"...")
         self.form.ProgressBar.show()
         try:
-            r = requests.post(SKETCHFAB_UPLOAD_URL, data=data, files=files, verify=False)
+            r = requests.post(SKETCHFAB_UPLOAD_URL, **self.get_request_payload(self.form.Text_Token.text(), data, files=files))
         except requests.exceptions.RequestException as e:
             QtGui.QMessageBox.critical(None,translate("Web","Upload error"),translate("Upload failed:")+" "+str(e))
             self.form.ProgressBar.hide()
             self.form.Button_Upload.show()
             return
-        result = r.json()
-        if r.status_code != requests.codes.ok:
-            QtGui.QMessageBox.critical(None,translate("Web","Upload error"),translate("Upload failed:")+" "+result["error"])
+        if r.status_code != requests.codes.created:
+            QtGui.QMessageBox.critical(None,translate("Web","Upload error"),translate("Upload failed:")+" "+r.json())
             self.form.ProgressBar.hide()
             self.form.Button_Upload.show()
             return
-        self.url = SKETCHFAB_MODEL_URL + result["result"]["id"]
+        self.url = r.headers['Location']
+        if self.form.Combo_Filetype.currentIndex() in [0,1]: # OBJ format, sketchfab expects inverted Y/Z axes
+            self.form.ProgressBar.setFormat(translate("Web","Awaiting confirmation..."))
+            self.form.ProgressBar.setValue(75)
+            if self.poll(self.url):
+                self.form.ProgressBar.setFormat(translate("Web","Fixing model..."))
+                self.patch(self.url)
+            else:
+                QtGui.QMessageBox.warning(None,translate("Web","Patch error"),translate("Web","Patching failed. The model was successfully uploaded, but might still require manual adjustments:"))
         self.form.ProgressBar.hide()
         self.form.Button_View.show()
+        
+    def poll(self,url):
+        
+        """GET the model endpoint to check the processing status."""
+        max_errors = 10
+        errors = 0
+        retry = 0
+        max_retries = 50
+        retry_timeout = 5  # seconds
+        while (retry < max_retries) and (errors < max_errors):
+            try:
+                r = requests.get(url, **self.get_request_payload(self.form.Text_Token.text()))
+            except requests.exceptions.RequestException as e:
+                print ('Sketchfab: Polling failed with error {}'.format(e))
+                errors += 1
+                retry += 1
+                continue
+            result = r.json()
+            if r.status_code != requests.codes.ok:
+                print ('Sketchfab: Polling failed with error: {}'.format(result['error']))
+                errors += 1
+                retry += 1
+                continue
+            processing_status = result['status']['processing']
+            if processing_status == 'PENDING':
+                retry += 1
+                time.sleep(retry_timeout)
+                continue
+            elif processing_status == 'PROCESSING':
+                retry += 1
+                time.sleep(retry_timeout)
+                continue
+            elif processing_status == 'FAILED':
+                print ('Sketchfab: Polling failed: {}'.format(result['error']))
+                return False
+            elif processing_status == 'SUCCEEDED':
+                return True
+            retry += 1
+        print ('Sketchfab: Stopped polling after too many retries or too many errors')
+        return False
+        
+    def patch(self,url):
+        
+        "applies different fixes to the uploaded model"
+        options_url = os.path.join(url, 'options')
+        data = {
+            'orientation': '{"axis": [1, 0, 0], "angle": 270}'
+            }
+        try:
+            r = requests.patch(options_url, **self.get_request_payload(self.form.Text_Token.text(), data, json_payload=True))
+        except requests.exceptions.RequestException as e:
+            QtGui.QMessageBox.warning(None,translate("Web","Patch error"),translate("Web","Patching failed. The model was successfully uploaded, but might still require manual adjustments:")+" "+str(e))
+        else:
+            if r.status_code != 204:
+                QtGui.QMessageBox.warning(None,translate("Web","Patch error"),translate("Web","Patching failed. The model was successfully uploaded, but might still require manual adjustments:")+" "+str(r.content))
 
     def viewModel(self):
         
         if self.url:
-            QtGui.QDesktopServices.openUrl(self.url)
+            url = self.url.replace("api","www")
+            url = url.replace("/v3","")
+            QtGui.QDesktopServices.openUrl(url)
         
 
 
