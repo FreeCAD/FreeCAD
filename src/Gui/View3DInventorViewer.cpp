@@ -931,7 +931,7 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
 #if !defined(HAVE_QT5_OPENGL)
     bool useCoinOffscreenRenderer = !QGLPixelBuffer::hasOpenGLPbuffers();
 #else
-    bool useCoinOffscreenRenderer = !QtGLFramebufferObject::hasOpenGLFramebufferObjects();
+    bool useCoinOffscreenRenderer = true;
 #endif
     useCoinOffscreenRenderer = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->
@@ -1331,13 +1331,24 @@ void View3DInventorViewer::setRenderType(const RenderType type)
             gl->makeCurrent();
 #if !defined(HAVE_QT5_OPENGL)
             framebuffer = new QtGLFramebufferObject(width, height, QtGLFramebufferObject::Depth);
+            renderToFramebuffer(framebuffer);
 #else
             QOpenGLFramebufferObjectFormat fboFormat;
-            //fboFormat.setSamples(getNumSamples());
+            fboFormat.setSamples(getNumSamples());
             fboFormat.setAttachment(QtGLFramebufferObject::Depth);
-            framebuffer = new QtGLFramebufferObject(width, height, fboFormat);
+            QtGLFramebufferObject* fbo = new QtGLFramebufferObject(width, height, fboFormat);
+            if (fbo->format().samples() > 0) {
+                renderToFramebuffer(fbo);
+                framebuffer = new QtGLFramebufferObject(fbo->size());
+                // this is needed to be able to render the texture later
+                QOpenGLFramebufferObject::blitFramebuffer(framebuffer, fbo);
+                delete fbo;
+            }
+            else {
+                renderToFramebuffer(fbo);
+                framebuffer = fbo;
+            }
 #endif
-            renderToFramebuffer(framebuffer);
         }
         break;
     case Image:
