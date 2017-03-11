@@ -102,15 +102,6 @@ public:
     {
         SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 
-        //SoBase::staticDataLock();
-        static bool init = false;
-        if (!init) {
-            std::string ext = (const char*)(glGetString(GL_EXTENSIONS));
-            vboAvailable = (ext.find("GL_ARB_vertex_buffer_object") != std::string::npos);
-            init = true;
-        }
-        //SoBase::staticDataUnlock();
-
         updateVbo = false;
         vboLoaded = false;
         indice_array = 0;
@@ -451,6 +442,15 @@ void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
 #else
 void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 {
+    //SoBase::staticDataLock();
+    static bool init = false;
+    if (!init) {
+        std::string ext = (const char*)(glGetString(GL_EXTENSIONS));
+        PRIVATE(this)->vboAvailable = (ext.find("GL_ARB_vertex_buffer_object") != std::string::npos);
+        init = true;
+    }
+    //SoBase::staticDataUnlock();
+
     if (this->coordIndex.getNum() < 3)
         return;
     if (this->selectionIndex.getNum() > 0)

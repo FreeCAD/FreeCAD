@@ -826,6 +826,8 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     if (w->doubleBuffer()) { w->swapBuffers(); }
 #endif
 
+    w->doneCurrent();
+
     PRIVATE(this)->autoredrawenabled = true;
 
     // process the delay queue the next time we enter this function,
