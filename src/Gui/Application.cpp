@@ -46,7 +46,9 @@
 
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <QtOpenGL.h>
-
+#if defined(HAVE_QT5_OPENGL)
+#include <QWindow>
+#endif
 
 // FreeCAD Base header
 #include <Base/Console.h>
@@ -1560,11 +1562,7 @@ void Application::runApplication(void)
     if (!QGLPixelBuffer::hasOpenGLPbuffers()) {
         Base::Console().Log("This system does not support pbuffers\n");
     }
-#endif
 
-#if defined(HAVE_QT5_OPENGL)
-    // FIXME: HAVE_QT5_OPENGL
-#else
     QGLFormat::OpenGLVersionFlags version = QGLFormat::openGLVersionFlags ();
     if (version & QGLFormat::OpenGL_Version_3_0)
         Base::Console().Log("OpenGL version 3.0 or higher is present\n");
@@ -1618,6 +1616,30 @@ void Application::runApplication(void)
     int size = hGrp->GetInt("ToolbarIconSize", 0);
     if (size >= 16) // must not be lower than this
         mw.setIconSize(QSize(size,size));
+
+#if defined(HAVE_QT5_OPENGL)
+    {
+        QWindow window;
+        window.setSurfaceType(QWindow::OpenGLSurface);
+        window.create();
+
+        QOpenGLContext context;
+        if (context.create()) {
+            context.makeCurrent(&window);
+            if (!context.functions()->hasOpenGLFeature(QOpenGLFunctions::Framebuffers)) {
+                Base::Console().Log("This system does not support framebuffer objects\n");
+            }
+            if (!context.functions()->hasOpenGLFeature(QOpenGLFunctions::NPOTTextures)) {
+                Base::Console().Log("This system does not support NPOT textures\n");
+            }
+
+            int major = context.format().majorVersion();
+            int minor = context.format().minorVersion();
+            const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+            Base::Console().Log("OpenGL version is: %d.%d (%s)\n", major, minor, glVersion);
+        }
+    }
+#endif
 
     // init the Inventor subsystem
     SoDB::init();
