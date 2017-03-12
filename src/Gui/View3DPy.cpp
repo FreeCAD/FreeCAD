@@ -696,6 +696,9 @@ Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
 
 void View3DInventorPy::createImageFromFramebuffer(int width, int height, const QColor& bgcolor, QImage& img)
 {
+    View3DInventorViewer* viewer = _view->getViewer();
+    static_cast<QtGLWidget*>(viewer->getGLWidget())->makeCurrent();
+
     const QtGLContext* context = QtGLContext::currentContext();
     if (!context) {
         Base::Console().Warning("createImageFromFramebuffer failed because no context is active\n");
@@ -709,18 +712,20 @@ void View3DInventorPy::createImageFromFramebuffer(int width, int height, const Q
 #else
     QtGLFramebufferObject fbo(width, height, QtGLFramebufferObject::Depth);
 #endif
-    const QColor col = _view->getViewer()->backgroundColor();
-    bool on = _view->getViewer()->hasGradientBackground();
+    const QColor col = viewer->backgroundColor();
+    bool on = viewer->hasGradientBackground();
 
     if (bgcolor.isValid()) {
-        _view->getViewer()->setBackgroundColor(bgcolor);
-        _view->getViewer()->setGradientBackground(false);
+        viewer->setBackgroundColor(bgcolor);
+        viewer->setGradientBackground(false);
     }
 
-    _view->getViewer()->renderToFramebuffer(&fbo);
-    _view->getViewer()->setBackgroundColor(col);
-    _view->getViewer()->setGradientBackground(on);
+    viewer->renderToFramebuffer(&fbo);
+    viewer->setBackgroundColor(col);
+    viewer->setGradientBackground(on);
     img = fbo.toImage();
+
+    static_cast<QtGLWidget*>(viewer->getGLWidget())->doneCurrent();
 }
 
 Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)

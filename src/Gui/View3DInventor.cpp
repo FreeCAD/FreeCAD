@@ -545,6 +545,7 @@ void View3DInventor::print(QPrinter* printer)
 #else
     QImage img;
     QPainter p(printer);
+    p.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
     if (!p.isActive() && !printer->outputFileName().isEmpty()) {
         qApp->setOverrideCursor(Qt::ArrowCursor);
         QMessageBox::critical(this, tr("Opening file failed"),
@@ -579,6 +580,8 @@ void View3DInventor::print(QPrinter* printer)
 
 void View3DInventor::previewFromFramebuffer(const QRect& rect, QImage& img)
 {
+    static_cast<QtGLWidget*>(_viewer->getGLWidget())->makeCurrent();
+
 #if QT_VERSION >= 0x040600
     QtGLFramebufferObjectFormat format;
     format.setSamples(8);
@@ -595,6 +598,8 @@ void View3DInventor::previewFromFramebuffer(const QRect& rect, QImage& img)
     _viewer->setBackgroundColor(col);
     _viewer->setGradientBackground(on);
     img = fbo.toImage();
+
+    static_cast<QtGLWidget*>(_viewer->getGLWidget())->doneCurrent();
 }
 
 // **********************************************************************************

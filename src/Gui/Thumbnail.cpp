@@ -134,9 +134,11 @@ void Thumbnail::RestoreDocFile(Base::Reader &reader)
 void Thumbnail::createThumbnailFromFramebuffer(QImage& img) const
 {
     // Alternative way of off-screen rendering
-    QtGLFramebufferObject fbo(this->size, this->size,QtGLFramebufferObject::Depth);
     if (this->viewer->isActiveWindow()) {
+        static_cast<QtGLWidget*>(this->viewer->getGLWidget())->makeCurrent();
+        QtGLFramebufferObject fbo(this->size, this->size,QtGLFramebufferObject::Depth);
         this->viewer->renderToFramebuffer(&fbo);
         img = fbo.toImage();
+        static_cast<QtGLWidget*>(this->viewer->getGLWidget())->doneCurrent();
     }
 }
