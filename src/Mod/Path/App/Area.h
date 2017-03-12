@@ -440,6 +440,8 @@ public:
      * used for sorting
      * \arg \c pstart: optional start point
      * \arg \c pend: optional output containing the ending point of the returned
+     * \arg \c arc_plane: optional arc plane selection, if given the found plane
+     * will be returned. See #AREA_PARAMS_ARC_PLANE for more details.
      *
      * See #AREA_PARAMS_SORT for other arguments
      *
@@ -447,7 +449,8 @@ public:
      */
     static std::list<TopoDS_Shape> sortWires(const std::list<TopoDS_Shape> &shapes,
             const AreaParams *params = NULL, const gp_Pnt *pstart=NULL, 
-            gp_Pnt *pend=NULL, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_SORT));
+            gp_Pnt *pend=NULL, short *arc_plane = NULL, 
+            PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_SORT));
 
     /** Convert a list of wires to gcode
      *

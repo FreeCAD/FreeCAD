@@ -173,6 +173,15 @@
         "minimum distance for the generated new wires. Wires maybe broken if the\n"\
         "algorithm see fits. Set to zero to disable wire breaking.",App::PropertyLength))
 
+/** Arc plane */
+#define AREA_PARAMS_ARC_PLANE \
+    ((enum, arc_plane, ArcPlane, 1, "Arc drawing plane, corresponding to G17, G18, and G19.\n"\
+        "If not 'None', the output wires will be transformed to align with the selected plane,\n"\
+        "and the corresponding GCode will be inserted.\n"\
+        "'Auto' means the plane is determined by the first encountered arc plane. If the found\n"\
+        "plane does not align to any GCode plane, XY plane is used.",\
+        (None)(Auto)(XY)(ZX)(YZ)))
+
 /** Area wire sorting parameters */
 #define AREA_PARAMS_SORT \
     ((enum, sort_mode, SortMode, 1, "Wire sorting mode to optimize travel distance.\n"\
@@ -185,12 +194,15 @@
 
 /** Area path generation parameters */
 #define AREA_PARAMS_PATH \
+    AREA_PARAMS_ARC_PLANE \
     AREA_PARAMS_SORT \
     ((double, threshold, RetractThreshold, 0.0,\
         "If two wire's end points are separated within this threshold, they are consider\n"\
         "as connected. You may want to set this to the tool diameter to keep the tool down.",\
         App::PropertyLength))\
-    ((double, height, RetractHeight, 0.0,"Tool retraction absolute height",App::PropertyLength))\
+    ((double, retraction, Retraction, 0.0,"Tool retraction absolute coordinate along retraction axis",\
+        App::PropertyLength))\
+    ((enum, retract_axis, RetractAxis, 2,"Tool retraction axis",(X)(Y)(Z)))\
     ((double, clearance, Clearance, 0.0,\
         "When return from last retraction, this gives the pause height relative to the Z\n"\
         "value of the next move",App::PropertyLength))\
