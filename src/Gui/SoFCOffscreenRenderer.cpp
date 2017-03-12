@@ -46,6 +46,11 @@
 #include "SoFCOffscreenRenderer.h"
 #include "BitmapFactory.h"
 
+#if defined(HAVE_QT5_OPENGL)
+# include <QOffscreenSurface>
+# include <QOpenGLContext>
+#endif
+
 using namespace Gui;
 using namespace std;
 
@@ -474,7 +479,7 @@ SoQtOffscreenRenderer::getViewportRegion(void) const
   before rendering.
 */
 void
-SoQtOffscreenRenderer::setBackgroundColor(const SbColor & color)
+SoQtOffscreenRenderer::setBackgroundColor(const SbColor4f & color)
 {
     PRIVATE(this)->backgroundcolor = color;
 }
@@ -482,7 +487,7 @@ SoQtOffscreenRenderer::setBackgroundColor(const SbColor & color)
 /*!
   Returns the background color.
 */
-const SbColor &
+const SbColor4f &
 SoQtOffscreenRenderer::getBackgroundColor(void) const
 {
     return PRIVATE(this)->backgroundcolor;
@@ -582,6 +587,9 @@ SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
     QtGLFramebufferObjectFormat fmt;
     fmt.setSamples(samples);
     fmt.setAttachment(QtGLFramebufferObject::Depth);
+#if defined(HAVE_QT5_OPENGL)
+    fmt.setInternalTextureFormat(GL_RGB32F_ARB);
+#endif
 #else
     QtGLFramebufferObject::Attachment fmt;
     fmt = QtGLFramebufferObject::Depth;
@@ -595,6 +603,19 @@ SbBool
 SoQtOffscreenRenderer::renderFromBase(SoBase * base)
 {
     const SbVec2s fullsize = this->viewport.getViewportSizePixels();
+
+#if defined(HAVE_QT5_OPENGL)
+    QSurfaceFormat format;
+    format.setSamples(PRIVATE(this)->numSamples);
+    QOpenGLContext context;
+    context.setFormat(format);
+    if (!context.create())
+        return false;
+    QOffscreenSurface offscreen;
+    offscreen.setFormat(format);
+    offscreen.create();
+    context.makeCurrent(&offscreen);
+#endif
 
 #if !defined(HAVE_QT5_OPENGL)
     if (PRIVATE(this)->pbuffer) {
@@ -631,7 +652,7 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
     glClearColor(this->backgroundcolor[0],
                  this->backgroundcolor[1],
                  this->backgroundcolor[2],
-                 0.0f);
+                 this->backgroundcolor[3]);
 
     // needed to clear viewport after glViewport() is called from
     // SoGLRenderAction
@@ -659,6 +680,11 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
     }
 
     this->renderaction->setCacheContext(oldcontext); // restore old
+
+#if defined(HAVE_QT5_OPENGL)
+    glImage = framebuffer->toImage();
+    context.doneCurrent();
+#endif
 
     return true;
 }
@@ -730,12 +756,13 @@ SoQtOffscreenRenderer::writeToImage (QImage& img) const
         if (pixelbuffer)
             img = pixelbuffer->toImage();
     }
-    else
-#endif
-    {
+    else {
         if (framebuffer)
             img = framebuffer->toImage();
     }
+#else
+    img = this->glImage;
+#endif
 }
 
 /*!

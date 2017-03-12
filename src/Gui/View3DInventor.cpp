@@ -586,6 +586,9 @@ void View3DInventor::previewFromFramebuffer(const QRect& rect, QImage& img)
     QtGLFramebufferObjectFormat format;
     format.setSamples(8);
     format.setAttachment(QtGLFramebufferObject::Depth);
+#if defined(HAVE_QT5_OPENGL)
+    format.setInternalTextureFormat(GL_RGB32F_ARB);
+#endif
     QtGLFramebufferObject fbo(rect.width(), rect.height(), format);
 #else
     QtGLFramebufferObject fbo(rect.width(), rect.height(), QtGLFramebufferObject::Depth);
