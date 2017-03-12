@@ -127,11 +127,15 @@ public:
             "\n* <key>: any key supported by Path.Area, see Path.Area.getParamDesc() for description"
         );
         add_keyword_method("sortWires",&Module::sortWires,
-            "sortWires(shapes, start=Vector(), "  PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) ", key=value...)\n"
+            "sortWires(shapes, start=Vector(), "  
+            PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_ARC_PLANE)
+            PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) ", key=value...)\n"
             "\nReturns (wires,end), where 'wires' is sorted across Z value and with optimized travel distance,\n"
-            "and 'end' is the ending position of the whole wires\n"
+            "and 'end' is the ending position of the whole wires. If arc_plane==1, it returns (wires,end,arc_plane),\n"
+            "where arc_plane is the found plane if any, or unchanged.\n"
             "\n* shapes: input shape list\n"
             "\n* start (Vector()): optional start position.\n"
+            PARAM_PY_DOC(ARG, AREA_PARAMS_ARC_PLANE)
             PARAM_PY_DOC(ARG, AREA_PARAMS_SORT)
             "\n* <key>: any key supported by Path.Area, see Path.Area.getParamDesc() for description"
         );
@@ -373,16 +377,22 @@ private:
 
     Py::Object sortWires(const Py::Tuple& args, const Py::Dict &kwds)
     {
+        PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_ARC_PLANE)
         PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_SORT)
         PARAM_PY_DECLARE_INIT(PARAM_FNAME,AREA_PARAMS_CONF)
         PyObject *pShapes=NULL;
         PyObject *start=NULL;
         static char* kwd_list[] = {"shapes", "start", 
+                PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_ARC_PLANE), 
                 PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_SORT), 
                 PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF), NULL};
         if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), 
-                "O|O!" PARAM_PY_KWDS(AREA_PARAMS_SORT) PARAM_PY_KWDS(AREA_PARAMS_CONF), 
+                "O|O!" 
+                PARAM_PY_KWDS(AREA_PARAMS_ARC_PLANE) 
+                PARAM_PY_KWDS(AREA_PARAMS_SORT) 
+                PARAM_PY_KWDS(AREA_PARAMS_CONF), 
                 kwd_list, &pShapes, &(Base::VectorPy::Type), &start, 
+                PARAM_REF(PARAM_FARG,AREA_PARAMS_ARC_PLANE),
                 PARAM_REF(PARAM_FARG,AREA_PARAMS_SORT),
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
             throw Py::Exception();
@@ -413,16 +423,19 @@ private:
         }
         
         try {
+            bool need_arc_plane = arc_plane==Area::ArcPlaneAuto;
             std::list<TopoDS_Shape> wires = Area::sortWires(shapes,&params,&pstart,
-                    &pend, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
+                    &pend, &arc_plane, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
             PyObject *list = PyList_New(0);
             for(auto &wire : wires)
                 PyList_Append(list,Py::new_reference_to(
                             Part::shape2pyshape(TopoDS::Wire(wire))));
-            PyObject *ret = PyTuple_New(2);
+            PyObject *ret = PyTuple_New(need_arc_plane?3:2);
             PyTuple_SetItem(ret,0,list);
             PyTuple_SetItem(ret,1,new Base::VectorPy(
                         Base::Vector3d(pend.X(),pend.Y(),pend.Z())));
+            if(need_arc_plane) 
+                PyTuple_SetItem(ret,2,PyInt_FromLong(arc_plane));
             return Py::asObject(ret);
         } PATH_CATCH
     }

@@ -262,19 +262,19 @@ void Area::addWire(CArea &area, const TopoDS_Wire& wire,
                 double first = curve.FirstParameter();
                 double last = curve.LastParameter();
                 gp_Circ circle = curve.Circle();
-                gp_Ax1 axis = circle.Axis();
-                int dir = axis.Direction().Z()<0?-1:1;
-                if(reversed) dir = -dir;
-                gp_Pnt loc = axis.Location();
+                gp_Dir dir = circle.Axis().Direction();
+                gp_Pnt center = circle.Location();
+                int type = dir.Z()<0?-1:1;
+                if(reversed) type = -type;
                 if(fabs(first-last)>M_PI) {
                     // Split arc(circle) larger than half circle. Because gcode
                     // can't handle full circle?
                     gp_Pnt mid = curve.Value((last-first)*0.5+first);
-                    ccurve.append(CVertex(dir,Point(mid.X(),mid.Y()),
-                                Point(loc.X(),loc.Y())));
+                    ccurve.append(CVertex(type,Point(mid.X(),mid.Y()),
+                                Point(center.X(),center.Y())));
                 }
-                ccurve.append(CVertex(dir,Point(p.X(),p.Y()),
-                            Point(loc.X(),loc.Y())));
+                ccurve.append(CVertex(type,Point(p.X(),p.Y()),
+                            Point(center.X(),center.Y())));
                 break;
             }
             //fall through
@@ -494,14 +494,18 @@ struct FindPlane {
         if (!finder.Found()) 
             return;
 
-        // NOTE: It seemed that FindSurface disregardge shape's transformation,
-        // so we have to transformed the found plane manually
-        gp_Ax3 pos = GeomAdaptor_Surface(finder.Surface()).Plane().Position().Transformed(
-                                    shape.Location().Transformation());
+        gp_Ax3 pos = GeomAdaptor_Surface(finder.Surface()).Plane().Position();
+        
+        // It seemed that FindSurface disregard shape's transformation,
+        // so we have to transformed the found plane manually, or is it??
+        // pos.Transform(shape.Location().Transformation());
 
-        //force plane to be right handed
+        // We only use right hand coordinate, hence gp_Ax2 instead of gp_Ax3
+        // This means that no matter what the work plane face oriented, we 
+        // will treat it as face upward in a right hand coordinate system.
         if(!pos.Direct())
             pos = gp_Ax3(pos.Ax2());
+
         gp_Dir dir(pos.Direction());
 
         trsf.SetTransformation(pos);
@@ -1178,7 +1182,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         Stepover = -stepover;
         return makeOffset(index,PARAM_FIELDS(PARAM_FNAME,AREA_PARAMS_OFFSET));
     }case Area::PocketModeZigZagOffset:
-	    pm = ZigZagThenSingleOffsetPocketMode;
+        pm = ZigZagThenSingleOffsetPocketMode;
         break;
     default:
         throw Base::ValueError("unknown poket mode");
@@ -1530,24 +1534,79 @@ struct ShapeInfo{
 
 struct ShapeInfoBuilder {
     std::list<ShapeInfo> &myList;
+    gp_Trsf &myTrsf;
+    short *myArcPlane;
+    bool &myArcPlaneFound;
 
-    ShapeInfoBuilder(std::list<ShapeInfo> &list)
-        :myList(list)
+    ShapeInfoBuilder(bool &plane_found, short *arc_plane, gp_Trsf &trsf, std::list<ShapeInfo> &list)
+        :myList(list) ,myTrsf(trsf) ,myArcPlane(arc_plane), myArcPlaneFound(plane_found)
     {}
 
-    void operator()(const TopoDS_Shape &shape, int) {
+    void operator()(const TopoDS_Shape &shape, int type) {
         BRepLib_FindSurface finder(shape,-1,Standard_True);
-        if(finder.Found())
-            myList.push_back(ShapeInfo(finder,shape));
-        else
+        if(!finder.Found()) {
             myList.push_back(ShapeInfo(shape));
+            return;
+        }
+        myList.push_back(ShapeInfo(finder,shape));
+        if(myArcPlane==NULL || *myArcPlane==Area::ArcPlaneNone || myArcPlaneFound)
+            return;
+
+        if(type == TopAbs_EDGE) {
+            BRepAdaptor_Curve curve(TopoDS::Edge(shape));
+            if(curve.GetType()!=GeomAbs_Circle) return;
+        }else{
+            for(TopExp_Explorer it(shape,TopAbs_EDGE);it.More();it.Next()) {
+                BRepAdaptor_Curve curve(TopoDS::Edge(it.Current()));
+                if(curve.GetType()==GeomAbs_Circle) goto NEXT;
+            }
+            return;
+        }
+NEXT: 
+        gp_Ax3 pos = myList.back().myPln.Position();
+        if(!pos.Direct()) pos = gp_Ax3(pos.Ax2());
+        const gp_Dir &dir = pos.Direction();
+        gp_Ax3 dstPos;
+        switch(*myArcPlane) {
+        case Area::ArcPlaneAuto: {
+            bool x0 = fabs(dir.X())<Precision::Confusion();
+            bool y0 = fabs(dir.Y())<Precision::Confusion();
+            bool z0 = fabs(dir.Z())<Precision::Confusion();
+            if(x0&&y0)
+                *myArcPlane = Area::ArcPlaneXY;
+            else if(x0&&z0)
+                *myArcPlane = Area::ArcPlaneZX;
+            else if(z0&&y0)
+                *myArcPlane = Area::ArcPlaneYZ;
+            else {
+                *myArcPlane = Area::ArcPlaneXY;
+                dstPos = gp_Ax3(pos.Location(),gp_Dir(0,0,1));
+                break;
+            }
+            myArcPlaneFound = true;
+            return;
+        }case Area::ArcPlaneXY:
+            dstPos = gp_Ax3(pos.Location(),gp_Dir(0,0,1));
+            break;
+        case Area::ArcPlaneZX:
+            dstPos = gp_Ax3(pos.Location(),gp_Dir(0,1,0));
+            break;
+        case Area::ArcPlaneYZ:
+            dstPos = gp_Ax3(pos.Location(),gp_Dir(1,0,0));
+            break;
+        default:
+            return;
+        }
+        myTrsf.SetTransformation(pos,dstPos);
+        myArcPlaneFound = true;
+        return;
     }
 };
 
 
 std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes, 
     const AreaParams *params, const gp_Pnt *_pstart, gp_Pnt *_pend, 
-    PARAM_ARGS(PARAM_FARG,AREA_PARAMS_SORT))
+    short *arc_plane, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_SORT))
 {
     std::list<TopoDS_Shape> wires;
 
@@ -1575,6 +1634,9 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
 #define SORT_WIRE_TIME(_msg) \
     TIME_PRINT(t1,"sortWires "<< _msg)
 
+    gp_Trsf trsf;
+    bool arcPlaneFound = false;
+
     if(sort_mode == SortMode3D) {
         for(auto &shape : shapes)
             shape_list.push_back(ShapeInfo(shape));
@@ -1582,13 +1644,14 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
         //first pass, find plane of each shape
         for(auto &shape : shapes) {
             //explode the shape
-            foreachSubshape(shape,ShapeInfoBuilder(shape_list));
+            foreachSubshape(shape,ShapeInfoBuilder(
+                        arcPlaneFound,arc_plane,trsf,shape_list));
         }
 
         if(shape_list.empty()) 
             return wires;
 
-        SORT_WIRE_TIME("plan finding");
+        SORT_WIRE_TIME("plane finding");
     }
  
     Bnd_Box bounds;
@@ -1603,6 +1666,10 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
         //Second stage, group shape by its plane, and find overall boundary
         for(auto itNext=shape_list.begin(),it=itNext;it!=shape_list.end();it=itNext) {
             ++itNext;
+            if(arcPlaneFound) {
+                it->myShape.Move(trsf);
+                if(it->myPlanar) it->myPln.Transform(trsf);
+            }
             if(use_bound)
                 BRepBndLib::Add(it->myShape, bounds, Standard_False);
             if(!it->myPlanar) continue;
@@ -1694,28 +1761,54 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     return std::move(wires);
 }
 
-static void addCommand(Toolpath &path, const gp_Pnt &p, 
-        bool g0=false, double g0height=0.0, double clearance=0.0)
+static inline void addParameter(Command &cmd, const char *name,
+        double last, double next, bool relative=false)
 {
+    double d = next-last;
+    if(fabs(d)<Precision::Confusion()) return;
+    cmd.Parameters[name] = relative?d:next;
+}
+
+static inline void addCommand(Toolpath &path, const gp_Pnt &last, 
+        const gp_Pnt &next, const char *name = "G1") {
     Command cmd;
-    cmd.Name = g0?"G0":"G1";
-    if(g0 && fabs(g0height)>Precision::Confusion()) {
-        cmd.Parameters["Z"] = g0height;
-        path.addCommand(cmd);
-        cmd.Parameters["X"] = p.X();
-        cmd.Parameters["Y"] = p.Y();
-        path.addCommand(cmd);
-        if(fabs(clearance)>Precision::Confusion()) {
-            cmd.Parameters["Z"] = p.Z()+clearance;
-            path.addCommand(cmd);
-            cmd.Name = "G1";
-        }
-    }else{
-        cmd.Parameters["X"] = p.X();
-        cmd.Parameters["Y"] = p.Y();
-    }
-    cmd.Parameters["Z"] = p.Z();
+    cmd.Name = name;
+    addParameter(cmd,"X",last.X(),next.X());
+    addParameter(cmd,"Y",last.Y(),next.Y());
+    addParameter(cmd,"Z",last.Z(),next.Z());
     path.addCommand(cmd);
+    return;
+}
+
+typedef Standard_Real (gp_Pnt::*AxisGetter)() const;
+typedef void (gp_Pnt::*AxisSetter)(Standard_Real);
+
+static void addCommand(Toolpath &path, 
+        gp_Pnt last, const gp_Pnt &next, 
+        AxisGetter getter, AxisSetter setter,
+        double retraction, double clearance)
+{
+    if(!getter || retraction-(last.*getter)() < Precision::Confusion()) {
+        addCommand(path,last,next,"G0");
+        return;
+    }
+    gp_Pnt pt(last);
+    (pt.*setter)(retraction);
+    addCommand(path,last,pt,"G0");
+    last = pt;
+    pt = next;
+    (pt.*setter)(retraction);
+    addCommand(path,last,pt,"G0");
+    if(clearance>Precision::Confusion() && 
+       clearance+(next.*getter)() < retraction)
+    {
+        last = pt;
+        pt = next;
+        (pt.*setter)((next.*getter)()+clearance);
+        addCommand(path,last,pt,"G0");
+        addCommand(path,pt,next);
+    }else
+        addCommand(path,pt,next,"G0");
 }
 
 static void addCommand(Toolpath &path, 
@@ -1724,12 +1817,18 @@ static void addCommand(Toolpath &path,
 {
     Command cmd;
     cmd.Name = clockwise?"G2":"G3";
-    cmd.Parameters["I"] = center.X()-pstart.X();
-    cmd.Parameters["J"] = center.Y()-pstart.Y();
-    cmd.Parameters["K"] = center.Z()-pstart.Z();
-    cmd.Parameters["X"] = pend.X();
-    cmd.Parameters["Y"] = pend.Y();
-    cmd.Parameters["Z"] = pend.Z();
+    addParameter(cmd,"I",pstart.X(),center.X(),true);
+    addParameter(cmd,"J",pstart.Y(),center.Y(),true);
+    addParameter(cmd,"K",pstart.Z(),center.Z(),true);
+    addParameter(cmd,"X",pstart.X(),pend.X());
+    addParameter(cmd,"Y",pstart.Y(),pend.Y());
+    addParameter(cmd,"Z",pstart.Z(),pend.Z());
+    path.addCommand(cmd);
+}
+
+static inline void addCommand(Toolpath &path, const char *name) {
+    Command cmd;
+    cmd.Name = name;
     path.addCommand(cmd);
 }
 
@@ -1742,10 +1841,42 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     AreaParams params;
     if(_params) params =*_params;
     wires = sortWires(shapes,&params,pstart,pend,
+            PARAM_REF(PARAM_FARG,AREA_PARAMS_ARC_PLANE), 
             PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
+
+    // absolute mode
+    addCommand(path,"G90");
+
+    if(arc_plane==ArcPlaneZX)
+        addCommand(path,"G18");
+    else if(arc_plane==ArcPlaneYZ)
+        addCommand(path,"G19");
     
+    threshold = fabs(threshold);
     if(threshold < Precision::Confusion())
         threshold = Precision::Confusion();
+    clearance = fabs(clearance);
+
+    AxisGetter getter = NULL;
+    AxisSetter setter = NULL;
+    retraction = fabs(retraction);
+    if(retraction>Precision::Confusion()) {
+        switch(retract_axis) {
+        case RetractAxisX:
+            getter = &gp_Pnt::X;
+            setter = &gp_Pnt::SetX;
+            break;
+        case RetractAxisY:
+            getter = &gp_Pnt::Y;
+            setter = &gp_Pnt::SetY;
+            break;
+        case RetractAxisZ:
+            getter = &gp_Pnt::Z;
+            setter = &gp_Pnt::SetZ;
+            break;
+        }
+    }
+
     gp_Pnt plast,p;
     if(pstart) plast = *pstart;
     bool first = true;
@@ -1753,9 +1884,9 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         BRepTools_WireExplorer xp(TopoDS::Wire(wire));
         p = BRep_Tool::Pnt(xp.CurrentVertex());
         if(first||p.Distance(plast)>threshold)
-            addCommand(path,p,true,height,clearance);
+            addCommand(path,plast,p,getter,setter,retraction,clearance);
         else
-            addCommand(path,p);
+            addCommand(path,plast,p);
         plast = p;
         first = false;
         for(;xp.More();xp.Next(),plast=p) {
@@ -1773,27 +1904,33 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
                         if(reversed) {
                             for (int i=nbPoints-1; i>=1; --i) {
                                 gp_Pnt pt = curve.Value(discretizer.Parameter(i));
-                                addCommand(path,pt);
+                                addCommand(path,plast,pt);
+                                plast = pt;
                             }
                         }else{
                             for (int i=2; i<=nbPoints; i++) {
                                 gp_Pnt pt = curve.Value(discretizer.Parameter(i));
-                                addCommand(path,pt);
+                                addCommand(path,plast,pt);
+                                plast = pt;
                             }
                         }
                         break;
                     }
                 }
-                addCommand(path,p);
+                addCommand(path,plast,p);
                 break;
             } case GeomAbs_Circle:{
                 double first = curve.FirstParameter();
                 double last = curve.LastParameter();
-                gp_Circ circle = curve.Circle();
-                gp_Ax1 axis = circle.Axis();
-                bool clockwise = axis.Direction().Z()<0;
+                const gp_Circ &circle = curve.Circle();
+                // Get the normal vector after trasform the circle to the XY0
+                // plane, in order to judge if the circle is facing upward or
+                // downward
+                const gp_Ax1 &axis = circle.Axis();
+                const gp_Dir &dir = axis.Direction().Transformed(curve.Trsf().Inverted());
+                bool clockwise = dir.Z()<0;
                 if(reversed) clockwise = !clockwise;
-                gp_Pnt center = axis.Location();
+                gp_Pnt center = circle.Location();
                 if(segmentation > Precision::Confusion()) {
                     GCPnts_UniformAbscissa discretizer(curve, segmentation, 
                             curve.FirstParameter(), curve.LastParameter());
@@ -1832,12 +1969,14 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
                     if(reversed) {
                         for (int i=nbPoints-1; i>=1; --i) {
                             gp_Pnt pt = discretizer.Value (i);
-                            addCommand(path,pt);
+                            addCommand(path,plast,pt);
+                            plast = pt;
                         }
                     }else{
                         for (int i=2; i<=nbPoints; i++) {
                             gp_Pnt pt = discretizer.Value (i);
-                            addCommand(path,pt);
+                            addCommand(path,plast,pt);
+                            plast = pt;
                         }
                     }
                 }else
