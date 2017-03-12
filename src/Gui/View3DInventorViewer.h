@@ -159,6 +159,7 @@ public:
     void setRenderType(const RenderType type);
     RenderType getRenderType() const;
     void renderToFramebuffer(QtGLFramebufferObject*);
+    QImage grabFramebuffer();
 
     virtual void setViewing(SbBool enable);
     virtual void setCursorEnabled(SbBool enable);
