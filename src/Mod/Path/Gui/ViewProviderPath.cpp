@@ -248,6 +248,9 @@ void ViewProviderPath::updateData(const App::Property* prop)
         bool absolutecenter = false;
         bool first = true;
 
+        // for mapping the coordinates to XY plane
+        double Base::Vector3d::*pz = &Base::Vector3d::z;
+
         for (unsigned int  i = 0; i < tp.getSize(); i++) {
             Path::Command cmd = tp.getCommand(i);
             std::string name = cmd.Name;
@@ -290,41 +293,43 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 Base::Vector3d center;
 
                 if ( (name == "G2") || (name == "G02") )
-                    norm.Set(0,0,-1);
+                    norm.*pz = -1.0;
                 else
-                    norm.Set(0,0,1);
+                    norm.*pz = 1.0;
+
                 if (absolutecenter)
                     center = cmd.getCenter();
                 else
                     center = (last + cmd.getCenter());
-                Base::Vector3d next0 = Base::Vector3d(next.x, next.y, 0);
-                Base::Vector3d last0 = Base::Vector3d(last.x, last.y, 0);
-                Base::Vector3d center0 = Base::Vector3d(center.x, center.y, 0);
+                Base::Vector3d next0(next);
+                next0.*pz = 0.0;
+                Base::Vector3d last0(last);
+                last0.*pz = 0.0;
+                Base::Vector3d center0(center);
+                center0.*pz = 0.0;
                 //double radius = (last - center).Length();
                 double angle = (next0 - center0).GetAngle(last0 - center0);
                 // GetAngle will always return the minor angle. Switch if needed
-                Base::Vector3d anorm = (last - center) % (next - center);
-                if ( (anorm.z < 0) && ( (name == "G3") || (name == "G03") ) )
-                    angle = M_PI * 2 - angle;
-                else if ( (anorm.z > 0) && ( (name == "G2") || (name == "G02") ) )
-                    angle = M_PI * 2 - angle;
-                if (angle == 0)
+                Base::Vector3d anorm = (last0 - center0) % (next0 - center0);
+                if(anorm.*pz < 0) {
+                    if(name == "G3" || name == "G03")
+                        angle = M_PI * 2 - angle;
+                }else if(anorm.*pz > 0) {
+                    if(name == "G2" || name == "G02")
+                        angle = M_PI * 2 - angle;
+                }else if (angle == 0)
                     angle = M_PI * 2;
                 int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/angle)); //we use a rather simple rule here, provisorily
-                double dZ = (next.z - last.z)/segments; //How far each segment will helix in Z
+                double dZ = (next.*pz - last.*pz)/segments; //How far each segment will helix in Z
 
                 for (int j = 1; j < segments; j++) {
-                    //std::cout << "vector " << j << std::endl;
                     Base::Vector3d inter;
                     Base::Rotation rot(norm,(angle/segments)*j);
-                    //std::cout << "angle " << (angle/segments)*j << std::endl;
                     rot.multVec((last0 - center0),inter);
-                    inter.z = last.z + dZ * j; //Enable displaying helices
-                    //std::cout << "result " << inter.x << " , " << inter.y << " , " << inter.z << std::endl;
+                    inter.*pz = last.*pz + dZ * j; //Enable displaying helices
                     points.push_back( center0 + inter);
                     colorindex.push_back(1);
                 }
-                //std::cout << "next " << next.x << " , " << next.y << " , " << next.z << std::endl;
                 points.push_back(next);
                 if (ShowNodes.getValue() == true) {
                     markers.push_back(next); // endpoint
@@ -354,13 +359,14 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 double r = 0;
                 if (cmd.has("R"))
                     r = cmd.getValue("R");
-                Base::Vector3d p1(next.x,next.y,last.z);
-//                Base::Vector3d p1(next.x,next.y,r);
+                Base::Vector3d p1(next);
+                p1.*pz = last.*pz;
                 points.push_back(p1);
                 if (ShowNodes.getValue() == true)
                     markers.push_back(p1);
                 colorindex.push_back(0);
-                Base::Vector3d p2(next.x,next.y,r);
+                Base::Vector3d p2(next);
+                p2.*pz = r;
                 points.push_back(p2);
                 if (ShowNodes.getValue() == true)
                     markers.push_back(p2);
@@ -372,14 +378,14 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 double q;
                 if (cmd.has("Q")) {
                     q = cmd.getValue("Q");
-                    double tempz = r;
-                    while (tempz > next.z) {
-                        Base::Vector3d temp(next.x,next.y,tempz);
-                        markers.push_back(temp);
-                        tempz -= q;
+                    if (q>0) {
+                        Base::Vector3d temp(next);
+                        for(temp.*pz=r;temp.*pz>next.*pz;temp.*pz-=q)
+                            markers.push_back(temp);
                     }
                 }
-                Base::Vector3d p3(next.x,next.y,last.z);
+                Base::Vector3d p3(next);
+                p3.*pz = last.*pz;
                 points.push_back(p3);
                 if (ShowNodes.getValue() == true)
                     markers.push_back(p2);
@@ -395,6 +401,12 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 Base::Vector3d p3(next.x,next.y,last.z);
                 points.push_back(p3);
                 colorindex.push_back(0);
+            } else if(name=="G17") {
+                pz = &Base::Vector3d::z;
+            } else if(name=="G18") {
+                pz = &Base::Vector3d::y;
+            } else if(name=="G19") {
+                pz = &Base::Vector3d::x;
             }}
 
         if (!points.empty()) {
