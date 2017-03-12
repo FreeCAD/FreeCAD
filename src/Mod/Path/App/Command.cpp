@@ -133,6 +133,7 @@ std::string Command::toGCode (void) const
     str << Name;
     for(std::map<std::string,double>::const_iterator i = Parameters.begin(); i != Parameters.end(); ++i) {
         std::string k = i->first;
+        if(k == "N") continue;
         std::string v = std::to_string(i->second);
         str << " " << k << v;
     }
