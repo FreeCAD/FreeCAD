@@ -1356,41 +1356,7 @@ void View3DInventorViewer::setRenderType(const RenderType type)
         break;
     case Image:
         {
-            QtGLWidget* gl = static_cast<QtGLWidget*>(this->viewport());
-            gl->makeCurrent();
-#if !defined(HAVE_QT5_OPENGL)
-            int w = gl->width();
-            int h = gl->height();
-            QImage img(QSize(w,h), QImage::Format_RGB32);
-            glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, img.bits());
-            glImage = img;
-#else
-            const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-            SbVec2s size = vp.getViewportSizePixels();
-            int width = size[0];
-            int height = size[1];
-
-            int samples = getNumSamples();
-            if (samples == 0) {
-                // if anti-aliasing is off we can directly use glReadPixels
-                QImage img(QSize(width, height), QImage::Format_RGB32);
-                glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, img.bits());
-                glImage = img;
-            }
-            else {
-                QOpenGLFramebufferObjectFormat fboFormat;
-                fboFormat.setSamples(getNumSamples());
-                fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
-                fboFormat.setTextureTarget(GL_TEXTURE_2D);
-                fboFormat.setInternalTextureFormat(GL_RGBA32F_ARB);
-
-                QOpenGLFramebufferObject fbo(width, height, fboFormat);
-                renderToFramebuffer(&fbo);
-
-                glImage = fbo.toImage(false);
-            }
-#endif
-            gl->doneCurrent();
+            glImage = grabFramebuffer();
         }
         break;
     }
@@ -1399,6 +1365,48 @@ void View3DInventorViewer::setRenderType(const RenderType type)
 View3DInventorViewer::RenderType View3DInventorViewer::getRenderType() const
 {
     return this->renderType;
+}
+
+QImage View3DInventorViewer::grabFramebuffer()
+{
+    QtGLWidget* gl = static_cast<QtGLWidget*>(this->viewport());
+    gl->makeCurrent();
+
+    QImage res;
+#if !defined(HAVE_QT5_OPENGL)
+    int w = gl->width();
+    int h = gl->height();
+    QImage img(QSize(w,h), QImage::Format_RGB32);
+    glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, img.bits());
+    res = img;
+#else
+    const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+    SbVec2s size = vp.getViewportSizePixels();
+    int width = size[0];
+    int height = size[1];
+
+    int samples = getNumSamples();
+    if (samples == 0) {
+        // if anti-aliasing is off we can directly use glReadPixels
+        QImage img(QSize(width, height), QImage::Format_RGB32);
+        glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, img.bits());
+        res = img;
+    }
+    else {
+        QOpenGLFramebufferObjectFormat fboFormat;
+        fboFormat.setSamples(getNumSamples());
+        fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
+        fboFormat.setTextureTarget(GL_TEXTURE_2D);
+        fboFormat.setInternalTextureFormat(GL_RGB32F_ARB);
+
+        QOpenGLFramebufferObject fbo(width, height, fboFormat);
+        renderToFramebuffer(&fbo);
+
+        res = fbo.toImage(false);
+    }
+#endif
+    gl->doneCurrent();
+    return res;
 }
 
 void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)
