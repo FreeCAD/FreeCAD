@@ -589,6 +589,8 @@ SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
     fmt.setAttachment(QtGLFramebufferObject::Depth);
 #if defined(HAVE_QT5_OPENGL)
     fmt.setInternalTextureFormat(GL_RGB32F_ARB);
+#else
+    fmt.setInternalTextureFormat(GL_RGB);
 #endif
 #else
     QtGLFramebufferObject::Attachment fmt;
