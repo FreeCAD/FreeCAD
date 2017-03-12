@@ -931,7 +931,7 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
 #if !defined(HAVE_QT5_OPENGL)
     bool useCoinOffscreenRenderer = !QGLPixelBuffer::hasOpenGLPbuffers();
 #else
-    bool useCoinOffscreenRenderer = true;
+    bool useCoinOffscreenRenderer = false;
 #endif
     useCoinOffscreenRenderer = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->
@@ -1001,8 +1001,10 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
     root->addChild(gl);
     root->addChild(pcViewProviderRoot);
 
+#if !defined(HAVE_QT5_OPENGL)
     if (useBackground)
         root->addChild(cb);
+#endif
 
     root->addChild(foregroundroot);
 
@@ -1012,7 +1014,7 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
             SoQtOffscreenRenderer renderer(vp);
             renderer.setNumPasses(4);
             if (bgColor.isValid())
-                renderer.setBackgroundColor(SbColor(bgColor.redF(), bgColor.greenF(), bgColor.blueF()));
+                renderer.setBackgroundColor(SbColor4f(bgColor.redF(), bgColor.greenF(), bgColor.blueF(), bgColor.alphaF()));
             if (!renderer.render(root))
                 throw Base::Exception("Offscreen rendering failed");
 

@@ -26,10 +26,10 @@
 
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/SbMatrix.h>
+#include <Inventor/SbColor4f.h>
+#include <QImage>
 #include <QStringList>
 #include <QtOpenGL.h>
-
-class QImage;
 
 namespace Gui {
 
@@ -108,8 +108,8 @@ public:
     void setViewportRegion(const SbViewportRegion & region);
     const SbViewportRegion & getViewportRegion(void) const;
 
-    void setBackgroundColor(const SbColor & color);
-    const SbColor & getBackgroundColor(void) const;
+    void setBackgroundColor(const SbColor4f & color);
+    const SbColor4f & getBackgroundColor(void) const;
 
     void setGLRenderAction(SoGLRenderAction * action);
     SoGLRenderAction * getGLRenderAction(void) const;
@@ -142,11 +142,14 @@ private:
     uint32_t                cache_context; // our unique context id
 
     SbViewportRegion viewport;
-    SbColor backgroundcolor;
+    SbColor4f backgroundcolor;
     SoGLRenderAction * renderaction;
     SbBool didallocation;
     SbBool pbuffer;
     int numSamples;
+#if defined(HAVE_QT5_OPENGL)
+    QImage glImage;
+#endif
 };
 
 } // namespace Gui
