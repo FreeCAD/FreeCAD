@@ -79,7 +79,7 @@ public:
      *                 and into the begin if where is InsertAfter.
      * @param after    if true insert the feature after the target. Default is false.
      *
-     * @note the methode doesn't modifies the Tip unlike addObject()
+     * @note the method doesn't modify the Tip unlike addObject()
      */
     void insertObject(App::DocumentObject* feature, App::DocumentObject* target, bool after=false);
 
