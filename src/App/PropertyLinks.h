@@ -153,8 +153,8 @@ private:
 };
 
 /** the Link Poperty with sub elements
- *  This property links a object and a defined sequence of
- *  sub elements. This subelemts (like Edges of a Shape)
+ *  This property links an object and a defined sequence of
+ *  sub elements. These subelements (like Edges of a Shape)
  *  are stored as names, which can be resolved by the 
  *  ComplexGeoDataType interface to concrete sub objects.
  */

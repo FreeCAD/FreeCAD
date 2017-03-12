@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
   <PythonExport
     Father="BodyBasePy"
@@ -24,7 +24,7 @@
                           and into the begin if where is InsertAfter.
                         @param after    if true insert the feature after the target. Default is false.
 
-                        @note the methode doesn't modifies the Tip unlike addObject()
+                        @note the method doesn't modify the Tip unlike addObject()
                     </UserDocu>
             </Documentation>
     </Methode>
