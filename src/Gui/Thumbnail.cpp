@@ -136,14 +136,15 @@ void Thumbnail::createThumbnailFromFramebuffer(QImage& img) const
     // Alternative way of off-screen rendering
     if (this->viewer->isActiveWindow()) {
         static_cast<QtGLWidget*>(this->viewer->getGLWidget())->makeCurrent();
-#if defined(HAVE_QT5_OPENGL)
+
         QtGLFramebufferObjectFormat format;
         format.setAttachment(QtGLFramebufferObject::Depth);
+#if defined(HAVE_QT5_OPENGL)
         format.setInternalTextureFormat(GL_RGB32F_ARB);
-        QtGLFramebufferObject fbo(this->size, this->size, format);
 #else
-        QtGLFramebufferObject fbo(this->size, this->size, QtGLFramebufferObject::Depth);
+        format.setInternalTextureFormat(GL_RGB);
 #endif
+        QtGLFramebufferObject fbo(this->size, this->size, format);
         this->viewer->renderToFramebuffer(&fbo);
         img = fbo.toImage();
         static_cast<QtGLWidget*>(this->viewer->getGLWidget())->doneCurrent();
