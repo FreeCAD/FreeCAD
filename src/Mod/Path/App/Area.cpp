@@ -565,6 +565,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
             yMin<<','<<yMax<<"), Z("<<zMin<<','<<zMax<<')');
 
     std::vector<double> heights;
+    double tolerance = 0.0;
     if(_heights.empty()) {
         double z;
         double d = fabs(myParams.Stepdown);
@@ -593,7 +594,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
             z = zMax;
         else if(z < zMin)
             z = zMin;
-        double dz,tolerance;
+        double dz;
         if(myParams.Stepdown>0.0) {
             dz = z - zMin;
             tolerance = myParams.SectionTolerance;
@@ -660,56 +661,77 @@ std::vector<shared_ptr<Area> > Area::makeSections(
 
     std::vector<shared_ptr<Area> > sections;
     sections.reserve(heights.size());
+    tolerance *= 2.0;
+    bool can_retry = fabs(tolerance)>Precision::Confusion();
     for(double z : heights) {
-        gp_Pln pln(gp_Pnt(0,0,z),gp_Dir(0,0,1));
-        Standard_Real a,b,c,d;
-        pln.Coefficients(a,b,c,d);
-        BRepLib_MakeFace mkFace(pln,xMin,xMax,yMin,yMax);
-        const TopoDS_Shape &face = mkFace.Face();
+        bool retried = !can_retry;
+        while(true) {
+            gp_Pln pln(gp_Pnt(0,0,z),gp_Dir(0,0,1));
+            Standard_Real a,b,c,d;
+            pln.Coefficients(a,b,c,d);
+            BRepLib_MakeFace mkFace(pln,xMin,xMax,yMin,yMax);
+            const TopoDS_Shape &face = mkFace.Face();
 
-        shared_ptr<Area> area(new Area(&myParams));
-        area->setPlane(face);
-        for(const Shape &s : myShapes) {
-            BRep_Builder builder;
-            TopoDS_Compound comp;
-            builder.MakeCompound(comp);
-            for(TopExp_Explorer it(s.shape.Moved(loc), TopAbs_SOLID); it.More(); it.Next()) {
-                Part::CrossSection section(a,b,c,it.Current());
-                std::list<TopoDS_Wire> wires = section.slice(-d);
-                if(wires.empty()) {
-                    AREA_LOG("Section returns no wires");
-                    continue;
-                }
-
-                Part::FaceMakerBullseye mkFace;
-                mkFace.setPlane(pln);
-                for(const TopoDS_Wire &wire : wires)
-                    mkFace.addWire(wire);
-                try {
-                    mkFace.Build();
-                    if (mkFace.Shape().IsNull())
-                        AREA_WARN("FaceMakerBullseye return null shape on section");
-                    else {
-                        builder.Add(comp,mkFace.Shape());
+            shared_ptr<Area> area(new Area(&myParams));
+            area->setPlane(face);
+            for(auto it=myShapes.begin();it!=myShapes.end();++it) {
+                const auto &s = *it;
+                BRep_Builder builder;
+                TopoDS_Compound comp;
+                builder.MakeCompound(comp);
+                for(TopExp_Explorer xp(s.shape.Moved(loc), TopAbs_SOLID); xp.More(); xp.Next()) {
+                    Part::CrossSection section(a,b,c,xp.Current());
+                    std::list<TopoDS_Wire> wires = section.slice(-d);
+                    if(wires.empty()) {
+                        AREA_LOG("Section returns no wires");
                         continue;
                     }
-                }catch (Base::Exception &e){
-                    AREA_WARN("FaceMakerBullseye failed on section: " << e.what());
+                    Part::FaceMakerBullseye mkFace;
+                    mkFace.setPlane(pln);
+                    for(const TopoDS_Wire &wire : wires)
+                        mkFace.addWire(wire);
+                    try {
+                        mkFace.Build();
+                        if (mkFace.Shape().IsNull())
+                            AREA_WARN("FaceMakerBullseye return null shape on section");
+                        else {
+                            builder.Add(comp,mkFace.Shape());
+                            continue;
+                        }
+                    }catch (Base::Exception &e){
+                        AREA_WARN("FaceMakerBullseye failed on section: " << e.what());
+                    }
+                    for(const TopoDS_Wire &wire : wires)
+                        builder.Add(comp,wire);
                 }
-                for(const TopoDS_Wire &wire : wires)
-                    builder.Add(comp,wire);
-            }
 
-            // Make sure the compound has at least one edge
-            for(TopExp_Explorer it(comp,TopAbs_EDGE);it.More();) {
-                area->add(comp,s.op);
+                // Make sure the compound has at least one edge
+                TopExp_Explorer xp(comp,TopAbs_EDGE);
+                if(xp.More()) {
+                    area->add(comp,s.op);
+                }else if(area->myShapes.empty()){
+                    auto itNext = it;
+                    if(++itNext != myShapes.end() &&
+                        (itNext->op==OperationIntersection ||
+                         itNext->op==OperationDifference))
+                    {
+                        break;
+                    }
+                }
+            }
+            if(area->myShapes.size()){
+                sections.push_back(area);
                 break;
             }
+            if(retried) {
+                AREA_WARN("Discard empty section");
+                break;
+            }else{
+                AREA_TRACE("retry section " <<z<<"->"<<z+tolerance);
+                z += tolerance;
+                retried = true;
+            }
         }
-        if(area->myShapes.size())
-            sections.push_back(area);
-        else
-            AREA_WARN("Discard empty section");
         TIME_PRINT(t1,"makeSection " << z);
     }
     TIME_PRINT(t,"makeSection count: " << sections.size()<<", total");
