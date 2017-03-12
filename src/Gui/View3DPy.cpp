@@ -710,6 +710,8 @@ void View3DInventorPy::createImageFromFramebuffer(int width, int height, const Q
     format.setAttachment(QtGLFramebufferObject::Depth);
 #if defined(HAVE_QT5_OPENGL)
     format.setInternalTextureFormat(GL_RGB32F_ARB);
+#else
+    format.setInternalTextureFormat(GL_RGB);
 #endif
     QtGLFramebufferObject fbo(width, height, format);
 #else
