@@ -53,6 +53,7 @@ public:
 
     /// Returns a point of the feature it counts as it's base
     virtual Base::Vector3d getBasePoint () const;
+
 protected:
     void onDocumentRestored();
 };
