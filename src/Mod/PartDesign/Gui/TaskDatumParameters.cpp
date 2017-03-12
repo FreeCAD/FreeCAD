@@ -77,6 +77,9 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *ViewProvider,QWidget
 
 TaskDatumParameters::~TaskDatumParameters()
 {
+    if(this->ViewProvider && this->ViewProvider->isDerivedFrom(ViewProviderDatum::getClassTypeId()))
+        static_cast<ViewProviderDatum*>(this->ViewProvider)->setPickable(true);
+    Gui::Selection().rmvSelectionGate();
 }
 
 
@@ -100,8 +103,6 @@ TaskDlgDatumParameters::~TaskDlgDatumParameters()
 
 bool TaskDlgDatumParameters::reject() {
     
-    Gui::Selection().rmvSelectionGate();
-    static_cast<ViewProviderDatum*>(ViewProvider)->setPickable(true);
     return PartGui::TaskDlgAttacher::reject();
 }
 
