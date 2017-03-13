@@ -97,9 +97,8 @@ GLImageBox::GLImageBox(QWidget * parent, Qt::WindowFlags f)
     _pColorMap = 0;
     _numMapEntries = 0;
 
-#ifdef _DEBUG
+#if defined(_DEBUG) && 0
     QSurfaceFormat format;
-    format.setProfile(QSurfaceFormat::CoreProfile);
     format.setOption(QSurfaceFormat::DebugContext);
     this->setFormat(format);
 #endif
@@ -132,19 +131,7 @@ void GLImageBox::initializeGL()
         haveMesa = (ver.find("Mesa") != std::string::npos);
     }
 
-#if _DEBUG
-#if 0
-    QString ext = QString::fromLatin1((const char*)(glGetString(GL_EXTENSIONS)));
-    QStringList list = ext.split(QLatin1Char(' '));
-    std::list<std::string> extlist;
-    Q_FOREACH(QString it, list) {
-        extlist.push_back(it.toStdString());
-    }
-    std::string glRenderer = (const char*)(glGetString(GL_RENDERER));
-    std::string glVendor = (const char*)(glGetString(GL_VENDOR));
-    std::string glVersion = (const char*)(glGetString(GL_VERSION));
-#endif
-
+#if defined(_DEBUG) && 0
     QOpenGLContext *context = QOpenGLContext::currentContext();
     if (context->hasExtension(QByteArrayLiteral("GL_KHR_debug"))) {
         QOpenGLDebugLogger *logger = new QOpenGLDebugLogger(this);

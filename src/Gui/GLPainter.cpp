@@ -61,6 +61,7 @@ bool GLPainter::begin(QPaintDevice * device)
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
+
     glLoadIdentity();
     glOrtho(0, this->width, 0, this->height, -1, 1);
 
@@ -80,7 +81,9 @@ bool GLPainter::begin(QPaintDevice * device)
     glLineWidth(1.0f);
     glColor4f(1.0, 1.0, 1.0, 0.0);
     glViewport(0, 0, this->width, this->height);
+#if !defined(HAVE_QT5_OPENGL)
     glDrawBuffer(GL_FRONT);
+#endif
 
     return true;
 }
@@ -110,7 +113,6 @@ bool GLPainter::end()
     glPopAttrib();
     glPopMatrix();
 
-    viewer->doneCurrent();
     viewer = 0;
     return true;
 }

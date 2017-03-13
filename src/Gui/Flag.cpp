@@ -125,7 +125,9 @@ void Flag::drawLine (View3DInventorViewer* v, int tox, int toy)
 
     GLPainter p;
     p.begin(v->getGLWidget());
+#if !defined(HAVE_QT5_OPENGL)
     p.setDrawBuffer(GL_BACK);
+#endif
 
     // the line
     p.setLineWidth(1.0f);
