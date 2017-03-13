@@ -170,6 +170,22 @@ class ViewProviderConnect:
             FreeCAD.Console.PrintError("Error in onDelete: " + str(err))
         return True
 
+    def canDragObjects(self):
+        return True
+    def canDropObjects(self):
+        return True
+    def canDragObject(self, dragged_object):
+        return True
+    def canDropObject(self, incoming_object):
+        return hasattr(incoming_object, 'Shape')
+    def dragObject(self, selfvp, dragged_object):
+        objs = self.Object.Objects
+        objs.remove(dragged_object)
+        self.Object.Objects = objs
+    def dropObject(self, selfvp, incoming_object):
+        self.Object.Objects = self.Object.Objects + [incoming_object]
+
+
 class CommandConnect:
     "Command to create Connect feature"
     def GetResources(self):
