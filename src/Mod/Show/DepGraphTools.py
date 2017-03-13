@@ -68,17 +68,12 @@ def getAllDependent(feat):
 def isContainer(obj):
     '''isContainer(obj): returns True if obj is an object container, such as 
     Group, Part, Body. The important characterisic of an object being a 
-    container is its action on visibility of linked objects. E.g. a 
-    Part::Compound is not a group, because it does not affect visibility 
-    of originals. Documents are considered containers, too.'''
+    container is visibility nesting.'''
     
-    if obj.isDerivedFrom("App::DocumentObjectGroup"):
+    if obj.hasExtension('App::OriginGroupExtension'):
         return True
-    if obj.isDerivedFrom("Part::BodyBase"):
+    if obj.hasExtension('App::GroupExtension'):
         return True
-    if obj.isDerivedFrom("App::Origin"):
+    if obj.isDerivedFrom('App::Origin'):
         return True
-    if obj.isDerivedFrom("App::Part"):
-        return True
-    if obj.isDerivedFrom('App::Document'):
-        return True
+    return False
