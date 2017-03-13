@@ -729,8 +729,6 @@ void View3DInventorPy::createImageFromFramebuffer(int width, int height, const Q
     viewer->setBackgroundColor(col);
     viewer->setGradientBackground(on);
     img = fbo.toImage();
-
-    static_cast<QtGLWidget*>(viewer->getGLWidget())->doneCurrent();
 }
 
 Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)

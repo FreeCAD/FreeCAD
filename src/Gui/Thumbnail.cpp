@@ -147,6 +147,5 @@ void Thumbnail::createThumbnailFromFramebuffer(QImage& img) const
         QtGLFramebufferObject fbo(this->size, this->size, format);
         this->viewer->renderToFramebuffer(&fbo);
         img = fbo.toImage();
-        static_cast<QtGLWidget*>(this->viewer->getGLWidget())->doneCurrent();
     }
 }

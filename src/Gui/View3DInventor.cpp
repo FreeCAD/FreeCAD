@@ -603,8 +603,6 @@ void View3DInventor::previewFromFramebuffer(const QRect& rect, QImage& img)
     _viewer->setBackgroundColor(col);
     _viewer->setGradientBackground(on);
     img = fbo.toImage();
-
-    static_cast<QtGLWidget*>(_viewer->getGLWidget())->doneCurrent();
 }
 
 // **********************************************************************************
