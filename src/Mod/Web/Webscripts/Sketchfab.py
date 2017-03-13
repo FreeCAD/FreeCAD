@@ -26,7 +26,7 @@ __title__ = "Sketchfab uploader"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-import FreeCAD, FreeCADGui, WebGui, os, zipfile, requests, tempfile, json, time
+import FreeCAD, FreeCADGui, WebGui, os, zipfile, requests, tempfile, json, time, re
 from PySide import QtCore, QtGui
 
 # \cond
@@ -123,9 +123,22 @@ class SketchfabTaskPanel:
             import Part
             Part.export(objects,filename+".iges")
             return self.packFiles(filename,[filename+".iges"])
-        elif filetype == 5: # STL
+        elif filetype == 5: # IV
             import FreeCADGui
             FreeCADGui.export(objects,filename+".iv")
+            # removing FreeCAD-specific nodes
+            f = open(filename+".iv","rb")
+            s = f.read()
+            f.close()
+            s = s.replace("SoBrepEdgeSet","SoIndexedLineSet")
+            s = s.replace("SoBrepFaceSet","SoIndexedFaceSet")
+            s = s.replace("\n","--endl--")
+            s = re.sub("highlightIndex .*?\]"," ",s)
+            s = re.sub("partIndex .*?\]"," ",s)
+            s = s.replace("--endl--","\n")
+            f = open(filename+".iv","wb")
+            f.write(s)
+            f.close()
             return self.packFiles(filename,[filename+".iv"])
 
     def packFiles(self,filename,fileslist):
@@ -159,11 +172,21 @@ class SketchfabTaskPanel:
         if not pack:
             QtGui.QMessageBox.critical(None,translate("Web","File packing error"),translate("Unable to save and zip a file for upload"))
             return
+        if os.path.getsize(pack[0]) >= 52428800:
+            b = QtGui.QMessageBox()
+            b.setText(translate("Web","Big upload"))
+            b.setInformativeText(translate("Web","The file to be uploaded is %s, which is above the maximum 50Mb allowed by free Sketchfab accounts. Pro accounts allow for up to 200Mb. Continue?") % pack[1])
+            b.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
+            b.setDefaultButton(QtGui.QMessageBox.Cancel)
+            ret = b.exec_()
+            if ret != QtGui.QMessageBox.Ok:
+                return            
         data = {
             "name": self.form.Text_Name.text(),
             "description": self.form.Text_Description.text(),
             "tags": ["freecad"]+[t.strip() for t in self.form.Text_Tags.text().split(",")],
             "private": self.form.Check_Private.isChecked(),
+            "source":"freecad",
             }
         files = {
             "modelFile": open(pack[0], 'rb')
@@ -172,24 +195,26 @@ class SketchfabTaskPanel:
         # for now this is a fake progress bar, it won't move, just to show the user that the upload is in progress
         self.form.ProgressBar.setFormat(translate("Web","Uploading")+" "+pack[1]+"...")
         self.form.ProgressBar.show()
+        QtGui.qApp.processEvents()
         try:
             r = requests.post(SKETCHFAB_UPLOAD_URL, **self.get_request_payload(self.form.Text_Token.text(), data, files=files))
         except requests.exceptions.RequestException as e:
-            QtGui.QMessageBox.critical(None,translate("Web","Upload error"),translate("Upload failed:")+" "+str(e))
+            QtGui.QMessageBox.critical(None,translate("Web","Upload error"),translate("Web","Upload failed:")+" "+str(e))
             self.form.ProgressBar.hide()
             self.form.Button_Upload.show()
             return
         if r.status_code != requests.codes.created:
-            QtGui.QMessageBox.critical(None,translate("Web","Upload error"),translate("Upload failed:")+" "+r.json())
+            QtGui.QMessageBox.critical(None,translate("Web","Upload error"),translate("Web","Upload failed:")+" "+str(r.json()))
             self.form.ProgressBar.hide()
             self.form.Button_Upload.show()
             return
         self.url = r.headers['Location']
-        if self.form.Combo_Filetype.currentIndex() in [0,1]: # OBJ format, sketchfab expects inverted Y/Z axes
+        if self.form.Combo_Filetype.currentIndex() in [0,1,5]: # OBJ format, sketchfab expects inverted Y/Z axes
             self.form.ProgressBar.setFormat(translate("Web","Awaiting confirmation..."))
             self.form.ProgressBar.setValue(75)
             if self.poll(self.url):
                 self.form.ProgressBar.setFormat(translate("Web","Fixing model..."))
+                QtGui.qApp.processEvents()
                 self.patch(self.url)
             else:
                 QtGui.QMessageBox.warning(None,translate("Web","Patch error"),translate("Web","Patching failed. The model was successfully uploaded, but might still require manual adjustments:"))
@@ -208,13 +233,17 @@ class SketchfabTaskPanel:
             try:
                 r = requests.get(url, **self.get_request_payload(self.form.Text_Token.text()))
             except requests.exceptions.RequestException as e:
-                print ('Sketchfab: Polling failed with error {}'.format(e))
+                print ('Sketchfab: Polling failed with error: ',str(e))
                 errors += 1
                 retry += 1
                 continue
             result = r.json()
+            if "error" in result:
+                e = result["error"]
+            else:
+                e = result
             if r.status_code != requests.codes.ok:
-                print ('Sketchfab: Polling failed with error: {}'.format(result['error']))
+                print ('Sketchfab: Polling failed with error: ',str(e))
                 errors += 1
                 retry += 1
                 continue
@@ -228,7 +257,7 @@ class SketchfabTaskPanel:
                 time.sleep(retry_timeout)
                 continue
             elif processing_status == 'FAILED':
-                print ('Sketchfab: Polling failed: {}'.format(result['error']))
+                print ('Sketchfab: Polling failed: ',str(e))
                 return False
             elif processing_status == 'SUCCEEDED':
                 return True
@@ -257,7 +286,6 @@ class SketchfabTaskPanel:
             url = self.url.replace("api","www")
             url = url.replace("/v3","")
             QtGui.QDesktopServices.openUrl(url)
-        
 
 
 
