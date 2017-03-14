@@ -23,21 +23,7 @@ if(BUILD_GUI)
         LoadFemExample3D.py
         Mesh.py
         PartDesign.py
-        images/Background.jpg
-        images/FreeCAD.png
-        images/PartDesign.png
-        images/ArchDesign.png
-        images/Mesh.png
-        images/Complete.png
-        images/PartDesignExample.png
-        images/ArchExample.png
-        images/web.png
-        images/blank.png
-        images/freecad-doc.png
-        images/complete.jpg
         Ship.py
-        images/Ship.png
-        images/ShipExample.png
         StartPage.css
         StartPage.js
         StartPage.html
