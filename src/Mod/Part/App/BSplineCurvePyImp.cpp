@@ -840,17 +840,6 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
         
         if (weight1 || weight2 || weight3) {
             // It seems that this function only works with Continuity = C0, C1 or C2
-            if (degMax < 3) {
-                c = GeomAbs_C0;
-            }
-            else if (degMax < 5) {
-                if (!(c == GeomAbs_C0)) {
-                    c = GeomAbs_C1;
-                }
-            }
-            else if (!(c == GeomAbs_C0 || c == GeomAbs_C1 || c == GeomAbs_C2)) {
-                c = GeomAbs_C2;
-            }
             GeomAPI_PointsToBSpline fit(pnts, weight1, weight2, weight3, degMax, c, tol3d);
             Handle_Geom_BSplineCurve spline = fit.Curve();
             if (!spline.IsNull()) {
