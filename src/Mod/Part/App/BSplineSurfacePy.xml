@@ -695,6 +695,7 @@
 					- X0, dX, Y0, dY (floats) with Points = 2Darray of floats
 					- ParamType = 'Uniform','Centripetal' or 'ChordLength'
 					- LengthWeight, CurvatureWeight, TorsionWeight (floats)
+					(with this smoothing algorithm, continuity C1 requires DegMax >= 3 and C2, DegMax >=5)
 					
 					Possible combinations :
 					- approximate(Points, DegMin, DegMax, Continuity, Tolerance)

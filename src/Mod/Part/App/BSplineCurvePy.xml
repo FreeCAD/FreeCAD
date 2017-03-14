@@ -315,7 +315,7 @@ from the knots table of this B-Spline curve.</UserDocu>
 					points using variational smoothing algorithm, which tries to minimize 
 					additional criterium: 
 					LengthWeight*CurveLength + CurvatureWeight*Curvature + TorsionWeight*Torsion
-					Continuity must be C0, C1 or C2, else defaults to C2.
+                                        Continuity must be C0, C1(with DegMax >= 3) or C2(with DegMax >= 5).
 
 					Parameters = list of floats : knot sequence of the approximated points.
 					This argument is only used if the weights above are all null.
