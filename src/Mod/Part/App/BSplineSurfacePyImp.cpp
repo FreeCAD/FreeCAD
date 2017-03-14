@@ -1329,13 +1329,6 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args, PyObject *kwds)
         }
         else if (!(weight1 == 0) || !(weight2 == 0) || !(weight3 == 0)) {
             // one of the weights is not null, we use the smoothing algorithm
-            // adjust continuity for low values of degMax, instead of failing
-            if (degMax < 3) {
-                c = GeomAbs_C0;
-            }
-            else if ((degMax < 5) && (c == GeomAbs_C2)) {
-                c = GeomAbs_C1;
-            }
             surInterpolation.Init(interpolationPoints, weight1, weight2, weight3, degMax, c, tol3d);
         }
         else {
