@@ -176,6 +176,7 @@ public:
                 logger->startLogging(QOpenGLDebugLogger::SynchronousLogging);
         }
 #endif
+        connect(this, &CustomGLWidget::resized, this, &CustomGLWidget::slotResized);
     }
     bool event(QEvent *e)
     {
@@ -198,6 +199,14 @@ public:
     void handleLoggedMessage(const QOpenGLDebugMessage &message)
     {
         qDebug() << message;
+    }
+    void showEvent(QShowEvent*)
+    {
+        update(); // force update when changing window mode
+    }
+    void slotResized()
+    {
+        update(); // fixes flickering on some systems
     }
 };
 #else
