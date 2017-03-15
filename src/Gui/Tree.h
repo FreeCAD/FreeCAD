@@ -37,6 +37,8 @@ namespace Gui {
 
 class ViewProviderDocumentObject;
 class DocumentObjectItem;
+typedef std::set<DocumentObjectItem*> DocumentObjectItems;
+typedef std::shared_ptr<DocumentObjectItems> DocumentObjectItemsPtr;
 class DocumentItem;
 
 /// highlight modes for the tree items
@@ -154,12 +156,13 @@ public:
     void selectItems(void);
     void testStatus(void);
     void setData(int column, int role, const QVariant & value);
+    void populateItem(DocumentObjectItem *item, bool refresh = false);
 
 protected:
     /** Adds a view provider to the document item.
      * If this view provider is already added nothing happens.
      */
-    void slotNewObject(const Gui::ViewProviderDocumentObject&);
+    void slotNewObject(DocumentObjectItem *parent, const Gui::ViewProviderDocumentObject&);
     /** Removes a view provider from the document item.
      * If this view provider is not added nothing happens.
      */
@@ -171,11 +174,10 @@ protected:
     void slotResetEdit       (const Gui::ViewProviderDocumentObject&);
     void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool);
     void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&);
-    std::vector<DocumentObjectItem*> getAllParents(DocumentObjectItem*) const;
-
+        
 private:
     const Gui::Document* pDocument;
-    std::map<std::string,DocumentObjectItem*> ObjectMap;
+    std::map<std::string,DocumentObjectItemsPtr> ObjectMap;
 
     typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
     Connection connectNewObject;
@@ -197,7 +199,8 @@ private:
 class DocumentObjectItem : public QTreeWidgetItem
 {
 public:
-    DocumentObjectItem(Gui::ViewProviderDocumentObject* pcViewProvider, QTreeWidgetItem * parent);
+    DocumentObjectItem(Gui::ViewProviderDocumentObject* pcViewProvider, 
+                       QTreeWidgetItem * parent, DocumentObjectItemsPtr selves);
     ~DocumentObjectItem();
 
     Gui::ViewProviderDocumentObject* object() const;
@@ -220,7 +223,11 @@ private:
     Connection connectTool;
     Connection connectStat;
 
+    DocumentObjectItemsPtr myselves;
+    bool populated;
+
     friend class TreeWidget;
+    friend class DocumentItem;
 };
 
 /**
