@@ -82,8 +82,7 @@ class ObjectPathEngrave:
         return None
 
     def onChanged(self, obj, prop):
-        if prop == "UserLabel":
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+        pass
 
     def execute(self, obj):
         PathLog.track()
@@ -118,45 +117,51 @@ class ObjectPathEngrave:
         if baseobject is None:
             return
 
-        if isinstance(baseobject.Proxy, Draft._ShapeString):
+        try:
+            if isinstance(baseobject.Proxy, Draft._ShapeString):
+                output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
+
+                # we only consider the outer wire if this is a Face
+                for w in baseobject.Shape.Wires:
+                    tempedges = PathUtils.cleanedges(w.Edges, 0.5)
+                    wires.append(Part.Wire(tempedges))
+
+                if obj.Algorithm == "OCC Native":
+                    output += self.buildpathocc(obj, wires)
+
+            elif isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+                baseobject.Proxy.execute(baseobject)
+                ss = baseobject.Proxy.sheettag
+                ss.Placement = baseobject.Placement.multiply(ss.Placement)
+
+                output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
+                for w in ss.Wires:
+                    tempedges = PathUtils.cleanedges(w.Edges, 0.5)
+                    wires.append(Part.Wire(tempedges))
+                if obj.Algorithm == "OCC Native":
+                    output += self.buildpathocc(obj, wires)
+
+                for subobj in baseobject.Group:  # process the group of panels
+                    if isinstance(subobj.Proxy, ArchPanel.PanelCut):
+                        subobj.Proxy.execute(subobj)
+
+                        if hasattr(subobj.Proxy, "tag"):
+                            ss = subobj.Proxy.tag
+                            ss.Placement = subobj.Placement.multiply(ss.Placement)
+
+                            output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
+                            for w in ss.Wires:
+                                tempedges = PathUtils.cleanedges(w.Edges, 0.5)
+                                wires.append(Part.Wire(tempedges))
+                            if obj.Algorithm == "OCC Native":
+                                output += self.buildpathocc(obj, wires)
+            else:
+                raise ValueError('Unknown baseobject type for engraving')
+
             output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
 
-            # we only consider the outer wire if this is a Face
-            for w in baseobject.Shape.Wires:
-                tempedges = PathUtils.cleanedges(w.Edges, 0.5)
-                wires.append(Part.Wire(tempedges))
-
-            if obj.Algorithm == "OCC Native":
-                output += self.buildpathocc(obj, wires)
-
-        elif isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
-            baseobject.Proxy.execute(baseobject)
-            ss = baseobject.Proxy.sheettag
-            ss.Placement = baseobject.Placement.multiply(ss.Placement)
-
-            output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
-            for w in ss.Wires:
-                tempedges = PathUtils.cleanedges(w.Edges, 0.5)
-                wires.append(Part.Wire(tempedges))
-            if obj.Algorithm == "OCC Native":
-                output += self.buildpathocc(obj, wires)
-
-            for subobj in baseobject.Group:  # process the group of panels
-                if isinstance(subobj.Proxy, ArchPanel.PanelCut):
-                    subobj.Proxy.execute(subobj)
-
-                    if hasattr(subobj.Proxy, "tag"):
-                        ss = subobj.Proxy.tag
-                        ss.Placement = subobj.Placement.multiply(ss.Placement)
-
-                        output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
-                        for w in ss.Wires:
-                            tempedges = PathUtils.cleanedges(w.Edges, 0.5)
-                            wires.append(Part.Wire(tempedges))
-                        if obj.Algorithm == "OCC Native":
-                            output += self.buildpathocc(obj, wires)
-
-        output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
+        except:
+            FreeCAD.Console.PrintError("The Job Base Object has no engraveable element.  Engraving operation will produce no output.")
 
         # print output
         if output == "":
@@ -248,8 +253,8 @@ class _ViewProviderEngrave:
     def __setstate__(self, state):
         return None
 
-    def onDelete(self):
-        return None
+    # def onDelete(self):
+    #     return None
 
 
 class CommandPathEngrave:
