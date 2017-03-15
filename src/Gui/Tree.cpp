@@ -1003,7 +1003,6 @@ void DocumentItem::slotNewObject(DocumentObjectItem *parent,
     std::string name = obj.getObject()->getNameInDocument();
     auto &ptrs = ObjectMap[name];
     if(!ptrs) {
-        assert(parent==NULL);
         ptrs.reset(new DocumentObjectItems);
     }else if(ptrs->size() && parent==NULL) {
         Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
