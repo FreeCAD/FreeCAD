@@ -937,7 +937,8 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     : QTreeWidgetItem(parent, TreeWidget::DocumentType), pDocument(doc)
 {
     // Setup connections
-    connectNewObject = doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, nullptr,_1));
+    connectNewObject = doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, 
+                static_cast<DocumentObjectItem*>(0),_1));
     connectDelObject = doc->signalDeletedObject.connect(boost::bind(&DocumentItem::slotDeleteObject, this, _1));
     connectChgObject = doc->signalChangedObject.connect(boost::bind(&DocumentItem::slotChangeObject, this, _1));
     connectRenObject = doc->signalRelabelObject.connect(boost::bind(&DocumentItem::slotRenameObject, this, _1));
