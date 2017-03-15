@@ -21,8 +21,6 @@
 
 
 import FreeCAD, os, sys, unittest, Part, Sketcher
-import ProfileLib.RegularPolygon
-
 App = FreeCAD
 
 def CreateBoxSketchSet(SketchFeature):
@@ -54,8 +52,8 @@ def CreateSlotPlateSet(SketchFeature):
 	SketchFeature.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(60.039921,3.811391,0),App.Vector(0,0,1),35.127132),-1.403763,1.419522))
 	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',3,2,2,2)) 
 	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',3,1,0,1)) 
-	SketchFeature.addConstraint(Sketcher.Constraint('Tangent',3,2)) 
-	SketchFeature.addConstraint(Sketcher.Constraint('Tangent',3,0)) 
+	SketchFeature.addConstraint(Sketcher.Constraint('Tangent',2,2,3,2))
+	SketchFeature.addConstraint(Sketcher.Constraint('Tangent',0,1,3,1))
 	SketchFeature.addConstraint(Sketcher.Constraint('Angle',0,2,1,1,0.947837)) 
 	SketchFeature.addConstraint(Sketcher.Constraint('Distance',0,184.127425)) 
 	SketchFeature.setDatum(9,200.000000)
@@ -83,10 +81,8 @@ def CreateSlotPlateInnerSet(SketchFeature):
 	SketchFeature.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(192.422913,38.216347,0),App.Vector(0,0,1),45.315174),2.635158,3.602228))
 	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',7,2,8,1)) 
 	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',8,2,5,1))
+	
 
-
-def CreateHexagonSketch(SketchFeature):
-	ProfileLib.RegularPolygon.makeRegularPolygon(SketchFeature.Name,6,App.Vector(0,0,0),App.Vector(10.0,10.0,0),False)
 
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Sketcher module
@@ -117,16 +113,9 @@ class SketcherSolverTestCases(unittest.TestCase):
 		CreateSlotPlateInnerSet(self.Slot)
 		self.Doc.recompute()
 		self.failUnless(len(self.Slot.Shape.Edges) == 9)
-
-
-	def testHexagonCase(self):
-		self.Hexagon = self.Doc.addObject('Sketcher::SketchObject', 'SketchHexagon')
-		CreateHexagonSketch(self.Hexagon)
-		self.Doc.recompute()
-		self.failUnless(len(self.Hexagon.Shape.Edges) == 6)
 	
 	
 	def tearDown(self):
 		#closing doc
 		FreeCAD.closeDocument("SketchSolverTest")
-		#print ("omit closing document for debugging")
+		#print ("omit close document for debuging")
