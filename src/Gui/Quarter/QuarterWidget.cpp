@@ -62,6 +62,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
 #include <QAction>
+#include <QApplication>
 #include <QPaintEvent>
 #include <QResizeEvent>
 
@@ -158,10 +159,45 @@ public:
         //surfaceFormat.setMajorVersion(3);
         //surfaceFormat.setMinorVersion(2);
         //surfaceFormat.setProfile(QSurfaceFormat::CoreProfile);
-#if defined (_DEBUG) && 1
+#if defined (_DEBUG) && 0
         surfaceFormat.setOption(QSurfaceFormat::DebugContext);
 #endif
         setFormat(surfaceFormat);
+    }
+    void initializeGL()
+    {
+#if defined (_DEBUG) && 0
+        QOpenGLContext *context = QOpenGLContext::currentContext();
+        if (context && context->hasExtension(QByteArrayLiteral("GL_KHR_debug"))) {
+            QOpenGLDebugLogger *logger = new QOpenGLDebugLogger(this);
+            connect(logger, &QOpenGLDebugLogger::messageLogged, this, &CustomGLWidget::handleLoggedMessage);
+
+            if (logger->initialize())
+                logger->startLogging(QOpenGLDebugLogger::SynchronousLogging);
+        }
+#endif
+    }
+    bool event(QEvent *e)
+    {
+        // If a debug logger is activated then Qt's default implementation
+        // first releases the context before stopping the logger. However,
+        // the logger needs the active context and thus crashes because it's
+        // null.
+        if (e->type() == QEvent::WindowChangeInternal) {
+            if (!qApp->testAttribute(Qt::AA_ShareOpenGLContexts)) {
+                QOpenGLDebugLogger* logger = this->findChild<QOpenGLDebugLogger*>();
+                if (logger) {
+                    logger->stopLogging();
+                    delete logger;
+                }
+            }
+        }
+
+        return QOpenGLWidget::event(e);
+    }
+    void handleLoggedMessage(const QOpenGLDebugMessage &message)
+    {
+        qDebug() << message;
     }
 };
 #else
