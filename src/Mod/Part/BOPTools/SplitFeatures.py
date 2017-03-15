@@ -122,6 +122,21 @@ class ViewProviderBooleanFragments:
             FreeCAD.Console.PrintError("Error in onDelete: " + str(err))
         return True
 
+    def canDragObjects(self):
+        return True
+    def canDropObjects(self):
+        return True
+    def canDragObject(self, dragged_object):
+        return True
+    def canDropObject(self, incoming_object):
+        return hasattr(incoming_object, 'Shape')
+    def dragObject(self, selfvp, dragged_object):
+        objs = self.Object.Objects
+        objs.remove(dragged_object)
+        self.Object.Objects = objs
+    def dropObject(self, selfvp, incoming_object):
+        self.Object.Objects = self.Object.Objects + [incoming_object]
+
 def cmdCreateBooleanFragmentsFeature(name, mode):
     """cmdCreateBooleanFragmentsFeature(name, mode): implementation of GUI command to create
     BooleanFragments feature (GFA). Mode can be "Standard", "Split", or "CompSolid"."""
@@ -376,6 +391,21 @@ class ViewProviderXOR:
         except Exception as err:
             FreeCAD.Console.PrintError("Error in onDelete: " + str(err))
         return True
+
+    def canDragObjects(self):
+        return True
+    def canDropObjects(self):
+        return True
+    def canDragObject(self, dragged_object):
+        return True
+    def canDropObject(self, incoming_object):
+        return hasattr(incoming_object, 'Shape')
+    def dragObject(self, selfvp, dragged_object):
+        objs = self.Object.Objects
+        objs.remove(dragged_object)
+        self.Object.Objects = objs
+    def dropObject(self, selfvp, incoming_object):
+        self.Object.Objects = self.Object.Objects + [incoming_object]
 
 def cmdCreateXORFeature(name):
     """cmdCreateXORFeature(name): implementation of GUI command to create
