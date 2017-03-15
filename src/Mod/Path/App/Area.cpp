@@ -498,7 +498,7 @@ struct FindPlane {
         
         // It seemed that FindSurface disregard shape's transformation,
         // so we have to transformed the found plane manually, or is it??
-        // pos.Transform(shape.Location().Transformation());
+        pos.Transform(shape.Location().Transformation());
 
         // We only use right hand coordinate, hence gp_Ax2 instead of gp_Ax3
         // This means that no matter what the work plane face oriented, we 
@@ -663,6 +663,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
     sections.reserve(heights.size());
     tolerance *= 2.0;
     bool can_retry = fabs(tolerance)>Precision::Confusion();
+    TopLoc_Location locInverse(loc.Inverted());
     for(double z : heights) {
         bool retried = !can_retry;
         while(true) {
@@ -673,7 +674,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
             const TopoDS_Shape &face = mkFace.Face();
 
             shared_ptr<Area> area(new Area(&myParams));
-            area->setPlane(face);
+            area->setPlane(face.Moved(locInverse));
             for(auto it=myShapes.begin();it!=myShapes.end();++it) {
                 const auto &s = *it;
                 BRep_Builder builder;
@@ -708,7 +709,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                 // Make sure the compound has at least one edge
                 TopExp_Explorer xp(comp,TopAbs_EDGE);
                 if(xp.More()) {
-                    area->add(comp,s.op);
+                    area->add(comp.Moved(locInverse),s.op);
                 }else if(area->myShapes.empty()){
                     auto itNext = it;
                     if(++itNext != myShapes.end() &&
@@ -868,12 +869,9 @@ list<TopoDS_Shape> Area::sortWires(int index, int count, const gp_Pnt *pstart,
     gp_Pnt pend,pt;
     if(pstart) pt = *pstart;
 
-    pt.Transform(TopLoc_Location(myTrsf));
-
     if(mySections.size()) {
         if(index>=(int)mySections.size())
             throw Base::ValueError("index out of bound");
-        TopLoc_Location loc(myTrsf.Inverted());
         if(index<0) {
             index = 0;
             count = mySections.size();
@@ -881,17 +879,15 @@ list<TopoDS_Shape> Area::sortWires(int index, int count, const gp_Pnt *pstart,
         if(count<=0 || count>(int)mySections.size())
             count = mySections.size();
         for(int i=index;i<count;++i) {
-            const std::list<TopoDS_Shape> ws = 
-                mySections[i]->sortWires(0,0,&pt,&pend,
+            wires = mySections[i]->sortWires(0,0,&pt,&pend,
                         PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
-            for(auto &wire : ws)
-                wires.push_back(wire.Moved(loc));
             pt = pend;
         }
-        if(_pend)
-            *_pend = pend.Transformed(loc);
+        if(_pend) *_pend = pend;
         return std::move(wires);
     }
+
+    pt.Transform(TopLoc_Location(myTrsf));
 
     if(!myArea || myArea->m_curves.empty()) return wires;
 
@@ -946,7 +942,6 @@ TopoDS_Shape Area::toShape(CArea &area, short fill) {
     if(mySections.size()) {\
         if(_index>=(int)mySections.size())\
             return TopoDS_Shape();\
-        TopLoc_Location loc(myTrsf.Inverted());\
         if(_index<0) {\
             BRep_Builder builder;\
             TopoDS_Compound compound;\
@@ -954,16 +949,13 @@ TopoDS_Shape Area::toShape(CArea &area, short fill) {
             for(shared_ptr<Area> area : mySections){\
                 const TopoDS_Shape &s = area->_op(-1, ## __VA_ARGS__);\
                 if(s.IsNull()) continue;\
-                builder.Add(compound,s.Moved(loc));\
+                builder.Add(compound,s);\
             }\
             for(TopExp_Explorer it(compound,TopAbs_EDGE);it.More();)\
                 return compound;\
             return TopoDS_Shape();\
         }\
-        const TopoDS_Shape &shape = mySections[_index]->_op(-1, ## __VA_ARGS__);\
-        if(!shape.IsNull())\
-            return shape.Moved(loc);\
-        return shape;\
+        return mySections[_index]->_op(-1, ## __VA_ARGS__);\
     }\
 }while(0)
 
