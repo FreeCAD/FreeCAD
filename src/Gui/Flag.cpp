@@ -153,6 +153,11 @@ void Flag::mouseMoveEvent(QMouseEvent *e)
     if (e->buttons() & Qt::LeftButton) {
         move(e->globalPos() - dragPosition);
         e->accept();
+#if defined(HAVE_QT5_OPENGL)
+        View3DInventorViewer* viewer = dynamic_cast<View3DInventorViewer*>(parentWidget());
+        if (viewer)
+            viewer->getSoRenderManager()->scheduleRedraw();
+#endif
     }
 }
 
@@ -366,6 +371,10 @@ void GLFlagWindow::deleteFlags()
                 flag->deleteLater();
             }
         }
+#if defined(HAVE_QT5_OPENGL)
+        if (ct > 0)
+            _viewer->getSoRenderManager()->scheduleRedraw();
+#endif
     }
 }
 
@@ -386,6 +395,9 @@ void GLFlagWindow::removeFlag(Flag* item)
 {
     if (_flagLayout) {
         _flagLayout->removeWidget(item);
+#if defined(HAVE_QT5_OPENGL)
+        _viewer->getSoRenderManager()->scheduleRedraw();
+#endif
     }
 }
 
