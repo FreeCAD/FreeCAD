@@ -79,6 +79,7 @@
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelectionAction.h"
 #include "ViewProviderDocumentObject.h"
+#include "ViewProviderGeometryObject.h"
 
 using namespace Gui;
 
@@ -295,13 +296,18 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 vps = this->pcDocument->getViewProvidersOfType(ViewProviderDocumentObject::getClassTypeId());
             for (std::vector<ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
                 ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(*it);
+                bool selected = Selection().isSelected(vpd->getObject()) && vpd->isSelectable();
                 if (vpd->useNewSelectionModel()) {
-                    if (Selection().isSelected(vpd->getObject()) && vpd->isSelectable()) {
+                    if(vpd->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId()) &&
+                       static_cast<ViewProviderGeometryObject*>(vpd)->SelectionStyle.getValue()==1)
+                    {
+                        static_cast<ViewProviderGeometryObject*>(vpd)->showBoundingBox(selected);
+                    }else if(selected){
                         SoSelectionElementAction action(SoSelectionElementAction::All);
                         action.setColor(this->colorSelection.getValue());
                         action.apply(vpd->getRoot());
                     }
-                    else {
+                    if(!selected){
                         SoSelectionElementAction action(SoSelectionElementAction::None);
                         action.setColor(this->colorSelection.getValue());
                         action.apply(vpd->getRoot());

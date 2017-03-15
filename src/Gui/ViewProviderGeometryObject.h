@@ -64,6 +64,7 @@ public:
     App::PropertyMaterial ShapeMaterial;
     App::PropertyBool BoundingBox;
     App::PropertyBool Selectable;
+    App::PropertyEnumeration SelectionStyle;
 
     /**
      * Attaches the document object to this view provider.
@@ -93,6 +94,9 @@ public:
     
     /*! synchronize From FC placement to Coin placement*/
     static void updateTransform(const Base::Placement &from, SoTransform *to);
+    
+    void showBoundingBox(bool);
+
 protected:
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
@@ -102,7 +106,6 @@ protected:
     SoFCCSysDragger *csysDragger = nullptr;
 
 protected:
-    void showBoundingBox(bool);
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop);
     void setSelectable(bool Selectable=true);

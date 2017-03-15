@@ -88,6 +88,10 @@ ViewProviderGeometryObject::ViewProviderGeometryObject() : pcBoundSwitch(0)
     ADD_PROPERTY(BoundingBox,(false));
     ADD_PROPERTY(Selectable,(true));
 
+    ADD_PROPERTY(SelectionStyle,((long)0));
+    static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
+    SelectionStyle.setEnums(SelectionStyleEnum);
+
     bool enableSel = hGrp->GetBool("EnableSelection", true);
     Selectable.setValue(enableSel);
 
@@ -146,8 +150,9 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
         pcShapeMaterial->shininess.setValue(Mat.shininess);
         pcShapeMaterial->transparency.setValue(Mat.transparency);
     }
-    else if (prop == &BoundingBox) {
-        showBoundingBox( BoundingBox.getValue() );
+    else if (prop == &BoundingBox || prop == &SelectionStyle) {
+        if(SelectionStyle.getValue()!=0)
+            showBoundingBox( BoundingBox.getValue() );
     }
 
     ViewProviderDocumentObject::onChanged(prop);
