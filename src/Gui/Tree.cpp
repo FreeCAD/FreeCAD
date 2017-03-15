@@ -604,26 +604,28 @@ void TreeWidget::dropEvent(QDropEvent *event)
             return; // no group like object
         }
 
-        std::vector<const App::DocumentObject*> dropObjects;
-        dropObjects.reserve(idxs.size());
+        bool dropOnly = QApplication::keyboardModifiers()== Qt::ControlModifier;
 
         // Open command
+        Gui::Document* gui = vp->getDocument();
+        gui->openCommand("Drag object");
         for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
             Gui::ViewProviderDocumentObject* vpc = static_cast<DocumentObjectItem*>(*it)->object();
             App::DocumentObject* obj = vpc->getObject();
 
-            dropObjects.push_back(obj);
-
-            // does this have a parent object
-            QTreeWidgetItem* parent = (*it)->parent();
-            if (parent && parent->type() == TreeWidget::ObjectType) {
-                Gui::ViewProvider* vpp = static_cast<DocumentObjectItem *>(parent)->object();
-                vpp->dragObject(obj);
+            if(!dropOnly) {
+                // does this have a parent object
+                QTreeWidgetItem* parent = (*it)->parent();
+                if (parent && parent->type() == TreeWidget::ObjectType) {
+                    Gui::ViewProvider* vpp = static_cast<DocumentObjectItem *>(parent)->object();
+                    vpp->dragObject(obj);
+                }
             }
 
             // now add the object to the target object
             vp->dropObject(obj);
         }
+        gui->commitCommand();
     }
     else if (targetitem->type() == TreeWidget::DocumentType) {
         // Open command
