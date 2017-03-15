@@ -556,7 +556,8 @@ class EditorPanel():
                     newtool = tool.copy()
                     obj.Tooltable.setTool(int(toolnum), newtool)
                     obj.ToolNumber = int(toolnum)
-                    obj.recompute()
+                    #obj.recompute()
+        FreeCAD.ActiveDocument.recompute()
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok)

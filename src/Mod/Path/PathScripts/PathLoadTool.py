@@ -34,8 +34,8 @@ from PySide import QtCore, QtGui
 import PathScripts.PathLog as PathLog
 
 LOG_MODULE = 'PathLoadTool'
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-PathLog.trackModule('PathLoadTool')
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+#PathLog.trackModule('PathLoadTool')
 
 # Qt tanslation handling
 try:

@@ -233,14 +233,25 @@ def findToolController(obj, name=None):
     if no controller is found, returns None'''
 
     PathLog.track('name: {}'.format(name))
+
+    #First check if a user has selected a tool controller in the tree.
+    for sel in FreeCADGui.Selection.getSelectionEx():
+        if hasattr(sel.Object, 'Proxy'):
+            if isinstance(sel.Object.Proxy, PathScripts.PathLoadTool.LoadTool):
+                return sel.Object
+
     controllers = getToolControllers(obj)
 
+    if len(controllers) == 0:
+        return None
+
+    #If there's only one in the job, use it.
     if len(controllers) == 1:
         if name is None or name == controllers[0].Label:
             tc = controllers[0]
         else:
             tc = None
-    elif name is not None:
+    elif name is not None:  #More than one, make the user choose.
         tc = [i for i in controllers if i.Label == name][0]
     else:
         #form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgTCChooser.ui")
@@ -253,14 +264,6 @@ def findToolController(obj, name=None):
         else:
             tc = [i for i in controllers if i.Label == form.uiToolController.currentText()][0]
     return tc
-
-    # for c in controllers:
-    #     if c.Label == name:
-    #         return c
-    # if len(controllers) > 0:
-    #     return controllers[0]
-    # else:
-    #     return None
 
 def findParentJob(obj):
     '''retrieves a parent job object for an operation or other Path object'''

@@ -108,7 +108,7 @@ class ObjectDrilling:
         toolLoad = obj.ToolController
         if toolLoad is None or toolLoad.ToolNumber == 0:
             FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
-            #return
+            return
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
@@ -317,6 +317,7 @@ class CommandPathDrilling:
         FreeCADGui.doCommand('obj.RetractHeight= ' + str(ztop))
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
+        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -380,6 +381,7 @@ class TaskPanel:
         self.form.uiToolController.blockSignals(True)
         self.form.uiToolController.addItems(labels)
         self.form.uiToolController.blockSignals(False)
+
         if self.obj.ToolController is not None:
             index = self.form.uiToolController.findText(
                 self.obj.ToolController.Label, QtCore.Qt.MatchFixedString)
@@ -388,9 +390,6 @@ class TaskPanel:
                 self.form.uiToolController.blockSignals(True)
                 self.form.uiToolController.setCurrentIndex(index)
                 self.form.uiToolController.blockSignals(False)
-        else:
-            self.obj.ToolController = PathUtils.findToolController(self.obj)
-
 
     def open(self):
         self.s = SelObserver()
