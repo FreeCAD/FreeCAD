@@ -79,6 +79,7 @@
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelectionAction.h"
 #include "ViewProviderDocumentObject.h"
+#include "ViewProviderGeometryObject.h"
 
 using namespace Gui;
 
@@ -281,10 +282,12 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                         type = SoSelectionElementAction::None;
                 }
 
-                SoSelectionElementAction action(type);
-                action.setColor(this->colorSelection.getValue());
-                action.setElement(detail);
-                action.apply(vp->getRoot());
+                if(checkSelectionStyle(type,vp)) {
+                    SoSelectionElementAction action(type);
+                    action.setColor(this->colorSelection.getValue());
+                    action.setElement(detail);
+                    action.apply(vp->getRoot());
+                }
                 delete detail;
             }
         }
@@ -296,13 +299,13 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             for (std::vector<ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
                 ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(*it);
                 if (vpd->useNewSelectionModel()) {
-                    if (Selection().isSelected(vpd->getObject()) && vpd->isSelectable()) {
-                        SoSelectionElementAction action(SoSelectionElementAction::All);
-                        action.setColor(this->colorSelection.getValue());
-                        action.apply(vpd->getRoot());
-                    }
-                    else {
-                        SoSelectionElementAction action(SoSelectionElementAction::None);
+                    SoSelectionElementAction::Type type;
+                    if(Selection().isSelected(vpd->getObject()) && vpd->isSelectable())
+                        type = SoSelectionElementAction::All;
+                    else
+                        type = SoSelectionElementAction::None;
+                    if(checkSelectionStyle(type,vpd)) {
+                        SoSelectionElementAction action(type);
                         action.setColor(this->colorSelection.getValue());
                         action.apply(vpd->getRoot());
                     }
@@ -518,7 +521,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                 }
 
                 action->setHandled(); 
-                if (currenthighlight) {
+                if (currenthighlight && checkSelectionStyle(type,vpd)) {
                     SoSelectionElementAction action(type);
                     action.setColor(this->colorSelection.getValue());
                     action.setElement(pp ? pp->getDetail() : 0);
@@ -530,6 +533,19 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
     }
 
     inherited::handleEvent(action);
+}
+
+bool SoFCUnifiedSelection::checkSelectionStyle(int type, ViewProvider *vp) {
+    if((type == SoSelectionElementAction::All ||
+        type == SoSelectionElementAction::None) &&
+        vp->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId()) &&
+        static_cast<ViewProviderGeometryObject*>(vp)->SelectionStyle.getValue()==1)
+    {
+        bool selected = type==SoSelectionElementAction::All;
+        static_cast<ViewProviderGeometryObject*>(vp)->showBoundingBox(selected);
+        if(selected) return false;
+    }
+    return true;
 }
 
 void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
