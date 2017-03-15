@@ -503,6 +503,7 @@ class CommandPathPocket:
         FreeCADGui.doCommand('obj.RampSize = 0.75')
         FreeCADGui.doCommand('obj.HelixSize = 0.75')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
+        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
 
         FreeCAD.ActiveDocument.recompute()
@@ -556,7 +557,6 @@ class TaskPanel:
                 self.obj.ZigZagAngle = FreeCAD.Units.Quantity(self.form.zigZagAngle.text()).Value
             if hasattr(self.obj, "StepOver"):
                 self.obj.StepOver = self.form.stepOverPercent.value()
-
             if hasattr(self.obj, "ToolController"):
                 PathLog.debug("name: {}".format(self.form.uiToolController.currentText()))
                 tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
