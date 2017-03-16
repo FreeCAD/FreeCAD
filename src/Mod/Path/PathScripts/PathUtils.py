@@ -233,12 +233,16 @@ def findToolController(obj, name=None):
     if no controller is found, returns None'''
 
     PathLog.track('name: {}'.format(name))
-
-    #First check if a user has selected a tool controller in the tree.
+    c = None
+    #First check if a user has selected a tool controller in the tree. Return the first one and remove all from selection
     for sel in FreeCADGui.Selection.getSelectionEx():
         if hasattr(sel.Object, 'Proxy'):
             if isinstance(sel.Object.Proxy, PathScripts.PathLoadTool.LoadTool):
-                return sel.Object
+                if c is None:
+                    c = sel.Object
+                FreeCADGui.Selection.removeSelection(sel.Object)
+    if c is not None:
+        return c
 
     controllers = getToolControllers(obj)
 
