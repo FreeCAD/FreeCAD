@@ -203,12 +203,6 @@ print "y - " + str(point.y)
         lead_in_line_len = 0.0
         lead_out_line_len = 0.0
 
-        '''
-
-        Right here, I need to know the Holding Tags group from the tree that refers to this profile operation and build up the tags for PathKurve Utils.
-        I need to access the location vector, length, angle in radians and height.
-
-        '''
         depthparams = depth_params(
             obj.ClearanceHeight.Value,
             obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown.Value, 0.0,
@@ -244,7 +238,7 @@ print "y - " + str(point.y)
                 self.radius = tool.Diameter/2
 
         output += "(" + obj.Label + ")"
-        if obj.Side != "On":
+        if obj.UseComp:
             output += "(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"
         else:
             output += "(Uncompensated Tool Path)"
@@ -386,12 +380,13 @@ class CommandPathProfile:
         FreeCADGui.doCommand('obj.SafeHeight = ' + str(ztop + 2.0))
         FreeCADGui.doCommand('obj.Side = "Left"')
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
-        FreeCADGui.doCommand('obj.Direction = "CCW"')
-        FreeCADGui.doCommand('obj.UseComp = False')
+        FreeCADGui.doCommand('obj.Direction = "CW"')
+        FreeCADGui.doCommand('obj.UseComp = True')
         FreeCADGui.doCommand('obj.processHoles = False')
         FreeCADGui.doCommand('obj.processPerimeter = True')
         FreeCADGui.doCommand('PathScripts.PathProfile._ViewProviderProfile(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
+        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
