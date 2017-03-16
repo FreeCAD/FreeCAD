@@ -49,15 +49,19 @@ class PathPostTestCases(unittest.TestCase):
         PathScripts.PathJob.ObjectPathJob(job)
         job.Base = self.doc.Box
         PathScripts.PathLoadTool.CommandPathLoadTool.Create(job.Name, False)
-        toolLib = job.Group[0]
         tool1 = Path.Tool()
         tool1.Diameter = 5.0
         tool1.Name = "Default Tool"
         tool1.CuttingEdgeHeight = 15.0
         tool1.ToolType = "EndMill"
         tool1.Material = "HighSpeedSteel"
-        job.Tooltable.addTools(tool1)
-        toolLib.ToolNumber = 1
+
+        tc = FreeCAD.ActiveDocument.addObject("Path::FeaturePython",'TC')
+        PathScripts.PathLoadTool.LoadTool(tc)
+        PathScripts.PathUtils.addToJob(tc, "Job")
+        tc.Tooltable.setTool(2, tool1)
+        tc.ToolNumber = 2
+
         self.failUnless(True)
 
         self.doc.getObject("TC").ToolNumber = 2
@@ -73,6 +77,7 @@ class PathPostTestCases(unittest.TestCase):
         contour.SafeHeight = 12.0
         contour.OffsetExtra = 0.0
         contour.Direction = 'CW'
+        contour.ToolController = tc
         contour.UseComp = True
         PathScripts.PathUtils.addToJob(contour)
         PathScripts.PathContour.ObjectContour.setDepths(contour.Proxy, contour)

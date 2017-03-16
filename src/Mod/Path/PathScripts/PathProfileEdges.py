@@ -188,12 +188,6 @@ print("y - " + str(point.y))
         lead_in_line_len = 0.0
         lead_out_line_len = 0.0
 
-        '''
-
-        Right here, I need to know the Holding Tags group from the tree that refers to this profile operation and build up the tags for PathKurve Utils.
-        I need to access the location vector, length, angle in radians and height.
-
-        '''
         depthparams = depth_params(
             obj.ClearanceHeight.Value,
             obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown.Value, 0.0,
@@ -228,7 +222,7 @@ print("y - " + str(point.y))
                 self.radius = tool.Diameter/2
 
         output += "(" + obj.Label + ")"
-        if obj.Side != "On":
+        if obj.UseComp:
             output += "(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"
         else:
             output += "(Uncompensated Tool Path)"
@@ -358,8 +352,10 @@ class CommandPathProfileEdges:
         FreeCADGui.doCommand('obj.Side = "On"')
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
         FreeCADGui.doCommand('obj.Direction = "CW"')
-        FreeCADGui.doCommand('obj.UseComp = False')
+        FreeCADGui.doCommand('obj.UseComp = True')
+
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
+        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -451,7 +447,9 @@ class TaskPanel:
         index = self.form.cutSide.findText(
                 self.obj.Side, QtCore.Qt.MatchFixedString)
         if index >= 0:
+            self.form.cutSide.blockSignals(True)
             self.form.cutSide.setCurrentIndex(index)
+            self.form.cutSide.blockSignals(False)
 
         index = self.form.direction.findText(
                 self.obj.Direction, QtCore.Qt.MatchFixedString)

@@ -172,8 +172,7 @@ class ObjectPocket:
         """Build the pocket path using libarea algorithm"""
         import PathScripts.PathAreaUtils as PathAreaUtils
         from PathScripts.PathUtils import depth_params
-
-        FreeCAD.Console.PrintMessage(translate("PathPocket", "Generating toolpath with libarea offsets.\n"))
+        PathLog.debug("Generating toolpath with libarea offsets.\n")
 
         depthparams = depth_params(
                 obj.ClearanceHeight.Value,
@@ -222,7 +221,7 @@ class ObjectPocket:
         import DraftGeomUtils
         from PathScripts.PathUtils import fmt, helicalPlunge, rampPlunge, depth_params
 
-        FreeCAD.Console.PrintMessage(translate("PathPocket", "Generating toolpath with OCC native offsets.\n"))
+        PathLog.debug("Generating toolpath with OCC native offsets.\n")
         extraoffset = obj.MaterialAllowance.Value
 
         # Build up the offset loops
