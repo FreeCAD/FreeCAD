@@ -723,6 +723,43 @@ class PanelCut(Draft._DraftObject):
                     obj.Shape = base
                     obj.Placement = pl
 
+    def getWires(self,obj):
+        
+        """getWires(obj): returns a tuple containing 3 shapes
+        that define the panel outline, the panel holes, and
+        tags (engravings): (outline,holes,tags). Any of these can
+        be None if nonexistent"""
+        
+        tag = None
+        outl = None
+        inl = None
+        if not hasattr(self,"outline"):
+            self.execute(obj)
+        if not hasattr(self,"outline"):
+            return None
+        outl = self.outline
+        if hasattr(self,"tag"):
+            tag = self.tag
+        if tag:
+            tag.Placement = obj.Placement.multiply(tag.Placement)
+            if parent:
+                tag.Placement = parent.Placement.multiply(tag.Placement)
+        outl.Placement = obj.Placement.multiply(outl.Placement)
+        if len(outl.Wires) > 1:
+            # separate outline
+            d = 0
+            ow = None
+            for w in outl.Wires:
+                if w.BoundBox.DiagonalLength > d:
+                    d = w.BoundBox.DiagonalLength
+                    ow = w
+            if ow:
+                inl = Part.Compound([w for w in outl.Wires if w.hashCode() != ow.hashCode()])
+                outl = ow
+        else:
+            inl = None
+            outl = outl.Wires[0]
+        return (outl,inl,tags)
 
 class ViewProviderPanelCut(Draft._ViewProviderDraft):
     "a view provider for the panel cut object"
@@ -852,6 +889,66 @@ class PanelSheet(Draft._DraftObject):
             obj.Shape = base
             obj.Placement = pl
             obj.FillRatio = int((subarea/area)*100)
+
+    def getOutlines(self,obj,transform=False):
+        """getOutlines(obj,transform=False): returns a list of wires that define the
+        outlines of the panels in this sheet. If transform is True, the placement of
+        the sheet will be added to each wire"""
+        
+        outp = []
+        for p in obj.Group:
+            ispanel = False
+            if hasattr(p,"Proxy"):
+                if hasattr(p.Proxy,"getWires"):
+                    ispanel = True
+                    w = p.Proxy.getWires(p)
+                    if w[0]:
+                        w = w[0]
+                        if transform:
+                            w.Placement = obj.Placement.multiply(w.Placement)
+                        outp.append(w)
+            if not ispanel:
+                if p.isDerivedFrom("Part::Feature"):
+                    for w in p.Shape.Wires:
+                        if transform:
+                            w.Placement = obj.Placement.multiply(w.Placement)
+                        outp.append(w)
+        return outp
+
+    def getHoles(self,obj,transform=False):
+        """getHoles(obj,transform=False): returns a list of wires that define the
+        holes contained in the panels in this sheet. If transform is True, the placement of
+        the sheet will be added to each wire"""
+        
+        outp = []
+        for p in obj.Group:
+            if hasattr(p,"Proxy"):
+                if hasattr(p.Proxy,"getWires"):
+                    w = p.Proxy.getWires(p)
+                    if w[1]:
+                        w = w[1]
+                        if transform:
+                            w.Placement = obj.Placement.multiply(w.Placement)
+                        outp.append(w)
+        return outp
+
+    def getTags(self,obj,transform=False):
+        """getTags(obj,transform=False): returns a list of wires that define the
+        tags (engravings) contained in the panels in this sheet. If transform is 
+        True, the placement of the sheet will be added to each wire. Warning, the
+        wires returned by this function may not be closed, depending on the font"""
+        
+        outp = []
+        for p in obj.Group:
+            if hasattr(p,"Proxy"):
+                if hasattr(p.Proxy,"getWires"):
+                    w = p.Proxy.getWires(p)
+                    if w[1]:
+                        w = w[1]
+                        if transform:
+                            w.Placement = obj.Placement.multiply(w.Placement)
+                        outp.append(w)
+        return outp
 
 
 class ViewProviderPanelSheet(Draft._ViewProviderDraft):
