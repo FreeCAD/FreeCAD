@@ -357,7 +357,7 @@ SbBox3f ViewProviderDatum::getRelevantBoundBox () const {
 SbBox3f ViewProviderDatum::getRelevantBoundBox (
         SoGetBoundingBoxAction &bboxAction, const std::vector <App::DocumentObject *> &objs )
 {
-    SbBox3f bbox(0,0,0, 0,0,0);
+    SbBox3f bbox = defaultBoundBox();
 
     // Adds the bbox of given feature to the output
     for (auto obj :objs) {
@@ -380,6 +380,7 @@ SbBox3f ViewProviderDatum::getRelevantBoundBox (
         }
     }
 
+    // TODO: shrink bbox when all other elements are too small
     return bbox;
 }
 
