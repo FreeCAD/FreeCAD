@@ -25,7 +25,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import Draft
+#import Draft
 import Part
 import ArchPanel
 
@@ -118,7 +118,9 @@ class ObjectPathEngrave:
             return
 
         try:
-            if isinstance(baseobject.Proxy, Draft._ShapeString):
+            if baseobject.isDerivedFrom('Sketcher::SketchObject') or \
+                    baseobject.isDerivedFrom('Part::Part2DObject'):
+
                 output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
 
                 # we only consider the outer wire if this is a Face
