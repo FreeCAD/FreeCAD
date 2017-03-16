@@ -35,8 +35,8 @@ import PathUtils
 import PathScripts.PathLog as PathLog
 
 LOG_MODULE = 'PathToolLibraryManager'
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-PathLog.trackModule('PathToolLibraryManager')
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+#PathLog.trackModule('PathToolLibraryManager')
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
@@ -392,7 +392,6 @@ class EditorPanel():
 
     def addTool(self):
         t = Path.Tool()
-        print("adding a new tool")
         editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
 
         r = editform.exec_()
@@ -509,6 +508,17 @@ class EditorPanel():
             listname = self.form.listView.selectedIndexes()[0].data()
             self.TLM.write(filename, listname)
 
+    def checkCopy(self):
+        self.form.btnCopyTools.setEnabled(False)
+        model = self.form.ToolsList.model()
+        for i in range(model.rowCount()):
+            item = model.item(i, 0)
+            if item.checkState():
+                self.form.btnCopyTools.setEnabled(True)
+
+        if len(PathUtils.GetJobs()) == 0:
+            self.form.btnCopyTools.setEnabled(False)
+
     def copyTools(self):
         tools = []
         model = self.form.ToolsList.model()
@@ -571,7 +581,10 @@ class EditorPanel():
         self.form.ButtonUp.clicked.connect(self.moveUp)
         self.form.ButtonDelete.clicked.connect(self.delete)
         self.form.ToolsList.doubleClicked.connect(self.editTool)
+        self.form.ToolsList.clicked.connect(self.checkCopy)
         self.form.btnCopyTools.clicked.connect(self.copyTools)
+
+        self.form.btnCopyTools.setEnabled(False)
 
         self.setFields()
 
