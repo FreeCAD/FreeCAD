@@ -1109,7 +1109,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
 
         const char* name = child->getNameInDocument();
         if (!name) {
-            Base::Console().Warning("Gui::DocumentItem::populate(): Cannot reparent unknown object.\n");
+            Base::Console().Warning("Gui::DocumentItem::populateItem(): Cannot reparent unknown object.\n");
             continue;
         }
 
@@ -1127,6 +1127,12 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
         if(childItem->parent() != this)
             slotNewObject(item,*childItem->object());
         else {
+            if(item->isChildOfItem(childItem)) {
+                Base::Console().Error("Gui::DocumentItem::populateItem(): Cyclic dependency in %s and %s\n",
+                        item->object()->getObject()->Label.getValue(),
+                        childItem->object()->getObject()->Label.getValue());
+                continue;
+            }
             this->removeChild(childItem);
             item->addChild(childItem);
         }
@@ -1574,8 +1580,6 @@ void DocumentObjectItem::slotChangeStatusTip(const QString& tip)
 {
     this->setStatusTip(0, tip);
 }
-
-
 
 #include "moc_Tree.cpp"
 
