@@ -336,9 +336,12 @@ private:
     static void ParseOptions(int argc, char ** argv);
     /// checks if the environment is allreight
     //static void CheckEnv(void);
-    // search for the home path
+    /// Search for the FreeCAD home path based on argv[0]
+    /*!
+     * There are multiple implementations of this method per-OS
+     */
     static std::string FindHomePath(const char* sCall);
-    /// print the help massage
+    /// Print the help message
     static void PrintInitHelp(void);
     /// figure out some things
     static void ExtractUserPath();

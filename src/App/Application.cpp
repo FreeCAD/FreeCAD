@@ -2281,30 +2281,35 @@ std::string Application::FindHomePath(const char* sCall)
 
 std::string Application::FindHomePath(const char* call)
 {
-    uint32_t sz = 0;
-    char *buf;
+    // If Python is intialized at this point, then we're being run from
+    // MainPy.cpp, which hopefully rewrote argv[0] to point at the
+    // FreeCAD shared library.
+    if (!Py_IsInitialized()) {
+        uint32_t sz = 0;
+        char *buf;
 
-    _NSGetExecutablePath(NULL, &sz); //function only returns "sz" if first arg is to small to hold value
-    buf = new char[++sz];
+        _NSGetExecutablePath(NULL, &sz); //function only returns "sz" if first arg is to small to hold value
+        buf = new char[++sz];
 
-    if (_NSGetExecutablePath(buf, &sz) == 0) {
-        char resolved[PATH_MAX];
-        char* path = realpath(buf, resolved);
-        delete [] buf;
+        if (_NSGetExecutablePath(buf, &sz) == 0) {
+            char resolved[PATH_MAX];
+            char* path = realpath(buf, resolved);
+            delete [] buf;
 
-        if (path) {
-            std::string Call(resolved), TempHomePath;
-            std::string::size_type pos = Call.find_last_of(PATHSEP);
-            TempHomePath.assign(Call,0,pos);
-            pos = TempHomePath.find_last_of(PATHSEP);
-            TempHomePath.assign(TempHomePath,0,pos+1);
-            return TempHomePath;
+            if (path) {
+                std::string Call(resolved), TempHomePath;
+                std::string::size_type pos = Call.find_last_of(PATHSEP);
+                TempHomePath.assign(Call,0,pos);
+                pos = TempHomePath.find_last_of(PATHSEP);
+                TempHomePath.assign(TempHomePath,0,pos+1);
+                return TempHomePath;
+            }
+        } else {
+            delete [] buf;
         }
-    } else {
-        delete [] buf;
     }
 
-    return call; // error
+    return call;
 }
 
 #elif defined (FC_OS_WIN32)
