@@ -742,8 +742,6 @@ class PanelCut(Draft._DraftObject):
             tag = self.tag
         if tag:
             tag.Placement = obj.Placement.multiply(tag.Placement)
-            if parent:
-                tag.Placement = parent.Placement.multiply(tag.Placement)
         outl.Placement = obj.Placement.multiply(outl.Placement)
         if len(outl.Wires) > 1:
             # separate outline
