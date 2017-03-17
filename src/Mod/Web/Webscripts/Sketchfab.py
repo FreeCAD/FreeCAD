@@ -130,6 +130,10 @@ class SketchfabTaskPanel:
             f = open(filename+".iv","rb")
             s = f.read()
             f.close()
+            ver = FreeCAD.Version()
+            vinfo = "# Exported by FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + "\n"
+            vinfo += "# http://www.freecadweb.org\n"
+            s = s.replace("#Inventor V2.1 ascii","#Inventor V2.1 ascii\n"+vinfo)
             s = s.replace("SoBrepEdgeSet","SoIndexedLineSet")
             s = s.replace("SoBrepFaceSet","SoIndexedFaceSet")
             s = s.replace("\n","--endl--")
