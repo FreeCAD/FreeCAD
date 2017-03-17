@@ -277,10 +277,10 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // labels and progressbar
     d->status = new StatusBarObserver();
     d->actionLabel = new QLabel(statusBar());
-    d->actionLabel->setMinimumWidth(120);
+    // d->actionLabel->setMinimumWidth(120);
     d->sizeLabel = new QLabel(tr("Dimension"), statusBar());
     d->sizeLabel->setMinimumWidth(120);
-    statusBar()->addWidget(d->actionLabel, 0);
+    statusBar()->addWidget(d->actionLabel, 1);
     QProgressBar* progressBar = Gui::Sequencer::instance()->getProgressBar(statusBar());
     statusBar()->addPermanentWidget(progressBar, 0);
     statusBar()->addPermanentWidget(d->sizeLabel, 0);
@@ -1550,7 +1550,7 @@ void MainWindow::changeEvent(QEvent *e)
 void MainWindow::showMessage (const QString& message, int timeout)
 {
     QFontMetrics fm(statusBar()->font());
-    QString msg = fm.elidedText(message, Qt::ElideMiddle, this->width()/2);
+    QString msg = fm.elidedText(message, Qt::ElideMiddle, this->d->actionLabel->width());
 #if QT_VERSION <= 0x040600
     this->statusBar()->showMessage(msg, timeout);
 #else
