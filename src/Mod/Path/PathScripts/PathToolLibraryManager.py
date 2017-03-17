@@ -270,8 +270,16 @@ class ToolLibraryManager():
         if tt:
             try:
                 file = open(unicode(filename[0]), "wb")
-                file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-                file.write(tt.Content)
+
+                if filename[1] == 'LinuxCNC tooltable (*.tbl)':
+                    for key in tt.Tools:
+                        t = tt.Tools[key]
+                        file.write("T{} P{} Y{} Z{} A{} B{} C{} U{} V{} W{} D{} I{} J{} Q{} ;{}\n".format(key,key,0,t.LengthOffset,0,0,0,0,0,0,t.Diameter,0,0,0,t.Name))
+
+                else:
+                    file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+                    file.write(tt.Content)
+
                 file.close()
                 print("Written ", unicode(filename[0]))
 
@@ -502,10 +510,11 @@ class EditorPanel():
 
     def exportFile(self):
         "imports a tooltable from a file"
-        filename = QtGui.QFileDialog.getSaveFileName(self.form, _translate("TooltableEditor", "Save tooltable", None), None, _translate("TooltableEditor", "Tooltable XML (*.xml)", None))
+        filename = QtGui.QFileDialog.getSaveFileName(self.form, _translate("TooltableEditor", "Save tooltable", None), None, _translate("TooltableEditor", "Tooltable XML (*.xml);;LinuxCNC tooltable (*.tbl)", None))
 
         if filename[0]:
-            listname = self.form.listView.selectedIndexes()[0].data()
+            #listname = self.form.listView.selectedIndexes()[0].data()
+            listname = '<Main>'
             self.TLM.write(filename, listname)
 
     def checkCopy(self):
