@@ -24,6 +24,7 @@
 #ifndef PATH_ViewProviderPath_H
 #define PATH_ViewProviderPath_H
 
+#include <Gui/Selection.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/ViewProviderPythonFeature.h>
@@ -35,11 +36,13 @@ class SoMaterial;
 class SoBaseColor;
 class SoMaterialBinding;
 class SoTransform;
+class SoSwitch;
 
 namespace PathGui
 {
 
 class PathGuiExport ViewProviderPath : public Gui::ViewProviderGeometryObject
+                                     , public Gui::SelectionObserver
 {
     PROPERTY_HEADER(PathGui::ViewProviderPath);
 
@@ -64,12 +67,16 @@ public:
     void recomputeBoundingBox();
     virtual QIcon getIcon() const;
 
+    virtual bool useNewSelectionModel(void) const {return true;}
+    virtual std::string getElement(const SoDetail *) const;
+    SoDetail* getDetail(const char* subelement) const;
+
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+
 protected:
 
     virtual void onChanged(const App::Property* prop);
  
-    Gui::SoFCSelection    * pcPathRoot;
-    SoTransform           * pcTransform;
     SoCoordinate3         * pcLineCoords;
     SoCoordinate3         * pcMarkerCoords;
     SoDrawStyle           * pcDrawStyle;
@@ -78,6 +85,14 @@ protected:
     SoBaseColor           * pcMarkerColor;
     SoMaterialBinding     * pcMatBind;
     std::vector<int>        colorindex;
+
+    SoSwitch              * pcArrowSwitch;
+    SoTransform           * pcArrowTransform;
+
+    std::vector<int>   command2Edge;
+    std::deque<int>   edge2Command;
+
+    mutable int pt0Index;
 
  };
  
