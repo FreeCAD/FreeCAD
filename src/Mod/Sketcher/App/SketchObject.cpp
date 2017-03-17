@@ -4003,6 +4003,8 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     // we succeeded with the multiplicity modification, so aligment geometry may be invalid/inconsistent for the new bspline
     // If multiplicity is increased, the number of poles is increased. An increase of 1 degree generates one pole extra
 
+    std::vector<int> delGeoId;
+    
     if(multiplicityincr > 0) {
 
         std::vector<Base::Vector3d> poles = bsp->getPoles();
@@ -4025,19 +4027,51 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
         const std::vector< Sketcher::Constraint * > &cvals = Constraints.getValues();
 
-        std::vector< Constraint * > newcVals(cvals);
+        std::vector< Constraint * > newcVals(0);
 
         // modify pole constraints
-        for (std::vector< Sketcher::Constraint * >::iterator it= newcVals.begin(); it != newcVals.end(); ++it) {
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= cvals.begin(); it != cvals.end(); ++it) {
             if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
             {
-                if((*it)->AlignmentType == Sketcher::BSplineControlPoint && prevpole[(*it)->InternalAlignmentIndex]!=-1) {
-                    (*it)->InternalAlignmentIndex = prevpole[(*it)->InternalAlignmentIndex];
+                if((*it)->AlignmentType == Sketcher::BSplineControlPoint) {
+                    if (prevpole[(*it)->InternalAlignmentIndex]!=-1) {
+                        assert(prevpole[(*it)->InternalAlignmentIndex] < bspline->countPoles());
+                        Constraint * newConstr = (*it)->clone();
+                        newConstr->InternalAlignmentIndex = prevpole[(*it)->InternalAlignmentIndex];
+                        newcVals.push_back(newConstr);
+                    }
+                    else { // it is an internal aligment geometry that is no longer valid => delete it and the pole circle
+                        delGeoId.push_back((*it)->First);
+                    }
+                } 
+                else { // it is a bspline geometry, but not a controlpoint
+                    newcVals.push_back(*it);
                 }
+            }
+            else {
+                newcVals.push_back(*it);
             }
         }
 
+        const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+        
+        std::vector< Part::Geometry * > newVals(vals);
+        
+        newVals[GeoId] = bspline;
+        
+        Geometry.setValues(newVals);
+        Constraints.acceptGeometry(getCompleteGeometry());
+        rebuildVertexIndex();
+        
         this->Constraints.setValues(newcVals);
+        
+        std::sort (delGeoId.begin(), delGeoId.end());
+        
+        if (delGeoId.size()>0) {
+            for (std::vector<int>::reverse_iterator it=delGeoId.rbegin(); it!=delGeoId.rend(); ++it) {
+                delGeometry(*it,false);
+            }
+        }
     }
     else {
         return false;
@@ -4058,15 +4092,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     //#7  0x7f4b0342727d in GeomLProp_CLProps::GeomLProp_CLProps(Handle_Geom_Curve const&, double, int, double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xcd
     //#8  0x7f4b11924b53 in Part::GeomCurve::pointAtParameter(double) const from /home/abdullah/github/freecad-build/Mod/Part/Part.so+0xa7
 
-    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
-    std::vector< Part::Geometry * > newVals(vals);
-
-    newVals[GeoId] = bspline;
-
-    Geometry.setValues(newVals);
-    Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
 
     return true;
 }
