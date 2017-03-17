@@ -540,16 +540,11 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
                         Gui::Command::doCommand(
                             Doc,"App.ActiveDocument.%s.modifyBSplineKnotMultiplicity(%d,%d,%d) ",
                             selection[0].getFeatName(),(*it)->Second, (*it)->InternalAlignmentIndex + 1, 1);
-                        
-                        Obj->solve();
-                        
-                        // add internalalignment for new pole
-                        Gui::Command::doCommand(Gui::Command::Doc,
-                                                "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
-                                                selection[0].getFeatName(),
-                                                (*it)->Second);
-                        
+
                         applied = true;
+                        
+                        // Warning: GeoId list might have changed as the consequence of deleting pole circles and
+                        // particularly bspline GeoID might have changed.
                     }
                     catch (const Base::Exception& e) {
                         Base::Console().Error("%s\n", e.what());
