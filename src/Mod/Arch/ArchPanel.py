@@ -737,9 +737,9 @@ class PanelCut(Draft._DraftObject):
             self.execute(obj)
         if not hasattr(self,"outline"):
             return None
-        outl = self.outline
+        outl = self.outline.copy()
         if hasattr(self,"tag"):
-            tag = self.tag
+            tag = self.tag.copy()
         if tag:
             tag.Placement = obj.Placement.multiply(tag.Placement)
         outl.Placement = obj.Placement.multiply(outl.Placement)
