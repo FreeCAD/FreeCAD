@@ -1041,7 +1041,10 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
     }
     else {
         TopoDS_Shape shape = getVerifiedFace(true);
-        if(shape.ShapeType() == TopAbs_FACE) {
+        if (shape == TopoDS_Shape())
+            return SketchVector;
+
+        if (shape.ShapeType() == TopAbs_FACE) {
             BRepAdaptor_Surface adapt(TopoDS::Face(shape));
             double u = adapt.FirstUParameter() + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
             double v = adapt.FirstVParameter() + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
