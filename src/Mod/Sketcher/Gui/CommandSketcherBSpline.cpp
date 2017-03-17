@@ -518,44 +518,83 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    
+    if(SubNames.size()>1) {
+        // Check that only one object is selected, as we need only one object to get the new GeoId after multiplicity change
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("The selection comprises more than one item. Please select just one knot."));
+        return;
+    }
+
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     openCommand("Increase knot multiplicity");
-    
+
     bool applied = false;
-    
-    for (unsigned int i=0; i<SubNames.size(); i++ ) {
-        int GeoId;
-        Sketcher::PointPos PosId;
-        getIdsFromName(SubNames[i], Obj, GeoId, PosId);
 
-        if(isSimpleVertex(Obj, GeoId, PosId)) {
+    int GeoId;
+    Sketcher::PointPos PosId;
+    getIdsFromName(SubNames[0], Obj, GeoId, PosId);
 
-            const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+    if(isSimpleVertex(Obj, GeoId, PosId)) {
 
-            for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-                if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
-                {
-                    try {
-                        Gui::Command::doCommand(
-                            Doc,"App.ActiveDocument.%s.modifyBSplineKnotMultiplicity(%d,%d,%d) ",
-                            selection[0].getFeatName(),(*it)->Second, (*it)->InternalAlignmentIndex + 1, 1);
+        const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
-                        applied = true;
-                        
-                        // Warning: GeoId list might have changed as the consequence of deleting pole circles and
-                        // particularly bspline GeoID might have changed.
-                    }
-                    catch (const Base::Exception& e) {
-                        Base::Console().Error("%s\n", e.what());
-                    }
-                    
-                    break; // we applied to a knot, because the constraints have changed in the meanwhile, this loop is now invalid, so we exit.
-                   
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
+            {
+                try {
+                    Gui::Command::doCommand(
+                        Doc,"App.ActiveDocument.%s.modifyBSplineKnotMultiplicity(%d,%d,%d) ",
+                        selection[0].getFeatName(),(*it)->Second, (*it)->InternalAlignmentIndex + 1, 1);
+
+                    applied = true;
+
+                    // Warning: GeoId list might have changed as the consequence of deleting pole circles and
+                    // particularly bspline GeoID might have changed.
+
                 }
-            }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("%s\n", e.what());
+                }
 
+                break; // we have already found our knot.
+
+            }
         }
+
+    }
+    
+    // Grab the new GeoId of the knot after possible modifications
+    selection = getSelection().getSelectionEx();
+    const std::vector<std::string> &SubNames2 = selection[0].getSubNames();
+    getIdsFromName(SubNames2[0], Obj, GeoId, PosId);
+    
+    if(isSimpleVertex(Obj, GeoId, PosId) && applied) {
+        
+        const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+        
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
+            {
+                try {
+                    Obj->solve();
+
+                    // add internalalignment for new pole
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                                            "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
+                                            selection[0].getFeatName(),
+                                            (*it)->Second);
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("%s\n", e.what());
+                }
+                
+                break; // we have already found our knot.
+                
+            }
+        }
+        
     }
     
     if(!applied) {
