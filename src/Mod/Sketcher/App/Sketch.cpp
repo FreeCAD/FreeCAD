@@ -2474,6 +2474,8 @@ int Sketch::addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int 
         GCS::Circle &c = Circles[Geoms[geoId2].index];
 
         GCS::BSpline &b = BSplines[Geoms[geoId1].index];
+        
+        assert( poleindex < b.poles.size() && poleindex >= 0 );
 
         int tag = ++ConstraintsCounter;
         GCSsys.addConstraintInternalAlignmentBSplineControlPoint(b, c, poleindex, tag);
