@@ -66,6 +66,7 @@
 #include <Inventor/SoPickedPoint.h>
 
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Document.h>
@@ -369,12 +370,13 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
 
                 this->preSelection = 1;
                 static char buf[513];
-                snprintf(buf,512,"Preselected: %s.%s.%s (%f,%f,%f)",documentName.c_str()
+                int p = Base::UnitsApi::getDecimals();
+                snprintf(buf,512,"Preselected: %s.%s.%s (%.*g,%.*g,%.*g)",documentName.c_str()
                                            ,objectName.c_str()
                                            ,subElementName.c_str()
-                                           ,pp->getPoint()[0]
-                                           ,pp->getPoint()[1]
-                                           ,pp->getPoint()[2]);
+                                           ,p,pp->getPoint()[0]
+                                           ,p,pp->getPoint()[1]
+                                           ,p,pp->getPoint()[2]);
 
                 getMainWindow()->showMessage(QString::fromLatin1(buf));
 
@@ -471,12 +473,13 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                         if (ok)
                             type = SoSelectionElementAction::Append;
                         if (mymode == OFF) {
-                            snprintf(buf,512,"Selected: %s.%s.%s (%f,%f,%f)",documentName.c_str()
+                            int p = Base::UnitsApi::getDecimals();
+                            snprintf(buf,512,"Selected: %s.%s.%s (%.*g,%.*g,%.*g)",documentName.c_str()
                                                        ,objectName.c_str()
                                                        ,subElementName.c_str()
-                                                       ,pp->getPoint()[0]
-                                                       ,pp->getPoint()[1]
-                                                       ,pp->getPoint()[2]);
+                                                       ,p,pp->getPoint()[0]
+                                                       ,p,pp->getPoint()[1]
+                                                       ,p,pp->getPoint()[2]);
 
                             getMainWindow()->showMessage(QString::fromLatin1(buf));
                         }
@@ -509,12 +512,13 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                     }
 
                     if (mymode == OFF) {
-                        snprintf(buf,512,"Selected: %s.%s.%s (%f,%f,%f)",documentName.c_str()
+                        int p = Base::UnitsApi::getDecimals();
+                        snprintf(buf,512,"Selected: %s.%s.%s (%.*g,%.*g,%.*g)",documentName.c_str()
                                                    ,objectName.c_str()
                                                    ,subElementName.c_str()
-                                                   ,pp->getPoint()[0]
-                                                   ,pp->getPoint()[1]
-                                                   ,pp->getPoint()[2]);
+                                                   ,p,pp->getPoint()[0]
+                                                   ,p,pp->getPoint()[1]
+                                                   ,p,pp->getPoint()[2]);
 
                         getMainWindow()->showMessage(QString::fromLatin1(buf));
                     }
