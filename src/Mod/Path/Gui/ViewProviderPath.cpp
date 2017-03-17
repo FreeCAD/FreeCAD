@@ -55,6 +55,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/SoFCBoundingBox.h>
 #include <Gui/SoAxisCrossKit.h>
+#include <Gui/SoFCUnifiedSelection.h>
 
 
 #define ARC_MIN_SEGMENTS   20.0  // minimum # segements to interpolate an arc
@@ -76,7 +77,7 @@ using namespace PartGui;
 PROPERTY_SOURCE(PathGui::ViewProviderPath, Gui::ViewProviderGeometryObject)
 
 ViewProviderPath::ViewProviderPath()
-    :pt0Index(-1)
+    :pt0Index(-1),blockPropertyChange(false),edgeStart(-1),coordStart(-1)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
     unsigned long lcol = hGrp->GetUnsigned("DefaultNormalPathColor",0xFF00UL); // changed to green (0,255,0) to distinguish from selection color
@@ -89,11 +90,27 @@ ViewProviderPath::ViewProviderPath()
     ADD_PROPERTY_TYPE(NormalColor,(lr,lg,lb),"Path",App::Prop_None,"The color of the feed rate moves");
     ADD_PROPERTY_TYPE(MarkerColor,(mr,mg,mb),"Path",App::Prop_None,"The color of the markers");
     ADD_PROPERTY_TYPE(LineWidth,(lwidth),"Path",App::Prop_None,"The line width of this path");
-    ADD_PROPERTY_TYPE(ShowFirstRapid,(true),"Path",App::Prop_None,"Turns the display of the first rapid move on/off");
     ADD_PROPERTY_TYPE(ShowNodes,(false),"Path",App::Prop_None,"Turns the display of nodes on/off");
+
+
+    ShowCountConstraints.LowerBound=0;
+    ShowCountConstraints.UpperBound=INT_MAX;
+    ShowCountConstraints.StepSize=1;
+    ShowCount.setConstraints(&ShowCountConstraints);
+    StartIndexConstraints.LowerBound=0;
+    StartIndexConstraints.UpperBound=INT_MAX;
+    StartIndexConstraints.StepSize=1;
+    StartIndex.setConstraints(&StartIndexConstraints);
+    ADD_PROPERTY_TYPE(StartPosition,(Base::Vector3d()),"Show",App::Prop_None,"Tool initial position");
+    ADD_PROPERTY_TYPE(StartIndex,(0),"Show",App::Prop_None,"The index of first GCode to show");
+    ADD_PROPERTY_TYPE(ShowCount,(0),"Show",App::Prop_None,"Number of movement GCode to show, 0 means all");
 
     pcLineCoords = new SoCoordinate3();
     pcLineCoords->ref();
+
+    pcMarkerSwitch = new SoSwitch();
+    pcMarkerSwitch->ref();
+    pcMarkerSwitch->whichChild = -1;
 
     pcMarkerCoords = new SoCoordinate3();
     pcMarkerCoords->ref();
@@ -127,10 +144,9 @@ ViewProviderPath::ViewProviderPath()
     auto pArrowScale = new SoShapeScale();
     auto pArrow = new SoAxisCrossKit();
     pArrow->set("xAxis.appearance.drawStyle", "style INVISIBLE");
-    pArrow->set("yAxis.appearance.drawStyle", "style INVISIBLE");
     pArrow->set("xHead.appearance.drawStyle", "style INVISIBLE");
+    pArrow->set("yAxis.appearance.drawStyle", "style INVISIBLE");
     pArrow->set("yHead.appearance.drawStyle", "style INVISIBLE");
-    pArrow->set("zAxis.appearance.drawStyle", "style INVISIBLE");
     pArrow->set("zAxis.appearance.drawStyle", "style INVISIBLE");
     pArrow->set("zHead.transform", "translation 0 0 0");
     pArrowScale->setPart("shape", pArrow);
@@ -148,6 +164,7 @@ ViewProviderPath::~ViewProviderPath()
 {
     pcLineCoords->unref();
     pcMarkerCoords->unref();
+    pcMarkerSwitch->unref();
     pcDrawStyle->unref();
     pcLines->unref();
     pcLineColor->unref();
@@ -175,11 +192,11 @@ void ViewProviderPath::attach(App::DocumentObject *pcObj)
     markersep->addChild(pcMarkerColor);
     markersep->addChild(pcMarkerCoords);
     markersep->addChild(marker);
+    pcMarkerSwitch->addChild(markersep);
 
     SoSeparator* pcPathRoot = new SoSeparator();
     pcPathRoot->addChild(linesep);
-    pcPathRoot->addChild(markersep);
-
+    pcPathRoot->addChild(pcMarkerSwitch);
     pcPathRoot->addChild(pcArrowSwitch);
 
     addDisplayMaskMode(pcPathRoot, "Waypoints");
@@ -201,16 +218,16 @@ std::vector<std::string> ViewProviderPath::getDisplayModes(void) const
 
 std::string ViewProviderPath::getElement(const SoDetail* detail) const
 {
-    if (detail && detail->getTypeId() == SoLineDetail::getClassTypeId()) {
+    if(edgeStart>=0 && detail && detail->getTypeId() == SoLineDetail::getClassTypeId()) {
         const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
-        int index = line_detail->getLineIndex();
+        int index = line_detail->getLineIndex()+edgeStart;
         if(index>=0 && index<(int)edge2Command.size()) {
             index = edge2Command[index];
             Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
             const Toolpath &tp = pcPathObj->Path.getValue();
             if(index<(int)tp.getSize()) {
                 std::stringstream str;
-                str << index+1 << ": " << tp.getCommand(index).toGCode();
+                str << index+1 << " " << tp.getCommand(index).toGCode(3,false);
                 pt0Index = line_detail->getPoint0()->getCoordinateIndex();
                 if(pt0Index<0 || pt0Index>=pcLineCoords->point.getNum())
                     pt0Index = -1;
@@ -228,8 +245,11 @@ SoDetail* ViewProviderPath::getDetail(const char* subelement) const
     int index = std::atoi(subelement);
     SoDetail* detail = 0;
     if (index>0 && index<=(int)command2Edge.size()) {
-        detail = new SoLineDetail();
-        static_cast<SoLineDetail*>(detail)->setLineIndex(command2Edge[index-1]);
+        index = command2Edge[index-1];
+        if(index>=0 && edgeStart>=0 && edgeStart<=index) {
+            detail = new SoLineDetail();
+            static_cast<SoLineDetail*>(detail)->setLineIndex(index-edgeStart);
+        }
     }
     return detail;
 }
@@ -240,8 +260,11 @@ void ViewProviderPath::onSelectionChanged(const Gui::SelectionChanges& msg) {
        strcmp(msg.pDocName,getObject()->getDocument()->getName())==0 &&
        strcmp(msg.pObjectName,getObject()->getNameInDocument())==0)
     {
+        Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
+        Base::Vector3d pt = pcPathObj->Placement.getValue().inverse().toMatrix()*
+                                Base::Vector3d(msg.x,msg.y,msg.z);
         const SbVec3f &ptTo = *pcLineCoords->point.getValues(pt0Index);
-        SbVec3f ptFrom(msg.x,msg.y,msg.z);
+        SbVec3f ptFrom(pt.x,pt.y,pt.z);
         if(ptFrom != ptTo) {
             pcArrowTransform->pointAt(ptFrom,ptTo);
             pcArrowSwitch->whichChild = 0;
@@ -253,10 +276,12 @@ void ViewProviderPath::onSelectionChanged(const Gui::SelectionChanges& msg) {
 
 void ViewProviderPath::onChanged(const App::Property* prop)
 {
+    if(blockPropertyChange) return;
+
     if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
     } else if (prop == &NormalColor) {
-        if (colorindex.size() > 0) {
+        if (colorindex.size() > 0 && coordStart>=0 && coordStart<(int)colorindex.size()) {
             const App::Color& c = NormalColor.getValue();
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
             unsigned long rcol = hGrp->GetUnsigned("DefaultRapidPathColor",2852126975UL); // dark red (170,0,0)
@@ -269,41 +294,101 @@ void ViewProviderPath::onChanged(const App::Property* prop)
 
             pcMatBind->value = SoMaterialBinding::PER_PART;
             // resizing and writing the color vector:
-            pcLineColor->diffuseColor.setNum(colorindex.size());
+            
+            int count = coordEnd-coordStart;
+            if(count > (int)colorindex.size()-coordStart) count = colorindex.size()-coordStart;
+            pcLineColor->diffuseColor.setNum(count);
             SbColor* colors = pcLineColor->diffuseColor.startEditing();
-            for(unsigned int i=0;i<colorindex.size();i++) {
-                if (colorindex[i] == 0)
+            for(int i=0;i<count;i++) {
+                switch(colorindex[i+coordStart]){
+                case 0:
                     colors[i] = SbColor(rr,rg,rb);
-                else if (colorindex[i] == 1)
+                    break;
+                case 1:
                     colors[i] = SbColor(c.r,c.g,c.b);
-                else
+                    break;
+                default:
                     colors[i] = SbColor(pr,pg,pb);
+                }
             }
             pcLineColor->diffuseColor.finishEditing();
         }
     } else if (prop == &MarkerColor) {
         const App::Color& c = MarkerColor.getValue();
         pcMarkerColor->rgb.setValue(c.r,c.g,c.b);
-    } else if ( (prop == &ShowFirstRapid) || (prop == &ShowNodes) ) {
-        Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
-        this->updateData(&pcPathObj->Path);
+    } else if(prop == &ShowNodes) {
+        pcMarkerSwitch->whichChild = ShowNodes.getValue()?0:-1;
+    } else if (prop == &ShowCount || prop==&StartIndex) {
+        bool vis = isShow();
+        if (vis) hide();
+        updateVisual();
+        if (vis) show();
+    } else if (prop == &StartPosition) {
+        if(pcLineCoords->point.getNum()){
+            const Base::Vector3d &pt = StartPosition.getValue();
+            pcLineCoords->point.set1Value(0,pt.x,pt.y,pt.z);
+            pcMarkerCoords->point.set1Value(0,pt.x,pt.y,pt.z);
+        }
     } else {
         ViewProviderGeometryObject::onChanged(prop);
     }
 }
 
+void ViewProviderPath::updateShowConstraints() {
+    Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
+    const Toolpath &tp = pcPathObj->Path.getValue();
+
+    StartIndexConstraints.UpperBound = tp.getSize();
+
+    if(StartIndex.getValue() >= tp.getSize()) {
+        int start = ((int)tp.getSize())-ShowCount.getValue();
+        if(start>=(int)tp.getSize())
+            start=tp.getSize()-1;
+        if(start<0) start = 0;
+        blockPropertyChange = true;
+        StartIndex.setValue(start);
+        blockPropertyChange = false;
+        StartIndex.purgeTouched();
+    }
+    StartIndexConstraints.StepSize = ShowCount.getValue()>0?ShowCount.getValue():1;
+}
+
 void ViewProviderPath::updateData(const App::Property* prop)
 {
     Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
+    if(prop == &pcPathObj->Path) {
+        updateVisual(true);
+        return;
+    }
+    ViewProviderGeometryObject::updateData(prop);
+}
 
-    if (prop == &pcPathObj->Path) {
+void ViewProviderPath::updateVisual(bool rebuild) {
 
-        command2Edge.clear();
-        edge2Command.clear();
+    // Clear selection
+    SoSelectionElementAction saction(Gui::SoSelectionElementAction::None);
+    saction.apply(pcLines);
 
+    // Clear highlighting
+    SoHighlightElementAction haction;
+    haction.apply(pcLines);
+
+    // Hide arrow
+    pcArrowSwitch->whichChild = -1;
+    
+    updateShowConstraints();
+
+    pcLines->coordIndex.deleteValues(0);
+
+    if(rebuild) {
         pcLineCoords->point.deleteValues(0);
         pcMarkerCoords->point.deleteValues(0);
 
+        command2Edge.clear();
+        edge2Command.clear();
+        edgeIndices.clear();
+
+        Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
         const Toolpath &tp = pcPathObj->Path.getValue();
         if(tp.getSize()==0) {
             return;
@@ -313,23 +398,23 @@ void ViewProviderPath::updateData(const App::Property* prop)
         float deviation = hGrp->GetFloat("MeshDeviation",0.2);
         std::deque<Base::Vector3d> points;
         std::deque<Base::Vector3d> markers;
-        std::deque<int> edgeIndices;
-        Base::Vector3d last(0,0,0);
+        Base::Vector3d last(StartPosition.getValue());
         colorindex.clear();
         bool absolute = true;
         bool absolutecenter = false;
-        bool first = true;
 
         // for mapping the coordinates to XY plane
         double Base::Vector3d::*pz = &Base::Vector3d::z;
 
-        command2Edge.resize(tp.getSize(),0);
+        command2Edge.resize(tp.getSize(),-1);
+
+        points.push_back(last);
+        markers.push_back(last); // startpoint of path
 
         for (unsigned int  i = 0; i < tp.getSize(); i++) {
             const Path::Command &cmd = tp.getCommand(i);
             const std::string &name = cmd.Name;
             Base::Vector3d next = cmd.getPlacement().getPosition();
-            command2Edge[i] = edgeIndices.size();
 
             if (!absolute)
                 next = last + next;
@@ -342,28 +427,16 @@ void ViewProviderPath::updateData(const App::Property* prop)
 
             if ( (name == "G0") || (name == "G00") || (name == "G1") || (name == "G01") ) {
                 // straight line
-                if ( (!first) || (ShowFirstRapid.getValue() == true) || (name == "G1") || (name == "G01") ) {
-                    if (first) {
-                        points.push_back(last);
-                        markers.push_back(last); // startpoint of path
-                    }
-                    points.push_back(next);
-                    if (ShowNodes.getValue() == true)
-                        markers.push_back(next); // endpoint
-                    last = next;
-                    if ( (name == "G0") || (name == "G00") )
-                        colorindex.push_back(0); // rapid color
-                    else
-                        colorindex.push_back(1); // std color
-                    edgeIndices.push_back(points.size());
-                    edge2Command.push_back(i);
-                } else {
-                    // don't show first G0 move if ShowFirstRapid is False
-                    last = next;
-                    points.push_back(last);
-                    markers.push_back(last); // startpoint of path
-                }
-                first = false;
+                points.push_back(next);
+                markers.push_back(next); // endpoint
+                last = next;
+                if ( (name == "G0") || (name == "G00") )
+                    colorindex.push_back(0); // rapid color
+                else
+                    colorindex.push_back(1); // std color
+                command2Edge[i] = edgeIndices.size();
+                edgeIndices.push_back(points.size());
+                edge2Command.push_back(i);
 
             } else if ( (name == "G2") || (name == "G02") || (name == "G3") || (name == "G03") ) {
                 // arc
@@ -409,12 +482,11 @@ void ViewProviderPath::updateData(const App::Property* prop)
                     colorindex.push_back(1);
                 }
                 points.push_back(next);
-                if (ShowNodes.getValue() == true) {
-                    markers.push_back(next); // endpoint
-                    markers.push_back(center); // add a marker at center too
-                }
+                markers.push_back(next); // endpoint
+                markers.push_back(center); // add a marker at center too
                 last = next;
                 colorindex.push_back(1);
+                command2Edge[i] = edgeIndices.size();
                 edgeIndices.push_back(points.size());
                 edge2Command.push_back(i);
 
@@ -442,18 +514,15 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 Base::Vector3d p1(next);
                 p1.*pz = last.*pz;
                 points.push_back(p1);
-                if (ShowNodes.getValue() == true)
-                    markers.push_back(p1);
+                markers.push_back(p1);
                 colorindex.push_back(0);
                 Base::Vector3d p2(next);
                 p2.*pz = r;
                 points.push_back(p2);
-                if (ShowNodes.getValue() == true)
-                    markers.push_back(p2);
+                markers.push_back(p2);
                 colorindex.push_back(0);
                 points.push_back(next);
-                if (ShowNodes.getValue() == true)
-                    markers.push_back(next);
+                markers.push_back(next);
                 colorindex.push_back(1);
                 double q;
                 if (cmd.has("Q")) {
@@ -467,9 +536,9 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 Base::Vector3d p3(next);
                 p3.*pz = last.*pz;
                 points.push_back(p3);
-                if (ShowNodes.getValue() == true)
-                    markers.push_back(p2);
+                markers.push_back(p2);
                 colorindex.push_back(0);
+                command2Edge[i] = edgeIndices.size();
                 edgeIndices.push_back(points.size());
                 edge2Command.push_back(i);
 
@@ -483,6 +552,7 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 Base::Vector3d p3(next.x,next.y,last.z);
                 points.push_back(p3);
                 colorindex.push_back(0);
+                command2Edge[i] = edgeIndices.size();
                 edgeIndices.push_back(points.size());
                 edge2Command.push_back(i);
             } else if(name=="G17") {
@@ -494,7 +564,6 @@ void ViewProviderPath::updateData(const App::Property* prop)
             }}
 
         if (!edgeIndices.empty()) {
-            pcLineCoords->point.deleteValues(0);
             pcLineCoords->point.setNum(points.size());
             SbVec3f* verts = pcLineCoords->point.startEditing();
             int i=0;
@@ -502,31 +571,54 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 verts[i++].setValue(pt.x,pt.y,pt.z);
             pcLineCoords->point.finishEditing();
 
-            // index + seperators
-            int count = points.size()+2*(edgeIndices.size()-1)+1;
-            pcLines->coordIndex.setNum(count);
-            int32_t *idx = pcLines->coordIndex.startEditing();
-            int start = 0;
-            i=0;
-            for(auto end : edgeIndices) {
-                for(;start<end;++start)
-                    idx[i++] = start;
-                idx[i++]=-1;
-                --start;
-            }
-            pcLines->coordIndex.finishEditing();
-            assert(i==count);
-
-            pcMarkerCoords->point.deleteValues(0);
             pcMarkerCoords->point.setNum(markers.size());
             for(unsigned int i=0;i<markers.size();i++)
                 pcMarkerCoords->point.set1Value(i,markers[i].x,markers[i].y,markers[i].z);
 
-            // update the coloring after we changed the color vector
-            NormalColor.touch();
             recomputeBoundingBox();
         }
     }
+
+    // count = index + seperators
+    edgeStart = -1;
+    int i;
+    for(i=StartIndex.getValue();i<(int)command2Edge.size();++i)
+        if((edgeStart=command2Edge[i])>=0) break;
+
+    if(edgeStart<0) return;
+
+    if(i!=StartIndex.getValue() && StartIndex.getValue()!=0) {
+        blockPropertyChange = true;
+        StartIndex.setValue(i);
+        blockPropertyChange = false;
+        StartIndex.purgeTouched();
+    }
+
+    int edgeEnd = edgeStart+ShowCount.getValue();
+    if(edgeEnd==edgeStart || edgeEnd>(int)edgeIndices.size())
+        edgeEnd = edgeIndices.size();
+
+    // coord index start
+    coordStart = edgeStart==0?0:(edgeIndices[edgeStart-1]-1);
+    coordEnd = edgeIndices[edgeEnd-1];
+
+    // count = coord indices + index separators
+    int count = coordEnd-coordStart+2*(edgeEnd-edgeStart-1)+1;
+
+    pcLines->coordIndex.setNum(count);
+    int32_t *idx = pcLines->coordIndex.startEditing();
+    i=0;
+    int start = coordStart;
+    for(int e=edgeStart;e!=edgeEnd;++e) {
+        for(int end=edgeIndices[e];start<end;++start)
+            idx[i++] = start;
+        idx[i++]=-1;
+        --start;
+    }
+    pcLines->coordIndex.finishEditing();
+    assert(i==count);
+
+    NormalColor.touch();
 }
 
 void ViewProviderPath::recomputeBoundingBox()
