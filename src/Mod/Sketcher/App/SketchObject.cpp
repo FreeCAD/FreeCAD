@@ -3456,15 +3456,19 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 icon.push_back(newConstr);
 
                 if(it != controlpointgeoids.begin()) {
-                    // if pole-weight newly created make it equal to first weight by default
-                    /*Sketcher::Constraint *newConstr2 = new Sketcher::Constraint();
-                    newConstr2->Type = Sketcher::Equal;
-                    newConstr2->First = currentgeoid+incrgeo+1;
-                    newConstr2->FirstPos = Sketcher::none;
-                    newConstr2->Second = controlpointgeoids[0];
-                    newConstr2->SecondPos = Sketcher::none;
+                    // if pole-weight newly created AND first weight is radius-constrained,
+                    // make it equal to first weight by default
+                    
+                    if(isfirstweightconstrained) {
+                        Sketcher::Constraint *newConstr2 = new Sketcher::Constraint();
+                        newConstr2->Type = Sketcher::Equal;
+                        newConstr2->First = currentgeoid+incrgeo+1;
+                        newConstr2->FirstPos = Sketcher::none;
+                        newConstr2->Second = controlpointgeoids[0];
+                        newConstr2->SecondPos = Sketcher::none;
 
-                    icon.push_back(newConstr2);*/
+                        icon.push_back(newConstr2);
+                    }
                 }
                 else {
                     controlpointgeoids[0] = currentgeoid+incrgeo+1;
