@@ -96,16 +96,15 @@ bool Command::has(const std::string& attr) const
     return Parameters.count(a) > 0;
 }
 
-std::string Command::toGCode (void) const
+std::string Command::toGCode (int precision, bool padzero) const
 {
     std::stringstream str;
-    str.precision(5);
+    if(padzero) str.setf(std::ios::fixed);
+    str.precision(precision);
     str << Name;
     for(std::map<std::string,double>::const_iterator i = Parameters.begin(); i != Parameters.end(); ++i) {
-        std::string k = i->first;
-        if(k == "N") continue;
-        std::string v = std::to_string(i->second);
-        str << " " << k << v;
+        if(i->first == "N") continue;
+        str << " " << i->first << i->second;
     }
     return str.str();
 }
