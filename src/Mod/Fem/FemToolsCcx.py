@@ -222,7 +222,40 @@ class FemToolsCcx(FemTools.FemTools):
             print("--------end of stderr---------")
             print("--------start of stdout-------")
             print(self.ccx_stdout)
+            self.has_for_nonpositive_jacobians()
             print("--------end of stdout---------")
+
+    def has_for_nonpositive_jacobians(self):
+        if '*ERROR in e_c3d: nonpositive jacobian' in self.ccx_stdout:
+            print('CalculiX returned an error due to nonpositive jacobian elements.')
+            nonpositive_jacobian_elements = []
+            nonpositive_jacobian_elenodes = []
+            for line in self.ccx_stdout.splitlines():
+                if 'determinant in element' in line:
+                    # print line
+                    # print line.split()
+                    non_posjac_ele = int(line.split()[3])
+                    # print(non_posjac_ele)
+                    if non_posjac_ele not in nonpositive_jacobian_elements:
+                        nonpositive_jacobian_elements.append(non_posjac_ele)
+            for e in nonpositive_jacobian_elements:
+                for n in self.mesh.FemMesh.getElementNodes(e):
+                    nonpositive_jacobian_elenodes.append(n)
+            nonpositive_jacobian_elements = sorted(nonpositive_jacobian_elements)
+            nonpositive_jacobian_elenodes = sorted(nonpositive_jacobian_elenodes)
+            command_for_nonposjacnodes = 'nonpositive_jacobian_elenodes = ' + str(nonpositive_jacobian_elenodes)
+            command_to_highlight = "Gui.ActiveDocument." + self.mesh.Name + ".HighlightedNodes = nonpositive_jacobian_elenodes"
+            print('nonpositive_jacobian_elements = ' + str(nonpositive_jacobian_elements))
+            print(command_for_nonposjacnodes)
+            print(command_to_highlight)
+            print('Gui.ActiveDocument.Extrude_Mesh.HighlightedNodes = []\n')  # command to reset the Highlighted Nodes
+            if FreeCAD.GuiUp:
+                import FreeCADGui
+                FreeCADGui.doCommand(command_for_nonposjacnodes)
+                FreeCADGui.doCommand(command_to_highlight)
+            return True
+        else:
+            return False
 
     def load_results(self):
         self.results_present = False
