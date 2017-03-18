@@ -145,13 +145,8 @@ def fill_femresult_mechanical(results, result_set, span):
             scale = 1.0
 
         results.DisplacementVectors = list(map((lambda x: x * scale), disp.values()))
-
         results.NodeNumbers = disp.keys()
-
-        disp_abs = []
-        for d in displacement:
-            disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
-        results.DisplacementLengths = disp_abs
+        results.DisplacementLengths = calculate_disp_abs(displacement)
 
         if 'stressv' in result_set:
             stressv = result_set['stressv']
@@ -248,9 +243,9 @@ def fill_femresult_mechanical(results, result_set, span):
         x_min, y_min, z_min = map(min, zip(*displacement))
         sum_list = map(sum, zip(*displacement))
         x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
-        a_max = max(disp_abs)
-        a_min = min(disp_abs)
-        a_avg = sum(disp_abs) / no_of_values
+        a_max = max(results.DisplacementLengths)
+        a_min = min(results.DisplacementLengths)
+        a_avg = sum(results.DisplacementLengths) / no_of_values
     if results.StressValues:
         s_max = max(results.StressValues)
         s_min = min(results.StressValues)
@@ -317,3 +312,10 @@ def calculate_principal_stress(i):
     eigvals.reverse()
     maxshear = (eigvals[0] - eigvals[2]) / 2.0
     return (eigvals[0], eigvals[1], eigvals[2], maxshear)
+
+
+def calculate_disp_abs(displacements):
+    disp_abs = []
+    for d in displacements:
+        disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
+    return disp_abs
