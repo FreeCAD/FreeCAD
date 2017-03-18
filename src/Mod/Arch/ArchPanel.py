@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math
+import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math, Part
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -374,7 +374,7 @@ class _Panel(ArchComponent.Component):
         if self.clone(obj):
             return
 
-        import Part, DraftGeomUtils
+        import Part #, DraftGeomUtils
 
         # base tests
         if obj.Base:
@@ -415,7 +415,7 @@ class _Panel(ArchComponent.Component):
         if obj.Base:
             base = obj.Base.Shape.copy()
             if not base.Solids:
-                p = FreeCAD.Placement(obj.Base.Placement)
+               # p = FreeCAD.Placement(obj.Base.Placement)
                 if base.Faces:
                     baseprofile = base
                     if not normal:
@@ -515,7 +515,7 @@ class _Panel(ArchComponent.Component):
                 base = self.vol.common(base)
                 base = base.removeSplitter()
                 if not base:
-                    FreeCAD.Console.PrintError(transpate("Arch","Error computing shape of ")+obj.Label+"\n")
+                    FreeCAD.Console.PrintError(translate("Arch","Error computing shape of ")+obj.Label+"\n")
                     return False
 
         if base and (obj.Sheets > 1) and normal and thickness:
@@ -558,7 +558,7 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
         vobj.ShapeColor = ArchCommands.getDefaultColor("Panel")
 
     def getIcon(self):
-        import Arch_rc
+        #import Arch_rc
         if hasattr(self,"Object"):
             if hasattr(self.Object,"CloneOf"):
                 if self.Object.CloneOf:
@@ -723,13 +723,12 @@ class PanelCut(Draft._DraftObject):
                     obj.Shape = base
                     obj.Placement = pl
 
-    def getWires(self,obj):
-        
+    def getWires(self, obj):
+
         """getWires(obj): returns a tuple containing 3 shapes
         that define the panel outline, the panel holes, and
         tags (engravings): (outline,holes,tags). Any of these can
         be None if nonexistent"""
-        
         tag = None
         outl = None
         inl = None
@@ -742,6 +741,8 @@ class PanelCut(Draft._DraftObject):
             tag = self.tag.copy()
         if tag:
             tag.Placement = obj.Placement.multiply(tag.Placement)
+
+        outl = self.outline.copy()
         outl.Placement = obj.Placement.multiply(outl.Placement)
         if len(outl.Wires) > 1:
             # separate outline
@@ -753,11 +754,11 @@ class PanelCut(Draft._DraftObject):
                     ow = w
             if ow:
                 inl = Part.Compound([w for w in outl.Wires if w.hashCode() != ow.hashCode()])
-                outl = ow
+                outl = Part.Compound([ow])
         else:
             inl = None
-            outl = outl.Wires[0]
-        return (outl,inl,tags)
+            outl = Part.Compound([outl.Wires[0]])
+        return (outl, inl, tag)
 
 class ViewProviderPanelCut(Draft._ViewProviderDraft):
     "a view provider for the panel cut object"
@@ -889,10 +890,10 @@ class PanelSheet(Draft._DraftObject):
             obj.FillRatio = int((subarea/area)*100)
 
     def getOutlines(self,obj,transform=False):
-        """getOutlines(obj,transform=False): returns a list of wires that define the
+        """getOutlines(obj,transform=False): returns a list of compounds whose wires define the
         outlines of the panels in this sheet. If transform is True, the placement of
         the sheet will be added to each wire"""
-        
+
         outp = []
         for p in obj.Group:
             ispanel = False
@@ -914,10 +915,10 @@ class PanelSheet(Draft._DraftObject):
         return outp
 
     def getHoles(self,obj,transform=False):
-        """getHoles(obj,transform=False): returns a list of wires that define the
+        """getHoles(obj,transform=False): returns a list of compound whose wires define the
         holes contained in the panels in this sheet. If transform is True, the placement of
         the sheet will be added to each wire"""
-        
+
         outp = []
         for p in obj.Group:
             if hasattr(p,"Proxy"):
@@ -931,21 +932,25 @@ class PanelSheet(Draft._DraftObject):
         return outp
 
     def getTags(self,obj,transform=False):
-        """getTags(obj,transform=False): returns a list of wires that define the
-        tags (engravings) contained in the panels in this sheet. If transform is 
-        True, the placement of the sheet will be added to each wire. Warning, the
-        wires returned by this function may not be closed, depending on the font"""
-        
+        """getTags(obj,transform=False): returns a list of compounds whose wires define the
+        tags (engravings) contained in the panels in this sheet and the sheet intself.
+        If transform is True, the placement of the sheet will be added to each wire.
+        Warning, the wires returned by this function may not be closed,
+        depending on the font"""
+
         outp = []
         for p in obj.Group:
             if hasattr(p,"Proxy"):
                 if hasattr(p.Proxy,"getWires"):
                     w = p.Proxy.getWires(p)
-                    if w[1]:
-                        w = w[1]
+                    if w[2]:
+                        w = w[2]
                         if transform:
                             w.Placement = obj.Placement.multiply(w.Placement)
                         outp.append(w)
+        if self.sheettag is not None:
+            outp.append(self.sheettag)
+
         return outp
 
 

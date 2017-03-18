@@ -93,6 +93,7 @@ def isDrillable(obj, candidate):
         if (round(face.ParameterRange[0], 8) == 0.0) and (round(face.ParameterRange[1], 8) == round(math.pi * 2, 8)):
             for edge in face.Edges:  # Find seam edge and check if aligned to Z axis.
                 if (isinstance(edge.Curve, Part.Line)):
+                    PathLog.debug("candidate is a circle")
                     v0 = edge.Vertexes[0].Point
                     v1 = edge.Vertexes[1].Point
                     if (v1.sub(v0).x == 0) and (v1.sub(v0).y == 0):
@@ -103,16 +104,19 @@ def isDrillable(obj, candidate):
                         if obj.isInside(lsp, 0, False) or obj.isInside(lep, 0, False):
                             drillable = False
                         # eliminate elliptical holes
-                        elif abs(face.BoundBox.XLength - face.BoundBox.YLength) > 0.05:
+                        elif not hasattr(face.Surface, "Radius"): #abs(face.BoundBox.XLength - face.BoundBox.YLength) > 0.05:
                             drillable = False
                         else:
                             drillable = True
     else:
         for edge in candidate.Edges:
-            if (isinstance(edge.Curve, Part.Circle)):
-                if abs(edge.BoundBox.XLength - edge.BoundBox.YLength) > 0.05:
+            if isinstance(edge.Curve, Part.Circle) and edge.isClosed():
+                PathLog.debug("candidate is a circle or ellipse")
+                if not hasattr(edge.Curve, "Radius"): #bbdiff > 0.05:
+                    PathLog.debug("No radius.  Ellipse.")
                     drillable = False
                 else:
+                    PathLog.debug("Has Radius, Circle")
                     drillable = True
     return drillable
 
