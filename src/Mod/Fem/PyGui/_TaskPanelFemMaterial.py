@@ -176,7 +176,7 @@ class _TaskPanelFemMaterial:
             # Fluidic properties
             if 'KinematicViscosity' not in self.material:
                 print('KinematicViscosity not found in material data of: ' + self.material['Name'])
-                self.material['KineticViscosity'] = '0 m^2/s'
+                self.material['KinematicViscosity'] = '0 m^2/s'
             if 'VolumetricThermalExpansionCoefficient' not in self.material:
                 print('VolumetricThermalExpansionCoefficient not found in material data of: ' + self.material['Name'])
                 self.material['VolumetricThermalExpansionCoefficient'] = '0 m/m/K'
