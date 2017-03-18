@@ -328,53 +328,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="widget_2" native="true">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item row="2" column="0">
-           <widget class="QCheckBox" name="useEndPoint">
-            <property name="text">
-             <string>Use End Point</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="useStartPoint">
-            <property name="text">
-             <string>Use Start Point</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QCheckBox" name="useCompensation">
-            <property name="text">
-             <string>Use Compensation</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QCheckBox" name="processHoles">
-            <property name="text">
-             <string>Process Holes</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QCheckBox" name="processPerimeter">
-            <property name="text">
-             <string>Process Perimeter</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
         <widget class="QWidget" name="widget_4" native="true">
          <layout class="QGridLayout" name="gridLayout_6">
           <property name="topMargin">
@@ -414,6 +367,54 @@
             </property>
             <property name="unit" stdset="0">
              <string notr="true">mm</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_2" native="true">
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="2" column="2">
+           <widget class="QCheckBox" name="processPerimeter">
+            <property name="text">
+             <string>Process Perimeter</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QCheckBox" name="processHoles">
+            <property name="text">
+             <string>Process Holes</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="useEndPoint">
+            <property name="text">
+             <string>Use End Point</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="useStartPoint">
+            <property name="text">
+             <string>Use Start Point</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QCheckBox" name="useCompensation">
+            <property name="text">
+             <string>Use Compensation</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QCheckBox" name="processCircles">
+            <property name="text">
+             <string>Process Circles</string>
             </property>
            </widget>
           </item>
