@@ -26,13 +26,15 @@ import FreeCAD
 import Path
 import numpy
 import TechDraw
+import ArchPanel
+
 from FreeCAD import Vector
 from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
 import PathScripts.PathLog as PathLog
 
 LOG_MODULE = 'PathProfile'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 # PathLog.trackModule('PathProfile')
 
 if FreeCAD.GuiUp:
@@ -99,6 +101,7 @@ class ObjectProfile:
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final profile- good for roughing toolpath"))
         obj.addProperty("App::PropertyBool", "processHoles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile holes as well as the outline"))
         obj.addProperty("App::PropertyBool", "processPerimeter", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the outline"))
+        obj.addProperty("App::PropertyBool", "processCircles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile round holes"))
 
         obj.Proxy = self
 
@@ -109,8 +112,7 @@ class ObjectProfile:
         return None
 
     def onChanged(self, obj, prop):
-        if prop == "UserLabel":
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+        pass
 
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
@@ -270,6 +272,40 @@ print "y - " + str(point.y)
                 edgelist = profilewire.Edges
                 edgelist = Part.__sortEdges__(edgelist)
                 output += self._buildPathLibarea(obj, edgelist, False)
+
+        else:  #Try to build targets frorm the job base
+            parentJob = PathUtils.findParentJob(obj)
+            if parentJob is None:
+                return
+            baseobject = parentJob.Base
+            if baseobject is None:
+                return
+
+            if hasattr(baseobject, "Proxy"):
+                if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+                    if obj.processPerimeter:
+                        shapes = baseobject.Proxy.getOutlines(baseobject, transform=False)
+                        for shape in shapes:
+                            for wire in shape.Wires:
+                                edgelist = wire.Edges
+                                edgelist = Part.__sortEdges__(edgelist)
+                                PathLog.debug("Processing panel perimeter.  edges found: {}".format(len(edgelist)))
+                            try:
+                                output += self._buildPathLibarea(obj, edgelist, isHole=False)
+                            except:
+                                FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+
+                    shapes = baseobject.Proxy.getHoles(baseobject, transform=False)
+                    for shape in shapes:
+                        for wire in shape.Wires:
+                            drillable = PathUtils.isDrillable(baseobject.Proxy, wire)
+                            if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
+                                edgelist = wire.Edges
+                                edgelist = Part.__sortEdges__(edgelist)
+                                try:
+                                    output += self._buildPathLibarea(obj, edgelist, isHole=True)
+                                except:
+                                    FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
         if obj.Active:
             path = Path.Path(output)
@@ -442,6 +478,8 @@ class TaskPanel:
                 self.obj.processHoles = self.form.processHoles.isChecked()
             if hasattr(self.obj, "processPerimeter"):
                 self.obj.processPerimeter = self.form.processPerimeter.isChecked()
+            if hasattr(self.obj, "processCircles"):
+                self.obj.processCircles = self.form.processCircles.isChecked()
             if hasattr(self.obj, "ToolController"):
                 PathLog.debug("name: {}".format(self.form.uiToolController.currentText()))
                 tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
@@ -462,6 +500,7 @@ class TaskPanel:
         self.form.useEndPoint.setChecked(self.obj.UseEndPoint)
         self.form.processHoles.setChecked(self.obj.processHoles)
         self.form.processPerimeter.setChecked(self.obj.processPerimeter)
+        self.form.processCircles.setChecked(self.obj.processCircles)
 
         index = self.form.cutSide.findText(
                 self.obj.Side, QtCore.Qt.MatchFixedString)
@@ -602,6 +641,7 @@ class TaskPanel:
         self.form.rollRadius.editingFinished.connect(self.getFields)
         self.form.processHoles.clicked.connect(self.getFields)
         self.form.processPerimeter.clicked.connect(self.getFields)
+        self.form.processCircles.clicked.connect(self.getFields)
 
         self.setFields()
 

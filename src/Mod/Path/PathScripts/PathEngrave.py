@@ -116,7 +116,6 @@ class ObjectPathEngrave:
         baseobject = parentJob.Base
         if baseobject is None:
             return
-
         try:
             if baseobject.isDerivedFrom('Sketcher::SketchObject') or \
                     baseobject.isDerivedFrom('Part::Part2DObject'):
@@ -132,31 +131,14 @@ class ObjectPathEngrave:
                     output += self.buildpathocc(obj, wires)
 
             elif isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
-                baseobject.Proxy.execute(baseobject)
-                ss = baseobject.Proxy.sheettag
-                ss.Placement = baseobject.Placement.multiply(ss.Placement)
-
-                output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
-                for w in ss.Wires:
-                    tempedges = PathUtils.cleanedges(w.Edges, 0.5)
-                    wires.append(Part.Wire(tempedges))
-                if obj.Algorithm == "OCC Native":
-                    output += self.buildpathocc(obj, wires)
-
-                for subobj in baseobject.Group:  # process the group of panels
-                    if isinstance(subobj.Proxy, ArchPanel.PanelCut):
-                        subobj.Proxy.execute(subobj)
-
-                        if hasattr(subobj.Proxy, "tag"):
-                            ss = subobj.Proxy.tag
-                            ss.Placement = subobj.Placement.multiply(ss.Placement)
-
-                            output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
-                            for w in ss.Wires:
-                                tempedges = PathUtils.cleanedges(w.Edges, 0.5)
-                                wires.append(Part.Wire(tempedges))
-                            if obj.Algorithm == "OCC Native":
-                                output += self.buildpathocc(obj, wires)
+                shapes = baseobject.Proxy.getTags(baseobject)
+                for shape in shapes:
+                    output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
+                    for w in shape.Wires:
+                        tempedges = PathUtils.cleanedges(w.Edges, 0.5)
+                        wires.append(Part.Wire(tempedges))
+                    if obj.Algorithm == "OCC Native":
+                        output += self.buildpathocc(obj, wires)
             else:
                 raise ValueError('Unknown baseobject type for engraving')
 

@@ -34,7 +34,7 @@ import ArchPanel
 
 LOG_MODULE = 'PathContour'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-PathLog.trackModule('PathContour')
+#PathLog.trackModule('PathContour')
 
 if FreeCAD.GuiUp:
     import FreeCADGui
