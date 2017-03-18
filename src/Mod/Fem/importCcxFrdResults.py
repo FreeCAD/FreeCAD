@@ -492,6 +492,9 @@ def readResult(frd_input):
                 results.append(mode_results)
                 mode_disp = {}
                 mode_stress = {}
+                mode_stressv = {}
+                mode_strain = {}
+                mode_peeq = {}
                 mode_temp = {}
                 eigenmode = 0
 
@@ -507,6 +510,9 @@ def readResult(frd_input):
                 results.append(mode_results)
                 mode_disp = {}
                 mode_stress = {}
+                mode_stressv = {}
+                mode_strain = {}
+                mode_peeq = {}
                 eigenmode = 0
 
             if mode_massflow and mode_networkpressure:
