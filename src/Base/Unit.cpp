@@ -486,6 +486,7 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::SpecificHeat                )       return QString::fromLatin1("SpecificHeat"); else
     if(*this == Unit::ThermalTransferCoefficient  )       return QString::fromLatin1("ThermalTransferCoefficient"); else
     if(*this == Unit::HeatFlux                    )       return QString::fromLatin1("HeatFlux"); else
+    if(*this == Unit::KinematicViscosity          )       return QString::fromLatin1("KinematicViscosity"); else
 
     return QString();
 
@@ -519,3 +520,4 @@ Unit Unit::ThermalExpansionCoefficient (0,0,0,0,-1);
 Unit Unit::SpecificHeat                (2,0,-2,0,-1);
 Unit Unit::ThermalTransferCoefficient  (0,1,-3,0,-1);
 Unit Unit::HeatFlux                    (0,1,-3,0,0);
+Unit Unit::KinematicViscosity          (2,0,-1);  // SI unit: m^2/s, https://en.wikipedia.org/wiki/Viscosity#Kinematic_viscosity
