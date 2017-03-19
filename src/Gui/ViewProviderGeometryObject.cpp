@@ -151,7 +151,7 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
         pcShapeMaterial->transparency.setValue(Mat.transparency);
     }
     else if (prop == &BoundingBox || prop == &SelectionStyle) {
-        if(SelectionStyle.getValue()!=0)
+        if(SelectionStyle.getValue()==0)
             showBoundingBox( BoundingBox.getValue() );
     }
 
@@ -437,7 +437,7 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
 
         // add to the highlight node
         pcBoundSwitch->addChild(pBoundingSep);
-        pcRoot->addChild(pcBoundSwitch);
+        pcRoot->insertChild(pcBoundSwitch,pcRoot->findChild(pcModeSwitch));
     }
 
     if (pcBoundSwitch) {
