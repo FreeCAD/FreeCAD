@@ -146,13 +146,6 @@ class ViewProviderConnect:
         self.ViewObject = vobj
         self.Object = vobj.Object
 
-
-    def setEdit(self,vobj,mode):
-        return False
-
-    def unsetEdit(self,vobj,mode):
-        return
-
     def __getstate__(self):
         return None
 
@@ -256,13 +249,6 @@ class ViewProviderEmbed:
         self.ViewObject = vobj
         self.Object = vobj.Object
 
-
-    def setEdit(self,vobj,mode):
-        return False
-
-    def unsetEdit(self,vobj,mode):
-        return
-
     def __getstate__(self):
         return None
 
@@ -350,13 +336,6 @@ class ViewProviderCutout:
     def attach(self, vobj):
         self.ViewObject = vobj
         self.Object = vobj.Object
-
-
-    def setEdit(self,vobj,mode):
-        return False
-
-    def unsetEdit(self,vobj,mode):
-        return
 
     def __getstate__(self):
         return None
