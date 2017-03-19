@@ -84,8 +84,8 @@ def curvetowire(obj, steps):
         p0 = p
     return edgelist
 
-def isDrillable(obj, candidate):
-    PathLog.debug('obj: {} candidate {}')
+def isDrillable(obj, candidate, tooldiameter=None):
+    PathLog.track('obj: {} candidate: {} tooldiameter {}'.format(obj, candidate, tooldiameter))
     drillable = False
     if candidate.ShapeType == 'Face':
         face = candidate
@@ -107,7 +107,10 @@ def isDrillable(obj, candidate):
                         elif not hasattr(face.Surface, "Radius"): #abs(face.BoundBox.XLength - face.BoundBox.YLength) > 0.05:
                             drillable = False
                         else:
-                            drillable = True
+                            if tooldiameter is not None:
+                                drillable = face.Surface.Radius >= tooldiameter/2
+                            else:
+                                drillable = True
     else:
         for edge in candidate.Edges:
             if isinstance(edge.Curve, Part.Circle) and edge.isClosed():
@@ -117,7 +120,11 @@ def isDrillable(obj, candidate):
                     drillable = False
                 else:
                     PathLog.debug("Has Radius, Circle")
-                    drillable = True
+                    if tooldiameter is not None:
+                        drillable = edge.Curve.Radius >= tooldiameter/2
+                    else:
+                        drillable = True
+    PathLog.debug("candidate is drillable: {}".format(drillable))
     return drillable
 
 # fixme set at 4 decimal places for testing
