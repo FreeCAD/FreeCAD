@@ -97,3 +97,11 @@ SET_BIN_DIR(AssemblyGui AssemblyGui /Mod/Assembly)
 SET_PYTHON_PREFIX_SUFFIX(AssemblyGui)
 
 INSTALL(TARGETS AssemblyGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(AssemblyGuiIcon_SVG
+	Resources/icons/AssemblyWorkbench.svg
+)
+
+fc_copy_sources(AssemblyGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Assembly" ${AssemblyGuiIcon_SVG})
+
+INSTALL(FILES ${AssemblyGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Assembly/Resources/icons")
