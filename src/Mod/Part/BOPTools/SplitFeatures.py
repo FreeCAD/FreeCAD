@@ -99,12 +99,6 @@ class ViewProviderBooleanFragments:
         self.ViewObject = vobj
         self.Object = vobj.Object
 
-    def setEdit(self,vobj,mode):
-        return False
-
-    def unsetEdit(self,vobj,mode):
-        return
-
     def __getstate__(self):
         return None
 
@@ -240,13 +234,6 @@ class ViewProviderSlice:
         self.ViewObject = vobj
         self.Object = vobj.Object
 
-
-    def setEdit(self,vobj,mode):
-        return False
-
-    def unsetEdit(self,vobj,mode):
-        return
-
     def __getstate__(self):
         return None
 
@@ -367,13 +354,6 @@ class ViewProviderXOR:
     def attach(self, vobj):
         self.ViewObject = vobj
         self.Object = vobj.Object
-
-
-    def setEdit(self,vobj,mode):
-        return False
-
-    def unsetEdit(self,vobj,mode):
-        return
 
     def __getstate__(self):
         return None
