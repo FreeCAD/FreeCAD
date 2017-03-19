@@ -14,8 +14,8 @@
    height="64"
    id="svg1307"
    sodipodi:version="0.32"
-   inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="button_down.svg"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="button_left.svg"
    inkscape:export-filename="/home/lapo/Desktop/Grafica/Icone/media-actions-outlines.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"
@@ -470,26 +470,37 @@
        y1="84.263489"
        x2="174.74524"
        y2="105.49083" />
-    <radialGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4150"
-       id="radialGradient4160"
-       cx="10.783883"
-       cy="11.8779"
-       fx="10.783883"
-       fy="11.8779"
-       r="24.568377"
-       gradientTransform="matrix(0.98014458,0.00432595,-0.00454275,0.98189747,0.26807665,0.16836958)"
-       gradientUnits="userSpaceOnUse" />
     <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4191"
-       id="linearGradient4197"
-       x1="31.695362"
-       y1="55.638584"
-       x2="30.507326"
-       y2="-5.7826624"
-       gradientUnits="userSpaceOnUse" />
+       gradientTransform="matrix(0,-1.4500001,1.4705882,0,-15.05882,91.45)"
+       y2="36.079998"
+       x2="21.689653"
+       y1="29.279999"
+       x1="56.172409"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3036"
+       xlink:href="#linearGradient3895"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient3895">
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1;"
+         offset="0"
+         id="stop3897" />
+      <stop
+         style="stop-color:#204a87;stop-opacity:1;"
+         offset="1"
+         id="stop3899" />
+    </linearGradient>
+    <linearGradient
+       y2="34.719997"
+       x2="54.103443"
+       y1="29.279999"
+       x1="23.758619"
+       gradientTransform="matrix(0,1.4500001,1.4705882,0,-15.058821,-43.45)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3012"
+       xlink:href="#linearGradient3895"
+       inkscape:collect="always" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -498,11 +509,11 @@
      borderopacity="0.19607843"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="6.3984375"
-     inkscape:cx="45.642975"
-     inkscape:cy="12.062994"
+     inkscape:zoom="12.796875"
+     inkscape:cx="44.278009"
+     inkscape:cy="35.372181"
      inkscape:current-layer="layer1"
-     showgrid="false"
+     showgrid="true"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
      inkscape:grid-points="true"
@@ -511,13 +522,16 @@
      inkscape:guide-bbox="true"
      guidetolerance="1px"
      stroke="#729fcf"
-     inkscape:window-width="1280"
-     inkscape:window-height="1004"
-     inkscape:window-x="1278"
-     inkscape:window-y="-3"
+     inkscape:window-width="1600"
+     inkscape:window-height="837"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
      showborder="true"
      inkscape:showpageshadow="false"
-     inkscape:window-maximized="1">
+     inkscape:window-maximized="1"
+     inkscape:snap-grids="true"
+     inkscape:snap-bbox="true"
+     inkscape:snap-nodes="true">
     <sodipodi:guide
        orientation="horizontal"
        position="38.996647"
@@ -595,14 +609,28 @@
        type="xygrid"
        originx="0px"
        originy="0px"
-       spacingx="0.5px"
-       spacingy="0.5px"
+       spacingx="16px"
+       spacingy="16px"
        color="#3f3fff"
-       empcolor="#3f3fff"
+       empcolor="#ff3f00"
        opacity="0.15"
-       empopacity="0.38"
+       empopacity="0.38039216"
        empspacing="2"
        visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+    <inkscape:grid
+       type="xygrid"
+       id="grid3403"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+    <inkscape:grid
+       type="xygrid"
+       id="grid3405"
+       empspacing="5"
+       visible="false"
        enabled="true"
        snapvisiblegridlinesonly="true" />
   </sodipodi:namedview>
@@ -614,26 +642,20 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
         <dc:creator>
           <cc:Agent>
-            <dc:title>Lapo Calamandrei</dc:title>
+            <dc:title></dc:title>
           </cc:Agent>
         </dc:creator>
         <cc:license
-           rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
+           rdf:resource="" />
         <dc:subject>
-          <rdf:Bag>
-            <rdf:li>media</rdf:li>
-            <rdf:li>stop</rdf:li>
-            <rdf:li>playback</rdf:li>
-            <rdf:li>video</rdf:li>
-            <rdf:li>music</rdf:li>
-          </rdf:Bag>
+          <rdf:Bag />
         </dc:subject>
         <dc:contributor>
           <cc:Agent>
-            <dc:title>Jakub Steiner</dc:title>
+            <dc:title></dc:title>
           </cc:Agent>
         </dc:contributor>
       </cc:Work>
@@ -663,11 +685,22 @@
      inkscape:r_cy="true"
      transform="translate(0,16)">
     <path
-       style="fill:url(#linearGradient4197);stroke:#0037ff;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;fill-opacity:1"
-       d="M 21.411477,1.4847375 41.260074,1.6410257 41.728938,35.399268 61.421246,35.868132 32.19536,61.968253 2.0317461,35.086691 21.880341,34.930403 z"
-       id="path4181"
        inkscape:connector-curvature="0"
-       transform="translate(0,-16)"
-       sodipodi:nodetypes="cccccccc" />
+       style="fill:url(#linearGradient3012);fill-opacity:1;fill-rule:evenodd;stroke:#0b1521;stroke-width:1.99999988000000006;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 7,13 14,0 0,-26 22,0 0,26 14,0 -25.000001,32 z"
+       id="path3343"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
+       inkscape:export-xdpi="4.1683898"
+       inkscape:export-ydpi="4.1683898" />
+    <path
+       inkscape:connector-curvature="0"
+       style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 11.12088,15 23,15 l 0,-26 18,0 0,26 11.945055,0 -20.772994,26.999994 z"
+       id="path3343-2"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
+       inkscape:export-xdpi="4.1683898"
+       inkscape:export-ydpi="4.1683898" />
   </g>
 </svg>
