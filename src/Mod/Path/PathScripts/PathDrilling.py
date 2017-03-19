@@ -35,8 +35,8 @@ from PathScripts.PathUtils import fmt
 
 
 LOG_MODULE = 'PathDrilling'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-#PathLog.trackModule('PathDrilling')
+PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+PathLog.trackModule('PathDrilling')
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -61,7 +61,7 @@ class ObjectDrilling:
         # Base & location
         obj.addProperty("App::PropertyLinkSubList", "Base","Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base geometry of this toolpath"))
         #obj.addProperty("App::PropertyVectorList", "Positions", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Locations of insterted holding tags"))
-        obj.addProperty("App::PropertyIntegerList", "Disabled", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Ids of disabled holding tags"))
+        obj.addProperty("App::PropertyIntegerList", "Disabled", "Path", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Ids of disabled holding tags"))
 
         # General Properties
         obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Make False, to prevent operation from generating code"))
@@ -128,7 +128,7 @@ class ObjectDrilling:
             baseobject = parentJob.Base
             if baseobject is None:
                 return
-            holes = self.findHoles(baseobject.Shape)
+            holes = self.findHoles(obj, baseobject.Shape)
             for hole in holes:
                 self.addDrillableLocation(obj, baseobject, hole[0])
 
@@ -198,25 +198,30 @@ class ObjectDrilling:
             obj.Path = path
             obj.ViewObject.Visibility = False
 
-    def findHoles(self, obj):
-        PathLog.track()
+    def findHoles(self, obj, shape):
+        import DraftGeomUtils as dgu
+        PathLog.track('obj: {} shape: {}'.format(obj, shape))
         holelist = []
-        if obj.BoundBox.ZLength == 0:
-            for i in range(len(obj.Edges)):
+        tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
+        PathLog.debug('search for holes larger than tooldiameter: {}: '.format(tooldiameter))
+        if dgu.isPlanar(shape):
+            for i in range(len(shape.Edges)):
                 candidateEdgeName = "Edge" + str(i +1)
-                e = obj.getElement(candidateEdgeName)
-                if PathUtils.isDrillable(obj, e):
-                    x = e.BoundBox.Center.x
-                    y = e.BoundBox.Center.y
+                e = shape.getElement(candidateEdgeName)
+                if PathUtils.isDrillable(shape, e, tooldiameter):
+                    PathLog.debug('edge candidate: {} is drillable '.format(e))
+                    x = e.Curve.Center.x
+                    y = e.Curve.Center.y
                     diameter = e.BoundBox.XLength
                     holelist.append((candidateEdgeName, e, x, y, diameter))
         else:
-            for i in range(len(obj.Faces)):
+            for i in range(len(shape.Faces)):
                 candidateFaceName = "Face" + str(i + 1)
-                f = obj.getElement(candidateFaceName)
-                if PathUtils.isDrillable(obj, f):
-                    x = f.BoundBox.Center.x
-                    y = f.BoundBox.Center.y
+                f = shape.getElement(candidateFaceName)
+                if PathUtils.isDrillable(obj, f, tooldiameter):
+                    PathLog.debug('face candidate: {} is drillable '.format(f))
+                    x = f.Surface.Center.x
+                    y = f.Surface.Center.y
                     diameter = f.BoundBox.XLength
                     holelist.append((candidateFaceName, f, x, y, diameter))
 
