@@ -1905,13 +1905,15 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
 void CmdPartDesignMultiTransform::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-		App::Document *doc = getDocument();
-		PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-			/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+    // No PartDesign feature without Body past FreeCAD 0.16
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-		// No PartDesign feature without Body past FreeCAD 0.16
-		if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
-			return;
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
 
     std::vector<App::DocumentObject*> features;
 
