@@ -219,12 +219,13 @@ void SoBrepFaceSet::doAction(SoAction* action)
         Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
         this->selectionColor = selaction->getColor();
         if (selaction->getType() == Gui::SoSelectionElementAction::All) {
-            int num = this->partIndex.getNum();
-            this->selectionIndex.setNum(num);
-            int32_t* v = this->selectionIndex.startEditing();
-            for (int i=0; i<num;i++)
-                v[i] = i;
-            this->selectionIndex.finishEditing();
+            //int num = this->partIndex.getNum();
+            //this->selectionIndex.setNum(num);
+            //int32_t* v = this->selectionIndex.startEditing();
+            //for (int i=0; i<num;i++)
+            //    v[i] = i;
+            //this->selectionIndex.finishEditing();
+            this->selectionIndex.setValue(-1); // all
             PRIVATE(this)->updateVbo = true;
             return;
         }
@@ -933,11 +934,19 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
         }
 
         // coords
-        int length = (int)pindices[id]*4;
+        int length=0;
         int start=0;
-        for (int j=0;j<id;j++)
-            start+=(int)pindices[j];
-        start *= 4;
+        int numparts=1;
+        // if < 0 then select everything
+        if (id < 0) {
+            length = numindices;
+        }
+        else {
+            length = (int)pindices[id]*4;
+            for (int j=0;j<id;j++)
+                start+=(int)pindices[j];
+            start *= 4;
+        }
 
         // normals
         const SbVec3f * normals_s = normals;
@@ -950,7 +959,7 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
             nbind = OVERALL;
 
         renderShape(action, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
-            &(pindices[id]), 1, normals_s, nindices_s, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
+            &(pindices[id]), numparts, normals_s, nindices_s, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
     }
     state->pop();
     
