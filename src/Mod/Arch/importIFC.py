@@ -1710,11 +1710,14 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                         for fcface in fcsolid.Faces:
                             for e in fcface.Edges:
                                 if DraftGeomUtils.geomType(e) != "Line":
+                                    from FreeCAD import Base
                                     try:
                                         if e.curvatureAt(e.FirstParameter+(e.LastParameter-e.FirstParameter)/2) > 0.0001:
                                             curves = True
                                             break
                                     except Part.OCCError:
+                                        pass
+                                    except Base.FreeCADError:
                                         pass
                         if curves:
                             joinfacets = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcJoinCoplanarFacets",False)
