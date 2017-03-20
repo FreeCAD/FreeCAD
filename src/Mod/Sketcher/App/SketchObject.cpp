@@ -4138,12 +4138,17 @@ void SketchObject::validateExternalLinks(void)
         const App::DocumentObject *Obj=Objects[i];
         const std::string SubElement=SubElements[i];
 
-        const Part::Feature *refObj=static_cast<const Part::Feature*>(Obj);
-        const Part::TopoShape& refShape=refObj->Shape.getShape();
-        
         TopoDS_Shape refSubShape;
         try {
-            refSubShape = refShape.getSubShape(SubElement.c_str());
+            if (Obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+                const Part::Datum* datum = static_cast<const Part::Datum*>(Obj);
+                refSubShape = datum->getShape();
+            }
+            else {
+                const Part::Feature *refObj=static_cast<const Part::Feature*>(Obj);
+                const Part::TopoShape& refShape=refObj->Shape.getShape();
+                refSubShape = refShape.getSubShape(SubElement.c_str());
+            }
         }
         catch (Standard_Failure) {
             rebuild = true ;
@@ -4185,7 +4190,6 @@ void SketchObject::validateExternalLinks(void)
         rebuildVertexIndex();
         solve(true); // we have to update this sketch and everything depending on it.
     }
-    
 }
 
 void SketchObject::rebuildExternalGeometry(void)
