@@ -123,7 +123,6 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.selectionobj = FreeCAD.ActiveDocument.addObject("Path::Feature","selection")
         self.selectionobj.ViewObject.LineWidth = 4
         self.selectionobj.ViewObject.NormalColor = highlightcolor
-        self.selectionobj.ViewObject.ShowFirstRapid = False
 
         # nice text editor widget for editing the gcode
         self.editor = QtGui.QTextEdit()

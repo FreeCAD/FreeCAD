@@ -122,8 +122,8 @@ def processArguments(argstring):
             SHOW_EDITOR = True
         elif arg == '--no-show-editor':
             SHOW_EDITOR = False
-        elif arg == '--IP_ADDR':
-            IP_ADDR = '192.168.1.11'
+        elif arg.split('=')[0] == '--IP_ADDR':
+            IP_ADDR = arg.split('=')[1]
         elif arg == '--verbose':
             VERBOSE = True
 
