@@ -33,6 +33,7 @@ class SoSensor;
 class SoDragger;
 class SbVec2s;
 class SoTransform;
+class SoBaseColor;
 
 namespace Base { class Placement;}
 
@@ -109,6 +110,7 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop);
     void setSelectable(bool Selectable=true);
+    void applyBoundColor();
 
 private:
     static void dragStartCallback(void * data, SoDragger * d);
@@ -120,6 +122,7 @@ protected:
     SoMaterial       * pcShapeMaterial;
     SoFCBoundingBox  * pcBoundingBox;
     SoSwitch         * pcBoundSwitch;
+    SoBaseColor      * pcBoundColor;
 };
 
 } // namespace Gui
