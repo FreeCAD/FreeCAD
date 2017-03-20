@@ -28,11 +28,34 @@ import Sketcher
 import Part
 import PartDesign
 import PartDesignGui
+import tempfile
 
 from PySide import QtGui, QtCore
 from PySide.QtGui import QApplication
 
 #timer runs this class in order to access modal dialog
+class CallableCheckWorkflow:
+    def __init__(self, test):
+        self.test = test
+    def __call__(self):
+        diag = QApplication.activeModalWidget()
+        self.test.assertIsNotNone(diag, "Dialog box could not be found")
+        if (diag != None):
+            cbuttons = diag.findChildren(QtGui.QPushButton)
+            cbuttons = [but for but in cbuttons if but.text() == u'Migrate manually']
+            self.test.assertEqual(len(cbuttons), 1, "Button could not be found")
+            cbutton = cbuttons[0]
+            dialogcheck = CallableCheckDialog(self.test)
+            QtCore.QTimer.singleShot(500, dialogcheck)
+            QtCore.QTimer.singleShot(0, cbutton, QtCore.SLOT('click()'))
+
+class CallableCheckDialog:
+    def __init__(self, test):
+        self.test = test
+    def __call__(self):
+        diag = QApplication.activeModalWidget()
+        self.test.assertIsNone(diag, "Dialog box could not be found")
+
 class CallableCheckWarning:
     def __init__(self, test):
         self.test = test
@@ -181,6 +204,39 @@ class PartDesignGuiTestCases(unittest.TestCase):
 
     def tearDown(self):
         FreeCAD.closeDocument("SketchGuiTest")
+
+class PartDesignTransformed(unittest.TestCase):
+    def setUp(self):
+        self.Doc = App.newDocument("PartDesignTransformed")
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.BoxObj = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        self.BoxObj.Length=10.0
+        self.BoxObj.Width=10.0
+        self.BoxObj.Height=10.0
+        App.ActiveDocument.recompute()
+        #not adding box to the body to imitate undertermined workflow
+        tempDir = tempfile.gettempdir()
+        self.TempDoc = os.path.join(tempDir, 'PartDesignTransformed.FCStd')
+        App.ActiveDocument.saveAs(self.TempDoc)
+        App.closeDocument("PartDesignTransformed")
+  
+    def testMultiTransformCase(self):
+        App.Console.PrintMessage('Testing applying MultiTransform to the Box outside the body\n')
+        App.open(self.TempDoc)
+        App.setActiveDocument("PartDesignTransformed")
+        Gui.Selection.addSelection(App.ActiveDocument.Box)
+
+        workflowcheck = CallableCheckWorkflow(self)
+        QtCore.QTimer.singleShot(500, workflowcheck)
+        Gui.runCommand("PartDesign_MultiTransform")
+
+        App.closeDocument("PartDesignTransformed")
+        
+    def tearDown(self):
+        #closing doc
+        if (App.ActiveDocument != None and App.ActiveDocument.Name == PartDesignTransformed):
+            App.closeDocument("PartDesignTransformed")
+        #print ("omit closing document for debugging")
 
 #class PartDesignGuiTestCases(unittest.TestCase):
 #   def setUp(self):
