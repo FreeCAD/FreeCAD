@@ -2285,12 +2285,12 @@ std::string Application::FindHomePath(const char* call)
     char *buf;
 
     _NSGetExecutablePath(NULL, &sz); //function only returns "sz" if first arg is to small to hold value
-    buf = (char*) malloc(++sz);
+    buf = new char[++sz];
 
     if (_NSGetExecutablePath(buf, &sz) == 0) {
         char resolved[PATH_MAX];
         char* path = realpath(buf, resolved);
-        free(buf);
+        delete [] buf;
 
         if (path) {
             std::string Call(resolved), TempHomePath;
@@ -2300,6 +2300,8 @@ std::string Application::FindHomePath(const char* call)
             TempHomePath.assign(TempHomePath,0,pos+1);
             return TempHomePath;
         }
+    } else {
+        delete [] buf;
     }
 
     return call; // error
