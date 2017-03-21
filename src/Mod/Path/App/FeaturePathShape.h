@@ -53,7 +53,7 @@ public:
     // Part::PropertyPartShape Shape;
     App::PropertyLinkList Sources;
     App::PropertyVector StartPoint;
-    PARAM_PROP_DECLARE(AREA_PARAMS_PATH_CONF)
+    PARAM_PROP_DECLARE(AREA_PARAMS_PATH)
 
     //@{
     /// recalculate the feature

@@ -72,13 +72,6 @@ same algorithm</UserDocu>
     </Methode>
     <Methode Name="getParamsDesc" Keyword="true">
       <Documentation>
-          <UserDocu>getParamsDesc(as_string=True): Returns a list of supported parameters and their descriptions.\n
-* as_string: if False, then return a dictionary of documents of all supported parameters.
-          </UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="sortWires" Keyword="true">
-      <Documentation>
           <UserDocu></UserDocu>
       </Documentation>
     </Methode>
