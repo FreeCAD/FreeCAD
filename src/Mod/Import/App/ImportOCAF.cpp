@@ -64,9 +64,14 @@
 # endif
 #endif
 
+// define NEW_PART_DESIGN
+
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#ifdef NEW_PART_DESIGN
+#include <App/Part.h>
+#endif
 #include <App/DocumentObjectPy.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/FeatureCompound.h>
@@ -107,6 +112,7 @@ void ImportOCAF::loadShapes()
     std::vector<App::DocumentObject*> lValue;
     myRefShapes.clear();
     loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false, lValue);
+    lValue.clear();;
 }
 
 void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
@@ -184,7 +190,6 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
         asm_name = part_name;
     }
 #endif
-
     TDF_Label ref;
     if (aShapeTool->IsReference(label) && aShapeTool->GetReferredShape(label, ref)) {
         loadShapes(ref, part_loc, part_name, asm_name, true, lValue);
@@ -199,28 +204,64 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
             if (!asm_name.empty())
                 part_name = asm_name;
             if (isRef)
+	    {
                 createShape(label, loc, part_name, lValue);
+	    }
             else
+	    {
                 createShape(label, part_loc, part_name, localValue);
+	    }
         }
         else {
             // This is probably an Assembly let's try to create a Compound with the name
+#ifndef NEW_PART_DESIGN
             Part::Compound *pcCompound = NULL;
             if (aShapeTool->IsAssembly(label)) {
                 pcCompound = static_cast<Part::Compound*>(doc->addObject
                             ("Part::Compound",asm_name.c_str()));
             }
+#endif
+#ifdef NEW_PART_DESIGN
+	    App::Part *pcPart = NULL;
+	    if (aShapeTool->IsAssembly(label)) {
+	        printf("pcPart: %s\n",asm_name.c_str());
+                pcPart = static_cast<App::Part*>(doc->addObject
+                            ("App::Part",asm_name.c_str()));
+            }
+#endif
 
             for (TDF_ChildIterator it(label); it.More(); it.Next()) {
+		printf("loading from %s\n",asm_name.c_str());
                 loadShapes(it.Value(), part_loc, part_name, asm_name, isRef, localValue);
             }
 
+#ifndef NEW_PART_DESIGN
             if (pcCompound) {
                 pcCompound->Links.setValues(localValue);
                 lValue.push_back(pcCompound);
+		printf("Pushing %s\n",pcCompound->getNameInDocument());
                 Node_Shapes.push_back(pcCompound->getNameInDocument());
             }
+#endif
+#ifdef NEW_PART_DESIGN
+        // localValue contain the object that I must add to
+        // the local Part
+        // I must add the PartOrigin and the Part itself
+	if ( localValue.size() )
+		printf("\t\t************** Starting moving part into %s\n",asm_name.c_str());
+	else
+		printf("localValue size null %s:   %d\n",asm_name.c_str(),lValue.size());
+        for(int unsigned i=0;i<localValue.size();i++){
+		printf("\t\t moving %s to %s\n",localValue[i]->getNameInDocument(),asm_name.c_str());
+                // pcPart->getDocument()->addObject((localValue[i]->getNameInDocument()));
+                pcPart->addObject((localValue[i]));
         }
+//	lValue.back()->addObject(pcPart);
+	if ( pcPart != NULL )
+		lValue.push_back(pcPart);
+#endif
+
+       }
     }
 }
 
@@ -237,23 +278,42 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
         TopExp_Explorer xp;
         int ctSolids = 0, ctShells = 0;
         std::vector<App::DocumentObject *> localValue;
-
+#ifndef NEW_PART_DESIGN
         Part::Compound *pcCompound = static_cast<Part::Compound*>(doc->addObject
                             ("Part::Compound",name.c_str() ));
+#endif
+#ifdef NEW_PART_DESIGN
+        App::Part *pcPart = NULL;
+        pcPart = static_cast<App::Part*>(doc->addObject
+                         ("App::Part",name.c_str()));
+	printf("\t\t\t adding new pcPart %s\n",name.c_str());
+#endif
         for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
             createShape(xp.Current(), loc, name, localValue);
         }
         for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
             createShape(xp.Current(), loc, name, localValue);
         }
-
+#ifndef NEW_PART_DESIGN
         pcCompound->Links.setValues(localValue);
         lValue.push_back(pcCompound);
+	printf("Pushing %s\n",pcCompound->getNameInDocument());
+#endif
+#ifdef NEW_PART_DESIGN
+        // localValue contain the object that I must add to
+        // the local Part
+        // I must add the PartOrigin and the Part itself
+        for(int unsigned i=0;i<localValue.size();i++){
+                pcPart->addObject(localValue[i]);
+        }
+	lValue.push_back(pcPart);
+#endif
+#ifndef NEW_PART_DESIGN
         Node_Shapes.push_back(pcCompound->getNameInDocument());
+#endif
         if (ctSolids > 0 || ctShells > 0)
             return;
     }
-
     createShape(aShape, loc, name, lValue);
 }
 
@@ -261,12 +321,18 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
                              std::vector<App::DocumentObject*>& lvalue)
 {
     Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
+
+// I probably have to create a Part copy
+// as to properly set it up into my new step tree
+
     if (!loc.IsIdentity())
         part->Shape.setValue(aShape.Moved(loc));
     else
         part->Shape.setValue(aShape);
     part->Label.setValue(name);
+#ifndef NEW_PART_DESIGN
     Leaf_Shapes.push_back(part->getNameInDocument());
+#endif
     lvalue.push_back(part);
 
     Quantity_Color aColor;
