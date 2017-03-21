@@ -32,6 +32,7 @@
 # include <QDropEvent>
 # include <QDragEnterEvent>
 # include <QFileDialog>
+# include <QLayout>
 # include <QMdiSubWindow>
 # include <QMessageBox>
 # include <QPainter>
