@@ -28,7 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD Command show results for FEM workbench
 
-from FemCommands import FemCommands
+from .FemCommands import FemCommands
 import FreeCADGui
 from PySide import QtCore
 

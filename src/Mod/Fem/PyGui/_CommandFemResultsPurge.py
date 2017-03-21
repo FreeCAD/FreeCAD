@@ -27,7 +27,7 @@ __url__ = "http://www.freecadweb.org"
 ## @package CommandFemResultsPurge
 #  \ingroup FEM
 
-from FemCommands import FemCommands
+from .FemCommands import FemCommands
 import FemTools
 import FreeCADGui
 from PySide import QtCore
