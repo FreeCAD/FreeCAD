@@ -218,7 +218,7 @@ PyObject* AreaPy::getShape(PyObject *args, PyObject *keywds)
     PyObject *pcObj = Py_False;
     short index=-1;
     static char *kwlist[] = {"index","rebuild", NULL};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds,"|hO",kwlist,&pcObj))
+    if (!PyArg_ParseTupleAndKeywords(args, keywds,"|hO",kwlist,&index,&pcObj))
         return 0;
 
     if(PyObject_IsTrue(pcObj))
