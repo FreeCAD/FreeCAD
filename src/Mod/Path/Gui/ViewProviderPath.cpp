@@ -195,8 +195,8 @@ void ViewProviderPath::attach(App::DocumentObject *pcObj)
     pcMarkerSwitch->addChild(markersep);
 
     SoSeparator* pcPathRoot = new SoSeparator();
-    pcPathRoot->addChild(linesep);
     pcPathRoot->addChild(pcMarkerSwitch);
+    pcPathRoot->addChild(linesep);
     pcPathRoot->addChild(pcArrowSwitch);
 
     addDisplayMaskMode(pcPathRoot, "Waypoints");
