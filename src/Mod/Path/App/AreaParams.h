@@ -179,8 +179,10 @@
         "If not 'None', the output wires will be transformed to align with the selected plane,\n"\
         "and the corresponding GCode will be inserted.\n"\
         "'Auto' means the plane is determined by the first encountered arc plane. If the found\n"\
-        "plane does not align to any GCode plane, XY plane is used.",\
-        (None)(Auto)(XY)(ZX)(YZ)))
+        "plane does not align to any GCode plane, XY plane is used.\n"\
+        "'Variable' means the arc plane can be changed during operation to align to the the\n"\
+        "arc encountered.",\
+        (None)(Auto)(XY)(ZX)(YZ)(Variable)))
 
 /** Area wire sorting parameters */
 #define AREA_PARAMS_SORT \
@@ -190,7 +192,11 @@
         "move on to the next nearest plane.\n"\
         "'3D' makes no assumption of planarity. The sorting is done across 3D space\n",\
         (None)(2D5)(3D)))\
-    AREA_PARAMS_MIN_DIST
+    AREA_PARAMS_MIN_DIST \
+    ((double, abscissa, SortAbscissa, 3.0, "Controls vertex sampling on wire for nearest point searching\n"\
+        "The sampling is dong using OCC GCPnts_UniformAbscissa",App::PropertyLength))\
+    ((short, nearest_k, NearestK, 3, "Nearest k sampling vertices are considered during sorting"))
+       
 
 /** Area path generation parameters */
 #define AREA_PARAMS_PATH \
@@ -208,15 +214,8 @@
         "value of the next move",App::PropertyLength))\
     ((double,segmentation,Segmentation,0.0,\
         "Break long curves into segments of this length. One use case is for PCB autolevel,\n"\
-        "so that more correction points can be inserted",App::PropertyLength))
-
-#define AREA_PARAMS_PATH_EXTRA \
-    AREA_PARAMS_DEFLECTION \
-    AREA_PARAMS_FIT_ARCS
-
-#define AREA_PARAMS_PATH_CONF \
-    AREA_PARAMS_PATH \
-    AREA_PARAMS_PATH_EXTRA 
+        "so that more correction points can be inserted",App::PropertyLength)) \
+    AREA_PARAMS_DEFLECTION
 
 /** Group of all Area configuration parameters except CArea's*/
 #define AREA_PARAMS_AREA \
@@ -238,8 +237,13 @@
     AREA_PARAMS_OPCODE
 
 #define AREA_PARAM_LOG_LEVEL (Error)(Warning)(Log)(Trace)
-#define AREA_PARAMS_LOG_LEVEL \
-    ((enum, log_level, LogLevel, 1, "Area log level", AREA_PARAM_LOG_LEVEL))
+#if FC_DEBUG
+#   define AREA_PARAMS_LOG_LEVEL \
+        ((enum, log_level, LogLevel, 3, "Area log level", AREA_PARAM_LOG_LEVEL))
+#else
+#   define AREA_PARAMS_LOG_LEVEL \
+        ((enum, log_level, LogLevel, 1, "Area log level", AREA_PARAM_LOG_LEVEL))
+#endif
 
 #define AREA_PARAMS_EXTRA_CONF \
     AREA_PARAMS_LOG_LEVEL 
