@@ -84,6 +84,19 @@ static PyObject* areaGetParams(PyObject *, PyObject *args) {
     return dict;
 }
 
+static PyObject * areaGetParamsDesc(PyObject *, PyObject *args, PyObject *kwd) {
+    PyObject *pcObj = Py_False;
+    static char *kwlist[] = {"as_string", NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwd, "|O",kwlist,&pcObj))
+        return 0;
+
+    if(PyObject_IsTrue(pcObj)) 
+        return PyString_FromString(PARAM_PY_DOC(NAME,AREA_PARAMS_STATIC_CONF));
+
+    PyObject *dict = PyDict_New();
+    PARAM_PY_DICT_SET_DOC(dict,NAME,AREA_PARAMS_STATIC_CONF)
+    return dict;
+}
 
 static const PyMethodDef areaOverrides[] = {
     {
@@ -129,16 +142,6 @@ static const PyMethodDef areaOverrides[] = {
         "of this Area is used if section mode is 'Workplane'.",
     },
     {
-        "sortWires",NULL,0,
-        "sortWires(index=-1, count=0, start=Vector(), allow_break=False, " PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) "):\n"
-        "Returns a tuple (wires,end): sorted wires with minimized travel distance, and the endpoint\n"
-        "of the wires.\n"
-        "\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n"
-        "\n* count (0): the number of sections to return. <=0 means all sections starting from index.\n"
-        "\n* start (Vector()): a vector specifies the start point.\n"
-        PARAM_PY_DOC(ARG,AREA_PARAMS_SORT),
-    },
-    {
         "setDefaultParams",(PyCFunction)areaSetParams, METH_VARARGS|METH_KEYWORDS|METH_STATIC,
         "setDefaultParams(" PARAM_PY_ARGS_DOC(NAME,AREA_PARAMS_EXTRA_CONF) ", key=value...):\n"
         "Static method to set the default parameters of all following Path.Area, plus the following\n"
@@ -154,6 +157,11 @@ static const PyMethodDef areaOverrides[] = {
         "abort(aborting=True): Static method to abort any ongoing operation\n"
         "\nTo ensure no stray abortion is left in the previous operaion, it is advised to manually clear\n"
         "the aborting flag by calling abort(False) before starting a new operation.",
+    },
+    {
+        "getParamsDesc",(PyCFunction)areaGetParamsDesc, METH_VARARGS|METH_KEYWORDS|METH_STATIC,
+        "getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.\n"
+        "\n* as_string: if False, then return a dictionary of documents of all supported parameters."
     },
 };
 
@@ -224,39 +232,6 @@ PyObject* AreaPy::getShape(PyObject *args, PyObject *keywds)
     if(PyObject_IsTrue(pcObj))
         getAreaPtr()->clean();
     return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->getShape(index)));
-}
-
-PyObject* AreaPy::sortWires(PyObject *args, PyObject *keywds){
-    PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_SORT)
-    short index = -1;
-    short count = 0;
-    PyObject *start = NULL;
-
-    static char *kwlist[] = {"index","count","start",
-        PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_SORT), NULL};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds,
-                "|hhO!" PARAM_PY_KWDS(AREA_PARAMS_SORT),
-                kwlist,&index,&count,&(Base::VectorPy::Type),&start,
-                PARAM_REF(PARAM_FARG,AREA_PARAMS_SORT)))
-        return 0;
-
-    gp_Pnt pstart,pend;
-    if(start) {
-        Base::Vector3d vec = static_cast<Base::VectorPy*>(start)->value();
-        pstart.SetCoord(vec.x, vec.y, vec.z);
-    }
-    std::list<TopoDS_Shape> wires = getAreaPtr()->sortWires(
-            index,count,&pstart,&pend,
-            PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
-    PyObject *list = PyList_New(0);
-    for(auto &wire : wires)
-        PyList_Append(list,Py::new_reference_to(
-                        Part::shape2pyshape(TopoDS::Wire(wire))));
-    PyObject *ret = PyTuple_New(2);
-    PyTuple_SetItem(ret,0,list);
-    PyTuple_SetItem(ret,1,new Base::VectorPy(
-                Base::Vector3d(pend.X(),pend.Y(),pend.Z())));
-    return ret;
 }
 
 PyObject* AreaPy::add(PyObject *args, PyObject *keywds)
@@ -441,19 +416,9 @@ PyObject* AreaPy::abort(PyObject *, PyObject *) {
     return 0;
 }
 
-PyObject* AreaPy::getParamsDesc(PyObject *args, PyObject *keywds)
+PyObject* AreaPy::getParamsDesc(PyObject *, PyObject *)
 {
-    PyObject *pcObj = Py_True;
-    static char *kwlist[] = {"as_string", NULL};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds,"|O",kwlist,&pcObj))
-        return 0;
-
-    if(PyObject_IsTrue(pcObj)) 
-        return PyString_FromString(PARAM_PY_DOC(NAME,AREA_PARAMS_CONF));
-
-    PyObject *dict = PyDict_New();
-    PARAM_PY_DICT_SET_DOC(dict,NAME,AREA_PARAMS_CONF)
-    return dict;
+    return 0;
 }
 
 Py::List AreaPy::getSections(void) const {
