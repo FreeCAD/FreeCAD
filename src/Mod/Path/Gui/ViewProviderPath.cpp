@@ -258,20 +258,25 @@ SoDetail* ViewProviderPath::getDetail(const char* subelement) const
 }
 
 void ViewProviderPath::onSelectionChanged(const Gui::SelectionChanges& msg) {
-    if(msg.Type == Gui::SelectionChanges::SetPreselect &&
-       msg.pSubName && pt0Index >= 0 &&
-       strcmp(msg.pDocName,getObject()->getDocument()->getName())==0 &&
-       strcmp(msg.pObjectName,getObject()->getNameInDocument())==0)
-    {
-        Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
-        Base::Vector3d pt = pcPathObj->Placement.getValue().inverse().toMatrix()*
-                                Base::Vector3d(msg.x,msg.y,msg.z);
-        const SbVec3f &ptTo = *pcLineCoords->point.getValues(pt0Index);
-        SbVec3f ptFrom(pt.x,pt.y,pt.z);
-        if(ptFrom != ptTo) {
-            pcArrowTransform->pointAt(ptFrom,ptTo);
-            pcArrowSwitch->whichChild = 0;
-            return;
+    if(msg.Type == Gui::SelectionChanges::SetPreselect && msg.pSubName && 
+       pt0Index >= 0 && getObject() && getObject()->getDocument())
+    { 
+        const char *docName = getObject()->getDocument()->getName();
+        const char *objName = getObject()->getNameInDocument();
+        if(docName && objName && 
+           strcmp(msg.pDocName,docName)==0 &&
+           strcmp(msg.pObjectName,objName)==0)
+        {
+            Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
+            Base::Vector3d pt = pcPathObj->Placement.getValue().inverse().toMatrix()*
+                                    Base::Vector3d(msg.x,msg.y,msg.z);
+            const SbVec3f &ptTo = *pcLineCoords->point.getValues(pt0Index);
+            SbVec3f ptFrom(pt.x,pt.y,pt.z);
+            if(ptFrom != ptTo) {
+                pcArrowTransform->pointAt(ptFrom,ptTo);
+                pcArrowSwitch->whichChild = 0;
+                return;
+            }
         }
     }
     pcArrowSwitch->whichChild = -1;
