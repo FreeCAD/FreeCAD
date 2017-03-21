@@ -54,6 +54,11 @@
 # include <Inventor/fields/SoSFColor.h>
 #endif
 # include <QStackedWidget>
+#include <QtOpenGL.h>
+
+#if defined(HAVE_QT5_OPENGL)
+# include <QWindow>
+#endif
 
 #include <Base/Exception.h>
 #include <Base/Console.h>
@@ -982,6 +987,21 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
     ViewMode oldmode = MDIView::currentViewMode();
     if (oldmode == newmode)
         return;
+
+#if defined(HAVE_QT5_OPENGL)
+    if (newmode == Child) {
+        // Fix in two steps:
+        // The mdi view got a QWindow when it became a top-level widget and when resetting it to a child widget
+        // the QWindow must be deleted because it has an impact on resize events and may break the layout of
+        // mdi view inside the QMdiSubWindow.
+        // In the second step below the layout must be invalidated after it's again a child widget to make sure
+        // the mdi view fits into the QMdiSubWindow.
+        QWindow* winHandle = this->windowHandle();
+        if (winHandle)
+            winHandle->destroy();
+    }
+#endif
+
     MDIView::setCurrentViewMode(newmode);
 
     // This widget becomes the focus proxy of the embedded GL widget if we leave 
@@ -1009,6 +1029,13 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
         QList<QAction*> acts = this->actions();
         for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it)
             this->removeAction(*it);
+
+#if defined(HAVE_QT5_OPENGL)
+        // Step two
+        QMdiSubWindow* mdi = qobject_cast<QMdiSubWindow*>(parentWidget());
+        if (mdi && mdi->layout())
+            mdi->layout()->invalidate();
+#endif
     }
 }
 
