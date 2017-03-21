@@ -158,6 +158,9 @@ ViewProviderPath::ViewProviderPath()
 
     NormalColor.touch();
     MarkerColor.touch();
+
+    DisplayMode.setStatus(App::Property::Status::Hidden, true);
+    SelectionStyle.setValue(1);
 }
 
 ViewProviderPath::~ViewProviderPath()
@@ -634,7 +637,7 @@ void ViewProviderPath::recomputeBoundingBox()
     Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
     Base::Placement pl = *(&pcPathObj->Placement.getValue());
     Base::Vector3d pt;
-    for (int i=0;i<pcLineCoords->point.getNum();i++) {
+    for (int i=1;i<pcLineCoords->point.getNum();i++) {
         pt.x = pcLineCoords->point[i].getValue()[0];
         pt.y = pcLineCoords->point[i].getValue()[1];
         pt.z = pcLineCoords->point[i].getValue()[2];
