@@ -53,9 +53,9 @@ void  PersistencePy::setContent(Py::String /*arg*/)
     throw Py::AttributeError(std::string("Attribute 'Content' of object 'Persistence' is read-only"));
 }
 
-Py::Int PersistencePy::getMemSize(void) const
+Py::Long PersistencePy::getMemSize(void) const
 {
-    return Py::Int((long)getPersistencePtr()->getMemSize());
+    return Py::Long((long)getPersistencePtr()->getMemSize());
 }
 
 

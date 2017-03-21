@@ -150,7 +150,7 @@ PP_Debug_Function(PyObject *func, PyObject *args)
     /* expand tuple at front */
     // it seems that some versions of python want just 2 arguments; in that
     // case, remove trailing 1
-#if (PY_MAJOR_VERSION==2)&&(PY_MINOR_VERSION>=2)
+#if (PY_MAJOR_VERSION>=2)&&(PY_MINOR_VERSION>=2)
     oops = _PyTuple_Resize(&args, (1 + PyTuple_Size(args))); 
 #else
     oops = _PyTuple_Resize(&args, (1 + PyTuple_Size(args)),1); 
