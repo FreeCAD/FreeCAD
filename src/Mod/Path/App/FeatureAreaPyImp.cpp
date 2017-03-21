@@ -69,8 +69,7 @@ PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist, 
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
-        Py_Error(Base::BaseExceptionFreeCADError, 
-            "Wrong parameters, call getParamsDesc() to get supported params");
+        return 0;
 
 #define AREA_GET(_param) \
     feature->PARAM_FNAME(_param).setValue(\
