@@ -144,7 +144,7 @@ const std::vector<TopoDS_Shape> &FeatureArea::getShapes() {
 
 short FeatureArea::mustExecute(void) const
 {
-    if(!myArea.isBuilt())
+    if(myInited && !myArea.isBuilt())
         return 1;
     return Part::Feature::mustExecute();
 }
