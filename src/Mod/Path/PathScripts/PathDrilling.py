@@ -205,6 +205,7 @@ class ObjectDrilling:
         tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
         PathLog.debug('search for holes larger than tooldiameter: {}: '.format(tooldiameter))
         if dgu.isPlanar(shape):
+            PathLog.debug("shape is planar")
             for i in range(len(shape.Edges)):
                 candidateEdgeName = "Edge" + str(i +1)
                 e = shape.getElement(candidateEdgeName)
@@ -215,6 +216,7 @@ class ObjectDrilling:
                     diameter = e.BoundBox.XLength
                     holelist.append((candidateEdgeName, e, x, y, diameter))
         else:
+            PathLog.debug("shape is not planar")
             for i in range(len(shape.Faces)):
                 candidateFaceName = "Face" + str(i + 1)
                 f = shape.getElement(candidateFaceName)
