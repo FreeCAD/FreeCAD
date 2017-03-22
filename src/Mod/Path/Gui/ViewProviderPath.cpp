@@ -34,7 +34,7 @@
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
+# include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/nodes/SoSwitch.h>
@@ -90,6 +90,8 @@ ViewProviderPath::ViewProviderPath()
     ADD_PROPERTY_TYPE(NormalColor,(lr,lg,lb),"Path",App::Prop_None,"The color of the feed rate moves");
     ADD_PROPERTY_TYPE(MarkerColor,(mr,mg,mb),"Path",App::Prop_None,"The color of the markers");
     ADD_PROPERTY_TYPE(LineWidth,(lwidth),"Path",App::Prop_None,"The line width of this path");
+    int markerSize = hGrp->GetInt("DefaultPathMarkerSize",4);
+    ADD_PROPERTY_TYPE(MarkerSize,(markerSize),"Path",App::Prop_None,"The point size of the markers");
     ADD_PROPERTY_TYPE(ShowNodes,(false),"Path",App::Prop_None,"Turns the display of nodes on/off");
 
 
@@ -114,6 +116,11 @@ ViewProviderPath::ViewProviderPath()
 
     pcMarkerCoords = new SoCoordinate3();
     pcMarkerCoords->ref();
+
+    pcMarkerStyle = new SoDrawStyle();
+    pcMarkerStyle->ref();
+    pcMarkerStyle->style = SoDrawStyle::POINTS;
+    pcMarkerStyle->pointSize = MarkerSize.getValue();
 
     pcDrawStyle = new SoDrawStyle();
     pcDrawStyle->ref();
@@ -169,6 +176,7 @@ ViewProviderPath::~ViewProviderPath()
     pcMarkerCoords->unref();
     pcMarkerSwitch->unref();
     pcDrawStyle->unref();
+    pcMarkerStyle->unref();
     pcLines->unref();
     pcLineColor->unref();
     pcMatBind->unref();
@@ -190,10 +198,10 @@ void ViewProviderPath::attach(App::DocumentObject *pcObj)
 
     // Draw markers
     SoSeparator* markersep = new SoSeparator;
-    SoMarkerSet* marker = new SoMarkerSet;
-    marker->markerIndex=SoMarkerSet::PLUS_7_7;
+    SoPointSet* marker = new SoPointSet;
     markersep->addChild(pcMarkerColor);
     markersep->addChild(pcMarkerCoords);
+    markersep->addChild(pcMarkerStyle);
     markersep->addChild(marker);
     pcMarkerSwitch->addChild(markersep);
 
@@ -288,6 +296,8 @@ void ViewProviderPath::onChanged(const App::Property* prop)
 
     if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
+    } else if (prop == &MarkerSize) {
+        pcMarkerStyle->pointSize = MarkerSize.getValue();
     } else if (prop == &NormalColor) {
         if (colorindex.size() > 0 && coordStart>=0 && coordStart<(int)colorindex.size()) {
             const App::Color& c = NormalColor.getValue();

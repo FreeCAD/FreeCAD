@@ -58,6 +58,7 @@ public:
     App::PropertyInteger LineWidth;
     App::PropertyColor   NormalColor;
     App::PropertyColor   MarkerColor;
+    App::PropertyInteger MarkerSize;
     App::PropertyBool    ShowNodes;
     App::PropertyVector  StartPosition;
 
@@ -89,6 +90,7 @@ protected:
     SoCoordinate3         * pcLineCoords;
     SoCoordinate3         * pcMarkerCoords;
     SoDrawStyle           * pcDrawStyle;
+    SoDrawStyle           * pcMarkerStyle;
     PartGui::SoBrepEdgeSet         * pcLines;
     SoMaterial            * pcLineColor;
     SoBaseColor           * pcMarkerColor;
