@@ -238,7 +238,7 @@ std::string ViewProviderPath::getElement(const SoDetail* detail) const
             const Toolpath &tp = pcPathObj->Path.getValue();
             if(index<(int)tp.getSize()) {
                 std::stringstream str;
-                str << index+1 << " " << tp.getCommand(index).toGCode(3,false);
+                str << index+1 << " " << tp.getCommand(index).toGCode(6,false);
                 pt0Index = line_detail->getPoint0()->getCoordinateIndex();
                 if(pt0Index<0 || pt0Index>=pcLineCoords->point.getNum())
                     pt0Index = -1;
