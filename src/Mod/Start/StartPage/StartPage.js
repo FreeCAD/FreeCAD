@@ -100,6 +100,7 @@ function showTweets(data) {
     html.push('<a href="exthttp://github.com/FreeCAD/FreeCAD/commits/master">text63<a/>');
     ddiv.innerHTML = html.join('');
     resize();
+    resize(); // intentional javascript hack
 }
 
 function showDescr(d) {
@@ -143,7 +144,7 @@ function resize() {
     rowThreeHeight = rowThreeHeight + 80;
     var totalHeight = rowTwoHeight + rowThreeHeight + filesHeight + 36;
 
-    w = w - 52;
+    w = w - 45;
     for (var i = 0; i < halfblocks.length; i++) {
         halfblocks[i].style.width = w/2 + 'px';
     }
