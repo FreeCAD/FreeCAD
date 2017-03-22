@@ -35,7 +35,6 @@
 # include <cfloat>
 # include <algorithm>
 # include <QFontMetrics>
-# include <QGLWidget>
 # include <QPainter>
 # include <QPen>
 # include <Inventor/actions/SoGLRenderAction.h>
@@ -62,6 +61,7 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #endif
 
+#include <QtOpenGL.h>
 #include "SoTextLabel.h"
 #include "SoFCInteractiveElement.h"
 #include "BitmapFactory.h"
@@ -318,7 +318,7 @@ SoStringLabel::SoStringLabel()
  */
 void SoStringLabel::GLRender(SoGLRenderAction *action)
 {
-    QGLWidget* window;
+    QtGLWidget* window;
     SoState * state = action->getState();
     state->push();
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
@@ -376,7 +376,11 @@ void SoStringLabel::GLRender(SoGLRenderAction *action)
     QStringList list;
     for (int i=0; i<this->string.getNum(); i++)
         list << QLatin1String(this->string[i].getString());
+#if !defined(HAVE_QT5_OPENGL)
     window->renderText(nil[0],nil[1],nil[2],list.join(QLatin1String("\n")),font);
+#else
+    //FIXME: HAVE_QT5_OPENGL
+#endif
 
     // Leave 2D screen mode
     glPopAttrib();
@@ -492,7 +496,7 @@ void SoFrameLabel::GLRender(SoGLRenderAction *action)
 {
     inherited::GLRender(action);
 #if 0
-    QGLWidget* window;
+    QtGLWidget* window;
     SoState * state = action->getState();
     state->push();
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);

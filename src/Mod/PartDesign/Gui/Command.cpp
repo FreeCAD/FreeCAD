@@ -724,7 +724,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
 
         Gui::Command::openCommand((std::string("Make ") + which).c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",
-                    which.c_str(), FeatName.c_str());
+            which.c_str(), FeatName.c_str());
         
         if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Profile = App.activeDocument().%s",
@@ -738,14 +738,14 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
         func(static_cast<Part::Feature*>(feature), FeatName);
     };
     
-    //if a profie is selected we can make our life easy and fast
-    auto selection = cmd->getSelection().getSelectionEx();
+    //if a profile is selected we can make our life easy and fast
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (!selection.empty() && selection.front().hasSubNames()) {
         base_worker(selection.front().getObject(), selection.front().getSubNames().front());
         return;
     }
 
-    //no face profile was selected, do he extended sketch logic
+    //no face profile was selected, do the extended sketch logic
 
     bool bNoSketchWasSelected = false;
     // Get a valid sketch from the user
@@ -774,7 +774,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
         return true;
     };
     
-    auto sketch_worker = [&](std::vector<App::DocumentObject*> features) {
+    auto sketch_worker = [&, base_worker](std::vector<App::DocumentObject*> features) {
         
         base_worker(features.front(), "");
     };
@@ -884,11 +884,12 @@ void CmdPartDesignPad::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-        /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.16
-    if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
         return;
 
     Gui::Command* cmd = this;
@@ -942,11 +943,12 @@ void CmdPartDesignPocket::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-        /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.16
-    if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
         return;
 
     Gui::Command* cmd = this;
@@ -988,20 +990,28 @@ void CmdPartDesignRevolution::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-        /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.16
-    if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [this, cmd, &pcActiveBody](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
-        Gui::Command::doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
-                                                                                FeatName.c_str(), sketch->getNameInDocument());
+        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            Gui::Command::doCommand(Doc, "App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
+                FeatName.c_str(), sketch->getNameInDocument());
+        }
+        else {
+            Gui::Command::doCommand(Doc, "App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,[\"\"])",
+                FeatName.c_str(), pcActiveBody->getOrigin()->getY()->getNameInDocument());
+        }
+
         Gui::Command::doCommand(Doc,"App.activeDocument().%s.Angle = 360.0",FeatName.c_str());
         PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(cmd->getDocument()->getObject(FeatName.c_str()));
         if (pcRevolution && pcRevolution->suggestReversed())
@@ -1040,19 +1050,28 @@ void CmdPartDesignGroove::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-        /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [this, cmd, &pcActiveBody](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
-        Gui::Command::doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
-                                                                             FeatName.c_str(), sketch->getNameInDocument());
+        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            Gui::Command::doCommand(Doc, "App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
+                FeatName.c_str(), sketch->getNameInDocument());
+        }
+        else {
+            Gui::Command::doCommand(Doc, "App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,[\"\"])",
+                FeatName.c_str(), pcActiveBody->getOrigin()->getY()->getNameInDocument());
+        }
+
         Gui::Command::doCommand(Doc,"App.activeDocument().%s.Angle = 360.0",FeatName.c_str());
         PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(cmd->getDocument()->getObject(FeatName.c_str()));
         if (pcGroove && pcGroove->suggestReversed())
@@ -1090,9 +1109,12 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
 void CmdPartDesignAdditivePipe::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.13
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
     if (!pcActiveBody)
         return;
 
@@ -1137,9 +1159,12 @@ CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
 void CmdPartDesignSubtractivePipe::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.13
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
     if (!pcActiveBody)
         return;
 
@@ -1184,9 +1209,12 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
 void CmdPartDesignAdditiveLoft::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.13
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
     if (!pcActiveBody)
         return;
 
@@ -1231,9 +1259,12 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
 void CmdPartDesignSubtractiveLoft::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    // No PartDesign feature without Body past FreeCAD 0.13
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
     if (!pcActiveBody)
         return;
 
@@ -1264,8 +1295,17 @@ bool CmdPartDesignSubtractiveLoft::isActive(void)
 bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
         Gui::SelectionObject &selected)
 {
+    // No PartDesign feature without Body past FreeCAD 0.16
+    App::Document *doc = cmd->getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return false;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return false;
+
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    selection = cmd->getSelection().getSelectionEx();
 
     if (selection.size() == 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1274,6 +1314,11 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
     } else if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select an edge, face or body from a single body."));
+        return false;
+    }
+    else if (pcActiveBody != PartDesignGui::getBodyFor(selection[0].getObject(), false)) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
+            QObject::tr("Select an edge, face or body from an active body."));
         return false;
     }
 
@@ -1582,7 +1627,18 @@ void prepareTransformed(Gui::Command* cmd, const std::string& which,
             return;
         }
     }
+    else if (features.size() > 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Multiple Features Selected"),
+            QObject::tr("Please select only one subtractive or additive feature first."));
+        return;
+    }
     else {
+        PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+        if (pcActiveBody != PartDesignGui::getBodyFor(features[0], false)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
+                QObject::tr("Please select only one subtractive or additive feature in an active body."));
+            return;
+        }
         worker(features);
     }
 }
@@ -1612,6 +1668,16 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
 void CmdPartDesignMirrored::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    // No PartDesign feature without Body past FreeCAD 0.16
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
+
+	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+	if (!pcActiveBody)
+		return;
+
     Gui::Command* cmd = this;
     auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
@@ -1666,6 +1732,16 @@ CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
 void CmdPartDesignLinearPattern::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    // No PartDesign feature without Body past FreeCAD 0.16
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
+
     Gui::Command* cmd = this;
     auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
@@ -1722,6 +1798,16 @@ CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
 void CmdPartDesignPolarPattern::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    // No PartDesign feature without Body past FreeCAD 0.16
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
+
     Gui::Command* cmd = this;
     auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
@@ -1819,8 +1905,15 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
 void CmdPartDesignMultiTransform::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
-    //if (!pcActiveBody) return;
+    // No PartDesign feature without Body past FreeCAD 0.16
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
 
     std::vector<App::DocumentObject*> features;
 

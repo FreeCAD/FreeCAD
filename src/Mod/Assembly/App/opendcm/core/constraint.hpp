@@ -149,7 +149,7 @@ protected:
         virtual void disable() = 0;
         virtual placeholder* clone() = 0;
 
-        //some runtime type infos are needed, as we cant access the contents with arbitrary functors
+        //some runtime type infos are needed, as we can't access the contents with arbitrary functors
         virtual std::vector<boost::any> getGenericEquations() = 0;
         virtual std::vector<boost::any> getGenericConstraints() = 0;
         virtual std::vector<const std::type_info*> getEquationTypes() = 0;

@@ -398,6 +398,21 @@
     </message>
 </context>
 <context>
+    <name>CmdMeshSectionByPlane</name>
+    <message>
+        <source>Mesh</source>
+        <translation type="unfinished">Сітка(Меш)</translation>
+    </message>
+    <message>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdMeshSegmentation</name>
     <message>
         <source>Mesh</source>
@@ -737,30 +752,30 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Settings...</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
         <source>Evaluation settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Evaluation settings</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметри</translation>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Check for non-manifold points</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enable check for folds on surface</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Only consider zero area faces as degenerated</translation>
     </message>
 </context>
 <context>
@@ -886,6 +901,10 @@ Please run the command to repair folds first</source>
     <message>
         <source>mm</source>
         <translation type="obsolete">мм</translation>
+    </message>
+    <message>
+        <source>Export AMF files using compression</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1099,7 +1118,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Minumum number of faces</source>
-        <translation>Мінімальна кількість граней</translation>
+        <translation type="obsolete">Мінімальна кількість граней</translation>
     </message>
     <message>
         <source>Cylinder</source>
@@ -1172,11 +1191,11 @@ Please run the command to repair folds first</source>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation>Оберіть площину</translation>
+        <translation type="obsolete">Оберіть площину</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation>Оберіть площину за допомогою якої ви будете обрізати сітку.</translation>
+        <translation type="obsolete">Оберіть площину за допомогою якої ви будете обрізати сітку.</translation>
     </message>
 </context>
 <context>
@@ -1187,12 +1206,16 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation>Виникла невідома помилка при виконанні OpenSCAD.</translation>
+        <translation type="obsolete">Виникла невідома помилка при виконанні OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
         <translation>OpenSCAD не знайдений на вашій системі. Будь ласка, відвідайте http://www.openscad.org/index.html щоб встановити цю програму.</translation>
+    </message>
+    <message>
+        <source>Unknown error occurred while running OpenSCAD.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -294,14 +294,9 @@
       <translation>Доступна для скачивания более новая версия FreeCAD.</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="109"/>
-      <source>Load an FEM example analysis</source>
-      <translation>Загрузить пример МКЭ анализа</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="54"/>
       <source>Latest commits</source>
-      <translation type="unfinished">Latest commits</translation>
+      <translation>Последние коммиты</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="110"/>
@@ -311,12 +306,22 @@
     <message>
       <location filename="StartPage.py" line="111"/>
       <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation type="unfinished">&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</translation>
+      <translation>&lt;b&gt;Разрабатываемые версии&lt;/b&gt; предоставляются членами сообщества время от времени и обычно содержат последние изменения, но есть вероятность, что они содержат ошибки.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="112"/>
       <source>See all commits</source>
-      <translation type="unfinished">See all commits</translation>
+      <translation>Просмотреть все коммиты</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM 3D example analysis</source>
+      <translation type="unfinished">Load an FEM 3D example analysis</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="113"/>
+      <source>Load an FEM 2D example analysis</source>
+      <translation type="unfinished">Load an FEM 2D example analysis</translation>
     </message>
   </context>
 </TS>

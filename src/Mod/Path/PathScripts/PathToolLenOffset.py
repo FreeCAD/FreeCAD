@@ -81,7 +81,6 @@ class _ViewProviderTLO:
         vobj.setEditorMode('LineWidth', mode)
         vobj.setEditorMode('MarkerColor', mode)
         vobj.setEditorMode('NormalColor', mode)
-        vobj.setEditorMode('ShowFirstRapid', mode)
         vobj.setEditorMode('DisplayMode', mode)
         vobj.setEditorMode('BoundingBox', mode)
         vobj.setEditorMode('Selectable', mode)
@@ -103,7 +102,6 @@ class _ViewProviderTLO:
         vobj.setEditorMode('LineWidth', mode)
         vobj.setEditorMode('MarkerColor', mode)
         vobj.setEditorMode('NormalColor', mode)
-        vobj.setEditorMode('ShowFirstRapid', mode)
         vobj.setEditorMode('DisplayMode', mode)
         vobj.setEditorMode('BoundingBox', mode)
         vobj.setEditorMode('Selectable', mode)
@@ -156,7 +154,6 @@ project = PathUtils.addToJob(obj)
 tl = PathUtils.changeTool(obj,project)
 if tl:
     obj.HeightNumber = tl
-obj.ViewObject.ShowFirstRapid = False
 FreeCAD.ActiveDocument.recompute()
 '''
         FreeCADGui.doCommand(snippet)

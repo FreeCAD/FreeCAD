@@ -38,11 +38,6 @@
 # include <QMessageLogContext>
 #endif
 # include <QPointer>
-# include <QGLFormat>
-# include <QGLPixelBuffer>
-#if QT_VERSION >= 0x040200
-# include <QGLFramebufferObject>
-#endif
 # include <QSessionManager>
 # include <QStatusBar>
 # include <QTextStream>
@@ -50,7 +45,10 @@
 #endif
 
 #include <boost/interprocess/sync/file_lock.hpp>
-
+#include <QtOpenGL.h>
+#if defined(HAVE_QT5_OPENGL)
+#include <QWindow>
+#endif
 
 // FreeCAD Base header
 #include <Base/Console.h>
@@ -1553,26 +1551,22 @@ void Application::runApplication(void)
     ActionStyleEvent::EventType = QEvent::registerEventType(QEvent::User + 1);
 
     // check for OpenGL
+#if !defined(HAVE_QT5_OPENGL)
     if (!QGLFormat::hasOpenGL()) {
         QMessageBox::critical(0, QObject::tr("No OpenGL"), QObject::tr("This system does not support OpenGL"));
         throw Base::Exception("This system does not support OpenGL");
     }
-#if QT_VERSION >= 0x040200
     if (!QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         Base::Console().Log("This system does not support framebuffer objects\n");
     }
-#endif
     if (!QGLPixelBuffer::hasOpenGLPbuffers()) {
         Base::Console().Log("This system does not support pbuffers\n");
     }
 
     QGLFormat::OpenGLVersionFlags version = QGLFormat::openGLVersionFlags ();
-#if QT_VERSION >= 0x040500
     if (version & QGLFormat::OpenGL_Version_3_0)
         Base::Console().Log("OpenGL version 3.0 or higher is present\n");
-    else
-#endif
-    if (version & QGLFormat::OpenGL_Version_2_1)
+    else if (version & QGLFormat::OpenGL_Version_2_1)
         Base::Console().Log("OpenGL version 2.1 or higher is present\n");
     else if (version & QGLFormat::OpenGL_Version_2_0)
         Base::Console().Log("OpenGL version 2.0 or higher is present\n");
@@ -1588,6 +1582,7 @@ void Application::runApplication(void)
         Base::Console().Log("OpenGL version 1.1 or higher is present\n");
     else if (version & QGLFormat::OpenGL_Version_None)
         Base::Console().Log("No OpenGL is present or no OpenGL context is current\n");
+#endif
 
 #if !defined(Q_OS_LINUX)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QString::fromLatin1(":/icons/FreeCAD-default"));
@@ -1621,6 +1616,30 @@ void Application::runApplication(void)
     int size = hGrp->GetInt("ToolbarIconSize", 0);
     if (size >= 16) // must not be lower than this
         mw.setIconSize(QSize(size,size));
+
+#if defined(HAVE_QT5_OPENGL)
+    {
+        QWindow window;
+        window.setSurfaceType(QWindow::OpenGLSurface);
+        window.create();
+
+        QOpenGLContext context;
+        if (context.create()) {
+            context.makeCurrent(&window);
+            if (!context.functions()->hasOpenGLFeature(QOpenGLFunctions::Framebuffers)) {
+                Base::Console().Log("This system does not support framebuffer objects\n");
+            }
+            if (!context.functions()->hasOpenGLFeature(QOpenGLFunctions::NPOTTextures)) {
+                Base::Console().Log("This system does not support NPOT textures\n");
+            }
+
+            int major = context.format().majorVersion();
+            int minor = context.format().minorVersion();
+            const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+            Base::Console().Log("OpenGL version is: %d.%d (%s)\n", major, minor, glVersion);
+        }
+    }
+#endif
 
     // init the Inventor subsystem
     SoDB::init();

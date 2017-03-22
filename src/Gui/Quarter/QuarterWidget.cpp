@@ -62,8 +62,14 @@
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
 #include <QAction>
+#include <QApplication>
 #include <QPaintEvent>
 #include <QResizeEvent>
+
+#if defined(HAVE_QT5_OPENGL)
+#include <QOpenGLDebugMessage>
+#include <QOpenGLDebugLogger>
+#endif
 
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/system/gl.h>
@@ -136,8 +142,74 @@ using namespace SIM::Coin3D::Quarter;
 #ifndef GL_MULTISAMPLE_BIT_EXT
 #define GL_MULTISAMPLE_BIT_EXT 0x20000000
 #endif
-  
+
 //We need to avoid buffer swaping when initializing a QPainter on this widget
+#if defined(HAVE_QT5_OPENGL)
+class CustomGLWidget : public QOpenGLWidget {
+public:
+    CustomGLWidget(const QSurfaceFormat& format, QWidget* parent = 0, const QOpenGLWidget* shareWidget = 0, Qt::WindowFlags f = 0)
+     : QOpenGLWidget(parent, f)
+    {
+        Q_UNUSED(shareWidget);
+        QSurfaceFormat surfaceFormat(format);
+        surfaceFormat.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
+        // With the settings below we could determine deprecated OpenGL API
+        // but can't do this since otherwise it will complain about almost any
+        // OpenGL call in Coin3d
+        //surfaceFormat.setMajorVersion(3);
+        //surfaceFormat.setMinorVersion(2);
+        //surfaceFormat.setProfile(QSurfaceFormat::CoreProfile);
+#if defined (_DEBUG) && 0
+        surfaceFormat.setOption(QSurfaceFormat::DebugContext);
+#endif
+        setFormat(surfaceFormat);
+    }
+    void initializeGL()
+    {
+#if defined (_DEBUG) && 0
+        QOpenGLContext *context = QOpenGLContext::currentContext();
+        if (context && context->hasExtension(QByteArrayLiteral("GL_KHR_debug"))) {
+            QOpenGLDebugLogger *logger = new QOpenGLDebugLogger(this);
+            connect(logger, &QOpenGLDebugLogger::messageLogged, this, &CustomGLWidget::handleLoggedMessage);
+
+            if (logger->initialize())
+                logger->startLogging(QOpenGLDebugLogger::SynchronousLogging);
+        }
+#endif
+        connect(this, &CustomGLWidget::resized, this, &CustomGLWidget::slotResized);
+    }
+    bool event(QEvent *e)
+    {
+        // If a debug logger is activated then Qt's default implementation
+        // first releases the context before stopping the logger. However,
+        // the logger needs the active context and thus crashes because it's
+        // null.
+        if (e->type() == QEvent::WindowChangeInternal) {
+            if (!qApp->testAttribute(Qt::AA_ShareOpenGLContexts)) {
+                QOpenGLDebugLogger* logger = this->findChild<QOpenGLDebugLogger*>();
+                if (logger) {
+                    logger->stopLogging();
+                    delete logger;
+                }
+            }
+        }
+
+        return QOpenGLWidget::event(e);
+    }
+    void handleLoggedMessage(const QOpenGLDebugMessage &message)
+    {
+        qDebug() << message;
+    }
+    void showEvent(QShowEvent*)
+    {
+        update(); // force update when changing window mode
+    }
+    void slotResized()
+    {
+        update(); // fixes flickering on some systems
+    }
+};
+#else
 class CustomGLWidget : public QGLWidget {
 public:
     CustomGLWidget(const QGLFormat& fo, QWidget* parent = 0, const QGLWidget* shareWidget = 0, Qt::WindowFlags f = 0)
@@ -146,9 +218,10 @@ public:
          setAutoBufferSwap(false);
     }
 };
+#endif
 
 /*! constructor */
-QuarterWidget::QuarterWidget(const QGLFormat & format, QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
+QuarterWidget::QuarterWidget(const QtGLFormat & format, QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
   Q_UNUSED(f); 
@@ -156,15 +229,15 @@ QuarterWidget::QuarterWidget(const QGLFormat & format, QWidget * parent, const Q
 }
 
 /*! constructor */
-QuarterWidget::QuarterWidget(QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
+QuarterWidget::QuarterWidget(QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
   Q_UNUSED(f); 
-  this->constructor(QGLFormat(), sharewidget);
+  this->constructor(QtGLFormat(), sharewidget);
 }
 
 /*! constructor */
-QuarterWidget::QuarterWidget(QGLContext * context, QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
+QuarterWidget::QuarterWidget(QtGLContext * context, QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
   Q_UNUSED(f); 
@@ -172,7 +245,7 @@ QuarterWidget::QuarterWidget(QGLContext * context, QWidget * parent, const QGLWi
 }
 
 void
-QuarterWidget::constructor(const QGLFormat & format, const QGLWidget * sharewidget)
+QuarterWidget::constructor(const QtGLFormat & format, const QtGLWidget * sharewidget)
 {
   QGraphicsScene* scene = new QGraphicsScene;
   setScene(scene);
@@ -749,17 +822,21 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     std::clock_t begin = std::clock();
 
     if(!initialized) {
+#if !defined(HAVE_QT5_OPENGL)
         glEnable(GL_DEPTH_TEST);
+#endif
         this->getSoRenderManager()->reinitialize();
         initialized = true;
     }
 
     getSoRenderManager()->activate();
 
+#if !defined(HAVE_QT5_OPENGL)
     glEnable(GL_DEPTH_TEST);
+#endif
     glMatrixMode(GL_PROJECTION);
 
-    QGLWidget* w = static_cast<QGLWidget*>(this->viewport());
+    QtGLWidget* w = static_cast<QtGLWidget*>(this->viewport());
     assert(w->isValid() && "No valid GL context found!");
     // We might have to process the delay queue here since we don't know
     // if paintGL() is called from Qt, and we might have some sensors
@@ -785,7 +862,12 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
 
     assert(w->isValid() && "No valid GL context found!");
 
+#if defined(HAVE_QT5_OPENGL)
+    // Causes an OpenGL error on resize
+    //glDrawBuffer(w->format().swapBehavior() == QSurfaceFormat::DoubleBuffer ? GL_BACK : GL_FRONT);
+#else
     glDrawBuffer(w->doubleBuffer() ? GL_BACK : GL_FRONT);
+#endif
 
     w->makeCurrent();
     this->actualRedraw();
@@ -797,7 +879,13 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     inherited::paintEvent(event);
     glPopAttrib();
 
+#if defined(HAVE_QT5_OPENGL)
+    // Causes an OpenGL error on resize
+    //if (w->format().swapBehavior() == QSurfaceFormat::DoubleBuffer)
+    //    w->context()->swapBuffers(w->context()->surface());
+#else
     if (w->doubleBuffer()) { w->swapBuffers(); }
+#endif
 
     PRIVATE(this)->autoredrawenabled = true;
 

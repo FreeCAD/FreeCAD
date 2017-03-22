@@ -60,10 +60,30 @@
     <name>App::Property</name>
     <message>
         <source>The displayed size of the origin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The displayed size of the origin</translation>
     </message>
     <message>
         <source>Visual size of the feature</source>
+        <translation type="unfinished">Visual size of the feature</translation>
+    </message>
+    <message>
+        <source>&lt;empty&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Angle</source>
+        <translation type="unfinished">Γωνία</translation>
+    </message>
+    <message>
+        <source>Axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished">Position</translation>
+    </message>
+    <message>
+        <source>Base</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -160,33 +180,6 @@
     <message>
         <source>Ok</source>
         <translation>OK</translation>
-    </message>
-</context>
-<context>
-    <name>DlgUnitCalculator</name>
-    <message>
-        <source>Units calculator</source>
-        <translation type="obsolete">Υπολογιστής μονάδων μέτρησης</translation>
-    </message>
-    <message>
-        <source>as:</source>
-        <translation type="obsolete">όπως:</translation>
-    </message>
-    <message>
-        <source>=&gt;</source>
-        <translation type="obsolete">=&gt;</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation type="obsolete">Βοήθεια</translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation type="obsolete">Αντιγραφή</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="obsolete">Κλείσιμο</translation>
     </message>
 </context>
 <context>
@@ -339,19 +332,19 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::DAG::Model</name>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">Μετονομασία</translation>
+        <translation>Μετονομασία</translation>
     </message>
     <message>
         <source>Rename object</source>
-        <translation type="unfinished">Μετονομασία αντικειμένου</translation>
+        <translation>Μετονομασία αντικειμένου</translation>
     </message>
     <message>
         <source>Finish editing</source>
-        <translation type="unfinished">Τερματισμός της επεξεργασίας</translation>
+        <translation>Τερματισμός της επεξεργασίας</translation>
     </message>
     <message>
         <source>Finish editing object</source>
-        <translation type="unfinished">Ολοκλήρωση τηε επεξεργασίας του αντικειμένου</translation>
+        <translation>Ολοκλήρωση τηε επεξεργασίας του αντικειμένου</translation>
     </message>
 </context>
 <context>
@@ -381,10 +374,6 @@ while doing a left or right click and move the mouse up or down</source>
         <translation>Ημερομηνία έκδοσης</translation>
     </message>
     <message>
-        <source>License...</source>
-        <translation type="obsolete">Άδεια...</translation>
-    </message>
-    <message>
         <source>Copy to clipboard</source>
         <translation>Αντιγραφή στο Πρόχειρο</translation>
     </message>
@@ -398,15 +387,15 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Credits</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Credits</translation>
     </message>
     <message>
         <source>FreeCAD would be nowhere without their efforts:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD would be nowhere without their efforts:</translation>
     </message>
     <message>
         <source>License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">License</translation>
     </message>
 </context>
 <context>
@@ -578,15 +567,15 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgCheckableMessageBox</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">Διάλογος</translation>
+        <translation>Διάλογος</translation>
     </message>
     <message>
         <source>TextLabel</source>
-        <translation type="unfinished">Ετικέτα κειμένου</translation>
+        <translation>Ετικέτα κειμένου</translation>
     </message>
     <message>
         <source>CheckBox</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CheckBox</translation>
     </message>
 </context>
 <context>
@@ -792,7 +781,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Καθαρισμός</translation>
+        <translation>Καθαρισμός</translation>
     </message>
 </context>
 <context>
@@ -1248,28 +1237,56 @@ Please define another shortcut.</source>
         <source>Style sheet:</source>
         <translation>Φύλλο τεχνοτροπίας:</translation>
     </message>
+    <message>
+        <source>Python console</source>
+        <translation type="unfinished">Πίνακας χειρισμού της Πάιθον</translation>
+    </message>
+    <message>
+        <source>Enable word wrap</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
         <source>Default (%1 x %1)</source>
-        <translation>Προεπιλογή (%1 x % 1)</translation>
+        <translation type="obsolete">Προεπιλογή (%1 x % 1)</translation>
     </message>
     <message>
         <source>Small (%1 x %1)</source>
-        <translation>Μικρό (%1 x % 1)</translation>
+        <translation type="obsolete">Μικρό (%1 x % 1)</translation>
     </message>
     <message>
         <source>Large (%1 x %1)</source>
-        <translation>Μεγάλο (%1 x % 1)</translation>
+        <translation type="obsolete">Μεγάλο (%1 x % 1)</translation>
     </message>
     <message>
         <source>Extra large (%1 x %1)</source>
-        <translation>Πολύ μεγάλο (%1 x % 1)</translation>
+        <translation type="obsolete">Πολύ μεγάλο (%1 x % 1)</translation>
     </message>
     <message>
         <source>No style sheet</source>
         <translation>Χωρίς φύλλο τεχνοτροπίας</translation>
+    </message>
+    <message>
+        <source>Small (%1px)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Medium (%1px)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Large (%1px)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extra large (%1px)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom (%1px)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1733,6 +1750,14 @@ Specify another directory, please.</source>
         <source>Please select an object from the list</source>
         <translation>Παρακαλώ επιλέξτε ένα αντικείμενο από τη λίστα</translation>
     </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished">Αναζήτηση</translation>
+    </message>
+    <message>
+        <source>A search pattern to filter the results above</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgReportView</name>
@@ -1937,6 +1962,10 @@ Specify another directory, please.</source>
     <message>
         <source>Perspective renderin&amp;g</source>
         <translation type="unfinished">Perspective renderin&amp;g</translation>
+    </message>
+    <message>
+        <source>Use OpenGL Vertex Buffer Object (experimental)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2458,6 +2487,14 @@ Specify another directory, please.</source>
         <source>Insert comment</source>
         <translation>Εισαγωγή σχολίου</translation>
     </message>
+    <message>
+        <source>Transparent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add watermark</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
@@ -2554,11 +2591,11 @@ Specify another directory, please.</source>
     </message>
     <message utf8="true">
         <source>Building Euro (cm/m²/m³)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Building Euro (cm/m²/m³)</translation>
     </message>
     <message>
         <source>Building US (ft-in/sqft/cuft)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Building US (ft-in/sqft/cuft)</translation>
     </message>
 </context>
 <context>
@@ -2597,106 +2634,61 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Pick radius (px):</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pick radius (px):</translation>
     </message>
     <message>
         <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
     <message>
         <source>PickRadius</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">PickRadius</translation>
     </message>
     <message>
         <source>View</source>
-        <translation type="unfinished">Προβολή</translation>
+        <translation type="obsolete">Προβολή</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
-    <message>
-        <source>Tip of the day</source>
-        <translation type="obsolete">Συμβουλή της ημέρας</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</source>
-        <translation type="obsolete">&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Γνωρίζετε ότι...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&amp;Show tips at start up</source>
-        <translation type="obsolete">Εμφάνιση συμβουλών κατά την έναρξη</translation>
-    </message>
-    <message>
-        <source>Alt+S</source>
-        <translation type="obsolete">Alt+S</translation>
-    </message>
-    <message>
-        <source>&amp;Next Tip</source>
-        <translation type="obsolete">Επόμενη συμβουλή</translation>
-    </message>
-    <message>
-        <source>Alt+N</source>
-        <translation type="obsolete">Alt+N</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="obsolete">&amp;Κλείσιμο</translation>
-    </message>
-    <message>
-        <source>Alt+C</source>
-        <translation type="obsolete">Alt+C</translation>
-    </message>
     <message>
         <source></source>
         <translation></translation>
     </message>
 </context>
 <context>
-    <name>Gui::Dialog::DlgTipOfTheDayImp</name>
-    <message>
-        <source>Download failed: %1
-</source>
-        <translation type="obsolete">Αποτυχία λήψης: %1
-</translation>
-    </message>
-    <message>
-        <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-        <translation type="obsolete">Αν θέλετε να μάθετε περισσότερα σχετικά με FreeCAD θα πρέπει να πάτε στο %1 ή να χρησιμοποιήσετε την επιλογή &quot;Βοήθεια&quot; στο μενού &quot;Βοήθεια&quot;.</translation>
-    </message>
-</context>
-<context>
     <name>Gui::Dialog::DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
-        <translation type="unfinished">Υπολογιστής μονάδων μέτρησης</translation>
+        <translation>Υπολογιστής μονάδων μέτρησης</translation>
     </message>
     <message>
         <source>as:</source>
-        <translation type="unfinished">όπως:</translation>
+        <translation>όπως:</translation>
     </message>
     <message>
         <source>=&gt;</source>
-        <translation type="unfinished">=&gt;</translation>
+        <translation>=&gt;</translation>
     </message>
     <message>
         <source>Quantity:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Quantity:</translation>
     </message>
     <message>
         <source>Units:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Units:</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Βοήθεια</translation>
+        <translation>Βοήθεια</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished">Αντιγραφή</translation>
+        <translation>Αντιγραφή</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Κλείσιμο</translation>
+        <translation>Κλείσιμο</translation>
     </message>
 </context>
 <context>
@@ -2828,82 +2820,39 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
     <message>
         <source>Cleanup...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cleanup...</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Διαγραφή</translation>
+        <translation>Διαγραφή</translation>
     </message>
     <message>
         <source>Cleanup</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cleanup</translation>
     </message>
     <message>
         <source>Are you sure you want to delete the selected transient directories?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Are you sure you want to delete the selected transient directories?</translation>
     </message>
     <message>
         <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete all transient directories?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Are you sure you want to delete all transient directories?</translation>
     </message>
     <message>
         <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">When deleting all transient directory you won&apos;t be able to recover any files afterwards.</translation>
     </message>
     <message>
         <source>Finished</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Finished</translation>
     </message>
     <message>
         <source>Transient directories deleted.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Gui::Dialog::DownloadDialog</name>
-    <message>
-        <source>Download</source>
-        <translation type="obsolete">Λήψη</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="obsolete">Άκυρο</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="obsolete">Κλείσιμο</translation>
-    </message>
-    <message>
-        <source>There already exists a file called %1 in the current directory. Overwrite?</source>
-        <translation type="obsolete">Υπάρχει, ήδη, ένα αρχείο με το όνομα %1, στον τωρινό φάκελο. \n\nΝα αντικατασταθεί;</translation>
-    </message>
-    <message>
-        <source>Unable to save the file %1: %2.</source>
-        <translation type="obsolete">Αδυναμία αποθήκευσης του αρχείου %1:\n%2.</translation>
-    </message>
-    <message>
-        <source>Downloading %1.</source>
-        <translation type="obsolete">Λαμβάνεται το %1.</translation>
-    </message>
-    <message>
-        <source>Download canceled.</source>
-        <translation type="obsolete">Η λήψη ακυρώθηκε.</translation>
-    </message>
-    <message>
-        <source>Download failed: %1.</source>
-        <translation type="obsolete">Η λήψη επέτυχε: \n%1.</translation>
-    </message>
-    <message>
-        <source>Downloaded %1 to current directory.</source>
-        <translation type="obsolete">Έγινε λήψη του %1 στον τωρινό κατάλογο.</translation>
-    </message>
-    <message>
-        <source>%1 at %2</source>
-        <translation type="obsolete">%1 στο %2</translation>
+        <translation type="unfinished">Transient directories deleted.</translation>
     </message>
 </context>
 <context>
@@ -3043,13 +2992,6 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <message>
         <source>X:</source>
         <translation>X:</translation>
-    </message>
-</context>
-<context>
-    <name>Gui::Dialog::LicenseDialog</name>
-    <message>
-        <source>Copyright</source>
-        <translation type="obsolete">Πνευματικά δικαιώματα</translation>
     </message>
 </context>
 <context>
@@ -3275,6 +3217,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
         <source>Euler angles (XY&apos;Z&apos;&apos;)</source>
         <translation type="unfinished">Euler angles (XY&apos;Z&apos;&apos;)</translation>
     </message>
+    <message>
+        <source>Use center of mass</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::PrintModel</name>
@@ -3402,45 +3348,6 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
 </context>
 <context>
-    <name>Gui::DockWnd::HelpView</name>
-    <message>
-        <source>Previous</source>
-        <translation type="obsolete">Προηγούμενο</translation>
-    </message>
-    <message>
-        <source>Next</source>
-        <translation type="obsolete">Επόμενο</translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation type="obsolete">Σπίτι</translation>
-    </message>
-    <message>
-        <source>Open</source>
-        <translation type="obsolete">Άνοιγμα</translation>
-    </message>
-    <message>
-        <source>Open file</source>
-        <translation type="obsolete">Άνοιγμα αρχείου</translation>
-    </message>
-    <message>
-        <source>All HTML files (*.html *.htm)</source>
-        <translation type="obsolete">Όλα τα αρχεία ΈιτσΤιΕμΈλ (*.html *.htm)</translation>
-    </message>
-    <message>
-        <source>External browser</source>
-        <translation type="obsolete">Εξωτερικός φυλλομετρητής</translation>
-    </message>
-    <message>
-        <source>No external browser found. Specify in preferences, please</source>
-        <translation type="obsolete">Δεν βρέθηκε κάποιος εξωτερικός πλοηγός διαδικτύου. Παρακαλώ, όρισε κάποιον στις ρυθμίσεις.</translation>
-    </message>
-    <message>
-        <source>Starting of %1 failed</source>
-        <translation type="obsolete">Απέτυχε η εκκίνηση του %1</translation>
-    </message>
-</context>
-<context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
         <source>Property View</source>
@@ -3565,66 +3472,11 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
     <message>
         <source>Mark to recompute</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mark to recompute</translation>
     </message>
     <message>
         <source>Mark this object to be recomputed</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Gui::DockWnd::TextBrowser</name>
-    <message>
-        <source>Could not open file.</source>
-        <translation type="obsolete">Αδυναμία ανοίγματος του αρχείου.</translation>
-    </message>
-    <message>
-        <source>You tried to access the address %1 which is currently unavailable. Please make sure that the URL exists and try reloading the page.</source>
-        <translation type="obsolete">Επιχείρησες να αποκτήσεις πρόσβαση στην διεύθυνση %1, η οποία, αυτή τη στιγμή, είναι μη διαθέσιμη. Παρακάλω, σιγουρέψου πως η διεύθυνση URL υπάρχει, και δοκίμασε να επαναφορτώσεις την σελίδα.</translation>
-    </message>
-    <message>
-        <source>Connecting to %1</source>
-        <translation type="obsolete">Γίνεται σύνδεση στο %1</translation>
-    </message>
-    <message>
-        <source>Sending to %1</source>
-        <translation type="obsolete">Γίνεται αποστολή στο %1</translation>
-    </message>
-    <message>
-        <source>Reading from %1</source>
-        <translation type="obsolete">Γίνεται ανάγνωση από το %1</translation>
-    </message>
-    <message>
-        <source>Download failed: %1.</source>
-        <translation type="obsolete">Η λήψη επέτυχε: \n%1.</translation>
-    </message>
-    <message>
-        <source>Previous</source>
-        <translation type="obsolete">Προηγούμενο</translation>
-    </message>
-    <message>
-        <source>Forward</source>
-        <translation type="obsolete">Μπροστά</translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation type="obsolete">Σπίτι</translation>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation type="obsolete">Ανανέωση</translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation type="obsolete">Αντιγραφή</translation>
-    </message>
-    <message>
-        <source>Select all</source>
-        <translation type="obsolete">Επιλογή όλων</translation>
-    </message>
-    <message>
-        <source>No description for</source>
-        <translation type="obsolete">Καμία περιγραφή για</translation>
+        <translation type="unfinished">Mark this object to be recomputed</translation>
     </message>
 </context>
 <context>
@@ -3937,11 +3789,15 @@ Do you want to copy them, too?</source>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="unfinished">See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</translation>
+        <translation type="obsolete">See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
         <translation type="unfinished">Don&apos;t show again</translation>
+    </message>
+    <message>
+        <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4369,15 +4225,15 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskCSysDragger</name>
     <message>
         <source>Increments</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Increments</translation>
     </message>
     <message>
         <source>Translation Increment: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Translation Increment: </translation>
     </message>
     <message>
         <source>Rotation Increment: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rotation Increment: </translation>
     </message>
 </context>
 <context>
@@ -4510,18 +4366,22 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Skip recomputes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Skip recomputes</translation>
     </message>
     <message>
         <source>Enable or disable recomputations of document</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enable or disable recomputations of document</translation>
     </message>
     <message>
         <source>Mark to recompute</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mark to recompute</translation>
     </message>
     <message>
         <source>Mark this object to be recomputed</source>
+        <translation type="unfinished">Mark this object to be recomputed</translation>
+    </message>
+    <message>
+        <source>%1, Internal name: %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4555,31 +4415,31 @@ Do you want to specify another directory?</source>
     <name>MAC_APPLICATION_MENU</name>
     <message>
         <source>Services</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Services</translation>
     </message>
     <message>
         <source>Hide %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hide %1</translation>
     </message>
     <message>
         <source>Hide Others</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hide Others</translation>
     </message>
     <message>
         <source>Show All</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Show All</translation>
     </message>
     <message>
         <source>Preferences...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Preferences...</translation>
     </message>
     <message>
         <source>Quit %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Quit %1</translation>
     </message>
     <message>
         <source>About %1</source>
-        <translation type="unfinished">Σχετικά με %1</translation>
+        <translation>Σχετικά με %1</translation>
     </message>
 </context>
 <context>
@@ -4719,7 +4579,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>DAG View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">DAG View</translation>
     </message>
 </context>
 <context>
@@ -4822,18 +4682,6 @@ Do you want to continue?</source>
     <message>
         <source>Cannot open file &apos;%1&apos;.</source>
         <translation>Αδυναμία ανοίγματος του αρχείου &apos;%1&apos;.</translation>
-    </message>
-    <message>
-        <source>Docked</source>
-        <translation type="obsolete">Προσκολλημένο</translation>
-    </message>
-    <message>
-        <source>Undocked</source>
-        <translation type="obsolete">Αποπροσκολλημένο</translation>
-    </message>
-    <message>
-        <source>Fullscreen</source>
-        <translation type="obsolete">Πλήρης οθόνη</translation>
     </message>
     <message>
         <source>files</source>
@@ -5094,26 +4942,30 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Origin</translation>
     </message>
     <message>
         <source> %1.%2.%3 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"> %1.%2.%3 </translation>
     </message>
     <message>
         <source>Translation: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Translation: </translation>
     </message>
     <message>
         <source>Rotation: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rotation: </translation>
     </message>
     <message>
         <source>Delete group content?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Delete group content?</translation>
     </message>
     <message>
         <source>The %1 is not empty, delete it&apos;s content as well?</source>
+        <translation type="obsolete">The %1 is not empty, delete it&apos;s content as well?</translation>
+    </message>
+    <message>
+        <source>The %1 is not empty, delete its content as well?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5121,11 +4973,11 @@ Be aware the point where you click matters.</source>
     <name>SelectionFilter</name>
     <message>
         <source>Not allowed:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed:</translation>
     </message>
     <message>
         <source>Selection not allowed by filter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selection not allowed by filter</translation>
     </message>
 </context>
 <context>
@@ -5458,7 +5310,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Panels</source>
-        <translation type="unfinished">Panels</translation>
+        <translation>Πάνελ</translation>
     </message>
     <message>
         <source>List of available dock panels</source>
@@ -6199,15 +6051,15 @@ Be aware the point where you click matters.</source>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Προκαθορισμένη προβολή</translation>
+        <translation>Προκαθορισμένη προβολή</translation>
     </message>
     <message>
         <source>Select visible objects</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select visible objects</translation>
     </message>
     <message>
         <source>Select visible objects in the active document</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select visible objects in the active document</translation>
     </message>
 </context>
 <context>
@@ -6922,15 +6774,15 @@ Be aware the point where you click matters.</source>
     <name>StdViewDock</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Προκαθορισμένη προβολή</translation>
+        <translation>Προκαθορισμένη προβολή</translation>
     </message>
     <message>
         <source>Docked</source>
-        <translation type="unfinished">Προσκολλημένο</translation>
+        <translation>Προσκολλημένο</translation>
     </message>
     <message>
         <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-        <translation type="unfinished">Προβολή της ενεργούς όψης είτε σε πλήρη οθόνη, είτε σε ανεξάρτητο, είτε σε ενσωματωμένο παράθυρο</translation>
+        <translation>Προβολή της ενεργούς όψης είτε σε πλήρη οθόνη, είτε σε ανεξάρτητο, είτε σε ενσωματωμένο παράθυρο</translation>
     </message>
 </context>
 <context>
@@ -6952,15 +6804,15 @@ Be aware the point where you click matters.</source>
     <name>StdViewFullscreen</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Προκαθορισμένη προβολή</translation>
+        <translation>Προκαθορισμένη προβολή</translation>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation type="unfinished">Πλήρης οθόνη</translation>
+        <translation>Πλήρης οθόνη</translation>
     </message>
     <message>
         <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-        <translation type="unfinished">Προβολή της ενεργούς όψης είτε σε πλήρη οθόνη, είτε σε ανεξάρτητο, είτε σε ενσωματωμένο παράθυρο</translation>
+        <translation>Προβολή της ενεργούς όψης είτε σε πλήρη οθόνη, είτε σε ανεξάρτητο, είτε σε ενσωματωμένο παράθυρο</translation>
     </message>
 </context>
 <context>
@@ -6982,15 +6834,15 @@ Be aware the point where you click matters.</source>
     <name>StdViewUndock</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Προκαθορισμένη προβολή</translation>
+        <translation>Προκαθορισμένη προβολή</translation>
     </message>
     <message>
         <source>Undocked</source>
-        <translation type="unfinished">Αποπροσκολλημένο</translation>
+        <translation>Αποπροσκολλημένο</translation>
     </message>
     <message>
         <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-        <translation type="unfinished">Προβολή της ενεργούς όψης είτε σε πλήρη οθόνη, είτε σε ανεξάρτητο, είτε σε ενσωματωμένο παράθυρο</translation>
+        <translation>Προβολή της ενεργούς όψης είτε σε πλήρη οθόνη, είτε σε ανεξάρτητο, είτε σε ενσωματωμένο παράθυρο</translation>
     </message>
 </context>
 <context>
@@ -7022,20 +6874,16 @@ Be aware the point where you click matters.</source>
         <translation>Εξαρτήσεις του αντικειμένου</translation>
     </message>
     <message>
-        <source>This object is referenced by other objects and thus these objects might get broken.
-Are you sure to continue?</source>
-        <translation type="obsolete">Αυτό το αντικείμενο χρησιμοποιείται ως αναφορά, από άλλα αντικείμενα.\n
-Κατά συνέπεια, αυτά τα άλλα αντικείμενα μπορεί να «σπάσουν».\n
-\n
-Θέλεις πραγματικά να συνεχίσεις;</translation>
-    </message>
-    <message>
         <source>The following, referencing objects might break.
 
 Are you sure you want to continue?
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The following, referencing objects might break.
+
+Are you sure you want to continue?
+
+</translation>
     </message>
 </context>
 <context>
@@ -7079,6 +6927,22 @@ Are you sure you want to continue?
     <message>
         <source>Points mode</source>
         <translation>Κατάσταση λειτουργίας σημείων</translation>
+    </message>
+    <message>
+        <source>Hidden line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hidden line mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No shading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No shading mode</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -7131,16 +6995,12 @@ Do you want to specify its installation path if it&apos;s already installed?</so
         <translation type="unfinished">This will discard all the changes since last file save.</translation>
     </message>
     <message>
-        <source>Are you sure?</source>
-        <translation type="obsolete">Are you sure?</translation>
-    </message>
-    <message>
         <source>Revert document</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Revert document</translation>
     </message>
     <message>
         <source>Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Do you want to continue?</translation>
     </message>
 </context>
 <context>

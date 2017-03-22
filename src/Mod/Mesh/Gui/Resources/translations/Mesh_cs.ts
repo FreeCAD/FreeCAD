@@ -398,6 +398,21 @@
     </message>
 </context>
 <context>
+    <name>CmdMeshSectionByPlane</name>
+    <message>
+        <source>Mesh</source>
+        <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdMeshSegmentation</name>
     <message>
         <source>Mesh</source>
@@ -738,30 +753,30 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     </message>
     <message>
         <source>Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Settings...</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
         <source>Evaluation settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Evaluation settings</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení</translation>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Check for non-manifold points</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enable check for folds on surface</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Only consider zero area faces as degenerated</translation>
     </message>
 </context>
 <context>
@@ -887,6 +902,10 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     <message>
         <source>mm</source>
         <translation type="obsolete">mm</translation>
+    </message>
+    <message>
+        <source>Export AMF files using compression</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1100,7 +1119,7 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     </message>
     <message>
         <source>Minumum number of faces</source>
-        <translation>Minimální počet ploch</translation>
+        <translation type="obsolete">Minimální počet ploch</translation>
     </message>
     <message>
         <source>Cylinder</source>
@@ -1173,11 +1192,11 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation>Vyberte rovinu</translation>
+        <translation type="obsolete">Vyberte rovinu</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation>Prosím vyberte rovinu, kterou ořezáváte síť.</translation>
+        <translation type="obsolete">Prosím vyberte rovinu, kterou ořezáváte síť.</translation>
     </message>
 </context>
 <context>
@@ -1188,13 +1207,17 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation>Během chodu OpenSCADu se objevila neznámá chyba.</translation>
+        <translation type="obsolete">Během chodu OpenSCADu se objevila neznámá chyba.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
         <translation>OpenSCAD nelze najít ve Vašem systému.
 Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</translation>
+    </message>
+    <message>
+        <source>Unknown error occurred while running OpenSCAD.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

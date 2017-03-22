@@ -428,7 +428,7 @@ typename ClusterMath<Sys>::Scalar ClusterMath<Sys>::calculateClusterScale() {
         //three points on a line need to be treaded as multiple points
     }
 
-    //more than 3 points dont have a exakt solution. we search for a midpoint from which all points
+    //more than 3 points don't have a exact solution. we search for a midpoint from which all points
     //are at least MAXFAKTOR*scale away, but not closer than MINFAKTOR*scale
 
     //get the bonding box to get the center of points
@@ -618,7 +618,7 @@ void ClusterMath<Sys>::applyClusterScale(Scalar scale, bool isFixed) {
 #ifdef USE_LOGGING
     BOOST_LOG(log) << "sstrans scale: "<<ssTrans.scaling().factor();
     BOOST_LOG(log) << "finish transform scale: "<<m_transform.scaling().factor();
-    //we may want to access the scale points for debuging (I mean you, freecad assembly debug!), so 
+    //we may want to access the scale points for debugging (I mean you, freecad assembly debug!), so 
     //it is important to transform them too to ensure the points are in the same coordinate system
     typename Vec::iterator it;
     for(it=m_points.begin(); it!=m_points.end(); it++) {

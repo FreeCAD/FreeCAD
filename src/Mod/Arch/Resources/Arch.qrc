@@ -118,5 +118,10 @@
         <file>translations/Arch_sr.qm</file>
         <file>translations/Arch_el.qm</file>
         <file>translations/Arch_sl.qm</file>
+        <file>translations/Arch_eu.qm</file>
+        <file>translations/Arch_ca.qm</file>
+        <file>translations/Arch_gl.qm</file>
+        <file>translations/Arch_kab.qm</file>
+        <file>translations/Arch_ko.qm</file>
     </qresource>
 </RCC> 

@@ -26,9 +26,16 @@ import FreeCAD
 import Path
 import numpy
 import TechDraw
+import ArchPanel
+
 from FreeCAD import Vector
 from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
+import PathScripts.PathLog as PathLog
+
+LOG_MODULE = 'PathProfile'
+PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+# PathLog.trackModule('PathProfile')
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -61,11 +68,8 @@ class ObjectProfile:
         obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this profile"))
         obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
 
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The tool number in use")
-        obj.ToolNumber = (0, 0, 1000, 1)
-        obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", "The description of the tool ")
-        obj.setEditorMode('ToolDescription', 1)  # make this read only
+        # Tool Properties
+        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
@@ -97,6 +101,7 @@ class ObjectProfile:
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final profile- good for roughing toolpath"))
         obj.addProperty("App::PropertyBool", "processHoles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile holes as well as the outline"))
         obj.addProperty("App::PropertyBool", "processPerimeter", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the outline"))
+        obj.addProperty("App::PropertyBool", "processCircles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile round holes"))
 
         obj.Proxy = self
 
@@ -107,8 +112,7 @@ class ObjectProfile:
         return None
 
     def onChanged(self, obj, prop):
-        if prop == "UserLabel":
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+        pass
 
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
@@ -153,6 +157,9 @@ class ObjectProfile:
         import PathScripts.PathKurveUtils as PathKurveUtils
         # import math
         # import area
+
+        PathLog.track("edgelist: {} \n".format(edgelist))
+
         output = ""
         if obj.Comment != "":
             output += '(' + str(obj.Comment)+')\n'
@@ -198,12 +205,6 @@ print "y - " + str(point.y)
         lead_in_line_len = 0.0
         lead_out_line_len = 0.0
 
-        '''
-
-        Right here, I need to know the Holding Tags group from the tree that refers to this profile operation and build up the tags for PathKurve Utils.
-        I need to access the location vector, length, angle in radians and height.
-
-        '''
         depthparams = depth_params(
             obj.ClearanceHeight.Value,
             obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown.Value, 0.0,
@@ -222,36 +223,24 @@ print "y - " + str(point.y)
         import Part  # math #DraftGeomUtils
         output = ""
 
-        toolLoad = PathUtils.getLastToolLoad(obj)
-
+        toolLoad = obj.ToolController
         if toolLoad is None or toolLoad.ToolNumber == 0:
-            self.vertFeed = 100
-            self.horizFeed = 100
-            self.vertRapid = 100
-            self.horizRapid = 100
-            self.radius = 0.25
-            obj.ToolNumber = 0
-            obj.ToolDescription = "UNDEFINED"
+            FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
+            #return
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
             self.vertRapid = toolLoad.VertRapid.Value
             self.horizRapid = toolLoad.HorizRapid.Value
-            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-            if tool.Diameter == 0:
-                self.radius = 0.25
+            tool = toolLoad.Proxy.getTool(toolLoad)
+            if not tool or tool.Diameter == 0:
+                FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
+                return
             else:
                 self.radius = tool.Diameter/2
-            obj.ToolNumber = toolLoad.ToolNumber
-            obj.ToolDescription = toolLoad.Name
-
-        if obj.UserLabel == "":
-            obj.Label = obj.Name + " :" + obj.ToolDescription
-        else:
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
         output += "(" + obj.Label + ")"
-        if obj.Side != "On":
+        if obj.UseComp:
             output += "(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"
         else:
             output += "(Uncompensated Tool Path)"
@@ -283,6 +272,40 @@ print "y - " + str(point.y)
                 edgelist = profilewire.Edges
                 edgelist = Part.__sortEdges__(edgelist)
                 output += self._buildPathLibarea(obj, edgelist, False)
+
+        else:  #Try to build targets frorm the job base
+            parentJob = PathUtils.findParentJob(obj)
+            if parentJob is None:
+                return
+            baseobject = parentJob.Base
+            if baseobject is None:
+                return
+
+            if hasattr(baseobject, "Proxy"):
+                if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+                    if obj.processPerimeter:
+                        shapes = baseobject.Proxy.getOutlines(baseobject, transform=True)
+                        for shape in shapes:
+                            for wire in shape.Wires:
+                                edgelist = wire.Edges
+                                edgelist = Part.__sortEdges__(edgelist)
+                                PathLog.debug("Processing panel perimeter.  edges found: {}".format(len(edgelist)))
+                            try:
+                                output += self._buildPathLibarea(obj, edgelist, isHole=False)
+                            except:
+                                FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+
+                    shapes = baseobject.Proxy.getHoles(baseobject, transform=True)
+                    for shape in shapes:
+                        for wire in shape.Wires:
+                            drillable = PathUtils.isDrillable(baseobject.Proxy, wire)
+                            if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
+                                edgelist = wire.Edges
+                                edgelist = Part.__sortEdges__(edgelist)
+                                try:
+                                    output += self._buildPathLibarea(obj, edgelist, isHole=True)
+                                except:
+                                    FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
         if obj.Active:
             path = Path.Path(output)
@@ -393,12 +416,13 @@ class CommandPathProfile:
         FreeCADGui.doCommand('obj.SafeHeight = ' + str(ztop + 2.0))
         FreeCADGui.doCommand('obj.Side = "Left"')
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
-        FreeCADGui.doCommand('obj.Direction = "CCW"')
-        FreeCADGui.doCommand('obj.UseComp = False')
+        FreeCADGui.doCommand('obj.Direction = "CW"')
+        FreeCADGui.doCommand('obj.UseComp = True')
         FreeCADGui.doCommand('obj.processHoles = False')
         FreeCADGui.doCommand('obj.processPerimeter = True')
         FreeCADGui.doCommand('PathScripts.PathProfile._ViewProviderProfile(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
+        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -454,6 +478,13 @@ class TaskPanel:
                 self.obj.processHoles = self.form.processHoles.isChecked()
             if hasattr(self.obj, "processPerimeter"):
                 self.obj.processPerimeter = self.form.processPerimeter.isChecked()
+            if hasattr(self.obj, "processCircles"):
+                self.obj.processCircles = self.form.processCircles.isChecked()
+            if hasattr(self.obj, "ToolController"):
+                PathLog.debug("name: {}".format(self.form.uiToolController.currentText()))
+                tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
+                self.obj.ToolController = tc
+
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
@@ -469,6 +500,7 @@ class TaskPanel:
         self.form.useEndPoint.setChecked(self.obj.UseEndPoint)
         self.form.processHoles.setChecked(self.obj.processHoles)
         self.form.processPerimeter.setChecked(self.obj.processPerimeter)
+        self.form.processCircles.setChecked(self.obj.processCircles)
 
         index = self.form.cutSide.findText(
                 self.obj.Side, QtCore.Qt.MatchFixedString)
@@ -483,6 +515,22 @@ class TaskPanel:
             self.form.direction.blockSignals(True)
             self.form.direction.setCurrentIndex(index)
             self.form.direction.blockSignals(False)
+
+        controllers = PathUtils.getToolControllers(self.obj)
+        labels = [c.Label for c in controllers]
+        self.form.uiToolController.blockSignals(True)
+        self.form.uiToolController.addItems(labels)
+        self.form.uiToolController.blockSignals(False)
+        if self.obj.ToolController is not None:
+            index = self.form.uiToolController.findText(
+                self.obj.ToolController.Label, QtCore.Qt.MatchFixedString)
+            PathLog.debug("searching for TC label {}. Found Index: {}".format(self.obj.ToolController.Label, index))
+            if index >= 0:
+                self.form.uiToolController.blockSignals(True)
+                self.form.uiToolController.setCurrentIndex(index)
+                self.form.uiToolController.blockSignals(False)
+        else:
+            self.obj.ToolController = PathUtils.findToolController(self.obj)
 
         self.form.baseList.blockSignals(True)
         for i in self.obj.Base:
@@ -572,6 +620,7 @@ class TaskPanel:
         self.form.addBase.clicked.connect(self.addBase)
         self.form.deleteBase.clicked.connect(self.deleteBase)
         self.form.reorderBase.clicked.connect(self.reorderBase)
+        self.form.uiToolController.currentIndexChanged.connect(self.getFields)
 
         # Depths
         self.form.startDepth.editingFinished.connect(self.getFields)
@@ -592,6 +641,7 @@ class TaskPanel:
         self.form.rollRadius.editingFinished.connect(self.getFields)
         self.form.processHoles.clicked.connect(self.getFields)
         self.form.processPerimeter.clicked.connect(self.getFields)
+        self.form.processCircles.clicked.connect(self.getFields)
 
         self.setFields()
 

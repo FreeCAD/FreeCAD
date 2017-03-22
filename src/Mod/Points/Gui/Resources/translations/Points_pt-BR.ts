@@ -11,14 +11,14 @@
     <message>
         <location line="+1"/>
         <source>Convert to points...</source>
-        <translation>Converter para pontos...</translation>
+        <translation>Converter em pontos...</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>
         <source>Convert to points</source>
-        <translation>Converter para pontos</translation>
+        <translation>Converter em pontos</translation>
     </message>
 </context>
 <context>

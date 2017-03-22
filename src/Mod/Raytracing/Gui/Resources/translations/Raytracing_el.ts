@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Export a Raytracing project to a file</source>
-        <translation type="unfinished">Export a Raytracing project to a file</translation>
+        <translation>Για να εξαγάγετε ένα έργο Raytracing σε ένα αρχείο</translation>
     </message>
     <message>
         <source>Export the Povray project file</source>
@@ -43,7 +43,7 @@
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">No template</translation>
+        <translation>Δεν πρότυπο</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -61,7 +61,7 @@
     <message>
         <location line="+1"/>
         <source>Insert part</source>
-        <translation type="unfinished">Insert part</translation>
+        <translation>Εισάγετε μέρος</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -96,12 +96,12 @@
     <message>
         <location line="+1"/>
         <source>Insert new POV-Ray project into the document</source>
-        <translation type="unfinished">Insert new POV-Ray project into the document</translation>
+        <translation>Εισαγάγετε το νέο έργο POV-Ray στο έγγραφο</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">No template</translation>
+        <translation>Δεν πρότυπο</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -119,12 +119,12 @@
     <message>
         <location line="+1"/>
         <source>&amp;Render</source>
-        <translation type="unfinished">&amp;Render</translation>
+        <translation>&amp; Απόδοσης</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Renders the current raytracing project with an external renderer</source>
-        <translation type="unfinished">Renders the current raytracing project with an external renderer</translation>
+        <translation>Καθιστά το τρέχον έργο raytracing με μια εξωτερική λειτουργία απόδοσης</translation>
     </message>
 </context>
 <context>
@@ -159,8 +159,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation type="unfinished">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
+        <translation type="obsolete">Εξαγάγετε τη φωτογραφική μηχανή θέση της ενεργούς προβολής σε μορφή POV-Ray 3D σε ένα αρχείο</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>
@@ -358,7 +362,7 @@ Do you want to continue?</translation>
         <location line="+62"/>
         <location line="+272"/>
         <source>POV-Ray</source>
-        <translation type="unfinished">POV-Ray</translation>
+        <translation>POV-Ray</translation>
     </message>
     <message>
         <location line="-384"/>

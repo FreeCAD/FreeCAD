@@ -63,7 +63,7 @@ class TempoVis(FrozenClass):
         TempoVis deletion, or call to restore().'''
 
         if App.GuiUp:
-            if type(doc_obj_or_list) is not list:
+            if not hasattr(doc_obj_or_list, '__iter__'):
                 doc_obj_or_list = [doc_obj_or_list]
             for doc_obj in doc_obj_or_list:
                 if not hasattr(doc_obj.ViewObject, prop_name):
@@ -216,7 +216,7 @@ class TempoVis(FrozenClass):
         tempovis. '''
         
         if App.GuiUp:
-            if type(doc_obj_or_list) is not list:
+            if not hasattr(doc_obj_or_list, '__iter__'):
                 doc_obj_or_list = [doc_obj_or_list]
             for doc_obj in doc_obj_or_list:
                 if doc_obj.Document is not self.document:  #ignore objects from other documents

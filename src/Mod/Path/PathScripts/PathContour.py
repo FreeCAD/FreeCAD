@@ -23,12 +23,18 @@
 # ***************************************************************************
 
 import FreeCAD
-import Path
 from FreeCAD import Vector
-import TechDraw
+import Path
+import PathScripts.PathLog as PathLog
 from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
 from PySide import QtCore
+import TechDraw
+import ArchPanel
+
+LOG_MODULE = 'PathContour'
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+#PathLog.trackModule('PathContour')
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -60,11 +66,8 @@ class ObjectContour:
         obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Contour"))
         obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
 
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool number in use"))
-        obj.ToolNumber = (0, 0, 1000, 1)
-        obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The description of the tool "))
-        obj.setEditorMode('ToolDescription', 1)  # make this read only
+        # Tool Properties
+        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
@@ -104,17 +107,11 @@ class ObjectContour:
     def __setstate__(self, state):
         return None
 
-    def setLabel(self, obj):
-        if not obj.UserLabel:
-            obj.Label = obj.Name + " :" + obj.ToolDescription
-        else:
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
-
     def onChanged(self, obj, prop):
-        if prop == "UserLabel":
-            self.setLabel(obj)
+        pass
 
     def setDepths(proxy, obj):
+        PathLog.track()
         parentJob = PathUtils.findParentJob(obj)
         if parentJob is None:
             return
@@ -136,6 +133,7 @@ class ObjectContour:
 
     def _buildPathLibarea(self, obj, edgelist):
         import PathScripts.PathKurveUtils as PathKurveUtils
+        PathLog.track()
         # import math
         # import area
         output = ""
@@ -188,33 +186,28 @@ class ObjectContour:
         return output
 
     def execute(self, obj):
+        PathLog.track()
         import Part  # math #DraftGeomUtils
         output = ""
 
-        toolLoad = PathUtils.getLastToolLoad(obj)
+        toolLoad = obj.ToolController
 
         if toolLoad is None or toolLoad.ToolNumber == 0:
-            self.vertFeed = 100
-            self.horizFeed = 100
-            self.vertRapid = 100
-            self.horizRapid = 100
-            self.radius = 0.25
-            obj.ToolNumber = 0
-            obj.ToolDescription = "UNDEFINED"
+            FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
+            return
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
             self.vertRapid = toolLoad.VertRapid.Value
             self.horizRapid = toolLoad.HorizRapid.Value
-            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
+            tool = toolLoad.Proxy.getTool(toolLoad) #PathUtils.getTool(obj, toolLoad.ToolNumber)
             if not tool or tool.Diameter == 0:
-                self.radius = 0.25
+                FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
+                return
+
+                #self.radius = 0.25
             else:
                 self.radius = tool.Diameter/2
-            obj.ToolNumber = toolLoad.ToolNumber
-            obj.ToolDescription = toolLoad.Name
-
-        self.setLabel(obj)
 
         output += "(" + obj.Label + ")"
         if not obj.UseComp:
@@ -228,20 +221,37 @@ class ObjectContour:
         baseobject = parentJob.Base
         if baseobject is None:
             return
-        contourwire = TechDraw.findShapeOutline(baseobject.Shape, 1, Vector(0, 0, 1))
 
-        edgelist = contourwire.Edges
-        edgelist = Part.__sortEdges__(edgelist)
-        try:
-            output += self._buildPathLibarea(obj, edgelist)
-        except:
-            FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+        if hasattr(baseobject, "Proxy"):
+            if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+                baseobject.Proxy.execute(baseobject)
+                for subobj in baseobject.Group:  # process the group of panels
+                    if isinstance(subobj.Proxy, ArchPanel.PanelCut):
+                        shapes = baseobject.Proxy.getOutlines(baseobject, transform=True)
+                        for shape in shapes:
+                            for wire in shape.Wires:
+                                edgelist = wire.Edges
+                                edgelist = Part.__sortEdges__(edgelist)
+                                PathLog.debug("Processing panel perimeter.  edges found: {}".format(len(edgelist)))                       # subobj.Proxy.execute(subobj)
+                            try:
+                                output += self._buildPathLibarea(obj, edgelist)
+                            except:
+                                FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+        else:
+            contourwire = TechDraw.findShapeOutline(baseobject.Shape, 1, Vector(0, 0, 1))
+
+            edgelist = contourwire.Edges
+            edgelist = Part.__sortEdges__(edgelist)
+
+            try:
+                output += self._buildPathLibarea(obj, edgelist)
+            except:
+                FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
         if obj.Active:
             path = Path.Path(output)
             obj.Path = path
             if obj.ViewObject:
                 obj.ViewObject.Visibility = True
-
         else:
             path = Path.Path("(inactive operation)")
             obj.Path = path
@@ -351,6 +361,7 @@ class CommandPathContour:
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
 
         FreeCADGui.doCommand('PathScripts.PathContour.ObjectContour.setDepths(obj.Proxy, obj)')
+        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -377,6 +388,7 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
     def getFields(self):
+        PathLog.track()
         if self.obj:
             if hasattr(self.obj, "StartDepth"):
                 self.obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
@@ -400,9 +412,13 @@ class TaskPanel:
                 self.obj.UseEndPoint = self.form.useEndPoint.isChecked()
             if hasattr(self.obj, "Direction"):
                 self.obj.Direction = str(self.form.direction.currentText())
+            if hasattr(self.obj, "ToolController"):
+                tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
+                self.obj.ToolController = tc
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
+        PathLog.track()
         self.form.startDepth.setText(FreeCAD.Units.Quantity(self.obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.finalDepth.setText(FreeCAD.Units.Quantity(self.obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.safeHeight.setText(FreeCAD.Units.Quantity(self.obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
@@ -417,7 +433,28 @@ class TaskPanel:
         index = self.form.direction.findText(
                 self.obj.Direction, QtCore.Qt.MatchFixedString)
         if index >= 0:
+            self.form.direction.blockSignals(True)
             self.form.direction.setCurrentIndex(index)
+            self.form.direction.blockSignals(False)
+
+        controllers = PathUtils.getToolControllers(self.obj)
+        labels = [c.Label for c in controllers]
+        self.form.uiToolController.blockSignals(True)
+        self.form.uiToolController.addItems(labels)
+        self.form.uiToolController.blockSignals(False)
+
+        if self.obj.ToolController is None:
+            self.obj.ToolController = PathUtils.findToolController(self.obj)
+
+        if self.obj.ToolController is not None:
+            index = self.form.uiToolController.findText(
+                self.obj.ToolController.Label, QtCore.Qt.MatchFixedString)
+            if index >= 0:
+                self.form.uiToolController.blockSignals(True)
+                self.form.uiToolController.setCurrentIndex(index)
+                self.form.uiToolController.blockSignals(False)
+        else:
+            self.obj.ToolController = PathUtils.findToolController(self.obj)
 
     def open(self):
         self.s = SelObserver()
@@ -428,7 +465,7 @@ class TaskPanel:
         return int(QtGui.QDialogButtonBox.Ok)
 
     def setupUi(self):
-
+        PathLog.track()
         # Connect Signals and Slots
         # Depths
         self.form.startDepth.editingFinished.connect(self.getFields)
@@ -441,6 +478,7 @@ class TaskPanel:
 
         # operation
         self.form.direction.currentIndexChanged.connect(self.getFields)
+        self.form.uiToolController.currentIndexChanged.connect(self.getFields)
         self.form.useCompensation.clicked.connect(self.getFields)
         self.form.useStartPoint.clicked.connect(self.getFields)
         self.form.useEndPoint.clicked.connect(self.getFields)

@@ -258,6 +258,7 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
         if not techdraw:
             svg += '</g>'
     # add additional edge symbols from windows
+    cutwindows = []
     if cutface and windows:
         cutwindows = [w.Name for w in windows if w.Shape.BoundBox.intersect(cutface.BoundBox)]
     if windows:

@@ -5,9 +5,9 @@
 
 /** \namespace App
     \ingroup APP
-    \brief The FreeCAD Aplication layer
+    \brief The FreeCAD Application layer
 
-    This namespace includes Aplication services of FreeCAD like:
+    This namespace includes Application services of FreeCAD like:
     - The Application class 
     - The Document class
 

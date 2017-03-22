@@ -4,7 +4,7 @@
 <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+476"/>
+        <location filename="../../Command.cpp" line="+474"/>
         <source>Drawing</source>
         <translation>Tekening</translation>
     </message>
@@ -17,7 +17,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts an Annotation view in the active drawing</source>
-        <translation type="unfinished">Inserts an Annotation view in the active drawing</translation>
+        <translation>Voeg een aantekening toe aan de actieve tekening</translation>
     </message>
 </context>
 <context>
@@ -30,7 +30,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Clip</source>
-        <translation type="unfinished">&amp;Clip</translation>
+        <translation>&amp;Clip</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -49,7 +49,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished">&amp;Draft View</translation>
+        <translation>&amp;Concept weergave</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -94,7 +94,7 @@
 <context>
     <name>CmdDrawingNewPage</name>
     <message>
-        <location line="-181"/>
+        <location line="-179"/>
         <source>Drawing</source>
         <translation>Tekening</translation>
     </message>
@@ -108,7 +108,7 @@
 <context>
     <name>CmdDrawingNewView</name>
     <message>
-        <location line="+216"/>
+        <location line="+214"/>
         <source>Drawing</source>
         <translation>Tekening</translation>
     </message>
@@ -126,7 +126,7 @@
 <context>
     <name>CmdDrawingOpen</name>
     <message>
-        <location line="-252"/>
+        <location line="-250"/>
         <source>Drawing</source>
         <translation>Tekening</translation>
     </message>
@@ -144,7 +144,7 @@
 <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-        <location line="+377"/>
+        <location line="+375"/>
         <source>Drawing</source>
         <translation>Tekening</translation>
     </message>
@@ -207,7 +207,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Spreadsheet View</source>
-        <translation type="unfinished">&amp;Spreadsheet View</translation>
+        <translation>&amp;Rekenbladweergave</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -294,7 +294,7 @@
     <message>
         <location line="+1"/>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF-bestand</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -347,20 +347,19 @@ Do you want to continue?</translation>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished">Different paper size</translation>
+        <translation>Ander papierformaat</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">The printer uses a different paper size than the drawing.
-Do you want to continue?</translation>
+        <translation>De printer gebruikt een ander papierfromaat dan de tekening. Wilt u toch doorgaan?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Opening file failed</source>
-        <translation type="unfinished">Opening file failed</translation>
+        <translation>Bestand openen mislukt</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -675,12 +674,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+1"/>
         <source>There is currently no active document to complete the operation</source>
-        <translation type="unfinished">There is currently no active document to complete the operation</translation>
+        <translation>Er is momenteel geen actief document om de operatie te voltooien</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>No active view</source>
-        <translation type="unfinished">No active view</translation>
+        <translation>Geen actieve weergave</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -772,8 +771,8 @@ Do you want to continue?</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location line="-171"/>
-        <location line="+519"/>
+        <location line="-169"/>
+        <location line="+517"/>
         <source>Choose an SVG file to open</source>
         <translation>Kies een SVG-bestand om te openen</translation>
     </message>
@@ -812,8 +811,8 @@ Do you want to continue?</translation>
         <translation type="obsolete">Maak een pagina om aanzichten toe te voegen.</translation>
     </message>
     <message>
-        <location line="-251"/>
-        <location line="+519"/>
+        <location line="-249"/>
+        <location line="+517"/>
         <location line="+53"/>
         <source>Scalable Vector Graphic</source>
         <translation type="unfinished">Scalable Vector Graphic</translation>
@@ -826,7 +825,7 @@ Do you want to continue?</translation>
         <location line="+45"/>
         <location line="+179"/>
         <source>No page found</source>
-        <translation type="unfinished">No page found</translation>
+        <translation>Geen pagina gevonden</translation>
     </message>
     <message>
         <location line="-431"/>
@@ -836,7 +835,7 @@ Do you want to continue?</translation>
         <location line="+45"/>
         <location line="+179"/>
         <source>Create a page first.</source>
-        <translation type="unfinished">Create a page first.</translation>
+        <translation>Maak eerst een pagina.</translation>
     </message>
     <message>
         <location line="-362"/>
@@ -852,7 +851,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+6"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Alle bestanden</translation>
     </message>
     <message>
         <location line="+113"/>

@@ -4,7 +4,7 @@
 <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+476"/>
+        <location filename="../../Command.cpp" line="+474"/>
         <source>Drawing</source>
         <translation>Чертеж</translation>
     </message>
@@ -49,13 +49,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished">&amp;Draft View</translation>
+        <translation>&amp; Представление проекта</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-        <translation type="unfinished">Inserts a Draft view of the selected object(s) in the active drawing</translation>
+        <translation>Представление проекта выбранных объектов в активном документе</translation>
     </message>
 </context>
 <context>
@@ -94,7 +94,7 @@
 <context>
     <name>CmdDrawingNewPage</name>
     <message>
-        <location line="-181"/>
+        <location line="-179"/>
         <source>Drawing</source>
         <translation>Чертеж</translation>
     </message>
@@ -108,7 +108,7 @@
 <context>
     <name>CmdDrawingNewView</name>
     <message>
-        <location line="+216"/>
+        <location line="+214"/>
         <source>Drawing</source>
         <translation>Чертеж</translation>
     </message>
@@ -126,7 +126,7 @@
 <context>
     <name>CmdDrawingOpen</name>
     <message>
-        <location line="-252"/>
+        <location line="-250"/>
         <source>Drawing</source>
         <translation>Чертеж</translation>
     </message>
@@ -144,7 +144,7 @@
 <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-        <location line="+377"/>
+        <location line="+375"/>
         <source>Drawing</source>
         <translation>Чертеж</translation>
     </message>
@@ -207,13 +207,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Spreadsheet View</source>
-        <translation type="unfinished">&amp;Spreadsheet View</translation>
+        <translation>&amp; Представление таблицы</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-        <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
+        <translation>Вставляет представление выбранной таблицы в активном документе</translation>
     </message>
 </context>
 <context>
@@ -334,14 +334,13 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished">Different orientation</translation>
+        <translation>Другая ориентация</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">The printer uses a different orientation  than the drawing.
-Do you want to continue?</translation>
+        <translation>Принтер использует другую оринтацию бумаги, нежели рисунок. Хотите продолжить?</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -364,7 +363,7 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
+        <translation>Не удается открыть файл «%1» для записи.</translation>
     </message>
 </context>
 <context>
@@ -771,8 +770,8 @@ Do you want to continue?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location line="-171"/>
-        <location line="+519"/>
+        <location line="-169"/>
+        <location line="+517"/>
         <source>Choose an SVG file to open</source>
         <translation>Выберите SVG-файл для открытия</translation>
     </message>
@@ -811,8 +810,8 @@ Do you want to continue?</source>
         <translation type="obsolete">Создайте страницу для вставки видов</translation>
     </message>
     <message>
-        <location line="-251"/>
-        <location line="+519"/>
+        <location line="-249"/>
+        <location line="+517"/>
         <location line="+53"/>
         <source>Scalable Vector Graphic</source>
         <translation>Масштабируемая векторная графика (SVG)</translation>

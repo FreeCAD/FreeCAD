@@ -142,12 +142,12 @@
       <translation>Kérem válasszon ki először 3 tárgyat</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Unsupported Function</source>
       <translation>Nem támogatott funkció</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Press OK</source>
       <translation>OK-ra kattintson</translation>
     </message>

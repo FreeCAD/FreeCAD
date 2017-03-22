@@ -40,6 +40,7 @@
 #include <Base/Console.h>
 
 #include "Utils.h"
+#include "WorkflowManager.h"
 
 using namespace std;
 
@@ -59,9 +60,14 @@ CmdPrimtiveCompAdditive::CmdPrimtiveCompAdditive()
 
 void CmdPrimtiveCompAdditive::activated(int iMsg)
 {
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
 
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-    if (!pcActiveBody) return;
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
 
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
@@ -241,8 +247,14 @@ CmdPrimtiveCompSubtractive::CmdPrimtiveCompSubtractive()
 
 void CmdPrimtiveCompSubtractive::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-    if (!pcActiveBody) return;
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
 
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());

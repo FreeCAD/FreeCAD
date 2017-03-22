@@ -398,6 +398,21 @@
     </message>
 </context>
 <context>
+    <name>CmdMeshSectionByPlane</name>
+    <message>
+        <source>Mesh</source>
+        <translation type="unfinished">siatka</translation>
+    </message>
+    <message>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdMeshSegmentation</name>
     <message>
         <source>Mesh</source>
@@ -737,30 +752,30 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustawienia...</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
         <source>Evaluation settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustawienia ewaluacji</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustawienia</translation>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Check for non-manifold points</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation type="unfinished"></translation>
+        <translation>Włącz sprawdzanie fałd na powierzchni</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
-        <translation type="unfinished"></translation>
+        <translation>Uznaj za uszkodzone tylko powierzchnie nie tworzące obszaru (zero area faces)</translation>
     </message>
 </context>
 <context>
@@ -886,6 +901,10 @@ Please run the command to repair folds first</source>
     <message>
         <source>mm</source>
         <translation type="obsolete">mm</translation>
+    </message>
+    <message>
+        <source>Export AMF files using compression</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1099,7 +1118,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Minumum number of faces</source>
-        <translation>Minimalna liczba powierzchni</translation>
+        <translation type="obsolete">Minimalna liczba powierzchni</translation>
     </message>
     <message>
         <source>Cylinder</source>
@@ -1172,11 +1191,11 @@ Please run the command to repair folds first</source>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation>Wybierz płaszczyznę</translation>
+        <translation type="obsolete">Wybierz płaszczyznę</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation>Wybierz płaszczyznę którą chcesz przyciąć siatkę.</translation>
+        <translation type="obsolete">Wybierz płaszczyznę którą chcesz przyciąć siatkę.</translation>
     </message>
 </context>
 <context>
@@ -1187,13 +1206,17 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation>Wystąpił nieznany błąd podczas uruchamiania OpenSCAD.</translation>
+        <translation type="obsolete">Wystąpił nieznany błąd podczas uruchamiania OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
         <translation>OpenSCAD nie znaleziony w systemie. 
 Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation>
+    </message>
+    <message>
+        <source>Unknown error occurred while running OpenSCAD.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1373,7 +1396,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Alias Mesh</source>
-        <translation type="unfinished">Alias Mesh</translation>
+        <translation>Jako Siatka (Mesh)</translation>
     </message>
     <message>
         <source>Object File Format</source>
@@ -1393,7 +1416,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>X3D Extensible 3D</source>
-        <translation type="unfinished">X3D Extensible 3D</translation>
+        <translation>X3D rozszerzenie 3D(*. x3d)</translation>
     </message>
     <message>
         <source>VRML V2.0</source>
@@ -1405,11 +1428,11 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Nastran</source>
-        <translation type="unfinished">Nastran</translation>
+        <translation>Nastran</translation>
     </message>
     <message>
         <source>Python module def</source>
-        <translation type="unfinished">Python module def</translation>
+        <translation>Moduły Pythona</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>

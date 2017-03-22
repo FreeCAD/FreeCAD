@@ -27,5 +27,10 @@
         <file>translations/StartPage_sr.qm</file>
         <file>translations/StartPage_el.qm</file>
         <file>translations/StartPage_sl.qm</file>
+        <file>translations/StartPage_eu.qm</file>
+        <file>translations/StartPage_ca.qm</file>
+        <file>translations/StartPage_gl.qm</file>
+        <file>translations/StartPage_kab.qm</file>
+        <file>translations/StartPage_ko.qm</file>
     </qresource>
 </RCC>

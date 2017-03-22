@@ -286,7 +286,7 @@
     <message>
       <location filename="TankInstance.py" line="129"/>
       <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
-      <translation type="unfinished">Tank volume operation failed. The tool is retrying that slightly moving the free surface position</translation>
+      <translation>Falha na operação de volume do tanque. A ferramenta está tentando mover ligeiramente a posição de superfície livre</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="133"/>
@@ -356,7 +356,7 @@
     <message>
       <location filename="Tools.py" line="122"/>
       <source>Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</source>
-      <translation type="unfinished">Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</translation>
+      <translation>Operação booleana falhada ao tentar encontrar o lado submerso. A ferramenta está a tentar executar essa operação movendo ligeiramente a posição da superficie livre</translation>
     </message>
     <message>
       <location filename="Tools.py" line="198"/>
@@ -381,12 +381,12 @@
     <message>
       <location filename="Tools.py" line="466"/>
       <source>Part.OCCError: Main frame area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Main frame area cannot be computed</translation>
+      <translation>Part.OCCError: Área do quadro principal não pôde ser computada</translation>
     </message>
     <message>
       <location filename="Tools.py" line="480"/>
       <source>ZeroDivisionError: Null area found during the main frame area coefficient computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the main frame area coefficient computation!</translation>
+      <translation>ZeroDivisionError: Área Nula encontrada durante o cálculo de coeficiente de área do quadro principal!</translation>
     </message>
   </context>
   <context>
@@ -442,12 +442,12 @@
     <message>
       <location filename="ShipGui.py" line="196"/>
       <source>GZ curve computation</source>
-      <translation type="unfinished">GZ curve computation</translation>
+      <translation>Cálculo da curva GZ</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="244"/>
       <source>Plot the GZ curve</source>
-      <translation type="unfinished">Plot the GZ curve</translation>
+      <translation>Traçar a curva de GZ</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="249"/>
@@ -462,27 +462,27 @@
     <message>
       <location filename="TaskPanel.py" line="261"/>
       <source>Variable trim</source>
-      <translation type="unfinished">Variable trim</translation>
+      <translation>Aparar variável</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="267"/>
       <source>The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</source>
-      <translation type="unfinished">The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</translation>
+      <translation>O navio será rodado para o ângulo de compensação de equilíbrio para cada ângulo de rolamento. Aumentará significativamente o tempo de computação necessário</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="294"/>
       <source>GZ curve tool angle selected [deg]</source>
-      <translation type="unfinished">GZ curve tool angle selected [deg]</translation>
+      <translation>GZ curva ferramenta ângulo selecionado [deg]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="310"/>
       <source>GZ curve tool number of points selected</source>
-      <translation type="unfinished">GZ curve tool number of points selected</translation>
+      <translation>Número de pontos da ferramenta de curva GZ selecionado</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="326"/>
       <source>GZ curve tool variable trim angle selection</source>
-      <translation type="unfinished">GZ curve tool variable trim angle selection</translation>
+      <translation>Seleção do ângulo de ajuste variável da ferramenta da curva GZ</translation>
     </message>
   </context>
   <context>

@@ -264,7 +264,7 @@
     <message>
         <location line="+1"/>
         <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-        <translation>nastavi privzete vrednosti hitrosti, pospeška in neprekinjenosti za naknadne ukaze ustvarjanja točk</translation>
+        <translation>nastavi privzete vrednosti hitrosti, pospeška in zveznosti za naknadne ukaze ustvarjanja točk</translation>
     </message>
 </context>
 <context>
@@ -379,7 +379,12 @@
         <translation>Napačna izbira</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -439,12 +444,11 @@
         <translation>Za uporabo tega ukaza se morate z miško pomakniti preko geometrije (predizbira). Za podrobnosti glejte dokumentacijo.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Izberite enega robota za nastavitev izhodiščnega položaja</translation>
+        <translation type="obsolete">Izberite enega robota za nastavitev izhodiščnega položaja</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Izberite enega robota</translation>
     </message>
@@ -467,7 +471,7 @@
     <message>
         <location line="+9"/>
         <source>set default continuity</source>
-        <translation>nastavi privzeto neprekinjenost</translation>
+        <translation>nastavi privzeto zveznost</translation>
     </message>
     <message>
         <location line="+1"/>

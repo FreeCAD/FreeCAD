@@ -133,6 +133,52 @@ def makeConstraintTransform(name="ConstraintTransform"):
     return obj
 
 
+########## element definition objects ##########
+def makeElementFluid1D(name="ElementFluid1D"):
+    '''makeElementFluid1D([name]): creates an 1D fluid element object to define 1D flow'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    import PyObjects._FemElementFluid1D
+    PyObjects._FemElementFluid1D._FemElementFluid1D(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemElementFluid1D
+        PyGui._ViewProviderFemElementFluid1D._ViewProviderFemElementFluid1D(obj.ViewObject)
+    return obj
+
+
+def makeElementGeometry1D(sectiontype='Rectangular', width=10.0, height=25.0, name="ElementGeometry1D"):
+    '''makeElementGeometry1D([width], [height], [name]): creates an 1D geometry element object to define a cross section'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    import PyObjects._FemElementGeometry1D
+    PyObjects._FemElementGeometry1D._FemElementGeometry1D(obj)
+    sec_types = PyObjects._FemElementGeometry1D._FemElementGeometry1D.known_beam_types
+    if sectiontype not in sec_types:
+        FreeCAD.Console.PrintError("Section type is not known. Set to " + sec_types[0] + " \n")
+        obj.SectionType = sec_types[0]
+    else:
+        obj.SectionType = sectiontype
+    obj.RectWidth = width
+    obj.RectHeight = height
+    obj.CircDiameter = height
+    obj.PipeDiameter = height
+    obj.PipeThickness = width
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemElementGeometry1D
+        PyGui._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D(obj.ViewObject)
+    return obj
+
+
+def makeElementGeometry2D(thickness=20.0, name="ElementGeometry2D"):
+    '''makeElementGeometry2D([thickness], [name]): creates an 2D geometry element object to define a plate thickness'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    import PyObjects._FemElementGeometry2D
+    PyObjects._FemElementGeometry2D._FemElementGeometry2D(obj)
+    obj.Thickness = thickness
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemElementGeometry2D
+        PyGui._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D(obj.ViewObject)
+    return obj
+
+
 ########## material objects ##########
 def makeMaterialSolid(name="MechanicalSolidMaterial"):
     '''makeMaterialSolid(name): makes an FEM Material for solid'''
@@ -236,7 +282,6 @@ def makeResultMechanical(name="MechanicalResult"):
     return obj
 
 
-
 ########## solver objects ##########
 def makeSolverCalculix(name="CalculiX"):
     '''makeSolverCalculix(name): makes a Calculix solver object'''
@@ -257,53 +302,6 @@ def makeSolverZ88(name="Z88"):
     if FreeCAD.GuiUp:
         import PyGui._ViewProviderFemSolverZ88
         PyGui._ViewProviderFemSolverZ88._ViewProviderFemSolverZ88(obj.ViewObject)
-    return obj
-
-
-########## element geometry definition objects ##########
-# TODO object type not yet in object name, see forum topic http://forum.freecadweb.org/viewtopic.php?f=18&t=21029
-def makeBeamSection(sectiontype='Rectangular', width=10.0, height=25.0, name="BeamSection"):
-    '''makeBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''
-    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
-    import PyObjects._FemBeamSection
-    PyObjects._FemBeamSection._FemBeamSection(obj)
-    sec_types = PyObjects._FemBeamSection._FemBeamSection.known_beam_types
-    if sectiontype not in sec_types:
-        FreeCAD.Console.PrintError("Section type is not known. Set to " + sec_types[0] + " \n")
-        obj.SectionType = sec_types[0]
-    else:
-        obj.SectionType = sectiontype
-    obj.RectWidth = width
-    obj.RectHeight = height
-    obj.CircDiameter = height
-    obj.PipeDiameter = height
-    obj.PipeThickness = width
-    if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemBeamSection
-        PyGui._ViewProviderFemBeamSection._ViewProviderFemBeamSection(obj.ViewObject)
-    return obj
-
-
-def makeFemFluidSection(name="FluidSection"):
-    '''makeFemFluidSection([name]): creates an Fluid section object to define 1D flow'''
-    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
-    import PyObjects._FemFluidSection
-    PyObjects._FemFluidSection._FemFluidSection(obj)
-    if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemFluidSection
-        PyGui._ViewProviderFemFluidSection._ViewProviderFemFluidSection(obj.ViewObject)
-    return obj
-
-
-def makeShellThickness(thickness=20.0, name="ShellThickness"):
-    '''makeShellThickness([thickness], [name]): creates an shellthickness object to define a plate thickness'''
-    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
-    import PyObjects._FemShellThickness
-    PyObjects._FemShellThickness._FemShellThickness(obj)
-    obj.Thickness = thickness
-    if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemShellThickness
-        PyGui._ViewProviderFemShellThickness._ViewProviderFemShellThickness(obj.ViewObject)
     return obj
 
 

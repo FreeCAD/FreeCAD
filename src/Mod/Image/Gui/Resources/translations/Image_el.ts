@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Create a planar image in the 3D space</source>
-        <translation type="unfinished">Create a planar image in the 3D space</translation>
+        <translation>Δημιουργήστε μια επίπεδη εικόνα στο τρισδιάστατο χώρο</translation>
     </message>
     <message>
         <source>create a planar image in the 3D space</source>
@@ -38,20 +38,20 @@
     <message>
         <location line="+1"/>
         <source>Open image view</source>
-        <translation type="unfinished">Open image view</translation>
+        <translation>Άνοιγμα εικόνας προβολή</translation>
     </message>
 </context>
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+325"/>
+        <location filename="../../GLImageBox.cpp" line="+331"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>Μη ορισμός χρωματικού περιβάλλοντος για την προβολή της εικόνας</translation>
     </message>
     <message>
         <location line="-1"/>
         <source>Image pixel format</source>
-        <translation type="unfinished">Image pixel format</translation>
+        <translation>Μορφή pixel εικόνας</translation>
     </message>
 </context>
 <context>
@@ -107,12 +107,12 @@
     <message>
         <location line="+4"/>
         <source>&amp;1:1 scale</source>
-        <translation type="unfinished">&amp;1:1 scale</translation>
+        <translation>&amp; κλίμακας 1:1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Display the image at a 1:1 scale</source>
-        <translation type="unfinished">Display the image at a 1:1 scale</translation>
+        <translation>Εμφάνιση της εικόνας σε κλίμακα 1:1</translation>
     </message>
     <message>
         <source>&amp;Original color</source>
@@ -199,13 +199,21 @@
     </message>
     <message>
         <location line="+8"/>
-        <source>Error open image</source>
-        <translation>Σφάλμα ανοίγματος εικόνας</translation>
+        <source>Error opening image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Could not load the chosen image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error open image</source>
+        <translation type="obsolete">Σφάλμα ανοίγματος εικόνας</translation>
+    </message>
+    <message>
         <source>Could not load the choosen image</source>
-        <translation>Δεν ήταν δυνατή η φόρτωση της επιλεγμένης εικόνας</translation>
+        <translation type="obsolete">Δεν ήταν δυνατή η φόρτωση της επιλεγμένης εικόνας</translation>
     </message>
 </context>
 <context>

@@ -196,13 +196,18 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action)
 
     int num = (int)this->sl.size();
     if (num > 0) {
-        cindices = &(this->sl[0]);
-        numcindices = (int)this->sl.size();
-        if (!validIndexes(coords, this->sl)) {
-            SoDebugError::postWarning("SoBrepEdgeSet::renderSelection", "selectionIndex out of range");
+        if (this->sl[0] < 0) {
+            renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
         }
         else {
-            renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+            cindices = &(this->sl[0]);
+            numcindices = (int)this->sl.size();
+            if (!validIndexes(coords, this->sl)) {
+                SoDebugError::postWarning("SoBrepEdgeSet::renderSelection", "selectionIndex out of range");
+            }
+            else {
+                renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+            }
         }
     }
     state->pop();
@@ -275,25 +280,28 @@ void SoBrepEdgeSet::doAction(SoAction* action)
 
         this->selectionColor = selaction->getColor();
         if (selaction->getType() == Gui::SoSelectionElementAction::All) {
-            const int32_t* cindices = this->coordIndex.getValues(0);
-            int numcindices = this->coordIndex.getNum();
-            unsigned int num = std::count_if(cindices, cindices+numcindices, 
-                std::bind2nd(std::equal_to<int32_t>(), -1));
+            //const int32_t* cindices = this->coordIndex.getValues(0);
+            //int numcindices = this->coordIndex.getNum();
+            //unsigned int num = std::count_if(cindices, cindices+numcindices,
+            //    std::bind2nd(std::equal_to<int32_t>(), -1));
 
+            //this->sl.clear();
+            //this->selectionIndex.setNum(num);
+            //int32_t* v = this->selectionIndex.startEditing();
+            //for (unsigned int i=0; i<num;i++)
+            //    v[i] = i;
+            //this->selectionIndex.finishEditing();
+
+            //int numsegm = this->selectionIndex.getNum();
+            //if (numsegm > 0) {
+            //    const int32_t* selsegm = this->selectionIndex.getValues(0);
+            //    const int32_t* cindices = this->coordIndex.getValues(0);
+            //    int numcindices = this->coordIndex.getNum();
+            //    createIndexArray(selsegm, numsegm, cindices, numcindices, this->sl);
+            //}
+            this->selectionIndex.setValue(-1); // all
             this->sl.clear();
-            this->selectionIndex.setNum(num);
-            int32_t* v = this->selectionIndex.startEditing();
-            for (unsigned int i=0; i<num;i++)
-                v[i] = i;
-            this->selectionIndex.finishEditing();
-
-            int numsegm = this->selectionIndex.getNum();
-            if (numsegm > 0) {
-                const int32_t* selsegm = this->selectionIndex.getValues(0);
-                const int32_t* cindices = this->coordIndex.getValues(0);
-                int numcindices = this->coordIndex.getNum();
-                createIndexArray(selsegm, numsegm, cindices, numcindices, this->sl);
-            }
+            this->sl.push_back(-1);
             return;
         }
         else if (selaction->getType() == Gui::SoSelectionElementAction::None) {

@@ -26,7 +26,7 @@
     <message>
       <location filename="StartPage.py" line="57"/>
       <source>FreeCAD Homepage</source>
-      <translation>FreeCAD主页</translation>
+      <translation>FreeCAD 主页</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="58"/>
@@ -256,17 +256,17 @@
     <message>
       <location filename="StartPage.py" line="87"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
+      <translation>http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="105"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Tutorials</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Tutorials</translation>
+      <translation>http://www.freecadweb.org/wiki/index.php?title=Tutorials</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="106"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
+      <translation>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="74"/>
@@ -276,47 +276,52 @@
     <message>
       <location filename="StartPage.py" line="96"/>
       <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</translation>
+      <translation>FreeCAD 网站专门到 python 脚本，以例子，解释和 API 命令的部分。</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="100"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
+      <translation>http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="107"/>
       <source>Your version of FreeCAD is up to date.</source>
-      <translation type="unfinished">Your version of FreeCAD is up to date.</translation>
+      <translation>您的 FreeCAD 版本是最新的。</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="108"/>
       <source>There is a new release of FreeCAD available.</source>
-      <translation type="unfinished">There is a new release of FreeCAD available.</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="109"/>
-      <source>Load an FEM example analysis</source>
-      <translation type="unfinished">Load an FEM example analysis</translation>
+      <translation>有新版本的 FreeCAD可以使用。</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="54"/>
       <source>Latest commits</source>
-      <translation type="unfinished">Latest commits</translation>
+      <translation>最新提交</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="110"/>
       <source>Obtain a development version</source>
-      <translation type="unfinished">Obtain a development version</translation>
+      <translation>获取开发版本</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="111"/>
       <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation type="unfinished">&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</translation>
+      <translation>&lt;b&gt;开发中的版本&lt;/b&gt; 是由的社区成员不时和通常包含最新的更改，但更有可能包含 bug 提供。</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="112"/>
       <source>See all commits</source>
-      <translation type="unfinished">See all commits</translation>
+      <translation>查看所有提交</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM 3D example analysis</source>
+      <translation>加载3D有限元分析示例</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="113"/>
+      <source>Load an FEM 2D example analysis</source>
+      <translation>加载2D有限元分析示例</translation>
     </message>
   </context>
 </TS>

@@ -214,7 +214,7 @@
     <message>
         <location line="+1"/>
         <source>Insert preselection position into trajectory (W)</source>
-        <translation>プリセレクション位置を軌道に挿入 (W)</translation>
+        <translation>軌道 (W) に選択前位置を挿入</translation>
     </message>
 </context>
 <context>
@@ -379,7 +379,12 @@
         <translation>誤った選択</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -415,7 +420,7 @@
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>すべてのファイル</translation>
     </message>
     <message>
         <location line="-61"/>
@@ -431,7 +436,7 @@
     <message>
         <location filename="../../CommandTrajectory.cpp" line="+79"/>
         <source>No preselection</source>
-        <translation>プリセレクションがありません</translation>
+        <translation>事前選択がありません</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -439,12 +444,11 @@
         <translation>このコマンドを使用するにはマウスを使ってジオメトリ（事前選択）の上にカーソルを移動する必要があります。詳細についてはマニュアルを参照してください。</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>ホームポジションを設定するロボットを1台選択</translation>
+        <translation type="obsolete">ホームポジションを設定するロボットを1台選択</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>1台のロボットを選択する</translation>
     </message>

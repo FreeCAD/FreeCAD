@@ -379,7 +379,12 @@
         <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -439,12 +444,11 @@
         <translation type="unfinished">You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Başlangıç konumunu ayarlamak için bir robot seç</translation>
+        <translation type="obsolete">Başlangıç konumunu ayarlamak için bir robot seç</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Bir Robot seç</translation>
     </message>

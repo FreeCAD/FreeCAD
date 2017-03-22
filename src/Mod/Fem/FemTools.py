@@ -190,15 +190,15 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.pressure_constraints = []
         ## @var beam_sections
         # set of beam sections from the analysis. Updated with update_objects
-        # Individual beam sections are Proxy.Type "FemBeamSection"
+        # Individual beam sections are Proxy.Type "FemElementGeometry1D"
         self.beam_sections = []
         ## @var fluid_sections
         # set of fluid sections from the analysis. Updated with update_objects
-        # Individual fluid sections are Proxy.Type "FemFluidSection"
+        # Individual fluid sections are Proxy.Type "FemElementFluid1D"
         self.fluid_sections = []
         ## @var shell_thicknesses
         # set of shell thicknesses from the analysis. Updated with update_objects
-        # Individual shell thicknesses are Proxy.Type "FemShellThickness"
+        # Individual shell thicknesses are Proxy.Type "FemElementGeometry2D"
         self.shell_thicknesses = []
         ## @var displacement_constraints
         # set of displacements for the analysis. Updated with update_objects
@@ -302,15 +302,15 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 transform_constraint_dict = {}
                 transform_constraint_dict['Object'] = m
                 self.transform_constraints.append(transform_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemBeamSection":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementGeometry1D":
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
                 self.beam_sections.append(beam_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemFluidSection":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementFluid1D":
                 fluid_section_dict = {}
                 fluid_section_dict['Object'] = m
                 self.fluid_sections.append(fluid_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemShellThickness":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementGeometry2D":
                 shell_thickness_dict = {}
                 shell_thickness_dict['Object'] = m
                 self.shell_thicknesses.append(shell_thickness_dict)

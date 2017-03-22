@@ -91,6 +91,8 @@ public:
     //virtual void GLRenderInPath(SoGLRenderAction * action);
     //static  void turnOffCurrentHighlight(SoGLRenderAction * action);
 
+    bool checkSelectionStyle(int type, ViewProvider *vp);
+
     friend class View3DInventorViewer;
 protected:
     virtual ~SoFCUnifiedSelection();

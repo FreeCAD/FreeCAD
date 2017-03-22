@@ -24,12 +24,12 @@
     <message>
         <location filename="../../Workbench.cpp" line="+57"/>
         <source>Self-test...</source>
-        <translation>Self-test...</translation>
+        <translation>Bezpečnostný test...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Runs a self-test to check if the application works properly</source>
-        <translation>Spustí bezpečný test pre overenie, či aplikácia funguje správne</translation>
+        <translation>Spusť bezpečnostný test pre overenie, či aplikácia funguje správne</translation>
     </message>
 </context>
 <context>
@@ -57,21 +57,25 @@
     <message>
         <location line="+1"/>
         <source>Sketch based</source>
-        <translation>Náčrt založený</translation>
+        <translation>Základný náčrt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Primitives</source>
-        <translation>Základné</translation>
+        <translation>Základný</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Parametric</source>
         <translation type="obsolete">Parametrické</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Vzhľad objektu</translation>
+        <translation type="obsolete">Vzhľad objektu</translation>
     </message>
     <message>
         <location line="+1"/>

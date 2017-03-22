@@ -283,7 +283,7 @@ void ExtensionContainer::Save(Base::Writer& writer) const {
 
     //Note: save extensions must be called first to ensure that the extension element is always the 
     //      very first inside the object element. That is needed as extension eleent works together with 
-    //      an object attribute, and if annother element would be read first the object attributes would be
+    //      an object attribute, and if another element would be read first the object attributes would be
     //      cleared.
     saveExtensions(writer);
     App::PropertyContainer::Save(writer);
@@ -294,7 +294,7 @@ void ExtensionContainer::Restore(Base::XMLReader& reader) {
     //restore dynamic extensions. 
     //Note 1: The extension element must be read first, before all other object elements. That is 
     //        needed as the element works together with an object element attribute, which would be 
-    //        cleared if annother attribute is read first
+    //        cleared if another attribute is read first
     //Note 2: This must happen before the py object of this container is used, as only in the 
     //        pyobject constructor the extension methods are added to the container.
     restoreExtensions(reader);
@@ -349,7 +349,7 @@ void ExtensionContainer::saveExtensions(Base::Writer& writer) const {
 void ExtensionContainer::restoreExtensions(Base::XMLReader& reader) {
 
     //Dynamic extensions are optional (also because they are introduced late into the document format)
-    //and hence it is possible that the element does not exist. As we cannot check for the existance of 
+    //and hence it is possible that the element does not exist. As we cannot check for the existence of 
     //an element a object attribute is set if extensions are available. Here we check that 
     //attribute, and only if it exists the extensions element will be available.
     if(!reader.hasAttribute("Extensions"))

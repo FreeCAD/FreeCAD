@@ -390,7 +390,7 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
     Vector3 c, n1, n2, nxn;
 
     //if the lines are parallel we need to fall back to point-line distance
-    //to do this efficently we just hold a point-line distance equation and use it instead
+    //to do this efficiently we just hold a point-line distance equation and use it instead
     Distance::type<Kernel, tag::point3D, tag::line3D> pl_eqn;
 
 #ifdef USE_LOGGING
@@ -467,7 +467,7 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         Scalar diff = (-dline1.template head<3>().dot(nxn)+c.dot(nxn_diff))*nxn_n;
         diff -= c.dot(nxn)*nxn.dot(nxn_diff)/nxn_n;
 
-        //absoulute value requires diffrent differentation for diffrent results
+        //absoulute value requires different differentation for different results
         if(cdn <= 0)
             diff *= -1;
 
@@ -493,7 +493,7 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         Scalar diff = (dline2.template head<3>().dot(nxn)+c.dot(nxn_diff))*nxn_n;
         diff -= c.dot(nxn)*nxn.dot(nxn_diff)/nxn_n;
 
-        //absoulute value requires diffrent differentation for diffrent results
+        //absoulute value requires different differentation for different results
         if(cdn <= 0)
             diff *= -1;
 

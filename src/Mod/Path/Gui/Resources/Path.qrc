@@ -54,6 +54,7 @@
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgSelectPostProcessor.ui</file>
         <file>panels/DlgToolCopy.ui</file>
+        <file>panels/DlgTCChooser.ui</file>
         <file>panels/DogboneEdit.ui</file>
         <file>panels/DrillingEdit.ui</file>
         <file>panels/EngraveEdit.ui</file>
@@ -97,5 +98,10 @@
         <file>translations/Path_uk.qm</file>
         <file>translations/Path_zh-CN.qm</file>
         <file>translations/Path_zh-TW.qm</file>
+        <file>translations/Path_eu.qm</file>
+        <file>translations/Path_ca.qm</file>
+        <file>translations/Path_gl.qm</file>
+        <file>translations/Path_kab.qm</file>
+        <file>translations/Path_ko.qm</file>
     </qresource>
 </RCC>

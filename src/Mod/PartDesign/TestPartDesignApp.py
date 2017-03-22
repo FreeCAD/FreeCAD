@@ -21,7 +21,6 @@
 
 import FreeCAD, os, sys, unittest, Sketcher, PartDesign, TestSketcherApp
 App = FreeCAD
-
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Sketcher module
 #---------------------------------------------------------------------------
@@ -43,4 +42,47 @@ class PartDesignPadTestCases(unittest.TestCase):
 	def tearDown(self):
 		#closing doc
 		FreeCAD.closeDocument("PartDesignTest")
-		#print ("omit clos document for debuging")
+		# print ("omit clos document for debuging")
+
+class PartDesignRevolveTestCases(unittest.TestCase):
+	def setUp(self):
+		self.Doc = FreeCAD.newDocument("PartDesignTest")
+
+	def testRevolveFace(self):
+		self.Body = self.Doc.addObject('PartDesign::Body','Body')
+		self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+		self.Body.addObject(self.Box)
+		self.Box.Length=10.00
+		self.Box.Width=10.00
+		self.Box.Height=10.00
+		self.Doc.recompute()
+		self.Revolution = self.Doc.addObject("PartDesign::Revolution","Revolution")
+		self.Revolution.Profile = (self.Box, ["Face6"])
+	 	self.Revolution.ReferenceAxis = (self.Doc.Y_Axis,[""])
+		self.Revolution.Angle = 180.0
+		self.Revolution.Reversed = 1
+		self.Body.addObject(self.Revolution)
+		self.Doc.recompute()
+		self.failUnless(len(self.Revolution.Shape.Faces) == 10)
+		
+	def testGrooveFace(self):
+		self.Body = self.Doc.addObject('PartDesign::Body','Body')
+		self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+		self.Body.addObject(self.Box)
+		self.Box.Length=10.00
+		self.Box.Width=10.00
+		self.Box.Height=10.00
+		self.Doc.recompute()
+		self.Groove = self.Doc.addObject("PartDesign::Groove","Groove")
+		self.Groove.Profile = (self.Box, ["Face6"])
+	 	self.Groove.ReferenceAxis = (self.Doc.X_Axis,[""])
+		self.Groove.Angle = 180.0
+		self.Groove.Reversed = 1
+		self.Body.addObject(self.Groove)
+		self.Doc.recompute()
+		self.failUnless(len(self.Groove.Shape.Faces) == 5)
+		
+	def tearDown(self):
+		#closing doc
+		FreeCAD.closeDocument("PartDesignTest")
+		# print ("omit closing document for debugging")

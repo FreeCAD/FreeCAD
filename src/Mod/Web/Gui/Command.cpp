@@ -237,6 +237,35 @@ bool CmdWebBrowserZoomOut::isActive(void)
     return getGuiApplication()->sendHasMsgToActiveView("ZoomOut");
 }
 
+//===========================================================================
+// CmdWebSketchfab
+//===========================================================================
+
+DEF_STD_CMD_A(CmdWebSketchfab);
+
+CmdWebSketchfab::CmdWebSketchfab()
+  : Command("Web_Sketchfab")
+{
+    sAppModule      = "Web";
+    sGroup          = QT_TR_NOOP("Web");
+    sMenuText       = QT_TR_NOOP("Sketchfab");
+    sToolTipText    = QT_TR_NOOP("Uploads a model to your sketchfab account");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/web-sketchfab";
+}
+
+void CmdWebSketchfab::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"from Webscripts import Sketchfab");
+    doCommand(Command::Gui,"FreeCADGui.Control.showDialog(Sketchfab.SketchfabTaskPanel())");
+}
+
+bool CmdWebSketchfab::isActive(void)
+{
+    return hasActiveDocument();
+}
 
 void CreateWebCommands(void)
 {
@@ -249,4 +278,5 @@ void CreateWebCommands(void)
     rcCmdMgr.addCommand(new CmdWebBrowserStop());
     rcCmdMgr.addCommand(new CmdWebBrowserZoomIn());
     rcCmdMgr.addCommand(new CmdWebBrowserZoomOut());
+    rcCmdMgr.addCommand(new CmdWebSketchfab());
  }

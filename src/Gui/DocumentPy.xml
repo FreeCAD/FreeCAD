@@ -31,7 +31,7 @@
     <Methode Name="setEdit">
       <Documentation>
         <UserDocu>
-          setEdit([String:Name|ViewProvider|DocumentObjet]|,mod)
+          setEdit([String:Name|ViewProvider|DocumentObject]|,mod)
           Set the given object in edit mode.
         </UserDocu>
       </Documentation>

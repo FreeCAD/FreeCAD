@@ -65,13 +65,17 @@
         <translation>Początkowe</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Parametryczny</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Wygląd obiektu</translation>
+        <translation type="obsolete">Wygląd obiektu</translation>
     </message>
     <message>
         <location line="+1"/>

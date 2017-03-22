@@ -11,7 +11,7 @@
     <message>
         <location line="+1"/>
         <source>Constraint Axle...</source>
-        <translation>Axul de restricție...
+        <translation>Axa de restricție...
 </translation>
     </message>
     <message>
@@ -66,13 +66,17 @@
         <translation>Primitive</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Parametric</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Aparenţa obiectului</translation>
+        <translation type="obsolete">Aparenţa obiectului</translation>
     </message>
     <message>
         <location line="+1"/>

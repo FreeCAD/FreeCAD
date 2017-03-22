@@ -337,14 +337,14 @@ class AlignmentView : public Gui::AbstractSplitView
 public:
     QLabel* myLabel;
 
-    AlignmentView(Gui::Document* pcDocument, QWidget* parent, QGLWidget* shareWidget=0, Qt::WindowFlags wflags=0)
+    AlignmentView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=0)
         : AbstractSplitView(pcDocument, parent, wflags)
     {
         QSplitter* mainSplitter=0;
         mainSplitter = new QSplitter(Qt::Horizontal, this);
-        _viewer.push_back(new View3DInventorViewer(mainSplitter, shareWidget));
+        _viewer.push_back(new View3DInventorViewer(mainSplitter));
         _viewer.back()->setDocument(pcDocument);
-        _viewer.push_back(new View3DInventorViewer(mainSplitter, shareWidget));
+        _viewer.push_back(new View3DInventorViewer(mainSplitter));
         _viewer.back()->setDocument(pcDocument);
 
         QFrame* vbox = new QFrame(this);
@@ -759,15 +759,8 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     if (myAlignModel.isEmpty())
         return;
 
-    QGLWidget* shareWidget = 0;
-    std::list<MDIView*> theViews = myDocument->getMDIViewsOfType(View3DInventor::getClassTypeId());
-    if (!theViews.empty()) {
-        shareWidget = qobject_cast<QGLWidget*>(static_cast<View3DInventor*>
-            (theViews.front())->getViewer()->getGLWidget());
-    }
-
     // create a splitted window for picking the points
-    myViewer = new AlignmentView(myDocument,Gui::getMainWindow(),shareWidget);
+    myViewer = new AlignmentView(myDocument,Gui::getMainWindow());
     myViewer->setWindowTitle(tr("Alignment[*]"));
     myViewer->setWindowIcon(QApplication::windowIcon());
     myViewer->resize(400, 300);

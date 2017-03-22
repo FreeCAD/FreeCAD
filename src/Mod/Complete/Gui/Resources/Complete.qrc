@@ -27,5 +27,10 @@
         <file>translations/Complete_sr.qm</file>
         <file>translations/Complete_el.qm</file>
         <file>translations/Complete_sl.qm</file>
+        <file>translations/Complete_eu.qm</file>
+        <file>translations/Complete_ca.qm</file>
+        <file>translations/Complete_gl.qm</file>
+        <file>translations/Complete_kab.qm</file>
+        <file>translations/Complete_ko.qm</file>
     </qresource>
 </RCC>

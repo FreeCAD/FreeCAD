@@ -208,7 +208,7 @@ void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
 }
 
 /**
- * @brief Update graph stucture with given path and expression.
+ * @brief Update graph structure with given path and expression.
  * @param path Path
  * @param expression Expression to query for dependencies
  * @param nodes Map with nodes of graph

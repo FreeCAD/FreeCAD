@@ -28,9 +28,9 @@
 
 #include <Base/Parameter.h>
 #include <QImage>
+#include <QtOpenGL.h>
 
 class SoNode;
-class QGLWidget;
 class QPrinter;
 class QStackedWidget;
 
@@ -68,7 +68,7 @@ class GuiExport View3DInventor : public MDIView, public ParameterGrp::ObserverTy
     TYPESYSTEM_HEADER();
 
 public:
-    View3DInventor(Gui::Document* pcDocument, QWidget* parent, const QGLWidget* sharewidget = 0, Qt::WindowFlags wflags=0);
+    View3DInventor(Gui::Document* pcDocument, QWidget* parent, const QtGLWidget* sharewidget = 0, Qt::WindowFlags wflags=0);
     ~View3DInventor();
 
     /// Message handler

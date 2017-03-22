@@ -350,6 +350,16 @@ protected:
 };
 
 /**
+ * Change a floating point number with many decimal points (hard coded as 16)
+ */
+class GuiExport PropertyPrecisionItem: public PropertyFloatConstraintItem
+{
+    PROPERTYITEM_HEADER
+protected:
+    PropertyPrecisionItem();
+};
+
+/**
  * Change a floating point number.
  * \author Werner Mayer
  */

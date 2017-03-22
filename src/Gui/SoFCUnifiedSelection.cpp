@@ -25,7 +25,6 @@
 #ifndef _PreComp_
 # include <qstatusbar.h>
 # include <qstring.h>
-# include <QGLWidget>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
 #endif
@@ -65,6 +64,8 @@
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/SoPickedPoint.h>
 
+#include <QtOpenGL.h>
+
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -79,6 +80,7 @@
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelectionAction.h"
 #include "ViewProviderDocumentObject.h"
+#include "ViewProviderGeometryObject.h"
 
 using namespace Gui;
 
@@ -281,10 +283,12 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                         type = SoSelectionElementAction::None;
                 }
 
-                SoSelectionElementAction action(type);
-                action.setColor(this->colorSelection.getValue());
-                action.setElement(detail);
-                action.apply(vp->getRoot());
+                if(checkSelectionStyle(type,vp)) {
+                    SoSelectionElementAction action(type);
+                    action.setColor(this->colorSelection.getValue());
+                    action.setElement(detail);
+                    action.apply(vp->getRoot());
+                }
                 delete detail;
             }
         }
@@ -296,13 +300,13 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             for (std::vector<ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
                 ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(*it);
                 if (vpd->useNewSelectionModel()) {
-                    if (Selection().isSelected(vpd->getObject()) && vpd->isSelectable()) {
-                        SoSelectionElementAction action(SoSelectionElementAction::All);
-                        action.setColor(this->colorSelection.getValue());
-                        action.apply(vpd->getRoot());
-                    }
-                    else {
-                        SoSelectionElementAction action(SoSelectionElementAction::None);
+                    SoSelectionElementAction::Type type;
+                    if(Selection().isSelected(vpd->getObject()) && vpd->isSelectable())
+                        type = SoSelectionElementAction::All;
+                    else
+                        type = SoSelectionElementAction::None;
+                    if(checkSelectionStyle(type,vpd)) {
+                        SoSelectionElementAction action(type);
                         action.setColor(this->colorSelection.getValue());
                         action.apply(vpd->getRoot());
                     }
@@ -366,7 +370,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
 
                 this->preSelection = 1;
                 static char buf[513];
-                snprintf(buf,512,"Preselected: %s.%s.%s (%f,%f,%f)",documentName.c_str()
+                snprintf(buf,512,"Preselected: %s.%s.%s (%g, %g, %g)",documentName.c_str()
                                            ,objectName.c_str()
                                            ,subElementName.c_str()
                                            ,pp->getPoint()[0]
@@ -468,7 +472,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                         if (ok)
                             type = SoSelectionElementAction::Append;
                         if (mymode == OFF) {
-                            snprintf(buf,512,"Selected: %s.%s.%s (%f,%f,%f)",documentName.c_str()
+                            snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",documentName.c_str()
                                                        ,objectName.c_str()
                                                        ,subElementName.c_str()
                                                        ,pp->getPoint()[0]
@@ -506,7 +510,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                     }
 
                     if (mymode == OFF) {
-                        snprintf(buf,512,"Selected: %s.%s.%s (%f,%f,%f)",documentName.c_str()
+                        snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",documentName.c_str()
                                                    ,objectName.c_str()
                                                    ,subElementName.c_str()
                                                    ,pp->getPoint()[0]
@@ -518,7 +522,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                 }
 
                 action->setHandled(); 
-                if (currenthighlight) {
+                if (currenthighlight && checkSelectionStyle(type,vpd)) {
                     SoSelectionElementAction action(type);
                     action.setColor(this->colorSelection.getValue());
                     action.setElement(pp ? pp->getDetail() : 0);
@@ -532,6 +536,19 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
     inherited::handleEvent(action);
 }
 
+bool SoFCUnifiedSelection::checkSelectionStyle(int type, ViewProvider *vp) {
+    if((type == SoSelectionElementAction::All ||
+        type == SoSelectionElementAction::None) &&
+        vp->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId()) &&
+        static_cast<ViewProviderGeometryObject*>(vp)->SelectionStyle.getValue()==1)
+    {
+        bool selected = type==SoSelectionElementAction::All;
+        static_cast<ViewProviderGeometryObject*>(vp)->showBoundingBox(selected);
+        if(selected) return false;
+    }
+    return true;
+}
+
 void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
 {
     inherited::GLRenderBelowPath(action);
@@ -541,7 +558,7 @@ void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
         // this is called when a selection gate forbade to select an object
         // and the user moved the mouse to an empty area
         this->preSelection = -1;
-        QGLWidget* window;
+        QtGLWidget* window;
         SoState *state = action->getState();
         SoGLWidgetElement::get(state, window);
         QWidget* parent = window ? window->parentWidget() : 0;

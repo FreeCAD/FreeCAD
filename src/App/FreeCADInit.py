@@ -33,10 +33,25 @@
 # imports the one and only
 import FreeCAD
 
+def removeFromPath(module_name):
+	"""removes the module from the sys.path. The entry point for imports
+		will therfor always be FreeCAD.
+		eg.: from FreeCAD.Module.submodule import function"""
+	import sys, os
+	paths = sys.path
+	for path in paths:
+		if module_name in path:
+			sys.path.remove(path)
+			return
+	else:
+		Wrn(module_name + " not found in sys.path\n")
+
+FreeCAD._importFromFreeCAD = removeFromPath
+
 
 def InitApplications():
 	try:
-		import sys,os,traceback,cStringIO
+		import sys,os,traceback,io
 	except ImportError:
 		FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
 		raise
@@ -86,9 +101,23 @@ def InitApplications():
 	# add also this path so that all modules search for libraries
 	# they depend on first here
 	PathExtension = BinDir + os.pathsep
+
 	# prepend all module paths to Python search path
 	Log('Init:   Searching for modules...\n')
-	FreeCAD.__path__ = ModDict.values()
+
+
+	# to have all the module-paths available in FreeCADGuiInit.py:
+	FreeCAD.__ModDirs__ = list(ModDict.values())
+
+	# this allows importing with:
+	# from FreeCAD.Module import package
+	FreeCAD.__path__ = [ModDir, Lib64Dir, LibDir, HomeMod]
+
+	# also add these directories to the sys.path to 
+	# not change the old behaviour. once we have moved to 
+	# proper python modules this can eventuelly be removed.
+	sys.path = [ModDir, Lib64Dir, LibDir] + sys.path
+
 	for Dir in ModDict.values():
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
 			sys.path.insert(0,Dir)
@@ -96,23 +125,22 @@ def InitApplications():
 			InstallFile = os.path.join(Dir,"Init.py")
 			if (os.path.exists(InstallFile)):
 				try:
-					#execfile(InstallFile)
-					exec open(InstallFile).read()
-				except Exception, inst:
+					# XXX: This looks scary securitywise...
+
+					with open(InstallFile) as f:
+						exec(f.read())
+				except Exception as inst:
 					Log('Init:      Initializing ' + Dir + '... failed\n')
 					Log('-'*100+'\n')
-					output=cStringIO.StringIO()
-					traceback.print_exc(file=output)
-					Log(output.getvalue())
+					Log(traceback.format_exc())
 					Log('-'*100+'\n')
-					Err('During initialization the error ' + str(inst).decode('ascii','replace') + ' occurred in ' + InstallFile + '\n')
+					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
+					Err('Please look into the log file for further information')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:
 				Log('Init:      Initializing ' + Dir + '(Init.py not found)... ignore\n')
-	sys.path.insert(0,LibDir)
-	sys.path.insert(0,Lib64Dir)
-	sys.path.insert(0,ModDir)
+
 	Log("Using "+ModDir+" as module path!\n")
 	# new paths must be prepended to avoid to load a wrong version of a library
 	try:
@@ -265,7 +293,3 @@ del(InitApplications)
 del(test_ascii)
 
 Log ('Init: App::FreeCADInit.py done\n')
-
-
-
-

@@ -262,7 +262,7 @@
         <location line="-51"/>
         <location line="+51"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>すべてのファイル</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -272,7 +272,7 @@
     <message>
         <location line="+1"/>
         <source>Enter maximum distance:</source>
-        <translation type="unfinished">Enter maximum distance:</translation>
+        <translation>最大距離を入力:</translation>
     </message>
 </context>
 <context>

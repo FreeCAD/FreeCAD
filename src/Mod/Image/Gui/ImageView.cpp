@@ -28,7 +28,6 @@
 #endif
 
 #include "ImageView.h"
-#include "GLImageBox.h"
 #include "../App/ImageBase.h"
 #include "XpmImages.h"
 
@@ -65,7 +64,11 @@ ImageView::ImageView(QWidget* parent)
     // Since Qt the class QGLWidget is marked as deprecated and should be
     // replaced by QOpenGLWidget.
 
+#if defined(HAVE_QT5_OPENGL)
+  _pGLImageBox = new GLImageBox(this);
+#else
   _pGLImageBox = new GLImageBox(parent);
+#endif // HAVE_QT5_OPENGL
 #else
   _pGLImageBox = new GLImageBox(this);
 #endif

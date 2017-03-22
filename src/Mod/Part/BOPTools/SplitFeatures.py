@@ -99,12 +99,6 @@ class ViewProviderBooleanFragments:
         self.ViewObject = vobj
         self.Object = vobj.Object
 
-    def setEdit(self,vobj,mode):
-        return False
-
-    def unsetEdit(self,vobj,mode):
-        return
-
     def __getstate__(self):
         return None
 
@@ -121,6 +115,21 @@ class ViewProviderBooleanFragments:
         except Exception as err:
             FreeCAD.Console.PrintError("Error in onDelete: " + str(err))
         return True
+
+    def canDragObjects(self):
+        return True
+    def canDropObjects(self):
+        return True
+    def canDragObject(self, dragged_object):
+        return True
+    def canDropObject(self, incoming_object):
+        return hasattr(incoming_object, 'Shape')
+    def dragObject(self, selfvp, dragged_object):
+        objs = self.Object.Objects
+        objs.remove(dragged_object)
+        self.Object.Objects = objs
+    def dropObject(self, selfvp, incoming_object):
+        self.Object.Objects = self.Object.Objects + [incoming_object]
 
 def cmdCreateBooleanFragmentsFeature(name, mode):
     """cmdCreateBooleanFragmentsFeature(name, mode): implementation of GUI command to create
@@ -224,13 +233,6 @@ class ViewProviderSlice:
     def attach(self, vobj):
         self.ViewObject = vobj
         self.Object = vobj.Object
-
-
-    def setEdit(self,vobj,mode):
-        return False
-
-    def unsetEdit(self,vobj,mode):
-        return
 
     def __getstate__(self):
         return None
@@ -353,13 +355,6 @@ class ViewProviderXOR:
         self.ViewObject = vobj
         self.Object = vobj.Object
 
-
-    def setEdit(self,vobj,mode):
-        return False
-
-    def unsetEdit(self,vobj,mode):
-        return
-
     def __getstate__(self):
         return None
 
@@ -376,6 +371,21 @@ class ViewProviderXOR:
         except Exception as err:
             FreeCAD.Console.PrintError("Error in onDelete: " + str(err))
         return True
+
+    def canDragObjects(self):
+        return True
+    def canDropObjects(self):
+        return True
+    def canDragObject(self, dragged_object):
+        return True
+    def canDropObject(self, incoming_object):
+        return hasattr(incoming_object, 'Shape')
+    def dragObject(self, selfvp, dragged_object):
+        objs = self.Object.Objects
+        objs.remove(dragged_object)
+        self.Object.Objects = objs
+    def dropObject(self, selfvp, incoming_object):
+        self.Object.Objects = self.Object.Objects + [incoming_object]
 
 def cmdCreateXORFeature(name):
     """cmdCreateXORFeature(name): implementation of GUI command to create

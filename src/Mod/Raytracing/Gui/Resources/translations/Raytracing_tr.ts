@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Export a Raytracing project to a file</source>
-        <translation type="unfinished">Export a Raytracing project to a file</translation>
+        <translation>Raytracing proje verme</translation>
     </message>
     <message>
         <source>Export the Povray project file</source>
@@ -48,7 +48,7 @@
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">No template available</translation>
+        <translation>Mevcut şablon yok</translation>
     </message>
 </context>
 <context>
@@ -106,7 +106,7 @@
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">No template available</translation>
+        <translation>Mevcut şablon yok</translation>
     </message>
 </context>
 <context>
@@ -159,8 +159,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation type="unfinished">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
+        <translation type="obsolete">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>

@@ -4,7 +4,7 @@
 <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+476"/>
+        <location filename="../../Command.cpp" line="+474"/>
         <source>Drawing</source>
         <translation>Desenho de folhas (layout)</translation>
     </message>
@@ -94,7 +94,7 @@
 <context>
     <name>CmdDrawingNewPage</name>
     <message>
-        <location line="-181"/>
+        <location line="-179"/>
         <source>Drawing</source>
         <translation>Desenho de folhas (layout)</translation>
     </message>
@@ -108,7 +108,7 @@
 <context>
     <name>CmdDrawingNewView</name>
     <message>
-        <location line="+216"/>
+        <location line="+214"/>
         <source>Drawing</source>
         <translation>Desenho de folhas (layout)</translation>
     </message>
@@ -126,7 +126,7 @@
 <context>
     <name>CmdDrawingOpen</name>
     <message>
-        <location line="-252"/>
+        <location line="-250"/>
         <source>Drawing</source>
         <translation>Desenho de folhas (layout)</translation>
     </message>
@@ -144,7 +144,7 @@
 <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-        <location line="+377"/>
+        <location line="+375"/>
         <source>Drawing</source>
         <translation>Desenho de folhas (layout)</translation>
     </message>
@@ -770,8 +770,8 @@ Do you want to continue?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location line="-171"/>
-        <location line="+519"/>
+        <location line="-169"/>
+        <location line="+517"/>
         <source>Choose an SVG file to open</source>
         <translation>Escolha um ficheiro SVG para abrir</translation>
     </message>
@@ -810,8 +810,8 @@ Do you want to continue?</source>
         <translation type="obsolete">Cria uma página para inserir as visualizações.</translation>
     </message>
     <message>
-        <location line="-251"/>
-        <location line="+519"/>
+        <location line="-249"/>
+        <location line="+517"/>
         <location line="+53"/>
         <source>Scalable Vector Graphic</source>
         <translation>Gráficos vetoriais escaláveis (Svg)</translation>

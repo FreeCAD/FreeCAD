@@ -40,7 +40,7 @@
 #include <QtGui/QColor>
 #include <QGraphicsView>
 #include <QtCore/QUrl>
-#include <QtOpenGL/QGLWidget>
+#include <QtOpenGL.h>
 #include "Gui/Quarter/Basic.h"
 
 class QMenu;
@@ -81,9 +81,9 @@ class QUARTER_DLL_API QuarterWidget : public QGraphicsView {
 
 
 public:
-  explicit QuarterWidget(QWidget * parent = 0, const QGLWidget * sharewidget = 0, Qt::WindowFlags f = 0);
-  explicit QuarterWidget(QGLContext * context, QWidget * parent = 0, const QGLWidget * sharewidget = 0, Qt::WindowFlags f = 0);
-  explicit QuarterWidget(const QGLFormat & format, QWidget * parent = 0, const QGLWidget * shareWidget = 0, Qt::WindowFlags f = 0);
+  explicit QuarterWidget(QWidget * parent = 0, const QtGLWidget * sharewidget = 0, Qt::WindowFlags f = 0);
+  explicit QuarterWidget(QtGLContext * context, QWidget * parent = 0, const QtGLWidget * sharewidget = 0, Qt::WindowFlags f = 0);
+  explicit QuarterWidget(const QtGLFormat & format, QWidget * parent = 0, const QtGLWidget * shareWidget = 0, Qt::WindowFlags f = 0);
   virtual ~QuarterWidget();
 
   enum TransparencyType {
@@ -199,7 +199,7 @@ protected:
   double renderTime;
 
 private:
-  void constructor(const QGLFormat& format, const QGLWidget* sharewidget);
+  void constructor(const QtGLFormat& format, const QtGLWidget* sharewidget);
   friend class QuarterWidgetP;
   class QuarterWidgetP * pimpl;
   bool initialized;  

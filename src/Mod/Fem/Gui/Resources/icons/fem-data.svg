@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="64" height="64" id="svg2" version="1.1" inkscape:version="0.48.5 r10040" sodipodi:docname="New document 1">
+  <defs id="defs4"/>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="11.2" inkscape:cx="37.69975" inkscape:cy="32.557457" inkscape:document-units="px" inkscape:current-layer="layer1" showgrid="true" inkscape:snap-bbox="true" inkscape:snap-nodes="true" inkscape:window-width="1600" inkscape:window-height="837" inkscape:window-x="0" inkscape:window-y="27" inkscape:window-maximized="1">
+    <inkscape:grid type="xygrid" id="grid2985" empspacing="2" visible="true" enabled="true" snapvisiblegridlinesonly="true" color="#ff0000" opacity="0.1254902" empcolor="#ff0000" empopacity="0.25098039" spacingx="8px" spacingy="8px"/>
+    <inkscape:grid type="xygrid" id="grid2987" empspacing="2" visible="true" enabled="true" snapvisiblegridlinesonly="true"/>
+  </sodipodi:namedview>
+  <metadata id="metadata7">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Alexander Gryson]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>fem-data</dc:title>
+        <dc:date>2017-03-11</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1" transform="translate(0,-988.36218)">
+    <rect style="fill:#8ae234;fill-opacity:1;stroke:none;stroke-width:1.99999988000000006;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.59999999999999964" id="rect3953" width="48" height="46.999996" x="8" y="997.36218"/>
+    <g id="g3784" transform="matrix(0.96424011,0,0,0.96551654,0.21711293,35.185622)" style="stroke-width:4">
+      <path sodipodi:nodetypes="cc" inkscape:connector-curvature="0" id="path2989" d="m 8.0715239,991.36216 0,58.00004" style="fill:none;stroke:#172a04;stroke-width:4.14560127;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"/>
+      <path sodipodi:nodetypes="cc" inkscape:connector-curvature="0" id="path2989-3" d="m 32.96159,991.36216 0,58.00004" style="fill:none;stroke:#172a04;stroke-width:4.14560127;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"/>
+      <path sodipodi:nodetypes="cc" inkscape:connector-curvature="0" id="path2989-6" d="m 58,991.36216 -0.148344,58.00004" style="fill:none;stroke:#172a04;stroke-width:4.14560127;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"/>
+    </g>
+    <path style="fill:none;stroke:#172a04;stroke-width:3.99999976;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" d="m 4,1044.3622 56,0" id="path2989-5" inkscape:connector-curvature="0" sodipodi:nodetypes="cc"/>
+    <path style="fill:none;stroke:#172a04;stroke-width:3.99999976;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" d="m 4,1020.3622 56,0" id="path2989-3-3" inkscape:connector-curvature="0" sodipodi:nodetypes="cc"/>
+    <path style="fill:none;stroke:#172a04;stroke-width:3.99999976;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" d="m 4,996.36218 56,0" id="path2989-6-5" inkscape:connector-curvature="0" sodipodi:nodetypes="cc"/>
+    <rect style="fill:#73d216;fill-opacity:1;stroke:#8ae234;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.59999999999999964" id="rect3880" width="18" height="18" x="11" y="11" transform="translate(0,988.36218)"/>
+    <rect style="fill:#73d216;fill-opacity:1;stroke:#4e9a06;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.59999999999999964" id="rect3893" width="2" height="2" x="13" y="25" transform="translate(0,988.36218)"/>
+    <rect style="fill:#73d216;fill-opacity:1;stroke:#8ae234;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.6" id="rect3880-1" width="18" height="18" x="35" y="999.36218"/>
+    <rect style="fill:#73d216;fill-opacity:1;stroke:#4e9a06;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.6" id="rect3893-2" width="2" height="2" x="37" y="1013.3622"/>
+    <rect style="fill:#73d216;fill-opacity:1;stroke:#8ae234;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.6" id="rect3880-7" width="18" height="18" x="35" y="1023.3622"/>
+    <rect style="fill:#73d216;fill-opacity:1;stroke:#4e9a06;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.6" id="rect3893-0" width="2" height="2" x="37" y="1037.3622"/>
+    <rect style="fill:#73d216;fill-opacity:1;stroke:#8ae234;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.6" id="rect3880-9" width="18" height="18" x="11" y="1023.3622"/>
+    <rect style="fill:#73d216;fill-opacity:1;stroke:#4e9a06;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.6" id="rect3893-3" width="2" height="2" x="13" y="1037.3622"/>
+  </g>
+</svg>
