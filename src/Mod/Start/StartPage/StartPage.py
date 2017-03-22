@@ -27,7 +27,7 @@ import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
 from PySide import QtGui
 from xml.etree.ElementTree import parse
 
-from TranslationTexts import (text01, text02, text03, text04, text05, text06,
+from .TranslationTexts import (text01, text02, text03, text04, text05, text06,
                               text07, text08, text09, text10, text11, text12,
                               text13, text14, text15, text16, text17, text18,
                               text19, text20, text21, text22, text23, text24,
@@ -59,13 +59,13 @@ html_filename = os.path.join(resources_dir, "StartPage.html")
 js_filename = os.path.join(resources_dir, "StartPage.js")
 css_filename = os.path.join(resources_dir, "StartPage.css")
 
-with open(html_filename, 'r') as f:
+with open(html_filename, 'rb') as f:
     startpage_html = f.read()
 
-with open(js_filename, 'r') as f:
+with open(js_filename, 'rb') as f:
     startpage_js = f.read()
 
-with open(css_filename, 'r') as f:
+with open(css_filename, 'rb') as f:
     startpage_css = f.read()
 
 def getInfo(filename):
