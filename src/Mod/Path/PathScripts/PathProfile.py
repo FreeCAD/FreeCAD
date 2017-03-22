@@ -284,7 +284,7 @@ print "y - " + str(point.y)
             if hasattr(baseobject, "Proxy"):
                 if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
                     if obj.processPerimeter:
-                        shapes = baseobject.Proxy.getOutlines(baseobject, transform=False)
+                        shapes = baseobject.Proxy.getOutlines(baseobject, transform=True)
                         for shape in shapes:
                             for wire in shape.Wires:
                                 edgelist = wire.Edges
@@ -295,7 +295,7 @@ print "y - " + str(point.y)
                             except:
                                 FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
-                    shapes = baseobject.Proxy.getHoles(baseobject, transform=False)
+                    shapes = baseobject.Proxy.getHoles(baseobject, transform=True)
                     for shape in shapes:
                         for wire in shape.Wires:
                             drillable = PathUtils.isDrillable(baseobject.Proxy, wire)

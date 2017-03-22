@@ -949,7 +949,10 @@ class PanelSheet(Draft._DraftObject):
                             w.Placement = obj.Placement.multiply(w.Placement)
                         outp.append(w)
         if self.sheettag is not None:
-            outp.append(self.sheettag)
+            w = self.sheettag.copy()
+            if transform:
+                w.Placement = obj.Placement.multiply(w.Placement)
+            outp.append(w)
 
         return outp
 

@@ -131,7 +131,8 @@ class ObjectPathEngrave:
                     output += self.buildpathocc(obj, wires)
 
             elif isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
-                shapes = baseobject.Proxy.getTags(baseobject)
+
+                shapes = baseobject.Proxy.getTags(baseobject, transform=True)
                 for shape in shapes:
                     output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
                     for w in shape.Wires:
