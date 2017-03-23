@@ -23,6 +23,14 @@
 
 #ifndef _PreComp_
 #endif
+
+#include <boost/version.hpp>
+#include <boost/config.hpp>
+#if defined(BOOST_MSVC) && (BOOST_VERSION == 105500)
+// for fixing issue https://svn.boost.org/trac/boost/ticket/9332
+#   include "boost_fix/intrusive/detail/memory_util.hpp"
+#   include "boost_fix/container/detail/memory_util.hpp"
+#endif
 #include <boost/geometry.hpp>
 #include <boost/geometry/index/rtree.hpp>
 #include <boost/geometry/geometries/geometries.hpp>
