@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #endif
 #include <boost/geometry.hpp>
+#include <boost/geometry/index/rtree.hpp>
 #include <boost/geometry/geometries/geometries.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
 #include <boost/range/adaptor/indexed.hpp>
