@@ -379,7 +379,12 @@
         <translation>Fel val</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -439,12 +444,11 @@
         <translation>Du måste sväva ovanför en geometri (Förval) med musen för att använda detta kommando. Se dokumentationen för detaljer.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Välj en robot för att ställa in hempositionen</translation>
+        <translation type="obsolete">Välj en robot för att ställa in hempositionen</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Välj en Robot</translation>
     </message>

@@ -65,13 +65,17 @@
         <translation>基础图元</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">参数化</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>对象外观</translation>
+        <translation type="obsolete">对象外观</translation>
     </message>
     <message>
         <location line="+1"/>

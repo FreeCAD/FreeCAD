@@ -36,7 +36,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="110"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Ko je ta možnost izbrana bo objekt iz množenih matrik bil parametričen</translation>
+      <translation>Ko je ta možnost izbrana, bo objekt iz množenih matrik parametričen</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="113"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>Največje število ploskev mnogokotnika, prizme ali prisekanega telesa. V kolikor je fn večji od te vrednosti se objekt smatra kot zaokrožen. Izberi 0 za neomejeno</translation>
+      <translation>Največje število ploskev mnogokotnika, prizme ali prisekanega telesa. V kolikor je fn večji od te vrednosti, se objekt smatra kot zaokrožen. Izberite 0 za neomejeno</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="133"/>
@@ -142,12 +142,12 @@
       <translation>Izberi najprej 3 objekte</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Unsupported Function</source>
       <translation>Nepodprta funkcija</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Press OK</source>
       <translation>Pritisnite V redu</translation>
     </message>
@@ -169,7 +169,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="267"/>
       <source>Add OpenSCAD Element</source>
-      <translation>Dodaj OpenSCAD element</translation>
+      <translation>Dodaj element OpenSCAD</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="340"/>
@@ -197,12 +197,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="382"/>
       <source>Add OpenSCAD Element...</source>
-      <translation>Dodaj OpenSCAD element...</translation>
+      <translation>Dodaj element OpenSCAD …</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="384"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>Dodaj OpenSCAD element z vnosom OpenSCAD kode in zagonom programa OpenSCAD</translation>
+      <translation>Dodaj element OpenSCAD z vnosom kode OpenSCAD in zagonom OpenSCAD programa</translation>
     </message>
   </context>
   <context>

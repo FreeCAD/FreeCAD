@@ -46,7 +46,7 @@ namespace fusion = boost::fusion;
 namespace dcm {
 
 struct No_Identifier {}; //struct to show that no identifier shall be used
-struct Unspecified_Identifier {}; //struct to show that it dosen't matter which identifier type is used
+struct Unspecified_Identifier {}; //struct to show that it doesn't matter which identifier type is used
 struct solved {}; //signal emitted when solving is done
 
 namespace details {
@@ -267,7 +267,7 @@ public:
     typename boost::disable_if< boost::is_same< typename mpl::find<typename Kernel::PropertySequence, Option>::type,
     typename mpl::end<typename Kernel::PropertySequence>::type >, void >::type setOption(typename Option::type value);
     
-    //convinience function
+    //convenience function
     template<typename Option>
     typename Option::type& option();
     

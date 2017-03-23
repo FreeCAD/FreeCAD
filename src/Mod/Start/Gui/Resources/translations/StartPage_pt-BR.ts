@@ -294,11 +294,6 @@
       <translation>Há uma nova versão do FreeCAD disponível.</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="109"/>
-      <source>Load an FEM example analysis</source>
-      <translation>Carregar um exemplo de análise FEM</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="54"/>
       <source>Latest commits</source>
       <translation>Últimos commits</translation>
@@ -317,6 +312,16 @@
       <location filename="StartPage.py" line="112"/>
       <source>See all commits</source>
       <translation>Ver todos os commits</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM 3D example analysis</source>
+      <translation>Abrir um exemplo de uma análise FEM 3D</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="113"/>
+      <source>Load an FEM 2D example analysis</source>
+      <translation>Abrir um exemplo de uma análise FEM 2D</translation>
     </message>
   </context>
 </TS>

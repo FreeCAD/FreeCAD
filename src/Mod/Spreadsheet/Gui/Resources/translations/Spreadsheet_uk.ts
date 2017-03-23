@@ -159,11 +159,11 @@
     </message>
     <message>
         <source>Set alias</source>
-        <translation type="unfinished">Set alias</translation>
+        <translation>Встановити псевдонім</translation>
     </message>
     <message>
         <source>Set alias for selected cell</source>
-        <translation type="unfinished">Set alias for selected cell</translation>
+        <translation>Встановити псевдонім для обраної комірки</translation>
     </message>
 </context>
 <context>

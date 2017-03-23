@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+325"/>
+        <location filename="../../GLImageBox.cpp" line="+331"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>Resmi görüntülemek için tanılanamayan bir renk uzayı seçili</translation>
     </message>
@@ -199,13 +199,21 @@
     </message>
     <message>
         <location line="+8"/>
-        <source>Error open image</source>
-        <translation>Resim açarken hata</translation>
+        <source>Error opening image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Could not load the chosen image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error open image</source>
+        <translation type="obsolete">Resim açarken hata</translation>
+    </message>
+    <message>
         <source>Could not load the choosen image</source>
-        <translation>Seçilen resim yüklenemedi</translation>
+        <translation type="obsolete">Seçilen resim yüklenemedi</translation>
     </message>
 </context>
 <context>

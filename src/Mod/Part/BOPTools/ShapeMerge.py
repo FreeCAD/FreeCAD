@@ -157,7 +157,7 @@ def mergeWires(list_of_edges_wires, flag_single = False, split_connections = [])
         return Part.Wire(edges)
     else:
         groups = splitIntoGroupsBySharing(edges, lambda sh: sh.Vertexes, split_connections)
-        return Part.makeCompound([Part.Wire(Part.getSortedClusters(group)[0]) for group in groups])
+        return Part.makeCompound([Part.Wire(Part.sortEdges(group)[0]) for group in groups])
 
 def mergeVertices(list_of_vertices, flag_single = False, split_connections = []):
     # no comprehensive support, just following the footprint of other mergeXXX()

@@ -78,6 +78,7 @@ SET(PathScripts_SRCS
     PathScripts/phillips_post.py
     PathScripts/rml_post.py
     PathScripts/slic3r_pre.py
+    PathScripts/smoothie_post.py
 )
 
 SET(PathScripts_NC_SRCS

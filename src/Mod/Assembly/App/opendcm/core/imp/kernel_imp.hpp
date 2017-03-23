@@ -271,7 +271,7 @@ int Dogleg<Kernel>::solve(typename Kernel::MappedEquationSystem& sys, Functor& r
                 rescale();
                 sys.recalculate();
             }
-            //it can also happen that the differentials get too small, however, we cant check for that
+            //it can also happen that the differentials get too small, however, we can't check for that
             else if(iter>1 && (counter>50)) {
                 rescale();
                 sys.recalculate();

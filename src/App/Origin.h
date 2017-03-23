@@ -50,8 +50,8 @@ public:
     }
 
     /** @name Axis and plane access
-     * This functions returns casted axis and planes objects and asserts they are setted correctly
-     * otherwice Base::Exception is thrown.
+     * This functions returns casted axis and planes objects and asserts they are set correctly
+     * otherwise Base::Exception is thrown.
      */
     ///@{
     // returns X axis
@@ -90,7 +90,7 @@ public:
         return { getXY(), getXZ(), getYZ() };
     }
 
-    /// Returns all controled objects (both planes and axis) to iterate on them
+    /// Returns all controlled objects (both planes and axis) to iterate on them
     std::vector<App::OriginFeature *> baseObjects() const {
         return { getX(), getY(), getZ(), getXY(), getXZ(), getYZ() };
     }

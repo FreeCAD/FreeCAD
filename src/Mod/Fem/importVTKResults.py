@@ -92,7 +92,8 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
 
     # workaround for the DisplacementLengths (They should have been calculated by Fem.readResult)
     if not result_obj.DisplacementLengths:
-        result_obj.DisplacementLengths = calculate_disp_abs(result_obj.DisplacementVectors)
+        import importToolsFem
+        result_obj.DisplacementLengths = importToolsFem.calculate_disp_abs(result_obj.DisplacementVectors)
 
     analysis_object.Member = analysis_object.Member + [result_obj]
     # FIXME move the ResultMesh in the analysis
@@ -106,12 +107,3 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
         time_step = 0.0
     # Stats has been setup in C++ function FemVTKTools importCfdResult()
     '''
-
-
-# helper
-def calculate_disp_abs(displacements):
-    from math import sqrt
-    disp_abs = []
-    for d in displacements:
-        disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
-    return disp_abs

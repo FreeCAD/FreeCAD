@@ -34,156 +34,71 @@
 
 using namespace Gui;
 
-#if 0 // Test functions with transparency
-
-#if 1
-    QDialog* dlg = Gui::getMainWindow()->findChild<QDialog*>();
-    QImage image;
-    if (dlg) {
-        QPixmap p = QPixmap::grabWidget(dlg);
-        image = p.toImage();
-    }
-    else {
-        QImage img(128,128, QImage::Format_ARGB32);
-        img.fill(qRgba(255, 255, 255, 127));
-        QPainter painter;
-        painter.begin(&img);
-        painter.setPen(Qt::black);
-        painter.drawText(25, 50, QLatin1String("Hello, World!"));
-        painter.end();
-        image = img;
-    }
-#else
-    QPixmap pm (128,128);
-    QBitmap mask (128,128);
-    mask.fill(Qt::color0);
-
-    QPainter painter(&mask);
-    painter.drawText(QPoint(0, 0), QLatin1String("Hello, World!"));
-    pm.setMask(mask);
-
-    QImage img = pm.toImage();
-    img.load(QLatin1String("C:/Temp/tux.png"),"PNG");
-#endif
-
-#include "MainWindow.h"
-void drawImage(QGLWidget* w,double x1, double y1, double x2, double y2, QImage pic)
-{
-    //pic.save(QLatin1String("C:/Temp/texture.png"),"PNG");
-#if 0
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glEnable(GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4d(0.0,0.0,1.0,0.2f);
-    glBegin(GL_QUADS);
-    glTexCoord2d(0,0); glVertex2f(x1,y1);
-    glTexCoord2d(1,0); glVertex2f(x2,y1);
-    glTexCoord2d(1,1); glVertex2f(x2,y2);
-    glTexCoord2d(0,1); glVertex2f(x1,y2);
-    glEnd();
-    glPopAttrib();
-#elif 0
-    pic = QGLWidget::convertToGLFormat(pic);
-    int texid = w->bindTexture(pic);
-    glColor3f(1,1,1);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glDisable(GL_LIGHTING);
-    glBegin(GL_QUADS);
-    glTexCoord2d(0,0); glVertex2f(x1,y1);
-    glTexCoord2d(1,0); glVertex2f(x2,y1);
-    glTexCoord2d(1,1); glVertex2f(x2,y2);
-    glTexCoord2d(0,1); glVertex2f(x1,y2);
-    glEnd();
-    //    glEnable(GL_LIGHTING);
-    w->deleteTexture(texid);
-#elif 0
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glEnable(GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4d(0.0,0.0,1.0,0.2f);
-    int texid = w->bindTexture(pic);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glDisable(GL_LIGHTING);
-    glBegin(GL_QUADS);
-    glTexCoord2d(0,0); glVertex2f(x1,y1);
-    glTexCoord2d(1,0); glVertex2f(x2,y1);
-    glTexCoord2d(1,1); glVertex2f(x2,y2);
-    glTexCoord2d(0,1); glVertex2f(x1,y2);
-    glEnd();
-    //    glEnable(GL_LIGHTING);
-    w->deleteTexture(texid);
-    glPopAttrib();
-#elif 1
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glEnable(GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4d(0.0,0.0,1.0,0.2f);
-    pic = QGLWidget::convertToGLFormat(pic);
-    glRasterPos2d(x1,y1);
-    glDrawPixels(pic.width(),pic.height(),GL_RGBA,GL_UNSIGNED_BYTE,pic.bits());
-    glPopAttrib();
-#endif
-}
-
-#endif
 
 /* TRANSLATOR Gui::Flag */
-
-#if 1
 
 // TODO: Rename to Annotation
 //       Support transparency
 //       Embed complete widgets
 
 Flag::Flag(QWidget* parent)
-  : QGLWidget(parent), coord(0.0f, 0.0f, 0.0f)
+  : QtGLWidget(parent), coord(0.0f, 0.0f, 0.0f)
 {
     this->setFixedHeight(20);
+#if defined(HAVE_QT5_OPENGL)
+    setAutoFillBackground(true);
+#endif
+}
+
+Flag::~Flag()
+{
 }
 
 void Flag::initializeGL()
 {
     const QPalette& p = this->palette();
-    qglClearColor(/*Qt::white*/p.color(QPalette::Window));
+#if !defined(HAVE_QT5_OPENGL)
+    qglClearColor(p.color(QPalette::Window));
+#else
+    QColor c(p.color(QPalette::Window));
+    glClearColor(c.redF(), c.greenF(), c.blueF(), c.alphaF());
+#endif
 }
 
 void Flag::paintGL()
 {
+#if !defined(HAVE_QT5_OPENGL)
     const QPalette& p = this->palette();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    qglColor(/*Qt::black*/p.color(QPalette::Text));
+    qglColor(p.color(QPalette::Text));
     renderText(10,15,this->text);
+#else
+    QOpenGLWidget::paintGL();
+#endif
+}
+
+void Flag::paintEvent(QPaintEvent* e)
+{
+#if !defined(HAVE_QT5_OPENGL)
+    QtGLWidget::paintEvent(e);
+#else
+    const QPalette& p = this->palette();
+    QColor c(p.color(QPalette::Text));
+
+    QPainter painter;
+    painter.begin(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.fillRect(e->rect(), p.color(QPalette::Window));
+    painter.setPen(c);
+    painter.drawText(10, 15, this->text);
+    painter.end();
+#endif
 }
 
 void Flag::resizeGL(int width, int height)
 {
-    Q_UNUSED(width); 
-    Q_UNUSED(height); 
-    return;
-    //int side = qMin(width, height);
-    //glViewport((width - side) / 2, (height - side) / 2, side, side);
-
-    //glMatrixMode(GL_PROJECTION);
-    //glLoadIdentity();
-    //glFrustum(-1.0, +1.0, -1.0, 1.0, 5.0, 60.0);
-    //glMatrixMode(GL_MODELVIEW);
-    //glLoadIdentity();
-    //glTranslated(0.0, 0.0, -40.0);
-}
-
-#else
-
-Flag::Flag(QWidget* parent)
-  : QWidget(parent), coord(0.0f, 0.0f, 0.0f)
-{
-    this->setFixedHeight(20);
-}
-#endif
-
-Flag::~Flag()
-{
+    Q_UNUSED(width);
+    Q_UNUSED(height);
 }
 
 void Flag::setOrigin(const SbVec3f& v)
@@ -210,7 +125,9 @@ void Flag::drawLine (View3DInventorViewer* v, int tox, int toy)
 
     GLPainter p;
     p.begin(v->getGLWidget());
+#if !defined(HAVE_QT5_OPENGL)
     p.setDrawBuffer(GL_BACK);
+#endif
 
     // the line
     p.setLineWidth(1.0f);
@@ -226,42 +143,9 @@ void Flag::setText(const QString& t)
     this->text = t;
 }
 
-void Flag::resizeEvent(QResizeEvent * )
+void Flag::resizeEvent(QResizeEvent* e)
 {
-#if 0
-    image = QImage(this->size(), QImage::Format_ARGB32);
-
-    QPainter painter;
-    painter.begin(&image);
-    painter.fillRect(image.rect(), Qt::white);
-    painter.setPen(Qt::black);
-    painter.drawText(10, 15, this->text);
-    painter.end();
-#endif
-}
-
-void Flag::paintEvent(QPaintEvent* e)
-{
-#if 1
-    QGLWidget::paintEvent(e);
-#else
-#if 1
-    QPainter painter;
-    painter.begin(this);
-    painter.setRenderHint(QPainter::Antialiasing);
-
-    painter.drawImage((width() - image.width())/2, 0, image);
-    painter.end();
-#else
-    // draw the overlaid text using QPainter
-    QPainter p(this);
-    p.fillRect(this->rect(), Qt::white);
-    p.setPen(Qt::black);
-    p.setBrush(Qt::NoBrush);
-    QFontMetrics fm(p.font());
-    p.drawText(10, 15, this->text);
-#endif
-#endif
+    QtGLWidget::resizeEvent(e);
 }
 
 void Flag::mouseMoveEvent(QMouseEvent *e)
@@ -269,6 +153,11 @@ void Flag::mouseMoveEvent(QMouseEvent *e)
     if (e->buttons() & Qt::LeftButton) {
         move(e->globalPos() - dragPosition);
         e->accept();
+#if defined(HAVE_QT5_OPENGL)
+        View3DInventorViewer* viewer = dynamic_cast<View3DInventorViewer*>(parentWidget());
+        if (viewer)
+            viewer->getSoRenderManager()->scheduleRedraw();
+#endif
     }
 }
 
@@ -482,6 +371,10 @@ void GLFlagWindow::deleteFlags()
                 flag->deleteLater();
             }
         }
+#if defined(HAVE_QT5_OPENGL)
+        if (ct > 0)
+            _viewer->getSoRenderManager()->scheduleRedraw();
+#endif
     }
 }
 
@@ -502,6 +395,9 @@ void GLFlagWindow::removeFlag(Flag* item)
 {
     if (_flagLayout) {
         _flagLayout->removeWidget(item);
+#if defined(HAVE_QT5_OPENGL)
+        _viewer->getSoRenderManager()->scheduleRedraw();
+#endif
     }
 }
 

@@ -23,14 +23,22 @@
 
 # This is the start page template
 
-import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,sys
+import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
 from PySide import QtGui
 from xml.etree.ElementTree import parse
 
-try:
-    import io as cStringIO
-except:
-    import cStringIO
+from .TranslationTexts import (text01, text02, text03, text04, text05, text06,
+                              text07, text08, text09, text10, text11, text12,
+                              text13, text14, text15, text16, text17, text18,
+                              text19, text20, text21, text22, text23, text24,
+                              text25, text26, text27, text28, text29, text30,
+                              text31, text32, text33, text34, text35, text36,
+                              text37, text38, text39, text40, text41, text42,
+                              text43, text44, text45, text46, text47, text48,
+                              text49, text50, text51, text52, text53, text54,
+                              text55, text56, text57, text58, text59, text60,
+                              text61, text62, text63, text64, text65, text66,
+                              text67, text68)
 
 try:
     import io as cStringIO
@@ -40,509 +48,25 @@ except:
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
 
-def translate(context,text):
-    "convenience function for the Qt translator"
-    # return str(QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).toUtf8())
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
-        u = QtGui.QApplication.translate(context, text, None, _encoding)
-    except AttributeError:
-        u = QtGui.QApplication.translate(context, text, None)
-
-    if sys.version_info.major < 3:
-        u = u.encode("utf8")
-
-    # s = cStringIO.StringIO()
-    # for i in u:
-    #     if sys.version_info.major > 2: #below only works correctly in python3
-    #         if i == 39:
-    #             s.write("\\'")
-    #         else:
-    #             s.write(chr(i))
-    #     else:
-    #         if ord(i) == 39:
-    #             s.write(unicode("\\'"))
-    #         else:
-    #             s.write(unicode(i))
-    # t = s.getvalue()
-    # s.close()
-    # return t
-    
-    return u.replace(chr(39), "\\'")
-
-# texts to be translated
-
-text01 = translate("StartPage","FreeCAD Start Center")
-text02 = translate("StartPage","Start a new project")
-text03 = translate("StartPage","Recent Files")
-text04 = translate("StartPage","Latest videos")
-text05 = translate("StartPage","Latest commits")
-text06 = translate("StartPage","On the web")
-text07 = translate("StartPage","This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.")
-text08 = translate("StartPage","FreeCAD Homepage")
-text09 = translate("StartPage","Example projects")
-text10 = translate("StartPage","Schenkel STEP file")
-text11 = translate("StartPage","Load a PartDesign example")
-text12 = translate("StartPage","Load a Drawing extraction")
-text13 = translate("StartPage","Load a Robot simulation example")
-text14 = translate("StartPage","Projects from the Web")
-text15 = translate("StartPage","Schenkel STEP")
-text16 = translate("StartPage","Complex Part")
-text17 = translate("StartPage","Close this window after opening or creating a file")
-text18 = translate("StartPage","Don't show me this window again next time")
-text19 = translate("StartPage","Designing parts")
-text20 = translate("StartPage","The <b>Part Design</b> workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.")
-text21 = translate("StartPage","Example workflow")
-text22 = translate("StartPage","Part Design")
-text23 = translate("StartPage","Designing architectural elements")
-text24 = translate("StartPage","The <b>Architectural Design</b> workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architecutral objects.")
-text25 = translate("StartPage","Architectural Design")
-text26 = translate("StartPage","Working with Meshes")
-text27 = translate("StartPage","The <b>Mesh Workbench</b> is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.")
-text28 = translate("StartPage","FreeCAD offers you several tools to convert between Mesh and Part objects.")
-text29 = translate("StartPage","Work with Meshes")
-text30 = translate("StartPage","The complete workbench")
-text31 = translate("StartPage","FreeCAD Complete workbench")
-text32 = translate("StartPage","populated with some of the most commonly used tools.")
-text33 = translate("StartPage","file size:")
-text34 = translate("StartPage","creation time:")
-text35 = translate("StartPage","last modified:")
-text36 = translate("StartPage","location:")
-text37 = translate("StartPage","User manual")
-text38 = translate("StartPage","http://www.freecadweb.org/wiki/Online_Help_Toc")
-text39 = translate("StartPage","Tutorials")
-text40 = translate("StartPage","Python resources")
-text41 = translate("StartPage","File not found")
-text42 = translate("StartPage","from <a href=http://twitter.com/FreeCADNews>@FreeCADNews</a>")
-text43 = translate("StartPage","The FreeCAD-tutorial blog")
-text44 = translate("StartPage","from <a href=http://www.youtube.com/user/FreeCADNews?feature=mhee>FreeCADNews channel</a>")
-text45 = translate("StartPage","This is the official user manual of FreeCAD, built, maintained and translated by the FreeCAD community.")
-text46 = translate("StartPage","The tutorials section on the FreeCAD website")
-text47 = translate("StartPage","The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.")
-text48 = translate("StartPage","A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community")
-text49 = translate("StartPage","Getting started")
-text50 = translate("StartPage","The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.")
-text51 = translate("StartPage","http://www.freecadweb.org/wiki/Workbenches")
-text52 = translate("StartPage","Ship Design")
-text53 = translate("StartPage","Designing and calculating ships")
-text54 = translate("StartPage","The <b>Ship Design</b> module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.")
-text55 = translate("StartPage","Load an Architectural example model")
-text56 = translate("StartPage","http://www.freecadweb.org/wiki/Tutorials")
-text57 = translate("StartPage","http://www.freecadweb.org/wiki/Power_users_hub")
-text58 = translate("StartPage","Your version of FreeCAD is up to date.")
-text59 = translate("StartPage","There is a new release of FreeCAD available.")
-text60 = translate("StartPage","Load an FEM 3D example analysis")
-text61 = translate("StartPage","Obtain a development version")
-text62 = translate("StartPage","<b>Development versions</b> are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.")
-text63 = translate("StartPage","See all commits")
-text64 = translate("StartPage","Load an FEM 2D example analysis")
-text65 = translate("StartPage","FreeCAD Standard File")
-text66 = translate("StartPage","Author")
-text67 = translate("StartPage","Company")
-text68 = translate("StartPage","License")
-
 # get FreeCAD version
-
 v = FreeCAD.Version()
-vmajor = v[0]
-vminor = v[1]
+vmajor, vminor = v[0], v[1]
 vbuild = v[2].split(" ")[0]
 
 # here is the html page skeleton
+resources_dir = os.path.join(FreeCAD.getResourceDir(), "Mod", "Start", "StartPage")
+html_filename = os.path.join(resources_dir, "StartPage.html")
+js_filename = os.path.join(resources_dir, "StartPage.js")
+css_filename = os.path.join(resources_dir, "StartPage.css")
 
-page = """
-<html>
-  <head>
-    <title>FreeCAD - Start page</title>
+with open(html_filename, 'rb') as f:
+    startpage_html = f.read()
 
-    <script language="javascript">
+with open(js_filename, 'rb') as f:
+    startpage_js = f.read()
 
-        var linkDescriptions = [];
-
-        function JSONscriptRequest(fullUrl) {
-            // REST request path
-            this.fullUrl = fullUrl; 
-            // Get the DOM location to put the script tag
-            this.headLoc = document.getElementsByTagName("head").item(0);
-            // Generate a unique script tag id
-            this.scriptId = 'JscriptId' + JSONscriptRequest.scriptCounter++;
-        }
-
-        // Static script ID counter
-        JSONscriptRequest.scriptCounter = 1;
-
-        JSONscriptRequest.prototype.buildScriptTag = function () {
-            // Create the script tag
-            this.scriptObj = document.createElement("script");
-            // Add script object attributes
-            this.scriptObj.setAttribute("type", "text/javascript");
-            this.scriptObj.setAttribute("charset", "utf-8");
-            this.scriptObj.setAttribute("src", this.fullUrl);
-            this.scriptObj.setAttribute("id", this.scriptId);
-        }
- 
-        JSONscriptRequest.prototype.removeScriptTag = function () {
-            // Destroy the script tag
-            this.headLoc.removeChild(this.scriptObj);  
-        }
-
-        JSONscriptRequest.prototype.addScriptTag = function () {
-            // Create the script tag
-            this.headLoc.appendChild(this.scriptObj);
-        }
-
-        function show(theText) {
-            ddiv = document.getElementById("description");
-            if (theText == "") theText = "&nbsp;";
-            ddiv.innerHTML = theText;
-        }
-        
-        function checkVersion(data) {
-            vdiv = document.getElementById("versionbox");
-            var cmajor = """ + vmajor + """;
-            var cminor = """ + vminor + """;
-            var cbuild = """ + vbuild + """;
-            var amajor = data[0]['major'];
-            var aminor = data[0]['minor'];
-            var abuild = data[0]['build'];
-            if (cmajor >= amajor && cminor >= aminor && cbuild >= abuild) {
-                vdiv.innerHTML=" """ + text58 + """: """ + vmajor + """.""" + vminor + """.""" + vbuild + """";
-            } else {
-                vdiv.innerHTML="<a href=exthttp://github.com/FreeCAD/FreeCAD/releases/latest> """ + text59 + """:"+amajor+"."+aminor+"."+abuild+"</a>";
-            }
-        }
-
-        function load() {
-            // load latest news
-            ddiv = document.getElementById("news");
-            ddiv.innerHTML = "Connecting...";
-            var tobj=new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=showTweets');
-            tobj.buildScriptTag(); // Build the script tag
-            tobj.addScriptTag(); // Execute (add) the script tag
-            ddiv.innerHTML = "Downloading latest news...";
-            
-            // load version
-            var script = document.createElement('script');
-            script.src = 'http://www.freecadweb.org/version.php?callback=checkVersion';
-            document.body.appendChild(script);
-        }
-
-        function stripTags(text) {
-            // from http://www.pagecolumn.com/tool/all_about_html_tags.htm /<\s*\/?\s*span\s*.*?>/g
-            stripped = text.replace("<table", "<div");
-            stripped = stripped.replace("</table", "</div");
-            stripped = stripped.replace("<tr", "<tr");
-            stripped = stripped.replace("</tr", "</tr");
-            stripped = stripped.replace("<td", "<td");
-            stripped = stripped.replace("</td", "</td");
-            stripped = stripped.replace("555px", "auto");
-            stripped = stripped.replace("border:1px", "border:0px");
-            stripped = stripped.replace("color:#000000;","");
-            return stripped;
-        }
-
-        function showTweets(data) {
-            ddiv = document.getElementById('news');
-            ddiv.innerHTML = "Received";
-            var html = ['<ul>'];
-            for (var i = 0; i < 15; i++) {
-                html.push('<li><img src="web.png">&nbsp;<a href="ext', data.data[i].commit.url, '" onMouseOver="showDescr(', i+1, ')" onMouseOut="showDescr()">', data.data[i].commit.message, '</a></li>');
-                if ("message" in data.data[i].commit) {
-                    linkDescriptions.push(stripTags(data.data[i].commit.message)+'<br/>'+data.data[i].commit.author.name+'<br/>'+data.data[i].commit.author.date);
-                } else {
-                    linkDescriptions.push("");
-                }
-                
-            }
-            html.push('</ul>');
-            html.push('<a href="exthttp://github.com/FreeCAD/FreeCAD/commits/master">""" + text63 + """<a/>');
-            ddiv.innerHTML = html.join('');
-        }
-
-        function showDescr(d) {
-            if (d) {
-                show(linkDescriptions[d-1]);
-            } else {
-                show("");
-            }
-        }
-
-        function scroller() {
-            desc = document.getElementById("description");
-            base = document.getElementById("column").offsetTop;
-            scro = window.scrollY;
-            if (scro > base) {
-                desc.className = "stick";
-            } else {
-                desc.className = "";
-            }
-        }
-
-        document.onmousemove=scroller;
-
-    </script>
-
-    <style type="text/css">
-
-        body {
-            background: #basecolor;
-            color: #textcolor;
-            font-family: Arial, Helvetica, Sans;
-            font-size: 11px;
-        }
-
-        a {
-            color: #linkcolor;
-            font-weight: bold;
-            text-decoration: none;
-            padding: 2px;
-        }
-
-        a:hover {
-            color: white;
-            background: #linkcolor;
-            border-radius: 5px;
-        }
-
-        p {
-            text-align: justify;
-        }
-
-        .left {
-            text-align: left;
-        }
-
-        h1 {
-            font-size: 3em;
-            letter-spacing: 2px;
-            padding: 20px 0 0 80px;
-            align: bottom;
-            color: #ffffff;
-        }
-
-        h2 {
-            font-size: 1.2em;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        #column {
-            margin: 0 350px 0 10px;
-        }
-
-        #column img {
-            max-width: 14px;
-        }
-
-        .block {
-            background: #windowcolor;
-            border-radius: 5px;
-            padding: 8px;
-            margin-bottom: 10px;
-            color: #windowtextcolor;
-            width: auto;
-        }
-
-        .options {
-            clear: both;
-        }
-
-        .from {
-            font-size: 0.7em;
-            font-weight: normal;
-        }
-        
-        #versionbox {
-            float: right;
-            text-align: right;
-            font-size: 0.33em;
-            font-weight: normal;
-            padding-right: 20px;
-            letter-spacing: 0;
-            color: #ffffff;
-        }
-
-        #description {
-            background: #windowcolor;
-            border-radius: 5px;
-            padding: 8px;
-            color: #windowtextcolor;
-            float: right;
-            width: 316px;
-            right: 10px;
-            height: 100%;
-            position: relative;
-        }
-
-        #description img {
-            max-width: 300px;
-            clear: both;
-        }
-        
-        #description p span {
-            text-align: left;
-        }
-        
-        .disabled {
-            opacity: 0.5;
-        }
-
-        pre {
-            width: 300px !important;
-            white-space: pre-wrap;
-        }
-
-        .stick {
-            position: fixed !important;
-            top: 0px;
-            right: 18px !important;
-        }
-
-    </style>
-
-  </head>
-
-  <body onload="load()">
-
-    <h1><img src="FreeCAD.png">&nbsp;""" + text01 + """<div id=versionbox>&nbsp</div></h1>
-
-    <div id="description">
-      &nbsp;
-    </div>
-
-    <div id="column">
-
-      <div class="block">
-        <h2>""" + text02 + """</h2>
-          defaultworkbenches
-      </div>
-
-      <div class="block">
-        <h2>""" + text03 + """</h2>
-          recentfiles
-      </div>
-
-      <div class="block">
-        <h2>""" + text05 + """</h2>
-        <div id="news">news feed</div>
-      </div>
-
-      <div class="block">
-        <h2>""" + text06 + """</h2>
-            defaultlinks
-      </div>
-
-      <div class="block">
-        <h2>""" + text09 + """</h2>
-            defaultexamples
-      </div>
-
-      customblocks
-
-    </div>
-
-    <!--
-    <form class="options">
-      <input type="checkbox" name="closeThisDialog">
-      """ + text17 + """<br/>
-      <input type="checkbox" name="dontShowAgain">
-      """ + text18 + """
-    </form>
-    -->
-
-  </body>
-</html>
-"""
-
-def getWebExamples():
-    return """
-    <ul>
-        <li><a href="http://freecad-project.de/svn/ExampleData/FileFormates/Schenkel.stp">""" + text15 + """</a></li>
-        <li><a href="http://freecad-project.de/svn/ExampleData/Examples/CAD/Complex.FCStd">""" + text16 + """</a></li>
-    </ul>"""
-      
-def getExamples():
-    return """
-    <ul>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadSchenkel.py">""" + text10 + """</a></li>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadPartDesignExample.py">""" + text11 + """</a></li>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadDrawingExample.py">""" + text12 + """</a></li>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadRobotExample.py">""" + text13 + """</a></li>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadArchExample.py">""" + text55 + """</a></li>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample2D.py">""" + text64 + """</a></li>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample3D.py">""" + text60 + """</a></li>
-    </ul>"""
-      
-def getLinks():
-    return """
-    <ul>
-        <li><img src="web.png">&nbsp;
-            <a onMouseover="show('<p>""" + text07 + """</p>')" 
-                onMouseout="show('')"
-                href="exthttp://www.freecadweb.org/">""" + text08 + """</a></li>
-        <li><img src="web.png">&nbsp;
-            <a onMouseover="show('<p>""" + text45 + """</p>')" 
-                onMouseout="show('')"
-                href=ext""" + text38 + """>""" + text37 + """</a></li>
-        <li><img src="web.png">&nbsp;
-            <a onMouseover="show('<p>""" + text46 + """</p>')" 
-                onMouseout="show('')"
-                href=ext""" + text56 + """>""" + text39 + """</a></li>
-        <li><img src="web.png">&nbsp;
-            <a onMouseover="show('<p>""" + text47 + """</p>')" 
-                onMouseout="show('')"
-                href=ext""" + text57 + """>""" + text40 + """</a></li>
-        <li><img src="web.png">&nbsp;
-            <a onMouseover="show('<p>""" + text48 + """</p>')" 
-                onMouseout="show('')"
-                href="exthttp://freecad-tutorial.blogspot.com/">""" + text43 + """</a></li>
-        <li><img src="web.png">&nbsp;
-            <a href="exthttp://github.com/FreeCAD/FreeCAD/releases" 
-               onMouseOver="show('<p>""" + text62 + """</p>')" 
-               onMouseOut="show('')">""" + text61 + """</a></li>
-
-    </ul>"""
-
-def getWorkbenches():
-    return """
-    <ul>
-        <li><img src="blank.png">&nbsp;
-            <a onMouseover="show('<h3>""" + text49 + """</h3> \
-            <p>""" + text50 + """</p>')" 
-            onMouseout="show('')" 
-            href=""" + text51 + """>""" + text49 + """</a>
-        </li>
-        <li><img src="PartDesign.png">&nbsp;
-            <a onMouseover="show('<h3>""" + text19 + """</h3> \
-            <p>""" + text20 + """</p><p><small>""" + text21 + """ \
-            :</small></p><img src=PartDesignExample.png>')" 
-            onMouseout="show('')" 
-            href="PartDesign.py">""" + text22 + """</a>
-        </li>
-        <li><img src="ArchDesign.png">&nbsp;
-          <a onMouseover="show('<h3>""" + text23 + """</h3> \
-            <p>""" + text24 + """</p><p><small>""" + text21 + """ \
-            :</small></p><img src=ArchExample.png>')" 
-            onMouseout="show('')"
-            href="ArchDesign.py">""" + text25 + """</a>
-        </li>
-        <li><img src="Ship.png">&nbsp;
-          <a onMouseover="show('<h3>""" + text53 + """</h3> \
-            <p>""" + text54 + """</p><p><small>""" + text21 + """ \
-            :</small></p><img src=ShipExample.png>')" 
-            onMouseout="show('')"
-            href="Ship.py">""" + text52 + """</a>
-        </li>
-        <li><img src="Mesh.png">&nbsp;
-            <a onMouseover="show('<h3>""" + text26 + """</h3> \
-            <p>""" + text27 + """</p><p>""" + text28 + """</p>')" 
-            onMouseout="show('')" 
-            href="Mesh.py">""" + text29 + """</a>
-        </li>
-    </ul>"""
+with open(css_filename, 'rb') as f:
+    startpage_css = f.read()
 
 def getInfo(filename):
     "returns available file information"
@@ -578,7 +102,7 @@ def getInfo(filename):
             if files[0] == "Document.xml":
                 html += "<p><b>" + text65 + "</b></p>"
                 image="thumbnails/Thumbnail.png"
-                doc = str(zfile.read(files[0]))
+                doc = zfile.read(files[0])
                 doc = doc.replace("\n"," ")
                 author = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"\/>",doc)
                 if author: 
@@ -601,7 +125,6 @@ def getInfo(filename):
             print ("not a freecad file: "+os.path.splitext(filename)[1].upper())
     else:
         html += "<p>" + text41 + "</p>"
-            
     return html
 
 def getRecentFiles():
@@ -616,9 +139,9 @@ def getRecentFiles():
                 fn = os.path.basename(mr)
                 html += '<li>'
                 if mr[-5:].upper() == "FCSTD":
-                    html += '<img src="freecad-doc.png" style="width: 16px">&nbsp;'
+                    html += '<img src="images/freecad-doc.png" style="width: 16px">&nbsp;'
                 else:
-                    html += '<img src="blank.png" style="width: 16px">&nbsp;'
+                    html += '<img src="images/blank.png" style="width: 16px">&nbsp;'
                 html += '<a '
                 html += 'onMouseover="show(\''+getInfo(mr).replace("'","&rsquo;")+'\')" '
                 html += 'onMouseout="show(\'\')" '
@@ -629,9 +152,9 @@ def getRecentFiles():
                 fn = os.path.basename(mr)
                 html += '<li>'
                 if mr[-5:].upper() == "FCSTD":
-                    html += '<img src="freecad-doc.png" style="width: 16px">&nbsp;'
+                    html += '<img src="images/freecad-doc.png" style="width: 16px">&nbsp;'
                 else:
-                    html += '<img src="blank.png" style="width: 16px">&nbsp;'
+                    html += '<img src="images/blank.png" style="width: 16px">&nbsp;'
                 html += '<span class="disabled">'
                 html += fn
                 html += '</span></li>'
@@ -689,7 +212,7 @@ def setColors(html):
         pass
     else:
         #defaults["#basecolor"] = palette.base().color().name()
-        defaults["#basecolor"] = "#171A2B url(Background.jpg)"
+        defaults["#basecolor"] = "#171A2B url(images/Background.jpg)"
         #defaults["#linkcolor"] = palette.link().color().name() # UGLY!!
         defaults["#textcolor"] = palette.text().color().name()
         defaults["#windowcolor"] = palette.window().color().name()
@@ -698,34 +221,90 @@ def setColors(html):
         html = html.replace(k,str(v))
     return html
 
+def insert_page_resources(html):
+    html = html.replace("startpage_js", startpage_js)
+    html = html.replace("startpage_css", startpage_css)
+    return html
+
+def replace_html_text(html):
+    html = html.replace("text01", text01)
+    html = html.replace("text02", text02)
+    html = html.replace("text03", text03)
+    html = html.replace("text05", text05)
+    html = html.replace("text06", text06)
+    html = html.replace("text07", text07)
+    html = html.replace("text08", text08)
+    html = html.replace("text09", text09)
+    html = html.replace("text10", text10)
+    html = html.replace("text11", text11)
+    html = html.replace("text12", text12)
+    html = html.replace("text13", text13)
+    html = html.replace("text17", text17)
+    html = html.replace("text18", text18)
+    html = html.replace("text19", text19)
+    html = html.replace("text20", text20)
+    html = html.replace("text21", text21)
+    html = html.replace("text22", text22)
+    html = html.replace("text23", text23)
+    html = html.replace("text24", text24)
+    html = html.replace("text25", text25)
+    html = html.replace("text26", text26)
+    html = html.replace("text27", text27)
+    html = html.replace("text28", text28)
+    html = html.replace("text29", text29)
+    html = html.replace("text37", text37)
+    html = html.replace("text38", text38)
+    html = html.replace("text39", text39)
+    html = html.replace("text40", text40)
+    html = html.replace("text43", text43)
+    html = html.replace("text45", text45)
+    html = html.replace("text46", text46)
+    html = html.replace("text47", text47)
+    html = html.replace("text48", text48)
+    html = html.replace("text49", text49)
+    html = html.replace("text50", text50)
+    html = html.replace("text51", text51)
+    html = html.replace("text52", text52)
+    html = html.replace("text53", text53)
+    html = html.replace("text54", text54)
+    html = html.replace("text55", text55)
+    html = html.replace("text56", text56)
+    html = html.replace("text57", text57)
+    html = html.replace("text60", text60)
+    html = html.replace("text61", text61)
+    html = html.replace("text62", text62)
+    html = html.replace("text64", text64)
+    return html
+
+def replace_js_text(html):
+    html = html.replace("vmajor", vmajor)
+    html = html.replace("vminor", vminor)
+    html = html.replace("vbuild", vbuild)
+    html = html.replace("text58", text58)
+    html = html.replace("text59", text59)
+    html = html.replace("text63", text63)
+    return html
+
 def handle():
     "returns the complete html startpage"
+    # add strings into files
+    html = insert_page_resources(startpage_html)
+    html = replace_js_text(html)
     
     # add recent files
     recentfiles = getRecentFiles()
-    html = page.replace("recentfiles",recentfiles)
-
-    # add default workbenches
-    html = html.replace("defaultworkbenches",getWorkbenches())
-
-    # add default web links
-    html = html.replace("defaultlinks",getLinks())
-
-    # add default examples
-    html = html.replace("defaultexamples",getExamples())
-
-    # add web examples
-    #html = html.replace("webexamples",getWebExamples())
-
+    html = html.replace("recentfiles",recentfiles)
+        
     # add custom blocks
     html = html.replace("customblocks",getCustomBlocks())
 
+    html = replace_html_text(html)
     # fetches system colors
     html = setColors(html)
-    
     return html
 
 def exportTestFile():
     f = open(os.path.expanduser("~")+os.sep+"freecad-startpage.html","wb")
     f.write(handle())
     f.close()
+

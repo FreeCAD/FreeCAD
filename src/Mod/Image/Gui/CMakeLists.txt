@@ -23,9 +23,18 @@ set(ImageGui_LIBS
 
 set(ImageGui_MOC_HDRS
     ImageView.h
-    GLImageBox.h
     ImageOrientationDialog.h
 )
+
+if(FREECAD_USE_QTOPENGL_WIDGET)
+    list(APPEND ImageGui_MOC_HDRS
+        OpenGLImageBox.h
+    )
+else()
+    list(APPEND ImageGui_MOC_HDRS
+        GLImageBox.h
+    )
+endif()
 
 fc_wrap_cpp(ImageGui_MOC_SRCS ${ImageGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${ImageGui_MOC_SRCS})
@@ -57,8 +66,6 @@ SET(ImageGui_SRCS
     ImageOrientationDialog.h
     ViewProviderImagePlane.cpp
     ViewProviderImagePlane.h
-    GLImageBox.cpp
-    GLImageBox.h
     Resources/Image.qrc
     ImageView.cpp
     ImageView.h
@@ -68,6 +75,18 @@ SET(ImageGui_SRCS
     Workbench.h
     XpmImages.h
 )
+
+if(FREECAD_USE_QTOPENGL_WIDGET)
+    list(APPEND ImageGui_SRCS
+        OpenGLImageBox.cpp
+        OpenGLImageBox.h
+    )
+else()
+    list(APPEND ImageGui_SRCS
+        GLImageBox.cpp
+        GLImageBox.h
+    )
+endif()
 
 add_library(ImageGui SHARED ${ImageGui_SRCS})
 target_link_libraries(ImageGui ${ImageGui_LIBS})

@@ -1097,6 +1097,27 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
     }
 }
 
+//**************************************************************************
+// PropertyPrecision
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyPrecision, App::PropertyFloatConstraint);
+
+//**************************************************************************
+// Construction/Destruction
+//
+const PropertyFloatConstraint::Constraints PrecisionStandard = {0.0,DBL_MAX,0.001};
+
+PropertyPrecision::PropertyPrecision()
+{
+    setConstraints(&PrecisionStandard);
+}
+
+PropertyPrecision::~PropertyPrecision()
+{
+
+}
+
 
 //**************************************************************************
 // PropertyFloatList

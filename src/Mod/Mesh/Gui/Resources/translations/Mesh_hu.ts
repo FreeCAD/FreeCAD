@@ -398,6 +398,21 @@
     </message>
 </context>
 <context>
+    <name>CmdMeshSectionByPlane</name>
+    <message>
+        <source>Mesh</source>
+        <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdMeshSegmentation</name>
     <message>
         <source>Mesh</source>
@@ -738,30 +753,30 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
         <source>Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Settings...</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
         <source>Evaluation settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Evaluation settings</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Beállítások</translation>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Check for non-manifold points</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enable check for folds on surface</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Only consider zero area faces as degenerated</translation>
     </message>
 </context>
 <context>
@@ -887,6 +902,10 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     <message>
         <source>mm</source>
         <translation type="obsolete">mm</translation>
+    </message>
+    <message>
+        <source>Export AMF files using compression</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1100,7 +1119,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
         <source>Minumum number of faces</source>
-        <translation>Felületek minimum száma</translation>
+        <translation type="obsolete">Felületek minimum száma</translation>
     </message>
     <message>
         <source>Cylinder</source>
@@ -1173,11 +1192,11 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation>Sík kijelölése</translation>
+        <translation type="obsolete">Sík kijelölése</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation>Kérjük válasszon egy síkot, mellyel kimetszi a hálótestet.</translation>
+        <translation type="obsolete">Kérjük válasszon egy síkot, mellyel kimetszi a hálótestet.</translation>
     </message>
 </context>
 <context>
@@ -1188,12 +1207,16 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation>Ismeretlen hiba történt az OpenSCAD futása közben.</translation>
+        <translation type="obsolete">Ismeretlen hiba történt az OpenSCAD futása közben.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
         <translation>OpenSCAD nem található a rendszeren. Kérjük, látogasson el ide: http://www.openscad.org/index.html a telepítéshez.</translation>
+    </message>
+    <message>
+        <source>Unknown error occurred while running OpenSCAD.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1391,7 +1414,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation>Minden Fájl</translation>
+        <translation>Minden fájl</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>

@@ -27,6 +27,13 @@ import Path
 from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
 from DraftGeomUtils import findWires
+import PathScripts.PathLog as PathLog
+
+"""Path Profile from Edges Object and Command"""
+
+LOG_MODULE = 'PathProfileEdges'
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+# PathLog.trackModule('PathProfileEdges')
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -34,6 +41,7 @@ if FreeCAD.GuiUp:
     # Qt tanslation handling
     try:
         _encoding = QtGui.QApplication.UnicodeUTF8
+
         def translate(context, text, disambig=None):
             return QtGui.QApplication.translate(context, text, disambig, _encoding)
     except AttributeError:
@@ -58,11 +66,8 @@ class ObjectProfile:
         obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this profile"))
         obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
 
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool number in use"))
-        obj.ToolNumber = (0, 0, 1000, 1)
-        obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The description of the tool"))
-        obj.setEditorMode('ToolDescription', 1)  # make this read onlyt
+        # Tool Properties
+        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
@@ -183,12 +188,6 @@ print("y - " + str(point.y))
         lead_in_line_len = 0.0
         lead_out_line_len = 0.0
 
-        '''
-
-        Right here, I need to know the Holding Tags group from the tree that refers to this profile operation and build up the tags for PathKurve Utils.
-        I need to access the location vector, length, angle in radians and height.
-
-        '''
         depthparams = depth_params(
             obj.ClearanceHeight.Value,
             obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown.Value, 0.0,
@@ -207,36 +206,23 @@ print("y - " + str(point.y))
         import Part  # math #DraftGeomUtils
         output = ""
 
-        toolLoad = PathUtils.getLastToolLoad(obj)
-
+        toolLoad = obj.ToolController
         if toolLoad is None or toolLoad.ToolNumber == 0:
-            self.vertFeed = 100
-            self.horizFeed = 100
-            self.vertRapid = 100
-            self.horizRapid = 100
-            self.radius = 0.25
-            obj.ToolNumber = 0
-            obj.ToolDescription = "UNDEFINED"
+            FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
             self.vertRapid = toolLoad.VertRapid.Value
             self.horizRapid = toolLoad.HorizRapid.Value
-            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-            if tool.Diameter == 0:
-                self.radius = 0.25
+            tool = toolLoad.Proxy.getTool(toolLoad)
+            if not tool or tool.Diameter == 0:
+                FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
+                return
             else:
                 self.radius = tool.Diameter/2
-            obj.ToolNumber = toolLoad.ToolNumber
-            obj.ToolDescription = toolLoad.Name
-
-        if obj.UserLabel == "":
-            obj.Label = obj.Name + " :" + obj.ToolDescription
-        else:
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
         output += "(" + obj.Label + ")"
-        if obj.Side != "On":
+        if obj.UseComp:
             output += "(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"
         else:
             output += "(Uncompensated Tool Path)"
@@ -366,8 +352,10 @@ class CommandPathProfileEdges:
         FreeCADGui.doCommand('obj.Side = "On"')
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
         FreeCADGui.doCommand('obj.Direction = "CW"')
-        FreeCADGui.doCommand('obj.UseComp = False')
+        FreeCADGui.doCommand('obj.UseComp = True')
+
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
+        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -421,6 +409,11 @@ class TaskPanel:
                 self.obj.Side = str(self.form.cutSide.currentText())
             if hasattr(self.obj, "Direction"):
                 self.obj.Direction = str(self.form.direction.currentText())
+            if hasattr(self.obj, "ToolController"):
+                PathLog.debug("name: {}".format(self.form.uiToolController.currentText()))
+                tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
+                self.obj.ToolController = tc
+
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
@@ -435,10 +428,28 @@ class TaskPanel:
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
         self.form.useEndPoint.setChecked(self.obj.UseEndPoint)
 
+        controllers = PathUtils.getToolControllers(self.obj)
+        labels = [c.Label for c in controllers]
+        self.form.uiToolController.blockSignals(True)
+        self.form.uiToolController.addItems(labels)
+        self.form.uiToolController.blockSignals(False)
+        if self.obj.ToolController is not None:
+            index = self.form.uiToolController.findText(
+                self.obj.ToolController.Label, QtCore.Qt.MatchFixedString)
+            PathLog.debug("searching for TC label {}. Found Index: {}".format(self.obj.ToolController.Label, index))
+            if index >= 0:
+                self.form.uiToolController.blockSignals(True)
+                self.form.uiToolController.setCurrentIndex(index)
+                self.form.uiToolController.blockSignals(False)
+        else:
+            self.obj.ToolController = PathUtils.findToolController(self.obj)
+
         index = self.form.cutSide.findText(
                 self.obj.Side, QtCore.Qt.MatchFixedString)
         if index >= 0:
+            self.form.cutSide.blockSignals(True)
             self.form.cutSide.setCurrentIndex(index)
+            self.form.cutSide.blockSignals(False)
 
         index = self.form.direction.findText(
                 self.obj.Direction, QtCore.Qt.MatchFixedString)
@@ -530,6 +541,7 @@ class TaskPanel:
         self.form.addBase.clicked.connect(self.addBase)
         self.form.deleteBase.clicked.connect(self.deleteBase)
         self.form.reorderBase.clicked.connect(self.reorderBase)
+        self.form.uiToolController.currentIndexChanged.connect(self.getFields)
 
         # Depths
         self.form.startDepth.editingFinished.connect(self.getFields)

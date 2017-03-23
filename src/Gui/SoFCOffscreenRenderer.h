@@ -26,11 +26,10 @@
 
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/SbMatrix.h>
+#include <Inventor/SbColor4f.h>
+#include <QImage>
 #include <QStringList>
-
-class QImage;
-class QGLFramebufferObject;
-class QGLPixelBuffer;
+#include <QtOpenGL.h>
 
 namespace Gui {
 
@@ -109,8 +108,8 @@ public:
     void setViewportRegion(const SbViewportRegion & region);
     const SbViewportRegion & getViewportRegion(void) const;
 
-    void setBackgroundColor(const SbColor & color);
-    const SbColor & getBackgroundColor(void) const;
+    void setBackgroundColor(const SbColor4f & color);
+    const SbColor4f & getBackgroundColor(void) const;
 
     void setGLRenderAction(SoGLRenderAction * action);
     SoGLRenderAction * getGLRenderAction(void) const;
@@ -131,19 +130,26 @@ private:
     void init(const SbViewportRegion & vpr, SoGLRenderAction * glrenderaction = NULL);
     static void pre_render_cb(void * userdata, SoGLRenderAction * action);
     SbBool renderFromBase(SoBase * base);
+#if !defined(HAVE_QT5_OPENGL)
     void makePixelBuffer(int width, int height, int samples);
+#endif
     void makeFrameBuffer(int width, int height, int samples);
 
-    QGLPixelBuffer*        pixelbuffer; // the offscreen rendering supported by Qt
-    QGLFramebufferObject*  framebuffer;
-    uint32_t               cache_context; // our unique context id
+#if !defined(HAVE_QT5_OPENGL)
+    QGLPixelBuffer*         pixelbuffer; // the offscreen rendering supported by Qt
+#endif
+    QtGLFramebufferObject*  framebuffer;
+    uint32_t                cache_context; // our unique context id
 
     SbViewportRegion viewport;
-    SbColor backgroundcolor;
+    SbColor4f backgroundcolor;
     SoGLRenderAction * renderaction;
     SbBool didallocation;
     SbBool pbuffer;
     int numSamples;
+#if defined(HAVE_QT5_OPENGL)
+    QImage glImage;
+#endif
 };
 
 } // namespace Gui

@@ -106,9 +106,7 @@ FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modu
         <source>Enter the name of a callable object which, when called, will return a TestCase.Click &apos;start&apos;, and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-        <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.Click &apos;start&apos;, and the test thus produced will be run.
-
-Double click on an error in the tree view to see more information about it,including the stack trace.</translation>
+        <translation>Πληκτρολογήστε το όνομα του ένα προσφωνήσιμη αγαθό που, όταν κάλεσε, θα επιστρέψει ένα TestCase.Click &apos;Έναρξη&apos;, και η δοκιμή προκληθέντων θα εκτελεστεί.  Κάντε διπλό κλικ στο σφάλμα στην ιεραρχημένη προβολή για να δείτε περισσότερες πληροφορίες σχετικά με αυτό, καθώς και το ίχνος στοίβας.</translation>
     </message>
 </context>
 </TS>

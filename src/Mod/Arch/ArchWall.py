@@ -644,18 +644,21 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         sep.addChild(self.fcoords)
         sep.addChild(self.fset)
         vobj.RootNode.addChild(sep)
-        return
+        ArchComponent.ViewProviderComponent.attach(self,vobj)
 
     def updateData(self,obj,prop):
         if prop in ["Placement","Shape"]:
             if obj.ViewObject.DisplayMode == "Footprint":
                 obj.ViewObject.Proxy.setDisplayMode("Footprint")
+        ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
 
     def getDisplayModes(self,vobj):
-        modes=["Footprint"]
+        modes = ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)+["Footprint"]
         return modes
 
     def setDisplayMode(self,mode):
+        self.fset.coordIndex.deleteValues(0)
+        self.fcoords.point.deleteValues(0)
         if mode == "Footprint":
             if hasattr(self,"Object"):
                 faces = self.Object.Proxy.getFootprint(self.Object)
@@ -673,10 +676,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                     self.fcoords.point.setValues(verts)
                     self.fset.coordIndex.setValues(0,len(fdata),fdata)
             return "Wireframe"
-        else:
-            self.fset.coordIndex.deleteValues(0)
-            self.fcoords.point.deleteValues(0)
-            return mode
+        return ArchComponent.ViewProviderComponent.setDisplayMode(self,mode)
 
 
 if FreeCAD.GuiUp:

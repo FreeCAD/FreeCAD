@@ -33,6 +33,7 @@ class SoSensor;
 class SoDragger;
 class SbVec2s;
 class SoTransform;
+class SoBaseColor;
 
 namespace Base { class Placement;}
 
@@ -64,6 +65,7 @@ public:
     App::PropertyMaterial ShapeMaterial;
     App::PropertyBool BoundingBox;
     App::PropertyBool Selectable;
+    App::PropertyEnumeration SelectionStyle;
 
     /**
      * Attaches the document object to this view provider.
@@ -93,6 +95,9 @@ public:
     
     /*! synchronize From FC placement to Coin placement*/
     static void updateTransform(const Base::Placement &from, SoTransform *to);
+    
+    void showBoundingBox(bool);
+
 protected:
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
@@ -102,10 +107,10 @@ protected:
     SoFCCSysDragger *csysDragger = nullptr;
 
 protected:
-    void showBoundingBox(bool);
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop);
     void setSelectable(bool Selectable=true);
+    void applyBoundColor();
 
 private:
     static void dragStartCallback(void * data, SoDragger * d);
@@ -117,6 +122,7 @@ protected:
     SoMaterial       * pcShapeMaterial;
     SoFCBoundingBox  * pcBoundingBox;
     SoSwitch         * pcBoundSwitch;
+    SoBaseColor      * pcBoundColor;
 };
 
 } // namespace Gui

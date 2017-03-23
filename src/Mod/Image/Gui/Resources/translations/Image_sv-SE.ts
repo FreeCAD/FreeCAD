@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+325"/>
+        <location filename="../../GLImageBox.cpp" line="+331"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>Odefinierad färgrymd för bildvisning</translation>
     </message>
@@ -199,13 +199,21 @@
     </message>
     <message>
         <location line="+8"/>
-        <source>Error open image</source>
-        <translation>Fel vid öppning av bilden</translation>
+        <source>Error opening image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Could not load the chosen image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error open image</source>
+        <translation type="obsolete">Fel vid öppning av bilden</translation>
+    </message>
+    <message>
         <source>Could not load the choosen image</source>
-        <translation>Kunde inte ladda den valda bilden</translation>
+        <translation type="obsolete">Kunde inte ladda den valda bilden</translation>
     </message>
 </context>
 <context>

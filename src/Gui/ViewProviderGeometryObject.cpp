@@ -74,7 +74,7 @@ PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDocumentObject
 
 const App::PropertyIntegerConstraint::Constraints intPercent = {0,100,1};
 
-ViewProviderGeometryObject::ViewProviderGeometryObject() : pcBoundSwitch(0)
+ViewProviderGeometryObject::ViewProviderGeometryObject() : pcBoundSwitch(0),pcBoundColor(0)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor",3435973887UL); // light gray (204,204,204)
@@ -87,6 +87,10 @@ ViewProviderGeometryObject::ViewProviderGeometryObject() : pcBoundSwitch(0)
     ADD_PROPERTY(ShapeMaterial,(mat));
     ADD_PROPERTY(BoundingBox,(false));
     ADD_PROPERTY(Selectable,(true));
+
+    ADD_PROPERTY(SelectionStyle,((long)0));
+    static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
+    SelectionStyle.setEnums(SelectionStyleEnum);
 
     bool enableSel = hGrp->GetBool("EnableSelection", true);
     Selectable.setValue(enableSel);
@@ -146,8 +150,10 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
         pcShapeMaterial->shininess.setValue(Mat.shininess);
         pcShapeMaterial->transparency.setValue(Mat.transparency);
     }
-    else if (prop == &BoundingBox) {
-        showBoundingBox( BoundingBox.getValue() );
+    else if (prop == &BoundingBox || prop == &SelectionStyle) {
+        applyBoundColor();
+        if(SelectionStyle.getValue()==0 || !Selectable.getValue())
+            showBoundingBox( BoundingBox.getValue() );
     }
 
     ViewProviderDocumentObject::onChanged(prop);
@@ -409,21 +415,32 @@ SoPickedPoint* ViewProviderGeometryObject::getPickedPoint(const SbVec2s& pos, co
     return (pick ? new SoPickedPoint(*pick) : 0);
 }
 
+void ViewProviderGeometryObject::applyBoundColor() {
+    if(!pcBoundColor) return;
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    unsigned long bbcol;
+    if(SelectionStyle.getValue() == 0 || !Selectable.getValue() || !hGrp->GetBool("EnableSelection", true))
+        bbcol = hGrp->GetUnsigned("BoundingBoxColor",4294967295UL); // white (255,255,255)
+    else
+        bbcol = hGrp->GetUnsigned("SelectionColor",0x00CD00UL); // rgb(0,205,0)
+
+    float r,g,b;
+    r = ((bbcol >> 24) & 0xff) / 255.0; g = ((bbcol >> 16) & 0xff) / 255.0; b = ((bbcol >> 8) & 0xff) / 255.0;
+    pcBoundColor->rgb.setValue(r, g, b);
+}
+
 void ViewProviderGeometryObject::showBoundingBox(bool show)
 {
     if (!pcBoundSwitch && show) {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-        unsigned long bbcol = hGrp->GetUnsigned("BoundingBoxColor",4294967295UL); // white (255,255,255)
-        float r,g,b;
-        r = ((bbcol >> 24) & 0xff) / 255.0; g = ((bbcol >> 16) & 0xff) / 255.0; b = ((bbcol >> 8) & 0xff) / 255.0;
         pcBoundSwitch = new SoSwitch();
         SoSeparator* pBoundingSep = new SoSeparator();
         SoDrawStyle* lineStyle = new SoDrawStyle;
         lineStyle->lineWidth = 2.0f;
         pBoundingSep->addChild(lineStyle);
-        SoBaseColor* color = new SoBaseColor();
-        color->rgb.setValue(r, g, b);
-        pBoundingSep->addChild(color);
+
+        pcBoundColor = new SoBaseColor();
+        pBoundingSep->addChild(pcBoundColor);
+        applyBoundColor();
 
         pBoundingSep->addChild(new SoResetTransform());
         pBoundingSep->addChild(pcBoundingBox);
@@ -432,7 +449,7 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
 
         // add to the highlight node
         pcBoundSwitch->addChild(pBoundingSep);
-        pcRoot->addChild(pcBoundSwitch);
+        pcRoot->insertChild(pcBoundSwitch,pcRoot->findChild(pcModeSwitch));
     }
 
     if (pcBoundSwitch) {
@@ -442,6 +459,12 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
 
 void ViewProviderGeometryObject::setSelectable(bool selectable)
 {
+    if(SelectionStyle.getValue()) {
+        applyBoundColor();
+        if(!selectable) 
+            showBoundingBox(false);
+    }
+
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::ALL);
     sa.setSearchingAll(TRUE);

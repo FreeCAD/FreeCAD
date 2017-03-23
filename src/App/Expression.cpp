@@ -908,7 +908,7 @@ Expression * FunctionExpression::evalAggregate() const
 }
 
 /**
-  * Evaluate function. Returns a NumberExpression if evaluation is successfuly.
+  * Evaluate function. Returns a NumberExpression if evaluation is successful.
   * Throws an ExpressionError exception if something fails.
   *
   * @returns A NumberExpression with the result.
@@ -1930,6 +1930,19 @@ bool ExpressionParser::isTokenAnIndentifier(const std::string & str)
     ExpressionParser_delete_buffer(buf);
 
     if (status == 0 && (token == IDENTIFIER || token == CELLADDRESS ))
+        return true;
+    else
+        return false;
+}
+
+bool ExpressionParser::isTokenAUnit(const std::string & str)
+{
+    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
+    int token = ExpressionParserlex();
+    int status = ExpressionParserlex();
+    ExpressionParser_delete_buffer(buf);
+
+    if (status == 0 && token == UNIT)
         return true;
     else
         return false;

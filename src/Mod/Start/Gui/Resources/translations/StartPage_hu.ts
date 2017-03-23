@@ -26,7 +26,7 @@
     <message>
       <location filename="StartPage.py" line="57"/>
       <source>FreeCAD Homepage</source>
-      <translation>FreeCAD Honlap</translation>
+      <translation>FreeCAD honlap</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="58"/>
@@ -201,7 +201,7 @@
     <message>
       <location filename="StartPage.py" line="92"/>
       <source>The FreeCAD-tutorial blog</source>
-      <translation>A  FreeCAD bemutató-blog</translation>
+      <translation>A FreeCAD bemutató-blog</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="93"/>
@@ -294,11 +294,6 @@
       <translation>Egy új FreeCAD kiadás érhető el.</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="109"/>
-      <source>Load an FEM example analysis</source>
-      <translation>Betölt egy FEM (Finite Element Method) példa elemzést</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="54"/>
       <source>Latest commits</source>
       <translation>Legújabb követések</translation>
@@ -317,6 +312,16 @@
       <location filename="StartPage.py" line="112"/>
       <source>See all commits</source>
       <translation>Lásd az összes követőt</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM 3D example analysis</source>
+      <translation>Egy FEM 3D példa elemzés betöltése</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="113"/>
+      <source>Load an FEM 2D example analysis</source>
+      <translation>Egy FEM 2D példa elemzés betöltése</translation>
     </message>
   </context>
 </TS>

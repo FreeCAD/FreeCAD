@@ -27,8 +27,8 @@
 #include <QLayout>
 #include <QRect>
 #include <QWidgetItem>
-#include <QGLWidget>
 #include <Inventor/SbVec3f.h>
+#include <QtOpenGL.h>
 #include <Gui/GLPainter.h>
 
 namespace Gui {
@@ -38,7 +38,7 @@ class View3DInventorViewer;
  * @author Werner Mayer
  */
 #if 1
-class GuiExport Flag : public QGLWidget
+class GuiExport Flag : public QtGLWidget
 {
     Q_OBJECT
 

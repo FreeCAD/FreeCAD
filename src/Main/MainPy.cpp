@@ -128,21 +128,79 @@ extern "C"
         argv[0][PATH_MAX-1] = '\0'; // ensure null termination
         // this is a workaround to avoid a crash in libuuid.so
 #elif defined(FC_OS_MACOSX)
-        uint32_t sz = 0;
-        char *buf;
 
-        _NSGetExecutablePath(NULL, &sz);
-        buf = (char*) malloc(++sz);
-        int err=_NSGetExecutablePath(buf, &sz);
-        if (err != 0) {
+        // The MacOS approach uses the Python sys.path list to find the path
+        // to FreeCAD.so - this should be OS-agnostic, except these two
+        // strings, and the call to access().
+        const static char libName[] = "/FreeCAD.so";
+        const static char upDir[] = "/../";
+
+        char *buf = NULL;
+
+        PyObject *pySysPath = PySys_GetObject("path");
+        if ( PyList_Check(pySysPath) ) { 
+            int i;
+            // pySysPath should be a *PyList of strings - iterate through it
+            // backwards since the FreeCAD path was likely appended just before
+            // we were imported.
+            for (i = PyList_Size(pySysPath) - 1; i >= 0 ; --i) {
+                char *basePath;
+                PyObject *pyPath = PyList_GetItem(pySysPath, i);
+                long sz = 0;
+
+#if PY_MAJOR_VERSION >= 3
+                if ( PyUnicode_Check(pyPath) ) {
+                    // Python 3 string
+                    basePath = PyUnicode_AsUTF8AndSize(pyPath, &sz);
+
+                }
+#else
+                if ( PyString_Check(pyPath) ) {
+                    // Python 2 string type
+                    PyString_AsStringAndSize(pyPath, &basePath, &sz);
+
+                } else if ( PyUnicode_Check(pyPath) ) {
+                    // Python 2 unicode type - explicitly use UTF-8 codec
+                    PyObject *fromUnicode = PyUnicode_AsUTF8String(pyPath);
+                    PyString_AsStringAndSize(fromUnicode, &basePath, &sz);
+                    Py_XDECREF(fromUnicode);
+                }
+#endif // #if/else PY_MAJOR_VERSION >= 3
+                  else {
+                    continue;
+                }
+
+                if (sz + sizeof(libName) > PATH_MAX) {
+                    continue;
+                }
+
+                // buf gets assigned to argv[0], which is free'd at the end
+                buf = (char *)malloc(sz + sizeof(libName));
+                if (buf == NULL) {
+                    break;
+                }
+
+                strcpy(buf, basePath);
+
+                // append libName to buf
+                strcat(buf, libName);
+                if (access(buf, R_OK | X_OK) == 0) {
+
+                    // The FreeCAD "home" path is one level up from
+                    // libName, so replace libName with upDir.
+                    strcpy(buf + sz, upDir); 
+                    buf[sz + sizeof(upDir)] = '\0';
+                    break;
+                }
+            } // end for (i = PyList_Size(pySysPath) - 1; i >= 0 ; --i) {
+        } // end if ( PyList_Check(pySysPath) ) { 
+
+        if (buf == NULL) {
             PyErr_SetString(PyExc_ImportError, "Cannot get path of the FreeCAD module!");
             return;
         }
 
-        argv[0] = (char*)malloc(PATH_MAX);
-        strncpy(argv[0], buf, PATH_MAX);
-        argv[0][PATH_MAX-1] = '\0'; // ensure null termination
-        free(buf);
+        argv[0] = buf;
 #else
 # error "Implement: Retrieve the path of the module for your platform."
 #endif

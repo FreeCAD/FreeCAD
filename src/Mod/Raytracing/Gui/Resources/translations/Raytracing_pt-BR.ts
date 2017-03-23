@@ -159,8 +159,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation>Exportar a posição da câmera da vista 3D atual para um arquivo no formato do POV-Ray</translation>
+        <translation type="obsolete">Exportar a posição da câmera da vista 3D atual para um arquivo no formato do POV-Ray</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>
@@ -463,7 +467,7 @@ Do you want to continue?</source>
     <message>
         <location line="-216"/>
         <source>Max mesh deviation:</source>
-        <translation>Desvio Max. de malha:</translation>
+        <translation>Max desvio de malha:</translation>
     </message>
     <message>
         <location line="+57"/>

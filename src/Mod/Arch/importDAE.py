@@ -168,11 +168,25 @@ def export(exportList,filename,tessellation=1):
     if not checkCollada(): return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     scale = p.GetFloat("ColladaScalingFactor",1.0)
+    scale = scale * 0.001 # from millimeters (FreeCAD) to meters (Collada)
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
     c = p.GetUnsigned("DefaultShapeColor",4294967295)
     defaultcolor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0)
     colmesh = collada.Collada()
     colmesh.assetInfo.upaxis = collada.asset.UP_AXIS.Z_UP
+    # authoring info
+    cont = collada.asset.Contributor()
+    author = FreeCAD.ActiveDocument.CreatedBy.encode("utf8")
+    author = author.replace("<","")
+    author = author.replace(">","")
+    cont.author = author
+    ver = FreeCAD.Version()
+    appli = "FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + "\n"
+    cont.authoring_tool = appli
+    print author,appli
+    colmesh.assetInfo.contributors.append(cont)
+    colmesh.assetInfo.unitname = "meter"
+    colmesh.assetInfo.unitmeter = 1.0
     defaultmat = None
     objind = 0
     scenenodes = []

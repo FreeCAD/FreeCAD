@@ -65,13 +65,17 @@
         <translation>Temel öğeler</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Değişken tabanlı (Parametrik)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Nesne görünümü</translation>
+        <translation type="obsolete">Nesne görünümü</translation>
     </message>
     <message>
         <location line="+1"/>

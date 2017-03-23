@@ -379,7 +379,12 @@
         <translation>Rossz kiválasztás</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -415,7 +420,7 @@
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation>Minden Fájl</translation>
+        <translation>Minden fájl</translation>
     </message>
     <message>
         <location line="-61"/>
@@ -439,12 +444,11 @@
         <translation>A geometria (előválasztás) fölé kell vinni az egérrel a kurzort, hogy használni tudja ezt a parancsot. Részleteket a dokumentációban talál.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Robot kiválasztása és alaphelyzetbe állítása</translation>
+        <translation type="obsolete">Robot kiválasztása és alaphelyzetbe állítása</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Válasszon ki egy robotot</translation>
     </message>

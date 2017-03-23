@@ -177,6 +177,14 @@ set_property(CACHE FREECAD_USE_OCC_VARIANT PROPERTY STRINGS
              "Community Edition"
 )
 
+if (BUILD_QT5)
+  OPTION(FREECAD_USE_QTOPENGL_WIDGET "Replace QGLWidget with QOpenGLWidget." ON)
+  if (FREECAD_USE_QTOPENGL_WIDGET)
+    set(HAVE_QT5_OPENGL 1)
+  endif()
+endif()
+configure_file(${CMAKE_SOURCE_DIR}/src/QtOpenGL.h.cmake ${CMAKE_BINARY_DIR}/src/QtOpenGL.h)
+
 if(APPLE)
     OPTION(FREECAD_CREATE_MAC_APP "Create app bundle on install" OFF)
 
@@ -903,11 +911,15 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             )
 	endif()
     else()
+        if (PYTHON_VERSION_MAJOR LESS 3)
+            SET(PYTHON_SUFFIX -python2.7)
+            SET(PYTHON_BASENAME -python2.7)
+        else(PYTHON_VERSION_MAJOR LESS 3)
         # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
         # below are two variables that can be left empty for standard python, but must be set by the user for different python versions such as 3.5
-        SET(PYTHON_SUFFIX "" CACHE STRING "Shiboken cmake file suffix. If left empty, system default python version will be used: <ShibokenConfigPYTHON_SUFFIX.cmake>")
-        SET(PYTHON_BASENAME "" CACHE STRING "Same as PYTHON_SUFFIX but for PySide. if left empty, PYTHON_SUFFIX will be used: <PySideConfigPYTHON_BASENAME.cmake>")
-
+            SET(PYTHON_SUFFIX "" CACHE STRING "Shiboken cmake file suffix. If left empty, system default python version will be used: <ShibokenConfigPYTHON_SUFFIX.cmake>")
+            SET(PYTHON_BASENAME "" CACHE STRING "Same as PYTHON_SUFFIX but for PySide. if left empty, PYTHON_SUFFIX will be used: <PySideConfigPYTHON_BASENAME.cmake>")
+        endif(PYTHON_VERSION_MAJOR LESS 3)
         if(DEFINED MACPORTS_PREFIX)
             find_package(Shiboken REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
             find_package(PySide REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")

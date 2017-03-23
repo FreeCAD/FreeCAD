@@ -25,44 +25,12 @@
 
 import FreeCAD
 import FreeCADGui
-#from FreeCAD import Vector
+import PathUtils
+import PathScripts.PathLog as PathLog
 
-
-# def equals(p1, p2):
-#     '''returns True if vertexes have same coordinates within precision amount of digits '''
-#     precision = 12
-#     p = precision
-#     u = Vector(p1.X, p1.Y, p1.Z)
-#     v = Vector(p2.X, p2.Y, p2.Z)
-#     vector = (u.sub(v))
-#     isNull = (round(vector.x, p) == 0 and round(vector.y, p) == 0 and round(vector.z, p) == 0)
-#     return isNull
-
-
-# def segments(poly):
-#     ''' A sequence of (x,y) numeric coordinates pairs '''
-#     return zip(poly, poly[1:] + [poly[0]])
-
-
-# def check_clockwise(poly):
-#     '''
-#      check_clockwise(poly) a function for returning a boolean if the selected wire is clockwise or counter clockwise
-#      based on point order. poly = [(x1,y1),(x2,y2),(x3,y3)]
-#     '''
-#     clockwise = False
-#     if (sum(x0*y1 - x1*y0 for ((x0, y0), (x1, y1)) in segments(poly))) < 0:
-#         clockwise = not clockwise
-#     return clockwise
-
-
-# class FGate:
-#     def allow(self, doc, obj, sub):
-#         return (sub[0:4] == 'Face')
-
-
-# class VGate:
-#     def allow(self, doc, obj, sub):
-#         return (sub[0:6] == 'Vertex')
+LOG_MODULE = 'PathSelection'
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+PathLog.trackModule('PathSelection')
 
 
 class EGate:
@@ -78,7 +46,6 @@ class MESHGate:
 class ENGRAVEGate:
     def allow(self, doc, obj, sub):
         engraveable = False
-
         if hasattr(obj, "Shape"):
             if obj.Shape.BoundBox.ZLength == 0.0:
                 try:
@@ -87,31 +54,18 @@ class ENGRAVEGate:
                     return False
                 if len(obj.Wires) > 0:
                     engraveable = True
-
         return engraveable
+
 
 class DRILLGate:
     def allow(self, doc, obj, sub):
-        import Part
-        drillable = False
-        try:
+        PathLog.debug('obj: {} sub: {}'.format(obj, sub))
+        if hasattr(obj, "Shape"):
             obj = obj.Shape
-        except:
+            subobj = obj.getElement(sub)
+            return PathUtils.isDrillable(obj, subobj)
+        else:
             return False
-        if obj.ShapeType == 'Vertex':
-                drillable = True
-        elif obj.ShapeType in['Solid', 'Compound']:
-            if sub[0:4] == 'Face':
-                subobj = obj.getElement(sub)
-                drillable = isinstance(subobj.Edges[0].Curve, Part.Circle)
-                if str(subobj.Surface) == "<Cylinder object>":
-                    drillable = subobj.isClosed()
-
-            if sub[0:4] == 'Edge':
-                o = obj.getElement(sub)
-                drillable = isinstance(o.Curve, Part.Circle)
-
-        return drillable
 
 
 class PROFILEGate:
@@ -182,45 +136,29 @@ def contourselect():
     FreeCADGui.Selection.addSelectionGate(CONTOURGate())
     FreeCAD.Console.PrintWarning("Contour Select Mode\n")
 
-# def fselect():
-#     FreeCADGui.Selection.addSelectionGate(FGate())
-#     FreeCAD.Console.PrintWarning("Face Select Mode\n")
-
-
-# def vselect():
-#     FreeCADGui.Selection.addSelectionGate(VGate())
-#     FreeCAD.Console.PrintWarning("Vertex Select Mode\n")
-
-
 def eselect():
     FreeCADGui.Selection.addSelectionGate(EGate())
     FreeCAD.Console.PrintWarning("Edge Select Mode\n")
-
 
 def drillselect():
     FreeCADGui.Selection.addSelectionGate(DRILLGate())
     FreeCAD.Console.PrintWarning("Drilling Select Mode\n")
 
-
 def engraveselect():
     FreeCADGui.Selection.addSelectionGate(ENGRAVEGate())
     FreeCAD.Console.PrintWarning("Engraving Select Mode\n")
-
 
 def profileselect():
     FreeCADGui.Selection.addSelectionGate(PROFILEGate())
     FreeCAD.Console.PrintWarning("Profiling Select Mode\n")
 
-
 def pocketselect():
     FreeCADGui.Selection.addSelectionGate(POCKETGate())
     FreeCAD.Console.PrintWarning("Pocketing Select Mode\n")
 
-
 def surfaceselect():
     FreeCADGui.Selection.addSelectionGate(MESHGate())
     FreeCAD.Console.PrintWarning("Surfacing Select Mode\n")
-
 
 def clear():
     FreeCADGui.Selection.removeSelectionGate()

@@ -37,7 +37,7 @@
     <message>
       <location filename="PlotGui.py" line="113"/>
       <source>Show/Hide grid on selected plot</source>
-      <translation type="unfinished">Show/Hide grid on selected plot</translation>
+      <translation>Εμφάνιση/απόκρυψη πλέγματος σε επιλεγμένη οικόπεδο</translation>
     </message>
   </context>
   <context>
@@ -58,12 +58,12 @@
     <message>
       <location filename="PlotGui.py" line="137"/>
       <source>Show/Hide legend</source>
-      <translation type="unfinished">Show/Hide legend</translation>
+      <translation>Εμφάνιση/απόκρυψη υπομνήματος</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="140"/>
       <source>Show/Hide legend on selected plot</source>
-      <translation type="unfinished">Show/Hide legend on selected plot</translation>
+      <translation>Εμφάνιση/απόκρυψη θρύλος σε επιλεγμένο οικόπεδο</translation>
     </message>
   </context>
   <context>
@@ -170,7 +170,7 @@
     <message>
       <location filename="TaskPanel.py" line="257"/>
       <source>Check it to apply transformations to all axes</source>
-      <translation type="unfinished">Check it to apply transformations to all axes</translation>
+      <translation>Ελέγξτε και να τους εφαρμόσετε σε όλους τους άξονες</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="263"/>

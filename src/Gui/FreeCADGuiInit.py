@@ -98,10 +98,10 @@ class NoneWorkbench ( Workbench ):
 		return "Gui::NoneWorkbench"
 
 def InitApplications():
-	import sys,os,traceback,cStringIO
+	import sys,os,traceback
 	# Searching modules dirs +++++++++++++++++++++++++++++++++++++++++++++++++++
 	# (additional module paths are already cached)
-	ModDirs = FreeCAD.__path__
+	ModDirs = FreeCAD.__ModDirs__
 	#print ModDirs
 	Log('Init:   Searching modules...\n')
 	for Dir in ModDirs:
@@ -109,16 +109,16 @@ def InitApplications():
 			InstallFile = os.path.join(Dir,"InitGui.py")
 			if (os.path.exists(InstallFile)):
 				try:
-					#execfile(InstallFile)
-					exec open(InstallFile).read()
-				except Exception, inst:
+					# XXX: This looks scary securitywise...
+					with open(InstallFile) as f:
+						exec(f.read())
+				except Exception as inst:
 					Log('Init:      Initializing ' + Dir + '... failed\n')
 					Log('-'*100+'\n')
-					output=cStringIO.StringIO()
-					traceback.print_exc(file=output)
-					Log(output.getvalue())
+					Log(traceback.format_exc())
 					Log('-'*100+'\n')
-					Err('During initialization the error ' + str(inst).decode('ascii','replace') + ' occurred in ' + InstallFile + '\n')
+					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
+					Err('Please look into the log file for further information')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:

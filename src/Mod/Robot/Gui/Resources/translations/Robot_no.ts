@@ -379,7 +379,12 @@
         <translation>Feil valg</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
         <location filename="../../CommandExport.cpp" line="-61"/>
         <location line="+62"/>
@@ -439,12 +444,11 @@
         <translation>Du må holde mus over noe geometri (Forvalg) for å bruke denne kommandoen. Se dokumentasjonen for detaljer.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Velg en robot å sette i utgangsposisjon</translation>
+        <translation type="obsolete">Velg en robot å sette i utgangsposisjon</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Velg en robot</translation>
     </message>

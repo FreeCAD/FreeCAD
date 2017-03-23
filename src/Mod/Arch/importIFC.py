@@ -1098,7 +1098,14 @@ def export(exportList,filename):
         if ifctype in ["IfcSlab","IfcFooting","IfcRoof"]:
             args = args + ["NOTDEFINED"]
         elif ifctype in ["IfcWindow","IfcDoor"]:
-            args = args + [obj.Width.Value/1000.0, obj.Height.Value/1000.0]
+            if hasattr(obj,"Width") and hasattr(obj,"Height"):
+                args = args + [obj.Width.Value/1000.0, obj.Height.Value/1000.0]
+            else:
+                if obj.Shape.BoundBox.XLength > obj.Shape.BoundBox.YLength:
+                    l = obj.Shape.BoundBox.XLength
+                else:
+                    l = obj.Shape.BoundBox.YLength
+                args = args + [l/1000.0,obj.Shape.BoundBox.ZLength/1000.0]
         elif ifctype == "IfcSpace":
             args = args + ["ELEMENT","INTERNAL",obj.Shape.BoundBox.ZMin/1000.0]
         elif ifctype == "IfcBuildingElementProxy":
@@ -1703,11 +1710,14 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                         for fcface in fcsolid.Faces:
                             for e in fcface.Edges:
                                 if DraftGeomUtils.geomType(e) != "Line":
+                                    from FreeCAD import Base
                                     try:
                                         if e.curvatureAt(e.FirstParameter+(e.LastParameter-e.FirstParameter)/2) > 0.0001:
                                             curves = True
                                             break
                                     except Part.OCCError:
+                                        pass
+                                    except Base.FreeCADError:
                                         pass
                         if curves:
                             joinfacets = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcJoinCoplanarFacets",False)
@@ -1750,14 +1760,17 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             for wire in fcface.Wires:
                                 if wire.hashCode() != fcface.OuterWire.hashCode():
                                     verts = [v.Point for v in wire.OrderedVertexes]
-                                    v1 = verts[0].sub(c)
-                                    v2 = verts[1].sub(c)
-                                    if DraftVecUtils.angle(v2,v1,DraftVecUtils.neg(n)) >= 0:
-                                        verts.reverse()
-                                    pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
-                                    loop =  ifcfile.createIfcPolyLoop(pts)
-                                    bound = ifcfile.createIfcFaceBound(loop,True)
-                                    loops.append(bound)
+                                    if len(verts) > 1:
+                                        v1 = verts[0].sub(c)
+                                        v2 = verts[1].sub(c)
+                                        if DraftVecUtils.angle(v2,v1,DraftVecUtils.neg(n)) >= 0:
+                                            verts.reverse()
+                                        pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
+                                        loop =  ifcfile.createIfcPolyLoop(pts)
+                                        bound = ifcfile.createIfcFaceBound(loop,True)
+                                        loops.append(bound)
+                                    else:
+                                        print ("Warning: wire with one/no vertex in ",obj.Label)
                             face =  ifcfile.createIfcFace(loops)
                             faces.append(face)
 

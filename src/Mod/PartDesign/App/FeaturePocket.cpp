@@ -217,4 +217,3 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 }
-

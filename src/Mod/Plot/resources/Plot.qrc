@@ -35,5 +35,10 @@
         <file>translations/Plot_sr.qm</file>
         <file>translations/Plot_el.qm</file>
         <file>translations/Plot_sl.qm</file>
+        <file>translations/Plot_eu.qm</file>
+        <file>translations/Plot_ca.qm</file>
+        <file>translations/Plot_gl.qm</file>
+        <file>translations/Plot_kab.qm</file>
+        <file>translations/Plot_ko.qm</file>
     </qresource>
 </RCC>

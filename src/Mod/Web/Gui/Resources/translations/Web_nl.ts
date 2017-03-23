@@ -127,12 +127,12 @@
     <name>QObject</name>
     <message>
         <location filename="../../AppWebGui.cpp" line="78"/>
-        <location filename="../../BrowserView.cpp" line="353"/>
+        <location filename="../../BrowserView.cpp" line="354"/>
         <source>Browser</source>
         <translation>Browser</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="249"/>
+        <location filename="../../BrowserView.cpp" line="250"/>
         <source>File does not exist!</source>
         <translation>Bestand bestaat niet!</translation>
     </message>
@@ -140,12 +140,12 @@
 <context>
     <name>WebGui::BrowserView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="244"/>
+        <location filename="../../BrowserView.cpp" line="245"/>
         <source>Error</source>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="324"/>
+        <location filename="../../BrowserView.cpp" line="325"/>
         <source>Loading %1...</source>
         <translation>Laden %1...</translation>
     </message>

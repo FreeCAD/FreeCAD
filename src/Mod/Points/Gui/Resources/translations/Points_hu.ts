@@ -262,7 +262,7 @@
         <location line="-51"/>
         <location line="+51"/>
         <source>All Files</source>
-        <translation>Minden Fájl</translation>
+        <translation>Minden fájl</translation>
     </message>
     <message>
         <location line="+74"/>

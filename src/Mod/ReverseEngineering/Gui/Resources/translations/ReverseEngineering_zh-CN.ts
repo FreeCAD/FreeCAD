@@ -104,7 +104,7 @@
         <location line="-38"/>
         <location line="+67"/>
         <source>Control points</source>
-        <translation type="unfinished">Control points</translation>
+        <translation>控制点</translation>
     </message>
     <message>
         <location line="-35"/>

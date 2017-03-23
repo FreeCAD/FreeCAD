@@ -31,7 +31,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="93"/>
       <source>Use ViewProvider in Tree View</source>
-      <translation type="unfinished">Use ViewProvider in Tree View</translation>
+      <translation>Χρήση ViewProvider σε προβολή δέντρου</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="110"/>
@@ -41,12 +41,12 @@
     <message>
       <location filename="openscadprefs-base.ui" line="113"/>
       <source>Use Multmatrix Feature</source>
-      <translation type="unfinished">Use Multmatrix Feature</translation>
+      <translation>Χρησιμοποιήστε το χαρακτηριστικό Multmatrix</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation type="unfinished">The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</translation>
+      <translation>Ο μέγιστος αριθμός του πρόσωπα ενός πολυγώνου, πρίσμα ή frustum. Εάν η fn είναι μεγαλύτερη από την τιμή αυτή, το αντικείμενο θεωρείται να είναι ένα κυκλικό. Ορίζεται στο 0 για δεν υπάρχει όριο</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="133"/>
@@ -101,17 +101,17 @@
     <message>
       <location filename="openscadprefs-base.ui" line="341"/>
       <source>Mesh fallback</source>
-      <translation type="unfinished">Mesh fallback</translation>
+      <translation>Πλέγμα επιστροφή</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="383"/>
       <source>Deflection</source>
-      <translation type="unfinished">Deflection</translation>
+      <translation>Εκτροπή</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="386"/>
       <source>deflection</source>
-      <translation type="unfinished">deflection</translation>
+      <translation>εκτροπή</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="393"/>
@@ -142,12 +142,12 @@
       <translation>Παρακαλώ επιλέξτε πρώτα 3 αντικείμενα</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Unsupported Function</source>
       <translation>Μη υποστηριζόμενη λειτουργία</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1118"/>
+      <location filename="importCSG.py" line="1161"/>
       <source>Press OK</source>
       <translation>Πατήστε OK</translation>
     </message>

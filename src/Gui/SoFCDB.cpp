@@ -128,6 +128,7 @@ void Gui::SoFCDB::init()
     PropertyFloatItem               ::init();
     PropertyUnitItem                ::init();
     PropertyFloatConstraintItem     ::init();
+    PropertyPrecisionItem           ::init();
     PropertyUnitConstraintItem      ::init();
     PropertyAngleItem               ::init();
     PropertyBoolItem                ::init();

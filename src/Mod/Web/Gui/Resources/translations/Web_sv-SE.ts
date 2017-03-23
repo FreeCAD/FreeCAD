@@ -48,7 +48,7 @@
         <location filename="../../Command.cpp" line="135"/>
         <location filename="../../Command.cpp" line="136"/>
         <source>Refresh web page</source>
-        <translation>Uppdatera websida</translation>
+        <translation>Uppdatera websidan</translation>
     </message>
 </context>
 <context>
@@ -120,19 +120,19 @@
     <message>
         <location filename="../../Command.cpp" line="52"/>
         <source>Opens a website in FreeCAD</source>
-        <translation>Öppnar en webbsida i FreeCAD</translation>
+        <translation>Öppnar en webbplats i FreeCAD</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../../AppWebGui.cpp" line="78"/>
-        <location filename="../../BrowserView.cpp" line="353"/>
+        <location filename="../../BrowserView.cpp" line="354"/>
         <source>Browser</source>
         <translation>Webbläsare</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="249"/>
+        <location filename="../../BrowserView.cpp" line="250"/>
         <source>File does not exist!</source>
         <translation>Filen existerar inte!</translation>
     </message>
@@ -140,12 +140,12 @@
 <context>
     <name>WebGui::BrowserView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="244"/>
+        <location filename="../../BrowserView.cpp" line="245"/>
         <source>Error</source>
         <translation>Fel</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="324"/>
+        <location filename="../../BrowserView.cpp" line="325"/>
         <source>Loading %1...</source>
         <translation>Laddar %1...</translation>
     </message>
@@ -160,7 +160,7 @@
     <message>
         <location filename="../../BrowserView.cpp" line="126"/>
         <source>Open in new window</source>
-        <translation type="unfinished">Open in new window</translation>
+        <translation>Öppna i Nytt fönster</translation>
     </message>
 </context>
 <context>

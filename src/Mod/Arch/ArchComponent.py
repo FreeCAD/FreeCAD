@@ -323,6 +323,7 @@ class Component:
         obj.addProperty("App::PropertyArea","VerticalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
         obj.addProperty("App::PropertyArea","HorizontalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
         obj.addProperty("App::PropertyLength","PerimeterLength","Arch",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"))
+        obj.addProperty("App::PropertyLink","HiRes","Arch",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
@@ -677,15 +678,17 @@ class ViewProviderComponent:
             if obj.Base:
                 if obj.Base.isDerivedFrom("Part::Compound"):
                     if obj.ViewObject.DiffuseColor != obj.Base.ViewObject.DiffuseColor:
-                        obj.ViewObject.DiffuseColor = obj.Base.ViewObject.DiffuseColor
-                        obj.ViewObject.update()
-                        self.onChanged(obj.ViewObject,"ShapeColor")
+                        if len(obj.Base.ViewObject.DiffuseColor) > 1:
+                            obj.ViewObject.DiffuseColor = obj.Base.ViewObject.DiffuseColor
+                            obj.ViewObject.update()
+                        #self.onChanged(obj.ViewObject,"ShapeColor")
         elif prop == "CloneOf":
             if obj.CloneOf and not(obj.BaseMaterial):
                 if obj.ViewObject.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
+                    if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
                         obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
                         obj.ViewObject.update()
-                        self.onChanged(obj.ViewObject,"ShapeColor")
+                        #self.onChanged(obj.ViewObject,"ShapeColor")
         return
 
     def getIcon(self):
@@ -720,13 +723,58 @@ class ViewProviderComponent:
         return
 
     def attach(self,vobj):
+        from pivy import coin
         self.Object = vobj.Object
+        self.hiresgroup = coin.SoSeparator()
+        self.meshcolor = coin.SoBaseColor()
+        self.hiresgroup.addChild(self.meshcolor)
+        self.hiresgroup.setName("HiRes")
+        vobj.addDisplayMode(self.hiresgroup,"HiRes");
         return
 
     def getDisplayModes(self,vobj):
-        return []
+        modes=["HiRes"]
+        return modes
 
     def setDisplayMode(self,mode):
+        if hasattr(self,"meshnode"):
+            if self.meshnode:
+                self.hiresgroup.removeChild(self.meshnode)
+                del self.meshnode
+        if mode == "HiRes":
+            from pivy import coin
+            m = None
+            if hasattr(self,"Object"):
+                if hasattr(self.Object,"HiRes"):
+                    if self.Object.HiRes:
+                        # if the file was recently loaded, the node is not present yet
+                        self.Object.HiRes.ViewObject.show()
+                        self.Object.HiRes.ViewObject.hide()
+                        m = self.Object.HiRes.ViewObject.RootNode
+                if not m:
+                    if hasattr(self.Object,"CloneOf"):
+                        if self.Object.CloneOf:
+                            if hasattr(self.Object.CloneOf,"HiRes"):
+                                if self.Object.CloneOf.HiRes:
+                                    # if the file was recently loaded, the node is not present yet
+                                    self.Object.CloneOf.HiRes.ViewObject.show()
+                                    self.Object.CloneOf.HiRes.ViewObject.hide()
+                                    m = self.Object.CloneOf.HiRes.ViewObject.RootNode
+            if m:
+                self.meshnode = m.copy()
+                for c in self.meshnode.getChildren():
+                    # switch the first found SoSwitch on
+                    if isinstance(c,coin.SoSwitch):
+                        num = 0
+                        if c.getNumChildren() > 0:
+                            if c.getChild(0).getName() == "HiRes":
+                                num = 1
+                        print "getting node ",num," for ",self.Object.Label
+                        c.whichChild = num
+                        break
+                self.hiresgroup.addChild(self.meshnode)
+            else:
+                return "Flat Lines"
         return mode
 
     def __getstate__(self):
@@ -764,7 +812,7 @@ class ViewProviderComponent:
                 if hasattr(self.Object,link):
                     objlink = getattr(self.Object,link)
                     c.extend(objlink)
-            for link in ["Tool","Subvolume","Mesh","Hires"]:
+            for link in ["Tool","Subvolume","Mesh","HiRes"]:
                 if hasattr(self.Object,link):
                     objlink = getattr(self.Object,link)
                     if objlink:

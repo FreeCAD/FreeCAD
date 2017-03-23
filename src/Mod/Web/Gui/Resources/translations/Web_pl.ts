@@ -16,7 +16,7 @@
     <message>
         <location filename="../../Command.cpp" line="78"/>
         <source>Go back to the previous page</source>
-        <translation>Idź do poprzedniej strony</translation>
+        <translation>Powróć do poprzedniej strony</translation>
     </message>
 </context>
 <context>
@@ -127,12 +127,12 @@
     <name>QObject</name>
     <message>
         <location filename="../../AppWebGui.cpp" line="78"/>
-        <location filename="../../BrowserView.cpp" line="353"/>
+        <location filename="../../BrowserView.cpp" line="354"/>
         <source>Browser</source>
         <translation>Przeglądarka</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="249"/>
+        <location filename="../../BrowserView.cpp" line="250"/>
         <source>File does not exist!</source>
         <translation>Plik nie istnieje!</translation>
     </message>
@@ -140,12 +140,12 @@
 <context>
     <name>WebGui::BrowserView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="244"/>
+        <location filename="../../BrowserView.cpp" line="245"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="324"/>
+        <location filename="../../BrowserView.cpp" line="325"/>
         <source>Loading %1...</source>
         <translation>Ładowanie %1...</translation>
     </message>

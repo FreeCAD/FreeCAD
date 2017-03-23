@@ -1177,6 +1177,7 @@ void Application::initTypes(void)
     App ::PropertyFloat             ::init();
     App ::PropertyFloatList         ::init();
     App ::PropertyFloatConstraint   ::init();
+    App ::PropertyPrecision         ::init();
     App ::PropertyQuantity          ::init();
     App ::PropertyQuantityConstraint::init();
     App ::PropertyAngle             ::init();
@@ -1557,7 +1558,7 @@ void Application::runApplication()
     processCmdLineFiles();
 
     if (mConfig["RunMode"] == "Cmd") {
-        // Run the comandline interface
+        // Run the commandline interface
         Interpreter().runCommandLine("FreeCAD Console mode");
     }
     else if (mConfig["RunMode"] == "Internal") {
@@ -1809,7 +1810,7 @@ void Application::ParseOptions(int ac, char ** av)
     //x11.add_options()
     //    ("display",  boost::program_options::value< string >(), "set the X-Server")
     //    ;
-    //0000723: improper handling of qt specific comand line arguments
+    //0000723: improper handling of qt specific command line arguments
     std::vector<std::string> args;
     bool merge=false;
     for (int i=1; i<ac; i++) {
@@ -1873,7 +1874,7 @@ void Application::ParseOptions(int ac, char ** av)
     if (vm.count("help")) {
         std::stringstream str;
         str << mConfig["ExeName"] << endl << endl;
-        str << "For detailed descripton see http://www.freecadweb.org" << endl<<endl;
+        str << "For detailed description see http://www.freecadweb.org" << endl<<endl;
         str << "Usage: " << mConfig["ExeName"] << " [options] File1 File2 ..." << endl << endl;
         str << visible << endl;
         throw Base::ProgramInformation(str.str());
@@ -2280,28 +2281,35 @@ std::string Application::FindHomePath(const char* sCall)
 
 std::string Application::FindHomePath(const char* call)
 {
-    uint32_t sz = 0;
-    char *buf;
+    // If Python is intialized at this point, then we're being run from
+    // MainPy.cpp, which hopefully rewrote argv[0] to point at the
+    // FreeCAD shared library.
+    if (!Py_IsInitialized()) {
+        uint32_t sz = 0;
+        char *buf;
 
-    _NSGetExecutablePath(NULL, &sz); //function only returns "sz" if first arg is to small to hold value
-    buf = (char*) malloc(++sz);
+        _NSGetExecutablePath(NULL, &sz); //function only returns "sz" if first arg is to small to hold value
+        buf = new char[++sz];
 
-    if (_NSGetExecutablePath(buf, &sz) == 0) {
-        char resolved[PATH_MAX];
-        char* path = realpath(buf, resolved);
-        free(buf);
+        if (_NSGetExecutablePath(buf, &sz) == 0) {
+            char resolved[PATH_MAX];
+            char* path = realpath(buf, resolved);
+            delete [] buf;
 
-        if (path) {
-            std::string Call(resolved), TempHomePath;
-            std::string::size_type pos = Call.find_last_of(PATHSEP);
-            TempHomePath.assign(Call,0,pos);
-            pos = TempHomePath.find_last_of(PATHSEP);
-            TempHomePath.assign(TempHomePath,0,pos+1);
-            return TempHomePath;
+            if (path) {
+                std::string Call(resolved), TempHomePath;
+                std::string::size_type pos = Call.find_last_of(PATHSEP);
+                TempHomePath.assign(Call,0,pos);
+                pos = TempHomePath.find_last_of(PATHSEP);
+                TempHomePath.assign(TempHomePath,0,pos+1);
+                return TempHomePath;
+            }
+        } else {
+            delete [] buf;
         }
     }
 
-    return call; // error
+    return call;
 }
 
 #elif defined (FC_OS_WIN32)

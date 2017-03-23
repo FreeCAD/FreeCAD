@@ -29,7 +29,7 @@
    <item row="0" column="0">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="Geometry">
       <property name="enabled">
@@ -40,7 +40,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>343</height>
+        <height>331</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -117,8 +117,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>114</width>
-        <height>108</height>
+        <width>334</width>
+        <height>331</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -195,8 +195,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>144</width>
-        <height>56</height>
+        <width>334</width>
+        <height>331</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -245,8 +245,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>94</width>
-        <height>24</height>
+        <width>334</width>
+        <height>331</height>
        </rect>
       </property>
       <attribute name="label">
@@ -259,8 +259,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>178</width>
-        <height>120</height>
+        <width>334</width>
+        <height>331</height>
        </rect>
       </property>
       <attribute name="label">
@@ -341,7 +341,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>343</height>
+        <height>331</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -351,42 +351,103 @@
       <attribute name="label">
        <string>Operation</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout_2">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-       </property>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Algorithm</string>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QFrame" name="frame_2">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
          </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>ToolController</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="uiToolController"/>
+          </item>
+         </layout>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="algorithmSelect">
-         <item>
-          <property name="text">
-           <string>OCC Native</string>
+       <item>
+        <widget class="QFrame" name="frame_4">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="leftMargin">
+           <number>9</number>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>libarea</string>
+          <property name="topMargin">
+           <number>0</number>
           </property>
-         </item>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>Algorithm</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="algorithmSelect">
+            <item>
+             <property name="text">
+              <string>OCC Native</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>libarea</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2">
-        <widget class="QWidget" name="widget_3" native="true">
-         <layout class="QGridLayout" name="gridLayout_5">
-          <item row="0" column="0">
+       <item>
+        <widget class="QFrame" name="frame_3">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
            <widget class="QLabel" name="label_9">
             <property name="text">
              <string>Cut Mode</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
+          <item>
            <widget class="QComboBox" name="cutMode">
             <item>
              <property name="text">
@@ -403,9 +464,15 @@
          </layout>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2">
+       <item>
         <widget class="QWidget" name="widget_2" native="true">
-         <layout class="QGridLayout" name="gridLayout_4">
+         <layout class="QFormLayout" name="formLayout_2">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item row="0" column="0">
            <widget class="QCheckBox" name="useStartPoint">
             <property name="text">
@@ -413,39 +480,47 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Material Allowance</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="Gui::InputField" name="extraOffset">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="minimum">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
-       <item row="8" column="0" colspan="2">
-        <widget class="QWidget" name="widget_4" native="true">
-         <layout class="QGridLayout" name="gridLayout_6"/>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_8">
-         <property name="text">
-          <string>Material Allowance</string>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="Gui::InputField" name="extraOffset">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>96</height>
+          </size>
          </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="unit" stdset="0">
-          <string notr="true">mm</string>
-         </property>
-        </widget>
+        </spacer>
        </item>
       </layout>
      </widget>

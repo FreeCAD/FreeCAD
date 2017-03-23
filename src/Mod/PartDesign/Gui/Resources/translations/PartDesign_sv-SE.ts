@@ -6,17 +6,17 @@
     <message>
         <location filename="../../Command.cpp" line="+1176"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Additive loft</source>
-        <translation type="unfinished"></translation>
+        <translation>Additivt loft</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sweep a selected sketch along a path or to other profiles</source>
-        <translation type="unfinished"></translation>
+        <translation>Svep en vald skiss längs en bana eller till andra profiler</translation>
     </message>
 </context>
 <context>
@@ -24,35 +24,35 @@
     <message>
         <location line="-96"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Additive pipe</source>
-        <translation type="unfinished"></translation>
+        <translation>Additivt rör</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sweep a selected sketch along a path or to other profiles</source>
-        <translation type="unfinished"></translation>
+        <translation>Svep en vald skiss längs en bana eller till andra profiler</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignBody</name>
     <message>
-        <location filename="../../CommandBody.cpp" line="+125"/>
+        <location filename="../../CommandBody.cpp" line="+130"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create body</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa kropp</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a new body and make it active</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en ny kropp och gör den aktiv</translation>
     </message>
 </context>
 <context>
@@ -60,17 +60,17 @@
     <message>
         <location filename="../../Command.cpp" line="+832"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Boolean operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Boolesk operation</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Boolean operation with two or more bodies</source>
-        <translation type="unfinished"></translation>
+        <translation>Boolesk operation med två eller fler kroppar</translation>
     </message>
 </context>
 <context>
@@ -120,19 +120,19 @@
 <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-        <location filename="../../CommandBody.cpp" line="+400"/>
+        <location filename="../../CommandBody.cpp" line="+420"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Duplicate selected object</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplicera valda objekt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Duplicates the selected object and adds it to the active body</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplicerar det markerade objektet och lägger till den till aktiva kroppen</translation>
     </message>
 </context>
 <context>
@@ -163,12 +163,12 @@
     <message>
         <location line="+1"/>
         <source>Groove</source>
-        <translation type="unfinished">Groove</translation>
+        <translation>Skåra</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Groove a selected sketch</source>
-        <translation type="unfinished">Groove a selected sketch</translation>
+        <translation>Skåra av aktiva skissen</translation>
     </message>
 </context>
 <context>
@@ -176,17 +176,17 @@
     <message>
         <location line="-856"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a datum line</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en datumlinje</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a new datum line</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en ny datumlinje</translation>
     </message>
 </context>
 <context>
@@ -204,7 +204,7 @@
     <message>
         <location line="+1"/>
         <source>Create a linear pattern feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa ett linjärt mönster av detaljer</translation>
     </message>
     <message>
         <source>create a linear pattern feature</source>
@@ -216,17 +216,17 @@
     <message>
         <location filename="../../CommandBody.cpp" line="-296"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Migrate</source>
-        <translation type="unfinished"></translation>
+        <translation>Migrera</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Migrate document to the modern partdesign workflow</source>
-        <translation type="unfinished"></translation>
+        <translation>Migrera dokumentet till det moderna arbetsflödet för föremålsdesign</translation>
     </message>
 </context>
 <context>
@@ -244,7 +244,7 @@
     <message>
         <location line="+1"/>
         <source>create a mirrored feature</source>
-        <translation type="unfinished">skapa ett speglat föremål</translation>
+        <translation>skapa ett speglat föremål</translation>
     </message>
 </context>
 <context>
@@ -252,17 +252,17 @@
     <message>
         <location filename="../../CommandBody.cpp" line="+348"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Move object to other body</source>
-        <translation type="unfinished"></translation>
+        <translation>Flytta objekt till annan kropp</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Moves the selected object to another body</source>
-        <translation type="unfinished"></translation>
+        <translation>Flyttar objektet till en annan kropp</translation>
     </message>
 </context>
 <context>
@@ -270,17 +270,17 @@
     <message>
         <location line="+138"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Move object after other object</source>
-        <translation type="unfinished"></translation>
+        <translation>Flytta objekt efter andra objekt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Moves the selected object and insert it after another object</source>
-        <translation type="unfinished"></translation>
+        <translation>Flyttar det markerade objektet och infoga det efter ett annat objekt</translation>
     </message>
 </context>
 <context>
@@ -288,17 +288,17 @@
     <message>
         <location line="-278"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Set tip</source>
-        <translation type="unfinished"></translation>
+        <translation>Ställ in spets</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Move the tip of the body</source>
-        <translation type="unfinished"></translation>
+        <translation>Flytta spetsen på kroppen</translation>
     </message>
 </context>
 <context>
@@ -311,7 +311,7 @@
     <message>
         <location line="+1"/>
         <source>Create MultiTransform</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa MultiTransform</translation>
     </message>
     <message>
         <source>MultiTransform</source>
@@ -320,7 +320,7 @@
     <message>
         <location line="+1"/>
         <source>Create a multitransform feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa ett multitransformdetalj</translation>
     </message>
     <message>
         <source>create a multitransform feature</source>
@@ -332,17 +332,17 @@
     <message>
         <location line="-1508"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create sketch</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa skiss</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a new sketch</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en ny skiss</translation>
     </message>
 </context>
 <context>
@@ -366,19 +366,19 @@
 <context>
     <name>CmdPartDesignPart</name>
     <message>
-        <location filename="../../CommandBody.cpp" line="-367"/>
+        <location filename="../../CommandBody.cpp" line="-387"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create part</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa del</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a new part and make it active</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en ny del och gör den aktiv</translation>
     </message>
 </context>
 <context>
@@ -386,17 +386,17 @@
     <message>
         <location filename="../../Command.cpp" line="-728"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a datum plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa ett datumplan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a new datum plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa ett nytt datumplan</translation>
     </message>
 </context>
 <context>
@@ -414,7 +414,7 @@
     <message>
         <location line="+1"/>
         <source>Create a pocket with the selected sketch</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en ficka av den valda skissen</translation>
     </message>
     <message>
         <source>create a pocket with the selected sketch</source>
@@ -426,17 +426,17 @@
     <message>
         <location line="-730"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a datum point</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en datumpunkt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a new datum point</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en ny datumpunkt</translation>
     </message>
 </context>
 <context>
@@ -454,7 +454,7 @@
     <message>
         <location line="+1"/>
         <source>Create a polar pattern feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa ett polärt mönster av detaljer</translation>
     </message>
     <message>
         <source>create a polar pattern feature</source>
@@ -494,7 +494,7 @@
     <message>
         <location line="+1"/>
         <source>Create a scaled feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa ett skalad detalj</translation>
     </message>
     <message>
         <source>create a scaled feature</source>
@@ -506,17 +506,17 @@
     <message>
         <location line="-1536"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a shape binder</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en formbindning</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a new shape binder</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en ny formbindning</translation>
     </message>
 </context>
 <context>
@@ -524,17 +524,17 @@
     <message>
         <location line="+984"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Subtractive loft</source>
-        <translation type="unfinished"></translation>
+        <translation>Subtraktivt loft</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-        <translation type="unfinished"></translation>
+        <translation>Svep en vald skiss längs en bana eller till andra profiler och ta bort den från kroppen</translation>
     </message>
 </context>
 <context>
@@ -542,17 +542,17 @@
     <message>
         <location line="-96"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Subtractive pipe</source>
-        <translation type="unfinished"></translation>
+        <translation>Subtraktivt rör</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-        <translation type="unfinished"></translation>
+        <translation>Svep en vald skiss längs en bana eller till andra profiler och ta bort den från kroppen</translation>
     </message>
 </context>
 <context>
@@ -560,17 +560,17 @@
     <message>
         <location line="+342"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Thickness</source>
-        <translation type="unfinished"></translation>
+        <translation>Tjocklek</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make a thick solid</source>
-        <translation type="unfinished"></translation>
+        <translation>Gör en tjock solid</translation>
     </message>
 </context>
 <context>
@@ -578,53 +578,53 @@
     <message>
         <location filename="../../CommandPrimitive.cpp" line="+52"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Create an additive primitive</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en additiv primitiv</translation>
     </message>
     <message>
         <location line="+136"/>
         <source>Additive Box</source>
-        <translation type="unfinished"></translation>
+        <translation>Additiv låda</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Additive Cylinder</source>
-        <translation type="unfinished"></translation>
+        <translation>Additiv cylinder</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Additive Sphere</source>
-        <translation type="unfinished"></translation>
+        <translation>Additiv sfär</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Additive Cone</source>
-        <translation type="unfinished"></translation>
+        <translation>Additiv kon</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Additive Ellipsoid</source>
-        <translation type="unfinished"></translation>
+        <translation>Additiv ellipsoid</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Additive Torus</source>
-        <translation type="unfinished"></translation>
+        <translation>Additiv torus</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Additive Prism</source>
-        <translation type="unfinished"></translation>
+        <translation>Additivt prisma</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Additive Wedge</source>
-        <translation type="unfinished"></translation>
+        <translation>Additiv kil</translation>
     </message>
 </context>
 <context>
@@ -632,53 +632,53 @@
     <message>
         <location line="+16"/>
         <source>PartDesign</source>
-        <translation type="unfinished">Del design</translation>
+        <translation>Del design</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Create an subtractive primitive</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en subtraktiv primitiv</translation>
     </message>
     <message>
         <location line="+146"/>
         <source>Subtractive Box</source>
-        <translation type="unfinished"></translation>
+        <translation>Subtraktiv låda</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Subtractive Cylinder</source>
-        <translation type="unfinished"></translation>
+        <translation>Subtraktiv cylinder</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Subtractive Sphere</source>
-        <translation type="unfinished"></translation>
+        <translation>Subtraktiv sfär</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Subtractive Cone</source>
-        <translation type="unfinished"></translation>
+        <translation>Subtraktiv kon</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Subtractive Ellipsoid</source>
-        <translation type="unfinished"></translation>
+        <translation>Subtraktiv ellipsoid</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Subtractive Torus</source>
-        <translation type="unfinished"></translation>
+        <translation>Subtraktiv torus</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Subtractive Prism</source>
-        <translation type="unfinished"></translation>
+        <translation>Subtraktivt prisma</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Subtractive Wedge</source>
-        <translation type="unfinished"></translation>
+        <translation>Subtraktiv kil</translation>
     </message>
 </context>
 <context>
@@ -686,27 +686,27 @@
     <message>
         <location filename="../../DlgReference.ui" line="+14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-        <translation type="unfinished"></translation>
+        <translation>Du har valt geometrier som inte är del av aktiva kroppen. Definiera hur dessa val ska hanteras. Om du inte vill ha dessa referenser välj avbryt.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Make independent copy (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gör oberoende kopia (rekommenderas)</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Make dependent copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Gör beroende kopia</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Create cross-reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa korsreferens</translation>
     </message>
 </context>
 <context>
@@ -714,37 +714,37 @@
     <message>
         <location filename="../../FeaturePickDialog.cpp" line="+45"/>
         <source>Valid</source>
-        <translation type="unfinished"></translation>
+        <translation>Giltig</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid shape</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogiltig form</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No wire in sketch</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen tråd i skiss</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sketch already used by other feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Skissen används redan av annan detalj</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sketch belongs to another Body feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Skissen tillhör en annan kropps detalj</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Base plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Basplan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Feature is located after the Tip feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Detaljen ligger efter spetsdetaljen</translation>
     </message>
 </context>
 <context>
@@ -770,7 +770,7 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Involute parameter</translation>
+        <translation>Evolvent-parameter</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -780,12 +780,12 @@
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modules:</translation>
+        <translation>Moduler:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">High precision:</translation>
+        <translation>Hög precision:</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -802,12 +802,12 @@
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished">External gear:</translation>
+        <translation>Yttre kuggar:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Pressure angle:</translation>
+        <translation>Ingreppsvinkel:</translation>
     </message>
 </context>
 <context>
@@ -858,19 +858,19 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskPrimitiveParameters.ui" line="+14"/>
         <source>Geometric Primitives</source>
-        <translation type="unfinished"></translation>
+        <translation>Geometriska primitiver</translation>
     </message>
     <message>
         <location line="+40"/>
         <location line="+107"/>
         <source>Width:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bredd:</translation>
     </message>
     <message>
         <location line="-100"/>
         <location line="+93"/>
         <source>Length:</source>
-        <translation type="unfinished">Längd:</translation>
+        <translation>Längd:</translation>
     </message>
     <message>
         <location line="-7"/>
@@ -879,14 +879,14 @@ Välj en eller fler kanter först.</translation>
         <location line="+535"/>
         <location line="+239"/>
         <source>Height:</source>
-        <translation type="unfinished"></translation>
+        <translation>Höjd:</translation>
     </message>
     <message>
         <location line="-954"/>
         <location line="+107"/>
         <location line="+854"/>
         <source>Angle:</source>
-        <translation type="unfinished">Vinkel:</translation>
+        <translation>Vinkel:</translation>
     </message>
     <message>
         <location line="-908"/>
@@ -895,173 +895,173 @@ Välj en eller fler kanter först.</translation>
         <location line="+122"/>
         <location line="+65"/>
         <source>Radius:</source>
-        <translation type="unfinished">Radie:</translation>
+        <translation>Radie:</translation>
     </message>
     <message>
         <location line="-940"/>
         <location line="+200"/>
         <location line="+254"/>
         <source>Radius 1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Radie 1:</translation>
     </message>
     <message>
         <location line="-447"/>
         <location line="+200"/>
         <location line="+240"/>
         <source>Radius 2:</source>
-        <translation type="unfinished"></translation>
+        <translation>Radie 2:</translation>
     </message>
     <message>
         <location line="-377"/>
         <location line="+191"/>
         <source>U parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation>U parameter:</translation>
     </message>
     <message>
         <location line="-184"/>
         <source>V parameters:</source>
-        <translation type="unfinished"></translation>
+        <translation>V parametrar:</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Radius 3:</source>
-        <translation type="unfinished"></translation>
+        <translation>Radie 3:</translation>
     </message>
     <message>
         <location line="+70"/>
         <location line="+90"/>
         <source>V parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation>U parameter:</translation>
     </message>
     <message>
         <location line="-23"/>
         <source>U Parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation>U parameter:</translation>
     </message>
     <message>
         <location line="+150"/>
         <location line="+882"/>
         <source>Polygon:</source>
-        <translation type="unfinished"></translation>
+        <translation>Polygon:</translation>
     </message>
     <message>
         <location line="-862"/>
         <location line="+882"/>
         <source>Circumradius:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Circumradius:</translation>
     </message>
     <message>
         <location line="-831"/>
         <source>X min/max:</source>
-        <translation type="unfinished"></translation>
+        <translation>X min/max:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Y min/max:</source>
-        <translation type="unfinished"></translation>
+        <translation>Y min/max:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Z min/max:</source>
-        <translation type="unfinished"></translation>
+        <translation>Z min/max:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>X2 min/max:</source>
-        <translation type="unfinished"></translation>
+        <translation>X2 min/max:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Z2 min/max:</source>
-        <translation type="unfinished"></translation>
+        <translation>Z2 min/max:</translation>
     </message>
     <message>
         <location line="+160"/>
         <source>Pitch:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lutning:</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Coordinate system:</source>
-        <translation type="unfinished"></translation>
+        <translation>Koordinatsystem:</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Right-handed</source>
-        <translation type="unfinished"></translation>
+        <translation>Högerhänt</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Left-handed</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänsterhänt</translation>
     </message>
     <message>
         <location line="+88"/>
         <source>Growth:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillväxt:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Number of rotations:</source>
-        <translation type="unfinished"></translation>
+        <translation>Antal rotationer:</translation>
     </message>
     <message>
         <location line="+58"/>
         <location line="+103"/>
         <source>Angle 1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vinkel 1:</translation>
     </message>
     <message>
         <location line="-96"/>
         <location line="+103"/>
         <source>Angle 2:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vinkel 2:</translation>
     </message>
     <message>
         <location line="-49"/>
         <source>From three points</source>
-        <translation type="unfinished"></translation>
+        <translation>Från tre punkter</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Major radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Stora radie:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Minor radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lilla radie:</translation>
     </message>
     <message>
         <location line="+82"/>
         <location line="+81"/>
         <location line="+54"/>
         <source>X:</source>
-        <translation type="unfinished"></translation>
+        <translation>X:</translation>
     </message>
     <message>
         <location line="-125"/>
         <location line="+81"/>
         <location line="+54"/>
         <source>Y:</source>
-        <translation type="unfinished"></translation>
+        <translation>Y:</translation>
     </message>
     <message>
         <location line="-125"/>
         <location line="+81"/>
         <location line="+54"/>
         <source>Z:</source>
-        <translation type="unfinished"></translation>
+        <translation>Z:</translation>
     </message>
     <message>
         <location line="-37"/>
         <source>End point</source>
-        <translation type="unfinished"></translation>
+        <translation>Slutpunkt</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Start point</source>
-        <translation type="unfinished"></translation>
+        <translation>Startpunkt</translation>
     </message>
 </context>
 <context>
@@ -1076,7 +1076,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../ReferenceSelection.cpp" line="+182"/>
         <source>Selecting this will cause circular dependency.</source>
-        <translation type="unfinished"></translation>
+        <translation>Om du väljer detta kommer det att orsaka cirkelberoende.</translation>
     </message>
 </context>
 <context>
@@ -1084,61 +1084,61 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskBooleanParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Add body</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till kropp</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Remove body</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort kropp</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Fuse</source>
-        <translation type="unfinished"></translation>
+        <translation>Kombinera</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>Klipp</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Common</source>
-        <translation type="unfinished"></translation>
+        <translation>Vanligt</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Sektionering</translation>
     </message>
     <message>
         <location filename="../../TaskBooleanParameters.cpp" line="+54"/>
         <source>Boolean parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Booleska parametrar</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Remove</source>
-        <translation type="unfinished">Ta bort</translation>
+        <translation>Ta bort</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskBoxPrimitives</name>
     <message>
-        <location filename="../../TaskPrimitiveParameters.cpp" line="+51"/>
+        <location filename="../../TaskPrimitiveParameters.cpp" line="+54"/>
         <source>Primitive parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Primitivparametrar</translation>
     </message>
     <message>
-        <location line="+538"/>
+        <location line="+573"/>
         <location line="+7"/>
         <source>Create primitive</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa primitiv</translation>
     </message>
 </context>
 <context>
@@ -1198,12 +1198,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+8"/>
         <source>Add ref</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till ref</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Remove ref</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort ref</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -1217,7 +1217,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskChamferParameters.cpp" line="+86"/>
         <source>Remove</source>
-        <translation type="unfinished">Ta bort</translation>
+        <translation>Ta bort</translation>
     </message>
 </context>
 <context>
@@ -1225,7 +1225,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskDatumParameters.cpp" line="+72"/>
         <source> parameters</source>
-        <translation type="unfinished"></translation>
+        <translation> parametrar</translation>
     </message>
 </context>
 <context>
@@ -1233,7 +1233,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
         <source>Boolean: Accept: Input error</source>
-        <translation type="unfinished"></translation>
+        <translation>Boolean: Acceptera: Felinmatning</translation>
     </message>
 </context>
 <context>
@@ -1248,12 +1248,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskDatumParameters.cpp" line="+48"/>
         <source>Incompatible reference set</source>
-        <translation type="unfinished"></translation>
+        <translation>Inkompatibel referensuppsättning</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>Det finns inget sammankopplings-läge som passar de givna referenserna. Om du väljer att fortsätta kommer detaljen att vara kvar där den är nu och kommer inte att flyttas om referenserna ändras. Fortsätt?</translation>
     </message>
 </context>
 <context>
@@ -1266,9 +1266,9 @@ Välj en eller fler kanter först.</translation>
 <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-        <location filename="../../TaskFeatureParameters.cpp" line="+114"/>
+        <location filename="../../TaskFeatureParameters.cpp" line="+134"/>
         <source>Input error</source>
-        <translation type="unfinished">Inmatningsfel</translation>
+        <translation>Inmatningsfel</translation>
     </message>
 </context>
 <context>
@@ -1309,9 +1309,9 @@ Välj en eller fler kanter först.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-        <location filename="../../TaskPipeParameters.cpp" line="+790"/>
+        <location filename="../../TaskPipeParameters.cpp" line="+795"/>
         <source>Input error</source>
-        <translation type="unfinished">Inmatningsfel</translation>
+        <translation>Inmatningsfel</translation>
     </message>
 </context>
 <context>
@@ -1344,7 +1344,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskShapeBinder.cpp" line="+313"/>
         <source>Input error</source>
-        <translation type="unfinished">Inmatningsfel</translation>
+        <translation>Inmatningsfel</translation>
     </message>
 </context>
 <context>
@@ -1406,92 +1406,96 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskFeaturePick.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Allow used features</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillåt använda detaljer</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Allow external features</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillåt externa detaljer</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>From  other bodies of the same part</source>
-        <translation type="unfinished"></translation>
+        <translation>Från andra kroppar av samma del</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>From different parts or free features</source>
-        <translation type="unfinished"></translation>
+        <translation>Från andra delar eller fria detaljer</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Make independent copy (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gör oberoende kopia (rekommenderas)</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Make dependent copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Gör beroende kopia</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Create cross-reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa korsreferens</translation>
     </message>
     <message>
         <location filename="../../TaskFeaturePick.cpp" line="+62"/>
         <source>Valid</source>
-        <translation type="unfinished"></translation>
+        <translation>Giltig</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid shape</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogiltig form</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No wire in sketch</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen tråd i skiss</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sketch already used by other feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Skissen används redan av annan detalj</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Belongs to another body</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillhör en annan kropp</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Belongs to another part</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillhör en annan del</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Doesn&apos;t belongs to any body</source>
+        <source>Doesn&apos;t belong to any body</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Doesn&apos;t belongs to any body</source>
+        <translation type="obsolete">Tillhör inte någon kropp</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Base plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Basplan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Feature is located after the tip feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Detaljen ligger efter spetsdetaljen</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Select feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj detalj</translation>
     </message>
 </context>
 <context>
@@ -1504,12 +1508,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+8"/>
         <source>Add ref</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till ref</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Remove ref</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort ref</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1523,7 +1527,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+86"/>
         <source>Remove</source>
-        <translation type="unfinished">Ta bort</translation>
+        <translation>Ta bort</translation>
     </message>
 </context>
 <context>
@@ -1634,12 +1638,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="-27"/>
         <source>Add feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till ny detalj</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Remove feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort detalj</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -1677,12 +1681,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskLinearPatternParameters.cpp" line="+113"/>
         <source>Remove</source>
-        <translation type="unfinished">Ta bort</translation>
+        <translation>Ta bort</translation>
     </message>
     <message>
         <location line="+203"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fel</translation>
     </message>
 </context>
 <context>
@@ -1690,37 +1694,37 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskLoftParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Ruled surface</source>
-        <translation type="unfinished"></translation>
+        <translation>Enkelkrökt yta</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Closed</source>
-        <translation type="unfinished"></translation>
+        <translation>Stängd</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Add Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till avsnitt</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Remove Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort avsnitt</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Update view</source>
-        <translation type="unfinished">Uppdatera vy</translation>
+        <translation>Uppdatera vy</translation>
     </message>
     <message>
         <location filename="../../TaskLoftParameters.cpp" line="+58"/>
         <source>Loft parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Loft-parametrar</translation>
     </message>
 </context>
 <context>
@@ -1766,12 +1770,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="-27"/>
         <source>Add feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till ny detalj</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Remove feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort detalj</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1798,12 +1802,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="+110"/>
         <source>Remove</source>
-        <translation type="unfinished">Ta bort</translation>
+        <translation>Ta bort</translation>
     </message>
     <message>
         <location line="+134"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fel</translation>
     </message>
 </context>
 <context>
@@ -1820,12 +1824,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+8"/>
         <source>Add feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till ny detalj</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Remove feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort detalj</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1840,7 +1844,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskMultiTransformParameters.cpp" line="+73"/>
         <source>Remove</source>
-        <translation type="unfinished">Ta bort</translation>
+        <translation>Ta bort</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1908,7 +1912,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+18"/>
         <source>Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Offset</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -2055,87 +2059,87 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskPipeOrientation.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Orientation mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Orienterings-läge</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Standard</source>
-        <translation type="unfinished"></translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fixed</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Frenet</source>
-        <translation type="unfinished"></translation>
+        <translation>Frenet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Auxillery</source>
-        <translation type="unfinished"></translation>
+        <translation>Hjälpare</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Binormal</source>
-        <translation type="unfinished"></translation>
+        <translation>Binormal</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Curvelinear equivalenz</source>
-        <translation type="unfinished"></translation>
+        <translation>Kurvlinjär ekvivalens</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Object</source>
-        <translation type="unfinished"></translation>
+        <translation>Objekt</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Add Edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till kant</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Remove Edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort kant</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-        <translation type="unfinished"></translation>
+        <translation>Ange den konstanta binormalvektorn som används för att beräkna profilers orientering</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>X</source>
-        <translation type="unfinished">X</translation>
+        <translation>X</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Y</source>
-        <translation type="unfinished">Y</translation>
+        <translation>Y</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Z</source>
-        <translation type="unfinished">Z</translation>
+        <translation>Z</translation>
     </message>
     <message>
-        <location filename="../../TaskPipeParameters.cpp" line="-500"/>
+        <location filename="../../TaskPipeParameters.cpp" line="-502"/>
         <source>Section orientation</source>
-        <translation type="unfinished"></translation>
+        <translation>Sektionsorientering</translation>
     </message>
 </context>
 <context>
@@ -2143,52 +2147,52 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskPipeParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Corner Transition</source>
-        <translation type="unfinished"></translation>
+        <translation>Hörntransition</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Transformed</source>
-        <translation type="unfinished"></translation>
+        <translation>Transformerad</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Right Corner</source>
-        <translation type="unfinished"></translation>
+        <translation>Höger hörn</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Round Corner</source>
-        <translation type="unfinished"></translation>
+        <translation>Runt hörn</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Object</source>
-        <translation type="unfinished"></translation>
+        <translation>Objekt</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Add Edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till kant</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Remove Edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort kant</translation>
     </message>
     <message>
-        <location filename="../../TaskPipeParameters.cpp" line="-219"/>
+        <location filename="../../TaskPipeParameters.cpp" line="-222"/>
         <source>Pipe parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Rörparametrar</translation>
     </message>
 </context>
 <context>
@@ -2196,37 +2200,37 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskPipeScaling.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Transform mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Transformeringsläge</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Constant</source>
-        <translation type="unfinished"></translation>
+        <translation>Konstant</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Multisection</source>
-        <translation type="unfinished"></translation>
+        <translation>Flerval</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Add Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till avsnitt</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Remove Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort avsnitt</translation>
     </message>
     <message>
-        <location filename="../../TaskPipeParameters.cpp" line="+459"/>
+        <location filename="../../TaskPipeParameters.cpp" line="+464"/>
         <source>Section transformation</source>
-        <translation type="unfinished"></translation>
+        <translation>Avsnittsomvandling</translation>
     </message>
 </context>
 <context>
@@ -2255,7 +2259,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+30"/>
         <source>Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Offset</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -2364,12 +2368,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="-27"/>
         <source>Add feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till ny detalj</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Remove feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort detalj</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -2403,12 +2407,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskPolarPatternParameters.cpp" line="+111"/>
         <source>Remove</source>
-        <translation type="unfinished">Ta bort</translation>
+        <translation>Ta bort</translation>
     </message>
     <message>
         <location line="+206"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fel</translation>
     </message>
 </context>
 <context>
@@ -2437,25 +2441,25 @@ Välj en eller fler kanter först.</translation>
         <location line="-15"/>
         <location filename="../../TaskRevolutionParameters.cpp" line="+184"/>
         <source>Base X axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Basens X-axel</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskRevolutionParameters.cpp" line="+1"/>
         <source>Base Y axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Basens Y-axel</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskRevolutionParameters.cpp" line="+1"/>
         <source>Base Z axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Basens Z-axel</translation>
     </message>
     <message>
         <location line="+15"/>
         <location filename="../../TaskRevolutionParameters.cpp" line="+7"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Välj referens...</translation>
+        <translation>Välj referens...</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -2509,12 +2513,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+8"/>
         <source>Add feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till ny detalj</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Remove feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort detalj</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -2539,7 +2543,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskScaledParameters.cpp" line="+97"/>
         <source>Remove</source>
-        <translation type="unfinished">Ta bort</translation>
+        <translation>Ta bort</translation>
     </message>
 </context>
 <context>
@@ -2547,27 +2551,27 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskShapeBinder.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Object</source>
-        <translation type="unfinished"></translation>
+        <translation>Objekt</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Add Geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till geometri</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Remove Geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort geometri</translation>
     </message>
     <message>
         <location filename="../../TaskShapeBinder.cpp" line="-252"/>
         <source>Datum shape parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Datum-formens parametrar</translation>
     </message>
 </context>
 <context>
@@ -2575,12 +2579,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskSketchBasedParameters.cpp" line="+157"/>
         <source>Face</source>
-        <translation type="unfinished">Yta</translation>
+        <translation>Yta</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>No face selected</source>
-        <translation type="unfinished">Inget yta vald</translation>
+        <translation>Inget yta vald</translation>
     </message>
 </context>
 <context>
@@ -2588,67 +2592,71 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskThicknessParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Add face</source>
-        <translation type="unfinished">Lägg till yta</translation>
+        <translation>Lägg till yta</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Remove face</source>
-        <translation type="unfinished">Ta bort yta</translation>
+        <translation>Ta bort yta</translation>
+    </message>
+    <message>
+        <source>Thikness</source>
+        <translation type="obsolete">Tjocklek</translation>
     </message>
     <message>
         <location line="+17"/>
-        <source>Thikness</source>
-        <translation type="unfinished"></translation>
+        <source>Thickness</source>
+        <translation type="unfinished">Tjocklek</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Läge</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Join Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Föreningstyp</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Skin</source>
-        <translation type="unfinished"></translation>
+        <translation>Skinn</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Pipe</source>
-        <translation type="unfinished"></translation>
+        <translation>Rör</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Recto Verso</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Recto Verso</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Arc</source>
-        <translation type="unfinished"></translation>
+        <translation>Cirkelbåge</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Intersection</source>
-        <translation type="unfinished"></translation>
+        <translation>Skärning</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Make thickness inwards</source>
-        <translation type="unfinished"></translation>
+        <translation>Gör tjocklek inåt</translation>
     </message>
     <message>
         <location filename="../../TaskThicknessParameters.cpp" line="+94"/>
         <source>Remove</source>
-        <translation type="unfinished">Ta bort</translation>
+        <translation>Ta bort</translation>
     </message>
 </context>
 <context>
@@ -2656,75 +2664,75 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
         <source>Transformed feature messages</source>
-        <translation type="unfinished">Transformed feature messages</translation>
+        <translation>Transformationsmeddelanden</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskTransformedParameters</name>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="+183"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="+195"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Normal skissaxel</translation>
+        <translation>Normal skissaxel</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Vertikal skissaxel</translation>
+        <translation>Vertikal skissaxel</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Horisontell skissaxel</translation>
+        <translation>Horisontell skissaxel</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+36"/>
         <source>Construction line %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konstruktionslinje %1</translation>
     </message>
     <message>
         <location line="-22"/>
         <source>Base X axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Basens X-axel</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Base Y axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Basens Y-axel</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Base Z axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Basens Z-axel</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+36"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Välj referens...</translation>
+        <translation>Välj referens...</translation>
     </message>
     <message>
         <location line="-9"/>
         <source>Base XY plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Basens XY-plan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Base YZ plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Basens YZ-plan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Base XZ plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Basens XZ-plan</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::ViewProviderBody</name>
     <message>
-        <location filename="../../ViewProviderBody.cpp" line="+137"/>
+        <location filename="../../ViewProviderBody.cpp" line="+135"/>
         <source>Toggle active body</source>
-        <translation type="unfinished"></translation>
+        <translation>Växla aktiv kropp</translation>
     </message>
 </context>
 <context>
@@ -2732,42 +2740,42 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../CommandPrimitive.cpp" line="-219"/>
         <source>Create an additive box by its with, height and length</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en additiv låda av dess vidd, höjd och längd</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an additive cylinder by its radius, height and angle</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en additiv cylinder av dess radie, höjd och vinkel</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an additive sphere by its radius and varius angles</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en additiv sfär av dess radie och olika vinklar</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an additive cone</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en additiv kon</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an additive ellipsoid</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en additiv ellipsoid</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an additive torus</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en additiv torus</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an additive prism</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa ett additiv prisma</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an additive wedge</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en additiv kil</translation>
     </message>
 </context>
 <context>
@@ -2775,55 +2783,55 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+164"/>
         <source>Create an subtractive box by its with, height and length</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en subtraktiv låda av dess vidd, höjd och längd</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an subtractive cylinder by its radius, height and angle</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en subtraktiv cylinder av dess radie, höjd och vinkel</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an subtractive sphere by its radius and varius angles</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en subtraktiv sfär av dess radie och olika vinklar</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an subtractive cone</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en subtraktiv kon</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an subtractive ellipsoid</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en subtraktiv ellipsoid</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an subtractive torus</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en subtraktiv torus</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an subtractive prism</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa ett subtraktivt prisma</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an subtractive wedge</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en subtraktiv kil</translation>
     </message>
 </context>
 <context>
     <name>PartDesign_MoveFeature</name>
     <message>
-        <location filename="../../CommandBody.cpp" line="+556"/>
+        <location filename="../../CommandBody.cpp" line="+576"/>
         <source>Select body</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj kropp</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select a body from the list</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj en kropp från listan</translation>
     </message>
 </context>
 <context>
@@ -2831,12 +2839,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+137"/>
         <source>Select feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj detalj</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select a feature from the list</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj en detalj från listan</translation>
     </message>
 </context>
 <context>
@@ -2917,7 +2925,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+295"/>
         <source>Please create a subtractive or additive feature first.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänligen skapa en subtraktiv eller additiv detalj först.</translation>
     </message>
     <message>
         <source>No chamfer possible on selected faces/edges</source>
@@ -2974,64 +2982,64 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../Command.cpp" line="-1456"/>
         <source>Invalid selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogiltigt val</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>There are no attachment modes that fit seleted objects. Select something else.</source>
-        <translation type="unfinished"></translation>
+        <translation>Det finns inget sammankopplings-läge som passar valda objekt. Välj något annat.</translation>
     </message>
     <message>
         <location line="+11"/>
         <location line="+2"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fel</translation>
     </message>
     <message>
         <location line="+222"/>
         <source>Several sub-elements selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Flera underelement valda</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You have to select a single face as support for a sketch!</source>
-        <translation type="unfinished"></translation>
+        <translation>Du måste välja en enkel yta som stöd för en skiss!</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>No support face selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen stödyta vald</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You have to select a face as support for a sketch!</source>
-        <translation type="unfinished"></translation>
+        <translation>Du måste välja en yta som stöd för en skiss!</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>No planar support</source>
-        <translation type="unfinished"></translation>
+        <translation>Inget planärt stöd</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You need a planar face as support for a sketch!</source>
-        <translation type="unfinished"></translation>
+        <translation>Du behöver en plan yta som stöd för en skiss!</translation>
     </message>
     <message>
         <location line="+122"/>
         <source>No valid planes in this document</source>
-        <translation type="unfinished"></translation>
+        <translation>Inga giltiga plan i detta dokument</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please create a plane first or select a face to sketch on</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänligen skapa ett plan först eller välj en sida att skissa på</translation>
     </message>
     <message>
         <location line="+36"/>
         <location line="+290"/>
         <location line="+736"/>
-        <location filename="../../ViewProvider.cpp" line="+100"/>
+        <location filename="../../ViewProvider.cpp" line="+101"/>
         <location filename="../../ViewProviderBoolean.cpp" line="+74"/>
         <location filename="../../ViewProviderDatum.cpp" line="+243"/>
         <location filename="../../ViewProviderPrimitive.cpp" line="+83"/>
@@ -3054,37 +3062,37 @@ Create the sketch on a face.</source>
     <message>
         <location line="-804"/>
         <source>No sketch to work on</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen skiss att arbeta med</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No sketch is available in the document</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen skiss finns i dokumentet</translation>
     </message>
     <message>
         <location line="+511"/>
         <source>Select an edge, face or body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj en kant, sida eller kropp.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Select an edge, face or body from a single body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj en kant, sida eller kropp från en enda kropp.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 works only on parts.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 fungerar bara på delar.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Shape of the selected Part is empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Form på den markerade delen är tom</translation>
     </message>
     <message>
         <location line="+12"/>
         <source> not possible on selected faces/edges.</source>
-        <translation type="unfinished"></translation>
+        <translation> inte är möjligt på valda sidor/kanter.</translation>
     </message>
     <message>
         <location filename="../../ViewProviderRevolution.cpp" line="+51"/>
@@ -3124,7 +3132,7 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../ViewProviderTransformed.cpp" line="+151"/>
         <source>One transformed shape does not intersect support</source>
-        <translation type="unfinished">One transformed shape does not intersect support</translation>
+        <translation>En transformerad form skär inte stödet</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3139,77 +3147,81 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../ViewProviderGroove.cpp" line="+51"/>
         <source>Edit groove</source>
-        <translation type="unfinished">Edit groove</translation>
+        <translation>Redigera skåra</translation>
     </message>
     <message>
         <source>Edit revolve</source>
         <translation type="obsolete">Edit revolve</translation>
     </message>
     <message>
-        <location filename="../../CommandBody.cpp" line="-716"/>
+        <location filename="../../CommandBody.cpp" line="-736"/>
         <source>Part creation failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Delen gick inte att skapa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Failed to create a part object.</source>
-        <translation type="unfinished"></translation>
+        <translation>Det gick inte att skapa en delobjekt.</translation>
     </message>
     <message>
-        <location line="+88"/>
+        <location line="+89"/>
         <location line="+5"/>
         <location line="+7"/>
         <location line="+8"/>
         <location line="+8"/>
         <source>Bad base feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Felaktig basdetalj</translation>
     </message>
     <message>
         <location line="-27"/>
         <source>Body can&apos;t be based on a PartDesign feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kroppen kan inte baseras på en PartDesign detalj.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 already belongs to a body, can&apos;t use it as base feature for another body.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 tillhör redan en kropp, kan inte använda den som bas-detalj för ett annan kropp.</translation>
+    </message>
+    <message>
+        <source>Body can&apos;t be based on annother body.</source>
+        <translation type="obsolete">Kroppen kan inte baseras på en annan kropp.</translation>
     </message>
     <message>
         <location line="+7"/>
-        <source>Body can&apos;t be based on annother body.</source>
+        <source>Body can&apos;t be based on another body.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Base feature (%1) belongs to other part.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bas-detalj (%1) tillhör annan del.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Body may be based no more than on one feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kroppen kan inte baseras på mer än en detalj.</translation>
     </message>
     <message>
-        <location line="+82"/>
+        <location line="+101"/>
         <source>Nothing to migrate</source>
-        <translation type="unfinished"></translation>
+        <translation>Inget att migrera</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No PartDesign features which doesn&apos;t belong to a body found. Nothing to migrate.</source>
-        <translation type="unfinished"></translation>
+        <translation>Inga PartDesign-detaljer som inte tillhör en kropp hittades. Ingenting att migrera.</translation>
     </message>
     <message>
         <location line="+148"/>
         <location line="+287"/>
         <source>Sketch plane cannot be migrated</source>
-        <translation type="unfinished"></translation>
+        <translation>Skissplanet kan inte migreras</translation>
     </message>
     <message>
         <location line="-286"/>
         <location line="+287"/>
         <source>Please edit &apos;%1&apos; and redefine it to use a Base or Datum plane as the sketch plane.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänligen redigera &apos;%1&apos; och omdefiniera det att använda en bas eller datumplan som skissplanet.</translation>
     </message>
     <message>
         <location line="-225"/>
@@ -3218,206 +3230,216 @@ Create the sketch on a face.</source>
         <location line="+266"/>
         <location line="+7"/>
         <source>Selection error</source>
-        <translation type="unfinished"></translation>
+        <translation>Markeringsfel</translation>
     </message>
     <message>
         <location line="-281"/>
         <source>Select exactly one PartDesign feature or a body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj exakt en PartDesign-detalj eller en kropp.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Couldn&apos;t determin a body for the selected feature &apos;%s&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunde inte finna en kropp för den valda detaljen &apos;%s&apos;.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Only a solid feature can be the tip of a body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Endast en solid kan vara toppen av en kropp.</translation>
     </message>
     <message>
         <location line="+116"/>
         <location line="+27"/>
         <source>Features cannot be moved</source>
-        <translation type="unfinished"></translation>
+        <translation>Det går inte att flytta detaljerna</translation>
     </message>
     <message>
         <location line="-26"/>
         <source>Some of the selected features have dependencies in the source body</source>
-        <translation type="unfinished"></translation>
+        <translation>Några av de valda detaljerna har beroenden i källkroppen</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>There are no other bodies to move to</source>
-        <translation type="unfinished"></translation>
+        <translation>Det finns inga andra kroppar att flytta till</translation>
     </message>
     <message>
         <location line="+122"/>
         <source>Impossible to move the base feature of a body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Omöjligt att flytta basdetaljen för en kropp.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Select one or more features from the same body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj en eller flera detaljer i samma kropp.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Beginning of the body</source>
-        <translation type="unfinished"></translation>
+        <translation>Början av kroppen</translation>
     </message>
     <message>
         <location filename="../../CommandPrimitive.cpp" line="-157"/>
         <source>No previous feature found</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen tidigare detalj som funnen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>It is not possible to create a subtractive feature without a base feature available</source>
-        <translation type="unfinished"></translation>
+        <translation>Det går inte att skapa en subtraktiv detalj utan en tillgänglig bas-detalj</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+106"/>
         <location filename="../../TaskTransformedParameters.cpp" line="-19"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Vertikal skissaxel</translation>
+        <translation>Vertikal skissaxel</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../TaskTransformedParameters.cpp" line="+1"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Horisontell skissaxel</translation>
+        <translation>Horisontell skissaxel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Construction line %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konstruktionslinje %1</translation>
     </message>
     <message>
         <location filename="../../TaskSketchBasedParameters.cpp" line="-96"/>
         <source>Face</source>
-        <translation type="unfinished">Yta</translation>
+        <translation>Yta</translation>
     </message>
     <message>
         <location filename="../../Utils.cpp" line="+72"/>
         <source>No active Body</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen aktiv kropp</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-        <translation type="unfinished"></translation>
+        <translation>För att kunna använda PartDesign behöver du en aktivt kropp i dokumentet. Gör en aktiv (dubbel klick) eller skapa en. Om du har en äldre dokument med PartDesign objekt utan kropp, använd funktionen för överföring i PartDesign för att sätta dem i en kropp.</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Feature is not in a body</source>
-        <translation type="unfinished"></translation>
+        <translation>Detaljen är inte i en kropp</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>In order to use this feature it needs to belong to a body object in the document.</source>
-        <translation type="unfinished"></translation>
+        <translation>För att kunna använda denna detalj måste den tillhöra en kropp i dokumentet.</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Feature is not in a part</source>
-        <translation type="unfinished"></translation>
+        <translation>Detaljen är inte i en del</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>In order to use this feature it needs to belong to a part object in the document.</source>
-        <translation type="unfinished"></translation>
+        <translation>För att kunna använda denna detalj måste den tillhöra en del i dokumentet.</translation>
     </message>
     <message>
         <location filename="../../ViewProviderBoolean.cpp" line="-17"/>
         <source>Edit boolean</source>
-        <translation type="unfinished"></translation>
+        <translation>Redigera booleskt värde</translation>
     </message>
     <message>
         <location filename="../../ViewProviderDatum.cpp" line="-124"/>
         <location line="+83"/>
         <source>Plane</source>
-        <translation type="unfinished">Plan</translation>
+        <translation>Plan</translation>
     </message>
     <message>
         <location line="-81"/>
         <location line="+77"/>
         <source>Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Linje</translation>
     </message>
     <message>
         <location line="-75"/>
         <location line="+83"/>
         <source>Point</source>
-        <translation type="unfinished"></translation>
+        <translation>Punkt</translation>
     </message>
     <message>
         <location line="-81"/>
         <source>CoordinateSystem</source>
-        <translation type="unfinished"></translation>
+        <translation>Koordinatsystem</translation>
     </message>
     <message>
         <location line="+98"/>
         <source>Edit datum </source>
-        <translation type="unfinished"></translation>
+        <translation>Redigera datum </translation>
     </message>
     <message>
         <location filename="../../ViewProviderDressUp.cpp" line="+70"/>
         <source>Feature error</source>
-        <translation type="unfinished"></translation>
+        <translation>Detaljfel</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 misses a base feature.
 This feature is broken and can&apos;t be edited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saknar en bas-detalj. Denna detalj är trasig och kan inte redigeras.</translation>
     </message>
     <message>
         <location filename="../../ViewProviderLoft.cpp" line="+69"/>
         <source>Edit loft</source>
-        <translation type="unfinished"></translation>
+        <translation>Redigera loft</translation>
     </message>
     <message>
         <location filename="../../ViewProviderPipe.cpp" line="+69"/>
         <source>Edit pipe</source>
-        <translation type="unfinished"></translation>
+        <translation>Redigera rör</translation>
     </message>
     <message>
         <location filename="../../ViewProviderShapeBinder.cpp" line="+91"/>
         <source>Edit shape binder</source>
-        <translation type="unfinished"></translation>
+        <translation>Redigera formbindare</translation>
+    </message>
+    <message>
+        <source>The document &quot;%1&quot; you are editing was design with old version of PartDesign workbench.</source>
+        <translation type="obsolete">Dokumentet &quot;%1&quot; du redigerar var skapat med gamla versionen av PartDesign arbetsbänk.</translation>
     </message>
     <message>
         <location filename="../../WorkflowManager.cpp" line="+144"/>
-        <source>The document &quot;%1&quot; you are editing was design with old version of PartDesign workbench.</source>
+        <source>The document &quot;%1&quot; you are editing was designed with an old version of PartDesign workbench.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Do you want to migrate in order to use modern PartDesign features?</source>
-        <translation type="unfinished"></translation>
+        <translation>Vill du migrera för att kunna använda moderna PartDesign detaljer?</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The document &quot;%1&quot; seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokumentet &quot;%1&quot; verkar vara antingen mitt i migreringsprocessen från äldre PartDesign eller ha en något skadad struktur.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Do you want to make the migration automatically?</source>
-        <translation type="unfinished"></translation>
+        <translation>Vill du göra migreringen automatiskt?</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Note If you choose to migrate you won&apos;t be able to edit the file wtih old FreeCAD versions.
+        <source>Note: If you choose to migrate you won&apos;t be able to edit the file with an old FreeCAD versions.
 If you refuse to migrate you won&apos;t be able to use new PartDesign features like Bodies and Parts. As a result you also won&apos;t be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with &apos;Part Design-&gt;Migrate...&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Note If you choose to migrate you won&apos;t be able to edit the file wtih old FreeCAD versions.
+If you refuse to migrate you won&apos;t be able to use new PartDesign features like Bodies and Parts. As a result you also won&apos;t be able to use your parts in the assembly workbench.
+Although you will be able to migrate any moment later with &apos;Part Design-&gt;Migrate...&apos;.</source>
+        <translation type="obsolete">Om du väljer att migrera du kommer inte att kunna redigera-filen med gamla FreeCAD versioner. Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign detaljer som kroppar och delar. Du kommer heller inte kunna använda dina delar i arbetsbänken för montering. Dock kan du alltid migrera senare med &apos;Del Design-&gt; migrera...&apos;.</translation>
+    </message>
+    <message>
         <location line="+9"/>
         <source>Migrate manually</source>
-        <translation type="unfinished"></translation>
+        <translation>Migrera manuellt</translation>
     </message>
 </context>
 <context>
@@ -3425,128 +3447,128 @@ Although you will be able to migrate any moment later with &apos;Part Design-&gt
     <message>
         <location filename="../../../FeatureHole/TaskHole.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Position</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Face</source>
-        <translation type="unfinished">Yta</translation>
+        <translation>Yta</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+38"/>
         <source>Edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Kant</translation>
     </message>
     <message>
         <location line="-24"/>
         <location line="+38"/>
         <source>Distance</source>
-        <translation type="unfinished">Distans</translation>
+        <translation>Distans</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>Type</source>
-        <translation type="unfinished">Typ</translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Through</source>
-        <translation type="unfinished"></translation>
+        <translation>Genom</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+340"/>
         <source>Depth</source>
-        <translation type="unfinished"></translation>
+        <translation>Djup</translation>
     </message>
     <message>
         <location line="-331"/>
         <source>Threaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Gängad</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Countersink</source>
-        <translation type="unfinished"></translation>
+        <translation>Försänk</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Counterbore</source>
-        <translation type="unfinished"></translation>
+        <translation>Upprymning</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Hole norm</source>
-        <translation type="unfinished"></translation>
+        <translation>Hålstandard</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Custom dimensions</source>
-        <translation type="unfinished"></translation>
+        <translation>Anpassade dimensioner</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Tolerance</source>
-        <translation type="unfinished"></translation>
+        <translation>Tolerans</translation>
     </message>
     <message>
         <location line="+31"/>
         <location line="+119"/>
         <location line="+106"/>
         <source>Diameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Diameter</translation>
     </message>
     <message>
         <location line="-194"/>
         <source>Bolt/Washer</source>
-        <translation type="unfinished"></translation>
+        <translation>Bult/bricka</translation>
     </message>
     <message>
         <location line="+49"/>
         <location line="+8"/>
         <source>Thread norm</source>
-        <translation type="unfinished"></translation>
+        <translation>Gängstandard</translation>
     </message>
     <message>
         <location line="+62"/>
         <source> Custom thread length</source>
-        <translation type="unfinished"></translation>
+        <translation> Anpassad gänglängd</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Finish depth</source>
-        <translation type="unfinished"></translation>
+        <translation>Slutdjup</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Data</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Counterbore/sink dia</source>
-        <translation type="unfinished"></translation>
+        <translation>Upprymning/förs. dia</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Counterbore depth</source>
-        <translation type="unfinished"></translation>
+        <translation>Upprymningsdjup</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Countersink angle</source>
-        <translation type="unfinished"></translation>
+        <translation>Försänkningsvinkel</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Thread length</source>
-        <translation type="unfinished"></translation>
+        <translation>Gänglängd</translation>
     </message>
 </context>
 <context>
