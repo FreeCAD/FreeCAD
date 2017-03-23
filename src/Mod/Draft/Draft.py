@@ -244,8 +244,10 @@ def ungroup(obj):
     "removes the current object from any group it belongs to"
     for g in getGroupNames():
         grp = FreeCAD.ActiveDocument.getObject(g)
-        if grp.hasObject(obj):
-            grp.removeObject(obj)
+        if obj in grp.Group:
+            g = grp.Group
+            g.remove(obj)
+            grp.Group = g
             
 def autogroup(obj):
     "adds a given object to the autogroup, if applicable"
