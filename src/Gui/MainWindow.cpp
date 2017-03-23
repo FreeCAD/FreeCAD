@@ -469,57 +469,11 @@ void MainWindow::arrangeIcons()
 void MainWindow::tile()
 {
     d->mdiArea->tileSubWindows();
-
-// Warn about limitation in Qt4.8 involving multiple OpenGL widgets with Cocoa.
-#if defined(__APPLE__)
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("MainWindow");
-
-    if(hGrp->GetBool("ShowAppleMdiWarning", true)) {
-        QMessageBox mb(this);
-        mb.setIcon(QMessageBox::Warning);
-        mb.setTextFormat(Qt::RichText);
-        mb.setText(tr("There is a rendering issue on MacOS."));
-        mb.setInformativeText(tr("See <a href=\"http://www.freecadweb.org/wiki/OpenGL_on_MacOS\"> the wiki</a> for more information"));
-
-        QAbstractButton *suppressBtn;
-        suppressBtn = mb.addButton(tr("Don't show again"), QMessageBox::DestructiveRole);
-        mb.addButton(QMessageBox::Ok);
-
-        mb.exec();
-        if(mb.clickedButton() == suppressBtn) {
-            hGrp->SetBool("ShowAppleMdiWarning", false);
-        }
-    }
-#endif // defined(__APPLE__)
 }
 
 void MainWindow::cascade()
 {
     d->mdiArea->cascadeSubWindows();
-
-// See above in MainWindow::tile()
-#if defined(__APPLE__)
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("MainWindow");
-
-    if(hGrp->GetBool("ShowAppleMdiWarning", true)) {
-        QMessageBox mb(this);
-        mb.setIcon(QMessageBox::Warning);
-        mb.setTextFormat(Qt::RichText);
-        mb.setText(tr("There is a rendering issue on MacOS."));
-        mb.setInformativeText(tr("See <a href=\"http://www.freecadweb.org/wiki/OpenGL_on_MacOS\"> the wiki</a> for more information"));
-
-        QAbstractButton *suppressBtn;
-        suppressBtn = mb.addButton(tr("Don't show again"), QMessageBox::DestructiveRole);
-        mb.addButton(QMessageBox::Ok);
-
-        mb.exec();
-        if(mb.clickedButton() == suppressBtn) {
-            hGrp->SetBool("ShowAppleMdiWarning", false);
-        }
-    }
-#endif // defined(__APPLE__)
 }
 
 void MainWindow::closeActiveWindow ()
