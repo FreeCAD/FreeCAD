@@ -358,7 +358,7 @@ void ViewProviderPath::updateShowConstraints() {
 
     StartIndexConstraints.UpperBound = tp.getSize();
 
-    if(StartIndex.getValue() >= tp.getSize()) {
+    if (StartIndex.getValue() >= (long)tp.getSize()) {
         int start = ((int)tp.getSize())-ShowCount.getValue();
         if(start>=(int)tp.getSize())
             start=tp.getSize()-1;
