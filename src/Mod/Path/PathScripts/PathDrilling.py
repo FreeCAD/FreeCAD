@@ -220,7 +220,7 @@ class ObjectDrilling:
             for i in range(len(shape.Faces)):
                 candidateFaceName = "Face" + str(i + 1)
                 f = shape.getElement(candidateFaceName)
-                if PathUtils.isDrillable(obj, f, tooldiameter):
+                if PathUtils.isDrillable(shape, f, tooldiameter):
                     PathLog.debug('face candidate: {} is drillable '.format(f))
                     x = f.Surface.Center.x
                     y = f.Surface.Center.y
