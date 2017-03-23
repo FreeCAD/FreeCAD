@@ -246,15 +246,15 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
         int ctSolids = 0, ctShells = 0;
         std::vector<App::DocumentObject *> localValue;
         App::Part *pcPart = NULL;
-	if ( localValue.size() > 0 )
-        	pcPart = static_cast<App::Part*>(doc->addObject
-                         ("App::Part",name.c_str()));
         for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
             createShape(xp.Current(), loc, name, localValue);
         }
         for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
             createShape(xp.Current(), loc, name, localValue);
         }
+	if ( localValue.size() > 0 )
+                pcPart = static_cast<App::Part*>(doc->addObject
+                         ("App::Part",name.c_str()));
         // localValue contain the object that I must add to
         // the local Part
         // I must add the PartOrigin and the Part itself
