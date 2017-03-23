@@ -57,12 +57,6 @@ public:
     ImportOCAF(Handle_TDocStd_Document h, App::Document* d, const std::string& name);
     virtual ~ImportOCAF();
     void loadShapes();
-    std::vector<const char *> return_leaf() const {
-        return Leaf_Shapes;
-    }
-    std::vector<const char *> return_node() const {
-        return Node_Shapes;
-    }
 
 private:
     void loadShapes(const TDF_Label& label, const TopLoc_Location&, const std::string& partname, const std::string& assembly, bool isRef, std::vector<App::DocumentObject*> &);
@@ -78,10 +72,6 @@ private:
     std::string default_name;
     std::set<int> myRefShapes;
     static const int HashUpper = INT_MAX;
-    // These variables are used to transfer Shape names to the UI backend and decide
-    // to activate / deactivate the right members for performance improvements
-    std::vector<const char *> Leaf_Shapes;
-    std::vector<const char *> Node_Shapes;
 };
 
 class ImportExport ExportOCAF
