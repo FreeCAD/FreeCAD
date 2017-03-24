@@ -80,7 +80,7 @@ ViewProviderPath::ViewProviderPath()
     :pt0Index(-1),blockPropertyChange(false),edgeStart(-1),coordStart(-1)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
-    unsigned long lcol = hGrp->GetUnsigned("DefaultNormalPathColor",0xFF00UL); // changed to green (0,255,0) to distinguish from selection color
+    unsigned long lcol = hGrp->GetUnsigned("DefaultNormalPathColor",11141375UL); // dark green (0,170,0)
     float lr,lg,lb;
     lr = ((lcol >> 24) & 0xff) / 255.0; lg = ((lcol >> 16) & 0xff) / 255.0; lb = ((lcol >> 8) & 0xff) / 255.0;
     unsigned long mcol = hGrp->GetUnsigned("DefaultPathMarkerColor",1442775295UL); // lime green (85,255,0)
