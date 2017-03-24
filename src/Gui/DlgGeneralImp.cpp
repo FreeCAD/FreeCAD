@@ -128,8 +128,9 @@ void DlgGeneralImp::saveSettings()
     RecentFiles->onSave();
     SplashScreen->onSave();
     PythonWordWrap->onSave();
-
-    PythonConsole* pcPython = new PythonConsole(this);
+  
+    QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
+    PythonConsole *pcPython = static_cast<PythonConsole*>(pc);
     bool pythonWordWrap = App::GetApplication().GetUserParameter().
         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General")->GetBool("PythonWordWrap", true);
 
