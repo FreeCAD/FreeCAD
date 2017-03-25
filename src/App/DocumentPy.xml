@@ -205,6 +205,12 @@ Both parameters are optional.</UserDocu>
       </Documentation>
       <Parameter Name="Name" Type="String"/>
     </Attribute>
+    <Attribute Name="RecomputesFrozen">
+      <Documentation>
+        <UserDocu>Returns or sets if automatic recomputes for this document are disabled.</UserDocu>
+      </Documentation>
+      <Parameter Name="RecomputesFrozen" Type="Boolean"/>
+    </Attribute>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>
