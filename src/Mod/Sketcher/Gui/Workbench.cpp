@@ -289,7 +289,8 @@ inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline){
         << "Sketcher_BSplineKnotMultiplicity"
         << "Sketcher_BSplineConvertToNURB"
         << "Sketcher_BSplineIncreaseDegree"
-        << "Sketcher_BSplineIncreaseKnotMultiplicity";
+        << "Sketcher_BSplineIncreaseKnotMultiplicity"
+        << "Sketcher_BSplineDecreaseKnotMultiplicity";
 }
 
 template <>
@@ -297,7 +298,8 @@ inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bsp
     bspline << "Sketcher_CompBSplineShowHideGeometryInformation"
     << "Sketcher_BSplineConvertToNURB"
     << "Sketcher_BSplineIncreaseDegree"
-    << "Sketcher_BSplineIncreaseKnotMultiplicity";
+    << "Sketcher_BSplineIncreaseKnotMultiplicity"
+    << "Sketcher_BSplineDecreaseKnotMultiplicity";
 }
 
 template <typename T>
