@@ -621,6 +621,139 @@ bool CmdSketcherIncreaseKnotMultiplicity::isActive(void)
     return isSketcherBSplineActive( getActiveGuiDocument(), true );
 }
 
+DEF_STD_CMD_A(CmdSketcherDecreaseKnotMultiplicity);
+
+CmdSketcherDecreaseKnotMultiplicity::CmdSketcherDecreaseKnotMultiplicity()
+:Command("Sketcher_BSplineDecreaseKnotMultiplicity")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Decrease degree");
+    sToolTipText    = QT_TR_NOOP("Decreases the multiplicity of the selected knot of a B-spline");
+    sWhatsThis      = "Sketcher_BSplineDecreaseKnotMultiplicity";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_BSplineDecreaseKnotMultiplicity";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    
+    // get the selection
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        return;
+    }
+    
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    
+    if(SubNames.size()>1) {
+        // Check that only one object is selected, as we need only one object to get the new GeoId after multiplicity change
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("The selection comprises more than one item. Please select just one knot."));
+        return;
+    }
+    
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    
+    openCommand("Decrease knot multiplicity");
+    
+    bool applied = false;
+    
+    int GeoId;
+    Sketcher::PointPos PosId;
+    getIdsFromName(SubNames[0], Obj, GeoId, PosId);
+    
+    if(isSimpleVertex(Obj, GeoId, PosId)) {
+        
+        const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+        
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
+            {
+                try {
+                    Gui::Command::doCommand(
+                        Doc,"App.ActiveDocument.%s.modifyBSplineKnotMultiplicity(%d,%d,%d) ",
+                                            selection[0].getFeatName(),(*it)->Second, (*it)->InternalAlignmentIndex + 1, -1);
+                    
+                    applied = true;
+                    
+                    // Warning: GeoId list might have changed as the consequence of deleting pole circles and
+                    // particularly bspline GeoID might have changed.
+                    
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("%s\n", e.what());
+                }
+                
+                break; // we have already found our knot.
+                
+            }
+        }
+        
+    }
+    
+    // Grab the new GeoId of the knot after possible modifications
+    selection = getSelection().getSelectionEx();
+    const std::vector<std::string> &SubNames2 = selection[0].getSubNames();
+    getIdsFromName(SubNames2[0], Obj, GeoId, PosId);
+    
+    if(isSimpleVertex(Obj, GeoId, PosId) && applied) {
+        
+        const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+        
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
+            {
+                try {
+                    Obj->solve();
+                    
+                    // add internalalignment for new pole
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                                            "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
+                                            selection[0].getFeatName(),
+                                            (*it)->Second);
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("%s\n", e.what());
+                }
+                
+                break; // we have already found our knot.
+                
+            }
+        }
+        
+    }
+    
+    if(!applied) {
+        abortCommand();
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("None of the selected elements is a knot of a bspline"));
+    }
+    else {
+        commitCommand();
+    }
+    
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+    
+    if (autoRecompute)
+        Gui::Command::updateActive();
+    else
+        Obj->solve();
+    
+}
+
+bool CmdSketcherDecreaseKnotMultiplicity::isActive(void)
+{
+    return isSketcherBSplineActive( getActiveGuiDocument(), true );
+}
+
 void CreateSketcherCommandsBSpline(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -633,4 +766,5 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherConvertToNURB());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseDegree());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseKnotMultiplicity());
+    rcCmdMgr.addCommand(new CmdSketcherDecreaseKnotMultiplicity());
 }
