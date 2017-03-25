@@ -3993,7 +3993,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
             bspline->increaseMultiplicity(knotIndex, curmult + multiplicityincr);
         }
         else { // decrease multiplicity
-            bool result = bspline->removeKnot(knotIndex, curmult + multiplicityincr);
+            bool result = bspline->removeKnot(knotIndex, curmult + multiplicityincr,1E6);
 
             if(!result)
                 return false;
@@ -4005,82 +4005,75 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     }
 
     // we succeeded with the multiplicity modification, so aligment geometry may be invalid/inconsistent for the new bspline
-    // If multiplicity is increased, the number of poles is increased. An increase of 1 degree generates one pole extra
 
     std::vector<int> delGeoId;
     
-    if(multiplicityincr > 0) {
+    std::vector<Base::Vector3d> poles = bsp->getPoles();
+    std::vector<Base::Vector3d> newpoles = bspline->getPoles();
+    std::vector<int> prevpole(bsp->countPoles());
 
-        std::vector<Base::Vector3d> poles = bsp->getPoles();
-        std::vector<Base::Vector3d> newpoles = bspline->getPoles();
-        std::vector<int> prevpole(bsp->countPoles());
+    for(int i = 0; i < int(poles.size()); i++)
+        prevpole[i] = -1;
 
-        for(int i = 0; i < int(poles.size()); i++)
-            prevpole[i] = -1;
-
-        int taken = 0;
-        for(int j = 0; j < int(poles.size()); j++){
-            for(int i = taken; i < int(newpoles.size()); i++){
-                if( newpoles[i] == poles[j] ) {
-                    prevpole[j] = i;
-                    taken++;
-                    break;
-                }
+    int taken = 0;
+    for(int j = 0; j < int(poles.size()); j++){
+        for(int i = taken; i < int(newpoles.size()); i++){
+            if( newpoles[i] == poles[j] ) {
+                prevpole[j] = i;
+                taken++;
+                break;
             }
         }
+    }
 
-        const std::vector< Sketcher::Constraint * > &cvals = Constraints.getValues();
+    const std::vector< Sketcher::Constraint * > &cvals = Constraints.getValues();
 
-        std::vector< Constraint * > newcVals(0);
+    std::vector< Constraint * > newcVals(0);
 
-        // modify pole constraints
-        for (std::vector< Sketcher::Constraint * >::const_iterator it= cvals.begin(); it != cvals.end(); ++it) {
-            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
-            {
-                if((*it)->AlignmentType == Sketcher::BSplineControlPoint) {
-                    if (prevpole[(*it)->InternalAlignmentIndex]!=-1) {
-                        assert(prevpole[(*it)->InternalAlignmentIndex] < bspline->countPoles());
-                        Constraint * newConstr = (*it)->clone();
-                        newConstr->InternalAlignmentIndex = prevpole[(*it)->InternalAlignmentIndex];
-                        newcVals.push_back(newConstr);
-                    }
-                    else { // it is an internal aligment geometry that is no longer valid => delete it and the pole circle
-                        delGeoId.push_back((*it)->First);
-                    }
-                } 
-                else { // it is a bspline geometry, but not a controlpoint
-                    newcVals.push_back(*it);
+    // modify pole constraints
+    for (std::vector< Sketcher::Constraint * >::const_iterator it= cvals.begin(); it != cvals.end(); ++it) {
+        if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+        {
+            if((*it)->AlignmentType == Sketcher::BSplineControlPoint) {
+                if (prevpole[(*it)->InternalAlignmentIndex]!=-1) {
+                    assert(prevpole[(*it)->InternalAlignmentIndex] < bspline->countPoles());
+                    Constraint * newConstr = (*it)->clone();
+                    newConstr->InternalAlignmentIndex = prevpole[(*it)->InternalAlignmentIndex];
+                    newcVals.push_back(newConstr);
                 }
-            }
-            else {
+                else { // it is an internal aligment geometry that is no longer valid => delete it and the pole circle
+                    delGeoId.push_back((*it)->First);
+                }
+            } 
+            else { // it is a bspline geometry, but not a controlpoint
                 newcVals.push_back(*it);
             }
         }
-
-        const std::vector< Part::Geometry * > &vals = getInternalGeometry();
-        
-        std::vector< Part::Geometry * > newVals(vals);
-        
-        newVals[GeoId] = bspline;
-        
-        Geometry.setValues(newVals);
-        Constraints.acceptGeometry(getCompleteGeometry());
-        rebuildVertexIndex();
-        
-        this->Constraints.setValues(newcVals);
-        
-        std::sort (delGeoId.begin(), delGeoId.end());
-        
-        if (delGeoId.size()>0) {
-            for (std::vector<int>::reverse_iterator it=delGeoId.rbegin(); it!=delGeoId.rend(); ++it) {
-                delGeometry(*it,false);
-            }
+        else {
+            newcVals.push_back(*it);
         }
     }
-    else {
-        return false;
-    }
+
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
     
+    std::vector< Part::Geometry * > newVals(vals);
+    
+    newVals[GeoId] = bspline;
+    
+    Geometry.setValues(newVals);
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+    
+    this->Constraints.setValues(newcVals);
+    
+    std::sort (delGeoId.begin(), delGeoId.end());
+    
+    if (delGeoId.size()>0) {
+        for (std::vector<int>::reverse_iterator it=delGeoId.rbegin(); it!=delGeoId.rend(); ++it) {
+            delGeometry(*it,false);
+        }
+    }
+
     // * DOCUMENTING OCC ISSUE OCC < 6.9.0
     // https://forum.freecadweb.org/viewtopic.php?f=10&t=9364&start=330#p162528
     //
