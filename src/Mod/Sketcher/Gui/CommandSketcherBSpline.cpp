@@ -27,6 +27,7 @@
 # include <QMessageBox>
 # include <Precision.hxx>
 # include <QApplication>
+# include <Standard_Version.hxx>
 #endif
 
 # include <QMessageBox>
@@ -508,6 +509,12 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     
+    #if OCC_VERSION_HEX < 0x060900
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong OCE/OCC version"),
+                         QObject::tr("This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher"));
+    return;
+    #endif
+    
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     
@@ -641,6 +648,12 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     
+    #if OCC_VERSION_HEX < 0x060900
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong OCE/OCC version"),
+                         QObject::tr("This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher"));
+    return;
+    #endif
+    
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     
@@ -772,6 +785,7 @@ CmdSketcherCompModifyKnotMultiplicity::CmdSketcherCompModifyKnotMultiplicity()
 
 void CmdSketcherCompModifyKnotMultiplicity::activated(int iMsg)
 {
+    
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     
     Gui::Command * cmd;

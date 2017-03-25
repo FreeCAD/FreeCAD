@@ -3478,6 +3478,7 @@ int SketchObject::exposeInternalGeometry(int GeoId)
             }
         }
         
+        #if OCC_VERSION_HEX >= 0x060900
         index=0;
         
         for(it=knotgeoids.begin(), itb=knotpoints.begin(); it!=knotgeoids.end() && itb!=knotpoints.end(); ++it, ++itb, index++) {
@@ -3507,7 +3508,7 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 incrgeo++;
             }
         }
-        
+        #endif
 
         Q_UNUSED(isfirstweightconstrained);
         // constraint the first weight to allow for seamless weight modification and proper visualization
@@ -3959,6 +3960,11 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 
 bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr)
 {
+    #if OCC_VERSION_HEX < 0x060900
+    Base::Console().Error("This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher\n");
+    return false;
+    #endif
+    
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return false;
     
