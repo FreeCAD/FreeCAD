@@ -298,8 +298,7 @@ inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bsp
     bspline << "Sketcher_CompBSplineShowHideGeometryInformation"
     << "Sketcher_BSplineConvertToNURB"
     << "Sketcher_BSplineIncreaseDegree"
-    << "Sketcher_BSplineIncreaseKnotMultiplicity"
-    << "Sketcher_BSplineDecreaseKnotMultiplicity";
+    << "Sketcher_CompModifyKnotMultiplicity";
 }
 
 template <typename T>
