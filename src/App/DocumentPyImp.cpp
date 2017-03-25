@@ -573,6 +573,16 @@ Py::String DocumentPy::getName(void) const
     return Py::String(getDocumentPtr()->getName());
 }
 
+Py::Boolean DocumentPy::getRecomputesFrozen(void) const
+{
+    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::SkipRecompute));
+}
+
+void DocumentPy::setRecomputesFrozen(Py::Boolean arg)
+{
+    getDocumentPtr()->setStatus(Document::Status::SkipRecompute, arg.isTrue());
+}
+
 PyObject* DocumentPy::getTempFileName(PyObject *args)
 {
     PyObject *value;
