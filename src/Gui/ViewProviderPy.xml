@@ -85,6 +85,11 @@
 				<UserDocu>Set a transformation on the Inventor node</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="claimChildren" Const="true">
+			<Documentation>
+				<UserDocu>Returns list of objects that are to be grouped in tree under this object.</UserDocu>
+			</Documentation>
+		</Methode>
 		<Attribute Name="Annotation" ReadOnly="false">
 			<Documentation>
 				<UserDocu>A pivy Separator to add a custom scene graph to this ViewProvider</UserDocu>
