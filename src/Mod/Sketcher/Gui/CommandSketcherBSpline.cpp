@@ -628,7 +628,7 @@ CmdSketcherDecreaseKnotMultiplicity::CmdSketcherDecreaseKnotMultiplicity()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Decrease degree");
+    sMenuText       = QT_TR_NOOP("Decrease multiplicity");
     sToolTipText    = QT_TR_NOOP("Decreases the multiplicity of the selected knot of a B-spline");
     sWhatsThis      = "Sketcher_BSplineDecreaseKnotMultiplicity";
     sStatusTip      = sToolTipText;
@@ -754,6 +754,96 @@ bool CmdSketcherDecreaseKnotMultiplicity::isActive(void)
     return isSketcherBSplineActive( getActiveGuiDocument(), true );
 }
 
+
+// Composite drop down for knot increase/decrease
+DEF_STD_CMD_ACLU(CmdSketcherCompModifyKnotMultiplicity);
+
+CmdSketcherCompModifyKnotMultiplicity::CmdSketcherCompModifyKnotMultiplicity()
+: Command("Sketcher_CompModifyKnotMultiplicity")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Modify knot multiplicity");
+    sToolTipText    = QT_TR_NOOP("Modifies the multiplicity of the selected knot of a B-spline");    
+    sWhatsThis      = "Sketcher_CompModifyKnotMultiplicity";
+    sStatusTip      = sToolTipText;
+    eType           = ForEdit;
+}
+
+void CmdSketcherCompModifyKnotMultiplicity::activated(int iMsg)
+{
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    
+    Gui::Command * cmd;
+    
+    if (iMsg==0)
+        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineIncreaseKnotMultiplicity");
+    else if (iMsg==1)
+        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineDecreaseKnotMultiplicity");
+    else 
+        return;
+    
+    cmd->invoke(0);
+    
+    // Since the default icon is reset when enabing/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+    
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdSketcherCompModifyKnotMultiplicity::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* c1 = pcAction->addAction(QString());
+    c1->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplineIncreaseKnotMultiplicity"));
+    QAction* c2 = pcAction->addAction(QString());
+    c2->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplineDecreaseKnotMultiplicity"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(c1->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompModifyKnotMultiplicity::languageChange()
+{
+    Command::languageChange();
+    
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+    
+    QAction* c1 = a[0];
+    c1->setText(QApplication::translate("CmdSketcherCompModifyKnotMultiplicity","Increase knot multiplicity"));
+    c1->setToolTip(QApplication::translate("Sketcher_BSplineIncreaseKnotMultiplicity","Increases the multiplicity of the selected knot of a B-spline"));
+    c1->setStatusTip(QApplication::translate("Sketcher_BSplineIncreaseKnotMultiplicity","Increases the multiplicity of the selected knot of a B-spline"));
+    QAction* c2 = a[1];
+    c2->setText(QApplication::translate("CmdSketcherCompModifyKnotMultiplicity","Decrease knot multiplicity"));
+    c2->setToolTip(QApplication::translate("Sketcher_BSplineDecreaseKnotMultiplicity","Decreases the multiplicity of the selected knot of a B-spline"));
+    c2->setStatusTip(QApplication::translate("Sketcher_BSplineDecreaseKnotMultiplicity","Decreases the multiplicity of the selected knot of a B-spline"));
+
+}
+
+void CmdSketcherCompModifyKnotMultiplicity::updateAction(int /*mode*/)
+{
+}
+
+bool CmdSketcherCompModifyKnotMultiplicity::isActive(void)
+{
+    return isSketcherBSplineActive( getActiveGuiDocument(), false );
+}
+
 void CreateSketcherCommandsBSpline(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -767,4 +857,5 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherIncreaseDegree());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherDecreaseKnotMultiplicity());
+    rcCmdMgr.addCommand(new CmdSketcherCompModifyKnotMultiplicity());
 }
