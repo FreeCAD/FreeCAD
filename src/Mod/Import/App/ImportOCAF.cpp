@@ -344,18 +344,20 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
 
 // ----------------------------------------------------------------------------
 
-ExportOCAF::ExportOCAF(Handle_TDocStd_Document h)
+ExportOCAF::ExportOCAF(Handle_TDocStd_Document h, bool explicitPlacement)
     : pDoc(h)
+    , keepExplicitPlacement(explicitPlacement)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 
-#if defined(OCAF_KEEP_PLACEMENT)
-    rootLabel = aShapeTool->NewShape();
-    TDataStd_Name::Set(rootLabel, "ASSEMBLY");
-#else
-    rootLabel = TDF_TagSource::NewChild(pDoc->Main());
-#endif
+    if (keepExplicitPlacement) {
+        rootLabel = aShapeTool->NewShape();
+        TDataStd_Name::Set(rootLabel, "ASSEMBLY");
+    }
+    else {
+        rootLabel = TDF_TagSource::NewChild(pDoc->Main());
+    }
 }
 
 void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& colors)
@@ -364,13 +366,16 @@ void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& c
     if (shape.IsNull())
         return;
 
-#if defined(OCAF_KEEP_PLACEMENT)
-    // http://www.opencascade.org/org/forum/thread_18813/?forum=3
-    TopLoc_Location aLoc = shape.Location();
-    TopoDS_Shape baseShape = shape.Located(TopLoc_Location());
-#else
-    TopoDS_Shape baseShape = shape;
-#endif
+    TopoDS_Shape baseShape;
+    TopLoc_Location aLoc;
+    if (keepExplicitPlacement) {
+        // http://www.opencascade.org/org/forum/thread_18813/?forum=3
+        aLoc = shape.Location();
+        baseShape = shape.Located(TopLoc_Location());
+    }
+    else {
+        baseShape = shape;
+    }
 
     // Add shape and name
     TDF_Label shapeLabel = aShapeTool->NewShape();
@@ -378,9 +383,9 @@ void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& c
 
     TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), 1));
 
-#if defined(OCAF_KEEP_PLACEMENT)
-    aShapeTool->AddComponent(rootLabel, shapeLabel, aLoc);
-#endif
+    if (keepExplicitPlacement) {
+        aShapeTool->AddComponent(rootLabel, shapeLabel, aLoc);
+    }
 
     // Add color information
     Quantity_Color col;

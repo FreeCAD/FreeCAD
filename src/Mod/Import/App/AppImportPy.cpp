@@ -209,12 +209,14 @@ private:
         std::string name8bit = Part::encodeFilename(Utf8Name);
 
         try {
+            Py::Sequence list(object);
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
-            Import::ExportOCAF ocaf(hDoc);
 
-            Py::Sequence list(object);
+            bool keepExplicitPlacement = list.size() > 1;
+            Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
+
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 PyObject* item = (*it).ptr();
                 if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
