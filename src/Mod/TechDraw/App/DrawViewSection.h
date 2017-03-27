@@ -46,7 +46,7 @@ namespace TechDraw
 {
 class DrawProjGroupItem;
 class DrawGeomHatch;
-class HatchLine;
+class PATLineSpec;
 class LineSet;
 class DashSet;
 
@@ -88,7 +88,7 @@ public:
     std::vector<TopoDS_Wire> getSectionFaceWires(void) { return sectionFaceWires; }
 
     std::vector<LineSet> getDrawableLines(int i = 0);
-    std::vector<HatchLine> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
+    std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
 
     static const char* SectionDirEnums[];
 

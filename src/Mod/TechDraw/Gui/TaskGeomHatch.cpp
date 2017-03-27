@@ -75,7 +75,7 @@ TaskGeomHatch::~TaskGeomHatch()
 void TaskGeomHatch::initUi()
 {
     ui->fcFile->setFileName(QString::fromUtf8(m_file.data(), m_file.size()));
-    std::vector<std::string> names = HatchLine::getPatternList(m_file);
+    std::vector<std::string> names = PATLineSpec::getPatternList(m_file);
     QStringList qsNames = listToQ(names);
     ui->cbName->addItems(qsNames);
     int nameIndex = ui->cbName->findText(QString::fromUtf8(m_name.data(),m_name.size()));
@@ -118,7 +118,7 @@ QStringList TaskGeomHatch::listToQ(std::vector<std::string> in)
 void TaskGeomHatch::onFileChanged(void)
 {
     m_file = ui->fcFile->fileName().toUtf8().constData();
-    std::vector<std::string> names = HatchLine::getPatternList(m_file);
+    std::vector<std::string> names = PATLineSpec::getPatternList(m_file);
     QStringList qsNames = listToQ(names);
     ui->cbName->clear();
     ui->cbName->addItems(qsNames);
