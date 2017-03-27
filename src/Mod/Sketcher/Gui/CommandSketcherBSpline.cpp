@@ -481,6 +481,8 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
         Gui::Command::updateActive();
     else
         Obj->solve();
+    
+    getSelection().clearSelection();
 
 }
 
@@ -563,6 +565,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
                 }
                 catch (const Base::Exception& e) {
                     Base::Console().Error("%s\n", e.what());
+                    getSelection().clearSelection();
                 }
 
                 break; // we have already found our knot.
@@ -573,35 +576,48 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     }
     
     // Grab the new GeoId of the knot after possible modifications
+    bool isnewGeoId = true;
     selection = getSelection().getSelectionEx();
-    const std::vector<std::string> &SubNames2 = selection[0].getSubNames();
-    getIdsFromName(SubNames2[0], Obj, GeoId, PosId);
     
-    if(isSimpleVertex(Obj, GeoId, PosId) && applied) {
+    if (selection.size() != 1)
+        isnewGeoId = false;
+    
+    
+    const std::vector<std::string> &SubNames2 = selection[0].getSubNames();
+    
+    if(SubNames.size() == 1)
+        isnewGeoId = false;
+    
+    if(isnewGeoId) {
         
-        const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+        getIdsFromName(SubNames2[0], Obj, GeoId, PosId);
         
-        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-            if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
-            {
-                try {
-                    Obj->solve();
+        if(isSimpleVertex(Obj, GeoId, PosId) && applied) {
+            
+            const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+            
+            for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
+                if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
+                {
+                    try {
+                        Obj->solve();
 
-                    // add internalalignment for new pole
-                    Gui::Command::doCommand(Gui::Command::Doc,
-                                            "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
-                                            selection[0].getFeatName(),
-                                            (*it)->Second);
+                        // add internalalignment for new pole
+                        Gui::Command::doCommand(Gui::Command::Doc,
+                                                "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
+                                                selection[0].getFeatName(),
+                                                (*it)->Second);
+                    }
+                    catch (const Base::Exception& e) {
+                        Base::Console().Error("%s\n", e.what());
+                        getSelection().clearSelection();
+                    }
+                    
+                    break; // we have already found our knot.
+                    
                 }
-                catch (const Base::Exception& e) {
-                    Base::Console().Error("%s\n", e.what());
-                }
-                
-                break; // we have already found our knot.
-                
             }
         }
-        
     }
     
     if(!applied) {
@@ -620,6 +636,8 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         Gui::Command::updateActive();
     else
         Obj->solve();
+    
+    getSelection().clearSelection();
     
 }
 
@@ -702,6 +720,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
                 }
                 catch (const Base::Exception& e) {
                     Base::Console().Error("%s\n", e.what());
+                    getSelection().clearSelection();
                 }
                 
                 break; // we have already found our knot.
@@ -712,35 +731,49 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     }
     
     // Grab the new GeoId of the knot after possible modifications
+    bool isnewGeoId = true;
     selection = getSelection().getSelectionEx();
-    const std::vector<std::string> &SubNames2 = selection[0].getSubNames();
-    getIdsFromName(SubNames2[0], Obj, GeoId, PosId);
     
-    if(isSimpleVertex(Obj, GeoId, PosId) && applied) {
+    if (selection.size() != 1)
+        isnewGeoId = false;
+    
+    
+    const std::vector<std::string> &SubNames2 = selection[0].getSubNames();
+    
+    if(SubNames.size() == 1)
+        isnewGeoId = false;
+    
+    if(isnewGeoId) {
         
-        const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+        getIdsFromName(SubNames2[0], Obj, GeoId, PosId);
         
-        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-            if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
-            {
-                try {
-                    Obj->solve();
+        if(isSimpleVertex(Obj, GeoId, PosId) && applied) {
+            
+            const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+            
+            for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
+                if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
+                {
+                    try {
+                        Obj->solve();
+                        
+                        // add internalalignment for new pole
+                        Gui::Command::doCommand(Gui::Command::Doc,
+                                                "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
+                                                selection[0].getFeatName(),
+                                                (*it)->Second);
+                    }
+                    catch (const Base::Exception& e) {
+                        Base::Console().Error("%s\n", e.what());
+                        getSelection().clearSelection();
+                    }
                     
-                    // add internalalignment for new pole
-                    Gui::Command::doCommand(Gui::Command::Doc,
-                                            "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
-                                            selection[0].getFeatName(),
-                                            (*it)->Second);
+                    break; // we have already found our knot.
+                    
                 }
-                catch (const Base::Exception& e) {
-                    Base::Console().Error("%s\n", e.what());
-                }
-                
-                break; // we have already found our knot.
-                
             }
+            
         }
-        
     }
     
     if(!applied) {
@@ -759,6 +792,8 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
         Gui::Command::updateActive();
     else
         Obj->solve();
+    
+    getSelection().clearSelection();
     
 }
 
