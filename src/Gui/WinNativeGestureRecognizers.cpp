@@ -40,12 +40,47 @@
 
 
 #include <qgesture.h>
-#include <private/qevent_p.h>
+
 #include <Base/Exception.h>
 
 QT_BEGIN_NAMESPACE
 
 #if !defined(QT_NO_NATIVE_GESTURES)
+
+//#include <private/qevent_p.h>
+//this include is not avalable on conda Qt, see https://forum.freecadweb.org/viewtopic.php?f=4&t=21405&p=167395#p167395
+//copy-pasted from this header:
+class QNativeGestureEvent : public QEvent
+{
+public:
+    enum Type {
+        None,
+        GestureBegin,
+        GestureEnd,
+        Pan,
+        Zoom,
+        Rotate,
+        Swipe
+    };
+
+    QNativeGestureEvent()
+        : QEvent(QEvent::NativeGesture), gestureType(None), percentage(0)
+#ifdef Q_WS_WIN
+        , sequenceId(0), argument(0)
+#endif
+    {
+    }
+
+    Type gestureType;
+    float percentage;
+    QPoint position;
+    float angle;
+#ifdef Q_WS_WIN
+    ulong sequenceId;
+    quint64 argument;
+#endif
+};
+
 
 QGesture* WinNativeGestureRecognizerPinch::create(QObject* target)
 {
