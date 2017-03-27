@@ -173,13 +173,13 @@ void DrawViewSection::onChanged(const App::Property* prop)
         prop == &NameGeomPattern ) {
       if ((!FileHatchPattern.isEmpty())  &&
           (!NameGeomPattern.isEmpty())) {
-              std::vector<HatchLine> specs = 
+              std::vector<PATLineSpec> specs = 
                                DrawGeomHatch::getDecodedSpecsFromFile(FileHatchPattern.getValue(),NameGeomPattern.getValue());
               m_lineSets.clear();
               for (auto& hl: specs) {
                   //hl.dump("hl from section");
                   LineSet ls;
-                  ls.setHatchLine(hl);
+                  ls.setPATLineSpec(hl);
                   m_lineSets.push_back(ls);
               }
                   
