@@ -472,7 +472,7 @@
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="Gui::PrefFileChooser" name="fileChooser">
+         <widget class="Gui::PrefFileChooser" name="pfc_FilePattern">
           <property name="toolTip">
            <string>Default location for PAT file</string>
           </property>
@@ -489,7 +489,7 @@
       <item>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="2">
-         <widget class="Gui::PrefLineEdit" name="lineEdit">
+         <widget class="Gui::PrefLineEdit" name="le_NamePattern">
           <property name="toolTip">
            <string>Default PAT pattern</string>
           </property>
