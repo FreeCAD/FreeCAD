@@ -30,7 +30,9 @@
 #include <stdexcept>
 #endif
 
+#include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopExp.hxx>
 
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
@@ -42,23 +44,80 @@
 
 using namespace TechDraw;
 
-HatchLine::HatchLine()
+double LineSet::getMinX(void)
+{
+    double xMin,yMin,zMin,xMax,yMax,zMax;
+    m_box.Get(xMin,yMin,zMin,xMax,yMax,zMax);
+    return xMin;
+}
+
+double LineSet::getMinY(void)
+{
+    double xMin,yMin,zMin,xMax,yMax,zMax;
+    m_box.Get(xMin,yMin,zMin,xMax,yMax,zMax);
+    return yMin;
+}
+
+double LineSet::getMaxX(void)
+{
+    double xMin,yMin,zMin,xMax,yMax,zMax;
+    m_box.Get(xMin,yMin,zMin,xMax,yMax,zMax);
+    return xMax;
+}
+
+double LineSet::getMaxY(void)
+{
+    double xMin,yMin,zMin,xMax,yMax,zMax;
+    m_box.Get(xMin,yMin,zMin,xMax,yMax,zMax);
+    return yMax;
+}
+
+bool LineSet::isDashed(void)
+{
+    bool result = m_hatchLine.isDashed();
+    return result;
+}
+
+//TODO: needs to incorporate deltaX parameter
+//! calculates the apparent start point for dashed lines
+Base::Vector3d LineSet::calcApparentStart(TechDrawGeometry::BaseGeom* g)
+{
+    Base::Vector3d result;
+    Base::Vector3d start(g->getStartPoint().x,g->getStartPoint().y,0.0);
+    double angle = getPATLineSpec().getAngle();
+    if (angle == 0.0) {             //horizontal 
+        result = Base::Vector3d(getMinX(),start.y,0.0);
+    } else if ((angle == 90.0) ||
+               (angle == -90.0)) {  //vertical
+        result = Base::Vector3d(start.x,getMinY(),0.0);
+    } else {               
+        double slope = getPATLineSpec().getSlope();
+        double y     = getMinY();
+        double x = ((y - start.y) / slope) + start.x;
+        result = Base::Vector3d(x,y,0);
+    }
+    return result;
+}
+
+
+//*******************************************
+PATLineSpec::PATLineSpec()
 {
     init();
 }
 
-HatchLine::HatchLine(std::string& lineSpec)
+PATLineSpec::PATLineSpec(std::string& lineSpec)
 {
     init();
     load(lineSpec);
 }
 
 
-HatchLine::~HatchLine()
+PATLineSpec::~PATLineSpec()
 {
 }
 
-void HatchLine::init(void)
+void PATLineSpec::init(void)
 {
     m_angle = 0.0;
     m_origin = Base::Vector3d(0.0,0.0,0.0);
@@ -66,11 +125,11 @@ void HatchLine::init(void)
     m_offset = 0.0;
 }
 
-void HatchLine::load(std::string& lineSpec)
+void PATLineSpec::load(std::string& lineSpec)
 {
     std::vector<double> values = split(lineSpec);
     if (values.size() < 5) {
-        Base::Console().Message( "HatchLine::load(%s) invalid entry in pattern\n",lineSpec.c_str() );
+        Base::Console().Message( "PATLineSpec::load(%s) invalid entry in pattern\n",lineSpec.c_str() );
         return;
     }
     m_angle    = values[0];
@@ -78,11 +137,13 @@ void HatchLine::load(std::string& lineSpec)
     m_offset   = values[3];
     m_interval = values[4];
     if (values.size() > 5) {
-        m_dashParms.insert(std::end(m_dashParms), std::begin(values) + 5, std::end(values));
+        std::vector<double> dash;
+        dash.insert(std::end(dash), std::begin(values) + 5, std::end(values));
+        m_dashParms = DashSpec(dash);
     }
 }
 
-std::vector<double> HatchLine::split(std::string line)
+std::vector<double> PATLineSpec::split(std::string line)
 {
     std::vector<double>   result;
     std::stringstream     lineStream(line);
@@ -101,25 +162,26 @@ std::vector<double> HatchLine::split(std::string line)
     return result;
 }
 
-void HatchLine::dump(char* title)
+void PATLineSpec::dump(char* title)
 {
     Base::Console().Message( "DUMP: %s\n",title);
     Base::Console().Message( "Angle: %.3f\n", m_angle);
     Base::Console().Message( "Origin: %s\n",DrawUtil::formatVector(m_origin).c_str());
     Base::Console().Message( "Offset: %.3f\n",m_offset);
     Base::Console().Message( "Interval: %.3f\n",m_interval);
-    std::stringstream ss;
-    for (auto& d: m_dashParms) {
-        ss << d << ", ";
-    }
-    ss << "end";
-    Base::Console().Message( "DashSpec: %s\n",ss.str().c_str());
+//    std::stringstream ss;
+//    for (auto& d: m_dashParms) {
+//        ss << d << ", ";
+//    }
+//    ss << "end";
+//    Base::Console().Message( "DashSpec: %s\n",ss.str().c_str());
+    m_dashParms.dump("dashspec");
 }
 
 //static class methods
-std::vector<HatchLine> HatchLine::getSpecsForPattern(std::string& parmFile, std::string& parmName)
+std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, std::string& parmName)
 {
-    std::vector<HatchLine> result;
+    std::vector<PATLineSpec> result;
     std::vector<std::string> lineSpecs;
     std::ifstream inFile;
     inFile.open (parmFile, std::ifstream::in);
@@ -137,15 +199,15 @@ std::vector<HatchLine> HatchLine::getSpecsForPattern(std::string& parmFile, std:
         return result;
     }
     
-    //decode definition lines into HatchLine objects
+    //decode definition lines into PATLineSpec objects
     for (auto& l: lineSpecs) {
-        HatchLine hl(l);
+        PATLineSpec hl(l);
         result.push_back(hl);
     }
     return result;
 }
 
-bool  HatchLine::findPatternStart(std::ifstream& inFile, std::string& parmName)
+bool  PATLineSpec::findPatternStart(std::ifstream& inFile, std::string& parmName)
 {
     bool result = false;
     while ( inFile.good() ){
@@ -176,7 +238,7 @@ bool  HatchLine::findPatternStart(std::ifstream& inFile, std::string& parmName)
 }
 
 //get the definition lines for this pattern
-std::vector<std::string> HatchLine::loadPatternDef(std::ifstream& inFile)
+std::vector<std::string> PATLineSpec::loadPatternDef(std::ifstream& inFile)
 {
     std::vector<std::string> result;
     while ( inFile.good() ){
@@ -196,7 +258,7 @@ std::vector<std::string> HatchLine::loadPatternDef(std::ifstream& inFile)
     return result;
 }
 
-std::vector<std::string> HatchLine::getPatternList(std::string& parmFile)
+std::vector<std::string> PATLineSpec::getPatternList(std::string& parmFile)
 {
     std::vector<std::string> result;
     std::ifstream inFile;
@@ -222,6 +284,26 @@ std::vector<std::string> HatchLine::getPatternList(std::string& parmFile)
             result.push_back(patternName);
         }
     }
+    return result;
+}
+
+double PATLineSpec::getSlope(void)
+{
+    double angle = getAngle();
+
+    //only dealing with angles -180:180 for now
+    if (angle > 90.0) {
+         angle = -(180.0 - angle);
+    } else if (angle < -90.0) {
+        angle = (180 + angle);
+    }
+    double slope = tan(angle * M_PI/180.0);
+    return slope;
+}
+
+bool PATLineSpec::isDashed(void)
+{
+    bool result = !m_dashParms.empty();
     return result;
 }
 
