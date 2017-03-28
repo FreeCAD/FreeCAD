@@ -52,10 +52,11 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-TaskGeomHatch::TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp) :
+TaskGeomHatch::TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp,bool mode) :
     ui(new Ui_TaskGeomHatch),
     m_hatch(inHatch),
-    m_Vp(inVp)
+    m_Vp(inVp),
+    m_createMode(mode)
 {
     ui->setupUi(this);
     connect(ui->fcFile, SIGNAL(fileNameSelected( const QString & )), this, SLOT(onFileChanged(void)));
@@ -77,6 +78,12 @@ void TaskGeomHatch::initUi()
     std::vector<std::string> names = HatchLine::getPatternList(m_file);
     QStringList qsNames = listToQ(names);
     ui->cbName->addItems(qsNames);
+    int nameIndex = ui->cbName->findText(QString::fromUtf8(m_name.data(),m_name.size()));
+    if (nameIndex > -1) {
+        ui->cbName->setCurrentIndex(nameIndex);
+    } else {
+        Base::Console().Warning("Warning - Pattern name not found in current PAT File\n");
+    }
     ui->sbScale->setValue(m_scale);
     ui->sbWeight->setValue(m_weight);
     ui->ccColor->setColor(m_color.asValue<QColor>());
@@ -121,16 +128,27 @@ bool TaskGeomHatch::accept()
 {
     updateValues();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    m_source->touch();
+    m_source->getDocument()->recompute();          //TODO: this is only here to get graphics to update.
+                                                   //      sb "redraw graphics" since m_source geom has not changed.
     return true;
 }
 
 bool TaskGeomHatch::reject()
 {
-    std::string HatchName = m_hatch->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",HatchName.c_str());
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
-    m_source->touch();
-    m_source->getDocument()->recompute();
+    if (getCreateMode()) {
+        std::string HatchName = m_hatch->getNameInDocument();
+        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",HatchName.c_str());
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        m_source->touch();
+        m_source->getDocument()->recompute();
+    } else {
+        m_hatch->FilePattern.setValue(m_origFile);
+        m_hatch->NamePattern.setValue(m_origName);
+        m_hatch->ScalePattern.setValue(m_origScale);
+        m_Vp->ColorPattern.setValue(m_origColor);
+        m_Vp->WeightPattern.setValue(m_origWeight);
+    }
     return false;
 }
 
@@ -141,6 +159,14 @@ void TaskGeomHatch::getParameters()
     m_scale  = m_hatch->ScalePattern.getValue();
     m_color  = m_Vp->ColorPattern.getValue();
     m_weight = m_Vp->WeightPattern.getValue();
+    if (!getCreateMode()) {
+        m_origFile   = m_hatch->FilePattern.getValue();
+        m_origName   = m_hatch->NamePattern.getValue();
+        m_origScale  = m_hatch->ScalePattern.getValue();
+        m_origColor  = m_Vp->ColorPattern.getValue();
+        m_origWeight = m_Vp->WeightPattern.getValue();
+    }
+    
 }
 
 void TaskGeomHatch::changeEvent(QEvent *e)
@@ -151,10 +177,11 @@ void TaskGeomHatch::changeEvent(QEvent *e)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-TaskDlgGeomHatch::TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::ViewProviderGeomHatch* inVp) :
-    TaskDialog()
+TaskDlgGeomHatch::TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::ViewProviderGeomHatch* inVp, bool mode) :
+    TaskDialog(),
+    viewProvider(nullptr)
 {
-    widget  = new TaskGeomHatch(inHatch,inVp);
+    widget  = new TaskGeomHatch(inHatch,inVp, mode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Tree_View"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
@@ -163,6 +190,11 @@ TaskDlgGeomHatch::TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui
 
 TaskDlgGeomHatch::~TaskDlgGeomHatch()
 {
+}
+
+void TaskDlgGeomHatch::setCreateMode(bool b)
+{
+    widget->setCreateMode(b);
 }
 
 void TaskDlgGeomHatch::update()

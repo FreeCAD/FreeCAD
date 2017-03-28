@@ -539,7 +539,7 @@ Base::Vector3d DrawViewSection::getSectionVector (const std::string sectionName)
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {
     std::vector<LineSet> result;
-    result = DrawGeomHatch::getDrawableLines(this,m_lineSets,i,HatchScale.getValue());
+    result = DrawGeomHatch::getTrimmedLines(this,m_lineSets,i,HatchScale.getValue());
     return result;
 }
 

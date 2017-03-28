@@ -29,6 +29,7 @@
 #include <App/PropertyFile.h>
 
 class TopoDS_Edge;
+class TopoDS_Face;
 class Bnd_Box;
 
 namespace TechDrawGeometry
@@ -39,7 +40,7 @@ class BaseGeom;
 namespace TechDraw
 {
 class DrawViewPart;
-class HatchLine;
+class PATLineSpec;
 class LineSet;
 class DashSet;
 
@@ -66,17 +67,21 @@ public:
 
     DrawViewPart* getSourceView(void) const;
 
-    std::vector<LineSet> getDrawableLines(int i = 0);
-    static std::vector<LineSet> getDrawableLines(DrawViewPart* dvp, std::vector<LineSet> lineSets, int iface, double scale);
+    std::vector<LineSet> getFaceOverlay(int i = 0);
+    std::vector<LineSet> getTrimmedLines(int i = 0);
+    static std::vector<LineSet> getTrimmedLines(DrawViewPart* dvp, std::vector<LineSet> lineSets, int iface, double scale);
 
-    static std::vector<TopoDS_Edge> makeEdgeOverlay(HatchLine hl, Bnd_Box bBox, double scale);
+    static std::vector<TopoDS_Edge> makeEdgeOverlay(PATLineSpec hl, Bnd_Box bBox, double scale);
     static TopoDS_Edge makeLine(Base::Vector3d s, Base::Vector3d e);
-    static std::vector<HatchLine> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
+    static std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
+    static TopoDS_Face extractFace(DrawViewPart* source, int iface );
 
 protected:
     void getParameters(void);
-    std::vector<HatchLine> getDecodedSpecsFromFile();
+    std::vector<PATLineSpec> getDecodedSpecsFromFile();
     std::vector<LineSet> m_lineSets;
+    std::string m_saveFile;
+    std::string m_saveName;
 
 private:
     static App::PropertyFloatConstraint::Constraints scaleRange;

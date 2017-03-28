@@ -139,6 +139,13 @@ void QGIViewPart::setViewPartFeature(TechDraw::DrawViewPart *obj)
 
 QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) const
 {
+    double rot = getViewObject()->Rotation.getValue();
+    return geomToPainterPath(baseGeom,rot);
+}
+
+
+QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom, double rot)
+{
     QPainterPath path;
 
     switch(baseGeom->geomType) {
@@ -152,7 +159,6 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
                           Rez::guiX(y), 
                           Rez::guiX(geom->radius * 2), 
                           Rez::guiX(geom->radius * 2));            //topleft@(x,y) radx,rady
-          //Base::Console().Message("TRACE -drawPainterPath - making an CIRCLE @(%.3f,%.3f) R:%.3f\n",x, y, geom->radius);
         } break;
         case TechDrawGeometry::ARCOFCIRCLE: {
           TechDrawGeometry::AOC  *geom = static_cast<TechDrawGeometry::AOC *>(baseGeom);
@@ -167,9 +173,6 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
                   Rez::guiX(geom->endPnt.y),
                   Rez::guiX(geom->startPnt.x), 
                   Rez::guiX(geom->startPnt.y));
-//          double x = geom->center.x - geom->radius;
-//          double y = geom->center.y - geom->radius;
-          //Base::Console().Message("TRACE -drawPainterPath - making an ARCOFCIRCLE @(%.3f,%.3f) R:%.3f\n",x, y, geom->radius);
         } break;
         case TechDrawGeometry::ELLIPSE: {
           TechDrawGeometry::Ellipse *geom = static_cast<TechDrawGeometry::Ellipse *>(baseGeom);
@@ -202,7 +205,6 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
                   Rez::guiX(endX), 
                   Rez::guiX(endY));
 
-          //Base::Console().Message("TRACE -drawPainterPath - making an ELLIPSE @(%.3f,%.3f) R1:%.3f R2:%.3f\n",geom->center.x,geom->center.y, geom->major, geom->minor);
         } break;
         case TechDrawGeometry::ARCOFELLIPSE: {
           TechDrawGeometry::AOE *geom = static_cast<TechDrawGeometry::AOE *>(baseGeom);
@@ -217,7 +219,6 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
                   Rez::guiX(geom->endPnt.y),
                   Rez::guiX(geom->startPnt.x), 
                   Rez::guiX(geom->startPnt.y));
-          //Base::Console().Message("TRACE -drawPainterPath - making an ARCOFELLIPSE R1:%.3f R2:%.3f From: (%.3f,%.3f) To: (%.3f,%.3f)\n",geom->major, geom->minor,geom->startPnt.x, geom->startPnt.y,geom->endPnt.x, geom->endPnt.y);
 
         } break;
         case TechDrawGeometry::BEZIER: {
@@ -225,7 +226,6 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
 
           // Move painter to the beginning
           path.moveTo(Rez::guiX(geom->pnts[0].x), Rez::guiX(geom->pnts[0].y));
-          //Base::Console().Message("TRACE -drawPainterPath - making an BEZIER From: (%.3f,%.3f)\n",geom->pnts[0].x,geom->pnts[0].y);
 
           if ( geom->poles == 2 ) {
               // Degree 1 bezier = straight line...
@@ -254,7 +254,6 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
 
           // Move painter to the beginning of our first segment
           path.moveTo(Rez::guiX(it->pnts[0].x), Rez::guiX(it->pnts[0].y));
-          //Base::Console().Message("TRACE -drawPainterPath - making an BSPLINE From: (%.3f,%.3f)\n",it->pnts[0].x,it->pnts[0].y);
 
           for ( ; it != geom->segments.end(); ++it) {
               // At this point, the painter is either at the beginning
@@ -282,19 +281,16 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
 
           path.moveTo(Rez::guiX(geom->points[0].x), Rez::guiX(geom->points[0].y));
           std::vector<Base::Vector2d>::const_iterator it = geom->points.begin();
-          //Base::Console().Message("TRACE -drawPainterPath - making an GENERIC From: (%.3f,%.3f)\n",geom->points[0].x, geom->points[0].y);
           for(++it; it != geom->points.end(); ++it) {
               path.lineTo(Rez::guiX((*it).x), Rez::guiX((*it).y));
-              //Base::Console().Message(">>>> To: (%.3f,%.3f)\n",(*it).x, (*it).y);
           }
         } break;
         default:
-          Base::Console().Error("Error - drawPainterPath - UNKNOWN geomType: %d\n",baseGeom->geomType);
+          Base::Console().Error("Error - geomToPainterPath - UNKNOWN geomType: %d\n",baseGeom->geomType);
           break;
       }
 
-    double rot = getViewObject()->Rotation.getValue();
-    if (rot) {
+    if (rot != 0.0) {
         QTransform t;
         t.rotate(-rot);
         path = t.map(path);
@@ -391,16 +387,11 @@ void QGIViewPart::drawViewPart()
                 const std::vector<std::string> &sourceNames = fGeom->Source.getSubValues();
                 if (!sourceNames.empty()) {
                     int fdx = TechDraw::DrawUtil::getIndexFromName(sourceNames.at(0));
-                    std::vector<LineSet> lineSets = fGeom->getDrawableLines(fdx);
+                    std::vector<LineSet> lineSets = fGeom->getTrimmedLines(fdx);
                     if (!lineSets.empty()) {
                         newFace->clearLineSets();
                         for (auto& ls: lineSets) {
-                            QPainterPath bigPath;
-                            for (auto& g: ls.getGeoms()) {
-                                QPainterPath smallPath = drawPainterPath(g);
-                                bigPath.addPath(smallPath);
-                            }
-                            newFace->addLineSet(bigPath,ls.getDashSpec());
+                            newFace->addLineSet(ls);
                         }
                         newFace->isHatched(true);
                         newFace->setFillMode(QGIFace::GeomHatchFill);
@@ -555,7 +546,6 @@ void QGIViewPart::removePrimitives()
          if (prim) {
             removeFromGroup(prim);
             scene()->removeItem(prim);
-//            deleteItems.append(prim);         //pretty sure we could just delete here since not in scene anymore
             delete prim;
          }
      }
@@ -722,7 +712,7 @@ void QGIViewPart::drawMatting()
 void QGIViewPart::pathArc(QPainterPath &path, double rx, double ry, double x_axis_rotation,
                                     bool large_arc_flag, bool sweep_flag,
                                     double x, double y,
-                                    double curx, double cury) const
+                                    double curx, double cury) 
 {
     double sin_th, cos_th;
     double a00, a01, a10, a11;
@@ -804,7 +794,7 @@ void QGIViewPart::pathArc(QPainterPath &path, double rx, double ry, double x_axi
 void QGIViewPart::pathArcSegment(QPainterPath &path,
                                            double xc, double yc,
                                            double th0, double th1,
-                                           double rx, double ry, double xAxisRotation) const
+                                           double rx, double ry, double xAxisRotation)
 {
     double sinTh, cosTh;
     double a00, a01, a10, a11;

@@ -119,12 +119,12 @@ void QGIViewSection::drawSectionFace()
                     if (!lineSets.empty()) {
                         newFace->clearLineSets();
                         for (auto& ls: lineSets) {
-                            QPainterPath bigPath;
-                            for (auto& g: ls.getGeoms()) {
-                                QPainterPath smallPath = drawPainterPath(g);
-                                bigPath.addPath(smallPath);
-                            }
-                            newFace->addLineSet(bigPath,ls.getDashSpec());
+//                            QPainterPath bigPath;
+//                            for (auto& g: ls.getGeoms()) {
+//                                QPainterPath smallPath = drawPainterPath(g);
+//                                bigPath.addPath(smallPath);
+//                            }
+                            newFace->addLineSet(ls);
                         }
                     }
                 }
