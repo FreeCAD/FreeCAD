@@ -29,6 +29,7 @@
 #include <QByteArray>
 #include <QBrush>
 #include <QPixmap>
+//#include <QVector>
 
 #include <Mod/TechDraw/App/HatchLine.h>
 #include <Mod/TechDraw/App/Geometry.h>
@@ -108,9 +109,11 @@ public:
     void addLineSet(LineSet ls);
     void clearFillItems(void);
 
-    void lineSetToFillItem(LineSet ls);
-    QGraphicsLineItem* geomToLine(TechDrawGeometry::BaseGeom* base);
-    double calcOffset(TechDrawGeometry::BaseGeom* g,LineSet ls);
+    void lineSetToFillItems(LineSet ls);
+    QGraphicsPathItem* geomToLine(TechDrawGeometry::BaseGeom* base, LineSet ls);
+    QGraphicsPathItem* geomToOffsetLine(TechDrawGeometry::BaseGeom* base, double offset, LineSet ls);
+    QGraphicsPathItem* geomToStubbyLine(TechDrawGeometry::BaseGeom* base, double offset, LineSet ls);
+    QGraphicsPathItem* lineFromPoints(Base::Vector3d start, Base::Vector3d end, DashSpec ds);
 
     //bitmap texture fill parms method
     QPixmap textureFromBitmap(std::string fileSpec);
@@ -119,8 +122,12 @@ public:
 protected:
     void makeMark(double x, double y);
     double getXForm(void);
+    void getParameters(void);
 
-
+    std::vector<double> offsetDash(const std::vector<double> dv, const double offset);
+    QPainterPath dashedPPath(const std::vector<double> dv, const Base::Vector3d start, const Base::Vector3d end);
+    double dashRemain(const std::vector<double> dv, const double offset);
+    double calcOffset(TechDrawGeometry::BaseGeom* g,LineSet ls);
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
     QGCustomRect *m_rect;
 
@@ -133,11 +140,13 @@ protected:
     bool m_isHatched;
     QGIFace::fillMode m_mode;
 
-    QPen setGeomPen(DashSpec ds);
-    QVector<qreal> decodeDashSpec(DashSpec d);
-    std::vector<QGraphicsLineItem*> m_fillItems;
+    QPen setGeomPen(void);
+    std::vector<double> decodeDashSpec(DashSpec d);
+    std::vector<QGraphicsPathItem*> m_fillItems;
     std::vector<LineSet> m_lineSets;
     std::vector<DashSpec> m_dashSpecs;
+    long int m_segCount;
+    long int m_maxSeg;
 
 
 private:
