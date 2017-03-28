@@ -277,6 +277,34 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setTransitionMode(PyObject *args)
     Py_Return;
 }
 
+PyObject* BRepOffsetAPI_MakePipeShellPy::setMaxDegree(PyObject *args)
+{
+    int degree;
+    if (!PyArg_ParseTuple(args, "i",&degree))
+        return 0;
+    this->getBRepOffsetAPI_MakePipeShellPtr()->SetMaxDegree(degree);
+    Py_Return;
+}
+
+PyObject* BRepOffsetAPI_MakePipeShellPy::setMaxSegments(PyObject *args)
+{
+    int nbseg;
+    if (!PyArg_ParseTuple(args, "i",&nbseg))
+        return 0;
+    this->getBRepOffsetAPI_MakePipeShellPtr()->SetMaxSegments(nbseg);
+    Py_Return;
+}
+
+PyObject* BRepOffsetAPI_MakePipeShellPy::setForceApproxC1(PyObject *args)
+{
+    PyObject *obj;
+    if (!PyArg_ParseTuple(args, "O!",&PyBool_Type,&obj))
+        return 0;
+    this->getBRepOffsetAPI_MakePipeShellPtr()->SetForceApproxC1(PyObject_IsTrue(obj) ? Standard_True : Standard_False);
+    Py_Return;
+}
+
+
 PyObject *BRepOffsetAPI_MakePipeShellPy::getCustomAttributes(const char* ) const
 {
     return 0;
