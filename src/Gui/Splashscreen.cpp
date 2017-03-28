@@ -324,6 +324,12 @@ static QString getOperatingSystem()
             return QString::fromLatin1("Mac OS X 10.8");
         case QSysInfo::MV_10_9:
             return QString::fromLatin1("Mac OS X 10.9");
+        case QSysInfo::MV_10_10:
+            return QString::fromLatin1("Mac OS X 10.10");
+        case QSysInfo::MV_10_11:
+            return QString::fromLatin1("Mac OS X 10.11");
+        case QSysInfo::MV_10_12:
+            return QString::fromLatin1("Mac OS X 10.12");
 #endif
         default:
             return QString::fromLatin1("Mac OS X");
