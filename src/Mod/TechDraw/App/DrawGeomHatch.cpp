@@ -289,7 +289,7 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
     Base::Vector3d start;
     Base::Vector3d end;
     Base::Vector3d origin = hl.getOrigin();
-    double interval = hl.getInterval() * scale;
+    double interval = hl.getIntervalX() * scale;
     double angle = hl.getAngle();
 
     //only dealing with angles -180:180 for now
@@ -301,29 +301,33 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
     double slope = hl.getSlope();
 
     if (angle == 0.0) {         //odd case 1: horizontal lines
-        double y  = origin.y;
-        int repeatUp = (int) ceil(((maxY - y)/interval) + 1);
-        int repeatDown  = (int) ceil(((y - minY)/interval) + 1);
-        int repeatTotal = repeatUp + repeatDown;
+        interval = hl.getInterval() * scale;
+        double atomY  = origin.y;
+        int repeatUp = (int) fabs((maxY - atomY)/interval);
+        int repeatDown  = (int) fabs(((atomY - minY)/interval));
+        int repeatTotal = repeatUp + repeatDown + 1;
+        double yStart = atomY - repeatDown * interval;
         
         // make repeats
         for (int i = 0; i < repeatTotal; i++) {
-            Base::Vector3d newStart(minX,minY + float(i)*interval,0);
-            Base::Vector3d newEnd(maxX,minY + float(i)*interval,0);
+            Base::Vector3d newStart(minX,yStart + float(i)*interval,0);
+            Base::Vector3d newEnd(maxX,yStart + float(i)*interval,0);
             TopoDS_Edge newLine = makeLine(newStart,newEnd);
             result.push_back(newLine);
         }
     } else if ((angle == 90.0)  || 
                (angle == -90.0))  {         //odd case 2: vertical lines
-        double x  = origin.x;
-        int repeatRight = (int) ceil(((maxX - x)/interval) + 1);
-        int repeatLeft  = (int) ceil(((x - minX)/interval) + 1);
-        int repeatTotal = repeatRight + repeatLeft;
+        interval = hl.getInterval() * scale;
+        double atomX  = origin.x;
+        int repeatRight = (int) fabs((maxX - atomX)/interval);
+        int repeatLeft  = (int) fabs((atomX - minX)/interval);
+        int repeatTotal = repeatRight + repeatLeft + 1;
+        double xStart = atomX - repeatLeft * interval;
 
         // make repeats
         for (int i = 0; i < repeatTotal; i++) {
-            Base::Vector3d newStart(minX + float(i)*interval,minY,0);
-            Base::Vector3d newEnd(minX + float(i)*interval,maxY,0);
+            Base::Vector3d newStart(xStart + float(i)*interval,minY,0);
+            Base::Vector3d newEnd(xStart + float(i)*interval,maxY,0);
             TopoDS_Edge newLine = makeLine(newStart,newEnd);
             result.push_back(newLine);
         }
@@ -334,12 +338,12 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
         double xLeftAtom = origin.x + (minY - origin.y)/slope;                  //the "atom" is the fill line that passes through the 
                                                                                 //pattern-origin (not necc. R2 origin)
         double xRightAtom = origin.x + (maxY - origin.y)/slope;
-        int repeatRight = (int) ceil(((maxX - xLeftAtom)/interval) + 1);
-        int repeatLeft  = (int) ceil(((xRightAtom - minX)/interval) + 1);
+        int repeatRight = (int) fabs((maxX - xLeftAtom)/interval);
+        int repeatLeft  = (int) fabs((xRightAtom - minX)/interval);
 
         double leftStartX = xLeftAtom - (repeatLeft * interval);
         double leftEndX   = xRightAtom - (repeatLeft * interval);
-        int repeatTotal = repeatRight + repeatLeft;
+        int repeatTotal = repeatRight + repeatLeft + 1;
         
         //make repeats
         for (int i = 0; i < repeatTotal; i++) {
@@ -353,11 +357,11 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
 //        Base::Console().Message("TRACE - DGH-makeEdgeOverlay - making angle < 0\n");
         double xRightAtom = origin.x + ((minY - origin.y)/slope);         //x-coord of left end of Atom line
         double xLeftAtom = origin.x + ((maxY - origin.y)/slope);          //x-coord of right end of Atom line
-        int repeatRight = (int) ceil(((maxX - xLeftAtom)/interval) + 1); //number of lines to Right of Atom
-        int repeatLeft  = (int) ceil(((xRightAtom - minX)/interval) + 1);//number of lines to Left of Atom
+        int repeatRight = (int) fabs((maxX - xLeftAtom)/interval);        //number of lines to Right of Atom
+        int repeatLeft  = (int) fabs((xRightAtom - minX)/interval);       //number of lines to Left of Atom
         double leftEndX = xLeftAtom - (repeatLeft * interval);
         double leftStartX   = xRightAtom - (repeatLeft * interval);
-        int repeatTotal = repeatRight + repeatLeft;
+        int repeatTotal = repeatRight + repeatLeft + 1;
 
         // make repeats
         for (int i = 0; i < repeatTotal; i++) {
