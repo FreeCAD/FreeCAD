@@ -56,6 +56,9 @@ public:
     virtual void attach(App::DocumentObject *);
     virtual void updateData(const App::Property*);
     virtual void onChanged(const App::Property *prop);
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+    virtual bool doubleClicked(void);
 
     virtual bool useNewSelectionModel(void) const {return false;}
     virtual void setDisplayMode(const char* ModeName);

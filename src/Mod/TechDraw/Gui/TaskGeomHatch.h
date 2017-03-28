@@ -49,12 +49,14 @@ class TaskGeomHatch : public QWidget
     Q_OBJECT
 
 public:
-    TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp);
+    TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
     ~TaskGeomHatch();
 
 public:
     virtual bool accept();
     virtual bool reject();
+    void setCreateMode(bool b) { m_createMode = b;}
+    bool getCreateMode() { return m_createMode; }
 
 protected Q_SLOTS:
     void onFileChanged(void);
@@ -77,6 +79,13 @@ private:
     double m_scale;
     double m_weight;
     App::Color m_color;
+    std::string m_origFile;
+    std::string m_origName;
+    double m_origScale;
+    double m_origWeight;
+    App::Color m_origColor;
+
+    bool m_createMode;
 
 };
 
@@ -85,8 +94,9 @@ class TaskDlgGeomHatch : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp);
+    TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
     ~TaskDlgGeomHatch();
+    const ViewProviderGeomHatch * getViewProvider() const { return viewProvider; }
 
 public:
     /// is called the TaskView when the dialog is opened
@@ -101,10 +111,12 @@ public:
     virtual void helpRequested() { return;}
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
+    void setCreateMode(bool b);
 
     void update();
 
 protected:
+    const ViewProviderGeomHatch *viewProvider;
 
 private:
     TaskGeomHatch * widget;

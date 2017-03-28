@@ -31,6 +31,7 @@
 #include <QPixmap>
 
 #include <Mod/TechDraw/App/HatchLine.h>
+#include <Mod/TechDraw/App/Geometry.h>
 
 #include "QGIPrimPath.h"
 
@@ -101,17 +102,25 @@ public:
     
     //PAT fill parms & methods
     void setGeomHatchWeight(double w) { m_geomWeight = w; }
-    void clearLineSets(void);
-    void addLineSet(QPainterPath pp, std::vector<double> dp);
-    QGraphicsPathItem* addFillItem();
-    void clearFillItems(void);
     void setLineWeight(double w);
+
+    void clearLineSets(void);
+    void addLineSet(LineSet ls);
+    void clearFillItems(void);
+
+    void lineSetToFillItem(LineSet ls);
+    QGraphicsLineItem* geomToLine(TechDrawGeometry::BaseGeom* base);
+    double calcOffset(TechDrawGeometry::BaseGeom* g,LineSet ls);
 
     //bitmap texture fill parms method
     QPixmap textureFromBitmap(std::string fileSpec);
     QPixmap textureFromSvg(std::string fillSpec);
 
 protected:
+    void makeMark(double x, double y);
+    double getXForm(void);
+
+
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
     QGCustomRect *m_rect;
 
@@ -124,10 +133,10 @@ protected:
     bool m_isHatched;
     QGIFace::fillMode m_mode;
 
-    QPen setGeomPen(int i);
+    QPen setGeomPen(DashSpec ds);
     QVector<qreal> decodeDashSpec(DashSpec d);
-    std::vector<QGraphicsPathItem*> m_fillItems;
-    std::vector<QPainterPath> m_geomHatchPaths;     // 0/1 dashspec per hatchpath
+    std::vector<QGraphicsLineItem*> m_fillItems;
+    std::vector<LineSet> m_lineSets;
     std::vector<DashSpec> m_dashSpecs;
 
 
