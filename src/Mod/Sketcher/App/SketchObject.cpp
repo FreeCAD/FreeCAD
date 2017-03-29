@@ -3991,9 +3991,10 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         if ( (curmult + multiplicityincr) > degree || (curmult + multiplicityincr) < 0) // zero is removing the knot, degree is just positional continuity
             return false;
 
-        const Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(bsp->handle());
+        //const Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(bsp->handle());
 
-        bspline = new Part::GeomBSplineCurve(curve);
+        //bspline = new Part::GeomBSplineCurve(curve);
+        bspline = static_cast<Part::GeomBSplineCurve *>(bsp->clone());
 
         if(multiplicityincr > 0) { // increase multiplicity
             bspline->increaseMultiplicity(knotIndex, curmult + multiplicityincr);
@@ -4031,6 +4032,25 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
             }
         }
     }
+    
+    // on fully removing a knot the knot geometry changes
+    std::vector<double> knots = bsp->getKnots();
+    std::vector<double> newknots = bspline->getKnots();
+    std::vector<int> prevknot(bsp->countKnots());
+    
+    for(int i = 0; i < int(knots.size()); i++)
+        prevknot[i] = -1;
+    
+    taken = 0;
+    for(int j = 0; j < int(knots.size()); j++){
+        for(int i = taken; i < int(newknots.size()); i++){
+            if( newknots[i] == knots[j] ) {
+                prevknot[j] = i;
+                taken++;
+                break;
+            }
+        }
+    }
 
     const std::vector< Sketcher::Constraint * > &cvals = Constraints.getValues();
 
@@ -4050,8 +4070,19 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
                 else { // it is an internal aligment geometry that is no longer valid => delete it and the pole circle
                     delGeoId.push_back((*it)->First);
                 }
-            } 
-            else { // it is a bspline geometry, but not a controlpoint
+            }
+            else if((*it)->AlignmentType == Sketcher::BSplineKnotPoint) {
+                if (prevknot[(*it)->InternalAlignmentIndex]!=-1) {
+                    assert(prevknot[(*it)->InternalAlignmentIndex] < bspline->countKnots());
+                    Constraint * newConstr = (*it)->clone();
+                    newConstr->InternalAlignmentIndex = prevknot[(*it)->InternalAlignmentIndex];
+                    newcVals.push_back(newConstr);
+                }
+                else { // it is an internal aligment geometry that is no longer valid => delete it and the knot point
+                    delGeoId.push_back((*it)->First);
+                }
+            }
+            else { // it is a bspline geometry, but not a controlpoint or knot
                 newcVals.push_back(*it);
             }
         }
