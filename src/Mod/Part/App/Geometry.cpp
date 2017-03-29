@@ -132,6 +132,8 @@
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 
+#include <ctime>
+
 #include "Geometry.h"
 
 using namespace Part;
@@ -181,6 +183,17 @@ TYPESYSTEM_SOURCE_ABSTRACT(Part::Geometry,Base::Persistence)
 Geometry::Geometry()
   : Construction(false)
 {
+    // Initialize a random number generator, to avoid Valgrind false positives.
+    static boost::mt19937 ran;
+    static bool seeded = false;
+    
+    if (!seeded) {
+        ran.seed(static_cast<unsigned int>(std::time(0)));
+        seeded = true;
+    }
+    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
+    
+    tag = gen();
 }
 
 Geometry::~Geometry()
@@ -205,6 +218,11 @@ void Geometry::Restore(Base::XMLReader &reader)
     reader.readElement("Construction");
     // get the value of my Attribute
     Construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
+}
+
+boost::uuids::uuid Geometry::getTag() const
+{
+    return tag;
 }
 
 // -------------------------------------------------
@@ -239,6 +257,7 @@ Geometry *GeomPoint::clone(void) const
 {
     GeomPoint *newPoint = new GeomPoint(myPoint);
     newPoint->Construction = this->Construction;
+    newPoint->tag = this->tag;
     return newPoint;
 }
 
@@ -581,6 +600,7 @@ Geometry *GeomBezierCurve::clone(void) const
 {
     GeomBezierCurve *newCurve = new GeomBezierCurve(myCurve);
     newCurve->Construction = this->Construction;
+    newCurve->tag = this->tag;
     return newCurve;
 }
 
@@ -668,6 +688,7 @@ Geometry *GeomBSplineCurve::clone(void) const
 {
     GeomBSplineCurve *newCurve = new GeomBSplineCurve(myCurve);
     newCurve->Construction = this->Construction;
+    newCurve->tag = this->tag;    
     return newCurve;
 }
 
@@ -1451,6 +1472,7 @@ Geometry *GeomCircle::clone(void) const
 {
     GeomCircle *newCirc = new GeomCircle(myCurve);
     newCirc->Construction = this->Construction;
+    newCirc->tag = this->tag;    
     return newCirc;
 }
 
@@ -1624,6 +1646,7 @@ Geometry *GeomArcOfCircle::clone(void) const
     GeomArcOfCircle* copy = new GeomArcOfCircle();
     copy->setHandle(this->myCurve);
     copy->Construction = this->Construction;
+    copy->tag = this->tag;
     return copy;
 }
 
@@ -1835,6 +1858,7 @@ Geometry *GeomEllipse::clone(void) const
 {
     GeomEllipse *newEllipse = new GeomEllipse(myCurve);
     newEllipse->Construction = this->Construction;
+    newEllipse->tag = this->tag;
     return newEllipse;
 }
 
@@ -2091,6 +2115,7 @@ Geometry *GeomArcOfEllipse::clone(void) const
     GeomArcOfEllipse* copy = new GeomArcOfEllipse();
     copy->setHandle(this->myCurve);
     copy->Construction = this->Construction;
+    copy->tag = this->tag;
     return copy;
 }
 
@@ -2354,6 +2379,7 @@ Geometry *GeomHyperbola::clone(void) const
 {
     GeomHyperbola *newHyp = new GeomHyperbola(myCurve);
     newHyp->Construction = this->Construction;
+    newHyp->tag = this->tag;
     return newHyp;
 }
 
@@ -2518,6 +2544,7 @@ Geometry *GeomArcOfHyperbola::clone(void) const
     GeomArcOfHyperbola* copy = new GeomArcOfHyperbola();
     copy->setHandle(this->myCurve);
     copy->Construction = this->Construction;
+    copy->tag = this->tag;
     return copy;
 }
 
@@ -2772,6 +2799,7 @@ Geometry *GeomParabola::clone(void) const
 {
     GeomParabola *newPar = new GeomParabola(myCurve);
     newPar->Construction = this->Construction;
+    newPar->tag = this->tag;
     return newPar;
 }
 
@@ -2917,6 +2945,7 @@ Geometry *GeomArcOfParabola::clone(void) const
     GeomArcOfParabola* copy = new GeomArcOfParabola();
     copy->setHandle(this->myCurve);
     copy->Construction = this->Construction;
+    copy->tag = this->tag;
     return copy;
 }
 
@@ -3139,6 +3168,7 @@ Geometry *GeomLine::clone(void) const
 {
     GeomLine *newLine = new GeomLine(myCurve);
     newLine->Construction = this->Construction;
+    newLine->tag = this->tag;
     return newLine;
 }
 
@@ -3227,6 +3257,7 @@ Geometry *GeomLineSegment::clone(void)const
     GeomLineSegment *tempCurve = new GeomLineSegment();
     tempCurve->myCurve = Handle_Geom_TrimmedCurve::DownCast(myCurve->Copy());
     tempCurve->Construction = this->Construction;
+    tempCurve->tag = this->tag;
     return tempCurve;
 }
 
@@ -3349,6 +3380,7 @@ Geometry *GeomOffsetCurve::clone(void) const
 {
     GeomOffsetCurve *newCurve = new GeomOffsetCurve(myCurve);
     newCurve->Construction = this->Construction;
+    newCurve->tag = this->tag;
     return newCurve;
 }
 
@@ -3403,6 +3435,7 @@ Geometry *GeomTrimmedCurve::clone(void) const
 {
     GeomTrimmedCurve *newCurve =  new GeomTrimmedCurve(myCurve);
     newCurve->Construction = this->Construction;
+    newCurve->tag = this->tag;
     return newCurve;
 }
 
@@ -3497,6 +3530,7 @@ Geometry *GeomBezierSurface::clone(void) const
 {
     GeomBezierSurface *newSurf =  new GeomBezierSurface(mySurface);
     newSurf->Construction = this->Construction;
+    newSurf->tag = this->tag;
     return newSurf;
 }
 
@@ -3556,6 +3590,7 @@ Geometry *GeomBSplineSurface::clone(void) const
 {
     GeomBSplineSurface *newSurf =  new GeomBSplineSurface(mySurface);
     newSurf->Construction = this->Construction;
+    newSurf->tag = this->tag;
     return newSurf;
 }
 
@@ -3603,6 +3638,7 @@ Geometry *GeomCylinder::clone(void) const
     GeomCylinder *tempCurve = new GeomCylinder();
     tempCurve->mySurface = Handle_Geom_CylindricalSurface::DownCast(mySurface->Copy());
     tempCurve->Construction = this->Construction;
+    tempCurve->tag = this->tag;
     return tempCurve;
 }
 
@@ -3650,6 +3686,7 @@ Geometry *GeomCone::clone(void) const
     GeomCone *tempCurve = new GeomCone();
     tempCurve->mySurface = Handle_Geom_ConicalSurface::DownCast(mySurface->Copy());
     tempCurve->Construction = this->Construction;
+    tempCurve->tag = this->tag;
     return tempCurve;
 }
 
@@ -3697,6 +3734,7 @@ Geometry *GeomToroid::clone(void) const
     GeomToroid *tempCurve = new GeomToroid();
     tempCurve->mySurface = Handle_Geom_ToroidalSurface::DownCast(mySurface->Copy());
     tempCurve->Construction = this->Construction;
+    tempCurve->tag = this->tag;
     return tempCurve;
 }
 
@@ -3744,6 +3782,7 @@ Geometry *GeomSphere::clone(void) const
     GeomSphere *tempCurve = new GeomSphere();
     tempCurve->mySurface = Handle_Geom_SphericalSurface::DownCast(mySurface->Copy());
     tempCurve->Construction = this->Construction;
+    tempCurve->tag = this->tag;
     return tempCurve;
 }
 
@@ -3791,6 +3830,7 @@ Geometry *GeomPlane::clone(void) const
     GeomPlane *tempCurve = new GeomPlane();
     tempCurve->mySurface = Handle_Geom_Plane::DownCast(mySurface->Copy());
     tempCurve->Construction = this->Construction;
+    tempCurve->tag = this->tag;
     return tempCurve;
 }
 
@@ -3840,6 +3880,7 @@ Geometry *GeomOffsetSurface::clone(void) const
 {
     GeomOffsetSurface *newSurf = new GeomOffsetSurface(mySurface);
     newSurf->Construction = this->Construction;
+    newSurf->tag = this->tag;
     return newSurf;
 }
 
@@ -3895,6 +3936,7 @@ Geometry *GeomPlateSurface::clone(void) const
 {
     GeomPlateSurface *newSurf = new GeomPlateSurface(mySurface);
     newSurf->Construction = this->Construction;
+    newSurf->tag = this->tag;
     return newSurf;
 }
 
@@ -3950,6 +3992,7 @@ Geometry *GeomTrimmedSurface::clone(void) const
 {
     GeomTrimmedSurface *newSurf = new GeomTrimmedSurface(mySurface);
     newSurf->Construction = this->Construction;
+    newSurf->tag = this->tag;
     return newSurf;
 }
 
@@ -3999,6 +4042,7 @@ Geometry *GeomSurfaceOfRevolution::clone(void) const
 {
     GeomSurfaceOfRevolution *newSurf = new GeomSurfaceOfRevolution(mySurface);
     newSurf->Construction = this->Construction;
+    newSurf->tag = this->tag;
     return newSurf;
 }
 
@@ -4048,6 +4092,7 @@ Geometry *GeomSurfaceOfExtrusion::clone(void) const
 {
     GeomSurfaceOfExtrusion *newSurf = new GeomSurfaceOfExtrusion(mySurface);
     newSurf->Construction = this->Construction;
+    newSurf->tag = this->tag;
     return newSurf;
 }
 
