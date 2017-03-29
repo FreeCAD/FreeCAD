@@ -59,6 +59,9 @@
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+
 namespace Part {
 
 class PartExport Geometry: public Base::Persistence
@@ -77,9 +80,14 @@ public:
     virtual Geometry *clone(void) const = 0;
     /// construction geometry (means no impact on a later built topo)
     bool Construction;
+    /// returns the tag of the geometry object
+    boost::uuids::uuid getTag() const;
 
 protected:
     Geometry();
+    
+protected:
+    boost::uuids::uuid tag;    
 
 private:
     Geometry(const Geometry&);
