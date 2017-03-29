@@ -361,7 +361,7 @@ class MacroWorker(QtCore.QThread):
         for mac in macros:
             macname = mac[6:]
             macname = macname.replace("&amp;","&")
-            if not (macname in MACROS_BLACKLIST):
+            if (not (macname in MACROS_BLACKLIST)) and (not("recipes" in macname.lower())):
                 macfile = mac.replace(" ","_")+".FCMacro"
                 if os.path.exists(os.path.join(macropath,macfile)):
                     installed = 1
