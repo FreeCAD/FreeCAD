@@ -287,6 +287,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setMaxDegree(PyObject *args)
     Py_Return;
 #else
     PyErr_SetString(PyExc_TypeError, "requires OCC >= 6.8");
+    return 0;
 #endif
 }
 
@@ -300,6 +301,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setMaxSegments(PyObject *args)
     Py_Return;
 #else
     PyErr_SetString(PyExc_TypeError, "requires OCC >= 6.8");
+    return 0;
 #endif
 }
 
@@ -313,6 +315,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setForceApproxC1(PyObject *args)
     Py_Return;
 #else
     PyErr_SetString(PyExc_TypeError, "requires OCC >= 6.7");
+    return 0;
 #endif
 }
 
