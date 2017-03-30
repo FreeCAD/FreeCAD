@@ -129,4 +129,4 @@ class SketcherSolverTestCases(unittest.TestCase):
 	def tearDown(self):
 		#closing doc
 		FreeCAD.closeDocument("SketchSolverTest")
-		#print ("omit close document for debuging")
+		#print ("omit closing document for debugging")

@@ -170,12 +170,12 @@ class GitControl(VersionControl):
 
     def revisionNumber(self, srcdir,origin=None):
         """sets the revision number
-for master and release branches all commits are counted
-for other branches the version numver is split in two parts
-the first number reflects the number of commits in common with the
-blessed master repository.
-the second part, seperated by " +"reflects the number of commits that are
-different form the master repository"""
+        for master and release branches all commits are counted
+        for other branches the version numver is split in two parts
+        the first number reflects the number of commits in common with the
+        blessed master repository.
+        the second part, separated by " +" reflects the number of commits that are
+        different from the master repository"""
         #referencecommit="f119e740c87918b103140b66b2316ae96f136b0e"
         #referencerevision=4138
         referencecommit="6b3d7b17a749e03bcbf2cf79bbbb903137298c44"
@@ -208,10 +208,10 @@ different form the master repository"""
 
     def namebranchbyparents(self):
         """name multiple branches in case that the last commit was a merge
-a merge is identified by having two or more parents
-if the describe does not return a ref name (the hash is added)
-if one parent is the master and the second one has no ref name, one branch was
-merged."""
+        a merge is identified by having two or more parents
+        if the describe does not return a ref name (the hash is added)
+        if one parent is the master and the second one has no ref name, one branch was
+        merged."""
         parents=os.popen("git log -n1 --pretty=%P").read()\
                 .strip().split(' ')
         if len(parents) >= 2: #merge commit

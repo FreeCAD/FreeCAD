@@ -458,11 +458,11 @@ PropertyOwner<PropertyList>::PropertyOwner() {
 };
 
 /**
- * @brief Convienience spezialisation to ease interaction with system class
+ * @brief Convienience specialization to ease interaction with system class
  *
- * Normaly property lists are retrieved from the system class, however, there are no empty lists. If no
+ * Normally property lists are retrieved from the system class, however, there are no empty lists. If no
  * property is supplied for a PropertyOwner derived class, a mpl::void_ type will be retrieved. To
- * remove the burdon of checking for that type in the class definition this spezialisation is supplied.
+ * remove the burden of checking for that type in the class definition this specialization is supplied.
  **/
 template<>
 struct PropertyOwner<mpl::void_> {

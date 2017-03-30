@@ -168,7 +168,7 @@ def DrawText(name,
     string -- Text to draw (it is strongly recommended to use format u'').
     position -- Point to draw the text.
     angle -- Counter clockwise rotation of text.
-    justification -- Alignement of the text ("Left", "Right" or "Center").
+    justification -- Alignment of the text ("Left", "Right" or "Center").
     colour -- Colour of the text.
     size -- Font size (in points pt).
 

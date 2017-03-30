@@ -62,7 +62,7 @@ SET(Module_SRCS
 )
 SOURCE_GROUP("Module" FILES ${Module_SRCS})
 
-#externalisation is not possible for msvc as a stupid bug prevents the function definition resolving
+#externalization is not possible for msvc as a stupid bug prevents the function definition resolving
 if(MSVC)
 	set(Solver_SRC )
 else(MSVC)

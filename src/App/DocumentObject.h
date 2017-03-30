@@ -224,7 +224,7 @@ protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute(void);
     /** get called by the document to recompute this feature
-      * Normaly this method get called in the processing of
+      * Normally this method get called in the processing of
       * Document::recompute().
       * In execute() the outpupt properties get recomputed
       * with the data from linked objects and objects own

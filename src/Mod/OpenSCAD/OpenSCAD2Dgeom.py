@@ -392,13 +392,13 @@ def edgestofaces(edges,algo=3,eps=0.001):
                 comp=Part.Compound(edges2)
                 w = comp.connectEdgesToWires(False,eps).Wires[0]
         facel.append(Part.Face(w))
-        #if w.isValid: #debuging
+        #if w.isValid: #debugging
         #    facel.append(Part.Face(w))
         #else:
         #    Part.show(w)
     if algo is None:
         return facel
-    elif algo == 1: #stabale behavior
+    elif algo == 1: #stable behavior
         return subtractfaces(facel)
     elif algo == 0: #return all faces
         return Part.Compound(facel)

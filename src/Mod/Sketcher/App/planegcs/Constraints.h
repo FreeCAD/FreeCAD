@@ -27,7 +27,7 @@
 #include "Util.h"
 #include <boost/graph/graph_concepts.hpp>
 
-//#define _GCS_EXTRACT_SOLVER_SUBSYSTEM_ // This enables debuging code intended to extract information to file bug reports against Eigen, not for production code
+//#define _GCS_EXTRACT_SOLVER_SUBSYSTEM_ // This enables debugging code intended to extract information to file bug reports against Eigen, not for production code
 
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
 #define _PROTECTED_UNLESS_EXTRACT_MODE_ public
