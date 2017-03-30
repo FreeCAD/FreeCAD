@@ -164,7 +164,7 @@ void Geometry<Kernel, Dim, TagList>::setClusterMode(bool iscluster, bool isFixed
     m_isInCluster = iscluster;
     m_clusterFixed = isFixed;
     if(iscluster) {
-        //we are in cluster, therfore the parameter map should not point to a solver value but to
+        //we are in cluster, therefore the parameter map should not point to a solver value but to
         //the rotated original value;
         new(&m_parameter) typename Kernel::VectorMap(&m_rotated(0), m_parameterCount, DS(1,1));
         //the local value is the global one as no transformation was applied  yet

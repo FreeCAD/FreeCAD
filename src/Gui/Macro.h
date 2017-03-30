@@ -82,7 +82,7 @@ public:
     /// insert a new line in the macro
     void addLine(LineType Type,const char* sLine);
     /** Set the active module 
-     * This is normaly done by the workbench switch. It sets
+     * This is normally done by the workbench switch. It sets
      * the actually active application module so when the macro
      * gets started the right import can be issued.
      */

@@ -2281,7 +2281,7 @@ std::string Application::FindHomePath(const char* sCall)
 
 std::string Application::FindHomePath(const char* call)
 {
-    // If Python is intialized at this point, then we're being run from
+    // If Python is initialized at this point, then we're being run from
     // MainPy.cpp, which hopefully rewrote argv[0] to point at the
     // FreeCAD shared library.
     if (!Py_IsInitialized()) {

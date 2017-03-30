@@ -539,7 +539,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     }
 
     App::DocumentObject* mesh = pcDoc->addObject("Fem::FemMeshObject", "ResultMesh");
-    FemMesh* fmesh = new FemMesh(); // PropertyFemMesh instance is responsible to relase FemMesh ??
+    FemMesh* fmesh = new FemMesh(); // PropertyFemMesh instance is responsible to release FemMesh ??
     importVTKMesh(dataset, fmesh, scale);
     static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->setValue(*fmesh);
     static_cast<App::PropertyLink*>(result->getPropertyByName("Mesh"))->setValue(mesh);
