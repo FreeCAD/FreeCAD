@@ -307,7 +307,7 @@ void ProgressDialog::leaveControlEvents()
 {
     qApp->removeEventFilter(this);
 
-    // relase the keyboard again
+    // release the keyboard again
     releaseKeyboard();
 }
 

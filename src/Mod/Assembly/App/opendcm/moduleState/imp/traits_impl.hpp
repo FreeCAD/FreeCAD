@@ -18,7 +18,7 @@
 */
 
 //move the traits specializations outside of the traits definition to avoid the spirit header parsing every
-//time this module is included and just parse it in externalisation mode when the generator is build
+//time this module is included and just parse it in externalization mode when the generator is built
 
 #ifndef DCM_PARSER_TRAITS_IMPL_H
 #define DCM_PARSER_TRAITS_IMPL_H

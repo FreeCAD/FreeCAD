@@ -289,7 +289,7 @@ struct inject_set {
         g->set(gt);
     };
 };
-//spezialisation if no type in the typelist has the right weight
+//specialization if no type in the typelist has the right weight
 template<>
 struct inject_set<mpl::void_> {
 

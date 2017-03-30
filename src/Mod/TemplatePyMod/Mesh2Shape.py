@@ -26,7 +26,7 @@ for i in segments:
          for i in wires:
             i.reverse()
 
-         # make sure that the exterior wires comes as first in the lsit
+         # make sure that the exterior wires comes as first in the list
          wires.insert(0, ext)
          faces.append(Part.Face(wires))
 

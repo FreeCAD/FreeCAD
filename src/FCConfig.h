@@ -334,7 +334,7 @@ typedef unsigned __int64    uint64_t;
 //#   pragma warning( disable : 4503 )
 //#   pragma warning( disable : 4786 )  // specifier longer then 255 chars
 //#   pragma warning( disable : 4290 )  // not implemented throw specification
-#   pragma warning( disable : 4996 )  // suppress depricated warning for e.g. open()
+#   pragma warning( disable : 4996 )  // suppress deprecated warning for e.g. open()
 #if defined(WIN64) || defined(_WIN64) || defined(__WIN64__)
 #   pragma warning( disable : 4244 )
 #   pragma warning( disable : 4267 )

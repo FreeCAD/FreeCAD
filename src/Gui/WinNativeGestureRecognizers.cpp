@@ -48,7 +48,7 @@ QT_BEGIN_NAMESPACE
 #if !defined(QT_NO_NATIVE_GESTURES)
 
 //#include <private/qevent_p.h>
-//this include is not avalable on conda Qt, see https://forum.freecadweb.org/viewtopic.php?f=4&t=21405&p=167395#p167395
+//this include is not available on conda Qt, see https://forum.freecadweb.org/viewtopic.php?f=4&t=21405&p=167395#p167395
 //copy-pasted from this header:
 class QNativeGestureEvent : public QEvent
 {

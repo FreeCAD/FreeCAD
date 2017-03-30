@@ -60,4 +60,4 @@ class TechDrawTestCases(unittest.TestCase):
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("TechDrawTest")
-        #print ("omit clos document for debuging")
+        #print ("omit closing document for debugging")
