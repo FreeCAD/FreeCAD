@@ -415,15 +415,18 @@ SoPickedPoint* ViewProviderGeometryObject::getPickedPoint(const SbVec2s& pos, co
     return (pick ? new SoPickedPoint(*pick) : 0);
 }
 
+unsigned long ViewProviderGeometryObject::getBoundColor() const {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    if(SelectionStyle.getValue() == 0 || !Selectable.getValue() || !hGrp->GetBool("EnableSelection", true))
+        return hGrp->GetUnsigned("BoundingBoxColor",4294967295UL); // white (255,255,255)
+    else
+        return hGrp->GetUnsigned("SelectionColor",0x00CD00UL); // rgb(0,205,0)
+}
+
 void ViewProviderGeometryObject::applyBoundColor() {
     if(!pcBoundColor) return;
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long bbcol;
-    if(SelectionStyle.getValue() == 0 || !Selectable.getValue() || !hGrp->GetBool("EnableSelection", true))
-        bbcol = hGrp->GetUnsigned("BoundingBoxColor",4294967295UL); // white (255,255,255)
-    else
-        bbcol = hGrp->GetUnsigned("SelectionColor",0x00CD00UL); // rgb(0,205,0)
 
+    unsigned long bbcol = getBoundColor();
     float r,g,b;
     r = ((bbcol >> 24) & 0xff) / 255.0; g = ((bbcol >> 16) & 0xff) / 255.0; b = ((bbcol >> 8) & 0xff) / 255.0;
     pcBoundColor->rgb.setValue(r, g, b);
