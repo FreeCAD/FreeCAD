@@ -558,6 +558,7 @@ void QGVPage::toggleHatch(bool enable)
 void QGVPage::saveSvg(QString filename)
 {
     // TODO: We only have m_vpPage because constructor gets passed a view provider...
+    //NOTE: this makes wrong size pages in low-Rez
     TechDraw::DrawPage *page( m_vpPage->getDrawPage() );
 
     const QString docName( QString::fromUtf8(page->getDocument()->getName()) );
@@ -567,11 +568,7 @@ void QGVPage::saveSvg(QString filename)
                              tr(" exported from FreeCAD document: ") +
                              docName;
 
-    //Base::Console().Message("TRACE - saveSVG - page width: %d height: %d\n",width,height);    //A4 297x210
 
-    //with Rez set to 10 we make a dot 10 times/mm => 254dpi?
-    //                                 12          => 304.8 dpi?  approx printer dpi 300dpi
-    
     QSvgGenerator svgGen;
     svgGen.setFileName(filename);
     svgGen.setSize(QSize((int) Rez::guiX(page->getPageWidth()), (int) Rez::guiX(page->getPageHeight())));   //expects pixels, gets mm

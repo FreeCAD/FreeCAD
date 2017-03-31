@@ -125,7 +125,7 @@ double Rez::getParameter()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Rez");
-    double rezFactor  = hGrp->GetFloat("Resolution", 1.0);
+    double rezFactor  = hGrp->GetFloat("Resolution", 10.0);
     return rezFactor;
 }
 
