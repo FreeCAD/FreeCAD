@@ -119,7 +119,9 @@ class TimerFunctionPrivate
 {
 public:
     boost::function<void()> timeoutFunc;
+    boost::function<void(QObject*)> timeoutFuncQObject;
     bool autoDelete;
+    QPointer<QObject> argQObject;
 };
 }
 
@@ -139,6 +141,13 @@ void TimerFunction::setFunction(boost::function<void()> func)
     d->timeoutFunc = func;
 }
 
+void TimerFunction::setFunction(boost::function<void(QObject*)> func, QObject* args)
+{
+    Q_D(TimerFunction);
+    d->timeoutFuncQObject = func;
+    d->argQObject = args;
+}
+
 void TimerFunction::setAutoDelete(bool on)
 {
     Q_D(TimerFunction);
@@ -148,7 +157,10 @@ void TimerFunction::setAutoDelete(bool on)
 void TimerFunction::timeout()
 {
     Q_D(TimerFunction);
-    d->timeoutFunc();
+    if (d->timeoutFunc)
+        d->timeoutFunc();
+    else if (d->timeoutFuncQObject)
+        d->timeoutFuncQObject(d->argQObject);
     if (d->autoDelete)
         deleteLater();
 }
