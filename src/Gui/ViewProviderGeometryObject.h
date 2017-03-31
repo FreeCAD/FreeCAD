@@ -96,7 +96,7 @@ public:
     /*! synchronize From FC placement to Coin placement*/
     static void updateTransform(const Base::Placement &from, SoTransform *to);
     
-    void showBoundingBox(bool);
+    virtual void showBoundingBox(bool);
 
 protected:
     bool setEdit(int ModNum);
@@ -110,6 +110,8 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop);
     void setSelectable(bool Selectable=true);
+
+    virtual unsigned long getBoundColor() const;
     void applyBoundColor();
 
 private:
