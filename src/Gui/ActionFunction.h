@@ -98,6 +98,7 @@ public:
     virtual ~TimerFunction();
 
     void setFunction(boost::function<void()> func);
+    void setFunction(boost::function<void(QObject*)> func, QObject* args);
     void setAutoDelete(bool);
 
 private Q_SLOTS:
