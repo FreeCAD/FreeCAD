@@ -540,6 +540,8 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     openCommand("Increase knot multiplicity");
 
     bool applied = false;
+    
+    boost::uuids::uuid bsplinetag;
 
     int GeoId;
     Sketcher::PointPos PosId;
@@ -552,6 +554,8 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
             if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
             {
+                bsplinetag = Obj->getGeometry((*it)->Second)->getTag();
+                
                 try {
                     Gui::Command::doCommand(
                         Doc,"App.ActiveDocument.%s.modifyBSplineKnotMultiplicity(%d,%d,%d) ",
@@ -575,48 +579,35 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 
     }
     
-    // Grab the new GeoId of the knot after possible modifications
-    bool isnewGeoId = true;
-    selection = getSelection().getSelectionEx();
-    
-    if (selection.size() != 1)
-        isnewGeoId = false;
-    
-    
-    const std::vector<std::string> &SubNames2 = selection[0].getSubNames();
-    
-    if(SubNames.size() == 1)
-        isnewGeoId = false;
-    
-    if(isnewGeoId) {
+    if(applied)
+    {
+        // find new geoid for bspline as GeoId might have changed
+        const std::vector< Part::Geometry * > &gvals = Obj->getInternalGeometry();
         
-        getIdsFromName(SubNames2[0], Obj, GeoId, PosId);
+        int ngeoid = 0;
+        bool ngfound = false;
         
-        if(isSimpleVertex(Obj, GeoId, PosId) && applied) {
-            
-            const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
-            
-            for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-                if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
-                {
-                    try {
-                        Obj->solve();
-
-                        // add internalalignment for new pole
-                        Gui::Command::doCommand(Gui::Command::Doc,
-                                                "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
-                                                selection[0].getFeatName(),
-                                                (*it)->Second);
-                    }
-                    catch (const Base::Exception& e) {
-                        Base::Console().Error("%s\n", e.what());
-                        getSelection().clearSelection();
-                    }
-                    
-                    break; // we have already found our knot.
-                    
-                }
+        for (std::vector<Part::Geometry *>::const_iterator geo = gvals.begin(); geo != gvals.end(); geo++, ngeoid++) {
+            if ((*geo) && (*geo)->getTag() == bsplinetag) {
+                ngfound = true;
+                break;
             }
+        }
+        
+        
+        if(ngfound) {
+            try {
+                // add internalalignment for new pole
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
+                                        selection[0].getFeatName(),
+                                        ngeoid);
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                getSelection().clearSelection();
+            }
+            
         }
     }
     
