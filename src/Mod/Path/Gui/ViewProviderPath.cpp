@@ -167,7 +167,11 @@ ViewProviderPath::ViewProviderPath()
     MarkerColor.touch();
 
     DisplayMode.setStatus(App::Property::Status::Hidden, true);
-    SelectionStyle.setValue(1);
+    
+    static const char *SelectionStyleEnum[] = {"Shape","BoundBox","None",0};
+    SelectionStyle.setEnums(SelectionStyleEnum);
+    unsigned long sstyle = hGrp->GetInt("DefaultSelectionStyle",0);
+    SelectionStyle.setValue(sstyle);
 }
 
 ViewProviderPath::~ViewProviderPath()
@@ -186,7 +190,7 @@ ViewProviderPath::~ViewProviderPath()
 
 void ViewProviderPath::attach(App::DocumentObject *pcObj)
 {
-    ViewProviderGeometryObject::attach(pcObj);
+    inherited::attach(pcObj);
 
     // Draw trajectory lines
     SoSeparator* linesep = new SoSeparator;
@@ -213,11 +217,15 @@ void ViewProviderPath::attach(App::DocumentObject *pcObj)
     addDisplayMaskMode(pcPathRoot, "Waypoints");
 }
 
+bool ViewProviderPath::useNewSelectionModel(void) const {
+    return SelectionStyle.getValue()!=2;
+}
+
 void ViewProviderPath::setDisplayMode(const char* ModeName)
 {
     if ( strcmp("Waypoints",ModeName)==0 )
         setDisplayMaskMode("Waypoints");
-    ViewProviderGeometryObject::setDisplayMode( ModeName );
+    inherited::setDisplayMode( ModeName );
 }
 
 std::vector<std::string> ViewProviderPath::getDisplayModes(void) const
@@ -348,8 +356,26 @@ void ViewProviderPath::onChanged(const App::Property* prop)
             pcMarkerCoords->point.set1Value(0,pt.x,pt.y,pt.z);
         }
     } else {
-        ViewProviderGeometryObject::onChanged(prop);
+        inherited::onChanged(prop);
+        if(prop == &SelectionStyle && SelectionStyle.getValue()==2)
+            hideSelection();
     }
+}
+
+void ViewProviderPath::showBoundingBox(bool show) {
+    if(show) {
+        if(!pcLineCoords->point.getNum()) 
+            return;
+    }
+    inherited::showBoundingBox(show);
+}
+
+unsigned long ViewProviderPath::getBoundColor() const {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
+    if(SelectionStyle.getValue() == 0 || !Selectable.getValue())
+        return hGrp->GetUnsigned("DefaultBBoxNormalColor",4294967295UL); // white (255,255,255)
+    else
+        return hGrp->GetUnsigned("DefaultBBoxSelectionColor",0xc8ffff00UL); // rgb(0,85,255)
 }
 
 void ViewProviderPath::updateShowConstraints() {
@@ -378,11 +404,10 @@ void ViewProviderPath::updateData(const App::Property* prop)
         updateVisual(true);
         return;
     }
-    ViewProviderGeometryObject::updateData(prop);
+    inherited::updateData(prop);
 }
 
-void ViewProviderPath::updateVisual(bool rebuild) {
-
+void ViewProviderPath::hideSelection() {
     // Clear selection
     SoSelectionElementAction saction(Gui::SoSelectionElementAction::None);
     saction.apply(pcLines);
@@ -393,6 +418,11 @@ void ViewProviderPath::updateVisual(bool rebuild) {
 
     // Hide arrow
     pcArrowSwitch->whichChild = -1;
+}
+
+void ViewProviderPath::updateVisual(bool rebuild) {
+
+    hideSelection();
     
     updateShowConstraints();
 
