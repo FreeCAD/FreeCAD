@@ -76,9 +76,14 @@ public:
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
-    /// returns a cloned object 
+    /// returns a cloned object. A cloned object has the same tag (see getTag) as the original object.
+    /// If you want a clone with another handle, it is possible to clone an object and then assign another handle.
+    /// If you do not desire to have the same tag, then a copy can be performed by using a constructor (which will generate another tag)
+    /// and then, if necessary (e.g. if the constructor did not take a handle as a parameter), set a new handle.
     virtual Geometry *clone(void) const = 0;
     /// construction geometry (means no impact on a later built topo)
+    /// Note: In the Sketcher and only for the specific case of a point, it has a special meaning:
+    /// a construction point has fixed coordinates for the solver (it has fixed parameters)
     bool Construction;
     /// returns the tag of the geometry object
     boost::uuids::uuid getTag() const;
@@ -113,6 +118,7 @@ public:
     virtual PyObject *getPyObject(void);
 
     const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle_Geom_CartesianPoint&);
 
     Base::Vector3d getPoint(void)const;
     void setPoint(const Base::Vector3d&);
@@ -369,6 +375,8 @@ public:
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     const Handle_Geom_Geometry& handle() const;
+    
+    void setHandle(const Handle_Geom_Circle&);
 
 private:
     Handle_Geom_Circle myCurve;
@@ -398,6 +406,7 @@ public:
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     void setHandle(const Handle_Geom_TrimmedCurve&);
+    void setHandle(const Handle_Geom_Circle&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -463,6 +472,7 @@ public:
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     void setHandle(const Handle_Geom_TrimmedCurve&);
+    void setHandle(const Handle_Geom_Ellipse&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -493,6 +503,7 @@ public:
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle_Geom_Hyperbola&);
 
 private:
     Handle_Geom_Hyperbola myCurve;
@@ -526,6 +537,7 @@ public:
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     void setHandle(const Handle_Geom_TrimmedCurve&);
+    void setHandle(const Handle_Geom_Hyperbola&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -553,6 +565,7 @@ public:
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle_Geom_Parabola&);
 
 private:
     Handle_Geom_Parabola myCurve;
@@ -584,6 +597,7 @@ public:
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     void setHandle(const Handle_Geom_TrimmedCurve&);
+    void setHandle(const Handle_Geom_Parabola&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -612,6 +626,7 @@ public:
     virtual PyObject *getPyObject(void);
 
     const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle_Geom_Line&);
 
 private:
     Handle_Geom_Line myCurve;
@@ -622,6 +637,7 @@ class PartExport GeomLineSegment : public GeomCurve
     TYPESYSTEM_HEADER();
 public:
     GeomLineSegment();
+    GeomLineSegment(const Handle_Geom_Line& l);
     virtual ~GeomLineSegment();
     virtual Geometry *clone(void) const;
 
@@ -639,6 +655,7 @@ public:
     virtual PyObject *getPyObject(void);
 
     void setHandle(const Handle_Geom_TrimmedCurve&);
+    void setHandle(const Handle_Geom_Line&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -720,7 +737,7 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-
+    void setHandle(const Handle_Geom_BezierSurface& b);
     const Handle_Geom_Geometry& handle() const;
 
 private:
