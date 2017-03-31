@@ -44,6 +44,7 @@ import FreeCAD
 from FreeCAD import Units
 import datetime
 from PathScripts import PostUtils
+from PathScripts import PathUtils
 
 now = datetime.datetime.now()
 
@@ -61,7 +62,7 @@ LINENR = 100  # line number starting value
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
-UNIT_FORMAT = 'in/min'
+UNIT_FORMAT = 'mm/min'
 MACHINE_NAME = "LinuxCNC"
 CORNER_MIN = {'x': 0, 'y': 0, 'z': 0}
 CORNER_MAX = {'x': 500, 'y': 300, 'z': 300}
@@ -118,6 +119,8 @@ def processArguments(argstring):
 def export(objectslist, filename, argstring):
     processArguments(argstring)
     global UNITS
+    global UNIT_FORMAT
+
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
@@ -131,13 +134,18 @@ def export(objectslist, filename, argstring):
     # sure we're using the current values in the Machine Def.
     myMachine = None
     for pathobj in objectslist:
-        if hasattr(pathobj,"MachineName"):
-            myMachine = pathobj.MachineName
-        if hasattr(pathobj, "MachineUnits"):
-            if pathobj.MachineUnits == "Metric":
+        job = PathUtils.findParentJob(pathobj)
+
+        if hasattr(job,"MachineName"):
+            myMachine = job.MachineName
+        if hasattr(job, "MachineUnits"):
+            if job.MachineUnits == "Metric":
                UNITS = "G21"
+               UNIT_FORMAT = 'mm/min'
             else:
                UNITS = "G20"
+               UNIT_FORMAT = 'in/min'
+
     if myMachine is None:
         print("No machine found in this selection")
 
