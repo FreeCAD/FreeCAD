@@ -3966,34 +3966,35 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     #endif
     
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
-        return false;
+        throw Base::ValueError("BSpline GeoId is out of bounds.");
     
     if (multiplicityincr == 0) // no change in multiplicity
-        return true;
+        throw Base::ValueError("You are requesting no change in knot multiplicity.");
     
     const Part::Geometry *geo = getGeometry(GeoId);
     
     if(geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
-        return false;
+        throw Base::TypeError("The GeoId provided is not a B-spline curve");
     
     const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
     
     int degree = bsp->getDegree();
     
     if( knotIndex > bsp->countKnots() || knotIndex < 1 ) // knotindex in OCC 1 -> countKnots
-        return false;
+        throw Base::ValueError("The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.");
 
     Part::GeomBSplineCurve *bspline;
 
+    int curmult = bsp->getMultiplicity(knotIndex);
+    
+    if ( (curmult + multiplicityincr) > degree ) // zero is removing the knot, degree is just positional continuity
+        throw Base::ValueError("The multiplicity cannot be increased beyond the degree of the b-spline.");
+    
+    if ( (curmult + multiplicityincr) < 0) // zero is removing the knot, degree is just positional continuity
+        throw Base::ValueError("The multiplicity cannot be decreased beyond zero.");
+    
     try {
-        int curmult = bsp->getMultiplicity(knotIndex);
 
-        if ( (curmult + multiplicityincr) > degree || (curmult + multiplicityincr) < 0) // zero is removing the knot, degree is just positional continuity
-            return false;
-
-        //const Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(bsp->handle());
-
-        //bspline = new Part::GeomBSplineCurve(curve);
         bspline = static_cast<Part::GeomBSplineCurve *>(bsp->clone());
 
         if(multiplicityincr > 0) { // increase multiplicity
@@ -4003,7 +4004,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
             bool result = bspline->removeKnot(knotIndex, curmult + multiplicityincr,1E6);
 
             if(!result)
-                return false;
+                throw Base::RuntimeError("OCC is unable to decrease the multiplicity within the maximum tolerance.");
         }
     }
     catch (const Base::Exception& e) {
