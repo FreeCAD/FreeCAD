@@ -26,6 +26,7 @@
 
 #include <QObject>
 #include <QPointer>
+#include <QVariant>
 #include <boost/function.hpp>
 
 class QAction;
@@ -100,6 +101,7 @@ public:
 
     void setFunction(boost::function<void()> func);
     void setFunction(boost::function<void(QObject*)> func, QObject* args);
+    void setFunction(boost::function<void(QVariant)> func, QVariant args);
     void setAutoDelete(bool);
 
 private Q_SLOTS:
