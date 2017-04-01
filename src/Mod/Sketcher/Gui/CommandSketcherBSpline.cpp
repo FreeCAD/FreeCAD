@@ -540,6 +540,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     openCommand("Increase knot multiplicity");
 
     bool applied = false;
+    bool notaknot = true;
     
     boost::uuids::uuid bsplinetag;
 
@@ -556,6 +557,8 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
             {
                 bsplinetag = Obj->getGeometry((*it)->Second)->getTag();
                 
+                notaknot = false;
+                
                 try {
                     Gui::Command::doCommand(
                         Doc,"App.ActiveDocument.%s.modifyBSplineKnotMultiplicity(%d,%d,%d) ",
@@ -568,15 +571,22 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 
                 }
                 catch (const Base::Exception& e) {
-                    Base::Console().Error("%s\n", e.what());
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
+                                         QObject::tr(e.what()));
                     getSelection().clearSelection();
                 }
 
                 break; // we have already found our knot.
 
             }
+
         }
 
+    }
+    
+    if(notaknot){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("None of the selected elements is a knot of a bspline"));
     }
     
     if(applied)
@@ -613,8 +623,6 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     
     if(!applied) {
         abortCommand();
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                         QObject::tr("None of the selected elements is a knot of a bspline or the knot has already reached the maximum multiplicity."));
     }
     else {
         commitCommand();
@@ -686,6 +694,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     openCommand("Decrease knot multiplicity");
     
     bool applied = false;
+    bool notaknot = true;
     
     boost::uuids::uuid bsplinetag;
     
@@ -702,6 +711,8 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
             {
                 bsplinetag = Obj->getGeometry((*it)->Second)->getTag();
                 
+                notaknot = false;
+                
                 try {
                     Gui::Command::doCommand(
                         Doc,"App.ActiveDocument.%s.modifyBSplineKnotMultiplicity(%d,%d,%d) ",
@@ -714,7 +725,8 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
                     
                 }
                 catch (const Base::Exception& e) {
-                    Base::Console().Error("%s\n", e.what());
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
+                                         QObject::tr(e.what()));
                     getSelection().clearSelection();
                 }
                 
@@ -724,6 +736,11 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
         }
         
     }
+    
+    if(notaknot){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("None of the selected elements is a knot of a bspline"));
+    }    
     
     if(applied)
     {
@@ -759,8 +776,6 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     
     if(!applied) {
         abortCommand();
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("None of the selected elements is a knot of a bspline"));
     }
     else {
         commitCommand();
