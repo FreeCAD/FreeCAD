@@ -25,6 +25,7 @@
 #define GUI_ACTIONFUNCTION_H
 
 #include <QObject>
+#include <QPointer>
 #include <boost/function.hpp>
 
 class QAction;
