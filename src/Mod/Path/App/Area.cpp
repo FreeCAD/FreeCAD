@@ -1982,8 +1982,8 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         threshold = Precision::Confusion();
     clearance = fabs(clearance);
 
-    AxisGetter getter = NULL;
-    AxisSetter setter = NULL;
+    AxisGetter getter = &gp_Pnt::Z;
+    AxisSetter setter = &gp_Pnt::SetZ;
     retraction = fabs(retraction);
     if(retraction>Precision::Confusion()) {
         switch(retract_axis) {
@@ -1995,10 +1995,6 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
             getter = &gp_Pnt::Y;
             setter = &gp_Pnt::SetY;
             break;
-        case RetractAxisZ:
-            getter = &gp_Pnt::Z;
-            setter = &gp_Pnt::SetZ;
-            break;
         }
     }
 
@@ -2009,7 +2005,16 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     for(const TopoDS_Shape &wire : wires) {
         BRepTools_WireExplorer xp(TopoDS::Wire(wire));
         p = BRep_Tool::Pnt(xp.CurrentVertex());
-        if(first||p.Distance(plast)>threshold)
+
+        gp_Pnt pTmp(p),plastTmp(plast);
+        // Assuming the stepdown direction is the same as retraction direction.
+        // We don't want to count step down distance in stepdown direction,
+        // because it is always safe to go in that direction in feed move
+        // without getting bumped.
+        (pTmp.*setter)(0.0);
+        (plastTmp.*setter)(0.0);
+
+        if(first||pTmp.Distance(plastTmp)>threshold)
             addCommand(path,plast,p,getter,setter,retraction,clearance);
         else
             addCommand(path,plast,p);
