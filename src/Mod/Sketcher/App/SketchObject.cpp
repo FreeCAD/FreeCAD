@@ -390,6 +390,17 @@ int SketchObject::toggleDriving(int ConstrId)
 
     if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && vals[ConstrId]->isDriving==false)
         return -3; // a constraint that does not have at least one element as not-external-geometry can never be driving.
+    
+    const Part::Geometry * geo1 = getGeometry(vals[ConstrId]->First);
+    const Part::Geometry * geo2 = getGeometry(vals[ConstrId]->Second);
+    const Part::Geometry * geo3 = getGeometry(vals[ConstrId]->Third);
+    
+    bool extorconstructionpoint1 = (vals[ConstrId]->First == Constraint::GeoUndef) || (vals[ConstrId]->First < 0) || (geo1 && geo1->getTypeId() == Part::GeomPoint::getClassTypeId() && geo1->Construction == true);
+    bool extorconstructionpoint2 = (vals[ConstrId]->Second == Constraint::GeoUndef) || (vals[ConstrId]->Second < 0) || (geo2 && geo2->getTypeId() == Part::GeomPoint::getClassTypeId() && geo2->Construction == true);
+    bool extorconstructionpoint3 = (vals[ConstrId]->Third == Constraint::GeoUndef) || (vals[ConstrId]->Third < 0) || (geo3 && geo3->getTypeId() == Part::GeomPoint::getClassTypeId() && geo3->Construction == true);
+    
+    if (extorconstructionpoint1 && extorconstructionpoint2 && extorconstructionpoint3 && vals[ConstrId]->isDriving==false)
+        return -4;
 
     // copy the list
     std::vector<Constraint *> newVals(vals);
