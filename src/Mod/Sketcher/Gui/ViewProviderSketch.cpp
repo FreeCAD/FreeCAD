@@ -769,6 +769,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             
                                 if(autoRecompute)
                                     Gui::Command::updateActive();
+                                else
+                                    getSketchObject()->solve();
                             }
                             catch (const Base::Exception& e) {
                                 Gui::Command::abortCommand();
@@ -805,6 +807,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             
                                 if(autoRecompute)
                                     Gui::Command::updateActive();
+                                else
+                                    getSketchObject()->solve();
                             }
                             catch (const Base::Exception& e) {
                                 Gui::Command::abortCommand();
