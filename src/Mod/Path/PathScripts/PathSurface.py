@@ -304,7 +304,6 @@ class ObjectSurface:
 
         if mesh.TypeId.startswith('Mesh'):
             mesh = mesh.Mesh
-            bb = mesh.BoundBox
         else:
             # try/except is for Path Jobs created before GeometryTolerance
             try:
@@ -313,8 +312,9 @@ class ObjectSurface:
                 from PathScripts.PathPreferences import PathPreferences
                 deflection = PathPreferences.defaultGeometryTolerance()
 
-            mesh = MeshPart.meshFromShape(mesh.Shape, MaxLength=2)
-            bb = mesh.Shape.BoundBox
+            mesh = MeshPart.meshFromShape(mesh.Shape, Deflection = deflection)
+
+        bb = mesh.BoundBox
 
         s = ocl.STLSurf()
         for f in mesh.Facets:
