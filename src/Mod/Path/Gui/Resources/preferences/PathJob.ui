@@ -7,19 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>503</width>
-    <height>526</height>
+    <height>557</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Job Preferences</string>
   </property>
   <layout class="QVBoxLayout">
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <property name="margin">
-    <number>9</number>
-   </property>
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="sizePolicy">
@@ -199,6 +193,35 @@
         <property name="prefPath" stdset="0">
          <cstring>Mod/Path</cstring>
         </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Geometry</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QWidget" name="widget_5" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Default Geometry Tolerance</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Gui::InputField" name="geometryTolerance">
+           <property name="toolTip">
+            <string>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>

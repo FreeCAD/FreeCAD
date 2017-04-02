@@ -30,6 +30,8 @@ class PathPreferences:
     PostProcessorDefault     = "PostProcessorDefault"
     PostProcessorDefaultArgs = "PostProcessorDefaultArgs"
     PostProcessorBlacklist   = "PostProcessorBlacklist"
+    # Linear tolerance to use when generating Paths, eg when tesselating geometry
+    GeometryTolerance  = "GeometryTolerance"
 
     @classmethod
     def preferences(cls):
@@ -71,6 +73,10 @@ class PathPreferences:
         return pref.GetString(cls.PostProcessorDefaultArgs, "")
 
     @classmethod
+    def defaultGeometryTolerance(cls):
+        return cls.preferences().GetFloat(cls.GeometryTolerance, 0.01)
+
+    @classmethod
     def postProcessorBlacklist(cls):
         pref = cls.preferences()
         blacklist = pref.GetString(cls.PostProcessorBlacklist, "")
@@ -79,11 +85,12 @@ class PathPreferences:
         return eval(blacklist)
 
     @classmethod
-    def savePostProcessorDefaults(cls, processor, args, blacklist):
+    def savePostProcessorDefaults(cls, processor, args, blacklist, geometryTolerance):
         pref = cls.preferences()
         pref.SetString(cls.PostProcessorDefault, processor)
         pref.SetString(cls.PostProcessorDefaultArgs, args)
         pref.SetString(cls.PostProcessorBlacklist, "%s" % (blacklist))
+        pref.SetFloat(cls.GeometryTolerance, geometryTolerance)
 
 
     DefaultOutputFile = "DefaultOutputFile"
