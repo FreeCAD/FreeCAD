@@ -1184,6 +1184,7 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
 
     std::ofstream anABAQUS_Output;
     anABAQUS_Output.open(Filename.c_str());
+    anABAQUS_Output.precision(15);
 
     // add nodes
     //
