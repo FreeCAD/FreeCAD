@@ -304,10 +304,17 @@ class ObjectSurface:
 
         if mesh.TypeId.startswith('Mesh'):
             mesh = mesh.Mesh
-            bb = mesh.BoundBox
         else:
-            bb = mesh.Shape.BoundBox
-            mesh = MeshPart.meshFromShape(mesh.Shape, MaxLength=2)
+            # try/except is for Path Jobs created before GeometryTolerance
+            try:
+                deflection = parentJob.GeometryTolerance
+            except AttributeError:
+                from PathScripts.PathPreferences import PathPreferences
+                deflection = PathPreferences.defaultGeometryTolerance()
+
+            mesh = MeshPart.meshFromShape(mesh.Shape, Deflection = deflection)
+
+        bb = mesh.BoundBox
 
         s = ocl.STLSurf()
         for f in mesh.Facets:
