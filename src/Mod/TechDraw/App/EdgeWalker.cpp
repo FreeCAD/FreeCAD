@@ -98,6 +98,11 @@ void edgeVisitor::setGraph(TechDraw::graph& g)
 //* EdgeWalker methods
 //*******************************************************
 
+//some shapes are being passed in where edges that should be connected are in fact
+//separated by more than 2*Precision::Confusion (expected tolerance for 2 TopoDS_Vertex)
+#define EWTOLERANCE 0.00001    //arbitrary number that seems to give good results for drawing
+
+
 EdgeWalker::EdgeWalker()
 {
 }
@@ -308,9 +313,9 @@ std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge>
         bool addv1 = true;
         bool addv2 = true;
         for (auto v:uniqueVert) {
-            if (DrawUtil::isSamePoint(v,v1))
+            if (DrawUtil::isSamePoint(v,v1,EWTOLERANCE))
                 addv1 = false;
-            if (DrawUtil::isSamePoint(v,v2))
+            if (DrawUtil::isSamePoint(v,v2,EWTOLERANCE))
                 addv2 = false;
         }
         if (addv1)
@@ -325,7 +330,7 @@ std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge>
 std::vector<WalkerEdge> EdgeWalker::makeWalkerEdges(std::vector<TopoDS_Edge> edges,
                                                       std::vector<TopoDS_Vertex> verts)
 {
-    //Base::Console().Message("TRACE - EW::makeWalkerEdges()\n");
+//    Base::Console().Message("TRACE - EW::makeWalkerEdges()\n");
     m_saveInEdges = edges;
     std::vector<WalkerEdge> walkerEdges;
     for (auto e:edges) {
@@ -345,11 +350,11 @@ std::vector<WalkerEdge> EdgeWalker::makeWalkerEdges(std::vector<TopoDS_Edge> edg
 
 int EdgeWalker::findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert)
 {
-    //Base::Console().Message("TRACE - EW::findUniqueVert()\n");
+//    Base::Console().Message("TRACE - EW::findUniqueVert()\n");
     int idx = 0;
     int result = 0;
     for(auto& v:uniqueVert) {                    //we're always going to find vx, right?
-        if (DrawUtil::isSamePoint(v,vx)) {
+        if (DrawUtil::isSamePoint(v,vx,EWTOLERANCE)) {
             result = idx;
             break;
         }
@@ -412,12 +417,12 @@ std::vector<embedItem> EdgeWalker::makeEmbedding(const std::vector<TopoDS_Edge> 
         std::vector<incidenceItem> iiList;
         for (auto& e: edges) {
             double angle = 0;
-            if (DrawUtil::isFirstVert(e,v)) {
-                angle = DrawUtil::angleWithX(e,v);
+            if (DrawUtil::isFirstVert(e,v,EWTOLERANCE)) {
+                angle = DrawUtil::angleWithX(e,v,EWTOLERANCE);
                 incidenceItem ii(ie, angle, m_saveWalkerEdges[ie].ed);
                 iiList.push_back(ii);
-            } else if (DrawUtil::isLastVert(e,v)) {
-                angle = DrawUtil::angleWithX(e,v);
+            } else if (DrawUtil::isLastVert(e,v,EWTOLERANCE)) {
+                angle = DrawUtil::angleWithX(e,v,EWTOLERANCE);
                 incidenceItem ii(ie, angle, m_saveWalkerEdges[ie].ed);
                 iiList.push_back(ii);
             } else {
