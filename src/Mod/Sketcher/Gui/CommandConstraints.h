@@ -31,6 +31,8 @@ namespace SketcherGui {
 
 bool checkBothExternal(int GeoId1, int GeoId2);
 
+bool checkBothExternalOrConstructionPoints(const Sketcher::SketchObject* Obj,int GeoId1, int GeoId2);
+
 void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj, int &GeoId, Sketcher::PointPos &PosId);
 
 bool inline isVertex(int GeoId, Sketcher::PointPos PosId);
@@ -38,6 +40,8 @@ bool inline isVertex(int GeoId, Sketcher::PointPos PosId);
 bool inline isEdge(int GeoId, Sketcher::PointPos PosId);
 
 bool isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, Sketcher::PointPos PosId);
+
+bool isConstructionPoint(const Sketcher::SketchObject* Obj, int GeoId);
 
 bool IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj);
 
