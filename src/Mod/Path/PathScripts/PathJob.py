@@ -72,6 +72,10 @@ class ObjectPathJob:
         obj.addProperty("App::PropertyEnumeration", "MachineUnits", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Units that the machine works in, ie Metric or Inch"))
         obj.MachineUnits = ['Metric', 'Inch']
 
+        obj.addProperty("App::PropertyDistance", "GeometryTolerance", "Geometry",
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "For computing Paths; smaller increases accuracy, but slows down computation"))
+        obj.GeometryTolerance = PathPreferences.defaultGeometryTolerance()
+
         obj.addProperty("App::PropertyDistance", "X_Max", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Maximum distance in X the machine can travel"))
         obj.addProperty("App::PropertyDistance", "Y_Max", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Maximum distance in X the machine can travel"))
         obj.addProperty("App::PropertyDistance", "Z_Max", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Maximum distance in X the machine can travel"))
