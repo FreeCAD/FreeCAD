@@ -1137,8 +1137,23 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
             item->addChild(childItem);
         }
     }
-    for(auto childItem : oldItems)
+    for(auto childItem : oldItems) {
+        if (childItem->type() == TreeWidget::ObjectType) {
+            DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(childItem);
+            // Add the child item back to document root if it is the only
+            // instance.  Now, because of the lazy loading strategy, this may
+            // not truely be the last instance of the object. It may belong to
+            // other parents not expanded yet. We don't want to traverse the
+            // whole tree to confirm that. Just let it be. If the other
+            // parent(s) later expanded, this child item will be moved from
+            // root to its parent.
+            if(obj->myselves->size()==1) {
+                this->addChild(childItem);
+                continue;
+            }
+        }
         delete childItem;
+    }
 }
 
 void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
