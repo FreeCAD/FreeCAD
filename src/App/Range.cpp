@@ -176,7 +176,7 @@ int App::validColumn(const std::string &colstr)
     }
     else {
         col = 0;
-        for (std::string::const_reverse_iterator i = colstr.rbegin(); i != colstr.rend(); ++i) {
+        for (std::string::const_iterator i = colstr.begin(); i != colstr.end(); ++i) {
             int v;
 
             if ((*i >= 'A' && *i <= 'Z'))
