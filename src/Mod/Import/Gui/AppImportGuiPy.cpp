@@ -52,9 +52,11 @@
 # include <IGESControl_Controller.hxx>
 # include <IGESData_GlobalSection.hxx>
 # include <IGESData_IGESModel.hxx>
+# include <IGESToBRep_Actor.hxx>
 # include <Interface_Static.hxx>
 # include <Transfer_TransientProcess.hxx>
 # include <XSControl_WorkSession.hxx>
+# include <XSControl_TransferReader.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_MapOfShape.hxx>
 # include <TopExp_Explorer.hxx>
@@ -391,6 +393,9 @@ private:
                     pi->Show();
                     aReader.Transfer(hDoc);
                     pi->EndScope();
+                    // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
+                    Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
+                            ->SetModel(new IGESData_IGESModel);
                 }
                 catch (OSD_Exception) {
                     Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -565,6 +570,9 @@ private:
                 pi->Show();
                 aReader.Transfer(hDoc);
                 pi->EndScope();
+                // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
+                Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
+                        ->SetModel(new IGESData_IGESModel);
             }
             else {
                 throw Py::Exception(Base::BaseExceptionFreeCADError, "no supported file format");

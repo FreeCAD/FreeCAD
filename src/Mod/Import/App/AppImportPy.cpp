@@ -41,9 +41,11 @@
 # include <IGESControl_Controller.hxx>
 # include <IGESData_GlobalSection.hxx>
 # include <IGESData_IGESModel.hxx>
+# include <IGESToBRep_Actor.hxx>
 # include <Interface_Static.hxx>
 # include <Transfer_TransientProcess.hxx>
 # include <XSControl_WorkSession.hxx>
+# include <XSControl_TransferReader.hxx>
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <OSD_Exception.hxx>
 #endif
@@ -164,6 +166,9 @@ private:
                     pi->Show();
                     aReader.Transfer(hDoc);
                     pi->EndScope();
+                    // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
+                    Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
+                            ->SetModel(new IGESData_IGESModel);
                 }
                 catch (OSD_Exception) {
                     Handle_Standard_Failure e = Standard_Failure::Caught();
