@@ -444,6 +444,8 @@ public:
             const gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL,
             PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_PATH));
 
+    static int getWireDirection(const TopoDS_Shape& wire, const gp_Pln *plane=0);
+
     PARAM_ENUM_DECLARE(AREA_PARAMS_PATH)
 
     static void abort(bool aborting);
@@ -451,6 +453,7 @@ public:
 
     static void setDefaultParams(const AreaStaticParams &params);
     static const AreaStaticParams &getDefaultParams();
+
 
 #define AREA_LOG_CHECK_DECLARE(_1,_2,_elem) \
     static bool BOOST_PP_CAT(_elem,Enabled)();
