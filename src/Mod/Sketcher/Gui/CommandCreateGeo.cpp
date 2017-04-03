@@ -6182,6 +6182,238 @@ bool CmdSketcherExternal::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+// ======================================================================================
+
+namespace SketcherGui {
+    class CarbonCopySelection : public Gui::SelectionFilterGate
+    {
+        App::DocumentObject* object;
+    public:
+        CarbonCopySelection(App::DocumentObject* obj)
+        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+        {}
+        
+        bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
+        {
+            Q_UNUSED(sSubName);
+            
+            Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
+            sketch->allowOtherBody = false;
+            
+            this->notAllowedReason = "";
+            Sketcher::SketchObject::eReasonList msg;
+            // Reusing code: All good reasons not to allow a carbon copy
+            if (!sketch->isExternalAllowed(pDoc, pObj, &msg)){
+                switch(msg){
+                    case Sketcher::SketchObject::rlCircularReference:
+                        this->notAllowedReason = QT_TR_NOOP("Carbon copy would cause a circular dependency.");
+                        break;
+                    case Sketcher::SketchObject::rlOtherDoc:
+                        this->notAllowedReason = QT_TR_NOOP("This object is in another document.");
+                        break;
+                    case Sketcher::SketchObject::rlOtherBody:
+                        this->notAllowedReason = QT_TR_NOOP("This object belongs to another body.");
+                        break;
+                    case Sketcher::SketchObject::rlOtherPart:
+                        this->notAllowedReason = QT_TR_NOOP("This object belongs to another part.");
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+            // Carbon copy only works on sketchs that do not disallowed (e.g. would produce a circular reference)
+            if (pObj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
+                return true;
+                }
+
+            return  false;
+        }
+    };
+};
+
+
+/* XPM */
+static const char *cursor_carboncopy[]={
+    "32 32 3 1",
+    "+ c white",
+    "* c red",
+    ". c None",
+    "......+.........................",
+    "......+.........................",
+    "......+.........................",
+    "......+.........................",
+    "......+.........................",
+    "................................",
+    "+++++...+++++...................",
+    "................................",
+    "......+.........................",
+    "......+.........................",
+    "......+.........................",
+    "......+.........................",
+    "......+....+++++++++++++++......",
+    ".........++*..............+++...",
+    "........++.*..............++*...",
+    ".......++..*.............++.*...",
+    "......+....*............+...*...",
+    "....++.....*..........++....*...",
+    "...++......*.........++.....*...",
+    "..++.......*........++......*...",
+    "..++++++++++++++++++........*...",
+    "..*........*.......*........*...",
+    "..*........*.......*........*...",
+    "..*.......+++++++++*++++++++*...",
+    "..*.....++.........*.......++...",
+    "..*....++..........*......++....",
+    "..*...+............*.....+......",
+    "..*.++.............*...++.......",
+    "..*++..............*..++........",
+    "..*+...............*.++.........",
+    "..++++++++++++++++++............",
+    "................................"};
+    
+    class DrawSketchHandlerCarbonCopy: public DrawSketchHandler
+    {
+    public:
+        DrawSketchHandlerCarbonCopy() {}
+        virtual ~DrawSketchHandlerCarbonCopy()
+        {
+            Gui::Selection().rmvSelectionGate();
+        }
+        
+        virtual void activated(ViewProviderSketch *sketchgui)
+        {
+            sketchgui->setAxisPickStyle(false);
+            Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+            Gui::View3DInventorViewer *viewer;
+            viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
+            
+            SoNode* root = viewer->getSceneGraph();
+            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+            
+            Gui::Selection().clearSelection();
+            Gui::Selection().rmvSelectionGate();
+            Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
+            setCursor(QPixmap(cursor_carboncopy),7,7);
+        }
+        
+        virtual void deactivated(ViewProviderSketch *sketchgui)
+        {
+            sketchgui->setAxisPickStyle(true);
+        }
+        
+        virtual void mouseMove(Base::Vector2d onSketchPos)
+        {
+            Q_UNUSED(onSketchPos);
+            if (Gui::Selection().getPreselection().pObjectName)
+                applyCursor();
+        }
+        
+        virtual bool pressButton(Base::Vector2d onSketchPos)
+        {
+            Q_UNUSED(onSketchPos);
+            return true;
+        }
+        
+        virtual bool releaseButton(Base::Vector2d onSketchPos)
+        {
+            Q_UNUSED(onSketchPos);
+            /* this is ok not to call to purgeHandler
+             * in continuous creation mode because the 
+             * handler is destroyed by the quit() method on pressing the
+             * right button of the mouse */
+            return true;
+        }
+        
+        virtual bool onSelectionChanged(const Gui::SelectionChanges& msg)
+        {
+            if (msg.Type == Gui::SelectionChanges::AddSelection) {
+                App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
+                if (obj == NULL)
+                    throw Base::Exception("Sketcher: External geometry: Invalid object in selection");
+                
+                if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
+
+                    try {
+                        Gui::Command::openCommand("Add carbon copy");
+                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.carbonCopy(\"%s\",%s)",
+                                                sketchgui->getObject()->getNameInDocument(),
+                                                msg.pObjectName, geometryCreationMode==Construction?"True":"False");
+                        
+                        Gui::Command::commitCommand();
+                        
+                        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                        
+                        if(autoRecompute)
+                            Gui::Command::updateActive();
+                        else {
+                            // adding external geometry does not require a solve() per se (the DoF is the same), 
+                            // however a solve is required to update the amount of solver geometry, because we only
+                            // redraw a changed Sketch if the solver geometry amount is the same as the SkethObject
+                            // geometry amount (as this avoids other issues).
+                            // This solver is a very low cost one anyway (there is actually nothing to solve).
+                            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+                        }
+                        
+                        Gui::Selection().clearSelection();
+                        /* this is ok not to call to purgeHandler
+                         * in continuous creation mode because the 
+                         * handler is destroyed by the quit() method on pressing the
+                         * right button of the mouse */
+                    }
+                    catch (const Base::Exception& e) {
+                        Base::Console().Error("Failed to add carbon copy: %s\n", e.what());
+                        Gui::Command::abortCommand();
+                    }
+                    return true;
+                    }
+            }
+            return false;
+        }
+    };
+    
+    DEF_STD_CMD_AU(CmdSketcherCarbonCopy);
+    
+    CmdSketcherCarbonCopy::CmdSketcherCarbonCopy()
+    : Command("Sketcher_CarbonCopy")
+    {
+        sAppModule      = "Sketcher";
+        sGroup          = QT_TR_NOOP("Sketcher");
+        sMenuText       = QT_TR_NOOP("CarbonCopy");
+        sToolTipText    = QT_TR_NOOP("Copies the geometry of another sketch");
+        sWhatsThis      = "Sketcher_CarbonCopy";
+        sStatusTip      = sToolTipText;
+        sPixmap         = "Sketcher_CarbonCopy";
+        sAccel          = "C,C";
+        eType           = ForEdit;
+    }
+    
+    void CmdSketcherCarbonCopy::activated(int iMsg)
+    {
+        Q_UNUSED(iMsg);
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCarbonCopy());
+    }
+    
+    bool CmdSketcherCarbonCopy::isActive(void)
+    {
+        return isCreateGeoActive(getActiveGuiDocument());
+    }
+    
+    void CmdSketcherCarbonCopy::updateAction(int mode)
+    {
+        switch (mode) {
+            case Normal:
+                if (getAction())
+                    getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CarbonCopy"));
+                break;
+            case Construction:
+                if (getAction())
+                    getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CarbonCopy_Constr"));
+                break;
+        }
+    }
+
 
 /* Create Slot =======================================================*/
 
@@ -7007,4 +7239,5 @@ void CreateSketcherCommandsCreateGeo(void)
     //rcCmdMgr.addCommand(new CmdSketcherCreateDraftLine());
     rcCmdMgr.addCommand(new CmdSketcherTrimming());
     rcCmdMgr.addCommand(new CmdSketcherExternal());
+    rcCmdMgr.addCommand(new CmdSketcherCarbonCopy());
 }
