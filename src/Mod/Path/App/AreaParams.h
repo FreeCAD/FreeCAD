@@ -195,9 +195,11 @@
     AREA_PARAMS_MIN_DIST \
     ((double, abscissa, SortAbscissa, 3.0, "Controls vertex sampling on wire for nearest point searching\n"\
         "The sampling is dong using OCC GCPnts_UniformAbscissa",App::PropertyLength))\
-    ((short, nearest_k, NearestK, 3, "Nearest k sampling vertices are considered during sorting"))
+    ((short, nearest_k, NearestK, 3, "Nearest k sampling vertices are considered during sorting"))\
+    ((enum, orientation, Orientation, 0, "Enforce loop orientation\n"\
+        "Note the CW/CCW here specifies the outer wire orientation. For inner wires (holes), the\n"\
+        "enforced orientation is reversed", (None)(CW)(CCW)))
        
-
 /** Area path generation parameters */
 #define AREA_PARAMS_PATH \
     AREA_PARAMS_ARC_PLANE \
