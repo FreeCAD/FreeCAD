@@ -1168,61 +1168,58 @@ class Snapper:
 
     def makeSnapToolBar(self):
         "builds the Snap toolbar"
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
-        bsize = p.GetInt("ToolbarIconSize",24)+2
-        isize = p.GetInt("ToolbarIconSize",24)/3*2
         self.toolbar = QtGui.QToolBar(None)
-        self.toolbar.setIconSize(QtCore.QSize(isize, isize))
         self.toolbar.setObjectName("Draft Snap")
         self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
         self.toolbarButtons = []
         # grid button
-        gridbutton = QtGui.QToolButton(None)
-        gridbutton.setIcon(QtGui.QIcon(":/icons/Draft_Grid.svg"))
-        gridbutton.setMaximumSize(QtCore.QSize(bsize,bsize))
-        gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid on/off"))
-        gridbutton.setObjectName("GridButton")
-        QtCore.QObject.connect(gridbutton,QtCore.SIGNAL("clicked()"),self.toggleGrid)
-        self.toolbar.addWidget(gridbutton)
+        self.gridbutton = QtGui.QAction(None)
+        self.gridbutton.setIcon(QtGui.QIcon(":/icons/Draft_Grid.svg"))
+        self.gridbutton.setText(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Grid"))
+        self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid on/off"))
+        self.gridbutton.setObjectName("GridButton")
+        QtCore.QObject.connect(self.gridbutton,QtCore.SIGNAL("triggered()"),self.toggleGrid)
+        self.toolbar.addAction(self.gridbutton)
         # master button
-        self.masterbutton = QtGui.QToolButton(None)
+        self.masterbutton = QtGui.QAction(None)
         self.masterbutton.setIcon(QtGui.QIcon(":/icons/Snap_Lock.svg"))
-        self.masterbutton.setMaximumSize(QtCore.QSize(bsize,bsize))
+        self.masterbutton.setText(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Lock"))
         self.masterbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Toggle On/Off"))
         self.masterbutton.setObjectName("SnapButtonMain")
         self.masterbutton.setCheckable(True)
         self.masterbutton.setChecked(True)
         QtCore.QObject.connect(self.masterbutton,QtCore.SIGNAL("toggled(bool)"),self.toggle)
-        self.toolbar.addWidget(self.masterbutton)
+        self.toolbar.addAction(self.masterbutton)
         for c,i in self.cursors.items():
             if i:
-                b = QtGui.QToolButton(None)
+                b = QtGui.QAction(None)
                 b.setIcon(QtGui.QIcon(i))
-                b.setMaximumSize(QtCore.QSize(bsize,bsize))
                 if c == "passive":
+                    b.setText(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
                     b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
                 else:
+                    b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+c.capitalize(),c.capitalize()))
                     b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+c.capitalize(),c.capitalize()))
                 b.setObjectName("SnapButton"+c)
                 b.setCheckable(True)
                 b.setChecked(True)
-                self.toolbar.addWidget(b)
+                self.toolbar.addAction(b)
                 self.toolbarButtons.append(b)
                 QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
         # adding non-snap button
         for n in ["Dimensions","WorkingPlane"]:
-            b = QtGui.QToolButton(None)
+            b = QtGui.QAction(None)
             b.setIcon(QtGui.QIcon(":/icons/Snap_"+n+".svg"))
-            b.setMaximumSize(QtCore.QSize(bsize,bsize))
+            b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
             b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
             b.setObjectName("SnapButton"+n)
             b.setCheckable(True)
             b.setChecked(True)
-            self.toolbar.addWidget(b)
+            self.toolbar.addAction(b)
             QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
             self.toolbarButtons.append(b)
         # restoring states 
-        t = Draft.getParam("snapModes","11111111110111")
+        t = Draft.getParam("snapModes","111111111101111")
         if t:
             c = 0
             for b in [self.masterbutton]+self.toolbarButtons:
