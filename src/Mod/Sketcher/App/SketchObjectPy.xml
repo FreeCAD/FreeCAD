@@ -53,6 +53,11 @@
         <UserDocu>Rename a constraint of the sketch</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="carbonCopy">
+        <Documentation>
+            <UserDocu>copy another sketch's geometry and constraints</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="addExternal">
       <Documentation>
         <UserDocu>add a link to an external geometry to use it in a constraint</UserDocu>

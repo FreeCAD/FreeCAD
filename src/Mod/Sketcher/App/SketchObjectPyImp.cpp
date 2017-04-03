@@ -374,6 +374,41 @@ PyObject* SketchObjectPy::renameConstraint(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::carbonCopy(PyObject *args)
+{
+    char *ObjectName;
+    PyObject *construction = Py_True;
+    if (!PyArg_ParseTuple(args, "s|O!:Give an object", &ObjectName, &PyBool_Type, &construction))
+        return 0;
+
+    Sketcher::SketchObject* skObj = this->getSketchObjectPtr();
+    App::DocumentObject * Obj = skObj->getDocument()->getObject(ObjectName);
+    
+    if (!Obj) {
+        std::stringstream str;
+        str << ObjectName << " does not exist in the document";
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+    // check if this type of external geometry is allowed
+    if (!skObj->isExternalAllowed(Obj->getDocument(), Obj) && (Obj->getTypeId() != Sketcher::SketchObject::getClassTypeId())) {
+        std::stringstream str;
+        str << ObjectName << " is not allowed for a carbon copy operation in this sketch";
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+    
+    // add the external
+    if (skObj->carbonCopy(Obj, PyObject_IsTrue(construction) ? true : false) < 0) {
+        std::stringstream str;
+        str << "Not able to add the requested geometry";
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+    
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::addExternal(PyObject *args)
 {
     char *ObjectName;
