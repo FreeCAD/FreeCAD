@@ -1127,12 +1127,14 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
         if(childItem->parent() != this)
             slotNewObject(item,*childItem->object());
         else {
-            if(item->isChildOfItem(childItem)) {
-                Base::Console().Error("Gui::DocumentItem::populateItem(): Cyclic dependency in %s and %s\n",
-                        item->object()->getObject()->Label.getValue(),
-                        childItem->object()->getObject()->Label.getValue());
-                continue;
-            }
+            // Cyclic checking disabled here due to big impact on performance.
+            //
+            // if(item->isChildOfItem(childItem)) {
+            //     Base::Console().Error("Gui::DocumentItem::populateItem(): Cyclic dependency in %s and %s\n",
+            //             item->object()->getObject()->Label.getValue(),
+            //             childItem->object()->getObject()->Label.getValue());
+            //     continue;
+            // }
             this->removeChild(childItem);
             item->addChild(childItem);
         }
