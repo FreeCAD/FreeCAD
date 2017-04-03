@@ -2077,6 +2077,15 @@ QTableView > QWidget > QDateTimeEdit:read-only {
     border-color: transparent;
 }
 
+/*==================================================================================================
+Navigation indicator (and other potential future QPushButtons in status bar)
+==================================================================================================*/
+QStatusBar > QPushButton {
+    text-align: left;
+    background-color: transparent;
+    border: none;
+    padding: 4px 4px;
+}
 
 /*==================================================================================================
 EXPERIMENTAL
