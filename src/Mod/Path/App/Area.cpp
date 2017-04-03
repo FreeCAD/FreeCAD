@@ -47,6 +47,7 @@
 #include <BRepLib_FindSurface.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepTools.hxx>
 #include <BRepTools_WireExplorer.hxx>
 #include <TopoDS.hxx>
@@ -1307,9 +1308,10 @@ struct RGetter
 typedef bgi::linear<16> RParameters;
 typedef bgi::rtree<RValue,RParameters,RGetter> RTree;
 
-struct RTreeParams {
+struct ShapeParams {
     double abscissa;
     int k;
+    short orientation;
 #ifdef AREA_TIME_ENABLE
     TIME_DURATION qd; //rtree query duration
     TIME_DURATION bd; //rtree build duration
@@ -1317,8 +1319,8 @@ struct RTreeParams {
     TIME_DURATION xd; //BRepExtrema_DistShapeShape duration
 #endif
 
-    RTreeParams(double _a, int _k)
-        :abscissa(_a),k(_k)
+    ShapeParams(double _a, int _k, short o)
+        :abscissa(_a),k(_k),orientation(o)
 #ifdef AREA_TIME_ENABLE
         ,qd(0),bd(0),rd(0),xd(0)
 #endif
@@ -1333,8 +1335,8 @@ typedef std::map<Wires::iterator,size_t> RResults;
 struct GetWires {
     Wires &wires;
     RTree &rtree;
-    RTreeParams &params;
-    GetWires(std::list<WireInfo> &ws, RTree &rt, RTreeParams &rp)
+    ShapeParams &params;
+    GetWires(std::list<WireInfo> &ws, RTree &rt, ShapeParams &rp)
         :wires(ws),rtree(rt),params(rp)
     {}
     void operator()(const TopoDS_Shape &shape, int type) {
@@ -1345,6 +1347,13 @@ struct GetWires {
         else
             info.wire = BRepBuilderAPI_MakeWire(TopoDS::Edge(shape)).Wire();
         info.isClosed = BRep_Tool::IsClosed(info.wire);
+
+        if(info.isClosed && params.orientation != Area::OrientationNone){
+            int dir =Area::getWireDirection(info.wire);
+            if((dir>0&&params.orientation==Area::OrientationCW) || 
+               (dir<0&&params.orientation==Area::OrientationCCW))
+                info.wire.Reverse();
+        }
 
         TIME_INIT(t);
         BRepTools_WireExplorer xp(info.wire);
@@ -1399,20 +1408,20 @@ struct ShapeInfo{
     gp_Pnt myStartPt;
     Wires::iterator myBestWire;
     TopoDS_Shape mySupport;
-    RTreeParams &myParams;
+    ShapeParams &myParams;
     Standard_Real myBestParameter;
     bool mySupportEdge;
     bool myPlanar;
     bool myRebase;
     bool myStart;
 
-    ShapeInfo(BRepLib_FindSurface &finder, const TopoDS_Shape &shape, RTreeParams &params)
+    ShapeInfo(BRepLib_FindSurface &finder, const TopoDS_Shape &shape, ShapeParams &params)
         :myPln(GeomAdaptor_Surface(finder.Surface()).Plane())
         ,myShape(shape),myStartPt(1e20,1e20,1e20),myParams(params),myPlanar(true)
     {}
 
-    ShapeInfo(const TopoDS_Shape &shape, RTreeParams &params)
-        :myShape(shape),myStartPt(1e20,1e20,1e20),myParams(params),myPlanar(true)
+    ShapeInfo(const TopoDS_Shape &shape, ShapeParams &params)
+        :myShape(shape),myStartPt(1e20,1e20,1e20),myParams(params),myPlanar(false)
     {}
     double nearest(const gp_Pnt &pt) {
         myStartPt = pt;
@@ -1654,10 +1663,10 @@ struct ShapeInfoBuilder {
     gp_Trsf &myTrsf;
     short *myArcPlane;
     bool &myArcPlaneFound;
-    RTreeParams &myParams;
+    ShapeParams &myParams;
 
     ShapeInfoBuilder(bool &plane_found, short *arc_plane, gp_Trsf &trsf, 
-            std::list<ShapeInfo> &list, RTreeParams &params)
+            std::list<ShapeInfo> &list, ShapeParams &params)
         :myList(list) ,myTrsf(trsf) ,myArcPlane(arc_plane)
         ,myArcPlaneFound(plane_found), myParams(params)
     {}
@@ -1738,6 +1747,27 @@ struct ShapeInfoBuilder {
     }
 };
 
+struct WireOrienter {
+    std::list<TopoDS_Shape> &wires;
+    short orientation;
+
+    WireOrienter(std::list<TopoDS_Shape> &ws, short o)
+        :wires(ws),orientation(o)
+    {}
+
+    void operator()(const TopoDS_Shape &shape, int type) {
+        if(type == TopAbs_WIRE)
+            wires.push_back(shape);
+        else
+            wires.push_back(BRepBuilderAPI_MakeWire(TopoDS::Edge(shape)).Wire());
+        if(orientation!=Area::OrientationNone && BRep_Tool::IsClosed(wires.back())) {
+            int dir = Area::getWireDirection(wires.back());
+            if((dir>0&&orientation==Area::OrientationCW) || 
+               (dir<0&&orientation==Area::OrientationCCW))
+                wires.back().Reverse();
+        }
+    }
+};
 
 std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes, 
     const gp_Pnt *_pstart, gp_Pnt *_pend, short *arc_plane, 
@@ -1749,21 +1779,14 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
 
     if(sort_mode == SortModeNone) {
         for(auto &shape : shapes) {
-            if (shape.IsNull())
-                continue;
-            bool haveShape=false;
-            for(TopExp_Explorer it(shape,TopAbs_WIRE);it.More();it.Next()) {
-                haveShape=true;
-                wires.push_back(it.Current());
-            }
-            if(haveShape) continue;
-            for(TopExp_Explorer it(shape,TopAbs_EDGE);it.More();it.Next())
-                wires.push_back(BRepBuilderAPI_MakeWire(TopoDS::Edge(it.Current())).Wire());
+            if(!shape.IsNull())
+                foreachSubshape(shape,
+                    WireOrienter(wires,orientation), TopAbs_WIRE);
         }
         return std::move(wires);
     }
 
-    RTreeParams rparams(abscissa,nearest_k>0?nearest_k:1);
+    ShapeParams rparams(abscissa,nearest_k>0?nearest_k:1,orientation);
     std::list<ShapeInfo> shape_list;
 
     TIME_INIT2(t,t1);
@@ -1957,6 +1980,31 @@ static inline void addCommand(Toolpath &path, const char *name) {
     path.addCommand(cmd);
 }
 
+int Area::getWireDirection(const TopoDS_Shape &shape, const gp_Pln *pln) {
+    gp_Dir dir;
+    if(pln) 
+        dir = pln->Axis().Direction();
+    else{
+        BRepLib_FindSurface finder(shape,-1,Standard_True);
+        if(!finder.Found()) return 0;
+        dir = GeomAdaptor_Surface(finder.Surface()).Plane().Axis().Direction();
+    }
+    const TopoDS_Wire &wire = TopoDS::Wire(shape);
+    //make a test face
+    BRepBuilderAPI_MakeFace mkFace(wire, /*onlyplane=*/Standard_True);
+    if(!mkFace.IsDone()) return 0;
+    TopoDS_Face tmpFace = mkFace.Face();
+    //compare face surface normal with our plane's one
+    BRepAdaptor_Surface surf(tmpFace);
+    bool normal_co = surf.Plane().Axis().Direction().Dot(dir) > 0;
+
+    //unlikely, but just in case OCC decided to reverse our wire for the face...  take that into account!
+    TopoDS_Iterator it(tmpFace, /*CumOri=*/Standard_False);
+    normal_co ^= it.Value().Orientation() != wire.Orientation();
+
+    return normal_co ? 1 : -1;
+}
+
 void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         const gp_Pnt *pstart, gp_Pnt *pend, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_PATH))
 {
@@ -2003,6 +2051,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     bool first = true;
     bool arcWarned = false;
     for(const TopoDS_Shape &wire : wires) {
+
         BRepTools_WireExplorer xp(TopoDS::Wire(wire));
         p = BRep_Tool::Pnt(xp.CurrentVertex());
 
