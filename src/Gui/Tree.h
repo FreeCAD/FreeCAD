@@ -162,7 +162,7 @@ protected:
     /** Adds a view provider to the document item.
      * If this view provider is already added nothing happens.
      */
-    void slotNewObject(DocumentObjectItem *parent, const Gui::ViewProviderDocumentObject&);
+    void slotNewObject(const Gui::ViewProviderDocumentObject&);
     /** Removes a view provider from the document item.
      * If this view provider is not added nothing happens.
      */
@@ -174,6 +174,10 @@ protected:
     void slotResetEdit       (const Gui::ViewProviderDocumentObject&);
     void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool);
     void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&);
+
+    bool createNewItem(const Gui::ViewProviderDocumentObject&, 
+                    QTreeWidgetItem *parent=0, int index=-1, 
+                    DocumentObjectItemsPtr ptrs = DocumentObjectItemsPtr());
         
 private:
     const Gui::Document* pDocument;
@@ -200,7 +204,7 @@ class DocumentObjectItem : public QTreeWidgetItem
 {
 public:
     DocumentObjectItem(Gui::ViewProviderDocumentObject* pcViewProvider, 
-                       QTreeWidgetItem * parent, DocumentObjectItemsPtr selves);
+                       DocumentObjectItemsPtr selves);
     ~DocumentObjectItem();
 
     Gui::ViewProviderDocumentObject* object() const;
