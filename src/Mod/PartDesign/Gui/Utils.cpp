@@ -82,6 +82,30 @@ PartDesign::Body *getBody(bool messageIfNot)
     return activeBody;
 }
 
+void needActiveBodyError(void)
+{
+    QMessageBox::warning( Gui::getMainWindow(),
+        QObject::tr("Active Body Required"),
+        QObject::tr("To create a new PartDesign object, there must be "
+                    "an active Body object in the document. Please make "
+                    "one active (double click) or create a new Body.") );
+}
+
+PartDesign::Body * makeBody(App::Document *doc)
+{
+    // This is intended as a convenience when starting a new document.
+    auto bodyName( doc->getUniqueObjectName("Body") );
+    Gui::Command::doCommand( Gui::Command::Doc,
+                             "App.activeDocument().addObject('PartDesign::Body','%s')",
+                             bodyName.c_str() );
+    Gui::Command::doCommand( Gui::Command::Gui,
+                             "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
+                             PDBODYKEY, bodyName.c_str() );
+
+    auto activeView( Gui::Application::Instance->activeView() );
+    return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+}
+
 PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot)
 {
     if(!obj)
