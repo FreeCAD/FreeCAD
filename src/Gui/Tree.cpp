@@ -937,8 +937,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     : QTreeWidgetItem(parent, TreeWidget::DocumentType), pDocument(doc)
 {
     // Setup connections
-    connectNewObject = doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, 
-                static_cast<DocumentObjectItem*>(0),_1));
+    connectNewObject = doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, _1));
     connectDelObject = doc->signalDeletedObject.connect(boost::bind(&DocumentItem::slotDeleteObject, this, _1));
     connectChgObject = doc->signalChangedObject.connect(boost::bind(&DocumentItem::slotChangeObject, this, _1));
     connectRenObject = doc->signalRelabelObject.connect(boost::bind(&DocumentItem::slotRenameObject, this, _1));
@@ -995,27 +994,53 @@ void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
     END_FOREACH_ITEM
 }
 
-void DocumentItem::slotNewObject(DocumentObjectItem *parent, 
-        const Gui::ViewProviderDocumentObject& obj)
-{
-    if (!obj.showInTree()) return;
+void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj) {
+    createNewItem(obj);
+}
 
-    std::string name = obj.getObject()->getNameInDocument();
-    auto &ptrs = ObjectMap[name];
+bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
+            QTreeWidgetItem *parent, int index, DocumentObjectItemsPtr ptrs)
+{
+    const char *name;
+    if (!obj.showInTree() || !(name=obj.getObject()->getNameInDocument())) 
+        return false;
+
     if(!ptrs) {
-        ptrs.reset(new DocumentObjectItems);
-    }else if(ptrs->size() && parent==NULL) {
-        Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
-        return;
+        auto &items = ObjectMap[name];
+        if(!items) {
+            items.reset(new DocumentObjectItems);
+        }else if(items->size() && parent==NULL) {
+            Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
+            return false;
+        }
+        ptrs = items;
     }
     std::string displayName = obj.getObject()->Label.getValue();
     std::string objectName = obj.getObject()->getNameInDocument();
     DocumentObjectItem* item = new DocumentObjectItem(
-        const_cast<Gui::ViewProviderDocumentObject*>(&obj), 
-        parent?static_cast<QTreeWidgetItem*>(parent):this, ptrs);
+        const_cast<Gui::ViewProviderDocumentObject*>(&obj), ptrs);
+    if(!parent) parent = this;
+    if(index<0)
+        parent->addChild(item);
+    else
+        parent->insertChild(index,item);
     item->setIcon(0, obj.getIcon());
     item->setText(0, QString::fromUtf8(displayName.c_str()));
     populateItem(item);
+    return true;
+}
+
+static inline bool canCreateItem(const App::DocumentObject *obj, const Document *doc) {
+    // Note: It is possible that we receive an invalid pointer from
+    // claimChildren(), e.g. if multiple properties were changed in
+    // a transaction and slotChangedObject() is triggered by one
+    // property being reset before the invalid pointer has been
+    // removed from another. Currently this happens for
+    // PartDesign::Body when cancelling a new feature in the dialog.
+    // First the new feature is deleted, then the Tip property is
+    // reset, but claimChildren() accesses the Model property which
+    // still contains the pointer to the deleted feature
+    return obj && obj->getNameInDocument() && doc->getDocument()->isIn(obj);
 }
 
 void DocumentItem::slotDeleteObject(const Gui::ViewProviderDocumentObject& view)
@@ -1034,14 +1059,14 @@ void DocumentItem::slotDeleteObject(const Gui::ViewProviderDocumentObject& view)
     // under document item.
     const auto &children = view.claimChildren();
     for(auto child : children) {
-        if(!child || !pDocument->getDocument()->isIn(child))
+        if(!canCreateItem(child,pDocument)) 
             continue;
-        auto it = ObjectMap.find(std::string(child->getNameInDocument()));
+        auto it = ObjectMap.find(child->getNameInDocument());
         if(it==ObjectMap.end() || it->second->empty()) {
             ViewProvider* vp = pDocument->getViewProvider(child);
             if(!vp || !vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
                 continue;
-            slotNewObject(0,static_cast<ViewProviderDocumentObject&>(*vp));
+            createNewItem(static_cast<ViewProviderDocumentObject&>(*vp));
         }
     }
 }
@@ -1061,19 +1086,9 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
     if(!item->populated && !item->isExpanded()) {
         bool doPopulate = false;
         for(auto child : children) {
-            if(!child || !pDocument->getDocument()->isIn(child)){
-                // Note: It is possible that we receive an invalid pointer from
-                // claimChildren(), e.g. if multiple properties were changed in
-                // a transaction and slotChangedObject() is triggered by one
-                // property being reset before the invalid pointer has been
-                // removed from another. Currently this happens for
-                // PartDesign::Body when cancelling a new feature in the dialog.
-                // First the new feature is deleted, then the Tip property is
-                // reset, but claimChildren() accesses the Model property which
-                // still contains the pointer to the deleted feature
+            if(!canCreateItem(child,pDocument)) 
                 continue;
-            }
-            auto it = ObjectMap.find(std::string(child->getNameInDocument()));
+            auto it = ObjectMap.find(child->getNameInDocument());
             if(it == ObjectMap.end() || it->second->empty()) {
                 ViewProvider* vp = pDocument->getViewProvider(child);
                 if(!vp || !vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
@@ -1090,43 +1105,46 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
     }
     item->populated = true;
 
-    auto oldItems = item->takeChildren();
+    int i=-1;
+    // iterate through the claimed children, and try to synchronize them with the 
+    // children tree item with the same order of apperance. 
     for(auto child : children) {
-        if(!child || !pDocument->getDocument()->isIn(child))
-            continue;
+        if(!canCreateItem(child,pDocument)) continue;
+
+        ++i; // the current index of the claimed child
 
         bool found = false;
-        for(auto it=oldItems.begin(),itNext=it;it!=oldItems.end();it=itNext) {
-            ++itNext;
-            DocumentObjectItem *childItem = static_cast<DocumentObjectItem*>(*it);
+        for(int j=0,count=item->childCount();j<count;++j) {
+            QTreeWidgetItem *ci = item->child(j);
+            if(ci->type() != TreeWidget::ObjectType) continue;
+            DocumentObjectItem *childItem = static_cast<DocumentObjectItem*>(ci);
             if(childItem->object()->getObject() != child) continue;
             found = true;
-            oldItems.erase(it);
-            item->addChild(childItem);
+            if(j!=i) { // fix index if it is changed
+                item->removeChild(ci);
+                item->insertChild(i,ci);
+            }
             break;
         }
         if(found) continue;
 
-        const char* name = child->getNameInDocument();
-        if (!name) {
-            Base::Console().Warning("Gui::DocumentItem::populateItem(): Cannot reparent unknown object.\n");
-            continue;
-        }
-
         // This algo will be recursively applied to newly created child items
         // through slotNewObject -> populateItem
 
-        auto it = ObjectMap.find(name);
+        auto it = ObjectMap.find(child->getNameInDocument());
         if(it==ObjectMap.end() || it->second->empty()) {
             ViewProvider* vp = pDocument->getViewProvider(child);
-            if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
-                slotNewObject(item,static_cast<ViewProviderDocumentObject&>(*vp));
+            if(!vp || !vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()) || 
+               !createNewItem(static_cast<ViewProviderDocumentObject&>(*vp),item,i,
+                        it==ObjectMap.end()?DocumentObjectItemsPtr():it->second))
+                --i;
             continue;
         }
         DocumentObjectItem *childItem = *it->second->begin();
-        if(childItem->parent() != this)
-            slotNewObject(item,*childItem->object());
-        else {
+        if(childItem->parent() != this) {
+            if(!createNewItem(*childItem->object(),item,i,it->second))
+                --i;
+        }else {
             if(item->isChildOfItem(childItem)) {
                 Base::Console().Error("Gui::DocumentItem::populateItem(): Cyclic dependency in %s and %s\n",
                         item->object()->getObject()->Label.getValue(),
@@ -1134,10 +1152,12 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
                 continue;
             }
             this->removeChild(childItem);
-            item->addChild(childItem);
+            item->insertChild(i,childItem);
         }
     }
-    for(auto childItem : oldItems) {
+    for(++i;item->childCount()>i;) {
+        QTreeWidgetItem *childItem = item->child(i);
+        item->removeChild(childItem);
         if (childItem->type() == TreeWidget::ObjectType) {
             DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(childItem);
             // Add the child item back to document root if it is the only
@@ -1402,8 +1422,8 @@ void DocumentItem::selectItems(void)
 // ----------------------------------------------------------------------------
 
 DocumentObjectItem::DocumentObjectItem(Gui::ViewProviderDocumentObject* pcViewProvider,
-                                       QTreeWidgetItem* parent, DocumentObjectItemsPtr selves)
-    : QTreeWidgetItem(parent, TreeWidget::ObjectType), previousStatus(-1), viewObject(pcViewProvider)
+                                       DocumentObjectItemsPtr selves)
+    : QTreeWidgetItem(TreeWidget::ObjectType), previousStatus(-1), viewObject(pcViewProvider)
     , myselves(selves), populated(false)
 {
     setFlags(flags()|Qt::ItemIsEditable);
