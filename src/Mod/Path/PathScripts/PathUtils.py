@@ -227,7 +227,7 @@ def getToolControllers(obj):
     '''returns all the tool controllers'''
     controllers = []
     try:
-        parent = obj.InList[0]
+        parent = findParentJob(obj)
     except:
         parent = None
 
