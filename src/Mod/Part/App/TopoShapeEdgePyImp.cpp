@@ -49,6 +49,7 @@
 # include <gp_Hypr.hxx>
 # include <gp_Parab.hxx>
 # include <gp_Lin.hxx>
+# include <TopExp.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Edge.hxx>
@@ -666,6 +667,26 @@ PyObject* TopoShapeEdgePy::setTolerance(PyObject *args)
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     aBuilder.UpdateEdge(e, tol);
     Py_Return;
+}
+
+PyObject* TopoShapeEdgePy::firstVertex(PyObject *args)
+{
+    PyObject* orient = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient))
+        return 0;
+    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    TopoDS_Vertex v = TopExp::FirstVertex(e, PyObject_IsTrue(orient) ? Standard_True : Standard_False);
+    return new TopoShapeVertexPy(new TopoShape(v));
+}
+
+PyObject* TopoShapeEdgePy::lastVertex(PyObject *args)
+{
+    PyObject* orient = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient))
+        return 0;
+    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    TopoDS_Vertex v = TopExp::LastVertex(e, PyObject_IsTrue(orient) ? Standard_True : Standard_False);
+    return new TopoShapeVertexPy(new TopoShape(v));
 }
 
 // ====== Attributes ======================================================================

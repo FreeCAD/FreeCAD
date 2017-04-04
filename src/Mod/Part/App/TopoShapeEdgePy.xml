@@ -69,7 +69,25 @@
 				<UserDocu>Set the tolerance for the edge.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="discretize" Const="true" Keyword="true">
+        <Methode Name="firstVertex">
+            <Documentation>
+                <UserDocu>Vertex = firstVertex(Orientation=False)
+Returns the Vertex of orientation FORWARD in this edge.
+If there is none a Null shape is returned.
+Orientation = True : taking into account the edge orientation
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="lastVertex">
+            <Documentation>
+            <UserDocu>Vertex = lastVertex(Orientation=False)
+Returns the Vertex of orientation REVERSED in this edge.
+If there is none a Null shape is returned.
+Orientation = True : taking into account the edge orientation
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="discretize" Const="true" Keyword="true">
 			<Documentation>
         <UserDocu>Discretizes the edge and returns a list of points.
 The function accepts keywords as argument:
