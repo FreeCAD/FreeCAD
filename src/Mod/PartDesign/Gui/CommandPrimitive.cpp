@@ -79,10 +79,20 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     if (!PartDesignGui::assureModernWorkflow(doc))
         return;
 
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+    // We need either an active Body, or for there to be no Body objects
+    // (in which case, just make one) to make a new additive shape.
 
-    if (!pcActiveBody)
-        return;
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody( /* messageIfNot = */ false );
+
+    auto shouldMakeBody( false );
+    if (pcActiveBody == nullptr) {
+        if ( doc->getObjectsOfType(PartDesign::Body::getClassTypeId()).empty() ) {
+            shouldMakeBody = true;
+        } else {
+            PartDesignGui::needActiveBodyError();
+            return;
+        }
+    }
 
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
@@ -91,6 +101,10 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     auto FeatName( getUniqueObjectName(shapeType) );
 
     Gui::Command::openCommand( (std::string("Make additive ") + shapeType).c_str() );
+    if (shouldMakeBody) {
+        pcActiveBody = PartDesignGui::makeBody(doc);
+    }
+
     Gui::Command::doCommand(
             Gui::Command::Doc,
             "App.ActiveDocument.addObject(\'PartDesign::Additive%s\',\'%s\')",
