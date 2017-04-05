@@ -114,14 +114,15 @@ class _CommandRebar:
             if Draft.getType(obj) == "Structure":
                 if len(sel) > 1:
                     sk = sel[1].Object
-                    if Draft.getType(sk) == "Sketch":
-                        # we have a base object and a sketch: create the rebar now
-                        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
-                        FreeCADGui.addModule("Arch")
-                        FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+obj.Name+",FreeCAD.ActiveDocument."+sk.Name+")")
-                        FreeCAD.ActiveDocument.commitTransaction()
-                        FreeCAD.ActiveDocument.recompute()
-                        return
+                    if sk.isDerivedFrom("Part::Feature"):
+                        if len(sk.Shape.Wires) == 1:
+                            # we have a base object and a sketch: create the rebar now
+                            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
+                            FreeCADGui.addModule("Arch")
+                            FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+obj.Name+",FreeCAD.ActiveDocument."+sk.Name+")")
+                            FreeCAD.ActiveDocument.commitTransaction()
+                            FreeCAD.ActiveDocument.recompute()
+                            return
                 else:
                     # we have only a base object: open the sketcher
                     FreeCADGui.activateWorkbench("SketcherWorkbench")
@@ -129,24 +130,25 @@ class _CommandRebar:
                     FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(obj,FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Rebar")
                     FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
                     return
-            elif Draft.getType(obj) == "Sketch":
+            elif obj.isDerivedFrom("Part::Feature"):
+                if len(obj.Shape.Wires) == 1:
                 # we have only the sketch: extract the base object from it
-                if hasattr(obj,"Support"):
-                    if obj.Support:
-                        if len(obj.Support) != 0:
-                            sup = obj.Support[0][0]
+                    if hasattr(obj,"Support"):
+                        if obj.Support:
+                            if len(obj.Support) != 0:
+                                sup = obj.Support[0][0]
+                            else:
+                                print("Arch: error: couldn't extract a base object")
+                                return
+                            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
+                            FreeCADGui.addModule("Arch")
+                            FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+sup.Name+",FreeCAD.ActiveDocument."+obj.Name+")")
+                            FreeCAD.ActiveDocument.commitTransaction()
+                            FreeCAD.ActiveDocument.recompute()
+                            return
                         else:
                             print("Arch: error: couldn't extract a base object")
                             return
-                        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
-                        FreeCADGui.addModule("Arch")
-                        FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+sup.Name+",FreeCAD.ActiveDocument."+obj.Name+")")
-                        FreeCAD.ActiveDocument.commitTransaction()
-                        FreeCAD.ActiveDocument.recompute()
-                        return
-                    else:
-                        print("Arch: error: couldn't extract a base object")
-                        return
 
         FreeCAD.Console.PrintMessage(translate("Arch","Please select a base face on a structural object\n"))
         FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
