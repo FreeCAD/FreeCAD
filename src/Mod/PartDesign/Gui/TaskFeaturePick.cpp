@@ -152,7 +152,6 @@ TaskFeaturePick::~TaskFeaturePick()
 {
     for(Gui::ViewProviderOrigin* vpo : origins)
         vpo->resetTemporaryVisibility();
-
 }
 
 void TaskFeaturePick::updateList()
@@ -439,10 +438,11 @@ void TaskFeaturePick::showExternal(bool val)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgFeaturePick::TaskDlgFeaturePick(std::vector<App::DocumentObject*> &objects,
+TaskDlgFeaturePick::TaskDlgFeaturePick( std::vector<App::DocumentObject*> &objects,
                                         const std::vector<TaskFeaturePick::featureStatus> &status,
                                         boost::function<bool (std::vector<App::DocumentObject*>)> afunc,
-                                        boost::function<void (std::vector<App::DocumentObject*>)> wfunc)
+                                        boost::function<void (std::vector<App::DocumentObject*>)> wfunc,
+                                        boost::function<void (void)> abortfunc /* = NULL */ )
     : TaskDialog(), accepted(false)
 {
     pick  = new TaskFeaturePick(objects, status);
@@ -450,14 +450,27 @@ TaskDlgFeaturePick::TaskDlgFeaturePick(std::vector<App::DocumentObject*> &object
 
     acceptFunction = afunc;
     workFunction = wfunc;
+    abortFunction = abortfunc;
 }
 
 TaskDlgFeaturePick::~TaskDlgFeaturePick()
 {
     //do the work now as before in accept() the dialog is still open, hence the work
     //function could not open another dialog
-    if (accepted)
+    if (accepted) {
         workFunction(pick->buildFeatures());
+    } else if (abortFunction) {
+
+        // Get rid of the TaskFeaturePick before the TaskDialog dtor does. The
+        // TaskFeaturePick holds pointers to things (ie any implicitly created
+        // Body objects) that might be modified/removed by abortFunction.
+        for (auto it : Content) {
+            delete it;
+        }
+        Content.clear();
+
+        abortFunction();
+    }
 }
 
 //==== calls from the TaskView ===============================================================
