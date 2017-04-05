@@ -129,26 +129,6 @@ def export(objectslist, filename, argstring):
     print("postprocessing...")
     gcode = ""
 
-    # Find the machine.
-    # The user my have overridden post processor defaults in the GUI.  Make
-    # sure we're using the current values in the Machine Def.
-    myMachine = None
-    for pathobj in objectslist:
-        job = PathUtils.findParentJob(pathobj)
-
-        if hasattr(job,"MachineName"):
-            myMachine = job.MachineName
-        if hasattr(job, "MachineUnits"):
-            if job.MachineUnits == "Metric":
-               UNITS = "G21"
-               UNIT_FORMAT = 'mm/min'
-            else:
-               UNITS = "G20"
-               UNIT_FORMAT = 'in/min'
-
-    if myMachine is None:
-        print("No machine found in this selection")
-
     # write header
     if OUTPUT_HEADER:
         gcode += linenumber() + "(Exported by FreeCAD)\n"
@@ -164,9 +144,26 @@ def export(objectslist, filename, argstring):
 
     for obj in objectslist:
 
+        # fetch machine details
+        job = PathUtils.findParentJob(obj)
+
+        myMachine = 'not set'
+
+        if hasattr(job,"MachineName"):
+            myMachine = job.MachineName
+
+        if hasattr(job, "MachineUnits"):
+            if job.MachineUnits == "Metric":
+               UNITS = "G21"
+               UNIT_FORMAT = 'mm/min'
+            else:
+               UNITS = "G20"
+               UNIT_FORMAT = 'in/min'
+
         # do the pre_op
         if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(begin operation: " + obj.Label + ")\n"
+            gcode += linenumber() + "(begin operation: %s)\n" % obj.Label
+            gcode += linenumber() + "(machine: %s, %s)\n" % (myMachine, UNIT_FORMAT)
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
@@ -174,7 +171,7 @@ def export(objectslist, filename, argstring):
 
         # do the post_op
         if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(finish operation: " + obj.Label + ")\n"
+            gcode += linenumber() + "(finish operation: %s)\n" % obj.Label
         for line in POST_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
