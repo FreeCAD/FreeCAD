@@ -90,10 +90,11 @@ class TaskDlgFeaturePick : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgFeaturePick(std::vector<App::DocumentObject*> &objects, 
+    TaskDlgFeaturePick( std::vector<App::DocumentObject*> &objects,
                         const std::vector<TaskFeaturePick::featureStatus> &status,
                         boost::function<bool (std::vector<App::DocumentObject*>)> acceptfunc,
-                        boost::function<void (std::vector<App::DocumentObject*>)> workfunc);
+                        boost::function<void (std::vector<App::DocumentObject*>)> workfunc,
+                        boost::function<void (void)> abortfunc = NULL );
     ~TaskDlgFeaturePick();
 
 public:
@@ -120,6 +121,7 @@ protected:
     bool accepted;
     boost::function<bool (std::vector<App::DocumentObject*>)>  acceptFunction;
     boost::function<void (std::vector<App::DocumentObject*>)>  workFunction;
+    boost::function<void (void)> abortFunction;
 };
 
 }
