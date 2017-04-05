@@ -4167,7 +4167,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     const std::vector< Sketcher::Constraint * > &scvals = psObj->Constraints.getValues();
     
     for (std::vector<Part::Geometry *>::const_iterator it=svals.begin(); it != svals.end(); ++it){
-        Part::Geometry *geoNew = (*it)->clone();
+        Part::Geometry *geoNew = (*it)->copy();
         if(construction) {
             geoNew->Construction = true;
         }
