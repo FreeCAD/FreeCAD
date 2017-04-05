@@ -1462,6 +1462,10 @@ class DraftToolBar:
         elif txt.endswith("]"):
             self.toggleradius(-1)
             spec = True
+        elif txt.endswith("q"):
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.addHoldPoint()
+            spec = True
         elif txt.endswith("x"):
             self.constrain("x")
             self.displayPoint()

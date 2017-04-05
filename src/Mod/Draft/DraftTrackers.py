@@ -133,11 +133,22 @@ class snapTracker(Tracker):
             self.marker.markerIndex = coin.SoMarkerSet.SQUARE_FILLED_9_9
         elif (style == "empty"):
             self.marker.markerIndex = coin.SoMarkerSet.SQUARE_LINE_9_9
+        elif (style == "cross"):
+            self.marker.markerIndex = coin.SoMarkerSet.CROSS_9_9
         else:
             self.marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_9_9
 
     def setCoords(self,point):
         self.coords.point.setValue((point.x,point.y,point.z))
+        
+    def addCoords(self,point):
+        l = self.coords.point.getValues()
+        l.append(coin.SbVec3f(point.x,point.y,point.z))
+        self.coords.point.setValues(l)
+        
+    def clear(self):
+        self.coords.point.deleteValues(0)
+        
 
 class lineTracker(Tracker):
     "A Line tracker, used by the tools that need to draw temporary lines"
