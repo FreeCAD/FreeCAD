@@ -205,6 +205,8 @@ class AddonsInstaller(QtGui.QDialog):
             self.install_worker.start()
         elif self.tabWidget.currentIndex() == 1:
             macropath = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
+            if not os.path.isdir(macropath):
+                os.makedirs(macropath)
             macro = self.macros[self.listMacros.currentRow()]
             if len(macro) < 5:
                 self.labelDescription.setText(QtGui.QApplication.translate("AddonsInstaller", "Unable to install", None, QtGui.QApplication.UnicodeUTF8))
