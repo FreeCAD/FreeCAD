@@ -42,7 +42,7 @@ import FreeCAD,urllib2,re,os,shutil
 
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
-MACROS_BLACKLIST = ["BOLTS","WorkFeatures","how to install","PartsLibrary"]
+MACROS_BLACKLIST = ["BOLTS","WorkFeatures","how to install","PartsLibrary","FCGear"]
 
 def symlink(source, link_name):
     if os.path.exists(link_name):
@@ -74,9 +74,11 @@ class AddonsInstaller(QtGui.QDialog):
         self.verticalLayout.addWidget(self.tabWidget)
         self.listWorkbenches = QtGui.QListWidget()
         self.listWorkbenches.setIconSize(QtCore.QSize(16,16))
+        self.listWorkbenches.setSortingEnabled(True)
         self.tabWidget.addTab(self.listWorkbenches,"")
         self.listMacros = QtGui.QListWidget()
         self.listMacros.setIconSize(QtCore.QSize(16,16))
+        self.listMacros.setSortingEnabled(True)
         self.tabWidget.addTab(self.listMacros,"")
         self.labelDescription = QtGui.QLabel()
         self.labelDescription.setMinimumSize(QtCore.QSize(0, 75))
@@ -333,7 +335,11 @@ class InfoWorker(QtCore.QThread):
             u = urllib2.urlopen(url)
             p = u.read()
             u.close()
-            desc = re.findall("<meta content=\"(.*?)\" name", p)[3]
+            desc = re.findall("<meta name=\"description\" content=\"(.*?)\">",p)
+            if desc:
+                desc = desc[0]
+            else:
+                desc = "Unable to retrieve addon description"
             self.repos[i].append(desc)
             i += 1
             self.addon_repos.emit(self.repos)
@@ -397,7 +403,11 @@ class ShowWorker(QtCore.QThread):
             u = urllib2.urlopen(url)
             p = u.read()
             u.close()
-            desc = re.findall("<meta content=\"(.*?)\" name",p)[4]
+            desc = re.findall("<meta name=\"description\" content=\"(.*?)\">",p)
+            if desc:
+                desc = desc[0]
+            else:
+                desc = "Unable to retrieve addon description"
             self.repos[self.idx].append(desc)
             self.addon_repos.emit(self.repos)
         if self.repos[self.idx][2] == 1 :
