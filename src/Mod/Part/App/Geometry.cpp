@@ -258,9 +258,17 @@ const Handle_Geom_Geometry& GeomPoint::handle() const
     return myPoint;
 }
 
+
 void GeomPoint::setHandle(const Handle_Geom_CartesianPoint& p)
 {
     myPoint = Handle_Geom_CartesianPoint::DownCast(p->Copy());
+}
+
+Geometry *GeomPoint::copy(void) const
+{
+    GeomPoint *newPoint = new GeomPoint(myPoint);
+    newPoint->Construction = this->Construction;
+    return newPoint;
 }
 
 Geometry *GeomPoint::clone(void) const
@@ -606,6 +614,13 @@ const Handle_Geom_Geometry& GeomBezierCurve::handle() const
     return myCurve;
 }
 
+Geometry *GeomBezierCurve::copy(void) const
+{
+    GeomBezierCurve *newCurve = new GeomBezierCurve(myCurve);
+    newCurve->Construction = this->Construction;
+    return newCurve;
+}
+
 Geometry *GeomBezierCurve::clone(void) const
 {
     GeomBezierCurve *newCurve = new GeomBezierCurve(myCurve);
@@ -692,6 +707,13 @@ void GeomBSplineCurve::setHandle(const Handle_Geom_BSplineCurve& c)
 const Handle_Geom_Geometry& GeomBSplineCurve::handle() const
 {
     return myCurve;
+}
+
+Geometry *GeomBSplineCurve::copy(void) const
+{
+    GeomBSplineCurve *newCurve = new GeomBSplineCurve(myCurve);
+    newCurve->Construction = this->Construction;
+    return newCurve;
 }
 
 Geometry *GeomBSplineCurve::clone(void) const
@@ -1478,9 +1500,17 @@ const Handle_Geom_Geometry& GeomCircle::handle() const
     return myCurve;
 }
 
+
 void GeomCircle::setHandle(const Handle_Geom_Circle& c)
 {
     myCurve = Handle_Geom_Circle::DownCast(c->Copy());
+}
+
+Geometry *GeomCircle::copy(void) const
+{
+    GeomCircle *newCirc = new GeomCircle(myCurve);
+    newCirc->Construction = this->Construction;
+    return newCirc;
 }
 
 Geometry *GeomCircle::clone(void) const
@@ -1660,6 +1690,14 @@ void GeomArcOfCircle::setHandle(const Handle_Geom_Circle& c)
 const Handle_Geom_Geometry& GeomArcOfCircle::handle() const
 {
     return myCurve;
+}
+
+Geometry *GeomArcOfCircle::copy(void) const
+{
+    GeomArcOfCircle* copy = new GeomArcOfCircle();
+    copy->setHandle(this->myCurve);
+    copy->Construction = this->Construction;
+    return copy;
 }
 
 Geometry *GeomArcOfCircle::clone(void) const
@@ -1878,6 +1916,13 @@ const Handle_Geom_Geometry& GeomEllipse::handle() const
 void GeomEllipse::setHandle(const Handle_Geom_Ellipse &e)
 {
     this->myCurve = Handle_Geom_Ellipse::DownCast(e->Copy());
+}
+
+Geometry *GeomEllipse::copy(void) const
+{
+    GeomEllipse *newEllipse = new GeomEllipse(myCurve);
+    newEllipse->Construction = this->Construction;
+    return newEllipse;
 }
 
 Geometry *GeomEllipse::clone(void) const
@@ -2134,6 +2179,14 @@ void GeomArcOfEllipse::setHandle(const Handle_Geom_Ellipse& e)
 const Handle_Geom_Geometry& GeomArcOfEllipse::handle() const
 {
     return myCurve;
+}
+
+Geometry *GeomArcOfEllipse::copy(void) const
+{
+    GeomArcOfEllipse* copy = new GeomArcOfEllipse();
+    copy->setHandle(this->myCurve);
+    copy->Construction = this->Construction;
+    return copy;
 }
 
 Geometry *GeomArcOfEllipse::clone(void) const
@@ -2401,9 +2454,17 @@ const Handle_Geom_Geometry& GeomHyperbola::handle() const
     return myCurve;
 }
 
+
 void GeomHyperbola::setHandle(const Handle_Geom_Hyperbola& c)
 {
     myCurve = Handle_Geom_Hyperbola::DownCast(c->Copy());
+}
+
+Geometry *GeomHyperbola::copy(void) const
+{
+    GeomHyperbola *newHyp = new GeomHyperbola(myCurve);
+    newHyp->Construction = this->Construction;
+    return newHyp;
 }
 
 Geometry *GeomHyperbola::clone(void) const
@@ -2573,6 +2634,14 @@ void GeomArcOfHyperbola::setHandle(const Handle_Geom_Hyperbola& h)
 const Handle_Geom_Geometry& GeomArcOfHyperbola::handle() const
 {
     return myCurve;
+}
+
+Geometry *GeomArcOfHyperbola::copy(void) const
+{
+    GeomArcOfHyperbola* copy = new GeomArcOfHyperbola();
+    copy->setHandle(this->myCurve);
+    copy->Construction = this->Construction;
+    return copy;
 }
 
 Geometry *GeomArcOfHyperbola::clone(void) const
@@ -2836,6 +2905,13 @@ void GeomParabola::setHandle(const Handle_Geom_Parabola& c)
     myCurve = Handle_Geom_Parabola::DownCast(c->Copy());
 }
 
+Geometry *GeomParabola::copy(void) const
+{
+    GeomParabola *newPar = new GeomParabola(myCurve);
+    newPar->Construction = this->Construction;
+    return newPar;
+}
+
 Geometry *GeomParabola::clone(void) const
 {
     GeomParabola *newPar = new GeomParabola(myCurve);
@@ -2984,6 +3060,14 @@ void GeomArcOfParabola::setHandle(const Handle_Geom_Parabola& h)
 const Handle_Geom_Geometry& GeomArcOfParabola::handle() const
 {
     return myCurve;
+}
+
+Geometry *GeomArcOfParabola::copy(void) const
+{
+    GeomArcOfParabola* copy = new GeomArcOfParabola();
+    copy->setHandle(this->myCurve);
+    copy->Construction = this->Construction;
+    return copy;
 }
 
 Geometry *GeomArcOfParabola::clone(void) const
@@ -3210,11 +3294,18 @@ const Handle_Geom_Geometry& GeomLine::handle() const
     return myCurve;
 }
 
+
 void GeomLine::setHandle(const Handle_Geom_Line& l)
 {
     this->myCurve = Handle_Geom_Line::DownCast(l->Copy());
 }
 
+Geometry *GeomLine::copy(void) const
+{
+    GeomLine *newLine = new GeomLine(myCurve);
+    newLine->Construction = this->Construction;
+    return newLine;
+}
 
 Geometry *GeomLine::clone(void) const
 {
@@ -3312,6 +3403,14 @@ void GeomLineSegment::setHandle(const Handle_Geom_Line& l)
 const Handle_Geom_Geometry& GeomLineSegment::handle() const
 {
     return myCurve;
+}
+
+Geometry *GeomLineSegment::copy(void)const
+{
+    GeomLineSegment *tempCurve = new GeomLineSegment();
+    tempCurve->myCurve = Handle_Geom_TrimmedCurve::DownCast(myCurve->Copy());
+    tempCurve->Construction = this->Construction;
+    return tempCurve;
 }
 
 Geometry *GeomLineSegment::clone(void)const
@@ -3438,6 +3537,13 @@ GeomOffsetCurve::~GeomOffsetCurve()
 {
 }
 
+Geometry *GeomOffsetCurve::copy(void) const
+{
+    GeomOffsetCurve *newCurve = new GeomOffsetCurve(myCurve);
+    newCurve->Construction = this->Construction;
+    return newCurve;
+}
+
 Geometry *GeomOffsetCurve::clone(void) const
 {
     GeomOffsetCurve *newCurve = new GeomOffsetCurve(myCurve);
@@ -3491,6 +3597,13 @@ void GeomTrimmedCurve::setHandle(const Handle_Geom_TrimmedCurve& c)
 const Handle_Geom_Geometry& GeomTrimmedCurve::handle() const
 {
     return myCurve;
+}
+
+Geometry *GeomTrimmedCurve::copy(void) const
+{
+    GeomTrimmedCurve *newCurve =  new GeomTrimmedCurve(myCurve);
+    newCurve->Construction = this->Construction;
+    return newCurve;
 }
 
 Geometry *GeomTrimmedCurve::clone(void) const
@@ -3593,6 +3706,13 @@ void GeomBezierSurface::setHandle(const Handle_Geom_BezierSurface& b)
     this->mySurface = Handle_Geom_BezierSurface::DownCast(b->Copy());
 }
 
+Geometry *GeomBezierSurface::copy(void) const
+{
+    GeomBezierSurface *newSurf =  new GeomBezierSurface(mySurface);
+    newSurf->Construction = this->Construction;
+    return newSurf;
+}
+
 Geometry *GeomBezierSurface::clone(void) const
 {
     GeomBezierSurface *newSurf =  new GeomBezierSurface(mySurface);
@@ -3653,6 +3773,13 @@ const Handle_Geom_Geometry& GeomBSplineSurface::handle() const
     return mySurface;
 }
 
+Geometry *GeomBSplineSurface::copy(void) const
+{
+    GeomBSplineSurface *newSurf =  new GeomBSplineSurface(mySurface);
+    newSurf->Construction = this->Construction;
+    return newSurf;
+}
+
 Geometry *GeomBSplineSurface::clone(void) const
 {
     GeomBSplineSurface *newSurf =  new GeomBSplineSurface(mySurface);
@@ -3698,6 +3825,14 @@ void GeomCylinder::setHandle(const Handle_Geom_CylindricalSurface& s)
 const Handle_Geom_Geometry& GeomCylinder::handle() const
 {
     return mySurface;
+}
+
+Geometry *GeomCylinder::copy(void) const
+{
+    GeomCylinder *tempCurve = new GeomCylinder();
+    tempCurve->mySurface = Handle_Geom_CylindricalSurface::DownCast(mySurface->Copy());
+    tempCurve->Construction = this->Construction;
+    return tempCurve;
 }
 
 Geometry *GeomCylinder::clone(void) const
@@ -3748,6 +3883,14 @@ const Handle_Geom_Geometry& GeomCone::handle() const
     return mySurface;
 }
 
+Geometry *GeomCone::copy(void) const
+{
+    GeomCone *tempCurve = new GeomCone();
+    tempCurve->mySurface = Handle_Geom_ConicalSurface::DownCast(mySurface->Copy());
+    tempCurve->Construction = this->Construction;
+    return tempCurve;
+}
+
 Geometry *GeomCone::clone(void) const
 {
     GeomCone *tempCurve = new GeomCone();
@@ -3794,6 +3937,14 @@ void GeomToroid::setHandle(const Handle_Geom_ToroidalSurface& s)
 const Handle_Geom_Geometry& GeomToroid::handle() const
 {
     return mySurface;
+}
+
+Geometry *GeomToroid::copy(void) const
+{
+    GeomToroid *tempCurve = new GeomToroid();
+    tempCurve->mySurface = Handle_Geom_ToroidalSurface::DownCast(mySurface->Copy());
+    tempCurve->Construction = this->Construction;
+    return tempCurve;
 }
 
 Geometry *GeomToroid::clone(void) const
@@ -3844,6 +3995,14 @@ const Handle_Geom_Geometry& GeomSphere::handle() const
     return mySurface;
 }
 
+Geometry *GeomSphere::copy(void) const
+{
+    GeomSphere *tempCurve = new GeomSphere();
+    tempCurve->mySurface = Handle_Geom_SphericalSurface::DownCast(mySurface->Copy());
+    tempCurve->Construction = this->Construction;
+    return tempCurve;
+}
+
 Geometry *GeomSphere::clone(void) const
 {
     GeomSphere *tempCurve = new GeomSphere();
@@ -3890,6 +4049,14 @@ void GeomPlane::setHandle(const Handle_Geom_Plane& s)
 const Handle_Geom_Geometry& GeomPlane::handle() const
 {
     return mySurface;
+}
+
+Geometry *GeomPlane::copy(void) const
+{
+    GeomPlane *tempCurve = new GeomPlane();
+    tempCurve->mySurface = Handle_Geom_Plane::DownCast(mySurface->Copy());
+    tempCurve->Construction = this->Construction;
+    return tempCurve;
 }
 
 Geometry *GeomPlane::clone(void) const
@@ -3941,6 +4108,13 @@ void GeomOffsetSurface::setHandle(const Handle_Geom_OffsetSurface& s)
 const Handle_Geom_Geometry& GeomOffsetSurface::handle() const
 {
     return mySurface;
+}
+
+Geometry *GeomOffsetSurface::copy(void) const
+{
+    GeomOffsetSurface *newSurf = new GeomOffsetSurface(mySurface);
+    newSurf->Construction = this->Construction;
+    return newSurf;
 }
 
 Geometry *GeomOffsetSurface::clone(void) const
@@ -3999,6 +4173,13 @@ const Handle_Geom_Geometry& GeomPlateSurface::handle() const
     return mySurface;
 }
 
+Geometry *GeomPlateSurface::copy(void) const
+{
+    GeomPlateSurface *newSurf = new GeomPlateSurface(mySurface);
+    newSurf->Construction = this->Construction;
+    return newSurf;
+}
+
 Geometry *GeomPlateSurface::clone(void) const
 {
     GeomPlateSurface *newSurf = new GeomPlateSurface(mySurface);
@@ -4055,6 +4236,13 @@ const Handle_Geom_Geometry& GeomTrimmedSurface::handle() const
     return mySurface;
 }
 
+Geometry *GeomTrimmedSurface::copy(void) const
+{
+    GeomTrimmedSurface *newSurf = new GeomTrimmedSurface(mySurface);
+    newSurf->Construction = this->Construction;
+    return newSurf;
+}
+
 Geometry *GeomTrimmedSurface::clone(void) const
 {
     GeomTrimmedSurface *newSurf = new GeomTrimmedSurface(mySurface);
@@ -4105,6 +4293,13 @@ const Handle_Geom_Geometry& GeomSurfaceOfRevolution::handle() const
     return mySurface;
 }
 
+Geometry *GeomSurfaceOfRevolution::copy(void) const
+{
+    GeomSurfaceOfRevolution *newSurf = new GeomSurfaceOfRevolution(mySurface);
+    newSurf->Construction = this->Construction;
+    return newSurf;
+}
+
 Geometry *GeomSurfaceOfRevolution::clone(void) const
 {
     GeomSurfaceOfRevolution *newSurf = new GeomSurfaceOfRevolution(mySurface);
@@ -4153,6 +4348,13 @@ void GeomSurfaceOfExtrusion::setHandle(const Handle_Geom_SurfaceOfLinearExtrusio
 const Handle_Geom_Geometry& GeomSurfaceOfExtrusion::handle() const
 {
     return mySurface;
+}
+
+Geometry *GeomSurfaceOfExtrusion::copy(void) const
+{
+    GeomSurfaceOfExtrusion *newSurf = new GeomSurfaceOfExtrusion(mySurface);
+    newSurf->Construction = this->Construction;
+    return newSurf;
 }
 
 Geometry *GeomSurfaceOfExtrusion::clone(void) const

@@ -76,6 +76,8 @@ public:
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
+
+    virtual Geometry *copy(void) const = 0;
     /// returns a cloned object. A cloned object has the same tag (see getTag) as the original object.
     /// If you want a clone with another handle, it is possible to clone an object and then assign another handle.
     /// If you do not desire to have the same tag, then a copy can be performed by using a constructor (which will generate another tag)
@@ -109,6 +111,7 @@ public:
     GeomPoint(const Handle_Geom_CartesianPoint&);
     GeomPoint(const Base::Vector3d&);
     virtual ~GeomPoint();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
     virtual TopoDS_Shape toShape() const;
 
@@ -185,6 +188,7 @@ public:
     GeomBezierCurve();
     GeomBezierCurve(const Handle_Geom_BezierCurve&);
     virtual ~GeomBezierCurve();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -213,6 +217,7 @@ public:
                       int degree, bool periodic=false, bool checkrational = true);
     
     virtual ~GeomBSplineCurve();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     /*!
@@ -289,6 +294,7 @@ protected:
 
 public:
     virtual ~GeomConic();
+    virtual Geometry *copy(void) const = 0;
     virtual Geometry *clone(void) const = 0;
 
     /*!
@@ -322,6 +328,7 @@ protected:
 
 public:
     virtual ~GeomArcOfConic();
+    virtual Geometry *copy(void) const = 0;
     virtual Geometry *clone(void) const = 0;
 
     Base::Vector3d getStartPoint(bool emulateCCWXY=false) const;
@@ -363,6 +370,7 @@ public:
     GeomCircle();
     GeomCircle(const Handle_Geom_Circle&);
     virtual ~GeomCircle();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     double getRadius(void) const;
@@ -391,6 +399,7 @@ public:
     GeomArcOfCircle();
     GeomArcOfCircle(const Handle_Geom_Circle&);
     virtual ~GeomArcOfCircle();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     double getRadius(void) const;
@@ -422,6 +431,7 @@ public:
     GeomEllipse();
     GeomEllipse(const Handle_Geom_Ellipse&);
     virtual ~GeomEllipse();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     double getMajorRadius(void) const;
@@ -453,6 +463,7 @@ public:
     GeomArcOfEllipse();
     GeomArcOfEllipse(const Handle_Geom_Ellipse&);
     virtual ~GeomArcOfEllipse();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     double getMajorRadius(void) const;
@@ -489,6 +500,7 @@ public:
     GeomHyperbola();
     GeomHyperbola(const Handle_Geom_Hyperbola&);
     virtual ~GeomHyperbola();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
     
     double getMajorRadius(void) const;
@@ -518,6 +530,7 @@ public:
     GeomArcOfHyperbola();
     GeomArcOfHyperbola(const Handle_Geom_Hyperbola&);
     virtual ~GeomArcOfHyperbola();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     double getMajorRadius(void) const;
@@ -553,6 +566,7 @@ public:
     GeomParabola();
     GeomParabola(const Handle_Geom_Parabola&);
     virtual ~GeomParabola();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
     
     double getFocal(void) const;
@@ -580,6 +594,7 @@ public:
     GeomArcOfParabola();
     GeomArcOfParabola(const Handle_Geom_Parabola&);
     virtual ~GeomArcOfParabola();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     double getFocal(void) const;
@@ -614,6 +629,7 @@ public:
     GeomLine(const Handle_Geom_Line&);
     GeomLine(const Base::Vector3d& Pos, const Base::Vector3d& Dir);
     virtual ~GeomLine();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     void setLine(const Base::Vector3d& Pos, const Base::Vector3d& Dir);
@@ -641,6 +657,7 @@ public:
     GeomLineSegment();
     GeomLineSegment(const Handle_Geom_Line& l);
     virtual ~GeomLineSegment();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     Base::Vector3d getStartPoint() const;
@@ -672,6 +689,7 @@ public:
     GeomOffsetCurve(const Handle_Geom_Curve&, double, const gp_Dir&);
     GeomOffsetCurve(const Handle_Geom_OffsetCurve&);
     virtual ~GeomOffsetCurve();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -695,6 +713,7 @@ public:
     GeomTrimmedCurve();
     GeomTrimmedCurve(const Handle_Geom_TrimmedCurve&);
     virtual ~GeomTrimmedCurve();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -730,6 +749,7 @@ public:
     GeomBezierSurface();
     GeomBezierSurface(const Handle_Geom_BezierSurface&);
     virtual ~GeomBezierSurface();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -753,6 +773,7 @@ public:
     GeomBSplineSurface();
     GeomBSplineSurface(const Handle_Geom_BSplineSurface&);
     virtual ~GeomBSplineSurface();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -776,6 +797,7 @@ public:
     GeomCylinder();
     GeomCylinder(const Handle_Geom_CylindricalSurface&);
     virtual ~GeomCylinder();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -799,6 +821,7 @@ public:
     GeomCone();
     GeomCone(const Handle_Geom_ConicalSurface&);
     virtual ~GeomCone();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -822,6 +845,7 @@ public:
     GeomSphere();
     GeomSphere(const Handle_Geom_SphericalSurface&);
     virtual ~GeomSphere();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -845,6 +869,7 @@ public:
     GeomToroid();
     GeomToroid(const Handle_Geom_ToroidalSurface&);
     virtual ~GeomToroid();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -868,6 +893,7 @@ public:
     GeomPlane();
     GeomPlane(const Handle_Geom_Plane&);
     virtual ~GeomPlane();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -892,6 +918,7 @@ public:
     GeomOffsetSurface(const Handle_Geom_Surface&, double);
     GeomOffsetSurface(const Handle_Geom_OffsetSurface&);
     virtual ~GeomOffsetSurface();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -917,6 +944,7 @@ public:
     GeomPlateSurface(const GeomPlate_BuildPlateSurface&);
     GeomPlateSurface(const Handle_GeomPlate_Surface&);
     virtual ~GeomPlateSurface();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -940,6 +968,7 @@ public:
     GeomTrimmedSurface();
     GeomTrimmedSurface(const Handle_Geom_RectangularTrimmedSurface&);
     virtual ~GeomTrimmedSurface();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -964,6 +993,7 @@ public:
     GeomSurfaceOfRevolution(const Handle_Geom_Curve&, const gp_Ax1&);
     GeomSurfaceOfRevolution(const Handle_Geom_SurfaceOfRevolution&);
     virtual ~GeomSurfaceOfRevolution();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
@@ -988,6 +1018,7 @@ public:
     GeomSurfaceOfExtrusion(const Handle_Geom_Curve&, const gp_Dir&);
     GeomSurfaceOfExtrusion(const Handle_Geom_SurfaceOfLinearExtrusion&);
     virtual ~GeomSurfaceOfExtrusion();
+    virtual Geometry *copy(void) const;
     virtual Geometry *clone(void) const;
 
     // Persistence implementer ---------------------
