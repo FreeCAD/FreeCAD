@@ -217,6 +217,9 @@
     ((double,segmentation,Segmentation,0.0,\
         "Break long curves into segments of this length. One use case is for PCB autolevel,\n"\
         "so that more correction points can be inserted",App::PropertyLength)) \
+    ((double,feedrate,FeedRate,0.0, "Normal move feed rate", App::PropertyFloat)) \
+    ((double,feedrate_v,FeedRateVertical,0.0, "Vertical only (step down) move feed rate", App::PropertyFloat)) \
+    ((bool,verbose,Verbose,true, "If true, each motion GCode will contain full coordinate and feedrate")) \
     AREA_PARAMS_DEFLECTION
 
 /** Group of all Area configuration parameters except CArea's*/
