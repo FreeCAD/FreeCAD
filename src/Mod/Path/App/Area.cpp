@@ -1909,72 +1909,97 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     return std::move(wires);
 }
 
-static inline void addParameter(Command &cmd, const char *name,
+static inline void addParameter(bool verbose, Command &cmd, const char *name,
         double last, double next, bool relative=false)
 {
     double d = next-last;
-    if(fabs(d)<Precision::Confusion()) return;
-    cmd.Parameters[name] = relative?d:next;
+    if(verbose || fabs(d)>Precision::Confusion())
+        cmd.Parameters[name] = relative?d:next;
 }
 
-static inline void addCommand(Toolpath &path, const gp_Pnt &last, 
-        const gp_Pnt &next, const char *name = "G1") {
+static inline void addGCode(bool verbose, Toolpath &path, const gp_Pnt &last, 
+        const gp_Pnt &next, const char *name) 
+{
     Command cmd;
     cmd.Name = name;
-    addParameter(cmd,"X",last.X(),next.X());
-    addParameter(cmd,"Y",last.Y(),next.Y());
-    addParameter(cmd,"Z",last.Z(),next.Z());
+    addParameter(verbose,cmd,"X",last.X(),next.X());
+    addParameter(verbose,cmd,"Y",last.Y(),next.Y());
+    addParameter(verbose,cmd,"Z",last.Z(),next.Z());
     path.addCommand(cmd);
+    return;
+}
+
+static inline void addG1(bool verbose,Toolpath &path, const gp_Pnt &last, 
+        const gp_Pnt &next, double f, double &last_f) 
+{
+    addGCode(verbose,path,last,next,"G1");
+    if(f>Precision::Confusion()) {
+        Command *cmd = path.getCommands().back();
+        addParameter(verbose,*cmd,"F",last_f,f);
+        last_f = f;
+    }
     return;
 }
 
 typedef Standard_Real (gp_Pnt::*AxisGetter)() const;
 typedef void (gp_Pnt::*AxisSetter)(Standard_Real);
 
-static void addCommand(Toolpath &path, 
+static void addG0(bool verbose, Toolpath &path, 
         gp_Pnt last, const gp_Pnt &next, 
         AxisGetter getter, AxisSetter setter,
-        double retraction, double clearance)
+        double retraction, double clearance, 
+        double f, double &last_f)
 {
     if(!getter || retraction-(last.*getter)() < Precision::Confusion()) {
-        addCommand(path,last,next,"G0");
+        addGCode(verbose,path,last,next,"G0");
         return;
     }
     gp_Pnt pt(last);
     (pt.*setter)(retraction);
-    addCommand(path,last,pt,"G0");
+    addGCode(verbose,path,last,pt,"G0");
     last = pt;
     pt = next;
     (pt.*setter)(retraction);
-    addCommand(path,last,pt,"G0");
+    addGCode(verbose,path,last,pt,"G0");
     if(clearance>Precision::Confusion() && 
        clearance+(next.*getter)() < retraction)
     {
         last = pt;
         pt = next;
         (pt.*setter)((next.*getter)()+clearance);
-        addCommand(path,last,pt,"G0");
-        addCommand(path,pt,next);
+        addGCode(verbose,path,last,pt,"G0");
+        addG1(verbose,path,pt,next,f,last_f);
     }else
-        addCommand(path,pt,next,"G0");
+        addGCode(verbose,path,pt,next,"G0");
 }
 
-static void addCommand(Toolpath &path, 
+static void addGArc(bool verbose,Toolpath &path, 
         const gp_Pnt &pstart, const gp_Pnt &pend, 
-        const gp_Pnt &center, bool clockwise) 
+        const gp_Pnt &center, bool clockwise,
+        double f, double &last_f) 
 {
     Command cmd;
     cmd.Name = clockwise?"G2":"G3";
-    addParameter(cmd,"I",pstart.X(),center.X(),true);
-    addParameter(cmd,"J",pstart.Y(),center.Y(),true);
-    addParameter(cmd,"K",pstart.Z(),center.Z(),true);
-    addParameter(cmd,"X",pstart.X(),pend.X());
-    addParameter(cmd,"Y",pstart.Y(),pend.Y());
-    addParameter(cmd,"Z",pstart.Z(),pend.Z());
+    if(verbose) {
+        addParameter(verbose,cmd,"I",0.0,center.X());
+        addParameter(verbose,cmd,"J",0.0,center.Y());
+        addParameter(verbose,cmd,"K",0.0,center.Z());
+    }else{
+        addParameter(verbose,cmd,"I",pstart.X(),center.X(),true);
+        addParameter(verbose,cmd,"J",pstart.Y(),center.Y(),true);
+        addParameter(verbose,cmd,"K",pstart.Z(),center.Z(),true);
+    }
+    addParameter(verbose,cmd,"X",pstart.X(),pend.X());
+    addParameter(verbose,cmd,"Y",pstart.Y(),pend.Y());
+    addParameter(verbose,cmd,"Z",pstart.Z(),pend.Z());
+    if(f>Precision::Confusion()) {
+        addParameter(verbose,cmd,"F",last_f,f);
+        last_f = f;
+    }
     path.addCommand(cmd);
 }
 
-static inline void addCommand(Toolpath &path, const char *name) {
+static inline void addGCode(Toolpath &path, const char *name) {
     Command cmd;
     cmd.Name = name;
     path.addCommand(cmd);
@@ -2015,13 +2040,17 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
             PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
 
     // absolute mode
-    addCommand(path,"G90");
+    addGCode(path,"G90");
+    if(verbose)
+        addGCode(path,"G90.1"); // absolute center for arc move
+    else
+        addGCode(path,"G91.1"); // relative center for arc move
 
     short currentArcPlane = arc_plane;
     if(arc_plane==ArcPlaneZX)
-        addCommand(path,"G18");
+        addGCode(path,"G18");
     else if(arc_plane==ArcPlaneYZ)
-        addCommand(path,"G19");
+        addGCode(path,"G19");
     else
         currentArcPlane=ArcPlaneXY;
     
@@ -2050,6 +2079,11 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     if(pstart) plast = *pstart;
     bool first = true;
     bool arcWarned = false;
+    double cur_f = 0.0; // current feed rate
+    double nf = fabs(feedrate); // user specified normal move feed rate
+    double vf = fabs(feedrate_v); // user specified vertical move feed rate
+    if(vf < Precision::Confusion()) vf = nf;
+
     for(const TopoDS_Shape &wire : wires) {
 
         BRepTools_WireExplorer xp(TopoDS::Wire(wire));
@@ -2064,9 +2098,9 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         (plastTmp.*setter)(0.0);
 
         if(first||pTmp.Distance(plastTmp)>threshold)
-            addCommand(path,plast,p,getter,setter,retraction,clearance);
+            addG0(verbose,path,plast,p,getter,setter,retraction,clearance,vf,cur_f);
         else
-            addCommand(path,plast,p);
+            addG1(verbose,path,plast,p,vf,cur_f);
         plast = p;
         first = false;
         for(;xp.More();xp.Next(),plast=p) {
@@ -2085,20 +2119,20 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
                         if(reversed) {
                             for (int i=nbPoints-1; i>=1; --i) {
                                 gp_Pnt pt = curve.Value(discretizer.Parameter(i));
-                                addCommand(path,plast,pt);
+                                addG1(verbose,path,plast,pt,nf,cur_f);
                                 plast = pt;
                             }
                         }else{
                             for (int i=2; i<=nbPoints; i++) {
                                 gp_Pnt pt = curve.Value(discretizer.Parameter(i));
-                                addCommand(path,plast,pt);
+                                addG1(verbose,path,plast,pt,nf,cur_f);
                                 plast = pt;
                             }
                         }
                         break;
                     }
                 }
-                addCommand(path,plast,p);
+                addG1(verbose,path,plast,p,nf,cur_f);
                 break;
             } case GeomAbs_Circle:{
                 const gp_Circ &circle = curve.Circle();
@@ -2127,7 +2161,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
                    (arcPlane==currentArcPlane || arc_plane==ArcPlaneVariable))
                 {
                     if(arcPlane!=currentArcPlane)
-                        addCommand(path,cmd);
+                        addGCode(path,cmd);
 
                     if(reversed) clockwise = !clockwise;
                     gp_Pnt center = circle.Location();
@@ -2141,13 +2175,13 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
                             if(reversed) {
                                 for (int i=nbPoints-1; i>=1; --i) {
                                     gp_Pnt pt = curve.Value(discretizer.Parameter(i));
-                                    addCommand(path,plast,pt,center,clockwise);
+                                    addGArc(verbose,path,plast,pt,center,clockwise,nf,cur_f);
                                     plast = pt;
                                 }
                             }else{
                                 for (int i=2; i<=nbPoints; i++) {
                                     gp_Pnt pt = curve.Value(discretizer.Parameter(i));
-                                    addCommand(path,plast,pt,center,clockwise);
+                                    addGArc(verbose,path,plast,pt,center,clockwise,nf,cur_f);
                                     plast = pt;
                                 }
                             }
@@ -2158,10 +2192,10 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
                     if(fabs(first-last)>M_PI) {
                         // Split arc(circle) larger than half circle. 
                         gp_Pnt mid = curve.Value((last-first)*0.5+first);
-                        addCommand(path,plast,mid,center,clockwise);
+                        addGArc(verbose,path,plast,mid,center,clockwise,nf,cur_f);
                         plast = mid;
                     }
-                    addCommand(path,plast,p,center,clockwise);
+                    addGArc(verbose,path,plast,p,center,clockwise,nf,cur_f);
                     break;
                 }
 
@@ -2181,13 +2215,13 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
                     if(reversed) {
                         for (int i=nbPoints-1; i>=1; --i) {
                             gp_Pnt pt = discretizer.Value (i);
-                            addCommand(path,plast,pt);
+                            addG1(verbose,path,plast,pt,nf,cur_f);
                             plast = pt;
                         }
                     }else{
                         for (int i=2; i<=nbPoints; i++) {
                             gp_Pnt pt = discretizer.Value (i);
-                            addCommand(path,plast,pt);
+                            addG1(verbose,path,plast,pt,nf,cur_f);
                             plast = pt;
                         }
                     }
