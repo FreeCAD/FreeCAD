@@ -1209,6 +1209,7 @@ void Application::initTypes(void)
     App ::PropertyVectorDistance    ::init();
     App ::PropertyVectorList        ::init();
     App ::PropertyPlacement         ::init();
+    App ::PropertyPlacementList     ::init();
     App ::PropertyPlacementLink     ::init();
     App ::PropertyGeometry          ::init();
     App ::PropertyComplexGeoData    ::init();
