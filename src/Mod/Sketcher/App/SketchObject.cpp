@@ -4160,7 +4160,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     
     int nextgeoid = vals.size();
     
-    //int nextcid = cvals.size();
+    int nextcid = cvals.size();
     
     const std::vector< Part::Geometry * > &svals = psObj->getInternalGeometry();
     
@@ -4182,7 +4182,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
             newConstr->Second += nextgeoid;
         if( (*it)->Third>=0 )
             newConstr->Third += nextgeoid;
-        
+
         newcVals.push_back(newConstr);
     }
     
@@ -4191,6 +4191,33 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     rebuildVertexIndex();
     
     this->Constraints.setValues(newcVals);
+    
+    int sourceid = 0;
+    for (std::vector< Sketcher::Constraint * >::const_iterator it= scvals.begin(); it != scvals.end(); ++it,nextcid++,sourceid++) {
+
+        if ((*it)->Type == Sketcher::Distance ||
+            (*it)->Type == Sketcher::DistanceX || 
+            (*it)->Type == Sketcher::DistanceY ||
+            (*it)->Type == Sketcher::Radius || 
+            (*it)->Type == Sketcher::Angle ||
+            (*it)->Type == Sketcher::SnellsLaw) {
+            // then we link its value to the parent 
+            // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
+            if ((*it)->isDriving) {
+                App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
+                /*
+                 *           App::PropertyExpressionEngine::ExpressionInfo expr_info = psObj->getExpression(path);
+                 *           
+                 *           if (expr_info.expression)*/
+                //App::Expression * expr = parse(this, const std::string& buffer);
+                boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
+                setExpression(Constraints.createPath(nextcid), expr);
+                
+                
+            }
+            
+        }
+    }
     
     return svals.size();
 }
