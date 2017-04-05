@@ -1252,10 +1252,28 @@ def findDistance(point,edge,strict=False):
     '''
     findDistance(vector,edge,[strict]) - Returns a vector from the point to its
     closest point on the edge. If strict is True, the vector will be returned
-    only if its endpoint lies on the edge.
+    only if its endpoint lies on the edge. Edge can also be a list of 2 points.
     '''
     if isinstance(point, FreeCAD.Vector):
-        if geomType(edge) == "Line":
+        if isinstance(edge,list):
+            segment = edge[1].sub(edge[0])
+            chord = edge[0].sub(point)
+            norm = segment.cross(chord)
+            perp = segment.cross(norm)
+            dist = DraftVecUtils.project(chord,perp)
+            if not dist: return None
+            newpoint = point.add(dist)
+            if (dist.Length == 0):
+                return None
+            if strict:
+                s1 = newpoint.sub(edge[0])
+                s2 = newpoint.sub(edge[1])
+                if (s1.Length <= segment.Length) and (s2.Length <= segment.Length):
+                    return dist
+                else:
+                    return None
+            else: return dist
+        elif geomType(edge) == "Line":
             segment = vec(edge)
             chord = edge.Vertexes[0].Point.sub(point)
             norm = segment.cross(chord)
