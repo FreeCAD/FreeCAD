@@ -18,8 +18,16 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
 #**************************************************************************
+import os
+import sys
+import unittest
 
-import FreeCAD, os, sys, unittest, Sketcher, PartDesign, TestSketcherApp
+import FreeCAD
+import Part
+import Sketcher
+import PartDesign
+import TestSketcherApp
+
 App = FreeCAD
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Sketcher module
@@ -81,6 +89,71 @@ class PartDesignRevolveTestCases(unittest.TestCase):
         self.Body.addObject(self.Groove)
         self.Doc.recompute()
         self.failUnless(len(self.Groove.Shape.Faces) == 5)
+
+    def tearDown(self):
+        #closing doc
+        FreeCAD.closeDocument("PartDesignTest")
+        # print ("omit closing document for debugging")
+
+class PartDesignMirroredTestCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTest")
+
+    def testMirroredCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.Rect = self.Doc.addObject('Sketcher::SketchObject','Rect')
+        try:
+            self.Body.addObject(self.Rect)
+        except AttributeError:
+            pass
+        geoList = []
+        try:
+            geoList.append(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(1, 0, 0)))
+            geoList.append(Part.LineSegment(App.Vector(1, 0, 0), App.Vector(1, 1, 0)))
+            geoList.append(Part.LineSegment(App.Vector(1, 1, 0), App.Vector(0, 1, 0)))
+            geoList.append(Part.LineSegment(App.Vector(0, 1, 0), App.Vector(0, 0, 0)))
+        except AttributeError:
+            geoList.append(Part.Line(App.Vector(0, 0, 0), App.Vector(1, 0, 0)))
+            geoList.append(Part.Line(App.Vector(1, 0, 0), App.Vector(1, 1, 0)))
+            geoList.append(Part.Line(App.Vector(1, 1, 0), App.Vector(0, 1, 0)))
+            geoList.append(Part.Line(App.Vector(0, 1, 0), App.Vector(0, 0, 0)))
+        self.Rect.addGeometry(geoList,False)
+        conList = []
+        conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
+        conList.append(Sketcher.Constraint('Coincident',1,2,2,1))
+        conList.append(Sketcher.Constraint('Coincident',2,2,3,1))
+        conList.append(Sketcher.Constraint('Coincident',3,2,0,1))
+        conList.append(Sketcher.Constraint('Horizontal',0))
+        conList.append(Sketcher.Constraint('Horizontal',2))
+        conList.append(Sketcher.Constraint('Vertical',1))
+        conList.append(Sketcher.Constraint('Vertical',3))
+        self.Rect.addConstraint(conList)
+        self.Rect.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1))
+        self.Rect.addConstraint(Sketcher.Constraint('DistanceX',0,1,0,2,1))
+        self.Rect.setDatum(9,App.Units.Quantity('1.0 mm'))
+        self.Rect.addConstraint(Sketcher.Constraint('DistanceY',3,2,3,1,1))
+        self.Rect.setDatum(10,App.Units.Quantity('1.0 mm'))
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
+        try:
+            self.Pad.Profile = self.Rect
+        except AttributeError:
+            self.Pad.Sketch = self.Rect
+        self.Pad.Length = 1
+        try:
+            self.Body.addObject(self.Pad)
+        except AttributeError:
+            pass
+        self.Doc.recompute()
+        self.Mirrored = self.Doc.addObject("PartDesign::Mirrored","Mirrored")
+        self.Mirrored.Originals = [self.Pad]
+        self.Mirrored.MirrorPlane = (self.Rect, ["V_Axis"])
+        try:
+            self.Body.addObject(self.Mirrored)
+        except AttributeError:
+            pass
+        self.Doc.recompute()
+        self.failUnless(self.Mirrored.Shape.Volume > 1.0)
 
     def tearDown(self):
         #closing doc
