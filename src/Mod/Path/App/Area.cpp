@@ -85,6 +85,14 @@
 #include "Area.h"
 #include "../libarea/Area.h"
 
+namespace bg = boost::geometry;
+namespace bgi = boost::geometry::index;
+
+typedef bgi::linear<16> RParameters;
+
+BOOST_GEOMETRY_REGISTER_POINT_3D_GET_SET(
+        gp_Pnt,double,bg::cs::cartesian,X,Y,Z,SetX,SetY,SetZ)
+
 using namespace Path;
 
 CAreaParams::CAreaParams()
@@ -425,6 +433,136 @@ void Area::addToBuild(CArea &area, const TopoDS_Shape &shape) {
 namespace Part {
 extern PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges);
 }
+
+typedef std::list<TopoDS_Edge> Edges;
+struct EdgeInfo {
+    Edges::iterator it;
+    bool start;
+    EdgeInfo(Edges::iterator _it, bool _start)
+        :it(_it),start(_start)
+    {}
+    bool operator==(const EdgeInfo &other) const {
+        return it==other.it && start==other.start;
+    }
+};
+typedef std::pair<gp_Pnt,EdgeInfo> EdgeValue;
+
+struct WireJoiner {
+    bgi::rtree<EdgeValue,RParameters> vmap;
+
+    std::list<TopoDS_Edge> edges;
+    BRep_Builder builder;
+    TopoDS_Compound comp;
+
+    WireJoiner() {
+        builder.MakeCompound(comp);
+    }
+
+    void getVertexes(const TopoDS_Edge &e, gp_Pnt &p1, gp_Pnt &p2) {
+        TopExp_Explorer xp(e,TopAbs_VERTEX);
+        p1 = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
+        xp.Next();
+        p2 = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
+    }
+
+    void remove(Edges::iterator it) {
+        gp_Pnt p1,p2;
+        getVertexes(*it,p1,p2);
+        remove(it,p1,p2);
+    }
+
+    void remove(Edges::iterator it, const gp_Pnt &p1, const gp_Pnt &p2) {
+        vmap.remove(std::make_pair(p1,EdgeInfo(it,true)));
+        vmap.remove(std::make_pair(p2,EdgeInfo(it,false)));
+        edges.erase(it);
+    }
+
+    void addShape(const TopoDS_Edge &e) {
+        if(BRep_Tool::IsClosed(e)){
+            BRepBuilderAPI_MakeWire mkWire;
+            mkWire.Add(e);
+            builder.Add(comp,mkWire.Wire());
+            return;
+        }
+        gp_Pnt p1,p2;
+        getVertexes(e,p1,p2);
+        if(p1.SquareDistance(p2) < Precision::SquareConfusion())
+            return;
+        edges.push_front(e);
+        vmap.insert(std::make_pair(p1,EdgeInfo(edges.begin(),true)));
+        vmap.insert(std::make_pair(p2,EdgeInfo(edges.begin(),false)));
+    }
+
+    void addShape(const TopoDS_Wire &wire) {
+        for(BRepTools_WireExplorer xp(wire); xp.More(); xp.Next())
+            addShape(xp.Current());
+    }
+
+    void join(double tol) {
+        while(edges.size()) {
+            auto it = edges.begin();
+            BRepBuilderAPI_MakeWire mkWire;
+            mkWire.Add(*it);
+            gp_Pnt pstart,pend;
+            getVertexes(*it,pstart,pend);
+            remove(it,pstart,pend);
+
+            while(edges.size()) {
+                std::vector<EdgeValue> ret;
+                ret.reserve(2);
+                vmap.query(bgi::nearest(pstart,1),std::back_inserter(ret));
+                assert(ret.size()==1);
+                double d1 = ret[0].first.SquareDistance(pstart);
+                vmap.query(bgi::nearest(pend,1),std::back_inserter(ret));
+                assert(ret.size()==2);
+                double d2 = ret[1].first.SquareDistance(pend);
+                
+                int idx;
+                double d;
+                if(d1<d2) {
+                    idx = 0;
+                    d = d1;
+                }else{
+                    idx = 1;
+                    d = d2;
+                }
+                if(d > tol) break;
+
+                gp_Pnt p1,p2;
+                const TopoDS_Edge &e = *ret[idx].second.it;
+                bool start = ret[idx].second.start;
+                getVertexes(e,p1,p2);
+                if(d > Precision::SquareConfusion()) {
+                    // insert a filling edge to solve the tolerance problem
+                    if(idx)
+                        mkWire.Add(BRepBuilderAPI_MakeEdge(pend,ret[idx].first).Edge());
+                    else
+                        mkWire.Add(BRepBuilderAPI_MakeEdge(ret[idx].first,pstart).Edge());
+                }
+
+                if(idx==1 && start) {
+                    pend = p2;
+                    mkWire.Add(e);
+                }else if(idx==0 && !start) {
+                    pstart = p1;
+                    mkWire.Add(e);
+                }else if(idx==0 && start) {
+                    pstart = p2;
+                    mkWire.Add(TopoDS::Edge(e.Reversed()));
+                }else {
+                    pend = p1;
+                    mkWire.Add(TopoDS::Edge(e.Reversed()));
+                }
+                
+                remove(ret[idx].second.it,p1,p2);
+
+                if(pstart.SquareDistance(pend)<=Precision::SquareConfusion())
+                    break;
+            }
+            builder.Add(comp,mkWire.Wire());
+        }
+    }
+};
 
 void Area::explode(const TopoDS_Shape &shape) {
     const TopoDS_Shape &plane = getPlane();
@@ -843,24 +981,20 @@ void Area::build() {
 
         //Reassemble wires after explode
         if(myParams.Explode) {
-            std::list<TopoDS_Edge> edges;
+            WireJoiner joiner;
             gp_Trsf trsf(myTrsf.Inverted());
             for(const auto &c : myArea->m_curves) {
                 TopoDS_Wire wire = toShape(c,&trsf);
-                if(wire.IsNull()) continue;
-                TopExp_Explorer it(wire, TopAbs_EDGE);
-                edges.push_back(TopoDS::Edge(it.Current()));
+                if(!wire.IsNull()) 
+                    joiner.addShape(wire);
             }
+            joiner.join(Precision::Confusion());
+
             Area area(&myParams);
             area.myParams.Explode = false;
             area.myParams.Coplanar = CoplanarNone;
             area.myWorkPlane = getPlane(&area.myTrsf);
-            while(edges.size()) {
-                BRepBuilderAPI_MakeWire mkWire;
-                for(const auto &e : Part::sort_Edges(myParams.Tolerance,edges))
-                    mkWire.Add(TopoDS::Edge(e));
-                area.add(mkWire.Wire(),OperationCompound);
-            }
+            area.add(joiner.comp,OperationCompound);
             area.build();
             myArea = std::move(area.myArea);
         }
@@ -1278,12 +1412,6 @@ TopoDS_Shape Area::toShape(const CArea &area, bool fill, const gp_Trsf *trsf) {
     return TopoDS_Shape();
 }
 
-namespace bg = boost::geometry;
-namespace bgi = boost::geometry::index;
-
-BOOST_GEOMETRY_REGISTER_POINT_3D_GET_SET(
-        gp_Pnt,double,bg::cs::cartesian,X,Y,Z,SetX,SetY,SetZ)
-
 struct WireInfo {
     TopoDS_Wire wire;
     std::deque<gp_Pnt> points;
@@ -1305,7 +1433,6 @@ struct RGetter
     typedef const gp_Pnt& result_type;
     result_type operator()(const RValue &v) const { return v.first->points[v.second]; }
 };
-typedef bgi::linear<16> RParameters;
 typedef bgi::rtree<RValue,RParameters,RGetter> RTree;
 
 struct ShapeParams {
