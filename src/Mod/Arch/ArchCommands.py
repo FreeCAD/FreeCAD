@@ -211,6 +211,7 @@ def makeComponent(baseobj=None,name="Component",delete=False):
                     baseobj.ViewObject.hide()
         elif isinstance(baseobj,Part.Shape):
             obj.Shape = baseobj
+    Draft.select(obj)
     return obj
     
 def cloneComponent(obj):
@@ -225,6 +226,8 @@ def cloneComponent(obj):
     if hasattr(obj,"IfcAttributes"):
         if obj.IfcAttributes:
             c.IfcAttributes = obj.IfcAttributes
+    Draft.select(c)
+    return c
 
 def setAsSubcomponent(obj):
     '''Sets the given object properly to become a subcomponent (addition, subtraction)
