@@ -91,6 +91,7 @@
 #include "DrawHatch.h"
 #include "DrawGeomHatch.h"
 #include "DrawViewDimension.h"
+#include "DrawViewDetail.h"
 #include "DrawPage.h"
 #include "EdgeWalker.h"
 
@@ -618,6 +619,18 @@ std::vector<DrawViewSection*> DrawViewPart::getSectionRefs(void) const
     for (auto& o:inObjs) {
         if (o->getTypeId().isDerivedFrom(DrawViewSection::getClassTypeId())) {
             result.push_back(static_cast<TechDraw::DrawViewSection*>(o));
+        }
+    }
+    return result;
+}
+
+std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs(void) const
+{
+    std::vector<DrawViewDetail*> result;
+    std::vector<App::DocumentObject*> inObjs = getInList();
+    for (auto& o:inObjs) {
+        if (o->getTypeId().isDerivedFrom(DrawViewDetail::getClassTypeId())) {
+            result.push_back(static_cast<TechDraw::DrawViewDetail*>(o));
         }
     }
     return result;

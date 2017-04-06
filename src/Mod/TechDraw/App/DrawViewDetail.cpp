@@ -134,6 +134,12 @@ void DrawViewDetail::onChanged(const App::Property* prop)
                                   std::string(Reference.getValue());
             Label.setValue(lblText);
         }
+        if ((prop == &Reference)  ||
+           (prop == &Radius)     ||
+           (prop == &AnchorPoint))  {
+            BaseView.getValue()->touch();    //hack.  sb "update graphics"
+        }
+
     }
     DrawView::onChanged(prop);
 }

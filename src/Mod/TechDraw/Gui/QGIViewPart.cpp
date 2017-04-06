@@ -63,6 +63,7 @@
 #include "QGICMark.h"
 #include "QGISectionLine.h"
 #include "QGICenterLine.h"
+#include "QGIHighlight.h"
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
 #include "QGCustomRect.h"
@@ -500,6 +501,13 @@ void QGIViewPart::drawViewPart()
             drawSectionLine(r, true);
         }
     }
+
+    //draw detail highlights
+    auto drefs = viewPart->getDetailRefs();
+    for (auto& r:drefs) {
+        drawHighlight(r, true);
+    }
+
     //draw center lines
     drawCenterLines(true);
 }
@@ -684,6 +692,34 @@ void QGIViewPart::drawCenterLines(bool b)
         }
     }
 }
+
+void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
+{
+    TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
+    if (!viewPart ||
+        !viewDetail)  {
+        return;
+    }
+    
+    if (!viewDetail->hasGeometry()) {
+        return;
+    }
+
+    if (b) {
+        QGIHighlight* highlight = new QGIHighlight();
+        addToGroup(highlight);
+        highlight->setPos(0.0,0.0);   //sb setPos(center.x,center.y)?
+        highlight->setReference(const_cast<char*>(viewDetail->Reference.getValue()));
+        Base::Vector3d center = viewDetail->AnchorPoint.getValue();
+        double radius = viewDetail->Radius.getValue();
+        highlight->setBounds(center.x - radius, center.y + radius,center.x + radius, center.y - radius);
+        highlight->setWidth(Rez::guiX(viewPart->LineWidth.getValue()));
+        highlight->setFont(m_font,Rez::guiX(6.0));
+        highlight->setZValue(ZVALUE::HIGHLIGHT);
+        highlight->draw();
+    }
+}
+
 
 void QGIViewPart::drawMatting()
 {

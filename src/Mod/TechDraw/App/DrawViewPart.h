@@ -60,6 +60,7 @@ class DrawGeomHatch;
 class DrawViewDimension;
 class DrawProjectSplit;
 class DrawViewSection;
+class DrawViewDetail;
 }
 
 namespace TechDraw
@@ -120,6 +121,7 @@ public:
     double getBoxY(void) const;
     virtual QRectF getRect() const;
     virtual std::vector<DrawViewSection*> getSectionRefs() const;                    //are there ViewSections based on this ViewPart?
+    virtual std::vector<DrawViewDetail*> getDetailRefs() const;
     const Base::Vector3d& getUDir(void) const {return uDir;}                       //paperspace X
     const Base::Vector3d& getVDir(void) const {return vDir;}                       //paperspace Y
     const Base::Vector3d& getWDir(void) const {return wDir;}                       //paperspace Z
