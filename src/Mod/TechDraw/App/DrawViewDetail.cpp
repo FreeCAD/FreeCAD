@@ -248,6 +248,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
                                                     scale);
         gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
         geometryObject = buildGeometryObject(mirroredShape,viewAxis);
+        geometryObject->pruneVertexGeom(Base::Vector3d(0.0,0.0,0.0),Radius.getValue() * scale);      //remove vertices beyond clipradius
 
 #if MOD_TECHDRAW_HANDLE_FACES
     if (handleFaces()) {

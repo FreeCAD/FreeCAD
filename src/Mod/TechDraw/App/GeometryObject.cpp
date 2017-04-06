@@ -286,7 +286,6 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         edgeGeom.push_back(base);
 
         //add vertices of new edge if not already in list
-        bool skipDetail = false;
         if (visible) {
             BaseGeom* lastAdded = edgeGeom.back();
             bool v1Add = true, v2Add = true;
@@ -296,23 +295,9 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             TechDrawGeometry::Circle* circle = dynamic_cast<TechDrawGeometry::Circle*>(lastAdded);
             TechDrawGeometry::Vertex* c1 = nullptr;
             if (circle) {
-                // if this is the center of a detail view, skip it
-                TechDraw::DrawViewDetail* detail = isParentDetail();
-                if (detail != nullptr) {
-                    double scale = m_parent->Scale.getValue();
-                    if ( ((circle->center - Base::Vector2d(0.0,0.0)).Length() < Precision::Confusion()) &&
-                        (DrawUtil::fpCompare(circle->radius, scale * detail->getFudgeRadius())) ) {
-                        skipDetail = true;
-                    } else {
-                        c1 = new TechDrawGeometry::Vertex(circle->center);
-                        c1->isCenter = true;
-                        c1->visible = true;
-                    }
-                } else {
-                    c1 = new TechDrawGeometry::Vertex(circle->center);
-                    c1->isCenter = true;
-                    c1->visible = true;
-                }
+                c1 = new TechDrawGeometry::Vertex(circle->center);
+                c1->isCenter = true;
+                c1->visible = true;
             }
 
             std::vector<Vertex *>::iterator itVertex = vertexGeom.begin();
@@ -323,7 +308,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
                 if ((*itVertex)->isEqual(v2,Precision::Confusion())) {
                     v2Add = false;
                 }
-                if (circle && !skipDetail) {
+                if (circle ) {
                     if ((*itVertex)->isEqual(c1,Precision::Confusion())) {
                         c1Add = false;
                     }
@@ -343,7 +328,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
                 delete v2;
             }
 
-            if (circle && !skipDetail) {
+            if (circle) {
                 if (c1Add) {
                     vertexGeom.push_back(c1);
                     c1->visible = true;
@@ -435,6 +420,24 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
     Base::BoundBox3d bbox(xMin,yMin,zMin,xMax,yMax,zMax);
     return bbox;
 }
+
+void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
+{
+    const std::vector<Vertex *>&  oldVerts = getVertexGeometry();
+    std::vector<Vertex *> newVerts;
+    for (auto& v: oldVerts) {
+        Base::Vector3d v3 = v->getAs3D();
+        double length = (v3 - center).Length();
+        if (length < Precision::Confusion()) { 
+            continue;
+        } else if (length < radius) {
+            newVerts.push_back(v);
+        }
+    }
+    vertexGeom = newVerts;
+}
+
+
 
 //! does this GeometryObject already have this vertex
 bool GeometryObject::findVertex(Base::Vector2d v)
