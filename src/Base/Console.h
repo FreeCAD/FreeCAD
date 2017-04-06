@@ -130,7 +130,7 @@ public:
 
     enum FreeCAD_ConsoleMsgType { 
         MsgType_Txt = 1, 
-        MsgType_Log = 2, 
+        MsgType_Log = 2,
         MsgType_Wrn = 4, 
         MsgType_Err = 8 
     } ;
@@ -226,6 +226,8 @@ public:
     virtual void Error  (const char *sErr); 
     virtual void Log    (const char *sErr); 
     const char* Name(void){return "Console";}
+protected:
+    bool useColorStderr;
 };
 
 class BaseExport RedirectStdOutput : public std::streambuf
