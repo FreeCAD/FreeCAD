@@ -2869,6 +2869,7 @@ def clone(obj,delta=None,forcedraft=False):
             cl.Tag = base.Tag
         except:
             pass
+        select(cl)
         return cl
     else:
         cl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Clone")
@@ -2883,6 +2884,7 @@ def clone(obj,delta=None,forcedraft=False):
     elif len(obj) == 1:
         cl.Placement = obj[0].Placement
     formatObject(cl,obj[0])
+    select(cl)
     return cl
 
 def getCloneBase(obj,strict=False):
@@ -3375,6 +3377,7 @@ def upgrade(objects,delete=False,force=None):
         deleteList = []
         for n in names:
             FreeCAD.ActiveDocument.removeObject(n)
+    select(addList)
     return [addList,deleteList]
 
 def downgrade(objects,delete=False,force=None):
@@ -3575,6 +3578,7 @@ def downgrade(objects,delete=False,force=None):
         deleteList = []
         for n in names:
             FreeCAD.ActiveDocument.removeObject(n)
+    select(addList)
     return [addList,deleteList]
 
 
