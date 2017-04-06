@@ -504,14 +504,14 @@ struct FindPlane {
     void operator()(const TopoDS_Shape &shape, int) {
         gp_Trsf trsf;
 
-        BRepLib_FindSurface finder(shape,-1,Standard_True);
+        BRepLib_FindSurface finder(shape.Located(TopLoc_Location()),-1,Standard_True);
         if (!finder.Found()) 
             return;
 
         gp_Ax3 pos = GeomAdaptor_Surface(finder.Surface()).Plane().Position();
-        
-        // It seemed that FindSurface disregard shape's transformation,
-        // so we have to transformed the found plane manually, or is it??
+        // TODO: It seemed that FindSurface disregard shape's
+        // transformation SOMETIME, so we have to transformed the found
+        // plane manually. Need to figure out WHY!
         pos.Transform(shape.Location().Transformation());
 
         // We only use right hand coordinate, hence gp_Ax2 instead of gp_Ax3
