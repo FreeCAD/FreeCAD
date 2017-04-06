@@ -28,7 +28,6 @@ import Sketcher
 import PartDesign
 import TestSketcherApp
 
-
 App = FreeCAD
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD PartDesign module
