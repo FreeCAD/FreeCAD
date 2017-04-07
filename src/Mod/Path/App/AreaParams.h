@@ -131,8 +131,9 @@
         "'Workplane' means relative to workplane, minus SectionOffset.\n"\
         "Note that OCC has trouble getting the minimum bounding box of some solids, particularly\n"\
         "those with non-planar surface. It is recommended to use Workplane to specifiy the intended\n"\
-        "starting z height.",\
-        (Absolute)(BoundBox)(Workplane)))
+        "starting z height.\n",(Absolute)(BoundBox)(Workplane)))\
+    ((bool,project,Project,false, "The section is produced by normal pojecting the outline\n"\
+        "of all added shapes to the section plane, instead of slicing."))
 
 /** Section parameters */
 #define AREA_PARAMS_SECTION \
