@@ -71,6 +71,8 @@ void DocumentObserver::attachDocument(Document* doc)
         (&DocumentObserver::slotUndoDocument, this, _1));
     this->connectDocumentRedo = doc->signalRedoDocument.connect(boost::bind
         (&DocumentObserver::slotRedoDocument, this, _1));
+    this->connectDocumentDelete = doc->signalDeleteDocument.connect(boost::bind
+        (&DocumentObserver::slotDeleteDocument, this, _1));
 }
 
 void DocumentObserver::detachDocument()
@@ -84,6 +86,7 @@ void DocumentObserver::detachDocument()
     this->connectDocumentResetObject.disconnect();
     this->connectDocumentUndo.disconnect();
     this->connectDocumentRedo.disconnect();
+    this->connectDocumentDelete.disconnect();
 }
 
 void DocumentObserver::enableNotifications(DocumentObserver::Notifications value)
@@ -104,6 +107,10 @@ void DocumentObserver::slotUndoDocument(const Document& /*Doc*/)
 }
 
 void DocumentObserver::slotRedoDocument(const Document& /*Doc*/)
+{
+}
+
+void DocumentObserver::slotDeleteDocument(const Document& /*Doc*/)
 {
 }
 
