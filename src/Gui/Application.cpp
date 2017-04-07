@@ -593,6 +593,7 @@ void Application::slotDeleteDocument(const App::Document& Doc)
 
     // We must clear the selection here to notify all observers
     Gui::Selection().clearSelection(doc->second->getDocument()->getName());
+    doc->second->signalDeleteDocument(*doc->second);
     signalDeleteDocument(*doc->second);
 
     // If the active document gets destructed we must set it to 0. If there are further existing documents then the 
