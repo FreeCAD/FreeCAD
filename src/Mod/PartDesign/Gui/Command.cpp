@@ -29,6 +29,7 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <TopExp_Explorer.hxx>
 # include <QMessageBox>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 
 #include <sstream>
@@ -44,6 +45,8 @@
 #include <Gui/Selection.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Document.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -477,6 +480,24 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 Base::Console().Error("Failed to create a Body object");
                 return;
             }
+
+            // The method 'SoCamera::viewBoundingBox' is still declared as protected in Coin3d versions
+            // older than 4.0.
+#if COIN_MAJOR_VERSION >= 4
+            // if no part feature was there then auto-adjust the camera
+            Gui::Document* guidoc = Gui::Application::Instance->getDocument(doc);
+            Gui::View3DInventor* view = guidoc ? qobject_cast<Gui::View3DInventor*>(guidoc->getActiveView()) : nullptr;
+            if (view) {
+                SoCamera* camera = view->getViewer()->getCamera();
+                SbViewportRegion vpregion = view->getViewer()->getViewportRegion();
+                float aspectratio = vpregion.getViewportAspectRatio();
+
+                float size = Gui::ViewProviderOrigin::defaultSize();
+                SbBox3f bbox;
+                bbox.setBounds(-size,-size,-size,size,size,size);
+                camera->viewBoundingBox(bbox, aspectratio, 1.0f);
+            }
+#endif
         }
 
         // At this point, we have pcActiveBody
