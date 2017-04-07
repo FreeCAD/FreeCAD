@@ -77,6 +77,8 @@ protected:
     virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
     /** Notifies on undo */
     virtual void slotUndoDocument(const Gui::Document& Doc);
+    /** Notifies on document deletion */
+    virtual void slotDeleteDocument(const Gui::Document& Doc);
 
 private:
     Ui_TaskFeaturePick* ui;

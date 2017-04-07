@@ -449,6 +449,12 @@ void TaskFeaturePick::slotUndoDocument(const Gui::Document&)
     }
 }
 
+void TaskFeaturePick::slotDeleteDocument(const Gui::Document&)
+{
+    origins.clear();
+    QTimer::singleShot(100, &Gui::Control(), SLOT(closeDialog()));
+}
+
 void TaskFeaturePick::showExternal(bool val)
 {
     ui->checkOtherBody->setChecked(val);

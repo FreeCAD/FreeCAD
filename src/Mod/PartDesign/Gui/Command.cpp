@@ -571,8 +571,13 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             Gui::Command::doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
         };
 
-        // Called by dialog for "Cancel", or "OK" iff accepter returns false
-        auto quitter( Gui::Command::abortCommand ); 
+        // Called by dialog for "Cancel", or "OK" if accepter returns false
+        std::string docname = doc->getName();
+        auto quitter = [docname]() {
+            Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str());
+            if (document)
+                document->abortCommand();
+        };
 
         if (validPlaneCount == 0) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid planes in this document"),
