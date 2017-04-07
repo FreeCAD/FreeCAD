@@ -25,6 +25,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
+#include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/ViewProviderOrigin.h>
 #include <App/DocumentObject.h>
@@ -35,7 +36,9 @@ namespace PartDesignGui {
 
 class SoSwitch;
 class Ui_TaskFeaturePick;
-class TaskFeaturePick : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskFeaturePick : public Gui::TaskView::TaskBox
+                      , public Gui::SelectionObserver
+                      , public Gui::DocumentObserver
 {
     Q_OBJECT
 
@@ -68,6 +71,12 @@ protected Q_SLOTS:
     void onUpdate(bool);
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void onItemSelectionChanged();
+
+protected:
+    /** Notifies when the object is about to be removed. */
+    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
+    /** Notifies on undo */
+    virtual void slotUndoDocument(const Gui::Document& Doc);
 
 private:
     Ui_TaskFeaturePick* ui;

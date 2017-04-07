@@ -24,12 +24,14 @@
 
 #ifndef _PreComp_
 # include <QListIterator>
+# include <QTimer>
 #endif
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Document.h>
+#include <Gui/Control.h>
 #include <Gui/ViewProviderOrigin.h>
 #include <App/Document.h>
 #include <App/Origin.h>
@@ -101,6 +103,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     auto statusIt = status.cbegin();
     auto objIt = objects.begin();
     assert(status.size() == objects.size());
+
+    bool attached = false;
     for (; statusIt != status.end(); ++statusIt, ++objIt) {
         QListWidgetItem* item = new QListWidgetItem(
                 QString::fromLatin1("%1 (%2)")
@@ -113,6 +117,10 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
 
         App::Document* pDoc = (*objIt)->getDocument();
         documentName = pDoc->getName();
+        if (!attached) {
+            attached = true;
+            attachDocument(Gui::Application::Instance->getDocument(pDoc));
+        }
 
         //check if we need to set any origin in temporary visibility mode
         if (*statusIt != invalidShape && (*objIt)->isDerivedFrom ( App::OriginFeature::getClassTypeId () )) {
@@ -423,6 +431,22 @@ void TaskFeaturePick::onItemSelectionChanged()
     }
     ui->listWidget->blockSignals(false);
     doSelection = false;
+}
+
+void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
+{
+    std::vector<Gui::ViewProviderOrigin*>::iterator it;
+    it = std::find(origins.begin(), origins.end(), &Obj);
+    if (it != origins.end()) {
+        origins.erase(it);
+    }
+}
+
+void TaskFeaturePick::slotUndoDocument(const Gui::Document&)
+{
+    if (origins.empty()) {
+        QTimer::singleShot(100, &Gui::Control(), SLOT(closeDialog()));
+    }
 }
 
 void TaskFeaturePick::showExternal(bool val)
