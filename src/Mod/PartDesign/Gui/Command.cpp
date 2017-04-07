@@ -556,6 +556,10 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
         // Called by dialog when user hits "OK" and accepter returns true
         auto worker = [=](const std::vector<App::DocumentObject*>& features) {
+            // may happen when the user switched to an empty document while the
+            // dialog is open
+            if (features.empty())
+                return;
             App::Plane* plane = static_cast<App::Plane*>(features.front());
             std::string FeatName = getUniqueObjectName("Sketch");
             std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() +
