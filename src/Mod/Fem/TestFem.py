@@ -43,6 +43,7 @@ static_analysis_dir = temp_dir + '/FEM_static'
 static_save_fc_file = static_analysis_dir + '/' + static_base_name + '.fcstd'
 static_analysis_inp_file = test_file_dir + '/' + static_base_name + '.inp'
 static_expected_values = test_file_dir + "/cube_static_expected_values"
+static_save_unv_file = static_analysis_dir + '/' + static_base_name + '.unv'
 
 frequency_base_name = 'cube_frequency'
 frequency_analysis_dir = temp_dir + '/FEM_frequency'
@@ -140,6 +141,26 @@ class FemTest(unittest.TestCase):
 
     def save_file(self, fc_file_name):
         self.active_doc.saveAs(fc_file_name)
+
+    def test_unv_save_load(self):
+        tetra10 = Fem.FemMesh()
+        tetra10.addNode( 6, 12, 18,  1)
+        tetra10.addNode( 0,  0, 18,  2)
+        tetra10.addNode(12,  0, 18,  3)
+        tetra10.addNode( 6,  6,  0,  4)
+
+        tetra10.addNode( 3,  6, 18,  5)
+        tetra10.addNode( 6,  0, 18,  6)
+        tetra10.addNode( 9,  6, 18,  7)
+
+        tetra10.addNode( 6,  9,  9,  8)
+        tetra10.addNode( 3,  3,  9,  9)
+        tetra10.addNode( 9,  3,  9, 10)
+        tetra10.addVolume([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        tetra10.write(static_save_unv_file)
+        newmesh = Fem.read(static_save_unv_file)
+        expected = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        self.assertEqual(newmesh.getElementNodes(1), expected, "Nodes order of quadratic volume element is unexpected")
 
     def test_new_analysis(self):
         # static
