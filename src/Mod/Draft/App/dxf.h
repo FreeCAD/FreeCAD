@@ -126,6 +126,7 @@ private:
     void OnReadEllipse(const double* c, const double* m, double ratio, double start_angle, double end_angle);
     bool ReadInsert();
     bool ReadDimension();
+    bool ReadBlockInfo();
 
     void get_line();
     void put_line(const char *value);

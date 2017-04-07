@@ -160,11 +160,11 @@ void DraftDxfRead::OnReadText(const double *point, const double /*height*/, cons
 void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const char* name, double rotation)
 {
     //std::cout << "Inserting block " << name << " rotation " << rotation << " pos " << point[0] << "," << point[1] << "," << point[2] << " scale " << scale[0] << "," << scale[1] << "," << scale[2] << std::endl;
+    std::string prefix = "BLOCKS ";
+    prefix += name;
+    prefix += " ";
     for(std::map<std::string,std::vector<Part::TopoShape*> > ::const_iterator i = layers.begin(); i != layers.end(); ++i) {
         std::string k = i->first;
-        std::string prefix = "BLOCKS ";
-        prefix += name;
-        prefix += " ";
         if(k.substr(0, prefix.size()) == prefix) {
             BRep_Builder builder;
             TopoDS_Compound comp;
@@ -265,6 +265,8 @@ void DraftDxfRead::AddGraphics() const
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
             std::string k = i->first;
+            if (k == "0") // FreeCAD doesn't like an object name being '0'...
+                k = "LAYER_0";
             std::vector<Part::TopoShape*> v = i->second;
             if(k.substr(0, 6) != "BLOCKS") {
                 for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) { 
