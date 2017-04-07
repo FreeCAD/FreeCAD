@@ -3239,10 +3239,15 @@ class Trimex(Modifier):
 
         # modifying active edge
         if DraftGeomUtils.geomType(edge) == "Line":
-            perp = DraftGeomUtils.vec(edge).cross(Vector(0,0,1))
+            ve = DraftGeomUtils.vec(edge)
             chord = v1.sub(point)
-            proj = DraftVecUtils.project(chord,perp)
-            self.newpoint = Vector.add(point,proj)
+            n = ve.cross(chord)
+            if n.Length == 0:
+                self.newpoint = point
+            else:
+                perp = ve.cross(n)
+                proj = DraftVecUtils.project(chord,perp)
+                self.newpoint = Vector.add(point,proj)
             dist = v1.sub(self.newpoint).Length
             ghost.p1(self.newpoint)
             ghost.p2(v2)
