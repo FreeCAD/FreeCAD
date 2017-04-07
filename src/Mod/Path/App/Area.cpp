@@ -1669,7 +1669,7 @@ TopoDS_Wire Area::toShape(const CCurve &c, const gp_Trsf *trsf) {
             continue;
         }
         gp_Pnt pnext(v.m_p.x,v.m_p.y,0);
-        if(pnext.Distance(pt)<Precision::Confusion())
+        if(pnext.SquareDistance(pt)<Precision::SquareConfusion())
             continue;
         if(v.m_type == 0) {
             mkWire.Add(BRepBuilderAPI_MakeEdge(pt,pnext).Edge());
@@ -1939,8 +1939,8 @@ struct ShapeInfo{
                 DURATION_PLUS(myParams.xd,t);
             }
             if(!done){
-                double d1 = pt.Distance(it->pstart());
-                double d2 = pt.Distance(it->pend());
+                double d1 = pt.SquareDistance(it->pstart());
+                double d2 = pt.SquareDistance(it->pend());
                 if(d1<d2) {
                     d = d1;
                     p = it->pstart();
@@ -1969,6 +1969,7 @@ struct ShapeInfo{
     //Assumes nearest() has been called. Rebased the best wire
     //to begin with the best point. Currently only works with closed wire
     TopoDS_Shape rebaseWire(gp_Pnt &pend, double min_dist) {
+        min_dist *= min_dist;
         BRepBuilderAPI_MakeWire mkWire;
         TopoDS_Shape estart;
         TopoDS_Edge eend;
@@ -1978,7 +1979,8 @@ struct ShapeInfo{
             gp_Pnt pprev(BRep_Tool::Pnt(xp.CurrentVertex()));
 
             //checking the case of bestpoint == wire start
-            if(state==0 && !mySupportEdge && pprev.Distance(myBestPt)<Precision::Confusion()) {
+            if(state==0 && !mySupportEdge && 
+               pprev.SquareDistance(myBestPt)<Precision::SquareConfusion()) {
                 pend = myBestWire->pend();
                 return myBestWire->wire;
             }
@@ -2000,7 +2002,7 @@ struct ShapeInfo{
                 Handle_Geom_Curve curve = BRep_Tool::Curve(edge, first, last);
                 pt = curve->Value(last);
                 bool reversed;
-                if(pprev.Distance(pt)<Precision::Confusion()) {
+                if(pprev.SquareDistance(pt)<Precision::SquareConfusion()) {
                     reversed = true;
                     pt = curve->Value(first);
                 }else
@@ -2016,8 +2018,8 @@ struct ShapeInfo{
                 if(mySupportEdge) {
                     //if best point is on some edge, split the edge in half
                     if(edge.IsEqual(mySupport)) {
-                        double d1 = pprev.Distance(myBestPt);
-                        double d2 = pt.Distance(myBestPt);
+                        double d1 = pprev.SquareDistance(myBestPt);
+                        double d2 = pt.SquareDistance(myBestPt);
 
                         if(d1>min_dist && d2>min_dist) {
                             BRepBuilderAPI_MakeEdge mkEdge1,mkEdge2;
@@ -2070,7 +2072,7 @@ struct ShapeInfo{
                             continue;
                         }
                     }
-                }else if(myBestPt.Distance(pprev)<Precision::Confusion()){
+                }else if(myBestPt.SquareDistance(pprev)<Precision::SquareConfusion()){
                     pend = pprev;
                     // AREA_TRACE("break vertex");
                     //if best point is on some vertex
@@ -2097,7 +2099,7 @@ struct ShapeInfo{
 
     std::list<TopoDS_Shape> sortWires(const gp_Pnt &pstart, gp_Pnt &pend,double min_dist) {
 
-        if(pstart.Distance(myStartPt)>Precision::Confusion())
+        if(pstart.SquareDistance(myStartPt)>Precision::SquareConfusion())
             nearest(pstart);
 
         std::list<TopoDS_Shape> wires;
@@ -2355,7 +2357,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
             double d;
             gp_Pnt pt;
             if(it->myPlanar)
-                d = it->myPln.Distance(pstart);
+                d = it->myPln.SquareDistance(pstart);
             else
                 d = it->nearest(pstart);
             if(first || d<best_d) {
@@ -2565,7 +2567,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         (pTmp.*setter)(0.0);
         (plastTmp.*setter)(0.0);
 
-        if(first||pTmp.Distance(plastTmp)>threshold)
+        if(first||pTmp.SquareDistance(plastTmp)>threshold)
             addG0(verbose,path,plast,p,getter,setter,retraction,clearance,vf,cur_f);
         else
             addG1(verbose,path,plast,p,vf,cur_f);
