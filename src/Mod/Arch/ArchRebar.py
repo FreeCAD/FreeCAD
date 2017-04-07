@@ -35,7 +35,7 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-    
+
 ## @package ArchRebar
 #  \ingroup ARCH
 #  \brief The Rebar object and tools
@@ -82,15 +82,20 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
             host.Armatures = a
     if diameter:
         obj.Diameter = diameter
+        FreeCAD.ActiveDocument.recompute()
     else:
         obj.Diameter = p.GetFloat("RebarDiameter",6)
+        FreeCAD.ActiveDocument.recompute()
     obj.Amount = amount
+    FreeCAD.ActiveDocument.recompute()
     if offset:
         obj.OffsetStart = offset
         obj.OffsetEnd = offset
+        FreeCAD.ActiveDocument.recompute()
     else:
         obj.OffsetStart = p.GetFloat("RebarOffset",30)
         obj.OffsetEnd = p.GetFloat("RebarOffset",30)
+        FreeCAD.ActiveDocument.recompute()
     ArchCommands.fixDAG(obj)
     return obj
 
@@ -185,7 +190,7 @@ class _Rebar(ArchComponent.Component):
                     v = DraftGeomUtils.vec(e).normalize()
                     return e.Vertexes[0].Point,v
         return None,None
-        
+
     def getRebarData(self,obj):
         if len(obj.InList) != 1:
             return
@@ -237,10 +242,10 @@ class _Rebar(ArchComponent.Component):
         return [wires,obj.Diameter.Value/2]
 
     def execute(self,obj):
-        
+
         if self.clone(obj):
             return
-        
+
         if len(obj.InList) != 1:
             return
         if Draft.getType(obj.InList[0]) != "Structure":
