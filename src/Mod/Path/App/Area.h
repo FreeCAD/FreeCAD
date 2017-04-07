@@ -246,6 +246,8 @@ protected:
 
     TopoDS_Shape findPlane(const TopoDS_Shape &shape, gp_Trsf &trsf);
 
+    std::list<TopoDS_Wire> project(const TopoDS_Shape &solid);
+
 public:
     /** Declare all parameters defined in #AREA_PARAMS_ALL as member variable */
     PARAM_ENUM_DECLARE(AREA_PARAMS_ALL)
