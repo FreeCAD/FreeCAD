@@ -33,21 +33,6 @@
 # imports the one and only
 import FreeCAD
 
-def removeFromPath(module_name):
-	"""removes the module from the sys.path. The entry point for imports
-		will therfor always be FreeCAD.
-		eg.: from FreeCAD.Module.submodule import function"""
-	import sys, os
-	paths = sys.path
-	for path in paths:
-		if module_name in path:
-			sys.path.remove(path)
-			return
-	else:
-		Wrn(module_name + " not found in sys.path\n")
-
-FreeCAD._importFromFreeCAD = removeFromPath
-
 
 def InitApplications():
 	try:
