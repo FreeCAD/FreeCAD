@@ -183,17 +183,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Part::Geometry,Base::Persistence)
 Geometry::Geometry()
   : Construction(false)
 {
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    static boost::mt19937 ran;
-    static bool seeded = false;
-    
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(0)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-    
-    tag = gen();
+    createNewTag();
 }
 
 Geometry::~Geometry()
@@ -223,6 +213,21 @@ void Geometry::Restore(Base::XMLReader &reader)
 boost::uuids::uuid Geometry::getTag() const
 {
     return tag;
+}
+
+void Geometry::createNewTag()
+{
+    // Initialize a random number generator, to avoid Valgrind false positives.
+    static boost::mt19937 ran;
+    static bool seeded = false;
+
+    if (!seeded) {
+        ran.seed(static_cast<unsigned int>(std::time(0)));
+        seeded = true;
+    }
+    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
+
+    tag = gen();
 }
 
 // -------------------------------------------------
