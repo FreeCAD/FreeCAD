@@ -109,6 +109,8 @@ public:
     int delConstraintsToExternal();
     /// transfers all contraints of a point to a new point
     int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId);
+    /// Carbon copy another sketch geometry and constraints
+    int carbonCopy(App::DocumentObject * pObj, bool construction = true);
     /// add an external geometry reference
     int addExternal(App::DocumentObject *Obj, const char* SubName);
     /** delete external

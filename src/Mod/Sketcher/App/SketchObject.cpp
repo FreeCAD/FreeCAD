@@ -4143,6 +4143,58 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     return true;
 }
 
+int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
+{
+    if (pObj->getTypeId() != Sketcher::SketchObject::getClassTypeId())
+        return -1;
+    
+    SketchObject * psObj = static_cast<SketchObject *>(pObj);
+    
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+    
+    const std::vector< Sketcher::Constraint * > &cvals = Constraints.getValues();
+    
+    std::vector< Part::Geometry * > newVals(vals);
+    
+    std::vector< Constraint * > newcVals(cvals);
+    
+    int nextgeoid = vals.size();
+    
+    //int nextcid = cvals.size();
+    
+    const std::vector< Part::Geometry * > &svals = psObj->getInternalGeometry();
+    
+    const std::vector< Sketcher::Constraint * > &scvals = psObj->Constraints.getValues();
+    
+    for (std::vector<Part::Geometry *>::const_iterator it=svals.begin(); it != svals.end(); ++it){
+        Part::Geometry *geoNew = (*it)->clone();
+        if(construction) {
+            geoNew->Construction = true;
+        }
+        newVals.push_back(geoNew);
+    }
+    
+    for (std::vector< Sketcher::Constraint * >::const_iterator it= scvals.begin(); it != scvals.end(); ++it) {
+        Sketcher::Constraint *newConstr = (*it)->copy();
+        if( (*it)->First>=0 )
+            newConstr->First += nextgeoid;
+        if( (*it)->Second>=0 )
+            newConstr->Second += nextgeoid;
+        if( (*it)->Third>=0 )
+            newConstr->Third += nextgeoid;
+        
+        newcVals.push_back(newConstr);
+    }
+    
+    Geometry.setValues(newVals);
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+    
+    this->Constraints.setValues(newcVals);
+    
+    return svals.size();
+}
+
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 {
     // so far only externals to the support of the sketch and datum features
