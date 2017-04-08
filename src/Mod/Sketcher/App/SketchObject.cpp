@@ -2006,6 +2006,114 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
     return true;
 }
 
+bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn) const
+{
+    if (rsn)
+        *rsn = rlAllowed;
+    
+    // Only applicable to sketches
+    if (pObj->getTypeId() != Sketcher::SketchObject::getClassTypeId()) {
+        if (rsn)
+            *rsn = rlNotASketch;
+        return false;
+    }
+    
+    // Sketches outside of the Document are NOT allowed
+    if (this->getDocument() != pDoc){
+        if (rsn)
+            *rsn = rlOtherDoc;
+        return false;
+    }
+    
+    //circular reference prevention
+    try {
+        if (!(this->testIfLinkDAGCompatible(pObj))){
+            if (rsn)
+                *rsn = rlCircularReference;
+            return false;
+        }
+    } catch (Base::Exception &e) {
+        Base::Console().Warning("Probably, there is a circular reference in the document. Error: %s\n", e.what());
+        return true; //prohibiting this reference won't remove the problem anyway...
+    }
+    
+    
+    // Note: Checking for the body of the support doesn't work when the support are the three base planes
+    //App::DocumentObject *support = this->Support.getValue();
+    Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
+    Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
+    App::Part* part_this = App::Part::getPartOfObject(this, true);
+    App::Part* part_obj = App::Part::getPartOfObject(pObj, true);
+    if (part_this == part_obj){ //either in the same part, or in the root of document
+        if (body_this == NULL) {
+            return true;
+        } else if (body_this != body_obj) {
+            if (rsn)
+                *rsn = rlOtherBody;
+            return false;
+        }
+    } else {
+        // cross-part link. Disallow, should be done via shapebinders only
+        if (rsn)
+            *rsn = rlOtherPart;
+        return false;
+    }
+    
+    SketchObject * psObj = static_cast<SketchObject *>(pObj);
+    
+    const Rotation & srot = psObj->Placement.getValue().getRotation();
+    const Rotation & lrot = this->Placement.getValue().getRotation();
+    
+    Base::Vector3d snormal(0,0,1);
+    Base::Vector3d sx(1,0,0);
+    Base::Vector3d sy(0,1,0);
+    srot.multVec(snormal, snormal);
+    srot.multVec(sx, sx);
+    srot.multVec(sy, sy);
+    
+    Base::Vector3d lnormal(0,0,1);
+    Base::Vector3d lx(1,0,0);
+    Base::Vector3d ly(0,1,0);
+    lrot.multVec(lnormal, lnormal);
+    lrot.multVec(lx, lx);
+    lrot.multVec(ly, ly);
+    
+    double dot = snormal*lnormal;
+    double dotx = sx * lx;
+    double doty = sy * ly;
+    
+    // the planes of the sketches must be parallel
+    if(dot != 1.0 && dot != -1.0) {
+        if (rsn)
+            *rsn = rlNonParallel;
+        return false;
+    }
+    
+    // the axis must be aligned
+    if( (dotx != 1.0 && dotx != -1.0) || (doty != 1.0 && doty != -1.0)) {
+        if (rsn)
+            *rsn = rlAxesMisaligned;
+        return false;
+    }
+
+    
+    // the origins of the sketches must be aligned or be the same
+    Base::Vector3d ddir = (psObj->Placement.getValue().getPosition() - this->Placement.getValue().getPosition()).Normalize();
+    
+    double alignment = ddir * lnormal;
+    
+    if( (alignment != 1.0 && alignment != -1.0) && (psObj->Placement.getValue().getPosition() != this->Placement.getValue().getPosition()) ){
+        if (rsn)
+            *rsn = rlOriginsMisaligned;
+        return false;
+    }
+    
+    xinv = (dotx == 1.0);
+    yinv = (doty == 1.0);
+
+    return true;
+}
+
 int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId/*=Sketcher::none*/)
 {
     const std::vector< Part::Geometry * > &geovals = getInternalGeometry();
@@ -4145,50 +4253,13 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
 int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
 {
-    if (pObj->getTypeId() != Sketcher::SketchObject::getClassTypeId())
+    // so far only externals to the support of the sketch and datum features
+    bool xinv = false, yinv = false;
+    
+    if (!isCarbonCopyAllowed(pObj->getDocument(), pObj, xinv, yinv))
         return -1;
     
     SketchObject * psObj = static_cast<SketchObject *>(pObj);
-    
-    const Rotation & srot = psObj->Placement.getValue().getRotation();
-    const Rotation & lrot = this->Placement.getValue().getRotation();
-    
-    Base::Vector3d snormal(0,0,1);
-    Base::Vector3d sx(1,0,0);
-    Base::Vector3d sy(0,1,0);
-    srot.multVec(snormal, snormal);
-    srot.multVec(sx, sx);
-    srot.multVec(sy, sy);
-    
-    Base::Vector3d lnormal(0,0,1);
-    Base::Vector3d lx(1,0,0);
-    Base::Vector3d ly(0,1,0);
-    lrot.multVec(lnormal, lnormal);
-    lrot.multVec(lx, lx);
-    lrot.multVec(ly, ly);
-    
-    double dot = snormal*lnormal;
-    double dotx = sx * lx;
-    double doty = sy * ly;
-
-    // the planes of the sketches must be parallel
-    if(dot != 1.0 && dot != -1.0)
-        return -2;
-    
-    // the axis must be aligned
-    if(dotx != 1.0 && dotx != -1.0)
-        return -3;
-    
-    if(doty != 1.0 && doty != -1.0)
-        return -4;
-    
-    // the origins of the sketches must be aligned or be the same
-    Base::Vector3d ddir = (psObj->Placement.getValue().getPosition() - this->Placement.getValue().getPosition()).Normalize();
-    
-    double alignment = ddir * lnormal;
-    
-    if( (alignment != 1.0 && alignment != -1.0) && (psObj->Placement.getValue().getPosition() != this->Placement.getValue().getPosition()) )
-        return -5;
     
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
     
@@ -4262,7 +4333,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
             if ((*it)->isDriving) {
                 App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
                 
-                if(dotx == 1) {
+                if(xinv) {
                     boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
                     setExpression(Constraints.createPath(nextcid), expr);
                 }
@@ -4279,7 +4350,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
             if ((*it)->isDriving) {
                 App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
 
-                if(doty == 1) {
+                if(yinv) {
                     boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
                     setExpression(Constraints.createPath(nextcid), expr);
                 }
