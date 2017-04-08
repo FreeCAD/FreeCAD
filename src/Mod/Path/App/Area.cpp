@@ -2592,8 +2592,10 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         addGCode(path,"G18");
     else if(arc_plane==ArcPlaneYZ)
         addGCode(path,"G19");
-    else
+    else {
         currentArcPlane=ArcPlaneXY;
+        addGCode(path,"G17");
+    }
     
     threshold = fabs(threshold);
     if(threshold < Precision::Confusion())
