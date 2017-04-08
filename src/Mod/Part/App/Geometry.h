@@ -87,6 +87,8 @@ public:
     bool Construction;
     /// returns the tag of the geometry object
     boost::uuids::uuid getTag() const;
+    /// create a new tag for the geometry object
+    void createNewTag();
 
 protected:
     Geometry();
