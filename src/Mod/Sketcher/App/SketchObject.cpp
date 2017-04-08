@@ -4150,6 +4150,46 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     
     SketchObject * psObj = static_cast<SketchObject *>(pObj);
     
+    const Rotation & srot = psObj->Placement.getValue().getRotation();
+    const Rotation & lrot = this->Placement.getValue().getRotation();
+    
+    Base::Vector3d snormal(0,0,1);
+    Base::Vector3d sx(1,0,0);
+    Base::Vector3d sy(0,1,0);
+    srot.multVec(snormal, snormal);
+    srot.multVec(sx, sx);
+    srot.multVec(sy, sy);
+    
+    Base::Vector3d lnormal(0,0,1);
+    Base::Vector3d lx(1,0,0);
+    Base::Vector3d ly(0,1,0);
+    lrot.multVec(lnormal, lnormal);
+    lrot.multVec(lx, lx);
+    lrot.multVec(ly, ly);
+    
+    double dot = snormal*lnormal;
+    double dotx = sx * lx;
+    double doty = sy * ly;
+
+    // the planes of the sketches must be parallel
+    if(dot != 1.0 && dot != -1.0)
+        return -2;
+    
+    // the axis must be aligned
+    if(dotx != 1.0 && dotx != -1.0)
+        return -3;
+    
+    if(doty != 1.0 && doty != -1.0)
+        return -4;
+    
+    // the origins of the sketches must be aligned or be the same
+    Base::Vector3d ddir = (psObj->Placement.getValue().getPosition() - this->Placement.getValue().getPosition()).Normalize();
+    
+    double alignment = ddir * lnormal;
+    
+    if( (alignment != 1.0 && alignment != -1.0) && (psObj->Placement.getValue().getPosition() != this->Placement.getValue().getPosition()) )
+        return -5;
+    
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
     
     const std::vector< Sketcher::Constraint * > &cvals = Constraints.getValues();
@@ -4196,8 +4236,6 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     for (std::vector< Sketcher::Constraint * >::const_iterator it= scvals.begin(); it != scvals.end(); ++it,nextcid++,sourceid++) {
 
         if ((*it)->Type == Sketcher::Distance ||
-            (*it)->Type == Sketcher::DistanceX || 
-            (*it)->Type == Sketcher::DistanceY ||
             (*it)->Type == Sketcher::Radius || 
             (*it)->Type == Sketcher::Angle ||
             (*it)->Type == Sketcher::SnellsLaw) {
@@ -4210,6 +4248,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
                  *           
                  *           if (expr_info.expression)*/
                 //App::Expression * expr = parse(this, const std::string& buffer);
+                
                 boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
                 setExpression(Constraints.createPath(nextcid), expr);
                 
@@ -4217,6 +4256,40 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
             }
             
         }
+        else if ((*it)->Type == Sketcher::DistanceX) {
+            // then we link its value to the parent 
+            // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
+            if ((*it)->isDriving) {
+                App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
+                
+                if(dotx == 1) {
+                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
+                    setExpression(Constraints.createPath(nextcid), expr);
+                }
+                else {
+                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, std::string(1,'-') + spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
+                    setExpression(Constraints.createPath(nextcid), expr);
+                }
+            }
+            
+        }
+        else if ((*it)->Type == Sketcher::DistanceY ) {
+            // then we link its value to the parent 
+            // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
+            if ((*it)->isDriving) {
+                App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
+
+                if(doty == 1) {
+                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
+                    setExpression(Constraints.createPath(nextcid), expr);
+                }
+                else {
+                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, std::string(1,'-') + spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
+                    setExpression(Constraints.createPath(nextcid), expr);
+                }
+            }
+            
+        }        
     }
     
     return svals.size();
