@@ -5260,11 +5260,13 @@ class _Shape2DView(_DraftObject):
         obj.addProperty("App::PropertyIntegerList","FaceNumbers","Draft",QT_TRANSLATE_NOOP("App::Property","The indices of the faces to be projected in Individual Faces mode"))
         obj.addProperty("App::PropertyBool","HiddenLines","Draft",QT_TRANSLATE_NOOP("App::Property","Show hidden lines"))
         obj.addProperty("App::PropertyBool","Tessellation","Draft",QT_TRANSLATE_NOOP("App::Property","Tessellate Ellipses and BSplines into line segments"))
+        obj.addProperty("App::PropertyBool","InPlace","Draft",QT_TRANSLATE_NOOP("App::Property","For Cutlines and Cutfaces modes, this leaves the faces at the cut location"))
         obj.addProperty("App::PropertyFloat","SegmentLength","Draft",QT_TRANSLATE_NOOP("App::Property","Length of line segments if tessellating Ellipses or BSplines into line segments"))
         obj.Projection = Vector(0,0,1)
         obj.ProjectionMode = ["Solid","Individual Faces","Cutlines","Cutfaces"]
         obj.HiddenLines = False
         obj.Tessellation = False
+        obj.InPlace = True
         obj.SegmentLength = .05
         _DraftObject.__init__(self,obj,"Shape2DView")
 
@@ -5309,6 +5311,8 @@ class _Shape2DView(_DraftObject):
                                 shapes.append(o.Shape.copy())
                     cutp,cutv,iv =Arch.getCutVolume(obj.Base.Shape,shapes)
                     cuts = []
+                    opl = FreeCAD.Placement(obj.Base.Placement)
+                    proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
                     if obj.ProjectionMode == "Solid":
                         for sh in shapes:
                             if cutv:
@@ -5329,8 +5333,6 @@ class _Shape2DView(_DraftObject):
                                 else:
                                     cuts.append(sh.copy())
                         comp = Part.makeCompound(cuts)
-                        opl = FreeCAD.Placement(obj.Base.Placement)
-                        proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
                         obj.Shape = self.getProjected(obj,comp,proj)
                     elif obj.ProjectionMode in ["Cutlines","Cutfaces"]:
                         for sh in shapes:
@@ -5339,6 +5341,9 @@ class _Shape2DView(_DraftObject):
                             c = sh.section(cutp)
                             faces = []
                             if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
+                                if hasattr(obj,"InPlace"):
+                                    if not obj.InPlace:
+                                        c = self.getProjected(obj,c,proj)
                                 wires = DraftGeomUtils.findWires(c.Edges)
                                 for w in wires:
                                     if w.isClosed():
@@ -5382,6 +5387,8 @@ class _Shape2DView(_DraftObject):
                                 views.append(self.getProjected(obj,f,obj.Projection))
                             if views:
                                 obj.Shape = Part.makeCompound(views)
+                    else:
+                        FreeCAD.Console.PrintWarning(obj.ProjectionMode+" mode not implemented\n")
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
