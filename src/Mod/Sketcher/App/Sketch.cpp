@@ -2476,7 +2476,7 @@ int Sketch::addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int 
 
         GCS::BSpline &b = BSplines[Geoms[geoId1].index];
         
-        assert( poleindex < b.poles.size() && poleindex >= 0 );
+        assert(poleindex < static_cast<int>(b.poles.size()) && poleindex >= 0);
 
         int tag = ++ConstraintsCounter;
         GCSsys.addConstraintInternalAlignmentBSplineControlPoint(b, c, poleindex, tag);
