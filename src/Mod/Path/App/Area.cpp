@@ -434,6 +434,19 @@ void Area::addToBuild(CArea &area, const TopoDS_Shape &shape) {
     }
 }
 
+static inline void getEndPoints(const TopoDS_Edge &e, gp_Pnt &p1, gp_Pnt &p2) {
+    p1 = BRep_Tool::Pnt(TopExp::FirstVertex(e));
+    p2 = BRep_Tool::Pnt(TopExp::LastVertex(e));
+}
+
+static inline void getEndPoints(const TopoDS_Wire &wire, gp_Pnt &p1, gp_Pnt &p2) {
+    BRepTools_WireExplorer xp(wire);
+    p1 = BRep_Tool::Pnt(TopoDS::Vertex(xp.CurrentVertex()));
+    for(;xp.More();xp.Next());
+    p2 = BRep_Tool::Pnt(TopoDS::Vertex(xp.CurrentVertex()));
+}
+
+
 struct WireJoiner {
 
     typedef bg::model::box<gp_Pnt> Box;
@@ -451,15 +464,6 @@ struct WireJoiner {
         bound.Get(xMin, yMin, zMin, xMax, yMax, zMax);
         box = Box(gp_Pnt(xMin,yMin,zMin), gp_Pnt(xMax,yMax,zMax));
         return true;
-    }
-
-    static void getEndPoints(const TopoDS_Edge &e, gp_Pnt &p1, gp_Pnt &p2) {
-        p1 = BRep_Tool::Pnt(TopExp::FirstVertex((e)));
-        p2 = BRep_Tool::Pnt(TopExp::LastVertex((e)));
-        // TopExp_Explorer xp(e,TopAbs_VERTEX);
-        // p1 = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
-        // xp.Next();
-        // p2 = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
     }
 
     struct EdgeInfo {
@@ -1780,6 +1784,7 @@ struct ShapeParams {
     double abscissa;
     int k;
     short orientation;
+    short direction;
 #ifdef AREA_TIME_ENABLE
     TIME_DURATION qd; //rtree query duration
     TIME_DURATION bd; //rtree build duration
@@ -1787,8 +1792,8 @@ struct ShapeParams {
     TIME_DURATION xd; //BRepExtrema_DistShapeShape duration
 #endif
 
-    ShapeParams(double _a, int _k, short o)
-        :abscissa(_a),k(_k),orientation(o)
+    ShapeParams(double _a, int _k, short o, short d)
+        :abscissa(_a),k(_k),orientation(o),direction(d)
 #ifdef AREA_TIME_ENABLE
         ,qd(0),bd(0),rd(0),xd(0)
 #endif
@@ -1824,18 +1829,46 @@ struct GetWires {
         }
 
         TIME_INIT(t);
-        BRepTools_WireExplorer xp(info.wire);
         if(params.abscissa<Precision::Confusion() || !info.isClosed) {
-            info.points.push_back(BRep_Tool::Pnt(xp.CurrentVertex()));
-            for(;xp.More();xp.Next());
+            gp_Pnt p1,p2;
+            getEndPoints(info.wire,p1,p2);
+            if(!info.isClosed && params.direction!=Area::DirectionNone) {
+                bool reverse = false;
+                switch(params.direction) {
+                case Area::DirectionXPositive:
+                    reverse = p1.X()>p2.X();
+                    break;
+                case Area::DirectionXNegative:
+                    reverse = p1.X()<p2.X();
+                    break;
+                case Area::DirectionYPositive:
+                    reverse = p1.Y()>p2.Y();
+                    break;
+                case Area::DirectionYNegative:
+                    reverse = p1.Y()<p2.Y();
+                    break;
+                case Area::DirectionZPositive:
+                    reverse = p1.Z()>p2.Z();
+                    break;
+                case Area::DirectionZNegative:
+                    reverse = p1.Z()<p2.Z();
+                    break;
+                }
+                if(reverse) {
+                    info.wire.Reverse();
+                    std::swap(p1,p2);
+                }
+            }
             // We don't add in-between vertices of an open wire, because we
             // haven't implemented open wire breaking yet.
-            info.points.push_back(BRep_Tool::Pnt(xp.CurrentVertex()));
+            info.points.push_back(p1);
+            if(params.direction!=Area::DirectionNone)
+                info.points.push_back(p2);
         } else {
             // For closed wires, we are can easily rebase the wire, so we
             // discretize the wires to spatial index it in order to accelerate
             // nearest point searching
-            for(;xp.More();xp.Next()) {
+            for(BRepTools_WireExplorer xp(info.wire);xp.More();xp.Next()) {
 
                 // push the head point
                 info.points.push_back(BRep_Tool::Pnt(xp.CurrentVertex()));
@@ -1940,15 +1973,21 @@ struct ShapeInfo{
             }
             if(!done){
                 double d1 = pt.SquareDistance(it->pstart());
-                double d2 = pt.SquareDistance(it->pend());
-                if(d1<d2) {
+                if(myParams.direction==Area::DirectionNone) {
                     d = d1;
                     p = it->pstart();
                     is_start = true;
                 }else{
-                    d = d2;
-                    p = it->pend();
-                    is_start = false;
+                    double d2 = pt.SquareDistance(it->pend());
+                    if(d1<d2) {
+                        d = d1;
+                        p = it->pstart();
+                        is_start = true;
+                    }else{
+                        d = d2;
+                        p = it->pend();
+                        is_start = false;
+                    }
                 }
             }
             if(!first && d>=best_d) continue;
@@ -2049,9 +2088,9 @@ struct ShapeInfo{
                                 pend = myBestPt;
                                 estart = mySupport;
                                 state = 1;
-                                AREA_TRACE((reversed?"reversed ":"")<<"edge split "<<AREA_XYZ(pprev)<<", " << 
-                                        AREA_XYZ(myBestPt)<< ", "<<AREA_XYZ(pt)<<", "<<d1<<", "<<d2 <<", ("<<
-                                        first<<", " << myBestParameter << ", " << last<<')');
+                                // AREA_TRACE((reversed?"reversed ":"")<<"edge split "<<AREA_XYZ(pprev)<<", " <<
+                                //         AREA_XYZ(myBestPt)<< ", "<<AREA_XYZ(pt)<<", "<<d1<<", "<<d2 <<", ("<<
+                                //         first<<", " << myBestParameter << ", " << last<<')');
                                 continue;
                             }
                             AREA_WARN((reversed?"reversed ":"")<<"edge split failed "<<AREA_XYZ(pprev)<<", " << 
@@ -2220,9 +2259,10 @@ struct ShapeInfoBuilder {
 struct WireOrienter {
     std::list<TopoDS_Shape> &wires;
     short orientation;
+    short direction;
 
-    WireOrienter(std::list<TopoDS_Shape> &ws, short o)
-        :wires(ws),orientation(o)
+    WireOrienter(std::list<TopoDS_Shape> &ws, short o, short d)
+        :wires(ws),orientation(o),direction(d)
     {}
 
     void operator()(const TopoDS_Shape &shape, int type) {
@@ -2230,11 +2270,42 @@ struct WireOrienter {
             wires.push_back(shape);
         else
             wires.push_back(BRepBuilderAPI_MakeWire(TopoDS::Edge(shape)).Wire());
-        if(orientation!=Area::OrientationNone && BRep_Tool::IsClosed(wires.back())) {
-            int dir = Area::getWireDirection(wires.back());
-            if((dir>0&&orientation==Area::OrientationCW) || 
-               (dir<0&&orientation==Area::OrientationCCW))
-                wires.back().Reverse();
+
+        TopoDS_Shape &wire = wires.back();
+
+        if(BRep_Tool::IsClosed(wire)) {
+            if(orientation!=Area::OrientationNone) {
+                int dir = Area::getWireDirection(wire);
+                if((dir>0&&orientation==Area::OrientationCW) || 
+                (dir<0&&orientation==Area::OrientationCCW))
+                    wire.Reverse();
+            }
+        }else if(direction!=Area::DirectionNone) {
+            gp_Pnt p1,p2;
+            getEndPoints(TopoDS::Wire(wire),p1,p2);
+            bool reverse = false;
+            switch(direction) {
+            case Area::DirectionXPositive:
+                reverse = p1.X()>p2.X();
+                break;
+            case Area::DirectionXNegative:
+                reverse = p1.X()<p2.X();
+                break;
+            case Area::DirectionYPositive:
+                reverse = p1.Y()>p2.Y();
+                break;
+            case Area::DirectionYNegative:
+                reverse = p1.Y()<p2.Y();
+                break;
+            case Area::DirectionZPositive:
+                reverse = p1.Z()>p2.Z();
+                break;
+            case Area::DirectionZNegative:
+                reverse = p1.Z()<p2.Z();
+                break;
+            }
+            if(reverse)
+                wire.Reverse();
         }
     }
 };
@@ -2251,12 +2322,12 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
         for(auto &shape : shapes) {
             if(!shape.IsNull())
                 foreachSubshape(shape,
-                    WireOrienter(wires,orientation), TopAbs_WIRE);
+                    WireOrienter(wires,orientation,direction), TopAbs_WIRE);
         }
         return std::move(wires);
     }
 
-    ShapeParams rparams(abscissa,nearest_k>0?nearest_k:1,orientation);
+    ShapeParams rparams(abscissa,nearest_k>0?nearest_k:1,orientation,direction);
     std::list<ShapeInfo> shape_list;
 
     TIME_INIT2(t,t1);

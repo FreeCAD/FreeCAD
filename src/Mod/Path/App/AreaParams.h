@@ -199,7 +199,9 @@
     ((short, nearest_k, NearestK, 3, "Nearest k sampling vertices are considered during sorting"))\
     ((enum, orientation, Orientation, 0, "Enforce loop orientation\n"\
         "Note the CW/CCW here specifies the outer wire orientation. For inner wires (holes), the\n"\
-        "enforced orientation is reversed", (None)(CW)(CCW)))
+        "enforced orientation is reversed", (None)(CW)(CCW)))\
+    ((enum, direction, Direction, 0, "Enforce open path direction",\
+        (None)(XPositive)(XNegative)(YPositive)(YNegative)(ZPositive)(ZNegative)))
        
 /** Area path generation parameters */
 #define AREA_PARAMS_PATH \
