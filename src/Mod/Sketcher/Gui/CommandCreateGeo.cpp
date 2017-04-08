@@ -6203,7 +6203,8 @@ namespace SketcherGui {
             this->notAllowedReason = "";
             Sketcher::SketchObject::eReasonList msg;
             // Reusing code: All good reasons not to allow a carbon copy
-            if (!sketch->isExternalAllowed(pDoc, pObj, &msg)){
+            bool xinv = false, yinv = false;
+            if (!sketch->isCarbonCopyAllowed(pDoc, pObj, xinv, yinv, &msg)){
                 switch(msg){
                     case Sketcher::SketchObject::rlCircularReference:
                         this->notAllowedReason = QT_TR_NOOP("Carbon copy would cause a circular dependency.");
@@ -6217,17 +6218,22 @@ namespace SketcherGui {
                     case Sketcher::SketchObject::rlOtherPart:
                         this->notAllowedReason = QT_TR_NOOP("This object belongs to another part.");
                         break;
+                    case Sketcher::SketchObject::rlNonParallel:
+                        this->notAllowedReason = QT_TR_NOOP("The selected sketch is not parallel to this sketch.");
+                        break;
+                    case Sketcher::SketchObject::rlAxesMisaligned:
+                        this->notAllowedReason = QT_TR_NOOP("The XY axes of the selected sketch do not have the same direction as this sketch.");
+                        break;
+                    case Sketcher::SketchObject::rlOriginsMisaligned:
+                        this->notAllowedReason = QT_TR_NOOP("The origin of the selected sketch is not aligned with the origin of this sketch.");
+                        break;
                     default:
                         break;
                 }
                 return false;
             }
             // Carbon copy only works on sketchs that do not disallowed (e.g. would produce a circular reference)
-            if (pObj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
-                return true;
-                }
-
-            return  false;
+            return  true;
         }
     };
 };
@@ -6330,7 +6336,7 @@ static const char *cursor_carboncopy[]={
             if (msg.Type == Gui::SelectionChanges::AddSelection) {
                 App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
                 if (obj == NULL)
-                    throw Base::Exception("Sketcher: External geometry: Invalid object in selection");
+                    throw Base::Exception("Sketcher: Carbon Copy: Invalid object in selection");
                 
                 if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
 
@@ -6348,11 +6354,6 @@ static const char *cursor_carboncopy[]={
                         if(autoRecompute)
                             Gui::Command::updateActive();
                         else {
-                            // adding external geometry does not require a solve() per se (the DoF is the same), 
-                            // however a solve is required to update the amount of solver geometry, because we only
-                            // redraw a changed Sketch if the solver geometry amount is the same as the SkethObject
-                            // geometry amount (as this avoids other issues).
-                            // This solver is a very low cost one anyway (there is actually nothing to solve).
                             static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
                         }
                         
