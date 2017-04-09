@@ -230,6 +230,14 @@ void Geometry::createNewTag()
     tag = gen();
 }
 
+void Geometry::assignTag(const Part::Geometry * geo)
+{
+    if(geo->getTypeId() == this->getTypeId())
+        this->tag = geo->tag;
+    else
+        throw Base::TypeError("Geometry tag can not be assigned as geometry types do not match.");
+}
+
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomPoint,Part::Geometry)
