@@ -642,7 +642,7 @@ int SketchObject::addGeometry(const Part::Geometry *geo, bool construction/*=fal
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
     std::vector< Part::Geometry * > newVals(vals);
-    Part::Geometry *geoNew = geo->clone();
+    Part::Geometry *geoNew = geo->copy();
     
     if(geoNew->getTypeId() != Part::GeomPoint::getClassTypeId())
         geoNew->Construction = construction;
