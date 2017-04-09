@@ -98,13 +98,18 @@
  * */
 #define AREA_PARAMS_POCKET \
     ((enum,mode,PocketMode,0,"Selects the pocket toolpath pattern",\
-        (None)(ZigZag)(Offset)(Spiral)(ZigZagOffset)))\
+        (None)(ZigZag)(Offset)(Spiral)(ZigZagOffset)(Line)(Grid)(Triangle)))\
 	((double,tool_radius,ToolRadius,1.0,"Tool radius for pocketing",App::PropertyLength))\
 	((double,extra_offset,PocketExtraOffset,0.0,"Extra offset for pocketing",App::PropertyDistance))\
 	((double,stepover,PocketStepover,0.0,\
         "Cutter diameter to step over on each pass. If =0, use ToolRadius.",App::PropertyLength))\
 	((bool,from_center,FromCenter,true,"Start pocketing from center"))\
-	((double,zig_angle,ZigAngle,45,"Zig angle in degree",App::PropertyAngle))
+	((double,angle,Angle,45,"Pattern angle in degree",App::PropertyAngle))\
+	((double,angle_shift,AngleShift,0.0,"Pattern angle shift for each section", App::PropertyAngle))\
+	((double,shift,Shift,0.0,"Pattern shift distance for each section.\n"\
+        "The pocket patter will be shifted in othgnal direction by this amount for each section.\n"\
+        "This gives a 3D pattern mainly for 3D printing. The shift only applies to 'Offset', 'Grid'\n"\
+        "and 'Triangle'", App::PropertyDistance))
 
 #define AREA_PARAMS_POCKET_CONF \
     ((bool,thicken,Thicken,false,"Thicken the resulting wires with ToolRadius"))
