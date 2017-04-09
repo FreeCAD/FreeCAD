@@ -98,6 +98,9 @@ void makeTangentToArcOfParabolaviaNewPoint(const Sketcher::SketchObject* Obj,
                                                        int geoId1,
                                                        int geoId2
 );
+
+std::string getStrippedPythonExceptionString(const Base::Exception);
+
 }
 #endif // SKETCHERGUI_DrawSketchHandler_H
 
