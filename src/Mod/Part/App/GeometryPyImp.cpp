@@ -208,7 +208,7 @@ PyObject* GeometryPy::copy(PyObject *args)
         Part::Geometry* clone = static_cast<Part::Geometry*>(geompy->_pcTwinPointer);
         delete clone;
     }
-    geompy->_pcTwinPointer = geom->clone();
+    geompy->_pcTwinPointer = geom->copy();
     return cpy;
 }
 
