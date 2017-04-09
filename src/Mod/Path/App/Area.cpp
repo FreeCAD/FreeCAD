@@ -1391,7 +1391,7 @@ TopoDS_Shape Area::toShape(CArea &area, short fill) {
             TopoDS_Compound compound;\
             builder.MakeCompound(compound);\
             for(shared_ptr<Area> area : mySections){\
-                const TopoDS_Shape &s = area->_op(-1, ## __VA_ARGS__);\
+                const TopoDS_Shape &s = area->_op(_index, ## __VA_ARGS__);\
                 if(s.IsNull()) continue;\
                 builder.Add(compound,s);\
             }\
@@ -1399,7 +1399,7 @@ TopoDS_Shape Area::toShape(CArea &area, short fill) {
                 return compound;\
             return TopoDS_Shape();\
         }\
-        return mySections[_index]->_op(-1, ## __VA_ARGS__);\
+        return mySections[_index]->_op(_index, ## __VA_ARGS__);\
     }\
 }while(0)
 
@@ -1420,14 +1420,14 @@ TopoDS_Shape Area::getShape(int index) {
             myShapeDone = true;
             return myShape;
         }
-        myShape = makePocket(-1,PARAM_FIELDS(AREA_MY,AREA_PARAMS_POCKET));
+        myShape = makePocket(index,PARAM_FIELDS(AREA_MY,AREA_PARAMS_POCKET));
         myShapeDone = true;
         return myShape;
     }
 
     // if no pocket, do offset or thicken
     if(myParams.PocketMode == PocketModeNone){
-        myShape = makeOffset(-1,PARAM_FIELDS(AREA_MY,AREA_PARAMS_OFFSET));
+        myShape = makeOffset(index,PARAM_FIELDS(AREA_MY,AREA_PARAMS_OFFSET));
         myShapeDone = true;
         return myShape;
     }
@@ -1622,8 +1622,35 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
     AREA_SECTION(makePocket,index,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_POCKET));
 
     TIME_INIT(t);
+    bool done = false;
 
+    if(index>=0) {
+        if(fabs(angle_shift) >= Precision::Confusion())
+            angle += index*angle_shift;
+
+        if(fabs(shift)>=Precision::Confusion())
+            shift *= index;
+    }
+
+    if(angle<-360.0) 
+        angle += ceil(fabs(angle)/360.0)*360.0;
+    else if(angle>360.0)
+        angle -= floor(angle/360.0)*360.0;
+    else if(angle<0.0)
+        angle += 360.0;
+
+    if(shift<-stepover)
+        shift += ceil(fabs(shift)/stepover)*stepover;
+    else if(shift>stepover)
+        shift -= floor(shift/stepover)*stepover;
+    else if(shift<0.0)
+        shift += stepover;
+
+    CAreaConfig conf(myParams);
+
+    CArea out;
     PocketMode pm;
+
     switch(mode) {
     case Area::PocketModeZigZag:
         pm = ZigZagPocketMode;
@@ -1633,30 +1660,81 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         break;
     case Area::PocketModeOffset: {
         PARAM_DECLARE_INIT(PARAM_FNAME,AREA_PARAMS_OFFSET);
-        Offset = -tool_radius-extra_offset;
+        Offset = -tool_radius-extra_offset-shift;
         ExtraPass = -1;
         Stepover = -stepover;
         return makeOffset(index,PARAM_FIELDS(PARAM_FNAME,AREA_PARAMS_OFFSET));
     }case Area::PocketModeZigZagOffset:
         pm = ZigZagThenSingleOffsetPocketMode;
         break;
-    default:
+    case Area::PocketModeLine:
+    case Area::PocketModeGrid:
+    case Area::PocketModeTriangle:{
+        CBox2D box;
+        myArea->GetBox(box);
+        if(!box.m_valid)
+            throw Base::ValueError("failed to get bound box");
+        double angles[4];
+        int count=1;
+        angles[0] = 0.0;
+        if(mode == Area::PocketModeGrid){
+            angles[1]=90.0;
+            count=2;
+            if(shift<Precision::Confusion()){
+                count=4;
+                angles[2]=180.0;
+                angles[3]=270.0;
+            }
+        }else if(mode == Area::PocketModeTriangle) {
+            count=3;
+            angles[1]=120;
+            angles[2]=240;
+        }else
+            shift = 0.0; //Line pattern does not support shift
+        Point center(box.Centre());
+        double r = box.Radius()+stepover;
+        int steps = (int)ceil(r*2.0/stepover);
+        for(int i=0;i<count;++i) {
+            double a = angle + angles[i];
+            if(a>360.0) a-=360.0;
+            double offset = -r+shift;
+            for(int j=0;j<steps;++j,offset+=stepover) {
+                Point p1(-r,offset),p2(r,offset);
+                if(a > Precision::Confusion()) {
+                    double r = a*M_PI/180.0;
+                    p1.Rotate(r);
+                    p2.Rotate(r);
+                }
+                out.m_curves.emplace_back();
+                CCurve &curve = out.m_curves.back();
+                curve.m_vertices.emplace_back(p1+center);
+                curve.m_vertices.emplace_back(p2+center);
+            }
+        }
+        PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_CLIPPER_FILL);
+        out.Clip(toClipperOp(OperationIntersection),myArea.get(), SubjectFill,ClipFill);
+        done = true;
+        break;
+    }default:
         throw Base::ValueError("unknown poket mode");
     }
 
-    CAreaConfig conf(myParams);
-    CAreaPocketParams params(
-            tool_radius,extra_offset,stepover,from_center,pm,zig_angle);
-    CArea in(*myArea),out;
-    // MakePcoketToolPath internally uses libarea Offset which somehow demands
-    // reorder before input, otherwise nothing is shown.
-    in.Reorder();
-    in.MakePocketToolpath(out.m_curves,params);
+    if(!done) {
+        CAreaPocketParams params(
+                tool_radius,extra_offset,stepover,from_center,pm,angle);
+        CArea in(*myArea),out;
+        // MakePcoketToolPath internally uses libarea Offset which somehow demands
+        // reorder before input, otherwise nothing is shown.
+        in.Reorder();
+        in.MakePocketToolpath(out.m_curves,params);
+    }
 
     TIME_PRINT(t,"makePocket");
 
     if(myParams.Thicken){
+        TIME_INIT(t);
         out.Thicken(tool_radius);
+        TIME_PRINT(t,"thicken");
         return toShape(out,FillFace);
     }else
         return toShape(out,FillNone);
