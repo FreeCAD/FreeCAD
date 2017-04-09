@@ -99,6 +99,7 @@ SketchObject::SketchObject()
     ADD_PROPERTY_TYPE(ExternalGeometry,(0,0),"Sketch",(App::PropertyType)(App::Prop_None),"Sketch external geometry");
 
     allowOtherBody = true;
+    allowUnaligned = true;
 
     for (std::vector<Part::Geometry *>::iterator it=ExternalGeo.begin(); it != ExternalGeo.end(); ++it)
         if (*it) delete *it;
@@ -2083,14 +2084,14 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
     double doty = sy * ly;
     
     // the planes of the sketches must be parallel
-    if(dot != 1.0 && dot != -1.0) {
+    if(!allowUnaligned && dot != 1.0 && dot != -1.0) {
         if (rsn)
             *rsn = rlNonParallel;
         return false;
     }
     
     // the axis must be aligned
-    if( (dotx != 1.0 && dotx != -1.0) || (doty != 1.0 && doty != -1.0)) {
+    if(!allowUnaligned && ((dotx != 1.0 && dotx != -1.0) || (doty != 1.0 && doty != -1.0))) {
         if (rsn)
             *rsn = rlAxesMisaligned;
         return false;
@@ -2102,14 +2103,14 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
     
     double alignment = ddir * lnormal;
     
-    if( (alignment != 1.0 && alignment != -1.0) && (psObj->Placement.getValue().getPosition() != this->Placement.getValue().getPosition()) ){
+    if(!allowUnaligned && (alignment != 1.0 && alignment != -1.0) && (psObj->Placement.getValue().getPosition() != this->Placement.getValue().getPosition()) ){
         if (rsn)
             *rsn = rlOriginsMisaligned;
         return false;
     }
     
-    xinv = (dotx == 1.0);
-    yinv = (doty == 1.0);
+    xinv = allowUnaligned?false:(dotx == 1.0);
+    yinv = allowUnaligned?false:(doty == 1.0);
 
     return true;
 }

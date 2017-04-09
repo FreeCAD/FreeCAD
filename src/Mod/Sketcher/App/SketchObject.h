@@ -302,6 +302,8 @@ public:
 
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;
+    /// Flag to allow carbon copy from misaligned geometry
+    bool allowUnaligned;
 
     enum eReasonList{
         rlAllowed,

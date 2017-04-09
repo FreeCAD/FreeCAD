@@ -6199,6 +6199,7 @@ namespace SketcherGui {
             
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
             sketch->allowOtherBody = false;
+            sketch->allowUnaligned = (QApplication::keyboardModifiers() == Qt::ControlModifier);
             
             this->notAllowedReason = "";
             Sketcher::SketchObject::eReasonList msg;
@@ -6219,13 +6220,13 @@ namespace SketcherGui {
                         this->notAllowedReason = QT_TR_NOOP("This object belongs to another part.");
                         break;
                     case Sketcher::SketchObject::rlNonParallel:
-                        this->notAllowedReason = QT_TR_NOOP("The selected sketch is not parallel to this sketch.");
+                        this->notAllowedReason = QT_TR_NOOP("The selected sketch is not parallel to this sketch. Hold Ctrl to allow non-parallel sketchs.");
                         break;
                     case Sketcher::SketchObject::rlAxesMisaligned:
-                        this->notAllowedReason = QT_TR_NOOP("The XY axes of the selected sketch do not have the same direction as this sketch.");
+                        this->notAllowedReason = QT_TR_NOOP("The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl to disregard it.");
                         break;
                     case Sketcher::SketchObject::rlOriginsMisaligned:
-                        this->notAllowedReason = QT_TR_NOOP("The origin of the selected sketch is not aligned with the origin of this sketch.");
+                        this->notAllowedReason = QT_TR_NOOP("The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl to disregard it.");
                         break;
                     default:
                         break;
