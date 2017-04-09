@@ -76,10 +76,14 @@ public:
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
-
+    /// returns a copy of this object having a new randomly generated tag. If you also want to copy the tag, you may use clone() instead.
+    /// For creation of geometry with other handles, with or without the same tag, you may use the constructors and the sethandle functions.
+    /// The tag of a geometry can be copied to another geometry using the assignTag function.
     virtual Geometry *copy(void) const = 0;
     /// returns a cloned object. A cloned object has the same tag (see getTag) as the original object.
-    /// If you want a clone with another handle, it is possible to clone an object and then assign another handle.
+    /// if you want a copy not having the same tag, you can use copy() instead.
+    /// If you want a clone with another geometry handle, it is possible to clone an object and then assign another handle or to create an object
+    /// via constructor and use assignTag to assign the tag of the other geometry.
     /// If you do not desire to have the same tag, then a copy can be performed by using a constructor (which will generate another tag)
     /// and then, if necessary (e.g. if the constructor did not take a handle as a parameter), set a new handle.
     virtual Geometry *clone(void) const = 0;
@@ -91,6 +95,8 @@ public:
     boost::uuids::uuid getTag() const;
     /// create a new tag for the geometry object
     void createNewTag();
+    /// copies the tag from the geometry passed as a parameter to this object
+    void assignTag(const Part::Geometry *);
 
 protected:
     Geometry();
