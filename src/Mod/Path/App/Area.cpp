@@ -554,7 +554,11 @@ struct WireJoiner {
         if(BRep_Tool::IsClosed(e)){
             BRepBuilderAPI_MakeWire mkWire;
             mkWire.Add(e);
-            builder.Add(comp,mkWire.Wire());
+            const TopoDS_Wire &wire = mkWire.Wire();
+            if(bbox && Area::getWireDirection(wire)>0)
+                builder.Add(comp,wire.Reversed());
+            else
+                builder.Add(comp,wire);
             return;
         }
         gp_Pnt p1,p2;
