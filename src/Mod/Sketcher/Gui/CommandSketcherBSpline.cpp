@@ -572,7 +572,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
-                                         QObject::tr(e.what()));
+                                         QObject::tr(getStrippedPythonExceptionString(e).c_str()));
                     getSelection().clearSelection();
                 }
 
@@ -726,7 +726,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
-                                         QObject::tr(e.what()));
+                                         QObject::tr(getStrippedPythonExceptionString(e).c_str()));
                     getSelection().clearSelection();
                 }
                 
