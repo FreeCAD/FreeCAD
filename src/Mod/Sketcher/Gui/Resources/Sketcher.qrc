@@ -44,8 +44,11 @@
         <file>icons/Sketcher_BSplineApproximate.svg</file>
         <file>icons/Sketcher_BSplineComb.svg</file>
         <file>icons/Sketcher_BSplineDecreaseDegree.svg</file>
+        <file>icons/Sketcher_BSplineDecreaseKnotMultiplicity.svg</file>
         <file>icons/Sketcher_BSplineDegree.svg</file>
         <file>icons/Sketcher_BSplineIncreaseDegree.svg</file>
+        <file>icons/Sketcher_BSplineIncreaseKnotMultiplicity.svg</file>
+        <file>icons/Sketcher_BSplineKnotMultiplicity.svg</file>
         <file>icons/Sketcher_BSplinePolygon.svg</file>
         <file>icons/Sketcher_CarbonCopy.svg</file>
         <file>icons/Sketcher_CarbonCopy_Constr.svg</file>
