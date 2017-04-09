@@ -238,6 +238,13 @@ void Geometry::assignTag(const Part::Geometry * geo)
         throw Base::TypeError("Geometry tag can not be assigned as geometry types do not match.");
 }
 
+Geometry *Geometry::clone(void) const
+{
+    Geometry* cpy = this->copy();
+    cpy->tag = this->tag;
+    return cpy;
+}
+
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomPoint,Part::Geometry)
@@ -276,14 +283,6 @@ Geometry *GeomPoint::copy(void) const
 {
     GeomPoint *newPoint = new GeomPoint(myPoint);
     newPoint->Construction = this->Construction;
-    return newPoint;
-}
-
-Geometry *GeomPoint::clone(void) const
-{
-    GeomPoint *newPoint = new GeomPoint(myPoint);
-    newPoint->Construction = this->Construction;
-    newPoint->tag = this->tag;
     return newPoint;
 }
 
@@ -629,14 +628,6 @@ Geometry *GeomBezierCurve::copy(void) const
     return newCurve;
 }
 
-Geometry *GeomBezierCurve::clone(void) const
-{
-    GeomBezierCurve *newCurve = new GeomBezierCurve(myCurve);
-    newCurve->Construction = this->Construction;
-    newCurve->tag = this->tag;
-    return newCurve;
-}
-
 // Persistence implementer
 unsigned int GeomBezierCurve::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomBezierCurve::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
@@ -721,14 +712,6 @@ Geometry *GeomBSplineCurve::copy(void) const
 {
     GeomBSplineCurve *newCurve = new GeomBSplineCurve(myCurve);
     newCurve->Construction = this->Construction;
-    return newCurve;
-}
-
-Geometry *GeomBSplineCurve::clone(void) const
-{
-    GeomBSplineCurve *newCurve = new GeomBSplineCurve(myCurve);
-    newCurve->Construction = this->Construction;
-    newCurve->tag = this->tag;    
     return newCurve;
 }
 
@@ -1521,14 +1504,6 @@ Geometry *GeomCircle::copy(void) const
     return newCirc;
 }
 
-Geometry *GeomCircle::clone(void) const
-{
-    GeomCircle *newCirc = new GeomCircle(myCurve);
-    newCirc->Construction = this->Construction;
-    newCirc->tag = this->tag;    
-    return newCirc;
-}
-
 GeomBSplineCurve* GeomCircle::toNurbs(double first, double last) const
 {
     double radius = getRadius();
@@ -1705,15 +1680,6 @@ Geometry *GeomArcOfCircle::copy(void) const
     GeomArcOfCircle* copy = new GeomArcOfCircle();
     copy->setHandle(this->myCurve);
     copy->Construction = this->Construction;
-    return copy;
-}
-
-Geometry *GeomArcOfCircle::clone(void) const
-{
-    GeomArcOfCircle* copy = new GeomArcOfCircle();
-    copy->setHandle(this->myCurve);
-    copy->Construction = this->Construction;
-    copy->tag = this->tag;
     return copy;
 }
 
@@ -1930,14 +1896,6 @@ Geometry *GeomEllipse::copy(void) const
 {
     GeomEllipse *newEllipse = new GeomEllipse(myCurve);
     newEllipse->Construction = this->Construction;
-    return newEllipse;
-}
-
-Geometry *GeomEllipse::clone(void) const
-{
-    GeomEllipse *newEllipse = new GeomEllipse(myCurve);
-    newEllipse->Construction = this->Construction;
-    newEllipse->tag = this->tag;
     return newEllipse;
 }
 
@@ -2194,15 +2152,6 @@ Geometry *GeomArcOfEllipse::copy(void) const
     GeomArcOfEllipse* copy = new GeomArcOfEllipse();
     copy->setHandle(this->myCurve);
     copy->Construction = this->Construction;
-    return copy;
-}
-
-Geometry *GeomArcOfEllipse::clone(void) const
-{
-    GeomArcOfEllipse* copy = new GeomArcOfEllipse();
-    copy->setHandle(this->myCurve);
-    copy->Construction = this->Construction;
-    copy->tag = this->tag;
     return copy;
 }
 
@@ -2475,14 +2424,6 @@ Geometry *GeomHyperbola::copy(void) const
     return newHyp;
 }
 
-Geometry *GeomHyperbola::clone(void) const
-{
-    GeomHyperbola *newHyp = new GeomHyperbola(myCurve);
-    newHyp->Construction = this->Construction;
-    newHyp->tag = this->tag;
-    return newHyp;
-}
-
 GeomBSplineCurve* GeomHyperbola::toNurbs(double first, double last) const
 {
     return GeomCurve::toNurbs(first, last);
@@ -2649,15 +2590,6 @@ Geometry *GeomArcOfHyperbola::copy(void) const
     GeomArcOfHyperbola* copy = new GeomArcOfHyperbola();
     copy->setHandle(this->myCurve);
     copy->Construction = this->Construction;
-    return copy;
-}
-
-Geometry *GeomArcOfHyperbola::clone(void) const
-{
-    GeomArcOfHyperbola* copy = new GeomArcOfHyperbola();
-    copy->setHandle(this->myCurve);
-    copy->Construction = this->Construction;
-    copy->tag = this->tag;
     return copy;
 }
 
@@ -2920,14 +2852,6 @@ Geometry *GeomParabola::copy(void) const
     return newPar;
 }
 
-Geometry *GeomParabola::clone(void) const
-{
-    GeomParabola *newPar = new GeomParabola(myCurve);
-    newPar->Construction = this->Construction;
-    newPar->tag = this->tag;
-    return newPar;
-}
-
 GeomBSplineCurve* GeomParabola::toNurbs(double first, double last) const
 {
     // the default implementation suffices because a non-rational B-spline with
@@ -3075,15 +2999,6 @@ Geometry *GeomArcOfParabola::copy(void) const
     GeomArcOfParabola* copy = new GeomArcOfParabola();
     copy->setHandle(this->myCurve);
     copy->Construction = this->Construction;
-    return copy;
-}
-
-Geometry *GeomArcOfParabola::clone(void) const
-{
-    GeomArcOfParabola* copy = new GeomArcOfParabola();
-    copy->setHandle(this->myCurve);
-    copy->Construction = this->Construction;
-    copy->tag = this->tag;
     return copy;
 }
 
@@ -3315,14 +3230,6 @@ Geometry *GeomLine::copy(void) const
     return newLine;
 }
 
-Geometry *GeomLine::clone(void) const
-{
-    GeomLine *newLine = new GeomLine(myCurve);
-    newLine->Construction = this->Construction;
-    newLine->tag = this->tag;
-    return newLine;
-}
-
 // Persistence implementer
 unsigned int GeomLine::getMemSize (void) const
 {
@@ -3418,15 +3325,6 @@ Geometry *GeomLineSegment::copy(void)const
     GeomLineSegment *tempCurve = new GeomLineSegment();
     tempCurve->myCurve = Handle_Geom_TrimmedCurve::DownCast(myCurve->Copy());
     tempCurve->Construction = this->Construction;
-    return tempCurve;
-}
-
-Geometry *GeomLineSegment::clone(void)const
-{
-    GeomLineSegment *tempCurve = new GeomLineSegment();
-    tempCurve->myCurve = Handle_Geom_TrimmedCurve::DownCast(myCurve->Copy());
-    tempCurve->Construction = this->Construction;
-    tempCurve->tag = this->tag;
     return tempCurve;
 }
 
@@ -3552,14 +3450,6 @@ Geometry *GeomOffsetCurve::copy(void) const
     return newCurve;
 }
 
-Geometry *GeomOffsetCurve::clone(void) const
-{
-    GeomOffsetCurve *newCurve = new GeomOffsetCurve(myCurve);
-    newCurve->Construction = this->Construction;
-    newCurve->tag = this->tag;
-    return newCurve;
-}
-
 void GeomOffsetCurve::setHandle(const Handle_Geom_OffsetCurve& c)
 {
     this->myCurve = Handle_Geom_OffsetCurve::DownCast(c->Copy());
@@ -3611,14 +3501,6 @@ Geometry *GeomTrimmedCurve::copy(void) const
 {
     GeomTrimmedCurve *newCurve =  new GeomTrimmedCurve(myCurve);
     newCurve->Construction = this->Construction;
-    return newCurve;
-}
-
-Geometry *GeomTrimmedCurve::clone(void) const
-{
-    GeomTrimmedCurve *newCurve =  new GeomTrimmedCurve(myCurve);
-    newCurve->Construction = this->Construction;
-    newCurve->tag = this->tag;
     return newCurve;
 }
 
@@ -3721,14 +3603,6 @@ Geometry *GeomBezierSurface::copy(void) const
     return newSurf;
 }
 
-Geometry *GeomBezierSurface::clone(void) const
-{
-    GeomBezierSurface *newSurf =  new GeomBezierSurface(mySurface);
-    newSurf->Construction = this->Construction;
-    newSurf->tag = this->tag;
-    return newSurf;
-}
-
 // Persistence implementer
 unsigned int GeomBezierSurface::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomBezierSurface::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
@@ -3788,14 +3662,6 @@ Geometry *GeomBSplineSurface::copy(void) const
     return newSurf;
 }
 
-Geometry *GeomBSplineSurface::clone(void) const
-{
-    GeomBSplineSurface *newSurf =  new GeomBSplineSurface(mySurface);
-    newSurf->Construction = this->Construction;
-    newSurf->tag = this->tag;
-    return newSurf;
-}
-
 // Persistence implementer
 unsigned int GeomBSplineSurface::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomBSplineSurface::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
@@ -3840,15 +3706,6 @@ Geometry *GeomCylinder::copy(void) const
     GeomCylinder *tempCurve = new GeomCylinder();
     tempCurve->mySurface = Handle_Geom_CylindricalSurface::DownCast(mySurface->Copy());
     tempCurve->Construction = this->Construction;
-    return tempCurve;
-}
-
-Geometry *GeomCylinder::clone(void) const
-{
-    GeomCylinder *tempCurve = new GeomCylinder();
-    tempCurve->mySurface = Handle_Geom_CylindricalSurface::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
-    tempCurve->tag = this->tag;
     return tempCurve;
 }
 
@@ -3899,15 +3756,6 @@ Geometry *GeomCone::copy(void) const
     return tempCurve;
 }
 
-Geometry *GeomCone::clone(void) const
-{
-    GeomCone *tempCurve = new GeomCone();
-    tempCurve->mySurface = Handle_Geom_ConicalSurface::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
-    tempCurve->tag = this->tag;
-    return tempCurve;
-}
-
 // Persistence implementer
 unsigned int GeomCone::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomCone::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
@@ -3952,15 +3800,6 @@ Geometry *GeomToroid::copy(void) const
     GeomToroid *tempCurve = new GeomToroid();
     tempCurve->mySurface = Handle_Geom_ToroidalSurface::DownCast(mySurface->Copy());
     tempCurve->Construction = this->Construction;
-    return tempCurve;
-}
-
-Geometry *GeomToroid::clone(void) const
-{
-    GeomToroid *tempCurve = new GeomToroid();
-    tempCurve->mySurface = Handle_Geom_ToroidalSurface::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
-    tempCurve->tag = this->tag;
     return tempCurve;
 }
 
@@ -4011,15 +3850,6 @@ Geometry *GeomSphere::copy(void) const
     return tempCurve;
 }
 
-Geometry *GeomSphere::clone(void) const
-{
-    GeomSphere *tempCurve = new GeomSphere();
-    tempCurve->mySurface = Handle_Geom_SphericalSurface::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
-    tempCurve->tag = this->tag;
-    return tempCurve;
-}
-
 // Persistence implementer
 unsigned int GeomSphere::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomSphere::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
@@ -4064,15 +3894,6 @@ Geometry *GeomPlane::copy(void) const
     GeomPlane *tempCurve = new GeomPlane();
     tempCurve->mySurface = Handle_Geom_Plane::DownCast(mySurface->Copy());
     tempCurve->Construction = this->Construction;
-    return tempCurve;
-}
-
-Geometry *GeomPlane::clone(void) const
-{
-    GeomPlane *tempCurve = new GeomPlane();
-    tempCurve->mySurface = Handle_Geom_Plane::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
-    tempCurve->tag = this->tag;
     return tempCurve;
 }
 
@@ -4122,14 +3943,6 @@ Geometry *GeomOffsetSurface::copy(void) const
 {
     GeomOffsetSurface *newSurf = new GeomOffsetSurface(mySurface);
     newSurf->Construction = this->Construction;
-    return newSurf;
-}
-
-Geometry *GeomOffsetSurface::clone(void) const
-{
-    GeomOffsetSurface *newSurf = new GeomOffsetSurface(mySurface);
-    newSurf->Construction = this->Construction;
-    newSurf->tag = this->tag;
     return newSurf;
 }
 
@@ -4188,14 +4001,6 @@ Geometry *GeomPlateSurface::copy(void) const
     return newSurf;
 }
 
-Geometry *GeomPlateSurface::clone(void) const
-{
-    GeomPlateSurface *newSurf = new GeomPlateSurface(mySurface);
-    newSurf->Construction = this->Construction;
-    newSurf->tag = this->tag;
-    return newSurf;
-}
-
 // Persistence implementer
 unsigned int GeomPlateSurface::getMemSize (void) const
 {
@@ -4251,14 +4056,6 @@ Geometry *GeomTrimmedSurface::copy(void) const
     return newSurf;
 }
 
-Geometry *GeomTrimmedSurface::clone(void) const
-{
-    GeomTrimmedSurface *newSurf = new GeomTrimmedSurface(mySurface);
-    newSurf->Construction = this->Construction;
-    newSurf->tag = this->tag;
-    return newSurf;
-}
-
 // Persistence implementer
 unsigned int GeomTrimmedSurface::getMemSize (void) const {assert(0); return 0;/* not implemented yet */}
 void         GeomTrimmedSurface::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
@@ -4308,14 +4105,6 @@ Geometry *GeomSurfaceOfRevolution::copy(void) const
     return newSurf;
 }
 
-Geometry *GeomSurfaceOfRevolution::clone(void) const
-{
-    GeomSurfaceOfRevolution *newSurf = new GeomSurfaceOfRevolution(mySurface);
-    newSurf->Construction = this->Construction;
-    newSurf->tag = this->tag;
-    return newSurf;
-}
-
 // Persistence implementer
 unsigned int GeomSurfaceOfRevolution::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
 void         GeomSurfaceOfRevolution::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
@@ -4362,14 +4151,6 @@ Geometry *GeomSurfaceOfExtrusion::copy(void) const
 {
     GeomSurfaceOfExtrusion *newSurf = new GeomSurfaceOfExtrusion(mySurface);
     newSurf->Construction = this->Construction;
-    return newSurf;
-}
-
-Geometry *GeomSurfaceOfExtrusion::clone(void) const
-{
-    GeomSurfaceOfExtrusion *newSurf = new GeomSurfaceOfExtrusion(mySurface);
-    newSurf->Construction = this->Construction;
-    newSurf->tag = this->tag;
     return newSurf;
 }
 
