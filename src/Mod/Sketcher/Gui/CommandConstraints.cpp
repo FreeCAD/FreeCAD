@@ -674,6 +674,17 @@ void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(const Sketcher::SketchOb
         Gui::Command::updateActive();
 }
 
+std::string SketcherGui::getStrippedPythonExceptionString(const Base::Exception e)
+{
+    std::string msg = e.what();
+    
+    if( msg.length() > 26 && msg.substr(0,26) == "FreeCAD exception thrown (") {
+        return msg.substr(26, msg.length()-27);
+    }
+    else
+        return msg;
+}
+
 
 namespace SketcherGui {
 
