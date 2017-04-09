@@ -1046,7 +1046,7 @@ void StdMeshers_Penta_3D::MakeBlock()
           if (iCnt>1) {
             // \begin{E.A.}
             // The current algorithm fails if there is more that one
-            // face wich contains triangles ...
+            // face which contains triangles ...
             // In that case, replace return by break to try another
             // method (coded in "if (iCnt != 1) { ... }")
             //

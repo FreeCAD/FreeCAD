@@ -67,7 +67,7 @@ namespace dcm {
  * retrieving it's reference with get-methods.
  *
  * Propertys are further designed to fit in the concept of compile-time modularisation. To allow the extension
- * of all data-holding entitys with new data types, propertys store their own purpose. Thats
+ * of all data-holding entities with new data types, propertys store their own purpose. Thats
  * done by extending the property struct with a second typedef which is named kind and which specifies of which
  * kind the property is. That means, that this typedef defines when the property shall be used and for which
  * context it is designed for. Dependend on the propertys kind, it will be added to different places inside the dcm.
