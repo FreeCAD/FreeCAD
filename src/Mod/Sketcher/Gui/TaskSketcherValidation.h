@@ -71,7 +71,7 @@ private:
     struct Vertex_Less;
     struct Vertex_EqualTo;
     struct ConstraintIds;
-    struct Constraint_Less;
+    struct Constraint_Equal;
     std::vector<ConstraintIds> vertexConstraints;
 
 };

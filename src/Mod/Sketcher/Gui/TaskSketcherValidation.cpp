@@ -155,26 +155,20 @@ struct SketcherValidation::ConstraintIds {
     Sketcher::PointPos SecondPos;
 };
 
-struct SketcherValidation::Constraint_Less  : public std::binary_function<const ConstraintIds&,
-                                                                          const ConstraintIds&, bool>
+struct SketcherValidation::Constraint_Equal  : public std::unary_function<const ConstraintIds&, bool>
 {
-    bool operator()(const ConstraintIds& x,
-                    const ConstraintIds& y) const
+    ConstraintIds c;
+    Constraint_Equal(const ConstraintIds& c) : c(c)
     {
-        int x1 = x.First;
-        int x2 = x.Second;
-        int y1 = y.First;
-        int y2 = y.Second;
-
-        if (x1 > x2)
-        { std::swap(x1, x2); }
-        if (y1 > y2)
-        { std::swap(y1, y2); }
-
-        if      (x1 < y1) return true;
-        else if (x1 > y1) return false;
-        else if (x2 < y2) return true;
-        else if (x2 > y2) return false;
+    }
+    bool operator()(const ConstraintIds& x) const
+    {
+        if (c.First == x.First && c.FirstPos == x.FirstPos &&
+            c.Second == x.Second && c.SecondPos == x.SecondPos)
+            return true;
+        if (c.Second == x.First && c.SecondPos == x.FirstPos &&
+            c.First == x.Second && c.FirstPos == x.SecondPos)
+            return true;
         return false;
     }
 };
@@ -259,16 +253,19 @@ void SketcherValidation::on_findButton_clicked()
         }
     }
 
-    std::set<ConstraintIds, Constraint_Less> coincidences;
     double prec = Precision::Confusion();
     QVariant v = ui->comboBoxTolerance->itemData(ui->comboBoxTolerance->currentIndex());
     if (v.isValid())
         prec = v.toDouble();
     else
         prec = QLocale::system().toDouble(ui->comboBoxTolerance->currentText());
+
     std::sort(vertexIds.begin(), vertexIds.end(), Vertex_Less(prec));
     std::vector<VertexIds>::iterator vt = vertexIds.begin();
     Vertex_EqualTo pred(prec);
+
+    std::list<ConstraintIds> coincidences;
+    // Make a list of constraint we expect for coincident vertexes
     while (vt < vertexIds.end()) {
         // get first item whose adjacent element has the same vertex coordinates
         vt = std::adjacent_find(vt, vertexIds.end(), pred);
@@ -282,7 +279,7 @@ void SketcherValidation::on_findButton_clicked()
                     id.FirstPos = vt->PosId;
                     id.Second = vn->GeoId;
                     id.SecondPos = vn->PosId;
-                    coincidences.insert(id);
+                    coincidences.push_back(id);
                 }
                 else {
                     break;
@@ -293,15 +290,21 @@ void SketcherValidation::on_findButton_clicked()
         }
     }
 
+    // Go through the available 'Coincident', 'Tangent' or 'Perpendicular' constraints
+    // and check which of them is forcing two vertexes to be coincident.
+    // If there is none but two vertexes can be considered equal a coincident constraint is missing.
     std::vector<Sketcher::Constraint*> constraint = sketch->Constraints.getValues();
     for (std::vector<Sketcher::Constraint*>::iterator it = constraint.begin(); it != constraint.end(); ++it) {
-        if ((*it)->Type == Sketcher::Coincident) {
+        if ((*it)->Type == Sketcher::Coincident ||
+            (*it)->Type == Sketcher::Tangent ||
+            (*it)->Type == Sketcher::Perpendicular) {
             ConstraintIds id;
             id.First = (*it)->First;
             id.FirstPos = (*it)->FirstPos;
             id.Second = (*it)->Second;
             id.SecondPos = (*it)->SecondPos;
-            std::set<ConstraintIds, Constraint_Less>::iterator pos = coincidences.find(id);
+            std::list<ConstraintIds>::iterator pos = std::find_if
+                    (coincidences.begin(), coincidences.end(), Constraint_Equal(id));
             if (pos != coincidences.end()) {
                 coincidences.erase(pos);
             }
@@ -312,7 +315,7 @@ void SketcherValidation::on_findButton_clicked()
     this->vertexConstraints.reserve(coincidences.size());
     std::vector<Base::Vector3d> points;
     points.reserve(coincidences.size());
-    for (std::set<ConstraintIds, Constraint_Less>::iterator it = coincidences.begin(); it != coincidences.end(); ++it) {
+    for (std::list<ConstraintIds>::iterator it = coincidences.begin(); it != coincidences.end(); ++it) {
         this->vertexConstraints.push_back(*it);
         points.push_back(it->v);
     }
