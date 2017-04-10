@@ -672,6 +672,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
         cmd->copyVisual(FeatName.c_str(), "ShapeColor", pcActiveBody->getNameInDocument());
         cmd->copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());
         cmd->copyVisual(FeatName.c_str(), "PointColor", pcActiveBody->getNameInDocument());
+        cmd->copyVisual(FeatName.c_str(), "Transparency", pcActiveBody->getNameInDocument());
     }
 }
 
