@@ -624,16 +624,24 @@ int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList, bool
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
     std::vector< Part::Geometry * > newVals(vals);
+    std::vector< Part::Geometry * > copies;
+    copies.reserve(geoList.size());
     for (std::vector<Part::Geometry *>::const_iterator it = geoList.begin(); it != geoList.end(); ++it) {
-        if(construction && (*it)->getTypeId() != Part::GeomPoint::getClassTypeId())
-            const_cast<Part::Geometry *>(*it)->Construction = construction;
-        
-        newVals.push_back(*it);
+        Part::Geometry* copy = (*it)->copy();
+        if(construction && copy->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+            copy->Construction = construction;
+        }
+
+        copies.push_back(copy);
     }
+
+    newVals.insert(newVals.end(), copies.begin(), copies.end());
     Geometry.setValues(newVals);
+    for (std::vector<Part::Geometry *>::iterator it = copies.begin(); it != copies.end(); ++it)
+        delete *it;
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
-    
+
     return Geometry.getSize()-1;
 }
 
