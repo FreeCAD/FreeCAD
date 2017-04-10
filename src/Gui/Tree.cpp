@@ -1149,6 +1149,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
                 Base::Console().Error("Gui::DocumentItem::populateItem(): Cyclic dependency in %s and %s\n",
                         item->object()->getObject()->Label.getValue(),
                         childItem->object()->getObject()->Label.getValue());
+                --i;
                 continue;
             }
             this->removeChild(childItem);
