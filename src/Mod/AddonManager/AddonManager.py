@@ -74,11 +74,11 @@ class AddonsInstaller(QtGui.QDialog):
         self.verticalLayout.addWidget(self.tabWidget)
         self.listWorkbenches = QtGui.QListWidget()
         self.listWorkbenches.setIconSize(QtCore.QSize(16,16))
-        self.listWorkbenches.setSortingEnabled(True)
+        #self.listWorkbenches.setSortingEnabled(True)
         self.tabWidget.addTab(self.listWorkbenches,"")
         self.listMacros = QtGui.QListWidget()
         self.listMacros.setIconSize(QtCore.QSize(16,16))
-        self.listMacros.setSortingEnabled(True)
+        #self.listMacros.setSortingEnabled(True)
         self.tabWidget.addTab(self.listMacros,"")
         self.labelDescription = QtGui.QLabel()
         self.labelDescription.setMinimumSize(QtCore.QSize(0, 75))
@@ -308,6 +308,7 @@ class UpdateWorker(QtCore.QThread):
             #url = re.findall("title=\"(.*?) @",l)[0]
             url = "https://github.com/" + re.findall("href=\"\/(.*?)\/tree",l)[0]
             addondir = moddir + os.sep + name
+            #print ("found:",name," at ",url)
             if not os.path.exists(addondir):
                 state = 0
             else:
