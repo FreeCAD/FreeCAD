@@ -314,10 +314,12 @@ class UpdateWorker(QtCore.QThread):
             else:
                 state = 1
             repos.append([name,url,state])
-            self.addon_repo.emit([name,url,state])
         if not repos:
             self.info_label.emit(QtGui.QApplication.translate("AddonsInstaller", "Unable to download addon list.", None, QtGui.QApplication.UnicodeUTF8))
         else:
+            repos = sorted(repos, key=lambda s: s[0].lower())
+            for repo in repos:
+                self.addon_repo.emit(repo)
             self.info_label.emit(QtGui.QApplication.translate("AddonsInstaller", "Workbenches list was updated.", None, QtGui.QApplication.UnicodeUTF8))
         self.progressbar_show.emit(False)
         self.stop = True
