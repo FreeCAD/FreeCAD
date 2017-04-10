@@ -82,20 +82,16 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
             host.Armatures = a
     if diameter:
         obj.Diameter = diameter
-        FreeCAD.ActiveDocument.recompute()
     else:
         obj.Diameter = p.GetFloat("RebarDiameter",6)
-        FreeCAD.ActiveDocument.recompute()
     obj.Amount = amount
-    FreeCAD.ActiveDocument.recompute()
+    obj.Document.recompute()
     if offset:
         obj.OffsetStart = offset
         obj.OffsetEnd = offset
-        FreeCAD.ActiveDocument.recompute()
     else:
         obj.OffsetStart = p.GetFloat("RebarOffset",30)
         obj.OffsetEnd = p.GetFloat("RebarOffset",30)
-        FreeCAD.ActiveDocument.recompute()
     ArchCommands.fixDAG(obj)
     return obj
 
