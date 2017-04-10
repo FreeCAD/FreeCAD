@@ -2046,12 +2046,12 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
     App::Part* part_this = App::Part::getPartOfObject(this, true);
     App::Part* part_obj = App::Part::getPartOfObject(pObj, true);
     if (part_this == part_obj){ //either in the same part, or in the root of document
-        if (body_this == NULL) {
-            return true;
-        } else if (body_this != body_obj) {
-            if (rsn)
-                *rsn = rlOtherBody;
-            return false;
+        if (body_this != NULL) {
+            if (body_this != body_obj) {
+                if (rsn)
+                    *rsn = rlOtherBody;
+                return false;
+            }
         }
     } else {
         // cross-part link. Disallow, should be done via shapebinders only
