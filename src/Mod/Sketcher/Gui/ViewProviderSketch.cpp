@@ -272,7 +272,8 @@ PROPERTY_SOURCE(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObject)
 ViewProviderSketch::ViewProviderSketch()
   : edit(0),
     Mode(STATUS_NONE),
-    visibleInformationChanged(true)
+    visibleInformationChanged(true),
+    combrepscalehyst(0)
 {
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
     ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
@@ -3219,8 +3220,8 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     
     std::vector<int> bsplineGeoIds;
     
-    double combrepscale = 0;
-    
+    double combrepscale = 0; // the repscale that would correspond to this comb based only on this calculation.
+
     // end information layer
 
     int GeoId = 0;
@@ -3484,13 +3485,12 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 if(curvaturelist[i] > maxcurv)
                     maxcurv = curvaturelist[i];
 
-                double temp = ( pointatcurvelist[i] - midp ).Length();
+                double tempf = ( pointatcurvelist[i] - midp ).Length();
 
-                if( temp > maxdisttocenterofmass )
-                    maxdisttocenterofmass = temp;
+                if( tempf > maxdisttocenterofmass )
+                    maxdisttocenterofmass = tempf;
 
             }
-
 
             double temprepscale = ( 0.5 * maxdisttocenterofmass ) / maxcurv; // just a factor to make a comb reasonably visible
             
@@ -3502,6 +3502,10 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         else {
         }
     }
+    
+    if ( (combrepscale > (2 * combrepscalehyst)) || (combrepscale < (combrepscalehyst/2)))
+        combrepscalehyst = combrepscale ;
+        
     
     // geometry information layer for bsplines, as they need a second round now that max curvature is known
     for (std::vector<int>::const_iterator it = bsplineGeoIds.begin(); it != bsplineGeoIds.end(); ++it) {
@@ -3693,7 +3697,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         std::vector<Base::Vector3d> pointatcomblist(ndiv);
 
         for(int i = 0; i < ndiv; i++) {
-            pointatcomblist[i] = pointatcurvelist[i] - combrepscale * curvaturelist[i] * normallist[i];
+            pointatcomblist[i] = pointatcurvelist[i] - combrepscalehyst * curvaturelist[i] * normallist[i];
         }
         
         if(rebuildinformationlayer) {

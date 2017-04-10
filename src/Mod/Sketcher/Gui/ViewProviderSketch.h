@@ -405,7 +405,9 @@ protected:
     App::Part*          parentPart = nullptr;
     Part::BodyBase*     parentBody = nullptr;
 
+    // information layer variables
     bool visibleInformationChanged;
+    double combrepscalehyst;
 };
 
 } // namespace PartGui
