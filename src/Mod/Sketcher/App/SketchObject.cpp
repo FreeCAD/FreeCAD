@@ -2109,8 +2109,8 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
         return false;
     }
     
-    xinv = allowUnaligned?false:(dotx == 1.0);
-    yinv = allowUnaligned?false:(doty == 1.0);
+    xinv = allowUnaligned?false:(dotx != 1.0);
+    yinv = allowUnaligned?false:(doty != 1.0);
 
     return true;
 }
@@ -4335,11 +4335,12 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
                 App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
                 
                 if(xinv) {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
+                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, std::string(1,'-') + spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
                     setExpression(Constraints.createPath(nextcid), expr);
                 }
                 else {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, std::string(1,'-') + spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
+                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));                    
+
                     setExpression(Constraints.createPath(nextcid), expr);
                 }
             }
@@ -4352,11 +4353,11 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
                 App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
 
                 if(yinv) {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
+                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, std::string(1,'-') + spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
                     setExpression(Constraints.createPath(nextcid), expr);
                 }
                 else {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, std::string(1,'-') + spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
+                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));                    
                     setExpression(Constraints.createPath(nextcid), expr);
                 }
             }
