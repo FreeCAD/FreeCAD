@@ -74,11 +74,9 @@ class AddonsInstaller(QtGui.QDialog):
         self.verticalLayout.addWidget(self.tabWidget)
         self.listWorkbenches = QtGui.QListWidget()
         self.listWorkbenches.setIconSize(QtCore.QSize(16,16))
-        #self.listWorkbenches.setSortingEnabled(True)
         self.tabWidget.addTab(self.listWorkbenches,"")
         self.listMacros = QtGui.QListWidget()
         self.listMacros.setIconSize(QtCore.QSize(16,16))
-        #self.listMacros.setSortingEnabled(True)
         self.tabWidget.addTab(self.listMacros,"")
         self.labelDescription = QtGui.QLabel()
         self.labelDescription.setMinimumSize(QtCore.QSize(0, 75))
@@ -368,7 +366,7 @@ class MacroWorker(QtCore.QThread):
         u.close()
         macros = re.findall("title=\"(Macro.*?)\"",p)
         macros = [mac for mac in macros if (not("translated" in mac))]
-        macros.sort()
+        macros.sort(key=str.lower)
         for mac in macros:
             macname = mac[6:]
             macname = macname.replace("&amp;","&")
