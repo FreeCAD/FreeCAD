@@ -798,7 +798,8 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         GenericConstraintSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
+            , object(obj), allowedSelTypes(0)
         {}
 
         bool allow(App::Document *, App::DocumentObject *pObj, const char *sSubName)
@@ -913,7 +914,7 @@ class DrawSketchHandlerGenConstraint: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerGenConstraint(const char* cursor[], CmdSketcherConstraint *_cmd)
-        : constraintCursor(cursor), cmd(_cmd) {}
+        : constraintCursor(cursor), cmd(_cmd), seqIndex(0) {}
     virtual ~DrawSketchHandlerGenConstraint()
     {
         Gui::Selection().rmvSelectionGate();
@@ -3521,7 +3522,10 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
             const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
-            
+            if (!geo1 || !geo2) {
+                return;
+            }
+
             if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
                 geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -3529,9 +3533,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 return;
             }
             
-            if( geo1 && geo2 &&
-                ( geo1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
-                  geo2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
+            if (geo1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
+                geo2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
                 
                 // unsupported until tangent to BSpline at any point implemented.
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -3546,10 +3549,10 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             geo1 = Obj->getGeometry(GeoId1);
             geo2 = Obj->getGeometry(GeoId2);
 
-            if( geo1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+            if (geo1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
                 geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
                 geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
-                geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
+                geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
 
                 Base::Vector3d center;
                 Base::Vector3d majdir;
@@ -3705,6 +3708,9 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
 
         const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
         const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
+        if (!geo1 || !geo2) {
+            return;
+        }
 
         if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
             geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
@@ -3713,9 +3719,8 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
             return;
         }
 
-        if( geo1 && geo2 &&
-            ( geo1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
-              geo2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
+        if (geo1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
+            geo2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
 
             // unsupported until tangent to BSpline at any point implemented.
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
