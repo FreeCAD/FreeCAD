@@ -107,11 +107,15 @@ FemMesh::~FemMesh()
 {
     //Base::Console().Log("FemMesh::~FemMesh():%p\n",this);
 
-    TopoDS_Shape aNull;
-    myMesh->ShapeToMesh(aNull);
-    myMesh->Clear();
-    //myMesh->ClearLog();
-    delete myMesh;
+    try {
+        TopoDS_Shape aNull;
+        myMesh->ShapeToMesh(aNull);
+        myMesh->Clear();
+        //myMesh->ClearLog();
+        delete myMesh;
+    }
+    catch (...) {
+    }
 }
 
 FemMesh &FemMesh::operator=(const FemMesh& mesh)

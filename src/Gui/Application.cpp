@@ -29,6 +29,7 @@
 # include <boost/bind.hpp>
 # include <sstream>
 # include <stdexcept>
+# include <iostream>
 # include <QCloseEvent>
 # include <QDir>
 # include <QFileInfo>
@@ -385,7 +386,12 @@ Application::~Application()
     }
 
     // save macros
-    MacroCommand::save();
+    try {
+        MacroCommand::save();
+    }
+    catch (const Base::Exception& e) {
+        std::cerr << "Saving macros failed: " << e.what() << std::endl;
+    }
     //App::GetApplication().Detach(this);
 
     delete d;

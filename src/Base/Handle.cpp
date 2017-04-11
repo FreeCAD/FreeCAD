@@ -26,6 +26,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <iostream>
 # include <assert.h>
 #endif
 
@@ -47,7 +48,7 @@ Handled::Handled()
 Handled::~Handled()
 {
     if ((int)(*_lRefCount) != 0)
-        throw Exception("Reference counter of deleted object is not zero!!!!!\n");
+        std::cerr << "Reference counter of deleted object is not zero!!!!!" << std::endl;
     delete _lRefCount;
 }
 

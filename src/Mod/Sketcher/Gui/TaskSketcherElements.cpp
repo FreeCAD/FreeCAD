@@ -308,10 +308,14 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
 
 TaskSketcherElements::~TaskSketcherElements()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
-    hGrp->SetBool("Auto-switch to edge", ui->autoSwitchBox->isChecked());
-    hGrp->SetBool("Extended Naming", ui->namingBox->isChecked());
-    
+    try {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
+        hGrp->SetBool("Auto-switch to edge", ui->autoSwitchBox->isChecked());
+        hGrp->SetBool("Extended Naming", ui->namingBox->isChecked());
+    }
+    catch (const Base::Exception&) {
+    }
+
     connectionElementsChanged.disconnect();
     delete ui;
 }

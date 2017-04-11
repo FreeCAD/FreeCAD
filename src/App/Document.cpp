@@ -1092,8 +1092,13 @@ Document::~Document()
     doc->setInvalid();
 
     // remove Transient directory
-    Base::FileInfo TransDir(TransientDir.getValue());
-    TransDir.deleteDirectoryRecursive();
+    try {
+        Base::FileInfo TransDir(TransientDir.getValue());
+        TransDir.deleteDirectoryRecursive();
+    }
+    catch (const Base::Exception& e) {
+        std::cerr << "Removing transient directory failed: " << e.what() << std::endl;
+    }
     delete d;
 }
 
