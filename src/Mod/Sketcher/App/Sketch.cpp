@@ -1256,8 +1256,10 @@ int Sketch::addConstraint(const Constraint *constraint)
                 break;
             case BSplineControlPoint:
                 rtn = addInternalAlignmentBSplineControlPoint(constraint->First,constraint->Second, constraint->InternalAlignmentIndex);
+                break;
             case BSplineKnotPoint:
                 rtn = addInternalAlignmentKnotPoint(constraint->First,constraint->Second, constraint->InternalAlignmentIndex);
+                break;
             default:
                 break;
         }
