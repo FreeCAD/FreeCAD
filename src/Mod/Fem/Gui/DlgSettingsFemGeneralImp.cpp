@@ -46,6 +46,8 @@ void DlgSettingsFemGeneralImp::saveSettings()
 {
     fc_analysis_working_directory->onSave();
 
+    cb_no_calc_mesh_on_ok->onSave();
+
     cb_use_built_in_materials->onSave();
     cb_use_mat_from_config_dir->onSave();
     cb_use_mat_from_custom_dir->onSave();
@@ -59,6 +61,8 @@ void DlgSettingsFemGeneralImp::saveSettings()
 void DlgSettingsFemGeneralImp::loadSettings()
 {
     fc_analysis_working_directory->onRestore();
+
+    cb_no_calc_mesh_on_ok->onRestore();
 
     cb_use_built_in_materials->onRestore();
     cb_use_mat_from_config_dir->onRestore();

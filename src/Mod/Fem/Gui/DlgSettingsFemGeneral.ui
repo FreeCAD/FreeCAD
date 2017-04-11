@@ -202,6 +202,34 @@
       </widget>
      </item>
      <item>
+      <widget class="QGroupBox" name="gb_meshes">
+       <property name="title">
+        <string>Meshes</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="cb_no_calc_mesh_on_ok">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string>Store parameters without calculating mesh on OK</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>NoCalcMeshOnOk</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/General</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <widget class="QGroupBox" name="gb_results">
        <property name="title">
         <string>Results</string>
