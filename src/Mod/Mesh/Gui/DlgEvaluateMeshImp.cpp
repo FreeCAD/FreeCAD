@@ -168,11 +168,15 @@ DlgEvaluateMeshImp::~DlgEvaluateMeshImp()
         delete it->second;
     }
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Mod/Mesh/Evaluation");
-    hGrp->SetBool("CheckNonManifoldPoints", d->checkNonManfoldPoints);
-    hGrp->SetBool("EnableFoldsCheck", d->enableFoldsCheck);
-    hGrp->SetBool("StrictlyDegenerated", d->strictlyDegenerated);
+    try {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+                ("User parameter:BaseApp/Preferences/Mod/Mesh/Evaluation");
+        hGrp->SetBool("CheckNonManifoldPoints", d->checkNonManfoldPoints);
+        hGrp->SetBool("EnableFoldsCheck", d->enableFoldsCheck);
+        hGrp->SetBool("StrictlyDegenerated", d->strictlyDegenerated);
+    }
+    catch (...) {
+    }
 
     d->vp.clear();
     delete d;

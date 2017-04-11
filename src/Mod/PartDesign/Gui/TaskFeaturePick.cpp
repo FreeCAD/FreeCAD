@@ -224,55 +224,61 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
 {
     int index = 0;
     std::vector<App::DocumentObject*> result;
-    auto activeBody = PartDesignGui::getBody(false);
-    if (!activeBody)
-        return result;
-    auto activePart = PartDesignGui::getPartFor(activeBody, false);
+    try {
+        auto activeBody = PartDesignGui::getBody(false);
+        if (!activeBody)
+            return result;
 
-    for (std::vector<featureStatus>::const_iterator st = statuses.begin(); st != statuses.end(); st++) {
-        QListWidgetItem* item = ui->listWidget->item(index);
+        auto activePart = PartDesignGui::getPartFor(activeBody, false);
 
-        if (item->isSelected() && !item->isHidden()) {
-            QString t = item->data(Qt::UserRole).toString();
-            auto obj = App::GetApplication().getDocument(documentName.c_str())->getObject(t.toLatin1().data());
+        for (std::vector<featureStatus>::const_iterator st = statuses.begin(); st != statuses.end(); st++) {
+            QListWidgetItem* item = ui->listWidget->item(index);
 
-            //build the dependend copy or reference if wanted by the user
-            if (*st == otherBody || *st == otherPart || *st == notInBody) {
-                if (!ui->radioXRef->isChecked()) {
-                    auto copy = makeCopy(obj, "", ui->radioIndependent->isChecked());
+            if (item->isSelected() && !item->isHidden()) {
+                QString t = item->data(Qt::UserRole).toString();
+                auto obj = App::GetApplication().getDocument(documentName.c_str())->getObject(t.toLatin1().data());
 
-                    if (*st == otherBody) {
-                        activeBody->addObject(copy);
-                    }
-                    else if (*st == otherPart) {
-                        auto oBody = PartDesignGui::getBodyFor(obj, false);
-                        if (!oBody)
-                            activePart->addObject(copy);
-                        else
+                //build the dependend copy or reference if wanted by the user
+                if (*st == otherBody || *st == otherPart || *st == notInBody) {
+                    if (!ui->radioXRef->isChecked()) {
+                        auto copy = makeCopy(obj, "", ui->radioIndependent->isChecked());
+
+                        if (*st == otherBody) {
                             activeBody->addObject(copy);
-                    }
-                    else if (*st == notInBody) {
-                        activeBody->addObject(copy);
-                        // doesn't supposed to get here anything but sketch but to be on the safe side better to check
-                        if (copy->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
-                            Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(copy);
-                            PartDesignGui::fixSketchSupport(sketch);
                         }
+                        else if (*st == otherPart) {
+                            auto oBody = PartDesignGui::getBodyFor(obj, false);
+                            if (!oBody)
+                                activePart->addObject(copy);
+                            else
+                                activeBody->addObject(copy);
+                        }
+                        else if (*st == notInBody) {
+                            activeBody->addObject(copy);
+                            // doesn't supposed to get here anything but sketch but to be on the safe side better to check
+                            if (copy->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+                                Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(copy);
+                                PartDesignGui::fixSketchSupport(sketch);
+                            }
+                        }
+                        result.push_back(copy);
                     }
-                    result.push_back(copy);
+                    else {
+                        result.push_back(obj);
+                    }
                 }
                 else {
                     result.push_back(obj);
                 }
-            }
-            else {
-                result.push_back(obj);
+
+                break;
             }
 
-            break;
+            index++;
         }
-
-        index++;
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
     }
 
     return result;
@@ -499,7 +505,7 @@ TaskDlgFeaturePick::~TaskDlgFeaturePick()
         }
         Content.clear();
 
-        abortFunction();
+        try { abortFunction(); } catch (...) {}
     }
 }
 
