@@ -2293,7 +2293,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
         } else if ((*it)->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
             // Check if arc lies inside box selection
-            const Part::GeomArcOfParabola *aop = dynamic_cast<const Part::GeomArcOfParabola *>(*it);
+            const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(*it);
 
             pnt0 = aop->getStartPoint();
             pnt1 = aop->getEndPoint();
@@ -4112,7 +4112,7 @@ Restart:
                                     angle1plus = (startangle + endangle)/2;
                                     midpos1 = aoe->getCenter();
                                 } else if (geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
-                                    const Part::GeomArcOfHyperbola *aoh = dynamic_cast<const Part::GeomArcOfHyperbola *>(geo1);
+                                    const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(geo1);
                                     r1a = aoh->getMajorRadius();
                                     r1b = aoh->getMinorRadius();
                                     double startangle, endangle;
@@ -4122,7 +4122,7 @@ Restart:
                                     angle1plus = (startangle + endangle)/2;
                                     midpos1 = aoh->getCenter();
                                 } else if (geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
-                                    const Part::GeomArcOfParabola *aop = dynamic_cast<const Part::GeomArcOfParabola *>(geo1);
+                                    const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(geo1);
                                     r1a = aop->getFocal();
                                     double startangle, endangle;
                                     aop->getRange(startangle, endangle, /*emulateCCW=*/true);
@@ -4174,7 +4174,7 @@ Restart:
                                     angle2plus = (startangle + endangle)/2;
                                     midpos2 = aoh->getCenter();
                                 } else if (geo2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
-                                    const Part::GeomArcOfParabola *aop = dynamic_cast<const Part::GeomArcOfParabola *>(geo2);
+                                    const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(geo2);
                                     r2a = aop->getFocal();
                                     double startangle, endangle;
                                     aop->getRange(startangle, endangle, /*emulateCCW=*/true);
