@@ -129,6 +129,16 @@
           </property>
          </widget>
         </item>
+        <item row="4" column="0">
+         <widget class="QCheckBox" name="cb_no_mesh_calc">
+          <property name="text">
+           <string>Store parameters without calculating mesh on OK</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
