@@ -115,6 +115,8 @@ void QGIViewImage::draw()
     }
 
     auto viewImage( dynamic_cast<TechDraw::DrawViewImage*>(getViewObject()) );
+    if (!viewImage)
+        return;
     QRectF newRect(0.0,0.0,Rez::guiX(viewImage->Width.getValue()),Rez::guiX(viewImage->Height.getValue()));
     double pad = Rez::guiX(1.0);
     m_cliparea->setRect(newRect.adjusted(-pad,-pad,pad,pad));

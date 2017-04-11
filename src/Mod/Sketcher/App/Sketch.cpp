@@ -231,7 +231,7 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
         // create the definition struct for that geom
         return addArcOfHyperbola(*aoh, fixed);
     } else if (geo->getTypeId() == GeomArcOfParabola::getClassTypeId()) { // add an arc of parabola
-        const GeomArcOfParabola *aop = dynamic_cast<const GeomArcOfParabola*>(geo);
+        const GeomArcOfParabola *aop = static_cast<const GeomArcOfParabola*>(geo);
         // create the definition struct for that geom
         return addArcOfParabola(*aop, fixed);
     } else if (geo->getTypeId() == GeomBSplineCurve::getClassTypeId()) { // add a bspline
@@ -937,13 +937,13 @@ Py::Tuple Sketch::getPyGeometry(void) const
             GeomArcOfEllipse *ellipse = static_cast<GeomArcOfEllipse*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfEllipsePy(ellipse));
         } else if (it->type == ArcOfHyperbola) {
-            GeomArcOfHyperbola *aoh = dynamic_cast<GeomArcOfHyperbola*>(it->geo->clone());
+            GeomArcOfHyperbola *aoh = static_cast<GeomArcOfHyperbola*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfHyperbolaPy(aoh));
         } else if (it->type == ArcOfParabola) {
-            GeomArcOfParabola *aop = dynamic_cast<GeomArcOfParabola*>(it->geo->clone());
+            GeomArcOfParabola *aop = static_cast<GeomArcOfParabola*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfParabolaPy(aop));
         } else if (it->type == BSpline) {
-            GeomBSplineCurve *bsp = dynamic_cast<GeomBSplineCurve*>(it->geo->clone());
+            GeomBSplineCurve *bsp = static_cast<GeomBSplineCurve*>(it->geo->clone());
             tuple[i] = Py::asObject(new BSplineCurvePy(bsp));
         } else {
             // not implemented type in the sketch!
@@ -2641,7 +2641,7 @@ bool Sketch::updateGeometry()
             } else if (it->type == ArcOfHyperbola) {
                 GCS::ArcOfHyperbola &myArc = ArcsOfHyperbola[it->index];
 
-                GeomArcOfHyperbola *aoh = dynamic_cast<GeomArcOfHyperbola*>(it->geo);
+                GeomArcOfHyperbola *aoh = static_cast<GeomArcOfHyperbola*>(it->geo);
                 
                 Base::Vector3d center = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
                 Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
@@ -2663,7 +2663,7 @@ bool Sketch::updateGeometry()
             } else if (it->type == ArcOfParabola) {
                 GCS::ArcOfParabola &myArc = ArcsOfParabola[it->index];
 
-                GeomArcOfParabola *aop = dynamic_cast<GeomArcOfParabola*>(it->geo);
+                GeomArcOfParabola *aop = static_cast<GeomArcOfParabola*>(it->geo);
                 
                 Base::Vector3d vertex = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
                 Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
@@ -2677,7 +2677,7 @@ bool Sketch::updateGeometry()
             } else if (it->type == BSpline) {
                 GCS::BSpline &mybsp = BSplines[it->index];
 
-                GeomBSplineCurve *bsp = dynamic_cast<GeomBSplineCurve*>(it->geo);
+                GeomBSplineCurve *bsp = static_cast<GeomBSplineCurve*>(it->geo);
 
                 std::vector<Base::Vector3d> poles;
                 std::vector<double> weights;

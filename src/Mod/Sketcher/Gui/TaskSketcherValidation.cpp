@@ -228,7 +228,7 @@ void SketcherValidation::on_findButton_clicked()
             vertexIds.push_back(id);
         }
         else if (g->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
-            const Part::GeomArcOfParabola *segm = dynamic_cast<const Part::GeomArcOfParabola*>(g);
+            const Part::GeomArcOfParabola *segm = static_cast<const Part::GeomArcOfParabola*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;

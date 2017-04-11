@@ -520,7 +520,7 @@ Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
         else if (PosId == mid)
             return aoh->getCenter();
     } else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
-        const Part::GeomArcOfParabola *aop = dynamic_cast<const Part::GeomArcOfParabola*>(geo);
+        const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola*>(geo);
         if (PosId == start)
             return aop->getStartPoint();
         else if (PosId == end)
@@ -1050,7 +1050,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             }
             dist1.ProjectToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir1);
             dist2.ProjectToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir2);
-            Part::Geometry *newgeo = dynamic_cast<Part::Geometry* >(arc);
+            Part::Geometry *newgeo = arc;
             filletId = addGeometry(newgeo);
             if (filletId < 0) {
                 delete arc;
@@ -1937,7 +1937,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 }
                 else { // trim arc end
                     delConstraintOnPoint(GeoId, end, false);
-                    Part::GeomArcOfHyperbola *aoe1 = dynamic_cast<Part::GeomArcOfHyperbola*>(geomlist[GeoId]);
+                    Part::GeomArcOfHyperbola *aoe1 = static_cast<Part::GeomArcOfHyperbola*>(geomlist[GeoId]);
                     aoe1->setRange(startAngle, startAngle + theta1, /*emulateCCW=*/true);
                     Sketcher::Constraint *newConstr = new Sketcher::Constraint();
                     newConstr->Type = constrType;
