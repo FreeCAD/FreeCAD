@@ -896,7 +896,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox)
-    : TaskDialog(),ViewProvider(ViewProvider)
+    : TaskDialog(),ViewProvider(ViewProvider), parameter(nullptr)
 {
     assert(ViewProvider);
     
