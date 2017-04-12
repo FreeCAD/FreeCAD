@@ -86,7 +86,7 @@ App::DocumentObjectExecReturn *Cut::execute(void)
 
         //Cut Shape1 by Shape2
         TopoDS_Shape aCutShape;
-        aCutShape = ts1.cut(ts2._Shape);
+        aCutShape = ts1.cut(ts2.getShape());
 
         //Check if resulting shell is null
         if (aCutShape.IsNull()){

@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include "FeatureFilling.h"
 #include "FeatureSewing.h"
 #include "FeatureCut.h"
@@ -61,20 +62,17 @@ PyObject* initModule()
 
 
 /* Python entry */
-PyMODINIT_FUNC initSurface()
+PyMOD_INIT_FUNC(Surface)
 {
     try {
         Base::Interpreter().runString("import Part");
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
-    // ADD YOUR CODE HERE
-    //
-    //
-    (void) Surface::initModule();
+    PyObject* mod = Surface::initModule();
     Base::Console().Log("Loading Surface module... done\n");
 
     // Add types to module
@@ -84,4 +82,6 @@ PyMODINIT_FUNC initSurface()
     Surface::BSurf          ::init();
     Surface::BezSurf        ::init();
     Surface::BSplineSurf    ::init();
+
+    PyMOD_Return(mod);
 }

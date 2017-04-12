@@ -12,10 +12,8 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${SOQT_INCLUDE_DIR}
-    ${QT_INCLUDE_DIR}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
 )
 
@@ -31,12 +29,21 @@ set(SurfaceGui_MOC_HDRS
 fc_wrap_cpp(SurfaceGui_MOC_SRCS ${SurfaceGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${SurfaceGui_MOC_SRCS})
 
-qt4_add_resources(SurfaceGui_QRC_SRCS Resources/Surface.qrc)
+if (BUILD_QT5)
+    qt5_add_resources(SurfaceGui_QRC_SRCS Resources/Surface.qrc)
+else()
+    qt4_add_resources(SurfaceGui_QRC_SRCS Resources/Surface.qrc)
+endif()
 
 SET(SurfaceGui_UIC_SRCS
     BSurf.ui
 )
-qt4_wrap_ui(SurfaceGui_UIC_HDRS ${SurfaceGui_UIC_SRCS})
+
+if (BUILD_QT5)
+    qt5_wrap_ui(SurfaceGui_UIC_HDRS ${SurfaceGui_UIC_SRCS})
+else()
+    qt4_wrap_ui(SurfaceGui_UIC_HDRS ${SurfaceGui_UIC_SRCS})
+endif()
 
 SET(SurfaceGui_SRCS
     ${SurfaceGui_QRC_SRCS}
