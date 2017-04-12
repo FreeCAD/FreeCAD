@@ -474,7 +474,7 @@ void Hole::updateHoleCutParams()
     if (threadType == "ISOMetricProfile" || threadType == "ISOMetricFineProfile") {
         std::string holeCutType = HoleCutType.getValueAsString();
         double diameter = PartDesign::Hole::threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;
-        double f;
+        double f = 1.0;
         double depth = 0;
 
         if (holeCutType == "Counterbore") {
@@ -775,10 +775,13 @@ static void computeIntersection(gp_Pnt pa1, gp_Pnt pa2, gp_Pnt pb1, gp_Pnt pb2, 
     double f = 1 / ( ( vx1 * - vy2 ) - ( -vx2 * vy1 ) );
 
     double t1 = -vy2 * f * ( x2 - x1 ) + vx2 * f * ( y2 - y1 );
+
+#ifdef _DEBUG
     double t2 = -vy1 * f * ( x2 - x1 ) + vx1 * f * ( y2 - y1 );
 
     assert( ( x1 + t1 * vx1 ) - ( x2 + t2 * vx2 ) < 1e-6 );
     assert( ( y1 + t1 * vy1 ) - ( y2 + t2 * vy2 ) < 1e-6 );
+#endif
 
     x = x1 + t1 * vx1;
     y = y1 + t1 * vy1;
@@ -854,7 +857,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
     try {
         std::string method(DepthType.getValueAsString());
-        double length;
+        double length = 0.0;
 
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
