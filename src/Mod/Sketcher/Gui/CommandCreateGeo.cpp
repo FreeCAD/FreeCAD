@@ -6203,7 +6203,7 @@ namespace SketcherGui {
             
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
             sketch->allowOtherBody = (QApplication::keyboardModifiers() == Qt::ControlModifier || QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::AltModifier));
-            sketch->allowUnaligned = (QApplication::keyboardModifiers() == Qt::AltModifier || QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::AltModifier));
+            sketch->allowUnaligned = QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::AltModifier);
             
             this->notAllowedReason = "";
             Sketcher::SketchObject::eReasonList msg;
@@ -6224,13 +6224,13 @@ namespace SketcherGui {
                         this->notAllowedReason = QT_TR_NOOP("This object belongs to another part.");
                         break;
                     case Sketcher::SketchObject::rlNonParallel:
-                        this->notAllowedReason = QT_TR_NOOP("The selected sketch is not parallel to this sketch. Hold Alt to allow non-parallel sketchs.");
+                        this->notAllowedReason = QT_TR_NOOP("The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketchs.");
                         break;
                     case Sketcher::SketchObject::rlAxesMisaligned:
-                        this->notAllowedReason = QT_TR_NOOP("The XY axes of the selected sketch do not have the same direction as this sketch. Hold Alt to disregard it.");
+                        this->notAllowedReason = QT_TR_NOOP("The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.");
                         break;
                     case Sketcher::SketchObject::rlOriginsMisaligned:
-                        this->notAllowedReason = QT_TR_NOOP("The origin of the selected sketch is not aligned with the origin of this sketch. Hold Alt to disregard it.");
+                        this->notAllowedReason = QT_TR_NOOP("The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.");
                         break;
                     default:
                         break;
