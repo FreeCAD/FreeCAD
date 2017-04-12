@@ -2453,9 +2453,9 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
                 const Part::Geometry *geom = Obj->getGeometry(curves[iCrv].GeoId);
 
                 if( geom && geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
-                    // unsupported until normal to BSpline at any point implemented.
+                    // unsupported until normal to B-spline at any point implemented.
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                         QObject::tr("Point on BSpline edge currently unsupported."));
+                                         QObject::tr("Point on B-spline edge currently unsupported."));
                     continue;
                 }
 
@@ -2522,9 +2522,9 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
     const Part::Geometry *geom = Obj->getGeometry(GeoIdCrv);
 
     if( geom && geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
-        // unsupported until normal to BSpline at any point implemented.
+        // unsupported until normal to B-spline at any point implemented.
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Point on BSpline edge currently unsupported."));
+                             QObject::tr("Point on B-spline edge currently unsupported."));
         abortCommand();
 
         return;
@@ -3451,7 +3451,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 return;
             }
             
-            // This code supports simple bspline endpoint perp to any other geometric curve
+            // This code supports simple B-spline endpoint perp to any other geometric curve
             const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
             const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
 
@@ -3463,8 +3463,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     std::swap(GeoId1,GeoId2);
                     std::swap(PosId1,PosId2);
                 }
-                // GeoId1 is the bspline now
-            } // end of code supports simple bspline endpoint tangency
+                // GeoId1 is the B-spline now
+            } // end of code supports simple B-spline endpoint tangency
 
             openCommand("add perpendicular constraint");
             Gui::Command::doCommand(
@@ -3497,9 +3497,9 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
             
             if( geom2 && geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
-                // unsupported until normal to BSpline at any point implemented.
+                // unsupported until normal to B-spline at any point implemented.
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                     QObject::tr("Perpendicular to BSpline edge currently unsupported."));
+                                     QObject::tr("Perpendicular to B-spline edge currently unsupported."));
                 return;
             }
 
@@ -3536,9 +3536,9 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             if (geo1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
                 geo2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
                 
-                // unsupported until tangent to BSpline at any point implemented.
+                // unsupported until tangent to B-spline at any point implemented.
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                     QObject::tr("Perpendicular to BSpline edge currently unsupported."));
+                                     QObject::tr("Perpendicular to B-spline edge currently unsupported."));
                 return;
             }
 
@@ -3722,9 +3722,9 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
         if (geo1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
             geo2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
 
-            // unsupported until tangent to BSpline at any point implemented.
+            // unsupported until tangent to B-spline at any point implemented.
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Perpendicular to BSpline edge currently unsupported."));
+                                 QObject::tr("Perpendicular to B-spline edge currently unsupported."));
             return;
         }
 
@@ -4117,7 +4117,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 return;
             }
 
-            // This code supports simple bspline endpoint tangency to any other geometric curve
+            // This code supports simple B-spline endpoint tangency to any other geometric curve
             const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
             const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
 
@@ -4129,8 +4129,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     std::swap(GeoId1,GeoId2);
                     std::swap(PosId1,PosId2);
                 }
-                // GeoId1 is the bspline now
-            } // end of code supports simple bspline endpoint tangency
+                // GeoId1 is the B-spline now
+            } // end of code supports simple B-spline endpoint tangency
 
             openCommand("add tangent constraint");
             Gui::Command::doCommand(
@@ -4163,9 +4163,9 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
             
             if( geom2 && geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
-                // unsupported until tangent to BSpline at any point implemented.
+                // unsupported until tangent to B-spline at any point implemented.
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                     QObject::tr("Tangency to BSpline edge currently unsupported."));
+                                     QObject::tr("Tangency to B-spline edge currently unsupported."));
                 return;
             }
 
@@ -4193,9 +4193,9 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 ( geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
                 geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
                 
-                // unsupported until tangent to BSpline at any point implemented.
+                // unsupported until tangent to B-spline at any point implemented.
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                     QObject::tr("Tangency to BSpline edge currently unsupported."));
+                                     QObject::tr("Tangency to B-spline edge currently unsupported."));
                 return;
             }
             
@@ -4337,9 +4337,9 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
             ( geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
             geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
 
-            // unsupported until tangent to BSpline at any point implemented.
+            // unsupported until tangent to B-spline at any point implemented.
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Tangency to BSpline edge currently unsupported."));
+                                 QObject::tr("Tangency to B-spline edge currently unsupported."));
             return;
         }
 
@@ -4482,7 +4482,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
             return;
         }
 
-        // This code supports simple bspline endpoint tangency to any other geometric curve
+        // This code supports simple B-spline endpoint tangency to any other geometric curve
         const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
         const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
 
@@ -4494,8 +4494,8 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
                 std::swap(GeoId1,GeoId2);
                 std::swap(PosId1,PosId2);
             }
-            // GeoId1 is the bspline now
-        } // end of code supports simple bspline endpoint tangency
+            // GeoId1 is the B-spline now
+        } // end of code supports simple B-spline endpoint tangency
 
         openCommand("add tangent constraint");
         Gui::Command::doCommand(
@@ -5677,7 +5677,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
         if(geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
             // unsupported as they are generally hereogeneus shapes
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Equality for BSpline edge currently unsupported."));
+                                 QObject::tr("Equality for B-spline edge currently unsupported."));
             return;
         }
         
@@ -6137,9 +6137,9 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
         const Part::Geometry *geo = Obj->getGeometry(GeoId3);
         
         if( geo && geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
-            // unsupported until normal to BSpline at any point implemented.
+            // unsupported until normal to B-spline at any point implemented.
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("SnellsLaw on BSpline edge currently unsupported."));
+                                 QObject::tr("SnellsLaw on B-spline edge currently unsupported."));
             return;
         }
 
