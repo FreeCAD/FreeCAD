@@ -1066,7 +1066,7 @@ void CmdPartDesignHole::activated(int iMsg)
 
         if (FeatName.empty()) return;
 
-        Gui::Command::doCommand(Doc,"App.activeDocument().%s.Length = 5.0",FeatName.c_str());
+        Gui::Command::doCommand(Doc,"App.activeDocument().%s.Depth = 5.0",FeatName.c_str());
 
         finishProfileBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();

@@ -296,6 +296,10 @@ void TaskHoleParameters::changeEvent(QEvent *e)
 
 void TaskHoleParameters::changedObject(const App::Property &Prop)
 {
+    // happens when aborting the command
+    if (vp == nullptr)
+        return;
+
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
     bool ro = Prop.isReadOnly();
 
@@ -590,6 +594,7 @@ long   TaskHoleParameters::getDrillPoint() const
     if ( ui->drillPointAngled->isChecked() )
         return 1;
     assert( 0 );
+    return -1; // to avoid a compiler warning
 }
 
 Base::Quantity TaskHoleParameters::getDrillPointAngle() const
