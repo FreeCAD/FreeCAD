@@ -582,7 +582,7 @@ long   TaskHoleParameters::getType() const
     return ui->DepthType->currentIndex();
 }
 
-Base::Quantity TaskHoleParameters::getLength() const
+Base::Quantity TaskHoleParameters::getDepth() const
 {
     return ui->Depth->value();
 }
@@ -643,17 +643,18 @@ bool TaskDlgHoleParameters::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadSize = %u", name.c_str(), parameter->getThreadSize());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadClass = %u", name.c_str(), parameter->getThreadClass());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadFit = %u", name.c_str(), parameter->getThreadFit());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Diameter = %f", name.c_str(), parameter->getDiameter());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Diameter = %f", name.c_str(), parameter->getDiameter().getValue());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadDirection = %u", name.c_str(), parameter->getThreadDirection());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.HoleCutType = %u", name.c_str(), parameter->getHoleCutType());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.HoleCutDiameter = %f", name.c_str(), parameter->getHoleCutDiameter());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.HoleCutDepth = %f", name.c_str(), parameter->getHoleCutDepth());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.HoleCutDiameter = %f", name.c_str(), parameter->getHoleCutDiameter().getValue());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.HoleCutDepth = %f", name.c_str(), parameter->getHoleCutDepth().getValue());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.HoleCutCountersinkAngle = %f", name.c_str(), parameter->getHoleCutCountersinkAngle().getValue());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.DepthType = %u", name.c_str(), parameter->getType());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Depth = %f", name.c_str(), parameter->getLength());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Depth = %f", name.c_str(), parameter->getDepth().getValue());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.DrillPoint = %u", name.c_str(), parameter->getDrillPoint());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.DrillPointAngle = %f", name.c_str(), parameter->getDrillPointAngle());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.DrillPointAngle = %f", name.c_str(), parameter->getDrillPointAngle().getValue());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Tapered = %u", name.c_str(), parameter->getTapered());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.TaperedAngle = %f", name.c_str(), parameter->getTaperedAngle());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.TaperedAngle = %f", name.c_str(), parameter->getTaperedAngle().getValue());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!vp->getObject()->isValid())
             throw Base::Exception(vp->getObject()->getStatusString());

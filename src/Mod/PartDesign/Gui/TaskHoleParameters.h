@@ -71,7 +71,7 @@ public:
     Base::Quantity getHoleCutDepth() const;
     Base::Quantity getHoleCutCountersinkAngle() const;
     long   getType() const;
-    Base::Quantity getLength() const;
+    Base::Quantity getDepth() const;
     long   getDrillPoint() const;
     Base::Quantity getDrillPointAngle() const;
     bool   getTapered() const;

@@ -64,7 +64,7 @@
      </property>
     </widget>
    </item>
-   <item row="21" column="0" colspan="2">
+   <item row="21" column="2">
     <widget class="QCheckBox" name="Tapered">
      <property name="text">
       <string>Tapered</string>
@@ -252,7 +252,7 @@
      </property>
     </widget>
    </item>
-   <item row="21" column="2">
+   <item row="21" column="3" colspan="4">
     <widget class="Gui::PrefQuantitySpinBox" name="TaperedAngle" native="true"/>
    </item>
    <item row="11" column="2">
