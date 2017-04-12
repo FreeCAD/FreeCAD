@@ -469,6 +469,12 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.increaseBSplineDegree(%d) ",
                                     selection[0].getFeatName(),GeoId);
+            
+            // add new control points
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
+                                    selection[0].getFeatName(),
+                                    GeoId);
         }
     }
 
