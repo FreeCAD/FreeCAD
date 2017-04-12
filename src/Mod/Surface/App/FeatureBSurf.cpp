@@ -131,14 +131,14 @@ void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName,
             //we want only the subshape which is linked
             checkAndAdd(ts.getSubShape(subName), aWD);
         }
-        else if (!ts._Shape.IsNull() && ts._Shape.ShapeType() == TopAbs_WIRE) {
-            TopoDS_Wire wire = TopoDS::Wire(ts._Shape);
+        else if (!ts.getShape().IsNull() && ts.getShape().ShapeType() == TopAbs_WIRE) {
+            TopoDS_Wire wire = TopoDS::Wire(ts.getShape());
             for (TopExp_Explorer xp(wire, TopAbs_EDGE); xp.More(); xp.Next()) {
                 checkAndAdd(xp.Current(), aWD);
             }
         }
         else {
-            checkAndAdd(ts._Shape, aWD);
+            checkAndAdd(ts.getShape(), aWD);
         }
 #endif
     }

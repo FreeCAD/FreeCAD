@@ -29,6 +29,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
 
@@ -61,11 +62,11 @@ PyObject* initModule()
 } // namespace SurfaceGui
 
 /* Python entry */
-PyMODINIT_FUNC initSurfaceGui()
+PyMOD_INIT_FUNC(SurfaceGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     Base::Interpreter().runString("import Surface");
@@ -79,6 +80,7 @@ PyMODINIT_FUNC initSurfaceGui()
     
 //    SurfaceGui::ViewProviderCut::init();
 
-    (void) SurfaceGui::initModule();
+    PyObject* mod = SurfaceGui::initModule();
     Base::Console().Log("Loading GUI of Surface module... done\n");
+    PyMOD_Return(mod);
 }
