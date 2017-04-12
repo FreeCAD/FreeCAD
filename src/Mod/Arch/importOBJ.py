@@ -275,7 +275,12 @@ def insert(filename,docname):
             elif line[:2] == "v ":
                 verts.append([float(i) for i in line[2:].split()])
             elif line[:2] == "f ":
-                facets.append([int(i) for i in line[2:].split()])
+                fa = []
+                for i in line[2:].split():
+                    if "/" in i:
+                        i = i.split("/")[0]
+                    fa.append(int(i))
+                facets.append(fa)
             elif line[:7] == "usemtl ":
                 material = line[7:]
         if activeobject:
@@ -291,10 +296,14 @@ def makeMesh(doc,activeobject,verts,facets,material,colortable):
                 vecs = [FreeCAD.Vector(*verts[i-1]) for i in facet]
                 vecs.append(vecs[0])
                 pol = Part.makePolygon(vecs)
-                face = Part.Face(pol)
-                tris = face.tessellate(1)
-                for tri in tris[1]:
-                    mfacet.append([tris[0][i] for i in tri])
+                try:
+                    face = Part.Face(pol)
+                except Part.OCCError:
+                    print("Skipping non-planar polygon:",vecs)
+                else:
+                    tris = face.tessellate(1)
+                    for tri in tris[1]:
+                        mfacets.append([tris[0][i] for i in tri])
             else:
                 mfacets.append([verts[i-1] for i in facet])
     if mfacets:
