@@ -1143,7 +1143,7 @@ public:
     }
     
     virtual void quit(void) {
-        // We must see if we need to create a BSpline before cancelling everything
+        // We must see if we need to create a B-spline before cancelling everything
         // and now just like any other Handler,
         
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -4601,7 +4601,7 @@ public:
                 
                 currentgeoid++;
 
-                // Constraint pole circles to bspline.
+                // Constraint pole circles to B-spline.
                 std::stringstream cstream;
                 
                 cstream << "conList = []\n";
@@ -4678,7 +4678,7 @@ public:
     }
     
     virtual void quit(void) {
-        // We must see if we need to create a BSpline before cancelling everything
+        // We must see if we need to create a B-spline before cancelling everything
         // and now just like any other Handler,
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -4686,7 +4686,7 @@ public:
         bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
 
         if (CurrentConstraint > 1) {
-            // create bspline from existing poles
+            // create B-spline from existing poles
             Mode=STATUS_CLOSE;
             EditCurve.pop_back();
             this->releaseButton(Base::Vector2d(0.f,0.f));
@@ -4833,7 +4833,7 @@ CmdSketcherCompCreateBSpline::CmdSketcherCompCreateBSpline()
 }
 
 /**
- * @brief Instantiates the bspline handler when the bspline command activated
+ * @brief Instantiates the B-spline handler when the B-spline command activated
  * @param int iMsg
  */
 void CmdSketcherCompCreateBSpline::activated(int iMsg)
