@@ -77,6 +77,7 @@ PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
     //populate properties with the CONF variables
     PARAM_FOREACH(AREA_GET,AREA_PARAMS_CONF)
 
+    Py_INCREF(Py_None);
     return Py_None;
 }
 

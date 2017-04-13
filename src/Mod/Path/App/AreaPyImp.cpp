@@ -38,6 +38,7 @@ static PyObject * areaAbort(PyObject *, PyObject *args, PyObject *kwd) {
     if (!PyArg_ParseTupleAndKeywords(args,kwd,"|O",kwlist,&pObj))
         return 0;
     Area::abort(PyObject_IsTrue(pObj));
+    Py_INCREF(Py_None);
     return Py_None;
 }
 
@@ -69,6 +70,7 @@ static PyObject * areaSetParams(PyObject *, PyObject *args, PyObject *kwd) {
     PARAM_FOREACH(AREA_GET,AREA_PARAMS_STATIC_CONF)
 
     Area::setDefaultParams(params);
+    Py_INCREF(Py_None);
     return Py_None;
 }
 
