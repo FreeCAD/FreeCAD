@@ -43,13 +43,12 @@ PROPERTY_SOURCE(Surface::Sewing, Part::Feature)
 
 Sewing::Sewing()
 {
-    ADD_PROPERTY(ShapeList,(0,"TopoDS_Shape"));
-
-    ADD_PROPERTY(Tolerance,(0.0000001));
-    ADD_PROPERTY(SewingOption,(true));
-    ADD_PROPERTY(DegenerateShape,(true));
-    ADD_PROPERTY(CutFreeEdges,(true));
-    ADD_PROPERTY(Nonmanifold,(false));
+    ADD_PROPERTY_TYPE(ShapeList,(0,""), "Sewing", App::Prop_None, "Input shapes");
+    ADD_PROPERTY_TYPE(Tolerance,(Precision::Confusion()), "Sewing", App::Prop_None, "Sewing tolerance");
+    ADD_PROPERTY_TYPE(SewingOption,(true), "Sewing", App::Prop_None, "Sewing option");
+    ADD_PROPERTY_TYPE(DegenerateShape,(true), "Sewing", App::Prop_None, "Analysis of degenerated shapes");
+    ADD_PROPERTY_TYPE(CutFreeEdges,(true), "Sewing", App::Prop_None, "Cutting of free edges");
+    ADD_PROPERTY_TYPE(Nonmanifold,(false), "Sewing", App::Prop_None, "Non-manifold processing");
 }
 
 short Sewing::mustExecute() const
@@ -72,7 +71,6 @@ App::DocumentObjectExecReturn *Sewing::execute(void)
     bool opt2 = DegenerateShape.getValue();
     bool opt3 = CutFreeEdges.getValue();
     bool opt4 = Nonmanifold.getValue();
-
 
     try {
         BRepBuilderAPI_Sewing builder(atol,opt1,opt2,opt3,opt4);
@@ -99,13 +97,6 @@ App::DocumentObjectExecReturn *Sewing::execute(void)
         builder.Perform(); //Perform Sewing
 
         TopoDS_Shape aShape = builder.SewedShape(); //Get Shape
-        
-        //printf("number of degenerated shapes: %i\n",builder.NbDegeneratedShapes());
-        //printf("number of deleted faces: %i\n",builder.NbDeletedFaces());
-        //printf("number of free edges: %i\n",builder.NbFreeEdges());
-        //printf("number of multiple edges: %i\n",builder.NbMultipleEdges());
-        //printf("number of continuous edges: %i\n",builder.NbContigousEdges());
-
         if (aShape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         this->Shape.setValue(aShape);
