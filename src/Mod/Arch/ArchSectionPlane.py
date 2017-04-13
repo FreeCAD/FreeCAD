@@ -196,21 +196,21 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
         shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
         if shapes:
             baseshape = Part.makeCompound(shapes)
-            svgf = Drawing.projectToSVG(baseshape,direction)
-            if svgf:
-                svgf = svgf.replace('stroke-width="0.35"','stroke-width="LWPlaceholder"')
-                svgf = svgf.replace('stroke-width="1"','stroke-width="LWPlaceholder"')
-                svgf = svgf.replace('stroke-width:0.01','stroke-width:LWPlaceholder')
-                svg += svgf
+            style = {'stroke-width': 'LWPlaceholder'}
+            svgf = Drawing.projectToSVG(
+                baseshape, direction,
+                hStyle=style, h0Style=style, h1Style=style,
+                vStyle=style, v0Style=style, v1Style=style)
+            svg += svgf
         if hshapes:
             hshapes = Part.makeCompound(hshapes)
-            svgh = Drawing.projectToSVG(hshapes,direction)
-            if svgh:
-                svgh = svgh.replace('stroke-width="0.35"','stroke-width="LWPlaceholder"')
-                svgh = svgh.replace('stroke-width="1"','stroke-width="LWPlaceholder"')
-                svgh = svgh.replace('stroke-width:0.01','stroke-width:LWPlaceholder')
-                svgh = svgh.replace('fill="none"','fill="none"\nstroke-dasharray="DAPlaceholder"')
-                svg += svgh
+            style = {'stroke-width': 'LWPlaceholder',
+                     'stroke-dasharray': 'DAPlaceholder'}
+            svgh = Drawing.projectToSVG(
+                hshapes, direction,
+                hStyle=style, h0Style=style, h1Style=style,
+                vStyle=style, v0Style=style, v1Style=style)
+            svg += svgh
         if sshapes:
             svgs = ""
             if showFill:
@@ -224,14 +224,12 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
                         svgs += f
                 svgs += "</g>\n"
             sshapes = Part.makeCompound(sshapes)
-            svgs += Drawing.projectToSVG(sshapes,direction)
-            if svgs:
-                svgs = svgs.replace('stroke-width="0.35"','stroke-width="SWPlaceholder"')
-                svgs = svgs.replace('stroke-width="1"','stroke-width="SWPlaceholder"')
-                svgs = svgs.replace('stroke-width:0.01','stroke-width:SWPlaceholder')
-                svgs = svgs.replace('stroke-width="0.35 px"','stroke-width="SWPlaceholder"')
-                svgs = svgs.replace('stroke-width:0.35','stroke-width:SWPlaceholder')
-                svg += svgs
+            style = {'stroke-width': 'SWPlaceholder'}
+            svgs += Drawing.projectToSVG(
+                sshapes, direction,
+                hStyle=style, h0Style=style, h1Style=style,
+                vStyle=style, v0Style=style, v1Style=style)
+            svg += svgs
     scaledlinewidth = linewidth/scale
     st = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("CutLineThickness",2)
     yt = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("SymbolLineThickness",0.6)
