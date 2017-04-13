@@ -37,10 +37,39 @@
 
 #include <Mod/Part/App/OCCError.h>
 
+using namespace std;
 using Part::TopoShapePy;
 using Part::TopoShape;
 
 namespace Drawing {
+
+  /** Copies a Python dictionary of Python strings to a C++ container.
+   * 
+   * After the function call, the key-value pairs of the Python
+   * dictionary are copied into the target buffer as C++ pairs
+   * (pair<string, string>).
+   *
+   * @param sourceRange is a Python dictionary (Py::Dict). Both, the
+   * keys and the values must be Python strings.
+   *
+   * @param targetIt refers to where the data should be inserted. Must
+   * be of concept output iterator.
+   */
+  template<typename OutputIt>
+  void copy(Py::Dict sourceRange, OutputIt targetIt)
+  {
+    string key;
+    string value;
+
+    for (auto keyPy : sourceRange.keys()) {
+      key = Py::String(keyPy);
+      value = Py::String(sourceRange[keyPy]);
+      *targetIt = {key, value};
+      ++targetIt;
+    }
+  }
+
+
 class Module : public Py::ExtensionModule<Module>
 {
 public:
@@ -54,8 +83,8 @@ public:
             "[V,V1,VN,VO,VI,H,H1,HN,HO,HI] = projectEx(TopoShape[,App.Vector Direction, string type])\n"
             " -- Project a shape and return the all parts of it."
         );
-        add_varargs_method("projectToSVG",&Module::projectToSVG,
-            "string = projectToSVG(TopoShape[,App.Vector Direction, string type])\n"
+        add_keyword_method("projectToSVG",&Module::projectToSVG,
+            "string = projectToSVG(TopoShape[, App.Vector direction, string type, float tolerance, dict vStyle, dict v0Style, dict v1Style, dict hStyle, dict h0Style, dict h1Style])\n"
             " -- Project a shape and return the SVG representation as string."
         );
         add_varargs_method("projectToDXF",&Module::projectToDXF,
@@ -160,32 +189,76 @@ private:
 
         return list;
     }
-    Py::Object projectToSVG(const Py::Tuple& args)
-    {
-        PyObject *pcObjShape;
-        PyObject *pcObjDir=0;
-        const char *type=0;
-        float scale=1.0f;
-        float tol=0.1f;
 
-        if (!PyArg_ParseTuple(args.ptr(), "O!|O!sff",
-            &(TopoShapePy::Type), &pcObjShape,
-            &(Base::VectorPy::Type), &pcObjDir, &type, &scale, &tol))
-            throw Py::Exception();
+    Py::Object projectToSVG(const Py::Tuple& args, const Py::Dict& keys)
+        {
+            static char* argNames[] = {"topoShape", "direction", "type", "tolerance", "vStyle", "v0Style", "v1Style", "hStyle", "h0Style", "h1Style", NULL};
+            PyObject *pcObjShape = 0;
+            PyObject *pcObjDir = 0;
+            const char *extractionTypePy = 0;
+            ProjectionAlgos::ExtractionType extractionType = ProjectionAlgos::Plain;
+            const float tol = 0.1f;
+            PyObject* vStylePy = 0;
+            ProjectionAlgos::XmlAttributes vStyle;
+            PyObject* v0StylePy = 0;
+            ProjectionAlgos::XmlAttributes v0Style;
+            PyObject* v1StylePy = 0;
+            ProjectionAlgos::XmlAttributes v1Style;
+            PyObject* hStylePy = 0;
+            ProjectionAlgos::XmlAttributes hStyle;
+            PyObject* h0StylePy = 0;
+            ProjectionAlgos::XmlAttributes h0Style;
+            PyObject* h1StylePy = 0;
+            ProjectionAlgos::XmlAttributes h1Style;
+        
+            // Get the arguments
 
-        TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
-        Base::Vector3d Vector(0,0,1);
-        if (pcObjDir)
-            Vector = static_cast<Base::VectorPy*>(pcObjDir)->value();
-        ProjectionAlgos Alg(pShape->getTopoShapePtr()->getShape(),Vector);
+            if (!PyArg_ParseTupleAndKeywords(
+                    args.ptr(), keys.ptr(), 
+                    "O!|O!sfOOOOOO", 
+                    argNames,
+                    &(TopoShapePy::Type), &pcObjShape,
+                    &(Base::VectorPy::Type), &pcObjDir, 
+                    &extractionTypePy, &tol, 
+                    &vStylePy, &v0StylePy, &v1StylePy, 
+                    &hStylePy, &h0StylePy, &h1StylePy))
+          
+                throw Py::Exception();
 
-        bool hidden = false;
-        if (type && std::string(type) == "ShowHiddenLines")
-            hidden = true;
+            // Convert all arguments into the right format
 
-        Py::String result(Alg.getSVG(hidden?ProjectionAlgos::WithHidden:ProjectionAlgos::Plain, scale, tol));
-        return result;
-    }
+            TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
+
+            Base::Vector3d directionVector(0,0,1);
+            if (pcObjDir)
+                directionVector = static_cast<Base::VectorPy*>(pcObjDir)->value();
+
+            if (extractionTypePy && string(extractionTypePy) == "ShowHiddenLines")
+                extractionType = ProjectionAlgos::WithHidden;
+
+            if (vStylePy)
+                copy(Py::Dict(vStylePy), inserter(vStyle, vStyle.begin()));
+            if (v0StylePy)
+                copy(Py::Dict(v0StylePy), inserter(v0Style, v0Style.begin()));
+            if (v1StylePy)
+                copy(Py::Dict(v1StylePy), inserter(v1Style, v1Style.begin()));
+            if (hStylePy)
+                copy(Py::Dict(hStylePy), inserter(hStyle, hStyle.begin()));
+            if (h0StylePy)
+                copy(Py::Dict(h0StylePy), inserter(h0Style, h0Style.begin()));
+            if (h1StylePy)
+                copy(Py::Dict(h1StylePy), inserter(h1Style, h1Style.begin()));
+        
+            // Execute the SVG generation
+
+            ProjectionAlgos Alg(pShape->getTopoShapePtr()->getShape(), 
+                                directionVector);
+            Py::String result(Alg.getSVG(extractionType, tol, 
+                                         vStyle, v0Style, v1Style, 
+                                         hStyle, h0Style, h1Style));
+            return result;
+        }
+
     Py::Object projectToDXF(const Py::Tuple& args)
     {
         PyObject *pcObjShape;

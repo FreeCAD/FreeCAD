@@ -43,15 +43,21 @@ public:
     virtual ~ProjectionAlgos();
 
     void execute(void);
-//    static TopoDS_Shape invertY(const TopoDS_Shape&);
 
     enum ExtractionType {
         Plain = 0,
         WithHidden = 1,
         WithSmooth = 2
     };
+    typedef std::map<std::string,std::string> XmlAttributes;
 
-    std::string getSVG(ExtractionType type, double scale=0.35, double tolerance=0.05, double hiddenscale=0.15);
+    std::string getSVG(ExtractionType type, double tolerance=0.05,
+                       XmlAttributes V_style=XmlAttributes(),
+                       XmlAttributes V0_style=XmlAttributes(),
+                       XmlAttributes V1_style=XmlAttributes(),
+                       XmlAttributes H_style=XmlAttributes(),
+                       XmlAttributes H0_style=XmlAttributes(),
+                       XmlAttributes H1_style=XmlAttributes());
     std::string getDXF(ExtractionType type, double scale, double tolerance);//added by Dan Falck 2011/09/25
 
 
