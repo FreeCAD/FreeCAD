@@ -37,7 +37,6 @@
 #include <HLRBRep_Algo.hxx>
 #include <TopoDS_Shape.hxx>
 #include <HLRTopoBRep_OutLiner.hxx>
-//#include <BRepAPI_MakeOutLine.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_ShapeBounds.hxx>
 #include <HLRBRep_HLRToShape.hxx>
@@ -99,29 +98,6 @@ ProjectionAlgos::~ProjectionAlgos()
 {
 }
 
-/*
-// no longer used, replaced invertY by adding
-//                << "   transform=\"scale(1,-1)\"" << endl
-// to getSVG(...) below.
-// invertY, as here, wasn't right for intended purpose - always reflected in model Y direction rather
-// than SVG projection Y direction.  Also better to reflect about (0,0,0) rather than bbox centre
-
-TopoDS_Shape ProjectionAlgos::invertY(const TopoDS_Shape& shape)
-{
-    // make sure to have the y coordinates inverted
-    gp_Trsf mat;
-    Bnd_Box bounds;
-    BRepBndLib::Add(shape, bounds);
-    bounds.SetGap(0.0);
-    Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
-    bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-    mat.SetMirror(gp_Ax2(gp_Pnt((xMin+xMax)/2,(yMin+yMax)/2,(zMin+zMax)/2), gp_Dir(0,1,0)));
-    BRepBuilderAPI_Transform mkTrf(shape, mat);
-    return mkTrf.Shape();
-}
-*/
-
-
 //added by tanderson. aka blobfish.
 //projection algorithms build a 2d curve(pcurve) but no 3d curve.
 //this causes problems with meshing algorithms after save and load.
@@ -159,112 +135,125 @@ void ProjectionAlgos::execute(void)
     HI = build3dCurves(shapes.IsoLineHCompound());// isoparamtriques   invisibly
 }
 
-std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double tolerance, double hiddenscale)
+string ProjectionAlgos::getSVG(ExtractionType type, 
+                               double tolerance, 
+                               XmlAttributes V_style, 
+                               XmlAttributes V0_style, 
+                               XmlAttributes V1_style, 
+                               XmlAttributes H_style, 
+                               XmlAttributes H0_style, 
+                               XmlAttributes H1_style)
 {
-    std::stringstream result;
+    stringstream result;
     SVGOutput output;
 
     if (!H.IsNull() && (type & WithHidden)) {
-        double width = hiddenscale;
+        H_style.insert({"stroke", "rgb(0, 0, 0)"});
+        H_style.insert({"stroke-width", "0.15"});
+        H_style.insert({"stroke-linecap", "butt"});
+        H_style.insert({"stroke-linejoin", "miter"});
+        H_style.insert({"stroke-dasharray", "0.2,0.1)"});
+        H_style.insert({"fill", "none"});
+        H_style.insert({"transform", "scale(1,-1)"});
         BRepMesh_IncrementalMesh(H,tolerance);
-        result  << "<g"
-                //<< " id=\"" << ViewName << "\"" << endl
-                << "   stroke=\"rgb(0, 0, 0)\"" << endl
-                << "   stroke-width=\"" << width << "\"" << endl
-                << "   stroke-linecap=\"butt\"" << endl
-                << "   stroke-linejoin=\"miter\"" << endl
-                << "   stroke-dasharray=\"0.2,0.1\"" << endl
-                << "   fill=\"none\"" << endl
-                << "   transform=\"scale(1,-1)\"" << endl
-                << "  >" << endl
-                << output.exportEdges(H)
-                << "</g>" << endl;
+        result  << "<g";
+        for (const auto& attribute : H_style)
+            result << "   " << attribute.first << "=\"" 
+                   << attribute.second << "\"\n";
+        result << "  >" << endl
+               << output.exportEdges(H)
+               << "</g>" << endl;
     }
     if (!HO.IsNull() && (type & WithHidden)) {
-        double width = hiddenscale;
+        H0_style.insert({"stroke", "rgb(0, 0, 0)"});
+        H0_style.insert({"stroke-width", "0.15"});
+        H0_style.insert({"stroke-linecap", "butt"});
+        H0_style.insert({"stroke-linejoin", "miter"});
+        H0_style.insert({"stroke-dasharray", "0.02,0.1)"});
+        H0_style.insert({"fill", "none"});
+        H0_style.insert({"transform", "scale(1,-1)"});
         BRepMesh_IncrementalMesh(HO,tolerance);
-        result  << "<g"
-                //<< " id=\"" << ViewName << "\"" << endl
-                << "   stroke=\"rgb(0, 0, 0)\"" << endl
-                << "   stroke-width=\"" << width << "\"" << endl
-                << "   stroke-linecap=\"butt\"" << endl
-                << "   stroke-linejoin=\"miter\"" << endl
-                << "   stroke-dasharray=\"0.02,0.1\"" << endl
-                << "   fill=\"none\"" << endl
-                << "   transform=\"scale(1,-1)\"" << endl
-                << "  >" << endl
-                << output.exportEdges(HO)
-                << "</g>" << endl;
+        result  << "<g";
+        for (const auto& attribute : H0_style)
+            result << "   " << attribute.first << "=\"" 
+                   << attribute.second << "\"\n";
+        result << "  >" << endl
+               << output.exportEdges(HO)
+               << "</g>" << endl;
     }
     if (!VO.IsNull()) {
-        double width = scale;
+        V0_style.insert({"stroke", "rgb(0, 0, 0)"});
+        V0_style.insert({"stroke-width", "1.0"});
+        V0_style.insert({"stroke-linecap", "butt"});
+        V0_style.insert({"stroke-linejoin", "miter"});
+        V0_style.insert({"fill", "none"});
+        V0_style.insert({"transform", "scale(1,-1)"});
         BRepMesh_IncrementalMesh(VO,tolerance);
-        result  << "<g"
-                //<< " id=\"" << ViewName << "\"" << endl
-                << "   stroke=\"rgb(0, 0, 0)\"" << endl
-                << "   stroke-width=\"" << width << "\"" << endl
-                << "   stroke-linecap=\"butt\"" << endl
-                << "   stroke-linejoin=\"miter\"" << endl
-                << "   fill=\"none\"" << endl
-                << "   transform=\"scale(1,-1)\"" << endl
-                << "  >" << endl
-                << output.exportEdges(VO)
-                << "</g>" << endl;
+        result  << "<g";
+        for (const auto& attribute : V0_style)
+            result << "   " << attribute.first << "=\"" 
+                   << attribute.second << "\"\n";
+        result << "  >" << endl
+               << output.exportEdges(VO)
+               << "</g>" << endl;
     }
     if (!V.IsNull()) {
-        double width = scale;
+        V_style.insert({"stroke", "rgb(0, 0, 0)"});
+        V_style.insert({"stroke-width", "1.0"});
+        V_style.insert({"stroke-linecap", "butt"});
+        V_style.insert({"stroke-linejoin", "miter"});
+        V_style.insert({"fill", "none"});
+        V_style.insert({"transform", "scale(1,-1)"});
         BRepMesh_IncrementalMesh(V,tolerance);
-        result  << "<g"
-                //<< " id=\"" << ViewName << "\"" << endl
-                << "   stroke=\"rgb(0, 0, 0)\"" << endl
-                << "   stroke-width=\"" << width << "\"" << endl
-                << "   stroke-linecap=\"butt\"" << endl
-                << "   stroke-linejoin=\"miter\"" << endl
-                << "   fill=\"none\"" << endl
-                << "   transform=\"scale(1,-1)\"" << endl
-                << "  >" << endl
-                << output.exportEdges(V)
-                << "</g>" << endl;
+        result  << "<g";
+        for (const auto& attribute : V_style)
+            result << "   " << attribute.first << "=\"" 
+                   << attribute.second << "\"\n";
+        result << "  >" << endl
+               << output.exportEdges(V)
+               << "</g>" << endl;
     }
     if (!V1.IsNull() && (type & WithSmooth)) {
-        double width = scale;
+        V1_style.insert({"stroke", "rgb(0, 0, 0)"});
+        V1_style.insert({"stroke-width", "1.0"});
+        V1_style.insert({"stroke-linecap", "butt"});
+        V1_style.insert({"stroke-linejoin", "miter"});
+        V1_style.insert({"fill", "none"});
+        V1_style.insert({"transform", "scale(1,-1)"});
         BRepMesh_IncrementalMesh(V1,tolerance);
-        result  << "<g"
-                //<< " id=\"" << ViewName << "\"" << endl
-                << "   stroke=\"rgb(0, 0, 0)\"" << endl
-                << "   stroke-width=\"" << width << "\"" << endl
-                << "   stroke-linecap=\"butt\"" << endl
-                << "   stroke-linejoin=\"miter\"" << endl
-                << "   fill=\"none\"" << endl
-                << "   transform=\"scale(1,-1)\"" << endl
-                << "  >" << endl
-                << output.exportEdges(V1)
-                << "</g>" << endl;
+        result  << "<g";
+        for (const auto& attribute : V1_style)
+            result << "   " << attribute.first << "=\"" 
+                   << attribute.second << "\"\n";
+        result << "  >" << endl
+               << output.exportEdges(V1)
+               << "</g>" << endl;
     }
     if (!H1.IsNull() && (type & WithSmooth) && (type & WithHidden)) {
-        double width = hiddenscale;
+        H1_style.insert({"stroke", "rgb(0, 0, 0)"});
+        H1_style.insert({"stroke-width", "0.15"});
+        H1_style.insert({"stroke-linecap", "butt"});
+        H1_style.insert({"stroke-linejoin", "miter"});
+        H1_style.insert({"stroke-dasharray", "0.09,0.05)"});
+        H1_style.insert({"fill", "none"});
+        H1_style.insert({"transform", "scale(1,-1)"});
         BRepMesh_IncrementalMesh(H1,tolerance);
-        result  << "<g"
-                //<< " id=\"" << ViewName << "\"" << endl
-                << "   stroke=\"rgb(0, 0, 0)\"" << endl
-                << "   stroke-width=\"" << width << "\"" << endl
-                << "   stroke-linecap=\"butt\"" << endl
-                << "   stroke-linejoin=\"miter\"" << endl
-                << "   stroke-dasharray=\"0.09,0.05\"" << endl
-                << "   fill=\"none\"" << endl
-                << "   transform=\"scale(1,-1)\"" << endl
-                << "  >" << endl
-                << output.exportEdges(H1)
-                << "</g>" << endl;
+        result  << "<g";
+        for (const auto& attribute : H1_style)
+            result << "   " << attribute.first << "=\"" 
+                   << attribute.second << "\"\n";
+        result << "  >" << endl
+               << output.exportEdges(H1)
+               << "</g>" << endl;
     }
     return result.str();
 }
 
 /* dxf output section - Dan Falck 2011/09/25  */
 
-std::string ProjectionAlgos::getDXF(ExtractionType type, double /*scale*/, double tolerance)
+string ProjectionAlgos::getDXF(ExtractionType type, double /*scale*/, double tolerance)
 {
-    std::stringstream result;
+    stringstream result;
     DXFOutput output;
 
     if (!H.IsNull() && (type & WithHidden)) {
