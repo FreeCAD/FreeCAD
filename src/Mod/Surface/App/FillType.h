@@ -24,9 +24,12 @@
 #ifndef SURFACE_FILLTYPE_H
 #define SURFACE_FILLTYPE_H
 
-enum filltype_t
+enum FillType_t
 {
-    InvalidStyle = 0, StretchStyle, CoonsStyle, CurvedStyle
+    InvalidStyle = 0,
+    StretchStyle,
+    CoonsStyle,
+    CurvedStyle
 };
 
 #endif // SURAFCE_FILLTYPE_H

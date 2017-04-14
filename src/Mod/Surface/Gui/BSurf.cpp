@@ -95,7 +95,7 @@ BSurf::~BSurf()
 void BSurf::setEditedObject(Surface::BSurf* obj)
 {
     editedObject = obj;
-    oldFillType = (filltype_t)(editedObject->FillType.getValue());
+    oldFillType = (FillType_t)(editedObject->FillType.getValue());
     switch(oldFillType)
     {
     case StretchStyle:
@@ -111,9 +111,9 @@ void BSurf::setEditedObject(Surface::BSurf* obj)
     fillType = oldFillType;
 }
 
-filltype_t BSurf::getFillType() const
+FillType_t BSurf::getFillType() const
 {
-    filltype_t ret;
+    FillType_t ret;
     if (ui->fillType_stretch->isChecked())
         ret = StretchStyle;
     else if (ui->fillType_coons->isChecked())
