@@ -31,6 +31,7 @@ from PathScripts.PathUtils import depth_params
 from PySide import QtCore
 import TechDraw
 import ArchPanel
+import Part
 
 LOG_MODULE = 'PathContour'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
@@ -131,64 +132,99 @@ class ObjectContour:
             obj.ClearanceHeight = 10.0
             obj.SafeHeight = 8.0
 
-    def _buildPathLibarea(self, obj, edgelist):
-        import PathScripts.PathKurveUtils as PathKurveUtils
-        PathLog.track()
-        # import math
-        # import area
-        output = ""
-        if obj.Comment != "":
-            output += '(' + str(obj.Comment)+')\n'
+    def _buildPathArea(self, obj, edgelist, start = None):
 
-        if obj.StartPoint and obj.UseStartPoint:
-            startpoint = obj.StartPoint
-        else:
-            startpoint = None
+        c = Part.Wire(edgelist)
+        f = Part.makeFace([c], 'Part::FaceMakerSimple')
 
-        if obj.EndPoint and obj.UseEndPoint:
-            endpoint = obj.EndPoint
-        else:
-            endpoint = None
-
-        PathKurveUtils.output('mem')
-        PathKurveUtils.feedrate_hv(self.horizFeed, self.vertFeed)
-
-        output = ""
-        output += "G0 Z" + str(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
-        curve = PathKurveUtils.makeAreaCurve(edgelist, obj.Direction, startpoint, endpoint)
-
-        roll_radius = 2.0
-        extend_at_start = 0.0
-        extend_at_end = 0.0
-        lead_in_line_len = 0.0
-        lead_out_line_len = 0.0
-
-        if obj.UseComp is False:
-            obj.Side = 'On'
-        else:
-            if obj.Direction == 'CW':
-                obj.Side = 'Left'
-            else:
-                obj.Side = 'Right'
+        profile = Path.Area(Offset=self.radius,SectionCount=1)
+        profile.setPlane(Part.makeCircle(10))
+        profile.add(f)
+        lshapes = [profile.getShape()]
 
         depthparams = depth_params(
-            obj.ClearanceHeight.Value,
-            obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown.Value, 0.0,
-            obj.FinalDepth.Value, None)
+                clearance_height = obj.ClearanceHeight.Value,
+                rapid_safety_space = obj.SafeHeight.Value,
+                start_depth = obj.StartDepth.Value,
+                step_down = obj.StepDown.Value,
+                z_finish_step = 0.0,
+                final_depth = obj.FinalDepth.Value,
+                user_depths = None)
 
-        PathKurveUtils.profile2(
-            curve, obj.Side, self.radius, self.vertFeed, self.horizFeed,
-            self.vertRapid, self.horizRapid, obj.OffsetExtra.Value, roll_radius,
-            None, None, depthparams, extend_at_start, extend_at_end,
-            lead_in_line_len, lead_out_line_len)
+        print (depthparams.get_depths())
+        for l in depthparams.get_depths():
+                c = lshapes[0].copy()
+                c.Placement.Base.z = l
+                lshapes.append(c)
 
-        output += PathKurveUtils.retrieve_gcode()
-        return output
+        if start is None:
+            pp = Path.fromShapes(lshapes)
+        else:
+            pp = Path.fromShapes(lshapes, start)
+        return pp
+
+
+    # def _buildPathLibarea(self, obj, edgelist):
+    #     import PathScripts.PathKurveUtils as PathKurveUtils
+    #     PathLog.track()
+    #     # import math
+    #     # import area
+    #     output = ""
+    #     if obj.Comment != "":
+    #         output += '(' + str(obj.Comment)+')\n'
+
+    #     if obj.StartPoint and obj.UseStartPoint:
+    #         startpoint = obj.StartPoint
+    #     else:
+    #         startpoint = None
+
+    #     if obj.EndPoint and obj.UseEndPoint:
+    #         endpoint = obj.EndPoint
+    #     else:
+    #         endpoint = None
+
+    #     PathKurveUtils.output('mem')
+    #     PathKurveUtils.feedrate_hv(self.horizFeed, self.vertFeed)
+
+    #     output = ""
+    #     output += "G0 Z" + str(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
+    #     curve = PathKurveUtils.makeAreaCurve(edgelist, obj.Direction, startpoint, endpoint)
+
+    #     roll_radius = 2.0
+    #     extend_at_start = 0.0
+    #     extend_at_end = 0.0
+    #     lead_in_line_len = 0.0
+    #     lead_out_line_len = 0    #         obj.FinalDepth.Value, None)
+
+    #     PathKurveUtils.profile2(
+
+    #     if obj.UseComp is False:
+    #         obj.Side = 'On'
+    #     else:
+    #         if obj.Direction == 'CW':
+    #             obj.Side = 'Left'
+    #         else:
+    #             obj.Side = 'Right'
+
+    #     depthparams = depth_params(
+    #         obj.ClearanceHeight.Value,
+    #         obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown.Value, 0.0,
+    #         obj.FinalDepth.Value, None)
+
+    #     PathKurveUtils.profile2(
+    #         curve, obj.Side, self.radius, self.vertFeed, self.horizFeed,
+    #         self.vertRapid, self.horizRapid, obj.OffsetExtra.Value, roll_radius,
+    #         None, None, depthparams, extend_at_start, extend_at_end,
+    #         lead_in_line_len, lead_out_line_len)
+
+    #     output += PathKurveUtils.retrieve_gcode()
+    #     return output
 
     def execute(self, obj):
         PathLog.track()
         import Part  # math #DraftGeomUtils
-        output = ""
+        commandlist = []
+        #output = ""
 
         toolLoad = obj.ToolController
 
@@ -204,16 +240,20 @@ class ObjectContour:
             if not tool or tool.Diameter == 0:
                 FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
                 return
-
                 #self.radius = 0.25
             else:
                 self.radius = tool.Diameter/2
 
-        output += "(" + obj.Label + ")"
+        #output += "(" + obj.Label + ")"
+        commandlist.append(Path.Command("(" + obj.Label + ")"))
+
         if not obj.UseComp:
-            output += "(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"
+            #output += "(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"
+            commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
+
         else:
-            output += "(Uncompensated Tool Path)"
+            #output += "(Uncompensated Tool Path)"
+            commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
         parentJob = PathUtils.findParentJob(obj)
         if parentJob is None:
@@ -234,21 +274,29 @@ class ObjectContour:
                                 edgelist = Part.__sortEdges__(edgelist)
                                 PathLog.debug("Processing panel perimeter.  edges found: {}".format(len(edgelist)))                       # subobj.Proxy.execute(subobj)
                             try:
-                                output += self._buildPathLibarea(obj, edgelist)
-                            except:
+                                #output += self._buildPathLibarea(obj, edgelist)
+                                commandlist.extend(self._buildPathArea(obj, edgelist).Commands)
+                            except Exception as e: 
+                                print(e) 
                                 FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
         else:
-            contourwire = TechDraw.findShapeOutline(baseobject.Shape, 1, Vector(0, 0, 1))
+            fixbase = baseobject.Shape.copy()
+            fixbase.fix(0.00001,0.00001,0.00001)
+            contourwire = TechDraw.findShapeOutline(fixbase, 1, Vector(0, 0, 1))
 
             edgelist = contourwire.Edges
             edgelist = Part.__sortEdges__(edgelist)
 
             try:
-                output += self._buildPathLibarea(obj, edgelist)
-            except:
+                commandlist.extend(self._buildPathArea(obj, edgelist).Commands)
+            except Exception as e: 
+                print(e) 
                 FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
         if obj.Active:
-            path = Path.Path(output)
+            path = Path.Path(commandlist)
+            # for c in contourcommands.Commands:
+            #     path.addCommands(c)
+
             obj.Path = path
             if obj.ViewObject:
                 obj.ViewObject.Visibility = True

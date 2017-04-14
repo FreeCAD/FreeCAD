@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>323</width>
-    <height>482</height>
+    <width>518</width>
+    <height>754</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -33,8 +33,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>305</width>
-        <height>277</height>
+        <width>500</width>
+        <height>282</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -111,8 +111,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>305</width>
-        <height>124</height>
+        <width>500</width>
+        <height>241</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -192,8 +192,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>305</width>
-        <height>109</height>
+        <width>500</width>
+        <height>241</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -241,9 +241,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>289</width>
-        <height>297</height>
+        <y>-34</y>
+        <width>486</width>
+        <height>361</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -263,20 +263,6 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
-          <item row="0" column="2">
-           <widget class="Gui::QuantitySpinBox" name="zigZagAngle">
-            <property name="unit" stdset="0">
-             <string notr="true"/>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="useZigZag">
-            <property name="text">
-             <string>Use ZigZag</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="0" colspan="2">
            <widget class="QCheckBox" name="zigZagUnidirectional">
             <property name="text">
@@ -284,59 +270,18 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
+          <item row="0" column="2">
+           <widget class="Gui::QuantitySpinBox" name="zigZagAngle" native="true">
+            <property name="unit" stdset="0">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
            <widget class="QLabel" name="label_10">
             <property name="text">
              <string>ZigZag Angle</string>
             </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QWidget" name="widget_3" native="true">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_9">
-            <property name="text">
-             <string>Cut Mode</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_12">
-            <property name="text">
-             <string>Boundary Shape</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QComboBox" name="boundaryShape">
-            <item>
-             <property name="text">
-              <string>Perimeter</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Boundbox</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QComboBox" name="cutMode">
-            <item>
-             <property name="text">
-              <string>Climb</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Conventional</string>
-             </property>
-            </item>
            </widget>
           </item>
          </layout>
@@ -406,6 +351,85 @@
           </item>
           <item>
            <widget class="QComboBox" name="uiToolController"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QWidget" name="widget_3" native="true">
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Cut Mode</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="cutMode">
+            <item>
+             <property name="text">
+              <string>Climb</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Conventional</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>Boundary Shape</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="boundaryShape">
+            <item>
+             <property name="text">
+              <string>Perimeter</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Boundbox</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="offsetpattern">
+            <item>
+             <property name="text">
+              <string>ZigZag</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Offset</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Spiral</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>ZigZagOffset</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_14">
+            <property name="text">
+             <string>Pattern</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
