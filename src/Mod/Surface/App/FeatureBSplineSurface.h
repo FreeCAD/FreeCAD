@@ -21,20 +21,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATUREBSPLINESURF_H
-#define SURFACE_FEATUREBSPLINESURF_H
+#ifndef SURFACE_FEATUREBSPLINESURFACE_H
+#define SURFACE_FEATUREBSPLINESURFACE_H
 
-#include "FeatureBSurf.h"
+#include "FeatureSurface.h"
 
 namespace Surface
 {
 
-class SurfaceExport BSplineSurf :  public BSurf
+class SurfaceExport BSplineSurface :  public SurfaceFeature
 {
-    PROPERTY_HEADER(Surface::BSplineSurf);
+    PROPERTY_HEADER(Surface::BSplineSurface);
 
 public:
-    BSplineSurf();
+    BSplineSurface();
 
     // recalculate the feature
     virtual App::DocumentObjectExecReturn *execute(void);

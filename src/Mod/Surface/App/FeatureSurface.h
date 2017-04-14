@@ -21,8 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEATUREBSURF_H
-#define FEATUREBSURF_H
+#ifndef FEATURESURFACE_H
+#define FEATURESURFACE_H
 
 #include <Geom_BoundedSurface.hxx>
 #include <GeomFill_FillingStyle.hxx>
@@ -62,12 +62,12 @@ public:
     }
 };
   
-class BSurf : public Part::Feature
+class SurfaceFeature : public Part::Feature
 {
-  PROPERTY_HEADER(Surface::BSurf);
+  PROPERTY_HEADER(Surface::SurfaceFeature);
 
 public:
-    BSurf();
+    SurfaceFeature();
     App::PropertyLinkSubList BoundaryList;  //curves to be turned into a face (2-4 curves allowed).
     App::PropertyEnumeration FillType;      //Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
 
@@ -75,7 +75,7 @@ public:
 
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
-        return "SurfaceGui::ViewProviderBSurf";
+        return "SurfaceGui::ViewProviderSurfaceFeature";
     }
 
 protected:
@@ -92,4 +92,4 @@ private:
 
 }
 
-#endif // FEATUREBSURF_H
+#endif // FEATURESURFACE_H

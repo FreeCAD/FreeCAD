@@ -41,18 +41,18 @@
 #include <Base/Tools.h>
 #include <Base/Exception.h>
 
-#include "FeatureBezSurf.h"
+#include "FeatureBezierSurface.h"
 
 
 using namespace Surface;
 
-PROPERTY_SOURCE(Surface::BezSurf, Surface::BSurf)
+PROPERTY_SOURCE(Surface::BezierSurface, Surface::SurfaceFeature)
 
-BezSurf::BezSurf() : BSurf()
+BezierSurface::BezierSurface() : SurfaceFeature()
 {
 }
 
-App::DocumentObjectExecReturn *BezSurf::execute(void)
+App::DocumentObjectExecReturn *BezierSurface::execute(void)
 {
     correcteInvalidFillType();
 

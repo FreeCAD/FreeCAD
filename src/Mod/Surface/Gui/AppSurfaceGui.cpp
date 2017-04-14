@@ -34,7 +34,7 @@
 #include <Gui/Application.h>
 
 #include "Workbench.h"
-#include "BSurf.h"
+#include "SurfaceFilling.h"
 
 // use a different name to CreateCommand()
 void CreateSurfaceCommands(void);
@@ -76,7 +76,7 @@ PyMOD_INIT_FUNC(SurfaceGui)
     CreateSurfaceCommands();
 
     SurfaceGui::Workbench::init();
-    SurfaceGui::ViewProviderBSurf::init();
+    SurfaceGui::ViewProviderSurfaceFeature::init();
     
 //    SurfaceGui::ViewProviderCut::init();
 
