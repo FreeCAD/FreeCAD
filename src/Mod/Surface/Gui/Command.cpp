@@ -60,7 +60,7 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include "Mod/Part/App/PartFeature.h"
-#include "BSurf.h"
+#include "SurfaceFilling.h"
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -157,7 +157,7 @@ CmdSurfaceBSurf::CmdSurfaceBSurf()
     sAppModule    = "Surface";
     sGroup        = QT_TR_NOOP("Surface");
     sMenuText     = QT_TR_NOOP("Bezier or BSpline surface");
-    sToolTipText  = QT_TR_NOOP("Creates a surface from 2, 3 or 4 Bezier or BSpline curves");
+    sToolTipText  = QT_TR_NOOP("Creates a surface from 2, 3 or 4 Bezier or B-spline curves");
     sWhatsThis    = "Surface_BSurf";
     sStatusTip    = sToolTipText;
     sPixmap       = "BSplineSurf";
@@ -242,7 +242,7 @@ void CmdSurfaceBSurf::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("BezierSurface");
 
         openCommand("Create Bezier surface");
-        doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::BezSurf\",\"%s\")", FeatName.c_str());
+        doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::BezierSurface\",\"%s\")", FeatName.c_str());
         // invalid fill type meaning the surface is just created and cancel should delete it
         doCommand(Doc, "App.ActiveDocument.ActiveObject.FillType=0");
         doCommand(Doc, "App.ActiveDocument.ActiveObject.BoundaryList = [%s]", linklist.c_str());
@@ -253,8 +253,8 @@ void CmdSurfaceBSurf::activated(int iMsg)
     if (validator.isBSpline()) {
         std::string FeatName = getUniqueObjectName("BSplineSurface");
 
-        openCommand("Create BSpline surface");
-        doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::BSplineSurf\",\"%s\")", FeatName.c_str());
+        openCommand("Create B-spline surface");
+        doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::BSplineSurface\",\"%s\")", FeatName.c_str());
         // invalid fill type meaning the surface is just created and cancel should delete it
         doCommand(Doc, "App.ActiveDocument.ActiveObject.FillType=0");
         doCommand(Doc, "App.ActiveDocument.ActiveObject.BoundaryList = [%s]", linklist.c_str());
