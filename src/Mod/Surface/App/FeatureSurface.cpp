@@ -156,7 +156,6 @@ SurfaceFeature::SurfaceFeature(): Feature()
 {
     ADD_PROPERTY(FillType, ((long)0));
     ADD_PROPERTY(BoundaryList, (0, "Dummy"));
-    FillType.setStatus(App::Property::ReadOnly, true); // read-only in property editor
     FillType.setEnums(FillTypeEnums);
 }
 
