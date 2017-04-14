@@ -49,7 +49,7 @@ namespace SurfaceGui
         Q_OBJECT
 
     protected:
-        filltype_t fillType, oldFillType;
+        FillType_t fillType, oldFillType;
         Surface::BSurf* editedObject;
 
     private:
@@ -72,7 +72,7 @@ namespace SurfaceGui
         void on_fillType_stretch_clicked();
         void on_fillType_coons_clicked();
         void on_fillType_curved_clicked();
-        filltype_t getFillType() const;
+        FillType_t getFillType() const;
     };
 
     class TaskBSurf : public Gui::TaskView::TaskDialog
