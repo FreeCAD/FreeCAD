@@ -43,19 +43,19 @@
 #include <Base/Tools.h>
 #include <Base/Exception.h>
 
-#include "FeatureBSplineSurf.h"
+#include "FeatureBSplineSurface.h"
 
 
 using namespace Surface;
 
-PROPERTY_SOURCE(Surface::BSplineSurf, Surface::BSurf)
+PROPERTY_SOURCE(Surface::BSplineSurface, Surface::SurfaceFeature)
 
 
-BSplineSurf::BSplineSurf() : BSurf()
+BSplineSurface::BSplineSurface() : SurfaceFeature()
 {
 }
 
-App::DocumentObjectExecReturn *BSplineSurf::execute(void)
+App::DocumentObjectExecReturn *BSplineSurface::execute(void)
 {
     correcteInvalidFillType();
 

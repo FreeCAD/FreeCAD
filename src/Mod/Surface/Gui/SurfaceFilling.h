@@ -20,50 +20,50 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_GUI_BSURF_H
-#define SURFACE_GUI_BSURF_H
+#ifndef SURFACE_GUI_SURFACE_H
+#define SURFACE_GUI_SURFACE_H
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Base/BoundBox.h>
 #include <Mod/Surface/App/FillType.h>
 #include <Mod/Part/Gui/ViewProvider.h>
-#include <Mod/Surface/App/FeatureBSurf.h>
+#include <Mod/Surface/App/FeatureSurface.h>
 
 namespace SurfaceGui
 {
   
-    class Ui_DlgBSurf;
+    class Ui_SurfaceFilling;
 
-    class ViewProviderBSurf : public PartGui::ViewProviderPart
+    class ViewProviderSurfaceFeature : public PartGui::ViewProviderPart
     {
-        PROPERTY_HEADER(SurfaceGui::ViewProviderBSurf);
+        PROPERTY_HEADER(SurfaceGui::ViewProviderSurfaceFeature);
     public:
         virtual bool setEdit(int ModNum);
         virtual void unsetEdit(int ModNum);
         QIcon getIcon(void) const;
     };
 
-    class BSurf : public QWidget
+    class SurfaceFilling : public QWidget
     {
         Q_OBJECT
 
     protected:
         FillType_t fillType, oldFillType;
-        Surface::BSurf* editedObject;
+        Surface::SurfaceFeature* editedObject;
 
     private:
-        Ui_DlgBSurf* ui;
+        Ui_SurfaceFilling* ui;
         Base::BoundBox3d bbox;
-        ViewProviderBSurf* vp;
+        ViewProviderSurfaceFeature* vp;
 
     public:
-        BSurf(ViewProviderBSurf* vp, Surface::BSurf* obj);
-        ~BSurf();
+        SurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceFeature* obj);
+        ~SurfaceFilling();
         void accept();
         void reject();
         void apply();
-        void setEditedObject(Surface::BSurf* obj);
+        void setEditedObject(Surface::SurfaceFeature* obj);
 
     protected:
         void changeEvent(QEvent *e);
@@ -75,14 +75,14 @@ namespace SurfaceGui
         FillType_t getFillType() const;
     };
 
-    class TaskBSurf : public Gui::TaskView::TaskDialog
+    class TaskSurfaceFilling : public Gui::TaskView::TaskDialog
     {
         Q_OBJECT
 
     public:
-        TaskBSurf(ViewProviderBSurf* vp, Surface::BSurf* obj);
-        ~TaskBSurf();
-        void setEditedObject(Surface::BSurf* obj);
+        TaskSurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceFeature* obj);
+        ~TaskSurfaceFilling();
+        void setEditedObject(Surface::SurfaceFeature* obj);
 
     public:
         bool accept();
@@ -93,11 +93,11 @@ namespace SurfaceGui
         { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
 
     private:
-        BSurf* widget;
+        SurfaceFilling* widget;
         Gui::TaskView::TaskBox* taskbox;
-        ViewProviderBSurf* view;
+        ViewProviderSurfaceFeature* view;
     };
 
 } //namespace Surface
 
-#endif // SURFACE_GUI_BSURF_H
+#endif // SURFACE_GUI_SURFACE_H

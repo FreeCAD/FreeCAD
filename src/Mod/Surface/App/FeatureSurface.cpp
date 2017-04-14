@@ -41,7 +41,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 
-#include "FeatureBSurf.h"
+#include "FeatureSurface.h"
 
 using namespace Surface;
 
@@ -148,11 +148,11 @@ void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName,
 }
 
 
-PROPERTY_SOURCE(Surface::BSurf, Part::Feature)
+PROPERTY_SOURCE(Surface::SurfaceFeature, Part::Feature)
 
-const char* BSurf::FillTypeEnums[]    = {"Invalid", "Stretched", "Coons", "Curved", NULL};
+const char* SurfaceFeature::FillTypeEnums[]    = {"Invalid", "Stretched", "Coons", "Curved", NULL};
 
-BSurf::BSurf(): Feature()
+SurfaceFeature::SurfaceFeature(): Feature()
 {
     ADD_PROPERTY(FillType, ((long)0));
     ADD_PROPERTY(BoundaryList, (0, "Dummy"));
@@ -162,7 +162,7 @@ BSurf::BSurf(): Feature()
 
 
 //Check if any components of the surface have been modified
-short BSurf::mustExecute() const
+short SurfaceFeature::mustExecute() const
 {
     if (BoundaryList.isTouched() ||
         FillType.isTouched())
@@ -172,7 +172,7 @@ short BSurf::mustExecute() const
     return 0;
 }
 
-GeomFill_FillingStyle BSurf::getFillingStyle()
+GeomFill_FillingStyle SurfaceFeature::getFillingStyle()
 {
     //Identify filling style
     int ftype = FillType.getValue();
@@ -188,7 +188,7 @@ GeomFill_FillingStyle BSurf::getFillingStyle()
 }
 
 
-void BSurf::getWire(TopoDS_Wire& aWire)
+void SurfaceFeature::getWire(TopoDS_Wire& aWire)
 {
     Handle(ShapeFix_Wire) aShFW = new ShapeFix_Wire;
     Handle(ShapeExtend_WireData) aWD = new ShapeExtend_WireData;
@@ -234,7 +234,7 @@ void BSurf::getWire(TopoDS_Wire& aWire)
     }
 }
 
-void BSurf::createFace(const Handle_Geom_BoundedSurface &aSurface)
+void SurfaceFeature::createFace(const Handle_Geom_BoundedSurface &aSurface)
 {
     BRepBuilderAPI_MakeFace aFaceBuilder;
     Standard_Real u1, u2, v1, v2;
@@ -253,7 +253,7 @@ void BSurf::createFace(const Handle_Geom_BoundedSurface &aSurface)
     this->Shape.setValue(aFace);
 }
 
-void BSurf::correcteInvalidFillType()
+void SurfaceFeature::correcteInvalidFillType()
 {
     int ftype = FillType.getValue();
     if(ftype == InvalidStyle)

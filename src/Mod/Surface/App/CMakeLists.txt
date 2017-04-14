@@ -21,18 +21,18 @@ SET(Surface_SRCS
     AppSurface.cpp
     PreCompiled.cpp
     PreCompiled.h
-    FeatureBSurf.h
-    FeatureBSurf.cpp
-    FeatureFilling.h
+    FeatureSurface.cpp
+    FeatureSurface.h
     FeatureFilling.cpp
-    FeatureSewing.h
+    FeatureFilling.h
     FeatureSewing.cpp
-    FeatureCut.h
+    FeatureSewing.h
     FeatureCut.cpp
-    FeatureBezSurf.h
-    FeatureBezSurf.cpp
-    FeatureBSplineSurf.h
-    FeatureBSplineSurf.cpp
+    FeatureCut.h
+    FeatureBezierSurface.cpp
+    FeatureBezierSurface.h
+    FeatureBSplineSurface.cpp
+    FeatureBSplineSurface.h
     FillType.h
 )
 

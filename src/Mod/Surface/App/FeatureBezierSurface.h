@@ -21,20 +21,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATUREBEZSURF_H
-#define SURFACE_FEATUREBEZSURF_H
+#ifndef SURFACE_FEATUREBEZIERSURFACE_H
+#define SURFACE_FEATUREBEZIERSURFACE_H
 
-#include "FeatureBSurf.h"
+#include "FeatureSurface.h"
 
 namespace Surface
 {
 
-class SurfaceExport BezSurf :  public BSurf
+class SurfaceExport BezierSurface :  public SurfaceFeature
 {
-    PROPERTY_HEADER(Surface::BezSurf);
+    PROPERTY_HEADER(Surface::BezierSurface);
 
 public:
-    BezSurf();
+    BezierSurface();
 
     // recalculate the feature
     virtual App::DocumentObjectExecReturn *execute(void);
