@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <QAction>
+#include <QMenu>
 
 #include <Mod/Surface/App/FillType.h>
 #include <Gui/ViewProvider.h>
@@ -41,31 +43,51 @@ PROPERTY_SOURCE(SurfaceGui::ViewProviderSurfaceFeature, PartGui::ViewProviderPar
 
 namespace SurfaceGui {
 
+void ViewProviderSurfaceFeature::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act;
+    act = menu->addAction(QObject::tr("Edit filling"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
+    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
+}
+
 bool ViewProviderSurfaceFeature::setEdit(int ModNum)
 {
-    // When double-clicking on the item for this sketch the
-    // object unsets and sets its edit mode without closing
-    // the task panel
+    if (ModNum == ViewProvider::Default ) {
+        // When double-clicking on the item for this sketch the
+        // object unsets and sets its edit mode without closing
+        // the task panel
 
-    Surface::SurfaceFeature* obj =  static_cast<Surface::SurfaceFeature*>(this->getObject());
+        Surface::SurfaceFeature* obj =  static_cast<Surface::SurfaceFeature*>(this->getObject());
 
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    TaskSurfaceFilling* tDlg = qobject_cast<TaskSurfaceFilling*>(dlg);
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
 
-    // start the edit dialog
-    if(dlg) {
-        tDlg->setEditedObject(obj);
-        Gui::Control().showDialog(tDlg);
+        // start the edit dialog
+        if (dlg) {
+            TaskSurfaceFilling* tDlg = qobject_cast<TaskSurfaceFilling*>(dlg);
+            if (tDlg)
+                tDlg->setEditedObject(obj);
+            Gui::Control().showDialog(dlg);
+        }
+        else {
+            Gui::Control().showDialog(new TaskSurfaceFilling(this, obj));
+        }
+        return true;
     }
     else {
-        Gui::Control().showDialog(new TaskSurfaceFilling(this, obj));
+        return ViewProviderPart::setEdit(ModNum);
     }
-    return true;
 }
 
 void ViewProviderSurfaceFeature::unsetEdit(int ModNum)
 {
-    // nothing to do
+    if (ModNum == ViewProvider::Default) {
+        // when pressing ESC make sure to close the dialog
+        QTimer::singleShot(0, &Gui::Control(), SLOT(closeDialog()));
+    }
+    else {
+        PartGui::ViewProviderPart::unsetEdit(ModNum);
+    }
 }
 
 QIcon ViewProviderSurfaceFeature::getIcon(void) const

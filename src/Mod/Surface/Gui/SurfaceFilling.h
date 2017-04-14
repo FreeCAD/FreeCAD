@@ -39,6 +39,7 @@ namespace SurfaceGui
     {
         PROPERTY_HEADER(SurfaceGui::ViewProviderSurfaceFeature);
     public:
+        virtual void setupContextMenu(QMenu*, QObject*, const char*);
         virtual bool setEdit(int ModNum);
         virtual void unsetEdit(int ModNum);
         QIcon getIcon(void) const;
