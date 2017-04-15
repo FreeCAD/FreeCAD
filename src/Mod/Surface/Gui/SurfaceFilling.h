@@ -103,6 +103,7 @@ private Q_SLOTS:
     void on_fillType_curved_clicked();
     void on_buttonEdgeAdd_clicked();
     void on_buttonEdgeRemove_clicked();
+    void onDeleteEdge(void);
 };
 
 class TaskSurfaceFilling : public Gui::TaskView::TaskDialog
