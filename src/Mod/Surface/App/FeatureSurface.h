@@ -32,7 +32,6 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/Surface/App/FillType.h>
 
 namespace Surface
 {
@@ -82,9 +81,6 @@ protected:
     GeomFill_FillingStyle getFillingStyle();
     void getWire(TopoDS_Wire& aWire);
     void createFace(const Handle_Geom_BoundedSurface &aSurface);
-
-    // corrects the initially invalid fill type
-    void correcteInvalidFillType();
 
 private:
     static const char* FillTypeEnums[];

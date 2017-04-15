@@ -33,7 +33,6 @@ SET(Surface_SRCS
     FeatureBezierSurface.h
     FeatureBSplineSurface.cpp
     FeatureBSplineSurface.h
-    FillType.h
 )
 
 link_directories(${OCC_LIBRARY_DIR})
