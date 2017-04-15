@@ -116,14 +116,22 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
 
     // TODO remove this field (2015-09-08, Fat-Zer)
     App::DocumentObject* o = getObject();
-    if (o->getTypeId() == PartDesign::Plane::getClassTypeId())
-        datumType = QObject::tr("Plane");
-    else if (o->getTypeId() == PartDesign::Line::getClassTypeId())
-        datumType = QObject::tr("Line");
-    else if (o->getTypeId() == PartDesign::Point::getClassTypeId())
-        datumType = QObject::tr("Point");
-    else if (o->getTypeId() == PartDesign::CoordinateSystem::getClassTypeId())
-        datumType = QObject::tr("CoordinateSystem");
+    if (o->getTypeId() == PartDesign::Plane::getClassTypeId()) {
+        datumType = QString::fromLatin1("Plane");
+        datumText = QObject::tr("Plane");
+    }
+    else if (o->getTypeId() == PartDesign::Line::getClassTypeId()) {
+        datumType = QString::fromLatin1("Line");
+        datumText = QObject::tr("Line");
+    }
+    else if (o->getTypeId() == PartDesign::Point::getClassTypeId()) {
+        datumType = QString::fromLatin1("Point");
+        datumText = QObject::tr("Point");
+    }
+    else if (o->getTypeId() == PartDesign::CoordinateSystem::getClassTypeId()) {
+        datumType = QString::fromLatin1("CoordinateSystem");
+        datumText = QObject::tr("Coordinate System");
+    }
 
     SoShapeHints* hints = new SoShapeHints();
     hints->shapeType.setValue(SoShapeHints::UNKNOWN_SHAPE_TYPE);
@@ -221,7 +229,7 @@ bool ViewProviderDatum::isSelectable(void) const
 void ViewProviderDatum::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit datum ") + datumType, receiver, member);
+    act = menu->addAction(QObject::tr("Edit datum"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
 }
 
