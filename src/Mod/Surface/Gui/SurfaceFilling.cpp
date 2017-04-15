@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2015 Balázs Bámer                                       *
+ *                      Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,13 +24,15 @@
 #include "PreCompiled.h"
 #include <QAction>
 #include <QMenu>
+#include <QMessageBox>
 
 #include <Mod/Surface/App/FillType.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
-#include <Base/Sequencer.h>
+#include <Gui/SelectionObject.h>
+#include <Base/Console.h>
 #include <Gui/Control.h>
 #include <Gui/BitmapFactory.h>
 
@@ -39,16 +42,43 @@
 
 using namespace SurfaceGui;
 
-PROPERTY_SOURCE(SurfaceGui::ViewProviderSurfaceFeature, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(SurfaceGui::ViewProviderSurfaceFeature, PartGui::ViewProviderSpline)
 
 namespace SurfaceGui {
+
+bool EdgeSelection::allow(App::Document* , App::DocumentObject* pObj, const char* sSubName)
+{
+    // don't allow references to itself
+    if (pObj == editedObject)
+        return false;
+    if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId()))
+        return false;
+    if (!sSubName || sSubName[0] == '\0')
+        return false;
+    std::string element(sSubName);
+    if (element.substr(0,4) != "Edge")
+        return false;
+    auto links = editedObject->BoundaryList.getSubListValues();
+    for (auto it : links) {
+        if (it.first == pObj) {
+            for (auto jt : it.second) {
+                if (jt == sSubName)
+                    return !appendEdges;
+            }
+        }
+    }
+
+    return appendEdges;
+}
+
+// ----------------------------------------------------------------------------
 
 void ViewProviderSurfaceFeature::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Edit filling"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
+    PartGui::ViewProviderSpline::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderSurfaceFeature::setEdit(int ModNum)
@@ -75,7 +105,7 @@ bool ViewProviderSurfaceFeature::setEdit(int ModNum)
         return true;
     }
     else {
-        return ViewProviderPart::setEdit(ModNum);
+        return ViewProviderSpline::setEdit(ModNum);
     }
 }
 
@@ -86,7 +116,7 @@ void ViewProviderSurfaceFeature::unsetEdit(int ModNum)
         QTimer::singleShot(0, &Gui::Control(), SLOT(closeDialog()));
     }
     else {
-        PartGui::ViewProviderPart::unsetEdit(ModNum);
+        PartGui::ViewProviderSpline::unsetEdit(ModNum);
     }
 }
 
@@ -95,10 +125,13 @@ QIcon ViewProviderSurfaceFeature::getIcon(void) const
     return Gui::BitmapFactory().pixmap("BSplineSurf");
 }
 
+// ----------------------------------------------------------------------------
+
 SurfaceFilling::SurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceFeature* obj)
 {
     ui = new Ui_SurfaceFilling();
     ui->setupUi(this);
+    selectionMode = None;
     this->vp = vp;
     setEditedObject(obj);
 }
@@ -116,32 +149,45 @@ SurfaceFilling::~SurfaceFilling()
 void SurfaceFilling::setEditedObject(Surface::SurfaceFeature* obj)
 {
     editedObject = obj;
-    oldFillType = (FillType_t)(editedObject->FillType.getValue());
-    switch(oldFillType)
+    long curtype = editedObject->FillType.getValue();
+    switch(curtype)
     {
-    case StretchStyle:
+    case 1: // StretchStyle
         ui->fillType_stretch->setChecked(true);
         break;
-    case CoonsStyle:
+    case 2: // CoonsStyle
         ui->fillType_coons->setChecked(true);
         break;
-    case CurvedStyle:
+    case 3: // CurvedStyle
         ui->fillType_curved->setChecked(true);
         break;
+    default:
+        break;
     }
-    fillType = oldFillType;
-}
 
-FillType_t SurfaceFilling::getFillType() const
-{
-    FillType_t ret;
-    if (ui->fillType_stretch->isChecked())
-        ret = StretchStyle;
-    else if (ui->fillType_coons->isChecked())
-        ret = CoonsStyle;
-    else
-        ret = CurvedStyle;
-    return ret;
+    auto objects = editedObject->BoundaryList.getValues();
+    auto element = editedObject->BoundaryList.getSubValues();
+    auto it = objects.begin();
+    auto jt = element.begin();
+
+    App::Document* doc = editedObject->getDocument();
+    for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
+        QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+        ui->listWidget->addItem(item);
+
+        QString text = QString::fromLatin1("%1.%2")
+                .arg(QString::fromUtf8((*it)->Label.getValue()))
+                .arg(QString::fromStdString(*jt));
+        item->setText(text);
+
+        QList<QVariant> data;
+        data << QByteArray(doc->getName());
+        data << QByteArray((*it)->getNameInDocument());
+        data << QByteArray(jt->c_str());
+        item->setData(Qt::UserRole, data);
+    }
+
+    attachDocument(Gui::Application::Instance->getDocument(doc));
 }
 
 void SurfaceFilling::changeEvent(QEvent *e)
@@ -154,57 +200,180 @@ void SurfaceFilling::changeEvent(QEvent *e)
     }
 }
 
-void SurfaceFilling::accept()
+void SurfaceFilling::open()
 {
-    // applies the changes
-    apply();
+    if (!Gui::Command::hasPendingCommand()) {
+        std::string Msg("Edit ");
+        Msg += editedObject->Label.getValue();
+        Gui::Command::openCommand(Msg.c_str());
+    }
+}
+
+void SurfaceFilling::slotUndoDocument(const Gui::Document&)
+{
+  //Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+}
+
+void SurfaceFilling::slotRedoDocument(const Gui::Document&)
+{
+  //Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+}
+
+bool SurfaceFilling::accept()
+{
+    selectionMode = None;
+    Gui::Selection().rmvSelectionGate();
+
+    int count = ui->listWidget->count();
+    if (count > 4) {
+        QMessageBox::warning(this,
+            tr("Too many edges"),
+            tr("The tool requires two, three or four edges"));
+        return false;
+    }
+    else if (count < 2) {
+        QMessageBox::warning(this,
+            tr("Too less edges"),
+            tr("The tool requires two, three or four edges"));
+        return false;
+    }
+
+    if (editedObject->mustExecute())
+        editedObject->recomputeFeature();
+    if (!editedObject->isValid()) {
+        QMessageBox::warning(this, tr("Invalid object"),
+            QString::fromLatin1(editedObject->getStatusString()));
+        return false;
+    }
+
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::updateActive();
+    return true;
 }
 
-void SurfaceFilling::reject()
+bool SurfaceFilling::reject()
 {
-    if (oldFillType == InvalidStyle) {
-        Gui::Command::abortCommand();
-    }
-    else {
-        // if the object fill type was changed, reset the old one
-        if (editedObject->FillType.getValue() != oldFillType) {
-            editedObject->FillType.setValue(oldFillType);
-        }
+    selectionMode = None;
+    Gui::Selection().rmvSelectionGate();
 
-        Gui::Command::commitCommand();
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    }
-
+    Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
-}
-
-void SurfaceFilling::apply()
-{
-    // apply the change only if it is a real change
-    if (editedObject->FillType.getValue() != fillType) {
-        editedObject->FillType.setValue(fillType);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    }
+    Gui::Command::updateActive();
+    return true;
 }
 
 void SurfaceFilling::on_fillType_stretch_clicked()
 {
-    fillType = StretchStyle;
+    long curtype = editedObject->FillType.getValue();
+    if (curtype != 1) {
+        editedObject->FillType.setValue(1);
+        editedObject->recomputeFeature();
+        if (!editedObject->isValid()) {
+            Base::Console().Error("Surface filling: %s", editedObject->getStatusString());
+        }
+    }
 }
 
 void SurfaceFilling::on_fillType_coons_clicked()
 {
-    fillType = CoonsStyle;
+    long curtype = editedObject->FillType.getValue();
+    if (curtype != 2) {
+        editedObject->FillType.setValue(2);
+        editedObject->recomputeFeature();
+        if (!editedObject->isValid()) {
+            Base::Console().Error("Surface filling: %s", editedObject->getStatusString());
+        }
+    }
 }
 
 void SurfaceFilling::on_fillType_curved_clicked()
 {
-    fillType = CurvedStyle;
+    long curtype = editedObject->FillType.getValue();
+    if (curtype != 3) {
+        editedObject->FillType.setValue(3);
+        editedObject->recomputeFeature();
+        if (!editedObject->isValid()) {
+            Base::Console().Error("Surface filling: %s", editedObject->getStatusString());
+        }
+    }
 }
 
-// ---------------------------------------
+void SurfaceFilling::on_buttonEdgeAdd_clicked()
+{
+    selectionMode = Append;
+    Gui::Selection().addSelectionGate(new EdgeSelection(true, editedObject));
+}
+
+void SurfaceFilling::on_buttonEdgeRemove_clicked()
+{
+    selectionMode = Remove;
+    Gui::Selection().addSelectionGate(new EdgeSelection(false, editedObject));
+}
+
+void SurfaceFilling::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if (selectionMode == None)
+        return;
+
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        if (selectionMode == Append) {
+            QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+            ui->listWidget->addItem(item);
+
+            Gui::SelectionObject sel(msg);
+            QString text = QString::fromLatin1("%1.%2")
+                    .arg(QString::fromUtf8(sel.getObject()->Label.getValue()))
+                    .arg(QString::fromLatin1(msg.pSubName));
+            item->setText(text);
+
+            QList<QVariant> data;
+            data << QByteArray(msg.pDocName);
+            data << QByteArray(msg.pObjectName);
+            data << QByteArray(msg.pSubName);
+            item->setData(Qt::UserRole, data);
+
+            auto objects = editedObject->BoundaryList.getValues();
+            objects.push_back(sel.getObject());
+            auto element = editedObject->BoundaryList.getSubValues();
+            element.push_back(msg.pSubName);
+            editedObject->BoundaryList.setValues(objects, element);
+        }
+        else {
+            Gui::SelectionObject sel(msg);
+            QList<QVariant> data;
+            data << QByteArray(msg.pDocName);
+            data << QByteArray(msg.pObjectName);
+            data << QByteArray(msg.pSubName);
+            for (int i=0; i<ui->listWidget->count(); i++) {
+                QListWidgetItem* item = ui->listWidget->item(i);
+                if (item && item->data(Qt::UserRole) == data) {
+                    ui->listWidget->takeItem(i);
+                    delete item;
+                }
+            }
+
+            App::DocumentObject* obj = sel.getObject();
+            std::string sub = msg.pSubName;
+            auto objects = editedObject->BoundaryList.getValues();
+            auto element = editedObject->BoundaryList.getSubValues();
+            auto it = objects.begin();
+            auto jt = element.begin();
+            for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
+                if (*it == obj && *jt == sub) {
+                    objects.erase(it);
+                    element.erase(jt);
+                    editedObject->BoundaryList.setValues(objects, element);
+                    break;
+                }
+            }
+        }
+
+        editedObject->recomputeFeature();
+    }
+}
+
+// ----------------------------------------------------------------------------
 
 TaskSurfaceFilling::TaskSurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceFeature* obj)
 {
@@ -227,24 +396,19 @@ void TaskSurfaceFilling::setEditedObject(Surface::SurfaceFeature* obj)
     widget->setEditedObject(obj);
 }
 
+void TaskSurfaceFilling::open()
+{
+    widget->open();
+}
+
 bool TaskSurfaceFilling::accept()
 {
-    widget->accept();
-    return true;
+    return widget->accept();
 }
 
 bool TaskSurfaceFilling::reject()
 {
-    widget->reject();
-    return true;
-}
-
-// Apply clicked
-void TaskSurfaceFilling::clicked(int id)
-{
-    if (id == QDialogButtonBox::Apply) {
-        widget->apply();
-    }
+    return widget->reject();
 }
 
 }

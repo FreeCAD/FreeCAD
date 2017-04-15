@@ -25,79 +25,109 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Gui/SelectionFilter.h>
+#include <Gui/DocumentObserver.h>
 #include <Base/BoundBox.h>
 #include <Mod/Surface/App/FillType.h>
-#include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureSurface.h>
 
 namespace SurfaceGui
 {
-  
-    class Ui_SurfaceFilling;
 
-    class ViewProviderSurfaceFeature : public PartGui::ViewProviderPart
+class EdgeSelection : public Gui::SelectionFilterGate
+{
+public:
+    EdgeSelection(bool appendEdges, Surface::SurfaceFeature* editedObject)
+        : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
+        , appendEdges(appendEdges)
+        , editedObject(editedObject)
     {
-        PROPERTY_HEADER(SurfaceGui::ViewProviderSurfaceFeature);
-    public:
-        virtual void setupContextMenu(QMenu*, QObject*, const char*);
-        virtual bool setEdit(int ModNum);
-        virtual void unsetEdit(int ModNum);
-        QIcon getIcon(void) const;
-    };
+    }
+    /**
+      * Allow the user to pick only edges.
+      */
+    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName);
 
-    class SurfaceFilling : public QWidget
-    {
-        Q_OBJECT
+private:
+    bool appendEdges;
+    Surface::SurfaceFeature* editedObject;
+};
 
-    protected:
-        FillType_t fillType, oldFillType;
-        Surface::SurfaceFeature* editedObject;
+class Ui_SurfaceFilling;
 
-    private:
-        Ui_SurfaceFilling* ui;
-        Base::BoundBox3d bbox;
-        ViewProviderSurfaceFeature* vp;
+class ViewProviderSurfaceFeature : public PartGui::ViewProviderSpline
+{
+    PROPERTY_HEADER(SurfaceGui::ViewProviderSurfaceFeature);
+public:
+    virtual void setupContextMenu(QMenu*, QObject*, const char*);
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+    QIcon getIcon(void) const;
+};
 
-    public:
-        SurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceFeature* obj);
-        ~SurfaceFilling();
-        void accept();
-        void reject();
-        void apply();
-        void setEditedObject(Surface::SurfaceFeature* obj);
+class SurfaceFilling : public QWidget,
+                       public Gui::SelectionObserver,
+                       public Gui::DocumentObserver
+{
+    Q_OBJECT
 
-    protected:
-        void changeEvent(QEvent *e);
+protected:
+    enum SelectionMode { None, Append, Remove };
+    SelectionMode selectionMode;
+    Surface::SurfaceFeature* editedObject;
 
-    private Q_SLOTS:
-        void on_fillType_stretch_clicked();
-        void on_fillType_coons_clicked();
-        void on_fillType_curved_clicked();
-        FillType_t getFillType() const;
-    };
+private:
+    Ui_SurfaceFilling* ui;
+    ViewProviderSurfaceFeature* vp;
 
-    class TaskSurfaceFilling : public Gui::TaskView::TaskDialog
-    {
-        Q_OBJECT
+public:
+    SurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceFeature* obj);
+    ~SurfaceFilling();
 
-    public:
-        TaskSurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceFeature* obj);
-        ~TaskSurfaceFilling();
-        void setEditedObject(Surface::SurfaceFeature* obj);
+    void open();
+    bool accept();
+    bool reject();
+    void setEditedObject(Surface::SurfaceFeature* obj);
 
-    public:
-        bool accept();
-        bool reject();
-        void clicked(int id);
+protected:
+    void changeEvent(QEvent *e);
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    /** Notifies on undo */
+    virtual void slotUndoDocument(const Gui::Document& Doc);
+    /** Notifies on redo */
+    virtual void slotRedoDocument(const Gui::Document& Doc);
 
-        virtual QDialogButtonBox::StandardButtons getStandardButtons() const
-        { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
+private Q_SLOTS:
+    void on_fillType_stretch_clicked();
+    void on_fillType_coons_clicked();
+    void on_fillType_curved_clicked();
+    void on_buttonEdgeAdd_clicked();
+    void on_buttonEdgeRemove_clicked();
+};
 
-    private:
-        SurfaceFilling* widget;
-        Gui::TaskView::TaskBox* taskbox;
-        ViewProviderSurfaceFeature* view;
-    };
+class TaskSurfaceFilling : public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
+
+public:
+    TaskSurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceFeature* obj);
+    ~TaskSurfaceFilling();
+    void setEditedObject(Surface::SurfaceFeature* obj);
+
+public:
+    void open();
+    bool accept();
+    bool reject();
+
+    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+
+private:
+    SurfaceFilling* widget;
+    Gui::TaskView::TaskBox* taskbox;
+    ViewProviderSurfaceFeature* view;
+};
 
 } //namespace Surface
 
