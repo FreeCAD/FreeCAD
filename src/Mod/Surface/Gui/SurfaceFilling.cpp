@@ -134,6 +134,12 @@ SurfaceFilling::SurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceF
     selectionMode = None;
     this->vp = vp;
     setEditedObject(obj);
+
+    // Create context menu
+    QAction* action = new QAction(tr("Remove"), this);
+    ui->listWidget->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+    ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
 /*
@@ -370,6 +376,34 @@ void SurfaceFilling::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         editedObject->recomputeFeature();
+    }
+}
+
+void SurfaceFilling::onDeleteEdge()
+{
+    int row = ui->listWidget->currentRow();
+    QListWidgetItem* item = ui->listWidget->item(row);
+    if (item) {
+        QList<QVariant> data;
+        data = item->data(Qt::UserRole).toList();
+        ui->listWidget->takeItem(row);
+        delete item;
+
+        App::Document* doc = App::GetApplication().getDocument(data[0].toByteArray());
+        App::DocumentObject* obj = doc ? doc->getObject(data[1].toByteArray()) : nullptr;
+        std::string sub = data[2].toByteArray().constData();
+        auto objects = editedObject->BoundaryList.getValues();
+        auto element = editedObject->BoundaryList.getSubValues();
+        auto it = objects.begin();
+        auto jt = element.begin();
+        for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
+            if (*it == obj && *jt == sub) {
+                objects.erase(it);
+                element.erase(jt);
+                editedObject->BoundaryList.setValues(objects, element);
+                break;
+            }
+        }
     }
 }
 
