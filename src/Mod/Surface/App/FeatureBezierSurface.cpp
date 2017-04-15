@@ -54,8 +54,6 @@ BezierSurface::BezierSurface() : SurfaceFeature()
 
 App::DocumentObjectExecReturn *BezierSurface::execute(void)
 {
-    correcteInvalidFillType();
-
     try {
         std::vector<Handle_Geom_BezierCurve> crvs;
         crvs.reserve(4);

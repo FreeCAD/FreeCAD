@@ -25,8 +25,8 @@
 #include <QAction>
 #include <QMenu>
 #include <QMessageBox>
+#include <GeomFill_FillingStyle.hxx>
 
-#include <Mod/Surface/App/FillType.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -149,16 +149,16 @@ SurfaceFilling::~SurfaceFilling()
 void SurfaceFilling::setEditedObject(Surface::SurfaceFeature* obj)
 {
     editedObject = obj;
-    long curtype = editedObject->FillType.getValue();
+    GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
     switch(curtype)
     {
-    case 1: // StretchStyle
+    case GeomFill_StretchStyle:
         ui->fillType_stretch->setChecked(true);
         break;
-    case 2: // CoonsStyle
+    case GeomFill_CoonsStyle:
         ui->fillType_coons->setChecked(true);
         break;
-    case 3: // CurvedStyle
+    case GeomFill_CurvedStyle:
         ui->fillType_curved->setChecked(true);
         break;
     default:
@@ -265,9 +265,9 @@ bool SurfaceFilling::reject()
 
 void SurfaceFilling::on_fillType_stretch_clicked()
 {
-    long curtype = editedObject->FillType.getValue();
-    if (curtype != 1) {
-        editedObject->FillType.setValue(1);
+    GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
+    if (curtype != GeomFill_StretchStyle) {
+        editedObject->FillType.setValue(static_cast<long>(GeomFill_StretchStyle));
         editedObject->recomputeFeature();
         if (!editedObject->isValid()) {
             Base::Console().Error("Surface filling: %s", editedObject->getStatusString());
@@ -277,9 +277,9 @@ void SurfaceFilling::on_fillType_stretch_clicked()
 
 void SurfaceFilling::on_fillType_coons_clicked()
 {
-    long curtype = editedObject->FillType.getValue();
-    if (curtype != 2) {
-        editedObject->FillType.setValue(2);
+    GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
+    if (curtype != GeomFill_CoonsStyle) {
+        editedObject->FillType.setValue(static_cast<long>(GeomFill_CoonsStyle));
         editedObject->recomputeFeature();
         if (!editedObject->isValid()) {
             Base::Console().Error("Surface filling: %s", editedObject->getStatusString());
@@ -289,9 +289,9 @@ void SurfaceFilling::on_fillType_coons_clicked()
 
 void SurfaceFilling::on_fillType_curved_clicked()
 {
-    long curtype = editedObject->FillType.getValue();
-    if (curtype != 3) {
-        editedObject->FillType.setValue(3);
+    GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
+    if (curtype != GeomFill_CurvedStyle) {
+        editedObject->FillType.setValue(static_cast<long>(GeomFill_CurvedStyle));
         editedObject->recomputeFeature();
         if (!editedObject->isValid()) {
             Base::Console().Error("Surface filling: %s", editedObject->getStatusString());
