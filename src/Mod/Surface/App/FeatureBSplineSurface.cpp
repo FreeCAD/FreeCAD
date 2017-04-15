@@ -57,8 +57,6 @@ BSplineSurface::BSplineSurface() : SurfaceFeature()
 
 App::DocumentObjectExecReturn *BSplineSurface::execute(void)
 {
-    correcteInvalidFillType();
-
     try{
         std::vector<Handle_Geom_BSplineCurve> crvs;
         crvs.reserve(4);

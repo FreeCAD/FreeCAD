@@ -150,7 +150,7 @@ void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName,
 
 PROPERTY_SOURCE(Surface::SurfaceFeature, Part::Feature)
 
-const char* SurfaceFeature::FillTypeEnums[]    = {"Invalid", "Stretched", "Coons", "Curved", NULL};
+const char* SurfaceFeature::FillTypeEnums[]    = {"Stretched", "Coons", "Curved", NULL};
 
 SurfaceFeature::SurfaceFeature(): Feature()
 {
@@ -174,18 +174,16 @@ short SurfaceFeature::mustExecute() const
 GeomFill_FillingStyle SurfaceFeature::getFillingStyle()
 {
     //Identify filling style
-    int ftype = FillType.getValue();
-    if (ftype==StretchStyle)
-        return GeomFill_StretchStyle;
-    else if(ftype==CoonsStyle)
-        return GeomFill_CoonsStyle;
-    else if(ftype==CurvedStyle)
-        return GeomFill_CurvedStyle;
-    else
-        Standard_Failure::Raise("Filling style must be 1 (Stretch), 2 (Coons), or 3 (Curved).");
-    throw; // this is to shut up the compiler
+    switch (FillType.getValue()) {
+    case GeomFill_StretchStyle:
+    case GeomFill_CoonsStyle:
+    case GeomFill_CurvedStyle:
+        return static_cast<GeomFill_FillingStyle>(FillType.getValue());
+    default:
+        Standard_Failure::Raise("Filling style must be 0 (Stretch), 1 (Coons), or 2 (Curved).\n");
+        throw; // this is to shut up the compiler
+    }
 }
-
 
 void SurfaceFeature::getWire(TopoDS_Wire& aWire)
 {
@@ -214,7 +212,7 @@ void SurfaceFeature::getWire(TopoDS_Wire& aWire)
     }
 
     if (validator.numEdges() < 2 || validator.numEdges() > 4) {
-        Standard_Failure::Raise("Only 2-4 curves are allowed");
+        Standard_Failure::Raise("Only 2-4 curves are allowed\n");
     }
 
     //Reorder the curves and fix the wire if required
@@ -250,13 +248,4 @@ void SurfaceFeature::createFace(const Handle_Geom_BoundedSurface &aSurface)
         Standard_Failure::Raise("Resulting Face is null");
     }
     this->Shape.setValue(aFace);
-}
-
-void SurfaceFeature::correcteInvalidFillType()
-{
-    int ftype = FillType.getValue();
-    if(ftype == InvalidStyle)
-    {
-        FillType.setValue(StretchStyle);
-    }
 }

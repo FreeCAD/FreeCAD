@@ -28,7 +28,6 @@
 #include <Gui/SelectionFilter.h>
 #include <Gui/DocumentObserver.h>
 #include <Base/BoundBox.h>
-#include <Mod/Surface/App/FillType.h>
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureSurface.h>
 
