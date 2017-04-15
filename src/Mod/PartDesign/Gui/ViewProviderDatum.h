@@ -85,6 +85,7 @@ public:
     /// The datum type (Plane, Line or Point)
     // TODO remove this attribute (2015-09-08, Fat-Zer)
     QString datumType;
+    QString datumText;
 
     /**
      * Computes appropriate bounding box for the given list of objects to be passed to setExtents ()
