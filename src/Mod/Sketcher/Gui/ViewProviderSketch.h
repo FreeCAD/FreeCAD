@@ -386,7 +386,7 @@ protected:
     static SbVec2s newCursorPos;
 
     float zCross;
-    float zLines;
+    //float zLines;
     float zPoints;
     float zConstr;
     float zHighlight;
@@ -394,6 +394,9 @@ protected:
     float zEdit;
     float zHighLine;
     float zInfo;
+    float zLowLines;
+    float zMidLines;
+    float zHighLines;
 
     // reference coordinates for relative operations
     double xInit,yInit;
