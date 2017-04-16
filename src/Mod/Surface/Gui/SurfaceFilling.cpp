@@ -41,7 +41,7 @@
 
 using namespace SurfaceGui;
 
-PROPERTY_SOURCE(SurfaceGui::ViewProviderSurfaceFeature, PartGui::ViewProviderSpline)
+PROPERTY_SOURCE(SurfaceGui::ViewProviderGeomFillSurface, PartGui::ViewProviderSpline)
 
 namespace SurfaceGui {
 
@@ -72,7 +72,7 @@ bool EdgeSelection::allow(App::Document* , App::DocumentObject* pObj, const char
 
 // ----------------------------------------------------------------------------
 
-void ViewProviderSurfaceFeature::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+void ViewProviderGeomFillSurface::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Edit filling"), receiver, member);
@@ -80,14 +80,14 @@ void ViewProviderSurfaceFeature::setupContextMenu(QMenu* menu, QObject* receiver
     PartGui::ViewProviderSpline::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderSurfaceFeature::setEdit(int ModNum)
+bool ViewProviderGeomFillSurface::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this sketch the
         // object unsets and sets its edit mode without closing
         // the task panel
 
-        Surface::SurfaceFeature* obj =  static_cast<Surface::SurfaceFeature*>(this->getObject());
+        Surface::GeomFillSurface* obj =  static_cast<Surface::GeomFillSurface*>(this->getObject());
 
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
 
@@ -108,7 +108,7 @@ bool ViewProviderSurfaceFeature::setEdit(int ModNum)
     }
 }
 
-void ViewProviderSurfaceFeature::unsetEdit(int ModNum)
+void ViewProviderGeomFillSurface::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
@@ -119,14 +119,14 @@ void ViewProviderSurfaceFeature::unsetEdit(int ModNum)
     }
 }
 
-QIcon ViewProviderSurfaceFeature::getIcon(void) const
+QIcon ViewProviderGeomFillSurface::getIcon(void) const
 {
     return Gui::BitmapFactory().pixmap("BSplineSurf");
 }
 
 // ----------------------------------------------------------------------------
 
-SurfaceFilling::SurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceFeature* obj)
+SurfaceFilling::SurfaceFilling(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj)
 {
     ui = new Ui_SurfaceFilling();
     ui->setupUi(this);
@@ -152,7 +152,7 @@ SurfaceFilling::~SurfaceFilling()
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
-void SurfaceFilling::setEditedObject(Surface::SurfaceFeature* obj)
+void SurfaceFilling::setEditedObject(Surface::GeomFillSurface* obj)
 {
     editedObject = obj;
     GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
@@ -404,7 +404,7 @@ void SurfaceFilling::onDeleteEdge()
 
 // ----------------------------------------------------------------------------
 
-TaskSurfaceFilling::TaskSurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceFeature* obj)
+TaskSurfaceFilling::TaskSurfaceFilling(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj)
 {
     widget = new SurfaceFilling(vp, obj);
     widget->setWindowTitle(QObject::tr("Surface"));
@@ -420,7 +420,7 @@ TaskSurfaceFilling::~TaskSurfaceFilling()
     // automatically deleted in the sub-class
 }
 
-void TaskSurfaceFilling::setEditedObject(Surface::SurfaceFeature* obj)
+void TaskSurfaceFilling::setEditedObject(Surface::GeomFillSurface* obj)
 {
     widget->setEditedObject(obj);
 }

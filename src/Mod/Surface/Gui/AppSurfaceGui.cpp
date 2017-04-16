@@ -76,7 +76,7 @@ PyMOD_INIT_FUNC(SurfaceGui)
     CreateSurfaceCommands();
 
     SurfaceGui::Workbench::init();
-    SurfaceGui::ViewProviderSurfaceFeature::init();
+    SurfaceGui::ViewProviderGeomFillSurface::init();
     
 //    SurfaceGui::ViewProviderCut::init();
 
