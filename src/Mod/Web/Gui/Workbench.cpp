@@ -333,9 +333,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
                 << "Web_BrowserStop"
                 << "Separator"
                 << "Web_BrowserZoomIn"
-                << "Web_BrowserZoomOut"
-                << "Separator"
-                << "Web_Sketchfab";
+                << "Web_BrowserZoomOut";
 
     return root;
 
