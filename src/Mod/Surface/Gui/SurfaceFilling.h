@@ -30,6 +30,7 @@
 #include <Base/BoundBox.h>
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureSurface.h>
+#include <GeomFill_FillingStyle.hxx>
 
 namespace SurfaceGui
 {
@@ -75,6 +76,7 @@ protected:
     enum SelectionMode { None, Append, Remove };
     SelectionMode selectionMode;
     Surface::SurfaceFeature* editedObject;
+    bool checkCommand;
 
 private:
     Ui_SurfaceFilling* ui;
@@ -96,6 +98,7 @@ protected:
     virtual void slotUndoDocument(const Gui::Document& Doc);
     /** Notifies on redo */
     virtual void slotRedoDocument(const Gui::Document& Doc);
+    void changeFillType(GeomFill_FillingStyle);
 
 private Q_SLOTS:
     void on_fillType_stretch_clicked();
