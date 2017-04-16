@@ -662,6 +662,7 @@ class PanelCut(Draft._DraftObject):
         pl = obj.Placement
         if obj.Source:
             base = None
+            n = None
             if Draft.getType(obj.Source) == "Panel":
                 import Part,DraftGeomUtils
                 baseobj = None
@@ -672,17 +673,32 @@ class PanelCut(Draft._DraftObject):
                 if baseobj:
                     if baseobj.isDerivedFrom("Part::Feature"):
                         if baseobj.Shape.Solids:
-                            return
+                            center = baseobj.Shape.BoundBox.Center
+                            diag = baseobj.Shape.BoundBox.DiagonalLength
+                            if obj.Source.Normal.Length:
+                                n = obj.Source.Normal
+                            elif baseobj.isDerivedFrom("Part::Extrusion"):
+                                n = baseobj.Dir
+                            if not n:
+                                n = Vector(0,0,1)
+                            plane = Part.makePlane(diag,diag,center,n)
+                            plane.translate(center.sub(plane.BoundBox.Center))
+                            wires = []
+                            for sol in baseobj.Shape.Solids:
+                                s = sol.section(plane)
+                                wires.extend(DraftGeomUtils.findWires(s.Edges))
+                            if wires:
+                                base = Part.makeCompound(wires)
                         else:
                             base = Part.makeCompound(baseobj.Shape.Wires)
-                            n = None
                             for w in base.Wires:
                                 n = DraftGeomUtils.getNormal(w)
                                 if n:
                                     break
                             if not n:
                                 n = Vector(0,0,1)
-                            base.translate(base.Vertexes[0].Point.negative())
+                        if base and n:
+                            base.translate(base.BoundBox.Center.negative())
                             r = FreeCAD.Rotation(n,Vector(0,0,1))
                             base.rotate(Vector(0,0,0),r.Axis,math.degrees(r.Angle))
                     elif baseobj.isDerivedFrom("Mesh::Feature"):
