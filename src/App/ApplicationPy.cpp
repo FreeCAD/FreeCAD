@@ -129,6 +129,11 @@ PyMethodDef Application::Methods[] = {
     {"removeDocumentObserver",  (PyCFunction) Application::sRemoveDocObserver  ,1,
      "removeDocumentObserver() -> None\n\n"
      "Remove an added document observer."},
+    {"setLogLevel",          (PyCFunction) Application::sSetLogLevel, 1,
+     "setLogLevel(tag, level) -- Set the log level for a string tag.\n"
+     "'level' can either be string 'Log', 'Msg', 'Wrn', 'Error', or an integer value"},
+    {"getLogLevel",          (PyCFunction) Application::sGetLogLevel, 1,
+     "getLogLevel(tag) -- Get the log level of a string tag"},
 
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
@@ -604,3 +609,90 @@ PyObject* Application::sRemoveDocObserver(PyObject * /*self*/, PyObject *args,Py
         Py_Return;
     } PY_CATCH;
 }
+
+PyObject *Application::sSetLogLevel(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    char *tag;
+    PyObject *pcObj;
+    if (!PyArg_ParseTuple(args, "sO", &tag, &pcObj))
+        return NULL;
+    PY_TRY{
+        int l;
+        if (PyString_Check(pcObj)) {
+            const char *pstr = PyString_AsString(pcObj);
+            if(strcmp(pstr,"Log") == 0)
+                l = FC_LOGLEVEL_LOG;
+            else if(strcmp(pstr,"Warning") == 0)
+                l = FC_LOGLEVEL_WARN;
+            else if(strcmp(pstr,"Message") == 0)
+                l = FC_LOGLEVEL_MSG;
+            else if(strcmp(pstr,"Error") == 0)
+                l = FC_LOGLEVEL_ERR;
+            else if(strcmp(pstr,"Trace") == 0)
+                l = FC_LOGLEVEL_TRACE;
+            else if(strcmp(pstr,"Default") == 0)
+                l = FC_LOGLEVEL_DEFAULT;
+            else {
+                Py_Error(Base::BaseExceptionFreeCADError,
+                        "Unknown Log Level (use 'Default', 'Error', 'Warning', 'Message', 'Log', 'Trace' or an integer)");
+                return NULL;
+            }
+        }else 
+            l = PyLong_AsLong(pcObj);
+        GetApplication().GetParameterGroupByPath("User parameter:BaseApp/LogLevels")->SetInt(tag,l);
+        if(strcmp(tag,"Default") == 0) {
+#ifndef FC_DEBUG
+            if(l>=0) Base::Console().SetDefaultLogLevel(l);
+#endif
+        }else if(strcmp(tag,"DebugDefault") == 0) {
+#ifdef FC_DEBUG
+            if(l>=0) Base::Console().SetDefaultLogLevel(l);
+#endif
+        }else
+            *Base::Console().GetLogLevel(tag) = l;
+        Py_INCREF(Py_None);
+        return Py_None;
+    }PY_CATCH;
+}
+
+PyObject *Application::sGetLogLevel(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    char *tag;
+    if (!PyArg_ParseTuple(args, "s", &tag))
+        return NULL;
+
+    PY_TRY{
+        int l = -1;
+        if(strcmp(tag,"Default")==0) {
+#ifdef FC_DEBUG
+            l = _pcUserParamMngr->GetGroup("BaseApp/LogLevels")->GetInt(tag,-1);
+#endif
+        }else if(strcmp(tag,"DebugDefault")) {
+#ifndef FC_DEBUG
+            l = _pcUserParamMngr->GetGroup("BaseApp/LogLevels")->GetInt(tag,-1);
+#endif
+        }else{
+            int *pl = Base::Console().GetLogLevel(tag,false);
+            l = pl?*pl:-1;
+        }
+        // For performance reason, we only output integer value
+        return Py_BuildValue("i",Base::Console().LogLevel(l));
+
+        // switch(l) {
+        // case FC_LOGLEVEL_LOG:
+        //     return Py_BuildValue("s","Log");
+        // case FC_LOGLEVEL_WARN:
+        //     return Py_BuildValue("s","Warning");
+        // case FC_LOGLEVEL_ERR:
+        //     return Py_BuildValue("s","Error");
+        // case FC_LOGLEVEL_MSG:
+        //     return Py_BuildValue("s","Message");
+        // case FC_LOGLEVEL_TRACE:
+        //     return Py_BuildValue("s","Trace");
+        // default:
+        //     return Py_BuildValue("i",l);
+        // }
+    } PY_CATCH;
+}
+
+
