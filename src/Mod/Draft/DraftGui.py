@@ -886,7 +886,7 @@ class DraftToolBar:
         self.occOffset.show()
         self.labelRadius.setText(translate("draft","Distance"))
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-        self.radiusValue.setFocus()
+        todo.delay(self.radiusValue.setFocus,None)
         self.radiusValue.selectAll()
 
     def offUi(self):
@@ -949,7 +949,7 @@ class DraftToolBar:
         self.radiusUi()
         self.labelRadius.setText(translate("draft","Distance"))
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-        self.radiusValue.setFocus()
+        todo.delay(self.radiusValue.setFocus,None)
         self.radiusValue.selectAll()
 
     def radiusUi(self):
@@ -963,7 +963,7 @@ class DraftToolBar:
         self.hideXYZ()
         self.textValue.show()
         self.textValue.setText('')
-        self.textValue.setFocus()
+        todo.delay(self.textValue.setFocus,None)
         self.textbuffer=[]
         self.textline=0
         self.continueCmd.show()
@@ -974,7 +974,7 @@ class DraftToolBar:
         self.labelSString.show()
         self.SStringValue.show()
         self.SStringValue.setText('')
-        self.SStringValue.setFocus()
+        todo.delay(self.SStringValue.setFocus,None)
         self.continueCmd.hide()
 
     def SSizeUi(self):
@@ -985,7 +985,7 @@ class DraftToolBar:
         self.labelSSize.show()
         self.SSizeValue.setText(FreeCAD.Units.Quantity(1,FreeCAD.Units.Length).UserString)
         self.SSizeValue.show()
-        self.SSizeValue.setFocus()
+        todo.delay(self.SSizeValue.setFocus,None)
 
     def STrackUi(self):
         ''' set up ui for ShapeString tracking entry '''
@@ -994,7 +994,7 @@ class DraftToolBar:
         self.labelSTrack.show()
         self.STrackValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.STrackValue.show()
-        self.STrackValue.setFocus()
+        todo.delay(self.STrackValue.setFocus,None)
         
     def SFileUi(self):
         ''' set up UI for ShapeString font file selection '''
@@ -1005,7 +1005,7 @@ class DraftToolBar:
         self.labelFFile.show()
         self.FFileValue.show()
         self.chooserButton.show()
-        self.FFileValue.setFocus()
+        todo.delay(self.FFileValue.setFocus,None)
                 
     def switchUi(self,store=True):
         if store:
