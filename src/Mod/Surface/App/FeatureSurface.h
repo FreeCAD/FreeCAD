@@ -40,7 +40,6 @@ class SurfaceExport ShapeValidator
 {
 protected:
     bool willBezier;
-    bool willBSpline;
     int edgeCount;
 
 public:
@@ -52,9 +51,6 @@ public:
 
     bool isBezier() const {
         return willBezier;
-    }
-    bool isBSpline() const {
-        return willBSpline;
     }
     int numEdges() const {
         return edgeCount;
@@ -71,6 +67,7 @@ public:
     App::PropertyEnumeration FillType;      //Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
 
     short mustExecute() const;
+    App::DocumentObjectExecReturn *execute(void);
 
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
@@ -79,8 +76,11 @@ public:
 
 protected:
     GeomFill_FillingStyle getFillingStyle();
-    void getWire(TopoDS_Wire& aWire);
+    /// True means that all edges have Bezier curves
+    bool getWire(TopoDS_Wire& aWire);
     void createFace(const Handle_Geom_BoundedSurface &aSurface);
+    void createBezierSurface(TopoDS_Wire& aWire);
+    void createBSplineSurface(TopoDS_Wire& aWire);
 
 private:
     static const char* FillTypeEnums[];
