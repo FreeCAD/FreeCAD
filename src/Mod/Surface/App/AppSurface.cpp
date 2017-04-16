@@ -32,8 +32,6 @@
 #include "FeatureSewing.h"
 #include "FeatureCut.h"
 #include "FeatureSurface.h"
-#include "FeatureBezierSurface.h"
-#include "FeatureBSplineSurface.h"
 
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
@@ -80,8 +78,6 @@ PyMOD_INIT_FUNC(Surface)
     Surface::Sewing         ::init();
     Surface::Cut            ::init();
     Surface::SurfaceFeature ::init();
-    Surface::BezierSurface  ::init();
-    Surface::BSplineSurface ::init();
 
     PyMOD_Return(mod);
 }
