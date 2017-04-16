@@ -465,6 +465,39 @@ Py::Object DocumentPy::getActiveObject(void) const
     return Py::None();
 }
 
+Py::Object DocumentPy::getActiveContainer(void) const
+{
+    PropertyContainer* cnt = getDocumentPtr()->getActiveContainer();
+    if(cnt)
+        return Py::Object(cnt->getPyObject(), true);
+    else
+        return Py::None();
+}
+
+void DocumentPy::setActiveContainer(Py::Object newContainer)
+{
+    App::PropertyContainer* pcContainer = nullptr;
+    if (newContainer.isNone()){
+        pcContainer = nullptr;
+    } else if (PyObject_TypeCheck(newContainer.ptr(), &(DocumentPy::Type))) {
+        pcContainer = static_cast<DocumentPy*>(newContainer.ptr())->getDocumentPtr();
+    } else if (PyObject_TypeCheck(newContainer.ptr(), &(DocumentObjectPy::Type))) {
+        pcContainer = static_cast<DocumentObjectPy*>(newContainer.ptr())->getDocumentObjectPtr();
+    } else if (newContainer.isString()){
+        std::string name = Py::String(newContainer);
+        pcContainer = this->getDocumentPtr()->getObject(name.c_str());
+        if (!pcContainer){
+            std::stringstream msg;
+            msg << "There is no object named " << name << " in document "
+                << this->getDocumentPtr()->getName();
+            throw Py::ValueError(msg.str());
+        }
+    } else {
+        throw Base::TypeError("Object to activate must be either this document, an object in it, object name, or None. Something else was supplied.");
+    }
+    this->getDocumentPtr()->setActiveContainer(pcContainer);
+}
+
 PyObject*  DocumentPy::supportedTypes(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
