@@ -873,7 +873,7 @@ class DraftToolBar:
         self.zValue.show()
         self.pointButton.show()
         if rel: self.isRelative.show()
-        self.xValue.setFocus()
+        todo.delay(self.xValue.setFocus,None)
         self.xValue.selectAll()
 
     def extraUi(self):
