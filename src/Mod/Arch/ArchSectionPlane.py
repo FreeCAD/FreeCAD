@@ -128,13 +128,19 @@ def getCutShapes(objs,section,showHidden):
     return shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume
 
 
-def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=False,scale=1,linewidth=1,fontsize=1,techdraw=False,rotation=0):
-    """getSVG(section,[allOn,renderMode,showHidden,showFill,scale,linewidth,fontsize]) : 
+def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale=1, rotation=0, linewidth=1, lineColor=(0.0,0.0,0.0), fontsize=1, showFill=False, fillColor=(0.8,0.8,0.8), techdraw=False):
+    """getSVG(section, [renderMode, allOn, showHidden, scale, rotation,
+              linewidth, lineColor, fontsize, showFill, fillColor, techdraw]):
+
     returns an SVG fragment from an Arch section plane. If
     allOn is True, all cut objects are shown, regardless if they are visible or not.
     renderMode can be Wireframe (default) or Solid to use the Arch solid renderer. If
     showHidden is True, the hidden geometry above the section plane is shown in dashed line.
-    If showFill is True, the cut areas get filled with a pattern"""
+    If showFill is True, the cut areas get filled with a pattern.
+    lineColor -- Color of lines for the renderMode "Wireframe".
+    fillColor -- If showFill is True and renderMode is "Wireframe",
+                 the cut areas are filled with fillColor.
+    """
 
     if not section.Objects:
         return ""
@@ -196,7 +202,8 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
         shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
         if shapes:
             baseshape = Part.makeCompound(shapes)
-            style = {'stroke-width': 'LWPlaceholder'}
+            style = {'stroke':       Draft.getrgb(lineColor),
+                     'stroke-width': 'LWPlaceholder'}
             svgf = Drawing.projectToSVG(
                 baseshape, direction,
                 hStyle=style, h0Style=style, h1Style=style,
@@ -204,7 +211,8 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
             svg += svgf
         if hshapes:
             hshapes = Part.makeCompound(hshapes)
-            style = {'stroke-width': 'LWPlaceholder',
+            style = {'stroke':           Draft.getrgb(lineColor),
+                     'stroke-width':     'LWPlaceholder',
                      'stroke-dasharray': 'DAPlaceholder'}
             svgh = Drawing.projectToSVG(
                 hshapes, direction,
@@ -220,11 +228,14 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
                     if s.Edges:
                         #f = Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
                         # temporarily disabling fill patterns
-                        f = Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="#aaaaaa",color=(0,0,0))
+                        f = Draft.getSVG(s, direction=direction.negative(), linewidth=0,
+                                         fillstyle=Draft.getrgb(fillColor),
+                                         color=lineColor)
                         svgs += f
                 svgs += "</g>\n"
             sshapes = Part.makeCompound(sshapes)
-            style = {'stroke-width': 'SWPlaceholder'}
+            style = {'stroke':       Draft.getrgb(lineColor),
+                     'stroke-width': 'SWPlaceholder'}
             svgs += Drawing.projectToSVG(
                 sshapes, direction,
                 hStyle=style, h0Style=style, h1Style=style,
@@ -242,7 +253,9 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for d in drafts:
-            svg += Draft.getSVG(d,scale=scale,linewidth=linewidth*yt,fontsize=fontsize,direction=direction,techdraw=techdraw,rotation=rotation)
+            svg += Draft.getSVG(d, scale=scale, linewidth=linewidth*yt, fontsize=fontsize,
+                                direction=direction, color=lineColor, techdraw=techdraw,
+                                rotation=rotation)
         if not techdraw:
             svg += '</g>'
     # filter out spaces not cut by the section plane
@@ -252,7 +265,9 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for s in spaces:
-            svg += Draft.getSVG(s,scale=scale,linewidth=linewidth*yt,fontsize=fontsize,direction=direction,techdraw=techdraw,rotation=rotation)
+            svg += Draft.getSVG(s, scale=scale, linewidth=linewidth*yt, fontsize=fontsize,
+                                direction=direction, color=lineColor, techdraw=techdraw,
+                                rotation=rotation)
         if not techdraw:
             svg += '</g>'
     # add additional edge symbols from windows
@@ -279,7 +294,10 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
             if not techdraw:
                 svg += '<g transform="scale(1,-1)">'
             for s in sh:
-                svg += Draft.getSVG(s,scale=scale,linewidth=linewidth*yt,fontsize=fontsize,fillstyle="none",direction=direction,techdraw=techdraw,rotation=rotation)
+                svg += Draft.getSVG(s, scale=scale, linewidth=linewidth*yt,
+                                    fontsize=fontsize, fillstyle="none",
+                                    direction=direction, color=lineColor,
+                                    techdraw=techdraw, rotation=rotation)
             if not techdraw:
                 svg += '</g>'
             
@@ -570,13 +588,21 @@ class _ViewProviderSectionPlane:
 
 class _ArchDrawingView:
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink","Source","Base",QT_TRANSLATE_NOOP("App::Property","The linked object"))
-        obj.addProperty("App::PropertyEnumeration","RenderingMode","Drawing view",QT_TRANSLATE_NOOP("App::Property","The rendering mode to use"))
-        obj.addProperty("App::PropertyBool","ShowCut","Drawing view",QT_TRANSLATE_NOOP("App::Property","If cut geometry is shown or not"))
-        obj.addProperty("App::PropertyBool","ShowFill","Drawing view",QT_TRANSLATE_NOOP("App::Property","If cut geometry is filled or not"))
-        obj.addProperty("App::PropertyFloat","LineWidth","Drawing view",QT_TRANSLATE_NOOP("App::Property","The line width of the rendered objects"))
-        obj.addProperty("App::PropertyLength","FontSize","Drawing view",QT_TRANSLATE_NOOP("App::Property","The size of the texts inside this object"))
-        obj.addProperty("App::PropertyBool","AlwaysOn","Drawing view",QT_TRANSLATE_NOOP("App::Property","If checked, source objects are displayed regardless of being visible in the 3D model"))
+        obj.addProperty("App::PropertyLink", "Source", "Base",
+                        QT_TRANSLATE_NOOP("App::Property","The linked object"))
+        obj.addProperty("App::PropertyEnumeration", "RenderingMode", "Drawing view",
+                        QT_TRANSLATE_NOOP("App::Property","The rendering mode to use"))
+        obj.addProperty("App::PropertyBool", "ShowCut", "Drawing view",
+                        QT_TRANSLATE_NOOP("App::Property","If cut geometry is shown or not"))
+        obj.addProperty("App::PropertyBool", "ShowFill", "Drawing view",
+                        QT_TRANSLATE_NOOP("App::Property","If cut geometry is filled or not"))
+        obj.addProperty("App::PropertyFloat", "LineWidth", "Drawing view",
+                        QT_TRANSLATE_NOOP("App::Property","The line width of the rendered objects"))
+        obj.addProperty("App::PropertyLength", "FontSize", "Drawing view",
+                        QT_TRANSLATE_NOOP("App::Property","The size of the texts inside this object"))
+        obj.addProperty("App::PropertyBool", "AlwaysOn", "Drawing view",
+                        QT_TRANSLATE_NOOP("App::Property","If checked, source objects are displayed regardless of being visible in the 3D model"))
+        self.initProperties(obj)
         obj.RenderingMode = ["Solid","Wireframe"]
         obj.RenderingMode = "Wireframe"
         obj.LineWidth = 0.35
@@ -585,14 +611,29 @@ class _ArchDrawingView:
         self.Type = "ArchSectionView"
         obj.FontSize = 12
 
+    def initProperties(self, obj):
+        '''Creates and initializes the feature's properties if they do not yet exist.'''
+        if not hasattr(obj, "LineColor"):
+            obj.addProperty("App::PropertyColor", "LineColor", "Drawing view",
+                            QT_TRANSLATE_NOOP("App::Property", "The line color of the projected objects"))
+        if not hasattr(obj, "FillColor"):
+            obj.addProperty("App::PropertyColor", "FillColor", "Drawing view",
+                            QT_TRANSLATE_NOOP("App::Property", "The color of the cut faces (if turned on)"))
+            obj.FillColor = (0.8, 0.8, 0.8)
+
     def execute(self, obj):
         if hasattr(obj,"Source"):
             if obj.Source:
-                if hasattr(obj,"AlwaysOn"):
-                    a = obj.AlwaysOn
-                else:
-                    a = False
-                svgbody = getSVG(obj.Source,a,obj.RenderingMode,obj.ShowCut,obj.ShowFill,obj.Scale,obj.LineWidth,obj.FontSize)
+                svgbody = getSVG(section=obj.Source, 
+                                 renderMode=obj.RenderingMode,
+                                 allOn=getattr(obj, 'AlwaysOn', False),
+                                 showHidden=obj.ShowCut,
+                                 scale=obj.Scale,
+                                 linewidth=obj.LineWidth,
+                                 lineColor=obj.LineColor,
+                                 fontsize=obj.FontSize,
+                                 showFill=obj.ShowFill,
+                                 fillColor=obj.FillColor)
                 if svgbody:
                     result = '<g id="' + obj.Name + '"'
                     result += ' transform="'
@@ -603,7 +644,11 @@ class _ArchDrawingView:
                     result += svgbody
                     result += '</g>\n'
                     obj.ViewResult = result
-                    
+
+    def onDocumentRestored(self, obj):
+        # Fixes properties of old files to match them with the current set of properties.
+        self.initProperties(obj)
+
     def __getstate__(self):
         return self.Type
 
