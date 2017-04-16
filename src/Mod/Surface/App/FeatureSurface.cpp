@@ -24,18 +24,29 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <ShapeFix_Wire.hxx>
-#include <ShapeExtend_WireData.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_NurbsConvert.hxx>
 #include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <Geom_BezierCurve.hxx>
+#include <Geom_BezierSurface.hxx>
 #include <Geom_BSplineCurve.hxx>
+#include <Geom_BSplineSurface.hxx>
+#include <GeomFill.hxx>
 #include <GeomFill_BezierCurves.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
+#include <GeomFill_BSplineCurves.hxx>
+#include <gp_Trsf.hxx>
+#include <ShapeConstruct_Curve.hxx>
+#include <ShapeFix_Wire.hxx>
+#include <ShapeExtend_WireData.hxx>
+#include <Standard_ConstructionError.hxx>
+#include <StdFail_NotDone.hxx>
 #include <TopExp_Explorer.hxx>
-#include <BRep_Tool.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -52,7 +63,7 @@ ShapeValidator::ShapeValidator()
 
 void ShapeValidator::initValidator(void)
 {
-    willBezier = willBSpline = false;
+    willBezier = true;
     edgeCount = 0;
 }
 
@@ -60,7 +71,7 @@ void ShapeValidator::initValidator(void)
 void ShapeValidator::checkEdge(const TopoDS_Shape& shape)
 {
     if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE) {
-        Standard_Failure::Raise("Shape is not an edge.");
+        Standard_Failure::Raise("Shape is not an edge.\n");
     }
 
     TopoDS_Edge etmp = TopoDS::Edge(shape);   //Curve TopoDS_Edge
@@ -69,28 +80,10 @@ void ShapeValidator::checkEdge(const TopoDS_Shape& shape)
     Standard_Real u1;// contains output
     Handle_Geom_Curve c_geom = BRep_Tool::Curve(etmp,heloc,u0,u1); //The geometric curve
     Handle_Geom_BezierCurve bez_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
-    Handle_Geom_BSplineCurve bsp_geom = Handle_Geom_BSplineCurve::DownCast(c_geom); //Try to get BSpline curve
 
-    if (!bez_geom.IsNull()) {
-        // this one is a Bezier
-        if (willBSpline) {
-            // already found the other type, fail
-            Standard_Failure::Raise("Mixing Bezier and B-Spline curves is not allowed.");
-        }
-        // we will create Bezier surface
-        willBezier = true;
-    }
-    else if (!bsp_geom.IsNull()) {
-        // this one is Bezier
-        if (willBezier) {
-            // already found the other type, fail
-            Standard_Failure::Raise("Mixing Bezier and B-Spline curves is not allowed.");
-        }
-        // we will create B-Spline surface
-        willBSpline = true;
-    }
-    else {
-        //Standard_Failure::Raise("Neither Bezier nor B-Spline curve.");
+    // if not a Bezier then try to create a B-spline surface from the edges
+    if (bez_geom.IsNull()) {
+        willBezier = false;
     }
 
     edgeCount++;
@@ -109,24 +102,6 @@ void ShapeValidator::checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_W
 void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName, Handle(ShapeExtend_WireData) *aWD)
 {
     try {
-#if 0 // weird logic!
-        // unwrap the wire
-        if ((!ts._Shape.IsNull()) && ts._Shape.ShapeType() == TopAbs_WIRE) {
-            TopoDS_Wire wire = TopoDS::Wire(ts._Shape);
-            for (TopExp_Explorer wireExplorer (wire, TopAbs_EDGE); wireExplorer.More(); wireExplorer.Next()) {
-                checkAndAdd(wireExplorer.Current(), aWD);
-            }
-        }
-        else {
-            if (subName != NULL && *subName != 0) {
-                //we want only the subshape which is linked
-                checkAndAdd(ts.getSubShape(subName), aWD);
-            }
-            else {
-                checkAndAdd(ts._Shape, aWD);
-            }
-        }
-#else
         if (subName != NULL && *subName != '\0') {
             //we want only the subshape which is linked
             checkAndAdd(ts.getSubShape(subName), aWD);
@@ -140,10 +115,9 @@ void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName,
         else {
             checkAndAdd(ts.getShape(), aWD);
         }
-#endif
     }
-    catch(Standard_Failure) { // any OCC exception means an unappropriate shape in the selection
-        Standard_Failure::Raise("Wrong shape type.");
+    catch (Standard_Failure) { // any OCC exception means an unappropriate shape in the selection
+        Standard_Failure::Raise("Wrong shape type.\n");
     }
 }
 
@@ -164,11 +138,38 @@ SurfaceFeature::SurfaceFeature(): Spline()
 short SurfaceFeature::mustExecute() const
 {
     if (BoundaryList.isTouched() ||
-        FillType.isTouched())
-    {
+        FillType.isTouched()) {
         return 1;
     }
-    return 0;
+    return Spline::mustExecute();
+}
+
+App::DocumentObjectExecReturn *SurfaceFeature::execute(void)
+{
+    try {
+        TopoDS_Wire aWire;
+
+        //Gets the healed wire
+        if (getWire(aWire)) {
+            createBezierSurface(aWire);
+        }
+        else {
+            createBSplineSurface(aWire);
+        }
+
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_ConstructionError) {
+        // message is in a Latin language, show a normal one
+        return new App::DocumentObjectExecReturn("Curves are disjoint.");
+    }
+    catch (StdFail_NotDone) {
+        return new App::DocumentObjectExecReturn("A curve was not a b-spline and could not be converted into one.");
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
 }
 
 GeomFill_FillingStyle SurfaceFeature::getFillingStyle()
@@ -185,15 +186,14 @@ GeomFill_FillingStyle SurfaceFeature::getFillingStyle()
     }
 }
 
-void SurfaceFeature::getWire(TopoDS_Wire& aWire)
+bool SurfaceFeature::getWire(TopoDS_Wire& aWire)
 {
     Handle(ShapeFix_Wire) aShFW = new ShapeFix_Wire;
     Handle(ShapeExtend_WireData) aWD = new ShapeExtend_WireData;
 
     std::vector<App::PropertyLinkSubList::SubSet> boundary = BoundaryList.getSubListValues();
-    if(boundary.size() > 4) // if too many not even try
-    {
-        Standard_Failure::Raise("Only 2-4 curves are allowed");
+    if (boundary.size() > 4) {// if too many not even try
+        Standard_Failure::Raise("Only 2-4 curves are allowed\n");
     }
 
     ShapeValidator validator;
@@ -207,7 +207,7 @@ void SurfaceFeature::getWire(TopoDS_Wire& aWire)
             }
         }
         else {
-            Standard_Failure::Raise("Curve not from Part::Feature");
+            Standard_Failure::Raise("Curve not from Part::Feature\n");
         }
     }
 
@@ -227,8 +227,10 @@ void SurfaceFeature::getWire(TopoDS_Wire& aWire)
     aWire = aShFW->Wire(); //Healed Wire
 
     if (aWire.IsNull()) {
-        Standard_Failure::Raise("Wire unable to be constructed");
+        Standard_Failure::Raise("Wire unable to be constructed\n");
     }
+
+    return validator.isBezier();
 }
 
 void SurfaceFeature::createFace(const Handle_Geom_BoundedSurface &aSurface)
@@ -242,10 +244,114 @@ void SurfaceFeature::createFace(const Handle_Geom_BoundedSurface &aSurface)
     TopoDS_Face aFace = aFaceBuilder.Face();
 
     if (!aFaceBuilder.IsDone()) {
-        Standard_Failure::Raise("Face unable to be constructed");
+        Standard_Failure::Raise("Face unable to be constructed\n");
     }
     if (aFace.IsNull()) {
-        Standard_Failure::Raise("Resulting Face is null");
+        Standard_Failure::Raise("Resulting Face is null\n");
     }
     this->Shape.setValue(aFace);
+}
+
+void SurfaceFeature::createBezierSurface(TopoDS_Wire& aWire)
+{
+    std::vector<Handle_Geom_BezierCurve> crvs;
+    crvs.reserve(4);
+
+    Standard_Real u1, u2; // contains output
+    TopExp_Explorer anExp (aWire, TopAbs_EDGE);
+    for (; anExp.More(); anExp.Next()) {
+        const TopoDS_Edge hedge = TopoDS::Edge (anExp.Current());
+        TopLoc_Location heloc; // this will be output
+        Handle_Geom_Curve c_geom = BRep_Tool::Curve(hedge, heloc, u1, u2); //The geometric curve
+        Handle_Geom_BezierCurve b_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
+
+        if (!b_geom.IsNull()) {
+            gp_Trsf transf = heloc.Transformation();
+            b_geom->Transform(transf); // apply original transformation to control points
+            //Store Underlying Geometry
+            crvs.push_back(b_geom);
+        }
+        else {
+            Standard_Failure::Raise("Curve not a Bezier Curve");
+        }
+    }
+
+    GeomFill_FillingStyle fstyle = getFillingStyle();
+    GeomFill_BezierCurves aSurfBuilder; //Create Surface Builder
+
+    std::size_t edgeCount = crvs.size();
+    if (edgeCount == 2) {
+        aSurfBuilder.Init(crvs[0], crvs[1], fstyle);
+    }
+    else if (edgeCount == 3) {
+        aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);
+    }
+    else if (edgeCount == 4) {
+        aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);
+    }
+
+    createFace(aSurfBuilder.Surface());
+}
+
+void SurfaceFeature::createBSplineSurface(TopoDS_Wire& aWire)
+{
+    std::vector<Handle_Geom_BSplineCurve> crvs;
+    crvs.reserve(4);
+    Standard_Real u1, u2; // contains output
+    TopExp_Explorer anExp (aWire, TopAbs_EDGE);
+    for (; anExp.More(); anExp.Next()) {
+        const TopoDS_Edge& edge = TopoDS::Edge (anExp.Current());
+        TopLoc_Location heloc; // this will be output
+        Handle_Geom_Curve c_geom = BRep_Tool::Curve(edge, heloc, u1, u2); //The geometric curve
+        Handle_Geom_BSplineCurve b_geom = Handle_Geom_BSplineCurve::DownCast(c_geom); //Try to get BSpline curve
+
+        if (!b_geom.IsNull()) {
+            gp_Trsf transf = heloc.Transformation();
+            b_geom->Transform(transf); // apply original transformation to control points
+            //Store Underlying Geometry
+            crvs.push_back(b_geom);
+        }
+        else {
+            // try to convert it into a b-spline
+            BRepBuilderAPI_NurbsConvert mkNurbs(edge);
+            TopoDS_Edge nurbs = TopoDS::Edge(mkNurbs.Shape());
+            // avoid copying
+            TopLoc_Location heloc2; // this will be output
+            Handle_Geom_Curve c_geom2 = BRep_Tool::Curve(nurbs, heloc2, u1, u2); //The geometric curve
+            Handle_Geom_BSplineCurve b_geom2 = Handle_Geom_BSplineCurve::DownCast(c_geom2); //Try to get BSpline curve
+
+            if (!b_geom2.IsNull()) {
+                gp_Trsf transf = heloc2.Transformation();
+                b_geom2->Transform(transf); // apply original transformation to control points
+                //Store Underlying Geometry
+                crvs.push_back(b_geom2);
+            }
+            else {
+                // BRepBuilderAPI_NurbsConvert failed, try ShapeConstruct_Curve now
+                ShapeConstruct_Curve scc;
+                Handle_Geom_BSplineCurve spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
+                if (spline.IsNull())
+                    Standard_Failure::Raise("A curve was not a b-spline and could not be converted into one.");
+                gp_Trsf transf = heloc2.Transformation();
+                spline->Transform(transf); // apply original transformation to control points
+                crvs.push_back(spline);
+            }
+        }
+    }
+
+    GeomFill_FillingStyle fstyle = getFillingStyle();
+    GeomFill_BSplineCurves aSurfBuilder; //Create Surface Builder
+
+    std::size_t edgeCount = crvs.size();
+    if (edgeCount == 2) {
+        aSurfBuilder.Init(crvs[0], crvs[1], fstyle);
+    }
+    else if (edgeCount == 3) {
+        aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);
+    }
+    else if (edgeCount == 4) {
+        aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);
+    }
+
+    createFace(aSurfBuilder.Surface());
 }

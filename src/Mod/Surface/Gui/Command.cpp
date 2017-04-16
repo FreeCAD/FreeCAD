@@ -173,7 +173,7 @@ void CmdSurfaceBSurf::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Surface");
 
     openCommand("Create surface");
-    doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::BSplineSurface\",\"%s\")", FeatName.c_str());
+    doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::SurfaceFeature\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
 }
 
