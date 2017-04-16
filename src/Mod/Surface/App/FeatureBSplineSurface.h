@@ -35,9 +35,6 @@ class SurfaceExport BSplineSurface :  public SurfaceFeature
 
 public:
     BSplineSurface();
-
-    // recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute(void);
 };
 
 }//Namespace Surface
