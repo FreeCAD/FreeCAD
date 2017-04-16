@@ -2884,6 +2884,8 @@ def clone(obj,delta=None,forcedraft=False):
     elif len(obj) == 1:
         cl.Placement = obj[0].Placement
     formatObject(cl,obj[0])
+    if gui and (len(obj) > 1):
+        cl.ViewObject.Proxy.resetColors(cl.ViewObject)
     select(cl)
     return cl
 
@@ -5777,6 +5779,20 @@ class _ViewProviderClone:
 
     def setDisplayMode(self, mode):
         return mode
+
+    def resetColors(self, vobj):
+        colors = []
+        for o in getGroupContents(vobj.Object.Objects):
+            if o.isDerivedFrom("Part::Feature"):
+                if len(o.ViewObject.DiffuseColor) > 1:
+                    colors.extend(o.ViewObject.DiffuseColor)
+                else:
+                    c = o.ViewObject.ShapeColor
+                    c = (c[0],c[1],c[2],o.ViewObject.Transparency/100.0)
+                    for f in o.Shape.Faces:
+                        colors.append(c)
+        if colors:
+            vobj.DiffuseColor = colors
 
 class _ViewProviderDraftArray(_ViewProviderDraft):
     "a view provider that displays a Array icon instead of a Draft icon"
