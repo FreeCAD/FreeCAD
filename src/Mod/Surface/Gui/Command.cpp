@@ -149,31 +149,31 @@ void CmdSurfaceCut::activated(int iMsg)
 //===========================================================================
 // Bezier and BSpline surfaces
 //===========================================================================
-DEF_STD_CMD_A(CmdSurfaceBSurf);
+DEF_STD_CMD_A(CmdSurfaceGeomFillSurface)
 
-CmdSurfaceBSurf::CmdSurfaceBSurf()
-    : Command("Surface_BSurf")
+CmdSurfaceGeomFillSurface::CmdSurfaceGeomFillSurface()
+    : Command("Surface_GeomFillSurface")
 {
     sAppModule    = "Surface";
     sGroup        = QT_TR_NOOP("Surface");
     sMenuText     = QT_TR_NOOP("Fill boundary curves");
     sToolTipText  = QT_TR_NOOP("Creates a surface from two, three or four boundary edges");
-    sWhatsThis    = "Surface_BSurf";
+    sWhatsThis    = "Surface_GeomFillSurface";
     sStatusTip    = sToolTipText;
     sPixmap       = "BSplineSurf";
 }
 
-bool CmdSurfaceBSurf::isActive(void)
+bool CmdSurfaceGeomFillSurface::isActive(void)
 {
     return hasActiveDocument();
 }
 
-void CmdSurfaceBSurf::activated(int iMsg)
+void CmdSurfaceGeomFillSurface::activated(int iMsg)
 {
     std::string FeatName = getUniqueObjectName("Surface");
 
     openCommand("Create surface");
-    doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::SurfaceFeature\",\"%s\")", FeatName.c_str());
+    doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::GeomFillSurface\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
 }
 
@@ -182,5 +182,5 @@ void CreateSurfaceCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 /*  rcCmdMgr.addCommand(new CmdSurfaceFilling());
     rcCmdMgr.addCommand(new CmdSurfaceCut());*/
-    rcCmdMgr.addCommand(new CmdSurfaceBSurf());
+    rcCmdMgr.addCommand(new CmdSurfaceGeomFillSurface());
 }

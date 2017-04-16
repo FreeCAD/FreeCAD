@@ -52,7 +52,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 
-#include "FeatureSurface.h"
+#include "FeatureGeomFillSurface.h"
 
 using namespace Surface;
 
@@ -122,11 +122,11 @@ void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName,
 }
 
 
-PROPERTY_SOURCE(Surface::SurfaceFeature, Part::Spline)
+PROPERTY_SOURCE(Surface::GeomFillSurface, Part::Spline)
 
-const char* SurfaceFeature::FillTypeEnums[]    = {"Stretched", "Coons", "Curved", NULL};
+const char* GeomFillSurface::FillTypeEnums[]    = {"Stretched", "Coons", "Curved", NULL};
 
-SurfaceFeature::SurfaceFeature(): Spline()
+GeomFillSurface::GeomFillSurface(): Spline()
 {
     ADD_PROPERTY(FillType, ((long)0));
     ADD_PROPERTY(BoundaryList, (0, "Dummy"));
@@ -135,7 +135,7 @@ SurfaceFeature::SurfaceFeature(): Spline()
 
 
 //Check if any components of the surface have been modified
-short SurfaceFeature::mustExecute() const
+short GeomFillSurface::mustExecute() const
 {
     if (BoundaryList.isTouched() ||
         FillType.isTouched()) {
@@ -144,7 +144,7 @@ short SurfaceFeature::mustExecute() const
     return Spline::mustExecute();
 }
 
-App::DocumentObjectExecReturn *SurfaceFeature::execute(void)
+App::DocumentObjectExecReturn *GeomFillSurface::execute(void)
 {
     try {
         TopoDS_Wire aWire;
@@ -172,7 +172,7 @@ App::DocumentObjectExecReturn *SurfaceFeature::execute(void)
     }
 }
 
-GeomFill_FillingStyle SurfaceFeature::getFillingStyle()
+GeomFill_FillingStyle GeomFillSurface::getFillingStyle()
 {
     //Identify filling style
     switch (FillType.getValue()) {
@@ -186,7 +186,7 @@ GeomFill_FillingStyle SurfaceFeature::getFillingStyle()
     }
 }
 
-bool SurfaceFeature::getWire(TopoDS_Wire& aWire)
+bool GeomFillSurface::getWire(TopoDS_Wire& aWire)
 {
     Handle(ShapeFix_Wire) aShFW = new ShapeFix_Wire;
     Handle(ShapeExtend_WireData) aWD = new ShapeExtend_WireData;
@@ -233,7 +233,7 @@ bool SurfaceFeature::getWire(TopoDS_Wire& aWire)
     return validator.isBezier();
 }
 
-void SurfaceFeature::createFace(const Handle_Geom_BoundedSurface &aSurface)
+void GeomFillSurface::createFace(const Handle_Geom_BoundedSurface &aSurface)
 {
     BRepBuilderAPI_MakeFace aFaceBuilder;
     Standard_Real u1, u2, v1, v2;
@@ -252,7 +252,7 @@ void SurfaceFeature::createFace(const Handle_Geom_BoundedSurface &aSurface)
     this->Shape.setValue(aFace);
 }
 
-void SurfaceFeature::createBezierSurface(TopoDS_Wire& aWire)
+void GeomFillSurface::createBezierSurface(TopoDS_Wire& aWire)
 {
     std::vector<Handle_Geom_BezierCurve> crvs;
     crvs.reserve(4);
@@ -293,7 +293,7 @@ void SurfaceFeature::createBezierSurface(TopoDS_Wire& aWire)
     createFace(aSurfBuilder.Surface());
 }
 
-void SurfaceFeature::createBSplineSurface(TopoDS_Wire& aWire)
+void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
 {
     std::vector<Handle_Geom_BSplineCurve> crvs;
     crvs.reserve(4);

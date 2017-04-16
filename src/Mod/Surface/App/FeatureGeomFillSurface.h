@@ -21,8 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEATURESURFACE_H
-#define FEATURESURFACE_H
+#ifndef FEATUREGEOMFILLSURFACE_H
+#define FEATUREGEOMFILLSURFACE_H
 
 #include <Geom_BoundedSurface.hxx>
 #include <GeomFill_FillingStyle.hxx>
@@ -56,13 +56,13 @@ public:
         return edgeCount;
     }
 };
-  
-class SurfaceFeature : public Part::Spline
+
+class GeomFillSurface : public Part::Spline
 {
-  PROPERTY_HEADER(Surface::SurfaceFeature);
+  PROPERTY_HEADER(Surface::GeomFillSurface);
 
 public:
-    SurfaceFeature();
+    GeomFillSurface();
     App::PropertyLinkSubList BoundaryList;  //curves to be turned into a face (2-4 curves allowed).
     App::PropertyEnumeration FillType;      //Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
 
@@ -71,7 +71,7 @@ public:
 
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
-        return "SurfaceGui::ViewProviderSurfaceFeature";
+        return "SurfaceGui::ViewProviderGeomFillSurface";
     }
 
 protected:
@@ -88,4 +88,4 @@ private:
 
 }
 
-#endif // FEATURESURFACE_H
+#endif // FEATUREGEOMFILLSURFACE_H

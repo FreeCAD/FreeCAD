@@ -21,8 +21,8 @@ SET(Surface_SRCS
     AppSurface.cpp
     PreCompiled.cpp
     PreCompiled.h
-    FeatureSurface.cpp
-    FeatureSurface.h
+    FeatureGeomFillSurface.cpp
+    FeatureGeomFillSurface.h
     FeatureFilling.cpp
     FeatureFilling.h
     FeatureSewing.cpp

@@ -29,7 +29,7 @@
 #include <Gui/DocumentObserver.h>
 #include <Base/BoundBox.h>
 #include <Mod/Part/Gui/ViewProviderSpline.h>
-#include <Mod/Surface/App/FeatureSurface.h>
+#include <Mod/Surface/App/FeatureGeomFillSurface.h>
 #include <GeomFill_FillingStyle.hxx>
 
 namespace SurfaceGui
@@ -38,7 +38,7 @@ namespace SurfaceGui
 class EdgeSelection : public Gui::SelectionFilterGate
 {
 public:
-    EdgeSelection(bool appendEdges, Surface::SurfaceFeature* editedObject)
+    EdgeSelection(bool appendEdges, Surface::GeomFillSurface* editedObject)
         : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
         , appendEdges(appendEdges)
         , editedObject(editedObject)
@@ -51,14 +51,14 @@ public:
 
 private:
     bool appendEdges;
-    Surface::SurfaceFeature* editedObject;
+    Surface::GeomFillSurface* editedObject;
 };
 
 class Ui_SurfaceFilling;
 
-class ViewProviderSurfaceFeature : public PartGui::ViewProviderSpline
+class ViewProviderGeomFillSurface : public PartGui::ViewProviderSpline
 {
-    PROPERTY_HEADER(SurfaceGui::ViewProviderSurfaceFeature);
+    PROPERTY_HEADER(SurfaceGui::ViewProviderGeomFillSurface);
 public:
     virtual void setupContextMenu(QMenu*, QObject*, const char*);
     virtual bool setEdit(int ModNum);
@@ -75,21 +75,21 @@ class SurfaceFilling : public QWidget,
 protected:
     enum SelectionMode { None, Append, Remove };
     SelectionMode selectionMode;
-    Surface::SurfaceFeature* editedObject;
+    Surface::GeomFillSurface* editedObject;
     bool checkCommand;
 
 private:
     Ui_SurfaceFilling* ui;
-    ViewProviderSurfaceFeature* vp;
+    ViewProviderGeomFillSurface* vp;
 
 public:
-    SurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceFeature* obj);
+    SurfaceFilling(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj);
     ~SurfaceFilling();
 
     void open();
     bool accept();
     bool reject();
-    void setEditedObject(Surface::SurfaceFeature* obj);
+    void setEditedObject(Surface::GeomFillSurface* obj);
 
 protected:
     void changeEvent(QEvent *e);
@@ -114,9 +114,9 @@ class TaskSurfaceFilling : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskSurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceFeature* obj);
+    TaskSurfaceFilling(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj);
     ~TaskSurfaceFilling();
-    void setEditedObject(Surface::SurfaceFeature* obj);
+    void setEditedObject(Surface::GeomFillSurface* obj);
 
 public:
     void open();
@@ -129,7 +129,7 @@ public:
 private:
     SurfaceFilling* widget;
     Gui::TaskView::TaskBox* taskbox;
-    ViewProviderSurfaceFeature* view;
+    ViewProviderGeomFillSurface* view;
 };
 
 } //namespace Surface
