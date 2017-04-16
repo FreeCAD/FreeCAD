@@ -31,7 +31,7 @@
 #include "FeatureFilling.h"
 #include "FeatureSewing.h"
 #include "FeatureCut.h"
-#include "FeatureSurface.h"
+#include "FeatureGeomFillSurface.h"
 
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
@@ -74,10 +74,10 @@ PyMOD_INIT_FUNC(Surface)
     Base::Console().Log("Loading Surface module... done\n");
 
     // Add types to module
-    Surface::Filling        ::init();
-    Surface::Sewing         ::init();
-    Surface::Cut            ::init();
-    Surface::SurfaceFeature ::init();
+    Surface::Filling         ::init();
+    Surface::Sewing          ::init();
+    Surface::Cut             ::init();
+    Surface::GeomFillSurface ::init();
 
     PyMOD_Return(mod);
 }
