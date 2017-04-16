@@ -31,7 +31,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/FeaturePartSpline.h>
 
 namespace Surface
 {
@@ -61,7 +61,7 @@ public:
     }
 };
   
-class SurfaceFeature : public Part::Feature
+class SurfaceFeature : public Part::Spline
 {
   PROPERTY_HEADER(Surface::SurfaceFeature);
 
