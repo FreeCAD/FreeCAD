@@ -29,10 +29,6 @@ SET(Surface_SRCS
     FeatureSewing.h
     FeatureCut.cpp
     FeatureCut.h
-    FeatureBezierSurface.cpp
-    FeatureBezierSurface.h
-    FeatureBSplineSurface.cpp
-    FeatureBSplineSurface.h
 )
 
 link_directories(${OCC_LIBRARY_DIR})
