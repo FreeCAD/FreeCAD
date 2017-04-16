@@ -47,6 +47,7 @@ class Document;
 class DocumentObject;
 class ApplicationObserver;
 class Property;
+class PropertyContainer;
 
 
 
@@ -83,6 +84,8 @@ public:
     App::Document* openDocument(const char * FileName=0l);
     /// Retrieve the active document
     App::Document* getActiveDocument(void) const;
+    /// get active container (either a feature with GroupExtension, or ActiveDocument, or nullptr).
+    App::PropertyContainer* getActiveContainer(void) const;
     /// Retrieve a named document
     App::Document* getDocument(const char *Name) const;
     /// gets the (internal) name of the document
@@ -92,6 +95,8 @@ public:
     /// Set the active document
     void setActiveDocument(App::Document* pDoc);
     void setActiveDocument(const char *Name);
+    /// sets active container, and activates document
+    void setActiveContainer(App::PropertyContainer* newActiveContainer);
     /// close all documents (without saving)
     void closeAllDocuments(void);
     //@}
@@ -110,6 +115,12 @@ public:
     boost::signal<void (const Document&)> signalRenameDocument;
     /// signal on activating Document
     boost::signal<void (const Document&)> signalActiveDocument;
+    /**
+     * @brief signalActiveContainer fires whenever App.ActiveContainer changes.
+     * Either pointer can be null. Both are null when last document is closed.
+     * If non-null, object is either a DocumentObject, or Document.
+     */
+    boost::signal<void (PropertyContainer* /*newContainer*/, PropertyContainer* /*oldContainer*/)> signalActiveContainer;
     /// signal on saving Document
     boost::signal<void (const Document&)> signalSaveDocument;
     /// signal on starting to restore Document
@@ -269,9 +280,12 @@ protected:
     void slotChangedObject(const App::DocumentObject&, const App::Property& Prop);
     void slotRelabelObject(const App::DocumentObject&);
     void slotActivatedObject(const App::DocumentObject&);
+    void slotActivatedContainer(App::Document* doc, App::PropertyContainer* newContainer, App::PropertyContainer* oldContainer);
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
     //@}
+
+    void updatePyActiveObjects();
 
 private:
     /// Constructor
@@ -320,6 +334,7 @@ private:
     static PyObject* sAddDocObserver    (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sRemoveDocObserver (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sTranslateUnit     (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject* sSetActiveContainer(PyObject *self,PyObject *args,PyObject *kwd);
 
     static PyMethodDef    Methods[]; 
 

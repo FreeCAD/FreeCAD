@@ -144,6 +144,8 @@ public:
     boost::signal<void (const std::vector<App::DocumentObject*>&, Base::Reader&,
                         const std::map<std::string, std::string>&)> signalImportViewObjects;
     boost::signal<void (const App::Document&)> signalRecomputed;
+    /// fires when active container in this document changes.
+    boost::signal<void (App::Document* /*this*/, App::PropertyContainer* /*newContainer*/, App::PropertyContainer* /*oldContainer*/)> signalActiveContainer;
     //@}
 
     /** @name File handling of the document */
@@ -211,6 +213,9 @@ public:
     DocumentObject *getActiveObject(void) const;
     /// Returns a Object of this document
     DocumentObject *getObject(const char *Name) const;
+    /// Returns active container in this doc (or this, if doc itself is active container)
+    PropertyContainer* getActiveContainer() const;
+    void setActiveContainer(PropertyContainer* newContainer);
     /// Returns true if the DocumentObject is contained in this document
     bool isIn(const DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
@@ -341,6 +346,7 @@ protected:
 
     void _remObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);
+    void _deactivateDeletedObject(DocumentObject* pcObject);
     /// checks if a valid transaction is open
     void _checkTransaction(DocumentObject* pcObject);
     void breakDependency(DocumentObject* pcObject, bool clear);

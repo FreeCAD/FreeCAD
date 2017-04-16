@@ -145,6 +145,13 @@ Both parameters are optional.</UserDocu>
 		  </Documentation>
 		  <Parameter Name="ActiveObject" Type="Object" />
 	  </Attribute>
+      <Attribute Name="ActiveContainer" ReadOnly="false">
+		<Documentation>
+			<UserDocu>Active container in the document</UserDocu>
+		</Documentation>
+		<Parameter Name="ActiveContainer" Type="Object" />
+	  </Attribute>
+
 	  <Attribute Name="Objects" ReadOnly="true">
       <Documentation>
         <UserDocu>The list of object handled by this document</UserDocu>
