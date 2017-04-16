@@ -49,7 +49,7 @@ public:
     /** Adds an object of \a sType with \a pObjectName to the document this group belongs to and
      * append it to this group as well.
      */
-    virtual DocumentObject *addObject(const char* sType, const char* pObjectName);
+    virtual DocumentObject *newObject(const char* sType, const char* pObjectName);
     /* Adds the object \a obj to this group.
      */
     virtual void addObject(DocumentObject* obj);

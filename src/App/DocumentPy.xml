@@ -65,7 +65,18 @@
     </Methode>
     <Methode Name="addObject">
       <Documentation>
-        <UserDocu>Add an object with given type and name to the document</UserDocu>
+<UserDocu>addObject(type, name, proxy = None, vpproxy = None). Deprecated! Creates a new object in active container of the document.
+Deprecated. Please use App.ActiveContainer.newObject(...), or App.ActiveDocument.newObject(...) to be specific about which
+container to create the object in.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="newObject">
+      <Documentation>
+<UserDocu>newObject(type, name, proxy = None, vpproxy = None). Creates a new object into the root of the document.
+
+type: name of C++ type of the object to be created. For example, 'App::DocumentObjectGroup'.
+
+Proxy and vpproxy: shortcuts for assigning proxies for scripted objects.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="removeObject">

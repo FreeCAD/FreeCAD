@@ -446,7 +446,7 @@ public:
         }
 
         App::AnnotationLabel* anno = static_cast<App::AnnotationLabel*>
-            (group->addObject("App::AnnotationLabel", internalname.c_str()));
+            (group->newObject("App::AnnotationLabel", internalname.c_str()));
         QStringList lines = s.split(QLatin1String("\n"));
         std::vector<std::string> text;
         for (QStringList::Iterator it = lines.begin(); it != lines.end(); ++it)

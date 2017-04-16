@@ -81,6 +81,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "Document.h"
 #include "Application.h"
 #include "DocumentObject.h"
+#include "DocumentObjectPy.h"
 #include "MergeDocuments.h"
 #include <App/DocumentPy.h>
 
@@ -1188,7 +1189,7 @@ void Document::Restore(Base::XMLReader &reader)
             string name = reader.getAttribute("name");
 
             try {
-                addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
+                newObject(type.c_str(), name.c_str(), /*isNew=*/ false);
             }
             catch ( Base::Exception& ) {
                 Base::Console().Message("Cannot create object '%s'\n", name.c_str());
@@ -1308,7 +1309,7 @@ Document::readObjects(Base::XMLReader& reader)
             // otherwise we may cause a dependency to itself
             // Example: Object 'Cut001' references object 'Cut' and removing the
             // digits we make an object 'Cut' referencing itself.
-            App::DocumentObject* obj = addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
+            App::DocumentObject* obj = newObject(type.c_str(), name.c_str(), /*isNew=*/ false);
             if (obj) {
                 objs.push_back(obj);
                 // use this name for the later access because an object with
@@ -1390,6 +1391,30 @@ unsigned int Document::getMemSize (void) const
     size += getUndoMemSize();
 
     return size;
+}
+
+DocumentObject* Document::addObject(const char* sType, const char* pObjectName, bool isNew)
+{
+    if (!isNew)
+        return this->newObject(sType, pObjectName, isNew);
+
+    // All calls to App.ActiveDocument.addObject(...) end up here. We
+    // redirect them to App.ActiveContainer.newObject(...), to get
+    // automatic acive-container support in all existing workbenches.
+    // New code should always use App.ActiveContainer.newObject(...)
+    // directly. This is only for legacy code to work.
+
+    assert(sType);
+    std::stringstream cmd;
+    cmd << "App.getDocument('" << this->getName() << "').ActiveContainer"
+        << ".newObject('" << Base::Tools::escapedUnicodeFromUtf8(sType) << "'" ;
+    if (pObjectName) {
+        cmd << ", '" << Base::Tools::escapedUnicodeFromUtf8(pObjectName) << "'";
+    }
+    cmd << ")";
+    Py::Object newobject = Base::Interpreter().runStringObject(cmd.str().c_str());
+    assert(PyObject_TypeCheck(newobject.ptr(), &(DocumentObjectPy::Type)));
+    return static_cast<DocumentObjectPy*>(newobject.ptr())->getDocumentObjectPtr();
 }
 
 bool Document::saveAs(const char* file)
@@ -2145,13 +2170,16 @@ void Document::recomputeFeature(DocumentObject* Feat)
         _recomputeFeature(Feat);
 }
 
-DocumentObject * Document::addObject(const char* sType, const char* pObjectName, bool isNew)
+DocumentObject* Document::newObject(const char* sType, const char* pObjectName, bool isNew)
 {
     Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
 
     string ObjectName;
-    if (!base)
-        return 0;
+    if (!base) {
+        std::stringstream str;
+        str << "No document object found of type '" << sType << "'" << std::ends;
+        throw Base::TypeError(str.str());
+    }
     if (!base->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         delete base;
         std::stringstream str;

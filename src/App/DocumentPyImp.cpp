@@ -215,6 +215,42 @@ PyObject*  DocumentPy::exportGraphviz(PyObject * args)
     }
 }
 
+/**
+ * @brief assignProxies: helper function for addObject, newObject.
+ */
+void assignProxies(DocumentObject* pcFtr, PyObject* obj, PyObject* view)
+{
+    // Allows to hide the handling with Proxy in client python code
+    if (obj) {
+        try {
+            // the python binding class to the document object
+            Py::Object pyftr = Py::asObject(pcFtr->getPyObject());
+            // 'pyobj' is the python class with the implementation for DocumentObject
+            Py::Object pyobj(obj);
+            if (pyobj.hasAttr("__object__")) {
+                pyobj.setAttr("__object__", pyftr);
+            }
+            pyftr.setAttr("Proxy", pyobj);
+
+            // if a document class is set we also need a view provider defined which must be
+            // something different to None
+            Py::Object pyvp;
+            if (view)
+                pyvp = Py::Object(view);
+            if (pyvp.isNone())
+                pyvp = Py::Int(1);
+            // 'pyvp' is the python class with the implementation for ViewProvider
+            if (pyvp.hasAttr("__vobject__")) {
+                pyvp.setAttr("__vobject__", pyftr.getAttr("ViewObject"));
+            }
+            pyftr.getAttr("ViewObject").setAttr("Proxy", pyvp);
+        }
+        catch (Py::Exception& e) {
+            e.clear();
+        }
+    }
+}
+
 PyObject*  DocumentPy::addObject(PyObject *args)
 {
     char *sType,*sName=0;
@@ -227,36 +263,29 @@ PyObject*  DocumentPy::addObject(PyObject *args)
 
     pcFtr = getDocumentPtr()->addObject(sType,sName);
     if (pcFtr) {
-        // Allows to hide the handling with Proxy in client python code
-        if (obj) {
-            try {
-                // the python binding class to the document object
-                Py::Object pyftr = Py::asObject(pcFtr->getPyObject());
-                // 'pyobj' is the python class with the implementation for DocumentObject
-                Py::Object pyobj(obj);
-                if (pyobj.hasAttr("__object__")) {
-                    pyobj.setAttr("__object__", pyftr);
-                }
-                pyftr.setAttr("Proxy", pyobj);
+        assignProxies(pcFtr, obj, view);
+        return pcFtr->getPyObject();
+    }
+    else {
+        std::stringstream str;
+        str << "No document object found of type '" << sType << "'" << std::ends;
+        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
+    }
+}
 
-                // if a document class is set we also need a view provider defined which must be
-                // something different to None
-                Py::Object pyvp;
-                if (view)
-                    pyvp = Py::Object(view);
-                if (pyvp.isNone())
-                    pyvp = Py::Int(1);
-                // 'pyvp' is the python class with the implementation for ViewProvider
-                if (pyvp.hasAttr("__vobject__")) {
-                    pyvp.setAttr("__vobject__", pyftr.getAttr("ViewObject"));
-                }
-                pyftr.getAttr("ViewObject").setAttr("Proxy", pyvp);
-                return Py::new_reference_to(pyftr);
-            }
-            catch (Py::Exception& e) {
-                e.clear();
-            }
-        }
+PyObject*  DocumentPy::newObject(PyObject *args)
+{
+    char *sType,*sName=0;
+    PyObject* obj=0;
+    PyObject* view=0;
+    if (!PyArg_ParseTuple(args, "s|sOO", &sType,&sName,&obj,&view))     // convert args: Python->C
+        return NULL;                                         // NULL triggers exception
+
+    DocumentObject *pcFtr;
+
+    pcFtr = getDocumentPtr()->newObject(sType,sName);
+    if (pcFtr) {
+        assignProxies(pcFtr, obj, view);
         return pcFtr->getPyObject();
     }
     else {
