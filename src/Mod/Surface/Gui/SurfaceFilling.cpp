@@ -25,7 +25,6 @@
 #include <QAction>
 #include <QMenu>
 #include <QMessageBox>
-#include <GeomFill_FillingStyle.hxx>
 
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
@@ -133,6 +132,7 @@ SurfaceFilling::SurfaceFilling(ViewProviderSurfaceFeature* vp, Surface::SurfaceF
     ui->setupUi(this);
     selectionMode = None;
     this->vp = vp;
+    checkCommand = true;
     setEditedObject(obj);
 
     // Create context menu
@@ -208,21 +208,22 @@ void SurfaceFilling::changeEvent(QEvent *e)
 
 void SurfaceFilling::open()
 {
-    if (!Gui::Command::hasPendingCommand()) {
+    if (checkCommand && !Gui::Command::hasPendingCommand()) {
         std::string Msg("Edit ");
         Msg += editedObject->Label.getValue();
         Gui::Command::openCommand(Msg.c_str());
+        checkCommand = false;
     }
 }
 
 void SurfaceFilling::slotUndoDocument(const Gui::Document&)
 {
-  //Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    checkCommand = true;
 }
 
 void SurfaceFilling::slotRedoDocument(const Gui::Document&)
 {
-  //Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    checkCommand = true;
 }
 
 bool SurfaceFilling::accept()
@@ -271,33 +272,25 @@ bool SurfaceFilling::reject()
 
 void SurfaceFilling::on_fillType_stretch_clicked()
 {
-    GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
-    if (curtype != GeomFill_StretchStyle) {
-        editedObject->FillType.setValue(static_cast<long>(GeomFill_StretchStyle));
-        editedObject->recomputeFeature();
-        if (!editedObject->isValid()) {
-            Base::Console().Error("Surface filling: %s", editedObject->getStatusString());
-        }
-    }
+    changeFillType(GeomFill_StretchStyle);
 }
 
 void SurfaceFilling::on_fillType_coons_clicked()
 {
-    GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
-    if (curtype != GeomFill_CoonsStyle) {
-        editedObject->FillType.setValue(static_cast<long>(GeomFill_CoonsStyle));
-        editedObject->recomputeFeature();
-        if (!editedObject->isValid()) {
-            Base::Console().Error("Surface filling: %s", editedObject->getStatusString());
-        }
-    }
+    changeFillType(GeomFill_CoonsStyle);
 }
 
 void SurfaceFilling::on_fillType_curved_clicked()
 {
+    changeFillType(GeomFill_CurvedStyle);
+}
+
+void SurfaceFilling::changeFillType(GeomFill_FillingStyle fillType)
+{
     GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
-    if (curtype != GeomFill_CurvedStyle) {
-        editedObject->FillType.setValue(static_cast<long>(GeomFill_CurvedStyle));
+    if (curtype != fillType) {
+        open();
+        editedObject->FillType.setValue(static_cast<long>(fillType));
         editedObject->recomputeFeature();
         if (!editedObject->isValid()) {
             Base::Console().Error("Surface filling: %s", editedObject->getStatusString());
@@ -323,6 +316,7 @@ void SurfaceFilling::onSelectionChanged(const Gui::SelectionChanges& msg)
         return;
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        open();
         if (selectionMode == Append) {
             QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
             ui->listWidget->addItem(item);
@@ -384,6 +378,7 @@ void SurfaceFilling::onDeleteEdge()
     int row = ui->listWidget->currentRow();
     QListWidgetItem* item = ui->listWidget->item(row);
     if (item) {
+        open();
         QList<QVariant> data;
         data = item->data(Qt::UserRole).toList();
         ui->listWidget->takeItem(row);

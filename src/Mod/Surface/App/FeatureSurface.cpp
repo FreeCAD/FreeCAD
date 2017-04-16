@@ -148,11 +148,11 @@ void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName,
 }
 
 
-PROPERTY_SOURCE(Surface::SurfaceFeature, Part::Feature)
+PROPERTY_SOURCE(Surface::SurfaceFeature, Part::Spline)
 
 const char* SurfaceFeature::FillTypeEnums[]    = {"Stretched", "Coons", "Curved", NULL};
 
-SurfaceFeature::SurfaceFeature(): Feature()
+SurfaceFeature::SurfaceFeature(): Spline()
 {
     ADD_PROPERTY(FillType, ((long)0));
     ADD_PROPERTY(BoundaryList, (0, "Dummy"));
