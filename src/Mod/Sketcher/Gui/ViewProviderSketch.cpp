@@ -296,14 +296,18 @@ ViewProviderSketch::ViewProviderSketch()
     PointSize.setValue(4);
 
     zCross=0.001f;
-    zLines=0.005f;
-    zConstr=0.007f; // constraint not construction
-    zHighLine=0.006f;
-    zPoints=0.008f;
-    zHighlight=0.009f;
-    zText=0.011f;
     zEdit=0.001f;
     zInfo=0.004f;
+    zLowLines=0.005f;
+    //zLines=0.005f;    // ZLines removed in favour of 3 height groups intended for NormalLines, ConstructionLines, ExternalLines
+    zMidLines=0.006f;
+    zHighLines=0.007f;  // Lines that are somehow selected to be in the high position (higher than other line categories)
+    zHighLine=0.008f;   // highlighted line (of any group)
+    zConstr=0.009f; // constraint not construction
+    zPoints=0.010f;
+    zHighlight=0.011f;
+    zText=0.011f;
+    
 
     xInit=0;
     yInit=0;
@@ -2453,6 +2457,17 @@ void ViewProviderSketch::updateColor(void)
   //int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
   //int extGeoCount = getSketchObject()->getExternalGeometryCount();
     
+    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    
+    // 1->Normal Geometry, 2->Construction, 3->External
+    int topid = hGrpp->GetInt("TopRenderGeometryId",1);
+    int midid = hGrpp->GetInt("MidRenderGeometryId",2);
+    int lowid = hGrpp->GetInt("LowRenderGeometryId",3);
+    
+    float zNormLine = (topid==1?zHighLines:midid==1?zMidLines:zLowLines);
+    float zConstrLine = (topid==2?zHighLines:midid==2?zMidLines:zLowLines);
+    float zExtLine = (topid==3?zHighLines:midid==3?zMidLines:zLowLines);
+    
     float x,y,z;
     
     int j=0; // vertexindex
@@ -2491,28 +2506,28 @@ void ViewProviderSketch::updateColor(void)
             color[i] = CurveExternalColor;
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zConstr);
+                verts[j] = SbVec3f(x,y,zExtLine);
             }
         }
         else if (getSketchObject()->getGeometry(GeoId)->Construction) {
             color[i] = CurveDraftColor;
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zLines);
+                verts[j] = SbVec3f(x,y,zConstrLine);
             }
         }
         else if (edit->FullyConstrained) {
             color[i] = FullyConstrainedColor;
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zLines);
+                verts[j] = SbVec3f(x,y,zLowLines);
             }
         }
         else {
             color[i] = CurveColor;
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zLines);
+                verts[j] = SbVec3f(x,y,zNormLine);
             }
         }
     }
@@ -3874,7 +3889,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
     int i=0; // setting up the line set
     for (std::vector<Base::Vector3d>::const_iterator it = Coords.begin(); it != Coords.end(); ++it,i++)
-      verts[i].setValue(it->x,it->y,zLines);
+        verts[i].setValue(it->x,it->y,zLowLines);
     
     i=0; // setting up the indexes of the line set
     for (std::vector<unsigned int>::const_iterator it = Index.begin(); it != Index.end(); ++it,i++)

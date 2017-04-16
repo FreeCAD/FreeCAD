@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>153</width>
-    <height>115</height>
+    <width>194</width>
+    <height>228</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,26 +34,26 @@
       </widget>
      </item>
      <item>
-       <widget class="Gui::PrefQuantitySpinBox" name="gridSize">
-         <property name="unit" stdset="0">
-           <string notr="true">mm</string>
-         </property>
-         <property name="decimals" stdset="0">
-           <number>3</number>
-         </property>
-         <property name="maximum" stdset="0">
-           <double>99999999.0</double>
-         </property>
-         <property name="minimum" stdset="0">
-           <double>0.001</double>
-         </property>
-         <property name="singleStep" stdset="0">
-           <double>1.000000000000000</double>
-         </property>
-         <property name="value" stdset="0">
-           <double>0.0000001</double>
-         </property>
-       </widget>
+      <widget class="Gui::PrefQuantitySpinBox" name="gridSize" native="true">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="decimals" stdset="0">
+        <number>3</number>
+       </property>
+       <property name="maximum" stdset="0">
+        <double>99999999.000000000000000</double>
+       </property>
+       <property name="minimum" stdset="0">
+        <double>0.001000000000000</double>
+       </property>
+       <property name="singleStep" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="value" stdset="0">
+        <double>0.000000100000000</double>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -80,16 +80,35 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Rendering order:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QListWidget" name="renderingOrder">
+     <property name="dragEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+     <property name="sortingEnabled">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
-  <customwidgets>
-    <customwidget>
-      <class>Gui::PrefQuantitySpinBox</class>
-      <extends>QWidget</extends>
-      <header>Gui/PrefWidgets.h</header>
-    </customwidget>
-  </customwidgets>
-
-  <connections/>
+ <connections/>
 </ui>
