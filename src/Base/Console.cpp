@@ -39,6 +39,7 @@
 #include "Console.h"
 #include "Exception.h"
 #include "PyObjectBase.h"
+#include <QCoreApplication> 
 
 using namespace Base;
 
@@ -50,7 +51,12 @@ using namespace Base;
 
 
 ConsoleSingleton::ConsoleSingleton(void)
-  :_bVerbose(false)
+  :_bVerbose(false),_bCanRefresh(true)
+#ifdef FC_DEBUG
+  ,_defaultLogLevel(FC_LOGLEVEL_LOG)
+#else
+  ,_defaultLogLevel(FC_LOGLEVEL_MSG)
+#endif
 {
 
 }
@@ -354,6 +360,24 @@ ConsoleObserver *ConsoleSingleton::Get(const char *Name) const
     return 0;
 }
 
+int *ConsoleSingleton::GetLogLevel(const char *tag, bool create) {
+    if(!tag) tag = "";
+    if(_logLevels.find(tag) != _logLevels.end())
+        return &_logLevels[tag];
+    if(!create) return 0;
+    int &ret = _logLevels[tag];
+    ret = -1;
+    return &ret;
+}
+
+void ConsoleSingleton::Refresh() {
+    if(_bCanRefresh)
+        QCoreApplication::sendPostedEvents();
+}
+
+void ConsoleSingleton::EnableRefresh(bool enable) {
+    _bCanRefresh = enable;
+}
 
 //**************************************************************************
 // Singleton stuff
@@ -780,4 +804,25 @@ int RedirectStdError::sync()
         buffer.clear();
     }
     return 0;
+}
+
+//---------------------------------------------------------
+std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int line) {
+    static FC_TIME_POINT s_tstart;
+    static bool s_timing = false;
+    if(print_time) {
+        if(!s_timing) {
+            s_timing = true;
+            _FC_TIME_INIT(s_tstart);
+        }
+        auto tnow = std::chrono::FC_TIME_CLOCK::now();
+        auto d = std::chrono::duration_cast<FC_DURATION>(tnow-s_tstart);
+        str << d.count() << ' ';
+    }
+    if(print_tag) str << '<' << tag << "> ";
+    if(print_src) {
+        const char *_f = std::strrchr(src, '/');
+        str << (_f?_f+1:src)<<"("<<line<<"): ";
+    }
+    return str;
 }

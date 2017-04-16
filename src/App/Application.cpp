@@ -391,6 +391,8 @@ bool Application::closeDocument(const char* name)
     if (pos == DocMap.end()) // no such document
         return false;
 
+    Base::ConsoleRefreshDisabler disabler;
+
     // Trigger observers before removing the document from the internal map.
     // Some observers might rely on this document still being there.
     signalDeleteDocument(*pos->second);
@@ -1416,6 +1418,35 @@ void Application::initConfig(int argc, char ** argv)
                           mConfig["BuildRevision"].c_str());
 
     LoadParameters();
+
+    auto loglevelParam = _pcUserParamMngr->GetGroup("BaseApp/LogLevels");
+    const auto &loglevels = loglevelParam->GetIntMap();
+    bool hasDefault = false;
+    for(const auto &v : loglevels) {
+        if(v.first == "Default") {
+#ifndef FC_DEBUG
+            if(v.second>=0) {
+                hasDefault = true;
+                Base::Console().SetDefaultLogLevel(v.second);
+            }
+#endif
+        }else if(v.first == "DebugDefault") {
+#ifdef FC_DEBUG
+            if(v.second>=0) {
+                hasDefault = true;
+                Base::Console().SetDefaultLogLevel(v.second);
+            }
+#endif
+        }else
+            *Base::Console().GetLogLevel(v.first.c_str()) = v.second;
+    }
+    if(!hasDefault) {
+#ifdef FC_DEBUG
+        loglevelParam->SetInt("DebugDefault",Base::Console().LogLevel(-1));
+#else
+        loglevelParam->SetInt("Default",Base::Console().LogLevel(-1));
+#endif
+    }
 
     // Set application tmp. directory
     mConfig["AppTempPath"] = Base::FileInfo::getTempPath();
