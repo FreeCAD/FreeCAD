@@ -83,6 +83,7 @@ CmdSurfaceFilling::CmdSurfaceFilling()
 
 void CmdSurfaceFilling::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Base::Console().Message("Hello, World!\n");
 }
 
@@ -106,6 +107,7 @@ CmdSurfaceCut::CmdSurfaceCut()
 
 void CmdSurfaceCut::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
 /*    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, Part::Feature::getClassTypeId());
     if (Sel.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Invalid selection"),
@@ -170,6 +172,7 @@ bool CmdSurfaceGeomFillSurface::isActive(void)
 
 void CmdSurfaceGeomFillSurface::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::string FeatName = getUniqueObjectName("Surface");
 
     openCommand("Create surface");
