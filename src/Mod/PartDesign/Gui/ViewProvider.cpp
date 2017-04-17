@@ -145,7 +145,7 @@ void ViewProvider::unsetEdit(int ModNum)
 
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+        PartDesign::Body* activeBody = PartDesign::Body::findBodyOf(this->getObject());
         Gui::Control().closeDialog();
         if ((activeBody != NULL) && (oldTip != NULL)) {
             Gui::Selection().clearSelection();
