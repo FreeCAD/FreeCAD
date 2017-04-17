@@ -217,6 +217,7 @@ struct EditData {
 
     // helper data structures for the constraint rendering
     std::vector<ConstraintType> vConstrType;
+    std::vector<bool> vConstrIsDriving;
 
     // For each of the combined constraint icons drawn, also create a vector
     // of bounding boxes and associated constraint IDs, to go from the icon's
@@ -1625,9 +1626,22 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
     SoPath *path = Point->getPath();
     SoNode *tail = path->getTail();
     SoNode *tailFather = path->getNode(path->getLength()-2);
+    
+    SoSwitch *drivingsw = static_cast<SoSwitch *>(edit->constrGroup->getChild(0));
+    SoSwitch *drivensw = static_cast<SoSwitch *>(edit->constrGroup->getChild(1));
+    
+    int numconstrchildren = drivingsw->getNumChildren() + drivensw->getNumChildren();
 
-    for (int i=0; i < edit->constrGroup->getNumChildren(); ++i)
-        if (edit->constrGroup->getChild(i) == tailFather) {
+    for (int i=0; i < numconstrchildren; ++i) {
+        
+        SoSeparator *s;
+        
+        if(constrId2ToIsDriving[i])
+            s = static_cast<SoSeparator *>(drivingsw->getChild(constrId2ToIndex[i]));
+        else
+            s = static_cast<SoSeparator *>(drivensw->getChild(constrId2ToIndex[i]));
+        
+        if (s == tailFather) {
             SoSeparator *sep = static_cast<SoSeparator *>(tailFather);
             if(sep->getNumChildren() > CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID) {
                 SoInfo *constrIds = NULL;
@@ -1678,6 +1692,7 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
             break;
 
         }
+    }
     return constrIndices;
 }
 
@@ -1696,7 +1711,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
         //Base::Console().Log("Point pick\n");
         SoPath *path = Point->getPath();
         SoNode *tail = path->getTail();
-        SoNode *tailFather2 = path->getNode(path->getLength()-3);
+        SoNode *tailFather2 = path->getNode(path->getLength()-4);
 
         // checking for a hit in the points
         if (tail == edit->PointSet) {
@@ -1725,10 +1740,10 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
                     CrossIndex = 1 + static_cast<const SoLineDetail *>(cross_detail)->getLineIndex();
                 }
             } else {
-                // checking if a constraint is hit
+                // checking if a constraint is hit                
                 if (tailFather2 == edit->constrGroup)
                     constrIndices = detectPreselectionConstr(Point, viewer, cursorPos);
-            }
+                }
         }
 
         if (PtIndex != -1 && PtIndex != edit->PreselectPoint) { // if a new point is hit
@@ -1885,10 +1900,21 @@ void ViewProviderSketch::centerSelection()
 
     SoGroup* group = new SoGroup();
     group->ref();
+    
+    SoSwitch *drivingsw = static_cast<SoSwitch *>(edit->constrGroup->getChild(0));
+    SoSwitch *drivensw = static_cast<SoSwitch *>(edit->constrGroup->getChild(1));
+    
+    int numconstrchildren = drivingsw->getNumChildren() + drivensw->getNumChildren();
 
-    for (int i=0; i < edit->constrGroup->getNumChildren(); i++) {
+    for (int i=0; i < numconstrchildren; i++) {
         if (edit->SelConstraintSet.find(i) != edit->SelConstraintSet.end()) {
-            SoSeparator *sep = dynamic_cast<SoSeparator *>(edit->constrGroup->getChild(i));
+            SoSeparator *sep;
+
+            if(constrId2ToIsDriving[i])
+                sep = static_cast<SoSeparator *>(drivingsw->getChild(constrId2ToIndex[i]));
+            else
+                sep = static_cast<SoSeparator *>(drivensw->getChild(constrId2ToIndex[i]));
+
             if (sep)
                 group->addChild(sep);
         }
@@ -2552,9 +2578,18 @@ void ViewProviderSketch::updateColor(void)
     else
         crosscolor[1] = CrossColorV;
 
+    SoSwitch *drivingsw = static_cast<SoSwitch *>(edit->constrGroup->getChild(0));
+    SoSwitch *drivensw = static_cast<SoSwitch *>(edit->constrGroup->getChild(1));
+    
+    int numconstrchildren = drivingsw->getNumChildren() + drivensw->getNumChildren();
     // colors of the constraints
-    for (int i=0; i < edit->constrGroup->getNumChildren(); i++) {
-        SoSeparator *s = static_cast<SoSeparator *>(edit->constrGroup->getChild(i));
+    for (int i=0; i < numconstrchildren; i++) {
+        SoSeparator *s;
+        
+        if(constrId2ToIsDriving[i])
+            s = static_cast<SoSeparator *>(drivingsw->getChild(constrId2ToIndex[i]));
+        else
+            s = static_cast<SoSeparator *>(drivensw->getChild(constrId2ToIndex[i]));
 
         // Check Constraint Type
         Sketcher::Constraint* constraint = getSketchObject()->Constraints.getValues()[i];
@@ -2747,6 +2782,9 @@ void ViewProviderSketch::drawConstraintIcons()
     int constrId = 0;
 
     std::vector<constrIconQueueItem> iconQueue;
+    
+    SoSwitch *drivingsw = static_cast<SoSwitch *>(edit->constrGroup->getChild(0));
+    SoSwitch *drivensw = static_cast<SoSwitch *>(edit->constrGroup->getChild(1));
 
     for (std::vector<Sketcher::Constraint *>::const_iterator it=constraints.begin();
          it != constraints.end(); ++it, ++constrId) {
@@ -2785,8 +2823,12 @@ void ViewProviderSketch::drawConstraintIcons()
             break;
         }
 
-        // Find the Constraint Icon SoImage Node
-        SoSeparator *sep = static_cast<SoSeparator *>(edit->constrGroup->getChild(constrId));
+        SoSeparator *sep;
+
+        if(constrId2ToIsDriving[constrId])
+            sep = static_cast<SoSeparator *>(drivingsw->getChild(constrId2ToIndex[constrId]));
+        else
+            sep = static_cast<SoSeparator *>(drivensw->getChild(constrId2ToIndex[constrId]));
 
         SbVec3f absPos;
         // Somewhat hacky - we use SoZoomTranslations for most types of icon,
@@ -3939,14 +3981,20 @@ Restart:
     // check if a new constraint arrived
     if (constrlist.size() != edit->vConstrType.size())
         rebuildConstraintsVisual();
-    assert(int(constrlist.size()) == edit->constrGroup->getNumChildren());
-    assert(int(edit->vConstrType.size()) == edit->constrGroup->getNumChildren());
+    
+    SoSwitch *drivingsw = static_cast<SoSwitch *>(edit->constrGroup->getChild(0));
+    SoSwitch *drivensw = static_cast<SoSwitch *>(edit->constrGroup->getChild(1));
+    
+    int numconstrchildren = drivingsw->getNumChildren() + drivensw->getNumChildren();
+    
+    assert(int(constrlist.size()) == numconstrchildren);
+    assert(int(edit->vConstrType.size()) == numconstrchildren);
     // go through the constraints and update the position
     i = 0;
     for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin();
          it != constrlist.end(); ++it, i++) {
-        // check if the type has changed
-        if ((*it)->Type != edit->vConstrType[i]) {
+        // check if the type or driving status has changed
+        if (((*it)->Type != edit->vConstrType[i]) || ((*it)->isDriving != edit->vConstrIsDriving[i])) {
             // clearing the type vector will force a rebuild of the visual nodes
             edit->vConstrType.clear();
             //TODO: The 'goto' here is unsafe as it can happen that we cause an endless loop (see bug #0001956).
@@ -3954,7 +4002,13 @@ Restart:
         }
         try{//because calculateNormalAtPoint, used in there, can throw
             // root separator for this constraint
-            SoSeparator *sep = static_cast<SoSeparator *>(edit->constrGroup->getChild(i));
+            SoSeparator *sep;
+            
+            if((*it)->isDriving)
+                sep = static_cast<SoSeparator *>(drivingsw->getChild(constrId2ToIndex[i]));
+            else
+                sep = static_cast<SoSeparator *>(drivensw->getChild(constrId2ToIndex[i]));
+                    
             const Constraint *Constr = *it;
 
             // distinquish different constraint types to build up
@@ -3976,7 +4030,7 @@ Restart:
                         Base::Vector3d dir = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Normalize();
                         Base::Vector3d norm(-dir.y,dir.x,0);
 
-                        Base::Vector3d relpos = seekConstraintPosition(midpos, norm, dir, 2.5, edit->constrGroup->getChild(i));
+                        Base::Vector3d relpos = seekConstraintPosition(midpos, norm, dir, 2.5, sep);
 
                         static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos.x, midpos.y, zConstr); //Absolute Reference
 
@@ -4071,12 +4125,12 @@ Restart:
 
                         }
 
-                        Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
+                        Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, sep);
                         static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
                         static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                         if (twoIcons) {
-                            Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
+                            Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, sep);
 
                             Base::Vector3d secondPos = midpos2 - midpos1;
                             static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr);
@@ -4260,8 +4314,8 @@ Restart:
                             norm2 = Base::Vector3d(-dir2.y,dir2.x,0.);
                         }
 
-                        Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
-                        Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
+                        Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, sep);
+                        Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, sep);
 
                         static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
 
@@ -4384,7 +4438,7 @@ Restart:
                             norm.Normalize();
                             Base::Vector3d dir = norm; dir.RotateZ(-M_PI/2.0);
 
-                            relPos = seekConstraintPosition(pos, norm, dir, 2.5, edit->constrGroup->getChild(i));
+                            relPos = seekConstraintPosition(pos, norm, dir, 2.5, sep);
                             static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(pos.x, pos.y, zConstr); //Absolute Reference
                             static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relPos.x, relPos.y, 0);
                         }
@@ -4405,8 +4459,8 @@ Restart:
                                 Base::Vector3d norm1 = Base::Vector3d(-dir1.y,dir1.x,0.f);
                                 Base::Vector3d norm2 = Base::Vector3d(-dir2.y,dir2.x,0.f);
 
-                                Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
-                                Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
+                                Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, sep);
+                                Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, sep);
 
                                 static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
 
@@ -4731,11 +4785,29 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
     // clean up
     edit->constrGroup->removeAllChildren();
     edit->vConstrType.clear();
+    edit->vConstrIsDriving.clear();
+    constrId2ToIsDriving.clear();
+    constrId2ToIndex.clear();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     int fontSize = hGrp->GetInt("EditSketcherFontSize", 17);
+    
+    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    
+    SoSwitch *drivingsw = new SoSwitch();
+    SoSwitch *drivensw = new SoSwitch();
+    
+    drivingsw->whichChild = hGrpp->GetBool("DrivingConstraintsVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
+    drivensw->whichChild = hGrpp->GetBool("DrivenConstraintsVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
+    
+    drivingsw->ref();
+    drivensw->ref();
+    
+    int constrid = 0;
+    int drivingindex = 0;
+    int drivenindex = 0;
 
-    for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin(); it != constrlist.end(); ++it) {
+    for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin(); it != constrlist.end(); ++it,constrid++) {
         // root separator for one constraint
         SoSeparator *sep = new SoSeparator();
         sep->ref();
@@ -4776,8 +4848,22 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 anno->addChild(text);
                 // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(text);
-                edit->constrGroup->addChild(anno);
+
+                if((*it)->isDriving) {
+                    drivingsw->addChild(anno);
+                    constrId2ToIsDriving.insert(std::make_pair(constrid, true));
+                    constrId2ToIndex.insert(std::make_pair(constrid, drivingindex));
+                    drivingindex++;                    
+                }
+                else {
+                    drivensw->addChild(anno);
+                    constrId2ToIsDriving.insert(std::make_pair(constrid, false));
+                    constrId2ToIndex.insert(std::make_pair(constrid, drivenindex));
+                    drivenindex++;                    
+                }
+                
                 edit->vConstrType.push_back((*it)->Type);
+                edit->vConstrIsDriving.push_back((*it)->isDriving);
                 // nodes not needed
                 sep->unref();
                 mat->unref();
@@ -4798,10 +4884,12 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
 
                 // remember the type of this constraint node
                 edit->vConstrType.push_back((*it)->Type);
+                edit->vConstrIsDriving.push_back((*it)->isDriving);
             }
             break;
             case Coincident: // no visual for coincident so far
                 edit->vConstrType.push_back(Coincident);
+                edit->vConstrIsDriving.push_back((*it)->isDriving);
                 break;
             case Parallel:
             case Perpendicular:
@@ -4824,6 +4912,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
 
                 // remember the type of this constraint node
                 edit->vConstrType.push_back((*it)->Type);
+                edit->vConstrIsDriving.push_back((*it)->isDriving);
             }
             break;
             case PointOnObject:
@@ -4854,6 +4943,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 }
 
                 edit->vConstrType.push_back((*it)->Type);
+                edit->vConstrIsDriving.push_back((*it)->isDriving);
             }
             break;
             case Symmetric:
@@ -4873,22 +4963,44 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 sep->addChild(new SoInfo());
 
                 edit->vConstrType.push_back((*it)->Type);
+                edit->vConstrIsDriving.push_back((*it)->isDriving);
             }
             break;
             case InternalAlignment:
             {
                 edit->vConstrType.push_back((*it)->Type);
+                edit->vConstrIsDriving.push_back((*it)->isDriving);
             }
             break;
             default:
                 edit->vConstrType.push_back((*it)->Type);
+                edit->vConstrIsDriving.push_back((*it)->isDriving);
         }
 
-        edit->constrGroup->addChild(sep);
+        if((*it)->isDriving) {
+            drivingsw->addChild(sep);
+            constrId2ToIsDriving.insert(std::make_pair(constrid, true));
+            constrId2ToIndex.insert(std::make_pair(constrid, drivingindex));
+            drivingindex++;
+        }
+        else {
+            drivensw->addChild(sep);
+            constrId2ToIsDriving.insert(std::make_pair(constrid, false));
+            constrId2ToIndex.insert(std::make_pair(constrid, drivenindex));
+            drivenindex++;
+        }
+        
+        
         // decrement ref counter again
         sep->unref();
         mat->unref();
     }
+    edit->constrGroup->addChild(drivingsw);
+    edit->constrGroup->addChild(drivensw);
+    
+    drivingsw->unref();
+    drivensw->unref();
+    
 }
 
 void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
