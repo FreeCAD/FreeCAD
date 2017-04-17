@@ -212,10 +212,6 @@ void CmdPartDesignBody::activated(int iMsg)
     // Make the "Create sketch" prompt appear in the task panel
     doCommand(Gui,"Gui.Selection.clearSelection()");
     doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", bodyName.c_str());
-    if (actPart) {
-        doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
-                 actPart->getNameInDocument(), bodyName.c_str());
-    }
 
     // The method 'SoCamera::viewBoundingBox' is still declared as protected in Coin3d versions
     // older than 4.0.
@@ -242,7 +238,7 @@ void CmdPartDesignBody::activated(int iMsg)
 
 bool CmdPartDesignBody::isActive(void)
 {
-    return hasActiveDocument() && !PartDesignGui::isLegacyWorkflow ( getDocument () );
+    return hasActiveDocument() && !PartDesignGui::isLegacyWorkflow ( getDocument () ) && (PartDesign::Body::activeBody() == nullptr);
 }
 
 //===========================================================================
@@ -566,6 +562,7 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
     openCommand("Duplicate a PartDesign object");
     doCommand(Doc,"FreeCADGui.runCommand('Std_DuplicateSelection')");
 
+    //FIXME: make Std_DuplicateSelection do the container management (involved!, skipping now)
     if (pcActiveBody) {
         // Find the features that were added
         std::vector<App::DocumentObject*> afterFeatures = getDocument()->getObjects();
