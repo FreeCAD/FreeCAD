@@ -153,10 +153,7 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
                     svp->setHighlightedEdges(colors);
                 }
                 else {
-                    std::vector<App::Color> colors;
-                    colors.push_back(svp->LineColor.getValue());
-                    svp->setHighlightedEdges(colors);
-                    //svp->unsetHighlightedEdges();
+                    svp->unsetHighlightedEdges();
                 }
             }
         }
