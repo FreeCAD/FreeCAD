@@ -64,6 +64,7 @@ public:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     QIcon getIcon(void) const;
+    void highlightReferences(bool on);
 };
 
 class SurfaceFilling : public QWidget,
@@ -87,6 +88,7 @@ public:
     ~SurfaceFilling();
 
     void open();
+    void checkOpenCommand();
     bool accept();
     bool reject();
     void setEditedObject(Surface::GeomFillSurface* obj);
@@ -107,6 +109,7 @@ private Q_SLOTS:
     void on_buttonEdgeAdd_clicked();
     void on_buttonEdgeRemove_clicked();
     void onDeleteEdge(void);
+    void clearSelection();
 };
 
 class TaskSurfaceFilling : public Gui::TaskView::TaskDialog
