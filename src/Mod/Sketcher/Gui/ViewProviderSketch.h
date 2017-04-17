@@ -306,6 +306,10 @@ protected:
         /// Angle to rotate an icon
         double iconRotation;
     };
+    
+    // Mapping of constrId to driving, driven and the index therein
+    std::map<int, bool> constrId2ToIsDriving;
+    std::map<int, int> constrId2ToIndex;
 
     /// Internal type used for drawing constraint icons
     typedef std::vector<constrIconQueueItem> IconQueue;
