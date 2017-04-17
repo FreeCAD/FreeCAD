@@ -465,3 +465,13 @@ PyObject *Body::getPyObject(void)
     }
     return Py::new_reference_to(PythonObject);
 }
+
+
+PartDesign::Body* PartDesign::Body::activeBody()
+{
+    auto ac = App::GetApplication().getActiveContainer();
+    if(ac && ac->isDerivedFrom(Body::getClassTypeId()))
+        return static_cast<Body*>(ac);
+    else
+        return nullptr;
+}

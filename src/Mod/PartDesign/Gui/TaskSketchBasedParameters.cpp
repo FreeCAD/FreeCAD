@@ -139,7 +139,7 @@ const QByteArray TaskSketchBasedParameters::onFaceName(const QString& text)
     if (obj == NULL)
         return QByteArray();
 
-    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    PartDesign::Body* activeBody = PartDesign::Body::findBodyOf(vp->getObject());
     if (!activeBody)
         return QByteArray();
 
