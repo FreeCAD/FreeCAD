@@ -121,6 +121,11 @@ public:
      * If non-null, object is either a DocumentObject, or Document.
      */
     boost::signal<void (PropertyContainer* /*newContainer*/, PropertyContainer* /*oldContainer*/)> signalActiveContainer;
+    /**
+     * @brief signalDocActiveContainer: re-emit Document::signalActiveContainer. For simplifying Py observer code.
+     * Fires whenever ActiveContainer of any document changes.
+     */
+    boost::signal<void (Document* /*doc*/, PropertyContainer* /*newContainer*/, PropertyContainer* /*oldContainer*/)> signalDocActiveContainer;
     /// signal on saving Document
     boost::signal<void (const Document&)> signalSaveDocument;
     /// signal on starting to restore Document
