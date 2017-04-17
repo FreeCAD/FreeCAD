@@ -709,7 +709,8 @@ void ViewProviderPartExt::setHighlightedEdges(const std::vector<App::Color>& col
 {
     int size = static_cast<int>(colors.size());
     if (size > 1) {
-        pcLineBind->value = SoMaterialBinding::PER_PART;
+        // Although indexed lineset is used the material binding must be PER_FACE!
+        pcLineBind->value = SoMaterialBinding::PER_FACE;
         const int32_t* cindices = this->lineset->coordIndex.getValues(0);
         int numindices = this->lineset->coordIndex.getNum();
         pcLineMaterial->diffuseColor.setNum(size);
@@ -735,6 +736,7 @@ void ViewProviderPartExt::setHighlightedEdges(const std::vector<App::Color>& col
 
 void ViewProviderPartExt::unsetHighlightedEdges()
 {
+    pcLineBind->value = SoMaterialBinding::OVERALL;
     LineMaterial.touch();
 }
 
