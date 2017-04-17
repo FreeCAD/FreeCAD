@@ -1000,8 +1000,18 @@ void StdCmdDuplicateSelection::activated(int iMsg)
         // restore objects from file and add to active document
         Base::ifstream str(fi, std::ios::in | std::ios::binary);
         MergeDocuments mimeView(doc);
-        mimeView.importObjects(str);
+        auto copies = mimeView.importObjects(str);
         str.close();
+
+        //add copies to active container
+        auto ac = dynamic_cast<App::DocumentObject*>(App::GetApplication().getActiveContainer());
+        if (ac){
+            App::GroupExtension* ge = ac->getExtensionByType<App::GroupExtension>();
+            for (App::DocumentObject* obj: copies){
+                ge->adoptObject(obj);
+            }
+        }
+
         doc->commitTransaction();
     }
     fi.deleteFile();
