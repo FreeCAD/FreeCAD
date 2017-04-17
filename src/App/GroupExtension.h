@@ -50,9 +50,19 @@ public:
      * append it to this group as well.
      */
     virtual DocumentObject *newObject(const char* sType, const char* pObjectName);
-    /* Adds the object \a obj to this group.
+
+    /** Adds the object \a obj to this group. If the object is already in another group, it is withdrawn first.
      */
     virtual void addObject(DocumentObject* obj);
+
+    /**
+     * @brief adoptObject: addos object to this group if it isn't in any other
+     * group. Otherwise does nothing. This is useful for adding lists of
+     * objects with internal container relationships.
+     * @return returns true if object was adopted, false otherwise. (if re-adopting an own child, returns true too).
+     */
+    virtual bool adoptObject(DocumentObject* obj);
+
     /*override this function if you want only special objects
      */
     virtual bool allowObject(DocumentObject* ) {return true;};
