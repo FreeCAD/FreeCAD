@@ -287,6 +287,9 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
 App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::string sub, bool independent) {
     
     App::DocumentObject* copy = nullptr;
+    // Check for null to avoid segfault
+    if (!obj)
+        return copy;
     if( independent &&
         (obj->isDerivedFrom(Sketcher::SketchObject::getClassTypeId()) ||
         obj->isDerivedFrom(PartDesign::FeaturePrimitive::getClassTypeId()))) {
