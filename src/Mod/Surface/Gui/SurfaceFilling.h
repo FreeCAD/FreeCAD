@@ -132,7 +132,6 @@ public:
 private:
     SurfaceFilling* widget;
     Gui::TaskView::TaskBox* taskbox;
-    ViewProviderGeomFillSurface* view;
 };
 
 } //namespace Surface
