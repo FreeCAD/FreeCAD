@@ -176,6 +176,7 @@ SurfaceFilling::SurfaceFilling(ViewProviderGeomFillSurface* vp, Surface::GeomFil
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
+    action->setShortcut(QString::fromLatin1("Del"));
     ui->listWidget->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
     ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
