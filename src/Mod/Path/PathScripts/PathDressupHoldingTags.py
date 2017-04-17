@@ -711,6 +711,7 @@ class ObjectDressup:
 
     def __init__(self, obj):
         self.obj = obj
+        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
         obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "The base path to modify"))
         obj.addProperty("App::PropertyLength", "Width", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Width of tags."))
         obj.addProperty("App::PropertyLength", "Height", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Height of tags."))
@@ -921,7 +922,7 @@ class ObjectDressup:
         #         self.toolRadius = 5
         #     else:
         #         self.toolRadius = tool.Diameter / 2
-        toolLoad = obj.Base.ToolController
+        toolLoad = obj.ToolController
         if toolLoad is None or toolLoad.ToolNumber == 0:
             PathLog.error(translate("No Tool Controller is selected. We need a tool to build a Path\n"))
             #return
@@ -1432,6 +1433,7 @@ class CommandPathDressupHoldingTags:
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
         FreeCADGui.doCommand('dbo.setup(obj, True)')
+        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
