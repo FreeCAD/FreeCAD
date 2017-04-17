@@ -25,6 +25,9 @@
 #include <QAction>
 #include <QMenu>
 #include <QMessageBox>
+#include <QTimer>
+#include <TopExp.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
@@ -34,6 +37,7 @@
 #include <Base/Console.h>
 #include <Gui/Control.h>
 #include <Gui/BitmapFactory.h>
+#include <Mod/Part/Gui/ViewProvider.h>
 
 #include "SurfaceFilling.h"
 #include "ui_SurfaceFilling.h"
@@ -124,6 +128,41 @@ QIcon ViewProviderGeomFillSurface::getIcon(void) const
     return Gui::BitmapFactory().pixmap("BSplineSurf");
 }
 
+void ViewProviderGeomFillSurface::highlightReferences(bool on)
+{
+    Surface::GeomFillSurface* surface = static_cast<Surface::GeomFillSurface*>(getObject());
+    auto bounds = surface->BoundaryList.getSubListValues();
+    for (auto it : bounds) {
+        Part::Feature* base = dynamic_cast<Part::Feature*>(it.first);
+        if (base) {
+            PartGui::ViewProviderPartExt* svp = dynamic_cast<PartGui::ViewProviderPartExt*>(
+                        Gui::Application::Instance->getViewProvider(base));
+            if (svp) {
+                if (on) {
+                    std::vector<App::Color> colors;
+                    TopTools_IndexedMapOfShape eMap;
+                    TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
+                    colors.resize(eMap.Extent(), svp->LineColor.getValue());
+
+                    for (auto jt : it.second) {
+                        std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
+                        assert (idx >= 0 && idx < colors.size());
+                        colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                    }
+
+                    svp->setHighlightedEdges(colors);
+                }
+                else {
+                    std::vector<App::Color> colors;
+                    colors.push_back(svp->LineColor.getValue());
+                    svp->setHighlightedEdges(colors);
+                    //svp->unsetHighlightedEdges();
+                }
+            }
+        }
+    }
+}
+
 // ----------------------------------------------------------------------------
 
 SurfaceFilling::SurfaceFilling(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj)
@@ -208,6 +247,18 @@ void SurfaceFilling::changeEvent(QEvent *e)
 
 void SurfaceFilling::open()
 {
+    checkOpenCommand();
+    this->vp->highlightReferences(true);
+    Gui::Selection().clearSelection();
+}
+
+void SurfaceFilling::clearSelection()
+{
+    Gui::Selection().clearSelection();
+}
+
+void SurfaceFilling::checkOpenCommand()
+{
     if (checkCommand && !Gui::Command::hasPendingCommand()) {
         std::string Msg("Edit ");
         Msg += editedObject->Label.getValue();
@@ -228,6 +279,7 @@ void SurfaceFilling::slotRedoDocument(const Gui::Document&)
 
 bool SurfaceFilling::accept()
 {
+    this->vp->highlightReferences(false);
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
 
@@ -261,6 +313,7 @@ bool SurfaceFilling::accept()
 
 bool SurfaceFilling::reject()
 {
+    this->vp->highlightReferences(false);
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
 
@@ -289,7 +342,7 @@ void SurfaceFilling::changeFillType(GeomFill_FillingStyle fillType)
 {
     GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
     if (curtype != fillType) {
-        open();
+        checkOpenCommand();
         editedObject->FillType.setValue(static_cast<long>(fillType));
         editedObject->recomputeFeature();
         if (!editedObject->isValid()) {
@@ -316,7 +369,7 @@ void SurfaceFilling::onSelectionChanged(const Gui::SelectionChanges& msg)
         return;
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        open();
+        checkOpenCommand();
         if (selectionMode == Append) {
             QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
             ui->listWidget->addItem(item);
@@ -338,6 +391,7 @@ void SurfaceFilling::onSelectionChanged(const Gui::SelectionChanges& msg)
             auto element = editedObject->BoundaryList.getSubValues();
             element.push_back(msg.pSubName);
             editedObject->BoundaryList.setValues(objects, element);
+            this->vp->highlightReferences(true);
         }
         else {
             Gui::SelectionObject sel(msg);
@@ -353,6 +407,7 @@ void SurfaceFilling::onSelectionChanged(const Gui::SelectionChanges& msg)
                 }
             }
 
+            this->vp->highlightReferences(false);
             App::DocumentObject* obj = sel.getObject();
             std::string sub = msg.pSubName;
             auto objects = editedObject->BoundaryList.getValues();
@@ -367,9 +422,11 @@ void SurfaceFilling::onSelectionChanged(const Gui::SelectionChanges& msg)
                     break;
                 }
             }
+            this->vp->highlightReferences(true);
         }
 
         editedObject->recomputeFeature();
+        QTimer::singleShot(50, this, SLOT(clearSelection()));
     }
 }
 
@@ -378,7 +435,7 @@ void SurfaceFilling::onDeleteEdge()
     int row = ui->listWidget->currentRow();
     QListWidgetItem* item = ui->listWidget->item(row);
     if (item) {
-        open();
+        checkOpenCommand();
         QList<QVariant> data;
         data = item->data(Qt::UserRole).toList();
         ui->listWidget->takeItem(row);
@@ -391,6 +448,7 @@ void SurfaceFilling::onDeleteEdge()
         auto element = editedObject->BoundaryList.getSubValues();
         auto it = objects.begin();
         auto jt = element.begin();
+        this->vp->highlightReferences(false);
         for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
             if (*it == obj && *jt == sub) {
                 objects.erase(it);
@@ -399,6 +457,7 @@ void SurfaceFilling::onDeleteEdge()
                 break;
             }
         }
+        this->vp->highlightReferences(true);
     }
 }
 
