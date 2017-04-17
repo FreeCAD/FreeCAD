@@ -2462,7 +2462,7 @@ void ViewProviderSketch::updateColor(void)
     // 1->Normal Geometry, 2->Construction, 3->External
     int topid = hGrpp->GetInt("TopRenderGeometryId",1);
     int midid = hGrpp->GetInt("MidRenderGeometryId",2);
-    int lowid = hGrpp->GetInt("LowRenderGeometryId",3);
+    //int lowid = hGrpp->GetInt("LowRenderGeometryId",3);
     
     float zNormLine = (topid==1?zHighLines:midid==1?zMidLines:zLowLines);
     float zConstrLine = (topid==2?zHighLines:midid==2?zMidLines:zLowLines);
