@@ -78,6 +78,19 @@ void GroupExtension::addObject(DocumentObject* obj)
     }
 }
 
+bool GroupExtension::adoptObject(DocumentObject* obj)
+{
+    auto *group = App::GroupExtension::getGroupOfObject(obj);
+    if (group == getExtendedObject()){
+        return true;
+    } else if (group){
+        return false;
+    } else {
+        addObject(obj);
+        return true;
+    }
+}
+
 void GroupExtension::removeObject(DocumentObject* obj)
 {
     const std::vector<DocumentObject*> & grp = Group.getValues();
