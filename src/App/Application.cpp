@@ -948,7 +948,7 @@ void Application::slotActivatedObject(const App::DocumentObject&O)
 
 void Application::slotActivatedContainer(Document* doc, PropertyContainer* newContainer, PropertyContainer* oldContainer)
 {
-
+    signalDocActiveContainer(doc, newContainer, oldContainer);
     if (doc == this->getActiveDocument()){
         this->updatePyActiveObjects();
         this->signalActiveContainer(newContainer, oldContainer);
