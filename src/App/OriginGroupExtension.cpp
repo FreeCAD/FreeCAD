@@ -112,7 +112,7 @@ void OriginGroupExtension::onExtendedSetupObject () {
 
     std::string objName = std::string ( getExtendedObject()->getNameInDocument()).append ( "Origin" );
 
-    App::DocumentObject *originObj = doc->addObject ( "App::Origin", objName.c_str () );
+    App::DocumentObject *originObj = doc->newObject( "App::Origin", objName.c_str () );
 
     assert ( originObj && originObj->isDerivedFrom ( App::Origin::getClassTypeId () ) );
     Origin.setValue (originObj);
