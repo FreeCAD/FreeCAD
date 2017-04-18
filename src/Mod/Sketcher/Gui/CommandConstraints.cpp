@@ -1634,10 +1634,10 @@ void CmdSketcherConstrainLock::activated(int iMsg)
         openCommand("add fixed constraint");
         Gui::Command::doCommand(
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                                selection[0].getFeatName(),GeoId,PosId,pnt.x);
+                                selection[0].getFeatName(),GeoId[0],PosId[0],pnt.x);
         Gui::Command::doCommand(
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                                selection[0].getFeatName(),GeoId,PosId,pnt.y);
+                                selection[0].getFeatName(),GeoId[0],PosId[0],pnt.y);
 
         lastconstraintindex+=2;
 
