@@ -168,11 +168,22 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
         if Draft.getType(o) == "Window":
             windows.append(o)
     objs = nonspaces
-    svg = ''
+
+    archUserParameters = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    scaledLineWidth = linewidth/scale
+    svgLineWidth = str(scaledLineWidth) + 'px'
+    st = archUserParameters.GetFloat("CutLineThickness",2)
+    svgCutLineWidth = str(scaledLineWidth * st) + 'px'
+    yt = archUserParameters.GetFloat("SymbolLineThickness",0.6)
+    svgSymbolLineWidth = str(linewidth * yt)
+    hiddenPattern = archUserParameters.GetString("archHiddenPattern","30,10")
+    svgHiddenPattern = hiddenPattern.replace(" ","")
     fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
     fillpattern += ' x="0" y="0" width="10" height="10">'
     fillpattern += '<g>'
     fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
+    svg = ''
+
     # generating SVG
     if renderMode in ["Solid",1]:
         # render using the Arch Vector Renderer
@@ -188,11 +199,12 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
         else:
             render.cut(section.Shape)
         svg += '<g transform="scale(1,-1)">\n'
-        svg += render.getViewSVG(linewidth="LWPlaceholder")
+        svg += render.getViewSVG(linewidth=svgLineWidth)
         svg += fillpattern
-        svg += render.getSectionSVG(linewidth="SWPlaceholder",fillpattern="sectionfill")
+        svg += render.getSectionSVG(linewidth=svgCutLineWidth,
+                                    fillpattern="sectionfill")
         if showHidden:
-            svg += render.getHiddenSVG(linewidth="LWPlaceholder")
+            svg += render.getHiddenSVG(linewidth=svgLineWidth)
         svg += '</g>\n'
         # print(render.info())
 
@@ -203,61 +215,51 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
         if shapes:
             baseshape = Part.makeCompound(shapes)
             style = {'stroke':       Draft.getrgb(lineColor),
-                     'stroke-width': 'LWPlaceholder'}
-            svgf = Drawing.projectToSVG(
+                     'stroke-width': svgLineWidth}
+            svg = Drawing.projectToSVG(
                 baseshape, direction,
                 hStyle=style, h0Style=style, h1Style=style,
                 vStyle=style, v0Style=style, v1Style=style)
-            svg += svgf
         if hshapes:
             hshapes = Part.makeCompound(hshapes)
             style = {'stroke':           Draft.getrgb(lineColor),
-                     'stroke-width':     'LWPlaceholder',
-                     'stroke-dasharray': 'DAPlaceholder'}
-            svgh = Drawing.projectToSVG(
+                     'stroke-width':     svgLineWidth,
+                     'stroke-dasharray': svgHiddenPattern}
+            svg = Drawing.projectToSVG(
                 hshapes, direction,
                 hStyle=style, h0Style=style, h1Style=style,
                 vStyle=style, v0Style=style, v1Style=style)
-            svg += svgh
         if sshapes:
-            svgs = ""
             if showFill:
-                #svgs += fillpattern
-                svgs += '<g transform="rotate(180)">\n'
+                #svg += fillpattern
+                svg += '<g transform="rotate(180)">\n'
                 for s in sshapes:
                     if s.Edges:
-                        #f = Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
+                        #svg = Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
                         # temporarily disabling fill patterns
-                        f = Draft.getSVG(s, direction=direction.negative(), linewidth=0,
-                                         fillstyle=Draft.getrgb(fillColor),
-                                         color=lineColor)
-                        svgs += f
-                svgs += "</g>\n"
+                        svg = Draft.getSVG(s, direction=direction.negative(),
+                                           linewidth=0,
+                                           fillstyle=Draft.getrgb(fillColor),
+                                           color=lineColor)
+                svg += "</g>\n"
             sshapes = Part.makeCompound(sshapes)
             style = {'stroke':       Draft.getrgb(lineColor),
-                     'stroke-width': 'SWPlaceholder'}
-            svgs += Drawing.projectToSVG(
+                     'stroke-width': svgCutLineWidth}
+            svg += Drawing.projectToSVG(
                 sshapes, direction,
                 hStyle=style, h0Style=style, h1Style=style,
                 vStyle=style, v0Style=style, v1Style=style)
-            svg += svgs
-    scaledlinewidth = linewidth/scale
-    st = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("CutLineThickness",2)
-    yt = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("SymbolLineThickness",0.6)
-    da = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("archHiddenPattern","30,10")
-    da = da.replace(" ","")
-    svg = svg.replace('LWPlaceholder', str(scaledlinewidth) + 'px')
-    svg = svg.replace('SWPlaceholder', str(scaledlinewidth*st) + 'px')
-    svg = svg.replace('DAPlaceholder', str(da))
+
     if drafts:
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for d in drafts:
-            svg += Draft.getSVG(d, scale=scale, linewidth=linewidth*yt, fontsize=fontsize,
-                                direction=direction, color=lineColor, techdraw=techdraw,
-                                rotation=rotation)
+            svg += Draft.getSVG(d, scale=scale, linewidth=symbolLineWidth,
+                                fontsize=fontsize, direction=direction, color=lineColor,
+                                techdraw=techdraw, rotation=rotation)
         if not techdraw:
             svg += '</g>'
+
     # filter out spaces not cut by the section plane
     if cutface and spaces:
         spaces = [s for s in spaces if s.Shape.BoundBox.intersect(cutface.BoundBox)]
@@ -265,11 +267,12 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for s in spaces:
-            svg += Draft.getSVG(s, scale=scale, linewidth=linewidth*yt, fontsize=fontsize,
-                                direction=direction, color=lineColor, techdraw=techdraw,
-                                rotation=rotation)
+            svg += Draft.getSVG(s, scale=scale, linewidth=symbolLineWidth,
+                                fontsize=fontsize, direction=direction, color=lineColor,
+                                techdraw=techdraw, rotation=rotation)
         if not techdraw:
             svg += '</g>'
+
     # add additional edge symbols from windows
     cutwindows = []
     if cutface and windows:
@@ -294,14 +297,13 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
             if not techdraw:
                 svg += '<g transform="scale(1,-1)">'
             for s in sh:
-                svg += Draft.getSVG(s, scale=scale, linewidth=linewidth*yt,
+                svg += Draft.getSVG(s, scale=scale, linewidth=symbolLineWidth,
                                     fontsize=fontsize, fillstyle="none",
                                     direction=direction, color=lineColor,
                                     techdraw=techdraw, rotation=rotation)
             if not techdraw:
                 svg += '</g>'
-            
-    #print "complete node:",svg
+
     return svg
 
 
@@ -603,6 +605,7 @@ class _ArchDrawingView:
         obj.addProperty("App::PropertyBool", "AlwaysOn", "Drawing view",
                         QT_TRANSLATE_NOOP("App::Property","If checked, source objects are displayed regardless of being visible in the 3D model"))
         self.initProperties(obj)
+
         obj.RenderingMode = ["Solid","Wireframe"]
         obj.RenderingMode = "Wireframe"
         obj.LineWidth = 0.35
@@ -613,12 +616,15 @@ class _ArchDrawingView:
 
     def initProperties(self, obj):
         '''Creates and initializes the feature's properties if they do not yet exist.'''
+
         if not hasattr(obj, "LineColor"):
             obj.addProperty("App::PropertyColor", "LineColor", "Drawing view",
-                            QT_TRANSLATE_NOOP("App::Property", "The line color of the projected objects"))
+                            QT_TRANSLATE_NOOP("App::Property",
+                                              "The line color of the projected objects"))
         if not hasattr(obj, "FillColor"):
             obj.addProperty("App::PropertyColor", "FillColor", "Drawing view",
-                            QT_TRANSLATE_NOOP("App::Property", "The color of the cut faces (if turned on)"))
+                            QT_TRANSLATE_NOOP("App::Property",
+                                              "The color of the cut faces (if turned on)"))
             obj.FillColor = (0.8, 0.8, 0.8)
 
     def execute(self, obj):
