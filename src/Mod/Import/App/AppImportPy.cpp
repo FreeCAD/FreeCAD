@@ -127,7 +127,7 @@ private:
                         throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                     }
 
-                    Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                    Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.Reader().WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading STEP file...");
                     pi->Show();
@@ -135,7 +135,7 @@ private:
                     pi->EndScope();
                 }
                 catch (OSD_Exception) {
-                    Handle_Standard_Failure e = Standard_Failure::Caught();
+                    Handle(Standard_Failure) e = Standard_Failure::Caught();
                     Base::Console().Error("%s\n", e->GetMessageString());
                     Base::Console().Message("Try to load STEP file without colors...\n");
 
@@ -160,7 +160,7 @@ private:
                         throw Py::Exception(PyExc_IOError, "cannot read IGES file");
                     }
 
-                    Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                    Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading IGES file...");
                     pi->Show();
@@ -171,7 +171,7 @@ private:
                             ->SetModel(new IGESData_IGESModel);
                 }
                 catch (OSD_Exception) {
-                    Handle_Standard_Failure e = Standard_Failure::Caught();
+                    Handle(Standard_Failure) e = Standard_Failure::Caught();
                     Base::Console().Error("%s\n", e->GetMessageString());
                     Base::Console().Message("Try to load IGES file without colors...\n");
 
@@ -194,7 +194,7 @@ private:
             hApp->Close(hDoc);
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
         }
         catch (const Base::Exception& e) {
@@ -300,7 +300,7 @@ private:
             hApp->Close(hDoc);
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
         }
         catch (const Base::Exception& e) {
@@ -354,7 +354,7 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
                     return 0;
                 }
 
-                Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                 aReader.Reader().WS()->MapReader()->SetProgress(pi);
                 pi->NewScope(100, "Reading STEP file...");
                 pi->Show();
@@ -362,7 +362,7 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
                 pi->EndScope();
             }
             catch (OSD_Exception) {
-                Handle_Standard_Failure e = Standard_Failure::Caught();
+                Handle(Standard_Failure) e = Standard_Failure::Caught();
                 Base::Console().Error("%s\n", e->GetMessageString());
                 Base::Console().Message("Try to load STEP file without colors...\n");
 
@@ -383,7 +383,7 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
                     return 0;
                 }
 
-                Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                 aReader.WS()->MapReader()->SetProgress(pi);
                 pi->NewScope(100, "Reading IGES file...");
                 pi->Show();
@@ -391,7 +391,7 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
                 pi->EndScope();
             }
             catch (OSD_Exception) {
-                Handle_Standard_Failure e = Standard_Failure::Caught();
+                Handle(Standard_Failure) e = Standard_Failure::Caught();
                 Base::Console().Error("%s\n", e->GetMessageString());
                 Base::Console().Message("Try to load IGES file without colors...\n");
 
@@ -410,7 +410,7 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
 
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PyExc_Exception, e->GetMessageString());
         return 0;
     }

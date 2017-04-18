@@ -454,19 +454,16 @@ void TopoShape::read(const char *FileName)
 /*!
  Example code to get the labels for each face in an IGES file.
  \code
-#include <Handle_XSControl_WorkSession.hxx>
-#include <Handle_XSControl_TransferReader.hxx>
 #include <XSControl_WorkSession.hxx>
 #include <XSControl_TransferReader.hxx>
-#include <Handle_IGESData_IGESModel.hxx>
 #include <IGESData_IGESModel.hxx>
 #include <IGESData_IGESEntity.hxx>
 
 IGESControl_Reader aReader;
 ...
 // Gets the labels of all face items if defined in the IGES file
-Handle_XSControl_WorkSession ws = aReader.WS();
-Handle_XSControl_TransferReader tr = ws->TransferReader();
+Handle(XSControl_WorkSession) ws = aReader.WS();
+Handle(XSControl_TransferReader) tr = ws->TransferReader();
 
 std::string name;
 Handle(IGESData_IGESModel) aModel = aReader.IGESModel();
@@ -476,11 +473,11 @@ TopExp_Explorer ex;
 for (ex.Init(this->_Shape, TopAbs_FACE); ex.More(); ex.Next())
 {
     const TopoDS_Face& aFace = TopoDS::Face(ex.Current());
-    Handle_Standard_Transient ent = tr->EntityFromShapeResult(aFace, 1);
+    Handle(Standard_Transient) ent = tr->EntityFromShapeResult(aFace, 1);
     if (!ent.IsNull()) {
         int i = aModel->Number(ent);
         if (i > 0) {
-            Handle_IGESData_IGESEntity ie = aModel->Entity(i);
+            Handle(IGESData_IGESEntity) ie = aModel->Entity(i);
             if (ie->HasShortLabel())
                 name = ie->ShortLabel()->ToCString();
         }
@@ -500,7 +497,7 @@ void TopoShape::importIges(const char *FileName)
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone)
             throw Base::Exception("Error in reading IGES");
 
-        Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
+        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         pi->NewScope(100, "Reading IGES file...");
         pi->Show();
         aReader.WS()->MapReader()->SetProgress(pi);
@@ -525,7 +522,7 @@ void TopoShape::importStep(const char *FileName)
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone)
             throw Base::Exception("Error in reading STEP");
 
-        Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
+        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         aReader.WS()->MapReader()->SetProgress(pi);
         pi->NewScope(100, "Reading STEP file...");
         pi->Show();
@@ -549,7 +546,7 @@ void TopoShape::importBrep(const char *FileName)
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
 #if OCC_VERSION_HEX >= 0x060300
-        Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
+        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         pi->NewScope(100, "Reading BREP file...");
         pi->Show();
         BRepTools::Read(aShape,encodeFilename(FileName).c_str(),aBuilder,pi);
@@ -572,7 +569,7 @@ void TopoShape::importBrep(std::istream& str)
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
 #if OCC_VERSION_HEX >= 0x060300
-        Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
+        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         pi->NewScope(100, "Reading BREP file...");
         pi->Show();
         BRepTools::Read(aShape,str,aBuilder,pi);
@@ -666,9 +663,9 @@ void TopoShape::exportStep(const char *filename) const
         // write step file
         STEPControl_Writer aWriter;
 
-        const Handle_XSControl_TransferWriter& hTransferWriter = aWriter.WS()->TransferWriter();
-        Handle_Transfer_FinderProcess hFinder = hTransferWriter->FinderProcess();
-        Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
+        const Handle(XSControl_TransferWriter)& hTransferWriter = aWriter.WS()->TransferWriter();
+        Handle(Transfer_FinderProcess) hFinder = hTransferWriter->FinderProcess();
+        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         hFinder->SetProgress(pi);
         pi->NewScope(100, "Writing STEP file...");
         pi->Show();
@@ -1174,7 +1171,7 @@ bool TopoShape::analyze(std::ostream& str) const
 
             for (std::vector<TopoDS_Shape>::iterator xp = shapes.begin(); xp != shapes.end(); ++xp) {
                 if (!aChecker.IsValid(*xp)) {
-                    const Handle_BRepCheck_Result& result = aChecker.Result(*xp);
+                    const Handle(BRepCheck_Result)& result = aChecker.Result(*xp);
                     if (result.IsNull())
                         continue;
                     const BRepCheck_ListOfStatus& status = result->StatusOnShape(*xp);
@@ -1648,11 +1645,11 @@ TopoDS_Shape TopoShape::makeTube() const
     BRepAdaptor_Curve path_adapt(path_edge);
     double umin = path_adapt.FirstParameter();
     double umax = path_adapt.LastParameter();
-    Handle_Geom_Curve hPath = path_adapt.Curve().Curve();
+    Handle(Geom_Curve) hPath = path_adapt.Curve().Curve();
 
     // Apply placement of the shape to the curve
     TopLoc_Location loc1 = path_edge.Location();
-    hPath = Handle_Geom_Curve::DownCast(hPath->Transformed(loc1.Transformation()));
+    hPath = Handle(Geom_Curve)::DownCast(hPath->Transformed(loc1.Transformation()));
 
     if (hPath.IsNull())
         Standard_Failure::Raise("Invalid curve in path edge");
@@ -1660,7 +1657,7 @@ TopoDS_Shape TopoShape::makeTube() const
     GeomFill_Pipe mkTube(hPath, radius);
     mkTube.Perform(tol, Standard_False, GeomAbs_C1, BSplCLib::MaxDegree(), 1000);
 
-    const Handle_Geom_Surface& surf = mkTube.Surface();
+    const Handle(Geom_Surface)& surf = mkTube.Surface();
     double u1,u2,v1,v2;
     surf->Bounds(u1,u2,v1,v2);
 
@@ -1675,9 +1672,9 @@ TopoDS_Shape TopoShape::makeTube() const
 static Handle(Law_Function) CreateBsFunction (const Standard_Real theFirst, const Standard_Real theLast, const Standard_Real theRadius)
 {
     (void)theRadius;
-    //Handle_Law_BSpline aBs;
-    //Handle_Law_BSpFunc aFunc = new Law_BSpFunc (aBs, theFirst, theLast);
-    Handle_Law_Constant aFunc = new Law_Constant();
+    //Handle(Law_BSpline) aBs;
+    //Handle(Law_BSpFunc) aFunc = new Law_BSpFunc (aBs, theFirst, theLast);
+    Handle(Law_Constant) aFunc = new Law_Constant();
     aFunc->Set(1, theFirst, theLast);
     return aFunc;
 }
@@ -1728,7 +1725,7 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
     mkSweep.SetTolerance (theTol);
     mkSweep.Build (aSec, GeomFill_Location, theContinuity, theMaxDegree, theMaxSegment);
     if (mkSweep.IsDone()) {
-        Handle_Geom_Surface mySurface = mkSweep.Surface();
+        Handle(Geom_Surface) mySurface = mkSweep.Surface();
         //Standard_Real myError = mkSweep.ErrorOnSurface();
 
         Standard_Real u1,u2,v1,v2;
@@ -1764,11 +1761,11 @@ TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int f
     BRepAdaptor_Curve path_adapt(path_edge);
     double umin = path_adapt.FirstParameter();
     double umax = path_adapt.LastParameter();
-    Handle_Geom_Curve hPath = path_adapt.Curve().Curve();
+    Handle(Geom_Curve) hPath = path_adapt.Curve().Curve();
 
     // Apply placement of the shape to the curve
     TopLoc_Location loc1 = path_edge.Location();
-    hPath = Handle_Geom_Curve::DownCast(hPath->Transformed(loc1.Transformation()));
+    hPath = Handle(Geom_Curve)::DownCast(hPath->Transformed(loc1.Transformation()));
 
     if (hPath.IsNull())
         Standard_Failure::Raise("invalid curve in path edge");
@@ -1776,11 +1773,11 @@ TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int f
     BRepAdaptor_Curve prof_adapt(prof_edge);
     double vmin = prof_adapt.FirstParameter();
     double vmax = prof_adapt.LastParameter();
-    Handle_Geom_Curve hProfile = prof_adapt.Curve().Curve();
+    Handle(Geom_Curve) hProfile = prof_adapt.Curve().Curve();
 
     // Apply placement of the shape to the curve
     TopLoc_Location loc2 = prof_edge.Location();
-    hProfile = Handle_Geom_Curve::DownCast(hProfile->Transformed(loc2.Transformation()));
+    hProfile = Handle(Geom_Curve)::DownCast(hProfile->Transformed(loc2.Transformation()));
 
     if (hProfile.IsNull())
         Standard_Failure::Raise("invalid curve in profile edge");
@@ -1789,7 +1786,7 @@ TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int f
     mkSweep.GenerateParticularCase(Standard_True);
     mkSweep.Perform(tol, Standard_False, GeomAbs_C1, BSplCLib::MaxDegree(), 1000);
 
-    const Handle_Geom_Surface& surf = mkSweep.Surface();
+    const Handle(Geom_Surface)& surf = mkSweep.Surface();
     BRepBuilderAPI_MakeFace mkBuilder(surf, umin, umax, vmin, vmax
 #if OCC_VERSION_HEX >= 0x060502
       , Precision::Confusion()
@@ -1813,7 +1810,7 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
         Standard_Failure::Raise("Pitch and height of helix not compatible");
 
     gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
-    Handle_Geom_Surface surf;
+    Handle(Geom_Surface) surf;
     if (angle < Precision::Confusion()) {
         if (radius < Precision::Confusion())
             Standard_Failure::Raise("Radius of helix too small");
@@ -1873,7 +1870,7 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
         Standard_Failure::Raise("Height of helix too small");
 
     gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
-    Handle_Geom_Surface surf;
+    Handle(Geom_Surface) surf;
     Standard_Boolean isCylinder;
 
     if (angle < Precision::Confusion()) {                                      // Cylindrical helix
@@ -2372,7 +2369,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         std::list<TopoDS_Wire> offsetWires;
         //interestingly, if wires are removed, empty compounds are returned by MakeOffset (as of OCC 7.0.0)
         //so, we just extract all nesting
-        Handle_TopTools_HSequenceOfShape seq = ShapeExtend_Explorer().SeqFromCompound(offsetShape, Standard_True);
+        Handle(TopTools_HSequenceOfShape) seq = ShapeExtend_Explorer().SeqFromCompound(offsetShape, Standard_True);
         TopoDS_Iterator it(offsetShape);
         for(int i = 0; i < seq->Length(); ++i){
             offsetWires.push_back(TopoDS::Wire(seq->Value(i+1)));
@@ -2507,7 +2504,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                 result.Orientation(shapesToProcess[0].Orientation());
 
             ShapeExtend_Explorer xp;
-            Handle_TopTools_HSequenceOfShape result_leaves = xp.SeqFromCompound(result, Standard_True);
+            Handle(TopTools_HSequenceOfShape) result_leaves = xp.SeqFromCompound(result, Standard_True);
             for(int i = 0; i < result_leaves->Length(); ++i)
                 shapesToReturn.push_back(result_leaves->Value(i+1));
         }
@@ -2826,7 +2823,7 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
     Standard_Real x2, y2, z2;
     Standard_Real x3, y3, z3;
 
-    Handle_StlMesh_Mesh aMesh = new StlMesh_Mesh();
+    Handle(StlMesh_Mesh) aMesh = new StlMesh_Mesh();
 #if OCC_VERSION_HEX >= 0x060801
     BRepMesh_IncrementalMesh bMesh(this->_Shape, accuracy);
     StlTransfer::RetrieveMesh(this->_Shape,aMesh);
@@ -3080,7 +3077,7 @@ void TopoShape::getFacesFromSubelement(const Data::Segment* element,
         Standard_Real x2, y2, z2;
         Standard_Real x3, y3, z3;
 
-        Handle_StlMesh_Mesh aMesh = new StlMesh_Mesh();
+        Handle(StlMesh_Mesh) aMesh = new StlMesh_Mesh();
 #if OCC_VERSION_HEX >= 0x060801
         StlTransfer::RetrieveMesh(shape, aMesh);
 #else

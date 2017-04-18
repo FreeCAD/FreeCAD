@@ -78,8 +78,8 @@ void ShapeValidator::checkEdge(const TopoDS_Shape& shape)
     TopLoc_Location heloc; // this will be output
     Standard_Real u0;// contains output
     Standard_Real u1;// contains output
-    Handle_Geom_Curve c_geom = BRep_Tool::Curve(etmp,heloc,u0,u1); //The geometric curve
-    Handle_Geom_BezierCurve bez_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
+    Handle(Geom_Curve) c_geom = BRep_Tool::Curve(etmp,heloc,u0,u1); //The geometric curve
+    Handle(Geom_BezierCurve) bez_geom = Handle(Geom_BezierCurve)::DownCast(c_geom); //Try to get Bezier curve
 
     // if not a Bezier then try to create a B-spline surface from the edges
     if (bez_geom.IsNull()) {
@@ -167,7 +167,7 @@ App::DocumentObjectExecReturn *GeomFillSurface::execute(void)
         return new App::DocumentObjectExecReturn("A curve was not a b-spline and could not be converted into one.");
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 }
@@ -233,7 +233,7 @@ bool GeomFillSurface::getWire(TopoDS_Wire& aWire)
     return validator.isBezier();
 }
 
-void GeomFillSurface::createFace(const Handle_Geom_BoundedSurface &aSurface)
+void GeomFillSurface::createFace(const Handle(Geom_BoundedSurface) &aSurface)
 {
     BRepBuilderAPI_MakeFace aFaceBuilder;
     Standard_Real u1, u2, v1, v2;
@@ -254,7 +254,7 @@ void GeomFillSurface::createFace(const Handle_Geom_BoundedSurface &aSurface)
 
 void GeomFillSurface::createBezierSurface(TopoDS_Wire& aWire)
 {
-    std::vector<Handle_Geom_BezierCurve> crvs;
+    std::vector<Handle(Geom_BezierCurve)> crvs;
     crvs.reserve(4);
 
     Standard_Real u1, u2; // contains output
@@ -262,8 +262,8 @@ void GeomFillSurface::createBezierSurface(TopoDS_Wire& aWire)
     for (; anExp.More(); anExp.Next()) {
         const TopoDS_Edge hedge = TopoDS::Edge (anExp.Current());
         TopLoc_Location heloc; // this will be output
-        Handle_Geom_Curve c_geom = BRep_Tool::Curve(hedge, heloc, u1, u2); //The geometric curve
-        Handle_Geom_BezierCurve b_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
+        Handle(Geom_Curve) c_geom = BRep_Tool::Curve(hedge, heloc, u1, u2); //The geometric curve
+        Handle(Geom_BezierCurve) b_geom = Handle(Geom_BezierCurve)::DownCast(c_geom); //Try to get Bezier curve
 
         if (!b_geom.IsNull()) {
             gp_Trsf transf = heloc.Transformation();
@@ -295,15 +295,15 @@ void GeomFillSurface::createBezierSurface(TopoDS_Wire& aWire)
 
 void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
 {
-    std::vector<Handle_Geom_BSplineCurve> crvs;
+    std::vector<Handle(Geom_BSplineCurve)> crvs;
     crvs.reserve(4);
     Standard_Real u1, u2; // contains output
     TopExp_Explorer anExp (aWire, TopAbs_EDGE);
     for (; anExp.More(); anExp.Next()) {
         const TopoDS_Edge& edge = TopoDS::Edge (anExp.Current());
         TopLoc_Location heloc; // this will be output
-        Handle_Geom_Curve c_geom = BRep_Tool::Curve(edge, heloc, u1, u2); //The geometric curve
-        Handle_Geom_BSplineCurve b_geom = Handle_Geom_BSplineCurve::DownCast(c_geom); //Try to get BSpline curve
+        Handle(Geom_Curve) c_geom = BRep_Tool::Curve(edge, heloc, u1, u2); //The geometric curve
+        Handle(Geom_BSplineCurve) b_geom = Handle(Geom_BSplineCurve)::DownCast(c_geom); //Try to get BSpline curve
 
         if (!b_geom.IsNull()) {
             gp_Trsf transf = heloc.Transformation();
@@ -317,8 +317,8 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
             TopoDS_Edge nurbs = TopoDS::Edge(mkNurbs.Shape());
             // avoid copying
             TopLoc_Location heloc2; // this will be output
-            Handle_Geom_Curve c_geom2 = BRep_Tool::Curve(nurbs, heloc2, u1, u2); //The geometric curve
-            Handle_Geom_BSplineCurve b_geom2 = Handle_Geom_BSplineCurve::DownCast(c_geom2); //Try to get BSpline curve
+            Handle(Geom_Curve) c_geom2 = BRep_Tool::Curve(nurbs, heloc2, u1, u2); //The geometric curve
+            Handle(Geom_BSplineCurve) b_geom2 = Handle(Geom_BSplineCurve)::DownCast(c_geom2); //Try to get BSpline curve
 
             if (!b_geom2.IsNull()) {
                 gp_Trsf transf = heloc2.Transformation();
@@ -329,7 +329,7 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
             else {
                 // BRepBuilderAPI_NurbsConvert failed, try ShapeConstruct_Curve now
                 ShapeConstruct_Curve scc;
-                Handle_Geom_BSplineCurve spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
+                Handle(Geom_BSplineCurve) spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
                 if (spline.IsNull())
                     Standard_Failure::Raise("A curve was not a b-spline and could not be converted into one.");
                 gp_Trsf transf = heloc2.Transformation();

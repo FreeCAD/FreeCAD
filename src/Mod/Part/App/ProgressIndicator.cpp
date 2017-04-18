@@ -34,7 +34,7 @@ using namespace Part;
   #include <Transfer_TransientProcess.hxx>
 
   STEPControl_Reader aReader;
-  Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
+  Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
 
   pi->NewScope(20, "Loading STEP file...");
   pi->Show();

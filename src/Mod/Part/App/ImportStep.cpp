@@ -105,7 +105,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
         throw Base::Exception("Cannot open STEP file");
     }
 
-    Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
+    Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
     aReader.WS()->MapReader()->SetProgress(pi);
     pi->NewScope(100, "Reading STEP file...");
     pi->Show();
@@ -126,8 +126,8 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
     }
     else {
         //Handle(StepData_StepModel) Model = aReader.StepModel();
-        //Handle_XSControl_WorkSession ws = aReader.WS();
-        //Handle_XSControl_TransferReader tr = ws->TransferReader();
+        //Handle(XSControl_WorkSession) ws = aReader.WS();
+        //Handle(XSControl_TransferReader) tr = ws->TransferReader();
 
         std::map<int, Quantity_Color> hash_col;
         //ReadColors(aReader.WS(), hash_col);
@@ -145,7 +145,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
                 const TopoDS_Solid& aSolid = TopoDS::Solid(ex.Current());
 
                 std::string name = fi.fileNamePure();
-                //Handle_Standard_Transient ent = tr->EntityFromShapeResult(aSolid, 3);
+                //Handle(Standard_Transient) ent = tr->EntityFromShapeResult(aSolid, 3);
                 //if (!ent.IsNull()) {
                 //    name += ws->Model()->StringLabel(ent)->ToCString();
                 //}
@@ -181,7 +181,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
                 const TopoDS_Shell& aShell = TopoDS::Shell(ex.Current());
 
                 std::string name = fi.fileNamePure();
-                //Handle_Standard_Transient ent = tr->EntityFromShapeResult(aShell, 3);
+                //Handle(Standard_Transient) ent = tr->EntityFromShapeResult(aShell, 3);
                 //if (!ent.IsNull()) {
                 //    name += ws->Model()->StringLabel(ent)->ToCString();
                 //}
@@ -275,7 +275,7 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
     // parse and search for color attributes
     Standard_Integer nb = Styles.NbStyles();
     for (Standard_Integer i=1; i <= nb; i++) {
-        Handle_StepVisual_StyledItem style = Styles.Style (i);
+        Handle(StepVisual_StyledItem) style = Styles.Style (i);
         if (style.IsNull()) continue;
 
         Standard_Boolean IsVisible = Standard_True;
@@ -304,16 +304,16 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
         // take shape with real location.
         while (IsComponent) {
             // take SR of NAUO
-            Handle_StepShape_ShapeRepresentation aSR;
+            Handle(StepShape_ShapeRepresentation) aSR;
             findStyledSR(style, aSR);
             // search for SR along model
             if (aSR.IsNull())
                 break;
 //          Handle(Interface_InterfaceModel) Model = WS->Model();
-            Handle_XSControl_TransferReader TR = WS->TransferReader();
-            Handle_Transfer_TransientProcess TP = TR->TransientProcess();
+            Handle(XSControl_TransferReader) TR = WS->TransferReader();
+            Handle(Transfer_TransientProcess) TP = TR->TransientProcess();
             Interface_EntityIterator subs = WS->HGraph()->Graph().Sharings( aSR );
-            Handle_StepShape_ShapeDefinitionRepresentation aSDR;
+            Handle(StepShape_ShapeDefinitionRepresentation) aSDR;
             for (subs.Start(); subs.More(); subs.Next()) {
                 aSDR = Handle(StepShape_ShapeDefinitionRepresentation)::DownCast(subs.Value());
                 if (aSDR.IsNull())

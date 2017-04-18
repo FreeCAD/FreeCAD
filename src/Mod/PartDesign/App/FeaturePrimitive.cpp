@@ -143,7 +143,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -202,7 +202,7 @@ App::DocumentObjectExecReturn* Box::execute(void)
         return FeaturePrimitive::execute(mkBox.Shape());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 }
@@ -250,7 +250,7 @@ App::DocumentObjectExecReturn* Cylinder::execute(void)
         return FeaturePrimitive::execute(mkCylr.Shape());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -300,7 +300,7 @@ App::DocumentObjectExecReturn* Sphere::execute(void)
         return FeaturePrimitive::execute(mkSphere.Shape());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -356,7 +356,7 @@ App::DocumentObjectExecReturn* Cone::execute(void)
         return FeaturePrimitive::execute(mkCone.Shape());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -438,7 +438,7 @@ App::DocumentObjectExecReturn* Ellipsoid::execute(void)
         return FeaturePrimitive::execute(mkTrsf.Shape());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -501,7 +501,7 @@ App::DocumentObjectExecReturn* Torus::execute(void)
         return FeaturePrimitive::execute(mkTorus.Solid());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -567,7 +567,7 @@ App::DocumentObjectExecReturn* Prism::execute(void)
         return FeaturePrimitive::execute(mkPrism.Shape());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -654,7 +654,7 @@ App::DocumentObjectExecReturn* Wedge::execute(void)
         return FeaturePrimitive::execute(mkSolid.Solid());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 

@@ -76,15 +76,15 @@ void  ArcOfConic2dPy::setLocation(Py::Object arg)
 
 Py::Float ArcOfConic2dPy::getEccentricity(void) const
 {
-    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     return Py::Float(conic->Eccentricity());
 }
 
 Py::Object ArcOfConic2dPy::getXAxis(void) const
 {
-    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     gp_Dir2d xdir = conic->XAxis().Direction();
     Py::Module module("__FreeCADBase__");
     Py::Callable method(module.getAttr("Vector2d"));
@@ -96,8 +96,8 @@ Py::Object ArcOfConic2dPy::getXAxis(void) const
 
 void  ArcOfConic2dPy::setXAxis(Py::Object arg)
 {
-    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     Base::Vector2d dir = Py::Vector2d(arg.ptr()).getCxxObject()->value();
     gp_Ax2d xaxis = conic->XAxis();
     xaxis.SetDirection(gp_Dir2d(dir.x, dir.y));
@@ -106,8 +106,8 @@ void  ArcOfConic2dPy::setXAxis(Py::Object arg)
 
 Py::Object ArcOfConic2dPy::getYAxis(void) const
 {
-    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     gp_Dir2d ydir = conic->YAxis().Direction();
     Py::Module module("__FreeCADBase__");
     Py::Callable method(module.getAttr("Vector2d"));
@@ -119,8 +119,8 @@ Py::Object ArcOfConic2dPy::getYAxis(void) const
 
 void  ArcOfConic2dPy::setYAxis(Py::Object arg)
 {
-    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     Base::Vector2d dir = Py::Vector2d(arg.ptr()).getCxxObject()->value();
     gp_Ax2d yaxis = conic->YAxis();
     yaxis.SetDirection(gp_Dir2d(dir.x, dir.y));

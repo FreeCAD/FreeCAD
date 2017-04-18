@@ -71,7 +71,7 @@ public:
     virtual ~Geometry();
 
     virtual TopoDS_Shape toShape() const = 0;
-    virtual const Handle_Geom_Geometry& handle() const = 0;
+    virtual const Handle(Geom_Geometry)& handle() const = 0;
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
@@ -115,7 +115,7 @@ class PartExport GeomPoint : public Geometry
     TYPESYSTEM_HEADER();
 public:
     GeomPoint();
-    GeomPoint(const Handle_Geom_CartesianPoint&);
+    GeomPoint(const Handle(Geom_CartesianPoint)&);
     GeomPoint(const Base::Vector3d&);
     virtual ~GeomPoint();
     virtual Geometry *copy(void) const;
@@ -128,14 +128,14 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    const Handle_Geom_Geometry& handle() const;
-    void setHandle(const Handle_Geom_CartesianPoint&);
+    const Handle(Geom_Geometry)& handle() const;
+    void setHandle(const Handle(Geom_CartesianPoint)&);
 
     Base::Vector3d getPoint(void)const;
     void setPoint(const Base::Vector3d&);
 
 private:
-    Handle_Geom_CartesianPoint myPoint;
+    Handle(Geom_CartesianPoint) myPoint;
 };
 
 class GeomBSplineCurve;
@@ -192,7 +192,7 @@ class PartExport GeomBezierCurve : public GeomBoundedCurve
     TYPESYSTEM_HEADER();
 public:
     GeomBezierCurve();
-    GeomBezierCurve(const Handle_Geom_BezierCurve&);
+    GeomBezierCurve(const Handle(Geom_BezierCurve)&);
     virtual ~GeomBezierCurve();
     virtual Geometry *copy(void) const;
 
@@ -203,11 +203,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_BezierCurve&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_BezierCurve)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_BezierCurve myCurve;
+    Handle(Geom_BezierCurve) myCurve;
 };
 
 class PartExport GeomBSplineCurve : public GeomBoundedCurve
@@ -215,7 +215,7 @@ class PartExport GeomBSplineCurve : public GeomBoundedCurve
     TYPESYSTEM_HEADER();
 public:
     GeomBSplineCurve();
-    GeomBSplineCurve(const Handle_Geom_BSplineCurve&);
+    GeomBSplineCurve(const Handle(Geom_BSplineCurve)&);
     
     GeomBSplineCurve( const std::vector<Base::Vector3d>& poles, const std::vector<double>& weights,
                       const std::vector<double>& knots, const std::vector<int>& multiplicities,
@@ -259,7 +259,7 @@ public:
     int getMultiplicity(int index) const;
     int getDegree() const;
     bool isPeriodic() const;
-    bool join(const Handle_Geom_BSplineCurve&);
+    bool join(const Handle(Geom_BSplineCurve)&);
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
 
@@ -275,8 +275,8 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_BSplineCurve&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_BSplineCurve)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
     void createArcs(double tolerance, std::list<Geometry*>& new_spans,
@@ -286,7 +286,7 @@ private:
                               const gp_Pnt& p4, gp_Vec v_end,
                               gp_Pnt& p1, gp_Pnt& p2, gp_Pnt& p3) const;
 private:
-    Handle_Geom_BSplineCurve myCurve;
+    Handle(Geom_BSplineCurve) myCurve;
 };
 
 class PartExport GeomConic : public GeomCurve
@@ -319,7 +319,7 @@ public:
     virtual unsigned int getMemSize(void) const = 0;
     virtual PyObject *getPyObject(void) = 0;
 
-    const Handle_Geom_Geometry& handle() const = 0;
+    const Handle(Geom_Geometry)& handle() const = 0;
 };
 
 class PartExport GeomArcOfConic : public GeomCurve
@@ -362,7 +362,7 @@ public:
     virtual unsigned int getMemSize(void) const = 0;
     virtual PyObject *getPyObject(void) = 0;
 
-    const Handle_Geom_Geometry& handle() const = 0;
+    const Handle(Geom_Geometry)& handle() const = 0;
 };
 
 class PartExport GeomCircle : public GeomConic
@@ -370,7 +370,7 @@ class PartExport GeomCircle : public GeomConic
     TYPESYSTEM_HEADER();
 public:
     GeomCircle();
-    GeomCircle(const Handle_Geom_Circle&);
+    GeomCircle(const Handle(Geom_Circle)&);
     virtual ~GeomCircle();
     virtual Geometry *copy(void) const;
 
@@ -385,12 +385,12 @@ public:
     virtual PyObject *getPyObject(void);
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
-    const Handle_Geom_Geometry& handle() const;
+    const Handle(Geom_Geometry)& handle() const;
     
-    void setHandle(const Handle_Geom_Circle&);
+    void setHandle(const Handle(Geom_Circle)&);
 
 private:
-    Handle_Geom_Circle myCurve;
+    Handle(Geom_Circle) myCurve;
 };
 
 class PartExport GeomArcOfCircle : public GeomArcOfConic
@@ -398,7 +398,7 @@ class PartExport GeomArcOfCircle : public GeomArcOfConic
     TYPESYSTEM_HEADER();
 public:
     GeomArcOfCircle();
-    GeomArcOfCircle(const Handle_Geom_Circle&);
+    GeomArcOfCircle(const Handle(Geom_Circle)&);
     virtual ~GeomArcOfCircle();
     virtual Geometry *copy(void) const;
 
@@ -416,12 +416,12 @@ public:
     virtual PyObject *getPyObject(void);
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
-    void setHandle(const Handle_Geom_TrimmedCurve&);
-    void setHandle(const Handle_Geom_Circle&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_TrimmedCurve)&);
+    void setHandle(const Handle(Geom_Circle)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_TrimmedCurve myCurve;
+    Handle(Geom_TrimmedCurve) myCurve;
 };
 
 class PartExport GeomEllipse : public GeomConic
@@ -429,7 +429,7 @@ class PartExport GeomEllipse : public GeomConic
     TYPESYSTEM_HEADER();
 public:
     GeomEllipse();
-    GeomEllipse(const Handle_Geom_Ellipse&);
+    GeomEllipse(const Handle(Geom_Ellipse)&);
     virtual ~GeomEllipse();
     virtual Geometry *copy(void) const;
 
@@ -448,11 +448,11 @@ public:
     virtual PyObject *getPyObject(void);
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
-    void setHandle(const Handle_Geom_Ellipse &e);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_Ellipse) &e);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_Ellipse myCurve;
+    Handle(Geom_Ellipse) myCurve;
 };
 
 class PartExport GeomArcOfEllipse : public GeomArcOfConic
@@ -460,7 +460,7 @@ class PartExport GeomArcOfEllipse : public GeomArcOfConic
     TYPESYSTEM_HEADER();
 public:
     GeomArcOfEllipse();
-    GeomArcOfEllipse(const Handle_Geom_Ellipse&);
+    GeomArcOfEllipse(const Handle(Geom_Ellipse)&);
     virtual ~GeomArcOfEllipse();
     virtual Geometry *copy(void) const;
 
@@ -482,12 +482,12 @@ public:
     virtual PyObject *getPyObject(void);
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
-    void setHandle(const Handle_Geom_TrimmedCurve&);
-    void setHandle(const Handle_Geom_Ellipse&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_TrimmedCurve)&);
+    void setHandle(const Handle(Geom_Ellipse)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_TrimmedCurve myCurve;
+    Handle(Geom_TrimmedCurve) myCurve;
 };
 
 
@@ -496,7 +496,7 @@ class PartExport GeomHyperbola : public GeomConic
     TYPESYSTEM_HEADER();
 public:
     GeomHyperbola();
-    GeomHyperbola(const Handle_Geom_Hyperbola&);
+    GeomHyperbola(const Handle(Geom_Hyperbola)&);
     virtual ~GeomHyperbola();
     virtual Geometry *copy(void) const;
     
@@ -513,11 +513,11 @@ public:
     virtual PyObject *getPyObject(void);
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
-    const Handle_Geom_Geometry& handle() const;
-    void setHandle(const Handle_Geom_Hyperbola&);
+    const Handle(Geom_Geometry)& handle() const;
+    void setHandle(const Handle(Geom_Hyperbola)&);
 
 private:
-    Handle_Geom_Hyperbola myCurve;
+    Handle(Geom_Hyperbola) myCurve;
 };
 
 class PartExport GeomArcOfHyperbola : public GeomArcOfConic
@@ -525,7 +525,7 @@ class PartExport GeomArcOfHyperbola : public GeomArcOfConic
     TYPESYSTEM_HEADER();
 public:
     GeomArcOfHyperbola();
-    GeomArcOfHyperbola(const Handle_Geom_Hyperbola&);
+    GeomArcOfHyperbola(const Handle(Geom_Hyperbola)&);
     virtual ~GeomArcOfHyperbola();
     virtual Geometry *copy(void) const;
 
@@ -547,12 +547,12 @@ public:
     virtual PyObject *getPyObject(void);
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
-    void setHandle(const Handle_Geom_TrimmedCurve&);
-    void setHandle(const Handle_Geom_Hyperbola&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_TrimmedCurve)&);
+    void setHandle(const Handle(Geom_Hyperbola)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_TrimmedCurve myCurve;
+    Handle(Geom_TrimmedCurve) myCurve;
 };
 
 class PartExport GeomParabola : public GeomConic
@@ -560,7 +560,7 @@ class PartExport GeomParabola : public GeomConic
     TYPESYSTEM_HEADER();
 public:
     GeomParabola();
-    GeomParabola(const Handle_Geom_Parabola&);
+    GeomParabola(const Handle(Geom_Parabola)&);
     virtual ~GeomParabola();
     virtual Geometry *copy(void) const;
     
@@ -575,11 +575,11 @@ public:
     virtual PyObject *getPyObject(void);
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
-    const Handle_Geom_Geometry& handle() const;
-    void setHandle(const Handle_Geom_Parabola&);
+    const Handle(Geom_Geometry)& handle() const;
+    void setHandle(const Handle(Geom_Parabola)&);
 
 private:
-    Handle_Geom_Parabola myCurve;
+    Handle(Geom_Parabola) myCurve;
 };
 
 class PartExport GeomArcOfParabola : public GeomArcOfConic
@@ -587,7 +587,7 @@ class PartExport GeomArcOfParabola : public GeomArcOfConic
     TYPESYSTEM_HEADER();
 public:
     GeomArcOfParabola();
-    GeomArcOfParabola(const Handle_Geom_Parabola&);
+    GeomArcOfParabola(const Handle(Geom_Parabola)&);
     virtual ~GeomArcOfParabola();
     virtual Geometry *copy(void) const;
 
@@ -607,12 +607,12 @@ public:
     virtual PyObject *getPyObject(void);
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
-    void setHandle(const Handle_Geom_TrimmedCurve&);
-    void setHandle(const Handle_Geom_Parabola&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_TrimmedCurve)&);
+    void setHandle(const Handle(Geom_Parabola)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_TrimmedCurve myCurve;
+    Handle(Geom_TrimmedCurve) myCurve;
 };
 
 class PartExport GeomLine : public GeomCurve
@@ -620,7 +620,7 @@ class PartExport GeomLine : public GeomCurve
     TYPESYSTEM_HEADER();
 public:
     GeomLine();
-    GeomLine(const Handle_Geom_Line&);
+    GeomLine(const Handle(Geom_Line)&);
     GeomLine(const Base::Vector3d& Pos, const Base::Vector3d& Dir);
     virtual ~GeomLine();
     virtual Geometry *copy(void) const;
@@ -636,11 +636,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    const Handle_Geom_Geometry& handle() const;
-    void setHandle(const Handle_Geom_Line&);
+    const Handle(Geom_Geometry)& handle() const;
+    void setHandle(const Handle(Geom_Line)&);
 
 private:
-    Handle_Geom_Line myCurve;
+    Handle(Geom_Line) myCurve;
 };
 
 class PartExport GeomLineSegment : public GeomCurve
@@ -648,7 +648,7 @@ class PartExport GeomLineSegment : public GeomCurve
     TYPESYSTEM_HEADER();
 public:
     GeomLineSegment();
-    GeomLineSegment(const Handle_Geom_Line& l);
+    GeomLineSegment(const Handle(Geom_Line)& l);
     virtual ~GeomLineSegment();
     virtual Geometry *copy(void) const;
 
@@ -665,12 +665,12 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_TrimmedCurve&);
-    void setHandle(const Handle_Geom_Line&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_TrimmedCurve)&);
+    void setHandle(const Handle(Geom_Line)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_TrimmedCurve myCurve;
+    Handle(Geom_TrimmedCurve) myCurve;
 };
 
 class PartExport GeomOffsetCurve : public GeomCurve
@@ -678,8 +678,8 @@ class PartExport GeomOffsetCurve : public GeomCurve
     TYPESYSTEM_HEADER();
 public:
     GeomOffsetCurve();
-    GeomOffsetCurve(const Handle_Geom_Curve&, double, const gp_Dir&);
-    GeomOffsetCurve(const Handle_Geom_OffsetCurve&);
+    GeomOffsetCurve(const Handle(Geom_Curve)&, double, const gp_Dir&);
+    GeomOffsetCurve(const Handle(Geom_OffsetCurve)&);
     virtual ~GeomOffsetCurve();
     virtual Geometry *copy(void) const;
 
@@ -690,11 +690,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_OffsetCurve& c);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_OffsetCurve)& c);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_OffsetCurve myCurve;
+    Handle(Geom_OffsetCurve) myCurve;
 };
 
 class PartExport GeomTrimmedCurve : public GeomCurve
@@ -702,7 +702,7 @@ class PartExport GeomTrimmedCurve : public GeomCurve
     TYPESYSTEM_HEADER();
 public:
     GeomTrimmedCurve();
-    GeomTrimmedCurve(const Handle_Geom_TrimmedCurve&);
+    GeomTrimmedCurve(const Handle(Geom_TrimmedCurve)&);
     virtual ~GeomTrimmedCurve();
     virtual Geometry *copy(void) const;
 
@@ -713,11 +713,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_TrimmedCurve&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_TrimmedCurve)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_TrimmedCurve myCurve;
+    Handle(Geom_TrimmedCurve) myCurve;
 };
 
 class PartExport GeomSurface : public Geometry
@@ -737,7 +737,7 @@ class PartExport GeomBezierSurface : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomBezierSurface();
-    GeomBezierSurface(const Handle_Geom_BezierSurface&);
+    GeomBezierSurface(const Handle(Geom_BezierSurface)&);
     virtual ~GeomBezierSurface();
     virtual Geometry *copy(void) const;
 
@@ -748,11 +748,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_BezierSurface& b);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_BezierSurface)& b);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_BezierSurface mySurface;
+    Handle(Geom_BezierSurface) mySurface;
 };
 
 class PartExport GeomBSplineSurface : public GeomSurface
@@ -760,7 +760,7 @@ class PartExport GeomBSplineSurface : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomBSplineSurface();
-    GeomBSplineSurface(const Handle_Geom_BSplineSurface&);
+    GeomBSplineSurface(const Handle(Geom_BSplineSurface)&);
     virtual ~GeomBSplineSurface();
     virtual Geometry *copy(void) const;
 
@@ -771,11 +771,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_BSplineSurface&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_BSplineSurface)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_BSplineSurface mySurface;
+    Handle(Geom_BSplineSurface) mySurface;
 };
 
 class PartExport GeomCylinder : public GeomSurface
@@ -783,7 +783,7 @@ class PartExport GeomCylinder : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomCylinder();
-    GeomCylinder(const Handle_Geom_CylindricalSurface&);
+    GeomCylinder(const Handle(Geom_CylindricalSurface)&);
     virtual ~GeomCylinder();
     virtual Geometry *copy(void) const;
 
@@ -794,11 +794,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_CylindricalSurface&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_CylindricalSurface)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_CylindricalSurface mySurface;
+    Handle(Geom_CylindricalSurface) mySurface;
 };
 
 class PartExport GeomCone : public GeomSurface
@@ -806,7 +806,7 @@ class PartExport GeomCone : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomCone();
-    GeomCone(const Handle_Geom_ConicalSurface&);
+    GeomCone(const Handle(Geom_ConicalSurface)&);
     virtual ~GeomCone();
     virtual Geometry *copy(void) const;
 
@@ -817,11 +817,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_ConicalSurface&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_ConicalSurface)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_ConicalSurface mySurface;
+    Handle(Geom_ConicalSurface) mySurface;
 };
 
 class PartExport GeomSphere : public GeomSurface
@@ -829,7 +829,7 @@ class PartExport GeomSphere : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomSphere();
-    GeomSphere(const Handle_Geom_SphericalSurface&);
+    GeomSphere(const Handle(Geom_SphericalSurface)&);
     virtual ~GeomSphere();
     virtual Geometry *copy(void) const;
 
@@ -840,11 +840,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_SphericalSurface&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_SphericalSurface)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_SphericalSurface mySurface;
+    Handle(Geom_SphericalSurface) mySurface;
 };
 
 class PartExport GeomToroid : public GeomSurface
@@ -852,7 +852,7 @@ class PartExport GeomToroid : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomToroid();
-    GeomToroid(const Handle_Geom_ToroidalSurface&);
+    GeomToroid(const Handle(Geom_ToroidalSurface)&);
     virtual ~GeomToroid();
     virtual Geometry *copy(void) const;
 
@@ -863,11 +863,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_ToroidalSurface&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_ToroidalSurface)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_ToroidalSurface mySurface;
+    Handle(Geom_ToroidalSurface) mySurface;
 };
 
 class PartExport GeomPlane : public GeomSurface
@@ -875,7 +875,7 @@ class PartExport GeomPlane : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomPlane();
-    GeomPlane(const Handle_Geom_Plane&);
+    GeomPlane(const Handle(Geom_Plane)&);
     virtual ~GeomPlane();
     virtual Geometry *copy(void) const;
 
@@ -886,11 +886,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_Plane&);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_Plane)&);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_Plane mySurface;
+    Handle(Geom_Plane) mySurface;
 };
 
 class PartExport GeomOffsetSurface : public GeomSurface
@@ -898,8 +898,8 @@ class PartExport GeomOffsetSurface : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomOffsetSurface();
-    GeomOffsetSurface(const Handle_Geom_Surface&, double);
-    GeomOffsetSurface(const Handle_Geom_OffsetSurface&);
+    GeomOffsetSurface(const Handle(Geom_Surface)&, double);
+    GeomOffsetSurface(const Handle(Geom_OffsetSurface)&);
     virtual ~GeomOffsetSurface();
     virtual Geometry *copy(void) const;
 
@@ -910,11 +910,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_OffsetSurface& s);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_OffsetSurface)& s);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_OffsetSurface mySurface;
+    Handle(Geom_OffsetSurface) mySurface;
 };
 
 class PartExport GeomPlateSurface : public GeomSurface
@@ -922,9 +922,9 @@ class PartExport GeomPlateSurface : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomPlateSurface();
-    GeomPlateSurface(const Handle_Geom_Surface&, const Plate_Plate&);
+    GeomPlateSurface(const Handle(Geom_Surface)&, const Plate_Plate&);
     GeomPlateSurface(const GeomPlate_BuildPlateSurface&);
-    GeomPlateSurface(const Handle_GeomPlate_Surface&);
+    GeomPlateSurface(const Handle(GeomPlate_Surface)&);
     virtual ~GeomPlateSurface();
     virtual Geometry *copy(void) const;
 
@@ -935,11 +935,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_GeomPlate_Surface& s);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(GeomPlate_Surface)& s);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_GeomPlate_Surface mySurface;
+    Handle(GeomPlate_Surface) mySurface;
 };
 
 class PartExport GeomTrimmedSurface : public GeomSurface
@@ -947,7 +947,7 @@ class PartExport GeomTrimmedSurface : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomTrimmedSurface();
-    GeomTrimmedSurface(const Handle_Geom_RectangularTrimmedSurface&);
+    GeomTrimmedSurface(const Handle(Geom_RectangularTrimmedSurface)&);
     virtual ~GeomTrimmedSurface();
     virtual Geometry *copy(void) const;
 
@@ -958,11 +958,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_RectangularTrimmedSurface& s);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_RectangularTrimmedSurface)& s);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_RectangularTrimmedSurface mySurface;
+    Handle(Geom_RectangularTrimmedSurface) mySurface;
 };
 
 class PartExport GeomSurfaceOfRevolution : public GeomSurface
@@ -970,8 +970,8 @@ class PartExport GeomSurfaceOfRevolution : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomSurfaceOfRevolution();
-    GeomSurfaceOfRevolution(const Handle_Geom_Curve&, const gp_Ax1&);
-    GeomSurfaceOfRevolution(const Handle_Geom_SurfaceOfRevolution&);
+    GeomSurfaceOfRevolution(const Handle(Geom_Curve)&, const gp_Ax1&);
+    GeomSurfaceOfRevolution(const Handle(Geom_SurfaceOfRevolution)&);
     virtual ~GeomSurfaceOfRevolution();
     virtual Geometry *copy(void) const;
 
@@ -982,11 +982,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_SurfaceOfRevolution& c);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_SurfaceOfRevolution)& c);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_SurfaceOfRevolution mySurface;
+    Handle(Geom_SurfaceOfRevolution) mySurface;
 };
 
 class PartExport GeomSurfaceOfExtrusion : public GeomSurface
@@ -994,8 +994,8 @@ class PartExport GeomSurfaceOfExtrusion : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomSurfaceOfExtrusion();
-    GeomSurfaceOfExtrusion(const Handle_Geom_Curve&, const gp_Dir&);
-    GeomSurfaceOfExtrusion(const Handle_Geom_SurfaceOfLinearExtrusion&);
+    GeomSurfaceOfExtrusion(const Handle(Geom_Curve)&, const gp_Dir&);
+    GeomSurfaceOfExtrusion(const Handle(Geom_SurfaceOfLinearExtrusion)&);
     virtual ~GeomSurfaceOfExtrusion();
     virtual Geometry *copy(void) const;
 
@@ -1006,11 +1006,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom_SurfaceOfLinearExtrusion& c);
-    const Handle_Geom_Geometry& handle() const;
+    void setHandle(const Handle(Geom_SurfaceOfLinearExtrusion)& c);
+    const Handle(Geom_Geometry)& handle() const;
 
 private:
-    Handle_Geom_SurfaceOfLinearExtrusion mySurface;
+    Handle(Geom_SurfaceOfLinearExtrusion) mySurface;
 };
 
 
@@ -1036,7 +1036,7 @@ PartExport
 GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
                                       const Base::Vector3d &center, double radius);
 PartExport
-GeomSurface *makeFromSurface(const Handle_Geom_Surface&);
+GeomSurface *makeFromSurface(const Handle(Geom_Surface)&);
 }
 
 #endif // PART_GEOMETRY_H

@@ -44,7 +44,7 @@ using namespace Part;
 // returns a string which represents the object e.g. when printed in python
 std::string SpherePy::representation(void) const
 {
-    Handle_Geom_SphericalSurface sphere = Handle_Geom_SphericalSurface::DownCast
+    Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
         (getGeomSpherePtr()->handle());
     gp_Ax1 axis = sphere->Axis();
     gp_Dir dir = axis.Direction();
@@ -71,7 +71,7 @@ PyObject *SpherePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pyt
 int SpherePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     if (PyArg_ParseTuple(args, "")) {
-        Handle_Geom_SphericalSurface sphere = Handle_Geom_SphericalSurface::DownCast
+        Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
             (getGeomSpherePtr()->handle());
         sphere->SetRadius(1.0);
         return 0;
@@ -82,35 +82,35 @@ int SpherePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Float SpherePy::getRadius(void) const
 {
-    Handle_Geom_SphericalSurface sphere = Handle_Geom_SphericalSurface::DownCast
+    Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
         (getGeomSpherePtr()->handle());
     return Py::Float(sphere->Radius()); 
 }
 
 void  SpherePy::setRadius(Py::Float arg)
 {
-    Handle_Geom_SphericalSurface sphere = Handle_Geom_SphericalSurface::DownCast
+    Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
         (getGeomSpherePtr()->handle());
     sphere->SetRadius((double)arg);
 }
 
 Py::Float SpherePy::getArea(void) const
 {
-    Handle_Geom_SphericalSurface sphere = Handle_Geom_SphericalSurface::DownCast
+    Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
         (getGeomSpherePtr()->handle());
     return Py::Float(sphere->Area()); 
 }
 
 Py::Float SpherePy::getVolume(void) const
 {
-    Handle_Geom_SphericalSurface sphere = Handle_Geom_SphericalSurface::DownCast
+    Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
         (getGeomSpherePtr()->handle());
     return Py::Float(sphere->Volume()); 
 }
 
 Py::Object SpherePy::getCenter(void) const
 {
-    Handle_Geom_SphericalSurface sphere = Handle_Geom_SphericalSurface::DownCast
+    Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
         (getGeomSpherePtr()->handle());
     gp_Pnt loc = sphere->Location();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
@@ -121,13 +121,13 @@ void SpherePy::setCenter(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        Handle_Geom_SphericalSurface sphere = Handle_Geom_SphericalSurface::DownCast
+        Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
             (getGeomSpherePtr()->handle());
         sphere->SetLocation(gp_Pnt(loc.x, loc.y, loc.z));
     }
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d loc = Base::getVectorFromTuple<double>(p);
-        Handle_Geom_SphericalSurface sphere = Handle_Geom_SphericalSurface::DownCast
+        Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
             (getGeomSpherePtr()->handle());
         sphere->SetLocation(gp_Pnt(loc.x, loc.y, loc.z));
     }
@@ -140,7 +140,7 @@ void SpherePy::setCenter(Py::Object arg)
 
 Py::Object SpherePy::getAxis(void) const
 {
-    Handle_Geom_ElementarySurface s = Handle_Geom_ElementarySurface::DownCast
+    Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast
         (getGeometryPtr()->handle());
     gp_Dir dir = s->Axis().Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
@@ -169,7 +169,7 @@ void SpherePy::setAxis(Py::Object arg)
     }
 
     try {
-        Handle_Geom_ElementarySurface this_surf = Handle_Geom_ElementarySurface::DownCast
+        Handle(Geom_ElementarySurface) this_surf = Handle(Geom_ElementarySurface)::DownCast
             (this->getGeometryPtr()->handle());
         gp_Ax1 axis;
         axis.SetLocation(this_surf->Location());

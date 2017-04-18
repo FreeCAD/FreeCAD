@@ -254,7 +254,7 @@ GeomPoint::GeomPoint()
     this->myPoint = new Geom_CartesianPoint(0,0,0);
 }
 
-GeomPoint::GeomPoint(const Handle_Geom_CartesianPoint& p)
+GeomPoint::GeomPoint(const Handle(Geom_CartesianPoint)& p)
 {
     setHandle(p);
 }
@@ -268,15 +268,15 @@ GeomPoint::~GeomPoint()
 {
 }
 
-const Handle_Geom_Geometry& GeomPoint::handle() const
+const Handle(Geom_Geometry)& GeomPoint::handle() const
 {
     return myPoint;
 }
 
 
-void GeomPoint::setHandle(const Handle_Geom_CartesianPoint& p)
+void GeomPoint::setHandle(const Handle(Geom_CartesianPoint)& p)
 {
-    myPoint = Handle_Geom_CartesianPoint::DownCast(p->Copy());
+    myPoint = Handle(Geom_CartesianPoint)::DownCast(p->Copy());
 }
 
 Geometry *GeomPoint::copy(void) const
@@ -358,7 +358,7 @@ GeomCurve::~GeomCurve()
 
 TopoDS_Shape GeomCurve::toShape() const
 {
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
     BRepBuilderAPI_MakeEdge mkBuilder(c, c->FirstParameter(), c->LastParameter());
     return mkBuilder.Shape();
 }
@@ -366,8 +366,8 @@ TopoDS_Shape GeomCurve::toShape() const
 GeomBSplineCurve* GeomCurve::toBSpline(double first, double last) const
 {
     ShapeConstruct_Curve scc;
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
-    Handle_Geom_BSplineCurve spline = scc.ConvertToBSpline(c, first, last, Precision::Confusion());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
+    Handle(Geom_BSplineCurve) spline = scc.ConvertToBSpline(c, first, last, Precision::Confusion());
     if (spline.IsNull())
         throw Base::RuntimeError("Conversion to B-Spline failed");
     return new GeomBSplineCurve(spline);
@@ -380,7 +380,7 @@ GeomBSplineCurve* GeomCurve::toNurbs(double first, double last) const
 
 bool GeomCurve::tangent(double u, gp_Dir& dir) const
 {
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
     GeomLProp_CLProps prop(c,u,1,Precision::Confusion());
     if (prop.IsTangentDefined()) {
         prop.Tangent(dir);
@@ -392,7 +392,7 @@ bool GeomCurve::tangent(double u, gp_Dir& dir) const
 
 Base::Vector3d GeomCurve::pointAtParameter(double u) const
 {
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
     GeomLProp_CLProps prop(c,u,0,Precision::Confusion());
 
     const gp_Pnt &point=prop.Value();
@@ -402,7 +402,7 @@ Base::Vector3d GeomCurve::pointAtParameter(double u) const
 
 Base::Vector3d GeomCurve::firstDerivativeAtParameter(double u) const
 {
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
     GeomLProp_CLProps prop(c,u,1,Precision::Confusion());
 
     const gp_Vec &vec=prop.D1();
@@ -412,7 +412,7 @@ Base::Vector3d GeomCurve::firstDerivativeAtParameter(double u) const
 
 Base::Vector3d GeomCurve::secondDerivativeAtParameter(double u) const
 {
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
     GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
 
     const gp_Vec &vec=prop.D2();
@@ -422,7 +422,7 @@ Base::Vector3d GeomCurve::secondDerivativeAtParameter(double u) const
 
 bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
 {
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
 
     try {
         if (!c.IsNull()) {
@@ -435,7 +435,7 @@ bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 
@@ -444,7 +444,7 @@ bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
 
 bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
 {
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
     try {
         if (!c.IsNull()) {
             gp_Pnt pnt(point.x,point.y,point.z);
@@ -454,7 +454,7 @@ bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 
@@ -463,11 +463,11 @@ bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
 
 bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double &u) const
 {
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
 
     if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))){
-        Handle_Geom_TrimmedCurve tc = Handle_Geom_TrimmedCurve::DownCast(handle());
-        Handle_Geom_Curve bc = tc->BasisCurve();
+        Handle(Geom_TrimmedCurve) tc = Handle(Geom_TrimmedCurve)::DownCast(handle());
+        Handle(Geom_Curve) bc = tc->BasisCurve();
         try {
             if (!bc.IsNull()) {
                 gp_Pnt pnt(point.x,point.y,point.z);
@@ -477,7 +477,7 @@ bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double
             }
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Base::RuntimeError(e->GetMessageString());
         }
 
@@ -490,14 +490,14 @@ bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double
 
 double GeomCurve::getFirstParameter() const
 {
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
 
     try {
         // pending check for RealFirst RealLast in case of infinite curve
         return c->FirstParameter();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 
@@ -505,28 +505,28 @@ double GeomCurve::getFirstParameter() const
 
 double GeomCurve::getLastParameter() const
 {
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
 
     try {
         // pending check for RealFirst RealLast in case of infinite curve
         return c->LastParameter();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
 double GeomCurve::curvatureAt(double u) const
 {
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
 
     try {
         GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
         return prop.Curvature();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -534,27 +534,27 @@ double GeomCurve::curvatureAt(double u) const
 double GeomCurve::length(double u, double v) const
 {
 
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
 
     try {
         GeomAdaptor_Curve adaptor(c);
         return GCPnts_AbscissaPoint::Length(adaptor,u,v,Precision::Confusion());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
 void GeomCurve::reverse(void)
 {
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
 
     try {
         c->Reverse();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -574,7 +574,7 @@ GeomBoundedCurve::~GeomBoundedCurve()
 
 Base::Vector3d GeomBoundedCurve::getStartPoint() const
 {
-    Handle_Geom_BoundedCurve curve =  Handle_Geom_BoundedCurve::DownCast(handle());
+    Handle(Geom_BoundedCurve) curve =  Handle(Geom_BoundedCurve)::DownCast(handle());
     gp_Pnt pnt = curve->StartPoint();
 
     return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
@@ -582,7 +582,7 @@ Base::Vector3d GeomBoundedCurve::getStartPoint() const
 
 Base::Vector3d GeomBoundedCurve::getEndPoint() const
 {
-    Handle_Geom_BoundedCurve curve =  Handle_Geom_BoundedCurve::DownCast(handle());
+    Handle(Geom_BoundedCurve) curve =  Handle(Geom_BoundedCurve)::DownCast(handle());
     gp_Pnt pnt = curve->EndPoint();
 
     return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
@@ -598,11 +598,11 @@ GeomBezierCurve::GeomBezierCurve()
     TColgp_Array1OfPnt poles(1,2);
     poles(1) = gp_Pnt(0.0,0.0,0.0);
     poles(2) = gp_Pnt(0.0,0.0,1.0);
-    Handle_Geom_BezierCurve b = new Geom_BezierCurve(poles);
+    Handle(Geom_BezierCurve) b = new Geom_BezierCurve(poles);
     this->myCurve = b;
 }
 
-GeomBezierCurve::GeomBezierCurve(const Handle_Geom_BezierCurve& b)
+GeomBezierCurve::GeomBezierCurve(const Handle(Geom_BezierCurve)& b)
 {
     setHandle(b);
 }
@@ -611,12 +611,12 @@ GeomBezierCurve::~GeomBezierCurve()
 {
 }
 
-void GeomBezierCurve::setHandle(const Handle_Geom_BezierCurve& c)
+void GeomBezierCurve::setHandle(const Handle(Geom_BezierCurve)& c)
 {
-    myCurve = Handle_Geom_BezierCurve::DownCast(c->Copy());
+    myCurve = Handle(Geom_BezierCurve)::DownCast(c->Copy());
 }
 
-const Handle_Geom_Geometry& GeomBezierCurve::handle() const
+const Handle(Geom_Geometry)& GeomBezierCurve::handle() const
 {
     return myCurve;
 }
@@ -659,7 +659,7 @@ GeomBSplineCurve::GeomBSplineCurve()
     this->myCurve = new Geom_BSplineCurve(poles, knots, mults, 1);
 }
 
-GeomBSplineCurve::GeomBSplineCurve(const Handle_Geom_BSplineCurve& b)
+GeomBSplineCurve::GeomBSplineCurve(const Handle(Geom_BSplineCurve)& b)
 {
     setHandle(b);
 }
@@ -698,12 +698,12 @@ GeomBSplineCurve::~GeomBSplineCurve()
 {
 }
 
-void GeomBSplineCurve::setHandle(const Handle_Geom_BSplineCurve& c)
+void GeomBSplineCurve::setHandle(const Handle(Geom_BSplineCurve)& c)
 {
-    myCurve = Handle_Geom_BSplineCurve::DownCast(c->Copy());
+    myCurve = Handle(Geom_BSplineCurve)::DownCast(c->Copy());
 }
 
-const Handle_Geom_Geometry& GeomBSplineCurve::handle() const
+const Handle(Geom_Geometry)& GeomBSplineCurve::handle() const
 {
     return myCurve;
 }
@@ -735,7 +735,7 @@ void GeomBSplineCurve::setPole(int index, const Base::Vector3d& pole, double wei
             myCurve->SetPole(index,pnt,weight);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -799,7 +799,7 @@ void GeomBSplineCurve::setWeights(const std::vector<double>& weights)
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -813,7 +813,7 @@ void GeomBSplineCurve::setKnot(int index, const double val, int mult)
             myCurve->SetKnot(index, val, mult);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -873,7 +873,7 @@ int GeomBSplineCurve::getMultiplicity(int index) const
         return myCurve->Multiplicity(index);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -888,7 +888,7 @@ bool GeomBSplineCurve::isPeriodic() const
     return myCurve->IsPeriodic()==Standard_True;
 }
 
-bool GeomBSplineCurve::join(const Handle_Geom_BSplineCurve& spline)
+bool GeomBSplineCurve::join(const Handle(Geom_BSplineCurve)& spline)
 {
     GeomConvert_CompCurveToBSplineCurve ccbc(this->myCurve);
     if (!ccbc.Add(spline, Precision::Approximation()))
@@ -906,13 +906,13 @@ void GeomBSplineCurve::interpolate(const std::vector<gp_Pnt>& p,
         Standard_ConstructionError::Raise();
 
     double tol3d = Precision::Approximation();
-    Handle_TColgp_HArray1OfPnt pts = new TColgp_HArray1OfPnt(1, p.size());
+    Handle(TColgp_HArray1OfPnt) pts = new TColgp_HArray1OfPnt(1, p.size());
     for (std::size_t i=0; i<p.size(); i++) {
         pts->SetValue(i+1, p[i]);
     }
 
     TColgp_Array1OfVec tgs(1, t.size());
-    Handle_TColStd_HArray1OfBoolean fgs = new TColStd_HArray1OfBoolean(1, t.size());
+    Handle(TColStd_HArray1OfBoolean) fgs = new TColStd_HArray1OfBoolean(1, t.size());
     for (std::size_t i=0; i<p.size(); i++) {
         tgs.SetValue(i+1, t[i]);
         fgs->SetValue(i+1, Standard_True);
@@ -989,12 +989,12 @@ void GeomBSplineCurve::makeC1Continuous(double tol, double ang_tol)
 void GeomBSplineCurve::increaseDegree(double degree)
 {
     try {
-        Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(this->handle());
+        Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(this->handle());
         curve->IncreaseDegree(degree);
         return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1002,12 +1002,12 @@ void GeomBSplineCurve::increaseDegree(double degree)
 void GeomBSplineCurve::increaseMultiplicity(int index, int multiplicity)
 {
     try {
-        Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(this->handle());
+        Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(this->handle());
         curve->IncreaseMultiplicity(index, multiplicity);
         return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1015,11 +1015,11 @@ void GeomBSplineCurve::increaseMultiplicity(int index, int multiplicity)
 bool GeomBSplineCurve::removeKnot(int index, int multiplicity, double tolerance)
 {
     try {
-        Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(this->handle());
+        Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(this->handle());
         return curve->RemoveKnot(index, multiplicity, tolerance) == Standard_True;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1096,7 +1096,7 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
     int degree = reader.getAttributeAsInteger("Degree");
     bool isperiodic = (bool) reader.getAttributeAsInteger("IsPeriodic");
 
-    // Handle_Geom_BSplineCurve spline = new
+    // Handle(Geom_BSplineCurve) spline = new
     // Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,
     // PyObject_IsTrue(periodic) ? Standard_True : Standard_False,
     // PyObject_IsTrue(CheckRational) ? Standard_True : Standard_False);
@@ -1128,7 +1128,7 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
     // Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,periodic,CheckRational
 
     try {
-        Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(p, w, k, m, degree, isperiodic ? Standard_True : Standard_False, Standard_False);
+        Handle(Geom_BSplineCurve) spline = new Geom_BSplineCurve(p, w, k, m, degree, isperiodic ? Standard_True : Standard_False, Standard_False);
 
         if (!spline.IsNull())
             this->myCurve = spline;
@@ -1136,7 +1136,7 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
             throw Base::RuntimeError("BSpline restore failed");
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1161,7 +1161,7 @@ GeomConic::~GeomConic()
 
 Base::Vector3d GeomConic::getLocation(void) const
 {
-    Handle_Geom_Conic conic =  Handle_Geom_Conic::DownCast(handle());
+    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
     gp_Ax1 axis = conic->Axis();
     const gp_Pnt& loc = axis.Location();
     return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
@@ -1170,20 +1170,20 @@ Base::Vector3d GeomConic::getLocation(void) const
 void GeomConic::setLocation(const Base::Vector3d& Center)
 {
     gp_Pnt p1(Center.x,Center.y,Center.z);
-    Handle_Geom_Conic conic =  Handle_Geom_Conic::DownCast(handle());
+    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
 
     try {
         conic->SetLocation(p1);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
 Base::Vector3d GeomConic::getCenter(void) const
 {
-    Handle_Geom_Conic conic =  Handle_Geom_Conic::DownCast(handle());
+    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
     gp_Ax1 axis = conic->Axis();
     const gp_Pnt& loc = axis.Location();
     return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
@@ -1192,13 +1192,13 @@ Base::Vector3d GeomConic::getCenter(void) const
 void GeomConic::setCenter(const Base::Vector3d& Center)
 {
     gp_Pnt p1(Center.x,Center.y,Center.z);
-    Handle_Geom_Conic conic =  Handle_Geom_Conic::DownCast(handle());
+    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
 
     try {
         conic->SetLocation(p1);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1215,7 +1215,7 @@ void GeomConic::setCenter(const Base::Vector3d& Center)
  */
 double GeomConic::getAngleXU(void) const
 {
-    Handle_Geom_Conic conic =  Handle_Geom_Conic::DownCast(handle());
+    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
 
     gp_Pnt center = conic->Axis().Location();
     gp_Dir normal = conic->Axis().Direction();
@@ -1234,7 +1234,7 @@ double GeomConic::getAngleXU(void) const
  */
 void GeomConic::setAngleXU(double angle)
 {
-    Handle_Geom_Conic conic =  Handle_Geom_Conic::DownCast(handle());;
+    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());;
 
     try {
         gp_Pnt center = conic->Axis().Location();
@@ -1247,7 +1247,7 @@ void GeomConic::setAngleXU(double angle)
         conic->SetPosition(xdirref);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1260,7 +1260,7 @@ void GeomConic::setAngleXU(double angle)
  */
 bool GeomConic::isReversed() const
 {
-    Handle_Geom_Conic conic =  Handle_Geom_Conic::DownCast(handle());
+    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
     assert(!conic.IsNull());
     return conic->Axis().Direction().Z() < 0;
 }
@@ -1285,7 +1285,7 @@ GeomArcOfConic::~GeomArcOfConic()
  */
 Base::Vector3d GeomArcOfConic::getStartPoint(bool emulateCCWXY) const
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
     gp_Pnt pnt = curve->StartPoint();
     if (emulateCCWXY) {
         if (isReversed())
@@ -1302,7 +1302,7 @@ Base::Vector3d GeomArcOfConic::getStartPoint(bool emulateCCWXY) const
  */
 Base::Vector3d GeomArcOfConic::getEndPoint(bool emulateCCWXY) const
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
     gp_Pnt pnt = curve->EndPoint();
     if (emulateCCWXY) {
         if (isReversed())
@@ -1313,8 +1313,8 @@ Base::Vector3d GeomArcOfConic::getEndPoint(bool emulateCCWXY) const
 
 Base::Vector3d GeomArcOfConic::getCenter(void) const
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
     gp_Ax1 axis = conic->Axis();
     const gp_Pnt& loc = axis.Location();
     return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
@@ -1322,8 +1322,8 @@ Base::Vector3d GeomArcOfConic::getCenter(void) const
 
 Base::Vector3d GeomArcOfConic::getLocation(void) const
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
     gp_Ax1 axis = conic->Axis();
     const gp_Pnt& loc = axis.Location();
     return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
@@ -1332,14 +1332,14 @@ Base::Vector3d GeomArcOfConic::getLocation(void) const
 void GeomArcOfConic::setCenter(const Base::Vector3d& Center)
 {
     gp_Pnt p1(Center.x,Center.y,Center.z);
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
 
     try {
         conic->SetLocation(p1);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1347,14 +1347,14 @@ void GeomArcOfConic::setCenter(const Base::Vector3d& Center)
 void GeomArcOfConic::setLocation(const Base::Vector3d& Center)
 {
     gp_Pnt p1(Center.x,Center.y,Center.z);
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
 
     try {
         conic->SetLocation(p1);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1367,8 +1367,8 @@ void GeomArcOfConic::setLocation(const Base::Vector3d& Center)
  */
 bool GeomArcOfConic::isReversed() const
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
     assert(!conic.IsNull());
     return conic->Axis().Direction().Z() < 0;
 }
@@ -1385,8 +1385,8 @@ bool GeomArcOfConic::isReversed() const
  */
 double GeomArcOfConic::getAngleXU(void) const
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
 
     gp_Pnt center = conic->Axis().Location();
     gp_Dir normal = conic->Axis().Direction();
@@ -1402,8 +1402,8 @@ double GeomArcOfConic::getAngleXU(void) const
  */
 void GeomArcOfConic::setAngleXU(double angle)
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
 
     try {
         gp_Pnt center = conic->Axis().Location();
@@ -1416,7 +1416,7 @@ void GeomArcOfConic::setAngleXU(double angle)
         conic->SetPosition(xdirref);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1428,8 +1428,8 @@ void GeomArcOfConic::setAngleXU(double angle)
  */
 Base::Vector3d GeomArcOfConic::getXAxisDir() const
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
-    Handle_Geom_Conic c = Handle_Geom_Conic::DownCast( curve->BasisCurve() );
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Conic) c = Handle(Geom_Conic)::DownCast( curve->BasisCurve() );
     assert(!c.IsNull());
     gp_Dir xdir = c->XAxis().Direction();
     return Base::Vector3d(xdir.X(), xdir.Y(), xdir.Z());
@@ -1445,8 +1445,8 @@ Base::Vector3d GeomArcOfConic::getXAxisDir() const
  */
 void GeomArcOfConic::setXAxisDir(const Base::Vector3d& newdir)
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
-    Handle_Geom_Conic c = Handle_Geom_Conic::DownCast( curve->BasisCurve() );
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Conic) c = Handle(Geom_Conic)::DownCast( curve->BasisCurve() );
     assert(!c.IsNull());
 #if OCC_VERSION_HEX >= 0x060504
     if (newdir.Sqr() < Precision::SquareConfusion())
@@ -1462,7 +1462,7 @@ void GeomArcOfConic::setXAxisDir(const Base::Vector3d& newdir)
         c->SetPosition(pos);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1473,11 +1473,11 @@ TYPESYSTEM_SOURCE(Part::GeomCircle,Part::GeomConic)
 
 GeomCircle::GeomCircle()
 {
-    Handle_Geom_Circle c = new Geom_Circle(gp_Circ());
+    Handle(Geom_Circle) c = new Geom_Circle(gp_Circ());
     this->myCurve = c;
 }
 
-GeomCircle::GeomCircle(const Handle_Geom_Circle& c)
+GeomCircle::GeomCircle(const Handle(Geom_Circle)& c)
 {
     setHandle(c);
 }
@@ -1486,15 +1486,15 @@ GeomCircle::~GeomCircle()
 {
 }
 
-const Handle_Geom_Geometry& GeomCircle::handle() const
+const Handle(Geom_Geometry)& GeomCircle::handle() const
 {
     return myCurve;
 }
 
 
-void GeomCircle::setHandle(const Handle_Geom_Circle& c)
+void GeomCircle::setHandle(const Handle(Geom_Circle)& c)
 {
-    myCurve = Handle_Geom_Circle::DownCast(c->Copy());
+    myCurve = Handle(Geom_Circle)::DownCast(c->Copy());
 }
 
 Geometry *GeomCircle::copy(void) const
@@ -1507,7 +1507,7 @@ Geometry *GeomCircle::copy(void) const
 GeomBSplineCurve* GeomCircle::toNurbs(double first, double last) const
 {
     double radius = getRadius();
-    Handle_Geom_Conic conic =  Handle_Geom_Conic::DownCast(handle());
+    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
     gp_Ax1 axis = conic->Axis();
   //gp_Dir xdir = conic->XAxis().Direction();
   //Standard_Real angle = gp_Dir(1,0,0).Angle(xdir) + first;
@@ -1545,7 +1545,7 @@ GeomBSplineCurve* GeomCircle::toNurbs(double first, double last) const
     knots(2) = M_PI;
     knots(3) = 2*M_PI;
 
-    Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(poles, weights,knots, mults, 3,
+    Handle(Geom_BSplineCurve) spline = new Geom_BSplineCurve(poles, weights,knots, mults, 3,
         Standard_False, Standard_True);
     spline->Segment(0, last-first);
     return new GeomBSplineCurve(spline);
@@ -1553,13 +1553,13 @@ GeomBSplineCurve* GeomCircle::toNurbs(double first, double last) const
 
 double GeomCircle::getRadius(void) const
 {
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(handle());
+    Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(handle());
     return circle->Radius();
 }
 
 void GeomCircle::setRadius(double Radius)
 {
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(handle());
+    Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(handle());
 
     try {
         gp_Circ c = circle->Circ();
@@ -1567,7 +1567,7 @@ void GeomCircle::setRadius(double Radius)
         circle->SetCirc(c);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1627,7 +1627,7 @@ void GeomCircle::Restore(Base::XMLReader& reader)
         this->myCurve = mc.Value();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1643,11 +1643,11 @@ TYPESYSTEM_SOURCE(Part::GeomArcOfCircle,Part::GeomArcOfConic)
 
 GeomArcOfCircle::GeomArcOfCircle()
 {
-    Handle_Geom_Circle c = new Geom_Circle(gp_Circ());
+    Handle(Geom_Circle) c = new Geom_Circle(gp_Circ());
     this->myCurve = new Geom_TrimmedCurve(c, c->FirstParameter(),c->LastParameter());
 }
 
-GeomArcOfCircle::GeomArcOfCircle(const Handle_Geom_Circle& c)
+GeomArcOfCircle::GeomArcOfCircle(const Handle(Geom_Circle)& c)
 {
     setHandle(c);
 }
@@ -1656,21 +1656,21 @@ GeomArcOfCircle::~GeomArcOfCircle()
 {
 }
 
-void GeomArcOfCircle::setHandle(const Handle_Geom_TrimmedCurve& c)
+void GeomArcOfCircle::setHandle(const Handle(Geom_TrimmedCurve)& c)
 {
-    Handle_Geom_Circle basis = Handle_Geom_Circle::DownCast(c->BasisCurve());
+    Handle(Geom_Circle) basis = Handle(Geom_Circle)::DownCast(c->BasisCurve());
     if (basis.IsNull())
         Standard_Failure::Raise("Basis curve is not a circle");
-    this->myCurve = Handle_Geom_TrimmedCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
 }
 
-void GeomArcOfCircle::setHandle(const Handle_Geom_Circle& c)
+void GeomArcOfCircle::setHandle(const Handle(Geom_Circle)& c)
 {
     this->myCurve = new Geom_TrimmedCurve(c, c->FirstParameter(),c->LastParameter());
 }
 
 
-const Handle_Geom_Geometry& GeomArcOfCircle::handle() const
+const Handle(Geom_Geometry)& GeomArcOfCircle::handle() const
 {
     return myCurve;
 }
@@ -1685,20 +1685,20 @@ Geometry *GeomArcOfCircle::copy(void) const
 
 GeomBSplineCurve* GeomArcOfCircle::toNurbs(double first, double last) const
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(curve->BasisCurve());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(curve->BasisCurve());
     return GeomCircle(circle).toNurbs(first, last);
 }
 
 double GeomArcOfCircle::getRadius(void) const
 {
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(myCurve->BasisCurve());
+    Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(myCurve->BasisCurve());
     return circle->Radius();
 }
 
 void GeomArcOfCircle::setRadius(double Radius)
 {
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(myCurve->BasisCurve());
+    Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(myCurve->BasisCurve());
 
     try {
         gp_Circ c = circle->Circ();
@@ -1706,7 +1706,7 @@ void GeomArcOfCircle::setRadius(double Radius)
         circle->SetCirc(c);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1722,11 +1722,11 @@ void GeomArcOfCircle::setRadius(double Radius)
  */
 void GeomArcOfCircle::getRange(double& u, double& v, bool emulateCCWXY) const
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
     u = curve->FirstParameter();
     v = curve->LastParameter();
     if (emulateCCWXY){
-        Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(curve->BasisCurve());
+        Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
         double angleXU = -conic->Position().XDirection().AngleWithRef(gp_Dir(1.0,0.0,0.0), gp_Dir(0.0,0.0,1.0));
         double u1 = u, v1 = v;//the true arc curve parameters, cached. u,v will contain the rotation-corrected and swapped angles.
         if (conic->Axis().Direction().Z() > 0.0){
@@ -1759,9 +1759,9 @@ void GeomArcOfCircle::getRange(double& u, double& v, bool emulateCCWXY) const
 void GeomArcOfCircle::setRange(double u, double v, bool emulateCCWXY)
 {
     try {
-        Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
+        Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
         if (emulateCCWXY){
-            Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(curve->BasisCurve());
+            Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
             double angleXU = -conic->Position().XDirection().AngleWithRef(gp_Dir(1.0,0.0,0.0), gp_Dir(0.0,0.0,1.0));
             double u1 = u, v1 = v;//the values that were passed, ccw angles from X axis. u,v will contain the rotation-corrected and swapped angles.
             if (conic->Axis().Direction().Z() > 0.0){
@@ -1779,7 +1779,7 @@ void GeomArcOfCircle::setRange(double u, double v, bool emulateCCWXY)
         curve->SetTrim(u, v);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1795,7 +1795,7 @@ void GeomArcOfCircle::Save(Base::Writer &writer) const
     // save the attributes of the father class
     Geometry::Save(writer);
 
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(this->myCurve->BasisCurve());
+    Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(this->myCurve->BasisCurve());
 
     gp_Pnt center = circle->Axis().Location();
     gp_Dir norm = circle->Axis().Direction();
@@ -1845,15 +1845,15 @@ void GeomArcOfCircle::Restore(Base::XMLReader &reader)
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
 
-        Handle_Geom_TrimmedCurve tmpcurve = ma.Value();
-        Handle_Geom_Circle tmpcircle = Handle_Geom_Circle::DownCast(tmpcurve->BasisCurve());
-        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(this->myCurve->BasisCurve());
+        Handle(Geom_TrimmedCurve) tmpcurve = ma.Value();
+        Handle(Geom_Circle) tmpcircle = Handle(Geom_Circle)::DownCast(tmpcurve->BasisCurve());
+        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(this->myCurve->BasisCurve());
 
         circle->SetCirc(tmpcircle->Circ());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -1869,11 +1869,11 @@ TYPESYSTEM_SOURCE(Part::GeomEllipse,Part::GeomConic)
 
 GeomEllipse::GeomEllipse()
 {
-    Handle_Geom_Ellipse e = new Geom_Ellipse(gp_Elips());
+    Handle(Geom_Ellipse) e = new Geom_Ellipse(gp_Elips());
     this->myCurve = e;
 }
 
-GeomEllipse::GeomEllipse(const Handle_Geom_Ellipse& e)
+GeomEllipse::GeomEllipse(const Handle(Geom_Ellipse)& e)
 {
     setHandle(e);
 }
@@ -1882,14 +1882,14 @@ GeomEllipse::~GeomEllipse()
 {
 }
 
-const Handle_Geom_Geometry& GeomEllipse::handle() const
+const Handle(Geom_Geometry)& GeomEllipse::handle() const
 {
     return myCurve;
 }
 
-void GeomEllipse::setHandle(const Handle_Geom_Ellipse &e)
+void GeomEllipse::setHandle(const Handle(Geom_Ellipse) &e)
 {
-    this->myCurve = Handle_Geom_Ellipse::DownCast(e->Copy());
+    this->myCurve = Handle(Geom_Ellipse)::DownCast(e->Copy());
 }
 
 Geometry *GeomEllipse::copy(void) const
@@ -1906,7 +1906,7 @@ GeomBSplineCurve* GeomEllipse::toNurbs(double first, double last) const
         return GeomCurve::toNurbs(first, last);
     }
 
-    Handle_Geom_Ellipse conic =  Handle_Geom_Ellipse::DownCast(handle());
+    Handle(Geom_Ellipse) conic =  Handle(Geom_Ellipse)::DownCast(handle());
     gp_Ax1 axis = conic->Axis();
     Standard_Real majorRadius = conic->MajorRadius();
     Standard_Real minorRadius = conic->MinorRadius();
@@ -1942,45 +1942,45 @@ GeomBSplineCurve* GeomEllipse::toNurbs(double first, double last) const
     knots(2) = 1;
     knots(3) = 2;
 
-    Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(poles, weights,knots, mults, 3,
+    Handle(Geom_BSplineCurve) spline = new Geom_BSplineCurve(poles, weights,knots, mults, 3,
         Standard_False, Standard_True);
     return new GeomBSplineCurve(spline);
 }
 
 double GeomEllipse::getMajorRadius(void) const
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(handle());
     return ellipse->MajorRadius();
 }
 
 void GeomEllipse::setMajorRadius(double Radius)
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(handle());
 
     try {
         ellipse->SetMajorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
 double GeomEllipse::getMinorRadius(void) const
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(handle());
     return ellipse->MinorRadius();
 }
 
 void GeomEllipse::setMinorRadius(double Radius)
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(handle());
 
     try {
         ellipse->SetMinorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2018,7 +2018,7 @@ void GeomEllipse::setMajorAxisDir(Base::Vector3d newdir)
         myCurve->SetPosition(pos);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2100,7 +2100,7 @@ void GeomEllipse::Restore(Base::XMLReader& reader)
         this->myCurve = mc.Value();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2116,11 +2116,11 @@ TYPESYSTEM_SOURCE(Part::GeomArcOfEllipse,Part::GeomArcOfConic)
 
 GeomArcOfEllipse::GeomArcOfEllipse()
 {
-    Handle_Geom_Ellipse e = new Geom_Ellipse(gp_Elips());
+    Handle(Geom_Ellipse) e = new Geom_Ellipse(gp_Elips());
     this->myCurve = new Geom_TrimmedCurve(e, e->FirstParameter(),e->LastParameter());
 }
 
-GeomArcOfEllipse::GeomArcOfEllipse(const Handle_Geom_Ellipse& e)
+GeomArcOfEllipse::GeomArcOfEllipse(const Handle(Geom_Ellipse)& e)
 {
     setHandle(e);
 }
@@ -2129,20 +2129,20 @@ GeomArcOfEllipse::~GeomArcOfEllipse()
 {
 }
 
-void GeomArcOfEllipse::setHandle(const Handle_Geom_TrimmedCurve& c)
+void GeomArcOfEllipse::setHandle(const Handle(Geom_TrimmedCurve)& c)
 {
-    Handle_Geom_Ellipse basis = Handle_Geom_Ellipse::DownCast(c->BasisCurve());
+    Handle(Geom_Ellipse) basis = Handle(Geom_Ellipse)::DownCast(c->BasisCurve());
     if (basis.IsNull())
         Standard_Failure::Raise("Basis curve is not an ellipse");
-    this->myCurve = Handle_Geom_TrimmedCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
 }
 
-void GeomArcOfEllipse::setHandle(const Handle_Geom_Ellipse& e)
+void GeomArcOfEllipse::setHandle(const Handle(Geom_Ellipse)& e)
 {
     this->myCurve = new Geom_TrimmedCurve(e, e->FirstParameter(),e->LastParameter());
 }
 
-const Handle_Geom_Geometry& GeomArcOfEllipse::handle() const
+const Handle(Geom_Geometry)& GeomArcOfEllipse::handle() const
 {
     return myCurve;
 }
@@ -2157,45 +2157,45 @@ Geometry *GeomArcOfEllipse::copy(void) const
 
 GeomBSplineCurve* GeomArcOfEllipse::toNurbs(double first, double last) const
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(curve->BasisCurve());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(curve->BasisCurve());
     return GeomEllipse(ellipse).toNurbs(first, last);
 }
 
 double GeomArcOfEllipse::getMajorRadius(void) const
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(myCurve->BasisCurve());
     return ellipse->MajorRadius();
 }
 
 void GeomArcOfEllipse::setMajorRadius(double Radius)
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(myCurve->BasisCurve());
 
     try {
         ellipse->SetMajorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
 double GeomArcOfEllipse::getMinorRadius(void) const
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(myCurve->BasisCurve());
     return ellipse->MinorRadius();
 }
 
 void GeomArcOfEllipse::setMinorRadius(double Radius)
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(myCurve->BasisCurve());
 
     try {
         ellipse->SetMinorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2207,7 +2207,7 @@ void GeomArcOfEllipse::setMinorRadius(double Radius)
  */
 Base::Vector3d GeomArcOfEllipse::getMajorAxisDir() const
 {
-    Handle_Geom_Ellipse c = Handle_Geom_Ellipse::DownCast( myCurve->BasisCurve() );
+    Handle(Geom_Ellipse) c = Handle(Geom_Ellipse)::DownCast( myCurve->BasisCurve() );
     assert(!c.IsNull());
     gp_Dir xdir = c->XAxis().Direction();
     return Base::Vector3d(xdir.X(), xdir.Y(), xdir.Z());
@@ -2223,7 +2223,7 @@ Base::Vector3d GeomArcOfEllipse::getMajorAxisDir() const
  */
 void GeomArcOfEllipse::setMajorAxisDir(Base::Vector3d newdir)
 {
-    Handle_Geom_Ellipse c = Handle_Geom_Ellipse::DownCast( myCurve->BasisCurve() );
+    Handle(Geom_Ellipse) c = Handle(Geom_Ellipse)::DownCast( myCurve->BasisCurve() );
     assert(!c.IsNull());
 #if OCC_VERSION_HEX >= 0x060504
     if (newdir.Sqr() < Precision::SquareConfusion())
@@ -2237,7 +2237,7 @@ void GeomArcOfEllipse::setMajorAxisDir(Base::Vector3d newdir)
         c->SetPosition(pos);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2284,7 +2284,7 @@ void GeomArcOfEllipse::setRange(double u, double v, bool emulateCCWXY)
         myCurve->SetTrim(u, v);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2300,7 +2300,7 @@ void GeomArcOfEllipse::Save(Base::Writer &writer) const
     // save the attributes of the father class
     GeomCurve::Save(writer);
 
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(this->myCurve->BasisCurve());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(this->myCurve->BasisCurve());
 
     gp_Pnt center = ellipse->Axis().Location();
     gp_Dir normal = ellipse->Axis().Direction();
@@ -2369,15 +2369,15 @@ void GeomArcOfEllipse::Restore(Base::XMLReader &reader)
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
 
-        Handle_Geom_TrimmedCurve tmpcurve = ma.Value();
-        Handle_Geom_Ellipse tmpellipse = Handle_Geom_Ellipse::DownCast(tmpcurve->BasisCurve());
-        Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(this->myCurve->BasisCurve());
+        Handle(Geom_TrimmedCurve) tmpcurve = ma.Value();
+        Handle(Geom_Ellipse) tmpellipse = Handle(Geom_Ellipse)::DownCast(tmpcurve->BasisCurve());
+        Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(this->myCurve->BasisCurve());
 
         ellipse->SetElips(tmpellipse->Elips());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2393,11 +2393,11 @@ TYPESYSTEM_SOURCE(Part::GeomHyperbola,Part::GeomConic)
 
 GeomHyperbola::GeomHyperbola()
 {
-    Handle_Geom_Hyperbola h = new Geom_Hyperbola(gp_Hypr());
+    Handle(Geom_Hyperbola) h = new Geom_Hyperbola(gp_Hypr());
     this->myCurve = h;
 }
 
-GeomHyperbola::GeomHyperbola(const Handle_Geom_Hyperbola& h)
+GeomHyperbola::GeomHyperbola(const Handle(Geom_Hyperbola)& h)
 {
     setHandle(h);
 }
@@ -2406,15 +2406,15 @@ GeomHyperbola::~GeomHyperbola()
 {
 }
 
-const Handle_Geom_Geometry& GeomHyperbola::handle() const
+const Handle(Geom_Geometry)& GeomHyperbola::handle() const
 {
     return myCurve;
 }
 
 
-void GeomHyperbola::setHandle(const Handle_Geom_Hyperbola& c)
+void GeomHyperbola::setHandle(const Handle(Geom_Hyperbola)& c)
 {
-    myCurve = Handle_Geom_Hyperbola::DownCast(c->Copy());
+    myCurve = Handle(Geom_Hyperbola)::DownCast(c->Copy());
 }
 
 Geometry *GeomHyperbola::copy(void) const
@@ -2431,38 +2431,38 @@ GeomBSplineCurve* GeomHyperbola::toNurbs(double first, double last) const
 
 double GeomHyperbola::getMajorRadius(void) const
 {
-    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(handle());
+    Handle(Geom_Hyperbola) h = Handle(Geom_Hyperbola)::DownCast(handle());
     return h->MajorRadius();
 }
 
 void GeomHyperbola::setMajorRadius(double Radius)
 {
-    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(handle());
+    Handle(Geom_Hyperbola) h = Handle(Geom_Hyperbola)::DownCast(handle());
 
     try {
         h->SetMajorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
 double GeomHyperbola::getMinorRadius(void) const
 {
-    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(handle());
+    Handle(Geom_Hyperbola) h = Handle(Geom_Hyperbola)::DownCast(handle());
     return h->MinorRadius();
 }
 
 void GeomHyperbola::setMinorRadius(double Radius)
 {
-    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(handle());
+    Handle(Geom_Hyperbola) h = Handle(Geom_Hyperbola)::DownCast(handle());
 
     try {
         h->SetMinorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2538,7 +2538,7 @@ void GeomHyperbola::Restore(Base::XMLReader& reader)
         this->myCurve = mc.Value();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2554,11 +2554,11 @@ TYPESYSTEM_SOURCE(Part::GeomArcOfHyperbola,Part::GeomArcOfConic)
 GeomArcOfHyperbola::GeomArcOfHyperbola()
 {
     gp_Ax2 ax2 = gp_Ax2();
-    Handle_Geom_Hyperbola h = new Geom_Hyperbola(gp_Hypr(ax2, 1,1));
+    Handle(Geom_Hyperbola) h = new Geom_Hyperbola(gp_Hypr(ax2, 1,1));
     this->myCurve = new Geom_TrimmedCurve(h, h->FirstParameter(),h->LastParameter());
 }
 
-GeomArcOfHyperbola::GeomArcOfHyperbola(const Handle_Geom_Hyperbola& h)
+GeomArcOfHyperbola::GeomArcOfHyperbola(const Handle(Geom_Hyperbola)& h)
 {
     setHandle(h);
 }
@@ -2567,20 +2567,20 @@ GeomArcOfHyperbola::~GeomArcOfHyperbola()
 {
 }
 
-void GeomArcOfHyperbola::setHandle(const Handle_Geom_TrimmedCurve& c)
+void GeomArcOfHyperbola::setHandle(const Handle(Geom_TrimmedCurve)& c)
 {
-    Handle_Geom_Hyperbola basis = Handle_Geom_Hyperbola::DownCast(c->BasisCurve());
+    Handle(Geom_Hyperbola) basis = Handle(Geom_Hyperbola)::DownCast(c->BasisCurve());
     if (basis.IsNull())
         Standard_Failure::Raise("Basis curve is not an hyperbola");
-    this->myCurve = Handle_Geom_TrimmedCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
 }
 
-void GeomArcOfHyperbola::setHandle(const Handle_Geom_Hyperbola& h)
+void GeomArcOfHyperbola::setHandle(const Handle(Geom_Hyperbola)& h)
 {
     this->myCurve = new Geom_TrimmedCurve(h, h->FirstParameter(),h->LastParameter());
 }
 
-const Handle_Geom_Geometry& GeomArcOfHyperbola::handle() const
+const Handle(Geom_Geometry)& GeomArcOfHyperbola::handle() const
 {
     return myCurve;
 }
@@ -2595,45 +2595,45 @@ Geometry *GeomArcOfHyperbola::copy(void) const
 
 GeomBSplineCurve* GeomArcOfHyperbola::toNurbs(double first, double last) const
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
-    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(curve->BasisCurve());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(curve->BasisCurve());
     return GeomHyperbola(hyperbola).toNurbs(first, last);
 }
 
 double GeomArcOfHyperbola::getMajorRadius(void) const
 {
-    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+    Handle(Geom_Hyperbola) h = Handle(Geom_Hyperbola)::DownCast(myCurve->BasisCurve());
     return h->MajorRadius();
 }
 
 void GeomArcOfHyperbola::setMajorRadius(double Radius)
 {
-    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+    Handle(Geom_Hyperbola) h = Handle(Geom_Hyperbola)::DownCast(myCurve->BasisCurve());
 
     try {
         h->SetMajorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
 double GeomArcOfHyperbola::getMinorRadius(void) const
 {
-    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+    Handle(Geom_Hyperbola) h = Handle(Geom_Hyperbola)::DownCast(myCurve->BasisCurve());
     return h->MinorRadius();
 }
 
 void GeomArcOfHyperbola::setMinorRadius(double Radius)
 {
-    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+    Handle(Geom_Hyperbola) h = Handle(Geom_Hyperbola)::DownCast(myCurve->BasisCurve());
 
     try {
         h->SetMinorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2645,7 +2645,7 @@ void GeomArcOfHyperbola::setMinorRadius(double Radius)
  */
 Base::Vector3d GeomArcOfHyperbola::getMajorAxisDir() const
 {
-    Handle_Geom_Hyperbola c = Handle_Geom_Hyperbola::DownCast( myCurve->BasisCurve() );
+    Handle(Geom_Hyperbola) c = Handle(Geom_Hyperbola)::DownCast( myCurve->BasisCurve() );
     assert(!c.IsNull());
     gp_Dir xdir = c->XAxis().Direction();
     return Base::Vector3d(xdir.X(), xdir.Y(), xdir.Z());
@@ -2661,7 +2661,7 @@ Base::Vector3d GeomArcOfHyperbola::getMajorAxisDir() const
  */
 void GeomArcOfHyperbola::setMajorAxisDir(Base::Vector3d newdir)
 {
-    Handle_Geom_Hyperbola c = Handle_Geom_Hyperbola::DownCast( myCurve->BasisCurve() );
+    Handle(Geom_Hyperbola) c = Handle(Geom_Hyperbola)::DownCast( myCurve->BasisCurve() );
     assert(!c.IsNull());
     #if OCC_VERSION_HEX >= 0x060504
     if (newdir.Sqr() < Precision::SquareConfusion())
@@ -2676,7 +2676,7 @@ void GeomArcOfHyperbola::setMajorAxisDir(Base::Vector3d newdir)
         c->SetPosition(pos);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2686,14 +2686,14 @@ void GeomArcOfHyperbola::getRange(double& u, double& v, bool emulateCCWXY) const
     try {
         if (emulateCCWXY){
             if (isReversed()) {
-                Handle_Geom_Hyperbola c = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+                Handle(Geom_Hyperbola) c = Handle(Geom_Hyperbola)::DownCast(myCurve->BasisCurve());
                 assert(!c.IsNull());
                 c->Reverse();
             }
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 
@@ -2708,14 +2708,14 @@ void GeomArcOfHyperbola::setRange(double u, double v, bool emulateCCWXY)
 
         if (emulateCCWXY) {
             if (isReversed()) {
-                Handle_Geom_Hyperbola c = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+                Handle(Geom_Hyperbola) c = Handle(Geom_Hyperbola)::DownCast(myCurve->BasisCurve());
                 assert(!c.IsNull());
                 c->Reverse();
             }
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2731,7 +2731,7 @@ void GeomArcOfHyperbola::Save(Base::Writer &writer) const
     // save the attributes of the father class
     GeomCurve::Save(writer);
 
-    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(this->myCurve->BasisCurve());
+    Handle(Geom_Hyperbola) h = Handle(Geom_Hyperbola)::DownCast(this->myCurve->BasisCurve());
 
     gp_Pnt center = h->Axis().Location();
     gp_Dir normal = h->Axis().Direction();
@@ -2799,15 +2799,15 @@ void GeomArcOfHyperbola::Restore(Base::XMLReader &reader)
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
 
-        Handle_Geom_TrimmedCurve tmpcurve = ma.Value();
-        Handle_Geom_Hyperbola tmphyperbola = Handle_Geom_Hyperbola::DownCast(tmpcurve->BasisCurve());
-        Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(this->myCurve->BasisCurve());
+        Handle(Geom_TrimmedCurve) tmpcurve = ma.Value();
+        Handle(Geom_Hyperbola) tmphyperbola = Handle(Geom_Hyperbola)::DownCast(tmpcurve->BasisCurve());
+        Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(this->myCurve->BasisCurve());
 
         hyperbola->SetHypr(tmphyperbola->Hypr());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2822,11 +2822,11 @@ TYPESYSTEM_SOURCE(Part::GeomParabola,Part::GeomConic)
 
 GeomParabola::GeomParabola()
 {
-    Handle_Geom_Parabola p = new Geom_Parabola(gp_Parab());
+    Handle(Geom_Parabola) p = new Geom_Parabola(gp_Parab());
     this->myCurve = p;
 }
 
-GeomParabola::GeomParabola(const Handle_Geom_Parabola& p)
+GeomParabola::GeomParabola(const Handle(Geom_Parabola)& p)
 {
     setHandle(p);
 }
@@ -2835,14 +2835,14 @@ GeomParabola::~GeomParabola()
 {
 }
 
-const Handle_Geom_Geometry& GeomParabola::handle() const
+const Handle(Geom_Geometry)& GeomParabola::handle() const
 {
     return myCurve;
 }
 
-void GeomParabola::setHandle(const Handle_Geom_Parabola& c)
+void GeomParabola::setHandle(const Handle(Geom_Parabola)& c)
 {
-    myCurve = Handle_Geom_Parabola::DownCast(c->Copy());
+    myCurve = Handle(Geom_Parabola)::DownCast(c->Copy());
 }
 
 Geometry *GeomParabola::copy(void) const
@@ -2861,19 +2861,19 @@ GeomBSplineCurve* GeomParabola::toNurbs(double first, double last) const
 
 double GeomParabola::getFocal(void) const
 {
-    Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(handle());
+    Handle(Geom_Parabola) p = Handle(Geom_Parabola)::DownCast(handle());
     return p->Focal();
 }
 
 void GeomParabola::setFocal(double length)
 {
-    Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(handle());
+    Handle(Geom_Parabola) p = Handle(Geom_Parabola)::DownCast(handle());
 
     try {
         p->SetFocal(length);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2947,7 +2947,7 @@ void GeomParabola::Restore(Base::XMLReader& reader)
         this->myCurve = new Geom_Parabola(mc.Value());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -2963,11 +2963,11 @@ TYPESYSTEM_SOURCE(Part::GeomArcOfParabola,Part::GeomArcOfConic)
 
 GeomArcOfParabola::GeomArcOfParabola()
 {
-    Handle_Geom_Parabola p = new Geom_Parabola(gp_Parab());
+    Handle(Geom_Parabola) p = new Geom_Parabola(gp_Parab());
     this->myCurve = new Geom_TrimmedCurve(p, p->FirstParameter(),p->LastParameter());
 }
 
-GeomArcOfParabola::GeomArcOfParabola(const Handle_Geom_Parabola& h)
+GeomArcOfParabola::GeomArcOfParabola(const Handle(Geom_Parabola)& h)
 {
     setHandle(h);
 }
@@ -2976,20 +2976,20 @@ GeomArcOfParabola::~GeomArcOfParabola()
 {
 }
 
-void GeomArcOfParabola::setHandle(const Handle_Geom_TrimmedCurve& c)
+void GeomArcOfParabola::setHandle(const Handle(Geom_TrimmedCurve)& c)
 {
-    Handle_Geom_Parabola basis = Handle_Geom_Parabola::DownCast(c->BasisCurve());
+    Handle(Geom_Parabola) basis = Handle(Geom_Parabola)::DownCast(c->BasisCurve());
     if (basis.IsNull())
         Standard_Failure::Raise("Basis curve is not a parabola");
-    this->myCurve = Handle_Geom_TrimmedCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
 }
 
-void GeomArcOfParabola::setHandle(const Handle_Geom_Parabola& h)
+void GeomArcOfParabola::setHandle(const Handle(Geom_Parabola)& h)
 {
     this->myCurve = new Geom_TrimmedCurve(h, h->FirstParameter(),h->LastParameter());
 }
 
-const Handle_Geom_Geometry& GeomArcOfParabola::handle() const
+const Handle(Geom_Geometry)& GeomArcOfParabola::handle() const
 {
     return myCurve;
 }
@@ -3004,33 +3004,33 @@ Geometry *GeomArcOfParabola::copy(void) const
 
 GeomBSplineCurve* GeomArcOfParabola::toNurbs(double first, double last) const
 {
-    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
-    Handle_Geom_Parabola parabola = Handle_Geom_Parabola::DownCast(curve->BasisCurve());
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast(curve->BasisCurve());
     return GeomParabola(parabola).toNurbs(first, last);
 }
 
 double GeomArcOfParabola::getFocal(void) const
 {
-    Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
+    Handle(Geom_Parabola) p = Handle(Geom_Parabola)::DownCast(myCurve->BasisCurve());
     return p->Focal();
 }
 
 void GeomArcOfParabola::setFocal(double length)
 {
-    Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
+    Handle(Geom_Parabola) p = Handle(Geom_Parabola)::DownCast(myCurve->BasisCurve());
 
     try {
         p->SetFocal(length);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
 Base::Vector3d GeomArcOfParabola::getFocus(void) const
 {
-    Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
+    Handle(Geom_Parabola) p = Handle(Geom_Parabola)::DownCast(myCurve->BasisCurve());
     gp_Pnt gp = p->Focus();
 
     return Base::Vector3d(gp.X(),gp.Y(),gp.Z());
@@ -3041,14 +3041,14 @@ void GeomArcOfParabola::getRange(double& u, double& v, bool emulateCCWXY) const
     try {
         if (emulateCCWXY) {
             if (isReversed()) {
-                Handle_Geom_Parabola c = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
+                Handle(Geom_Parabola) c = Handle(Geom_Parabola)::DownCast(myCurve->BasisCurve());
                 assert(!c.IsNull());
                 c->Reverse();
             }
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 
@@ -3062,14 +3062,14 @@ void GeomArcOfParabola::setRange(double u, double v, bool emulateCCWXY)
         myCurve->SetTrim(u, v);
         if (emulateCCWXY) {
             if (isReversed()) {
-                Handle_Geom_Parabola c = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
+                Handle(Geom_Parabola) c = Handle(Geom_Parabola)::DownCast(myCurve->BasisCurve());
                 assert(!c.IsNull());
                 c->Reverse();
             }
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -3085,7 +3085,7 @@ void GeomArcOfParabola::Save(Base::Writer &writer) const
     // save the attributes of the father class
     GeomCurve::Save(writer);
 
-    Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(this->myCurve->BasisCurve());
+    Handle(Geom_Parabola) p = Handle(Geom_Parabola)::DownCast(this->myCurve->BasisCurve());
 
     gp_Pnt center = p->Axis().Location();
     gp_Dir normal = p->Axis().Direction();
@@ -3151,15 +3151,15 @@ void GeomArcOfParabola::Restore(Base::XMLReader &reader)
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
 
-        Handle_Geom_TrimmedCurve tmpcurve = ma.Value();
-        Handle_Geom_Parabola tmpparabola = Handle_Geom_Parabola::DownCast(tmpcurve->BasisCurve());
-        Handle_Geom_Parabola parabola = Handle_Geom_Parabola::DownCast(this->myCurve->BasisCurve());
+        Handle(Geom_TrimmedCurve) tmpcurve = ma.Value();
+        Handle(Geom_Parabola) tmpparabola = Handle(Geom_Parabola)::DownCast(tmpcurve->BasisCurve());
+        Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast(this->myCurve->BasisCurve());
 
         parabola->SetParab(tmpparabola->Parab());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -3175,11 +3175,11 @@ TYPESYSTEM_SOURCE(Part::GeomLine,Part::GeomCurve)
 
 GeomLine::GeomLine()
 {
-    Handle_Geom_Line c = new Geom_Line(gp_Lin());
+    Handle(Geom_Line) c = new Geom_Line(gp_Lin());
     this->myCurve = c;
 }
 
-GeomLine::GeomLine(const Handle_Geom_Line& l)
+GeomLine::GeomLine(const Handle(Geom_Line)& l)
 {
     setHandle(l);
 }
@@ -3212,15 +3212,15 @@ Base::Vector3d GeomLine::getDir(void) const
     return Base::Vector3d(Dir.X(),Dir.Y(),Dir.Z());
 }
 
-const Handle_Geom_Geometry& GeomLine::handle() const
+const Handle(Geom_Geometry)& GeomLine::handle() const
 {
     return myCurve;
 }
 
 
-void GeomLine::setHandle(const Handle_Geom_Line& l)
+void GeomLine::setHandle(const Handle(Geom_Line)& l)
 {
-    this->myCurve = Handle_Geom_Line::DownCast(l->Copy());
+    this->myCurve = Handle(Geom_Line)::DownCast(l->Copy());
 }
 
 Geometry *GeomLine::copy(void) const
@@ -3289,11 +3289,11 @@ GeomLineSegment::GeomLineSegment()
     gp_Lin line;
     line.SetLocation(gp_Pnt(0.0,0.0,0.0));
     line.SetDirection(gp_Dir(0.0,0.0,1.0));
-    Handle_Geom_Line c = new Geom_Line(line);
+    Handle(Geom_Line) c = new Geom_Line(line);
     this->myCurve = new Geom_TrimmedCurve(c, 0.0,1.0);
 }
 
-GeomLineSegment::GeomLineSegment(const Handle_Geom_Line& l)
+GeomLineSegment::GeomLineSegment(const Handle(Geom_Line)& l)
 {
     setHandle(l);
 }
@@ -3302,20 +3302,20 @@ GeomLineSegment::~GeomLineSegment()
 {
 }
 
-void GeomLineSegment::setHandle(const Handle_Geom_TrimmedCurve& c)
+void GeomLineSegment::setHandle(const Handle(Geom_TrimmedCurve)& c)
 {
-    Handle_Geom_Line basis = Handle_Geom_Line::DownCast(c->BasisCurve());
+    Handle(Geom_Line) basis = Handle(Geom_Line)::DownCast(c->BasisCurve());
     if (basis.IsNull())
         Standard_Failure::Raise("Basis curve is not a line");
-    this->myCurve = Handle_Geom_TrimmedCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
 }
 
-void GeomLineSegment::setHandle(const Handle_Geom_Line& l)
+void GeomLineSegment::setHandle(const Handle(Geom_Line)& l)
 {
     this->myCurve = new Geom_TrimmedCurve(l, l->FirstParameter(),l->LastParameter());
 }
 
-const Handle_Geom_Geometry& GeomLineSegment::handle() const
+const Handle(Geom_Geometry)& GeomLineSegment::handle() const
 {
     return myCurve;
 }
@@ -3323,21 +3323,21 @@ const Handle_Geom_Geometry& GeomLineSegment::handle() const
 Geometry *GeomLineSegment::copy(void)const
 {
     GeomLineSegment *tempCurve = new GeomLineSegment();
-    tempCurve->myCurve = Handle_Geom_TrimmedCurve::DownCast(myCurve->Copy());
+    tempCurve->myCurve = Handle(Geom_TrimmedCurve)::DownCast(myCurve->Copy());
     tempCurve->Construction = this->Construction;
     return tempCurve;
 }
 
 Base::Vector3d GeomLineSegment::getStartPoint() const
 {
-    Handle_Geom_TrimmedCurve this_curve = Handle_Geom_TrimmedCurve::DownCast(handle());
+    Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast(handle());
     gp_Pnt pnt = this_curve->StartPoint();
     return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
 }
 
 Base::Vector3d GeomLineSegment::getEndPoint() const
 {
-    Handle_Geom_TrimmedCurve this_curve = Handle_Geom_TrimmedCurve::DownCast(handle());
+    Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast(handle());
     gp_Pnt pnt = this_curve->EndPoint();
     return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
 }
@@ -3345,7 +3345,7 @@ Base::Vector3d GeomLineSegment::getEndPoint() const
 void GeomLineSegment::setPoints(const Base::Vector3d& Start, const Base::Vector3d& End)
 {
     gp_Pnt p1(Start.x,Start.y,Start.z), p2(End.x,End.y,End.z);
-    Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast(handle());
+    Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast(handle());
 
     try {
         // Create line out of two points
@@ -3357,15 +3357,15 @@ void GeomLineSegment::setPoints(const Base::Vector3d& Start, const Base::Vector3
         }
 
         // get Geom_Line of line segment
-        Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
+        Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
             (this_curv->BasisCurve());
-        Handle_Geom_TrimmedCurve that_curv = ms.Value();
-        Handle_Geom_Line that_line = Handle_Geom_Line::DownCast(that_curv->BasisCurve());
+        Handle(Geom_TrimmedCurve) that_curv = ms.Value();
+        Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast(that_curv->BasisCurve());
         this_line->SetLin(that_line->Lin());
         this_curv->SetTrim(that_curv->FirstParameter(), that_curv->LastParameter());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::RuntimeError(e->GetMessageString());
     }
 }
@@ -3429,12 +3429,12 @@ GeomOffsetCurve::GeomOffsetCurve()
 {
 }
 
-GeomOffsetCurve::GeomOffsetCurve(const Handle_Geom_Curve& c, double offset, const gp_Dir& dir)
+GeomOffsetCurve::GeomOffsetCurve(const Handle(Geom_Curve)& c, double offset, const gp_Dir& dir)
 {
     this->myCurve = new Geom_OffsetCurve(c, offset, dir);
 }
 
-GeomOffsetCurve::GeomOffsetCurve(const Handle_Geom_OffsetCurve& c)
+GeomOffsetCurve::GeomOffsetCurve(const Handle(Geom_OffsetCurve)& c)
 {
     setHandle(c);
 }
@@ -3450,12 +3450,12 @@ Geometry *GeomOffsetCurve::copy(void) const
     return newCurve;
 }
 
-void GeomOffsetCurve::setHandle(const Handle_Geom_OffsetCurve& c)
+void GeomOffsetCurve::setHandle(const Handle(Geom_OffsetCurve)& c)
 {
-    this->myCurve = Handle_Geom_OffsetCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom_OffsetCurve)::DownCast(c->Copy());
 }
 
-const Handle_Geom_Geometry& GeomOffsetCurve::handle() const
+const Handle(Geom_Geometry)& GeomOffsetCurve::handle() const
 {
     return this->myCurve;
 }
@@ -3478,7 +3478,7 @@ GeomTrimmedCurve::GeomTrimmedCurve()
 {
 }
 
-GeomTrimmedCurve::GeomTrimmedCurve(const Handle_Geom_TrimmedCurve& c)
+GeomTrimmedCurve::GeomTrimmedCurve(const Handle(Geom_TrimmedCurve)& c)
 {
     setHandle(c);
 }
@@ -3487,12 +3487,12 @@ GeomTrimmedCurve::~GeomTrimmedCurve()
 {
 }
 
-void GeomTrimmedCurve::setHandle(const Handle_Geom_TrimmedCurve& c)
+void GeomTrimmedCurve::setHandle(const Handle(Geom_TrimmedCurve)& c)
 {
-    this->myCurve = Handle_Geom_TrimmedCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
 }
 
-const Handle_Geom_Geometry& GeomTrimmedCurve::handle() const
+const Handle(Geom_Geometry)& GeomTrimmedCurve::handle() const
 {
     return myCurve;
 }
@@ -3528,7 +3528,7 @@ GeomSurface::~GeomSurface()
 
 TopoDS_Shape GeomSurface::toShape() const
 {
-    Handle_Geom_Surface s = Handle_Geom_Surface::DownCast(handle());
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
     Standard_Real u1,u2,v1,v2;
     s->Bounds(u1,u2,v1,v2);
     BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2
@@ -3541,7 +3541,7 @@ TopoDS_Shape GeomSurface::toShape() const
 
 bool GeomSurface::tangentU(double u, double v, gp_Dir& dirU) const
 {
-    Handle_Geom_Surface s = Handle_Geom_Surface::DownCast(handle());
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
     GeomLProp_SLProps prop(s,u,v,1,Precision::Confusion());
     if (prop.IsTangentUDefined()) {
         prop.TangentU(dirU);
@@ -3553,7 +3553,7 @@ bool GeomSurface::tangentU(double u, double v, gp_Dir& dirU) const
 
 bool GeomSurface::tangentV(double u, double v, gp_Dir& dirV) const
 {
-    Handle_Geom_Surface s = Handle_Geom_Surface::DownCast(handle());
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
     GeomLProp_SLProps prop(s,u,v,1,Precision::Confusion());
     if (prop.IsTangentVDefined()) {
         prop.TangentV(dirV);
@@ -3577,7 +3577,7 @@ GeomBezierSurface::GeomBezierSurface()
     this->mySurface = new Geom_BezierSurface(poles);
 }
 
-GeomBezierSurface::GeomBezierSurface(const Handle_Geom_BezierSurface& b)
+GeomBezierSurface::GeomBezierSurface(const Handle(Geom_BezierSurface)& b)
 {
     setHandle(b);
 }
@@ -3586,14 +3586,14 @@ GeomBezierSurface::~GeomBezierSurface()
 {
 }
 
-const Handle_Geom_Geometry& GeomBezierSurface::handle() const
+const Handle(Geom_Geometry)& GeomBezierSurface::handle() const
 {
     return mySurface;
 }
 
-void GeomBezierSurface::setHandle(const Handle_Geom_BezierSurface& b)
+void GeomBezierSurface::setHandle(const Handle(Geom_BezierSurface)& b)
 {
-    this->mySurface = Handle_Geom_BezierSurface::DownCast(b->Copy());
+    this->mySurface = Handle(Geom_BezierSurface)::DownCast(b->Copy());
 }
 
 Geometry *GeomBezierSurface::copy(void) const
@@ -3636,7 +3636,7 @@ GeomBSplineSurface::GeomBSplineSurface()
     this->mySurface = new Geom_BSplineSurface(poles, knots, knots, mults, mults, 1, 1);
 }
 
-GeomBSplineSurface::GeomBSplineSurface(const Handle_Geom_BSplineSurface& b)
+GeomBSplineSurface::GeomBSplineSurface(const Handle(Geom_BSplineSurface)& b)
 {
     setHandle(b);
 }
@@ -3645,12 +3645,12 @@ GeomBSplineSurface::~GeomBSplineSurface()
 {
 }
 
-void GeomBSplineSurface::setHandle(const Handle_Geom_BSplineSurface& s)
+void GeomBSplineSurface::setHandle(const Handle(Geom_BSplineSurface)& s)
 {
-    mySurface = Handle_Geom_BSplineSurface::DownCast(s->Copy());
+    mySurface = Handle(Geom_BSplineSurface)::DownCast(s->Copy());
 }
 
-const Handle_Geom_Geometry& GeomBSplineSurface::handle() const
+const Handle(Geom_Geometry)& GeomBSplineSurface::handle() const
 {
     return mySurface;
 }
@@ -3678,11 +3678,11 @@ TYPESYSTEM_SOURCE(Part::GeomCylinder,Part::GeomSurface)
 
 GeomCylinder::GeomCylinder()
 {
-    Handle_Geom_CylindricalSurface s = new Geom_CylindricalSurface(gp_Cylinder());
+    Handle(Geom_CylindricalSurface) s = new Geom_CylindricalSurface(gp_Cylinder());
     this->mySurface = s;
 }
 
-GeomCylinder::GeomCylinder(const Handle_Geom_CylindricalSurface& c)
+GeomCylinder::GeomCylinder(const Handle(Geom_CylindricalSurface)& c)
 {
     setHandle(c);
 }
@@ -3691,12 +3691,12 @@ GeomCylinder::~GeomCylinder()
 {
 }
 
-void GeomCylinder::setHandle(const Handle_Geom_CylindricalSurface& s)
+void GeomCylinder::setHandle(const Handle(Geom_CylindricalSurface)& s)
 {
-    mySurface = Handle_Geom_CylindricalSurface::DownCast(s->Copy());
+    mySurface = Handle(Geom_CylindricalSurface)::DownCast(s->Copy());
 }
 
-const Handle_Geom_Geometry& GeomCylinder::handle() const
+const Handle(Geom_Geometry)& GeomCylinder::handle() const
 {
     return mySurface;
 }
@@ -3704,7 +3704,7 @@ const Handle_Geom_Geometry& GeomCylinder::handle() const
 Geometry *GeomCylinder::copy(void) const
 {
     GeomCylinder *tempCurve = new GeomCylinder();
-    tempCurve->mySurface = Handle_Geom_CylindricalSurface::DownCast(mySurface->Copy());
+    tempCurve->mySurface = Handle(Geom_CylindricalSurface)::DownCast(mySurface->Copy());
     tempCurve->Construction = this->Construction;
     return tempCurve;
 }
@@ -3725,11 +3725,11 @@ TYPESYSTEM_SOURCE(Part::GeomCone,Part::GeomSurface)
 
 GeomCone::GeomCone()
 {
-    Handle_Geom_ConicalSurface s = new Geom_ConicalSurface(gp_Cone());
+    Handle(Geom_ConicalSurface) s = new Geom_ConicalSurface(gp_Cone());
     this->mySurface = s;
 }
 
-GeomCone::GeomCone(const Handle_Geom_ConicalSurface& c)
+GeomCone::GeomCone(const Handle(Geom_ConicalSurface)& c)
 {
     setHandle(c);
 }
@@ -3738,12 +3738,12 @@ GeomCone::~GeomCone()
 {
 }
 
-void GeomCone::setHandle(const Handle_Geom_ConicalSurface& s)
+void GeomCone::setHandle(const Handle(Geom_ConicalSurface)& s)
 {
-    mySurface = Handle_Geom_ConicalSurface::DownCast(s->Copy());
+    mySurface = Handle(Geom_ConicalSurface)::DownCast(s->Copy());
 }
 
-const Handle_Geom_Geometry& GeomCone::handle() const
+const Handle(Geom_Geometry)& GeomCone::handle() const
 {
     return mySurface;
 }
@@ -3751,7 +3751,7 @@ const Handle_Geom_Geometry& GeomCone::handle() const
 Geometry *GeomCone::copy(void) const
 {
     GeomCone *tempCurve = new GeomCone();
-    tempCurve->mySurface = Handle_Geom_ConicalSurface::DownCast(mySurface->Copy());
+    tempCurve->mySurface = Handle(Geom_ConicalSurface)::DownCast(mySurface->Copy());
     tempCurve->Construction = this->Construction;
     return tempCurve;
 }
@@ -3772,11 +3772,11 @@ TYPESYSTEM_SOURCE(Part::GeomToroid,Part::GeomSurface)
 
 GeomToroid::GeomToroid()
 {
-    Handle_Geom_ToroidalSurface s = new Geom_ToroidalSurface(gp_Torus());
+    Handle(Geom_ToroidalSurface) s = new Geom_ToroidalSurface(gp_Torus());
     this->mySurface = s;
 }
 
-GeomToroid::GeomToroid(const Handle_Geom_ToroidalSurface& t)
+GeomToroid::GeomToroid(const Handle(Geom_ToroidalSurface)& t)
 {
     setHandle(t);
 }
@@ -3785,12 +3785,12 @@ GeomToroid::~GeomToroid()
 {
 }
 
-void GeomToroid::setHandle(const Handle_Geom_ToroidalSurface& s)
+void GeomToroid::setHandle(const Handle(Geom_ToroidalSurface)& s)
 {
-    mySurface = Handle_Geom_ToroidalSurface::DownCast(s->Copy());
+    mySurface = Handle(Geom_ToroidalSurface)::DownCast(s->Copy());
 }
 
-const Handle_Geom_Geometry& GeomToroid::handle() const
+const Handle(Geom_Geometry)& GeomToroid::handle() const
 {
     return mySurface;
 }
@@ -3798,7 +3798,7 @@ const Handle_Geom_Geometry& GeomToroid::handle() const
 Geometry *GeomToroid::copy(void) const
 {
     GeomToroid *tempCurve = new GeomToroid();
-    tempCurve->mySurface = Handle_Geom_ToroidalSurface::DownCast(mySurface->Copy());
+    tempCurve->mySurface = Handle(Geom_ToroidalSurface)::DownCast(mySurface->Copy());
     tempCurve->Construction = this->Construction;
     return tempCurve;
 }
@@ -3819,11 +3819,11 @@ TYPESYSTEM_SOURCE(Part::GeomSphere,Part::GeomSurface)
 
 GeomSphere::GeomSphere()
 {
-    Handle_Geom_SphericalSurface s = new Geom_SphericalSurface(gp_Sphere());
+    Handle(Geom_SphericalSurface) s = new Geom_SphericalSurface(gp_Sphere());
     this->mySurface = s;
 }
 
-GeomSphere::GeomSphere(const Handle_Geom_SphericalSurface& s)
+GeomSphere::GeomSphere(const Handle(Geom_SphericalSurface)& s)
 {
     setHandle(s);
 }
@@ -3832,12 +3832,12 @@ GeomSphere::~GeomSphere()
 {
 }
 
-void GeomSphere::setHandle(const Handle_Geom_SphericalSurface& s)
+void GeomSphere::setHandle(const Handle(Geom_SphericalSurface)& s)
 {
-    mySurface = Handle_Geom_SphericalSurface::DownCast(s->Copy());
+    mySurface = Handle(Geom_SphericalSurface)::DownCast(s->Copy());
 }
 
-const Handle_Geom_Geometry& GeomSphere::handle() const
+const Handle(Geom_Geometry)& GeomSphere::handle() const
 {
     return mySurface;
 }
@@ -3845,7 +3845,7 @@ const Handle_Geom_Geometry& GeomSphere::handle() const
 Geometry *GeomSphere::copy(void) const
 {
     GeomSphere *tempCurve = new GeomSphere();
-    tempCurve->mySurface = Handle_Geom_SphericalSurface::DownCast(mySurface->Copy());
+    tempCurve->mySurface = Handle(Geom_SphericalSurface)::DownCast(mySurface->Copy());
     tempCurve->Construction = this->Construction;
     return tempCurve;
 }
@@ -3866,11 +3866,11 @@ TYPESYSTEM_SOURCE(Part::GeomPlane,Part::GeomSurface)
 
 GeomPlane::GeomPlane()
 {
-    Handle_Geom_Plane s = new Geom_Plane(gp_Pln());
+    Handle(Geom_Plane) s = new Geom_Plane(gp_Pln());
     this->mySurface = s;
 }
 
-GeomPlane::GeomPlane(const Handle_Geom_Plane& p)
+GeomPlane::GeomPlane(const Handle(Geom_Plane)& p)
 {
     setHandle(p);
 }
@@ -3879,12 +3879,12 @@ GeomPlane::~GeomPlane()
 {
 }
 
-void GeomPlane::setHandle(const Handle_Geom_Plane& s)
+void GeomPlane::setHandle(const Handle(Geom_Plane)& s)
 {
-    mySurface = Handle_Geom_Plane::DownCast(s->Copy());
+    mySurface = Handle(Geom_Plane)::DownCast(s->Copy());
 }
 
-const Handle_Geom_Geometry& GeomPlane::handle() const
+const Handle(Geom_Geometry)& GeomPlane::handle() const
 {
     return mySurface;
 }
@@ -3892,7 +3892,7 @@ const Handle_Geom_Geometry& GeomPlane::handle() const
 Geometry *GeomPlane::copy(void) const
 {
     GeomPlane *tempCurve = new GeomPlane();
-    tempCurve->mySurface = Handle_Geom_Plane::DownCast(mySurface->Copy());
+    tempCurve->mySurface = Handle(Geom_Plane)::DownCast(mySurface->Copy());
     tempCurve->Construction = this->Construction;
     return tempCurve;
 }
@@ -3915,12 +3915,12 @@ GeomOffsetSurface::GeomOffsetSurface()
 {
 }
 
-GeomOffsetSurface::GeomOffsetSurface(const Handle_Geom_Surface& s, double offset)
+GeomOffsetSurface::GeomOffsetSurface(const Handle(Geom_Surface)& s, double offset)
 {
     this->mySurface = new Geom_OffsetSurface(s, offset);
 }
 
-GeomOffsetSurface::GeomOffsetSurface(const Handle_Geom_OffsetSurface& s)
+GeomOffsetSurface::GeomOffsetSurface(const Handle(Geom_OffsetSurface)& s)
 {
     setHandle(s);
 }
@@ -3929,12 +3929,12 @@ GeomOffsetSurface::~GeomOffsetSurface()
 {
 }
 
-void GeomOffsetSurface::setHandle(const Handle_Geom_OffsetSurface& s)
+void GeomOffsetSurface::setHandle(const Handle(Geom_OffsetSurface)& s)
 {
-    mySurface = Handle_Geom_OffsetSurface::DownCast(s->Copy());
+    mySurface = Handle(Geom_OffsetSurface)::DownCast(s->Copy());
 }
 
-const Handle_Geom_Geometry& GeomOffsetSurface::handle() const
+const Handle(Geom_Geometry)& GeomOffsetSurface::handle() const
 {
     return mySurface;
 }
@@ -3964,18 +3964,18 @@ GeomPlateSurface::GeomPlateSurface()
 {
 }
 
-GeomPlateSurface::GeomPlateSurface(const Handle_Geom_Surface& s, const Plate_Plate& plate)
+GeomPlateSurface::GeomPlateSurface(const Handle(Geom_Surface)& s, const Plate_Plate& plate)
 {
     this->mySurface = new GeomPlate_Surface(s, plate);
 }
 
 GeomPlateSurface::GeomPlateSurface(const GeomPlate_BuildPlateSurface& buildPlate)
 {
-    Handle_GeomPlate_Surface s = buildPlate.Surface();
-    this->mySurface = Handle_GeomPlate_Surface::DownCast(s->Copy());
+    Handle(GeomPlate_Surface) s = buildPlate.Surface();
+    this->mySurface = Handle(GeomPlate_Surface)::DownCast(s->Copy());
 }
 
-GeomPlateSurface::GeomPlateSurface(const Handle_GeomPlate_Surface& s)
+GeomPlateSurface::GeomPlateSurface(const Handle(GeomPlate_Surface)& s)
 {
     setHandle(s);
 }
@@ -3984,12 +3984,12 @@ GeomPlateSurface::~GeomPlateSurface()
 {
 }
 
-void GeomPlateSurface::setHandle(const Handle_GeomPlate_Surface& s)
+void GeomPlateSurface::setHandle(const Handle(GeomPlate_Surface)& s)
 {
-    mySurface = Handle_GeomPlate_Surface::DownCast(s->Copy());
+    mySurface = Handle(GeomPlate_Surface)::DownCast(s->Copy());
 }
 
-const Handle_Geom_Geometry& GeomPlateSurface::handle() const
+const Handle(Geom_Geometry)& GeomPlateSurface::handle() const
 {
     return mySurface;
 }
@@ -4030,7 +4030,7 @@ GeomTrimmedSurface::GeomTrimmedSurface()
 {
 }
 
-GeomTrimmedSurface::GeomTrimmedSurface(const Handle_Geom_RectangularTrimmedSurface& s)
+GeomTrimmedSurface::GeomTrimmedSurface(const Handle(Geom_RectangularTrimmedSurface)& s)
 {
    setHandle(s);
 }
@@ -4039,12 +4039,12 @@ GeomTrimmedSurface::~GeomTrimmedSurface()
 {
 }
 
-void GeomTrimmedSurface::setHandle(const Handle_Geom_RectangularTrimmedSurface& s)
+void GeomTrimmedSurface::setHandle(const Handle(Geom_RectangularTrimmedSurface)& s)
 {
-    mySurface = Handle_Geom_RectangularTrimmedSurface::DownCast(s->Copy());
+    mySurface = Handle(Geom_RectangularTrimmedSurface)::DownCast(s->Copy());
 }
 
-const Handle_Geom_Geometry& GeomTrimmedSurface::handle() const
+const Handle(Geom_Geometry)& GeomTrimmedSurface::handle() const
 {
     return mySurface;
 }
@@ -4074,12 +4074,12 @@ GeomSurfaceOfRevolution::GeomSurfaceOfRevolution()
 {
 }
 
-GeomSurfaceOfRevolution::GeomSurfaceOfRevolution(const Handle_Geom_Curve& c, const gp_Ax1& a)
+GeomSurfaceOfRevolution::GeomSurfaceOfRevolution(const Handle(Geom_Curve)& c, const gp_Ax1& a)
 {
     this->mySurface = new Geom_SurfaceOfRevolution(c,a);
 }
 
-GeomSurfaceOfRevolution::GeomSurfaceOfRevolution(const Handle_Geom_SurfaceOfRevolution& s)
+GeomSurfaceOfRevolution::GeomSurfaceOfRevolution(const Handle(Geom_SurfaceOfRevolution)& s)
 {
     setHandle(s);
 }
@@ -4088,12 +4088,12 @@ GeomSurfaceOfRevolution::~GeomSurfaceOfRevolution()
 {
 }
 
-void GeomSurfaceOfRevolution::setHandle(const Handle_Geom_SurfaceOfRevolution& c)
+void GeomSurfaceOfRevolution::setHandle(const Handle(Geom_SurfaceOfRevolution)& c)
 {
-    mySurface = Handle_Geom_SurfaceOfRevolution::DownCast(c->Copy());
+    mySurface = Handle(Geom_SurfaceOfRevolution)::DownCast(c->Copy());
 }
 
-const Handle_Geom_Geometry& GeomSurfaceOfRevolution::handle() const
+const Handle(Geom_Geometry)& GeomSurfaceOfRevolution::handle() const
 {
     return mySurface;
 }
@@ -4123,12 +4123,12 @@ GeomSurfaceOfExtrusion::GeomSurfaceOfExtrusion()
 {
 }
 
-GeomSurfaceOfExtrusion::GeomSurfaceOfExtrusion(const Handle_Geom_Curve& c, const gp_Dir& d)
+GeomSurfaceOfExtrusion::GeomSurfaceOfExtrusion(const Handle(Geom_Curve)& c, const gp_Dir& d)
 {
     this->mySurface = new Geom_SurfaceOfLinearExtrusion(c,d);
 }
 
-GeomSurfaceOfExtrusion::GeomSurfaceOfExtrusion(const Handle_Geom_SurfaceOfLinearExtrusion& s)
+GeomSurfaceOfExtrusion::GeomSurfaceOfExtrusion(const Handle(Geom_SurfaceOfLinearExtrusion)& s)
 {
     setHandle(s);
 }
@@ -4137,12 +4137,12 @@ GeomSurfaceOfExtrusion::~GeomSurfaceOfExtrusion()
 {
 }
 
-void GeomSurfaceOfExtrusion::setHandle(const Handle_Geom_SurfaceOfLinearExtrusion& c)
+void GeomSurfaceOfExtrusion::setHandle(const Handle(Geom_SurfaceOfLinearExtrusion)& c)
 {
-    mySurface = Handle_Geom_SurfaceOfLinearExtrusion::DownCast(c->Copy());
+    mySurface = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(c->Copy());
 }
 
-const Handle_Geom_Geometry& GeomSurfaceOfExtrusion::handle() const
+const Handle(Geom_Geometry)& GeomSurfaceOfExtrusion::handle() const
 {
     return mySurface;
 }
@@ -4336,54 +4336,54 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
     return arc;
 }
 
-GeomSurface* makeFromSurface(const Handle_Geom_Surface& s)
+GeomSurface* makeFromSurface(const Handle(Geom_Surface)& s)
 {
     if (s->IsKind(STANDARD_TYPE(Geom_ToroidalSurface))) {
-        Handle_Geom_ToroidalSurface hSurf = Handle_Geom_ToroidalSurface::DownCast(s);
+        Handle(Geom_ToroidalSurface) hSurf = Handle(Geom_ToroidalSurface)::DownCast(s);
         return new GeomToroid(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_BezierSurface))) {
-        Handle_Geom_BezierSurface hSurf = Handle_Geom_BezierSurface::DownCast(s);
+        Handle(Geom_BezierSurface) hSurf = Handle(Geom_BezierSurface)::DownCast(s);
         return new GeomBezierSurface(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_BSplineSurface))) {
-        Handle_Geom_BSplineSurface hSurf = Handle_Geom_BSplineSurface::DownCast(s);
+        Handle(Geom_BSplineSurface) hSurf = Handle(Geom_BSplineSurface)::DownCast(s);
         return new GeomBSplineSurface(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_CylindricalSurface))) {
-        Handle_Geom_CylindricalSurface hSurf = Handle_Geom_CylindricalSurface::DownCast(s);
+        Handle(Geom_CylindricalSurface) hSurf = Handle(Geom_CylindricalSurface)::DownCast(s);
         return new GeomCylinder(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_ConicalSurface))) {
-        Handle_Geom_ConicalSurface hSurf = Handle_Geom_ConicalSurface::DownCast(s);
+        Handle(Geom_ConicalSurface) hSurf = Handle(Geom_ConicalSurface)::DownCast(s);
         return new GeomCone(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SphericalSurface))) {
-        Handle_Geom_SphericalSurface hSurf = Handle_Geom_SphericalSurface::DownCast(s);
+        Handle(Geom_SphericalSurface) hSurf = Handle(Geom_SphericalSurface)::DownCast(s);
         return new GeomSphere(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_Plane))) {
-        Handle_Geom_Plane hSurf = Handle_Geom_Plane::DownCast(s);
+        Handle(Geom_Plane) hSurf = Handle(Geom_Plane)::DownCast(s);
         return new GeomPlane(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_OffsetSurface))) {
-        Handle_Geom_OffsetSurface hSurf = Handle_Geom_OffsetSurface::DownCast(s);
+        Handle(Geom_OffsetSurface) hSurf = Handle(Geom_OffsetSurface)::DownCast(s);
         return new GeomOffsetSurface(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(GeomPlate_Surface))) {
-        Handle_GeomPlate_Surface hSurf = Handle_GeomPlate_Surface::DownCast(s);
+        Handle(GeomPlate_Surface) hSurf = Handle(GeomPlate_Surface)::DownCast(s);
         return new GeomPlateSurface(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_RectangularTrimmedSurface))) {
-        Handle_Geom_RectangularTrimmedSurface hSurf = Handle_Geom_RectangularTrimmedSurface::DownCast(s);
+        Handle(Geom_RectangularTrimmedSurface) hSurf = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
         return new GeomTrimmedSurface(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfRevolution))) {
-        Handle_Geom_SurfaceOfRevolution hSurf = Handle_Geom_SurfaceOfRevolution::DownCast(s);
+        Handle(Geom_SurfaceOfRevolution) hSurf = Handle(Geom_SurfaceOfRevolution)::DownCast(s);
         return new GeomSurfaceOfRevolution(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfLinearExtrusion))) {
-        Handle_Geom_SurfaceOfLinearExtrusion hSurf = Handle_Geom_SurfaceOfLinearExtrusion::DownCast(s);
+        Handle(Geom_SurfaceOfLinearExtrusion) hSurf = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(s);
         return new GeomSurfaceOfExtrusion(hSurf);
     }
 

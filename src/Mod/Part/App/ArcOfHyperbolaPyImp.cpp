@@ -46,9 +46,9 @@ extern const char* gce_ErrorStatusText(gce_ErrorType et);
 // returns a string which represents the object e.g. when printed in python
 std::string ArcOfHyperbolaPy::representation(void) const
 {
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
+    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfHyperbolaPtr()->handle());
-    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(trim->BasisCurve());
+    Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(trim->BasisCurve());
 
     gp_Ax1 axis = hyperbola->Axis();
     gp_Dir dir = axis.Direction();
@@ -93,7 +93,7 @@ int ArcOfHyperbolaPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject *sense=Py_True;
     if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::HyperbolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast
+            Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast
                 (static_cast<HyperbolaPy*>(o)->getGeomHyperbolaPtr()->handle());
             GC_MakeArcOfHyperbola arc(hyperbola->Hypr(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
@@ -105,7 +105,7 @@ int ArcOfHyperbolaPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return 0;
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -143,9 +143,9 @@ void  ArcOfHyperbolaPy::setMinorRadius(Py::Float arg)
 
 Py::Object ArcOfHyperbolaPy::getHyperbola(void) const
 {
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
+    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfHyperbolaPtr()->handle());
-    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(trim->BasisCurve());
+    Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(trim->BasisCurve());
     return Py::Object(new HyperbolaPy(new GeomHyperbola(hyperbola)), true);
 }
 

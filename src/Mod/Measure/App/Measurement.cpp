@@ -140,7 +140,7 @@ MeasureType Measurement::getType()
             }
             catch (Standard_Failure) {
                 std::stringstream errorMsg;
-                Handle_Standard_Failure e = Standard_Failure::Caught();
+                Handle(Standard_Failure) e = Standard_Failure::Caught();
                 errorMsg << "Measurement - getType - " << e->GetMessageString() << std::endl;
                 throw Base::Exception(e->GetMessageString());
             }
@@ -222,7 +222,7 @@ TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subNam
             refSubShape = refShape.getSubShape(subName);
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Base::Exception(e->GetMessageString());
         }
         return refSubShape;

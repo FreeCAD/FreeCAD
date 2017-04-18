@@ -154,8 +154,8 @@ public:
         GC_MakeArcOfCircle arc(points[0], points[1], points[2]);
         if (!arc.IsDone())
             throw Base::Exception(gce_ErrorStatusText(arc.Status()));
-        Handle_Geom_TrimmedCurve trim = arc.Value();
-        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
+        Handle(Geom_TrimmedCurve) trim = arc.Value();
+        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
 
         QString name = QString::fromLatin1(doc->getUniqueObjectName("Circle").c_str());
         return QString::fromLatin1(

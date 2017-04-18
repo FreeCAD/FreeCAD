@@ -74,13 +74,13 @@ void  Conic2dPy::setLocation(Py::Object arg)
 
 Py::Float Conic2dPy::getEccentricity(void) const
 {
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(getGeom2dConicPtr()->handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(getGeom2dConicPtr()->handle());
     return Py::Float(conic->Eccentricity());
 }
 
 Py::Object Conic2dPy::getXAxis(void) const
 {
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(getGeom2dConicPtr()->handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(getGeom2dConicPtr()->handle());
     gp_Dir2d xdir = conic->XAxis().Direction();
     Py::Module module("__FreeCADBase__");
     Py::Callable method(module.getAttr("Vector2d"));
@@ -93,7 +93,7 @@ Py::Object Conic2dPy::getXAxis(void) const
 void  Conic2dPy::setXAxis(Py::Object arg)
 {
     Base::Vector2d dir = Py::Vector2d(arg.ptr()).getCxxObject()->value();
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(getGeom2dConicPtr()->handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(getGeom2dConicPtr()->handle());
     gp_Ax2d xaxis = conic->XAxis();
     xaxis.SetDirection(gp_Dir2d(dir.x, dir.y));
     conic->SetXAxis(xaxis);
@@ -101,7 +101,7 @@ void  Conic2dPy::setXAxis(Py::Object arg)
 
 Py::Object Conic2dPy::getYAxis(void) const
 {
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(getGeom2dConicPtr()->handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(getGeom2dConicPtr()->handle());
     gp_Dir2d ydir = conic->YAxis().Direction();
     Py::Module module("__FreeCADBase__");
     Py::Callable method(module.getAttr("Vector2d"));
@@ -114,7 +114,7 @@ Py::Object Conic2dPy::getYAxis(void) const
 void  Conic2dPy::setYAxis(Py::Object arg)
 {
     Base::Vector2d dir = Py::Vector2d(arg.ptr()).getCxxObject()->value();
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(getGeom2dConicPtr()->handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(getGeom2dConicPtr()->handle());
     gp_Ax2d yaxis = conic->YAxis();
     yaxis.SetDirection(gp_Dir2d(dir.x, dir.y));
     conic->SetYAxis(yaxis);

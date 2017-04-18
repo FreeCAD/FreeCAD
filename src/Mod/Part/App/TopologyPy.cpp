@@ -272,7 +272,7 @@ PyObject *TopoShapePyOld::analyze(PyObject *args)
       {
         if (!aChecker.IsValid(it.Value()))
         {
-          const Handle_BRepCheck_Result& result = aChecker.Result(it.Value());
+          const Handle(BRepCheck_Result)& result = aChecker.Result(it.Value());
           const BRepCheck_ListOfStatus& status = result->StatusOnShape(it.Value());
 
           BRepCheck_ListIteratorOfListOfStatus it(status);
@@ -403,11 +403,9 @@ PyObject *TopoShapePyOld::analyze(PyObject *args)
 #include <MoniTool_ProgressIndicator.hxx>
 #include <MoniTool_ProgressScale.hxx>
 #include <Transfer_FinderProcess.hxx>
-#include <Handle_TCollection_HAsciiString.hxx>
 #include <TCollection_HAsciiString.hxx>
 #include <Transfer_TransientProcess.hxx>
 #include <IGESData_IGESEntity.hxx>
-#include <Handle_XSControl_TransferReader.hxx>
 #include <XSControl_TransferReader.hxx>
 #include <XSControl_WorkSession.hxx>
 #include <Interface_InterfaceModel.hxx>
@@ -437,7 +435,7 @@ public:
     Standard_Integer scopes = GetNbScopes();
 
     const MoniTool_ProgressScale& scale = GetScope(scopes);
-    Handle_TCollection_HAsciiString name = scale.GetName();
+    Handle(TCollection_HAsciiString) name = scale.GetName();
 
     if ( val < 2.0 )
       Base::Sequencer().start(name->ToCString(), (unsigned long)max);
@@ -478,7 +476,7 @@ PyObject *TopoShapePyOld::importIGES(PyObject *args)
     for (Standard_Integer j=1; j<=aList->Length(); j++) {
       Handle(IGESData_IGESEntity) igesEntity=Handle(IGESData_IGESEntity)::DownCast(aList->Value(j));
       // get names 
-      Handle_TCollection_HAsciiString name = igesEntity->NameValue();
+      Handle(TCollection_HAsciiString) name = igesEntity->NameValue();
       if ( !name.IsNull() ) {
         const char* cname = name->ToCString();
       }
@@ -586,7 +584,7 @@ PyObject *TopoShapePyOld::importSTEP(PyObject *args)
     for (Standard_Integer j=1; j<=aList->Length(); j++) {
       Handle(IGESData_IGESEntity) igesEntity=Handle(IGESData_IGESEntity)::DownCast(aList->Value(j));
       // get names 
-      Handle_TCollection_HAsciiString name = igesEntity->NameValue();
+      Handle(TCollection_HAsciiString) name = igesEntity->NameValue();
       if ( !name.IsNull() ) {
         const char* cname = name->ToCString();
       }
@@ -604,10 +602,10 @@ PyObject *TopoShapePyOld::importSTEP(PyObject *args)
     _cTopoShape = aReader.OneShape();
 
 #if 0 // Some interesting stuff
-	  Handle_XSControl_WorkSession ws = aReader.WS();
+	  Handle(XSControl_WorkSession) ws = aReader.WS();
 	  //SetModel( reader.StepModel() );
-	  Handle_XSControl_TransferReader tr = ws->TransferReader();
-	  Handle_Standard_Transient ent = tr->EntityFromShapeResult(_cTopoShape, 3);
+	  Handle(XSControl_TransferReader) tr = ws->TransferReader();
+	  Handle(Standard_Transient) ent = tr->EntityFromShapeResult(_cTopoShape, 3);
 	  if ( ! ent.IsNull() ) {
 		  //printf( "Name of STEP-Model: %s\n", ws->Model()->StringLabel(ent)->String() );
 	  }
@@ -615,7 +613,7 @@ PyObject *TopoShapePyOld::importSTEP(PyObject *args)
 	  TopExp::MapShapes( _cTopoShape, smap);
 	  for ( Standard_Integer k = 1; k <= smap.Extent(); k++ ) {
 		  const TopoDS_Shape& tsh = smap(k);
-		  Handle_Standard_Transient ent = tr->EntityFromShapeResult(tsh, 3);
+		  Handle(Standard_Transient) ent = tr->EntityFromShapeResult(tsh, 3);
 		  if ( ! ent.IsNull() ) {
 			  //printf( "Part %s ", ws->Model()->StringLabel(ent)->String() );
 			  //printf( "is a %s\n", ws->Model()->TypeName(ent) );

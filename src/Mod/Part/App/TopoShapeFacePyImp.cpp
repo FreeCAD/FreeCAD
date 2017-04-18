@@ -140,7 +140,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -173,7 +173,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -184,7 +184,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (PyArg_ParseTuple(args, "O!O!", &(Part::GeometrySurfacePy::Type), &surf,
                                        &(Part::TopoShapeWirePy::Type), &wire)) {
         try {
-            Handle_Geom_Surface S = Handle_Geom_Surface::DownCast
+            Handle(Geom_Surface) S = Handle(Geom_Surface)::DownCast
                 (static_cast<GeometryPy*>(surf)->getGeometryPtr()->handle());
             if (S.IsNull()) {
                 PyErr_SetString(PyExc_TypeError, "geometry is not a valid surface");
@@ -206,7 +206,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -216,7 +216,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject *bound=0;
     if (PyArg_ParseTuple(args, "O!|O!", &(GeometryPy::Type), &surf, &(PyList_Type), &bound)) {
         try {
-            Handle_Geom_Surface S = Handle_Geom_Surface::DownCast
+            Handle(Geom_Surface) S = Handle(Geom_Surface)::DownCast
                 (static_cast<GeometryPy*>(surf)->getGeometryPtr()->handle());
             if (S.IsNull()) {
                 PyErr_SetString(PyExc_TypeError, "geometry is not a valid surface");
@@ -252,7 +252,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -312,7 +312,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -359,7 +359,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
             return -1;
         } catch (Standard_Failure){
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -507,7 +507,7 @@ PyObject* TopoShapeFacePy::derivative1At(PyObject *args)
         return Py::new_reference_to(tuple);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -532,7 +532,7 @@ PyObject* TopoShapeFacePy::derivative2At(PyObject *args)
         return Py::new_reference_to(tuple);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -559,7 +559,7 @@ PyObject* TopoShapeFacePy::isPartOfDomain(PyObject *args)
         return PyBool_FromLong((state == TopAbs_ON || state == TopAbs_IN) ? 1 : 0);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -577,7 +577,7 @@ PyObject* TopoShapeFacePy::makeHalfSpace(PyObject *args)
         return new TopoShapeSolidPy(new TopoShape(mkHS.Solid()));
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -630,7 +630,7 @@ PyObject* TopoShapeFacePy::validate(PyObject *args)
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -653,7 +653,7 @@ PyObject* TopoShapeFacePy::curveOnSurface(PyObject *args)
         const TopoDS_Face& face = TopoDS::Face(getTopoShapePtr()->getShape());
 
         Standard_Real first, last;
-        Handle_Geom2d_Curve curve = BRep_Tool::CurveOnSurface(edge, face, first, last);
+        Handle(Geom2d_Curve) curve = BRep_Tool::CurveOnSurface(edge, face, first, last);
         std::unique_ptr<Part::Geom2dCurve> geo2d = getCurve2dFromGeom2d(curve);
         if (!geo2d)
             Py_Return;
@@ -665,7 +665,7 @@ PyObject* TopoShapeFacePy::curveOnSurface(PyObject *args)
         return Py::new_reference_to(tuple);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -680,7 +680,7 @@ Py::Object TopoShapeFacePy::getSurface() const
     case GeomAbs_Plane:
         {
             GeomPlane* plane = new GeomPlane();
-            Handle_Geom_Plane this_surf = Handle_Geom_Plane::DownCast
+            Handle(Geom_Plane) this_surf = Handle(Geom_Plane)::DownCast
                 (plane->handle());
             this_surf->SetPln(adapt.Plane());
             return Py::Object(new PlanePy(plane),true);
@@ -688,7 +688,7 @@ Py::Object TopoShapeFacePy::getSurface() const
     case GeomAbs_Cylinder:
         {
             GeomCylinder* cylinder = new GeomCylinder();
-            Handle_Geom_CylindricalSurface this_surf = Handle_Geom_CylindricalSurface::DownCast
+            Handle(Geom_CylindricalSurface) this_surf = Handle(Geom_CylindricalSurface)::DownCast
                 (cylinder->handle());
             this_surf->SetCylinder(adapt.Cylinder());
             return Py::Object(new CylinderPy(cylinder),true);
@@ -696,7 +696,7 @@ Py::Object TopoShapeFacePy::getSurface() const
     case GeomAbs_Cone:
         {
             GeomCone* cone = new GeomCone();
-            Handle_Geom_ConicalSurface this_surf = Handle_Geom_ConicalSurface::DownCast
+            Handle(Geom_ConicalSurface) this_surf = Handle(Geom_ConicalSurface)::DownCast
                 (cone->handle());
             this_surf->SetCone(adapt.Cone());
             return Py::Object(new ConePy(cone),true);
@@ -704,7 +704,7 @@ Py::Object TopoShapeFacePy::getSurface() const
     case GeomAbs_Sphere:
         {
             GeomSphere* sphere = new GeomSphere();
-            Handle_Geom_SphericalSurface this_surf = Handle_Geom_SphericalSurface::DownCast
+            Handle(Geom_SphericalSurface) this_surf = Handle(Geom_SphericalSurface)::DownCast
                 (sphere->handle());
             this_surf->SetSphere(adapt.Sphere());
             return Py::Object(new SpherePy(sphere),true);
@@ -712,7 +712,7 @@ Py::Object TopoShapeFacePy::getSurface() const
     case GeomAbs_Torus:
         {
             GeomToroid* toroid = new GeomToroid();
-            Handle_Geom_ToroidalSurface this_surf = Handle_Geom_ToroidalSurface::DownCast
+            Handle(Geom_ToroidalSurface) this_surf = Handle(Geom_ToroidalSurface)::DownCast
                 (toroid->handle());
             this_surf->SetTorus(adapt.Torus());
             return Py::Object(new ToroidPy(toroid),true);
@@ -729,11 +729,11 @@ Py::Object TopoShapeFacePy::getSurface() const
         }
     case GeomAbs_SurfaceOfRevolution:
         {
-            Handle_Geom_Surface s = BRep_Tool::Surface(f);
-            Handle_Geom_SurfaceOfRevolution rev = Handle_Geom_SurfaceOfRevolution::DownCast(s);
+            Handle(Geom_Surface) s = BRep_Tool::Surface(f);
+            Handle(Geom_SurfaceOfRevolution) rev = Handle(Geom_SurfaceOfRevolution)::DownCast(s);
             if (rev.IsNull()) {
-                Handle_Geom_RectangularTrimmedSurface rect = Handle_Geom_RectangularTrimmedSurface::DownCast(s);
-                rev = Handle_Geom_SurfaceOfRevolution::DownCast(rect->BasisSurface());
+                Handle(Geom_RectangularTrimmedSurface) rect = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
+                rev = Handle(Geom_SurfaceOfRevolution)::DownCast(rect->BasisSurface());
             }
             if (!rev.IsNull()) {
                 GeomSurfaceOfRevolution* surf = new GeomSurfaceOfRevolution(rev);
@@ -745,11 +745,11 @@ Py::Object TopoShapeFacePy::getSurface() const
         }
     case GeomAbs_SurfaceOfExtrusion:
         {
-            Handle_Geom_Surface s = BRep_Tool::Surface(f);
-            Handle_Geom_SurfaceOfLinearExtrusion ext = Handle_Geom_SurfaceOfLinearExtrusion::DownCast(s);
+            Handle(Geom_Surface) s = BRep_Tool::Surface(f);
+            Handle(Geom_SurfaceOfLinearExtrusion) ext = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(s);
             if (ext.IsNull()) {
-                Handle_Geom_RectangularTrimmedSurface rect = Handle_Geom_RectangularTrimmedSurface::DownCast(s);
-                ext = Handle_Geom_SurfaceOfLinearExtrusion::DownCast(rect->BasisSurface());
+                Handle(Geom_RectangularTrimmedSurface) rect = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
+                ext = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(rect->BasisSurface());
             }
             if (!ext.IsNull()) {
                 GeomSurfaceOfExtrusion* surf = new GeomSurfaceOfExtrusion(ext);
@@ -761,11 +761,11 @@ Py::Object TopoShapeFacePy::getSurface() const
         }
     case GeomAbs_OffsetSurface:
         {
-            Handle_Geom_Surface s = BRep_Tool::Surface(f);
-            Handle_Geom_OffsetSurface off = Handle_Geom_OffsetSurface::DownCast(s);
+            Handle(Geom_Surface) s = BRep_Tool::Surface(f);
+            Handle(Geom_OffsetSurface) off = Handle(Geom_OffsetSurface)::DownCast(s);
             if (off.IsNull()) {
-                Handle_Geom_RectangularTrimmedSurface rect = Handle_Geom_RectangularTrimmedSurface::DownCast(s);
-                off = Handle_Geom_OffsetSurface::DownCast(rect->BasisSurface());
+                Handle(Geom_RectangularTrimmedSurface) rect = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
+                off = Handle(Geom_OffsetSurface)::DownCast(rect->BasisSurface());
             }
             if (!off.IsNull()) {
                 GeomOffsetSurface* surf = new GeomOffsetSurface(off);

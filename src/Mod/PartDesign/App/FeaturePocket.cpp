@@ -204,7 +204,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         if (std::string(e->GetMessageString()) == "TopoDS::Face" &&
             (std::string(Type.getValueAsString()) == "UpToFirst" || std::string(Type.getValueAsString()) == "UpToFace"))
             return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"

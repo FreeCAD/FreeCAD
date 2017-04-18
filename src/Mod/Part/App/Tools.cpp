@@ -89,8 +89,8 @@ bool Part::intersect(const gp_Pln& pln1, const gp_Pln& pln2, gp_Lin& lin)
     if (intSS.IsDone()) {
         int numSol = intSS.NbLines();
         if (numSol > 0) {
-            Handle_Geom_Curve curve = intSS.Line(1);
-            lin = Handle_Geom_Line::DownCast(curve)->Lin();
+            Handle(Geom_Curve) curve = intSS.Line(1);
+            lin = Handle(Geom_Line)::DownCast(curve)->Lin();
             found = true;
         }
     }
@@ -107,7 +107,7 @@ If the \a theBoundaries list is empty then Standard_ConstructionError is thrown.
 If the algorithm fails it returns a null surface.
 \see http://opencascade.blogspot.com/2010/03/surface-modeling-part6.html
 */
-Handle_Geom_Surface
+Handle(Geom_Surface)
 Part::Tools::makeSurface(const TColStd_ListOfTransient &theBoundaries,
                          const Standard_Real theTol,
                          const Standard_Integer theNbPnts,
@@ -140,19 +140,19 @@ Part::Tools::makeSurface(const TColStd_ListOfTransient &theBoundaries,
             }
             else if (aCur->IsKind (STANDARD_TYPE (Adaptor3d_HCurveOnSurface))) {
                 //G1 constraint
-                const Handle(Adaptor3d_HCurveOnSurface)& aHCOS = Handle(Adaptor3d_HCurveOnSurface)::DownCast (aCur);
+                Handle(Adaptor3d_HCurveOnSurface) aHCOS (Handle(Adaptor3d_HCurveOnSurface)::DownCast (aCur));
                 Handle (GeomPlate_CurveConstraint) aConst = new GeomPlate_CurveConstraint (aHCOS, 1 /*GeomAbs_G1*/,aNbPnts, aTol3d, anAngTol, aCurvTol);
                 aPlateBuilder.Add (aConst);
             }
             else if (aCur->IsKind (STANDARD_TYPE (GeomAdaptor_HCurve))) {
                 //G0 constraint
-                const Handle(GeomAdaptor_HCurve)& aHC = Handle(GeomAdaptor_HCurve)::DownCast (aCur);
+                Handle(GeomAdaptor_HCurve) aHC (Handle(GeomAdaptor_HCurve)::DownCast (aCur));
                 Handle (GeomPlate_CurveConstraint) aConst = new GeomPlate_CurveConstraint (aHC, 0 /*GeomAbs_G0*/, aNbPnts, aTol3d);
                 aPlateBuilder.Add (aConst);
             }
             else if (aCur->IsKind (STANDARD_TYPE (Geom_Point))) {
                 //Point constraint
-                const Handle(Geom_Point)& aGP = Handle(Geom_Point)::DownCast (aCur);
+                Handle(Geom_Point) aGP (Handle(Geom_Point)::DownCast (aCur));
                 Handle(GeomPlate_PointConstraint) aConst = new GeomPlate_PointConstraint(aGP->Pnt(),0);
                 aPlateBuilder.Add(aConst);
             }

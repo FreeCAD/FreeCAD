@@ -289,7 +289,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             } catch (Standard_Failure) {
                 // Note: Ignoring this failure is probably pointless because if the intersection check fails, the later
                 // fuse operation of the transformation result will also fail
-                Handle_Standard_Failure e = Standard_Failure::Caught();
+                Handle(Standard_Failure) e = Standard_Failure::Caught();
                 std::string msg("Transformation: Intersection check failed");
                 if (e->GetMessageString() != NULL)
                     msg += std::string(": '") + e->GetMessageString() + "'";

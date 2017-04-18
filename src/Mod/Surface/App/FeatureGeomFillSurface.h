@@ -78,7 +78,7 @@ protected:
     GeomFill_FillingStyle getFillingStyle();
     /// True means that all edges have Bezier curves
     bool getWire(TopoDS_Wire& aWire);
-    void createFace(const Handle_Geom_BoundedSurface &aSurface);
+    void createFace(const Handle(Geom_BoundedSurface) &aSurface);
     void createBezierSurface(TopoDS_Wire& aWire);
     void createBSplineSurface(TopoDS_Wire& aWire);
 

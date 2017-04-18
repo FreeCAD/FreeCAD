@@ -69,10 +69,10 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         // Copy line
         LinePy* pcLine = static_cast<LinePy*>(pLine);
         // get Geom_Line of line
-        Handle_Geom_Line that_line = Handle_Geom_Line::DownCast
+        Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast
             (pcLine->getGeomLinePtr()->handle());
         // get Geom_Line of line
-        Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
+        Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
             (this->getGeomLinePtr()->handle());
 
         // Assign the lines
@@ -99,14 +99,14 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             // get Geom_Line of line
-            Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
+            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
                 (this->getGeomLinePtr()->handle());
-            Handle_Geom_Line that_curv = ms.Value();
+            Handle(Geom_Line) that_curv = ms.Value();
             this_curv->SetLin(that_curv->Lin());
             return 0;
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -125,7 +125,7 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Object LinePy::getLocation(void) const
 {
-    Handle_Geom_Line this_curve = Handle_Geom_Line::DownCast
+    Handle(Geom_Line) this_curve = Handle(Geom_Line)::DownCast
         (this->getGeomLinePtr()->handle());
     gp_Pnt pnt = this_curve->Position().Location();
     return Py::Vector(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
@@ -135,7 +135,7 @@ void LinePy::setLocation(Py::Object arg)
 {
     gp_Pnt pnt;
     gp_Dir dir;
-    Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
+    Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
         (this->getGeomLinePtr()->handle());
     dir = this_curv->Position().Direction();
 
@@ -165,18 +165,18 @@ void LinePy::setLocation(Py::Object arg)
         }
 
         // get Geom_Line of line
-        Handle_Geom_Line that_curv = ms.Value();
+        Handle(Geom_Line) that_curv = ms.Value();
         this_curv->SetLin(that_curv->Lin());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Py::Exception(e->GetMessageString());
     }
 }
 
 Py::Object LinePy::getDirection(void) const
 {
-    Handle_Geom_Line this_curve = Handle_Geom_Line::DownCast
+    Handle(Geom_Line) this_curve = Handle(Geom_Line)::DownCast
         (this->getGeomLinePtr()->handle());
     gp_Dir dir = this_curve->Position().Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
@@ -186,7 +186,7 @@ void LinePy::setDirection(Py::Object arg)
 {
     gp_Pnt pnt;
     gp_Dir dir;
-    Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
+    Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
         (this->getGeomLinePtr()->handle());
     pnt = this_curv->Position().Location();
 
@@ -215,11 +215,11 @@ void LinePy::setDirection(Py::Object arg)
         }
 
         // get Geom_Line of line
-        Handle_Geom_Line that_curv = ms.Value();
+        Handle(Geom_Line) that_curv = ms.Value();
         this_curv->SetLin(that_curv->Lin());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Py::Exception(e->GetMessageString());
     }
 }

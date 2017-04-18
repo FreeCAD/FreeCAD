@@ -221,7 +221,7 @@ private:
             }
 
             Reen::BSplineParameterCorrection pc(uOrder,vOrder,uPoles,vPoles);
-            Handle_Geom_BSplineSurface hSurf;
+            Handle(Geom_BSplineSurface) hSurf;
 
             if (uvdirs) {
                 Py::Tuple t(uvdirs);

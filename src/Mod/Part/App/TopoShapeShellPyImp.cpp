@@ -112,7 +112,7 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             Standard_Failure::Raise("Shape is not a shell");
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return -1;
     }
@@ -146,7 +146,7 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -198,7 +198,7 @@ PyObject* TopoShapeShellPy::makeHalfSpace(PyObject *args)
         return new TopoShapeSolidPy(new TopoShape(mkHS.Solid()));
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }

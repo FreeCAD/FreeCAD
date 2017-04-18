@@ -118,9 +118,9 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
 
     Standard_Boolean periodic=Standard_False;
     double period = 0;
-    Handle_Geom2d_Curve primaryCurve;
-    Handle_Geom_Geometry geom = (geomlist[GeoId])->handle();
-    Handle_Geom_Curve curve3d = Handle_Geom_Curve::DownCast(geom);
+    Handle(Geom2d_Curve) primaryCurve;
+    Handle(Geom_Geometry) geom = (geomlist[GeoId])->handle();
+    Handle(Geom_Curve) curve3d = Handle(Geom_Curve)::DownCast(geom);
     if (curve3d.IsNull())
         return false;
     else {
@@ -143,12 +143,12 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
     GeoId2 = -1;
     double param1=-1e10,param2=1e10;
     gp_Pnt2d p1,p2;
-    Handle_Geom2d_Curve secondaryCurve;
+    Handle(Geom2d_Curve) secondaryCurve;
     for (int id=0; id < int(geomlist.size()); id++) {
         // #0000624: Trim tool doesn't work with construction lines
         if (id != GeoId/* && !geomlist[id]->Construction*/) {
             geom = (geomlist[id])->handle();
-            curve3d = Handle_Geom_Curve::DownCast(geom);
+            curve3d = Handle(Geom_Curve)::DownCast(geom);
             if (!curve3d.IsNull()) {
                 secondaryCurve = GeomAPI::To2d(curve3d, plane);
                 // perform the curves intersection
