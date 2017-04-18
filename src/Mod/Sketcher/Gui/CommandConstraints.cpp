@@ -1598,48 +1598,90 @@ void CmdSketcherConstrainLock::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one entity from the sketch."));
-        ActivateHandler(getActiveGuiDocument(),
-                new DrawSketchHandlerGenConstraint(constraintCursor, this));
-        // clear the selection (convenience)
-        getSelection().clearSelection();
-        return;
+    std::vector<int> GeoId;
+    std::vector<Sketcher::PointPos> PosId;
+    
+    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
+        int GeoIdt;
+        Sketcher::PointPos PosIdt;
+        getIdsFromName((*it), Obj, GeoIdt, PosIdt);
+        GeoId.push_back(GeoIdt);
+        PosId.push_back(PosIdt);
+        
+        if ((it != std::prev(SubNames.end()) && (isEdge(GeoIdt,PosIdt) || (GeoIdt < 0 && GeoIdt >= Sketcher::GeoEnum::VAxis))) ||
+            (it == std::prev(SubNames.end()) && isEdge(GeoIdt,PosIdt)) ) {
+            if(selection.size() == 1) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                     QObject::tr("Select one vertex from the sketch other than the origin."));
+            }
+            else {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                     QObject::tr("Select only vertices from the sketch. The last selected vertex may be the origin."));
+            }
+            // clear the selection (convenience)
+            getSelection().clearSelection();
+            return;
+        }
     }
+    
+    int lastconstraintindex = Obj->Constraints.getSize()-1;
 
-    int GeoId;
-    Sketcher::PointPos PosId;
-    getIdsFromName(SubNames[0], Obj, GeoId, PosId);
+    if( GeoId.size() == 1 ) { // absolute mode
 
-    if (isEdge(GeoId,PosId) || (GeoId < 0 && GeoId >= Sketcher::GeoEnum::VAxis)) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one vertex from the sketch other than the origin."));
-        // clear the selection (convenience)
-        getSelection().clearSelection();
-        return;
+        Base::Vector3d pnt = Obj->getPoint(GeoId[0],PosId[0]);
+
+        // undo command open
+        openCommand("add fixed constraint");
+        Gui::Command::doCommand(
+            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
+                                selection[0].getFeatName(),GeoId,PosId,pnt.x);
+        Gui::Command::doCommand(
+            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
+                                selection[0].getFeatName(),GeoId,PosId,pnt.y);
+
+        lastconstraintindex+=2;
+
+        if (GeoId[0] <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId[0]) || constraintCreationMode==Reference) {
+            // it is a constraint on a external line, make it non-driving
+
+            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                                    selection[0].getFeatName(),lastconstraintindex-2,"False");
+
+            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                                    selection[0].getFeatName(),lastconstraintindex,"False");
+        }
     }
+    else {
+        std::vector<int>::const_iterator itg;
+        std::vector<Sketcher::PointPos>::const_iterator itp;
 
-    Base::Vector3d pnt = Obj->getPoint(GeoId,PosId);
+        Base::Vector3d pntr = Obj->getPoint(GeoId.back(),PosId.back());
 
-    // undo command open
-    openCommand("add fixed constraint");
-    Gui::Command::doCommand(
-        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-        selection[0].getFeatName(),GeoId,PosId,pnt.x);
-    Gui::Command::doCommand(
-        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-        selection[0].getFeatName(),GeoId,PosId,pnt.y);
+        for (itg = GeoId.begin(), itp = PosId.begin(); itg != std::prev(GeoId.end()) && itp != std::prev(PosId.end()); ++itp, ++itg) {
 
-    if (GeoId <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId) || constraintCreationMode==Reference) {
-        // it is a constraint on a external line, make it non-driving
-        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+            Base::Vector3d pnt = Obj->getPoint(*itg,*itp);
 
-        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-        selection[0].getFeatName(),ConStr.size()-2,"False");
+            // undo command open
+            openCommand("add relative lock constraint");
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
+                                    selection[0].getFeatName(),*itg,*itp,GeoId.back(),PosId.back(),pntr.x-pnt.x);
 
-        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-        selection[0].getFeatName(),ConStr.size()-1,"False");
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
+                                    selection[0].getFeatName(),*itg,*itp,GeoId.back(),PosId.back(),pntr.y-pnt.y);
+            lastconstraintindex+=2;
+
+            if (*itg <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,*itg) || constraintCreationMode==Reference) {
+                // it is a constraint on a external line, make it non-driving
+
+                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                                        selection[0].getFeatName(),lastconstraintindex-1,"False");
+
+                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                                        selection[0].getFeatName(),lastconstraintindex,"False");
+            }
+        }
     }
 
     // finish the transaction and update
