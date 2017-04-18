@@ -46,9 +46,9 @@ extern const char* gce_ErrorStatusText(gce_ErrorType et);
 // returns a string which represents the object e.g. when printed in python
 std::string ArcOfCirclePy::representation(void) const
 {
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
+    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfCirclePtr()->handle());
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
+    Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
 
     gp_Ax1 axis = circle->Axis();
     gp_Dir dir = axis.Direction();
@@ -82,7 +82,7 @@ int ArcOfCirclePy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject *sense=Py_True;
     if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::CirclePy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast
+            Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast
                 (static_cast<CirclePy*>(o)->getGeomCirclePtr()->handle());
             GC_MakeArcOfCircle arc(circle->Circ(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
@@ -94,7 +94,7 @@ int ArcOfCirclePy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return 0;
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -143,9 +143,9 @@ void  ArcOfCirclePy::setRadius(Py::Float arg)
 
 Py::Object ArcOfCirclePy::getCircle(void) const
 {
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
+    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfCirclePtr()->handle());
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
+    Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
     return Py::Object(new CirclePy(new GeomCircle(circle)), true);
 }
 

@@ -92,7 +92,7 @@ using namespace Import;
 
 #define OCAF_KEEP_PLACEMENT
 
-ImportOCAF::ImportOCAF(Handle_TDocStd_Document h, App::Document* d, const std::string& name)
+ImportOCAF::ImportOCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
     : pDoc(h), doc(d), default_name(name)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (pDoc->Main());
@@ -128,7 +128,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
         hash = aShape.HashCode(HashUpper);
     }
 
-    Handle_TDataStd_Name name;
+    Handle(TDataStd_Name) name;
     std::string part_name = defaultname;
     if (label.FindAttribute(TDataStd_Name::GetID(),name)) {
         TCollection_ExtendedString extstr = name->Get();
@@ -153,7 +153,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
     }
 
     TopLoc_Location part_loc = loc;
-    Handle_XCAFDoc_Location hLoc;
+    Handle(XCAFDoc_Location) hLoc;
     if (label.FindAttribute(XCAFDoc_Location::GetID(), hLoc)) {
         if (isRef)
             part_loc = part_loc * hLoc->Get();
@@ -344,7 +344,7 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
 
 // ----------------------------------------------------------------------------
 
-ExportOCAF::ExportOCAF(Handle_TDocStd_Document h, bool explicitPlacement)
+ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     : pDoc(h)
     , keepExplicitPlacement(explicitPlacement)
 {
@@ -434,7 +434,7 @@ void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& c
 
 // ----------------------------------------------------------------------------
 
-ImportXCAF::ImportXCAF(Handle_TDocStd_Document h, App::Document* d, const std::string& name)
+ImportXCAF::ImportXCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
     : hdoc(h), doc(d), default_name(name)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (hdoc->Main());

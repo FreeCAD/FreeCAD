@@ -69,7 +69,7 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
     static char* keywords_cd[] = {"Cylinder","Distance",NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd, &(CylinderPy::Type), &pCyl, &dist)) {
         CylinderPy* pcCylinder = static_cast<CylinderPy*>(pCyl);
-        Handle_Geom_CylindricalSurface cylinder = Handle_Geom_CylindricalSurface::DownCast
+        Handle(Geom_CylindricalSurface) cylinder = Handle(Geom_CylindricalSurface)::DownCast
             (pcCylinder->getGeomCylinderPtr()->handle());
         GC_MakeCylindricalSurface mc(cylinder->Cylinder(), dist);
         if (!mc.IsDone()) {
@@ -77,7 +77,7 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom_CylindricalSurface cyl = Handle_Geom_CylindricalSurface::DownCast
+        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
             (getGeomCylinderPtr()->handle());
         cyl->SetCylinder(mc.Value()->Cylinder());
         return 0;
@@ -87,9 +87,9 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!", keywords_c, &(CylinderPy::Type), &pCyl)) {
         CylinderPy* pcCylinder = static_cast<CylinderPy*>(pCyl);
-        Handle_Geom_CylindricalSurface cyl1 = Handle_Geom_CylindricalSurface::DownCast
+        Handle(Geom_CylindricalSurface) cyl1 = Handle(Geom_CylindricalSurface)::DownCast
             (pcCylinder->getGeomCylinderPtr()->handle());
-        Handle_Geom_CylindricalSurface cyl2 = Handle_Geom_CylindricalSurface::DownCast
+        Handle(Geom_CylindricalSurface) cyl2 = Handle(Geom_CylindricalSurface)::DownCast
             (this->getGeomCylinderPtr()->handle());
         cyl2->SetCylinder(cyl1->Cylinder());
         return 0;
@@ -113,7 +113,7 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom_CylindricalSurface cyl = Handle_Geom_CylindricalSurface::DownCast
+        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
             (getGeomCylinderPtr()->handle());
         cyl->SetCylinder(mc.Value()->Cylinder());
         return 0;
@@ -124,7 +124,7 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
     PyObject *pCirc;
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!", keywords_cc, &(CirclePy::Type), &pCirc)) {
         CirclePy* pcCircle = static_cast<CirclePy*>(pCirc);
-        Handle_Geom_Circle circ = Handle_Geom_Circle::DownCast
+        Handle(Geom_Circle) circ = Handle(Geom_Circle)::DownCast
             (pcCircle->getGeomCirclePtr()->handle());
         GC_MakeCylindricalSurface mc(circ->Circ());
         if (!mc.IsDone()) {
@@ -132,7 +132,7 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom_CylindricalSurface cyl = Handle_Geom_CylindricalSurface::DownCast
+        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
             (getGeomCylinderPtr()->handle());
         cyl->SetCylinder(mc.Value()->Cylinder());
         return 0;
@@ -141,7 +141,7 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
     static char* keywords_n[] = {NULL};
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
-        Handle_Geom_CylindricalSurface cyl = Handle_Geom_CylindricalSurface::DownCast
+        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
             (getGeomCylinderPtr()->handle());
         cyl->SetRadius(1.0);
         return 0;
@@ -164,14 +164,14 @@ PyObject* CylinderPy::uIso(PyObject * args)
         return 0;
 
     try {
-        Handle_Geom_CylindricalSurface cyl = Handle_Geom_CylindricalSurface::DownCast
+        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
             (getGeomCylinderPtr()->handle());
-        Handle_Geom_Curve c = cyl->UIso(v);
-        if (!Handle_Geom_Line::DownCast(c).IsNull()) {
+        Handle(Geom_Curve) c = cyl->UIso(v);
+        if (!Handle(Geom_Line)::DownCast(c).IsNull()) {
             GeomLine* line = new GeomLine();
-            Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
+            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
                 (line->handle());
-            this_curv->SetLin(Handle_Geom_Line::DownCast(c)->Lin());
+            this_curv->SetLin(Handle(Geom_Line)::DownCast(c)->Lin());
             return new LinePy(line);
         }
 
@@ -179,7 +179,7 @@ PyObject* CylinderPy::uIso(PyObject * args)
         return 0;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -192,21 +192,21 @@ PyObject* CylinderPy::vIso(PyObject * args)
         return 0;
 
     try {
-        Handle_Geom_CylindricalSurface cyl = Handle_Geom_CylindricalSurface::DownCast
+        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
             (getGeomCylinderPtr()->handle());
-        Handle_Geom_Curve c = cyl->VIso(v);
-        if (!Handle_Geom_Circle::DownCast(c).IsNull()) {
-            return new CirclePy(new GeomCircle(Handle_Geom_Circle::DownCast(c)));
+        Handle(Geom_Curve) c = cyl->VIso(v);
+        if (!Handle(Geom_Circle)::DownCast(c).IsNull()) {
+            return new CirclePy(new GeomCircle(Handle(Geom_Circle)::DownCast(c)));
         }
-        if (!Handle_Geom_Ellipse::DownCast(c).IsNull()) {
-            return new EllipsePy(new GeomEllipse(Handle_Geom_Ellipse::DownCast(c)));
+        if (!Handle(Geom_Ellipse)::DownCast(c).IsNull()) {
+            return new EllipsePy(new GeomEllipse(Handle(Geom_Ellipse)::DownCast(c)));
         }
 
         PyErr_SetString(PyExc_NotImplementedError, "this type of conical curve is not implemented");
         return 0;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -214,21 +214,21 @@ PyObject* CylinderPy::vIso(PyObject * args)
 
 Py::Float CylinderPy::getRadius(void) const
 {
-    Handle_Geom_CylindricalSurface cyl = Handle_Geom_CylindricalSurface::DownCast
+    Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
         (getGeomCylinderPtr()->handle());
     return Py::Float(cyl->Radius()); 
 }
 
 void CylinderPy::setRadius(Py::Float arg)
 {
-    Handle_Geom_CylindricalSurface cyl = Handle_Geom_CylindricalSurface::DownCast
+    Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
         (getGeomCylinderPtr()->handle());
     cyl->SetRadius((double)arg);
 }
 
 Py::Object CylinderPy::getCenter(void) const
 {
-    Handle_Geom_CylindricalSurface cyl = Handle_Geom_CylindricalSurface::DownCast
+    Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
         (getGeomCylinderPtr()->handle());
     gp_Pnt loc = cyl->Location();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
@@ -239,13 +239,13 @@ void CylinderPy::setCenter(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        Handle_Geom_CylindricalSurface cyl = Handle_Geom_CylindricalSurface::DownCast
+        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
             (getGeomCylinderPtr()->handle());
         cyl->SetLocation(gp_Pnt(loc.x, loc.y, loc.z));
     }
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d loc = Base::getVectorFromTuple<double>(p);
-        Handle_Geom_CylindricalSurface cyl = Handle_Geom_CylindricalSurface::DownCast
+        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
             (getGeomCylinderPtr()->handle());
         cyl->SetLocation(gp_Pnt(loc.x, loc.y, loc.z));
     }
@@ -258,7 +258,7 @@ void CylinderPy::setCenter(Py::Object arg)
 
 Py::Object CylinderPy::getAxis(void) const
 {
-    Handle_Geom_ElementarySurface s = Handle_Geom_ElementarySurface::DownCast
+    Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast
         (getGeometryPtr()->handle());
     gp_Dir dir = s->Axis().Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
@@ -287,7 +287,7 @@ void CylinderPy::setAxis(Py::Object arg)
     }
 
     try {
-        Handle_Geom_ElementarySurface this_surf = Handle_Geom_ElementarySurface::DownCast
+        Handle(Geom_ElementarySurface) this_surf = Handle(Geom_ElementarySurface)::DownCast
             (this->getGeometryPtr()->handle());
         gp_Ax1 axis;
         axis.SetLocation(this_surf->Location());

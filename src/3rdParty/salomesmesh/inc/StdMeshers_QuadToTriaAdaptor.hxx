@@ -33,8 +33,8 @@ struct SMESH_ElementSearcher;
 class SMDS_MeshElement;
 class SMDS_MeshNode;
 class SMDS_MeshFace;
-// class Handle_TColgp_HArray1OfPnt;
-// class Handle_TColgp_HArray1OfVec;
+// class Handle(TColgp_HArray1OfPnt);
+// class Handle(TColgp_HArray1OfVec);
 class gp_Pnt;
 class gp_Vec;
 
@@ -66,8 +66,8 @@ public:
 protected:
 
   int Preparation(const SMDS_MeshElement* face,
-                  Handle_TColgp_HArray1OfPnt& PN,
-                  Handle_TColgp_HArray1OfVec& VN,
+                  Handle(TColgp_HArray1OfPnt)& PN,
+                  Handle(TColgp_HArray1OfVec)& VN,
                   std::vector<const SMDS_MeshNode*>& FNodes,
                   gp_Pnt& PC, gp_Vec& VNorm,
                   const SMDS_MeshElement** volumes=0);

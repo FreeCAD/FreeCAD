@@ -69,7 +69,7 @@ int PlanePy::PyInit(PyObject* args, PyObject* kwds)
     static char* keywords_pd[] = {"Plane","Distance",NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_pd, &(PlanePy::Type), &pPlane, &dist)) {
         PlanePy* pcPlane = static_cast<PlanePy*>(pPlane);
-        Handle_Geom_Plane plane = Handle_Geom_Plane::DownCast
+        Handle(Geom_Plane) plane = Handle(Geom_Plane)::DownCast
             (pcPlane->getGeometryPtr()->handle());
         GC_MakePlane mc(plane->Pln(), dist);
         if (!mc.IsDone()) {
@@ -77,7 +77,7 @@ int PlanePy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom_Plane plan = Handle_Geom_Plane::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_Plane) plan = Handle(Geom_Plane)::DownCast(getGeometryPtr()->handle());
         plan->SetPln(mc.Value()->Pln());
         return 0;
     }
@@ -94,7 +94,7 @@ int PlanePy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom_Plane plane = Handle_Geom_Plane::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_Plane) plane = Handle(Geom_Plane)::DownCast(getGeometryPtr()->handle());
         plane->SetPln(mc.Value()->Pln());
         return 0;
     }
@@ -117,7 +117,7 @@ int PlanePy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom_Plane plane = Handle_Geom_Plane::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_Plane) plane = Handle(Geom_Plane)::DownCast(getGeometryPtr()->handle());
         plane->SetPln(mc.Value()->Pln());
         return 0;
     }
@@ -137,7 +137,7 @@ int PlanePy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom_Plane plane = Handle_Geom_Plane::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_Plane) plane = Handle(Geom_Plane)::DownCast(getGeometryPtr()->handle());
         plane->SetPln(mc.Value()->Pln());
         return 0;
     }
@@ -146,9 +146,9 @@ int PlanePy::PyInit(PyObject* args, PyObject* kwds)
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!", keywords_p, &(PlanePy::Type), &pPlane)) {
         PlanePy* pcPlane = static_cast<PlanePy*>(pPlane);
-        Handle_Geom_Plane plane1 = Handle_Geom_Plane::DownCast
+        Handle(Geom_Plane) plane1 = Handle(Geom_Plane)::DownCast
             (pcPlane->getGeometryPtr()->handle());
-        Handle_Geom_Plane plane2 = Handle_Geom_Plane::DownCast
+        Handle(Geom_Plane) plane2 = Handle(Geom_Plane)::DownCast
             (this->getGeometryPtr()->handle());
         plane2->SetPln(plane1->Pln());
         return 0;
@@ -174,7 +174,7 @@ int PlanePy::PyInit(PyObject* args, PyObject* kwds)
 
 Py::Object PlanePy::getPosition(void) const
 {
-    Handle_Geom_Plane this_surf = Handle_Geom_Plane::DownCast
+    Handle(Geom_Plane) this_surf = Handle(Geom_Plane)::DownCast
         (this->getGeomPlanePtr()->handle());
     gp_Pnt pnt = this_surf->Location();
     return Py::Vector(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
@@ -203,19 +203,19 @@ void PlanePy::setPosition(Py::Object arg)
     }
 
     try {
-        Handle_Geom_Plane this_surf = Handle_Geom_Plane::DownCast
+        Handle(Geom_Plane) this_surf = Handle(Geom_Plane)::DownCast
             (this->getGeomPlanePtr()->handle());
         this_surf->SetLocation(loc);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Py::Exception(e->GetMessageString());
     }
 }
 
 Py::Object PlanePy::getAxis(void) const
 {
-    Handle_Geom_ElementarySurface s = Handle_Geom_ElementarySurface::DownCast
+    Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast
         (getGeometryPtr()->handle());
     gp_Dir dir = s->Axis().Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
@@ -244,7 +244,7 @@ void PlanePy::setAxis(Py::Object arg)
     }
 
     try {
-        Handle_Geom_ElementarySurface this_surf = Handle_Geom_ElementarySurface::DownCast
+        Handle(Geom_ElementarySurface) this_surf = Handle(Geom_ElementarySurface)::DownCast
             (this->getGeometryPtr()->handle());
         gp_Ax1 axis;
         axis.SetLocation(this_surf->Location());
@@ -263,17 +263,17 @@ PyObject* PlanePy::uIso(PyObject * args)
         return 0;
 
     try {
-        Handle_Geom_Plane plane = Handle_Geom_Plane::DownCast
+        Handle(Geom_Plane) plane = Handle(Geom_Plane)::DownCast
             (getGeomPlanePtr()->handle());
-        Handle_Geom_Line c = Handle_Geom_Line::DownCast(plane->UIso(u));
+        Handle(Geom_Line) c = Handle(Geom_Line)::DownCast(plane->UIso(u));
         GeomLine* line = new GeomLine();
-        Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
+        Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
             (line->handle());
         this_curv->SetLin(c->Lin());
         return new LinePy(line);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -286,17 +286,17 @@ PyObject* PlanePy::vIso(PyObject * args)
         return 0;
 
     try {
-        Handle_Geom_Plane plane = Handle_Geom_Plane::DownCast
+        Handle(Geom_Plane) plane = Handle(Geom_Plane)::DownCast
             (getGeomPlanePtr()->handle());
-        Handle_Geom_Line c = Handle_Geom_Line::DownCast(plane->VIso(v));
+        Handle(Geom_Line) c = Handle(Geom_Line)::DownCast(plane->VIso(v));
         GeomLine* line = new GeomLine();
-        Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
+        Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
             (line->handle());
         this_curv->SetLin(c->Lin());
         return new LinePy(line);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }

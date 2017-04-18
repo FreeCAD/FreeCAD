@@ -41,14 +41,14 @@
 #ifndef _Handle_MeshVS_DataSource3D_HeaderFile
 //#include <Handle_MeshVS_DataSource3D.hxx>
 #include <MeshVS_DataSource3D.hxx>
+#include <SMESH_MeshVSLink.hxx>
 #endif
 
 class Standard_Transient;
-class Handle_Standard_Type;
-class Handle(MeshVS_DataSource3D);
+class Standard_Type;
 class SMESH_MeshVSLink;
 
-Standard_EXPORT Handle_Standard_Type& STANDARD_TYPE(SMESH_MeshVSLink);
+Standard_EXPORT Handle(Standard_Type)& STANDARD_TYPE(SMESH_MeshVSLink);
 
 class Handle(SMESH_MeshVSLink) : public Handle(MeshVS_DataSource3D) {
   public:

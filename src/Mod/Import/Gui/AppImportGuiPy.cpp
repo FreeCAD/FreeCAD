@@ -121,7 +121,7 @@
 class OCAFBrowser
 {
 public:
-    OCAFBrowser(Handle_TDocStd_Document h)
+    OCAFBrowser(Handle(TDocStd_Document) h)
         : pDoc(h)
     {
         myGroupIcon = QApplication::style()->standardIcon(QStyle::SP_DirIcon);
@@ -156,7 +156,7 @@ private:
 private:
     QIcon myGroupIcon;
     TDF_IDList myList;
-    Handle_TDocStd_Document pDoc;
+    Handle(TDocStd_Document) pDoc;
 };
 
 void OCAFBrowser::load(QTreeWidget* theTree)
@@ -188,25 +188,25 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
                 QString text;
                 QTextStream str(&text);
                 str << attr->DynamicType()->Name();
-                str << " = " << toString(Handle_TDataStd_Name::DownCast(attr)->Get()).c_str();
+                str << " = " << toString(Handle(TDataStd_Name)::DownCast(attr)->Get()).c_str();
                 child->setText(0, text);
             }
             else if (it.Value() == TDF_TagSource::GetID()) {
                 QString text;
                 QTextStream str(&text);
                 str << attr->DynamicType()->Name();
-                str << " = " << Handle_TDF_TagSource::DownCast(attr)->Get();
+                str << " = " << Handle(TDF_TagSource)::DownCast(attr)->Get();
                 child->setText(0, text);
             }
             else if (it.Value() == TDataStd_Integer::GetID()) {
                 QString text;
                 QTextStream str(&text);
                 str << attr->DynamicType()->Name();
-                str << " = " << Handle_TDataStd_Integer::DownCast(attr)->Get();
+                str << " = " << Handle(TDataStd_Integer)::DownCast(attr)->Get();
                 child->setText(0, text);
             }
             else if (it.Value() == TNaming_NamedShape::GetID()) {
-                TopoDS_Shape shape = Handle_TNaming_NamedShape::DownCast(attr)->Get();
+                TopoDS_Shape shape = Handle(TNaming_NamedShape)::DownCast(attr)->Get();
                 QString text;
                 QTextStream str(&text);
                 str << attr->DynamicType()->Name() << " = ";
@@ -273,7 +273,7 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
 class ImportOCAFExt : public Import::ImportOCAF
 {
 public:
-    ImportOCAFExt(Handle_TDocStd_Document h, App::Document* d, const std::string& name)
+    ImportOCAFExt(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
         : ImportOCAF(h, d, name)
     {
     }
@@ -354,7 +354,7 @@ private:
                         throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                     }
 
-                    Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                    Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.Reader().WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading STEP file...");
                     pi->Show();
@@ -362,7 +362,7 @@ private:
                     pi->EndScope();
                 }
                 catch (OSD_Exception) {
-                    Handle_Standard_Failure e = Standard_Failure::Caught();
+                    Handle(Standard_Failure) e = Standard_Failure::Caught();
                     Base::Console().Error("%s\n", e->GetMessageString());
                     Base::Console().Message("Try to load STEP file without colors...\n");
 
@@ -387,7 +387,7 @@ private:
                         throw Py::Exception(Base::BaseExceptionFreeCADError, "cannot read IGES file");
                     }
 
-                    Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                    Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading IGES file...");
                     pi->Show();
@@ -398,7 +398,7 @@ private:
                             ->SetModel(new IGESData_IGESModel);
                 }
                 catch (OSD_Exception) {
-                    Handle_Standard_Failure e = Standard_Failure::Caught();
+                    Handle(Standard_Failure) e = Standard_Failure::Caught();
                     Base::Console().Error("%s\n", e->GetMessageString());
                     Base::Console().Message("Try to load IGES file without colors...\n");
 
@@ -416,7 +416,7 @@ private:
             hApp->Close(hDoc);
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
         }
         catch (const Base::Exception& e) {
@@ -511,7 +511,7 @@ private:
             hApp->Close(hDoc);
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
         }
         catch (const Base::Exception& e) {
@@ -542,7 +542,7 @@ private:
                     throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                 }
 
-                Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                 aReader.Reader().WS()->MapReader()->SetProgress(pi);
                 pi->NewScope(100, "Reading STEP file...");
                 pi->Show();
@@ -564,7 +564,7 @@ private:
                     throw Py::Exception(PyExc_IOError, "cannot read IGES file");
                 }
 
-                Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                 aReader.WS()->MapReader()->SetProgress(pi);
                 pi->NewScope(100, "Reading IGES file...");
                 pi->Show();
@@ -605,7 +605,7 @@ private:
             hApp->Close(hDoc);
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
         }
         catch (const Base::Exception& e) {

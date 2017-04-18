@@ -1520,7 +1520,7 @@ struct ShapeInfo{
                 // PointProjectionFailed. Why??
 
                 Standard_Real first,last;
-                const Handle_Geom_Curve & curve = BRep_Tool::Curve(edge, first, last);
+                const Handle(Geom_Curve) & curve = BRep_Tool::Curve(edge, first, last);
                 pt = curve->Value(last);
                 bool reversed;
                 if(pprev.Distance(pt)<Precision::Confusion()) {

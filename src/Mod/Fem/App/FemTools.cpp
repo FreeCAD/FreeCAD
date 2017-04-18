@@ -72,7 +72,7 @@ bool Fem::Tools::isPlanar(const TopoDS_Face& face)
         return true;
     }
     else if (surface.GetType() == GeomAbs_BSplineSurface) {
-        Handle_Geom_BSplineSurface spline = surface.BSpline();
+        Handle(Geom_BSplineSurface) spline = surface.BSpline();
         try {
             TColgp_Array2OfPnt poles(1,spline->NbUPoles(),1,spline->NbVPoles());
             spline->Poles(poles);
@@ -104,7 +104,7 @@ bool Fem::Tools::isPlanar(const TopoDS_Face& face)
         }
     }
     else if (surface.GetType() == GeomAbs_BezierSurface) {
-        Handle_Geom_BezierSurface bezier = surface.Bezier();
+        Handle(Geom_BezierSurface) bezier = surface.Bezier();
         try {
             TColgp_Array2OfPnt poles(1,bezier->NbUPoles(),1,bezier->NbVPoles());
             bezier->Poles(poles);
@@ -148,7 +148,7 @@ gp_XYZ Fem::Tools::getDirection(const TopoDS_Face& face)
         dir = surface.Plane().Axis().Direction().XYZ();
     }
     else if (surface.GetType() == GeomAbs_BSplineSurface) {
-        Handle_Geom_BSplineSurface spline = surface.BSpline();
+        Handle(Geom_BSplineSurface) spline = surface.BSpline();
         try {
             TColgp_Array2OfPnt poles(1,spline->NbUPoles(),1,spline->NbVPoles());
             spline->Poles(poles);
@@ -167,7 +167,7 @@ gp_XYZ Fem::Tools::getDirection(const TopoDS_Face& face)
         }
     }
     else if (surface.GetType() == GeomAbs_BezierSurface) {
-        Handle_Geom_BezierSurface bezier = surface.Bezier();
+        Handle(Geom_BezierSurface) bezier = surface.Bezier();
         try {
             TColgp_Array2OfPnt poles(1,bezier->NbUPoles(),1,bezier->NbVPoles());
             bezier->Poles(poles);
@@ -196,7 +196,7 @@ bool Fem::Tools::isLinear(const TopoDS_Edge& edge)
         return true;
     }
     else if (curve.GetType() == GeomAbs_BSplineCurve) {
-        Handle_Geom_BSplineCurve spline = curve.BSpline();
+        Handle(Geom_BSplineCurve) spline = curve.BSpline();
         try {
             gp_Pnt s1 = spline->Pole(1);
             gp_Pnt sn = spline->Pole(spline->NbPoles());
@@ -218,7 +218,7 @@ bool Fem::Tools::isLinear(const TopoDS_Edge& edge)
         }
     }
     else if (curve.GetType() == GeomAbs_BezierCurve) {
-        Handle_Geom_BezierCurve bezier = curve.Bezier();
+        Handle(Geom_BezierCurve) bezier = curve.Bezier();
         try {
             gp_Pnt s1 = bezier->Pole(1);
             gp_Pnt sn = bezier->Pole(bezier->NbPoles());
@@ -252,7 +252,7 @@ gp_XYZ Fem::Tools::getDirection(const TopoDS_Edge& edge)
         dir = curve.Line().Direction().XYZ();
     }
     else if (curve.GetType() == GeomAbs_BSplineCurve) {
-        Handle_Geom_BSplineCurve spline = curve.BSpline();
+        Handle(Geom_BSplineCurve) spline = curve.BSpline();
         try {
             gp_Pnt s1 = spline->Pole(1);
             gp_Pnt sn = spline->Pole(spline->NbPoles());
@@ -264,7 +264,7 @@ gp_XYZ Fem::Tools::getDirection(const TopoDS_Edge& edge)
         }
     }
     else if (curve.GetType() == GeomAbs_BezierCurve) {
-        Handle_Geom_BezierCurve bezier = curve.Bezier();
+        Handle(Geom_BezierCurve) bezier = curve.Bezier();
         try {
             gp_Pnt s1 = bezier->Pole(1);
             gp_Pnt sn = bezier->Pole(bezier->NbPoles());

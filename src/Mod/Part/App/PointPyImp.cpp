@@ -76,10 +76,10 @@ int PointPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         // Copy point
         PointPy* pcPoint = static_cast<PointPy*>(pPoint);
         // get Geom_CartesianPoint of that point
-        Handle_Geom_CartesianPoint that_point = Handle_Geom_CartesianPoint::DownCast
+        Handle(Geom_CartesianPoint) that_point = Handle(Geom_CartesianPoint)::DownCast
             (pcPoint->getGeomPointPtr()->handle());
         // get Geom_CartesianPoint of this point
-        Handle_Geom_CartesianPoint this_point = Handle_Geom_CartesianPoint::DownCast
+        Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
             (this->getGeomPointPtr()->handle());
 
         // Assign the coordinates
@@ -91,7 +91,7 @@ int PointPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject *pV;
     if (PyArg_ParseTuple(args, "O!", &(Base::VectorPy::Type), &pV)) {
         Base::Vector3d v = static_cast<Base::VectorPy*>(pV)->value();
-        Handle_Geom_CartesianPoint this_point = Handle_Geom_CartesianPoint::DownCast
+        Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
             (this->getGeomPointPtr()->handle());
         this_point->SetCoord(v.x,v.y,v.z);
         return 0;
@@ -106,7 +106,7 @@ int PointPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 PyObject* PointPy::toShape(PyObject *args)
 {
-    Handle_Geom_CartesianPoint this_point = Handle_Geom_CartesianPoint::DownCast
+    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
         (this->getGeomPointPtr()->handle());
     try {
         if (!this_point.IsNull()) {
@@ -119,7 +119,7 @@ PyObject* PointPy::toShape(PyObject *args)
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -130,63 +130,63 @@ PyObject* PointPy::toShape(PyObject *args)
 
 Py::Float PointPy::getX(void) const
 {
-    Handle_Geom_CartesianPoint this_point = Handle_Geom_CartesianPoint::DownCast
+    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
         (this->getGeomPointPtr()->handle());
     return Py::Float(this_point->X());
 }
 
 void PointPy::setX(Py::Float X)
 {
-    Handle_Geom_CartesianPoint this_point = Handle_Geom_CartesianPoint::DownCast
+    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
         (this->getGeomPointPtr()->handle());
 
     try {
         this_point->SetX(double(X));
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Py::Exception(e->GetMessageString());
     }
 }
 
 Py::Float PointPy::getY(void) const
 {
-    Handle_Geom_CartesianPoint this_point = Handle_Geom_CartesianPoint::DownCast
+    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
         (this->getGeomPointPtr()->handle());
     return Py::Float(this_point->Y());
 }
 
 void PointPy::setY(Py::Float Y)
 {
-    Handle_Geom_CartesianPoint this_point = Handle_Geom_CartesianPoint::DownCast
+    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
         (this->getGeomPointPtr()->handle());
 
     try {
         this_point->SetY(double(Y));
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Py::Exception(e->GetMessageString());
     }
 }
 
 Py::Float PointPy::getZ(void) const
 {
-    Handle_Geom_CartesianPoint this_point = Handle_Geom_CartesianPoint::DownCast
+    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
         (this->getGeomPointPtr()->handle());
     return Py::Float(this_point->Z());
 }
 
 void PointPy::setZ(Py::Float Z)
 {
-    Handle_Geom_CartesianPoint this_point = Handle_Geom_CartesianPoint::DownCast
+    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
         (this->getGeomPointPtr()->handle());
 
     try {
         this_point->SetZ(double(Z));
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Py::Exception(e->GetMessageString());
     }
 }

@@ -85,9 +85,9 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
         int ret;
         // An arc created with Part.Arc will be converted into a Part.ArcOfCircle
         if (geo->getTypeId() == Part::GeomTrimmedCurve::getClassTypeId()) {
-            Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast(geo->handle());
-            Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-            Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(trim->BasisCurve());
+            Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(geo->handle());
+            Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
+            Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
             if (!circle.IsNull()) {
                 // create the definition struct for that geom
                 Part::GeomArcOfCircle aoc;
@@ -137,9 +137,9 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
 
                 // An arc created with Part.Arc will be converted into a Part.ArcOfCircle
                 if (geo->getTypeId() == Part::GeomTrimmedCurve::getClassTypeId()) {
-                    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast(geo->handle());
-                    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-                    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(trim->BasisCurve());
+                    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(geo->handle());
+                    Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
+                    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
                     if (!circle.IsNull()) {
                         // create the definition struct for that geom
                         boost::shared_ptr<Part::GeomArcOfCircle> aoc(new Part::GeomArcOfCircle());

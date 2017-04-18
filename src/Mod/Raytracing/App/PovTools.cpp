@@ -463,7 +463,7 @@ void PovTools::transferToArray(const TopoDS_Face& aFace,gp_Vec** vertices,gp_Vec
         gp_Dir clNormal;
 
         try {
-            Handle_Geom_Surface Surface = BRep_Tool::Surface(aFace);
+            Handle(Geom_Surface) Surface = BRep_Tool::Surface(aFace);
 
             gp_Pnt vertex((*vertices)[i].XYZ());
 //     gp_Pnt vertex((*vertices)[i][0], (*vertices)[i][1], (*vertices)[i][2]);

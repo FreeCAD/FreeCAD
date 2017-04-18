@@ -337,7 +337,7 @@ App::DocumentObjectExecReturn *Plane::execute(void)
 
     gp_Pnt pnt(0.0,0.0,0.0);
     gp_Dir dir(0.0,0.0,1.0);
-    Handle_Geom_Plane aPlane = new Geom_Plane(pnt, dir);
+    Handle(Geom_Plane) aPlane = new Geom_Plane(pnt, dir);
     BRepBuilderAPI_MakeFace mkFace(aPlane, 0.0, L, 0.0, W
 #if OCC_VERSION_HEX >= 0x060502
       , Precision::Confusion()
@@ -421,7 +421,7 @@ App::DocumentObjectExecReturn *Sphere::execute(void)
         this->Shape.setValue(ResultShape);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -503,7 +503,7 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
         this->Shape.setValue(ResultShape);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -546,7 +546,7 @@ App::DocumentObjectExecReturn *Cylinder::execute(void)
         this->Shape.setValue(ResultShape);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -604,7 +604,7 @@ App::DocumentObjectExecReturn *Prism::execute(void)
         this->Shape.setValue(mkPrism.Shape());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -656,7 +656,7 @@ App::DocumentObjectExecReturn *RegularPolygon::execute(void)
         this->Shape.setValue(mkPoly.Shape());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -706,7 +706,7 @@ App::DocumentObjectExecReturn *Cone::execute(void)
         this->Shape.setValue(ResultShape);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -778,7 +778,7 @@ App::DocumentObjectExecReturn *Torus::execute(void)
         this->Shape.setValue(ResultShape);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -859,7 +859,7 @@ App::DocumentObjectExecReturn *Helix::execute(void)
 //            this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS, myStyle));
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -922,7 +922,7 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
             Standard_Failure::Raise("Number of rotations too small");
 
         gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
-        Handle_Geom_Surface surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), myAngle, myRadius);
+        Handle(Geom_Surface) surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), myAngle, myRadius);
 
         gp_Pnt2d aPnt(0, 0);
         gp_Dir2d aDir(2. * M_PI, myPitch);
@@ -944,7 +944,7 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
         BRepLib::BuildCurves3d(wire);
 
-        Handle_Geom_Plane aPlane = new Geom_Plane(gp_Pnt(0.0,0.0,0.0), gp::DZ());
+        Handle(Geom_Plane) aPlane = new Geom_Plane(gp_Pnt(0.0,0.0,0.0), gp::DZ());
         Standard_Real range = (myNumRot+1) * myGrowth + 1 + myRadius;
         BRepBuilderAPI_MakeFace mkFace(aPlane, -range, range, -range, range
 #if OCC_VERSION_HEX >= 0x060502
@@ -957,7 +957,7 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         Primitive::execute();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
@@ -1044,7 +1044,7 @@ App::DocumentObjectExecReturn *Wedge::execute(void)
         this->Shape.setValue(mkSolid.Solid());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 

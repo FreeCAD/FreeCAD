@@ -136,7 +136,7 @@ private:
             }
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());
         }
 
@@ -194,7 +194,7 @@ private:
             }
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());
         }
 
@@ -258,7 +258,7 @@ private:
             edgeList = DrawProjectSplit::getEdgesForWalker(shape,scale,dir);
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());
         }
 
