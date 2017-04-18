@@ -170,7 +170,7 @@
         <item row="9" column="1">
          <widget class="Gui::PrefColorButton" name="DatumColor">
           <property name="toolTip">
-           <string>The color of fully constrained geometry in edit mode</string>
+           <string>The color of the datum portion of a driving constraint</string>
           </property>
           <property name="color">
            <color>
@@ -437,7 +437,7 @@
         <item row="8" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Non-driving Datum color</string>
+           <string>Reference Constraint color</string>
           </property>
          </widget>
         </item>
@@ -464,7 +464,7 @@
         <item row="8" column="1">
          <widget class="Gui::PrefColorButton" name="NonDrivingConstraintColor">
           <property name="toolTip">
-           <string>The color of non-driving constrains or dimensions in edit mode</string>
+           <string>The color of reference constrains and datum in edit mode</string>
           </property>
           <property name="color">
            <color>
