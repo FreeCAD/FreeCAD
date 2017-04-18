@@ -216,7 +216,7 @@ class GenerateModel:
 
 class PythonExport:
     subclass = None
-    def __init__(self, FatherNamespace='', RichCompare=0, Name='', Reference=0, FatherInclude='', Namespace='', Initialization=0, Father='', PythonName='', Twin='', Constructor=0, TwinPointer='', Include='', NumberProtocol=0, Delete=0, Documentation=None, Methode=None, Attribute=None, Sequence=None, CustomAttributes='', ClassDeclarations=''):
+    def __init__(self, FatherNamespace='', RichCompare=0, Name='', Reference=0, FatherInclude='', Namespace='', Initialization=0, Father='', PythonName='', Twin='', Constructor=0, TwinPointer='', Include='', NumberProtocol=0, Delete=0, Documentation=None, Methode=None, Attribute=None, Sequence=None, CustomAttributes='', ClassDeclarations='', IsTrueRef=0):
         self.FatherNamespace = FatherNamespace
         self.RichCompare = RichCompare
         self.Name = Name
@@ -244,6 +244,7 @@ class PythonExport:
         self.Sequence = Sequence
         self.CustomAttributes = CustomAttributes
         self.ClassDeclarations = ClassDeclarations
+        self.IsTrueRef = IsTrueRef
     def factory(*args_, **kwargs_):
         if PythonExport.subclass:
             return PythonExport.subclass(*args_, **kwargs_)
@@ -296,6 +297,8 @@ class PythonExport:
     def setNumberprotocol(self, NumberProtocol): self.NumberProtocol = NumberProtocol
     def getDelete(self): return self.Delete
     def setDelete(self, Delete): self.Delete = Delete
+    def getIsTrueRef(self): return self.IsTrueRef
+    def setIsTrueRef(self, IsTrueRef): self.IsTrueRef = IsTrueRef
     def export(self, outfile, level, name_='PythonExport'):
         showIndent(outfile, level)
         outfile.write('<%s' % (name_, ))
@@ -327,6 +330,8 @@ class PythonExport:
             outfile.write(' NumberProtocol="%s"' % (self.getNumberprotocol(), ))
         if self.getDelete() is not None:
             outfile.write(' Delete="%s"' % (self.getDelete(), ))
+        if self.getIsTrueRef() is not None:
+            outfile.write(' IsTrueRef="%s"' % (self.getIsTrueRef(), ))
     def exportChildren(self, outfile, level, name_='PythonExport'):
         if self.Documentation:
             self.Documentation.export(outfile, level)
@@ -375,6 +380,8 @@ class PythonExport:
         outfile.write('NumberProtocol = "%s",\n' % (self.getNumberprotocol(),))
         showIndent(outfile, level)
         outfile.write('Delete = "%s",\n' % (self.getDelete(),))
+        showIndent(outfile, level)
+        outfile.write('IsTrueRef = "%s",\n' % (self.getIsTrueRef(),))
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Documentation:
             showIndent(outfile, level)
@@ -483,6 +490,13 @@ class PythonExport:
                 self.Delete = 0
             else:
                 raise ValueError('Bad boolean attribute (Delete)')
+        if attrs.get('IsTrueRef'):
+            if attrs.get('IsTrueRef').value in ('true', '1'):
+                self.IsTrueRef = 1
+            elif attrs.get('IsTrueRef').value in ('false', '0'):
+                self.IsTrueRef = 0
+            else:
+                raise ValueError('Bad boolean attribute (IsTrueRef)')
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'Documentation':
