@@ -198,7 +198,7 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
             else if (pEI->v2.SquareDistance(last) <= tol3d) {
                 last = pEI->v1;
                 Standard_Real first, last;
-                const Handle_Geom_Curve & curve = BRep_Tool::Curve(pEI->edge, first, last);
+                const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
                 first = curve->ReversedParameter(first);
                 last = curve->ReversedParameter(last);
                 TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
@@ -211,7 +211,7 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
             else if (pEI->v1.SquareDistance(first) <= tol3d) {
                 first = pEI->v2;
                 Standard_Real first, last;
-                const Handle_Geom_Curve & curve = BRep_Tool::Curve(pEI->edge, first, last);
+                const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
                 first = curve->ReversedParameter(first);
                 last = curve->ReversedParameter(last);
                 TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
@@ -598,7 +598,7 @@ private:
             }
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
         }
 
@@ -635,7 +635,7 @@ private:
             }
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
         }
 
@@ -692,7 +692,7 @@ private:
             throw Py::Exception(Base::BaseExceptionFreeCADError, std::string("Argument type signature not recognized. Should be either (list, string), or (shape, string)"));
 
         } catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
         } catch (Base::Exception &e){
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
@@ -754,7 +754,7 @@ private:
             }
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
         }
     }
@@ -836,7 +836,7 @@ private:
                 Base::Vector3d vec = static_cast<Base::VectorPy*>(pDirZ)->value();
                 d.SetCoord(vec.x, vec.y, vec.z);
             }
-            Handle_Geom_Plane aPlane;
+            Handle(Geom_Plane) aPlane;
             if (pDirX) {
                 Base::Vector3d vec = static_cast<Base::VectorPy*>(pDirX)->value();
                 gp_Dir dx;
@@ -1046,7 +1046,7 @@ private:
             return Py::asObject(new TopoShapeWirePy(new TopoShape(mkPoly.Wire())));
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
         }
     }
@@ -1077,7 +1077,7 @@ private:
             circle.SetAxis(axis);
             circle.SetRadius(radius);
 
-            Handle_Geom_Circle hCircle = new Geom_Circle (circle);
+            Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
             BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, angle1*(M_PI/180), angle2*(M_PI/180));
             TopoDS_Edge edge = aMakeEdge.Edge();
             return Py::asObject(new TopoShapeEdgePy(new TopoShape(edge)));
@@ -1226,7 +1226,7 @@ private:
             return Py::asObject(new TopoShapeWirePy(new TopoShape(wire)));
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
         }
     }
@@ -1246,7 +1246,7 @@ private:
             return Py::asObject(new TopoShapeWirePy(new TopoShape(wire)));
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
         }
     }
@@ -1262,7 +1262,7 @@ private:
             return Py::asObject(new TopoShapeWirePy(new TopoShape(wire)));
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
         }
     }
@@ -1271,7 +1271,7 @@ private:
         double vmin = DBL_MAX, vmax=-DBL_MAX;
         double angle=360;
         PyObject *pPnt=0, *pDir=0, *pCrv;
-        Handle_Geom_Curve curve;
+        Handle(Geom_Curve) curve;
         union PyType_Object defaultType = {&Part::TopoShapeSolidPy::Type};
         PyObject* type = defaultType.o;
         if (PyArg_ParseTuple(args.ptr(), "O!|dddO!O!O!", &(GeometryPy::Type), &pCrv,
@@ -1280,7 +1280,7 @@ private:
                                                    &(Base::VectorPy::Type), &pDir,
                                                    &(PyType_Type), &type)) {
             GeometryPy* pcGeo = static_cast<GeometryPy*>(pCrv);
-            curve = Handle_Geom_Curve::DownCast
+            curve = Handle(Geom_Curve)::DownCast
                 (pcGeo->getGeometryPtr()->handle());
             if (curve.IsNull()) {
                 throw Py::Exception(PyExc_TypeError, "geometry is not a curve");
@@ -1310,10 +1310,10 @@ private:
             const TopoDS_Edge& edge = TopoDS::Edge(shape);
             BRepAdaptor_Curve adapt(edge);
 
-            const Handle_Geom_Curve& hCurve = adapt.Curve().Curve();
+            const Handle(Geom_Curve)& hCurve = adapt.Curve().Curve();
             // Apply placement of the shape to the curve
             TopLoc_Location loc = edge.Location();
-            curve = Handle_Geom_Curve::DownCast(hCurve->Transformed(loc.Transformation()));
+            curve = Handle(Geom_Curve)::DownCast(hCurve->Transformed(loc.Transformation()));
             if (curve.IsNull()) {
                 throw Py::Exception(PartExceptionOCCError, "invalid curve in edge");
             }
@@ -1428,7 +1428,7 @@ private:
             return Py::asObject(new TopoShapeFacePy(new TopoShape(face)));
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
         }
     }
@@ -1453,7 +1453,7 @@ private:
             return Py::asObject(new TopoShapeFacePy(new TopoShape(face)));
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
         }
     }
@@ -1464,11 +1464,11 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "O", &pcObj))
             throw Py::Exception;
 
-        NCollection_List<Handle_Geom_Curve> theSections;
+        NCollection_List<Handle(Geom_Curve)> theSections;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::GeometryCurvePy::Type))) {
-                Handle_Geom_Curve hCurve = Handle_Geom_Curve::DownCast(
+                Handle(Geom_Curve) hCurve = Handle(Geom_Curve)::DownCast(
                     static_cast<GeometryCurvePy*>((*it).ptr())->getGeomCurvePtr()->handle());
                 theSections.Append(hCurve);
             }
@@ -1476,13 +1476,13 @@ private:
 
         //populate section generator
         GeomFill_SectionGenerator aSecGenerator;
-        for (NCollection_List<Handle_Geom_Curve>::Iterator anIt(theSections); anIt.More(); anIt.Next()) {
-            const Handle_Geom_Curve& aCurve = anIt.Value();
+        for (NCollection_List<Handle(Geom_Curve)>::Iterator anIt(theSections); anIt.More(); anIt.Next()) {
+            const Handle(Geom_Curve)& aCurve = anIt.Value();
             aSecGenerator.AddCurve (aCurve);
         }
         aSecGenerator.Perform (Precision::PConfusion());
 
-        Handle_GeomFill_Line aLine = new GeomFill_Line (theSections.Size());
+        Handle(GeomFill_Line) aLine = new GeomFill_Line (theSections.Size());
 
         //parameters
         const Standard_Integer aMinDeg = 1, aMaxDeg = BSplCLib::MaxDegree(), aNbIt = 0;
@@ -1497,7 +1497,7 @@ private:
             return 0;
         }
 
-        Handle_Geom_BSplineSurface aRes;
+        Handle(Geom_BSplineSurface) aRes;
         aRes = new Geom_BSplineSurface(anAlgo.SurfPoles(), anAlgo.SurfWeights(),
             anAlgo.SurfUKnots(), anAlgo.SurfVKnots(), anAlgo.SurfUMults(), anAlgo.SurfVMults(),
             anAlgo.UDegree(), anAlgo.VDegree());

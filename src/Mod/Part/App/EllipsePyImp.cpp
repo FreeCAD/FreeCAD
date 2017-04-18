@@ -57,7 +57,7 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
 {
     char* keywords_n[] = {NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
-        Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+        Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
         ellipse->SetMajorRadius(2.0);
         ellipse->SetMinorRadius(1.0);
         return 0;
@@ -68,9 +68,9 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
     PyObject *pElips;
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(EllipsePy::Type), &pElips)) {
         EllipsePy* pEllipse = static_cast<EllipsePy*>(pElips);
-        Handle_Geom_Ellipse Elips1 = Handle_Geom_Ellipse::DownCast
+        Handle(Geom_Ellipse) Elips1 = Handle(Geom_Ellipse)::DownCast
             (pEllipse->getGeomEllipsePtr()->handle());
-        Handle_Geom_Ellipse Elips2 = Handle_Geom_Ellipse::DownCast
+        Handle(Geom_Ellipse) Elips2 = Handle(Geom_Ellipse)::DownCast
             (this->getGeomEllipsePtr()->handle());
         Elips2->SetElips(Elips1->Elips());
         return 0;
@@ -94,7 +94,7 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+        Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
         ellipse->SetElips(me.Value()->Elips());
         return 0;
     }
@@ -114,7 +114,7 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+        Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
         ellipse->SetElips(me.Value()->Elips());
         return 0;
     }
@@ -129,44 +129,44 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
 
 Py::Float EllipsePy::getMajorRadius(void) const
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     return Py::Float(ellipse->MajorRadius()); 
 }
 
 void EllipsePy::setMajorRadius(Py::Float arg)
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     ellipse->SetMajorRadius((double)arg);
 }
 
 Py::Float EllipsePy::getMinorRadius(void) const
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     return Py::Float(ellipse->MinorRadius()); 
 }
 
 void EllipsePy::setMinorRadius(Py::Float arg)
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     ellipse->SetMinorRadius((double)arg);
 }
 
 Py::Float EllipsePy::getFocal(void) const
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     return Py::Float(ellipse->Focal()); 
 }
 
 Py::Object EllipsePy::getFocus1(void) const
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     gp_Pnt loc = ellipse->Focus1();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
 
 Py::Object EllipsePy::getFocus2(void) const
 {
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     gp_Pnt loc = ellipse->Focus2();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }

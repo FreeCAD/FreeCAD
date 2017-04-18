@@ -84,7 +84,7 @@ Py::String AttachEnginePy::getAttacherType(void) const
   */
 #define ATTACHERPY_STDCATCH_ATTR \
     catch (Standard_Failure) {\
-        Handle_Standard_Failure e = Standard_Failure::Caught();\
+        Handle(Standard_Failure) e = Standard_Failure::Caught();\
         throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());\
     } catch (Base::Exception &e) {\
         throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());\
@@ -225,7 +225,7 @@ Py::List AttachEnginePy::getImplementedModes(void) const
   */
 #define ATTACHERPY_STDCATCH_METH \
     catch (Standard_Failure) {\
-        Handle_Standard_Failure e = Standard_Failure::Caught();\
+        Handle(Standard_Failure) e = Standard_Failure::Caught();\
         PyErr_SetString(Part::PartExceptionOCCError, e->GetMessageString());\
         return NULL;\
     } catch (Base::Exception &e) {\

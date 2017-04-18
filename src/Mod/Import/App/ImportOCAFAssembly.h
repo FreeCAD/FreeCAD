@@ -24,9 +24,6 @@
 #ifndef IMPORT_ImportOCAFAssembly_H
 #define IMPORT_ImportOCAFAssembly_H
 
-#include <Handle_TDocStd_Document.hxx>
-#include <Handle_XCAFDoc_ColorTool.hxx>
-#include <Handle_XCAFDoc_ShapeTool.hxx>
 #include <Quantity_Color.hxx>
 #include <TopoDS_Shape.hxx>
 #include <climits>
@@ -52,7 +49,7 @@ namespace Import {
 class ImportExport ImportOCAFAssembly
 {
 public:
-    ImportOCAFAssembly(Handle_TDocStd_Document h, App::Document* d, const std::string& name, App::DocumentObject *target);
+    ImportOCAFAssembly(Handle(TDocStd_Document) h, App::Document* d, const std::string& name, App::DocumentObject *target);
     virtual ~ImportOCAFAssembly();
     void loadShapes();
     void loadAssembly();
@@ -69,10 +66,10 @@ private:
     virtual void applyColors(Part::Feature*, const std::vector<App::Color>&){}
 
 private:
-    Handle_TDocStd_Document pDoc;
+    Handle(TDocStd_Document) pDoc;
     App::Document* doc;
-    Handle_XCAFDoc_ShapeTool aShapeTool;
-    Handle_XCAFDoc_ColorTool aColorTool;
+    Handle(XCAFDoc_ShapeTool) aShapeTool;
+    Handle(XCAFDoc_ColorTool) aColorTool;
     std::string default_name;
     std::set<int> myRefShapes;
     static const int HashUpper = INT_MAX;

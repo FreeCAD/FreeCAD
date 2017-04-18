@@ -172,7 +172,7 @@ Mesh::MeshObject* Mesher::createMesh() const
 {
     // OCC standard mesher
     if (method == Standard) {
-        Handle_StlMesh_Mesh aMesh = new StlMesh_Mesh();
+        Handle(StlMesh_Mesh) aMesh = new StlMesh_Mesh();
 
         if (!shape.IsNull()) {
             BRepTools::Clean(shape);

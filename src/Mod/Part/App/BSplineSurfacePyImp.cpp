@@ -71,7 +71,7 @@ PyObject* BSplineSurfacePy::bounds(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     Py::Tuple bound(4);
     Standard_Real u1,u2,v1,v2;
@@ -88,7 +88,7 @@ PyObject* BSplineSurfacePy::isURational(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsURational();
     return PyBool_FromLong(val ? 1 : 0);
@@ -99,7 +99,7 @@ PyObject* BSplineSurfacePy::isVRational(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVRational();
     return PyBool_FromLong(val ? 1 : 0);
@@ -110,7 +110,7 @@ PyObject* BSplineSurfacePy::isUPeriodic(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUPeriodic();
     return PyBool_FromLong(val ? 1 : 0);
@@ -121,7 +121,7 @@ PyObject* BSplineSurfacePy::isVPeriodic(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
     return PyBool_FromLong(val ? 1 : 0);
@@ -132,7 +132,7 @@ PyObject* BSplineSurfacePy::isUClosed(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUClosed();
     return PyBool_FromLong(val ? 1 : 0);
@@ -143,7 +143,7 @@ PyObject* BSplineSurfacePy::isVClosed(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
     return PyBool_FromLong(val ? 1 : 0);
@@ -155,7 +155,7 @@ PyObject* BSplineSurfacePy::increaseDegree(PyObject *args)
     if (!PyArg_ParseTuple(args, "ii",&udegree,&vdegree))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     surf->IncreaseDegree(udegree,vdegree);
     Py_Return;
@@ -168,7 +168,7 @@ PyObject* BSplineSurfacePy::increaseUMultiplicity(PyObject *args)
     if (!PyArg_ParseTuple(args, "ii|i", &start, &end, &mult))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     if (mult == -1) {
         mult = end;
@@ -188,7 +188,7 @@ PyObject* BSplineSurfacePy::increaseVMultiplicity(PyObject *args)
     if (!PyArg_ParseTuple(args, "ii|i", &start, &end, &mult))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     if (mult == -1) {
         mult = end;
@@ -208,12 +208,12 @@ PyObject* BSplineSurfacePy::incrementUMultiplicity(PyObject *args)
         return 0;
 
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->IncrementUMultiplicity(start, end, mult);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -228,12 +228,12 @@ PyObject* BSplineSurfacePy::incrementVMultiplicity(PyObject *args)
         return 0;
 
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->IncrementVMultiplicity(start, end, mult);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -250,12 +250,12 @@ PyObject* BSplineSurfacePy::insertUKnot(PyObject *args)
         return 0;
 
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->InsertUKnot(U,M,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -294,13 +294,13 @@ PyObject* BSplineSurfacePy::insertUKnots(PyObject *args)
             m(index++) = (int)val;
         }
 
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->InsertUKnots(k,m,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -317,12 +317,12 @@ PyObject* BSplineSurfacePy::insertVKnot(PyObject *args)
         return 0;
 
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->InsertVKnot(V,M,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -361,13 +361,13 @@ PyObject* BSplineSurfacePy::insertVKnots(PyObject *args)
             m(index++) = (int)val;
         }
 
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->InsertVKnots(k,m,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -383,13 +383,13 @@ PyObject* BSplineSurfacePy::removeUKnot(PyObject *args)
         return 0;
 
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         Standard_Boolean ok = surf->RemoveUKnot(Index,M,tol);
         return PyBool_FromLong(ok ? 1 : 0);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -403,13 +403,13 @@ PyObject* BSplineSurfacePy::removeVKnot(PyObject *args)
         return 0;
 
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         Standard_Boolean ok = surf->RemoveVKnot(Index,M,tol);
         return PyBool_FromLong(ok ? 1 : 0);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -421,13 +421,13 @@ PyObject* BSplineSurfacePy::segment(PyObject *args)
     if (!PyArg_ParseTuple(args, "dddd", &u1,&u2,&v1,&v2))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->Segment(u1,u2,v1,v2);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -440,7 +440,7 @@ PyObject* BSplineSurfacePy::setUKnot(PyObject *args)
     if (!PyArg_ParseTuple(args, "id|i", &Index, &K, &M))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     if (M == -1) {
         surf->SetUKnot(Index, K);
@@ -459,7 +459,7 @@ PyObject* BSplineSurfacePy::setVKnot(PyObject *args)
     if (!PyArg_ParseTuple(args, "id|i", &Index, &K, &M))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     if (M == -1) {
         surf->SetUKnot(Index, K);
@@ -477,7 +477,7 @@ PyObject* BSplineSurfacePy::getUKnot(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &Index))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     double M = surf->UKnot(Index);
 
@@ -490,7 +490,7 @@ PyObject* BSplineSurfacePy::getVKnot(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &Index))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     double M = surf->VKnot(Index);
 
@@ -511,13 +511,13 @@ PyObject* BSplineSurfacePy::setUKnots(PyObject *args)
             k(index++) = (double)val;
         }
 
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->SetUKnots(k);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -537,13 +537,13 @@ PyObject* BSplineSurfacePy::setVKnots(PyObject *args)
             k(index++) = (double)val;
         }
 
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->SetVKnots(k);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -554,7 +554,7 @@ PyObject* BSplineSurfacePy::getUKnots(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         TColStd_Array1OfReal w(1,surf->NbUKnots());
         surf->UKnots(w);
@@ -565,7 +565,7 @@ PyObject* BSplineSurfacePy::getUKnots(PyObject *args)
         return Py::new_reference_to(knots);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -576,7 +576,7 @@ PyObject* BSplineSurfacePy::getVKnots(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         TColStd_Array1OfReal w(1,surf->NbVKnots());
         surf->VKnots(w);
@@ -587,7 +587,7 @@ PyObject* BSplineSurfacePy::getVKnots(PyObject *args)
         return Py::new_reference_to(knots);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -603,7 +603,7 @@ PyObject* BSplineSurfacePy::setPole(PyObject *args)
     Base::Vector3d vec = static_cast<Base::VectorPy*>(p)->value();
     gp_Pnt pnt(vec.x, vec.y, vec.z);
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         if (weight < 0.0)
             surf->SetPole(uindex,vindex,pnt);
@@ -612,7 +612,7 @@ PyObject* BSplineSurfacePy::setPole(PyObject *args)
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -635,7 +635,7 @@ PyObject* BSplineSurfacePy::setPoleCol(PyObject *args)
             poles(index++) = gp_Pnt(v.x,v.y,v.z);
         }
 
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         if (obj2 == 0) {
             surf->SetPoleCol(vindex, poles);
@@ -653,7 +653,7 @@ PyObject* BSplineSurfacePy::setPoleCol(PyObject *args)
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -676,7 +676,7 @@ PyObject* BSplineSurfacePy::setPoleRow(PyObject *args)
             poles(index++) = gp_Pnt(v.x,v.y,v.z);
         }
 
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         if (obj2 == 0) {
             surf->SetPoleRow(uindex, poles);
@@ -694,7 +694,7 @@ PyObject* BSplineSurfacePy::setPoleRow(PyObject *args)
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -706,7 +706,7 @@ PyObject* BSplineSurfacePy::getPole(PyObject *args)
     if (!PyArg_ParseTuple(args, "ii", &uindex,&vindex))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         Standard_OutOfRange_Raise_if
             (uindex < 1 || uindex > surf->NbUPoles() ||
@@ -717,7 +717,7 @@ PyObject* BSplineSurfacePy::getPole(PyObject *args)
         return vec;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -728,7 +728,7 @@ PyObject* BSplineSurfacePy::getPoles(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         TColgp_Array2OfPnt p(1,surf->NbUPoles(),1,surf->NbVPoles());
         surf->Poles(p);
@@ -745,7 +745,7 @@ PyObject* BSplineSurfacePy::getPoles(PyObject *args)
         return Py::new_reference_to(poles);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -758,13 +758,13 @@ PyObject* BSplineSurfacePy::setWeight(PyObject *args)
     if (!PyArg_ParseTuple(args, "iid",&uindex,&vindex,&weight))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->SetWeight(uindex,vindex,weight);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -784,13 +784,13 @@ PyObject* BSplineSurfacePy::setWeightCol(PyObject *args)
             weights(index++) = (double)Py::Float(*it);
         }
 
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->SetWeightCol(vindex, weights);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -810,13 +810,13 @@ PyObject* BSplineSurfacePy::setWeightRow(PyObject *args)
             weights(index++) = (double)Py::Float(*it);
         }
 
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->SetWeightRow(uindex, weights);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -828,7 +828,7 @@ PyObject* BSplineSurfacePy::getWeight(PyObject *args)
     if (!PyArg_ParseTuple(args, "ii",&uindex,&vindex))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         Standard_OutOfRange_Raise_if
             (uindex < 1 || uindex > surf->NbUPoles() ||
@@ -837,7 +837,7 @@ PyObject* BSplineSurfacePy::getWeight(PyObject *args)
         return Py_BuildValue("d", w);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -848,7 +848,7 @@ PyObject* BSplineSurfacePy::getWeights(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         TColStd_Array2OfReal w(1,surf->NbUPoles(),1,surf->NbVPoles());
         surf->Weights(w);
@@ -863,7 +863,7 @@ PyObject* BSplineSurfacePy::getWeights(PyObject *args)
         return Py::new_reference_to(weights);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -874,7 +874,7 @@ PyObject* BSplineSurfacePy::getPolesAndWeights(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         TColgp_Array2OfPnt p(1,surf->NbUPoles(),1,surf->NbVPoles());
         surf->Poles(p);
@@ -899,7 +899,7 @@ PyObject* BSplineSurfacePy::getPolesAndWeights(PyObject *args)
         return Py::new_reference_to(poles);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -911,14 +911,14 @@ PyObject* BSplineSurfacePy::getResolution(PyObject *args)
     if (!PyArg_ParseTuple(args, "d", &tol))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         double utol, vtol;
         surf->Resolution(tol,utol,vtol);
         return Py_BuildValue("(dd)",utol,vtol);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -935,7 +935,7 @@ PyObject* BSplineSurfacePy::movePoint(PyObject *args)
         return 0;
     try {
         Base::Vector3d p = static_cast<Base::VectorPy*>(pnt)->value();
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         int ufirst, ulast, vfirst, vlast;
         surf->MovePoint(U, V, gp_Pnt(p.x,p.y,p.z), uindex1, uindex2, vindex1, vindex2,
@@ -943,7 +943,7 @@ PyObject* BSplineSurfacePy::movePoint(PyObject *args)
         return Py_BuildValue("(iiii)",ufirst, ulast, vfirst, vlast);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -954,13 +954,13 @@ PyObject* BSplineSurfacePy::setUNotPeriodic(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->SetUNotPeriodic();
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -971,13 +971,13 @@ PyObject* BSplineSurfacePy::setVNotPeriodic(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->SetVNotPeriodic();
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -988,13 +988,13 @@ PyObject* BSplineSurfacePy::setUPeriodic(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->SetUPeriodic();
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -1005,13 +1005,13 @@ PyObject* BSplineSurfacePy::setVPeriodic(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->SetVPeriodic();
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -1023,13 +1023,13 @@ PyObject* BSplineSurfacePy::setUOrigin(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &index))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->SetUOrigin(index);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -1041,13 +1041,13 @@ PyObject* BSplineSurfacePy::setVOrigin(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &index))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         surf->SetVOrigin(index);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -1059,13 +1059,13 @@ PyObject* BSplineSurfacePy::getUMultiplicity(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &index))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         int mult = surf->UMultiplicity(index);
         return Py_BuildValue("i", mult);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -1077,13 +1077,13 @@ PyObject* BSplineSurfacePy::getVMultiplicity(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &index))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         int mult = surf->VMultiplicity(index);
         return Py_BuildValue("i", mult);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -1094,7 +1094,7 @@ PyObject* BSplineSurfacePy::getUMultiplicities(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         TColStd_Array1OfInteger m(1,surf->NbUKnots());
         surf->UMultiplicities(m);
@@ -1105,7 +1105,7 @@ PyObject* BSplineSurfacePy::getUMultiplicities(PyObject *args)
         return Py::new_reference_to(mults);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -1116,7 +1116,7 @@ PyObject* BSplineSurfacePy::getVMultiplicities(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
         TColStd_Array1OfInteger m(1,surf->NbVKnots());
         surf->VMultiplicities(m);
@@ -1127,7 +1127,7 @@ PyObject* BSplineSurfacePy::getVMultiplicities(PyObject *args)
         return Py::new_reference_to(mults);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -1138,7 +1138,7 @@ PyObject* BSplineSurfacePy::exchangeUV(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
 
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     surf->ExchangeUV();
     Py_Return;
@@ -1151,13 +1151,13 @@ PyObject* BSplineSurfacePy::uIso(PyObject * args)
         return 0;
 
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
-        Handle_Geom_Curve c = surf->UIso(u);
-        return new BSplineCurvePy(new GeomBSplineCurve(Handle_Geom_BSplineCurve::DownCast(c)));
+        Handle(Geom_Curve) c = surf->UIso(u);
+        return new BSplineCurvePy(new GeomBSplineCurve(Handle(Geom_BSplineCurve)::DownCast(c)));
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -1170,13 +1170,13 @@ PyObject* BSplineSurfacePy::vIso(PyObject * args)
         return 0;
 
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
-        Handle_Geom_Curve c = surf->VIso(v);
-        return new BSplineCurvePy(new GeomBSplineCurve(Handle_Geom_BSplineCurve::DownCast(c)));
+        Handle(Geom_Curve) c = surf->VIso(v);
+        return new BSplineCurvePy(new GeomBSplineCurve(Handle(Geom_BSplineCurve)::DownCast(c)));
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -1194,14 +1194,14 @@ PyObject* BSplineSurfacePy::reparametrize(PyObject * args)
     v = std::max<int>(v, 2);
 
     try {
-        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
             (getGeometryPtr()->handle());
 
         double maxU = surf->UKnot(surf->NbUKnots()); // 1.0 if normalized surface
         double maxV = surf->VKnot(surf->NbVKnots()); // 1.0 if normalized surface
 
         GeomBSplineSurface* geom = new GeomBSplineSurface();
-        Handle_Geom_BSplineSurface spline = Handle_Geom_BSplineSurface::DownCast
+        Handle(Geom_BSplineSurface) spline = Handle(Geom_BSplineSurface)::DownCast
             (geom->handle());
         for (int i=1; i<u-1; i++) {
             double U = i * 1.0 / (u-1.0);
@@ -1229,7 +1229,7 @@ PyObject* BSplineSurfacePy::reparametrize(PyObject * args)
         return new BSplineSurfacePy(geom);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -1335,12 +1335,12 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args, PyObject *kwds)
             // fallback to strandard method
             surInterpolation.Init(interpolationPoints, degMin, degMax, c, tol3d);
         }
-        Handle_Geom_BSplineSurface sur(surInterpolation.Surface());
+        Handle(Geom_BSplineSurface) sur(surInterpolation.Surface());
         this->getGeomBSplineSurfacePtr()->setHandle(sur);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         std::string err = e->GetMessageString();
         if (err.empty()) err = e->DynamicType()->Name();
         PyErr_SetString(PartExceptionOCCError, err.c_str());
@@ -1403,12 +1403,12 @@ PyObject* BSplineSurfacePy::interpolate(PyObject *args)
         else {
             surInterpolation.Interpolate(zPoints, X0, dX, Y0, dY);
         }
-        Handle_Geom_BSplineSurface sur(surInterpolation.Surface());
+        Handle(Geom_BSplineSurface) sur(surInterpolation.Surface());
         this->getGeomBSplineSurfacePtr()->setHandle(sur);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         std::string err = e->GetMessageString();
         if (err.empty()) err = e->DynamicType()->Name();
         PyErr_SetString(PartExceptionOCCError, err.c_str());
@@ -1557,7 +1557,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
             (PyObject_Not(vperiodic) && sum_of_vmults - vdegree -1 != lv)) {
             Standard_Failure::Raise("number of poles and sum of mults mismatch");
         }
-        Handle_Geom_BSplineSurface spline = new Geom_BSplineSurface(occpoles,occweights,
+        Handle(Geom_BSplineSurface) spline = new Geom_BSplineSurface(occpoles,occweights,
             occuknots,occvknots,occumults,occvmults,udegree,vdegree,
             PyObject_IsTrue(uperiodic) ? Standard_True : Standard_False,
             PyObject_IsTrue(vperiodic) ? Standard_True : Standard_False);
@@ -1572,7 +1572,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
 
     }
     catch (const Standard_Failure & ) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         Standard_CString msg = e->GetMessageString();
         PyErr_SetString(PartExceptionOCCError, msg  ? msg : "");
         return 0;
@@ -1580,7 +1580,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
 }
 Py::Long BSplineSurfacePy::getUDegree(void) const
 {
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     int deg = surf->UDegree();
     return Py::Long(deg);
@@ -1588,7 +1588,7 @@ Py::Long BSplineSurfacePy::getUDegree(void) const
 
 Py::Long BSplineSurfacePy::getVDegree(void) const
 {
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     int deg = surf->VDegree();
     return Py::Long(deg);
@@ -1596,42 +1596,42 @@ Py::Long BSplineSurfacePy::getVDegree(void) const
 
 Py::Long BSplineSurfacePy::getMaxDegree(void) const
 {
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(surf->MaxDegree()); 
 }
 
 Py::Long BSplineSurfacePy::getNbUPoles(void) const
 {
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(surf->NbUPoles()); 
 }
 
 Py::Long BSplineSurfacePy::getNbVPoles(void) const
 {
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(surf->NbVPoles()); 
 }
 
 Py::Long BSplineSurfacePy::getNbUKnots(void) const
 {
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(surf->NbUKnots()); 
 }
 
 Py::Long BSplineSurfacePy::getNbVKnots(void) const
 {
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(surf->NbVKnots()); 
 }
 
 Py::Object BSplineSurfacePy::getFirstUKnotIndex(void) const
 {
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     int index = surf->FirstUKnotIndex();
     return Py::Long(index);
@@ -1639,7 +1639,7 @@ Py::Object BSplineSurfacePy::getFirstUKnotIndex(void) const
 
 Py::Object BSplineSurfacePy::getLastUKnotIndex(void) const
 {
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     int index = surf->LastUKnotIndex();
     return Py::Long(index);
@@ -1647,7 +1647,7 @@ Py::Object BSplineSurfacePy::getLastUKnotIndex(void) const
 
 Py::Object BSplineSurfacePy::getFirstVKnotIndex(void) const
 {
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     int index = surf->FirstVKnotIndex();
     return Py::Long(index);
@@ -1655,7 +1655,7 @@ Py::Object BSplineSurfacePy::getFirstVKnotIndex(void) const
 
 Py::Object BSplineSurfacePy::getLastVKnotIndex(void) const
 {
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     int index = surf->LastVKnotIndex();
     return Py::Long(index);
@@ -1663,7 +1663,7 @@ Py::Object BSplineSurfacePy::getLastVKnotIndex(void) const
 
 Py::List BSplineSurfacePy::getUKnotSequence(void) const
 {
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     Standard_Integer m = 0;
     for (int i=1; i<= surf->NbUKnots(); i++)
@@ -1679,7 +1679,7 @@ Py::List BSplineSurfacePy::getUKnotSequence(void) const
 
 Py::List BSplineSurfacePy::getVKnotSequence(void) const
 {
-    Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+    Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     Standard_Integer m = 0;
     for (int i=1; i<= surf->NbVKnots(); i++)

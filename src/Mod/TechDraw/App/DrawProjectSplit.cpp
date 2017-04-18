@@ -261,7 +261,7 @@ bool DrawProjectSplit::isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, b
             } else if (dist < Precision::Confusion()) {
                 const gp_Pnt pt = BRep_Tool::Pnt(v);                         //have to duplicate method 3 to get param
                 BRepAdaptor_Curve adapt(e);
-                const Handle_Geom_Curve c = adapt.Curve().Curve();
+                const Handle(Geom_Curve) c = adapt.Curve().Curve();
                 double maxDist = 0.000001;     //magic number.  less than this gives false positives.
                 //bool found =
                 (void) GeomLib_Tool::Parameter(c,pt,maxDist,param);  //already know point it on curve
@@ -334,7 +334,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::split1Edge(TopoDS_Edge e, std::vector
     }
 
     BRepAdaptor_Curve adapt(e);
-    Handle_Geom_Curve c = adapt.Curve().Curve();
+    Handle(Geom_Curve) c = adapt.Curve().Curve();
     double first = BRepLProp_CurveTool::FirstParameter(adapt);
     double last = BRepLProp_CurveTool::LastParameter(adapt);
     if (first > last) {

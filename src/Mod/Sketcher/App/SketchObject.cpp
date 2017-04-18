@@ -595,9 +595,9 @@ bool SketchObject::isSupportedGeometry(const Part::Geometry *geo) const
         return true;
     }
     if (geo->getTypeId() == Part::GeomTrimmedCurve::getClassTypeId()) {
-        Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast(geo->handle());
-        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-        Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(trim->BasisCurve());
+        Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(geo->handle());
+        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
+        Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
         if (!circle.IsNull() || !ellipse.IsNull()) {
             return true;
         }
@@ -4063,7 +4063,7 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 
     const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
 
-    const Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(bsp->handle());
+    const Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(bsp->handle());
 
     Part::GeomBSplineCurve *bspline = new Part::GeomBSplineCurve(curve);
 
@@ -4255,9 +4255,9 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     //#2  0x7f4b033f9582 in Geom_BSplineCurve::ValidateCache(double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x202
     //#3  0x7f4b033f2a7e in Geom_BSplineCurve::D0(double, gp_Pnt&) const from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xde
     //#4  0x7f4b033de1b5 in Geom_Curve::Value(double) const from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x25
-    //#5  0x7f4b03423d73 in GeomLProp_CurveTool::Value(Handle_Geom_Curve const&, double, gp_Pnt&) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x13
+    //#5  0x7f4b03423d73 in GeomLProp_CurveTool::Value(Handle(Geom_Curve) const&, double, gp_Pnt&) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x13
     //#6  0x7f4b03427175 in GeomLProp_CLProps::SetParameter(double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x75
-    //#7  0x7f4b0342727d in GeomLProp_CLProps::GeomLProp_CLProps(Handle_Geom_Curve const&, double, int, double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xcd
+    //#7  0x7f4b0342727d in GeomLProp_CLProps::GeomLProp_CLProps(Handle(Geom_Curve) const&, double, int, double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xcd
     //#8  0x7f4b11924b53 in Part::GeomCurve::pointAtParameter(double) const from /home/abdullah/github/freecad-build/Mod/Part/Part.so+0xa7
 
 
@@ -4758,7 +4758,7 @@ void SketchObject::rebuildExternalGeometry(void)
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
             catch (Standard_Failure) {
-                Handle_Standard_Failure e = Standard_Failure::Caught();
+                Handle(Standard_Failure) e = Standard_Failure::Caught();
                 throw Base::Exception(e->GetMessageString());
             }
         } else  if (Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
@@ -4843,8 +4843,8 @@ void SketchObject::rebuildExternalGeometry(void)
                         }
                         else {
                             Part::GeomArcOfCircle* gArc = new Part::GeomArcOfCircle();
-                            Handle_Geom_Curve hCircle = new Geom_Circle(circle);
-                            Handle_Geom_TrimmedCurve tCurve = new Geom_TrimmedCurve(hCircle, curve.FirstParameter(),
+                            Handle(Geom_Curve) hCircle = new Geom_Circle(circle);
+                            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(hCircle, curve.FirstParameter(),
                                                                                     curve.LastParameter());
                             gArc->setHandle(tCurve);
                             gArc->Construction = true;
@@ -4904,8 +4904,8 @@ void SketchObject::rebuildExternalGeometry(void)
                                     }
                                     else {
                                         Part::GeomArcOfCircle* arc = new Part::GeomArcOfCircle();
-                                        Handle_Geom_Curve curve = new Geom_Circle(c);
-                                        Handle_Geom_TrimmedCurve tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
+                                        Handle(Geom_Curve) curve = new Geom_Circle(c);
+                                        Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
                                                                                                 projCurve.LastParameter());
                                         arc->setHandle(tCurve);
                                         arc->Construction = true;
@@ -4924,7 +4924,7 @@ void SketchObject::rebuildExternalGeometry(void)
                                         gp_Pnt p2 = projCurve.Value(splits(2));
                                         gp_Pnt p3 = projCurve.Value(0.5 * (splits(1) + splits(2)));
                                         GC_MakeCircle circleMaker(p1, p2, p3);
-                                        Handle_Geom_Circle circ = circleMaker.Value();
+                                        Handle(Geom_Circle) circ = circleMaker.Value();
                                         Part::GeomCircle* circle = new Part::GeomCircle();
                                         circle->setRadius(circ->Radius());
                                         gp_Pnt center = circ->Axis().Location();
@@ -4958,8 +4958,8 @@ void SketchObject::rebuildExternalGeometry(void)
                                     }
                                     else {
                                         Part::GeomArcOfHyperbola* aoh = new Part::GeomArcOfHyperbola();
-                                        Handle_Geom_Curve curve = new Geom_Hyperbola(e);
-                                        Handle_Geom_TrimmedCurve tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
+                                        Handle(Geom_Curve) curve = new Geom_Hyperbola(e);
+                                        Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
                                                                                                 projCurve.LastParameter());
                                         aoh->setHandle(tCurve);
                                         aoh->Construction = true;
@@ -4985,8 +4985,8 @@ void SketchObject::rebuildExternalGeometry(void)
                                     }
                                     else {
                                         Part::GeomArcOfParabola* aop = new Part::GeomArcOfParabola();
-                                        Handle_Geom_Curve curve = new Geom_Parabola(e);
-                                        Handle_Geom_TrimmedCurve tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
+                                        Handle(Geom_Curve) curve = new Geom_Parabola(e);
+                                        Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
                                                                                                 projCurve.LastParameter());
                                         aop->setHandle(tCurve);
                                         aop->Construction = true;
@@ -5005,15 +5005,15 @@ void SketchObject::rebuildExternalGeometry(void)
 
                                     if (P1.SquareDistance(P2) < Precision::Confusion()) {
                                         Part::GeomEllipse* ellipse = new Part::GeomEllipse();
-                                        Handle_Geom_Ellipse curve = new Geom_Ellipse(e);
+                                        Handle(Geom_Ellipse) curve = new Geom_Ellipse(e);
                                         ellipse->setHandle(curve);
                                         ellipse->Construction = true;
                                         ExternalGeo.push_back(ellipse);
                                     }
                                     else {
                                         Part::GeomArcOfEllipse* aoe = new Part::GeomArcOfEllipse();
-                                        Handle_Geom_Curve curve = new Geom_Ellipse(e);
-                                        Handle_Geom_TrimmedCurve tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
+                                        Handle(Geom_Curve) curve = new Geom_Ellipse(e);
+                                        Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
                                                                                                 projCurve.LastParameter());
                                         aoe->setHandle(tCurve);
                                         aoe->Construction = true;
@@ -5027,7 +5027,7 @@ void SketchObject::rebuildExternalGeometry(void)
                         }
                     }
                     catch (Standard_Failure) {
-                        Handle_Standard_Failure e = Standard_Failure::Caught();
+                        Handle(Standard_Failure) e = Standard_Failure::Caught();
                         throw Base::Exception(e->GetMessageString());
                     }
                 }

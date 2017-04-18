@@ -98,7 +98,7 @@ bool tangentialArc(const gp_Pnt& p0, const gp_Vec& v0, const gp_Pnt& p1, gp_Pnt&
 class PartExport Tools
 {
 public:
-    Handle_Geom_Surface makeSurface (const TColStd_ListOfTransient& theBoundaries,
+    Handle(Geom_Surface) makeSurface (const TColStd_ListOfTransient& theBoundaries,
                                      const Standard_Real theTol,
                                      const Standard_Integer theNbPnts,
                                      const Standard_Integer theNbIter,

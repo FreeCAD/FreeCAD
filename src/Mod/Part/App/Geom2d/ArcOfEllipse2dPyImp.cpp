@@ -62,7 +62,7 @@ int ArcOfEllipse2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject *sense=Py_True;
     if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::Ellipse2dPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast
+            Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast
                 (static_cast<Ellipse2dPy*>(o)->getGeom2dEllipsePtr()->handle());
             GCE2d_MakeArcOfEllipse arc(ellipse->Elips2d(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
@@ -74,7 +74,7 @@ int ArcOfEllipse2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return 0;
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -112,8 +112,8 @@ void  ArcOfEllipse2dPy::setMinorRadius(Py::Float arg)
 
 Py::Object ArcOfEllipse2dPy::getEllipse(void) const
 {
-    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(curve->BasisCurve());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(curve->BasisCurve());
     return Py::asObject(new Ellipse2dPy(new Geom2dEllipse(ellipse)));
 }
 

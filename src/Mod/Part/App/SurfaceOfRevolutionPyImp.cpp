@@ -61,7 +61,7 @@ int SurfaceOfRevolutionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
 
     GeometryPy* pcGeo = static_cast<GeometryPy*>(pGeom);
-    Handle_Geom_Curve curve = Handle_Geom_Curve::DownCast
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast
         (pcGeo->getGeometryPtr()->handle());
     if (curve.IsNull()) {
         PyErr_SetString(PyExc_TypeError, "geometry is not a curve");
@@ -71,14 +71,14 @@ int SurfaceOfRevolutionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     try {
         Base::Vector3d pnt = static_cast<Base::VectorPy*>(pPnt)->value();
         Base::Vector3d dir = static_cast<Base::VectorPy*>(pDir)->value();
-        Handle_Geom_SurfaceOfRevolution curve2 = new Geom_SurfaceOfRevolution(curve,
+        Handle(Geom_SurfaceOfRevolution) curve2 = new Geom_SurfaceOfRevolution(curve,
             gp_Ax1(gp_Pnt(pnt.x,pnt.y,pnt.z),
                    gp_Dir(dir.x,dir.y,dir.z)));
         getGeomSurfaceOfRevolutionPtr()->setHandle(curve2);
         return 0;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return -1;
     }
@@ -86,7 +86,7 @@ int SurfaceOfRevolutionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Object SurfaceOfRevolutionPy::getLocation(void) const
 {
-    Handle_Geom_SurfaceOfRevolution curve = Handle_Geom_SurfaceOfRevolution::DownCast
+    Handle(Geom_SurfaceOfRevolution) curve = Handle(Geom_SurfaceOfRevolution)::DownCast
         (getGeometryPtr()->handle());
     const gp_Pnt& pnt = curve->Location();
     return Py::Vector(Base::Vector3d(pnt.X(),pnt.Y(),pnt.Z()));
@@ -97,13 +97,13 @@ void  SurfaceOfRevolutionPy::setLocation(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d pnt = static_cast<Base::VectorPy*>(p)->value();
-        Handle_Geom_SurfaceOfRevolution curve = Handle_Geom_SurfaceOfRevolution::DownCast
+        Handle(Geom_SurfaceOfRevolution) curve = Handle(Geom_SurfaceOfRevolution)::DownCast
             (getGeometryPtr()->handle());
         curve->SetLocation(gp_Pnt(pnt.x,pnt.y,pnt.z));
     }
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d pnt = Base::getVectorFromTuple<double>(p);
-        Handle_Geom_SurfaceOfRevolution curve = Handle_Geom_SurfaceOfRevolution::DownCast
+        Handle(Geom_SurfaceOfRevolution) curve = Handle(Geom_SurfaceOfRevolution)::DownCast
             (getGeometryPtr()->handle());
         curve->SetLocation(gp_Pnt(pnt.x,pnt.y,pnt.z));
     }
@@ -116,7 +116,7 @@ void  SurfaceOfRevolutionPy::setLocation(Py::Object arg)
 
 Py::Object SurfaceOfRevolutionPy::getDirection(void) const
 {
-    Handle_Geom_SurfaceOfRevolution curve = Handle_Geom_SurfaceOfRevolution::DownCast
+    Handle(Geom_SurfaceOfRevolution) curve = Handle(Geom_SurfaceOfRevolution)::DownCast
         (getGeometryPtr()->handle());
     const gp_Dir& dir = curve->Direction();
     return Py::Vector(Base::Vector3d(dir.X(),dir.Y(),dir.Z()));
@@ -127,13 +127,13 @@ void  SurfaceOfRevolutionPy::setDirection(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d dir = static_cast<Base::VectorPy*>(p)->value();
-        Handle_Geom_SurfaceOfRevolution curve = Handle_Geom_SurfaceOfRevolution::DownCast
+        Handle(Geom_SurfaceOfRevolution) curve = Handle(Geom_SurfaceOfRevolution)::DownCast
             (getGeometryPtr()->handle());
         curve->SetDirection(gp_Dir(dir.x,dir.y,dir.z));
     }
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d dir = Base::getVectorFromTuple<double>(p);
-        Handle_Geom_SurfaceOfRevolution curve = Handle_Geom_SurfaceOfRevolution::DownCast
+        Handle(Geom_SurfaceOfRevolution) curve = Handle(Geom_SurfaceOfRevolution)::DownCast
             (getGeometryPtr()->handle());
         curve->SetDirection(gp_Dir(dir.x,dir.y,dir.z));
     }
@@ -154,19 +154,19 @@ void  SurfaceOfRevolutionPy::setBasisCurve(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(GeometryPy::Type))) {
         GeometryPy* pcGeo = static_cast<GeometryPy*>(p);
-        Handle_Geom_Curve curve = Handle_Geom_Curve::DownCast
+        Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast
             (pcGeo->getGeometryPtr()->handle());
         if (curve.IsNull()) {
             throw Py::TypeError("geometry is not a curve");
         }
 
         try {
-            Handle_Geom_SurfaceOfRevolution curve2 = Handle_Geom_SurfaceOfRevolution::DownCast
+            Handle(Geom_SurfaceOfRevolution) curve2 = Handle(Geom_SurfaceOfRevolution)::DownCast
                 (getGeometryPtr()->handle());
             curve2->SetBasisCurve(curve);
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(e->GetMessageString());
         }
     }

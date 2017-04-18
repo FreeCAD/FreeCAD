@@ -62,7 +62,7 @@ int ArcOfCircle2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject *sense=Py_True;
     if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::Circle2dPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast
+            Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast
                 (static_cast<Circle2dPy*>(o)->getGeom2dCirclePtr()->handle());
             GCE2d_MakeArcOfCircle arc(circle->Circ2d(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
@@ -74,7 +74,7 @@ int ArcOfCircle2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return 0;
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -123,8 +123,8 @@ void  ArcOfCircle2dPy::setRadius(Py::Float arg)
 
 Py::Object ArcOfCircle2dPy::getCircle(void) const
 {
-    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
-    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(curve->BasisCurve());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(curve->BasisCurve());
     return Py::asObject(new Circle2dPy(new Geom2dCircle(circle)));
 }
 

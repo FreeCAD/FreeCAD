@@ -82,11 +82,11 @@ int StepShape::read(const char* fileName)
 
     //Use method StepData_StepModel::NextNumberForLabel to find its rank with the following:
     //Standard_CString label = "#...";
-    Handle_StepData_StepModel model = aReader.StepModel();
+    Handle(StepData_StepModel) model = aReader.StepModel();
     //rank = model->NextNumberForLabe(label, 0, Standard_False);
 
-    Handle_Message_PrinterOStream mstr = new Message_PrinterOStream();
-    Handle_Message_Messenger msg = new Message_Messenger(mstr);
+    Handle(Message_PrinterOStream) mstr = new Message_PrinterOStream();
+    Handle(Message_Messenger) msg = new Message_Messenger(mstr);
 
     std::cout << "dump of step header:" << std::endl;
 

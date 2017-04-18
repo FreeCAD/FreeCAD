@@ -56,7 +56,7 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
 {
     char* keywords_n[] = {NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
-        Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(getGeom2dEllipsePtr()->handle());
+        Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
         ellipse->SetMajorRadius(2.0);
         ellipse->SetMinorRadius(1.0);
         return 0;
@@ -67,9 +67,9 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
     PyObject *pElips;
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(Ellipse2dPy::Type), &pElips)) {
         Ellipse2dPy* pEllipse = static_cast<Ellipse2dPy*>(pElips);
-        Handle_Geom2d_Ellipse Elips1 = Handle_Geom2d_Ellipse::DownCast
+        Handle(Geom2d_Ellipse) Elips1 = Handle(Geom2d_Ellipse)::DownCast
             (pEllipse->getGeom2dEllipsePtr()->handle());
-        Handle_Geom2d_Ellipse Elips2 = Handle_Geom2d_Ellipse::DownCast
+        Handle(Geom2d_Ellipse) Elips2 = Handle(Geom2d_Ellipse)::DownCast
             (this->getGeom2dEllipsePtr()->handle());
         Elips2->SetElips2d(Elips1->Elips2d());
         return 0;
@@ -93,7 +93,7 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(getGeom2dEllipsePtr()->handle());
+        Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
         ellipse->SetElips2d(me.Value()->Elips2d());
         return 0;
     }
@@ -113,7 +113,7 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(getGeom2dEllipsePtr()->handle());
+        Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
         ellipse->SetElips2d(me.Value()->Elips2d());
         return 0;
     }
@@ -128,37 +128,37 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
 
 Py::Float Ellipse2dPy::getMajorRadius(void) const
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     return Py::Float(ellipse->MajorRadius()); 
 }
 
 void Ellipse2dPy::setMajorRadius(Py::Float arg)
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     ellipse->SetMajorRadius((double)arg);
 }
 
 Py::Float Ellipse2dPy::getMinorRadius(void) const
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     return Py::Float(ellipse->MinorRadius()); 
 }
 
 void Ellipse2dPy::setMinorRadius(Py::Float arg)
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     ellipse->SetMinorRadius((double)arg);
 }
 
 Py::Float Ellipse2dPy::getFocal(void) const
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     return Py::Float(ellipse->Focal()); 
 }
 
 Py::Object Ellipse2dPy::getFocus1(void) const
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     gp_Pnt2d loc = ellipse->Focus1();
 
     Py::Module module("__FreeCADBase__");
@@ -171,7 +171,7 @@ Py::Object Ellipse2dPy::getFocus1(void) const
 
 Py::Object Ellipse2dPy::getFocus2(void) const
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     gp_Pnt2d loc = ellipse->Focus2();
 
     Py::Module module("__FreeCADBase__");

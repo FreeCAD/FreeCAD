@@ -61,7 +61,7 @@ int ArcOfParabola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject *sense=Py_True;
     if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::Parabola2dPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle_Geom2d_Parabola parabola = Handle_Geom2d_Parabola::DownCast
+            Handle(Geom2d_Parabola) parabola = Handle(Geom2d_Parabola)::DownCast
                 (static_cast<Parabola2dPy*>(o)->getGeom2dParabolaPtr()->handle());
             GCE2d_MakeArcOfParabola arc(parabola->Parab2d(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
@@ -73,7 +73,7 @@ int ArcOfParabola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return 0;
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -101,9 +101,9 @@ void  ArcOfParabola2dPy::setFocal(Py::Float arg)
 
 Py::Object ArcOfParabola2dPy::getParabola(void) const
 {
-    Handle_Geom2d_TrimmedCurve trim = Handle_Geom2d_TrimmedCurve::DownCast
+    Handle(Geom2d_TrimmedCurve) trim = Handle(Geom2d_TrimmedCurve)::DownCast
         (getGeom2dArcOfParabolaPtr()->handle());
-    Handle_Geom2d_Parabola parabola = Handle_Geom2d_Parabola::DownCast(trim->BasisCurve());
+    Handle(Geom2d_Parabola) parabola = Handle(Geom2d_Parabola)::DownCast(trim->BasisCurve());
     return Py::asObject(new Parabola2dPy(new Geom2dParabola(parabola)));
 }
 

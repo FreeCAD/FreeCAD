@@ -701,7 +701,7 @@ PyObject* FemMeshPy::getFacesByFace(PyObject *args)
         return Py::new_reference_to(ret);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
         return 0;
     }
@@ -734,7 +734,7 @@ PyObject* FemMeshPy::getVolumesByFace(PyObject *args)
         return Py::new_reference_to(ret);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
         return 0;
     }
@@ -767,7 +767,7 @@ PyObject* FemMeshPy::getccxVolumesByFace(PyObject *args)
         return Py::new_reference_to(ret);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
         return 0;
     }
@@ -814,7 +814,7 @@ PyObject* FemMeshPy::getNodesBySolid(PyObject *args)
 
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
         return 0;
     }
@@ -842,7 +842,7 @@ PyObject* FemMeshPy::getNodesByFace(PyObject *args)
 
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
         return 0;
     }
@@ -870,7 +870,7 @@ PyObject* FemMeshPy::getNodesByEdge(PyObject *args)
 
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
         return 0;
     }
@@ -898,7 +898,7 @@ PyObject* FemMeshPy::getNodesByVertex(PyObject *args)
 
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
         return 0;
     }
@@ -920,7 +920,7 @@ PyObject* FemMeshPy::getElementNodes(PyObject *args)
         return Py::new_reference_to(ret);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
         return 0;
     }

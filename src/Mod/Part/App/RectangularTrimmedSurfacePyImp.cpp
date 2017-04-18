@@ -58,7 +58,7 @@ int RectangularTrimmedSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (PyArg_ParseTuple(args, "O!dddd|O!O!",&(Part::GeometrySurfacePy::Type),&surf,
                          &u1,&u2,&v1,&v2,&PyBool_Type,&usense,&PyBool_Type,&vsense)) {
         getGeomTrimmedSurfacePtr()->setHandle(new Geom_RectangularTrimmedSurface(
-            Handle_Geom_Surface::DownCast(static_cast<GeometrySurfacePy*>(surf)->
+            Handle(Geom_Surface)::DownCast(static_cast<GeometrySurfacePy*>(surf)->
                 getGeomSurfacePtr()->handle()),
             u1, u2, v1, v2,
             PyObject_IsTrue(usense) ? Standard_True : Standard_False,
@@ -75,7 +75,7 @@ int RectangularTrimmedSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         Standard_Boolean UTrim = PyObject_IsTrue(utrim) ? Standard_True : Standard_False;
         Standard_Boolean Sense = PyObject_IsTrue(sense) ? Standard_True : Standard_False;
         getGeomTrimmedSurfacePtr()->setHandle(new Geom_RectangularTrimmedSurface(
-            Handle_Geom_Surface::DownCast(static_cast<GeometrySurfacePy*>(surf)->
+            Handle(Geom_Surface)::DownCast(static_cast<GeometrySurfacePy*>(surf)->
                 getGeomSurfacePtr()->handle()),
             param1, param2, UTrim, Sense
         ));
@@ -93,11 +93,11 @@ PyObject* RectangularTrimmedSurfacePy::uIso(PyObject * args)
         return 0;
 
     try {
-        Handle_Geom_Surface surf = Handle_Geom_Surface::DownCast
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
             (getGeometryPtr()->handle());
-        Handle_Geom_Curve c = surf->UIso(v);
+        Handle(Geom_Curve) c = surf->UIso(v);
         if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
-            Handle_Geom_TrimmedCurve aCurve = Handle_Geom_TrimmedCurve::DownCast(c);
+            Handle(Geom_TrimmedCurve) aCurve = Handle(Geom_TrimmedCurve)::DownCast(c);
             return new GeometryCurvePy(new GeomTrimmedCurve(aCurve));
         }
 
@@ -106,7 +106,7 @@ PyObject* RectangularTrimmedSurfacePy::uIso(PyObject * args)
         return 0;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -119,11 +119,11 @@ PyObject* RectangularTrimmedSurfacePy::vIso(PyObject * args)
         return 0;
 
     try {
-        Handle_Geom_Surface surf = Handle_Geom_Surface::DownCast
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
             (getGeometryPtr()->handle());
-        Handle_Geom_Curve c = surf->VIso(v);
+        Handle(Geom_Curve) c = surf->VIso(v);
         if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
-            Handle_Geom_TrimmedCurve aCurve = Handle_Geom_TrimmedCurve::DownCast(c);
+            Handle(Geom_TrimmedCurve) aCurve = Handle(Geom_TrimmedCurve)::DownCast(c);
             return new GeometryCurvePy(new GeomTrimmedCurve(aCurve));
         }
 
@@ -132,7 +132,7 @@ PyObject* RectangularTrimmedSurfacePy::vIso(PyObject * args)
         return 0;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }

@@ -60,7 +60,7 @@ PyObject* BezierCurve2dPy::isRational(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
-    Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+    Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     Standard_Boolean val = curve->IsRational();
     return PyBool_FromLong(val ? 1 : 0);
@@ -70,7 +70,7 @@ PyObject* BezierCurve2dPy::isPeriodic(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
-    Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+    Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     Standard_Boolean val = curve->IsPeriodic();
     return PyBool_FromLong(val ? 1 : 0);
@@ -80,7 +80,7 @@ PyObject* BezierCurve2dPy::isClosed(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
-    Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+    Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     Standard_Boolean val = curve->IsClosed();
     return PyBool_FromLong(val ? 1 : 0);
@@ -91,7 +91,7 @@ PyObject* BezierCurve2dPy::increase(PyObject * args)
     int degree;
     if (!PyArg_ParseTuple(args, "i", &degree))
         return 0;
-    Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+    Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     curve->Increase(degree);
     Py_Return;
@@ -107,13 +107,13 @@ PyObject* BezierCurve2dPy::insertPoleAfter(PyObject * args)
     Base::Vector2d vec = Py::Vector2d(p).getCxxObject()->value();
     gp_Pnt2d pnt(vec.x, vec.y);
     try {
-        Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+        Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->InsertPoleAfter(index,pnt,weight);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -129,13 +129,13 @@ PyObject* BezierCurve2dPy::insertPoleBefore(PyObject * args)
     Base::Vector2d vec = Py::Vector2d(p).getCxxObject()->value();
     gp_Pnt2d pnt(vec.x, vec.y);
     try {
-        Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+        Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->InsertPoleBefore(index,pnt,weight);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -147,13 +147,13 @@ PyObject* BezierCurve2dPy::removePole(PyObject * args)
     if (!PyArg_ParseTuple(args, "i", &index))
         return 0;
     try {
-        Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+        Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->RemovePole(index);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -165,13 +165,13 @@ PyObject* BezierCurve2dPy::segment(PyObject * args)
     if (!PyArg_ParseTuple(args, "dd", &u1,&u2))
         return 0;
     try {
-        Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+        Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->Segment(u1,u2);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -187,7 +187,7 @@ PyObject* BezierCurve2dPy::setPole(PyObject * args)
     Base::Vector2d vec = Py::Vector2d(p).getCxxObject()->value();
     gp_Pnt2d pnt(vec.x, vec.y);
     try {
-        Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+        Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
         if (weight < 0.0)
             curve->SetPole(index,pnt);
@@ -196,7 +196,7 @@ PyObject* BezierCurve2dPy::setPole(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -208,7 +208,7 @@ PyObject* BezierCurve2dPy::getPole(PyObject * args)
     if (!PyArg_ParseTuple(args, "i", &index))
         return 0;
     try {
-        Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+        Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
         Standard_OutOfRange_Raise_if
             (index < 1 || index > curve->NbPoles(), "Pole index out of range");
@@ -222,7 +222,7 @@ PyObject* BezierCurve2dPy::getPole(PyObject * args)
         return Py::new_reference_to(method.apply(arg));
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -233,7 +233,7 @@ PyObject* BezierCurve2dPy::getPoles(PyObject * args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+        Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
         TColgp_Array1OfPnt2d p(1,curve->NbPoles());
         curve->Poles(p);
@@ -252,7 +252,7 @@ PyObject* BezierCurve2dPy::getPoles(PyObject * args)
         return Py::new_reference_to(poles);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -272,12 +272,12 @@ PyObject* BezierCurve2dPy::setPoles(PyObject * args)
             poles.SetValue(index++, gp_Pnt2d(pole.x,pole.y));
         }
 
-        Handle_Geom2d_BezierCurve bezier = new Geom2d_BezierCurve(poles);
+        Handle(Geom2d_BezierCurve) bezier = new Geom2d_BezierCurve(poles);
         this->getGeom2dBezierCurvePtr()->setHandle(bezier);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -290,13 +290,13 @@ PyObject* BezierCurve2dPy::setWeight(PyObject * args)
     if (!PyArg_ParseTuple(args, "id", &index,&weight))
         return 0;
     try {
-        Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+        Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->SetWeight(index,weight);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -308,7 +308,7 @@ PyObject* BezierCurve2dPy::getWeight(PyObject * args)
     if (!PyArg_ParseTuple(args, "i", &index))
         return 0;
     try {
-        Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+        Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
         Standard_OutOfRange_Raise_if
             (index < 1 || index > curve->NbPoles() , "Weight index out of range");
@@ -316,7 +316,7 @@ PyObject* BezierCurve2dPy::getWeight(PyObject * args)
         return Py_BuildValue("d", weight);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -327,7 +327,7 @@ PyObject* BezierCurve2dPy::getWeights(PyObject * args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+        Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
         TColStd_Array1OfReal w(1,curve->NbPoles());
         curve->Weights(w);
@@ -338,7 +338,7 @@ PyObject* BezierCurve2dPy::getWeights(PyObject * args)
         return Py::new_reference_to(weights);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -350,42 +350,42 @@ PyObject* BezierCurve2dPy::getResolution(PyObject* args)
     if (!PyArg_ParseTuple(args, "d", &tol))
         return 0;
     try {
-        Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+        Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
         double utol;
         curve->Resolution(tol,utol);
         return Py_BuildValue("d",utol);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
 Py::Long BezierCurve2dPy::getDegree(void) const
 {
-    Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+    Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     return Py::Long(curve->Degree()); 
 }
 
 Py::Long BezierCurve2dPy::getMaxDegree(void) const
 {
-    Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+    Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     return Py::Long(curve->MaxDegree()); 
 }
 
 Py::Long BezierCurve2dPy::getNbPoles(void) const
 {
-    Handle_Geom2d_BezierCurve curve = Handle_Geom2d_BezierCurve::DownCast
+    Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     return Py::Long(curve->NbPoles()); 
 }
 
 Py::Object BezierCurve2dPy::getStartPoint(void) const
 {
-    Handle_Geom2d_BezierCurve c = Handle_Geom2d_BezierCurve::DownCast
+    Handle(Geom2d_BezierCurve) c = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     gp_Pnt2d pnt = c->StartPoint();
 
@@ -399,7 +399,7 @@ Py::Object BezierCurve2dPy::getStartPoint(void) const
 
 Py::Object BezierCurve2dPy::getEndPoint(void) const
 {
-    Handle_Geom2d_BezierCurve c = Handle_Geom2d_BezierCurve::DownCast
+    Handle(Geom2d_BezierCurve) c = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     gp_Pnt2d pnt = c->EndPoint();
 

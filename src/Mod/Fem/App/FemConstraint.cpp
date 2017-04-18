@@ -348,7 +348,7 @@ Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base, const Base::
     }
 
     // Translate the plane in direction of the cylinder (for positive values of Distance)
-    Handle_Geom_Plane pln = new Geom_Plane(plane);
+    Handle(Geom_Plane) pln = new Geom_Plane(plane);
     gp_Pnt cylbase(base.x, base.y, base.z);
     GeomAPI_ProjectPointOnSurf proj(cylbase, pln);
     if (!proj.IsDone())
@@ -357,10 +357,10 @@ Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base, const Base::
     gp_Pnt projPnt = proj.NearestPoint();
     if ((fabs(dist) > Precision::Confusion()) && (projPnt.IsEqual(cylbase, Precision::Confusion()) == Standard_False))
         plane.Translate(gp_Vec(projPnt, cylbase).Normalized().Multiplied(dist));
-    Handle_Geom_Plane plnt = new Geom_Plane(plane);
+    Handle(Geom_Plane) plnt = new Geom_Plane(plane);
 
     // Intersect translated plane with cylinder axis
-    Handle_Geom_Curve crv = new Geom_Line(cylbase, cylaxis);
+    Handle(Geom_Curve) crv = new Geom_Line(cylbase, cylaxis);
     GeomAPI_IntCS intersector(crv, plnt);
     if (!intersector.IsDone())
         return Base::Vector3d(0,0,0);

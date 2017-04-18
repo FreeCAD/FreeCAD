@@ -121,9 +121,9 @@ Geom2dPoint::Geom2dPoint()
     this->myPoint = new Geom2d_CartesianPoint(0,0);
 }
 
-Geom2dPoint::Geom2dPoint(const Handle_Geom2d_CartesianPoint& p)
+Geom2dPoint::Geom2dPoint(const Handle(Geom2d_CartesianPoint)& p)
 {
-    this->myPoint = Handle_Geom2d_CartesianPoint::DownCast(p->Copy());
+    this->myPoint = Handle(Geom2d_CartesianPoint)::DownCast(p->Copy());
 }
 
 Geom2dPoint::Geom2dPoint(const Base::Vector2d& p)
@@ -137,7 +137,7 @@ Geom2dPoint::~Geom2dPoint()
 
 TopoDS_Shape Geom2dPoint::toShape() const
 {
-    Handle_Geom2d_CartesianPoint c = Handle_Geom2d_CartesianPoint::DownCast(handle());
+    Handle(Geom2d_CartesianPoint) c = Handle(Geom2d_CartesianPoint)::DownCast(handle());
     gp_Pnt2d xy = c->Pnt2d();
     gp_Pnt pnt;
     pnt.SetX(xy.X());
@@ -146,7 +146,7 @@ TopoDS_Shape Geom2dPoint::toShape() const
     return mkBuilder.Shape();
 }
 
-const Handle_Geom2d_Geometry& Geom2dPoint::handle() const
+const Handle(Geom2d_Geometry)& Geom2dPoint::handle() const
 {
     return myPoint;
 }
@@ -204,7 +204,7 @@ void Geom2dPoint::Restore(Base::XMLReader &reader)
 
 PyObject *Geom2dPoint::getPyObject(void)
 {
-    Handle_Geom2d_CartesianPoint c = Handle_Geom2d_CartesianPoint::DownCast(handle());
+    Handle(Geom2d_CartesianPoint) c = Handle(Geom2d_CartesianPoint)::DownCast(handle());
     gp_Pnt2d xy = c->Pnt2d();
 
     Py::Tuple tuple(2);
@@ -227,14 +227,14 @@ Geom2dCurve::~Geom2dCurve()
 
 TopoDS_Shape Geom2dCurve::toShape() const
 {
-    Handle_Geom2d_Curve c = Handle_Geom2d_Curve::DownCast(handle());
+    Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
     BRepBuilderAPI_MakeEdge2d mkBuilder(c);
     return mkBuilder.Shape();
 }
 
 bool Geom2dCurve::tangent(double u, gp_Dir2d& dir) const
 {
-    Handle_Geom2d_Curve c = Handle_Geom2d_Curve::DownCast(handle());
+    Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
     Geom2dLProp_CLProps2d prop(c,u,2,Precision::Confusion());
     if (prop.IsTangentDefined()) {
         prop.Tangent(dir);
@@ -246,7 +246,7 @@ bool Geom2dCurve::tangent(double u, gp_Dir2d& dir) const
 
 Base::Vector2d Geom2dCurve::pointAtParameter(double u) const
 {
-    Handle_Geom2d_Curve c = Handle_Geom2d_Curve::DownCast(handle());
+    Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
     Geom2dLProp_CLProps2d prop(c,u,0,Precision::Confusion());
 
     const gp_Pnt2d &point=prop.Value();
@@ -255,7 +255,7 @@ Base::Vector2d Geom2dCurve::pointAtParameter(double u) const
 
 Base::Vector2d Geom2dCurve::firstDerivativeAtParameter(double u) const
 {
-    Handle_Geom2d_Curve c = Handle_Geom2d_Curve::DownCast(handle());
+    Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
     Geom2dLProp_CLProps2d prop(c,u,1,Precision::Confusion());
 
     const gp_Vec2d &vec=prop.D1();
@@ -264,7 +264,7 @@ Base::Vector2d Geom2dCurve::firstDerivativeAtParameter(double u) const
 
 Base::Vector2d Geom2dCurve::secondDerivativeAtParameter(double u) const
 {
-    Handle_Geom2d_Curve c = Handle_Geom2d_Curve::DownCast(handle());
+    Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
     Geom2dLProp_CLProps2d prop(c,u,2,Precision::Confusion());
 
     const gp_Vec2d &vec=prop.D2();
@@ -273,7 +273,7 @@ Base::Vector2d Geom2dCurve::secondDerivativeAtParameter(double u) const
 
 bool Geom2dCurve::normal(double u, gp_Dir2d& dir) const
 {
-    Handle_Geom2d_Curve c = Handle_Geom2d_Curve::DownCast(handle());
+    Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
     Geom2dLProp_CLProps2d prop(c,u,2,Precision::Confusion());
     if (prop.IsTangentDefined()) {
         prop.Normal(dir);
@@ -285,7 +285,7 @@ bool Geom2dCurve::normal(double u, gp_Dir2d& dir) const
 
 bool Geom2dCurve::closestParameter(const Base::Vector2d& point, double &u) const
 {
-    Handle_Geom2d_Curve c = Handle_Geom2d_Curve::DownCast(handle());
+    Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
     try {
         if (!c.IsNull()) {
             gp_Pnt2d pnt(point.x,point.y);
@@ -295,7 +295,7 @@ bool Geom2dCurve::closestParameter(const Base::Vector2d& point, double &u) const
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         std::cout << e->GetMessageString() << std::endl;
         return false;
     }
@@ -305,11 +305,11 @@ bool Geom2dCurve::closestParameter(const Base::Vector2d& point, double &u) const
 
 bool Geom2dCurve::closestParameterToBasicCurve(const Base::Vector2d& point, double &u) const
 {
-    Handle_Geom2d_Curve c = Handle_Geom2d_Curve::DownCast(handle());
+    Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
     
     if (c->IsKind(STANDARD_TYPE(Geom2d_TrimmedCurve))){
-        Handle_Geom2d_TrimmedCurve tc = Handle_Geom2d_TrimmedCurve::DownCast(handle());
-        Handle_Geom2d_Curve bc = tc->BasisCurve();
+        Handle(Geom2d_TrimmedCurve) tc = Handle(Geom2d_TrimmedCurve)::DownCast(handle());
+        Handle(Geom2d_Curve) bc = tc->BasisCurve();
         try {
             if (!bc.IsNull()) {
                 gp_Pnt2d pnt(point.x,point.y);
@@ -319,7 +319,7 @@ bool Geom2dCurve::closestParameterToBasicCurve(const Base::Vector2d& point, doub
             }
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             std::cout << e->GetMessageString() << std::endl;
             return false;
         }
@@ -341,25 +341,25 @@ Geom2dBezierCurve::Geom2dBezierCurve()
     TColgp_Array1OfPnt2d poles(1,2);
     poles(1) = gp_Pnt2d(0.0,0.0);
     poles(2) = gp_Pnt2d(0.0,1.0);
-    Handle_Geom2d_BezierCurve b = new Geom2d_BezierCurve(poles);
+    Handle(Geom2d_BezierCurve) b = new Geom2d_BezierCurve(poles);
     this->myCurve = b;
 }
 
-Geom2dBezierCurve::Geom2dBezierCurve(const Handle_Geom2d_BezierCurve& b)
+Geom2dBezierCurve::Geom2dBezierCurve(const Handle(Geom2d_BezierCurve)& b)
 {
-    this->myCurve = Handle_Geom2d_BezierCurve::DownCast(b->Copy());
+    this->myCurve = Handle(Geom2d_BezierCurve)::DownCast(b->Copy());
 }
 
 Geom2dBezierCurve::~Geom2dBezierCurve()
 {
 }
 
-void Geom2dBezierCurve::setHandle(const Handle_Geom2d_BezierCurve& c)
+void Geom2dBezierCurve::setHandle(const Handle(Geom2d_BezierCurve)& c)
 {
-    myCurve = Handle_Geom2d_BezierCurve::DownCast(c->Copy());
+    myCurve = Handle(Geom2d_BezierCurve)::DownCast(c->Copy());
 }
 
-const Handle_Geom2d_Geometry& Geom2dBezierCurve::handle() const
+const Handle(Geom2d_Geometry)& Geom2dBezierCurve::handle() const
 {
     return myCurve;
 }
@@ -411,21 +411,21 @@ Geom2dBSplineCurve::Geom2dBSplineCurve()
     this->myCurve = new Geom2d_BSplineCurve(poles, knots, mults, 1);
 }
 
-Geom2dBSplineCurve::Geom2dBSplineCurve(const Handle_Geom2d_BSplineCurve& b)
+Geom2dBSplineCurve::Geom2dBSplineCurve(const Handle(Geom2d_BSplineCurve)& b)
 {
-    this->myCurve = Handle_Geom2d_BSplineCurve::DownCast(b->Copy());
+    this->myCurve = Handle(Geom2d_BSplineCurve)::DownCast(b->Copy());
 }
 
 Geom2dBSplineCurve::~Geom2dBSplineCurve()
 {
 }
 
-void Geom2dBSplineCurve::setHandle(const Handle_Geom2d_BSplineCurve& c)
+void Geom2dBSplineCurve::setHandle(const Handle(Geom2d_BSplineCurve)& c)
 {
-    myCurve = Handle_Geom2d_BSplineCurve::DownCast(c->Copy());
+    myCurve = Handle(Geom2d_BSplineCurve)::DownCast(c->Copy());
 }
 
-const Handle_Geom2d_Geometry& Geom2dBSplineCurve::handle() const
+const Handle(Geom2d_Geometry)& Geom2dBSplineCurve::handle() const
 {
     return myCurve;
 }
@@ -451,7 +451,7 @@ void Geom2dBSplineCurve::setPole(int index, const Base::Vector2d& pole, double w
             myCurve->SetPole(index+1,pnt,weight);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         std::cout << e->GetMessageString() << std::endl;
     }
 }
@@ -470,7 +470,7 @@ std::vector<Base::Vector2d> Geom2dBSplineCurve::getPoles() const
     return poles;
 }
 
-bool Geom2dBSplineCurve::join(const Handle_Geom2d_BSplineCurve& spline)
+bool Geom2dBSplineCurve::join(const Handle(Geom2d_BSplineCurve)& spline)
 {
     Geom2dConvert_CompCurveToBSplineCurve ccbc(this->myCurve);
     if (!ccbc.Add(spline, Precision::Approximation()))
@@ -488,13 +488,13 @@ void Geom2dBSplineCurve::interpolate(const std::vector<gp_Pnt2d>& p,
         Standard_ConstructionError::Raise();
 
     double tol3d = Precision::Approximation();
-    Handle_TColgp_HArray1OfPnt2d pts = new TColgp_HArray1OfPnt2d(1, p.size());
+    Handle(TColgp_HArray1OfPnt2d) pts = new TColgp_HArray1OfPnt2d(1, p.size());
     for (std::size_t i=0; i<p.size(); i++) {
         pts->SetValue(i+1, p[i]);
     }
 
     TColgp_Array1OfVec2d tgs(1, t.size());
-    Handle_TColStd_HArray1OfBoolean fgs = new TColStd_HArray1OfBoolean(1, t.size());
+    Handle(TColStd_HArray1OfBoolean) fgs = new TColStd_HArray1OfBoolean(1, t.size());
     for (std::size_t i=0; i<p.size(); i++) {
         tgs.SetValue(i+1, t[i]);
         fgs->SetValue(i+1, Standard_True);
@@ -608,7 +608,7 @@ Geom2dConic::~Geom2dConic()
 
 Base::Vector2d Geom2dConic::getLocation(void) const
 {
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(handle());
     const gp_Pnt2d& loc = conic->Location();
     return Base::Vector2d(loc.X(),loc.Y());
 }
@@ -616,20 +616,20 @@ Base::Vector2d Geom2dConic::getLocation(void) const
 void Geom2dConic::setLocation(const Base::Vector2d& Center)
 {
     gp_Pnt2d p1(Center.x,Center.y);
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(handle());
 
     try {
         conic->SetLocation(p1);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
 
 bool Geom2dConic::isReversed() const
 {
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(handle());
     gp_Dir2d xdir = conic->XAxis().Direction();
     gp_Dir2d ydir = conic->YAxis().Direction();
 
@@ -686,8 +686,8 @@ Geom2dArcOfConic::~Geom2dArcOfConic()
 
 Base::Vector2d Geom2dArcOfConic::getLocation(void) const
 {
-    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     const gp_Pnt2d& loc = conic->Location();
     return Base::Vector2d(loc.X(),loc.Y());
 }
@@ -695,22 +695,22 @@ Base::Vector2d Geom2dArcOfConic::getLocation(void) const
 void Geom2dArcOfConic::setLocation(const Base::Vector2d& Center)
 {
     gp_Pnt2d p1(Center.x,Center.y);
-    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
 
     try {
         conic->SetLocation(p1);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
 
 bool Geom2dArcOfConic::isReversed() const
 {
-    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
-    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(handle());
+    Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     gp_Dir2d xdir = conic->XAxis().Direction();
     gp_Dir2d ydir = conic->YAxis().Direction();
 
@@ -726,7 +726,7 @@ bool Geom2dArcOfConic::isReversed() const
  */
 Base::Vector2d Geom2dArcOfConic::getStartPoint() const
 {
-    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(handle());
     gp_Pnt2d pnt = curve->StartPoint();
     return Base::Vector2d(pnt.X(), pnt.Y());
 }
@@ -737,7 +737,7 @@ Base::Vector2d Geom2dArcOfConic::getStartPoint() const
  */
 Base::Vector2d Geom2dArcOfConic::getEndPoint() const
 {
-    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(handle());
     gp_Pnt2d pnt = curve->EndPoint();
     return Base::Vector2d(pnt.X(), pnt.Y());
 }
@@ -749,7 +749,7 @@ Base::Vector2d Geom2dArcOfConic::getEndPoint() const
  */
 void Geom2dArcOfConic::getRange(double& u, double& v) const
 {
-    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(handle());
     u = curve->FirstParameter();
     v = curve->LastParameter();
 }
@@ -762,11 +762,11 @@ void Geom2dArcOfConic::getRange(double& u, double& v) const
 void Geom2dArcOfConic::setRange(double u, double v)
 {
     try {
-        Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+        Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(handle());
         curve->SetTrim(u, v);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -814,20 +814,20 @@ TYPESYSTEM_SOURCE(Part::Geom2dCircle, Part::Geom2dConic)
 
 Geom2dCircle::Geom2dCircle()
 {
-    Handle_Geom2d_Circle c = new Geom2d_Circle(gp_Circ2d());
+    Handle(Geom2d_Circle) c = new Geom2d_Circle(gp_Circ2d());
     this->myCurve = c;
 }
 
-Geom2dCircle::Geom2dCircle(const Handle_Geom2d_Circle& c)
+Geom2dCircle::Geom2dCircle(const Handle(Geom2d_Circle)& c)
 {
-    this->myCurve = Handle_Geom2d_Circle::DownCast(c->Copy());
+    this->myCurve = Handle(Geom2d_Circle)::DownCast(c->Copy());
 }
 
 Geom2dCircle::~Geom2dCircle()
 {
 }
 
-const Handle_Geom2d_Geometry& Geom2dCircle::handle() const
+const Handle(Geom2d_Geometry)& Geom2dCircle::handle() const
 {
     return myCurve;
 }
@@ -840,13 +840,13 @@ Geometry2d *Geom2dCircle::clone(void) const
 
 double Geom2dCircle::getRadius(void) const
 {
-    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(handle());
+    Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(handle());
     return circle->Radius();
 }
 
 void Geom2dCircle::setRadius(double Radius)
 {
-    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(handle());
+    Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(handle());
 
     try {
         gp_Circ2d c = circle->Circ2d();
@@ -854,7 +854,7 @@ void Geom2dCircle::setRadius(double Radius)
         circle->SetCirc2d(c);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -869,7 +869,7 @@ void Geom2dCircle::Save(Base::Writer& writer) const
     // save the attributes of the father class
     Geom2dCurve::Save(writer);
 
-    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(handle());
+    Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(handle());
     gp_Circ2d c = circle->Circ2d();
     gp_Ax22d axis = c.Axis();
 
@@ -903,7 +903,7 @@ void Geom2dCircle::Restore(Base::XMLReader& reader)
         this->myCurve = mc.Value();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -919,11 +919,11 @@ TYPESYSTEM_SOURCE(Part::Geom2dArcOfCircle, Part::Geom2dArcOfConic)
 
 Geom2dArcOfCircle::Geom2dArcOfCircle()
 {
-    Handle_Geom2d_Circle c = new Geom2d_Circle(gp_Circ2d());
+    Handle(Geom2d_Circle) c = new Geom2d_Circle(gp_Circ2d());
     this->myCurve = new Geom2d_TrimmedCurve(c, c->FirstParameter(),c->LastParameter());
 }
 
-Geom2dArcOfCircle::Geom2dArcOfCircle(const Handle_Geom2d_Circle& c)
+Geom2dArcOfCircle::Geom2dArcOfCircle(const Handle(Geom2d_Circle)& c)
 {
     this->myCurve = new Geom2d_TrimmedCurve(c, c->FirstParameter(),c->LastParameter());
 }
@@ -932,15 +932,15 @@ Geom2dArcOfCircle::~Geom2dArcOfCircle()
 {
 }
 
-void Geom2dArcOfCircle::setHandle(const Handle_Geom2d_TrimmedCurve& c)
+void Geom2dArcOfCircle::setHandle(const Handle(Geom2d_TrimmedCurve)& c)
 {
-    Handle_Geom2d_Circle basis = Handle_Geom2d_Circle::DownCast(c->BasisCurve());
+    Handle(Geom2d_Circle) basis = Handle(Geom2d_Circle)::DownCast(c->BasisCurve());
     if (basis.IsNull())
         Standard_Failure::Raise("Basis curve is not a circle");
-    this->myCurve = Handle_Geom2d_TrimmedCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom2d_TrimmedCurve)::DownCast(c->Copy());
 }
 
-const Handle_Geom2d_Geometry& Geom2dArcOfCircle::handle() const
+const Handle(Geom2d_Geometry)& Geom2dArcOfCircle::handle() const
 {
     return myCurve;
 }
@@ -954,13 +954,13 @@ Geometry2d *Geom2dArcOfCircle::clone(void) const
 
 double Geom2dArcOfCircle::getRadius(void) const
 {
-    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(myCurve->BasisCurve());
     return circle->Radius();
 }
 
 void Geom2dArcOfCircle::setRadius(double Radius)
 {
-    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(myCurve->BasisCurve());
 
     try {
         gp_Circ2d c = circle->Circ2d();
@@ -968,7 +968,7 @@ void Geom2dArcOfCircle::setRadius(double Radius)
         circle->SetCirc2d(c);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -983,7 +983,7 @@ void Geom2dArcOfCircle::Save(Base::Writer &writer) const
     // save the attributes of the father class
     Geom2dCurve::Save(writer);
 
-    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(this->myCurve->BasisCurve());
+    Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(this->myCurve->BasisCurve());
 
     gp_Circ2d c = circle->Circ2d();
     gp_Ax22d axis = c.Axis();
@@ -1020,15 +1020,15 @@ void Geom2dArcOfCircle::Restore(Base::XMLReader &reader)
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
 
-        Handle_Geom2d_TrimmedCurve tmpcurve = ma.Value();
-        Handle_Geom2d_Circle tmpcircle = Handle_Geom2d_Circle::DownCast(tmpcurve->BasisCurve());
-        Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(this->myCurve->BasisCurve());
+        Handle(Geom2d_TrimmedCurve) tmpcurve = ma.Value();
+        Handle(Geom2d_Circle) tmpcircle = Handle(Geom2d_Circle)::DownCast(tmpcurve->BasisCurve());
+        Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(this->myCurve->BasisCurve());
  
         circle->SetCirc2d(tmpcircle->Circ2d());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1044,20 +1044,20 @@ TYPESYSTEM_SOURCE(Part::Geom2dEllipse, Part::Geom2dConic)
 
 Geom2dEllipse::Geom2dEllipse()
 {
-    Handle_Geom2d_Ellipse e = new Geom2d_Ellipse(gp_Elips2d());
+    Handle(Geom2d_Ellipse) e = new Geom2d_Ellipse(gp_Elips2d());
     this->myCurve = e;
 }
 
-Geom2dEllipse::Geom2dEllipse(const Handle_Geom2d_Ellipse& e)
+Geom2dEllipse::Geom2dEllipse(const Handle(Geom2d_Ellipse)& e)
 {
-    this->myCurve = Handle_Geom2d_Ellipse::DownCast(e->Copy());
+    this->myCurve = Handle(Geom2d_Ellipse)::DownCast(e->Copy());
 }
 
 Geom2dEllipse::~Geom2dEllipse()
 {
 }
 
-const Handle_Geom2d_Geometry& Geom2dEllipse::handle() const
+const Handle(Geom2d_Geometry)& Geom2dEllipse::handle() const
 {
     return myCurve;
 }
@@ -1070,38 +1070,38 @@ Geometry2d *Geom2dEllipse::clone(void) const
 
 double Geom2dEllipse::getMajorRadius(void) const
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(handle());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(handle());
     return ellipse->MajorRadius();
 }
 
 void Geom2dEllipse::setMajorRadius(double Radius)
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(handle());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(handle());
 
     try {
         ellipse->SetMajorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
 
 double Geom2dEllipse::getMinorRadius(void) const
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(handle());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(handle());
     return ellipse->MinorRadius();
 }
 
 void Geom2dEllipse::setMinorRadius(double Radius)
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(handle());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(handle());
 
     try {
         ellipse->SetMinorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1137,7 +1137,7 @@ void Geom2dEllipse::setMajorAxisDir(Base::Vector2d newdir)
         myCurve->SetElips2d(e);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1187,7 +1187,7 @@ void Geom2dEllipse::Restore(Base::XMLReader& reader)
         this->myCurve = mc.Value();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1197,9 +1197,9 @@ PyObject *Geom2dEllipse::getPyObject(void)
     return new Ellipse2dPy(static_cast<Geom2dEllipse*>(this->clone()));
 }
 
-void Geom2dEllipse::setHandle(const Handle_Geom2d_Ellipse &e)
+void Geom2dEllipse::setHandle(const Handle(Geom2d_Ellipse) &e)
 {
-    this->myCurve = Handle_Geom2d_Ellipse::DownCast(e->Copy());
+    this->myCurve = Handle(Geom2d_Ellipse)::DownCast(e->Copy());
 }
 
 // -------------------------------------------------
@@ -1208,11 +1208,11 @@ TYPESYSTEM_SOURCE(Part::Geom2dArcOfEllipse, Part::Geom2dArcOfConic)
 
 Geom2dArcOfEllipse::Geom2dArcOfEllipse()
 {
-    Handle_Geom2d_Ellipse e = new Geom2d_Ellipse(gp_Elips2d());
+    Handle(Geom2d_Ellipse) e = new Geom2d_Ellipse(gp_Elips2d());
     this->myCurve = new Geom2d_TrimmedCurve(e, e->FirstParameter(),e->LastParameter());
 }
 
-Geom2dArcOfEllipse::Geom2dArcOfEllipse(const Handle_Geom2d_Ellipse& e)
+Geom2dArcOfEllipse::Geom2dArcOfEllipse(const Handle(Geom2d_Ellipse)& e)
 {
     this->myCurve = new Geom2d_TrimmedCurve(e, e->FirstParameter(),e->LastParameter());
 }
@@ -1221,15 +1221,15 @@ Geom2dArcOfEllipse::~Geom2dArcOfEllipse()
 {
 }
 
-void Geom2dArcOfEllipse::setHandle(const Handle_Geom2d_TrimmedCurve& c)
+void Geom2dArcOfEllipse::setHandle(const Handle(Geom2d_TrimmedCurve)& c)
 {
-    Handle_Geom2d_Ellipse basis = Handle_Geom2d_Ellipse::DownCast(c->BasisCurve());
+    Handle(Geom2d_Ellipse) basis = Handle(Geom2d_Ellipse)::DownCast(c->BasisCurve());
     if (basis.IsNull())
         Standard_Failure::Raise("Basis curve is not an ellipse");
-    this->myCurve = Handle_Geom2d_TrimmedCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom2d_TrimmedCurve)::DownCast(c->Copy());
 }
 
-const Handle_Geom2d_Geometry& Geom2dArcOfEllipse::handle() const
+const Handle(Geom2d_Geometry)& Geom2dArcOfEllipse::handle() const
 {
     return myCurve;
 }
@@ -1243,38 +1243,38 @@ Geometry2d *Geom2dArcOfEllipse::clone(void) const
 
 double Geom2dArcOfEllipse::getMajorRadius(void) const
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(myCurve->BasisCurve());
     return ellipse->MajorRadius();
 }
 
 void Geom2dArcOfEllipse::setMajorRadius(double Radius)
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(myCurve->BasisCurve());
 
     try {
         ellipse->SetMajorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
 
 double Geom2dArcOfEllipse::getMinorRadius(void) const
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(myCurve->BasisCurve());
     return ellipse->MinorRadius();
 }
 
 void Geom2dArcOfEllipse::setMinorRadius(double Radius)
 {
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(myCurve->BasisCurve());
 
     try {
         ellipse->SetMinorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1286,7 +1286,7 @@ void Geom2dArcOfEllipse::setMinorRadius(double Radius)
  */
 Base::Vector2d Geom2dArcOfEllipse::getMajorAxisDir() const
 {
-    Handle_Geom2d_Ellipse c = Handle_Geom2d_Ellipse::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Ellipse) c = Handle(Geom2d_Ellipse)::DownCast(myCurve->BasisCurve());
     assert(!c.IsNull());
     gp_Dir2d xdir = c->XAxis().Direction();
     return Base::Vector2d(xdir.X(), xdir.Y());
@@ -1302,7 +1302,7 @@ Base::Vector2d Geom2dArcOfEllipse::getMajorAxisDir() const
  */
 void Geom2dArcOfEllipse::setMajorAxisDir(Base::Vector2d newdir)
 {
-    Handle_Geom2d_Ellipse c = Handle_Geom2d_Ellipse::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Ellipse) c = Handle(Geom2d_Ellipse)::DownCast(myCurve->BasisCurve());
     assert(!c.IsNull());
     if (newdir.Length() < Precision::Confusion())
         return;//zero vector was passed. Keep the old orientation.
@@ -1314,7 +1314,7 @@ void Geom2dArcOfEllipse::setMajorAxisDir(Base::Vector2d newdir)
         c->SetElips2d(e);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1329,7 +1329,7 @@ void Geom2dArcOfEllipse::Save(Base::Writer &writer) const
     // save the attributes of the father class
     Geom2dCurve::Save(writer);
     
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(this->myCurve->BasisCurve());
+    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(this->myCurve->BasisCurve());
 
     gp_Elips2d e = ellipse->Elips2d();
     gp_Ax22d axis = e.Axis();
@@ -1369,15 +1369,15 @@ void Geom2dArcOfEllipse::Restore(Base::XMLReader &reader)
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
         
-        Handle_Geom2d_TrimmedCurve tmpcurve = ma.Value();
-        Handle_Geom2d_Ellipse tmpellipse = Handle_Geom2d_Ellipse::DownCast(tmpcurve->BasisCurve());
-        Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(this->myCurve->BasisCurve());
+        Handle(Geom2d_TrimmedCurve) tmpcurve = ma.Value();
+        Handle(Geom2d_Ellipse) tmpellipse = Handle(Geom2d_Ellipse)::DownCast(tmpcurve->BasisCurve());
+        Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(this->myCurve->BasisCurve());
  
         ellipse->SetElips2d(tmpellipse->Elips2d());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1393,20 +1393,20 @@ TYPESYSTEM_SOURCE(Part::Geom2dHyperbola, Part::Geom2dConic)
 
 Geom2dHyperbola::Geom2dHyperbola()
 {
-    Handle_Geom2d_Hyperbola h = new Geom2d_Hyperbola(gp_Hypr2d());
+    Handle(Geom2d_Hyperbola) h = new Geom2d_Hyperbola(gp_Hypr2d());
     this->myCurve = h;
 }
 
-Geom2dHyperbola::Geom2dHyperbola(const Handle_Geom2d_Hyperbola& h)
+Geom2dHyperbola::Geom2dHyperbola(const Handle(Geom2d_Hyperbola)& h)
 {
-    this->myCurve = Handle_Geom2d_Hyperbola::DownCast(h->Copy());
+    this->myCurve = Handle(Geom2d_Hyperbola)::DownCast(h->Copy());
 }
 
 Geom2dHyperbola::~Geom2dHyperbola()
 {
 }
 
-const Handle_Geom2d_Geometry& Geom2dHyperbola::handle() const
+const Handle(Geom2d_Geometry)& Geom2dHyperbola::handle() const
 {
     return myCurve;
 }
@@ -1419,38 +1419,38 @@ Geometry2d *Geom2dHyperbola::clone(void) const
 
 double Geom2dHyperbola::getMajorRadius(void) const
 {
-    Handle_Geom2d_Hyperbola h = Handle_Geom2d_Hyperbola::DownCast(handle());
+    Handle(Geom2d_Hyperbola) h = Handle(Geom2d_Hyperbola)::DownCast(handle());
     return h->MajorRadius();
 }
 
 void Geom2dHyperbola::setMajorRadius(double Radius)
 {
-    Handle_Geom2d_Hyperbola h = Handle_Geom2d_Hyperbola::DownCast(handle());
+    Handle(Geom2d_Hyperbola) h = Handle(Geom2d_Hyperbola)::DownCast(handle());
 
     try {
         h->SetMajorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
 
 double Geom2dHyperbola::getMinorRadius(void) const
 {
-    Handle_Geom2d_Hyperbola h = Handle_Geom2d_Hyperbola::DownCast(handle());
+    Handle(Geom2d_Hyperbola) h = Handle(Geom2d_Hyperbola)::DownCast(handle());
     return h->MinorRadius();
 }
 
 void Geom2dHyperbola::setMinorRadius(double Radius)
 {
-    Handle_Geom2d_Hyperbola h = Handle_Geom2d_Hyperbola::DownCast(handle());
+    Handle(Geom2d_Hyperbola) h = Handle(Geom2d_Hyperbola)::DownCast(handle());
 
     try {
         h->SetMinorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1500,7 +1500,7 @@ void Geom2dHyperbola::Restore(Base::XMLReader& reader)
         this->myCurve = mc.Value();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1516,11 +1516,11 @@ TYPESYSTEM_SOURCE(Part::Geom2dArcOfHyperbola, Part::Geom2dArcOfConic)
 
 Geom2dArcOfHyperbola::Geom2dArcOfHyperbola()
 {
-    Handle_Geom2d_Hyperbola h = new Geom2d_Hyperbola(gp_Hypr2d());
+    Handle(Geom2d_Hyperbola) h = new Geom2d_Hyperbola(gp_Hypr2d());
     this->myCurve = new Geom2d_TrimmedCurve(h, h->FirstParameter(),h->LastParameter());
 }
 
-Geom2dArcOfHyperbola::Geom2dArcOfHyperbola(const Handle_Geom2d_Hyperbola& h)
+Geom2dArcOfHyperbola::Geom2dArcOfHyperbola(const Handle(Geom2d_Hyperbola)& h)
 {
     this->myCurve = new Geom2d_TrimmedCurve(h, h->FirstParameter(),h->LastParameter());
 }
@@ -1529,15 +1529,15 @@ Geom2dArcOfHyperbola::~Geom2dArcOfHyperbola()
 {
 }
 
-void Geom2dArcOfHyperbola::setHandle(const Handle_Geom2d_TrimmedCurve& c)
+void Geom2dArcOfHyperbola::setHandle(const Handle(Geom2d_TrimmedCurve)& c)
 {
-    Handle_Geom2d_Hyperbola basis = Handle_Geom2d_Hyperbola::DownCast(c->BasisCurve());
+    Handle(Geom2d_Hyperbola) basis = Handle(Geom2d_Hyperbola)::DownCast(c->BasisCurve());
     if (basis.IsNull())
         Standard_Failure::Raise("Basis curve is not an hyperbola");
-    this->myCurve = Handle_Geom2d_TrimmedCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom2d_TrimmedCurve)::DownCast(c->Copy());
 }
 
-const Handle_Geom2d_Geometry& Geom2dArcOfHyperbola::handle() const
+const Handle(Geom2d_Geometry)& Geom2dArcOfHyperbola::handle() const
 {
     return myCurve;
 }
@@ -1551,38 +1551,38 @@ Geometry2d *Geom2dArcOfHyperbola::clone(void) const
 
 double Geom2dArcOfHyperbola::getMajorRadius(void) const
 {
-    Handle_Geom2d_Hyperbola h = Handle_Geom2d_Hyperbola::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Hyperbola) h = Handle(Geom2d_Hyperbola)::DownCast(myCurve->BasisCurve());
     return h->MajorRadius();
 }
 
 void Geom2dArcOfHyperbola::setMajorRadius(double Radius)
 {
-    Handle_Geom2d_Hyperbola h = Handle_Geom2d_Hyperbola::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Hyperbola) h = Handle(Geom2d_Hyperbola)::DownCast(myCurve->BasisCurve());
 
     try {
         h->SetMajorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
 
 double Geom2dArcOfHyperbola::getMinorRadius(void) const
 {
-    Handle_Geom2d_Hyperbola h = Handle_Geom2d_Hyperbola::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Hyperbola) h = Handle(Geom2d_Hyperbola)::DownCast(myCurve->BasisCurve());
     return h->MinorRadius();
 }
 
 void Geom2dArcOfHyperbola::setMinorRadius(double Radius)
 {
-    Handle_Geom2d_Hyperbola h = Handle_Geom2d_Hyperbola::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Hyperbola) h = Handle(Geom2d_Hyperbola)::DownCast(myCurve->BasisCurve());
 
     try {
         h->SetMinorRadius(Radius);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1597,7 +1597,7 @@ void Geom2dArcOfHyperbola::Save(Base::Writer &writer) const
     // save the attributes of the father class
     Geom2dCurve::Save(writer);
     
-    Handle_Geom2d_Hyperbola hh = Handle_Geom2d_Hyperbola::DownCast(this->myCurve->BasisCurve());
+    Handle(Geom2d_Hyperbola) hh = Handle(Geom2d_Hyperbola)::DownCast(this->myCurve->BasisCurve());
 
     gp_Hypr2d h = hh->Hypr2d();
     gp_Ax22d axis = h.Axis();
@@ -1637,15 +1637,15 @@ void Geom2dArcOfHyperbola::Restore(Base::XMLReader &reader)
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
         
-        Handle_Geom2d_TrimmedCurve tmpcurve = ma.Value();
-        Handle_Geom2d_Hyperbola tmphyperbola = Handle_Geom2d_Hyperbola::DownCast(tmpcurve->BasisCurve());
-        Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast(this->myCurve->BasisCurve());
+        Handle(Geom2d_TrimmedCurve) tmpcurve = ma.Value();
+        Handle(Geom2d_Hyperbola) tmphyperbola = Handle(Geom2d_Hyperbola)::DownCast(tmpcurve->BasisCurve());
+        Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(this->myCurve->BasisCurve());
  
         hyperbola->SetHypr2d(tmphyperbola->Hypr2d());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1661,20 +1661,20 @@ TYPESYSTEM_SOURCE(Part::Geom2dParabola, Part::Geom2dConic)
 
 Geom2dParabola::Geom2dParabola()
 {
-    Handle_Geom2d_Parabola p = new Geom2d_Parabola(gp_Parab2d());
+    Handle(Geom2d_Parabola) p = new Geom2d_Parabola(gp_Parab2d());
     this->myCurve = p;
 }
 
-Geom2dParabola::Geom2dParabola(const Handle_Geom2d_Parabola& p)
+Geom2dParabola::Geom2dParabola(const Handle(Geom2d_Parabola)& p)
 {
-    this->myCurve = Handle_Geom2d_Parabola::DownCast(p->Copy());
+    this->myCurve = Handle(Geom2d_Parabola)::DownCast(p->Copy());
 }
 
 Geom2dParabola::~Geom2dParabola()
 {
 }
 
-const Handle_Geom2d_Geometry& Geom2dParabola::handle() const
+const Handle(Geom2d_Geometry)& Geom2dParabola::handle() const
 {
     return myCurve;
 }
@@ -1687,19 +1687,19 @@ Geometry2d *Geom2dParabola::clone(void) const
 
 double Geom2dParabola::getFocal(void) const
 {
-    Handle_Geom2d_Parabola p = Handle_Geom2d_Parabola::DownCast(handle());
+    Handle(Geom2d_Parabola) p = Handle(Geom2d_Parabola)::DownCast(handle());
     return p->Focal();
 }
 
 void Geom2dParabola::setFocal(double length)
 {
-    Handle_Geom2d_Parabola p = Handle_Geom2d_Parabola::DownCast(handle());
+    Handle(Geom2d_Parabola) p = Handle(Geom2d_Parabola)::DownCast(handle());
 
     try {
         p->SetFocal(length);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1748,7 +1748,7 @@ void Geom2dParabola::Restore(Base::XMLReader& reader)
         this->myCurve = mc.Value();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1764,11 +1764,11 @@ TYPESYSTEM_SOURCE(Part::Geom2dArcOfParabola, Part::Geom2dArcOfConic)
 
 Geom2dArcOfParabola::Geom2dArcOfParabola()
 {
-    Handle_Geom2d_Parabola p = new Geom2d_Parabola(gp_Parab2d());
+    Handle(Geom2d_Parabola) p = new Geom2d_Parabola(gp_Parab2d());
     this->myCurve = new Geom2d_TrimmedCurve(p, p->FirstParameter(),p->LastParameter());
 }
 
-Geom2dArcOfParabola::Geom2dArcOfParabola(const Handle_Geom2d_Parabola& h)
+Geom2dArcOfParabola::Geom2dArcOfParabola(const Handle(Geom2d_Parabola)& h)
 {
     this->myCurve = new Geom2d_TrimmedCurve(h, h->FirstParameter(),h->LastParameter());
 }
@@ -1777,15 +1777,15 @@ Geom2dArcOfParabola::~Geom2dArcOfParabola()
 {
 }
 
-void Geom2dArcOfParabola::setHandle(const Handle_Geom2d_TrimmedCurve& c)
+void Geom2dArcOfParabola::setHandle(const Handle(Geom2d_TrimmedCurve)& c)
 {
-    Handle_Geom2d_Parabola basis = Handle_Geom2d_Parabola::DownCast(c->BasisCurve());
+    Handle(Geom2d_Parabola) basis = Handle(Geom2d_Parabola)::DownCast(c->BasisCurve());
     if (basis.IsNull())
         Standard_Failure::Raise("Basis curve is not a parabola");
-    this->myCurve = Handle_Geom2d_TrimmedCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom2d_TrimmedCurve)::DownCast(c->Copy());
 }
 
-const Handle_Geom2d_Geometry& Geom2dArcOfParabola::handle() const
+const Handle(Geom2d_Geometry)& Geom2dArcOfParabola::handle() const
 {
     return myCurve;
 }
@@ -1799,19 +1799,19 @@ Geometry2d *Geom2dArcOfParabola::clone(void) const
 
 double Geom2dArcOfParabola::getFocal(void) const
 {
-    Handle_Geom2d_Parabola p = Handle_Geom2d_Parabola::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Parabola) p = Handle(Geom2d_Parabola)::DownCast(myCurve->BasisCurve());
     return p->Focal();
 }
 
 void Geom2dArcOfParabola::setFocal(double length)
 {
-    Handle_Geom2d_Parabola p = Handle_Geom2d_Parabola::DownCast(myCurve->BasisCurve());
+    Handle(Geom2d_Parabola) p = Handle(Geom2d_Parabola)::DownCast(myCurve->BasisCurve());
 
     try {
         p->SetFocal(length);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1826,7 +1826,7 @@ void Geom2dArcOfParabola::Save(Base::Writer &writer) const
     // save the attributes of the father class
     Geom2dCurve::Save(writer);
     
-    Handle_Geom2d_Parabola hp = Handle_Geom2d_Parabola::DownCast(this->myCurve->BasisCurve());
+    Handle(Geom2d_Parabola) hp = Handle(Geom2d_Parabola)::DownCast(this->myCurve->BasisCurve());
     gp_Parab2d p = hp->Parab2d();
     gp_Ax22d axis = p.Axis();
     double u = this->myCurve->FirstParameter();
@@ -1864,15 +1864,15 @@ void Geom2dArcOfParabola::Restore(Base::XMLReader &reader)
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
 
-        Handle_Geom2d_TrimmedCurve tmpcurve = ma.Value();
-        Handle_Geom2d_Parabola tmpparabola = Handle_Geom2d_Parabola::DownCast(tmpcurve->BasisCurve());
-        Handle_Geom2d_Parabola parabola = Handle_Geom2d_Parabola::DownCast(this->myCurve->BasisCurve());
+        Handle(Geom2d_TrimmedCurve) tmpcurve = ma.Value();
+        Handle(Geom2d_Parabola) tmpparabola = Handle(Geom2d_Parabola)::DownCast(tmpcurve->BasisCurve());
+        Handle(Geom2d_Parabola) parabola = Handle(Geom2d_Parabola)::DownCast(this->myCurve->BasisCurve());
  
         parabola->SetParab2d(tmpparabola->Parab2d());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -1888,13 +1888,13 @@ TYPESYSTEM_SOURCE(Part::Geom2dLine, Part::Geom2dCurve)
 
 Geom2dLine::Geom2dLine()
 {
-    Handle_Geom2d_Line c = new Geom2d_Line(gp_Lin2d());
+    Handle(Geom2d_Line) c = new Geom2d_Line(gp_Lin2d());
     this->myCurve = c;
 }
 
-Geom2dLine::Geom2dLine(const Handle_Geom2d_Line& l)
+Geom2dLine::Geom2dLine(const Handle(Geom2d_Line)& l)
 {
-    this->myCurve = Handle_Geom2d_Line::DownCast(l->Copy());
+    this->myCurve = Handle(Geom2d_Line)::DownCast(l->Copy());
 }
 
 Geom2dLine::Geom2dLine(const Base::Vector2d& Pos, const Base::Vector2d& Dir)
@@ -1924,7 +1924,7 @@ Base::Vector2d Geom2dLine::getDir(void) const
     return Base::Vector2d(Dir.X(),Dir.Y());
 }
 
-const Handle_Geom2d_Geometry& Geom2dLine::handle() const
+const Handle(Geom2d_Geometry)& Geom2dLine::handle() const
 {
     return myCurve;
 }
@@ -1982,7 +1982,7 @@ void Geom2dLine::Restore(Base::XMLReader &reader)
         this->myCurve = mc.Value();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -2001,7 +2001,7 @@ Geom2dLineSegment::Geom2dLineSegment()
     gp_Lin2d line;
     line.SetLocation(gp_Pnt2d(0.0,0.0));
     line.SetDirection(gp_Dir2d(0.0,1.0));
-    Handle_Geom2d_Line c = new Geom2d_Line(line);
+    Handle(Geom2d_Line) c = new Geom2d_Line(line);
     this->myCurve = new Geom2d_TrimmedCurve(c, 0.0,1.0);
 }
 
@@ -2009,15 +2009,15 @@ Geom2dLineSegment::~Geom2dLineSegment()
 {
 }
 
-void Geom2dLineSegment::setHandle(const Handle_Geom2d_TrimmedCurve& c)
+void Geom2dLineSegment::setHandle(const Handle(Geom2d_TrimmedCurve)& c)
 {
-    Handle_Geom2d_Line basis = Handle_Geom2d_Line::DownCast(c->BasisCurve());
+    Handle(Geom2d_Line) basis = Handle(Geom2d_Line)::DownCast(c->BasisCurve());
     if (basis.IsNull())
         Standard_Failure::Raise("Basis curve is not a line");
-    this->myCurve = Handle_Geom2d_TrimmedCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom2d_TrimmedCurve)::DownCast(c->Copy());
 }
 
-const Handle_Geom2d_Geometry& Geom2dLineSegment::handle() const
+const Handle(Geom2d_Geometry)& Geom2dLineSegment::handle() const
 {
     return myCurve;
 }
@@ -2025,20 +2025,20 @@ const Handle_Geom2d_Geometry& Geom2dLineSegment::handle() const
 Geometry2d *Geom2dLineSegment::clone(void)const
 {
     Geom2dLineSegment *tempCurve = new Geom2dLineSegment();
-    tempCurve->myCurve = Handle_Geom2d_TrimmedCurve::DownCast(myCurve->Copy());
+    tempCurve->myCurve = Handle(Geom2d_TrimmedCurve)::DownCast(myCurve->Copy());
     return tempCurve;
 }
 
 Base::Vector2d Geom2dLineSegment::getStartPoint() const
 {
-    Handle_Geom2d_TrimmedCurve this_curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+    Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast(handle());
     gp_Pnt2d pnt = this_curve->StartPoint();
     return Base::Vector2d(pnt.X(), pnt.Y());
 }
 
 Base::Vector2d Geom2dLineSegment::getEndPoint() const
 {
-    Handle_Geom2d_TrimmedCurve this_curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+    Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast(handle());
     gp_Pnt2d pnt = this_curve->EndPoint();
     return Base::Vector2d(pnt.X(), pnt.Y());
 }
@@ -2046,7 +2046,7 @@ Base::Vector2d Geom2dLineSegment::getEndPoint() const
 void Geom2dLineSegment::setPoints(const Base::Vector2d& Start, const Base::Vector2d& End)
 {
     gp_Pnt2d p1(Start.x,Start.y), p2(End.x,End.y);
-    Handle_Geom2d_TrimmedCurve this_curv = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+    Handle(Geom2d_TrimmedCurve) this_curv = Handle(Geom2d_TrimmedCurve)::DownCast(handle());
 
     try {
         // Create line out of two points
@@ -2058,15 +2058,15 @@ void Geom2dLineSegment::setPoints(const Base::Vector2d& Start, const Base::Vecto
         }
 
         // get Geom_Line of line segment
-        Handle_Geom2d_Line this_line = Handle_Geom2d_Line::DownCast
+        Handle(Geom2d_Line) this_line = Handle(Geom2d_Line)::DownCast
             (this_curv->BasisCurve());
-        Handle_Geom2d_TrimmedCurve that_curv = ms.Value();
-        Handle_Geom2d_Line that_line = Handle_Geom2d_Line::DownCast(that_curv->BasisCurve());
+        Handle(Geom2d_TrimmedCurve) that_curv = ms.Value();
+        Handle(Geom2d_Line) that_line = Handle(Geom2d_Line)::DownCast(that_curv->BasisCurve());
         this_line->SetLin2d(that_line->Lin2d());
         this_curv->SetTrim(that_curv->FirstParameter(), that_curv->LastParameter());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -2119,7 +2119,7 @@ void Geom2dLineSegment::Restore(Base::XMLReader &reader)
         this->myCurve = mc.Value();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
@@ -2137,14 +2137,14 @@ Geom2dOffsetCurve::Geom2dOffsetCurve()
 {
 }
 
-Geom2dOffsetCurve::Geom2dOffsetCurve(const Handle_Geom2d_Curve& c, double offset)
+Geom2dOffsetCurve::Geom2dOffsetCurve(const Handle(Geom2d_Curve)& c, double offset)
 {
     this->myCurve = new Geom2d_OffsetCurve(c, offset);
 }
 
-Geom2dOffsetCurve::Geom2dOffsetCurve(const Handle_Geom2d_OffsetCurve& c)
+Geom2dOffsetCurve::Geom2dOffsetCurve(const Handle(Geom2d_OffsetCurve)& c)
 {
-    this->myCurve = Handle_Geom2d_OffsetCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom2d_OffsetCurve)::DownCast(c->Copy());
 }
 
 Geom2dOffsetCurve::~Geom2dOffsetCurve()
@@ -2157,12 +2157,12 @@ Geometry2d *Geom2dOffsetCurve::clone(void) const
     return newCurve;
 }
 
-void Geom2dOffsetCurve::setHandle(const Handle_Geom2d_OffsetCurve& c)
+void Geom2dOffsetCurve::setHandle(const Handle(Geom2d_OffsetCurve)& c)
 {
-    this->myCurve = Handle_Geom2d_OffsetCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom2d_OffsetCurve)::DownCast(c->Copy());
 }
 
-const Handle_Geom2d_Geometry& Geom2dOffsetCurve::handle() const
+const Handle(Geom2d_Geometry)& Geom2dOffsetCurve::handle() const
 {
     return this->myCurve;
 }
@@ -2195,21 +2195,21 @@ Geom2dTrimmedCurve::Geom2dTrimmedCurve()
 {
 }
 
-Geom2dTrimmedCurve::Geom2dTrimmedCurve(const Handle_Geom2d_TrimmedCurve& c)
+Geom2dTrimmedCurve::Geom2dTrimmedCurve(const Handle(Geom2d_TrimmedCurve)& c)
 {
-    this->myCurve = Handle_Geom2d_TrimmedCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom2d_TrimmedCurve)::DownCast(c->Copy());
 }
 
 Geom2dTrimmedCurve::~Geom2dTrimmedCurve()
 {
 }
 
-void Geom2dTrimmedCurve::setHandle(const Handle_Geom2d_TrimmedCurve& c)
+void Geom2dTrimmedCurve::setHandle(const Handle(Geom2d_TrimmedCurve)& c)
 {
-    this->myCurve = Handle_Geom2d_TrimmedCurve::DownCast(c->Copy());
+    this->myCurve = Handle(Geom2d_TrimmedCurve)::DownCast(c->Copy());
 }
 
-const Handle_Geom2d_Geometry& Geom2dTrimmedCurve::handle() const
+const Handle(Geom2d_Geometry)& Geom2dTrimmedCurve::handle() const
 {
     return myCurve;
 }
@@ -2237,7 +2237,7 @@ void Geom2dTrimmedCurve::Restore(Base::XMLReader &/*reader*/)
 
 PyObject *Geom2dTrimmedCurve::getPyObject(void)
 {
-    Handle_Geom2d_Curve basis = this->myCurve->BasisCurve();
+    Handle(Geom2d_Curve) basis = this->myCurve->BasisCurve();
     if (basis.IsNull())
         Py_Return;
     if (basis->IsKind(STANDARD_TYPE (Geom2d_Parabola))) {
@@ -2267,12 +2267,12 @@ PyObject *Geom2dTrimmedCurve::getPyObject(void)
     }
     if (basis->IsKind(STANDARD_TYPE (Geom2d_BSplineCurve))) {
         Geom2dBSplineCurve c;
-        c.setHandle(Handle_Geom2d_BSplineCurve::DownCast(basis));
+        c.setHandle(Handle(Geom2d_BSplineCurve)::DownCast(basis));
         return c.getPyObject();
     }
     if (basis->IsKind(STANDARD_TYPE (Geom2d_BezierCurve))) {
         Geom2dBezierCurve c;
-        c.setHandle(Handle_Geom2d_BezierCurve::DownCast(basis));
+        c.setHandle(Handle(Geom2d_BezierCurve)::DownCast(basis));
         return c.getPyObject();
     }
 
@@ -2283,34 +2283,34 @@ PyObject *Geom2dTrimmedCurve::getPyObject(void)
 // ------------------------------------------------------------------
 
 namespace Part {
-std::unique_ptr<Geom2dCurve> getCurve2dFromGeom2d(Handle_Geom2d_Curve curve)
+std::unique_ptr<Geom2dCurve> getCurve2dFromGeom2d(Handle(Geom2d_Curve) curve)
 {
     std::unique_ptr<Geom2dCurve> geo2d;
     if (curve.IsNull())
         return geo2d;
     if (curve->IsKind(STANDARD_TYPE (Geom2d_Parabola))) {
-        geo2d.reset(new Geom2dParabola(Handle_Geom2d_Parabola::DownCast(curve)));
+        geo2d.reset(new Geom2dParabola(Handle(Geom2d_Parabola)::DownCast(curve)));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_Hyperbola))) {
-        geo2d.reset(new Geom2dHyperbola(Handle_Geom2d_Hyperbola::DownCast(curve)));
+        geo2d.reset(new Geom2dHyperbola(Handle(Geom2d_Hyperbola)::DownCast(curve)));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_Ellipse))) {
-        geo2d.reset(new Geom2dEllipse(Handle_Geom2d_Ellipse::DownCast(curve)));
+        geo2d.reset(new Geom2dEllipse(Handle(Geom2d_Ellipse)::DownCast(curve)));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_Circle))) {
-        geo2d.reset(new Geom2dCircle(Handle_Geom2d_Circle::DownCast(curve)));
+        geo2d.reset(new Geom2dCircle(Handle(Geom2d_Circle)::DownCast(curve)));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_Line))) {
-        geo2d.reset(new Geom2dLine(Handle_Geom2d_Line::DownCast(curve)));
+        geo2d.reset(new Geom2dLine(Handle(Geom2d_Line)::DownCast(curve)));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_BSplineCurve))) {
-        geo2d.reset(new Geom2dBSplineCurve(Handle_Geom2d_BSplineCurve::DownCast(curve)));
+        geo2d.reset(new Geom2dBSplineCurve(Handle(Geom2d_BSplineCurve)::DownCast(curve)));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_BezierCurve))) {
-        geo2d.reset(new Geom2dBezierCurve(Handle_Geom2d_BezierCurve::DownCast(curve)));
+        geo2d.reset(new Geom2dBezierCurve(Handle(Geom2d_BezierCurve)::DownCast(curve)));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_TrimmedCurve))) {
-        geo2d.reset(new Geom2dTrimmedCurve(Handle_Geom2d_TrimmedCurve::DownCast(curve)));
+        geo2d.reset(new Geom2dTrimmedCurve(Handle(Geom2d_TrimmedCurve)::DownCast(curve)));
     }
 
     return geo2d;

@@ -127,8 +127,8 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
 
         if (Orientation.getValue() == 0) {
             // Automatic
-            Handle_Adaptor3d_HCurve a1;
-            Handle_Adaptor3d_HCurve a2;
+            Handle(Adaptor3d_HCurve) a1;
+            Handle(Adaptor3d_HCurve) a2;
             if (curve1.ShapeType() == TopAbs_EDGE && curve2.ShapeType() == TopAbs_EDGE) {
                 BRepAdaptor_Curve adapt1(TopoDS::Edge(curve1));
                 BRepAdaptor_Curve adapt2(TopoDS::Edge(curve2));
@@ -192,7 +192,7 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
     catch (...) {
@@ -286,7 +286,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 }
@@ -466,7 +466,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
     catch (...) {

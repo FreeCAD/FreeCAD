@@ -62,7 +62,7 @@ int ArcOfHyperbola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject *sense=Py_True;
     if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::Hyperbola2dPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast
+            Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast
                 (static_cast<Hyperbola2dPy*>(o)->getGeom2dHyperbolaPtr()->handle());
             GCE2d_MakeArcOfHyperbola arc(hyperbola->Hypr2d(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
@@ -74,7 +74,7 @@ int ArcOfHyperbola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return 0;
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -112,9 +112,9 @@ void  ArcOfHyperbola2dPy::setMinorRadius(Py::Float arg)
 
 Py::Object ArcOfHyperbola2dPy::getHyperbola(void) const
 {
-    Handle_Geom2d_TrimmedCurve trim = Handle_Geom2d_TrimmedCurve::DownCast
+    Handle(Geom2d_TrimmedCurve) trim = Handle(Geom2d_TrimmedCurve)::DownCast
         (getGeom2dArcOfHyperbolaPtr()->handle());
-    Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast(trim->BasisCurve());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(trim->BasisCurve());
     return Py::asObject(new Hyperbola2dPy(new Geom2dHyperbola(hyperbola)));
 }
 
