@@ -53,6 +53,7 @@
 #include <boost/bind.hpp>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
+#include <Gui/PrefWidgets.h>
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -547,17 +548,24 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
         ui->listWidgetConstraints, SIGNAL(onUpdateDrivingStatus(QListWidgetItem *, bool)),
         this                     , SLOT  (on_listWidgetConstraints_updateDrivingStatus(QListWidgetItem *, bool))
        );
+    QObject::connect(
+        ui->filterInternalAlignment, SIGNAL(stateChanged(int)),
+        this                     , SLOT  (on_filterInternalAlignment_stateChanged(int))
+    );
 
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
         boost::bind(&SketcherGui::TaskSketcherConstrains::slotConstraintsChanged, this));
 
     this->groupLayout()->addWidget(proxy);
 
+    this->ui->filterInternalAlignment->onRestore();
+
     slotConstraintsChanged();
 }
 
 TaskSketcherConstrains::~TaskSketcherConstrains()
 {
+    this->ui->filterInternalAlignment->onSave();
     connectionConstraintsChanged.disconnect();
     delete ui;
 }
@@ -607,6 +615,12 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
 
 void TaskSketcherConstrains::on_comboBoxFilter_currentIndexChanged(int)
 {
+    slotConstraintsChanged();
+}
+
+void TaskSketcherConstrains::on_filterInternalAlignment_stateChanged(int state)
+{
+    Q_UNUSED(state);
     slotConstraintsChanged();
 }
 
@@ -740,6 +754,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
         bool showDatums = (Filter < 3);
         bool showNamed = (Filter == 3 && !(constraint->Name.empty()));
         bool showNonDriving = (Filter == 4 && !constraint->isDriving);
+        bool hideInternalAligment = this->ui->filterInternalAlignment->isChecked();
 
         switch(constraint->Type) {
         case Sketcher::Horizontal:
@@ -762,7 +777,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
             visible = (showDatums || showNamed || showNonDriving);
             break;
         case Sketcher::InternalAlignment:
-            visible = (showNormal || showNamed);
+            visible = ((showNormal || showNamed) && !hideInternalAligment);
         default:
             break;
         }

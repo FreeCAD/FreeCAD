@@ -34,6 +34,7 @@
 # include <QTimer>
 # include <QApplication>
 # include <QPalette>
+# include <QtGlobal>
 #endif
 
 #include <Base/Tools.h>
@@ -3366,11 +3367,27 @@ void LinkSelection::select()
 
 // ---------------------------------------------------------------
 
-LinkLabel::LinkLabel (QWidget * parent) : QLabel(parent)
-{
-    setTextFormat(Qt::RichText);
-    connect(this, SIGNAL(linkActivated(const QString&)),
+LinkLabel::LinkLabel (QWidget * parent) : QWidget(parent)
+{   
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setMargin(0);
+    layout->setSpacing(1);
+
+    label = new QLabel(this);
+    label->setAutoFillBackground(true);
+    label->setTextFormat(Qt::RichText);
+    layout->addWidget(label);
+
+    editButton = new QPushButton(QLatin1String("..."), this);
+    editButton->setToolTip(tr("Change the linked object"));
+    layout->addWidget(editButton);
+    
+    // setLayout(layout);
+    
+    connect(label, SIGNAL(linkActivated(const QString&)),
             this, SLOT(onLinkActivated(const QString&)));
+    connect(editButton, SIGNAL(clicked()),
+            this, SLOT(onEditClicked()));
 }
 
 LinkLabel::~LinkLabel()
@@ -3387,17 +3404,13 @@ void LinkLabel::setPropertyLink(const QStringList& o)
         "</style></head><body>"
         "<p>"
         "<a href=\"%1.%2\"><span style=\" text-decoration: underline; color:%3;\">%4</span></a>"
-        "<span>	</span>"
-        "<a href=\"@__edit_link_prop__@\"><span style=\" text-decoration: underline; color:%5;\">%6</span></a>"
         "</p></body></html>"
     )
     .arg(link[0])
     .arg(link[1])
     .arg(linkcolor)
-    .arg(link[2])
-    .arg(linkcolor)
-    .arg(tr("Edit..."));
-    setText(text);
+    .arg(link[2]);
+    label->setText(text);
 }
 
 QStringList LinkLabel::propertyLink() const
@@ -3407,18 +3420,25 @@ QStringList LinkLabel::propertyLink() const
 
 void LinkLabel::onLinkActivated (const QString& s)
 {
-    if (s == QLatin1String("@__edit_link_prop__@")) {
-        Gui::Dialog::DlgPropertyLink dlg(link, this);
-        if (dlg.exec() == QDialog::Accepted) {
-            setPropertyLink(dlg.propertyLink());
-            /*emit*/ linkChanged(link);
-        }
-    }
-    else {
-        LinkSelection* select = new LinkSelection(link);
-        QTimer::singleShot(50, select, SLOT(select()));
+    Q_UNUSED(s);
+    LinkSelection* select = new LinkSelection(link);
+    QTimer::singleShot(50, select, SLOT(select()));
+}
+
+void LinkLabel::onEditClicked ()
+{
+    Gui::Dialog::DlgPropertyLink dlg(link, this);
+    if (dlg.exec() == QDialog::Accepted) {
+        setPropertyLink(dlg.propertyLink());
+        /*emit*/ linkChanged(link);
     }
 }
+
+void LinkLabel::resizeEvent(QResizeEvent* e)
+{
+    editButton->setFixedWidth(e->size().height());
+}
+
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyLinkItem)
 
@@ -3483,7 +3503,11 @@ void PropertyLinkItem::setValue(const QVariant& value)
     if (items.size() > 1) {
         QString d = items[0];
         QString o = items[1];
-        QString data = QString::fromLatin1("App.getDocument('%1').getObject('%2')").arg(d).arg(o);
+        QString data;
+        if ( o.isEmpty() )
+            data = QString::fromLatin1("None");
+        else
+            data = QString::fromLatin1("App.getDocument('%1').getObject('%2')").arg(d).arg(o);
         setPropertyValue(data);
     }
 }

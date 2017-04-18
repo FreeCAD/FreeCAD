@@ -84,6 +84,8 @@ QStringList DlgPropertyLink::propertyLink() const
         QStringList list = link;
         list[1] = items[0]->data(Qt::UserRole).toString();
         list[2] = items[0]->text();
+        if (list[1].isEmpty())
+            list[2] = QString::fromUtf8("");
         return list;
     }
 }
@@ -125,6 +127,12 @@ void DlgPropertyLink::findObjects(bool on)
             outList = par->getOutList();
             outList.push_back(par);
         }
+
+        // Add a "None" entry on top
+        QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+        item->setText(tr("None (Remove link)"));
+        QByteArray ba("");
+        item->setData(Qt::UserRole, ba);
 
         std::vector<App::DocumentObject*> obj = doc->getObjectsOfType(baseType);
         for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
