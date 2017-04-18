@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>194</width>
-    <height>228</height>
+    <width>229</width>
+    <height>284</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -81,6 +81,32 @@
     </widget>
    </item>
    <item>
+    <widget class="Gui::PrefCheckBox" name="checkBoxHideDrivingConstraints">
+     <property name="text">
+      <string>Hide driving constraints</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>HideDrivingConstraints</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Sketcher</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="checkBoxHideDrivenConstraints">
+     <property name="text">
+      <string>Hide reference constraints</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>HideDrivenConstraints</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Sketcher</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Rendering order:</string>
@@ -106,6 +132,11 @@
   <customwidget>
    <class>Gui::PrefQuantitySpinBox</class>
    <extends>QWidget</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

@@ -4797,8 +4797,8 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
     SoSwitch *drivingsw = new SoSwitch();
     SoSwitch *drivensw = new SoSwitch();
     
-    drivingsw->whichChild = hGrpp->GetBool("DrivingConstraintsVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
-    drivensw->whichChild = hGrpp->GetBool("DrivenConstraintsVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
+    drivingsw->whichChild = hGrpp->GetBool("HideDrivingConstraints", false)?SO_SWITCH_NONE:SO_SWITCH_ALL;
+    drivensw->whichChild = hGrpp->GetBool("HideDrivenConstraints", false)?SO_SWITCH_NONE:SO_SWITCH_ALL;
     
     drivingsw->ref();
     drivensw->ref();
@@ -5890,9 +5890,19 @@ Base::Placement ViewProviderSketch::getPlacement() {
     return Plz;
 }
 
-void ViewProviderSketch::showRestoreInformationLayer() {
+void ViewProviderSketch::showRestoreInformationLayer() 
+{
 
     visibleInformationChanged = true ;
     draw(false,false);
+}
+
+void ViewProviderSketch::showConstraints(bool hidedriving, bool hidedriven)
+{
+    SoSwitch *drivingsw = static_cast<SoSwitch *>(edit->constrGroup->getChild(0));
+    SoSwitch *drivensw = static_cast<SoSwitch *>(edit->constrGroup->getChild(1));
+    
+    drivingsw->whichChild = hidedriving?SO_SWITCH_NONE:SO_SWITCH_ALL;
+    drivensw->whichChild = hidedriven?SO_SWITCH_NONE:SO_SWITCH_ALL;
 }
 
