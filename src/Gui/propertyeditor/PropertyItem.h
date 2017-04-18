@@ -908,7 +908,7 @@ private:
     QStringList link;
 };
 
-class LinkLabel : public QLabel
+class LinkLabel : public QWidget
 {
     Q_OBJECT
 
@@ -918,13 +918,19 @@ public:
     void setPropertyLink(const QStringList& o);
     QStringList propertyLink() const;
 
+protected:
+    void resizeEvent(QResizeEvent*);
+
 protected Q_SLOTS:
     void onLinkActivated(const QString&);
+    void onEditClicked();
 
 Q_SIGNALS:
     void linkChanged(const QStringList&);
 
 private:
+    QLabel* label;
+    QPushButton* editButton;
     QStringList link;
 };
 
