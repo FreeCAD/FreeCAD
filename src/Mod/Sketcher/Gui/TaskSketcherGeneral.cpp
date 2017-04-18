@@ -56,6 +56,10 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
             this, SIGNAL(emitToggleAutoconstraints(int)));
     connect(ui->renderingOrder->model(), SIGNAL(layoutChanged()),
             this, SLOT(renderOrderChanged()));
+    connect(ui->checkBoxHideDrivenConstraints, SIGNAL(stateChanged(int)),
+            this, SLOT(constraintcheckboxes_stateChanged(int)));
+    connect(ui->checkBoxHideDrivingConstraints, SIGNAL(stateChanged(int)),
+            this, SLOT(constraintcheckboxes_stateChanged(int)));
 }
 
 SketcherGeneralWidget::~SketcherGeneralWidget()
@@ -108,6 +112,9 @@ void SketcherGeneralWidget::loadSettings()
     newItem->setData(Qt::UserRole, QVariant(lowid));
     newItem->setText(lowid==1?tr("Normal Geometry"):lowid==2?tr("Construction Geometry"):tr("External Geometry"));
     ui->renderingOrder->insertItem(2,newItem);
+    
+    ui->checkBoxHideDrivenConstraints->onRestore();
+    ui->checkBoxHideDrivingConstraints->onRestore();
 }
 
 void SketcherGeneralWidget::toggleGridView(bool on)
@@ -155,6 +162,14 @@ void SketcherGeneralWidget::renderOrderChanged()
     emitrenderOrderChanged();
 }
 
+void SketcherGeneralWidget::constraintcheckboxes_stateChanged(int state)
+{
+    Q_UNUSED(state);
+    emithideconstraints(ui->checkBoxHideDrivingConstraints->isChecked(),ui->checkBoxHideDrivenConstraints->isChecked());
+    ui->checkBoxHideDrivenConstraints->onSave();
+    ui->checkBoxHideDrivingConstraints->onSave();
+}
+
 // ----------------------------------------------------------------------------
 
 TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
@@ -187,9 +202,13 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
     
     QObject::connect(
         widget, SIGNAL(emitrenderOrderChanged()),
-                     this  , SLOT  (renderOrderChanged())
+        this  , SLOT  (renderOrderChanged())
     );
     
+    QObject::connect(
+        widget, SIGNAL(emithideconstraints(bool,bool)),
+        this  , SLOT  (hideconstraints(bool,bool))
+    );
 
     Gui::Selection().Attach(this);
     widget->loadSettings();
@@ -240,6 +259,11 @@ void TaskSketcherGeneral::OnChange(Gui::SelectionSingleton::SubjectType &rCaller
 void TaskSketcherGeneral::renderOrderChanged()
 {
     sketchView->updateColor();
+}
+
+void TaskSketcherGeneral::hideconstraints(bool hidedriving, bool hidedriven)
+{
+    sketchView->showConstraints(hidedriving,hidedriven);
 }
 
 #include "moc_TaskSketcherGeneral.cpp"

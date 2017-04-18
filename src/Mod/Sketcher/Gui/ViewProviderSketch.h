@@ -125,6 +125,9 @@ public:
     /// Show/Hide nodes from information layer
     void showRestoreInformationLayer();
     
+    /// Show/Hide constraints
+    void showConstraints(bool hidedriving = false, bool hidedriven = false);
+    
     /** @name handler control */
     //@{
     /// sets an DrawSketchHandler in control
