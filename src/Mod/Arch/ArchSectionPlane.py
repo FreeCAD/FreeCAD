@@ -216,7 +216,7 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
             baseshape = Part.makeCompound(shapes)
             style = {'stroke':       Draft.getrgb(lineColor),
                      'stroke-width': svgLineWidth}
-            svg = Drawing.projectToSVG(
+            svg += Drawing.projectToSVG(
                 baseshape, direction,
                 hStyle=style, h0Style=style, h1Style=style,
                 vStyle=style, v0Style=style, v1Style=style)
@@ -225,7 +225,7 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
             style = {'stroke':           Draft.getrgb(lineColor),
                      'stroke-width':     svgLineWidth,
                      'stroke-dasharray': svgHiddenPattern}
-            svg = Drawing.projectToSVG(
+            svg += Drawing.projectToSVG(
                 hshapes, direction,
                 hStyle=style, h0Style=style, h1Style=style,
                 vStyle=style, v0Style=style, v1Style=style)
@@ -235,9 +235,9 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
                 svg += '<g transform="rotate(180)">\n'
                 for s in sshapes:
                     if s.Edges:
-                        #svg = Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
+                        #svg += Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
                         # temporarily disabling fill patterns
-                        svg = Draft.getSVG(s, direction=direction.negative(),
+                        svg += Draft.getSVG(s, direction=direction.negative(),
                                            linewidth=0,
                                            fillstyle=Draft.getrgb(fillColor),
                                            color=lineColor)
