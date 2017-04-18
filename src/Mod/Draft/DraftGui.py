@@ -2074,6 +2074,9 @@ class _ContainerObserver(object):
     "This observer updates the name of auto-group displayed on draft toolbar"
     def slotAppActiveContainer(self, newConainer, oldContainer):
         FreeCADGui.draftToolBar.updateAutoGroup()
+    def slotChangedObject(self, obj, prop_name):
+        if obj is FreeCAD.ActiveContainer and prop_name == "Label":
+            FreeCADGui.draftToolBar.updateAutoGroup()
 _theContainerObserver = _ContainerObserver()
 
 if not hasattr(FreeCADGui,"draftToolBar"):
