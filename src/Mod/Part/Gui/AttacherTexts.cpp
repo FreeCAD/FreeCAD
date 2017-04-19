@@ -141,7 +141,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                               qApp->translate("Attacher2D", "Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.","AttachmentPlane mode tooltip"));
         case mmRevolutionSection:
             return TwoStrings(qApp->translate("Attacher2D", "Revolution Section","AttachmentPlane mode caption"),
-                              qApp->translate("Attacher2D", "Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.","AttachmentPlane mode tooltip"));
+                              qApp->translate("Attacher2D", "Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.","AttachmentPlane mode tooltip"));
         case mmThreePointsPlane:
             return TwoStrings(qApp->translate("Attacher2D", "Plane by 3 points","AttachmentPlane mode caption"),
                               qApp->translate("Attacher2D", "Align plane to pass through three vertices.","AttachmentPlane mode tooltip"));
@@ -240,10 +240,10 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                               qApp->translate("Attacher0D", "Second focus of ellipse and hyperbola.","AttachmentPoint mode tooltip"));
         case mm0OnEdge:
             return TwoStrings(qApp->translate("Attacher0D", "On edge","AttachmentPoint mode caption"),
-                              qApp->translate("Attacher0D", "Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.","AttachmentPoint mode tooltip"));
+                              qApp->translate("Attacher0D", "Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.","AttachmentPoint mode tooltip"));
         case mm0CenterOfCurvature:
             return TwoStrings(qApp->translate("Attacher0D", "Center of curvature","AttachmentPoint mode caption"),
-                              qApp->translate("Attacher0D", "Center of osculating circle of an edge. Optinal vertex link defines where.","AttachmentPoint mode tooltip"));
+                              qApp->translate("Attacher0D", "Center of osculating circle of an edge. Optional vertex link defines where.","AttachmentPoint mode tooltip"));
         case mm0CenterOfMass:
             return TwoStrings(qApp->translate("Attacher0D", "Center of mass","AttachmentPoint mode caption"),
                               qApp->translate("Attacher0D", "Center of mass of all references (equal densities are assumed).","AttachmentPoint mode tooltip"));

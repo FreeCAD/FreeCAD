@@ -38,9 +38,9 @@ class _CommandFemConstraintSelfWeight(FemCommands):
     def __init__(self):
         super(_CommandFemConstraintSelfWeight, self).__init__()
         self.resources = {'Pixmap': 'fem-constraint-selfweight',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Constraint self weigt"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Constraint self weight"),
                           'Accel': "C, W",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Creates a FEM constraint self weigt")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Creates a FEM constraint self weight")}
         self.is_active = 'with_analysis'
 
     def Activated(self):

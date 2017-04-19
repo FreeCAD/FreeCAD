@@ -135,7 +135,7 @@ class TaskPanel:
         self.widget(QtGui.QListWidget, "items").setToolTip(
             QtGui.QApplication.translate(
                 "plot_positions",
-                "List of modificable items",
+                "List of modifiable items",
                 None))
         self.widget(QtGui.QDoubleSpinBox, "x").setToolTip(
             QtGui.QApplication.translate(
