@@ -33,12 +33,15 @@ set(MeshPartGui_LIBS
 )
 
 set(MeshPartGui_MOC_HDRS
+    CurveOnMesh.h
+    TaskCurveOnMesh.h
     Tessellation.h
 )
 fc_wrap_cpp(MeshPartGui_MOC_SRCS ${MeshPartGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${MeshPartGui_MOC_SRCS})
 
 set(MeshPartGui_UIC_SRCS
+    TaskCurveOnMesh.ui
     Tessellation.ui
 )
 
@@ -55,9 +58,14 @@ SET(MeshPartGui_SRCS
     ${MeshPartGui_UIC_HDRS}
     AppMeshPartGui.cpp
     Command.cpp
+    CurveOnMesh.cpp
+    CurveOnMesh.h
     Resources/MeshPart.qrc
     PreCompiled.cpp
     PreCompiled.h
+    TaskCurveOnMesh.ui
+    TaskCurveOnMesh.cpp
+    TaskCurveOnMesh.h
     Tessellation.ui
     Tessellation.cpp
     Tessellation.h

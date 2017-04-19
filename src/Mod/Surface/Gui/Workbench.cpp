@@ -52,7 +52,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* surface = new Gui::MenuItem;
     root->insertItem( item, surface );
     surface->setCommand("Surface");
-    *surface << "Surface_GeomFillSurface";
+    *surface << "Surface_CurveOnMesh"
+             << "Surface_GeomFillSurface";
 /*    *surface << "Surface_Filling";
     *surface << "Surface_Cut";*/
 
