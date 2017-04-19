@@ -124,7 +124,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
                     cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),support.getPyReprString().c_str());
                     cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),AttachEngine::getModeName(sugr.bestFitMode).c_str());
                 } else {
-                    QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit seleted objects. Select something else."));
+                    QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit selected objects. Select something else."));
                 }
             }
             if (pcActiveBody) {

@@ -42,9 +42,9 @@ class Stock:
 
     def __init__(self, obj):
         "Make stock"
-        obj.addProperty("App::PropertyFloat","Length_Allowance","Stock",QtCore.QT_TRANSLATE_NOOP("App::Property","extra allownace from part width")).Length_Allowance = 1.0
-        obj.addProperty("App::PropertyFloat","Width_Allowance","Stock",QtCore.QT_TRANSLATE_NOOP("App::Property","extra allownace from part width")).Width_Allowance = 1.0
-        obj.addProperty("App::PropertyFloat","Height_Allowance","Stock",QtCore.QT_TRANSLATE_NOOP("App::Property","extra allownace from part width")).Height_Allowance = 1.0
+        obj.addProperty("App::PropertyFloat","Length_Allowance","Stock",QtCore.QT_TRANSLATE_NOOP("App::Property","extra allowance from part width")).Length_Allowance = 1.0
+        obj.addProperty("App::PropertyFloat","Width_Allowance","Stock",QtCore.QT_TRANSLATE_NOOP("App::Property","extra allowance from part width")).Width_Allowance = 1.0
+        obj.addProperty("App::PropertyFloat","Height_Allowance","Stock",QtCore.QT_TRANSLATE_NOOP("App::Property","extra allowance from part width")).Height_Allowance = 1.0
         obj.addProperty("App::PropertyLink","Base","Base",QtCore.QT_TRANSLATE_NOOP("App::Property","The base object this represents"))
         obj.Proxy = self
 

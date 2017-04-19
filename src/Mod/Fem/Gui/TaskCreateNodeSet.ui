@@ -99,7 +99,7 @@
       <item>
        <widget class="QCheckBox" name="checkBox_AngleSearch">
         <property name="text">
-         <string>Collect adjancent nodes</string>
+         <string>Collect adjacent nodes</string>
         </property>
        </widget>
       </item>
