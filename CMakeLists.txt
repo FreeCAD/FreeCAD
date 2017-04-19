@@ -31,6 +31,8 @@ if(CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif()
 
+include(ExternalProject)
+
 # include local  modules
 include(AddFileDependencies)
 include(cMake/FreeCadMacros.cmake)
@@ -663,7 +665,34 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             else()
                 find_package(HDF5 REQUIRED)
             endif()
-            find_package(MEDFile REQUIRED)
+            if (APPLE)
+                # There is no MEDFile package for MacOSX, let's build it ourselves.
+                # Unfortunately it gets messy. A proper way would be to build all
+                # FreeCAD as a set of ExternalProjects or even better to use conan.io
+                # for all dependencies :-)
+                set(MEDFILE_INSTALL_DIR ${CMAKE_BINARY_DIR}/deps/src/MEDFile-install)
+                ExternalProject_Add(MEDFile
+                    PREFIX deps
+                    DOWNLOAD_NO_PROGRESS 1
+                    URL http://files.salome-platform.org/Salome/other/med-3.2.0.tar.gz
+                    URL_HASH MD5=eb61df92f0624feb6328f517cd756a23
+                    PATCH_COMMAND patch -p 1 < ${CMAKE_SOURCE_DIR}/cMake/medfile.patch
+                    CMAKE_ARGS
+                        -DCMAKE_INSTALL_PREFIX=${MEDFILE_INSTALL_DIR}
+                        -DMEDFILE_INSTALL_DOC=OFF
+                )
+                #
+                # Set MEDFILE_INCLUDE_DIRS and MEDFILE_LIBRARIES as if we were FindMEDFile.cmake
+                #
+                add_library(LIBMEDC SHARED IMPORTED)
+                set_target_properties(LIBMEDC PROPERTIES IMPORTED_LOCATION ${MEDFILE_INSTALL_DIR}/lib/libmedC.dylib)
+                # This dependency is needed to avoid breaking parallel builds.
+                add_dependencies(LIBMEDC MEDFile)
+                set(MEDFILE_INCLUDE_DIRS ${MEDFILE_INSTALL_DIR}/include)
+                set(MEDFILE_LIBRARIES LIBMEDC)
+            else()
+                find_package(MEDFile REQUIRED)
+            endif()
             set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
         else()
             find_package(SMESH)
