@@ -180,10 +180,45 @@ void CmdSurfaceGeomFillSurface::activated(int iMsg)
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
 }
 
+
+DEF_STD_CMD_A(CmdSurfaceCurveOnMesh)
+
+CmdSurfaceCurveOnMesh::CmdSurfaceCurveOnMesh()
+  : Command("Surface_CurveOnMesh")
+{
+    sAppModule    = "MeshPart";
+    sGroup        = QT_TR_NOOP("Surface");
+    sMenuText     = QT_TR_NOOP("Curve on mesh...");
+    sToolTipText  = QT_TR_NOOP("Curve on mesh");
+    sWhatsThis    = "Surface_CurveOnMesh";
+    sStatusTip    = sToolTipText;
+}
+
+void CmdSurfaceCurveOnMesh::activated(int)
+{
+    doCommand(Doc,"import MeshPartGui, FreeCADGui\n"
+                  "FreeCADGui.runCommand('MeshPart_CurveOnMesh')\n");
+}
+
+bool CmdSurfaceCurveOnMesh::isActive(void)
+{
+    if (Gui::Control().activeDialog())
+        return false;
+
+    // Check for the selected mesh feature (all Mesh types)
+    Base::Type meshType = Base::Type::fromName("Mesh::Feature");
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (doc && doc->countObjectsOfType(meshType) > 0)
+        return true;
+
+    return false;
+}
+
 void CreateSurfaceCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 /*  rcCmdMgr.addCommand(new CmdSurfaceFilling());
     rcCmdMgr.addCommand(new CmdSurfaceCut());*/
     rcCmdMgr.addCommand(new CmdSurfaceGeomFillSurface());
+    rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
 }
