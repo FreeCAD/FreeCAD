@@ -44,7 +44,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>The path to the OpenSCAD executeable</string>
+           <string>The path to the OpenSCAD executable</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>openscadexecutable</cstring>

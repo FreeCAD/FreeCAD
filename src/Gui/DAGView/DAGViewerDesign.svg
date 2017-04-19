@@ -3105,7 +3105,7 @@
          id="flowPara10075">    Modify = for features like fillet, chamfer, fuse, cut, common.</flowPara><flowPara
          id="flowPara10077">    Create = for features like box, cylinder, linked copy, section.</flowPara><flowPara
          id="flowPara10097">    Construction = datums.</flowPara><flowPara
-         id="flowPara10079">    These will determin whether dag forks or stays linear by default.</flowPara><flowPara
+         id="flowPara10079">    These will determine whether dag forks or stays linear by default.</flowPara><flowPara
          id="flowPara10081">    Maybe another virtual method to return target for feature that modify.</flowPara><flowPara
          id="flowPara3611">    Relation to claimChildren?</flowPara><flowPara
          id="flowPara3643">    Relation to BranchTags: Create, Terminate, Continue?</flowPara></flowRoot>    <flowRoot

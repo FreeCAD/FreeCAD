@@ -11,7 +11,7 @@
   your model history and changing its parameters. FreeCAD is 
   open source (LGPL license) and completely modular, allowing 
   for very advanced extension and customization.</p>
-  <p>FreeCAD is multiplatfom, and reads and writes many open 
+  <p>FreeCAD is multiplatform, and reads and writes many open 
   file formats such as STEP, IGES, STL and others.</p>
  </description>
  <screenshots>
