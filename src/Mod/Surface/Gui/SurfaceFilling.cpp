@@ -146,7 +146,7 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
 
                     for (auto jt : it.second) {
                         std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
-                        assert (idx >= 0 && idx < colors.size());
+                        assert (idx < colors.size());
                         colors[idx] = App::Color(1.0,0.0,1.0); // magenta
                     }
 

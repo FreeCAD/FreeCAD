@@ -32,6 +32,7 @@
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
+#include "CurveOnMesh.h"
 #include "Workbench.h"
 
 // use a different name to CreateCommand()
@@ -79,7 +80,8 @@ PyMOD_INIT_FUNC(MeshPartGui)
 
     // instantiating the commands
     CreateMeshPartCommands();
-    MeshPartGui::Workbench::init();
+    MeshPartGui::Workbench                  ::init();
+    MeshPartGui::ViewProviderCurveOnMesh    ::init();
 
      // add resources and reloads the translators
     loadMeshPartResource();
