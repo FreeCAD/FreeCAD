@@ -145,6 +145,9 @@ App::DocumentObjectExecReturn *Hole::execute(void)
     //            return new App::DocumentObjectExecReturn("Support shape is not a solid");
     //        // Let's call algorithm computing a fuse operation:
     //        BRepAlgoAPI_Cut mkCut(support, PrismMaker.Shape());
+    //#if OCC_VERSION_HEX >= 0x060900
+    //        mkCut.SetRunParallel(true);
+    //#endif
     //        // Let's check if the fusion has been successful
     //        if (!mkCut.IsDone()) 
     //            return new App::DocumentObjectExecReturn("Cut with support failed");

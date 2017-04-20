@@ -1312,6 +1312,9 @@ TopoDS_Shape TopoShape::cut(TopoDS_Shape shape) const
     if (shape.IsNull())
         Standard_Failure::Raise("Tool shape is null");
     BRepAlgoAPI_Cut mkCut(this->_Shape, shape);
+#if OCC_VERSION_HEX >= 0x060900
+    mkCut.SetRunParallel(true);
+#endif
     return mkCut.Shape();
 }
 
@@ -1358,6 +1361,9 @@ TopoDS_Shape TopoShape::common(TopoDS_Shape shape) const
     if (shape.IsNull())
         Standard_Failure::Raise("Tool shape is null");
     BRepAlgoAPI_Common mkCommon(this->_Shape, shape);
+#if OCC_VERSION_HEX >= 0x060900
+    mkCommon.SetRunParallel(true);
+#endif
     return mkCommon.Shape();
 }
 
@@ -1404,6 +1410,9 @@ TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
     if (shape.IsNull())
         Standard_Failure::Raise("Tool shape is null");
     BRepAlgoAPI_Fuse mkFuse(this->_Shape, shape);
+#if OCC_VERSION_HEX >= 0x060900
+    mkFuse.SetRunParallel(true);
+#endif
     return mkFuse.Shape();
 }
 
@@ -1473,6 +1482,9 @@ TopoDS_Shape TopoShape::section(TopoDS_Shape shape) const
     if (shape.IsNull())
         Standard_Failure::Raise("Tool shape is null");
     BRepAlgoAPI_Section mkSection(this->_Shape, shape);
+# if OCC_VERSION_HEX >= 0x060900
+    mkSection.SetRunParallel(true);
+# endif
     return mkSection.Shape();
 }
 

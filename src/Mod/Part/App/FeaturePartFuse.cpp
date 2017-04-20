@@ -145,6 +145,9 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
             mkFuse.SetArguments(shapeArguments);
             mkFuse.SetTools(shapeTools);
             mkFuse.Build();
+# if OCC_VERSION_HEX >= 0x060900
+            mkFuse.SetRunParallel(true);
+# endif
             if (!mkFuse.IsDone())
                 throw Base::Exception("MultiFusion failed");
             TopoDS_Shape resShape = mkFuse.Shape();

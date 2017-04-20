@@ -112,6 +112,9 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         if(getAddSubType() == FeatureAddSub::Additive) {
             
             BRepAlgoAPI_Fuse mkFuse(base, primitiveShape);
+#if OCC_VERSION_HEX >= 0x060900
+            mkFuse.SetRunParallel(true);
+#endif
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn("Adding the primitive failed");
             // we have to get the solids (fuse sometimes creates compounds)
@@ -127,6 +130,9 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         else if(getAddSubType() == FeatureAddSub::Subtractive) {
             
             BRepAlgoAPI_Cut mkCut(base, primitiveShape);
+#if OCC_VERSION_HEX >= 0x060900
+            mkCut.SetRunParallel(true);
+#endif
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Subtracting the primitive failed");
             // we have to get the solids (fuse sometimes creates compounds)

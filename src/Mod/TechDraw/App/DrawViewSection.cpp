@@ -238,6 +238,9 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     TopoDS_Shape myShape = BuilderCopy.Shape();
 
     BRepAlgoAPI_Cut mkCut(myShape, prism);
+#if OCC_VERSION_HEX >= 0x060900
+    mkCut.SetRunParallel(true);
+#endif
     if (!mkCut.IsDone())
         return new App::DocumentObjectExecReturn("Section cut has failed");
 

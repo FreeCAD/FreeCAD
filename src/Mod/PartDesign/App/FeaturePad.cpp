@@ -216,6 +216,9 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 //             static_cast<Part::Feature*>(obj)->Shape.setValue(getSolid(prism));
             // Let's call algorithm computing a fuse operation:
             BRepAlgoAPI_Fuse mkFuse(base, prism);
+#if OCC_VERSION_HEX >= 0x060900
+            mkFuse.SetRunParallel(true);
+#endif
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn("Pad: Fusion with base feature failed");

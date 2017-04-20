@@ -186,6 +186,9 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         if(getAddSubType() == FeatureAddSub::Additive) {
                        
             BRepAlgoAPI_Fuse mkFuse(base, result);
+#if OCC_VERSION_HEX >= 0x060900
+            mkFuse.SetRunParallel(true);
+#endif
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn("Loft: Adding the loft failed");
             // we have to get the solids (fuse sometimes creates compounds)
@@ -200,6 +203,9 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         else if(getAddSubType() == FeatureAddSub::Subtractive) {
             
             BRepAlgoAPI_Cut mkCut(base, result);
+#if OCC_VERSION_HEX >= 0x060900
+            mkCut.SetRunParallel(true);
+#endif
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Loft: Subtracting the loft failed");
             // we have to get the solids (fuse sometimes creates compounds)

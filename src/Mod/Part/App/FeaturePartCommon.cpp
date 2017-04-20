@@ -111,6 +111,9 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
             for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
                 // Let's call algorithm computing a fuse operation:
                 BRepAlgoAPI_Common mkCommon(resShape, *it);
+#if OCC_VERSION_HEX >= 0x060900
+                mkCommon.SetRunParallel(true);
+#endif
                 // Let's check if the fusion has been successful
                 if (!mkCommon.IsDone()) 
                     throw Base::Exception("Intersection failed");
