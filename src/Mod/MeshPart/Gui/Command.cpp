@@ -29,12 +29,18 @@
 
 #include <Mod/Mesh/App/MeshFeature.h>
 
+#include <App/Application.h>
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include "Tessellation.h"
+#include "TaskCurveOnMesh.h"
 
 using namespace std;
 
@@ -230,6 +236,43 @@ bool CmdMeshPartSection::isActive(void)
     return true;
 }
 
+DEF_STD_CMD_A(CmdMeshPartCurveOnMesh)
+
+CmdMeshPartCurveOnMesh::CmdMeshPartCurveOnMesh()
+  : Command("MeshPart_CurveOnMesh")
+{
+    sAppModule    = "MeshPart";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Curve on mesh...");
+    sToolTipText  = QT_TR_NOOP("Curve on mesh");
+    sWhatsThis    = "MeshPart_CurveOnMesh";
+    sStatusTip    = sToolTipText;
+}
+
+void CmdMeshPartCurveOnMesh::activated(int)
+{
+    Gui::Document* doc = getActiveGuiDocument();
+    std::list<Gui::MDIView*> mdis = doc->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+    if (mdis.empty()) {
+        return;
+    }
+
+    Gui::Control().showDialog(new MeshPartGui::TaskCurveOnMesh(static_cast<Gui::View3DInventor*>(mdis.front())));
+}
+
+bool CmdMeshPartCurveOnMesh::isActive(void)
+{
+    if (Gui::Control().activeDialog())
+        return false;
+
+    // Check for the selected mesh feature (all Mesh types)
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (doc && doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0)
+        return true;
+
+    return false;
+}
+
 
 void CreateMeshPartCommands(void)
 {
@@ -237,4 +280,5 @@ void CreateMeshPartCommands(void)
     rcCmdMgr.addCommand(new CmdMeshPartMesher());
     rcCmdMgr.addCommand(new CmdMeshPartTrimByPlane());
     rcCmdMgr.addCommand(new CmdMeshPartSection());
+    rcCmdMgr.addCommand(new CmdMeshPartCurveOnMesh());
 }
