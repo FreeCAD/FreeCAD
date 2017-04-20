@@ -70,7 +70,7 @@ def replaceobjfromselection(objs):
         elif objs[1] in objs[2].InList: newchild, parent, oldchild = objs
         elif objs[2] in objs[1].InList: newchild, oldchild, parent = objs
         else:
-            raise ValueError("Cannot determin current parent-child relationship")
+            raise ValueError("Cannot determine current parent-child relationship")
     else:
         raise ValueError("Wrong number of selected objects")
     replaceobj(parent,oldchild,newchild)

@@ -191,7 +191,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_9">
        <property name="text">
-        <string>Tetraeder count:</string>
+        <string>Tetrahedron count:</string>
        </property>
       </widget>
      </item>

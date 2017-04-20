@@ -158,7 +158,7 @@ class TaskPanel:
         self.widget(QtGui.QPushButton, "remove").setText(
             QtGui.QApplication.translate(
                 "plot_series",
-                "Remove serie",
+                "Remove series",
                 None))
         self.widget(QtGui.QLabel, "styleLabel").setText(
             QtGui.QApplication.translate(
@@ -183,7 +183,7 @@ class TaskPanel:
         self.widget(QtGui.QCheckBox, "isLabel").setToolTip(
             QtGui.QApplication.translate(
                 "plot_series",
-                "If checked serie will not be considered for legend",
+                "If checked, series will not be considered for legend",
                 None))
         self.widget(QtGui.QComboBox, "lineStyle").setToolTip(
             QtGui.QApplication.translate(
@@ -213,7 +213,7 @@ class TaskPanel:
         self.widget(QtGui.QPushButton, "remove").setToolTip(
             QtGui.QApplication.translate(
                 "plot_series",
-                "Removes this serie",
+                "Removes this series",
                 None))
 
     def fillStyles(self):

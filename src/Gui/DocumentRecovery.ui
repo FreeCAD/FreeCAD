@@ -30,7 +30,7 @@
    <item row="1" column="0" colspan="2">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Press 'Start Recovery' to start the recovery process of the doument listed below.
+      <string>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</string>
      </property>

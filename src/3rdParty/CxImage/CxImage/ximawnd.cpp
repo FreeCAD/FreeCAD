@@ -650,7 +650,7 @@ long CxImage::Draw(HDC hdc, const RECT& rect, RECT* pClipRect, bool bSmooth)
  *                 - If cx or cy are different than width or height, the image will be stretched
  *
  * \param pClipRect : limit the drawing operations inside a given rectangle in the output device context.
- * \param bSmooth : activates a bilinear filter that will enhance the appearence for zommed pictures.
+ * \param bSmooth : activates a bilinear filter that will enhance the appearance for zommed pictures.
  *                   Quite slow. Needs CXIMAGE_SUPPORT_INTERPOLATION.
  * \return true if everything is ok
  */
