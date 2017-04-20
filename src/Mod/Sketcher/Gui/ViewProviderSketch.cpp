@@ -2817,6 +2817,7 @@ void ViewProviderSketch::drawConstraintIcons()
                 multipleIcons = true;
                 }
         }
+            break;
         case Parallel:
             multipleIcons = true;
             break;
