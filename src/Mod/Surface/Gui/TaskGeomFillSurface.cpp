@@ -49,33 +49,6 @@ PROPERTY_SOURCE(SurfaceGui::ViewProviderGeomFillSurface, PartGui::ViewProviderSp
 
 namespace SurfaceGui {
 
-bool EdgeSelection::allow(App::Document* , App::DocumentObject* pObj, const char* sSubName)
-{
-    // don't allow references to itself
-    if (pObj == editedObject)
-        return false;
-    if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId()))
-        return false;
-    if (!sSubName || sSubName[0] == '\0')
-        return false;
-    std::string element(sSubName);
-    if (element.substr(0,4) != "Edge")
-        return false;
-    auto links = editedObject->BoundaryList.getSubListValues();
-    for (auto it : links) {
-        if (it.first == pObj) {
-            for (auto jt : it.second) {
-                if (jt == sSubName)
-                    return !appendEdges;
-            }
-        }
-    }
-
-    return appendEdges;
-}
-
-// ----------------------------------------------------------------------------
-
 void ViewProviderGeomFillSurface::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
@@ -158,6 +131,55 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
             }
         }
     }
+}
+
+// ----------------------------------------------------------------------------
+
+class GeomFillSurface::EdgeSelection : public Gui::SelectionFilterGate
+{
+public:
+    EdgeSelection(bool appendEdges, Surface::GeomFillSurface* editedObject)
+        : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
+        , appendEdges(appendEdges)
+        , editedObject(editedObject)
+    {
+    }
+    /**
+      * Allow the user to pick only edges.
+      */
+    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName);
+
+private:
+    bool appendEdges;
+    Surface::GeomFillSurface* editedObject;
+};
+
+bool GeomFillSurface::EdgeSelection::allow(App::Document* , App::DocumentObject* pObj, const char* sSubName)
+{
+    // don't allow references to itself
+    if (pObj == editedObject)
+        return false;
+    if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId()))
+        return false;
+
+    if (!sSubName || sSubName[0] == '\0')
+        return false;
+
+    std::string element(sSubName);
+    if (element.substr(0,4) != "Edge")
+        return false;
+
+    auto links = editedObject->BoundaryList.getSubListValues();
+    for (auto it : links) {
+        if (it.first == pObj) {
+            for (auto jt : it.second) {
+                if (jt == sSubName)
+                    return !appendEdges;
+            }
+        }
+    }
+
+    return appendEdges;
 }
 
 // ----------------------------------------------------------------------------

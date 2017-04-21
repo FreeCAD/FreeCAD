@@ -35,25 +35,6 @@
 namespace SurfaceGui
 {
 
-class EdgeSelection : public Gui::SelectionFilterGate
-{
-public:
-    EdgeSelection(bool appendEdges, Surface::GeomFillSurface* editedObject)
-        : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
-        , appendEdges(appendEdges)
-        , editedObject(editedObject)
-    {
-    }
-    /**
-      * Allow the user to pick only edges.
-      */
-    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName);
-
-private:
-    bool appendEdges;
-    Surface::GeomFillSurface* editedObject;
-};
-
 class Ui_GeomFillSurface;
 
 class ViewProviderGeomFillSurface : public PartGui::ViewProviderSpline
@@ -74,6 +55,7 @@ class GeomFillSurface : public QWidget,
     Q_OBJECT
 
 protected:
+    class EdgeSelection;
     enum SelectionMode { None, Append, Remove };
     SelectionMode selectionMode;
     Surface::GeomFillSurface* editedObject;
