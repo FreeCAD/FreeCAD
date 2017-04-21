@@ -60,7 +60,6 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include "Mod/Part/App/PartFeature.h"
-#include "SurfaceFilling.h"
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

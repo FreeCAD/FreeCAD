@@ -34,7 +34,7 @@
 #include <Gui/Application.h>
 
 #include "Workbench.h"
-#include "SurfaceFilling.h"
+#include "TaskGeomFillSurface.h"
 
 // use a different name to CreateCommand()
 void CreateSurfaceCommands(void);
