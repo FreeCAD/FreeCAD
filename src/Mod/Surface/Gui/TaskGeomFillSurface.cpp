@@ -39,8 +39,8 @@
 #include <Gui/BitmapFactory.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
-#include "SurfaceFilling.h"
-#include "ui_SurfaceFilling.h"
+#include "TaskGeomFillSurface.h"
+#include "ui_TaskGeomFillSurface.h"
 
 
 using namespace SurfaceGui;
@@ -97,13 +97,13 @@ bool ViewProviderGeomFillSurface::setEdit(int ModNum)
 
         // start the edit dialog
         if (dlg) {
-            TaskSurfaceFilling* tDlg = qobject_cast<TaskSurfaceFilling*>(dlg);
+            TaskGeomFillSurface* tDlg = qobject_cast<TaskGeomFillSurface*>(dlg);
             if (tDlg)
                 tDlg->setEditedObject(obj);
             Gui::Control().showDialog(dlg);
         }
         else {
-            Gui::Control().showDialog(new TaskSurfaceFilling(this, obj));
+            Gui::Control().showDialog(new TaskGeomFillSurface(this, obj));
         }
         return true;
     }
@@ -162,9 +162,9 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
 
 // ----------------------------------------------------------------------------
 
-SurfaceFilling::SurfaceFilling(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj)
+GeomFillSurface::GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj)
 {
-    ui = new Ui_SurfaceFilling();
+    ui = new Ui_GeomFillSurface();
     ui->setupUi(this);
     selectionMode = None;
     this->vp = vp;
@@ -182,14 +182,14 @@ SurfaceFilling::SurfaceFilling(ViewProviderGeomFillSurface* vp, Surface::GeomFil
 /*
  *  Destroys the object and frees any allocated resources
  */
-SurfaceFilling::~SurfaceFilling()
+GeomFillSurface::~GeomFillSurface()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
-void SurfaceFilling::setEditedObject(Surface::GeomFillSurface* obj)
+void GeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)
 {
     editedObject = obj;
     GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
@@ -233,7 +233,7 @@ void SurfaceFilling::setEditedObject(Surface::GeomFillSurface* obj)
     attachDocument(Gui::Application::Instance->getDocument(doc));
 }
 
-void SurfaceFilling::changeEvent(QEvent *e)
+void GeomFillSurface::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -243,19 +243,19 @@ void SurfaceFilling::changeEvent(QEvent *e)
     }
 }
 
-void SurfaceFilling::open()
+void GeomFillSurface::open()
 {
     checkOpenCommand();
     this->vp->highlightReferences(true);
     Gui::Selection().clearSelection();
 }
 
-void SurfaceFilling::clearSelection()
+void GeomFillSurface::clearSelection()
 {
     Gui::Selection().clearSelection();
 }
 
-void SurfaceFilling::checkOpenCommand()
+void GeomFillSurface::checkOpenCommand()
 {
     if (checkCommand && !Gui::Command::hasPendingCommand()) {
         std::string Msg("Edit ");
@@ -265,17 +265,17 @@ void SurfaceFilling::checkOpenCommand()
     }
 }
 
-void SurfaceFilling::slotUndoDocument(const Gui::Document&)
+void GeomFillSurface::slotUndoDocument(const Gui::Document&)
 {
     checkCommand = true;
 }
 
-void SurfaceFilling::slotRedoDocument(const Gui::Document&)
+void GeomFillSurface::slotRedoDocument(const Gui::Document&)
 {
     checkCommand = true;
 }
 
-bool SurfaceFilling::accept()
+bool GeomFillSurface::accept()
 {
     this->vp->highlightReferences(false);
     selectionMode = None;
@@ -309,7 +309,7 @@ bool SurfaceFilling::accept()
     return true;
 }
 
-bool SurfaceFilling::reject()
+bool GeomFillSurface::reject()
 {
     this->vp->highlightReferences(false);
     selectionMode = None;
@@ -321,22 +321,22 @@ bool SurfaceFilling::reject()
     return true;
 }
 
-void SurfaceFilling::on_fillType_stretch_clicked()
+void GeomFillSurface::on_fillType_stretch_clicked()
 {
     changeFillType(GeomFill_StretchStyle);
 }
 
-void SurfaceFilling::on_fillType_coons_clicked()
+void GeomFillSurface::on_fillType_coons_clicked()
 {
     changeFillType(GeomFill_CoonsStyle);
 }
 
-void SurfaceFilling::on_fillType_curved_clicked()
+void GeomFillSurface::on_fillType_curved_clicked()
 {
     changeFillType(GeomFill_CurvedStyle);
 }
 
-void SurfaceFilling::changeFillType(GeomFill_FillingStyle fillType)
+void GeomFillSurface::changeFillType(GeomFill_FillingStyle fillType)
 {
     GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
     if (curtype != fillType) {
@@ -349,19 +349,19 @@ void SurfaceFilling::changeFillType(GeomFill_FillingStyle fillType)
     }
 }
 
-void SurfaceFilling::on_buttonEdgeAdd_clicked()
+void GeomFillSurface::on_buttonEdgeAdd_clicked()
 {
     selectionMode = Append;
     Gui::Selection().addSelectionGate(new EdgeSelection(true, editedObject));
 }
 
-void SurfaceFilling::on_buttonEdgeRemove_clicked()
+void GeomFillSurface::on_buttonEdgeRemove_clicked()
 {
     selectionMode = Remove;
     Gui::Selection().addSelectionGate(new EdgeSelection(false, editedObject));
 }
 
-void SurfaceFilling::onSelectionChanged(const Gui::SelectionChanges& msg)
+void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (selectionMode == None)
         return;
@@ -428,7 +428,7 @@ void SurfaceFilling::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void SurfaceFilling::onDeleteEdge()
+void GeomFillSurface::onDeleteEdge()
 {
     int row = ui->listWidget->currentRow();
     QListWidgetItem* item = ui->listWidget->item(row);
@@ -461,9 +461,9 @@ void SurfaceFilling::onDeleteEdge()
 
 // ----------------------------------------------------------------------------
 
-TaskSurfaceFilling::TaskSurfaceFilling(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj)
+TaskGeomFillSurface::TaskGeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj)
 {
-    widget = new SurfaceFilling(vp, obj);
+    widget = new GeomFillSurface(vp, obj);
     widget->setWindowTitle(QObject::tr("Surface"));
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("BezSurf"),
@@ -472,31 +472,31 @@ TaskSurfaceFilling::TaskSurfaceFilling(ViewProviderGeomFillSurface* vp, Surface:
     Content.push_back(taskbox);
 }
 
-TaskSurfaceFilling::~TaskSurfaceFilling()
+TaskGeomFillSurface::~TaskGeomFillSurface()
 {
     // automatically deleted in the sub-class
 }
 
-void TaskSurfaceFilling::setEditedObject(Surface::GeomFillSurface* obj)
+void TaskGeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)
 {
     widget->setEditedObject(obj);
 }
 
-void TaskSurfaceFilling::open()
+void TaskGeomFillSurface::open()
 {
     widget->open();
 }
 
-bool TaskSurfaceFilling::accept()
+bool TaskGeomFillSurface::accept()
 {
     return widget->accept();
 }
 
-bool TaskSurfaceFilling::reject()
+bool TaskGeomFillSurface::reject()
 {
     return widget->reject();
 }
 
 }
 
-#include "moc_SurfaceFilling.cpp"
+#include "moc_TaskGeomFillSurface.cpp"

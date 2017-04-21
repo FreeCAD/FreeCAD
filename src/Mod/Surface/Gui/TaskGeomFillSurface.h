@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_GUI_SURFACE_H
-#define SURFACE_GUI_SURFACE_H
+#ifndef SURFACEGUI_TASKGEOMFILLSURFACE_H
+#define SURFACEGUI_TASKGEOMFILLSURFACE_H
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -54,7 +54,7 @@ private:
     Surface::GeomFillSurface* editedObject;
 };
 
-class Ui_SurfaceFilling;
+class Ui_GeomFillSurface;
 
 class ViewProviderGeomFillSurface : public PartGui::ViewProviderSpline
 {
@@ -67,9 +67,9 @@ public:
     void highlightReferences(bool on);
 };
 
-class SurfaceFilling : public QWidget,
-                       public Gui::SelectionObserver,
-                       public Gui::DocumentObserver
+class GeomFillSurface : public QWidget,
+                        public Gui::SelectionObserver,
+                        public Gui::DocumentObserver
 {
     Q_OBJECT
 
@@ -80,12 +80,12 @@ protected:
     bool checkCommand;
 
 private:
-    Ui_SurfaceFilling* ui;
+    Ui_GeomFillSurface* ui;
     ViewProviderGeomFillSurface* vp;
 
 public:
-    SurfaceFilling(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj);
-    ~SurfaceFilling();
+    GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj);
+    ~GeomFillSurface();
 
     void open();
     void checkOpenCommand();
@@ -112,13 +112,13 @@ private Q_SLOTS:
     void clearSelection();
 };
 
-class TaskSurfaceFilling : public Gui::TaskView::TaskDialog
+class TaskGeomFillSurface : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskSurfaceFilling(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj);
-    ~TaskSurfaceFilling();
+    TaskGeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj);
+    ~TaskGeomFillSurface();
     void setEditedObject(Surface::GeomFillSurface* obj);
 
 public:
@@ -130,10 +130,10 @@ public:
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 
 private:
-    SurfaceFilling* widget;
+    GeomFillSurface* widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 
-} //namespace Surface
+} //namespace SurfaceGui
 
-#endif // SURFACE_GUI_SURFACE_H
+#endif // SURFACEGUI_TASKGEOMFILLSURFACE_H

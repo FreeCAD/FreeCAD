@@ -24,7 +24,7 @@ set(SurfaceGui_LIBS
 )
 
 set(SurfaceGui_MOC_HDRS
-    SurfaceFilling.h
+    TaskGeomFillSurface.h
 )
 fc_wrap_cpp(SurfaceGui_MOC_SRCS ${SurfaceGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${SurfaceGui_MOC_SRCS})
@@ -36,7 +36,7 @@ else()
 endif()
 
 SET(SurfaceGui_UIC_SRCS
-    SurfaceFilling.ui
+    TaskGeomFillSurface.ui
 )
 
 if (BUILD_QT5)
@@ -48,8 +48,8 @@ endif()
 SET(SurfaceGui_SRCS
     ${SurfaceGui_QRC_SRCS}
     ${SurfaceGui_UIC_HDRS}
-    SurfaceFilling.cpp
-    SurfaceFilling.h
+    TaskGeomFillSurface.cpp
+    TaskGeomFillSurface.h
     AppSurfaceGui.cpp
     Command.cpp
     PreCompiled.cpp
