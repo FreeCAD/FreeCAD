@@ -5022,7 +5022,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
             QString cmdstr = QString::fromLatin1(
                         "ActiveSketch = App.ActiveDocument.getObject('{sketch_name}')\n"
                         "tv = Show.TempoVis(App.ActiveDocument)\n"
-                        "if ActiveSketch.ViewObject.HideDependent:\n"
+                        "if not App.ParamGet('User parameter:BaseApp/Preferences/Mod/Sketcher').GetBool('AutoRecompute') and ActiveSketch.ViewObject.HideDependent:\n"
                         "  tv.hide_all_dependent(ActiveSketch)\n"
                         "if ActiveSketch.ViewObject.ShowSupport:\n"
                         "  tv.show([ref[0] for ref in ActiveSketch.Support])\n"
