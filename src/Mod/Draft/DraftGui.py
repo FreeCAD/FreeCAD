@@ -1029,7 +1029,7 @@ class DraftToolBar:
 
     def setTitle(self,title,icon="Draft_Draft"):
         if self.taskmode:
-            self.baseWidget.setWindowTitle(title)
+            self.baseWidget.setWindowTitle(str(title))
             self.baseWidget.setWindowIcon(QtGui.QIcon(":/icons/"+icon+".svg"))
         else:
             self.cmdlabel.setText(title)
