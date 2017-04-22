@@ -283,9 +283,10 @@ Application::Application(std::map<std::string,std::string> &mConfig)
 
     PyObject* pContainersModule = Py_InitModule3("__FreeCADContainers__", NULL,
         "The Containers module contains interface classes for dealing with object-containing objects in a unified manner.");
-    PyModule_AddObject(pAppModule, "Containers", pContainersModule);
     Base::Interpreter().addType(&App::ContainerBasePy::Type, pContainersModule, "ContainerBase");
     Base::Interpreter().addType(&App::ContainerPy::Type, pContainersModule, "Container");
+    Py_INCREF(pContainersModule);
+    PyModule_AddObject(pAppModule, "Containers", pContainersModule);
 }
 
 Application::~Application()
