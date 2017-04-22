@@ -254,7 +254,7 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for d in drafts:
-            svg += Draft.getSVG(d, scale=scale, linewidth=symbolLineWidth,
+            svg += Draft.getSVG(d, scale=scale, linewidth=svgSymbolLineWidth,
                                 fontsize=fontsize, direction=direction, color=lineColor,
                                 techdraw=techdraw, rotation=rotation)
         if not techdraw:
@@ -267,7 +267,7 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for s in spaces:
-            svg += Draft.getSVG(s, scale=scale, linewidth=symbolLineWidth,
+            svg += Draft.getSVG(s, scale=scale, linewidth=svgSymbolLineWidth,
                                 fontsize=fontsize, direction=direction, color=lineColor,
                                 techdraw=techdraw, rotation=rotation)
         if not techdraw:
@@ -297,7 +297,8 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
             if not techdraw:
                 svg += '<g transform="scale(1,-1)">'
             for s in sh:
-                svg += Draft.getSVG(s, scale=scale, linewidth=symbolLineWidth,
+                svg += Draft.getSVG(s, scale=scale, 
+                                    linewidth=svgSymbolLineWidth,
                                     fontsize=fontsize, fillstyle="none",
                                     direction=direction, color=lineColor,
                                     techdraw=techdraw, rotation=rotation)
