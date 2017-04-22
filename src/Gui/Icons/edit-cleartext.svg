@@ -14,7 +14,7 @@
    height="16px"
    id="svg2985"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.48.4 r9939"
    sodipodi:docname="edit-cleartext.svg">
   <defs
      id="defs2987">
@@ -1221,10 +1221,10 @@
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
      inkscape:object-nodes="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1053"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-width="2560"
+     inkscape:window-height="1378"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata2990">
@@ -1244,7 +1244,7 @@
      inkscape:groupmode="layer">
     <g
        id="g4386"
-       transform="translate(0,-1.1749765)">
+       transform="translate(0.06370962,0.2266352)">
       <path
          inkscape:connector-curvature="0"
          id="rect4266-0"

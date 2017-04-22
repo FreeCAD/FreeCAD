@@ -110,6 +110,12 @@ void Filling::addConstraints(BRepFill_Filling& builder,
     auto face_sub = faces.getSubValues();
     auto contvals = orders.getValues();
 
+    // tmp. workaround
+    if (edge_obj.size() != contvals.size()) {
+        contvals.resize(edge_obj.size());
+        std::fill(contvals.begin(), contvals.end(), static_cast<long>(GeomAbs_C0));
+    }
+
     if (edge_obj.size() == edge_sub.size() &&
         edge_obj.size() == contvals.size()) {
         for (std::size_t index = 0; index < edge_obj.size(); index++) {

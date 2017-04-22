@@ -30,7 +30,6 @@
 #include <Base/BoundBox.h>
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureFilling.h>
-#include <GeomFill_FillingStyle.hxx>
 
 namespace SurfaceGui
 {
@@ -56,7 +55,7 @@ class FillingPanel : public QWidget,
 
 protected:
     class ShapeSelection;
-    enum SelectionMode { None, Append, Remove };
+    enum SelectionMode { None, InitFace, AppendEdge, RemoveEdge };
     SelectionMode selectionMode;
     Surface::Filling* editedObject;
     bool checkCommand;
@@ -82,14 +81,12 @@ protected:
     virtual void slotUndoDocument(const Gui::Document& Doc);
     /** Notifies on redo */
     virtual void slotRedoDocument(const Gui::Document& Doc);
-    void changeFillType(GeomFill_FillingStyle);
 
 private Q_SLOTS:
-    void on_fillType_stretch_clicked();
-    void on_fillType_coons_clicked();
-    void on_fillType_curved_clicked();
+    void on_buttonInitFace_clicked();
     void on_buttonEdgeAdd_clicked();
     void on_buttonEdgeRemove_clicked();
+    void on_lineInitFaceName_textChanged(const QString&);
     void onDeleteEdge(void);
     void clearSelection();
 };
