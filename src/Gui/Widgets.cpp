@@ -442,7 +442,7 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
 
 #if QT_VERSION >= 0x050200
 ClearLineEdit::ClearLineEdit (QWidget * parent)
-  : QLineEdit(parent), clearButton(nullptr)
+  : QLineEdit(parent)
 {
     clearAction = this->addAction(QIcon(QString::fromLatin1(":/icons/edit-cleartext.svg")),
                                         QLineEdit::TrailingPosition);
@@ -462,7 +462,7 @@ void ClearLineEdit::updateClearButton(const QString& text)
 }
 #else
 ClearLineEdit::ClearLineEdit (QWidget * parent)
-  : QLineEdit(parent), clearAction(nullptr)
+  : QLineEdit(parent)
 {
     clearButton = new QToolButton(this);
     QPixmap pixmap(BitmapFactory().pixmapFromSvg(":/icons/edit-cleartext.svg", QSize(18, 18)));
