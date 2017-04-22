@@ -235,6 +235,15 @@ void FillingPanel::setEditedObject(Surface::Filling* obj)
 {
     editedObject = obj;
 
+    App::DocumentObject* initFace = editedObject->InitialFace.getValue();
+    const std::vector<std::string>& subList = editedObject->InitialFace.getSubValues();
+    if (initFace && subList.size() == 1) {
+        QString text = QString::fromLatin1("%1.%2")
+                .arg(QString::fromUtf8(initFace->Label.getValue()))
+                .arg(QString::fromStdString(subList.front()));
+        ui->lineInitFaceName->setText(text);
+    }
+
     auto objects = editedObject->Border.getValues();
     auto element = editedObject->Border.getSubValues();
     auto it = objects.begin();
@@ -303,23 +312,8 @@ void FillingPanel::slotRedoDocument(const Gui::Document&)
 
 bool FillingPanel::accept()
 {
-    this->vp->highlightReferences(false);
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
-
-    int count = ui->listWidget->count();
-    if (count > 4) {
-        QMessageBox::warning(this,
-            tr("Too many edges"),
-            tr("The tool requires two, three or four edges"));
-        return false;
-    }
-    else if (count < 2) {
-        QMessageBox::warning(this,
-            tr("Too less edges"),
-            tr("The tool requires two, three or four edges"));
-        return false;
-    }
 
     if (editedObject->mustExecute())
         editedObject->recomputeFeature();
@@ -328,6 +322,8 @@ bool FillingPanel::accept()
             QString::fromLatin1(editedObject->getStatusString()));
         return false;
     }
+
+    this->vp->highlightReferences(false);
 
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
