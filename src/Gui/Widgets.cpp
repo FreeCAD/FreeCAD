@@ -478,7 +478,7 @@ ClearLineEdit::ClearLineEdit (QWidget * parent)
                   .arg(clearButton->sizeHint().width() + frameWidth + 1));
     QSize msz = minimumSizeHint();
     setMinimumSize(qMax(msz.width(), clearButton->sizeHint().height() + frameWidth * 2 + 2),
-                   qMax(msz.height(), clearButton->sizeHint().height() + frameWidth * 2 + 2));
+                   msz.height());
 }
 
 void ClearLineEdit::resizeEvent(QResizeEvent *)

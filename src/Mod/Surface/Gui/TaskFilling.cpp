@@ -103,9 +103,8 @@ QIcon ViewProviderFilling::getIcon(void) const
 
 void ViewProviderFilling::highlightReferences(bool on)
 {
-#if 0
     Surface::Filling* surface = static_cast<Surface::Filling*>(getObject());
-    auto bounds = surface->BoundaryList.getSubListValues();
+    auto bounds = surface->Border.getSubListValues();
     for (auto it : bounds) {
         Part::Feature* base = dynamic_cast<Part::Feature*>(it.first);
         if (base) {
@@ -132,7 +131,6 @@ void ViewProviderFilling::highlightReferences(bool on)
             }
         }
     }
-#endif
 }
 
 // ----------------------------------------------------------------------------
@@ -140,49 +138,69 @@ void ViewProviderFilling::highlightReferences(bool on)
 class FillingPanel::ShapeSelection : public Gui::SelectionFilterGate
 {
 public:
-    ShapeSelection(bool appendEdges, Surface::Filling* editedObject)
+    ShapeSelection(FillingPanel::SelectionMode mode, Surface::Filling* editedObject)
         : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
-        , appendEdges(appendEdges)
+        , mode(mode)
         , editedObject(editedObject)
     {
     }
     /**
       * Allow the user to pick only edges.
       */
-    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName);
+    bool allow(App::Document*, App::DocumentObject* pObj, const char* sSubName)
+    {
+        // don't allow references to itself
+        if (pObj == editedObject)
+            return false;
+        if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId()))
+            return false;
 
-private:
-    bool appendEdges;
-    Surface::Filling* editedObject;
-};
+        if (!sSubName || sSubName[0] == '\0')
+            return false;
 
-bool FillingPanel::ShapeSelection::allow(App::Document* , App::DocumentObject* pObj, const char* sSubName)
-{
-    // don't allow references to itself
-    if (pObj == editedObject)
-        return false;
-    if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId()))
-        return false;
-
-    if (!sSubName || sSubName[0] == '\0')
-        return false;
-
-    std::string element(sSubName);
-    if (element.substr(0,4) != "Edge")
-        return false;
-#if 0
-    auto links = editedObject->BoundaryList.getSubListValues();
-    for (auto it : links) {
-        if (it.first == pObj) {
-            for (auto jt : it.second) {
-                if (jt == sSubName)
-                    return !appendEdges;
-            }
+        switch (mode) {
+        case FillingPanel::InitFace:
+            return allowFace(pObj, sSubName);
+        case FillingPanel::AppendEdge:
+            return allowEdge(true, pObj, sSubName);
+        case FillingPanel::RemoveEdge:
+            return allowEdge(false, pObj, sSubName);
+        default:
+            return false;
         }
     }
-#endif
-    return appendEdges;
-}
+
+private:
+    bool allowFace(App::DocumentObject* pObj, const char* sSubName)
+    {
+        std::string element(sSubName);
+        if (element.substr(0,4) != "Face")
+            return false;
+        return true;
+    }
+    bool allowEdge(bool appendEdges, App::DocumentObject* pObj, const char* sSubName)
+    {
+        std::string element(sSubName);
+        if (element.substr(0,4) != "Edge")
+            return false;
+
+        auto links = editedObject->Border.getSubListValues();
+        for (auto it : links) {
+            if (it.first == pObj) {
+                for (auto jt : it.second) {
+                    if (jt == sSubName)
+                        return !appendEdges;
+                }
+            }
+        }
+
+        return appendEdges;
+    }
+
+private:
+    FillingPanel::SelectionMode mode;
+    Surface::Filling* editedObject;
+};
 
 // ----------------------------------------------------------------------------
 
@@ -216,25 +234,9 @@ FillingPanel::~FillingPanel()
 void FillingPanel::setEditedObject(Surface::Filling* obj)
 {
     editedObject = obj;
-#if 0
-    GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
-    switch(curtype)
-    {
-    case GeomFill_StretchStyle:
-        ui->fillType_stretch->setChecked(true);
-        break;
-    case GeomFill_CoonsStyle:
-        ui->fillType_coons->setChecked(true);
-        break;
-    case GeomFill_CurvedStyle:
-        ui->fillType_curved->setChecked(true);
-        break;
-    default:
-        break;
-    }
 
-    auto objects = editedObject->BoundaryList.getValues();
-    auto element = editedObject->BoundaryList.getSubValues();
+    auto objects = editedObject->Border.getValues();
+    auto element = editedObject->Border.getSubValues();
     auto it = objects.begin();
     auto jt = element.begin();
 
@@ -255,7 +257,6 @@ void FillingPanel::setEditedObject(Surface::Filling* obj)
         item->setData(Qt::UserRole, data);
     }
     attachDocument(Gui::Application::Instance->getDocument(doc));
-#endif
 }
 
 void FillingPanel::changeEvent(QEvent *e)
@@ -346,56 +347,56 @@ bool FillingPanel::reject()
     return true;
 }
 
-void FillingPanel::on_fillType_stretch_clicked()
+void FillingPanel::on_lineInitFaceName_textChanged(const QString& text)
 {
-    changeFillType(GeomFill_StretchStyle);
-}
-
-void FillingPanel::on_fillType_coons_clicked()
-{
-    changeFillType(GeomFill_CoonsStyle);
-}
-
-void FillingPanel::on_fillType_curved_clicked()
-{
-    changeFillType(GeomFill_CurvedStyle);
-}
-
-void FillingPanel::changeFillType(GeomFill_FillingStyle fillType)
-{
-#if 0
-    GeomFill_FillingStyle curtype = static_cast<GeomFill_FillingStyle>(editedObject->FillType.getValue());
-    if (curtype != fillType) {
+    if (text.isEmpty()) {
         checkOpenCommand();
-        editedObject->FillType.setValue(static_cast<long>(fillType));
+        editedObject->InitialFace.setValue(nullptr);
         editedObject->recomputeFeature();
-        if (!editedObject->isValid()) {
-            Base::Console().Error("Surface filling: %s", editedObject->getStatusString());
-        }
     }
-#endif
+}
+
+void FillingPanel::on_buttonInitFace_clicked()
+{
+    selectionMode = InitFace;
+    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
 }
 
 void FillingPanel::on_buttonEdgeAdd_clicked()
 {
-    selectionMode = Append;
-    Gui::Selection().addSelectionGate(new ShapeSelection(true, editedObject));
+    selectionMode = AppendEdge;
+    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
 }
 
 void FillingPanel::on_buttonEdgeRemove_clicked()
 {
-    selectionMode = Remove;
-    Gui::Selection().addSelectionGate(new ShapeSelection(false, editedObject));
+    selectionMode = RemoveEdge;
+    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
 }
 
 void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (selectionMode == None)
         return;
-#if 0
+
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         checkOpenCommand();
-        if (selectionMode == Append) {
+        if (selectionMode == InitFace) {
+            Gui::SelectionObject sel(msg);
+            QString text = QString::fromLatin1("%1.%2")
+                    .arg(QString::fromUtf8(sel.getObject()->Label.getValue()))
+                    .arg(QString::fromLatin1(msg.pSubName));
+            ui->lineInitFaceName->setText(text);
+
+            std::vector<std::string> subList;
+            subList.push_back(msg.pSubName);
+            editedObject->InitialFace.setValue(sel.getObject(), subList);
+            //this->vp->highlightReferences(true);
+
+            Gui::Selection().rmvSelectionGate();
+            selectionMode = None;
+        }
+        else if (selectionMode == AppendEdge) {
             QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
             ui->listWidget->addItem(item);
 
@@ -411,14 +412,14 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             data << QByteArray(msg.pSubName);
             item->setData(Qt::UserRole, data);
 
-            auto objects = editedObject->BoundaryList.getValues();
+            auto objects = editedObject->Border.getValues();
             objects.push_back(sel.getObject());
-            auto element = editedObject->BoundaryList.getSubValues();
+            auto element = editedObject->Border.getSubValues();
             element.push_back(msg.pSubName);
-            editedObject->BoundaryList.setValues(objects, element);
+            editedObject->Border.setValues(objects, element);
             this->vp->highlightReferences(true);
         }
-        else {
+        else if (selectionMode == RemoveEdge) {
             Gui::SelectionObject sel(msg);
             QList<QVariant> data;
             data << QByteArray(msg.pDocName);
@@ -435,15 +436,15 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             this->vp->highlightReferences(false);
             App::DocumentObject* obj = sel.getObject();
             std::string sub = msg.pSubName;
-            auto objects = editedObject->BoundaryList.getValues();
-            auto element = editedObject->BoundaryList.getSubValues();
+            auto objects = editedObject->Border.getValues();
+            auto element = editedObject->Border.getSubValues();
             auto it = objects.begin();
             auto jt = element.begin();
             for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
                 if (*it == obj && *jt == sub) {
                     objects.erase(it);
                     element.erase(jt);
-                    editedObject->BoundaryList.setValues(objects, element);
+                    editedObject->Border.setValues(objects, element);
                     break;
                 }
             }
@@ -453,12 +454,10 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
         editedObject->recomputeFeature();
         QTimer::singleShot(50, this, SLOT(clearSelection()));
     }
-#endif
 }
 
 void FillingPanel::onDeleteEdge()
 {
-#if 0
     int row = ui->listWidget->currentRow();
     QListWidgetItem* item = ui->listWidget->item(row);
     if (item) {
@@ -471,8 +470,8 @@ void FillingPanel::onDeleteEdge()
         App::Document* doc = App::GetApplication().getDocument(data[0].toByteArray());
         App::DocumentObject* obj = doc ? doc->getObject(data[1].toByteArray()) : nullptr;
         std::string sub = data[2].toByteArray().constData();
-        auto objects = editedObject->BoundaryList.getValues();
-        auto element = editedObject->BoundaryList.getSubValues();
+        auto objects = editedObject->Border.getValues();
+        auto element = editedObject->Border.getSubValues();
         auto it = objects.begin();
         auto jt = element.begin();
         this->vp->highlightReferences(false);
@@ -480,13 +479,12 @@ void FillingPanel::onDeleteEdge()
             if (*it == obj && *jt == sub) {
                 objects.erase(it);
                 element.erase(jt);
-                editedObject->BoundaryList.setValues(objects, element);
+                editedObject->Border.setValues(objects, element);
                 break;
             }
         }
         this->vp->highlightReferences(true);
     }
-#endif
 }
 
 // ----------------------------------------------------------------------------
