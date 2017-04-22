@@ -28,6 +28,8 @@
 #include <QTimer>
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
 
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
@@ -171,7 +173,7 @@ public:
     }
 
 private:
-    bool allowFace(App::DocumentObject* pObj, const char* sSubName)
+    bool allowFace(App::DocumentObject*, const char* sSubName)
     {
         std::string element(sSubName);
         if (element.substr(0,4) != "Face")
@@ -216,9 +218,9 @@ FillingPanel::FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj)
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QString::fromLatin1("Del"));
-    ui->listWidget->addAction(action);
+    ui->listBoundary->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
-    ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
+    ui->listBoundary->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
 /*
@@ -251,8 +253,8 @@ void FillingPanel::setEditedObject(Surface::Filling* obj)
 
     App::Document* doc = editedObject->getDocument();
     for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
-        QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
-        ui->listWidget->addItem(item);
+        QListWidgetItem* item = new QListWidgetItem(ui->listBoundary);
+        ui->listBoundary->addItem(item);
 
         QString text = QString::fromLatin1("%1.%2")
                 .arg(QString::fromUtf8((*it)->Label.getValue()))
@@ -370,6 +372,56 @@ void FillingPanel::on_buttonEdgeRemove_clicked()
     Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
 }
 
+void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
+{
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
+    selectionMode = None;
+    ui->comboBoxFaces->clear();
+    ui->comboBoxCont->clear();
+
+    if (item) {
+        modifyBorder(true);
+
+        QList<QVariant> data;
+        data = item->data(Qt::UserRole).toList();
+
+        try {
+            App::Document* doc = App::GetApplication().getDocument(data[0].toByteArray());
+            App::DocumentObject* obj = doc ? doc->getObject(data[1].toByteArray()) : nullptr;
+            if (obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                const Part::TopoShape& shape = static_cast<Part::Feature*>(obj)->Shape.getShape();
+                TopoDS_Shape edge = shape.getSubShape(data[2].toByteArray());
+
+                // build up map edge->face
+                TopTools_IndexedMapOfShape faces;
+                TopExp::MapShapes(shape.getShape(), TopAbs_FACE, faces);
+                TopTools_IndexedDataMapOfShapeListOfShape edge2Face;
+                TopExp::MapShapesAndAncestors(shape.getShape(), TopAbs_EDGE, TopAbs_FACE, edge2Face);
+                const TopTools_ListOfShape& adj_faces = edge2Face.FindFromKey(edge);
+                if (adj_faces.Extent() > 0) {
+                    ui->comboBoxFaces->addItem(tr("None"));
+                    ui->comboBoxCont->addItem(QString::fromLatin1("C0"));
+                    ui->comboBoxCont->addItem(QString::fromLatin1("G1"));
+                    ui->comboBoxCont->addItem(QString::fromLatin1("G2"));
+                    TopTools_ListIteratorOfListOfShape it(adj_faces);
+                    for (; it.More(); it.Next()) {
+                        const TopoDS_Shape& F = it.Value();
+                        int index = faces.FindIndex(F);
+                        ui->comboBoxFaces->addItem(QString::fromLatin1("Face%1").arg(index));
+                    }
+                }
+            }
+
+            Gui::Selection().addSelection(data[0].toByteArray(),
+                                          data[1].toByteArray(),
+                                          data[2].toByteArray());
+        }
+        catch (...) {
+        }
+    }
+}
+
 void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (selectionMode == None)
@@ -393,8 +445,8 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             selectionMode = None;
         }
         else if (selectionMode == AppendEdge) {
-            QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
-            ui->listWidget->addItem(item);
+            QListWidgetItem* item = new QListWidgetItem(ui->listBoundary);
+            ui->listBoundary->addItem(item);
 
             Gui::SelectionObject sel(msg);
             QString text = QString::fromLatin1("%1.%2")
@@ -421,10 +473,10 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             data << QByteArray(msg.pDocName);
             data << QByteArray(msg.pObjectName);
             data << QByteArray(msg.pSubName);
-            for (int i=0; i<ui->listWidget->count(); i++) {
-                QListWidgetItem* item = ui->listWidget->item(i);
+            for (int i=0; i<ui->listBoundary->count(); i++) {
+                QListWidgetItem* item = ui->listBoundary->item(i);
                 if (item && item->data(Qt::UserRole) == data) {
-                    ui->listWidget->takeItem(i);
+                    ui->listBoundary->takeItem(i);
                     delete item;
                 }
             }
@@ -454,13 +506,13 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void FillingPanel::onDeleteEdge()
 {
-    int row = ui->listWidget->currentRow();
-    QListWidgetItem* item = ui->listWidget->item(row);
+    int row = ui->listBoundary->currentRow();
+    QListWidgetItem* item = ui->listBoundary->item(row);
     if (item) {
         checkOpenCommand();
         QList<QVariant> data;
         data = item->data(Qt::UserRole).toList();
-        ui->listWidget->takeItem(row);
+        ui->listBoundary->takeItem(row);
         delete item;
 
         App::Document* doc = App::GetApplication().getDocument(data[0].toByteArray());
@@ -481,6 +533,30 @@ void FillingPanel::onDeleteEdge()
         }
         this->vp->highlightReferences(true);
     }
+}
+
+void FillingPanel::on_buttonAccept_clicked()
+{
+    modifyBorder(false);
+}
+
+void FillingPanel::on_buttonIgnore_clicked()
+{
+    modifyBorder(false);
+}
+
+void FillingPanel::modifyBorder(bool on)
+{
+    ui->buttonInitFace->setDisabled(on);
+    ui->lineInitFaceName->setDisabled(on);
+    ui->buttonEdgeAdd->setDisabled(on);
+    ui->buttonEdgeRemove->setDisabled(on);
+    ui->listBoundary->setDisabled(on);
+
+    ui->comboBoxFaces->setEnabled(on);
+    ui->comboBoxCont->setEnabled(on);
+    ui->buttonAccept->setEnabled(on);
+    ui->buttonIgnore->setEnabled(on);
 }
 
 // ----------------------------------------------------------------------------

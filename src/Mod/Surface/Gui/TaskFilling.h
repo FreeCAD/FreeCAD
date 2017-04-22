@@ -31,6 +31,8 @@
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureFilling.h>
 
+class QListWidgetItem;
+
 namespace SurfaceGui
 {
 
@@ -81,12 +83,16 @@ protected:
     virtual void slotUndoDocument(const Gui::Document& Doc);
     /** Notifies on redo */
     virtual void slotRedoDocument(const Gui::Document& Doc);
+    void modifyBorder(bool);
 
 private Q_SLOTS:
     void on_buttonInitFace_clicked();
     void on_buttonEdgeAdd_clicked();
     void on_buttonEdgeRemove_clicked();
     void on_lineInitFaceName_textChanged(const QString&);
+    void on_listBoundary_itemDoubleClicked(QListWidgetItem*);
+    void on_buttonAccept_clicked();
+    void on_buttonIgnore_clicked();
     void onDeleteEdge(void);
     void clearSelection();
 };
