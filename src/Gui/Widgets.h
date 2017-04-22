@@ -33,6 +33,7 @@
 #include <QPlainTextEdit>
 #include <QBasicTimer>
 #include <QTime>
+#include <QToolButton>
 
 namespace Gui {
 class PrefCheckBox;
