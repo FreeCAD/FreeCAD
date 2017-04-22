@@ -26,13 +26,14 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
-#include "Mod/Part/App/PartFeature.h"
+#include <Mod/Part/App/FeaturePartSpline.h>
 
 class BRepFill_Filling;
+
 namespace Surface
 {
 
-class SurfaceExport Filling :  public Part::Feature
+class SurfaceExport Filling :  public Part::Spline
 {
     PROPERTY_HEADER(Surface::Filling);
 
@@ -66,6 +67,10 @@ public:
     // recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
+    /// returns the type name of the view provider
+    const char* getViewProviderName(void) const {
+        return "SurfaceGui::ViewProviderFilling";
+    }
 
 private:
     void addConstraints(BRepFill_Filling& builder,

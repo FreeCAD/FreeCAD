@@ -64,29 +64,6 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //===========================================================================
-// CmdSurfaceFILLING THIS IS THE SURFACE FILLING COMMAND
-//===========================================================================
-DEF_STD_CMD(CmdSurfaceFilling);
-
-CmdSurfaceFilling::CmdSurfaceFilling()
-  :Command("Surface_Filling")
-{
-    sAppModule    = "Surface";
-    sGroup        = QT_TR_NOOP("Surface");
-    sMenuText     = QT_TR_NOOP("Surface Filling function");
-    sToolTipText  = QT_TR_NOOP("Fills a series of boundary curves, constraint curves and verticies with a surface.");
-    sWhatsThis    = QT_TR_NOOP("Surface Filling function");
-    sStatusTip    = QT_TR_NOOP("Surface Filling function");
-    sPixmap       = "Filling.svg";
-}
-
-void CmdSurfaceFilling::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    Base::Console().Message("Hello, World!\n");
-}
-
-//===========================================================================
 // CmdSurfaceCut THIS IS THE SURFACE CUT COMMAND
 //===========================================================================
 DEF_STD_CMD(CmdSurfaceCut);
@@ -146,6 +123,35 @@ void CmdSurfaceCut::activated(int iMsg)
     commitCommand();*/
 }
 
+
+DEF_STD_CMD_A(CmdSurfaceFilling)
+
+CmdSurfaceFilling::CmdSurfaceFilling()
+  :Command("Surface_Filling")
+{
+    sAppModule    = "Surface";
+    sGroup        = QT_TR_NOOP("Surface");
+    sMenuText     = QT_TR_NOOP("Filling...");
+    sToolTipText  = QT_TR_NOOP("Fills a series of boundary curves, constraint curves and vertexes with a surface");
+    sStatusTip    = QT_TR_NOOP("Fills a series of boundary curves, constraint curves and vertexes with a surface");
+    sWhatsThis    = QT_TR_NOOP("Surface_Filling");
+    sPixmap       = "Filling.svg";
+}
+
+void CmdSurfaceFilling::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::string FeatName = getUniqueObjectName("Surface");
+
+    openCommand("Create surface");
+    doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::Filling\",\"%s\")", FeatName.c_str());
+    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
+}
+
+bool CmdSurfaceFilling::isActive(void)
+{
+    return hasActiveDocument();
+}
 
 //===========================================================================
 // Bezier and BSpline surfaces
@@ -218,6 +224,7 @@ void CreateSurfaceCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 /*  rcCmdMgr.addCommand(new CmdSurfaceFilling());
     rcCmdMgr.addCommand(new CmdSurfaceCut());*/
+    rcCmdMgr.addCommand(new CmdSurfaceFilling());
     rcCmdMgr.addCommand(new CmdSurfaceGeomFillSurface());
     rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
 }
