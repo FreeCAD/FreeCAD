@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="BaseClassPy" 
+      Name="ContainerBasePy" 
+      Twin="ContainerBase" 
+      TwinPointer="ContainerBase" 
+      Include="App/Containers/ContainerBase.h" 
+      FatherInclude="Base/BaseClassPy.h" 
+      Namespace="App" 
+      Constructor="false"
+      Delete="false"
+      FatherNamespace="Base"
+      IsTrueRef="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+      <DeveloperDocu>ContainerBase</DeveloperDocu>
+      <UserDocu>ContainerBase - base class for container interface</UserDocu>
+    </Documentation>
+    <Attribute Name="Object" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Object the interface is around (either a Document or DocumentObject)</UserDocu>
+      </Documentation>
+      <Parameter Name="Object" Type="Object" />
+    </Attribute>
+    <Attribute Name="StaticChildren" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Objects contained by the container that cannot be removed.</UserDocu>
+      </Documentation>
+      <Parameter Name="StaticChildren" Type="List" />
+    </Attribute>
+    <Attribute Name="DynamicChildren" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Objects contained by the container that can be removed.</UserDocu>
+      </Documentation>
+      <Parameter Name="DynamicChildren" Type="List" />
+    </Attribute>
+    <Attribute Name="AllChildren" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Objects contained by the container that can be removed.</UserDocu>
+      </Documentation>
+      <Parameter Name="AllChildren" Type="List" />
+    </Attribute>
+
+    <Methode Name="getObject" Const="true">
+      <Documentation>
+        <UserDocu>getObject(name): returns object by name, or raises an exception if object is not found.</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

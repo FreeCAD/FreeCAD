@@ -108,6 +108,8 @@
 #include "Transactions.h"
 #include <App/MaterialPy.h>
 #include <Base/GeometryPyCXX.h>
+#include "Containers/ContainerBasePy.h"
+#include "Containers/ContainerPy.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -278,6 +280,12 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::Vector2dPy::init_type();
     Base::Interpreter().addType(Base::Vector2dPy::type_object(),
         pBaseModule,"Vector2d");
+
+    PyObject* pContainersModule = Py_InitModule3("__FreeCADContainers__", NULL,
+        "The Containers module contains interface classes for dealing with object-containing objects in a unified manner.");
+    PyModule_AddObject(pAppModule, "Containers", pContainersModule);
+    Base::Interpreter().addType(&App::ContainerBasePy::Type, pContainersModule, "ContainerBase");
+    Base::Interpreter().addType(&App::ContainerPy::Type, pContainersModule, "Container");
 }
 
 Application::~Application()
@@ -1316,6 +1324,11 @@ void Application::initTypes(void)
     App ::Line                      ::init();
     App ::Part                      ::init();
     App ::Origin                    ::init();
+
+    //Container classes
+    App ::ContainerBase             ::init();
+    App ::Container                 ::init();
+    App::ContainerError::initContainerExceptionTypes();
 
     // Expression classes
     App ::Expression                ::init();

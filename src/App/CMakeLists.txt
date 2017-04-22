@@ -40,6 +40,7 @@ include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}/Containers
     ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
@@ -86,6 +87,10 @@ generate_from_xml(ComplexGeoDataPy)
 generate_from_xml(PropertyContainerPy)
 generate_from_xml(MaterialPy)
 
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Containers)
+generate_from_xml(Containers/ContainerBasePy)
+generate_from_xml(Containers/ContainerPy)
+
 generate_from_py(FreeCADInit InitScript.h)
 generate_from_py(FreeCADTest TestScript.h)
 
@@ -104,6 +109,8 @@ SET(FreeCADApp_XML_SRCS
     PropertyContainerPy.xml
     ComplexGeoDataPy.xml
     MaterialPy.xml
+    Containers/ContainerBasePy.xml
+    Containers/ContainerPy.xml
 )
 SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 
@@ -150,6 +157,10 @@ SET(Document_CPP_SRCS
     VRMLObject.cpp
     MaterialObject.cpp
     MergeDocuments.cpp
+    Containers/ContainerBase.cpp
+    Containers/ContainerBasePyImp.cpp
+    Containers/Container.cpp
+    Containers/ContainerPyImp.cpp
 )
 
 SET(Document_HPP_SRCS
@@ -187,6 +198,8 @@ SET(Document_HPP_SRCS
     VRMLObject.h
     MaterialObject.h
     MergeDocuments.h
+    Containers/ContainerBase.h
+    Containers/Container.h
 )
 SET(Document_SRCS
     ${Document_CPP_SRCS}

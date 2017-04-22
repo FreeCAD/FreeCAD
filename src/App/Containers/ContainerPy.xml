@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="ContainerBasePy" 
+      Name="ContainerPy" 
+      Twin="Container" 
+      TwinPointer="Container" 
+      Include="App/Containers/Container.h" 
+      FatherInclude="App/Containers/ContainerBasePy.h" 
+      Namespace="App" 
+      Constructor="true"
+      Delete="true"
+      FatherNamespace="App"
+      IsTrueRef="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+      <DeveloperDocu>Container - object container interace</DeveloperDocu>
+      <UserDocu>Container - interface class for objects that can contain other objects</UserDocu>
+    </Documentation>
+  </PythonExport>
+</GenerateModel>
