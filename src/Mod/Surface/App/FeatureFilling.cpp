@@ -40,7 +40,7 @@
 
 using namespace Surface;
 
-PROPERTY_SOURCE(Surface::Filling, Part::Feature)
+PROPERTY_SOURCE(Surface::Filling, Part::Spline)
 
 //Initial values
 

@@ -24,6 +24,7 @@ set(SurfaceGui_LIBS
 )
 
 set(SurfaceGui_MOC_HDRS
+    TaskFilling.h
     TaskGeomFillSurface.h
 )
 fc_wrap_cpp(SurfaceGui_MOC_SRCS ${SurfaceGui_MOC_HDRS})
@@ -36,6 +37,7 @@ else()
 endif()
 
 SET(SurfaceGui_UIC_SRCS
+    TaskFilling.ui
     TaskGeomFillSurface.ui
 )
 
@@ -48,6 +50,8 @@ endif()
 SET(SurfaceGui_SRCS
     ${SurfaceGui_QRC_SRCS}
     ${SurfaceGui_UIC_HDRS}
+    TaskFilling.cpp
+    TaskFilling.h
     TaskGeomFillSurface.cpp
     TaskGeomFillSurface.h
     AppSurfaceGui.cpp
