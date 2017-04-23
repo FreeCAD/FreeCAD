@@ -1823,11 +1823,12 @@ def writePanelCut(ob,dxf,nospline,lwPoly,parent=None):
     if not hasattr(ob.Proxy,"outline"):
         ob.Proxy.execute(ob)
     if hasattr(ob.Proxy,"outline"):
-        outl = ob.Proxy.outline
+        outl = ob.Proxy.outline.copy()
         tag = None
         if hasattr(ob.Proxy,"tag"):
             tag = ob.Proxy.tag
         if tag:
+            tag = tag.copy()
             tag.Placement = ob.Placement.multiply(tag.Placement)
             if parent:
                 tag.Placement = parent.Placement.multiply(tag.Placement)
