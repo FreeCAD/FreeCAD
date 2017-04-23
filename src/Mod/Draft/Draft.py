@@ -1115,6 +1115,10 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,name="Array"):
     if gui:
         _ViewProviderDraftArray(obj.ViewObject)
         baseobject.ViewObject.hide()
+        formatObject(obj,obj.Base)
+        if len(obj.Base.ViewObject.DiffuseColor) > 1:
+            FreeCAD.ActiveDocument.recompute()
+            obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
 
@@ -1142,6 +1146,9 @@ def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs
         _ViewProviderDraftArray(obj.ViewObject)
         baseobject.ViewObject.hide()
         formatObject(obj,obj.Base)
+        if len(obj.Base.ViewObject.DiffuseColor) > 1:
+            FreeCAD.ActiveDocument.recompute()
+            obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
 
@@ -5802,6 +5809,29 @@ class _ViewProviderDraftArray(_ViewProviderDraft):
 
     def getIcon(self):
         return ":/icons/Draft_Array.svg"
+        
+    def resetColors(self, vobj):
+        colors = []
+        if vobj.Object.Base:
+            if vobj.Object.Base.isDerivedFrom("Part::Feature"):
+                if len(vobj.Object.Base.ViewObject.DiffuseColor) > 1:
+                    colors = vobj.Object.Base.ViewObject.DiffuseColor
+                else:
+                    c = vobj.Object.Base.ViewObject.ShapeColor
+                    c = (c[0],c[1],c[2],vobj.Object.Base.ViewObject.Transparency/100.0)
+                    for f in vobj.Object.Base.Shape.Faces:
+                        colors.append(c)
+        if colors:
+            n = 1
+            if hasattr(vobj.Object,"ArrayType"):
+                if vobj.Object.ArrayType == "ortho":
+                    n = vobj.Object.NumberX * vobj.Object.NumberY * vobj.Object.NumberZ
+                else:
+                    n = vobj.Object.NumberPolar
+            elif hasattr(vobj.Object,"Count"):
+                n = vobj.Object.Count
+            colors = colors * n
+            vobj.DiffuseColor = colors
 
 class _ShapeString(_DraftObject):
     "The ShapeString object"
