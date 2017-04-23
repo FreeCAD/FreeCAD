@@ -107,7 +107,7 @@ QIcon ViewProviderFilling::getIcon(void) const
 void ViewProviderFilling::highlightReferences(bool on)
 {
     Surface::Filling* surface = static_cast<Surface::Filling*>(getObject());
-    auto bounds = surface->Border.getSubListValues();
+    auto bounds = surface->BoundaryEdges.getSubListValues();
     for (auto it : bounds) {
         Part::Feature* base = dynamic_cast<Part::Feature*>(it.first);
         if (base) {
@@ -187,7 +187,7 @@ private:
         if (element.substr(0,4) != "Edge")
             return false;
 
-        auto links = editedObject->Border.getSubListValues();
+        auto links = editedObject->BoundaryEdges.getSubListValues();
         for (auto it : links) {
             if (it.first == pObj) {
                 for (auto jt : it.second) {
@@ -249,8 +249,8 @@ void FillingPanel::setEditedObject(Surface::Filling* obj)
         ui->lineInitFaceName->setText(text);
     }
 
-    auto objects = editedObject->Border.getValues();
-    auto element = editedObject->Border.getSubValues();
+    auto objects = editedObject->BoundaryEdges.getValues();
+    auto element = editedObject->BoundaryEdges.getSubValues();
     auto it = objects.begin();
     auto jt = element.begin();
 
@@ -405,7 +405,7 @@ void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
                     ui->statusLabel->setText(tr("Edge has %n adjacent face(s)", 0, n));
 
                     // fill up the combo boxes
-                    modifyBorder(true);
+                    modifyBoundary(true);
                     ui->comboBoxFaces->addItem(tr("None"), QByteArray("None"));
                     ui->comboBoxCont->addItem(QString::fromLatin1("C0"), static_cast<int>(GeomAbs_C0));
                     ui->comboBoxCont->addItem(QString::fromLatin1("G1"), static_cast<int>(GeomAbs_G1));
@@ -478,11 +478,11 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             data << QByteArray(msg.pSubName);
             item->setData(Qt::UserRole, data);
 
-            auto objects = editedObject->Border.getValues();
+            auto objects = editedObject->BoundaryEdges.getValues();
             objects.push_back(sel.getObject());
-            auto element = editedObject->Border.getSubValues();
+            auto element = editedObject->BoundaryEdges.getSubValues();
             element.push_back(msg.pSubName);
-            editedObject->Border.setValues(objects, element);
+            editedObject->BoundaryEdges.setValues(objects, element);
             this->vp->highlightReferences(true);
         }
         else if (selectionMode == RemoveEdge) {
@@ -502,15 +502,15 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             this->vp->highlightReferences(false);
             App::DocumentObject* obj = sel.getObject();
             std::string sub = msg.pSubName;
-            auto objects = editedObject->Border.getValues();
-            auto element = editedObject->Border.getSubValues();
+            auto objects = editedObject->BoundaryEdges.getValues();
+            auto element = editedObject->BoundaryEdges.getSubValues();
             auto it = objects.begin();
             auto jt = element.begin();
             for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
                 if (*it == obj && *jt == sub) {
                     objects.erase(it);
                     element.erase(jt);
-                    editedObject->Border.setValues(objects, element);
+                    editedObject->BoundaryEdges.setValues(objects, element);
                     break;
                 }
             }
@@ -536,8 +536,8 @@ void FillingPanel::onDeleteEdge()
         App::Document* doc = App::GetApplication().getDocument(data[0].toByteArray());
         App::DocumentObject* obj = doc ? doc->getObject(data[1].toByteArray()) : nullptr;
         std::string sub = data[2].toByteArray().constData();
-        auto objects = editedObject->Border.getValues();
-        auto element = editedObject->Border.getSubValues();
+        auto objects = editedObject->BoundaryEdges.getValues();
+        auto element = editedObject->BoundaryEdges.getSubValues();
         auto it = objects.begin();
         auto jt = element.begin();
         this->vp->highlightReferences(false);
@@ -545,7 +545,7 @@ void FillingPanel::onDeleteEdge()
             if (*it == obj && *jt == sub) {
                 objects.erase(it);
                 element.erase(jt);
-                editedObject->Border.setValues(objects, element);
+                editedObject->BoundaryEdges.setValues(objects, element);
                 break;
             }
         }
@@ -559,19 +559,22 @@ void FillingPanel::on_buttonAccept_clicked()
     if (item) {
         QList<QVariant> data;
         data = item->data(Qt::UserRole).toList();
+
+        QVariant face = ui->comboBoxFaces->itemData(ui->comboBoxFaces->currentIndex());
+        QVariant cont = ui->comboBoxCont->itemData(ui->comboBoxCont->currentIndex());
         if (data.size() == 5) {
-            data[3] = ui->comboBoxFaces->itemData(ui->comboBoxFaces->currentIndex());
-            data[4] = ui->comboBoxCont->itemData(ui->comboBoxCont->currentIndex());
+            data[3] = face;
+            data[4] = cont;
         }
         else {
-            data << ui->comboBoxFaces->itemData(ui->comboBoxFaces->currentIndex());
-            data << ui->comboBoxCont->itemData(ui->comboBoxCont->currentIndex());
+            data << face;
+            data << cont;
         }
 
         item->setData(Qt::UserRole, data);
     }
 
-    modifyBorder(false);
+    modifyBoundary(false);
     ui->comboBoxFaces->clear();
     ui->comboBoxCont->clear();
     ui->statusLabel->clear();
@@ -579,13 +582,13 @@ void FillingPanel::on_buttonAccept_clicked()
 
 void FillingPanel::on_buttonIgnore_clicked()
 {
-    modifyBorder(false);
+    modifyBoundary(false);
     ui->comboBoxFaces->clear();
     ui->comboBoxCont->clear();
     ui->statusLabel->clear();
 }
 
-void FillingPanel::modifyBorder(bool on)
+void FillingPanel::modifyBoundary(bool on)
 {
     ui->buttonInitFace->setDisabled(on);
     ui->lineInitFaceName->setDisabled(on);

@@ -83,7 +83,7 @@ protected:
     virtual void slotUndoDocument(const Gui::Document& Doc);
     /** Notifies on redo */
     virtual void slotRedoDocument(const Gui::Document& Doc);
-    void modifyBorder(bool);
+    void modifyBoundary(bool);
 
 private Q_SLOTS:
     void on_buttonInitFace_clicked();
