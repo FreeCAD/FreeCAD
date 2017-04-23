@@ -26,6 +26,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QTimer>
+#include <GeomAbs_Shape.hxx>
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
@@ -210,6 +211,8 @@ FillingPanel::FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj)
 {
     ui = new Ui_TaskFilling();
     ui->setupUi(this);
+    ui->statusLabel->clear();
+
     selectionMode = None;
     this->vp = vp;
     checkCommand = true;
@@ -381,8 +384,6 @@ void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
     ui->comboBoxCont->clear();
 
     if (item) {
-        modifyBorder(true);
-
         QList<QVariant> data;
         data = item->data(Qt::UserRole).toList();
 
@@ -400,16 +401,33 @@ void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
                 TopExp::MapShapesAndAncestors(shape.getShape(), TopAbs_EDGE, TopAbs_FACE, edge2Face);
                 const TopTools_ListOfShape& adj_faces = edge2Face.FindFromKey(edge);
                 if (adj_faces.Extent() > 0) {
-                    ui->comboBoxFaces->addItem(tr("None"));
-                    ui->comboBoxCont->addItem(QString::fromLatin1("C0"));
-                    ui->comboBoxCont->addItem(QString::fromLatin1("G1"));
-                    ui->comboBoxCont->addItem(QString::fromLatin1("G2"));
+                    int n = adj_faces.Extent();
+                    ui->statusLabel->setText(tr("Edge has %n adjacent face(s)", 0, n));
+
+                    // fill up the combo boxes
+                    modifyBorder(true);
+                    ui->comboBoxFaces->addItem(tr("None"), QByteArray("None"));
+                    ui->comboBoxCont->addItem(QString::fromLatin1("C0"), static_cast<int>(GeomAbs_C0));
+                    ui->comboBoxCont->addItem(QString::fromLatin1("G1"), static_cast<int>(GeomAbs_G1));
+                    ui->comboBoxCont->addItem(QString::fromLatin1("G2"), static_cast<int>(GeomAbs_G2));
                     TopTools_ListIteratorOfListOfShape it(adj_faces);
                     for (; it.More(); it.Next()) {
                         const TopoDS_Shape& F = it.Value();
                         int index = faces.FindIndex(F);
-                        ui->comboBoxFaces->addItem(QString::fromLatin1("Face%1").arg(index));
+                        QString text = QString::fromLatin1("Face%1").arg(index);
+                        ui->comboBoxFaces->addItem(text, text.toLatin1());
                     }
+
+                    // activste face and continuity
+                    if (data.size() == 5) {
+                        int index = ui->comboBoxFaces->findData(data[3]);
+                        ui->comboBoxFaces->setCurrentIndex(index);
+                        index = ui->comboBoxCont->findData(data[4]);
+                        ui->comboBoxCont->setCurrentIndex(index);
+                    }
+                }
+                else {
+                    ui->statusLabel->setText(tr("Edge has no adjacent faces"));
                 }
             }
 
@@ -537,12 +555,34 @@ void FillingPanel::onDeleteEdge()
 
 void FillingPanel::on_buttonAccept_clicked()
 {
+    QListWidgetItem* item = ui->listBoundary->currentItem();
+    if (item) {
+        QList<QVariant> data;
+        data = item->data(Qt::UserRole).toList();
+        if (data.size() == 5) {
+            data[3] = ui->comboBoxFaces->itemData(ui->comboBoxFaces->currentIndex());
+            data[4] = ui->comboBoxCont->itemData(ui->comboBoxCont->currentIndex());
+        }
+        else {
+            data << ui->comboBoxFaces->itemData(ui->comboBoxFaces->currentIndex());
+            data << ui->comboBoxCont->itemData(ui->comboBoxCont->currentIndex());
+        }
+
+        item->setData(Qt::UserRole, data);
+    }
+
     modifyBorder(false);
+    ui->comboBoxFaces->clear();
+    ui->comboBoxCont->clear();
+    ui->statusLabel->clear();
 }
 
 void FillingPanel::on_buttonIgnore_clicked()
 {
     modifyBorder(false);
+    ui->comboBoxFaces->clear();
+    ui->comboBoxCont->clear();
+    ui->statusLabel->clear();
 }
 
 void FillingPanel::modifyBorder(bool on)
