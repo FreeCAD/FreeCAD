@@ -24,7 +24,7 @@
       <Documentation>
         <UserDocu>Memory size of the object in byte</UserDocu>
       </Documentation>
-      <Parameter Name="MemSize" Type="Int"/>
+      <Parameter Name="MemSize" Type="Long"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

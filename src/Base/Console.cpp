@@ -410,15 +410,23 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args, PyOb
     if (PyUnicode_Check(output)) {
         unicode = PyUnicode_AsEncodedObject(output, "utf-8", "strict");
         if (unicode)
+#if PY_MAJOR_VERSION >= 3
+            string = PyUnicode_AsUTF8(unicode);
+#else
             string = PyString_AsString(unicode);
     }
     else if (PyString_Check(output)) {
         string = PyString_AsString(output);
+#endif
     }
     else {
         unicode = PyObject_Str(output);
         if (unicode)
+#if PY_MAJOR_VERSION >= 3
+            string = PyUnicode_AsUTF8(unicode);
+#else
             string = PyString_AsString(unicode);
+#endif
     }
 
     PY_TRY {
@@ -443,15 +451,23 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args, PyOb
     if (PyUnicode_Check(output)) {
         unicode = PyUnicode_AsEncodedObject(output, "utf-8", "strict");
         if (unicode)
+#if PY_MAJOR_VERSION >= 3
+            string = PyUnicode_AsUTF8(unicode);
+#else
             string = PyString_AsString(unicode);
     }
     else if (PyString_Check(output)) {
         string = PyString_AsString(output);
+#endif
     }
     else {
         unicode = PyObject_Str(output);
         if (unicode)
+#if PY_MAJOR_VERSION >= 3
+            string = PyUnicode_AsUTF8(unicode);
+#else
             string = PyString_AsString(unicode);
+#endif
     }
 
     PY_TRY {
@@ -476,15 +492,23 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args, PyObje
     if (PyUnicode_Check(output)) {
         unicode = PyUnicode_AsEncodedObject(output, "utf-8", "strict");
         if (unicode)
+#if PY_MAJOR_VERSION >= 3
+            string = PyUnicode_AsUTF8(unicode);
+#else
             string = PyString_AsString(unicode);
     }
     else if (PyString_Check(output)) {
         string = PyString_AsString(output);
+#endif
     }
     else {
         unicode = PyObject_Str(output);
         if (unicode)
+#if PY_MAJOR_VERSION >= 3
+            string = PyUnicode_AsUTF8(unicode);
+#else
             string = PyString_AsString(unicode);
+#endif
     }
 
     PY_TRY {
@@ -509,15 +533,23 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args, PyObject
     if (PyUnicode_Check(output)) {
         unicode = PyUnicode_AsEncodedObject(output, "utf-8", "strict");
         if (unicode)
+#if PY_MAJOR_VERSION >= 3
+            string = PyUnicode_AsUTF8(unicode);
+#else
             string = PyString_AsString(unicode);
     }
     else if (PyString_Check(output)) {
         string = PyString_AsString(output);
+#endif
     }
     else {
         unicode = PyObject_Str(output);
         if (unicode)
+#if PY_MAJOR_VERSION >= 3
+            string = PyUnicode_AsUTF8(unicode);
+#else
             string = PyString_AsString(unicode);
+#endif
     }
 
     PY_TRY {
