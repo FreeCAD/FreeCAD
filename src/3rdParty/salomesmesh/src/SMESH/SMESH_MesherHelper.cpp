@@ -3667,7 +3667,7 @@ namespace { // Structures used by FixQuadraticElements()
    * \brief Make up a chain of links
    *  \param iSide - link to add first
    *  \param chain - chain to fill in
-   *  \param pos   - postion of medium nodes the links should have
+   *  \param pos   - position of medium nodes the links should have
    *  \param error - out, specifies what is wrong
    *  \retval bool - false if valid chain can't be built; "valid" means that links
    *                 of the chain belongs to rectangles bounding hexahedrons

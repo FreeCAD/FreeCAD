@@ -131,7 +131,7 @@ class TaskPanel:
             return True
 
         # Get the element type
-        # 0 = unknow, 1 = vertex, 2 = line, 3 = face, 4 = solids
+        # 0 = unknown, 1 = vertex, 2 = line, 3 = face, 4 = solids
         self.elem_type = 0
         for shape in self.shapes:
             # Doing it in this way we are protected under strange entities,
@@ -161,7 +161,7 @@ class TaskPanel:
         if self.elem_type == 0:
             msg = QtGui.QApplication.translate(
                 "ship_weight",
-                "Unknow object shapes selected",
+                "Unknown object shapes selected",
                 None)
             App.Console.PrintError(msg + '\n')
             return True
