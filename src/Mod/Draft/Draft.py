@@ -3282,7 +3282,7 @@ def upgrade(objects,delete=False,force=None):
                      "makeShell","makeFaces","draftify","joinFaces","makeSketchFace","makeWires","turnToLine"]:
             result = eval(force)(objects)
         else:
-            msg(translate("Upgrade: Unknow force method:")+" "+force)
+            msg(translate("Upgrade: Unknown force method:")+" "+force)
             result = None
 
     else:
@@ -3523,7 +3523,7 @@ def downgrade(objects,delete=False,force=None):
         if force in ["explode","shapify","subtr","splitFaces","cut2","getWire","splitWires"]:
             result = eval(force)(objects)
         else:
-            msg(translate("Upgrade: Unknow force method:")+" "+force)
+            msg(translate("Upgrade: Unknown force method:")+" "+force)
             result = None
 
     else:
