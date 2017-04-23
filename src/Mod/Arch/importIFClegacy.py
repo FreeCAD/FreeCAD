@@ -1088,7 +1088,7 @@ def export(exportList,filename):
                 elif gdata[0] == "composite":
                     representation = ifc.addExtrudedCompositeCurve(gdata[1], gdata[2], color=color)
                 else:
-                    print("debug: unknow extrusion type")
+                    print("debug: unknown extrusion type")
             elif fdata:
                 representation = [ifc.addFacetedBrep(f, color=color) for f in fdata]
 

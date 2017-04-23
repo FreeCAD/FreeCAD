@@ -234,7 +234,7 @@ private:
   // private methods
 
   struct TPoint {
-    gp_XYZ myInitXYZ; // loaded postion
+    gp_XYZ myInitXYZ; // loaded position
     gp_XY  myInitUV;
     double myInitU; // [0,1]
     gp_Pnt myXYZ; // position to compute
