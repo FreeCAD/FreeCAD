@@ -3972,7 +3972,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
     // After an undo/redo it can happen that we have an empty geometry list but a non-empty constraint list
     // In this case just ignore the constraints. (See bug #0000421)
-    if (geomlist->size() <= 2 && !constrlist.empty()) {
+    if (geomlist->size() <= 2 /*&& !constrlist.empty()*/) {
         rebuildConstraintsVisual();
         return;
     }
