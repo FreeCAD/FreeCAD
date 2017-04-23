@@ -196,49 +196,39 @@ void ContainerBase::check() const
 
 std::vector<DocumentObject*> ContainerBase::recursiveChildren(bool b_dynamic, bool b_static) const
 {
-    //dependency-loop-proof non-recursive tree explorer... copied over from Mod/Show/DepGraphTools.py
-    typedef std::vector<PropertyContainer*> List;
-    typedef std::unordered_set<PropertyContainer*> Set;
-    List list_traversing_now; //list of containers
-    Set set_of_visited;
+    //dependency-loop-proof recursive container tree explorer
+    std::unordered_set<DocumentObject*> visited;
     std::vector<App::DocumentObject*> list_of_children;
+    //actual traversal is packed into a separate function with extra arguments, for infinite recursion protection.
+    recursiveChildrenRec(pcObject, b_dynamic, b_static, visited, list_of_children);
+    return list_of_children;
+}
 
-    list_traversing_now.push_back(pcObject); //seed
-
-    //outline: loop through all children of containers in list_traversing_now.
-    //If a container is encountered among them, add it to
-    //list_to_be_traversed_next. Repeat until no more containers are
-    //encountered. This results in a wave-like collecting: first, shallow
-    //children are gathered, then deeper and deeper.
-
-    //For guarding against dependency-loops, a set of containers already visited is kept around.
-
-    while ((list_traversing_now.size()) > 0){
-        List list_to_be_traversed_next;
-        for (PropertyContainer* cnt :list_traversing_now){
-            //visit static and dynamic children in separate loops
-            for (App::DocumentObject* child: Container(cnt).dynamicChildren()){
-                if (set_of_visited.find(child) != set_of_visited.end()){
-                    set_of_visited.insert(child);
-                    if (b_dynamic)
-                        list_of_children.push_back(child);
-                    if (Container::isAContainer(child))
-                        list_to_be_traversed_next.push_back(child);
-                }
-            }
-            for (App::DocumentObject* child: Container(cnt).staticChildren()){
-                if (set_of_visited.find(child) != set_of_visited.end()){
-                    set_of_visited.insert(child);
-                    if (b_static)
-                        list_of_children.push_back(child);
-                    if (Container::isAContainer(child))
-                        list_to_be_traversed_next.push_back(child);
-                }
+void ContainerBase::recursiveChildrenRec(PropertyContainer* cnt, bool b_dynamic, bool b_static, std::unordered_set<DocumentObject*>& visited, std::vector<DocumentObject*>& result)
+{
+    //visit static and dynamic children in separate loops
+    if (b_static || b_dynamic) { //there can be dynamic children buried under static, so we must always traverse them
+        for (App::DocumentObject* child: Container(cnt).staticChildren()){
+            if (visited.find(child) == visited.end()){
+                visited.insert(child);
+                if (b_static)
+                    result.push_back(child);
+                if (Container::isAContainer(child))
+                    recursiveChildrenRec(child, b_dynamic, b_static, visited, result);
             }
         }
-        std::swap(list_traversing_now, list_to_be_traversed_next); list_to_be_traversed_next.clear();
     }
-    return list_of_children;
+    if (b_dynamic) { //all static childern buried under dynamic are considered dynamic, so don't traverse dynamic if only static are requested
+        for (App::DocumentObject* child: Container(cnt).dynamicChildren()){
+            if (visited.find(child) == visited.end()){
+                visited.insert(child);
+                result.push_back(child);
+                if (Container::isAContainer(child))
+                    recursiveChildrenRec(child, true, true, visited, result); //static children of dynamic subcontainers are to be included into dynamic children
+            }
+        }
+    }
+
 }
 
 //------------------------------------------------------------------------------------------------

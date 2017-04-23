@@ -51,6 +51,12 @@ Py::List makePyList(std::vector<DocumentObject*> objects) {
         ret.append(Py::asObject(obj->getPyObject()));
     return ret;
 }
+Py::List makePyList(std::vector<PropertyContainer*> objects) {
+    Py::List ret;
+    for (PropertyContainer* obj : objects)
+        ret.append(Py::asObject(obj->getPyObject()));
+    return ret;
+}
 
 Py::List ContainerBasePy::getStaticChildren(void) const
 {
@@ -71,6 +77,57 @@ Py::List ContainerBasePy::getAllChildren(void) const
     } CONTAINERBASEPY_STDCATCH_ATTR;
 }
 
+
+Py::List ContainerBasePy::getStaticChildrenRecursive(void) const
+{
+    try {
+        return makePyList(getContainerBasePtr()->staticChildrenRecursive());
+    } CONTAINERBASEPY_STDCATCH_ATTR;
+}
+Py::List ContainerBasePy::getDynamicChildrenRecursive(void) const
+{
+    try {
+        return makePyList(getContainerBasePtr()->dynamicChildrenRecursive());
+    } CONTAINERBASEPY_STDCATCH_ATTR;
+}
+Py::List ContainerBasePy::getAllChildrenRecursive(void) const
+{
+    try {
+        return makePyList(getContainerBasePtr()->allChildrenRecursive());
+    } CONTAINERBASEPY_STDCATCH_ATTR;
+}
+
+Py::String ContainerBasePy::getName(void) const
+{
+    try {
+        return Py::String(getContainerBasePtr()->getName());
+    } CONTAINERBASEPY_STDCATCH_ATTR;
+}
+
+Py::Object ContainerBasePy::getDocument(void) const
+{
+    try {
+        return Py::asObject(getContainerBasePtr()->getDocument()->getPyObject());
+    } CONTAINERBASEPY_STDCATCH_ATTR;
+}
+
+Py::Object ContainerBasePy::getParent(void) const
+{
+    try {
+        App::PropertyContainer* parent = getContainerBasePtr()->parent();
+        if (parent)
+            return Py::asObject(parent->getPyObject());
+        else
+            return Py::None();
+    } CONTAINERBASEPY_STDCATCH_ATTR;
+}
+
+Py::List ContainerBasePy::getParents(void) const
+{
+    try {
+        return makePyList(getContainerBasePtr()->parents());
+    } CONTAINERBASEPY_STDCATCH_ATTR;
+}
 
 /**
   * @brief macro CONTAINERPY_STDCATCH_METH: catch for exceptions in method code
@@ -97,6 +154,97 @@ PyObject* ContainerBasePy::getObject(PyObject* args)
         return getContainerBasePtr()->getObject(objName)->getPyObject();
     } CONTAINERPY_STDCATCH_METH;
 }
+
+PyObject* ContainerBasePy::hasObject(PyObject* args)
+{
+    PyObject* obj = nullptr;
+    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &obj))
+        return 0;
+
+    try {
+        assert(obj);
+        return Py::new_reference_to(Py::Boolean(
+            getContainerBasePtr()->hasObject(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr())   )); //FIXME: broken =(
+    } CONTAINERPY_STDCATCH_METH;
+}
+
+PyObject* ContainerBasePy::isRoot(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    try {
+        return Py::new_reference_to(Py::Boolean(
+            getContainerBasePtr()->isRoot()   ));
+    } CONTAINERPY_STDCATCH_METH;
+}
+
+PyObject* ContainerBasePy::isAWorkspace(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    try {
+        return Py::new_reference_to(Py::Boolean(
+            getContainerBasePtr()->isAWorkspace()   ));
+    } CONTAINERPY_STDCATCH_METH;
+}
+
+PyObject* ContainerBasePy::isADocument(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    try {
+        return Py::new_reference_to(Py::Boolean(
+            getContainerBasePtr()->isADocument()   ));
+    } CONTAINERPY_STDCATCH_METH;
+}
+
+PyObject* ContainerBasePy::isAGroup(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    try {
+        return Py::new_reference_to(Py::Boolean(
+            getContainerBasePtr()->isAGroup()   ));
+    } CONTAINERPY_STDCATCH_METH;
+}
+
+PyObject* ContainerBasePy::isAnOriginGroup(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    try {
+        return Py::new_reference_to(Py::Boolean(
+            getContainerBasePtr()->isAnOriginGroup()   ));
+    } CONTAINERPY_STDCATCH_METH;
+}
+
+PyObject* ContainerBasePy::isAnOrigin(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    try {
+        return Py::new_reference_to(Py::Boolean(
+            getContainerBasePtr()->isAnOrigin()   ));
+    } CONTAINERPY_STDCATCH_METH;
+}
+
+PyObject* ContainerBasePy::isADocumentObject(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    try {
+        return Py::new_reference_to(Py::Boolean(
+            getContainerBasePtr()->isADocumentObject()   ));
+    } CONTAINERPY_STDCATCH_METH;
+}
+
 
 
 PyObject* ContainerBasePy::getCustomAttributes(const char*) const

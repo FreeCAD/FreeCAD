@@ -51,6 +51,8 @@
 #include <Base/Exception.h>
 #include <FCConfig.h>
 
+#include <unordered_set> //for private function
+
 namespace App {
 
 class Document;
@@ -59,6 +61,7 @@ class PropertyContainer;
 class GroupExtension;
 class OriginGroupExtension;
 class Origin;
+
 
 /**
  * @brief ContainerBase: abstract class to be a base for Container and
@@ -95,7 +98,19 @@ public:
      */
     virtual std::vector<DocumentObject*> staticChildren() const = 0;
 
+    /**
+     * @brief dynamicChildrenRecursive: returns children contained by this
+     * container directly and indirectly, that can be removed. This will
+     * include static children from dynamic-child subcontainers, since they
+     * can be removed from this container by removing the child container.
+     */
     virtual std::vector<DocumentObject*> dynamicChildrenRecursive() const;
+    /**
+     * @brief staticChildrenRecursive: returns children contained by this
+     * container directly and indirectly, that canot be removed. E.g. for
+     * OriginGroups, Origin and its contents are returned, but not
+     * origin/content of subcontainers.
+     */
     virtual std::vector<DocumentObject*> staticChildrenRecursive() const;
     virtual std::vector<DocumentObject*> allChildrenRecursive() const;
 
@@ -110,7 +125,6 @@ public:
 
     /**
      * @brief isA<Something>: tests if the container is represented by an object of this type. These are typechecking shortcuts.
-     * @return
      */
     //@{
     bool isADocument() const;
@@ -120,7 +134,15 @@ public:
     bool isADocumentObject() const {return isAGroup() || isAnOrigin();}
     //@}
 
+    /**
+     * @brief isAWorkspace: returns true if this container forms a workspace (workspace is a set of objects sharing a coordinate system)
+     */
     virtual bool isAWorkspace() const {return isAnOriginGroup();}
+
+    /**
+     * @brief isRoot: true if the container is the root of container tree (now, same as isADocument()).
+     * @return
+     */
     virtual bool isRoot() const {return isADocument();}
 
     /**
@@ -139,7 +161,22 @@ protected:
 
     void check() const;
 
+    /**
+     * @brief recursiveChildren: unified algorithm for allChildrenRecursive(), dynamicChildrenRecursive(), staticChildrenRecursive()
+     * @param b_dynamic: if true, include dynamic children to output
+     * @param b_static: if true, include static children to output
+     * @return
+     */
     std::vector<DocumentObject*> recursiveChildren(bool b_dynamic, bool b_static) const;
+
+private:
+    /**
+     * @brief recursiveChildrenRec: the actual traversal of container tree, with infinite recursion protection
+     */
+    static void recursiveChildrenRec(PropertyContainer* cnt,
+                                   bool b_dynamic, bool b_static,
+                                   std::unordered_set<DocumentObject*>& visited,
+                                   std::vector<DocumentObject*> &result);
 };
 
 

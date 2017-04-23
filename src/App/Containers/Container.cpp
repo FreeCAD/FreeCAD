@@ -91,7 +91,7 @@ bool Container::isAContainer(PropertyContainer* object)
     if (object == nullptr)
         return false;
     try {
-        Container(object);
+        Container tmp(object);
     } catch (ContainerError&){
         return false;
     }
