@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_TASKFILLING_H
-#define SURFACEGUI_TASKFILLING_H
+#ifndef SURFACEGUI_TASKFILLINGVERTEX_H
+#define SURFACEGUI_TASKFILLINGVERTEX_H
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -36,48 +36,32 @@ class QListWidgetItem;
 namespace SurfaceGui
 {
 
-class FillingVertexPanel;
-class Ui_TaskFilling;
+class ViewProviderFilling;
+class Ui_TaskFillingVertex;
 
-class ViewProviderFilling : public PartGui::ViewProviderSpline
-{
-    PROPERTY_HEADER(SurfaceGui::ViewProviderFilling);
-    typedef std::vector<App::PropertyLinkSubList::SubSet> References;
-
-public:
-    enum ShapeType {Vertex, Edge, Face};
-    virtual void setupContextMenu(QMenu*, QObject*, const char*);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    QIcon getIcon(void) const;
-    void highlightReferences(ShapeType type, const References& refs, bool on);
-};
-
-class FillingPanel : public QWidget,
-                     public Gui::SelectionObserver,
-                     public Gui::DocumentObserver
+class FillingVertexPanel : public QWidget,
+                           public Gui::SelectionObserver,
+                           public Gui::DocumentObserver
 {
     Q_OBJECT
 
 protected:
-    class ShapeSelection;
-    enum SelectionMode { None, InitFace, AppendEdge, RemoveEdge };
+    class VertexSelection;
+    enum SelectionMode { None, AppendVertex, RemoveVertex };
     SelectionMode selectionMode;
     Surface::Filling* editedObject;
     bool checkCommand;
 
 private:
-    Ui_TaskFilling* ui;
+    Ui_TaskFillingVertex* ui;
     ViewProviderFilling* vp;
 
 public:
-    FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj);
-    ~FillingPanel();
+    FillingVertexPanel(ViewProviderFilling* vp, Surface::Filling* obj);
+    ~FillingVertexPanel();
 
     void open();
     void checkOpenCommand();
-    bool accept();
-    bool reject();
     void setEditedObject(Surface::Filling* obj);
 
 protected:
@@ -87,42 +71,14 @@ protected:
     virtual void slotUndoDocument(const Gui::Document& Doc);
     /** Notifies on redo */
     virtual void slotRedoDocument(const Gui::Document& Doc);
-    void modifyBoundary(bool);
 
 private Q_SLOTS:
-    void on_buttonInitFace_clicked();
-    void on_buttonEdgeAdd_clicked();
-    void on_buttonEdgeRemove_clicked();
-    void on_lineInitFaceName_textChanged(const QString&);
-    void on_listBoundary_itemDoubleClicked(QListWidgetItem*);
-    void on_buttonAccept_clicked();
-    void on_buttonIgnore_clicked();
-    void onDeleteEdge(void);
+    void on_buttonVertexAdd_clicked();
+    void on_buttonVertexRemove_clicked();
+    void onDeleteVertex(void);
     void clearSelection();
-};
-
-class TaskFilling : public Gui::TaskView::TaskDialog
-{
-    Q_OBJECT
-
-public:
-    TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj);
-    ~TaskFilling();
-    void setEditedObject(Surface::Filling* obj);
-
-public:
-    void open();
-    bool accept();
-    bool reject();
-
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-
-private:
-    FillingPanel* widget1;
-    FillingVertexPanel* widget2;
 };
 
 } //namespace SurfaceGui
 
-#endif // SURFACEGUI_TASKFILLING_H
+#endif // SURFACEGUI_TASKFILLINGVERTEX_H
