@@ -35,7 +35,6 @@
 #include <Base/Exception.h>
 #include <Base/TimeInfo.h>
 #include <Base/Console.h>
-
 #include <Base/VectorPy.h>
 
 #include <Mod/Part/App/Geometry.h>
@@ -2742,8 +2741,13 @@ bool Sketch::updateNonDrivingConstraints()
                 
                 (*it).constr->Value = n2/n1;
             }
-            else
+            else if((*it).constr->Type==Angle) {
+                
+                (*it).constr->Value = std::fmod(*((*it).value), M_PI);
+            }
+            else {
                 (*it).constr->Value=*((*it).value);
+            }
         }
      }
     return true;
