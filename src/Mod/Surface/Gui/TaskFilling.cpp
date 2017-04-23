@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Balázs Bámer                                       *
- *                      Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -287,6 +286,7 @@ void FillingPanel::setEditedObject(Surface::Filling* obj)
 {
     editedObject = obj;
 
+    // get the link to the initial surface if set
     App::DocumentObject* initFace = editedObject->InitialFace.getValue();
     const std::vector<std::string>& subList = editedObject->InitialFace.getSubValues();
     if (initFace && subList.size() == 1) {
@@ -296,27 +296,56 @@ void FillingPanel::setEditedObject(Surface::Filling* obj)
         ui->lineInitFaceName->setText(text);
     }
 
+    // get the boundary edges, if set their adjacent faces and continuities
     auto objects = editedObject->BoundaryEdges.getValues();
-    auto element = editedObject->BoundaryEdges.getSubValues();
-    auto it = objects.begin();
-    auto jt = element.begin();
+    auto edges = editedObject->BoundaryEdges.getSubValues();
+    auto count = objects.size();
+
+    // fill up faces if wrong size
+    auto faces = editedObject->BoundaryFaces.getValues();
+    if (faces.size() != edges.size()) {
+        faces.resize(edges.size());
+        std::fill(faces.begin(), faces.end(), std::string());
+    }
+
+    // fill up continuities if wrong size
+    auto conts = editedObject->BoundaryOrder.getValues();
+    if (edges.size() != conts.size()) {
+        conts.resize(edges.size());
+        std::fill(conts.begin(), conts.end(), static_cast<long>(GeomAbs_C0));
+    }
 
     App::Document* doc = editedObject->getDocument();
-    for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
+    for (std::size_t i=0; i<count; i++) {
+        App::DocumentObject* obj = objects[i];
+        std::string edge = edges[i];
+        std::string face = faces[i];
+
         QListWidgetItem* item = new QListWidgetItem(ui->listBoundary);
         ui->listBoundary->addItem(item);
 
         QString text = QString::fromLatin1("%1.%2")
-                .arg(QString::fromUtf8((*it)->Label.getValue()))
-                .arg(QString::fromStdString(*jt));
+                .arg(QString::fromUtf8(obj->Label.getValue()))
+                .arg(QString::fromStdString(edge));
         item->setText(text);
 
+        // The user data field of a list widget item
+        // is a list of five elementa:
+        // 1. document name
+        // 2. object name
+        // 3. sub-element name of the edge
+        // 4. sub-element of an adjacent face or empty string
+        // 5. the continuity as int
         QList<QVariant> data;
         data << QByteArray(doc->getName());
-        data << QByteArray((*it)->getNameInDocument());
-        data << QByteArray(jt->c_str());
+        data << QByteArray(obj->getNameInDocument());
+        data << QByteArray(edge.c_str());
+        data << QByteArray(face.c_str());
+        data << static_cast<int>(conts[i]);
         item->setData(Qt::UserRole, data);
     }
+
+    // attach this document observer
     attachDocument(Gui::Application::Instance->getDocument(doc));
 }
 
@@ -433,6 +462,7 @@ void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
     selectionMode = None;
+
     ui->comboBoxFaces->clear();
     ui->comboBoxCont->clear();
 
@@ -459,7 +489,7 @@ void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
 
                     // fill up the combo boxes
                     modifyBoundary(true);
-                    ui->comboBoxFaces->addItem(tr("None"), QByteArray("None"));
+                    ui->comboBoxFaces->addItem(tr("None"), QByteArray(""));
                     ui->comboBoxCont->addItem(QString::fromLatin1("C0"), static_cast<int>(GeomAbs_C0));
                     ui->comboBoxCont->addItem(QString::fromLatin1("G1"), static_cast<int>(GeomAbs_G1));
                     ui->comboBoxCont->addItem(QString::fromLatin1("G2"), static_cast<int>(GeomAbs_G2));
@@ -529,13 +559,29 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             data << QByteArray(msg.pDocName);
             data << QByteArray(msg.pObjectName);
             data << QByteArray(msg.pSubName);
+            data << QByteArray("");
+            data << static_cast<int>(GeomAbs_C0);
             item->setData(Qt::UserRole, data);
 
             auto objects = editedObject->BoundaryEdges.getValues();
+            std::size_t count = objects.size();
             objects.push_back(sel.getObject());
             auto element = editedObject->BoundaryEdges.getSubValues();
             element.push_back(msg.pSubName);
             editedObject->BoundaryEdges.setValues(objects, element);
+
+            // extend faces and continuities lists if needed
+            auto faces = editedObject->BoundaryFaces.getValues();
+            if (count == faces.size()) {
+                faces.push_back(std::string());
+                editedObject->BoundaryFaces.setValues(faces);
+            }
+            auto conts = editedObject->BoundaryOrder.getValues();
+            if (count == conts.size()) {
+                conts.push_back(static_cast<long>(GeomAbs_C0));
+                editedObject->BoundaryOrder.setValues(conts);
+            }
+
             this->vp->highlightReferences(ViewProviderFilling::Edge,
                 editedObject->BoundaryEdges.getSubListValues(), true);
         }
@@ -545,11 +591,15 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             data << QByteArray(msg.pDocName);
             data << QByteArray(msg.pObjectName);
             data << QByteArray(msg.pSubName);
+
+            // only the three first elements must match
             for (int i=0; i<ui->listBoundary->count(); i++) {
                 QListWidgetItem* item = ui->listBoundary->item(i);
-                if (item && item->data(Qt::UserRole) == data) {
+                QList<QVariant> userdata = item->data(Qt::UserRole).toList();
+                if (userdata.mid(0,3) == data) {
                     ui->listBoundary->takeItem(i);
                     delete item;
+                    break;
                 }
             }
 
@@ -561,11 +611,28 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             auto element = editedObject->BoundaryEdges.getSubValues();
             auto it = objects.begin();
             auto jt = element.begin();
+
             for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
                 if (*it == obj && *jt == sub) {
+                    std::size_t index = std::distance(objects.begin(), it);
+
                     objects.erase(it);
                     element.erase(jt);
                     editedObject->BoundaryEdges.setValues(objects, element);
+
+                    // try to remove the item also from the faces
+                    auto faces = editedObject->BoundaryFaces.getValues();
+                    if (index < faces.size()) {
+                        faces.erase(faces.begin() + index);
+                        editedObject->BoundaryFaces.setValues(faces);
+                    }
+
+                    // try to remove the item also from the orders
+                    auto order = editedObject->BoundaryOrder.getValues();
+                    if (index < order.size()) {
+                        order.erase(order.begin() + index);
+                        editedObject->BoundaryOrder.setValues(order);
+                    }
                     break;
                 }
             }
@@ -600,9 +667,25 @@ void FillingPanel::onDeleteEdge()
             editedObject->BoundaryEdges.getSubListValues(), false);
         for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
             if (*it == obj && *jt == sub) {
+                std::size_t index = std::distance(objects.begin(), it);
+
                 objects.erase(it);
                 element.erase(jt);
                 editedObject->BoundaryEdges.setValues(objects, element);
+
+                // try to remove the item also from the faces
+                auto faces = editedObject->BoundaryFaces.getValues();
+                if (index < faces.size()) {
+                    faces.erase(faces.begin() + index);
+                    editedObject->BoundaryFaces.setValues(faces);
+                }
+
+                // try to remove the item also from the orders
+                auto order = editedObject->BoundaryOrder.getValues();
+                if (index < order.size()) {
+                    order.erase(order.begin() + index);
+                    editedObject->BoundaryOrder.setValues(order);
+                }
                 break;
             }
         }
@@ -630,6 +713,22 @@ void FillingPanel::on_buttonAccept_clicked()
         }
 
         item->setData(Qt::UserRole, data);
+
+        std::size_t index = ui->listBoundary->row(item);
+
+        // try to set the item of the faces
+        auto faces = editedObject->BoundaryFaces.getValues();
+        if (index < faces.size()) {
+            faces[index] = face.toByteArray().data();
+            editedObject->BoundaryFaces.setValues(faces);
+        }
+
+        // try to set the item of the orders
+        auto order = editedObject->BoundaryOrder.getValues();
+        if (index < order.size()) {
+            order[index] = cont.toInt();
+            editedObject->BoundaryOrder.setValues(order);
+        }
     }
 
     modifyBoundary(false);
