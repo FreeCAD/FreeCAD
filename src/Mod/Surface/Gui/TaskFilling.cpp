@@ -43,6 +43,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskFilling.h"
+#include "TaskFillingVertex.h"
 #include "ui_TaskFilling.h"
 
 
@@ -104,32 +105,74 @@ QIcon ViewProviderFilling::getIcon(void) const
     return Gui::BitmapFactory().pixmap("BSplineSurf");
 }
 
-void ViewProviderFilling::highlightReferences(bool on)
+void ViewProviderFilling::highlightReferences(ShapeType type, const References& refs, bool on)
 {
-    Surface::Filling* surface = static_cast<Surface::Filling*>(getObject());
-    auto bounds = surface->BoundaryEdges.getSubListValues();
-    for (auto it : bounds) {
+    for (auto it : refs) {
         Part::Feature* base = dynamic_cast<Part::Feature*>(it.first);
         if (base) {
             PartGui::ViewProviderPartExt* svp = dynamic_cast<PartGui::ViewProviderPartExt*>(
                         Gui::Application::Instance->getViewProvider(base));
             if (svp) {
-                if (on) {
-                    std::vector<App::Color> colors;
-                    TopTools_IndexedMapOfShape eMap;
-                    TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
-                    colors.resize(eMap.Extent(), svp->LineColor.getValue());
+                switch (type) {
+                case ViewProviderFilling::Vertex:
+#if 0 //FIXME
+                    if (on) {
+                        std::vector<App::Color> colors;
+                        TopTools_IndexedMapOfShape vMap;
+                        TopExp::MapShapes(base->Shape.getValue(), TopAbs_VERTEX, vMap);
+                        colors.resize(vMap.Extent(), svp->PointColor.getValue());
 
-                    for (auto jt : it.second) {
-                        std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
-                        assert (idx < colors.size());
-                        colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                        for (auto jt : it.second) {
+                            std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(6)) - 1);
+                            assert (idx < colors.size());
+                            colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                        }
+
+                        svp->setHighlightedPoints(colors);
                     }
+                    else {
+                        svp->unsetHighlightedPoints();
+                    }
+#endif
+                    break;
+                case ViewProviderFilling::Edge:
+                    if (on) {
+                        std::vector<App::Color> colors;
+                        TopTools_IndexedMapOfShape eMap;
+                        TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
+                        colors.resize(eMap.Extent(), svp->LineColor.getValue());
 
-                    svp->setHighlightedEdges(colors);
-                }
-                else {
-                    svp->unsetHighlightedEdges();
+                        for (auto jt : it.second) {
+                            std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
+                            assert (idx < colors.size());
+                            colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                        }
+
+                        svp->setHighlightedEdges(colors);
+                    }
+                    else {
+                        svp->unsetHighlightedEdges();
+                    }
+                    break;
+                case ViewProviderFilling::Face:
+                    if (on) {
+                        std::vector<App::Color> colors;
+                        TopTools_IndexedMapOfShape fMap;
+                        TopExp::MapShapes(base->Shape.getValue(), TopAbs_FACE, fMap);
+                        colors.resize(fMap.Extent(), svp->ShapeColor.getValue());
+
+                        for (auto jt : it.second) {
+                            std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
+                            assert (idx < colors.size());
+                            colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                        }
+
+                        svp->setHighlightedFaces(colors);
+                    }
+                    else {
+                        svp->unsetHighlightedFaces();
+                    }
+                    break;
                 }
             }
         }
@@ -141,11 +184,15 @@ void ViewProviderFilling::highlightReferences(bool on)
 class FillingPanel::ShapeSelection : public Gui::SelectionFilterGate
 {
 public:
-    ShapeSelection(FillingPanel::SelectionMode mode, Surface::Filling* editedObject)
+    ShapeSelection(FillingPanel::SelectionMode& mode, Surface::Filling* editedObject)
         : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
         , mode(mode)
         , editedObject(editedObject)
     {
+    }
+    ~ShapeSelection()
+    {
+        mode = FillingPanel::None;
     }
     /**
       * Allow the user to pick only edges.
@@ -201,7 +248,7 @@ private:
     }
 
 private:
-    FillingPanel::SelectionMode mode;
+    FillingPanel::SelectionMode& mode;
     Surface::Filling* editedObject;
 };
 
@@ -286,7 +333,8 @@ void FillingPanel::changeEvent(QEvent *e)
 void FillingPanel::open()
 {
     checkOpenCommand();
-    this->vp->highlightReferences(true);
+    this->vp->highlightReferences(ViewProviderFilling::Edge,
+        editedObject->BoundaryEdges.getSubListValues(), true);
     Gui::Selection().clearSelection();
 }
 
@@ -328,7 +376,8 @@ bool FillingPanel::accept()
         return false;
     }
 
-    this->vp->highlightReferences(false);
+    this->vp->highlightReferences(ViewProviderFilling::Edge,
+        editedObject->BoundaryEdges.getSubListValues(), false);
 
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
@@ -338,7 +387,8 @@ bool FillingPanel::accept()
 
 bool FillingPanel::reject()
 {
-    this->vp->highlightReferences(false);
+    this->vp->highlightReferences(ViewProviderFilling::Edge,
+        editedObject->BoundaryEdges.getSubListValues(), false);
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
 
@@ -359,20 +409,23 @@ void FillingPanel::on_lineInitFaceName_textChanged(const QString& text)
 
 void FillingPanel::on_buttonInitFace_clicked()
 {
-    selectionMode = InitFace;
+    // 'selectionMode' is passed by reference and changed when the filter is deleted
     Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    selectionMode = InitFace;
 }
 
 void FillingPanel::on_buttonEdgeAdd_clicked()
 {
-    selectionMode = AppendEdge;
+    // 'selectionMode' is passed by reference and changed when the filter is deleted
     Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    selectionMode = AppendEdge;
 }
 
 void FillingPanel::on_buttonEdgeRemove_clicked()
 {
-    selectionMode = RemoveEdge;
+    // 'selectionMode' is passed by reference and changed when the filter is deleted
     Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    selectionMode = RemoveEdge;
 }
 
 void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
@@ -457,7 +510,7 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::vector<std::string> subList;
             subList.push_back(msg.pSubName);
             editedObject->InitialFace.setValue(sel.getObject(), subList);
-            //this->vp->highlightReferences(true);
+            //this->vp->highlightReferences(..., true);
 
             Gui::Selection().rmvSelectionGate();
             selectionMode = None;
@@ -483,7 +536,8 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             auto element = editedObject->BoundaryEdges.getSubValues();
             element.push_back(msg.pSubName);
             editedObject->BoundaryEdges.setValues(objects, element);
-            this->vp->highlightReferences(true);
+            this->vp->highlightReferences(ViewProviderFilling::Edge,
+                editedObject->BoundaryEdges.getSubListValues(), true);
         }
         else if (selectionMode == RemoveEdge) {
             Gui::SelectionObject sel(msg);
@@ -499,7 +553,8 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
                 }
             }
 
-            this->vp->highlightReferences(false);
+            this->vp->highlightReferences(ViewProviderFilling::Edge,
+                editedObject->BoundaryEdges.getSubListValues(), false);
             App::DocumentObject* obj = sel.getObject();
             std::string sub = msg.pSubName;
             auto objects = editedObject->BoundaryEdges.getValues();
@@ -514,7 +569,8 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
                     break;
                 }
             }
-            this->vp->highlightReferences(true);
+            this->vp->highlightReferences(ViewProviderFilling::Edge,
+                editedObject->BoundaryEdges.getSubListValues(), true);
         }
 
         editedObject->recomputeFeature();
@@ -540,7 +596,8 @@ void FillingPanel::onDeleteEdge()
         auto element = editedObject->BoundaryEdges.getSubValues();
         auto it = objects.begin();
         auto jt = element.begin();
-        this->vp->highlightReferences(false);
+        this->vp->highlightReferences(ViewProviderFilling::Edge,
+            editedObject->BoundaryEdges.getSubListValues(), false);
         for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
             if (*it == obj && *jt == sub) {
                 objects.erase(it);
@@ -549,7 +606,8 @@ void FillingPanel::onDeleteEdge()
                 break;
             }
         }
-        this->vp->highlightReferences(true);
+        this->vp->highlightReferences(ViewProviderFilling::Edge,
+            editedObject->BoundaryEdges.getSubListValues(), true);
     }
 }
 
@@ -606,13 +664,21 @@ void FillingPanel::modifyBoundary(bool on)
 
 TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
 {
-    widget = new FillingPanel(vp, obj);
-    widget->setWindowTitle(QObject::tr("Surface"));
-    taskbox = new Gui::TaskView::TaskBox(
+    // first task box
+    widget1 = new FillingPanel(vp, obj);
+    Gui::TaskView::TaskBox* taskbox1 = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("BezSurf"),
-        widget->windowTitle(), true, 0);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+        widget1->windowTitle(), true, 0);
+    taskbox1->groupLayout()->addWidget(widget1);
+    Content.push_back(taskbox1);
+
+    // second task box
+    widget2 = new FillingVertexPanel(vp, obj);
+    Gui::TaskView::TaskBox* taskbox2 = new Gui::TaskView::TaskBox(
+        QPixmap(), widget2->windowTitle(), true, 0);
+    taskbox2->groupLayout()->addWidget(widget2);
+    Content.push_back(taskbox2);
+    taskbox2->hideGroupBox();
 }
 
 TaskFilling::~TaskFilling()
@@ -622,22 +688,22 @@ TaskFilling::~TaskFilling()
 
 void TaskFilling::setEditedObject(Surface::Filling* obj)
 {
-    widget->setEditedObject(obj);
+    widget1->setEditedObject(obj);
 }
 
 void TaskFilling::open()
 {
-    widget->open();
+    widget1->open();
 }
 
 bool TaskFilling::accept()
 {
-    return widget->accept();
+    return widget1->accept();
 }
 
 bool TaskFilling::reject()
 {
-    return widget->reject();
+    return widget1->reject();
 }
 
 }
