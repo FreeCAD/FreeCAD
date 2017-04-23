@@ -56,6 +56,8 @@ OUTPUT_LINE_NUMBERS = False
 IP_ADDR = None
 VERBOSE = False
 
+SPINDLE_SPEED = 0.0
+
 if FreeCAD.GuiUp:
     SHOW_EDITOR = True
 else:
@@ -298,6 +300,7 @@ def linenumber():
 def parse(pathobj):
     out = ""
     lastcommand = None
+    global SPINDLE_SPEED
 
     # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control
     # the order of parameters
@@ -339,9 +342,14 @@ def parse(pathobj):
                                 param + format(float(speed.getValueAs(UNIT_FORMAT)), '.2f') )
                     elif param == 'T':
                         outstring.append(param + str(c.Parameters['T']))
+                    elif param == 'S':
+                        outstring.append(param + str(c.Parameters['S']))
+                        SPINDLE_SPEED = c.Parameters['S']
                     else:
                         outstring.append(
                             param + format(c.Parameters[param], '.4f'))
+            if command in ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']:
+                outstring.append('S' + str(SPINDLE_SPEED))
 
             # store the latest command
             lastcommand = command
@@ -366,7 +374,7 @@ def parse(pathobj):
 
                 # append the line to the final output
                 for w in outstring:
-                    out += w + COMMAND_SPACE
+                    out += w + COMMAND_SPACE 
                 out = out.strip() + "\n"
 
         return out
