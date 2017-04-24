@@ -158,9 +158,9 @@ class ObjectContour:
                 lshapes.append(c)
 
         if start is None:
-            pp = Path.fromShapes(lshapes)
+            pp = Path.fromShapes(lshapes, verbose=False)
         else:
-            pp = Path.fromShapes(lshapes, start)
+            pp = Path.fromShapes(lshapes, start, verbose=False)
         return pp
 
 
