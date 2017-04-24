@@ -111,6 +111,7 @@ bool Container::canAccept(const char* type, const char* pytype) const
 DocumentObject* Container::newObject(const char* sType, const char* pObjectName, bool isNew)
 {
     check();
+    //FIXME: check if can accept
     if (isADocument()){
         return asDocument().newObject(sType, pObjectName, isNew);
     } else if (isAGroup()){
@@ -128,6 +129,7 @@ DocumentObject* Container::newObject(const char* sType, const char* pObjectName,
 bool Container::adoptObject(DocumentObject* obj)
 {
     check();
+    //FIXME: check if can accept
     if (obj->getDocument() != this->getDocument())
         return false;
     if (isADocument()){
@@ -145,6 +147,7 @@ bool Container::adoptObject(DocumentObject* obj)
 
 void Container::addObject(DocumentObject* obj)
 {
+    //FIXME: check if can accept
     check();
     if (obj->getDocument() != this->getDocument())
         throw AlreadyInContainerError("Object is in another document");

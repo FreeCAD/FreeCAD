@@ -56,7 +56,7 @@ public:
     virtual void addObject(DocumentObject* obj);
 
     /**
-     * @brief adoptObject: addos object to this group if it isn't in any other
+     * @brief adoptObject: adds object to this group if it isn't in any other
      * group. Otherwise does nothing. This is useful for adding lists of
      * objects with internal container relationships.
      * @return returns true if object was adopted, false otherwise. (if re-adopting an own child, returns true too).
@@ -65,7 +65,17 @@ public:
 
     /*override this function if you want only special objects
      */
-    virtual bool allowObject(DocumentObject* ) {return true;};
+    /**
+     * @brief allowObject(object): tests if given object can be added to this group
+     */
+    virtual bool allowObject(DocumentObject* obj);
+    /**
+     * @brief allowObject(type, pytype): tests if an object of given type can be created in/added to this group.
+     * @param type: c++ type name, e.g. "Part::Primitive"
+     * @param pytype: python type (free-form)
+     * @return
+     */
+    virtual bool allowObject(const char* type, const char* pytype = "");
     
     /** Removes an object from this group.
      */
@@ -122,7 +132,7 @@ public:
     virtual ~GroupExtensionPythonT() {}
  
     //override the documentobjectextension functions to make them available in python 
-    virtual bool allowObject(DocumentObject* obj)  override {
+    virtual bool allowObject(DocumentObject* obj) override {
         Py::Object pyobj = Py::asObject(obj->getPyObject());
         EXTENSION_PROXY_ONEARG(allowObject, pyobj);
                 
@@ -132,6 +142,28 @@ public:
         if(result.isBoolean())
             return result.isTrue();
         
+        return false;
+    };
+    virtual bool allowObject(const char* type, const char* pytype) override {
+        Py::String arg0(type);
+        Py::String arg1(pytype ? pytype : "");
+        EXTENSION_PROXY_FIRST(allowObject)
+        Py::Tuple args(2);
+        args.setItem(0, arg0);
+        args.setItem(0, arg1);
+        EXTENSION_PROXY_SECOND(allowObject)
+        Py::Tuple args(3);
+        args.setItem(0, Py::Object(this->getExtensionPyObject(), true));
+        args.setItem(1, arg0);
+        args.setItem(2, arg1);
+        EXTENSION_PROXY_THIRD()
+
+        if(result.isNone())
+            return ExtensionT::allowObject(type, pytype);
+
+        if(result.isBoolean())
+            return result.isTrue();
+
         return false;
     };
 };

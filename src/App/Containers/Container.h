@@ -42,13 +42,43 @@ public:
     Container(PropertyContainer* pcObject);
     virtual ~Container();
 
-    virtual std::vector<DocumentObject*> dynamicChildren() const;
-    virtual std::vector<DocumentObject*> staticChildren() const;
+    virtual std::vector<DocumentObject*> dynamicChildren() const override;
+    virtual std::vector<DocumentObject*> staticChildren() const override;
 
-    virtual std::vector<PropertyContainer*> parents() const;
+    virtual std::vector<PropertyContainer*> parents() const override;
+
+    virtual bool canAccept(DocumentObject* obj) const;
+    virtual bool canAccept(const char* type, const char* pytype = "") const;
+    /**
+     * @brief newObject: (see documentation of Document::newObject()
+     */
+    virtual DocumentObject* newObject(const char* sType, const char* pObjectName=0, bool isNew=true);
+    /**
+     * @brief adoptObject: adds object to this container if it isn't in any
+     * other container (i.e. is directly in Document). Otherwise does nothing.
+     * This is useful for adding lists of objects with internal container
+     * relationships.
+     * @return returns true if object was adopted, false otherwise. (if re-adopting an own child, returns true too).
+     */
+    virtual bool adoptObject(DocumentObject* obj);
+    /**
+     * @brief takeObject: adds an object to this container, withdrawing it from its current container if necessary.
+     */
+    virtual void addObject(DocumentObject* obj);
+    /**
+     * @brief withdrawObject: removes object from this container (and adds it to Document, implicitly).
+     * @param obj
+     */
+    virtual void withdrawObject(DocumentObject* obj);
+    /**
+     * @brief deleteObject: deletes an object.
+     */
+    virtual void deleteObject(DocumentObject* obj);
 public:
     static bool isAContainer(PropertyContainer* object);
     static std::vector<DocumentObject*> findAllContainers(App::Document& doc);
+    static std::vector<PropertyContainer*> getContainersOf(App::DocumentObject* obj);
+    static PropertyContainer* getContainerOf(App::DocumentObject* obj);
 };
 
 }//namespace App

@@ -45,11 +45,12 @@ ContainerBase::~ContainerBase()
 std::string ContainerBase::getName() const
 {
     check();
-    if (isADocument())
+    if (isADocument()){
         return asDocument().getName();
-    else if (isADocumentObject())
-        return asDocumentObject().getNameInDocument();
-    else {
+    } else if (isADocumentObject()){
+        const char* nm = asDocumentObject().getNameInDocument();
+        return std::string(nm ? nm : "");
+    } else {
         assert(false /*unexpected type*/);
         throw Base::TypeError("Unexpected object type");
     }
@@ -84,6 +85,20 @@ bool ContainerBase::hasObject(const DocumentObject* obj) const
     return std::find(children.begin(), children.end(), obj) != children.end();
 }
 
+bool ContainerBase::hasDynamicObject(const DocumentObject* obj) const
+{
+    //TODO: Py interface!
+    auto children = this->dynamicChildren();
+    return std::find(children.begin(), children.end(), obj) != children.end();
+}
+
+bool ContainerBase::hasStaticObject(const DocumentObject* obj) const
+{
+    //TODO: Py interface!
+    auto children = this->staticChildren();
+    return std::find(children.begin(), children.end(), obj) != children.end();
+}
+
 PropertyContainer* ContainerBase::parent() const
 {
     if (isRoot())
@@ -104,7 +119,7 @@ DocumentObject* ContainerBase::getObject(const char* objectName) const
     auto obj = getDocument()->getObject(objectName);
     if (!(hasObject(obj))){
         std::stringstream msg;
-        msg << "Object named '" << objectName << "'' not found in " << getName();
+        msg << "Object named '" << objectName << "' not found in " << getName();
         throw ObjectNotFoundError(msg.str());
     }
     return obj;

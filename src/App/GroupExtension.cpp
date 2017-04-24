@@ -91,6 +91,17 @@ bool GroupExtension::adoptObject(DocumentObject* obj)
     }
 }
 
+bool GroupExtension::allowObject(DocumentObject* obj)
+{
+    return allowObject(obj->getTypeId().getName(), "");
+}
+
+bool GroupExtension::allowObject(const char* type, const char* pytype)
+{
+    Base::Type t = Base::Type::fromName(type);
+    return t.isDerivedFrom(DocumentObject::getClassTypeId());
+}
+
 void GroupExtension::removeObject(DocumentObject* obj)
 {
     const std::vector<DocumentObject*> & grp = Group.getValues();
@@ -221,10 +232,11 @@ PyObject* GroupExtension::getExtensionPyObject(void) {
     return Py::new_reference_to(ExtensionPythonObject);
 }
 
-
 namespace App {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::GroupExtensionPython, App::GroupExtension)
 
 // explicit template instantiation
 template class AppExport ExtensionPythonT<GroupExtensionPythonT<GroupExtension>>;
+
+
 }

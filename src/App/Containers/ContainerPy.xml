@@ -17,5 +17,43 @@
       <DeveloperDocu>Container - object container interace</DeveloperDocu>
       <UserDocu>Container - interface class for objects that can contain other objects</UserDocu>
     </Documentation>
+
+    <Methode Name="canAccept">
+      <Documentation>
+<UserDocu>canAccept(object): tests if the object can be added to this container.
+canAccept(type, pytype = ''): tests if an object of given type can be created in this container.
+
+type: string name of a C++ type, like 'Part::Privitive'.
+
+pytype: string identifier of python type (optional; no specific format). </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="newObject">
+      <Documentation>
+        <UserDocu>newObject(type, name): creates a new object in this container.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="adoptObject">
+      <Documentation>
+        <UserDocu>adoptObject(object): adds the object to the container if it isn't in any group already.
+Returns True if object ends up in this container, either because it was there before, or was added.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addObject">
+      <Documentation>
+        <UserDocu>addObject(object): withdraws the object from the container it's already in (if needed), and adds it to this container.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="withdrawObject">
+      <Documentation>
+        <UserDocu>withdrawObject(object): removes the object from this container (the object ends up directly in the document).</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="deleteObject">
+      <Documentation>
+        <UserDocu>deleteObject(object): deletes the object (removes it from this container and from document).</UserDocu>
+      </Documentation>
+    </Methode>
+
   </PythonExport>
 </GenerateModel>

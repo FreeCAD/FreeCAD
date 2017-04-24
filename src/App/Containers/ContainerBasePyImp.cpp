@@ -164,7 +164,7 @@ PyObject* ContainerBasePy::hasObject(PyObject* args)
     try {
         assert(obj);
         return Py::new_reference_to(Py::Boolean(
-            getContainerBasePtr()->hasObject(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr())   )); //FIXME: broken =(
+            getContainerBasePtr()->hasObject(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr())   ));
     } CONTAINERPY_STDCATCH_METH;
 }
 

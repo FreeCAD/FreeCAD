@@ -106,8 +106,12 @@ public:
       * Return true if the given feature is allowed in a Body. Currently allowed are
       * all features derived from PartDesign::Feature and Part::Datum and sketches
       */
-    static bool isAllowed(const App::DocumentObject* f);
-    virtual bool allowObject(DocumentObject* f) override {return isAllowed(f);};
+    static bool isAllowed(const DocumentObject* obj);
+    static bool isAllowed(const char* type, const char* pytype = "");
+    virtual bool allowObject(const char* type, const char* pytype = "") override;
+    using BodyBase::allowObject; //fixes allowObject(object) screened out by the above override.
+
+
 
     /**
      * Return the body which this feature belongs too, or NULL

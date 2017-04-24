@@ -115,6 +115,8 @@ public:
     virtual std::vector<DocumentObject*> allChildrenRecursive() const;
 
     virtual bool hasObject(const DocumentObject* obj) const;
+    virtual bool hasDynamicObject(const DocumentObject* obj) const;
+    virtual bool hasStaticObject(const DocumentObject* obj) const;
 
     virtual PropertyContainer* parent() const;
     virtual std::vector<PropertyContainer*> parents() const = 0;
