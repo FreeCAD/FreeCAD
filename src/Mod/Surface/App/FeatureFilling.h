@@ -41,14 +41,14 @@ public:
     Filling();
 
     //Properties of Curves
-    App::PropertyLinkSubList Border;                // Border Edges (C0 is required for edges without a corresponding face)
-    App::PropertyLinkSubList BorderFaces;           // Border Faces (C0, G1 and G2 are possible)
-    App::PropertyIntegerList OrderBorderFaces;      // Order of constraint on border faces
-    App::PropertyLinkSubList Curves;                // Other Constraint Curves (C0 is required for edges without a corresponding face)
-    App::PropertyLinkSubList CurveFaces;            // Curve Faces (C0, G1 and G2 are possible)
-    App::PropertyIntegerList OrderCurveFaces;       // Order of constraint on curve faces
-    App::PropertyLinkSubList FreeFaces;             // Free constraint on a face
-    App::PropertyIntegerList OrderFreeFaces;        // Order of constraint on free faces
+    App::PropertyLinkSubList BoundaryEdges;         // Boundary Edges (C0 is required for edges without a corresponding face)
+    App::PropertyStringList  BoundaryFaces;         // Boundary Faces (C0, G1 and G2 are possible)
+    App::PropertyIntegerList BoundaryOrder;         // Order of constraint on border faces
+    App::PropertyLinkSubList UnboundEdges;          // Unbound constraint edges (C0 is required for edges without a corresponding face)
+    App::PropertyStringList  UnboundFaces;          // Unbound constraint faces (C0, G1 and G2 are possible)
+    App::PropertyIntegerList UnboundOrder;          // Order of constraint on curve faces
+    App::PropertyLinkSubList FreeFaces;             // Free constraint faces
+    App::PropertyIntegerList FreeOrder;             // Order of constraint on free faces
     App::PropertyLinkSubList Points;                // Constraint Points (on Surface)
     App::PropertyLinkSub InitialFace;               // Initial Face to use
 
@@ -75,7 +75,7 @@ public:
 private:
     void addConstraints(BRepFill_Filling& builder,
                         const App::PropertyLinkSubList& edges,
-                        const App::PropertyLinkSubList& faces,
+                        const App::PropertyStringList& faces,
                         const App::PropertyIntegerList& orders,
                         Standard_Boolean bnd);
     void addConstraints(BRepFill_Filling& builder,

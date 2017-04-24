@@ -297,9 +297,17 @@ void GeomFillSurface::slotRedoDocument(const Gui::Document&)
     checkCommand = true;
 }
 
+void GeomFillSurface::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
+{
+    // If this view provider is being deleted then reset the colors of
+    // referenced part objects. The dialog will be deleted later.
+    if (this->vp == &Obj) {
+        this->vp->highlightReferences(false);
+    }
+}
+
 bool GeomFillSurface::accept()
 {
-    this->vp->highlightReferences(false);
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
 
@@ -324,6 +332,8 @@ bool GeomFillSurface::accept()
             QString::fromLatin1(editedObject->getStatusString()));
         return false;
     }
+
+    this->vp->highlightReferences(false);
 
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");

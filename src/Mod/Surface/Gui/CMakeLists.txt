@@ -10,7 +10,7 @@ include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIR}
+    ${COIN3D_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
@@ -25,6 +25,7 @@ set(SurfaceGui_LIBS
 
 set(SurfaceGui_MOC_HDRS
     TaskFilling.h
+    TaskFillingVertex.h
     TaskGeomFillSurface.h
 )
 fc_wrap_cpp(SurfaceGui_MOC_SRCS ${SurfaceGui_MOC_HDRS})
@@ -38,6 +39,7 @@ endif()
 
 SET(SurfaceGui_UIC_SRCS
     TaskFilling.ui
+    TaskFillingVertex.ui
     TaskGeomFillSurface.ui
 )
 
@@ -52,6 +54,8 @@ SET(SurfaceGui_SRCS
     ${SurfaceGui_UIC_HDRS}
     TaskFilling.cpp
     TaskFilling.h
+    TaskFillingVertex.cpp
+    TaskFillingVertex.h
     TaskGeomFillSurface.cpp
     TaskGeomFillSurface.h
     AppSurfaceGui.cpp

@@ -46,42 +46,52 @@ PROPERTY_SOURCE(Surface::Filling, Part::Spline)
 
 Filling::Filling()
 {
-    ADD_PROPERTY_TYPE(Border,(0,""), "Filling", App::Prop_None, "Border Edges (C0 is required for edges without a corresponding face)");
-    ADD_PROPERTY_TYPE(BorderFaces,(0,""), "Filling", App::Prop_None, "Border Faces");
-    ADD_PROPERTY_TYPE(OrderBorderFaces,(-1), "Filling", App::Prop_None, "Order of constraint on border faces (C0, G1 and G2 are possible)");
+    ADD_PROPERTY_TYPE(BoundaryEdges,(0,""), "Filling", App::Prop_None, "Boundary Edges (C0 is required for edges without a corresponding face)");
+    ADD_PROPERTY_TYPE(BoundaryFaces,(""), "Filling", App::Prop_None, "Boundary Faces");
+    ADD_PROPERTY_TYPE(BoundaryOrder,(-1), "Filling", App::Prop_None, "Order of constraint on boundary faces (C0, G1 and G2 are possible)");
 
-    ADD_PROPERTY_TYPE(Curves,(0,""), "Filling", App::Prop_None, "Other Constraint Curves (C0 is required for edges without a corresponding face)");
-    ADD_PROPERTY_TYPE(CurveFaces,(0,""), "Filling", App::Prop_None, "Curve Faces");
-    ADD_PROPERTY_TYPE(OrderCurveFaces,(-1), "Filling", App::Prop_None, "Order of constraint on curve faces (C0, G1 and G2 are possible)");
+    ADD_PROPERTY_TYPE(UnboundEdges,(0,""), "Filling", App::Prop_None, "Unbound constraint edges (C0 is required for edges without a corresponding face)");
+    ADD_PROPERTY_TYPE(UnboundFaces,(""), "Filling", App::Prop_None, "Unbound constraint faces");
+    ADD_PROPERTY_TYPE(UnboundOrder,(-1), "Filling", App::Prop_None, "Order of constraint on curve faces (C0, G1 and G2 are possible)");
 
     ADD_PROPERTY_TYPE(FreeFaces,(0,""), "Filling", App::Prop_None, "Free constraint on a face");
-    ADD_PROPERTY_TYPE(OrderFreeFaces,(0), "Filling", App::Prop_None, "Order of constraint on free faces");
+    ADD_PROPERTY_TYPE(FreeOrder,(0), "Filling", App::Prop_None, "Order of constraint on free faces");
 
     ADD_PROPERTY_TYPE(Points,(0,""), "Filling", App::Prop_None, "Constraint Points (on Surface)");
     ADD_PROPERTY_TYPE(InitialFace,(0), "Filling", App::Prop_None, "Initial surface to use");
 
     ADD_PROPERTY_TYPE(Degree,(3), "Filling", App::Prop_None, "Starting degree");
-    ADD_PROPERTY_TYPE(PointsOnCurve,(3), "Filling", App::Prop_None, "Number of points on an edge for constraint");
+    ADD_PROPERTY_TYPE(PointsOnCurve,(15), "Filling", App::Prop_None, "Number of points on an edge for constraint");
     ADD_PROPERTY_TYPE(Iterations,(2), "Filling", App::Prop_None, "Number of iterations");
     ADD_PROPERTY_TYPE(Anisotropy,(false), "Filling", App::Prop_None, "Anisotropy");
     ADD_PROPERTY_TYPE(Tolerance2d,(0.00001), "Filling", App::Prop_None, "2D Tolerance");
     ADD_PROPERTY_TYPE(Tolerance3d,(0.0001), "Filling", App::Prop_None, "3D Tolerance");
-    ADD_PROPERTY_TYPE(TolAngular,(0.001), "Filling", App::Prop_None, "G1 tolerance");
-    ADD_PROPERTY_TYPE(TolCurvature,(0.01), "Filling", App::Prop_None, "G2 tolerance");
+    ADD_PROPERTY_TYPE(TolAngular,(0.01), "Filling", App::Prop_None, "G1 tolerance");
+    ADD_PROPERTY_TYPE(TolCurvature,(0.1), "Filling", App::Prop_None, "G2 tolerance");
     ADD_PROPERTY_TYPE(MaximumDegree,(8), "Filling", App::Prop_None, "Maximum curve degree");
-    ADD_PROPERTY_TYPE(MaximumSegments,(10000), "Filling", App::Prop_None, "Maximum number of segments");
+    ADD_PROPERTY_TYPE(MaximumSegments,(9), "Filling", App::Prop_None, "Maximum number of segments");
+
+    BoundaryEdges.setSize(0);
+    BoundaryFaces.setSize(0);
+    BoundaryOrder.setSize(0);
+    UnboundEdges.setSize(0);
+    UnboundFaces.setSize(0);
+    UnboundOrder.setSize(0);
+    FreeFaces.setSize(0);
+    FreeOrder.setSize(0);
+    Points.setSize(0);
 }
 
 short Filling::mustExecute() const
 {
-    if (Border.isTouched() ||
-        BorderFaces.isTouched() ||
-        OrderBorderFaces.isTouched() ||
-        Curves.isTouched() ||
-        CurveFaces.isTouched() ||
-        OrderCurveFaces.isTouched() ||
+    if (BoundaryEdges.isTouched() ||
+        BoundaryFaces.isTouched() ||
+        BoundaryOrder.isTouched() ||
+        UnboundEdges.isTouched() ||
+        UnboundFaces.isTouched() ||
+        UnboundOrder.isTouched() ||
         FreeFaces.isTouched() ||
-        OrderFreeFaces.isTouched() ||
+        FreeOrder.isTouched() ||
         Points.isTouched() ||
         InitialFace.isTouched() ||
         Degree.isTouched() ||
@@ -100,38 +110,60 @@ short Filling::mustExecute() const
 
 void Filling::addConstraints(BRepFill_Filling& builder,
                              const App::PropertyLinkSubList& edges,
-                             const App::PropertyLinkSubList& faces,
+                             const App::PropertyStringList& faces,
                              const App::PropertyIntegerList& orders,
                              Standard_Boolean bnd)
 {
     auto edge_obj = edges.getValues();
     auto edge_sub = edges.getSubValues();
-    auto face_obj = faces.getValues();
-    auto face_sub = faces.getSubValues();
+    auto face_sub = faces.getValues();
     auto contvals = orders.getValues();
 
-    // tmp. workaround
-    if (edge_obj.size() != contvals.size()) {
-        contvals.resize(edge_obj.size());
+    // if the number of continuities doesn't match then fall back to C0
+    if (edge_sub.size() != contvals.size()) {
+        contvals.resize(edge_sub.size());
         std::fill(contvals.begin(), contvals.end(), static_cast<long>(GeomAbs_C0));
     }
 
-    if (edge_obj.size() == edge_sub.size() &&
-        edge_obj.size() == contvals.size()) {
+    // if the number of faces doesn't match then fall back to empty strings
+    // an empty face string indicates that there is no face associated to an edge
+    if (face_sub.size() != edge_sub.size()) {
+        face_sub.resize(edge_obj.size());
+        std::fill(face_sub.begin(), face_sub.end(), std::string());
+    }
+
+    if (edge_obj.size() == edge_sub.size()) {
         for (std::size_t index = 0; index < edge_obj.size(); index++) {
+            // get the part object
             App::DocumentObject* obj = edge_obj[index];
             const std::string& sub = edge_sub[index];
+
             if (obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                // get the sub-edge of the part's shape
                 const Part::TopoShape& shape = static_cast<Part::Feature*>(obj)->Shape.getShape();
                 TopoDS_Shape edge = shape.getSubShape(sub.c_str());
                 if (!edge.IsNull() && edge.ShapeType() == TopAbs_EDGE) {
                     GeomAbs_Shape cont = static_cast<GeomAbs_Shape>(contvals[index]);
-                    if (cont == GeomAbs_C0) {
+
+                    // check for an adjacent face of the edge
+                    std::string subFace = face_sub[index];
+
+                    // edge doesn't have set an adjacent face
+                    if (subFace.empty()) {
                         builder.Add(TopoDS::Edge(edge), cont, bnd);
                     }
                     else {
-                        builder.Add(TopoDS::Edge(edge), cont, bnd);
+                        TopoDS_Shape face = shape.getSubShape(subFace.c_str());
+                        if (!face.IsNull() && face.ShapeType() == TopAbs_FACE) {
+                            builder.Add(TopoDS::Edge(edge), TopoDS::Face(face), cont, bnd);
+                        }
+                        else {
+                            Standard_Failure::Raise("Sub-shape is not a face");
+                        }
                     }
+                }
+                else {
+                    Standard_Failure::Raise("Sub-shape is not an edge");
                 }
             }
         }
@@ -141,6 +173,7 @@ void Filling::addConstraints(BRepFill_Filling& builder,
     }
 }
 
+// Add free support faces with their continuities
 void Filling::addConstraints(BRepFill_Filling& builder,
                              const App::PropertyLinkSubList& faces,
                              const App::PropertyIntegerList& orders)
@@ -160,6 +193,9 @@ void Filling::addConstraints(BRepFill_Filling& builder,
                 if (!face.IsNull() && face.ShapeType() == TopAbs_FACE) {
                     GeomAbs_Shape cont = static_cast<GeomAbs_Shape>(contvals[index]);
                     builder.Add(TopoDS::Face(face), cont);
+                }
+                else {
+                    Standard_Failure::Raise("Sub-shape is not a face");
                 }
             }
         }
@@ -207,7 +243,7 @@ App::DocumentObjectExecReturn *Filling::execute(void)
         BRepFill_Filling builder(degree, ptsoncurve, numIter, anisotropy, tol2d,
                                  tol3d, tolG1, tolG2, maxdeg, maxseg);
 
-        if ((Border.getSize()) < 1) {
+        if ((BoundaryEdges.getSize()) < 1) {
             return new App::DocumentObjectExecReturn("Border must have at least one curve defined.");
         }
 
@@ -226,16 +262,16 @@ App::DocumentObjectExecReturn *Filling::execute(void)
         }
 
         // Add the constraints of border curves/faces (bound)
-        addConstraints(builder, Border, BorderFaces, OrderBorderFaces, Standard_True);
+        addConstraints(builder, BoundaryEdges, BoundaryFaces, BoundaryOrder, Standard_True);
 
-        // Add additional curves constraints if available (unbound)
-        if (Curves.getSize() > 0) {
-            addConstraints(builder, Curves, CurveFaces, OrderCurveFaces, Standard_False);
+        // Add additional edge constraints if available (unbound)
+        if (UnboundEdges.getSize() > 0) {
+            addConstraints(builder, UnboundEdges, UnboundFaces, UnboundOrder, Standard_False);
         }
 
         // Add additional constraint on free faces
         if (FreeFaces.getSize() > 0) {
-            addConstraints(builder, FreeFaces, OrderFreeFaces);
+            addConstraints(builder, FreeFaces, FreeOrder);
         }
 
         // App point constraints

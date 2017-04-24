@@ -1604,13 +1604,16 @@ PyObject *PropertyStringList::getPyObject(void)
 
 void PropertyStringList::setPyObject(PyObject *value)
 {
-    if (PyList_Check(value)) {
-        Py_ssize_t nSize = PyList_Size(value);
+    if (PyString_Check(value)) {
+        setValue(PyString_AsString(value));
+    }
+    else if (PySequence_Check(value)) {
+        Py_ssize_t nSize = PySequence_Size(value);
         std::vector<std::string> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PyList_GetItem(value, i);
+            PyObject* item = PySequence_GetItem(value, i);
             if (PyUnicode_Check(item)) {
                 PyObject* unicode = PyUnicode_AsUTF8String(item);
                 values[i] = PyString_AsString(unicode);
@@ -1627,9 +1630,6 @@ void PropertyStringList::setPyObject(PyObject *value)
         }
         
         setValues(values);
-    }
-    else if (PyString_Check(value)) {
-        setValue(PyString_AsString(value));
     }
     else {
         std::string error = std::string("type must be str or list of str, not ");

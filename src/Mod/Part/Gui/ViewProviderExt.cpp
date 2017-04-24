@@ -73,6 +73,7 @@
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/details/SoPointDetail.h>
+# include <Inventor/errors/SoDebugError.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
@@ -244,6 +245,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY(PointMaterial,(mat));
     ADD_PROPERTY(LineColor,(mat.diffuseColor));
     ADD_PROPERTY(PointColor,(mat.diffuseColor));
+    ADD_PROPERTY(PointColorArray, (PointColor.getValue()));
     ADD_PROPERTY(DiffuseColor,(ShapeColor.getValue()));
     ADD_PROPERTY(LineColorArray,(LineColor.getValue()));
     ADD_PROPERTY(LineWidth,(lwidth));
@@ -273,8 +275,8 @@ ViewProviderPartExt::ViewProviderPartExt()
     nodeset = new SoBrepPointSet();
     nodeset->ref();
 
-    pcShapeBind = new SoMaterialBinding();
-    pcShapeBind->ref();
+    pcFaceBind = new SoMaterialBinding();
+    pcFaceBind->ref();
 
     pcLineBind = new SoMaterialBinding();
     pcLineBind->ref();
@@ -282,6 +284,8 @@ ViewProviderPartExt::ViewProviderPartExt()
     pcLineMaterial->ref();
     LineMaterial.touch();
 
+    pcPointBind = new SoMaterialBinding();
+    pcPointBind->ref();
     pcPointMaterial = new SoMaterial;
     pcPointMaterial->ref();
     PointMaterial.touch();
@@ -308,8 +312,9 @@ ViewProviderPartExt::ViewProviderPartExt()
 
 ViewProviderPartExt::~ViewProviderPartExt()
 {
-    pcShapeBind->unref();
+    pcFaceBind->unref();
     pcLineBind->unref();
+    pcPointBind->unref();
     pcLineMaterial->unref();
     pcPointMaterial->unref();
     pcLineStyle->unref();
@@ -391,7 +396,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         setHighlightedFaces(DiffuseColor.getValues());
     }
     else if (prop == &ShapeMaterial || prop == &ShapeColor) {
-        pcShapeBind->value = SoMaterialBinding::OVERALL;
+        pcFaceBind->value = SoMaterialBinding::OVERALL;
         ViewProviderGeometryObject::onChanged(prop);
         DiffuseColor.setValue(ShapeColor.getValue());
     }
@@ -400,7 +405,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         long value = (long)(100*Mat.transparency);
         if (value != Transparency.getValue()) {
             float trans = Transparency.getValue()/100.0f;
-            if (pcShapeBind->value.getValue() == SoMaterialBinding::PER_PART) {
+            if (pcFaceBind->value.getValue() == SoMaterialBinding::PER_PART) {
                 int cnt = pcShapeMaterial->diffuseColor.getNum();
                 pcShapeMaterial->transparency.setNum(cnt);
                 float *t = pcShapeMaterial->transparency.startEditing();
@@ -480,7 +485,7 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
 
     // just faces with no edges or points
     pcFlatRoot->addChild(pShapeHints);
-    pcFlatRoot->addChild(pcShapeBind);
+    pcFlatRoot->addChild(pcFaceBind);
     pcFlatRoot->addChild(pcShapeMaterial);
     SoDrawStyle* pcFaceStyle = new SoDrawStyle();
     pcFaceStyle->style = SoDrawStyle::FILLED;
@@ -494,6 +499,7 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     pcWireframeRoot->addChild(pcPointsRoot);
 
     // normal viewing with edges and points
+    pcPointsRoot->addChild(pcPointBind);
     pcPointsRoot->addChild(pcPointMaterial);
     pcPointsRoot->addChild(pcPointStyle);
     pcPointsRoot->addChild(nodeset);
@@ -643,7 +649,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Color>& col
 {
     int size = static_cast<int>(colors.size());
     if (size > 1 && size == this->faceset->partIndex.getNum()) {
-        pcShapeBind->value = SoMaterialBinding::PER_PART;
+        pcFaceBind->value = SoMaterialBinding::PER_PART;
         pcShapeMaterial->diffuseColor.setNum(size);
         pcShapeMaterial->transparency.setNum(size);
         SbColor* ca = pcShapeMaterial->diffuseColor.startEditing();
@@ -656,7 +662,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Color>& col
         pcShapeMaterial->transparency.finishEditing();
     }
     else if (colors.size() == 1) {
-        pcShapeBind->value = SoMaterialBinding::OVERALL;
+        pcFaceBind->value = SoMaterialBinding::OVERALL;
         pcShapeMaterial->diffuseColor.setValue(colors[0].r, colors[0].g, colors[0].b);
         //pcShapeMaterial->transparency = colors[0].a; do not get transparency from DiffuseColor in this case
     }
@@ -666,7 +672,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
 {
     int size = static_cast<int>(colors.size());
     if (size > 1 && size == this->faceset->partIndex.getNum()) {
-        pcShapeBind->value = SoMaterialBinding::PER_PART;
+        pcFaceBind->value = SoMaterialBinding::PER_PART;
 
         pcShapeMaterial->diffuseColor.setNum(size);
         pcShapeMaterial->ambientColor.setNum(size);
@@ -691,7 +697,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
         pcShapeMaterial->emissiveColor.finishEditing();
     }
     else if (colors.size() == 1) {
-        pcShapeBind->value = SoMaterialBinding::OVERALL;
+        pcFaceBind->value = SoMaterialBinding::OVERALL;
         pcShapeMaterial->diffuseColor.setValue(colors[0].diffuseColor.r, colors[0].diffuseColor.g, colors[0].diffuseColor.b);
         pcShapeMaterial->ambientColor.setValue(colors[0].ambientColor.r, colors[0].ambientColor.g, colors[0].ambientColor.b);
         pcShapeMaterial->specularColor.setValue(colors[0].specularColor.r, colors[0].specularColor.g, colors[0].specularColor.b);
@@ -701,7 +707,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
 
 void ViewProviderPartExt::unsetHighlightedFaces()
 {
-    ShapeMaterial.touch();
+    DiffuseColor.touch();
     Transparency.touch();
 }
 
@@ -744,8 +750,14 @@ void ViewProviderPartExt::setHighlightedPoints(const std::vector<App::Color>& co
 {
     int size = static_cast<int>(colors.size());
     if (size > 1) {
-        // FIXME: Check for size mismatch between number of points and number of colors
-        pcShapeBind->value = SoMaterialBinding::PER_VERTEX;
+#ifdef FC_DEBUG
+        int numPoints = coords->point.getNum() - nodeset->startIndex.getValue();
+        if (numPoints != size) {
+            SoDebugError::postWarning("ViewProviderPartExt::setHighlightedPoints",
+                                      "The number of points (%d) doesn't match with the number of colors (%d).", numPoints, size);
+        }
+#endif
+        pcPointBind->value = SoMaterialBinding::PER_VERTEX;
         pcPointMaterial->diffuseColor.setNum(size);
         SbColor* ca = pcPointMaterial->diffuseColor.startEditing();
         for (int i = 0; i < size; ++i)
@@ -753,14 +765,14 @@ void ViewProviderPartExt::setHighlightedPoints(const std::vector<App::Color>& co
         pcPointMaterial->diffuseColor.finishEditing();
     }
     else if (size == 1) {
-        pcShapeBind->value = SoMaterialBinding::OVERALL;
+        pcPointBind->value = SoMaterialBinding::OVERALL;
         pcPointMaterial->diffuseColor.setValue(colors[0].r, colors[0].g, colors[0].b);
     }
 }
 
 void ViewProviderPartExt::unsetHighlightedPoints()
 {
-    PointMaterial.touch();
+    PointColorArray.touch();
 }
 
 bool ViewProviderPartExt::loadParameter()
@@ -818,7 +830,7 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
         if (!VisualTouched) {
             if (this->faceset->partIndex.getNum() > 
                 this->pcShapeMaterial->diffuseColor.getNum()) {
-                this->pcShapeBind->value = SoMaterialBinding::OVERALL;
+                this->pcFaceBind->value = SoMaterialBinding::OVERALL;
             }
         }
     }
