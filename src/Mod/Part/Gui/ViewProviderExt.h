@@ -145,7 +145,7 @@ protected:
                     TColgp_Array1OfDir& theNormals);
 
     // nodes for the data representation
-    SoMaterialBinding * pcShapeBind;
+    SoMaterialBinding * pcFaceBind;
     SoMaterialBinding * pcLineBind;
     SoMaterial        * pcLineMaterial;
     SoMaterial        * pcPointMaterial;
