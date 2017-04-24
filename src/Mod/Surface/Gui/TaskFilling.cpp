@@ -121,9 +121,11 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                         colors.resize(vMap.Extent(), svp->PointColor.getValue());
 
                         for (auto jt : it.second) {
+                            // check again that the index is in range because it's possible that the
+                            // sub-names are invalid
                             std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(6)) - 1);
-                            assert (idx < colors.size());
-                            colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                            if (idx < colors.size())
+                                colors[idx] = App::Color(1.0,0.0,1.0); // magenta
                         }
 
                         svp->setHighlightedPoints(colors);
@@ -141,8 +143,10 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
 
                         for (auto jt : it.second) {
                             std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
-                            assert (idx < colors.size());
-                            colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                            // check again that the index is in range because it's possible that the
+                            // sub-names are invalid
+                            if (idx < colors.size())
+                                colors[idx] = App::Color(1.0,0.0,1.0); // magenta
                         }
 
                         svp->setHighlightedEdges(colors);
@@ -160,8 +164,10 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
 
                         for (auto jt : it.second) {
                             std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
-                            assert (idx < colors.size());
-                            colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                            // check again that the index is in range because it's possible that the
+                            // sub-names are invalid
+                            if (idx < colors.size())
+                                colors[idx] = App::Color(1.0,0.0,1.0); // magenta
                         }
 
                         svp->setHighlightedFaces(colors);
@@ -397,6 +403,22 @@ void FillingPanel::slotUndoDocument(const Gui::Document&)
 void FillingPanel::slotRedoDocument(const Gui::Document&)
 {
     checkCommand = true;
+}
+
+void FillingPanel::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
+{
+    // If this view provider is being deleted then reset the colors of
+    // referenced part objects. The dialog will be deleted later.
+    if (this->vp == &Obj) {
+        this->vp->highlightReferences(ViewProviderFilling::Edge,
+            editedObject->BoundaryEdges.getSubListValues(), false);
+
+        // unhighlight the referenced face
+        std::vector<App::PropertyLinkSubList::SubSet> links;
+        links.push_back(std::make_pair(editedObject->InitialFace.getValue(),
+                                       editedObject->InitialFace.getSubValues()));
+        this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
+    }
 }
 
 bool FillingPanel::accept()
@@ -716,6 +738,8 @@ void FillingPanel::onDeleteEdge()
         }
         this->vp->highlightReferences(ViewProviderFilling::Edge,
             editedObject->BoundaryEdges.getSubListValues(), true);
+
+        editedObject->recomputeFeature();
     }
 }
 
@@ -760,6 +784,8 @@ void FillingPanel::on_buttonAccept_clicked()
     ui->comboBoxFaces->clear();
     ui->comboBoxCont->clear();
     ui->statusLabel->clear();
+
+    editedObject->recomputeFeature();
 }
 
 void FillingPanel::on_buttonIgnore_clicked()
@@ -818,6 +844,7 @@ void TaskFilling::setEditedObject(Surface::Filling* obj)
 void TaskFilling::open()
 {
     widget1->open();
+    widget2->open();
 }
 
 bool TaskFilling::accept()

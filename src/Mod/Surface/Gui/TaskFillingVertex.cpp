@@ -220,6 +220,16 @@ void FillingVertexPanel::slotRedoDocument(const Gui::Document&)
     checkCommand = true;
 }
 
+void FillingVertexPanel::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
+{
+    // If this view provider is being deleted then reset the colors of
+    // referenced part objects. The dialog will be deleted later.
+    if (this->vp == &Obj) {
+        this->vp->highlightReferences(ViewProviderFilling::Vertex,
+            editedObject->Points.getSubListValues(), false);
+    }
+}
+
 void FillingVertexPanel::on_buttonVertexAdd_clicked()
 {
     // 'selectionMode' is passed by reference and changed when the filter is deleted
