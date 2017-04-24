@@ -189,6 +189,12 @@ void FillingVertexPanel::open()
     Gui::Selection().clearSelection();
 }
 
+void FillingVertexPanel::reject()
+{
+    this->vp->highlightReferences(ViewProviderFilling::Vertex,
+        editedObject->Points.getSubListValues(), false);
+}
+
 void FillingVertexPanel::clearSelection()
 {
     Gui::Selection().clearSelection();
@@ -290,7 +296,7 @@ void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
                 }
             }
             this->vp->highlightReferences(ViewProviderFilling::Vertex,
-                editedObject->Points.getSubListValues(), false);
+                editedObject->Points.getSubListValues(), true);
         }
 
         editedObject->recomputeFeature();

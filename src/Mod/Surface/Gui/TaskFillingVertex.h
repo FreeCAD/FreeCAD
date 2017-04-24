@@ -61,6 +61,7 @@ public:
     ~FillingVertexPanel();
 
     void open();
+    void reject();
     void checkOpenCommand();
     void setEditedObject(Surface::Filling* obj);
 

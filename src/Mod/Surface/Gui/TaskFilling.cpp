@@ -421,9 +421,6 @@ bool FillingPanel::accept()
                                    editedObject->InitialFace.getSubValues()));
     this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
 
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
-    Gui::Command::updateActive();
     return true;
 }
 
@@ -441,9 +438,6 @@ bool FillingPanel::reject()
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
 
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
-    Gui::Command::updateActive();
     return true;
 }
 
@@ -828,12 +822,28 @@ void TaskFilling::open()
 
 bool TaskFilling::accept()
 {
-    return widget1->accept();
+    bool ok = widget1->accept();
+    if (ok) {
+        widget2->reject();
+        Gui::Command::commitCommand();
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        Gui::Command::updateActive();
+    }
+
+    return ok;
 }
 
 bool TaskFilling::reject()
 {
-    return widget1->reject();
+    bool ok = widget1->reject();
+    if (ok) {
+        widget2->reject();
+        Gui::Command::abortCommand();
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        Gui::Command::updateActive();
+    }
+
+    return ok;
 }
 
 }
