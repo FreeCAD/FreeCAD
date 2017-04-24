@@ -73,6 +73,7 @@
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/details/SoPointDetail.h>
+# include <Inventor/errors/SoDebugError.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
@@ -244,6 +245,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY(PointMaterial,(mat));
     ADD_PROPERTY(LineColor,(mat.diffuseColor));
     ADD_PROPERTY(PointColor,(mat.diffuseColor));
+    ADD_PROPERTY(PointColorArray, (PointColor.getValue()));
     ADD_PROPERTY(DiffuseColor,(ShapeColor.getValue()));
     ADD_PROPERTY(LineColorArray,(LineColor.getValue()));
     ADD_PROPERTY(LineWidth,(lwidth));
@@ -282,6 +284,8 @@ ViewProviderPartExt::ViewProviderPartExt()
     pcLineMaterial->ref();
     LineMaterial.touch();
 
+    pcPointBind = new SoMaterialBinding();
+    pcPointBind->ref();
     pcPointMaterial = new SoMaterial;
     pcPointMaterial->ref();
     PointMaterial.touch();
@@ -310,6 +314,7 @@ ViewProviderPartExt::~ViewProviderPartExt()
 {
     pcFaceBind->unref();
     pcLineBind->unref();
+    pcPointBind->unref();
     pcLineMaterial->unref();
     pcPointMaterial->unref();
     pcLineStyle->unref();
@@ -494,6 +499,7 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     pcWireframeRoot->addChild(pcPointsRoot);
 
     // normal viewing with edges and points
+    pcPointsRoot->addChild(pcPointBind);
     pcPointsRoot->addChild(pcPointMaterial);
     pcPointsRoot->addChild(pcPointStyle);
     pcPointsRoot->addChild(nodeset);
@@ -744,8 +750,14 @@ void ViewProviderPartExt::setHighlightedPoints(const std::vector<App::Color>& co
 {
     int size = static_cast<int>(colors.size());
     if (size > 1) {
-        // FIXME: Check for size mismatch between number of points and number of colors
-        pcFaceBind->value = SoMaterialBinding::PER_VERTEX;
+#ifdef FC_DEBUG
+        int numPoints = coords->point.getNum() - nodeset->startIndex.getValue();
+        if (numPoints != size) {
+            SoDebugError::postWarning("ViewProviderPartExt::setHighlightedPoints",
+                                      "The number of points (%d) doesn't match with the number of colors (%d).", numPoints, size);
+        }
+#endif
+        pcPointBind->value = SoMaterialBinding::PER_VERTEX;
         pcPointMaterial->diffuseColor.setNum(size);
         SbColor* ca = pcPointMaterial->diffuseColor.startEditing();
         for (int i = 0; i < size; ++i)
@@ -753,14 +765,14 @@ void ViewProviderPartExt::setHighlightedPoints(const std::vector<App::Color>& co
         pcPointMaterial->diffuseColor.finishEditing();
     }
     else if (size == 1) {
-        pcFaceBind->value = SoMaterialBinding::OVERALL;
+        pcPointBind->value = SoMaterialBinding::OVERALL;
         pcPointMaterial->diffuseColor.setValue(colors[0].r, colors[0].g, colors[0].b);
     }
 }
 
 void ViewProviderPartExt::unsetHighlightedPoints()
 {
-    PointMaterial.touch();
+    PointColorArray.touch();
 }
 
 bool ViewProviderPartExt::loadParameter()
