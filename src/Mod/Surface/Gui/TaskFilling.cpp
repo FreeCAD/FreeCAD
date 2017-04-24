@@ -114,7 +114,6 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
             if (svp) {
                 switch (type) {
                 case ViewProviderFilling::Vertex:
-#if 0 //FIXME
                     if (on) {
                         std::vector<App::Color> colors;
                         TopTools_IndexedMapOfShape vMap;
@@ -132,7 +131,6 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                     else {
                         svp->unsetHighlightedPoints();
                     }
-#endif
                     break;
                 case ViewProviderFilling::Edge:
                     if (on) {
@@ -362,8 +360,17 @@ void FillingPanel::changeEvent(QEvent *e)
 void FillingPanel::open()
 {
     checkOpenCommand();
+
+    // highlight the boundary edges
     this->vp->highlightReferences(ViewProviderFilling::Edge,
         editedObject->BoundaryEdges.getSubListValues(), true);
+
+    // highlight the referenced face
+    std::vector<App::PropertyLinkSubList::SubSet> links;
+    links.push_back(std::make_pair(editedObject->InitialFace.getValue(),
+                                   editedObject->InitialFace.getSubValues()));
+    this->vp->highlightReferences(ViewProviderFilling::Face, links, true);
+
     Gui::Selection().clearSelection();
 }
 
@@ -408,6 +415,12 @@ bool FillingPanel::accept()
     this->vp->highlightReferences(ViewProviderFilling::Edge,
         editedObject->BoundaryEdges.getSubListValues(), false);
 
+    // unhighlight the referenced face
+    std::vector<App::PropertyLinkSubList::SubSet> links;
+    links.push_back(std::make_pair(editedObject->InitialFace.getValue(),
+                                   editedObject->InitialFace.getSubValues()));
+    this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
+
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     Gui::Command::updateActive();
@@ -418,6 +431,13 @@ bool FillingPanel::reject()
 {
     this->vp->highlightReferences(ViewProviderFilling::Edge,
         editedObject->BoundaryEdges.getSubListValues(), false);
+
+    // unhighlight the referenced face
+    std::vector<App::PropertyLinkSubList::SubSet> links;
+    links.push_back(std::make_pair(editedObject->InitialFace.getValue(),
+                                   editedObject->InitialFace.getSubValues()));
+    this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
+
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
 
@@ -431,6 +451,13 @@ void FillingPanel::on_lineInitFaceName_textChanged(const QString& text)
 {
     if (text.isEmpty()) {
         checkOpenCommand();
+
+        // unhighlight the referenced face
+        std::vector<App::PropertyLinkSubList::SubSet> links;
+        links.push_back(std::make_pair(editedObject->InitialFace.getValue(),
+                                       editedObject->InitialFace.getSubValues()));
+        this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
+
         editedObject->InitialFace.setValue(nullptr);
         editedObject->recomputeFeature();
     }
@@ -540,7 +567,11 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::vector<std::string> subList;
             subList.push_back(msg.pSubName);
             editedObject->InitialFace.setValue(sel.getObject(), subList);
-            //this->vp->highlightReferences(..., true);
+
+            // highlight the referenced face
+            std::vector<App::PropertyLinkSubList::SubSet> links;
+            links.push_back(std::make_pair(sel.getObject(), subList));
+            this->vp->highlightReferences(ViewProviderFilling::Face, links, true);
 
             Gui::Selection().rmvSelectionGate();
             selectionMode = None;
