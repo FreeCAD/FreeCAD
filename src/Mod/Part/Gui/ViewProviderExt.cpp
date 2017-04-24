@@ -701,7 +701,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
 
 void ViewProviderPartExt::unsetHighlightedFaces()
 {
-    ShapeMaterial.touch();
+    DiffuseColor.touch();
     Transparency.touch();
 }
 
