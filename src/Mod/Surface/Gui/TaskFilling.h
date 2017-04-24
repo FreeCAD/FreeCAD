@@ -87,6 +87,8 @@ protected:
     virtual void slotUndoDocument(const Gui::Document& Doc);
     /** Notifies on redo */
     virtual void slotRedoDocument(const Gui::Document& Doc);
+    /** Notifies when the object is about to be removed. */
+    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
     void modifyBoundary(bool);
 
 private Q_SLOTS:
