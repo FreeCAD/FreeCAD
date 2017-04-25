@@ -44,8 +44,8 @@
 //coordinate system transforms.
 //
 
-#ifndef CONTAINERBASE_H
-#define CONTAINERBASE_H
+#ifndef APP_CONTAINERBASE_H
+#define APP_CONTAINERBASE_H
 
 #include <Base/BaseClass.h>
 #include <Base/Exception.h>
@@ -255,4 +255,4 @@ DEFINE_CONTAINER_EXCEPTION(NullContainerError);
 DEFINE_CONTAINER_EXCEPTION(ObjectNotFoundError);
 
 }//namespace App
-#endif // CONTAINERBASE_H
+#endif // APP_CONTAINERBASE_H

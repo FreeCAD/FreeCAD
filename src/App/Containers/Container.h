@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTAINER_H
-#define CONTAINER_H
+#ifndef APP_CONTAINER_H
+#define APP_CONTAINER_H
 
 #include "ContainerBase.h"
 
@@ -97,4 +97,4 @@ public:
 };
 
 }//namespace App
-#endif // CONTAINERBASE_H
+#endif // APP_CONTAINER_H

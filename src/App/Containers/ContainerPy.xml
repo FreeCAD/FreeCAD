@@ -15,7 +15,28 @@
     <Documentation>
       <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
       <DeveloperDocu>Container - object container interace</DeveloperDocu>
-      <UserDocu>Container - interface class for objects that can contain other objects</UserDocu>
+<UserDocu>Container - interface class for objects that can contain other objects
+
+Constructor:
+Container(): creates an unbound container interface (useful for testing purposes only).
+Container(documentObject): creates a container interface around object (e.g. App::Part). 
+    If documentObject is not recognized as a container, exception is thrown. If you want 
+    your custom object to be recognized as a container, add GroupExtensionPython (or 
+    derived) to it.
+Container(document): creates a container interface around a document.
+Constructor is cheap, so constructing container interfaces around objects on the fly as 
+needed is all right.
+
+Attributes:
+Apart from built-in attributes and methods, child objects can be accessed as attributes of 
+Container object. E.g. 'Container(App.ActiveDocument).Part' is the same as 
+'App.ActiveDocument.Part', if Part is at the root of Document.
+
+Examples of use:
+Container(App.ActiveDocument).AllChildren - returns list of objects in document root (i.e. 
+   not contained by any container object)
+Container(App.ActiveDocument.Part).newObject('Part::Box', 'Cube') creates a Cube and adds 
+   it to Part.</UserDocu>
     </Documentation>
 
     <Methode Name="canAccept">
@@ -23,9 +44,12 @@
 <UserDocu>canAccept(object): tests if the object can be added to this container.
 canAccept(type, pytype = ''): tests if an object of given type can be created in this container.
 
-type: string name of a C++ type, like 'Part::Privitive'.
+type: string name of a C++ type, like 'Part::Primitive'.
 
-pytype: string identifier of python type (optional; no specific format). </UserDocu>
+pytype: string identifier of python type (optional; no specific format). The purpose of 
+this argument is for communication between GUI commands and Py-powered containers. 
+Py-powered containers can hook onto this function by implementing 
+allowObject(self, selfobj, type, pytype) extension method.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="newObject">
@@ -35,7 +59,7 @@ pytype: string identifier of python type (optional; no specific format). </UserD
     </Methode>
     <Methode Name="adoptObject">
       <Documentation>
-        <UserDocu>adoptObject(object): adds the object to the container if it isn't in any group already.
+        <UserDocu>adoptObject(object): adds the object to this container if it isn't in any group already.
 Returns True if object ends up in this container, either because it was there before, or was added.</UserDocu>
       </Documentation>
     </Methode>
@@ -46,7 +70,7 @@ Returns True if object ends up in this container, either because it was there be
     </Methode>
     <Methode Name="withdrawObject">
       <Documentation>
-        <UserDocu>withdrawObject(object): removes the object from this container (the object ends up directly in the document).</UserDocu>
+        <UserDocu>withdrawObject(object): removes the object from this container, making it free to be adopted by another container (in current implementation, the object ends up directly in the document).</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="deleteObject">
