@@ -182,6 +182,19 @@ bool GroupExtension::isChildOf(const GroupExtension* group) const
 
 std::vector<DocumentObject*> GroupExtension::getObjects() const
 {
+    auto result = getDynamicObjects();
+    auto staticobjects = getStaticObjects();
+    result.insert(result.end(), staticobjects.begin(), staticobjects.end());
+    return result;
+}
+
+std::vector<DocumentObject*> GroupExtension::getStaticObjects() const
+{
+    return std::vector<DocumentObject*>();
+}
+
+std::vector<DocumentObject*> GroupExtension::getDynamicObjects() const
+{
     return Group.getValues();
 }
 

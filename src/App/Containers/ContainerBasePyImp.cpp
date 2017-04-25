@@ -212,14 +212,14 @@ PyObject* ContainerBasePy::isAGroup(PyObject* args)
     } CONTAINERPY_STDCATCH_METH;
 }
 
-PyObject* ContainerBasePy::isAnOriginGroup(PyObject* args)
+PyObject* ContainerBasePy::isAGeoGroup(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
 
     try {
         return Py::new_reference_to(Py::Boolean(
-            getContainerBasePtr()->isAnOriginGroup()   ));
+            getContainerBasePtr()->isAGeoGroup()   ));
     } CONTAINERPY_STDCATCH_METH;
 }
 
@@ -258,6 +258,8 @@ PyObject* ContainerBasePy::getCustomAttributes(const char* attr) const
     PyObject* item = PyDict_GetItemString(this->ob_type->tp_dict, attr);
     if (item) return 0; //don't replace an existing attribute if object name happens to match it...
 
+    if (getContainerBasePtr()->isNull())
+        return nullptr;
     // search for an object with this name
     try {
         DocumentObject* obj = getContainerBasePtr()->getObject(attr);

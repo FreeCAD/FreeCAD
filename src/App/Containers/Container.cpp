@@ -2,6 +2,7 @@
 #include "PreCompiled.h"
 
 #include "Container.h"
+#include "ContainerPy.h"
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -33,7 +34,7 @@ std::vector<DocumentObject*> Container::dynamicChildren() const
 
         std::copy(resultset.begin(), resultset.end(), std::back_inserter(result));
     } else if (isAGroup()) {
-        result = asGroup().getObjects();
+        result = asGroup().getDynamicObjects();
     } else if (isAnOrigin()) {
         //no dynamic children
     } else {
@@ -48,14 +49,8 @@ std::vector<DocumentObject*> Container::staticChildren() const
         return std::vector<DocumentObject*>();
     if (isADocument()) {
         return std::vector<DocumentObject*>();
-    } else if (isAnOriginGroup()) {
-        OriginGroupExtension &g = asOriginGroup();
-        if (g.Origin.getValue())
-            return std::vector<DocumentObject*>({g.Origin.getValue(),});
-        else
-            return std::vector<DocumentObject*>();
     } else if (isAGroup()) {
-        return std::vector<DocumentObject*>();
+        return asGroup().getStaticObjects();
     } else if (isAnOrigin()) {
         return asOrigin().OriginFeatures.getValues();
     } else {
@@ -78,18 +73,34 @@ std::vector<PropertyContainer*> Container::parents() const
     return result;
 }
 
-bool Container::canAccept(DocumentObject* obj) const
+bool Container::canAccept(DocumentObject* obj, bool b_throw) const
 {
-    //TODO: add exception mode (throw exception explaining why can't accept)
-    if (!obj)
-        return false;
-    if (isNull())
-        return false;
-    //FIXME: add container loop prevention. Check if the object being added isn't in a container chain of this container
-    if (isAGroup())
-        return asGroup().allowObject(obj);
-    else
-        return this->canAccept(obj->getTypeId().getName());
+    try {
+        if (!obj){
+            throw Base::ValueError("Null object!");
+        }
+        if (isNull()){
+            throw NullContainerError("Null container can't take any objects");
+        }
+        if (isADocumentObject()) {
+            //the idea is to prevent a container to parent itself (directly or indirectly)
+            //FIXME: ignore non-DAGness, maybe, and only test containership loops
+            asDocumentObject().testIfLinkDAGCompatible(obj);
+        }
+        if (isAGroup()){
+            if (!asGroup().allowObject(obj))
+                throw RejectedByContainerError();
+        } else {
+            if (!this->canAccept(obj->getTypeId().getName()))
+                throw RejectedByContainerError("Container doesn't accept objects of this type");
+        }
+        return true;
+    } catch (ContainerError&){
+        if (b_throw)
+            throw;
+        else
+            return false;
+    }
 }
 
 bool Container::canAccept(const char* type, const char* pytype) const
@@ -114,11 +125,13 @@ DocumentObject* Container::newObject(const char* sType, const char* pObjectName,
     if (isADocument()){
         return asDocument().newObject(sType, pObjectName, isNew);
     } else if (isAGroup()){
+        if (!canAccept(sType) && isNew)
+            throw RejectedByContainerError("Container doesn't accept objects of this type");
         if (!isNew)
-            throw Base::ValueError("Can't create a non-new object in a group.");
+            throw Base::ValueError("Can't create a non-new object in a group."); //FIXME: add support of isNew to GroupExtension
         return asGroup().newObject(sType, pObjectName);
     } else if (isAnOrigin()){
-        throw ContainerUnsupportedError("Can't add objects to Origin");
+        throw RejectedByContainerError("Can't add objects to Origin");
     } else {
         assert(false /*unexpected type*/);
     }
@@ -128,6 +141,7 @@ DocumentObject* Container::newObject(const char* sType, const char* pObjectName,
 bool Container::adoptObject(DocumentObject* obj)
 {
     check();
+    canAccept(obj, /*b_throw=*/ true);
     if (obj->getDocument() != this->getDocument())
         return false;
     if (isADocument()){
@@ -145,13 +159,14 @@ bool Container::adoptObject(DocumentObject* obj)
 
 void Container::addObject(DocumentObject* obj)
 {
+    //FIXME: check if can accept
     check();
     if (obj->getDocument() != this->getDocument())
         throw AlreadyInContainerError("Object is in another document");
     App::PropertyContainer* oldcnt = getContainerOf(obj);
-    if (oldcnt == pcObject)
+    if (oldcnt == object())
         return; //already in, nothing to do
-    if (oldcnt && oldcnt != this->getDocument() && oldcnt != pcObject)
+    if (oldcnt && oldcnt != this->getDocument() && oldcnt != object())
         Container(oldcnt).withdrawObject(obj);
 
     bool adopted = adoptObject(obj);
@@ -199,6 +214,12 @@ void Container::deleteObject(DocumentObject* obj)
         doc->remObject(obj->getNameInDocument());
     else
         throw ObjectNotFoundError("Object is not in any document");
+}
+
+PyObject*Container::getPyObject()
+{
+    Container* cpy = new Container(object());
+    return new ContainerPy(cpy);
 }
 
 bool Container::isAContainer(PropertyContainer* object)
@@ -252,7 +273,6 @@ PropertyContainer* Container::getContainerOf(DocumentObject* obj)
         throw ContainerTreeError(msg.str());
     }
 }
-
 
 Container::Container(PropertyContainer* pcObject)
     :ContainerBase(pcObject)

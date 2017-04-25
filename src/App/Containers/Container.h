@@ -47,7 +47,19 @@ public:
 
     virtual std::vector<PropertyContainer*> parents() const override;
 
-    virtual bool canAccept(DocumentObject* obj) const;
+    /**
+     * @brief canAccept(object): returns if a given object can be added. Usually, type of the object is tested, and if no container dependency loops will result.
+     * @param obj:
+     * @param b_throw: if true, an exception is thrown instead of returning false. This can be useful to obtain information about reasons of rejection.
+     * @return
+     */
+    virtual bool canAccept(DocumentObject* obj, bool b_throw = false) const;
+    /**
+     * @brief canAccept(type, pytype): tests if a new object of given type can be created in this container.
+     * @param type: name of type of object, like "Part::Feature"
+     * @param pytype: name of python subtype (optional, free-form)
+     * @return
+     */
     virtual bool canAccept(const char* type, const char* pytype = "") const;
     /**
      * @brief newObject: (see documentation of Document::newObject()
@@ -74,6 +86,9 @@ public:
      * @brief deleteObject: deletes an object.
      */
     virtual void deleteObject(DocumentObject* obj);
+
+    PyObject* getPyObject() override;
+
 public:
     static bool isAContainer(PropertyContainer* object);
     static std::vector<DocumentObject*> findAllContainers(App::Document& doc);

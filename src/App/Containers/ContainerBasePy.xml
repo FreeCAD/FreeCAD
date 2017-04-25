@@ -115,9 +115,9 @@
         <UserDocu>isAGroup(): returns true if this container is an object that has GroupExtension or derivative (e.g. OriginGroup).</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="isAnOriginGroup" Const="true">
+    <Methode Name="isAGeoGroup" Const="true">
       <Documentation>
-        <UserDocu>isAnOriginGroup(): returns true if this container is an object that has OriginGroupExtension or derivative.</UserDocu>
+        <UserDocu>isAGeoGroup(): returns true if this container is an object that has GeoFeatureGroupExtension or derivative.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isAnOrigin" Const="true">

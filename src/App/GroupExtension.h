@@ -100,7 +100,10 @@ public:
     bool isChildOf(const GroupExtension*) const;
     /** Returns a list of all objects this group does have.
      */
-    std::vector<DocumentObject*> getObjects() const;
+    virtual std::vector<DocumentObject*> getObjects() const;
+    virtual std::vector<DocumentObject*> getStaticObjects() const;
+    virtual std::vector<DocumentObject*> getDynamicObjects() const;
+
     /** Returns a list of all objects of \a typeId this group does have.
      */
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;

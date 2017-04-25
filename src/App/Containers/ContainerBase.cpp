@@ -27,9 +27,11 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/PropertyContainerPy.h>
 #include <App/GroupExtension.h>
-#include <App/OriginGroupExtension.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
+#include <App/Application.h>
 
 #include <unordered_set>
 
@@ -37,9 +39,26 @@ using namespace App;
 
 TYPESYSTEM_SOURCE_ABSTRACT(App::ContainerBase, Base::BaseClass)
 
+ContainerBase::ContainerBase(PropertyContainer* pcObject)
+{
+    if (pcObject) {
+        if (pcObject->isDerivedFrom(PropertyContainer::getClassTypeId())) {
+            this->ref = Py::asObject(pcObject->getPyObject());
+            this->pcObject = static_cast<PropertyContainerPy*>(ref.ptr());
+        }
+    }
+}
+
 ContainerBase::~ContainerBase()
 {
+}
 
+PropertyContainer* ContainerBase::object() const
+{
+    if (this->pcObject && this->pcObject->isValid())
+        return pcObject->getPropertyContainerPtr();
+    else
+        return nullptr;
 }
 
 std::string ContainerBase::getName() const
@@ -129,31 +148,31 @@ Document* ContainerBase::getDocument() const
 {
     check();
     if (isADocument())
-        return static_cast<Document*>(pcObject);
+        return static_cast<Document*>(object());
     else
-        return static_cast<DocumentObject*>(pcObject)->getDocument();
+        return static_cast<DocumentObject*>(object())->getDocument();
 }
 
 bool ContainerBase::isADocument() const
 {
-    return pcObject && pcObject->isDerivedFrom(Document::getClassTypeId());
+    return object() && object()->isDerivedFrom(Document::getClassTypeId());
 }
 
 bool ContainerBase::isAGroup() const
 {
-    if (pcObject && pcObject->isDerivedFrom(DocumentObject::getClassTypeId())){
-        auto dobj = static_cast<DocumentObject*>(pcObject);
+    if (object() && object()->isDerivedFrom(DocumentObject::getClassTypeId())){
+        auto dobj = static_cast<DocumentObject*>(object());
         if (dobj->hasExtension(GroupExtension::getExtensionClassTypeId()))
             return true;
     }
     return false;
 }
 
-bool ContainerBase::isAnOriginGroup() const
+bool ContainerBase::isAGeoGroup() const
 {
-    if (pcObject && pcObject->isDerivedFrom(DocumentObject::getClassTypeId())){
-        auto dobj = static_cast<DocumentObject*>(pcObject);
-        if (dobj->hasExtension(OriginGroupExtension::getExtensionClassTypeId()))
+    if (object() && object()->isDerivedFrom(DocumentObject::getClassTypeId())){
+        auto dobj = static_cast<DocumentObject*>(object());
+        if (dobj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
             return true;
     }
     return false;
@@ -161,47 +180,47 @@ bool ContainerBase::isAnOriginGroup() const
 
 bool ContainerBase::isAnOrigin() const
 {
-    return pcObject && pcObject->isDerivedFrom(Origin::getClassTypeId());
+    return object() && object()->isDerivedFrom(Origin::getClassTypeId());
 }
 
 Document& ContainerBase::asDocument() const
 {
     if (!isADocument())
         throw Base::TypeError("Container::asDocument: Not a document!");
-    return static_cast<Document&>(*pcObject);
+    return static_cast<Document&>(*object());
 }
 
 GroupExtension& ContainerBase::asGroup() const
 {
     if (!isAGroup())
         throw Base::TypeError("Container::asGroup: Not a group!");
-    return static_cast<GroupExtension&>(*static_cast<DocumentObject*>(pcObject)->getExtensionByType<GroupExtension>());
+    return static_cast<GroupExtension&>(*static_cast<DocumentObject*>(object())->getExtensionByType<GroupExtension>());
 }
 
-OriginGroupExtension& ContainerBase::asOriginGroup() const
+GeoFeatureGroupExtension& ContainerBase::asGeoGroup() const
 {
-    if (!isAnOriginGroup())
+    if (!isAGeoGroup())
         throw Base::TypeError("Container::asOriginGroup: Not an origingroup!");
-    return static_cast<OriginGroupExtension&>(*static_cast<DocumentObject*>(pcObject)->getExtensionByType<OriginGroupExtension>());
+    return static_cast<GeoFeatureGroupExtension&>(*static_cast<DocumentObject*>(object())->getExtensionByType<GeoFeatureGroupExtension>());
 }
 
 Origin& ContainerBase::asOrigin() const
 {
     if (!isAnOrigin())
         throw Base::TypeError("Container::asOrigin: Not an origin!");
-    return static_cast<Origin&>(*pcObject);
+    return static_cast<Origin&>(*object());
 }
 
 DocumentObject& ContainerBase::asDocumentObject() const
 {
     if (!isADocumentObject())
         throw Base::TypeError("Container::asDocumentObject: Not a document-object!");
-    return static_cast<DocumentObject&>(*pcObject);
+    return static_cast<DocumentObject&>(*object());
 }
 
 void ContainerBase::check() const
 {
-    if (!this->pcObject)
+    if (!this->object())
         throw NullContainerError("Container is Null");
     if (!(  isADocument()
             || isAGroup() //OriginGroup covered by this too
@@ -215,7 +234,7 @@ std::vector<DocumentObject*> ContainerBase::recursiveChildren(bool b_dynamic, bo
     std::unordered_set<DocumentObject*> visited;
     std::vector<App::DocumentObject*> list_of_children;
     //actual traversal is packed into a separate function with extra arguments, for infinite recursion protection.
-    recursiveChildrenRec(pcObject, b_dynamic, b_static, visited, list_of_children);
+    recursiveChildrenRec(object(), b_dynamic, b_static, visited, list_of_children);
     return list_of_children;
 }
 
@@ -251,6 +270,7 @@ TYPESYSTEM_SOURCE(App::ContainerError             , Base::Exception)
 TYPESYSTEM_SOURCE(App::ContainerTreeError         , App::ContainerError)
 TYPESYSTEM_SOURCE(App::AlreadyInContainerError    , App::ContainerError)
 TYPESYSTEM_SOURCE(App::ContainerUnsupportedError  , App::ContainerError)
+TYPESYSTEM_SOURCE(App::RejectedByContainerError   , App::ContainerError)
 TYPESYSTEM_SOURCE(App::NotAContainerError         , App::ContainerError)
 TYPESYSTEM_SOURCE(App::SpecialChildError          , App::ContainerError)
 TYPESYSTEM_SOURCE(App::NullContainerError         , App::ContainerError)
@@ -262,6 +282,7 @@ void ContainerError::initContainerExceptionTypes()
     ContainerTreeError        ::init();
     AlreadyInContainerError   ::init();
     ContainerUnsupportedError ::init();
+    RejectedByContainerError  ::init();
     NotAContainerError        ::init();
     SpecialChildError         ::init();
     NullContainerError        ::init();

@@ -52,14 +52,16 @@
 #include <FCConfig.h>
 
 #include <unordered_set> //for private function
+#include <CXX/Objects.hxx>
 
 namespace App {
 
 class Document;
 class DocumentObject;
 class PropertyContainer;
+class PropertyContainerPy;
 class GroupExtension;
-class OriginGroupExtension;
+class GeoFeatureGroupExtension;
 class Origin;
 
 
@@ -73,15 +75,15 @@ class AppExport ContainerBase: public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 public:
-    ContainerBase():pcObject(nullptr) {}
-    ContainerBase(PropertyContainer* pcObject) : pcObject(pcObject) {}
+    ContainerBase() {}
+    ContainerBase(PropertyContainer* pcObject);
     virtual ~ContainerBase();
 
-    PropertyContainer* object() const {return pcObject;}
+    PropertyContainer* object() const;
 
     std::string getName() const;
 
-    bool isNull() const {return pcObject == nullptr;}
+    bool isNull() const {return object() == nullptr;}
 
     /**
      * @brief allChildren: all cobjects directly belonging to the container
@@ -131,7 +133,7 @@ public:
     //@{
     bool isADocument() const;
     bool isAGroup() const;
-    bool isAnOriginGroup() const;
+    bool isAGeoGroup() const;
     bool isAnOrigin() const;
     bool isADocumentObject() const {return isAGroup() || isAnOrigin();}
     //@}
@@ -139,7 +141,7 @@ public:
     /**
      * @brief isAWorkspace: returns true if this container forms a workspace (workspace is a set of objects sharing a coordinate system)
      */
-    virtual bool isAWorkspace() const {return isAnOriginGroup();}
+    virtual bool isAWorkspace() const {return isAGeoGroup();}
 
     /**
      * @brief isRoot: true if the container is the root of container tree (now, same as isADocument()).
@@ -153,13 +155,15 @@ public:
     //@{
     Document& asDocument() const;
     GroupExtension& asGroup() const;
-    OriginGroupExtension& asOriginGroup() const;
+    GeoFeatureGroupExtension& asGeoGroup() const;
     Origin& asOrigin() const;
     DocumentObject& asDocumentObject() const;
     //@}
 
 protected:
-    PropertyContainer* pcObject;
+    //we are remembering the object as a python object. The beauty about doing so is that if the object is deleted, we don't end up with an invalid pointer.
+    Py::Object ref; //keeps reference, so that the object isn't deleted while this Container is alive
+    PropertyContainerPy* pcObject; //usually, same as ref.ptr(), cast to the right type
 
     void check() const;
 
@@ -220,6 +224,11 @@ DEFINE_CONTAINER_EXCEPTION(AlreadyInContainerError);
  * @brief ContainerUnsupportedError class : the action is not supported by this kind of container (e.g. newObject to Origin)
  */
 DEFINE_CONTAINER_EXCEPTION(ContainerUnsupportedError);
+
+/**
+ * @brief RejectedByContainerError: thrown by Container::canAccept when the specific container doesn't accept the object (e.g. PartDesign Body will refuse to take a Part::Feature).
+ */
+DEFINE_CONTAINER_EXCEPTION(RejectedByContainerError);
 
 /**
  * @brief NotAContainerError: raised when requesting a container interface around an object that is not a container
