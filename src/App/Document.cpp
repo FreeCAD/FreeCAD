@@ -1404,17 +1404,8 @@ DocumentObject* Document::addObject(const char* sType, const char* pObjectName, 
     // New code should always use App.ActiveContainer.newObject(...)
     // directly. This is only for legacy code to work.
 
-    assert(sType);
-    std::stringstream cmd;
-    cmd << "App.getDocument('" << this->getName() << "').ActiveContainer"
-        << ".newObject('" << Base::Tools::escapedUnicodeFromUtf8(sType) << "'" ;
-    if (pObjectName) {
-        cmd << ", '" << Base::Tools::escapedUnicodeFromUtf8(pObjectName) << "'";
-    }
-    cmd << ")";
-    Py::Object newobject = Base::Interpreter().runStringObject(cmd.str().c_str());
-    assert(PyObject_TypeCheck(newobject.ptr(), &(DocumentObjectPy::Type)));
-    return static_cast<DocumentObjectPy*>(newobject.ptr())->getDocumentObjectPtr();
+
+    return App::Container(this->getActiveContainer()).newObject(sType, pObjectName, isNew);
 }
 
 bool Document::saveAs(const char* file)

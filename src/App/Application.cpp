@@ -217,8 +217,9 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // setting up Python binding
     Base::PyGILStateLocker lock;
     PyObject* pAppModule = Py_InitModule3("FreeCAD", Application::Methods, FreeCAD_doc);
-    Py::Module(pAppModule).setAttr(std::string("ActiveDocument"),Py::None());
-    Py::Module(pAppModule).setAttr(std::string("ActiveContainer"),Py::None());
+    //Py::Module(pAppModule).setAttr(std::string("ActiveDocument"),Py::None());
+    //Py::Module(pAppModule).setAttr(std::string("ActiveContainer"),Py::None());
+    updatePyActiveObjects();
 
     PyObject* pConsoleModule = Py_InitModule3("__FreeCADConsole__", ConsoleSingleton::Methods, Console_doc);
 
@@ -505,12 +506,12 @@ Document* Application::getActiveDocument(void) const
     return _pActiveDoc;
 }
 
-PropertyContainer* Application::getActiveContainer() const
+App::Container Application::getActiveContainer() const
 {
     if (this->getActiveDocument())
-        return this->getActiveDocument()->getActiveContainer();
+        return App::Container(this->getActiveDocument()->getActiveContainer());
     else
-        return nullptr;
+        return App::Container();
 }
 
 void Application::setActiveDocument(Document* pDoc)
@@ -976,20 +977,16 @@ void Application::slotRedoDocument(const App::Document& d)
 
 void Application::updatePyActiveObjects()
 {
+    Base::PyGILStateLocker lock;
     if (_pActiveDoc) {
-        Base::PyGILStateLocker lock;
         Py::Object ad(_pActiveDoc->getPyObject(), true);
         Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),ad);
-        Py::Object ac(_pActiveDoc->getActiveContainer()->getPyObject(), true);
-        Py::Module("FreeCAD").setAttr(std::string("ActiveContainer"),ac);
     }
     else {
-        Base::PyGILStateLocker lock;
-        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),Py::None());
-        Py::Module("FreeCAD").setAttr(std::string("ActiveContainer"),Py::None());
+        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),Py::None());        
     }
-
-
+    Py::Object ac(getActiveContainer().getPyObject(), true);
+    Py::Module("FreeCAD").setAttr(std::string("ActiveContainer"),ac);
 }
 
 //**************************************************************************

@@ -474,9 +474,9 @@ PyObject *Body::getPyObject(void)
 
 PartDesign::Body* PartDesign::Body::activeBody()
 {
-    auto ac = App::GetApplication().getActiveContainer();
-    if(ac && ac->isDerivedFrom(Body::getClassTypeId()))
-        return static_cast<Body*>(ac);
+    App::Container ac = App::GetApplication().getActiveContainer();
+    if(ac.object() && ac.object()->isDerivedFrom(Body::getClassTypeId()))
+        return static_cast<Body*>(ac.object());
     else
         return nullptr;
 }

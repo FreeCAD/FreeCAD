@@ -124,7 +124,7 @@ PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot)
 
 App::Part* getActivePart() {
     //FIXME: there shouldn't be any special relation with Part, any container should be usable
-    return dynamic_cast<App::Part*>(App::GetApplication().getActiveContainer());
+    return dynamic_cast<App::Part*>(App::GetApplication().getActiveContainer().object());
 }
 
 App::Part* getPartFor(const App::DocumentObject* obj, bool messageIfNot) {

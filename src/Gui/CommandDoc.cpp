@@ -1004,12 +1004,9 @@ void StdCmdDuplicateSelection::activated(int iMsg)
         str.close();
 
         //add copies to active container
-        auto ac = dynamic_cast<App::DocumentObject*>(App::GetApplication().getActiveContainer());
-        if (ac){
-            App::GroupExtension* ge = ac->getExtensionByType<App::GroupExtension>();
-            for (App::DocumentObject* obj: copies){
-                ge->adoptObject(obj);
-            }
+        App::Container ac = App::GetApplication().getActiveContainer();
+        for (App::DocumentObject* obj: copies){
+            ac.adoptObject(obj);
         }
 
         doc->commitTransaction();

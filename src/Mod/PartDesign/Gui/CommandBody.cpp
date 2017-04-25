@@ -58,12 +58,12 @@ namespace PartDesignGui {
 
 /// Returns active part, if there is no such, creates a new part, if it fails, shows a message
 App::Part* assertActivePart () {
-    App::Part* rv = dynamic_cast<App::Part*>(App::GetApplication().getActiveContainer());
+    App::Part* rv = dynamic_cast<App::Part*>(App::GetApplication().getActiveContainer().object());
 
     if ( !rv ) {
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
         rcCmdMgr.runCommandByName("PartDesign_Part");
-        rv = dynamic_cast<App::Part*>(App::GetApplication().getActiveContainer());
+        rv = dynamic_cast<App::Part*>(App::GetApplication().getActiveContainer().object());
         if ( !rv ) {
             QMessageBox::critical ( 0, QObject::tr( "Part creation failed" ),
                     QObject::tr( "Failed to create a part object." ) );

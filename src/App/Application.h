@@ -32,6 +32,7 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Parameter.h>
 #include <Base/Observer.h>
+#include "Containers/Container.h"
 
 
 namespace Base 
@@ -85,7 +86,7 @@ public:
     /// Retrieve the active document
     App::Document* getActiveDocument(void) const;
     /// get active container (either a feature with GroupExtension, or ActiveDocument, or nullptr).
-    App::PropertyContainer* getActiveContainer(void) const;
+    App::Container getActiveContainer(void) const;
     /// Retrieve a named document
     App::Document* getDocument(const char *Name) const;
     /// gets the (internal) name of the document
