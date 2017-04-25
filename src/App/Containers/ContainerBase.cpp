@@ -40,6 +40,7 @@ using namespace App;
 TYPESYSTEM_SOURCE_ABSTRACT(App::ContainerBase, Base::BaseClass)
 
 ContainerBase::ContainerBase(PropertyContainer* pcObject)
+    : pcObject(nullptr)
 {
     if (pcObject) {
         if (pcObject->isDerivedFrom(PropertyContainer::getClassTypeId())) {

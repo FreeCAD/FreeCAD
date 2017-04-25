@@ -75,7 +75,7 @@ class AppExport ContainerBase: public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 public:
-    ContainerBase() {}
+    ContainerBase() : pcObject(nullptr) {}
     ContainerBase(PropertyContainer* pcObject);
     virtual ~ContainerBase();
 
