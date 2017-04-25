@@ -2596,14 +2596,13 @@ static void addG0(bool verbose, Toolpath &path,
         addGCode(verbose,path,pt,next,"G0");
 }
 
-static void addGArc(bool verbose,Toolpath &path, 
-        const gp_Pnt &pstart, const gp_Pnt &pend, 
-        const gp_Pnt &center, bool clockwise,
-        double f, double &last_f) 
+static void addGArc(bool verbose,bool abs_center, Toolpath &path, 
+        const gp_Pnt &pstart, const gp_Pnt &pend, const gp_Pnt &center, 
+        bool clockwise, double f, double &last_f) 
 {
     Command cmd;
     cmd.Name = clockwise?"G2":"G3";
-    if(verbose) {
+    if(abs_center) {
         addParameter(verbose,cmd,"I",0.0,center.X());
         addParameter(verbose,cmd,"J",0.0,center.Y());
         addParameter(verbose,cmd,"K",0.0,center.Z());
@@ -2664,10 +2663,8 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
 
     // absolute mode
     addGCode(path,"G90");
-    if(verbose)
+    if(abs_center)
         addGCode(path,"G90.1"); // absolute center for arc move
-    else
-        addGCode(path,"G91.1"); // relative center for arc move
 
     short currentArcPlane = arc_plane;
     if(arc_plane==ArcPlaneZX)
@@ -2800,13 +2797,13 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
                             if(reversed) {
                                 for (int i=nbPoints-1; i>=1; --i) {
                                     gp_Pnt pt = curve.Value(discretizer.Parameter(i));
-                                    addGArc(verbose,path,plast,pt,center,clockwise,nf,cur_f);
+                                    addGArc(verbose,abs_center,path,plast,pt,center,clockwise,nf,cur_f);
                                     plast = pt;
                                 }
                             }else{
                                 for (int i=2; i<=nbPoints; i++) {
                                     gp_Pnt pt = curve.Value(discretizer.Parameter(i));
-                                    addGArc(verbose,path,plast,pt,center,clockwise,nf,cur_f);
+                                    addGArc(verbose,abs_center,path,plast,pt,center,clockwise,nf,cur_f);
                                     plast = pt;
                                 }
                             }
@@ -2817,10 +2814,10 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
                     if(fabs(first-last)>M_PI) {
                         // Split arc(circle) larger than half circle. 
                         gp_Pnt mid = curve.Value((last-first)*0.5+first);
-                        addGArc(verbose,path,plast,mid,center,clockwise,nf,cur_f);
+                        addGArc(verbose,abs_center,path,plast,mid,center,clockwise,nf,cur_f);
                         plast = mid;
                     }
-                    addGArc(verbose,path,plast,p,center,clockwise,nf,cur_f);
+                    addGArc(verbose,abs_center,path,plast,p,center,clockwise,nf,cur_f);
                     break;
                 }
 

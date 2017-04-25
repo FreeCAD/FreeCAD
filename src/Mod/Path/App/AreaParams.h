@@ -228,6 +228,7 @@
     ((double,feedrate,FeedRate,0.0, "Normal move feed rate", App::PropertyFloat)) \
     ((double,feedrate_v,FeedRateVertical,0.0, "Vertical only (step down) move feed rate", App::PropertyFloat)) \
     ((bool,verbose,Verbose,true, "If true, each motion GCode will contain full coordinate and feedrate")) \
+    ((bool,abs_center,AbsoluteArcCenter,false, "Use absolute arc center mode (G90.1)")) \
     AREA_PARAMS_DEFLECTION
 
 /** Group of all Area configuration parameters except CArea's*/
