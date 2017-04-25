@@ -5,8 +5,8 @@
 #include <App/Containers/ContainerBase.h>
 
 // inclusion of the generated files (generated out of AttachableObjectPy.xml)
-#include "ContainerBasePy.h"
-#include "ContainerBasePy.cpp"
+#include <Containers/ContainerBasePy.h>
+#include <Containers/ContainerBasePy.cpp>
 #include <App/PropertyContainerPy.h>
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>

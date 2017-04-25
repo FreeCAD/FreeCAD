@@ -2,7 +2,7 @@
 #include "PreCompiled.h"
 
 #include "Container.h"
-#include "ContainerPy.h"
+#include <Containers/ContainerPy.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

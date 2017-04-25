@@ -6,8 +6,8 @@
 #include <App/PropertyContainerPy.h>
 
 // inclusion of the generated files (generated out of ContainerPy.xml)
-#include "ContainerPy.h"
-#include "ContainerPy.cpp"
+#include <Containers/ContainerPy.h>
+#include <Containers/ContainerPy.cpp>
 #include <App/DocumentObjectPy.h>
 
 using namespace App;
