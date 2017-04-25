@@ -1904,7 +1904,7 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
         case mm0Focus1:
         case mm0Focus2:{
             if (shapes[0]->IsNull())
-                throw Base::ValueError("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
+                throw Base::ValueError("Null shape in AttachEnginePoint::calculateAttachedPlacement()!");
             const TopoDS_Edge &e = TopoDS::Edge(*(shapes[0]));
             BRepAdaptor_Curve adapt (e);
             gp_Pnt f1, f2;
@@ -1926,7 +1926,7 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
                     throw Base::ValueError("AttachEnginePoint::calculateAttachedPlacement: Parabola has no second focus");
             }break;
             default:
-                throw Base::ValueError("AttachEngineLine::calculateAttachedPlacement: referenced edge is not a conic section with a directrix");
+                throw Base::ValueError("AttachEnginePoint::calculateAttachedPlacement: referenced edge is not a conic section with a directrix");
             }
             if (mmode == mm0Focus1)
                 BasePoint = f1;
@@ -1936,16 +1936,16 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
         case mm0ProximityPoint1:
         case mm0ProximityPoint2:{
             if (shapes.size() < 2)
-                throw Base::ValueError("AttachEngineLine::calculateAttachedPlacement: Proximity mode requires two shapes; only one is supplied");
+                throw Base::ValueError("AttachEnginePoint::calculateAttachedPlacement: Proximity mode requires two shapes; only one is supplied");
             if (shapes[0]->IsNull())
-                throw Base::ValueError("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
+                throw Base::ValueError("Null shape in AttachEnginePoint::calculateAttachedPlacement()!");
             if (shapes[1]->IsNull())
-                throw Base::ValueError("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
+                throw Base::ValueError("Null shape in AttachEnginePoint::calculateAttachedPlacement()!");
             BRepExtrema_DistShapeShape distancer (*(shapes[0]), *(shapes[1]));
             if (!distancer.IsDone())
-                throw Base::ValueError("AttachEngineLine::calculateAttachedPlacement: proximity calculation failed.");
+                throw Base::ValueError("AttachEnginePoint::calculateAttachedPlacement: proximity calculation failed.");
             if (distancer.NbSolution()>1)
-                Base::Console().Warning("AttachEngineLine::calculateAttachedPlacement: proximity calculation gave %i solutions, ambiguous.\n",int(distancer.NbSolution()));
+                Base::Console().Warning("AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave %i solutions, ambiguous.\n",int(distancer.NbSolution()));
             gp_Pnt p1 = distancer.PointOnShape1(1);
             gp_Pnt p2 = distancer.PointOnShape2(1);
             if (mmode == mm0ProximityPoint1)
