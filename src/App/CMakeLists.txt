@@ -161,6 +161,7 @@ SET(Document_CPP_SRCS
     Containers/ContainerBasePyImp.cpp
     Containers/Container.cpp
     Containers/ContainerPyImp.cpp
+    Containers/Exceptions.cpp
 )
 
 SET(Document_HPP_SRCS
@@ -200,6 +201,7 @@ SET(Document_HPP_SRCS
     MergeDocuments.h
     Containers/ContainerBase.h
     Containers/Container.h
+    Containers/Exceptions.h
 )
 SET(Document_SRCS
     ${Document_CPP_SRCS}

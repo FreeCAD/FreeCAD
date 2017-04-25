@@ -48,7 +48,6 @@
 #define APP_CONTAINERBASE_H
 
 #include <Base/BaseClass.h>
-#include <Base/Exception.h>
 #include <FCConfig.h>
 
 #include <unordered_set> //for private function
@@ -189,70 +188,6 @@ private:
                                    std::vector<DocumentObject*> &result);
 };
 
-
-class AppExport ContainerError: public Base::Exception
-{
-    TYPESYSTEM_HEADER();
-public:
-    static void initContainerExceptionTypes();
-    ContainerError(){}
-    ContainerError(const char* message)
-        : Exception(message){}
-    ContainerError(const std::string& message)
-        : Exception(message){}
-};
-
-#define DEFINE_CONTAINER_EXCEPTION(classname)         \
-    class AppExport classname: public ContainerError  \
-    {                                                 \
-        TYPESYSTEM_HEADER();                          \
-    public:                                           \
-        classname(){}                                 \
-        classname(const char* message)                \
-            : ContainerError(message){}               \
-        classname(const std::string& message)         \
-            : ContainerError(message){}               \
-    }
-
-/**
- * @brief ContainerTreeError: raised if container tree is a graph (a child has multiple parents for example)
- */
-DEFINE_CONTAINER_EXCEPTION(ContainerTreeError);
-
-/**
- * @brief AlreadyInContainerError: raised when adding an object to a container, but it is already in another container.
- */
-DEFINE_CONTAINER_EXCEPTION(AlreadyInContainerError);
-
-/**
- * @brief ContainerUnsupportedError class : the action is not supported by this kind of container (e.g. newObject to Origin)
- */
-DEFINE_CONTAINER_EXCEPTION(ContainerUnsupportedError);
-
-/**
- * @brief RejectedByContainerError: thrown by Container::canAccept when the specific container doesn't accept the object (e.g. PartDesign Body will refuse to take a Part::Feature).
- */
-DEFINE_CONTAINER_EXCEPTION(RejectedByContainerError);
-
-/**
- * @brief NotAContainerError: raised when requesting a container interface around an object that is not a container
- */
-DEFINE_CONTAINER_EXCEPTION(NotAContainerError);
-
-/**
- * @brief SpecialChildError: raised when attempting to remove a  static child from the container (e.g., Origin).
- */
-DEFINE_CONTAINER_EXCEPTION(SpecialChildError);
-
-/**
- * @brief NullContainerError: raised if container doesn't exist
- */
-DEFINE_CONTAINER_EXCEPTION(NullContainerError);
-
-/**
- * @brief ObjectNotFoundError: raised by getObject(name)
- */
-DEFINE_CONTAINER_EXCEPTION(ObjectNotFoundError);
 
 }//namespace App
 #endif // APP_CONTAINERBASE_H

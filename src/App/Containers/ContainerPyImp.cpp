@@ -26,6 +26,7 @@
 
 #include <App/Containers/Container.h>
 #include <App/PropertyContainerPy.h>
+#include <App/Containers/Exceptions.h>
 
 // inclusion of the generated files (generated out of ContainerPy.xml)
 #include <Containers/ContainerPy.h>
@@ -73,20 +74,6 @@ std::string ContainerPy::representation(void) const
     return std::string(repr.str());
 }
 
-
-/**
-  * @brief macro CONTAINERPY_STDCATCH_METH: catch for exceptions in method code
-  * (returns NULL if an exception is caught). It is a helper to avoid repeating
-  * the same error handling code over and over again.
-  */
-#define CONTAINERPY_STDCATCH_METH \
-    catch (Base::Exception &e) {\
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());\
-        return NULL;\
-    } catch (const Py::Exception &){\
-        return NULL;\
-    }
-    //FIXME: add container errors!
 
 PyObject* ContainerPy::canAccept(PyObject* args)
 {

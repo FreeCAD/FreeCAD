@@ -25,6 +25,7 @@
 #endif
 
 #include <App/Containers/ContainerBase.h>
+#include <App/Containers/Exceptions.h>
 
 // inclusion of the generated files (generated out of ContainerBasePy.xml)
 #include <Containers/ContainerBasePy.h>
@@ -55,17 +56,6 @@ Py::Object ContainerBasePy::getObject(void) const
     else
         return Py::None();
 }
-
-/**
-  * @brief macro CONTAINERBASEPY_STDCATCH_ATTR: catch for exceptions in attribute
-  * code (re-throws the exception converted to Py::Exception). It is a helper
-  * to avoid repeating the same error handling code over and over again.
-  */
-#define CONTAINERBASEPY_STDCATCH_ATTR \
-    catch (Base::Exception &e) {\
-        throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());\
-    }
-    //FIXME: container errors to python
 
 Py::List makePyList(std::vector<DocumentObject*> objects) {
     Py::List ret;
@@ -151,19 +141,6 @@ Py::List ContainerBasePy::getParents(void) const
     } CONTAINERBASEPY_STDCATCH_ATTR;
 }
 
-/**
-  * @brief macro CONTAINERPY_STDCATCH_METH: catch for exceptions in method code
-  * (returns NULL if an exception is caught). It is a helper to avoid repeating
-  * the same error handling code over and over again.
-  */
-#define CONTAINERPY_STDCATCH_METH \
-    catch (Base::Exception &e) {\
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());\
-        return NULL;\
-    } catch (const Py::Exception &){\
-        return NULL;\
-    }
-    //FIXME: add container errors!
 
 
 PyObject* ContainerBasePy::getObject(PyObject* args)

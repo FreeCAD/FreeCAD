@@ -24,6 +24,7 @@
 
 #include "Container.h"
 #include <Containers/ContainerPy.h>
+#include "Exceptions.h"
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

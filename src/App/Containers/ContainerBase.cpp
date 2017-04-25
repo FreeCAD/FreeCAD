@@ -24,6 +24,7 @@
 
 #include "ContainerBase.h"
 #include "Container.h"
+#include "Exceptions.h"
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -264,28 +265,4 @@ void ContainerBase::recursiveChildrenRec(PropertyContainer* cnt, bool b_dynamic,
         }
     }
 
-}
-
-//------------------------------------------------------------------------------------------------
-TYPESYSTEM_SOURCE(App::ContainerError             , Base::Exception)
-TYPESYSTEM_SOURCE(App::ContainerTreeError         , App::ContainerError)
-TYPESYSTEM_SOURCE(App::AlreadyInContainerError    , App::ContainerError)
-TYPESYSTEM_SOURCE(App::ContainerUnsupportedError  , App::ContainerError)
-TYPESYSTEM_SOURCE(App::RejectedByContainerError   , App::ContainerError)
-TYPESYSTEM_SOURCE(App::NotAContainerError         , App::ContainerError)
-TYPESYSTEM_SOURCE(App::SpecialChildError          , App::ContainerError)
-TYPESYSTEM_SOURCE(App::NullContainerError         , App::ContainerError)
-TYPESYSTEM_SOURCE(App::ObjectNotFoundError        , App::ContainerError)
-
-void ContainerError::initContainerExceptionTypes()
-{
-    ContainerError            ::init();
-    ContainerTreeError        ::init();
-    AlreadyInContainerError   ::init();
-    ContainerUnsupportedError ::init();
-    RejectedByContainerError  ::init();
-    NotAContainerError        ::init();
-    SpecialChildError         ::init();
-    NullContainerError        ::init();
-    ObjectNotFoundError       ::init();
 }

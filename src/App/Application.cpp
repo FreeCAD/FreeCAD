@@ -110,6 +110,7 @@
 #include <Base/GeometryPyCXX.h>
 #include "Containers/ContainerBasePy.h"
 #include "Containers/ContainerPy.h"
+#include "Containers/Exceptions.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -288,6 +289,8 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::Interpreter().addType(&App::ContainerPy::Type, pContainersModule, "Container");
     Py_INCREF(pContainersModule);
     PyModule_AddObject(pAppModule, "Containers", pContainersModule);
+    ContainerError::registerPyExceptions(pContainersModule);
+
 }
 
 Application::~Application()
