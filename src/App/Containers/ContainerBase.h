@@ -70,6 +70,10 @@ class Origin;
  * Workspace. The derived classes are supposed to be handled in a by-value
  * manner, similarly to TopoDS_Shape. It is recommended to contsruct instances
  * around actual container objects on-the-fly, as needed.
+ *
+ * Container remembers pointer to the object as a python object, so if the
+ * object gets deleted while the Container is alive, the Container will not
+ * crash.
  */
 class AppExport ContainerBase: public Base::BaseClass
 {
@@ -147,7 +151,7 @@ public:
      * @brief isRoot: true if the container is the root of container tree (now, same as isADocument()).
      * @return
      */
-    virtual bool isRoot() const {return isADocument();}
+    virtual bool isRoot() const {check(); return isADocument();}
 
     /**
      * @brief as<Something>: same as object(), but with specific type, and insurance of non-null pointer.
