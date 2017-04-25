@@ -2619,7 +2619,7 @@ void Document::setActiveContainer(PropertyContainer* newContainer)
     if (newContainer == nullptr)
         newContainer = this;
 
-    if (newContainer && newContainer->isDerivedFrom(Document::getClassTypeId())){
+    if (newContainer->isDerivedFrom(Document::getClassTypeId())){
         if (newContainer != this)
             throw Base::ValueError("Can't activate another document inside this document");
         d->activeContainer = nullptr;
@@ -2627,6 +2627,7 @@ void Document::setActiveContainer(PropertyContainer* newContainer)
         DocumentObject* obj = static_cast<DocumentObject*>(newContainer);
         if (this != obj->getDocument())
             throw Base::ValueError("Can't activate the object because the object is in another document");
+        Container cnt(obj); //test if it's really a container
         d->activeContainer = obj;
     } else {
         throw Base::TypeError("Object to activate must be either this document, an object in it, or None. Something else was supplied.");
