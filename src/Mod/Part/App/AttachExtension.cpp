@@ -137,10 +137,13 @@ App::DocumentObjectExecReturn *AttachExtension::extensionExecute()
     if(this->isTouched_Mapping()) {
         try{
             positionBySupport();
+        // we let all Base::Exceptions thru, so that App:DocumentObject can take appropriate action
         /*} catch (Base::Exception &e) {
             return new App::DocumentObjectExecReturn(e.what());*/
+        // Convert OCC exceptions to Base::Exception
         } catch (Standard_Failure &e){
-            return new App::DocumentObjectExecReturn(e.GetMessageString());
+            throw Base::RuntimeError(e.GetMessageString());
+//            return new App::DocumentObjectExecReturn(e.GetMessageString());
         }
     }
     return App::DocumentObjectExtension::extensionExecute();
