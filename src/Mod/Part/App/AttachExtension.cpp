@@ -116,7 +116,7 @@ bool AttachExtension::changeAttacherType(const char* typeName)
 bool AttachExtension::positionBySupport()
 {
     if (!_attacher)
-        throw Base::Exception("AttachExtension: can't positionBySupport, because no AttachEngine is set.");
+        throw Base::RuntimeError("AttachExtension: can't positionBySupport, because no AttachEngine is set.");
     updateAttacherVals();
     try{
         getPlacement().setValue(_attacher->calculateAttachedPlacement(getPlacement().getValue()));
@@ -196,7 +196,7 @@ void AttachExtension::updateAttacherVals()
 App::PropertyPlacement& AttachExtension::getPlacement() {
 
     if(!getExtendedObject()->isDerivedFrom(App::GeoFeature::getClassTypeId()))
-        throw Base::Exception("AttachExtension not added to GeooFeature!");
+        throw Base::RuntimeError("AttachExtension not added to GeooFeature!");
     
     return static_cast<App::GeoFeature*>(getExtendedObject())->Placement;
 }
