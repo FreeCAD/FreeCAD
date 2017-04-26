@@ -546,6 +546,23 @@ UnitsMismatchError::UnitsMismatchError(const UnitsMismatchError &inst)
 }
 
 // ---------------------------------------------------------
+ 
+CADKernelError::CADKernelError(const char * sMessage)
+: Exception(sMessage)
+{
+}
+
+CADKernelError::CADKernelError(const std::string& sMessage)
+: Exception(sMessage)
+{
+}
+
+CADKernelError::CADKernelError(const CADKernelError &inst)
+: Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
 
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
 #include <stdexcept>
