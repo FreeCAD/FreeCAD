@@ -96,7 +96,7 @@ bool GroupExtension::allowObject(DocumentObject* obj)
     return allowObject(obj->getTypeId().getName(), "");
 }
 
-bool GroupExtension::allowObject(const char* type, const char* pytype)
+bool GroupExtension::allowObject(const char* type, const char* /*pytype*/)
 {
     Base::Type t = Base::Type::fromName(type);
     return t.isDerivedFrom(DocumentObject::getClassTypeId());

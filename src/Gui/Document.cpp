@@ -187,6 +187,7 @@ Document::~Document()
     d->connectCngObject.disconnect();
     d->connectRenObject.disconnect();
     d->connectActObject.disconnect();
+    d->connectActContainer.disconnect();
     d->connectSaveDocument.disconnect();
     d->connectRestDocument.disconnect();
     d->connectStartLoadDocument.disconnect();
@@ -569,7 +570,7 @@ void Document::slotActivatedObject(const App::DocumentObject& Obj)
     }
 }
 
-void Document::slotActivatedContainer(App::Document* doc, App::PropertyContainer* newContainer, App::PropertyContainer* oldContainer)
+void Document::slotActivatedContainer(App::Document* /*doc*/, App::PropertyContainer* newContainer, App::PropertyContainer* oldContainer)
 {
     if (oldContainer){
         if (oldContainer->isDerivedFrom(App::DocumentObject::getClassTypeId())){

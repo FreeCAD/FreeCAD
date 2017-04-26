@@ -245,7 +245,7 @@ bool Body::isAllowed(const App::DocumentObject* obj)
     return isAllowed(obj->getTypeId().getName(), "");
 }
 
-bool Body::isAllowed(const char* type, const char* pytype)
+bool Body::isAllowed(const char* type, const char* /*pytype*/)
 {
     Base::Type t = Base::Type::fromName(type);
     return (t.isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
