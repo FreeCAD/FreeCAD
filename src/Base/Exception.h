@@ -55,7 +55,7 @@ public: // FIXME: Remove the public keyword
   Exception(const std::string& sMessage);
   Exception(void);
   Exception(const Exception &inst);
-  
+
 protected:
   std::string _sErrMsg;
 };
@@ -486,6 +486,23 @@ public:
   UnitsMismatchError(const UnitsMismatchError &inst);
   /// Destruction
   virtual ~UnitsMismatchError() throw() {}
+};
+
+ /* The CADKernelError can be used to indicate an exception originating in the CAD Kernel
+ * allowing to propagate the error messages of, for example, OCC Standard_Failure exception to
+ * the FreeCAD application without making the FreeCAD application depend on OCC.
+ * @author Abdullah Tahiri
+ */
+class BaseExport CADKernelError : public Exception
+{
+public:
+    /// Construction
+    CADKernelError(const char * sMessage);
+    CADKernelError(const std::string& sMessage);
+    /// Construction
+    CADKernelError(const CADKernelError &inst);
+    /// Destruction
+    virtual ~CADKernelError() throw() {}
 };
 
 
