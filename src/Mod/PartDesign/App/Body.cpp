@@ -238,21 +238,26 @@ bool Body::isSolidFeature(const App::DocumentObject* f)
     return false;//DeepSOIC: work-in-progress?
 }
 
-bool Body::isAllowed(const App::DocumentObject* f)
+bool Body::isAllowed(const App::DocumentObject* obj)
 {
-    if (f == NULL)
+    if (!obj)
         return false;
+    return isAllowed(obj->getTypeId().getName(), "");
+}
 
-    // TODO: Should we introduce a PartDesign::FeaturePython class? This should then also return true for isSolidFeature()
-    return (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
-            f->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())   ||
-            // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
-            f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
-            f->getTypeId().isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
-            // TODO Why this lines was here? why should we allow anything of those? (2015-08-13, Fat-Zer)
-            //f->getTypeId().isDerivedFrom(Part::FeaturePython::getClassTypeId()) // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
-            //f->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())
+bool Body::isAllowed(const char* type, const char* /*pytype*/)
+{
+    Base::Type t = Base::Type::fromName(type);
+    return (t.isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
+            t.isDerivedFrom(Part::Datum::getClassTypeId())   ||
+            t.isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
+            t.isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
             );
+}
+
+bool Body::allowObject(const char* type, const char* pytype)
+{
+    return isAllowed(type, pytype);
 }
 
 
@@ -267,7 +272,7 @@ Body* Body::findBodyOf(const App::DocumentObject* feature)
 
 void Body::addObject(App::DocumentObject *feature)
 {
-    if(!isAllowed(feature))
+    if(!allowObject(feature))
         throw Base::Exception("Body: object is not allowed");
        
     //only one group per object
