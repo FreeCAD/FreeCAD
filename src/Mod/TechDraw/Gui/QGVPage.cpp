@@ -466,11 +466,9 @@ void QGVPage::setPageTemplate(TechDraw::DrawTemplate *obj)
     removeTemplate();
 
     if(obj->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId())) {
-        QGIDrawingTemplate *qTempItem = new QGIDrawingTemplate(scene());
-        pageTemplate = qTempItem;
+        pageTemplate = new QGIDrawingTemplate(scene());
     } else if(obj->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
-        QGISVGTemplate *qTempItem = new QGISVGTemplate(scene(),this);
-        pageTemplate = qTempItem;
+        pageTemplate = new QGISVGTemplate(scene());
     }
     pageTemplate->setTemplate(obj);
     pageTemplate->updateView();
