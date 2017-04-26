@@ -23,20 +23,15 @@
 
 #include "PreCompiled.h"
 #include <Base/Console.h>
-
 #include "DlgTemplateField.h"
 
 using namespace TechDrawGui;
 
-DlgTemplateField::DlgTemplateField( QWidget* parent )
+DlgTemplateField::DlgTemplateField( QWidget *parent /* = nullptr */ ) :
+    QDialog(parent)
 {
-    Q_UNUSED(parent);
     setupUi(this);
     leInput->setFocus();
-}
-
-DlgTemplateField::~DlgTemplateField()
-{
 }
 
 void DlgTemplateField::changeEvent(QEvent *e)
