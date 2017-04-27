@@ -625,6 +625,9 @@ int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject *va
 + if (self.export.Initialization):
     initialization();
 -
++   if (self.export.IsTrueRef):
+    this->setIsTrueRef();
+-
 }
 
 + if not (self.export.Constructor):
