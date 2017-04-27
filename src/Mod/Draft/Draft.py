@@ -445,7 +445,7 @@ def formatObject(target,origin=None):
             grp = doc.getObject(gname)
             if not grp:
                 grp = doc.addObject("App::DocumentObjectGroup",gname)
-            grp.addObject(target)
+                grp.addObject(target)
             if hasattr(obrep,"Transparency"):
                 obrep.Transparency = 80
         else:

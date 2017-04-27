@@ -325,6 +325,8 @@ void PyObjectBase::setAttributeOf(const char* attr, PyObject* par)
 
 void PyObjectBase::startNotify()
 {
+    if (isTrueRef())
+        return;
     if (attrDict) {
         // This is the attribute name to the parent structure
         // which we search for in the dict

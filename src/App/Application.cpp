@@ -108,6 +108,9 @@
 #include "Transactions.h"
 #include <App/MaterialPy.h>
 #include <Base/GeometryPyCXX.h>
+#include "Containers/ContainerBasePy.h"
+#include "Containers/ContainerPy.h"
+#include "Containers/Exceptions.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -215,7 +218,9 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // setting up Python binding
     Base::PyGILStateLocker lock;
     PyObject* pAppModule = Py_InitModule3("FreeCAD", Application::Methods, FreeCAD_doc);
-    Py::Module(pAppModule).setAttr(std::string("ActiveDocument"),Py::None());
+    //Py::Module(pAppModule).setAttr(std::string("ActiveDocument"),Py::None());
+    //Py::Module(pAppModule).setAttr(std::string("ActiveContainer"),Py::None());
+    updatePyActiveObjects();
 
     PyObject* pConsoleModule = Py_InitModule3("__FreeCADConsole__", ConsoleSingleton::Methods, Console_doc);
 
@@ -277,6 +282,15 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::Vector2dPy::init_type();
     Base::Interpreter().addType(Base::Vector2dPy::type_object(),
         pBaseModule,"Vector2d");
+
+    PyObject* pContainersModule = Py_InitModule3("__FreeCADContainers__", NULL,
+        "The Containers module contains interface classes for dealing with object-containing objects in a unified manner.");
+    Base::Interpreter().addType(&App::ContainerBasePy::Type, pContainersModule, "ContainerBase");
+    Base::Interpreter().addType(&App::ContainerPy::Type, pContainersModule, "Container");
+    Py_INCREF(pContainersModule);
+    PyModule_AddObject(pAppModule, "Containers", pContainersModule);
+    ContainerError::registerPyExceptions(pContainersModule);
+
 }
 
 Application::~Application()
@@ -333,7 +347,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
 
     // add the document to the internal list
     DocMap[name] = newDoc.release(); // now owned by the Application
-    _pActiveDoc = DocMap[name];
+    setActiveDocument(DocMap[name]);
 
 
     // connect the signals to the application for the new document
@@ -344,13 +358,10 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     _pActiveDoc->signalActivatedObject.connect(boost::bind(&App::Application::slotActivatedObject, this, _1));
     _pActiveDoc->signalUndo.connect(boost::bind(&App::Application::slotUndoDocument, this, _1));
     _pActiveDoc->signalRedo.connect(boost::bind(&App::Application::slotRedoDocument, this, _1));
+    _pActiveDoc->signalActiveContainer.connect(boost::bind(&App::Application::slotActivatedContainer, this, _1, _2, _3));
 
     // make sure that the active document is set in case no GUI is up
-    {
-        Base::PyGILStateLocker lock;
-        Py::Object active(_pActiveDoc->getPyObject(), true);
-        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),active);
-    }
+    updatePyActiveObjects();
 
     signalNewDocument(*_pActiveDoc);
 
@@ -498,30 +509,40 @@ Document* Application::getActiveDocument(void) const
     return _pActiveDoc;
 }
 
+App::Container Application::getActiveContainer() const
+{
+    if (this->getActiveDocument())
+        return App::Container(this->getActiveDocument()->getActiveContainer());
+    else
+        return App::Container();
+}
+
 void Application::setActiveDocument(Document* pDoc)
 {
+    App::PropertyContainer* oldContainer = nullptr;
+    if (_pActiveDoc)
+        oldContainer = _pActiveDoc->getActiveContainer();
+
     _pActiveDoc = pDoc;
 
     // make sure that the active document is set in case no GUI is up
-    if (pDoc) {
-        Base::PyGILStateLocker lock;
-        Py::Object active(pDoc->getPyObject(), true);
-        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),active);
-    }
-    else {
-        Base::PyGILStateLocker lock;
-        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),Py::None());
-    }
+    this->updatePyActiveObjects();
 
     if (pDoc)
         signalActiveDocument(*pDoc);
+
+    App::PropertyContainer* newContainer = nullptr;
+    if (pDoc)
+        newContainer = pDoc->getActiveContainer();
+
+    signalActiveContainer(newContainer, oldContainer);
 }
 
 void Application::setActiveDocument(const char *Name)
 {
     // If no active document is set, resort to a default.
     if (*Name == '\0') {
-        _pActiveDoc = 0;
+        setActiveDocument(static_cast<Document*>(nullptr));
         return;
     }
 
@@ -536,6 +557,28 @@ void Application::setActiveDocument(const char *Name)
         s << "Try to activate unknown document '" << Name << "'";
         throw Base::Exception(s.str());
     }
+}
+
+void Application::setActiveContainer(PropertyContainer* newActiveContainer)
+{
+    App::Document* doc = nullptr;
+    if (newActiveContainer){
+        if (newActiveContainer->isDerivedFrom(App::Document::getClassTypeId())){
+            doc = static_cast<App::Document*>(newActiveContainer);
+        } else if (newActiveContainer->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+            doc = static_cast<const App::DocumentObject*>(newActiveContainer)->getDocument();
+            if (!doc)
+                throw Base::ValueError("Container to activate is not in any document, so it can't be activated");
+        } else {
+            throw Base::TypeError("Container to activate must either be a DocumentObject, a Document, or None. Something else was supplied");
+        }
+    }
+
+    //it is important to set active container inside document first, to avoid Application::signalActiveContainer firing twice
+    if (doc)
+        doc->setActiveContainer(newActiveContainer);
+    if (doc != this->getActiveDocument())
+        setActiveDocument(doc);
 }
 
 const char* Application::getHomePath(void) const
@@ -916,6 +959,15 @@ void Application::slotActivatedObject(const App::DocumentObject&O)
     this->signalActivatedObject(O);
 }
 
+void Application::slotActivatedContainer(Document* doc, PropertyContainer* newContainer, PropertyContainer* oldContainer)
+{
+    signalDocActiveContainer(doc, newContainer, oldContainer);
+    if (doc == this->getActiveDocument()){
+        this->updatePyActiveObjects();
+        this->signalActiveContainer(newContainer, oldContainer);
+    }
+}
+
 void Application::slotUndoDocument(const App::Document& d)
 {
     this->signalUndoDocument(d);
@@ -924,6 +976,20 @@ void Application::slotUndoDocument(const App::Document& d)
 void Application::slotRedoDocument(const App::Document& d)
 {
     this->signalRedoDocument(d);
+}
+
+void Application::updatePyActiveObjects()
+{
+    Base::PyGILStateLocker lock;
+    if (_pActiveDoc) {
+        Py::Object ad(_pActiveDoc->getPyObject(), true);
+        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),ad);
+    }
+    else {
+        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),Py::None());        
+    }
+    Py::Object ac(getActiveContainer().getPyObject(), true);
+    Py::Module("FreeCAD").setAttr(std::string("ActiveContainer"),ac);
 }
 
 //**************************************************************************
@@ -1259,6 +1325,11 @@ void Application::initTypes(void)
     App ::Line                      ::init();
     App ::Part                      ::init();
     App ::Origin                    ::init();
+
+    //Container classes
+    App ::ContainerBase             ::init();
+    App ::Container                 ::init();
+    App::ContainerError::initContainerExceptionTypes();
 
     // Expression classes
     App ::Expression                ::init();

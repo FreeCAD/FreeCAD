@@ -284,15 +284,13 @@ bool ViewProviderDatum::doubleClicked(void)
     Gui::Command::openCommand(Msg.c_str());
     
     Part::Datum* pcDatum = static_cast<Part::Datum*>(getObject());
-    PartDesign::Body* activeBody = getActiveView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    PartDesign::Body* activeBody = PartDesign::Body::activeBody();
     auto datumBody = PartDesignGui::getBodyFor(pcDatum, false);
     
     if (datumBody != NULL) {
         if (datumBody != activeBody) {
             Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
-                datumBody->getDocument()->getName(),
-                PDBODYKEY,
+                "App.getDocument('%s').ActiveContainer = '%s'",
                 datumBody->getDocument()->getName(),
                 datumBody->getNameInDocument());
         }

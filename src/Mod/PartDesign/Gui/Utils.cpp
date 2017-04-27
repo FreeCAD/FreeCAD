@@ -61,21 +61,16 @@ namespace PartDesignGui {
 
 PartDesign::Body *getBody(bool messageIfNot)
 {
-    PartDesign::Body * activeBody = nullptr;
-    Gui::MDIView *activeView = Gui::Application::Instance->activeView();
+    PartDesign::Body* activeBody = PartDesign::Body::activeBody();
 
-    if (activeView) {
-        if ( PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
-            activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-
-            if (!activeBody && messageIfNot) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
-                    QObject::tr("In order to use PartDesign you need an active Body object in the document. "
-                                "Please make one active (double click) or create one. If you have a legacy document "
-                                "with PartDesign objects without Body, use the transfer function in "
-                                "PartDesign to put them into a Body."
-                                ));
-            }
+    if ( PartDesignGui::assureModernWorkflow ( App::GetApplication().getActiveDocument() ) ) {
+        if (!activeBody && messageIfNot) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
+                QObject::tr("In order to use PartDesign you need an active Body object in the document. "
+                            "Please make one active (double click) or create one. If you have a legacy document "
+                            "with PartDesign objects without Body, use the transfer function in "
+                            "PartDesign to put them into a Body."
+                            ));
         }
     }
 
@@ -99,11 +94,10 @@ PartDesign::Body * makeBody(App::Document *doc)
                              "App.activeDocument().addObject('PartDesign::Body','%s')",
                              bodyName.c_str() );
     Gui::Command::doCommand( Gui::Command::Gui,
-                             "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
-                             PDBODYKEY, bodyName.c_str() );
-
-    auto activeView( Gui::Application::Instance->activeView() );
-    return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+                             "App.activeDocument().ActiveContainer = '%s'",
+                             bodyName.c_str() );
+    assert(PartDesign::Body::activeBody());
+    return PartDesign::Body::activeBody();
 }
 
 PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot)
@@ -129,12 +123,8 @@ PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot)
 }
 
 App::Part* getActivePart() {
-    Gui::MDIView *activeView = Gui::Application::Instance->activeView();
-    if ( activeView ) {
-        return activeView->getActiveObject<App::Part*> (PARTKEY);
-    } else {
-        return 0;
-    }
+    //FIXME: there shouldn't be any special relation with Part, any container should be usable
+    return dynamic_cast<App::Part*>(App::GetApplication().getActiveContainer().object());
 }
 
 App::Part* getPartFor(const App::DocumentObject* obj, bool messageIfNot) {

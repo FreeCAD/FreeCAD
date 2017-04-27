@@ -291,6 +291,17 @@ public:
         return StatusBits.test(1);
     }
 
+    /**
+     * @brief setIsTrueRef: if called, disables notification chaining for this object
+     */
+    void setIsTrueRef() {
+        StatusBits.set(2);
+    }
+
+    bool isTrueRef() {
+        return StatusBits.test(2);
+    }
+
     void startNotify();
 
     typedef void* PointerType;
