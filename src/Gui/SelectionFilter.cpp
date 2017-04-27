@@ -148,6 +148,7 @@ void SelectionFilter::setFilter(const char* filter)
     if (!filter || filter[0] == 0) {
         delete Ast;
         Ast = 0;
+        Filter.clear();
     }
     else {
         Filter = filter;
@@ -237,16 +238,26 @@ void SelectionFilter::addError(const char* e)
 void SelectionFilterPy::init_type()
 {
     behaviors().name("SelectionFilter");
-    behaviors().doc("Filter for certain selection");
+    behaviors().doc("Filter for certain selection\n"
+        "Example strings are:\n"
+        "\"SELECT Part::Feature SUBELEMENT Edge\",\n"
+        "\"SELECT Part::Feature\", \n"
+        "\"SELECT Part::Feature COUNT 1..5\"\n");
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
     behaviors().set_tp_new(PyMake);
-    add_varargs_method("match",&SelectionFilterPy::match,"match()");
-    add_varargs_method("result",&SelectionFilterPy::result,"result()");
-    add_varargs_method("test",&SelectionFilterPy::test,"test()");
-    add_varargs_method("setFilter",&SelectionFilterPy::setFilter,"setFilter()");
+    add_varargs_method("match",&SelectionFilterPy::match,
+        "Check if the current selection matches the filter");
+    add_varargs_method("result",&SelectionFilterPy::result,
+        "If match() returns True then with result() you get a list of the matching objects");
+    add_varargs_method("test",&SelectionFilterPy::test,
+        "test(Feature, SubName='')\n"
+        "Test if a given object is described in the filter.\n"
+        "If SubName is not empty the sub-element gets also tested.");
+    add_varargs_method("setFilter",&SelectionFilterPy::setFilter,
+        "Set a new selection filter");
 }
 
 PyObject *SelectionFilterPy::PyMake(struct _typeobject *, PyObject *args, PyObject *)
@@ -254,7 +265,14 @@ PyObject *SelectionFilterPy::PyMake(struct _typeobject *, PyObject *args, PyObje
     char* str;
     if (!PyArg_ParseTuple(args, "s",&str))
         return 0;
-    return new SelectionFilterPy(str);
+    try {
+        SelectionFilter filter(str);
+        return new SelectionFilterPy(filter.getFilter());
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_SyntaxError, e.what());
+        return 0;
+    }
 }
 
 SelectionFilterPy::SelectionFilterPy(const std::string& s)
@@ -314,8 +332,13 @@ Py::Object SelectionFilterPy::setFilter(const Py::Tuple& args)
     char* text=0;
     if (!PyArg_ParseTuple(args.ptr(), "s",&text))
         throw Py::Exception();
-    filter.setFilter(text);
-    return Py::None();
+    try {
+        filter.setFilter(text);
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(PyExc_SyntaxError, e.what());
+    }
 }
 
 // === Parser & Scanner stuff ===============================================

@@ -57,6 +57,9 @@ public:
 
     /// Set a new filter string 
     void setFilter(const char* filter);
+    const std::string& getFilter() const {
+        return Filter;
+    }
     /** Test to current selection
      *  This method tests the current selection set
      *  against the filter and returns true if the 
