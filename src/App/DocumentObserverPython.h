@@ -70,6 +70,9 @@ private:
     /** Redoes the last undone transaction of the document */
     void slotRedoDocument(const App::Document& Doc);
 
+    void slotDocActiveContainer(App::Document* doc, App::Container newContainer, App::Container oldContainer);
+    void slotAppActiveContainer(App::Container newContainer, App::Container oldContainer);
+
 private:
     Py::Object inst;
     static std::vector<DocumentObserverPython*> _instances;
@@ -84,6 +87,8 @@ private:
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
     Connection connectDocumentChangedObject;
+    Connection connectDocActiveContainer;
+    Connection connectAppActiveContainer;
 };
 
 } //namespace App
