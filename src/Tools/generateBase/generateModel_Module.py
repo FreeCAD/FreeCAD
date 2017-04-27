@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
 #
-# Generated Sat Dec 03 11:48:45 2016 by generateDS.py.
+# Generated Thu Apr 27 15:48:35 2017 by generateDS.py.
+# Update it with: python generateDS.py -o generateModel_Module.py generateMetaModel_Module.xsd
+#
+# WARNING! All changes made in this file will be lost!
 #
 
 import sys
