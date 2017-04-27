@@ -81,6 +81,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "Document.h"
 #include "Application.h"
 #include "DocumentObject.h"
+#include "DocumentObjectPy.h"
 #include "MergeDocuments.h"
 #include <App/DocumentPy.h>
 
@@ -142,6 +143,8 @@ struct DocumentP
     std::vector<DocumentObject*> objectArray;
     std::map<std::string,DocumentObject*> objectMap;
     DocumentObject* activeObject;
+    /// active container in the doc. If doc itself is active container, ->nullptr
+    Container activeContainer;
     Transaction *activeUndoTransaction;
     int iTransactionMode;
     bool rollback;
@@ -158,6 +161,7 @@ struct DocumentP
 
     DocumentP() {
         activeObject = 0;
+        activeContainer = Container();
         activeUndoTransaction = 0;
         iTransactionMode = 0;
         rollback = false;
@@ -1061,6 +1065,7 @@ Document::Document(void)
     ADD_PROPERTY_TYPE(TipName,(""),0,PropertyType(Prop_Hidden|Prop_ReadOnly),
         "Link of the tip object of the document");
     Uid.touch();
+    d->activeContainer = Container(this);
 }
 
 Document::~Document()
@@ -1185,7 +1190,7 @@ void Document::Restore(Base::XMLReader &reader)
             string name = reader.getAttribute("name");
 
             try {
-                addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
+                newObject(type.c_str(), name.c_str(), /*isNew=*/ false);
             }
             catch ( Base::Exception& ) {
                 Base::Console().Message("Cannot create object '%s'\n", name.c_str());
@@ -1305,7 +1310,7 @@ Document::readObjects(Base::XMLReader& reader)
             // otherwise we may cause a dependency to itself
             // Example: Object 'Cut001' references object 'Cut' and removing the
             // digits we make an object 'Cut' referencing itself.
-            App::DocumentObject* obj = addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
+            App::DocumentObject* obj = newObject(type.c_str(), name.c_str(), /*isNew=*/ false);
             if (obj) {
                 objs.push_back(obj);
                 // use this name for the later access because an object with
@@ -1387,6 +1392,21 @@ unsigned int Document::getMemSize (void) const
     size += getUndoMemSize();
 
     return size;
+}
+
+DocumentObject* Document::addObject(const char* sType, const char* pObjectName, bool isNew)
+{
+    if (!isNew)
+        return this->newObject(sType, pObjectName, isNew);
+
+    // All calls to App.ActiveDocument.addObject(...) end up here. We
+    // redirect them to App.ActiveContainer.newObject(...), to get
+    // automatic acive-container support in all existing workbenches.
+    // New code should always use App.ActiveContainer.newObject(...)
+    // directly. This is only for legacy code to work.
+
+
+    return this->getActiveContainer().newObject(sType, pObjectName, "", isNew);
 }
 
 bool Document::saveAs(const char* file)
@@ -1550,13 +1570,13 @@ void Document::restore (void)
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
         signalDeletedObject(*(*obj));
         signalTransactionRemove(*(*obj), 0);
+        _deactivateDeletedObject(*obj);
     }
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
         delete *obj;
     }
     d->objectArray.clear();
     d->objectMap.clear();
-    d->activeObject = 0;
 
     Base::FileInfo fi(FileName.getValue());
     Base::ifstream file(fi, std::ios::in | std::ios::binary);
@@ -2142,13 +2162,16 @@ void Document::recomputeFeature(DocumentObject* Feat)
         _recomputeFeature(Feat);
 }
 
-DocumentObject * Document::addObject(const char* sType, const char* pObjectName, bool isNew)
+DocumentObject* Document::newObject(const char* sType, const char* pObjectName, bool isNew)
 {
     Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
 
     string ObjectName;
-    if (!base)
-        return 0;
+    if (!base) {
+        std::stringstream str;
+        str << "No document object found of type '" << sType << "'" << std::ends;
+        throw Base::TypeError(str.str());
+    }
     if (!base->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         delete base;
         std::stringstream str;
@@ -2278,6 +2301,15 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
     signalActivatedObject(*pcObject);
 }
 
+void Document::_deactivateDeletedObject(DocumentObject* pcObject)
+{
+    assert(pcObject);
+    if (d->activeObject == pcObject)
+        d->activeObject = nullptr;
+    if (d->activeContainer.object() == pcObject)
+        this->setActiveContainer(Container(this)); //only as fail-safe. Deletion of active container should be impossible.
+}
+
 /// Remove an object out of the document
 void Document::remObject(const char* sName)
 {
@@ -2289,8 +2321,7 @@ void Document::remObject(const char* sName)
 
     _checkTransaction(pos->second);
 
-    if (d->activeObject == pos->second)
-        d->activeObject = 0;
+    this->_deactivateDeletedObject(pos->second);
 
     // Mark the object as about to be deleted
     pos->second->StatusBits.set (ObjectStatus::Delete);
@@ -2365,9 +2396,7 @@ void Document::_remObject(DocumentObject* pcObject)
 
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(pcObject->getNameInDocument());
 
-
-    if (d->activeObject == pcObject)
-        d->activeObject = 0;
+    this->_deactivateDeletedObject(pcObject);
 
     // Mark the object as about to be deleted
     pcObject->StatusBits.set (ObjectStatus::Delete);
@@ -2572,7 +2601,28 @@ DocumentObject * Document::getObject(const char *Name) const
         return 0;
 }
 
-// Note: This method is only used in Tree.cpp slotChangeObject(), see explanation there
+App::Container Document::getActiveContainer() const
+{
+    if (d->activeContainer.isNull()){
+        //active container is null. It shouldn't happen. But make sure we don't return null container.
+        return App::Container(const_cast<Document*>(this));
+    } else {
+        return d->activeContainer;
+    }
+}
+
+void Document::setActiveContainer(App::Container newContainer)
+{
+    App::Container oldContainer = this->getActiveContainer();
+
+    if (newContainer.getDocument() != this){
+        throw Base::ValueError("Can't activate another document inside this document");
+    }
+    d->activeContainer = newContainer;
+
+    this->signalActiveContainer(this, newContainer, oldContainer);
+}
+
 bool Document::isIn(const DocumentObject *pFeat) const
 {
     for (std::map<std::string,DocumentObject*>::const_iterator o = d->objectMap.begin(); o != d->objectMap.end(); ++o) {

@@ -34,7 +34,9 @@
 #include "Application.h"
 #include "Document.h"
 #include "DocumentPy.h"
+#include "DocumentObjectPy.h"
 #include "DocumentObserverPython.h"
+#include <App/Containers/ContainerPy.h>
 
 // FreeCAD Base header
 #include <Base/Interpreter.h>
@@ -129,6 +131,8 @@ PyMethodDef Application::Methods[] = {
     {"removeDocumentObserver",  (PyCFunction) Application::sRemoveDocObserver  ,1,
      "removeDocumentObserver() -> None\n\n"
      "Remove an added document observer."},
+    {"setActiveContainer",(PyCFunction) Application::sSetActiveContainer, 1,
+     "setActiveContainer(object): sets active container (and changes ActiveDocument, if needed)."},
 
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
@@ -589,6 +593,30 @@ PyObject* Application::sRemoveDocObserver(PyObject * /*self*/, PyObject *args,Py
         return NULL;
     PY_TRY {
         DocumentObserverPython::removeObserver(Py::Object(o));
+        Py_Return;
+    } PY_CATCH;
+}
+
+PyObject* Application::sSetActiveContainer(PyObject* /*self*/, PyObject *args, PyObject* /*kwd*/)
+{
+    PyObject* newContainer;
+    if (!PyArg_ParseTuple(args, "O",&newContainer))
+        return NULL;
+    PY_TRY {
+        App::PropertyContainer* pcContainer = nullptr;
+        if (Py::Object(newContainer).isNone()){
+            pcContainer = nullptr;
+        } else if (PyObject_TypeCheck(newContainer, &(DocumentPy::Type))) {
+            pcContainer = static_cast<DocumentPy*>(newContainer)->getDocumentPtr();
+        } else if (PyObject_TypeCheck(newContainer, &(DocumentObjectPy::Type))) {
+            pcContainer = static_cast<DocumentObjectPy*>(newContainer)->getDocumentObjectPtr();
+        } else if (PyObject_TypeCheck(newContainer, &(ContainerPy::Type))) {
+            pcContainer = static_cast<ContainerPy*>(newContainer)->getContainerPtr()->object();
+        } else {
+            throw Base::TypeError("Object to activate must be either this document, an object in it, or None. Something else was supplied.");
+        }
+
+        App::GetApplication().setActiveContainer(pcContainer);
         Py_Return;
     } PY_CATCH;
 }

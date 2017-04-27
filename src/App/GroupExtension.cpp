@@ -49,7 +49,7 @@ GroupExtension::~GroupExtension()
 
 DocumentObject* GroupExtension::newObject(const char* sType, const char* pObjectName)
 {
-    DocumentObject* obj = getExtendedObject()->getDocument()->addObject(sType, pObjectName);
+    DocumentObject* obj = getExtendedObject()->getDocument()->newObject(sType, pObjectName);
     if(!allowObject(obj)) {
         getExtendedObject()->getDocument()->remObject(obj->getNameInDocument());
         std::stringstream msg;
