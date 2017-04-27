@@ -96,6 +96,7 @@ struct DocumentP
     Connection connectCngObject;
     Connection connectRenObject;
     Connection connectActObject;
+    Connection connectActContainer;
     Connection connectSaveDocument;
     Connection connectRestDocument;
     Connection connectStartLoadDocument;
@@ -139,6 +140,8 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::slotRelabelObject, this, _1));
     d->connectActObject = pcDocument->signalActivatedObject.connect
         (boost::bind(&Gui::Document::slotActivatedObject, this, _1));
+    d->connectActContainer = pcDocument->signalActiveContainer.connect
+        (boost::bind(&Gui::Document::slotActivatedContainer, this, _1, _2, _3));
     d->connectSaveDocument = pcDocument->signalSaveDocument.connect
         (boost::bind(&Gui::Document::Save, this, _1));
     d->connectRestDocument = pcDocument->signalRestoreDocument.connect
@@ -184,6 +187,7 @@ Document::~Document()
     d->connectCngObject.disconnect();
     d->connectRenObject.disconnect();
     d->connectActObject.disconnect();
+    d->connectActContainer.disconnect();
     d->connectSaveDocument.disconnect();
     d->connectRestDocument.disconnect();
     d->connectStartLoadDocument.disconnect();
@@ -563,6 +567,26 @@ void Document::slotActivatedObject(const App::DocumentObject& Obj)
     ViewProvider* viewProvider = getViewProvider(&Obj);
     if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
         signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
+    }
+}
+
+void Document::slotActivatedContainer(App::Document* /*doc*/, App::Container newContainer, App::Container oldContainer)
+{
+    if (oldContainer.isADocumentObject()){
+        App::DocumentObject* obj = &(oldContainer.asDocumentObject());
+        ViewProvider* vp = this->getViewProviderByName(obj->getNameInDocument());
+        if (vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())){
+            ViewProviderDocumentObject* vpdo = static_cast<ViewProviderDocumentObject*>(vp);
+            this->signalHighlightObject(*vpdo, Gui::HighlightMode::LightBlue, false);
+        }
+    }
+    if (newContainer.isADocumentObject()){
+        App::DocumentObject* obj = &(newContainer.asDocumentObject());
+        ViewProvider* vp = this->getViewProviderByName(obj->getNameInDocument());
+        if (vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())){
+            ViewProviderDocumentObject* vpdo = static_cast<ViewProviderDocumentObject*>(vp);
+            this->signalHighlightObject(*vpdo, Gui::HighlightMode::LightBlue, true);
+        }
     }
 }
 
