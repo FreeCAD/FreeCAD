@@ -193,6 +193,12 @@ class BaseExport PyObjectBase : public PyObject
      */
     Py_Header
 
+    enum Status {
+        Valid = 0,
+        Immutable = 1,
+        Notify = 2
+    };
+
 protected:
     /// destructor
     virtual ~PyObjectBase();
@@ -274,21 +280,29 @@ public:
 
     void setInvalid() { 
         // first bit is not set, i.e. invalid
-        StatusBits.reset(0);
+        StatusBits.reset(Valid);
         _pcTwinPointer = 0;
     }
 
     bool isValid() {
-        return StatusBits.test(0);
+        return StatusBits.test(Valid);
     }
 
     void setConst() {
         // second bit is set, i.e. immutable
-        StatusBits.set(1);
+        StatusBits.set(Immutable);
     }
 
     bool isConst() {
-        return StatusBits.test(1);
+        return StatusBits.test(Immutable);
+    }
+
+    void setShouldNotify(bool on) {
+        StatusBits.set(Notify, on);
+    }
+
+    bool shouldNotify() const {
+        return StatusBits.test(Notify);
     }
 
     void startNotify();

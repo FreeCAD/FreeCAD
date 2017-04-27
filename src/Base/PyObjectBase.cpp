@@ -45,7 +45,8 @@ PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
 #ifdef FC_LOGPYOBJECTS
     Base::Console().Log("PyO+: %s (%p)\n",T->tp_name, this);
 #endif
-    StatusBits.set(0); // valid, the second bit is NOT set, i.e. it's mutable
+    StatusBits.set(Valid); // valid, the second bit is NOT set, i.e. it's mutable
+    StatusBits.set(Notify);
 }
 
 /// destructor
@@ -325,6 +326,9 @@ void PyObjectBase::setAttributeOf(const char* attr, PyObject* par)
 
 void PyObjectBase::startNotify()
 {
+    if (!shouldNotify())
+        return;
+
     if (attrDict) {
         // This is the attribute name to the parent structure
         // which we search for in the dict
