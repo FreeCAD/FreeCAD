@@ -78,19 +78,6 @@ void GroupExtension::addObject(DocumentObject* obj)
     }
 }
 
-bool GroupExtension::adoptObject(DocumentObject* obj)
-{
-    auto *group = App::GroupExtension::getGroupOfObject(obj);
-    if (group == getExtendedObject()){
-        return true;
-    } else if (group){
-        return false;
-    } else {
-        addObject(obj);
-        return true;
-    }
-}
-
 bool GroupExtension::allowObject(DocumentObject* obj)
 {
     return allowObject(obj->getTypeId().getName(), "");
