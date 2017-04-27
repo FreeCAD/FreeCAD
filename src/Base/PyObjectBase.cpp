@@ -292,16 +292,18 @@ void PyObjectBase::resetAttribute()
     if (attrDict) {
         // This is the attribute name to the parent structure
         // which we search for in the dict
-        PyObject* key = PyString_FromString("__attribute_of_parent__");
-        PyObject* attr = PyDict_GetItem(attrDict, key);
+        PyObject* key1 = PyString_FromString("__attribute_of_parent__");
+        PyObject* key2 = PyString_FromString("__instance_of_parent__");
+        PyObject* attr = PyDict_GetItem(attrDict, key1);
+        PyObject* inst = PyDict_GetItem(attrDict, key2);
         if (attr) {
-            PyObject* parent = PyDict_GetItem(attrDict, attr);
-            if (parent) {
-                PyDict_DelItem(attrDict, attr);
-            }
-            PyDict_DelItem(attrDict, key);
+            PyDict_DelItem(attrDict, key1);
         }
-        Py_DECREF(key);
+        if (inst) {
+            PyDict_DelItem(attrDict, key2);
+        }
+        Py_DECREF(key1);
+        Py_DECREF(key2);
     }
 }
 
@@ -311,12 +313,14 @@ void PyObjectBase::setAttributeOf(const char* attr, PyObject* par)
         attrDict = PyDict_New();
     }
 
-    PyObject* key = PyString_FromString("__attribute_of_parent__");
+    PyObject* key1 = PyString_FromString("__attribute_of_parent__");
+    PyObject* key2 = PyString_FromString("__instance_of_parent__");
     PyObject* attro = PyString_FromString(attr);
-    PyDict_SetItem(attrDict, key, attro);
-    PyDict_SetItem(attrDict, attro, par);
+    PyDict_SetItem(attrDict, key1, attro);
+    PyDict_SetItem(attrDict, key2, par);
     Py_DECREF(attro);
-    Py_DECREF(key);
+    Py_DECREF(key1);
+    Py_DECREF(key2);
 }
 
 void PyObjectBase::startNotify()
@@ -324,30 +328,29 @@ void PyObjectBase::startNotify()
     if (attrDict) {
         // This is the attribute name to the parent structure
         // which we search for in the dict
-        PyObject* key = PyString_FromString("__attribute_of_parent__");
-        PyObject* attr = PyDict_GetItem(attrDict, key);
-        if (attr) {
-            PyObject* parent = PyDict_GetItem(attrDict, attr);
-            if (parent) {
-                // Inside __setattr of the parent structure the 'attr'
-                // is being removed from the dict and thus its reference
-                // counter will be decremented. To avoid to be deleted we
-                // must tmp. increment it and afterwards decrement it again.
-                Py_INCREF(parent);
-                Py_INCREF(attr);
-                Py_INCREF(this);
+        PyObject* key1 = PyString_FromString("__attribute_of_parent__");
+        PyObject* key2 = PyString_FromString("__instance_of_parent__");
+        PyObject* attr = PyDict_GetItem(attrDict, key1);
+        PyObject* parent = PyDict_GetItem(attrDict, key2);
+        if (attr && parent) {
+            // Inside __setattr of the parent structure the 'attr'
+            // is being removed from the dict and thus its reference
+            // counter will be decremented. To avoid to be deleted we
+            // must tmp. increment it and afterwards decrement it again.
+            Py_INCREF(parent);
+            Py_INCREF(attr);
+            Py_INCREF(this);
 
-                __setattr(parent, PyString_AsString(attr), this);
+            __setattr(parent, PyString_AsString(attr), this);
 
-                Py_DECREF(parent); // might be destroyed now
-                Py_DECREF(attr); // might be destroyed now
-                Py_DECREF(this); // might be destroyed now
+            Py_DECREF(parent); // might be destroyed now
+            Py_DECREF(attr); // might be destroyed now
+            Py_DECREF(this); // might be destroyed now
 
-                if (PyErr_Occurred())
-                    PyErr_Clear();
-            }
+            if (PyErr_Occurred())
+                PyErr_Clear();
         }
-        Py_DECREF(key);
+        Py_DECREF(key1);
     }
 }
 
