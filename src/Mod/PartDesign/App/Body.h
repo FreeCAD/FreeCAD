@@ -119,6 +119,11 @@ public:
      */
     static Body *findBodyOf(const App::DocumentObject* feature);
 
+    /**
+     * @brief activeBody(): if active container is a body, returns it, otherwise returns nullptr.
+     */
+    static Body* activeBody();
+
     PyObject *getPyObject(void) override;
 
 
