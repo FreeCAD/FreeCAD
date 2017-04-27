@@ -351,6 +351,7 @@ void PyObjectBase::startNotify()
                 PyErr_Clear();
         }
         Py_DECREF(key1);
+        Py_DECREF(key2);
     }
 }
 
