@@ -2075,6 +2075,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     def getArrow(arrowtype,point,arrowsize,color,linewidth,angle=0):
         svg = ""
+        if not obj.ViewObject:
+            return svg
         if obj.ViewObject.ArrowType == "Circle":
             svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
             svg += '" r="'+str(arrowsize)+'" '
@@ -2189,7 +2191,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
 
     elif getType(obj) == "Dimension":
-        if obj.ViewObject.Proxy:
+        if not obj.ViewObject:
+            print ("export of dimensions to SVG is only available in GUI mode")
+        elif obj.ViewObject.Proxy:
             if hasattr(obj.ViewObject.Proxy,"p1"):
                 prx = obj.ViewObject.Proxy
                 ts = (len(prx.string)*obj.ViewObject.FontSize.Value)/4.0
@@ -2259,7 +2263,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
 
     elif getType(obj) == "AngularDimension":
-        if obj.ViewObject.Proxy:
+        if not obj.ViewObject:
+            print ("export of dimensions to SVG is only available in GUI mode")
+        elif obj.ViewObject.Proxy:
             if hasattr(obj.ViewObject.Proxy,"circle"):
                 prx = obj.ViewObject.Proxy
 
@@ -2309,52 +2315,58 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Annotation":
         "returns an svg representation of a document annotation"
-        n = obj.ViewObject.FontName
-        a = obj.ViewObject.Rotation.getValueAs("rad")
-        t = obj.LabelText
-        j = obj.ViewObject.Justification
-        svg += getText(stroke,fontsize,n,a,getProj(obj.Position),t,linespacing,j)
+        if not obj.ViewObject:
+            print ("export of texts to SVG is only available in GUI mode")
+        else:
+            n = obj.ViewObject.FontName
+            a = obj.ViewObject.Rotation.getValueAs("rad")
+            t = obj.LabelText
+            j = obj.ViewObject.Justification
+            svg += getText(stroke,fontsize,n,a,getProj(obj.Position),t,linespacing,j)
 
     elif getType(obj) == "Axis":
         "returns the SVG representation of an Arch Axis system"
-        vobj = obj.ViewObject
-        lorig = getLineStyle()
-        fill = 'none'
-        rad = vobj.BubbleSize.Value/2
-        n = 0
-        for e in obj.Shape.Edges:
-            lstyle = lorig
-            svg += getPath([e])
-            lstyle = "none"
-            pos = ["Start"]
-            if hasattr(vobj,"BubblePosition"):
-                if vobj.BubblePosition == "Both":
-                    pos = ["Start","End"]
-                else:
-                    pos = [vobj.BubblePosition]
-            for p in pos:
-                if p == "Start":
-                    p1 = e.Vertexes[0].Point
-                    p2 = e.Vertexes[1].Point
-                else:
-                    p1 = e.Vertexes[1].Point
-                    p2 = e.Vertexes[0].Point
-                dv = p2.sub(p1)
-                dv.normalize()
-                center = p2.add(dv.scale(rad,rad,rad))
-                svg += getCircle(Part.makeCircle(rad,center))
-                if hasattr(vobj.Proxy,"bubbletexts"):
-                    if len (vobj.Proxy.bubbletexts) >= n:
-                        svg += '<text fill="' + stroke + '" '
-                        svg += 'font-size="' + str(rad) + '" '
-                        svg += 'style="text-anchor:middle;'
-                        svg += 'text-align:center;'
-                        svg += 'font-family: sans;" '
-                        svg += 'transform="translate(' + str(center.x+rad/4.0) + ',' + str(center.y-rad/3.0) + ') '
-                        svg += 'scale(1,-1)"> '
-                        svg += '<tspan>' + obj.ViewObject.Proxy.bubbletexts[n].string.getValues()[0] + '</tspan>\n'
-                        svg += '</text>\n'
-                        n += 1
+        if not obj.ViewObject:
+            print ("export of axes to SVG is only available in GUI mode")
+        else:
+            vobj = obj.ViewObject
+            lorig = getLineStyle()
+            fill = 'none'
+            rad = vobj.BubbleSize.Value/2
+            n = 0
+            for e in obj.Shape.Edges:
+                lstyle = lorig
+                svg += getPath([e])
+                lstyle = "none"
+                pos = ["Start"]
+                if hasattr(vobj,"BubblePosition"):
+                    if vobj.BubblePosition == "Both":
+                        pos = ["Start","End"]
+                    else:
+                        pos = [vobj.BubblePosition]
+                for p in pos:
+                    if p == "Start":
+                        p1 = e.Vertexes[0].Point
+                        p2 = e.Vertexes[1].Point
+                    else:
+                        p1 = e.Vertexes[1].Point
+                        p2 = e.Vertexes[0].Point
+                    dv = p2.sub(p1)
+                    dv.normalize()
+                    center = p2.add(dv.scale(rad,rad,rad))
+                    svg += getCircle(Part.makeCircle(rad,center))
+                    if hasattr(vobj.Proxy,"bubbletexts"):
+                        if len (vobj.Proxy.bubbletexts) >= n:
+                            svg += '<text fill="' + stroke + '" '
+                            svg += 'font-size="' + str(rad) + '" '
+                            svg += 'style="text-anchor:middle;'
+                            svg += 'text-align:center;'
+                            svg += 'font-family: sans;" '
+                            svg += 'transform="translate(' + str(center.x+rad/4.0) + ',' + str(center.y-rad/3.0) + ') '
+                            svg += 'scale(1,-1)"> '
+                            svg += '<tspan>' + obj.ViewObject.Proxy.bubbletexts[n].string.getValues()[0] + '</tspan>\n'
+                            svg += '</text>\n'
+                            n += 1
 
     elif getType(obj) == "Pipe":
         fill = stroke
@@ -2371,25 +2383,28 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Space":
         "returns an SVG fragment for the text of a space"
-        c = getrgb(obj.ViewObject.TextColor)
-        n = obj.ViewObject.FontName
-        a = 0
-        if rotation != 0:
-            a = math.radians(rotation)
-        t1 = obj.ViewObject.Proxy.text1.string.getValues()
-        t2 = obj.ViewObject.Proxy.text2.string.getValues()
-        scale = obj.ViewObject.FirstLine.Value/obj.ViewObject.FontSize.Value
-        f1 = fontsize*scale
-        p2 = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
-        lspc = FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue())
-        p1 = p2.add(lspc)
-        j = obj.ViewObject.TextAlign
-        svg += getText(c,f1,n,a,getProj(p1),t1,linespacing,j,flip=True)
-        if t2:
-            ofs = FreeCAD.Vector(0,lspc.Length,0)
-            if a:
-                ofs = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),-rotation).multVec(ofs)
-            svg += getText(c,fontsize,n,a,getProj(p1).add(ofs),t2,linespacing,j,flip=True)
+        if not obj.ViewObject:
+            print ("export of spaces to SVG is only available in GUI mode")
+        else:
+            c = getrgb(obj.ViewObject.TextColor)
+            n = obj.ViewObject.FontName
+            a = 0
+            if rotation != 0:
+                a = math.radians(rotation)
+            t1 = obj.ViewObject.Proxy.text1.string.getValues()
+            t2 = obj.ViewObject.Proxy.text2.string.getValues()
+            scale = obj.ViewObject.FirstLine.Value/obj.ViewObject.FontSize.Value
+            f1 = fontsize*scale
+            p2 = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
+            lspc = FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue())
+            p1 = p2.add(lspc)
+            j = obj.ViewObject.TextAlign
+            svg += getText(c,f1,n,a,getProj(p1),t1,linespacing,j,flip=True)
+            if t2:
+                ofs = FreeCAD.Vector(0,lspc.Length,0)
+                if a:
+                    ofs = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),-rotation).multVec(ofs)
+                svg += getText(c,fontsize,n,a,getProj(p1).add(ofs),t2,linespacing,j,flip=True)
 
     elif obj.isDerivedFrom('Part::Feature'):
         if obj.Shape.isNull():
