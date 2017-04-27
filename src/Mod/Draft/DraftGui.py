@@ -1749,6 +1749,17 @@ class DraftToolBar:
         FreeCADGui.runCommand("Draft_AutoGroup")
         
     def setAutoGroup(self,value=None):
+        FreeCAD.ActiveDocument.ActiveContainer = value
+
+    def updateAutoGroup(self):
+        ac = FreeCAD.ActiveContainer
+        if ac and ac.isDerivedFrom("App::Document"):
+            value = None
+            obj = None
+        else:
+            value = ac.Name if ac is not None else None
+            obj = ac
+
         if value == None:
             self.autogroup = None
             self.autoGroupButton.setText("None")
@@ -1756,7 +1767,6 @@ class DraftToolBar:
             self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
             self.autoGroupButton.setDown(False)
         else:
-            obj = FreeCAD.ActiveDocument.getObject(value)
             if obj:
                 self.autogroup = value
                 self.autoGroupButton.setText(obj.Label)
@@ -1769,7 +1779,7 @@ class DraftToolBar:
                 self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg'))
                 self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
                 self.autoGroupButton.setDown(False)
-
+        
     def show(self):
         if not self.taskmode:
             self.draftWidget.setVisible(True)
@@ -2060,9 +2070,16 @@ class FacebinderTaskPanel:
         self.addButton.setText(QtGui.QApplication.translate("draft", "Add", None))
         self.title.setText(QtGui.QApplication.translate("draft", "Facebinder elements", None))
 
+class _ContainerObserver(object):
+    "This observer updates the name of auto-group displayed on draft toolbar"
+    def slotAppActiveContainer(self, newConainer, oldContainer):
+        FreeCADGui.draftToolBar.updateAutoGroup()
+_theContainerObserver = _ContainerObserver()
 
 if not hasattr(FreeCADGui,"draftToolBar"):
     FreeCADGui.draftToolBar = DraftToolBar()
+    FreeCAD.addDocumentObserver(_theContainerObserver)
+    _theContainerObserver.slotAppActiveContainer(FreeCAD.ActiveContainer, None) #if Draft is loaded when there's an active container already, update the display.
 #----End of Python Features Definitions----#
    
 if not hasattr(FreeCADGui,"Snapper"):

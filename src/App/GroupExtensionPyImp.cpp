@@ -46,14 +46,9 @@ PyObject*  GroupExtensionPy::newObject(PyObject *args)
     if (!PyArg_ParseTuple(args, "s|s", &sType,&sName))     // convert args: Python->C
         return NULL;
 
-    DocumentObject *object = getGroupExtensionPtr()->addObject(sType, sName);
-    if ( object ) {
-        return object->getPyObject();
-    }
-    else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "Cannot create object of type '%s'", sType);
-        return NULL;
-    }
+    DocumentObject *object = getGroupExtensionPtr()->newObject(sType, sName);
+    assert(object);
+    return object->getPyObject();
 }
 
 PyObject*  GroupExtensionPy::addObject(PyObject *args)

@@ -215,13 +215,6 @@ void CmdSketcherNewSketch::activated(int iMsg)
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
         Part::Feature *part = static_cast<Part::Feature*>(support.getValue());//if multi-part support, this will return 0
-        if (part){
-            App::DocumentObjectGroup* grp = part->getGroup();
-            if (grp) {
-                doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
-                             ,grp->getNameInDocument(),FeatName.c_str());
-            }
-        }
     }
     else {
         // ask user for orientation

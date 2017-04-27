@@ -47,12 +47,15 @@ GroupExtension::~GroupExtension()
 {
 }
 
-DocumentObject* GroupExtension::addObject(const char* sType, const char* pObjectName)
+DocumentObject* GroupExtension::newObject(const char* sType, const char* pObjectName)
 {
-    DocumentObject* obj = getExtendedObject()->getDocument()->addObject(sType, pObjectName);
+    DocumentObject* obj = getExtendedObject()->getDocument()->newObject(sType, pObjectName);
     if(!allowObject(obj)) {
         getExtendedObject()->getDocument()->remObject(obj->getNameInDocument());
-        return nullptr;
+        std::stringstream msg;
+        msg << "Object " << this->getExtendedObject()->getNameInDocument()
+            << " cannot accept a new object of type " << sType;
+        throw Base::TypeError(msg.str());
     }
     if (obj) addObject(obj);
     return obj;
@@ -72,6 +75,19 @@ void GroupExtension::addObject(DocumentObject* obj)
         std::vector<DocumentObject*> grp = Group.getValues();
         grp.push_back(obj);
         Group.setValues(grp);
+    }
+}
+
+bool GroupExtension::adoptObject(DocumentObject* obj)
+{
+    auto *group = App::GroupExtension::getGroupOfObject(obj);
+    if (group == getExtendedObject()){
+        return true;
+    } else if (group){
+        return false;
+    } else {
+        addObject(obj);
+        return true;
     }
 }
 

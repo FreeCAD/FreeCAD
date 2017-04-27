@@ -106,7 +106,7 @@ void Segmentation::accept()
         const std::vector<MeshCore::MeshSegment>& data = (*it)->GetSegments();
         for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
             Mesh::MeshObject* segment = mesh->meshFromSegment(*jt);
-            Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
+            Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(group->newObject("Mesh::Feature", "Segment"));
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
             feaSegm->Mesh.finishEditing();

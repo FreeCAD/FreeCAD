@@ -1378,11 +1378,24 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
         in.rdbuf(&buf);
         MergeDocuments mimeView(doc);
         std::vector<App::DocumentObject*> newObj = mimeView.importObjects(in);
-        std::vector<App::DocumentObjectGroup*> grp = Gui::Selection().getObjectsOfType<App::DocumentObjectGroup>();
-        if (grp.size() == 1) {
-            Gui::Document* gui = Application::Instance->getDocument(doc);
-            if (gui)
-                gui->addRootObjectsToGroup(newObj, grp.front());
+
+        //add to group - either to selected one, or to active one.
+        App::DocumentObject* targetContainer = nullptr;
+        std::vector<App::DocumentObject*> grp = Gui::Selection().getObjectsOfType<App::DocumentObject>();
+        if (grp.size() == 1){
+            if (grp[0]->hasExtension(App::GroupExtension::getExtensionClassTypeId())){
+                targetContainer = grp[0];
+            }
+        }
+        if (!targetContainer){
+            //none selected, use active group
+            targetContainer = dynamic_cast<App::DocumentObject*>(App::GetApplication().getActiveContainer());
+        }
+        if (targetContainer){
+            App::GroupExtension* ge = targetContainer->getExtensionByType<App::GroupExtension>();
+            for (App::DocumentObject* obj: newObj){
+                ge->adoptObject(obj);
+            }
         }
         doc->commitTransaction();
     }
@@ -1397,11 +1410,24 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
         MergeDocuments mimeView(doc);
         std::vector<App::DocumentObject*> newObj = mimeView.importObjects(str);
         str.close();
-        std::vector<App::DocumentObjectGroup*> grp = Gui::Selection().getObjectsOfType<App::DocumentObjectGroup>();
-        if (grp.size() == 1) {
-            Gui::Document* gui = Application::Instance->getDocument(doc);
-            if (gui)
-                gui->addRootObjectsToGroup(newObj, grp.front());
+
+        //add to group - either to selected one, or to active one.
+        App::DocumentObject* targetContainer = nullptr;
+        std::vector<App::DocumentObject*> grp = Gui::Selection().getObjectsOfType<App::DocumentObject>();
+        if (grp.size() == 1){
+            if (grp[0]->hasExtension(App::GroupExtension::getExtensionClassTypeId())){
+                targetContainer = grp[0];
+            }
+        }
+        if (!targetContainer){
+            //none selected, use active group
+            targetContainer = dynamic_cast<App::DocumentObject*>(App::GetApplication().getActiveContainer());
+        }
+        if (targetContainer){
+            App::GroupExtension* ge = targetContainer->getExtensionByType<App::GroupExtension>();
+            for (App::DocumentObject* obj: newObj){
+                ge->adoptObject(obj);
+            }
         }
         doc->commitTransaction();
     }
