@@ -1005,6 +1005,34 @@ ViewProviderPythonFeatureImp::dropObject(App::DocumentObject* obj)
     return Rejected;
 }
 
+bool ViewProviderPythonFeatureImp::isShow() const
+{
+    // Run the onChanged method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("isShow"))) {
+                Py::Callable method(vp.getAttr(std::string("isShow")));
+                Py::Tuple args;
+                Py::Boolean ok(method.apply(args));
+                return static_cast<bool>(ok) ? true : false;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return false;
+}
+
+
 // ---------------------------------------------------------
 
 namespace Gui {
