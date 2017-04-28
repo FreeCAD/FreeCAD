@@ -116,7 +116,7 @@ bool AttachExtension::changeAttacherType(const char* typeName)
 bool AttachExtension::positionBySupport()
 {
     if (!_attacher)
-        throw Base::Exception("AttachExtension: can't positionBySupport, because no AttachEngine is set.");
+        throw Base::RuntimeError("AttachExtension: can't positionBySupport, because no AttachEngine is set.");
     updateAttacherVals();
     try{
         getPlacement().setValue(_attacher->calculateAttachedPlacement(getPlacement().getValue()));
@@ -137,10 +137,13 @@ App::DocumentObjectExecReturn *AttachExtension::extensionExecute()
     if(this->isTouched_Mapping()) {
         try{
             positionBySupport();
-        } catch (Base::Exception &e) {
-            return new App::DocumentObjectExecReturn(e.what());
+        // we let all Base::Exceptions thru, so that App:DocumentObject can take appropriate action
+        /*} catch (Base::Exception &e) {
+            return new App::DocumentObjectExecReturn(e.what());*/
+        // Convert OCC exceptions to Base::Exception
         } catch (Standard_Failure &e){
-            return new App::DocumentObjectExecReturn(e.GetMessageString());
+            throw Base::RuntimeError(e.GetMessageString());
+//            return new App::DocumentObjectExecReturn(e.GetMessageString());
         }
     }
     return App::DocumentObjectExtension::extensionExecute();
@@ -196,7 +199,7 @@ void AttachExtension::updateAttacherVals()
 App::PropertyPlacement& AttachExtension::getPlacement() {
 
     if(!getExtendedObject()->isDerivedFrom(App::GeoFeature::getClassTypeId()))
-        throw Base::Exception("AttachExtension not added to GeooFeature!");
+        throw Base::RuntimeError("AttachExtension not added to GeooFeature!");
     
     return static_cast<App::GeoFeature*>(getExtendedObject())->Placement;
 }
