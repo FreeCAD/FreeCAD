@@ -246,6 +246,8 @@ class ObjectPathHelix(object):
 
     def __init__(self, obj):
         # Basic
+        obj.addProperty("App::PropertyLink", "ToolController", "Path",
+                        translate("App::Property", "The tool controller that will be used to calculate the path"))
         obj.addProperty("App::PropertyLinkSubList", "Features", "Path",
                         translate("Features", "Selected features for the drill operation"))
         obj.addProperty("App::PropertyBool", "Active", "Path",
@@ -328,6 +330,7 @@ class ObjectPathHelix(object):
 
     def execute(self, obj):
         from Part import Circle, Cylinder, Plane
+        from PathScripts import PathUtils
         from math import sqrt
 
         output = '(helix cut operation'
@@ -343,14 +346,17 @@ class ObjectPathHelix(object):
                     obj.ViewObject.Visibility = False
                 return
 
-            toolload = PathUtils.getLastToolLoad(obj)
+            if not obj.ToolController:
+                obj.ToolController = PathUtils.findToolController(obj)
 
-            if toolload is None or toolload.ToolNumber == 0:
+            toolLoad = obj.ToolController
+
+            if toolLoad is None or toolLoad.ToolNumber == 0:
                 FreeCAD.Console.PrintError("PathHelix: No tool selected for helix cut operation, insert a tool change operation first\n")
                 obj.Path = Path.Path("(ERROR: no tool selected for helix cut operation)")
                 return
 
-            tool = PathUtils.getTool(obj, toolload.ToolNumber)
+            tool = toolLoad.Proxy.getTool(toolLoad)
 
             zsafe = max(baseobj.Shape.BoundBox.ZMax for baseobj, features in obj.Features) + obj.Clearance.Value
             output += "G0 Z" + fmt(zsafe)
@@ -439,7 +445,7 @@ class ObjectPathHelix(object):
                 output += helix_cut((job["xc"], job["yc"]), job["r_out"], job["r_in"], obj.DeltaR.Value,
                                     job["zmax"], job["zmin"], obj.StepDown.Value,
                                     job["zsafe"], tool.Diameter,
-                                    toolload.VertFeed.Value, toolload.HorizFeed.Value,
+                                    toolLoad.VertFeed.Value, toolLoad.HorizFeed.Value,
                                     obj.Direction, obj.StartSide)
                 output += '\n'
 
@@ -500,10 +506,14 @@ class CommandPathHelix(object):
         obj.Features = cylinders_in_selection()
         obj.DeltaR = 1.0
 
-        toolLoad = PathUtils.getLastToolLoad(obj)
+        if not obj.ToolController:
+            obj.ToolController = PathUtils.findToolController(obj)
+
+        toolLoad = obj.ToolController
+
         if toolLoad is not None:
             obj.ToolNumber = toolLoad.ToolNumber
-            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
+            tool = toolLoad.Proxy.getTool(toolLoad)
             if tool:
                 # start with 25% overlap
                 obj.DeltaR = tool.Diameter * 0.75
@@ -559,6 +569,8 @@ class TaskPanel(object):
 
     def __init__(self, obj):
         from Units import Quantity
+        from PathScripts import PathUtils
+
         self.obj = obj
         self.previous_value = {}
         self.form = QtGui.QToolBox()
@@ -692,11 +704,15 @@ class TaskPanel(object):
 
         layout = nextToolBoxItem("Drill parameters", ":/icons/Path-OperationB.svg")
         addCheckBox("Active", "Operation is active")
-        tool = PathUtils.getTool(self.obj, self.obj.ToolNumber)
+
+        toolLoad = PathUtils.findToolController(obj)
+        tool = toolLoad and toolLoad.Proxy.getTool(toolLoad)
+
         if not tool:
             drmax = None
         else:
             drmax = tool.Diameter
+
         addQuantity("DeltaR", "Step in Radius", max=drmax)
         addQuantity("StepDown", "Step in Z")
         addEnumeration("Direction", "Cut direction",
