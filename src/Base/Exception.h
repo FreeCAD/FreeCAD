@@ -33,6 +33,13 @@
 #include "FileInfo.h"
 #include "BaseClass.h"
 
+/* MACROS FOR THROWING EXCEPTIONS */
+
+#define THROW(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); throw myexcp;}
+#define THROWM(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); throw myexcp;}
+
+#define THROWMF_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); throw myexcp;}
+
 namespace Base
 {
 
@@ -41,16 +48,32 @@ class BaseExport Exception : public BaseClass
   TYPESYSTEM_HEADER();
 
 public:
+
   virtual ~Exception() throw() {}
 
   Exception &operator=(const Exception &inst);
+
   virtual const char* what(void) const throw();
+
   virtual void ReportException (void) const;
+
   inline void setMessage(const char * sMessage);
   inline void setMessage(const std::string& sMessage);
+  // what may differ from the message given by the user in
+  // derived classes
+  inline std::string getMessage() const;
+  
+  /// setter methods for including debug information
+  /// intended to use via macro for autofilling of debugging information
+  inline void setDebugInformation(const std::string & file, const int line, const std::string & function);
 
 protected:
 public: // FIXME: Remove the public keyword
+ /* sMessage may be:
+  * - an UI compliant string subsceptible of being translated and shown to the user in the UI
+  * - a very technical message not intended to be traslated or shown to the user in the UI
+  * The preferred way of throwing an exception is using the macros above. This way, the file, 
+  * line and function are automatically inserted. */
   Exception(const char * sMessage);
   Exception(const std::string& sMessage);
   Exception(void);
@@ -58,6 +81,9 @@ public: // FIXME: Remove the public keyword
 
 protected:
   std::string _sErrMsg;
+  std::string _file;
+  std::string _line;
+  std::string _function;
 };
 
 
@@ -74,6 +100,7 @@ public:
   AbortException();
   /// Construction
   AbortException(const AbortException &inst);
+
   /// Destruction
   virtual ~AbortException() throw() {}
   /// Description of the exception
@@ -92,6 +119,7 @@ public:
   XMLBaseException(const std::string& sMessage);
   /// Construction
   XMLBaseException(const XMLBaseException &inst);
+
   /// Destruction
   virtual ~XMLBaseException() throw() {}
 };
@@ -111,6 +139,7 @@ public:
   XMLParseException();
   /// Construction
   XMLParseException(const XMLParseException &inst);
+
   /// Destruction
   virtual ~XMLParseException() throw() {}
   /// Description of the exception
@@ -136,8 +165,14 @@ public:
   virtual ~FileException() throw() {}
   /// Description of the exception
   virtual const char* what() const throw();
+  /// Report generation
+  virtual void ReportException (void) const;
+  /// Get file name for use with tranlatable message
+  std::string getFileName() const;
 protected:
   FileInfo file;
+  // necesary for what() legacy behaviour as it returns a buffer that can not be of a temporary object to be destroyed at end of what()
+  std::string _sErrMsgAndFileName; 
 };
 
 /**
@@ -259,6 +294,7 @@ public:
   ProgramInformation(const std::string& sMessage);
   /// Construction
   ProgramInformation(const ProgramInformation &inst);
+
   /// Destruction
   virtual ~ProgramInformation() throw() {}
 };
@@ -514,6 +550,18 @@ inline void Exception::setMessage(const char * sMessage)
 inline void Exception::setMessage(const std::string& sMessage)
 {
   _sErrMsg = sMessage;
+}
+
+inline std::string Exception::getMessage() const
+{
+    return _sErrMsg;
+}
+
+inline void Exception::setDebugInformation(const std::string & file, const int line, const std::string & function)
+{
+    _file = file;
+    _line = std::to_string(line);
+    _function = function;
 }
 
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
