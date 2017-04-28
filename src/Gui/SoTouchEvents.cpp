@@ -159,7 +159,7 @@ GesturesDevice::GesturesDevice(QWidget* widget)
         SoGestureSwipeEvent::initClass();
     }
     if (! widget)
-        throw Base::Exception("Can't create a gestures quarter input device without widget (null pointer was passed).");
+        throw Base::ValueError("Can't create a gestures quarter input device without widget (null pointer was passed).");
     this->widget = widget;
 }
 

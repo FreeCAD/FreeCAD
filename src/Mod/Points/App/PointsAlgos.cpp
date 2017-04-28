@@ -61,7 +61,7 @@ void PointsAlgos::Load(PointKernel &points, const char *FileName)
     if (File.extension() == "asc" ||File.extension() == "ASC")
         LoadAscii(points,FileName);
     else
-        throw Base::Exception("Unknown ending");
+        throw Base::RuntimeError("Unknown ending");
 }
 
 void PointsAlgos::LoadAscii(PointKernel &points, const char *FileName)
@@ -109,7 +109,7 @@ void PointsAlgos::LoadAscii(PointKernel &points, const char *FileName)
     }
     catch (...) {
         points.clear();
-        throw Base::Exception("Reading in points failed.");
+        throw Base::BadFormatError("Reading in points failed.");
     }
 
     // now remove the last points from the kernel

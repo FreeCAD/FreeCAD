@@ -63,7 +63,7 @@ void Writer::insertAsciiFile(const char* FileName)
     Base::FileInfo fi(FileName);
     Base::ifstream from(fi);
     if (!from)
-        throw Base::Exception("Writer::insertAsciiFile() Could not open file!");
+        throw Base::FileException("Writer::insertAsciiFile() Could not open file!");
 
     Stream() << "<![CDATA[";
     char ch;
@@ -77,7 +77,7 @@ void Writer::insertBinFile(const char* FileName)
     Base::FileInfo fi(FileName);
     Base::ifstream from(fi, std::ios::in | std::ios::binary | std::ios::ate);
     if (!from)
-        throw Base::Exception("Writer::insertAsciiFile() Could not open file!");
+        throw Base::FileException("Writer::insertAsciiFile() Could not open file!");
 
     Stream() << "<![CDATA[";
     std::ifstream::pos_type fileSize = from.tellg();

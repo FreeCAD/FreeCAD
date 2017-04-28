@@ -41,10 +41,6 @@ class BaseExport Exception : public BaseClass
   TYPESYSTEM_HEADER();
 
 public:
-  Exception(const char * sMessage);
-  Exception(const std::string& sMessage);
-  Exception(void);
-  Exception(const Exception &inst);
   virtual ~Exception() throw() {}
 
   Exception &operator=(const Exception &inst);
@@ -52,6 +48,13 @@ public:
   virtual void ReportException (void) const;
   inline void setMessage(const char * sMessage);
   inline void setMessage(const std::string& sMessage);
+
+protected:
+public: // FIXME: Remove the public keyword
+  Exception(const char * sMessage);
+  Exception(const std::string& sMessage);
+  Exception(void);
+  Exception(const Exception &inst);
   
 protected:
   std::string _sErrMsg;
@@ -75,6 +78,22 @@ public:
   virtual ~AbortException() throw() {}
   /// Description of the exception
   virtual const char* what() const throw();
+};
+
+/**
+ * The XMLBaseException can be used to indicate any kind of XML related errors.
+ * @author Werner Mayer
+ */
+class BaseExport XMLBaseException : public Exception
+{
+public:
+  /// Construction
+  XMLBaseException(const char * sMessage);
+  XMLBaseException(const std::string& sMessage);
+  /// Construction
+  XMLBaseException(const XMLBaseException &inst);
+  /// Destruction
+  virtual ~XMLBaseException() throw() {}
 };
 
 /**
@@ -122,6 +141,39 @@ protected:
 };
 
 /**
+ * The FileSystemError can be used to indicate errors on file system
+ * e.g. if renaming of a file failed.
+ * @author Werner Mayer
+ */
+class BaseExport FileSystemError : public Exception
+{
+public:
+  /// Construction
+  FileSystemError(const char * sMessage);
+  FileSystemError(const std::string& sMessage);
+  /// Construction
+  FileSystemError(const FileSystemError &inst);
+  /// Destruction
+  virtual ~FileSystemError() throw() {}
+};
+
+/**
+ * The BadFormatError can be used to indicate errors in a data structure.
+ * @author Werner Mayer
+ */
+class BaseExport BadFormatError : public Exception
+{
+public:
+  /// Construction
+  BadFormatError(const char * sMessage);
+  BadFormatError(const std::string& sMessage);
+  /// Construction
+  BadFormatError(const BadFormatError &inst);
+  /// Destruction
+  virtual ~BadFormatError() throw() {}
+};
+
+/**
  * The MemoryException is thrown if not enough memory can be allocated.
  * @author Werner Mayer
  */
@@ -154,6 +206,8 @@ class BaseExport AccessViolation : public Exception
 public:
   /// Construction
   AccessViolation();
+  AccessViolation(const char * sMessage);
+  AccessViolation(const std::string& sMessage);
   /// Construction
   AccessViolation(const AccessViolation &inst);
   /// Destruction
@@ -170,6 +224,8 @@ public:
   /// Construction
   AbnormalProgramTermination();
   /// Construction
+  AbnormalProgramTermination(const char * sMessage);
+  AbnormalProgramTermination(const std::string& sMessage);
   AbnormalProgramTermination(const AbnormalProgramTermination &inst);
   /// Destruction
   virtual ~AbnormalProgramTermination() throw() {}
@@ -240,6 +296,22 @@ public:
 };
 
 /**
+ * The IndexError can be used when a sequence subscript is out of range.
+ * @author Werner Mayer
+ */
+class BaseExport IndexError : public Exception
+{
+public:
+  /// Construction
+  IndexError(const char * sMessage);
+  IndexError(const std::string& sMessage);
+  /// Construction
+  IndexError(const IndexError &inst);
+  /// Destruction
+  virtual ~IndexError() throw() {}
+};
+
+/**
  * The AttributeError can be used to indicate the usage of a wrong value.
  * @author Werner Mayer
  */
@@ -304,6 +376,22 @@ public:
 };
 
 /**
+ * The ReferencesError can be used to indicate a reference counter has the wrong value.
+ * @author Werner Mayer
+ */
+class BaseExport ReferencesError : public Exception
+{
+public:
+  /// Construction
+  ReferencesError(const char * sMessage);
+  ReferencesError(const std::string& sMessage);
+  /// Construction
+  ReferencesError(const ReferencesError &inst);
+  /// Destruction
+  virtual ~ReferencesError() throw() {}
+};
+
+/**
  * The ExpressionError can be used to indicate erroneous.input
  * to the expression engine.
  * @author Werner Mayer
@@ -334,6 +422,70 @@ public:
   ParserError(const ParserError &inst);
   /// Destruction
   virtual ~ParserError() throw() {}
+};
+
+/**
+ * The UnicodeError can be used to indicate unicode encoding/decoding error.
+ * @author Werner Mayer
+ */
+class BaseExport UnicodeError : public Exception
+{
+public:
+  /// Construction
+  UnicodeError(const char * sMessage);
+  UnicodeError(const std::string& sMessage);
+  /// Construction
+  UnicodeError(const UnicodeError &inst);
+  /// Destruction
+  virtual ~UnicodeError() throw() {}
+};
+
+/**
+ * The OverflowError can be used to indicate overflows of numbers.
+ * @author Werner Mayer
+ */
+class BaseExport OverflowError : public Exception
+{
+public:
+  /// Construction
+  OverflowError(const char * sMessage);
+  OverflowError(const std::string& sMessage);
+  /// Construction
+  OverflowError(const OverflowError &inst);
+  /// Destruction
+  virtual ~OverflowError() throw() {}
+};
+
+/**
+ * The UnderflowError can be used to indicate underflows of numbers.
+ * @author Werner Mayer
+ */
+class BaseExport UnderflowError : public Exception
+{
+public:
+  /// Construction
+  UnderflowError(const char * sMessage);
+  UnderflowError(const std::string& sMessage);
+  /// Construction
+  UnderflowError(const UnderflowError &inst);
+  /// Destruction
+  virtual ~UnderflowError() throw() {}
+};
+
+/**
+ * The UnitsMismatchError can be used to indicate that quantities with different units are used.
+ * @author Werner Mayer
+ */
+class BaseExport UnitsMismatchError : public Exception
+{
+public:
+  /// Construction
+  UnitsMismatchError(const char * sMessage);
+  UnitsMismatchError(const std::string& sMessage);
+  /// Construction
+  UnitsMismatchError(const UnitsMismatchError &inst);
+  /// Destruction
+  virtual ~UnitsMismatchError() throw() {}
 };
 
 

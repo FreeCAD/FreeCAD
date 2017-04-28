@@ -201,7 +201,7 @@ bool Base::XMLReader::read(void)
         char* message = XMLString::transcode(toCatch.getMessage());
         std::string what = message;
         XMLString::release(&message);
-        throw Base::Exception(what);
+        throw Base::XMLBaseException(what);
 #endif
     }
     catch (const SAXParseException& toCatch) {
@@ -223,7 +223,7 @@ bool Base::XMLReader::read(void)
         cerr << "Unexpected Exception \n" ;
         return false;
 #else
-        throw Base::Exception("Unexpected XML exception");
+        throw Base::XMLBaseException("Unexpected XML exception");
 #endif
     }
 
@@ -278,7 +278,7 @@ void Base::XMLReader::readBinFile(const char* filename)
     Base::FileInfo fi(filename);
     Base::ofstream to(fi, std::ios::out | std::ios::binary);
     if (!to)
-        throw Base::Exception("XMLReader::readBinFile() Could not open file!");
+        throw Base::FileException("XMLReader::readBinFile() Could not open file!");
 
     bool ok;
     do {

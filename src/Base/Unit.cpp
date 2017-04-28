@@ -45,7 +45,7 @@ static inline void checkRange(const char * op, int length, int mass, int time, i
          ( luminoseIntensity        >=  (1 << (UnitSignatureLuminoseIntensityBits        - 1)) ) ||
          ( angle                    >=  (1 << (UnitSignatureAngleBits                    - 1)) ) ||
          ( density                  >=  (1 << (UnitSignatureDensityBits                  - 1)) ) )
-        throw Base::Exception((std::string("Unit overflow in ") + std::string(op)).c_str());
+        throw Base::OverflowError((std::string("Unit overflow in ") + std::string(op)).c_str());
     if ( ( length                   <  -(1 << (UnitSignatureLengthBits                   - 1)) ) ||
          ( mass                     <  -(1 << (UnitSignatureMassBits                     - 1)) ) ||
          ( time                     <  -(1 << (UnitSignatureTimeBits                     - 1)) ) ||
@@ -55,7 +55,7 @@ static inline void checkRange(const char * op, int length, int mass, int time, i
          ( luminoseIntensity        <  -(1 << (UnitSignatureLuminoseIntensityBits        - 1)) ) ||
          ( angle                    <  -(1 << (UnitSignatureAngleBits                    - 1)) ) ||
          ( density                  <  -(1 << (UnitSignatureDensityBits                  - 1)) ) )
-        throw Base::Exception((std::string("Unit underflow in ") + std::string(op)).c_str());
+        throw Base::OverflowError((std::string("Unit underflow in ") + std::string(op)).c_str());
 }
 
 Unit::Unit(int8_t Length,

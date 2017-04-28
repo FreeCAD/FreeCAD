@@ -267,7 +267,7 @@ Application::Application(bool GUIenabled)
                 QLatin1String("Your system uses the same symbol for decimal point and group separator.\n\n"
                               "This causes serious problems and makes the application fail to work properly.\n"
                               "Go to the system configuration panel of the OS and fix this issue, please."));
-            throw Base::Exception("Invalid system settings");
+            throw Base::RuntimeError("Invalid system settings");
         }
 #endif
 #if 0 // QuantitySpinBox and InputField try to handle the group separator now
@@ -1561,7 +1561,7 @@ void Application::runApplication(void)
 #if !defined(HAVE_QT5_OPENGL)
     if (!QGLFormat::hasOpenGL()) {
         QMessageBox::critical(0, QObject::tr("No OpenGL"), QObject::tr("This system does not support OpenGL"));
-        throw Base::Exception("This system does not support OpenGL");
+        throw Base::RuntimeError("This system does not support OpenGL");
     }
     if (!QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         Base::Console().Log("This system does not support framebuffer objects\n");
