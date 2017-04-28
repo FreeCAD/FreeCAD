@@ -912,10 +912,10 @@ PyObject* Curve2dPy::intersectCC(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PyExc_RuntimeError, e->GetMessageString());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    PyErr_SetString(PyExc_TypeError, "Geometry is not a curve");
     return 0;
 }
