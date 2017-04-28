@@ -41,7 +41,7 @@ Exception::Exception(void)
 }
 
 Exception::Exception(const Exception &inst)
- : BaseClass(),_sErrMsg(inst._sErrMsg)
+: BaseClass(),_sErrMsg(inst._sErrMsg), _file(inst._file), _line(inst._line), _function(inst._function)
 {
 }
 
@@ -69,7 +69,30 @@ const char* Exception::what(void) const throw()
 
 void Exception::ReportException (void) const
 {
-    Console().Error("Exception (%s): %s \n",Console().Time(),what());
+    std::string str = "";
+    
+    if(!_sErrMsg.empty())
+        str+= (_sErrMsg + " ");
+    
+    if(!_function.empty()) {
+        str+="In ";
+        str+=_function;
+        str+= " ";
+    }
+    
+    if(!_file.empty() && !_line.empty()) {
+        // strip absolute path
+        std::size_t pos = _file.find("src");
+        
+        if (pos!=std::string::npos) {
+            str+="in ";
+            str+= _file.substr(pos);
+            str+= ":";
+            str+=_line;
+        }
+    }
+
+    Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
 }
 
 // ---------------------------------------------------------
@@ -144,32 +167,67 @@ FileException::FileException(const char * sMessage, const char * sFileName)
   : Exception( sMessage ),file(sFileName)
 {
     if (sFileName) {
-        _sErrMsg += ": ";
-        _sErrMsg += sFileName;
+        _sErrMsgAndFileName = _sErrMsg + ": ";
+        _sErrMsgAndFileName += sFileName;
     }
 }
 
 FileException::FileException(const char * sMessage, const FileInfo& File)
   : Exception( sMessage ),file(File)
 {
-    _sErrMsg += ": ";
-    _sErrMsg += File.fileName();
+    _sErrMsgAndFileName = _sErrMsg + ": ";
+    _sErrMsgAndFileName += File.fileName();
 }
 
 FileException::FileException()
-  : Exception( "Unknown file exeption happened" )
+  : Exception( "Unknown file exception happened" )
 {
+    _sErrMsgAndFileName = _sErrMsg;
 }
 
 FileException::FileException(const FileException &inst)
-  : Exception( inst._sErrMsg.c_str() ),file(inst.file)
+: Exception( inst._sErrMsg.c_str() ), file(inst.file), _sErrMsgAndFileName(inst._sErrMsgAndFileName.c_str())
 {
+}
+
+std::string FileException::getFileName() const
+{
+    return file.fileName();
 }
 
 const char* FileException::what() const throw()
 {
-    return Exception::what();
+    return _sErrMsgAndFileName.c_str();
 }
+
+void FileException::ReportException (void) const
+{
+    std::string str = "";
+    
+    if(!_sErrMsgAndFileName.empty())
+        str+= (_sErrMsgAndFileName + " ");
+    
+    if(!_function.empty()) {
+        str+="In ";
+        str+=_function;
+        str+= " ";
+    }
+    
+    if(!_file.empty() && !_line.empty()) {
+        // strip absolute path
+        std::size_t pos = _file.find("src");
+        
+        if (pos!=std::string::npos) {
+            str+="in ";
+            str+= _file.substr(pos);
+            str+= ":";
+            str+=_line;
+        }
+    }
+    
+    Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
+}
+
 
 // ---------------------------------------------------------
 
@@ -561,6 +619,7 @@ CADKernelError::CADKernelError(const CADKernelError &inst)
 : Exception(inst)
 {
 }
+
 
 // ---------------------------------------------------------
 
