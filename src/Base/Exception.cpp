@@ -41,7 +41,7 @@ Exception::Exception(void)
 }
 
 Exception::Exception(const Exception &inst)
- : BaseClass(),_sErrMsg(inst._sErrMsg)
+: BaseClass(),_sErrMsg(inst._sErrMsg), _file(inst._file), _line(inst._line), _function(inst._function)
 {
 }
 
@@ -53,6 +53,16 @@ Exception::Exception(const char * sMessage)
 
 Exception::Exception(const std::string& sMessage)
  : _sErrMsg(sMessage)
+{
+}
+
+Exception::Exception(const std::string & file, const int line, const std::string & function)
+: _file(file), _line(std::to_string(line)), _function(function)
+{
+}
+
+Exception::Exception(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: _sErrMsg(sMessage), _file(file), _line(std::to_string(line)), _function(function)
 {
 }
 
@@ -69,7 +79,35 @@ const char* Exception::what(void) const throw()
 
 void Exception::ReportException (void) const
 {
-    Console().Error("Exception (%s): %s \n",Console().Time(),what());
+    Console().Error("Exception (%s): %s \n",Console().Time(),report().c_str());
+}
+
+std::string Exception::report() const
+{
+    std::string str = "";
+
+    if(!_sErrMsg.empty())
+        str+= (_sErrMsg + " ");
+    
+    if(!_function.empty()) {
+        str+="in ";
+        str+=_function;
+        str+= " ";
+    }
+    
+    if(!_file.empty() && !_line.empty()) {
+        // strip absolute path
+        std::size_t pos = _file.find("src");
+        
+        if (pos!=std::string::npos) {
+            str+="in ";
+            str+= _file.substr(pos);
+            str+= ":";
+            str+=_line;
+        }
+    }
+    
+    return str;
 }
 
 // ---------------------------------------------------------
@@ -88,6 +126,14 @@ AbortException::AbortException(const AbortException &inst)
  : Exception(inst)
 {
 }
+
+AbortException::AbortException(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+ : Exception(sMessage, file, line, function)
+{}
+
+AbortException::AbortException(const std::string & file, const int line, const std::string & function)
+ : Exception(file, line, function)
+{}
 
 const char* AbortException::what() const throw()
 {
@@ -111,6 +157,10 @@ XMLBaseException::XMLBaseException(const XMLBaseException &inst)
 {
 }
 
+XMLBaseException::XMLBaseException(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
+
 // ---------------------------------------------------------
 
 XMLParseException::XMLParseException(const char * sMessage)
@@ -133,6 +183,15 @@ XMLParseException::XMLParseException(const XMLParseException &inst)
 {
 }
 
+XMLParseException::XMLParseException(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
+
+
+XMLParseException::XMLParseException(const std::string & file, const int line, const std::string & function)
+: Exception(file, line, function)
+{}
+
 const char* XMLParseException::what() const throw()
 {
     return Exception::what();
@@ -144,20 +203,20 @@ FileException::FileException(const char * sMessage, const char * sFileName)
   : Exception( sMessage ),file(sFileName)
 {
     if (sFileName) {
-        _sErrMsg += ": ";
-        _sErrMsg += sFileName;
+        _sErrMsgAndFileName = _sErrMsg + ": ";
+        _sErrMsgAndFileName += sFileName;
     }
 }
 
 FileException::FileException(const char * sMessage, const FileInfo& File)
   : Exception( sMessage ),file(File)
 {
-    _sErrMsg += ": ";
-    _sErrMsg += File.fileName();
+    _sErrMsgAndFileName = _sErrMsg + ": ";
+    _sErrMsgAndFileName += File.fileName();
 }
 
 FileException::FileException()
-  : Exception( "Unknown file exeption happened" )
+  : Exception( "Unknown file exception happened" )
 {
 }
 
@@ -166,9 +225,36 @@ FileException::FileException(const FileException &inst)
 {
 }
 
+FileException::FileException(const std::string& sMessage, const char * sFileName, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function),file(sFileName)
+{
+    if (sFileName) {
+        _sErrMsgAndFileName = _sErrMsg + ": ";
+        _sErrMsgAndFileName += sFileName;
+    }
+}
+
+FileException::FileException(const std::string& sMessage, const FileInfo& File, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function),file(File)
+{
+    _sErrMsgAndFileName = _sErrMsg + ": ";
+    _sErrMsgAndFileName += File.fileName();
+}
+
+FileException::FileException(const std::string & file, const int line, const std::string & function)
+: Exception("Unknown file exception happened",file, line, function)
+{
+    _sErrMsgAndFileName = _sErrMsg;
+}
+
+std::string FileException::getFileName() const
+{
+    return file.fileName();
+}
+
 const char* FileException::what() const throw()
 {
-    return Exception::what();
+    return _sErrMsgAndFileName.c_str();
 }
 
 // ---------------------------------------------------------
@@ -188,6 +274,11 @@ FileSystemError::FileSystemError(const FileSystemError &inst)
 {
 }
 
+FileSystemError::FileSystemError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
+
+
 // ---------------------------------------------------------
 
 BadFormatError::BadFormatError(const char * sMessage)
@@ -205,6 +296,10 @@ BadFormatError::BadFormatError(const BadFormatError &inst)
 {
 }
 
+BadFormatError::BadFormatError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
+
 // ---------------------------------------------------------
 
 MemoryException::MemoryException()
@@ -219,6 +314,12 @@ MemoryException::MemoryException(const MemoryException &inst)
  : Exception(inst)
 #endif
 {
+}
+
+MemoryException::MemoryException(const std::string & file, const int line, const std::string & function)
+: Exception(file, line, function)
+{
+    _sErrMsg = "Not enough memory available";
 }
 
 #if defined (__GNUC__)
@@ -251,6 +352,15 @@ AccessViolation::AccessViolation(const AccessViolation &inst)
 {
 }
 
+AccessViolation::AccessViolation(const std::string & file, const int line, const std::string & function)
+: Exception(file, line, function)
+{
+    _sErrMsg = "Access violation";
+}
+
+AccessViolation::AccessViolation(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
 // ---------------------------------------------------------
 
 AbnormalProgramTermination::AbnormalProgramTermination()
@@ -273,6 +383,16 @@ AbnormalProgramTermination::AbnormalProgramTermination(const AbnormalProgramTerm
 {
 }
 
+AbnormalProgramTermination::AbnormalProgramTermination(const std::string & file, const int line, const std::string & function)
+: Exception(file, line, function)
+{
+    _sErrMsg = "Abnormal program termination";
+}
+
+AbnormalProgramTermination::AbnormalProgramTermination(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
+
 // ---------------------------------------------------------
 
 UnknownProgramOption::UnknownProgramOption(const char * sMessage)
@@ -289,6 +409,10 @@ UnknownProgramOption::UnknownProgramOption(const UnknownProgramOption &inst)
  : Exception(inst)
 {
 }
+
+UnknownProgramOption::UnknownProgramOption(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
 
 // ---------------------------------------------------------
 
@@ -307,6 +431,11 @@ ProgramInformation::ProgramInformation(const ProgramInformation &inst)
 {
 }
 
+ProgramInformation::ProgramInformation(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
+
+
 // ---------------------------------------------------------
 
 TypeError::TypeError(const char * sMessage)
@@ -323,6 +452,10 @@ TypeError::TypeError(const TypeError &inst)
  : Exception(inst)
 {
 }
+
+TypeError::TypeError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
 
 // ---------------------------------------------------------
 
@@ -341,6 +474,10 @@ ValueError::ValueError(const ValueError &inst)
 {
 }
 
+ValueError::ValueError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
+
 // ---------------------------------------------------------
 
 IndexError::IndexError(const char * sMessage)
@@ -357,6 +494,10 @@ IndexError::IndexError(const IndexError &inst)
  : Exception(inst)
 {
 }
+
+IndexError::IndexError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
 
 // ---------------------------------------------------------
 
@@ -375,6 +516,10 @@ AttributeError::AttributeError(const AttributeError &inst)
 {
 }
 
+AttributeError::AttributeError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
+
 // ---------------------------------------------------------
 
 RuntimeError::RuntimeError(const char * sMessage)
@@ -391,6 +536,10 @@ RuntimeError::RuntimeError(const RuntimeError &inst)
  : Exception(inst)
 {
 }
+
+RuntimeError::RuntimeError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
 
 // ---------------------------------------------------------
 
@@ -409,6 +558,10 @@ NotImplementedError::NotImplementedError(const NotImplementedError &inst)
 {
 }
 
+NotImplementedError::NotImplementedError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
+
 // ---------------------------------------------------------
 
 DivisionByZeroError::DivisionByZeroError(const char * sMessage)
@@ -425,6 +578,10 @@ DivisionByZeroError::DivisionByZeroError(const DivisionByZeroError &inst)
  : Exception(inst)
 {
 }
+
+DivisionByZeroError::DivisionByZeroError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
 
 // ---------------------------------------------------------
 
@@ -460,6 +617,10 @@ ExpressionError::ExpressionError(const ExpressionError &inst)
 {
 }
 
+ExpressionError::ExpressionError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
+
 // ---------------------------------------------------------
 
 ParserError::ParserError(const char * sMessage)
@@ -476,6 +637,10 @@ ParserError::ParserError(const ParserError &inst)
  : Exception(inst)
 {
 }
+
+ParserError::ParserError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
 
 // ---------------------------------------------------------
 
@@ -494,6 +659,9 @@ UnicodeError::UnicodeError(const UnicodeError &inst)
 {
 }
 
+UnicodeError::UnicodeError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
 // ---------------------------------------------------------
 
 OverflowError::OverflowError(const char * sMessage)
@@ -510,6 +678,10 @@ OverflowError::OverflowError(const OverflowError &inst)
  : Exception(inst)
 {
 }
+
+OverflowError::OverflowError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
 
 // ---------------------------------------------------------
 
@@ -528,6 +700,10 @@ UnderflowError::UnderflowError(const UnderflowError &inst)
 {
 }
 
+UnderflowError::UnderflowError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
+
 // ---------------------------------------------------------
 
 UnitsMismatchError::UnitsMismatchError(const char * sMessage)
@@ -545,6 +721,10 @@ UnitsMismatchError::UnitsMismatchError(const UnitsMismatchError &inst)
 {
 }
 
+UnitsMismatchError::UnitsMismatchError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
+
 // ---------------------------------------------------------
  
 CADKernelError::CADKernelError(const char * sMessage)
@@ -561,6 +741,11 @@ CADKernelError::CADKernelError(const CADKernelError &inst)
 : Exception(inst)
 {
 }
+
+CADKernelError::CADKernelError(const std::string& sMessage, const std::string & file, const int line, const std::string & function)
+: Exception(sMessage, file, line, function)
+{}
+
 
 // ---------------------------------------------------------
 
