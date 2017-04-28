@@ -1041,6 +1041,10 @@ def addValue(t,v,p):
 
 def p_text_action(p) :
     'text_action : text LPAREN keywordargument_list RPAREN SEMICOL'
+    # If text string is null ignore
+    if p[3]['text'] == "" or p[3]['text'] == " " :
+        p[0] = []
+        return
     t = 'text ( text="'+p[3]['text']+'"'
     t = addValue(t,'size',p)
     t = addString(t,'spacing',p)
