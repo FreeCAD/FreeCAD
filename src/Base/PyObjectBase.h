@@ -508,7 +508,7 @@ inline PyObject * PyAsUnicodeObject(const char *str)
     // Returns a new reference, don't increment it!
     PyObject *p = PyUnicode_DecodeUTF8(str,strlen(str),0);
     if(!p)
-        throw Base::Exception("UTF8 conversion failure at PyAsUnicodeString()");
+        throw Base::UnicodeError("UTF8 conversion failure at PyAsUnicodeString()");
     return p;
 }
 

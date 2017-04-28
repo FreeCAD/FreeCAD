@@ -884,7 +884,7 @@ PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const cha
     _pcPyResourceDict = Interpreter().runMethodObject(_pcPyCommand, "GetResources");
     // check if the "GetResources()" method returns a Dict object
     if (!PyDict_Check(_pcPyResourceDict)) {
-        throw Base::Exception("PythonCommand::PythonCommand(): Method GetResources() of the Python "
+        throw Base::TypeError("PythonCommand::PythonCommand(): Method GetResources() of the Python "
                               "command object returns the wrong type (has to be dict)");
     }
 
@@ -921,7 +921,7 @@ const char* PythonCommand::getResource(const char* sName) const
     if (!pcTemp)
         return "";
     if (!PyString_Check(pcTemp)) {
-        throw Base::Exception("PythonCommand::getResource(): Method GetResources() of the Python "
+        throw Base::TypeError("PythonCommand::getResource(): Method GetResources() of the Python "
                               "command object returns a dictionary which holds not only strings");
     }
 
@@ -989,7 +989,7 @@ const char* PythonCommand::getHelpUrl(void) const
     if (! pcTemp )
         return "";
     if (! PyString_Check(pcTemp) )
-        throw Base::Exception("PythonCommand::CmdHelpURL(): Method CmdHelpURL() of the Python command object returns no string");
+        throw Base::TypeError("PythonCommand::CmdHelpURL(): Method CmdHelpURL() of the Python command object returns no string");
     return PyString_AsString(pcTemp);
 }
 
@@ -1064,16 +1064,16 @@ bool PythonCommand::isChecked() const
 {
     PyObject* item = PyDict_GetItemString(_pcPyResourceDict,"Checkable");
     if (!item) {
-        throw Base::Exception("PythonCommand::isChecked(): Method GetResources() of the Python "
-                              "command object doesn't contain the key 'Checkable'");
+        throw Base::ValueError("PythonCommand::isChecked(): Method GetResources() of the Python "
+                               "command object doesn't contain the key 'Checkable'");
     }
 
     if (PyBool_Check(item)) {
         return PyObject_IsTrue(item) ? true : false;
     }
     else {
-        throw Base::Exception("PythonCommand::isChecked(): Method GetResources() of the Python "
-                              "command object contains the key 'Checkable' which is not a boolean");
+        throw Base::ValueError("PythonCommand::isChecked(): Method GetResources() of the Python "
+                               "command object contains the key 'Checkable' which is not a boolean");
     }
 }
 
@@ -1351,7 +1351,7 @@ bool PythonGroupCommand::isExclusive() const
         return PyObject_IsTrue(item) ? true : false;
     }
     else {
-        throw Base::Exception("PythonGroupCommand::isExclusive(): Method GetResources() of the Python "
+        throw Base::TypeError("PythonGroupCommand::isExclusive(): Method GetResources() of the Python "
                               "command object contains the key 'Exclusive' which is not a boolean");
     }
 }
@@ -1367,7 +1367,7 @@ bool PythonGroupCommand::hasDropDownMenu() const
         return PyObject_IsTrue(item) ? true : false;
     }
     else {
-        throw Base::Exception("PythonGroupCommand::hasDropDownMenu(): Method GetResources() of the Python "
+        throw Base::TypeError("PythonGroupCommand::hasDropDownMenu(): Method GetResources() of the Python "
                               "command object contains the key 'DropDownMenu' which is not a boolean");
     }
 }

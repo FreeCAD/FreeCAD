@@ -825,7 +825,7 @@ bool View3DInventor::setCamera(const char* pCamera)
 {
     SoCamera * CamViewer = _viewer->getSoRenderManager()->getCamera();
     if (!CamViewer) {
-        throw Base::Exception("No camera set so far...");
+        throw Base::RuntimeError("No camera set so far...");
     }
 
     SoInput in;
@@ -835,7 +835,7 @@ bool View3DInventor::setCamera(const char* pCamera)
     SoDB::read(&in,Cam);
 
     if (!Cam){
-        throw Base::Exception("Camera settings failed to read");
+        throw Base::RuntimeError("Camera settings failed to read");
     }
 
     // toggle between persepective and orthographic camera
@@ -862,7 +862,7 @@ bool View3DInventor::setCamera(const char* pCamera)
             CamViewerP->farDistance   = ((SoPerspectiveCamera *)Cam)->farDistance;
             CamViewerP->focalDistance = ((SoPerspectiveCamera *)Cam)->focalDistance;
         } else {
-            throw Base::Exception("Camera type mismatch");
+            throw Base::TypeError("Camera type mismatch");
         }
     } else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
         if (CamViewerO){
@@ -875,7 +875,7 @@ bool View3DInventor::setCamera(const char* pCamera)
             CamViewerO->aspectRatio      = ((SoOrthographicCamera *)Cam)->aspectRatio ;
             CamViewerO->height           = ((SoOrthographicCamera *)Cam)->height;
         } else {
-            throw Base::Exception("Camera type mismatch");
+            throw Base::TypeError("Camera type mismatch");
         }
     }
 

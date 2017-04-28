@@ -303,7 +303,7 @@ void InterpreterSingleton::runInteractiveString(const char *sCmd)
         PyObject *errobj, *errdata, *errtraceback;
         PyErr_Fetch(&errobj, &errdata, &errtraceback);
 
-        Exception exc; // do not use PyException since this clears the error indicator
+        RuntimeError exc(""); // do not use PyException since this clears the error indicator
         if (PyString_Check(errdata))
             exc.setMessage(PyString_AsString(errdata));
         PyErr_Restore(errobj, errdata, errtraceback);
@@ -367,10 +367,7 @@ void InterpreterSingleton::runFile(const char*pxFileName, bool local)
         Py_DECREF(result);
     }
     else {
-        std::string err = "Unknown file: ";
-        err += pxFileName;
-        err += "\n";
-        throw Exception(err);
+        throw FileException("Unknown file", pxFileName);
     }
 }
 
@@ -537,7 +534,7 @@ void InterpreterSingleton::runMethod(PyObject *pobject, const char *method,
     pmeth = PyObject_GetAttrString(pobject, method);
     if (pmeth == NULL) {                            /* get callable object */
         va_end(argslist);
-        throw Exception("Error running InterpreterSingleton::RunMethod() method not defined");                                 /* bound method? has self */
+        throw AttributeError("Error running InterpreterSingleton::RunMethod() method not defined");                                 /* bound method? has self */
     }
 
     pargs = Py_VaBuildValue(argfmt, argslist);     /* args: c->python */
@@ -545,7 +542,7 @@ void InterpreterSingleton::runMethod(PyObject *pobject, const char *method,
 
     if (pargs == NULL) {
         Py_DECREF(pmeth);
-        throw Exception("InterpreterSingleton::RunMethod() wrong arguments");
+        throw TypeError("InterpreterSingleton::RunMethod() wrong arguments");
     }
 
     presult = PyEval_CallObject(pmeth, pargs);   /* run interpreter */
@@ -555,7 +552,7 @@ void InterpreterSingleton::runMethod(PyObject *pobject, const char *method,
     if (PP_Convert_Result(presult, resfmt, cresult)!= 0) {
         if ( PyErr_Occurred() )
             PyErr_Print();
-        throw Exception("Error running InterpreterSingleton::RunMethod() exception in called method");
+        throw RuntimeError("Error running InterpreterSingleton::RunMethod() exception in called method");
     }
 }
 
@@ -723,7 +720,7 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
         return proxy;
 
     // none of the SWIG's succeeded
-    throw Base::Exception("No SWIG wrapped library loaded");
+    throw Base::RuntimeError("No SWIG wrapped library loaded");
 }
 
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
@@ -769,7 +766,7 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
         return true;
 
     // none of the SWIG's succeeded
-    throw Base::Exception("No SWIG wrapped library loaded");
+    throw Base::RuntimeError("No SWIG wrapped library loaded");
 }
 
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))

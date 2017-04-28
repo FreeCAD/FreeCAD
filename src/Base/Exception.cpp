@@ -96,6 +96,23 @@ const char* AbortException::what() const throw()
 
 // ---------------------------------------------------------
 
+XMLBaseException::XMLBaseException(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+XMLBaseException::XMLBaseException(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+XMLBaseException::XMLBaseException(const XMLBaseException &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 XMLParseException::XMLParseException(const char * sMessage)
   : Exception(sMessage)
 {
@@ -156,6 +173,40 @@ const char* FileException::what() const throw()
 
 // ---------------------------------------------------------
 
+FileSystemError::FileSystemError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+FileSystemError::FileSystemError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+FileSystemError::FileSystemError(const FileSystemError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+BadFormatError::BadFormatError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+BadFormatError::BadFormatError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+BadFormatError::BadFormatError(const BadFormatError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 MemoryException::MemoryException()
 {
     _sErrMsg = "Not enough memory available";
@@ -185,6 +236,16 @@ AccessViolation::AccessViolation()
     _sErrMsg = "Access violation";
 }
 
+AccessViolation::AccessViolation(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+AccessViolation::AccessViolation(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
 AccessViolation::AccessViolation(const AccessViolation &inst)
  : Exception(inst)
 {
@@ -195,6 +256,16 @@ AccessViolation::AccessViolation(const AccessViolation &inst)
 AbnormalProgramTermination::AbnormalProgramTermination()
 {
     _sErrMsg = "Abnormal program termination";
+}
+
+AbnormalProgramTermination::AbnormalProgramTermination(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+AbnormalProgramTermination::AbnormalProgramTermination(const std::string& sMessage)
+  : Exception(sMessage)
+{
 }
 
 AbnormalProgramTermination::AbnormalProgramTermination(const AbnormalProgramTermination &inst)
@@ -272,6 +343,23 @@ ValueError::ValueError(const ValueError &inst)
 
 // ---------------------------------------------------------
 
+IndexError::IndexError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+IndexError::IndexError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+IndexError::IndexError(const IndexError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 AttributeError::AttributeError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -340,6 +428,23 @@ DivisionByZeroError::DivisionByZeroError(const DivisionByZeroError &inst)
 
 // ---------------------------------------------------------
 
+ReferencesError::ReferencesError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+ReferencesError::ReferencesError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+ReferencesError::ReferencesError(const ReferencesError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 ExpressionError::ExpressionError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -368,6 +473,74 @@ ParserError::ParserError(const std::string& sMessage)
 }
 
 ParserError::ParserError(const ParserError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+UnicodeError::UnicodeError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnicodeError::UnicodeError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnicodeError::UnicodeError(const UnicodeError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+OverflowError::OverflowError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+OverflowError::OverflowError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+OverflowError::OverflowError(const OverflowError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+UnderflowError::UnderflowError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnderflowError::UnderflowError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnderflowError::UnderflowError(const UnderflowError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+UnitsMismatchError::UnitsMismatchError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnitsMismatchError::UnitsMismatchError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnitsMismatchError::UnitsMismatchError(const UnitsMismatchError &inst)
  : Exception(inst)
 {
 }

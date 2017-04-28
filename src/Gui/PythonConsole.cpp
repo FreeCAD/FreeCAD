@@ -195,7 +195,7 @@ PyObject* InteractiveInterpreter::compile(const char* source) const
         return eval;
     } else {
         // do not throw Base::PyException as this clears the error indicator
-        throw Base::Exception();
+        throw Base::RuntimeError("Code evaluation failed");
     }
 
     // can never happen

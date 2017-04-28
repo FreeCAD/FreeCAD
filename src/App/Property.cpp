@@ -135,11 +135,11 @@ void Property::aboutToSetValue(void)
 void Property::verifyPath(const ObjectIdentifier &p) const
 {
     if (p.numSubComponents() != 1)
-        throw Base::Exception("Invalid property path: single component expected");
+        throw Base::ValueError("Invalid property path: single component expected");
     if (!p.getPropertyComponent(0).isSimple())
-        throw Base::Exception("Invalid property path: simple component expected");
+        throw Base::ValueError("Invalid property path: simple component expected");
     if (p.getPropertyComponent(0).getName() != getName())
-        throw Base::Exception("Invalid property path: name mismatch");
+        throw Base::ValueError("Invalid property path: name mismatch");
 }
 
 Property *Property::Copy(void) const 

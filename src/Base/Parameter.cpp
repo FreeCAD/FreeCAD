@@ -278,7 +278,7 @@ void ParameterGrp::importFrom(const char* FileName)
     ParameterManager Mngr;
 
     if (Mngr.LoadDocument(FileName) != 1)
-        throw Exception("ParameterGrp::import() cannot load document");
+        throw FileException("ParameterGrp::import() cannot load document", FileName);
 
     Mngr.GetGroup("BaseApp")->copyTo(Base::Reference<ParameterGrp>(this));
 }
@@ -288,7 +288,7 @@ void ParameterGrp::insert(const char* FileName)
     ParameterManager Mngr;
 
     if (Mngr.LoadDocument(FileName) != 1)
-        throw Exception("ParameterGrp::import() cannot load document");
+        throw FileException("ParameterGrp::import() cannot load document", FileName);
 
     Mngr.GetGroup("root")->insertTo(Base::Reference<ParameterGrp>(this));
 }
@@ -1085,7 +1085,7 @@ void ParameterManager::Init(void)
                 << "  Exception message:"
                 << pMsg;
             XMLString::release(&pMsg);
-            throw Exception(err.str().c_str());
+            throw XMLBaseException(err.str().c_str());
         }
         Init = true;
     }
@@ -1227,16 +1227,16 @@ int ParameterManager::LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSou
     delete errReporter;
 
     if (!_pDocument)
-        throw Exception("Malformed Parameter document: Invalid document");
+        throw XMLBaseException("Malformed Parameter document: Invalid document");
 
     DOMElement* rootElem = _pDocument->getDocumentElement();
     if (!rootElem)
-        throw Exception("Malformed Parameter document: Root group not found");
+        throw XMLBaseException("Malformed Parameter document: Root group not found");
 
     _pGroupNode = FindElement(rootElem,"FCParamGroup","Root");
 
     if (!_pGroupNode)
-        throw Exception("Malformed Parameter document: Root group not found");
+        throw XMLBaseException("Malformed Parameter document: Root group not found");
 
     return 1;
 }

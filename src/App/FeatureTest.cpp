@@ -134,7 +134,7 @@ DocumentObjectExecReturn *FeatureTest::execute(void)
   {
     case 0: break;
     case 1: throw "Test Exeption";
-    case 2: throw Base::Exception("FeatureTestException::execute(): Testexception");
+    case 2: throw Base::RuntimeError("FeatureTestException::execute(): Testexception");
     case 3: *i=0;printf("%i",*i);break; // seg-vault
     case 4: j=0; printf("%i",1/j); break; // int devision by zero
     case 5: f=0.0; printf("%f",1/f); break; // float devision by zero
@@ -161,7 +161,7 @@ DocumentObjectExecReturn *FeatureTestException::execute(void)
 {
   //ExceptionType;
 
-  throw Base::Exception("FeatureTestException::execute(): Testexception  ;-)");
+  throw Base::RuntimeError("FeatureTestException::execute(): Testexception  ;-)");
 
   return 0;
 }

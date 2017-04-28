@@ -300,7 +300,7 @@ void Application::renameDocument(const char *OldName, const char *NewName)
         signalRenameDocument(*temp);
     }
     else {
-        throw Base::Exception("Application::renameDocument(): no document with this name to rename!");
+        throw Base::RuntimeError("Application::renameDocument(): no document with this name to rename!");
     }
 }
 
@@ -449,7 +449,7 @@ Document* Application::openDocument(const char * FileName)
     if (!File.exists()) {
         std::stringstream str;
         str << "File '" << FileName << "' does not exist!";
-        throw Base::Exception(str.str().c_str());
+        throw Base::FileSystemError(str.str().c_str());
     }
 
     // Before creating a new document we check whether the document is already open
@@ -460,7 +460,7 @@ Document* Application::openDocument(const char * FileName)
         if (filepath == fi) {
             std::stringstream str;
             str << "The project '" << FileName << "' is already open!";
-            throw Base::Exception(str.str().c_str());
+            throw Base::FileSystemError(str.str().c_str());
         }
     }
 
@@ -534,7 +534,7 @@ void Application::setActiveDocument(const char *Name)
     else {
         std::stringstream s;
         s << "Try to activate unknown document '" << Name << "'";
-        throw Base::Exception(s.str());
+        throw Base::RuntimeError(s.str());
     }
 }
 
@@ -649,7 +649,7 @@ Base::Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* 
 
     // is there a path seperator ?
     if (pos == std::string::npos) {
-        throw Base::Exception("Application::GetParameterGroupByPath() no parameter set name specified");
+        throw Base::ValueError("Application::GetParameterGroupByPath() no parameter set name specified");
     }
     // assigning the parameter set name
     cTemp.assign(cName,0,pos);
@@ -658,7 +658,7 @@ Base::Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* 
     // test if name is valid
     std::map<std::string,ParameterManager *>::iterator It = mpcPramManager.find(cTemp.c_str());
     if (It == mpcPramManager.end())
-        throw Base::Exception("Application::GetParameterGroupByPath() unknown parameter set name specified");
+        throw Base::ValueError("Application::GetParameterGroupByPath() unknown parameter set name specified");
 
     return It->second->GetGroup(cName.c_str());
 }
@@ -1070,13 +1070,13 @@ void segmentation_fault_handler(int sig)
         case SIGSEGV:
             std::cerr << "Illegal storage access..." << std::endl;
 #if !defined(_DEBUG)
-            throw Base::Exception("Illegal storage access! Please save your work under a new file name and restart the application!");
+            throw Base::AccessViolation("Illegal storage access! Please save your work under a new file name and restart the application!");
 #endif
             break;
         case SIGABRT:
             std::cerr << "Abnormal program termination..." << std::endl;
 #if !defined(_DEBUG)
-            throw Base::Exception("Break signal occoured");
+            throw Base::AbnormalProgramTermination("Break signal occoured");
 #endif
             break;
         default:
@@ -1095,7 +1095,7 @@ void unexpection_error_handler()
     std::cerr << "Unexpected error occurred..." << std::endl;
     // try to throw an exception and give the user chance to save their work
 #if !defined(_DEBUG)
-    throw Base::Exception("Unexpected error occurred! Please save your work under a new file name and restart the application!");
+    throw Base::AbnormalProgramTermination("Unexpected error occurred! Please save your work under a new file name and restart the application!");
 #else
     terminate();
 #endif
@@ -1110,12 +1110,12 @@ void my_trans_func( unsigned int code, EXCEPTION_POINTERS* pExp )
    //{
    //    case FLT_DIVIDE_BY_ZERO :
    //       //throw CMyFunkyDivideByZeroException(code, pExp);
-   //       throw Base::Exception("Devision by zero!");
+   //       throw Base::DivisionByZeroError("Devision by zero!");
    //    break;
    //}
 
    // general C++ SEH exception for things we don't need to handle separately....
-   throw Base::Exception("my_trans_func()");
+   throw Base::RuntimeError("my_trans_func()");
 }
 #endif
 void Application::init(int argc, char ** argv)
@@ -2022,7 +2022,7 @@ void Application::ExtractUserPath()
     // Default paths for the user specific stuff
     struct passwd *pwd = getpwuid(getuid());
     if (pwd == NULL)
-        throw Base::Exception("Getting HOME path from system failed!");
+        throw Base::RuntimeError("Getting HOME path from system failed!");
     mConfig["UserHomePath"] = pwd->pw_dir;
 
     char *path = pwd->pw_dir;
@@ -2040,7 +2040,7 @@ void Application::ExtractUserPath()
         // This should never ever happen
         std::stringstream str;
         str << "Application data directory " << appData << " does not exist!";
-        throw Base::Exception(str.str());
+        throw Base::FileSystemError(str.str());
     }
 
     // In order to write into our data path, we must create some directories, first.
@@ -2057,7 +2057,7 @@ void Application::ExtractUserPath()
                 error += appData;
                 // Want more details on console
                 std::cerr << error << std::endl;
-                throw Base::Exception(error);
+                throw Base::FileSystemError(error);
             }
         }
         appData += PATHSEP;
@@ -2071,7 +2071,7 @@ void Application::ExtractUserPath()
             error += appData;
             // Want more details on console
             std::cerr << error << std::endl;
-            throw Base::Exception(error);
+            throw Base::FileSystemError(error);
         }
     }
 
@@ -2084,7 +2084,7 @@ void Application::ExtractUserPath()
     // Default paths for the user specific stuff on the platform
     struct passwd *pwd = getpwuid(getuid());
     if (pwd == NULL)
-        throw Base::Exception("Getting HOME path from system failed!");
+        throw Base::RuntimeError("Getting HOME path from system failed!");
     mConfig["UserHomePath"] = pwd->pw_dir;
     std::string appData = pwd->pw_dir;
     appData += PATHSEP;
@@ -2096,7 +2096,7 @@ void Application::ExtractUserPath()
         // This should never ever happen
         std::stringstream str;
         str << "Application data directory " << appData << " does not exist!";
-        throw Base::Exception(str.str());
+        throw Base::FileSystemError(str.str());
     }
 
     // In order to write to our data path, we must create some directories, first.
@@ -2112,7 +2112,7 @@ void Application::ExtractUserPath()
                 error += appData;
                 // Want more details on console
                 std::cerr << error << std::endl;
-                throw Base::Exception(error);
+                throw Base::FileSystemError(error);
             }
         }
         appData += PATHSEP;
@@ -2126,7 +2126,7 @@ void Application::ExtractUserPath()
             error += appData;
             // Want more details on console
             std::cerr << error << std::endl;
-            throw Base::Exception(error);
+            throw Base::FileSystemError(error);
         }
     }
 
@@ -2161,7 +2161,7 @@ void Application::ExtractUserPath()
             // This should never ever happen
             std::stringstream str;
             str << "Application data directory " << appData << " does not exist!";
-            throw Base::Exception(str.str());
+            throw Base::FileSystemError(str.str());
         }
 
         // In order to write to our data path we must create some directories first.
@@ -2177,7 +2177,7 @@ void Application::ExtractUserPath()
                     error += appData;
                     // Want more details on console
                     std::cerr << error << std::endl;
-                    throw Base::Exception(error);
+                    throw Base::FileSystemError(error);
                 }
             }
         }
@@ -2191,7 +2191,7 @@ void Application::ExtractUserPath()
                 error += appData;
                 // Want more details on console
                 std::cerr << error << std::endl;
-                throw Base::Exception(error);
+                throw Base::FileSystemError(error);
             }
         }
 
@@ -2260,7 +2260,7 @@ std::string Application::FindHomePath(const char* sCall)
         int nchars = readlink("/proc/self/exe", resolved, PATH_MAX);
 #endif
         if (nchars < 0 || nchars >= PATH_MAX)
-            throw Base::Exception("Cannot determine the absolute path of the executable");
+            throw Base::FileSystemError("Cannot determine the absolute path of the executable");
         resolved[nchars] = '\0'; // enfore null termination
         absPath = resolved;
     }
