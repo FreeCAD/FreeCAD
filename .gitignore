@@ -20,6 +20,7 @@ Makefile
 CMakeCache.txt
 config.h
 install_manifest.txt
+OpenSCAD.rc.py 
 /bin/
 /ALL_BUILD.dir/
 /doc/
