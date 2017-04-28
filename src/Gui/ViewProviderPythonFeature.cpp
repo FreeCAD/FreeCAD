@@ -1019,9 +1019,6 @@ bool ViewProviderPythonFeatureImp::isShow() const
                 Py::Boolean ok(method.apply(args));
                 return static_cast<bool>(ok) ? true : false;
             }
-            else {
-                return false;
-            }
         }
     }
     catch (Py::Exception&) {
