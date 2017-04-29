@@ -423,17 +423,21 @@ class TaskPanel:
     #         for sub in i[1]:
     #             self.form.baseList.addItem(i[0].Name + "." + sub)
 
-    # def deleteBase(self):
-    #     dlist = self.form.baseList.selectedItems()
-    #     for d in dlist:
-    #         newlist = []
-    #         for i in self.obj.Base:
-    #             if not i[0].Name == d.text().partition(".")[0]:
-    #                 newlist.append(i)
-    #         self.obj.Base = newlist
-    #     self.form.baseList.takeItem(self.form.baseList.row(d))
-    #     # self.obj.Proxy.execute(self.obj)
-    #     # FreeCAD.ActiveDocument.recompute()
+    def deleteBase(self):
+        dlist = self.form.baseList.selectedItems()
+        for d in dlist:
+
+            newlist = []
+            for i in self.obj.Base[0][1]:
+                if not i == d.text().partition(".")[2]:
+                    newlist.append(i)
+            bodyObj = self.obj.Base[0][0]
+            self.obj.Base = []
+            newB = [(bodyObj, newlist)]
+            self.obj.Base = newB
+            self.form.baseList.takeItem(self.form.baseList.row(d))
+        self.obj.Proxy.execute(self.obj)
+        FreeCAD.ActiveDocument.recompute()
 
     def itemActivated(self):
         FreeCADGui.Selection.clearSelection()
@@ -463,6 +467,17 @@ class TaskPanel:
     #     self.obj.Proxy.execute(self.obj)
     #     FreeCAD.ActiveDocument.recompute()
 
+    def findAll(self):
+        self.obj.Base = []
+        self.obj.Proxy.execute(self.obj)
+
+        self.form.baseList.clear()
+        for i in self.obj.Base:
+            for sub in i[1]:
+                self.form.baseList.addItem(i[0].Name + "." + sub)
+
+        Freecad.ActiveDocument.recompute()
+
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok)
 
@@ -476,7 +491,8 @@ class TaskPanel:
         self.form.clearanceHeight.editingFinished.connect(self.getFields)
 
         #self.form.addBase.clicked.connect(self.addBase)
-        #self.form.deleteBase.clicked.connect(self.deleteBase)
+        self.form.deleteBase.clicked.connect(self.deleteBase)
+        self.form.uiFindAllHoles.clicked.connect(self.findAll)
         #self.form.reorderBase.clicked.connect(self.reorderBase)
 
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
