@@ -62,6 +62,7 @@ public:
         Immutable = 1, // can't modify property
         ReadOnly = 2, // for property editor
         Hidden = 3, // for property editor
+        Transient = 4, // for property container save
         User1 = 28, // user-defined status
         User2 = 29, // user-defined status
         User3 = 30, // user-defined status

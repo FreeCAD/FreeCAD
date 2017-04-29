@@ -201,7 +201,10 @@ class PropertyAttribute : public std::binary_function<TCLASS, typename App::Prop
 public:
     PropertyAttribute(const PropertyContainer* c) : cont(c) {}
     bool operator () (const TCLASS& prop, typename App::PropertyType attr) const
-    { return (cont->getPropertyType(prop.second) & attr) == attr; }
+    { 
+        if((cont->getPropertyType(prop.second) & attr) == attr) return true;
+        return attr==Prop_Transient && prop.second->testStatus(Property::Transient);
+    }
 private:
     const PropertyContainer* cont;
 };
@@ -222,7 +225,8 @@ void PropertyContainer::Save (Base::Writer &writer) const
     for (it = Map.begin(); it != Map.end(); ++it)
     {
         // Don't write transient properties 
-        if (!(getPropertyType(it->second) & Prop_Transient))
+        if (!(getPropertyType(it->second) & Prop_Transient) && 
+            !it->second->testStatus(Property::Transient))
         {
             writer.incInd(); // indentation for 'Property name'
             writer.Stream() << writer.ind() << "<Property name=\"" << it->first << "\" type=\"" 
