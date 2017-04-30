@@ -4049,7 +4049,7 @@ Restart:
                             Base::Vector3d dir = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Normalize();
                             Base::Vector3d norm(-dir.y,dir.x,0);
 
-                            Base::Vector3d relpos = seekConstraintPosition(midpos, norm, dir, 2.5, edit->constrGroup->getChild(i));
+                            Base::Vector3d relpos = seekConstraintPosition(midpos, norm, dir, 2.5, sep);
 
                             static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos.x, midpos.y, zConstr); //Absolute Reference
 
@@ -4077,11 +4077,11 @@ Restart:
                             norm1 = Base::Vector3d(-dir1.y,dir1.x,0.);
                             norm2 = norm1;
                             
-                            Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
+                            Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, sep);
                             static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
                             static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
                             
-                            Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
+                            Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, sep);
                             
                             Base::Vector3d secondPos = midpos2 - midpos1;
                             static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr);
