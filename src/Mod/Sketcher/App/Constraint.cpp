@@ -29,6 +29,7 @@
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
+#include <App/Property.h>
 #include <QDateTime>
 
 #include "Constraint.h"
@@ -161,8 +162,9 @@ unsigned int Constraint::getMemSize (void) const
 
 void Constraint::Save (Writer &writer) const
 {
+    std::string encodeName = App::Property::encodeAttribute(Name);
     writer.Stream() << writer.ind()     << "<Constrain "
-    << "Name=\""                        <<  Name                << "\" "
+    << "Name=\""                        <<  encodeName          << "\" "
     << "Type=\""                        <<  (int)Type           << "\" ";
     if(this->Type==InternalAlignment)
         writer.Stream() 
