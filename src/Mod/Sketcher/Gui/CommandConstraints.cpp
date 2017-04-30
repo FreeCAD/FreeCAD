@@ -1178,13 +1178,19 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
-    std::vector<int> ids;
+    std::vector<int> edgegeoids;
+    std::vector<int> pointgeoids;
+    std::vector<Sketcher::PointPos> pointpos;
+    
+    int fixedpoints = 0;
     // go through the selected subelements
     for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
-        // only handle edges
-        if (it->size() > 4 && it->substr(0,4) == "Edge") {
-            int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
-
+        int GeoId;
+        Sketcher::PointPos PosId;
+        getIdsFromName((*it), Obj, GeoId, PosId);
+        
+        
+        if (isEdge(GeoId,PosId)) {// it is an edge
             const Part::Geometry *geo = Obj->getGeometry(GeoId);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
@@ -1206,22 +1212,45 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
                     return;
                 }
             }
-            ids.push_back(GeoId);
+            edgegeoids.push_back(GeoId);
+        }
+        else if(isVertex(GeoId,PosId)) {
+            // can be a point, a construction point, an external point or root
+
+            if(GeoId < 0 || isConstructionPoint(Obj,GeoId))
+                fixedpoints++;
+
+            pointgeoids.push_back(GeoId);
+            pointpos.push_back(PosId);
         }
     }
 
-    if (ids.empty()) {
+    if (edgegeoids.empty() && pointgeoids.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                              QObject::tr("The selected item(s) can't accept a horizontal constraint!"));
         return;
     }
-
-    // undo command open
-    openCommand("add horizontal constraint");
-    for (std::vector<int>::iterator it=ids.begin(); it != ids.end(); it++) {
-        // issue the actual commands to create the constraint
-        doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%d)) "
-                 ,selection[0].getFeatName(),*it);
+    
+    // if there is at least one edge selected, ignore the point alignment functionality
+    if (!edgegeoids.empty()) {
+        // undo command open
+        openCommand("add horizontal constraint");
+        for (std::vector<int>::iterator it=edgegeoids.begin(); it != edgegeoids.end(); it++) {
+            // issue the actual commands to create the constraint
+            doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%d)) "
+                    ,selection[0].getFeatName(),*it);
+        }
+    }
+    else if (fixedpoints <= 1) { // pointgeoids
+        // undo command open
+        openCommand("add horizontal alignment");
+        std::vector<int>::iterator it;
+        std::vector<Sketcher::PointPos>::iterator itp;
+        for (it=pointgeoids.begin(), itp=pointpos.begin(); it != std::prev(pointgeoids.end()) && itp != std::prev(pointpos.end()); it++,itp++) {
+            // issue the actual commands to create the constraint
+            doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) "
+            ,selection[0].getFeatName(),*it,*itp,*std::next(it),*std::next(itp));
+        }
     }
     // finish the transaction and update
     commitCommand();
@@ -1387,53 +1416,79 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
-     std::vector<int> ids;
+    std::vector<int> edgegeoids;
+    std::vector<int> pointgeoids;
+    std::vector<Sketcher::PointPos> pointpos;
+    
+    int fixedpoints = 0;
     // go through the selected subelements
-    for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it) {
-        // only handle edges
-        if (it->size() > 4 && it->substr(0,4) == "Edge") {
-            int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
-
+    for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
+        int GeoId;
+        Sketcher::PointPos PosId;
+        getIdsFromName((*it), Obj, GeoId, PosId);
+        
+        
+        if (isEdge(GeoId,PosId)) {// it is an edge
             const Part::Geometry *geo = Obj->getGeometry(GeoId);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-//                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-//                                     QObject::tr("The selected edge is not a line segment"));
-                ActivateHandler(getActiveGuiDocument(),
-                        new DrawSketchHandlerGenConstraint(constraintCursor, this));
-                getSelection().clearSelection();
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
+                                     QObject::tr("The selected edge is not a line segment"));
                 return;
             }
-
+            
             // check if the edge has already a Horizontal or Vertical constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
+                if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId){
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
+                                         QObject::tr("The selected edge has already a vertical constraint!"));
+                    return;
+                }
                 if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                        QObject::tr("The selected edge has already a horizontal constraint!"));
+                                         QObject::tr("The selected edge has already a horizontral constraint!"));
                     return;
                 }
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
-                        QObject::tr("The selected edge has already a vertical constraint!"));
-                    return;
-                }
-            }
-            ids.push_back(GeoId);
+                 }
+                 edgegeoids.push_back(GeoId);
+        }
+        else if(isVertex(GeoId,PosId)) {
+            // can be a point, a construction point, an external point or root
+            
+            if(GeoId < 0 || isConstructionPoint(Obj,GeoId))
+                fixedpoints++;
+            
+            pointgeoids.push_back(GeoId);
+            pointpos.push_back(PosId);
         }
     }
 
-    if (ids.empty()) {
+    if (edgegeoids.empty() && pointgeoids.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                              QObject::tr("The selected item(s) can't accept a vertical constraint!"));
         return;
     }
-
-    // undo command open
-    openCommand("add vertical constraint");
-    for (std::vector<int>::iterator it=ids.begin(); it != ids.end(); it++) {
-        // issue the actual command to create the constraint
-        doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%d))"
-                 ,selection[0].getFeatName(),*it);
+    
+    // if there is at least one edge selected, ignore the point alignment functionality
+    if (!edgegeoids.empty()) {
+        // undo command open
+        openCommand("add vertical constraint");
+        for (std::vector<int>::iterator it=edgegeoids.begin(); it != edgegeoids.end(); it++) {
+            // issue the actual commands to create the constraint
+            doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%d)) "
+            ,selection[0].getFeatName(),*it);
+        }
+    }
+    else if (fixedpoints <= 1) { // pointgeoids
+        // undo command open
+        openCommand("add vertical alignment");
+        std::vector<int>::iterator it;
+        std::vector<Sketcher::PointPos>::iterator itp;
+        for (it=pointgeoids.begin(), itp=pointpos.begin(); it != std::prev(pointgeoids.end()) && itp != std::prev(pointpos.end()); it++,itp++) {
+            // issue the actual commands to create the constraint
+            doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%d,%d,%d,%d)) "
+            ,selection[0].getFeatName(),*it,*itp,*std::next(it),*std::next(itp));
+        }
     }
     // finish the transaction and update
     commitCommand();
