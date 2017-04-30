@@ -404,6 +404,7 @@ private:
             ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
             ocaf.loadShapes();
             pcDoc->recompute();
+            hApp->Close(hDoc);
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -497,6 +498,8 @@ private:
                     throw Py::Exception();
                 }
             }
+
+            hApp->Close(hDoc);
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -587,6 +590,7 @@ private:
 
             OCAFBrowser browse(hDoc);
             browse.load(dlg->findChild<QTreeWidget*>());
+            hApp->Close(hDoc);
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();

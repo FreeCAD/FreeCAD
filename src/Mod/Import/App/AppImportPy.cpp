@@ -183,6 +183,7 @@ private:
             xcaf.loadShapes();
 #endif
             pcDoc->recompute();
+            hApp->Close(hDoc);
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -287,6 +288,8 @@ private:
                     throw Py::Exception();
                 }
             }
+
+            hApp->Close(hDoc);
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
