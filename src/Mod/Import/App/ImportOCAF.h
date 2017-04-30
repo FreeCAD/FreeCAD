@@ -75,7 +75,7 @@ private:
 class ImportExport ExportOCAF
 {
 public:
-    ExportOCAF(Handle_TDocStd_Document h);
+    ExportOCAF(Handle_TDocStd_Document h, bool explicitPlacement);
     void saveShape(Part::Feature* part, const std::vector<App::Color>&);
 
 private:
@@ -83,6 +83,7 @@ private:
     Handle_XCAFDoc_ShapeTool aShapeTool;
     Handle_XCAFDoc_ColorTool aColorTool;
     TDF_Label rootLabel;
+    bool keepExplicitPlacement;
 };
 
 
