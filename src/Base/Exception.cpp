@@ -257,6 +257,34 @@ const char* FileException::what() const throw()
     return _sErrMsgAndFileName.c_str();
 }
 
+std::string FileException::report() const
+{
+    std::string str = "";
+    
+    if(!_sErrMsgAndFileName.empty())
+        str+= (_sErrMsgAndFileName + " ");
+    
+    if(!_function.empty()) {
+        str+="in ";
+        str+=_function;
+        str+= " ";
+    }
+    
+    if(!_file.empty() && !_line.empty()) {
+        // strip absolute path
+        std::size_t pos = _file.find("src");
+        
+        if (pos!=std::string::npos) {
+            str+="in ";
+            str+= _file.substr(pos);
+            str+= ":";
+            str+=_line;
+        }
+    }
+    
+    return str;
+}
+
 // ---------------------------------------------------------
 
 FileSystemError::FileSystemError(const char * sMessage)

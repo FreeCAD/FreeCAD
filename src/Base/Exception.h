@@ -184,6 +184,8 @@ public:
   virtual ~FileException() throw() {}
   /// Description of the exception
   virtual const char* what() const throw();
+  /// Report string (for report view)
+  virtual std::string report() const;
   /// Get file name for use with tranlatable message
   std::string getFileName() const;
 protected:
