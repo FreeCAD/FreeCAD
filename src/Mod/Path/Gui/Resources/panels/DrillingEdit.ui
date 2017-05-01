@@ -46,38 +46,26 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0" colspan="3">
-        <widget class="QListWidget" name="baseList">
-         <property name="toolTip">
-          <string>Drag to reorder, then update.</string>
-         </property>
-         <property name="dragDropMode">
-          <enum>QAbstractItemView::DragDrop</enum>
-         </property>
-         <property name="defaultDropAction">
-          <enum>Qt::MoveAction</enum>
-         </property>
-         <property name="sortingEnabled">
-          <bool>false</bool>
-         </property>
+        <widget class="QTableWidget" name="baseList">
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QPushButton" name="addBase">
+        <widget class="QPushButton" name="uiEnableAll">
          <property name="toolTip">
-          <string>Add item selected in window.</string>
+          <string>Enable all features in the list.</string>
          </property>
          <property name="text">
-          <string>add</string>
+          <string>Enable All</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QPushButton" name="deleteBase">
+        <widget class="QPushButton" name="uiDisableAll">
          <property name="toolTip">
-          <string>Remove Item selected in list, then update.</string>
+          <string>Disable all features in the list</string>
          </property>
          <property name="text">
-          <string>Remove</string>
+          <string>Disable all</string>
          </property>
         </widget>
        </item>
@@ -91,7 +79,27 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="3">
+       <item row="2" column="0">
+        <widget class="QPushButton" name="uiEnableSelected">
+         <property name="toolTip">
+          <string>Enable selected items in the list</string>
+         </property>
+         <property name="text">
+          <string>Enable</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QPushButton" name="uiDisableSelected">
+         <property name="toolTip">
+          <string>Disable selected items in the list.</string>
+         </property>
+         <property name="text">
+          <string>Disable</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="3">
         <widget class="QLabel" name="label">
          <property name="text">
           <string>All objects will be processed using the same operation properties.</string>
