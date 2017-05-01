@@ -54,6 +54,7 @@
 #include "Inventor/SoDrawingGrid.h"
 #include "Inventor/SoAutoZoomTranslation.h"
 #include "Inventor/MarkerBitmaps.h"
+#include "Inventor/SmSwitchboard.h"
 #include "SoFCCSysDragger.h"
 
 #include "propertyeditor/PropertyItem.h"
@@ -118,6 +119,7 @@ void Gui::SoFCDB::init()
     SoAutoZoomTranslation           ::initClass();
     MarkerBitmaps                   ::initClass();
     SoFCCSysDragger                 ::initClass();
+    SmSwitchboard                   ::initClass();
 
     PropertyItem                    ::init();
     PropertySeparatorItem           ::init();
