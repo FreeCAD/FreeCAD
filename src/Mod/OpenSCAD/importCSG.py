@@ -347,6 +347,7 @@ def p_operation(p):
               | projection_action
               | hull_action
               | minkowski_action
+              | offset_action
               '''
     p[0] = p[1]
 
@@ -378,16 +379,31 @@ def CGALFeatureObj(name,children,arguments=[]):
             myobj.ViewObject.Proxy = 0
     return myobj
 
-#def p_offset_action(p):
-#    'offset_action : offset LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
-#    if len(p[5]) == 0:
-#        mycut = placeholder('group',[],'{}')
-#    elif (len(p[5]) == 1 ): #single object
-#        subobj = p[5]
-#    else:
-#        subobj = fuse(p[6],"Offset Union")
-#    newobj=doc.addObject("Part::FeaturePython",'offset')
-#    OffsetShape(newobj,subobj,p[3]['delta'])
+def p_offset_action(p):
+    'offset_action : offset LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
+    if len(p[6]) == 0:
+        newobj = placeholder('group',[],'{}')
+    elif (len(p[6]) == 1 ): #single object
+        subobj = p[6]
+    else:
+        subobj = fuse(p[6],"Offset Union")
+    if 'r' in p[3] :
+        offset = float(p[3]['r'])
+    if 'delta' in p[3] : 
+        offset = float(p[3]['delta'])
+    if subobj[0].Shape.Volume == 0 :
+       newobj=doc.addObject("Part::Offset2D",'Offset2D')
+       newobj.Source = subobj[0] 
+       newobj.Value = offset
+       if 'r' in p[3] :
+           newobj.Join = 0 
+       else :
+           newobj.Join = 2 
+    else :
+       newobj=doc.addObject("Part::Offset",'offset')
+       newobj.Shape = subobj[0].Shape.makeOffset(offset)
+    newobj.Document.recompute()
+    subobj[0].ViewObject.hide()
 #    if gui:
 #        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
 #            GetBool('useViewProviderTree'):
@@ -395,7 +411,7 @@ def CGALFeatureObj(name,children,arguments=[]):
 #            ViewProviderTree(newobj.ViewObject)
 #        else:
 #            newobj.ViewObject.Proxy = 0
-#    return [newobj]
+    p[0] = [newobj]
 
 def p_hull_action(p):
     'hull_action : hull LPAREN RPAREN OBRACE block_list EBRACE'
@@ -409,7 +425,6 @@ def p_minkowski_action(p):
 def p_not_supported(p):
     '''
     not_supported : glide LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
-                  | offset LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   | resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   | subdiv LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   '''
