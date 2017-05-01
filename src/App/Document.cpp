@@ -2137,6 +2137,73 @@ void Document::recomputeFeature(DocumentObject* Feat)
         _recomputeFeature(Feat);
 }
 
+std::vector<DocumentObject *> Document::addObjects(const char* sType, std::vector<const char*> pObjectNames, bool isNew)
+{
+   std::vector<DocumentObject *> pcObjects;
+   std::vector<void *> Instances;
+   Instances=Base::Type::createInstancesByName(sType,(int)(pObjectNames.size()),true);
+   int i=0;
+   for ( i=0; i < (int)(pObjectNames.size()); i++)
+   {
+   const char *pObjectName= pObjectNames[i];
+   Base::BaseClass* base = static_cast<Base::BaseClass*>(Instances[i]);
+
+    string ObjectName;
+    if (!base)
+        return pcObjects;
+    if (!base->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        delete base;
+        std::stringstream str;
+        str << "'" << sType << "' is not a document object type";
+        throw Base::TypeError(str.str());
+    }
+
+    App::DocumentObject* pcObject = static_cast<App::DocumentObject*>(base);
+    pcObject->setDocument(this);
+
+    // do no transactions if we do a rollback!
+    if (!d->rollback) {
+        // Undo stuff
+        if (d->activeUndoTransaction)
+            d->activeUndoTransaction->addObjectDel(pcObject);
+    }
+
+    // get Unique name
+    ObjectName = pObjectName; 
+
+    d->activeObject = pcObject;
+
+    // insert in the name map
+    d->objectMap[ObjectName] = pcObject;
+    // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
+    pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
+    // insert in the vector
+    d->objectArray.push_back(pcObject);
+    // insert in the adjacence list and referenc through the ConectionMap
+    //_DepConMap[pcObject] = add_vertex(_DepList);
+
+    pcObject->Label.setValue( ObjectName );
+
+    // Call the object-specific initialization
+    // I know this is  basic object so I don't setup the object in the GUI just 
+    // to check what happen
+    if (!d->undoing && !d->rollback && isNew) {
+        pcObject->setupObject ();
+    }
+
+    // mark the object as new (i.e. set status bit 2) and send the signal
+    pcObject->StatusBits.set(2);
+    signalNewObject(*pcObject);
+    // do no transactions if we do a rollback!
+        if (!d->rollback && d->activeUndoTransaction) {
+        signalTransactionAppend(*pcObject, d->activeUndoTransaction);
+    }
+    signalActivatedObject(*pcObject);
+    pcObjects.push_back(pcObject);
+    }
+    return pcObjects;
+}
+
 DocumentObject * Document::addObject(const char* sType, const char* pObjectName, bool isNew)
 {
     Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
@@ -2196,7 +2263,8 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     }
 
     signalActivatedObject(*pcObject);
-
+    // puts(" ======================= Label ADDED ============================== ");
+    // puts(ObjectName.c_str());
     // return the Object
     return pcObject;
 }
@@ -2578,24 +2646,13 @@ bool Document::isIn(const DocumentObject *pFeat) const
     return false;
 }
 
-const char * Document::getObjectName(DocumentObject *pFeat) const
-{
-    std::map<std::string,DocumentObject*>::const_iterator pos;
-
-    for (pos = d->objectMap.begin();pos != d->objectMap.end();++pos) {
-        if (pos->second == pFeat)
-            return pos->first.c_str();
-    }
-
-    return 0;
-}
-
 std::string Document::getUniqueObjectName(const char *Name) const
 {
     if (!Name || *Name == '\0')
         return std::string();
     std::string CleanName = Base::Tools::getIdentifier(Name);
-
+// REMOVE
+//    return(CleanName);
     // name in use?
     std::map<std::string,DocumentObject*>::const_iterator pos;
     pos = d->objectMap.find(CleanName);
@@ -2616,9 +2673,16 @@ std::string Document::getUniqueObjectName(const char *Name) const
 
         std::vector<std::string> names;
         names.reserve(d->objectMap.size());
+	// printf("Taille de la liste a parcourir %d\n",d->objectMap.size());
+	// That is stupid to copy the whole string names if we soon have buffered 
+	// them
+	// Each time I am getting there this is because we are going to add a name
+	// It means the stack is going to be increased by at leat 1 string number
+	// and this is hard to keep track of it
         for (pos = d->objectMap.begin();pos != d->objectMap.end();++pos) {
             names.push_back(pos->first);
         }
+	// puts("------------------------------ Trailing Name Computation ----------------------------------");
         return Base::Tools::getUniqueName(CleanName, names, 3);
     }
 }
@@ -2667,6 +2731,8 @@ std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, con
     boost::regex rx(objname);
     boost::cmatch what;
     std::vector<DocumentObject*> Objects;
+    // Try to find objects
+    // puts("Object lookup call");
     for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(typeId)) {
             if (boost::regex_match((*it)->getNameInDocument(), what, rx))
