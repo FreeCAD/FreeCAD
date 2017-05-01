@@ -120,6 +120,43 @@ void *Type::createInstanceByName(const char* TypeName, bool bLoadModule)
 
 }
 
+std::vector<void *>Type::createInstancesByName(const char* TypeName, int number, bool bLoadModule)
+{
+  std::vector<void *> return_value;
+  // if not already, load the module
+  if(bLoadModule)
+  {
+    // cut out the module name
+    string Mod = getModuleName(TypeName);
+    // ignore base modules
+    if(Mod != "App" && Mod != "Gui" && Mod != "Base")
+    {
+      // remember already loaded modules
+      set<string>::const_iterator pos = loadModuleSet.find(Mod);
+      if(pos == loadModuleSet.end())
+      {
+        Interpreter().loadModule(Mod.c_str());
+#ifdef FC_LOGLOADMODULE
+        Console().Log("Act: Module %s loaded through class %s \n",Mod.c_str(),TypeName);
+#endif
+        loadModuleSet.insert(Mod);
+      }
+    }
+  }
+
+  // now the type should be in the type map
+  Type t = fromName(TypeName);
+  if(t == badType())
+    return return_value;
+  if ( number > 0 )
+  	for ( int i=0 ; i < number ; i++ )
+		return_value.push_back(t.createInstance());
+  return return_value;
+
+}
+
+
+ 
 string Type::getModuleName(const char* ClassName)
 {
   string temp(ClassName);

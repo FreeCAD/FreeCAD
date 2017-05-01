@@ -87,6 +87,7 @@ public:
   void *createInstance(void);
   /// creates a instance of the named type
   static void *createInstanceByName(const char* TypeName, bool bLoadModule=false);
+  static std::vector<void *>createInstancesByName(const char* TypeName, int number=1,bool bLoadModule=false);
 
   typedef void * (*instantiationMethod)(void);
 
