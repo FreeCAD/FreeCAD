@@ -1006,6 +1006,16 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
 
     MDIView::setCurrentViewMode(newmode);
 
+#if defined(HAVE_QT5_OPENGL)
+    // Internally the QOpenGLWidget switches of the multi-sampling and there is no
+    // way to switch it on again. So as a workaround we just re-create a new viewport
+    // The method is private but defined as slot to avoid to call it by accident.
+    int index = _viewer->metaObject()->indexOfMethod("replaceViewport()");
+    if (index >= 0) {
+        _viewer->qt_metacall(QMetaObject::InvokeMetaMethod, index, 0);
+    }
+#endif
+
     // This widget becomes the focus proxy of the embedded GL widget if we leave 
     // the 'Child' mode. If we reenter 'Child' mode the focus proxy is reset to 0.
     // If we change from 'TopLevel' mode to 'Fullscreen' mode or vice versa nothing
