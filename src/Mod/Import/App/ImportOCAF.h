@@ -59,7 +59,7 @@ public:
     void loadShapes();
 private:
     void loadShapes(const TDF_Label& label, const TopLoc_Location&, const std::string& partname, const std::string& assembly, bool isRef, std::vector<App::DocumentObject*> &);
-    void createShape(const TDF_Label& label, const TopLoc_Location&, const std::string&, std::vector<App::DocumentObject*> &);
+    void createShape(const TDF_Label& label, const TopLoc_Location&, const std::string&, std::vector<App::DocumentObject*> &, bool);
     void createShape(const TopoDS_Shape& label, const TopLoc_Location&, const std::string&, std::vector<App::DocumentObject*> &);
     virtual void applyColors(Part::Feature*, const std::vector<App::Color>&){}
 
