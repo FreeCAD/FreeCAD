@@ -75,6 +75,26 @@ void GroupExtension::addObject(DocumentObject* obj)
     }
 }
 
+void GroupExtension::addObjects(std::vector<App::DocumentObject*> obj)
+{
+	for(int unsigned i=0;i<obj.size();i++){
+             if (!allowObject(obj[i]))
+		return;
+	     //only one group per object
+	    auto *group = App::GroupExtension::getGroupOfObject(obj[i]);
+	    if(group && group != getExtendedObject())
+	        group->getExtensionByType<App::GroupExtension>()->removeObject(obj[i]);
+        }
+	if (!hasObject(obj[0])) {
+        	std::vector<DocumentObject*> grp = Group.getValues();
+	        for(int unsigned i=0;i<obj.size();i++)
+	        	grp.push_back(obj[i]);
+        	Group.setValues(grp);
+        }
+
+}
+
+
 void GroupExtension::removeObject(DocumentObject* obj)
 {
     const std::vector<DocumentObject*> & grp = Group.getValues();
