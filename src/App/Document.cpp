@@ -1092,8 +1092,13 @@ Document::~Document()
     doc->setInvalid();
 
     // remove Transient directory
-    Base::FileInfo TransDir(TransientDir.getValue());
-    TransDir.deleteDirectoryRecursive();
+    try {
+        Base::FileInfo TransDir(TransientDir.getValue());
+        TransDir.deleteDirectoryRecursive();
+    }
+    catch (const Base::Exception& e) {
+        std::cerr << "Removing transient directory failed: " << e.what() << std::endl;
+    }
     delete d;
 }
 
@@ -1742,7 +1747,7 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
         std::stringstream ss;
         ss << "Gathering all dependencies failed, probably due to circular dependencies. Error: ";
         ss << e.what();
-        throw Base::Exception(ss.str().c_str());
+        throw Base::RuntimeError(ss.str().c_str());
     }
 
     std::set<Vertex> out;

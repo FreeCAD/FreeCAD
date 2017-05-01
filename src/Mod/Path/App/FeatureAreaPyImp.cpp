@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include <CXX/Objects.hxx>
+#include <Mod/Part/App/TopoShapePy.h>
 #include "FeatureArea.h"
 
 // inclusion of the generated files (generated out of FeatureAreaPy.xml)
@@ -68,8 +69,7 @@ PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist, 
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
-        Py_Error(Base::BaseExceptionFreeCADError, 
-            "Wrong parameters, call getParamsDesc() to get supported params");
+        return 0;
 
 #define AREA_GET(_param) \
     feature->PARAM_FNAME(_param).setValue(\
@@ -77,7 +77,23 @@ PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
     //populate properties with the CONF variables
     PARAM_FOREACH(AREA_GET,AREA_PARAMS_CONF)
 
+    Py_INCREF(Py_None);
     return Py_None;
+}
+
+Py::Object FeatureAreaPy::getWorkPlane(void) const {
+    return Part::shape2pyshape(getFeatureAreaPtr()->getArea().getPlane());
+}
+
+void FeatureAreaPy::setWorkPlane(Py::Object obj) {
+    PyObject* p = obj.ptr();
+    if (!PyObject_TypeCheck(p, &(Part::TopoShapePy::Type))) {
+        std::string error = std::string("type must be 'TopoShape', not ");
+        error += p->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+    getFeatureAreaPtr()->setWorkPlane(
+            static_cast<Part::TopoShapePy*>(p)->getTopoShapePtr()->getShape());
 }
 
 PyObject *FeatureAreaPy::getCustomAttributes(const char* /*attr*/) const

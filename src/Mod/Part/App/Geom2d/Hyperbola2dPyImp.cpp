@@ -56,7 +56,7 @@ int Hyperbola2dPy::PyInit(PyObject* args, PyObject* kwds)
 {
     char* keywords_n[] = {NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
-        Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast(getGeom2dHyperbolaPtr()->handle());
+        Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
         hyperbola->SetMajorRadius(2.0);
         hyperbola->SetMinorRadius(1.0);
         return 0;
@@ -67,9 +67,9 @@ int Hyperbola2dPy::PyInit(PyObject* args, PyObject* kwds)
     PyObject *pHypr;
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(Hyperbola2dPy::Type), &pHypr)) {
         Hyperbola2dPy* pHyperbola = static_cast<Hyperbola2dPy*>(pHypr);
-        Handle_Geom2d_Hyperbola Hypr1 = Handle_Geom2d_Hyperbola::DownCast
+        Handle(Geom2d_Hyperbola) Hypr1 = Handle(Geom2d_Hyperbola)::DownCast
             (pHyperbola->getGeom2dHyperbolaPtr()->handle());
-        Handle_Geom2d_Hyperbola Hypr2 = Handle_Geom2d_Hyperbola::DownCast
+        Handle(Geom2d_Hyperbola) Hypr2 = Handle(Geom2d_Hyperbola)::DownCast
             (this->getGeom2dHyperbolaPtr()->handle());
         Hypr2->SetHypr2d(Hypr1->Hypr2d());
         return 0;
@@ -93,7 +93,7 @@ int Hyperbola2dPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast(getGeom2dHyperbolaPtr()->handle());
+        Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
         hyperbola->SetHypr2d(me.Value()->Hypr2d());
         return 0;
     }
@@ -113,7 +113,7 @@ int Hyperbola2dPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast(getGeom2dHyperbolaPtr()->handle());
+        Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
         hyperbola->SetHypr2d(me.Value()->Hypr2d());
         return 0;
     }
@@ -128,37 +128,37 @@ int Hyperbola2dPy::PyInit(PyObject* args, PyObject* kwds)
 
 Py::Float Hyperbola2dPy::getMajorRadius(void) const
 {
-    Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
     return Py::Float(hyperbola->MajorRadius()); 
 }
 
 void Hyperbola2dPy::setMajorRadius(Py::Float arg)
 {
-    Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
     hyperbola->SetMajorRadius((double)arg);
 }
 
 Py::Float Hyperbola2dPy::getMinorRadius(void) const
 {
-    Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
     return Py::Float(hyperbola->MinorRadius()); 
 }
 
 void Hyperbola2dPy::setMinorRadius(Py::Float arg)
 {
-    Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
     hyperbola->SetMinorRadius((double)arg);
 }
 
 Py::Float Hyperbola2dPy::getFocal(void) const
 {
-    Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
     return Py::Float(hyperbola->Focal()); 
 }
 
 Py::Object Hyperbola2dPy::getFocus1(void) const
 {
-    Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
     gp_Pnt2d loc = hyperbola->Focus1();
 
     Py::Module module("__FreeCADBase__");
@@ -171,7 +171,7 @@ Py::Object Hyperbola2dPy::getFocus1(void) const
 
 Py::Object Hyperbola2dPy::getFocus2(void) const
 {
-    Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
     gp_Pnt2d loc = hyperbola->Focus2();
 
     Py::Module module("__FreeCADBase__");

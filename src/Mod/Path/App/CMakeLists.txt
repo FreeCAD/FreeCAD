@@ -2,6 +2,9 @@ if(MSVC)
     add_definitions(-DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
 else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        add_definitions(-fext-numeric-literals) #fix for gcc and qt5
+    endif()
 endif(MSVC)
 
 

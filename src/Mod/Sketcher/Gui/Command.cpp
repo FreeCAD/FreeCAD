@@ -162,7 +162,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
         if (msgid != Attacher::SuggestResult::srOK && msgid != Attacher::SuggestResult::srNoModesFit){
             QMessageBox::warning(Gui::getMainWindow(),
                 QObject::tr("Sketch mapping"),
-                QObject::tr("Can't map the skecth to selected object. %1.").arg(msg_str));
+                QObject::tr("Can't map the sketch to selected object. %1.").arg(msg_str));
             return;
         }
         if (validModes.size() > 1){

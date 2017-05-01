@@ -28,6 +28,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <App/Application.h>
 
 #include "PrefWidgets.h"
@@ -557,19 +558,24 @@ void PrefQuantitySpinBox::pushToHistory(const QString &valueq)
 
     std::string value(val.toUtf8());
     if (d->handle.isValid()) {
-        // do nothing if the given value is on top of the history
-        std::string tHist = d->handle->GetASCII("Hist0");
-        if (tHist != val.toUtf8().constData()) {
-            for (int i = d->historySize -1 ; i>=0 ;i--) {
-                QByteArray hist1 = "Hist";
-                QByteArray hist0 = "Hist";
-                hist1.append(QByteArray::number(i+1));
-                hist0.append(QByteArray::number(i));
-                std::string tHist = d->handle->GetASCII(hist0);
-                if (!tHist.empty())
-                    d->handle->SetASCII(hist1,tHist.c_str());
+        try {
+            // do nothing if the given value is on top of the history
+            std::string tHist = d->handle->GetASCII("Hist0");
+            if (tHist != val.toUtf8().constData()) {
+                for (int i = d->historySize -1 ; i>=0 ;i--) {
+                    QByteArray hist1 = "Hist";
+                    QByteArray hist0 = "Hist";
+                    hist1.append(QByteArray::number(i+1));
+                    hist0.append(QByteArray::number(i));
+                    std::string tHist = d->handle->GetASCII(hist0);
+                    if (!tHist.empty())
+                        d->handle->SetASCII(hist1,tHist.c_str());
+                }
+                d->handle->SetASCII("Hist0",value.c_str());
             }
-            d->handle->SetASCII("Hist0",value.c_str());
+        }
+        catch (const Base::Exception& e) {
+            Console().Warning("pushToHistory: %s\n", e.what());
         }
     }
 }

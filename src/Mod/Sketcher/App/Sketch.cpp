@@ -27,6 +27,7 @@
 # include <Precision.hxx>
 # include <ShapeFix_Wire.hxx>
 # include <TopoDS_Compound.hxx>
+# include <Standard_Version.hxx>
 #endif
 
 #include <Base/Writer.h>
@@ -34,7 +35,6 @@
 #include <Base/Exception.h>
 #include <Base/TimeInfo.h>
 #include <Base/Console.h>
-
 #include <Base/VectorPy.h>
 
 #include <Mod/Part/App/Geometry.h>
@@ -199,7 +199,12 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
     if (geo->getTypeId() == GeomPoint::getClassTypeId()) { // add a point
         const GeomPoint *point = static_cast<const GeomPoint*>(geo);
         // create the definition struct for that geom
-        return addPoint(*point, fixed);
+        if( point->Construction == false ) {
+            return addPoint(*point, fixed);
+        }
+        else {
+            return addPoint(*point, true);
+        }
     } else if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
         const GeomLineSegment *lineSeg = static_cast<const GeomLineSegment*>(geo);
         // create the definition struct for that geom
@@ -225,7 +230,7 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
         // create the definition struct for that geom
         return addArcOfHyperbola(*aoh, fixed);
     } else if (geo->getTypeId() == GeomArcOfParabola::getClassTypeId()) { // add an arc of parabola
-        const GeomArcOfParabola *aop = dynamic_cast<const GeomArcOfParabola*>(geo);
+        const GeomArcOfParabola *aop = static_cast<const GeomArcOfParabola*>(geo);
         // create the definition struct for that geom
         return addArcOfParabola(*aop, fixed);
     } else if (geo->getTypeId() == GeomBSplineCurve::getClassTypeId()) { // add a bspline
@@ -252,8 +257,6 @@ int Sketch::addPoint(const Part::GeomPoint &point, bool fixed)
 
     // create our own copy
     GeomPoint *p = static_cast<GeomPoint*>(point.clone());
-    // points in a sketch are always construction elements
-    p->Construction = true;
     // create the definition struct for that geom
     GeoDef def;
     def.geo  = p;
@@ -771,6 +774,14 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     bs.degree       = degree;
     bs.periodic     = periodic;
     def.index       = BSplines.size();
+    
+    // non-solver related, just to enable initialization of knotspoints which is not a parameter of the solver
+    bs.knotpointGeoids.resize(knots.size());
+    
+    for(std::vector<int>::iterator it = bs.knotpointGeoids.begin(); it != bs.knotpointGeoids.end(); ++it) {
+        (*it) = Constraint::GeoUndef; 
+    }
+    
     BSplines.push_back(bs);
 
     // store complete set
@@ -925,13 +936,13 @@ Py::Tuple Sketch::getPyGeometry(void) const
             GeomArcOfEllipse *ellipse = static_cast<GeomArcOfEllipse*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfEllipsePy(ellipse));
         } else if (it->type == ArcOfHyperbola) {
-            GeomArcOfHyperbola *aoh = dynamic_cast<GeomArcOfHyperbola*>(it->geo->clone());
+            GeomArcOfHyperbola *aoh = static_cast<GeomArcOfHyperbola*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfHyperbolaPy(aoh));
         } else if (it->type == ArcOfParabola) {
-            GeomArcOfParabola *aop = dynamic_cast<GeomArcOfParabola*>(it->geo->clone());
+            GeomArcOfParabola *aop = static_cast<GeomArcOfParabola*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfParabolaPy(aop));
         } else if (it->type == BSpline) {
-            GeomBSplineCurve *bsp = dynamic_cast<GeomBSplineCurve*>(it->geo->clone());
+            GeomBSplineCurve *bsp = static_cast<GeomBSplineCurve*>(it->geo->clone());
             tuple[i] = Py::asObject(new BSplineCurvePy(bsp));
         } else {
             // not implemented type in the sketch!
@@ -1244,6 +1255,10 @@ int Sketch::addConstraint(const Constraint *constraint)
                 break;
             case BSplineControlPoint:
                 rtn = addInternalAlignmentBSplineControlPoint(constraint->First,constraint->Second, constraint->InternalAlignmentIndex);
+                break;
+            case BSplineKnotPoint:
+                rtn = addInternalAlignmentKnotPoint(constraint->First,constraint->Second, constraint->InternalAlignmentIndex);
+                break;
             default:
                 break;
         }
@@ -2461,9 +2476,40 @@ int Sketch::addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int 
         GCS::Circle &c = Circles[Geoms[geoId2].index];
 
         GCS::BSpline &b = BSplines[Geoms[geoId1].index];
+        
+        assert(poleindex < static_cast<int>(b.poles.size()) && poleindex >= 0);
 
         int tag = ++ConstraintsCounter;
         GCSsys.addConstraintInternalAlignmentBSplineControlPoint(b, c, poleindex, tag);
+        return ConstraintsCounter;
+    }
+    return -1;
+}
+
+int Sketch::addInternalAlignmentKnotPoint(int geoId1, int geoId2, int knotindex)
+{
+    std::swap(geoId1, geoId2);
+
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId1].type != BSpline)
+        return -1;
+    if (Geoms[geoId2].type != Point)
+        return -1;
+
+    int pointId1 = getPointId(geoId2, start);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size())) {
+       // GCS::Point &p = Points[pointId1];
+
+        GCS::BSpline &b = BSplines[Geoms[geoId1].index];
+
+        // no constraint is actually added, as knots are fixed geometry in this implementation
+        // indexing is added here.
+        
+        b.knotpointGeoids[knotindex] = geoId2;
+        
         return ConstraintsCounter;
     }
     return -1;
@@ -2514,10 +2560,13 @@ bool Sketch::updateGeometry()
         try {
             if (it->type == Point) {
                 GeomPoint *point = static_cast<GeomPoint*>(it->geo);
-                point->setPoint(Vector3d(*Points[it->startPointId].x,
+                
+                if(!point->Construction) {
+                    point->setPoint(Vector3d(*Points[it->startPointId].x,
                                          *Points[it->startPointId].y,
                                          0.0)
                                );
+                }
             } else if (it->type == Line) {
                 GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(it->geo);
                 lineSeg->setPoints(Vector3d(*Lines[it->index].p1.x,
@@ -2593,7 +2642,7 @@ bool Sketch::updateGeometry()
             } else if (it->type == ArcOfHyperbola) {
                 GCS::ArcOfHyperbola &myArc = ArcsOfHyperbola[it->index];
 
-                GeomArcOfHyperbola *aoh = dynamic_cast<GeomArcOfHyperbola*>(it->geo);
+                GeomArcOfHyperbola *aoh = static_cast<GeomArcOfHyperbola*>(it->geo);
                 
                 Base::Vector3d center = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
                 Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
@@ -2615,7 +2664,7 @@ bool Sketch::updateGeometry()
             } else if (it->type == ArcOfParabola) {
                 GCS::ArcOfParabola &myArc = ArcsOfParabola[it->index];
 
-                GeomArcOfParabola *aop = dynamic_cast<GeomArcOfParabola*>(it->geo);
+                GeomArcOfParabola *aop = static_cast<GeomArcOfParabola*>(it->geo);
                 
                 Base::Vector3d vertex = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
                 Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
@@ -2629,7 +2678,7 @@ bool Sketch::updateGeometry()
             } else if (it->type == BSpline) {
                 GCS::BSpline &mybsp = BSplines[it->index];
 
-                GeomBSplineCurve *bsp = dynamic_cast<GeomBSplineCurve*>(it->geo);
+                GeomBSplineCurve *bsp = static_cast<GeomBSplineCurve*>(it->geo);
 
                 std::vector<Base::Vector3d> poles;
                 std::vector<double> weights;
@@ -2656,6 +2705,21 @@ bool Sketch::updateGeometry()
                 }
 
                 bsp->setKnots(knots,mult);
+                
+                #if OCC_VERSION_HEX >= 0x060900
+                int index = 0;
+                for(std::vector<int>::const_iterator it5 = mybsp.knotpointGeoids.begin(); it5 != mybsp.knotpointGeoids.end(); ++it5, index++) {
+                    if( *it5 != Constraint::GeoUndef) {
+                        if (Geoms[*it5].type == Point) {
+                            GeomPoint *point = static_cast<GeomPoint*>(Geoms[*it5].geo);
+
+                            if(point->Construction) {
+                                point->setPoint(bsp->pointAtParameter(knots[index]));
+                            }
+                        }
+                    }
+                }
+                #endif
 
             }
         } catch (Base::Exception e) {
@@ -2677,8 +2741,13 @@ bool Sketch::updateNonDrivingConstraints()
                 
                 (*it).constr->Value = n2/n1;
             }
-            else
+            else if((*it).constr->Type==Angle) {
+                
+                (*it).constr->Value = std::fmod(*((*it).value), M_PI);
+            }
+            else {
                 (*it).constr->Value=*((*it).value);
+            }
         }
      }
     return true;
@@ -3260,7 +3329,7 @@ TopoShape Sketch::toShape(void) const
 
     // collecting all (non constructive and non external) edges out of the sketch
     for (;it!=Geoms.end();++it) {
-        if (!it->external && !it->geo->Construction) {
+        if (!it->external && !it->geo->Construction && (it->type != Point)) {
             edge_list.push_back(TopoDS::Edge(it->geo->toShape()));
         }
     }

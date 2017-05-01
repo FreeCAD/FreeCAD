@@ -213,7 +213,7 @@ PyObject *PropertyPath::getPyObject(void)
 
     // Returns a new reference, don't increment it!
     PyObject *p = PyUnicode_DecodeUTF8(str.c_str(),str.size(),0);
-    if (!p) throw Base::Exception("UTF8 conversion failure at PropertyPath::getPyObject()");
+    if (!p) throw Base::UnicodeError("UTF8 conversion failure at PropertyPath::getPyObject()");
     return p;
 }
 
@@ -1338,7 +1338,7 @@ const char* PropertyString::getValue(void) const
 PyObject *PropertyString::getPyObject(void)
 {
     PyObject *p = PyUnicode_DecodeUTF8(_cValue.c_str(),_cValue.size(),0);
-    if (!p) throw Base::Exception("UTF8 conversion failure at PropertyString::getPyObject()");
+    if (!p) throw Base::UnicodeError("UTF8 conversion failure at PropertyString::getPyObject()");
     return p;
 }
 
@@ -1594,7 +1594,7 @@ PyObject *PropertyStringList::getPyObject(void)
         PyObject* item = PyUnicode_DecodeUTF8(_lValueList[i].c_str(), _lValueList[i].size(), 0);
         if (!item) {
             Py_DECREF(list);
-            throw Base::Exception("UTF8 conversion failure at PropertyStringList::getPyObject()");
+            throw Base::UnicodeError("UTF8 conversion failure at PropertyStringList::getPyObject()");
         }
         PyList_SetItem(list, i, item);
     }
@@ -1604,13 +1604,16 @@ PyObject *PropertyStringList::getPyObject(void)
 
 void PropertyStringList::setPyObject(PyObject *value)
 {
-    if (PyList_Check(value)) {
-        Py_ssize_t nSize = PyList_Size(value);
+    if (PyString_Check(value)) {
+        setValue(PyString_AsString(value));
+    }
+    else if (PySequence_Check(value)) {
+        Py_ssize_t nSize = PySequence_Size(value);
         std::vector<std::string> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PyList_GetItem(value, i);
+            PyObject* item = PySequence_GetItem(value, i);
             if (PyUnicode_Check(item)) {
                 PyObject* unicode = PyUnicode_AsUTF8String(item);
                 values[i] = PyString_AsString(unicode);
@@ -1627,9 +1630,6 @@ void PropertyStringList::setPyObject(PyObject *value)
         }
         
         setValues(values);
-    }
-    else if (PyString_Check(value)) {
-        setValue(PyString_AsString(value));
     }
     else {
         std::string error = std::string("type must be str or list of str, not ");
@@ -1752,7 +1752,7 @@ PyObject *PropertyMap::getPyObject(void)
         PyObject* item = PyUnicode_DecodeUTF8(it->second.c_str(), it->second.size(), 0);
         if (!item) {
             Py_DECREF(dict);
-            throw Base::Exception("UTF8 conversion failure at PropertyMap::getPyObject()");
+            throw Base::UnicodeError("UTF8 conversion failure at PropertyMap::getPyObject()");
         }
         PyDict_SetItemString(dict,it->first.c_str(),item);
     }

@@ -64,7 +64,7 @@ class DepsGraph:
 
     def visit(self, operation, op_args=[]):
         """"
-        Preform a depth first visit of the graph, calling operation
+        Perform a depth first visit of the graph, calling operation
         on each node.
         """
         stack = []

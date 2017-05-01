@@ -876,7 +876,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
                 ).toLatin1();
                 Base::Interpreter().runString(code_2.constData());
         }
-        catch (Base::PyException &e){
+        catch (Base::Exception &e){
             e.ReportException();
         }
     }
@@ -884,7 +884,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
         try {
             Base::Interpreter().runString("del(tv)");
         }
-        catch (Base::PyException &e) {
+        catch (Base::Exception &e) {
             e.ReportException();
         }
     }
@@ -896,7 +896,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox)
-    : TaskDialog(),ViewProvider(ViewProvider)
+    : TaskDialog(),ViewProvider(ViewProvider), parameter(nullptr)
 {
     assert(ViewProvider);
     

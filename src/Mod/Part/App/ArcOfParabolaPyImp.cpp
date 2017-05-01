@@ -46,9 +46,9 @@ extern const char* gce_ErrorStatusText(gce_ErrorType et);
 // returns a string which represents the object e.g. when printed in python
 std::string ArcOfParabolaPy::representation(void) const
 {
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
+    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfParabolaPtr()->handle());
-    Handle_Geom_Parabola parabola = Handle_Geom_Parabola::DownCast(trim->BasisCurve());
+    Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast(trim->BasisCurve());
 
     gp_Ax1 axis = parabola->Axis();
     gp_Dir dir = axis.Direction();
@@ -91,7 +91,7 @@ int ArcOfParabolaPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject *sense=Py_True;
     if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::ParabolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle_Geom_Parabola parabola = Handle_Geom_Parabola::DownCast
+            Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast
                 (static_cast<ParabolaPy*>(o)->getGeomParabolaPtr()->handle());
             GC_MakeArcOfParabola arc(parabola->Parab(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
@@ -103,7 +103,7 @@ int ArcOfParabolaPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return 0;
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -131,9 +131,9 @@ void  ArcOfParabolaPy::setFocal(Py::Float arg)
 
 Py::Object ArcOfParabolaPy::getParabola(void) const
 {
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
+    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfParabolaPtr()->handle());
-    Handle_Geom_Parabola parabola = Handle_Geom_Parabola::DownCast(trim->BasisCurve());
+    Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast(trim->BasisCurve());
     return Py::Object(new ParabolaPy(new GeomParabola(parabola)), true);
 }
 

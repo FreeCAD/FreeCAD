@@ -29,7 +29,7 @@
 #endif
 
 // #ifdef DCM_EXTERNAL_CORE
-// //following macros are used for externalisation. As constraint->initalize is very compiler intensive,
+// //following macros are used for externalization. As constraint->initialize is very compiler intensive,
 // //especially with module states recursive incarnation, we explicitly initiate all possible calls to this
 // //function so that it must only be compiled once, one function at a time. To get all possible equation
 // //combinations boost pp is needed.

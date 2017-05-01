@@ -1513,6 +1513,40 @@ bool CDxfRead::ReadDimension()
 }
 
 
+bool CDxfRead::ReadBlockInfo()
+{
+    while(!((*m_ifs).eof()))
+    {
+        get_line();
+        int n;
+        if(sscanf(m_str, "%d", &n) != 1)
+        {
+            printf("CDxfRead::ReadBlockInfo() Failed to read integer from '%s'\n", m_str);
+            return false;
+        }
+        std::istringstream ss;
+        ss.imbue(std::locale("C"));
+        switch(n){
+            case 2:
+                // block name
+                get_line();
+                strcpy(m_block_name, m_str);
+                return true;
+            case 3:
+                // block name too???
+                get_line();
+                strcpy(m_block_name, m_str);
+                return true;
+            default:
+                // skip the next line
+                get_line();
+                break;
+        }
+    }
+    return false;
+}
+
+
 void CDxfRead::get_line()
 {
     if (m_unused_line[0] != '\0')
@@ -1567,7 +1601,7 @@ bool CDxfRead::ReadUnits()
 
 bool CDxfRead::ReadLayer()
 {
-        std::string layername;
+    std::string layername;
     int aci = -1;
 
     while(!((*m_ifs).eof()))
@@ -1646,23 +1680,15 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
             }
             continue;
         } // End if - then
-
-        else if (!strcmp( m_str, "AcDbBlockBegin" )){
-            get_line();
-
-            if (! strcmp(m_str,"2"))
-            {
-                get_line();
-                strcpy(m_block_name, m_str);
-            }
-        } // End if - then
+        
         else if(!strcmp(m_str, "0"))
         {
             get_line();
             if (!strcmp( m_str, "SECTION" )){
               get_line();
               get_line();
-              strcpy(m_section_name, m_str);
+              if (strcmp( m_str, "ENTITIES" ))
+                strcpy(m_section_name, m_str);
               strcpy(m_block_name, "");
 
         } // End if - then
@@ -1679,7 +1705,17 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
                   printf("CDxfRead::DoRead() Failed to read layer\n");
                   //return; Some objects or tables can have "LAYER" as name...
                 }
-              continue;     }
+              continue;     
+        }
+        
+        else if (!strcmp( m_str, "BLOCK" )) {
+            if(!ReadBlockInfo())
+            {
+                printf("CDxfRead::DoRead() Failed to read block info\n");
+                return;
+            }
+            continue;
+        } // End if - then
 
         else if (!strcmp( m_str, "ENDSEC" )){
                     strcpy(m_section_name, "");
@@ -1805,17 +1841,17 @@ std::string CDxfRead::LayerName() const
     if (strlen(m_section_name) > 0)
     {
         result.append(m_section_name);
+        result.append(" ");
     }
 
     if (strlen(m_block_name) > 0)
     {
-        result.append(" ");
         result.append(m_block_name);
+        result.append(" ");
     }
 
     if (strlen(m_layer_name) > 0)
     {
-        result.append(" ");
         result.append(m_layer_name);
     }
 

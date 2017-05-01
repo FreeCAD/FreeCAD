@@ -76,7 +76,7 @@ class ObjectDrilling:
         # Heights & Depths
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
         obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
-        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Height to clear top of materil"))
+        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Height to clear top of material"))
         obj.addProperty("App::PropertyDistance", "RetractHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished"))
 
         # Tool Properties
@@ -220,7 +220,7 @@ class ObjectDrilling:
             for i in range(len(shape.Faces)):
                 candidateFaceName = "Face" + str(i + 1)
                 f = shape.getElement(candidateFaceName)
-                if PathUtils.isDrillable(obj, f, tooldiameter):
+                if PathUtils.isDrillable(shape, f, tooldiameter):
                     PathLog.debug('face candidate: {} is drillable '.format(f))
                     x = f.Surface.Center.x
                     y = f.Surface.Center.y

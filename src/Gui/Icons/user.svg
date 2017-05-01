@@ -14,10 +14,46 @@
    height="64px"
    id="svg2816"
    version="1.1"
-   inkscape:version="0.48.4 r"
-   sodipodi:docname="User.svg">
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="user.svg">
   <defs
      id="defs2818">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3964">
+      <stop
+         style="stop-color:#fce94f;stop-opacity:1"
+         offset="0"
+         id="stop3966" />
+      <stop
+         style="stop-color:#c4a000;stop-opacity:1"
+         offset="1"
+         id="stop3968" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3952">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="0"
+         id="stop3954" />
+      <stop
+         style="stop-color:#c4a000;stop-opacity:0;"
+         offset="1"
+         id="stop3956" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3942">
+      <stop
+         style="stop-color:#c4a000;stop-opacity:1"
+         offset="0"
+         id="stop3944" />
+      <stop
+         style="stop-color:#fce94f;stop-opacity:1"
+         offset="1"
+         id="stop3946" />
+    </linearGradient>
     <linearGradient
        inkscape:collect="always"
        id="linearGradient3873">
@@ -544,6 +580,37 @@
        id="linearGradient3896"
        xlink:href="#linearGradient3873-4"
        inkscape:collect="always" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3942"
+       id="linearGradient3948"
+       x1="35.26923"
+       y1="31.615385"
+       x2="23.346153"
+       y2="6.5769229"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3952"
+       id="radialGradient3958"
+       cx="10.5"
+       cy="2"
+       fx="10.5"
+       fy="2"
+       r="5.5"
+       gradientTransform="matrix(1,0,0,0.36363636,0,1.2727273)"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3964"
+       id="radialGradient3972"
+       cx="22"
+       cy="41.256756"
+       fx="22"
+       fy="41.256756"
+       r="24"
+       gradientTransform="matrix(1,0.58333334,-0.78918573,1.3528898,34.559242,-27.649181)"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -552,9 +619,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.8890872"
-     inkscape:cx="22.174436"
-     inkscape:cy="41.453574"
+     inkscape:zoom="5.4999999"
+     inkscape:cx="71.484934"
+     inkscape:cy="57.290399"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -566,11 +633,19 @@
      inkscape:snap-bbox-midpoints="true"
      inkscape:object-paths="true"
      inkscape:object-nodes="true"
-     inkscape:window-width="1280"
-     inkscape:window-height="758"
+     inkscape:window-width="1600"
+     inkscape:window-height="837"
      inkscape:window-x="0"
-     inkscape:window-y="19"
-     inkscape:window-maximized="0" />
+     inkscape:window-y="27"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3152"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
   <metadata
      id="metadata2821">
     <rdf:RDF>
@@ -588,58 +663,36 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <path
-       sodipodi:type="star"
-       style="fill:#c1a315;fill-opacity:1;stroke:url(#linearGradient3896);stroke-width:2.0803194;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="path3103-7"
-       sodipodi:sides="3"
-       sodipodi:cx="-85.624207"
-       sodipodi:cy="75.827965"
-       sodipodi:r1="26.227234"
-       sodipodi:r2="16.102348"
-       sodipodi:arg1="-1.5591689"
-       sodipodi:arg2="-0.54867416"
-       inkscape:flatsided="false"
-       inkscape:rounded="0"
-       inkscape:randomized="0"
-       d="m -85.319258,49.602504 13.433845,17.827177 8.820648,21.775107 -22.155711,2.720463 -23.268124,-3.248649 8.72187,-20.54764 z"
-       inkscape:transform-center-x="0.43909644"
-       inkscape:transform-center-y="0.45711473"
-       transform="matrix(1.2222796,0,0,0.85463352,136.84309,-17.529277)" />
+       style="fill:url(#radialGradient3972);fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       d="m 32,25.999999 c -14.636364,0 -23.0000008,30.882354 -23.0000008,30.882354 0,0 4.1818178,4.117647 23.0000008,4.117647 18.818181,0 22.999999,-4.117647 22.999999,-4.117647 0,0 -8.363636,-30.882354 -22.999999,-30.882354 z"
+       id="path3960"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="zczcz" />
+    <path
+       style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 31.999999,27.999998 c -13,0 -20.642824,28 -20.642824,28 0,0 4.642824,3 20.642824,3 16,0 20.642824,-3 20.642824,-3 0,0 -7.642824,-28 -20.642824,-28 z"
+       id="path3962"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="zczcz" />
     <path
        sodipodi:type="arc"
-       style="color:#000000;fill:url(#radialGradient4078-5);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.25000024;marker:none;visibility:visible;display:block"
-       id="path12511-2"
-       sodipodi:cx="55"
-       sodipodi:cy="125"
-       sodipodi:rx="14.375"
-       sodipodi:ry="14.375"
-       d="m 69.375,125 a 14.375,14.375 0 1 1 -28.75,0 14.375,14.375 0 1 1 28.75,0 z"
-       transform="matrix(0.48531681,0,0,0.68820277,-1.6688549,-43.077442)"
-       inkscape:export-filename="/home/jimmac/ximian_art/icons/nautilus/suse93/stock_new-16.png"
-       inkscape:export-xdpi="33.852203"
-       inkscape:export-ydpi="33.852203" />
+       style="fill:#fce94f;fill-opacity:1;stroke:#302b00;stroke-width:2.0666666;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:6"
+       id="path3154"
+       sodipodi:cx="30.5"
+       sodipodi:cy="18.5"
+       sodipodi:rx="15.5"
+       sodipodi:ry="15.5"
+       d="m 46,18.5 a 15.5,15.5 0 1 1 -31,0 15.5,15.5 0 1 1 31,0 z"
+       transform="matrix(0.96774194,0,0,0.96774194,2.483871,0.09677419)" />
     <path
        sodipodi:type="arc"
-       style="fill:#c1a315;fill-opacity:1;stroke:url(#linearGradient4060);stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
-       id="path4042"
-       sodipodi:cx="27.641447"
-       sodipodi:cy="39.95837"
-       sodipodi:rx="20.956074"
-       sodipodi:ry="20.956074"
-       d="m 48.597521,39.95837 a 20.956074,20.956074 0 1 1 -41.9121477,0 20.956074,20.956074 0 1 1 41.9121477,0 z"
-       transform="matrix(0.85502136,0,0,0.85908663,8.3659728,-14.321314)" />
-    <path
-       sodipodi:type="arc"
-       style="color:#000000;fill:url(#radialGradient4078);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.25000024;marker:none;visibility:visible;display:block"
-       id="path12511"
-       sodipodi:cx="55"
-       sodipodi:cy="125"
-       sodipodi:rx="14.375"
-       sodipodi:ry="14.375"
-       d="m 69.375,125 a 14.375,14.375 0 1 1 -28.75,0 14.375,14.375 0 1 1 28.75,0 z"
-       transform="matrix(0.66973139,0,0,0.67291568,-8.8771393,-69.988039)"
-       inkscape:export-filename="/home/jimmac/ximian_art/icons/nautilus/suse93/stock_new-16.png"
-       inkscape:export-xdpi="33.852203"
-       inkscape:export-ydpi="33.852203" />
+       style="fill:url(#linearGradient3948);fill-opacity:1;stroke:#fce94f;stroke-width:2.38461518;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:6"
+       id="path3154-3"
+       sodipodi:cx="30.5"
+       sodipodi:cy="18.5"
+       sodipodi:rx="15.5"
+       sodipodi:ry="15.5"
+       d="m 46,18.5 a 15.5,15.5 0 1 1 -31,0 15.5,15.5 0 1 1 31,0 z"
+       transform="matrix(0.83870968,0,0,0.83870968,6.4193546,2.483871)" />
   </g>
 </svg>

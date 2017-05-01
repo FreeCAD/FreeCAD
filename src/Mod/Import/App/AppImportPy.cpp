@@ -41,9 +41,11 @@
 # include <IGESControl_Controller.hxx>
 # include <IGESData_GlobalSection.hxx>
 # include <IGESData_IGESModel.hxx>
+# include <IGESToBRep_Actor.hxx>
 # include <Interface_Static.hxx>
 # include <Transfer_TransientProcess.hxx>
 # include <XSControl_WorkSession.hxx>
+# include <XSControl_TransferReader.hxx>
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <OSD_Exception.hxx>
 #endif
@@ -125,7 +127,7 @@ private:
                         throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                     }
 
-                    Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                    Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.Reader().WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading STEP file...");
                     pi->Show();
@@ -133,7 +135,7 @@ private:
                     pi->EndScope();
                 }
                 catch (OSD_Exception) {
-                    Handle_Standard_Failure e = Standard_Failure::Caught();
+                    Handle(Standard_Failure) e = Standard_Failure::Caught();
                     Base::Console().Error("%s\n", e->GetMessageString());
                     Base::Console().Message("Try to load STEP file without colors...\n");
 
@@ -158,15 +160,18 @@ private:
                         throw Py::Exception(PyExc_IOError, "cannot read IGES file");
                     }
 
-                    Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                    Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading IGES file...");
                     pi->Show();
                     aReader.Transfer(hDoc);
                     pi->EndScope();
+                    // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
+                    Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
+                            ->SetModel(new IGESData_IGESModel);
                 }
                 catch (OSD_Exception) {
-                    Handle_Standard_Failure e = Standard_Failure::Caught();
+                    Handle(Standard_Failure) e = Standard_Failure::Caught();
                     Base::Console().Error("%s\n", e->GetMessageString());
                     Base::Console().Message("Try to load IGES file without colors...\n");
 
@@ -186,9 +191,10 @@ private:
             xcaf.loadShapes();
 #endif
             pcDoc->recompute();
+            hApp->Close(hDoc);
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
         }
         catch (const Base::Exception& e) {
@@ -209,12 +215,14 @@ private:
         std::string name8bit = Part::encodeFilename(Utf8Name);
 
         try {
+            Py::Sequence list(object);
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
-            Import::ExportOCAF ocaf(hDoc);
 
-            Py::Sequence list(object);
+            bool keepExplicitPlacement = list.size() > 1;
+            Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
+
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 PyObject* item = (*it).ptr();
                 if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
@@ -288,9 +296,11 @@ private:
                     throw Py::Exception();
                 }
             }
+
+            hApp->Close(hDoc);
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
         }
         catch (const Base::Exception& e) {
@@ -340,11 +350,11 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
                 aReader.SetNameMode(true);
                 aReader.SetLayerMode(true);
                 if (aReader.ReadFile((Standard_CString)(name8bit.c_str())) != IFSelect_RetDone) {
-                    PyErr_SetString(PyExc_Exception, "cannot read STEP file");
+                    PyErr_SetString(PyExc_IOError, "cannot read STEP file");
                     return 0;
                 }
 
-                Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                 aReader.Reader().WS()->MapReader()->SetProgress(pi);
                 pi->NewScope(100, "Reading STEP file...");
                 pi->Show();
@@ -352,7 +362,7 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
                 pi->EndScope();
             }
             catch (OSD_Exception) {
-                Handle_Standard_Failure e = Standard_Failure::Caught();
+                Handle(Standard_Failure) e = Standard_Failure::Caught();
                 Base::Console().Error("%s\n", e->GetMessageString());
                 Base::Console().Message("Try to load STEP file without colors...\n");
 
@@ -369,11 +379,11 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
                 aReader.SetNameMode(true);
                 aReader.SetLayerMode(true);
                 if (aReader.ReadFile((Standard_CString)(name8bit.c_str())) != IFSelect_RetDone) {
-                    PyErr_SetString(PyExc_Exception, "cannot read IGES file");
+                    PyErr_SetString(PyExc_IOError, "cannot read IGES file");
                     return 0;
                 }
 
-                Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                 aReader.WS()->MapReader()->SetProgress(pi);
                 pi->NewScope(100, "Reading IGES file...");
                 pi->Show();
@@ -381,7 +391,7 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
                 pi->EndScope();
             }
             catch (OSD_Exception) {
-                Handle_Standard_Failure e = Standard_Failure::Caught();
+                Handle(Standard_Failure) e = Standard_Failure::Caught();
                 Base::Console().Error("%s\n", e->GetMessageString());
                 Base::Console().Message("Try to load IGES file without colors...\n");
 
@@ -390,7 +400,7 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
             }
         }
         else {
-            PyErr_SetString(PyExc_Exception, "no supported file format");
+            PyErr_SetString(PyExc_RuntimeError, "no supported file format");
             return 0;
         }
 
@@ -400,8 +410,8 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
 
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_RuntimeError, e->GetMessageString());
         return 0;
     }
     PY_CATCH

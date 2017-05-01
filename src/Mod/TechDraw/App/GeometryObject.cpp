@@ -154,7 +154,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
 
     auto start = chrono::high_resolution_clock::now();
 
-    Handle_HLRBRep_Algo brep_hlr = NULL;
+    Handle(HLRBRep_Algo) brep_hlr = NULL;
     try {
         brep_hlr = new HLRBRep_Algo();
         brep_hlr->Add(input, m_isoCount);

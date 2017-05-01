@@ -72,7 +72,7 @@ int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return -1;
     }
@@ -99,7 +99,7 @@ PyObject*  TopoShapeCompSolidPy::add(PyObject *args)
             Standard_Failure::Raise("Cannot empty shape to compound solid");
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }

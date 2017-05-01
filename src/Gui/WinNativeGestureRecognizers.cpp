@@ -40,12 +40,47 @@
 
 
 #include <qgesture.h>
-#include <private/qevent_p.h>
+
 #include <Base/Exception.h>
 
 QT_BEGIN_NAMESPACE
 
 #if !defined(QT_NO_NATIVE_GESTURES)
+
+//#include <private/qevent_p.h>
+//this include is not available on conda Qt, see https://forum.freecadweb.org/viewtopic.php?f=4&t=21405&p=167395#p167395
+//copy-pasted from this header:
+class QNativeGestureEvent : public QEvent
+{
+public:
+    enum Type {
+        None,
+        GestureBegin,
+        GestureEnd,
+        Pan,
+        Zoom,
+        Rotate,
+        Swipe
+    };
+
+    QNativeGestureEvent()
+        : QEvent(QEvent::NativeGesture), gestureType(None), percentage(0)
+#ifdef Q_WS_WIN
+        , sequenceId(0), argument(0)
+#endif
+    {
+    }
+
+    Type gestureType;
+    float percentage;
+    QPoint position;
+    float angle;
+#ifdef Q_WS_WIN
+    ulong sequenceId;
+    quint64 argument;
+#endif
+};
+
 
 QGesture* WinNativeGestureRecognizerPinch::create(QObject* target)
 {
@@ -205,11 +240,11 @@ void WinNativeGestureRecognizerPinch::TuneWindowsGestures(QWidget* target)
     //dynamic linking - required to be able to run on windows pre-7
     HINSTANCE hinstLib = LoadLibraryA("user32.dll");
     if (hinstLib == 0)
-        throw Base::Exception("LoadLibrary(user32.dll) failed. Could not tune Windows gestures.");
+        throw Base::RuntimeError("LoadLibrary(user32.dll) failed. Could not tune Windows gestures.");
 
     ptrSetGestureConfig dllSetGestureConfig = reinterpret_cast<ptrSetGestureConfig> (GetProcAddress(hinstLib,"SetGestureConfig"));
     if (dllSetGestureConfig == 0)
-        throw Base::Exception("DLL entry point for SetGestureConfig not found in user32.dll. Could not tune Windows gestures.");
+        throw Base::RuntimeError("DLL entry point for SetGestureConfig not found in user32.dll. Could not tune Windows gestures.");
 
     HWND w = target->winId();
 
@@ -229,7 +264,7 @@ void WinNativeGestureRecognizerPinch::TuneWindowsGestures(QWidget* target)
     if(!ret){
         DWORD err = GetLastError();
         QString errMsg = QString::fromLatin1("Error in SetGestureConfig. GetLastError = %1").arg(err);
-        throw Base::Exception(errMsg.toLatin1());
+        throw Base::RuntimeError(errMsg.toLatin1());
     }
 #endif
 }

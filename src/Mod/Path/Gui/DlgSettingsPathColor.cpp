@@ -27,6 +27,7 @@
 
 #include "DlgSettingsPathColor.h"
 #include <Gui/PrefWidgets.h>
+#include <Base/Console.h>
 
 using namespace PathGui;
 
@@ -60,6 +61,9 @@ void DlgSettingsPathColor::saveSettings()
     DefaultExtentsColor->onSave();
     DefaultProbePathColor->onSave();
     DefaultHighlightPathColor->onSave();
+    DefaultBBoxSelectionColor->onSave();
+    DefaultBBoxNormalColor->onSave();
+	DefaultSelectionStyle->onSave();
 }
 
 void DlgSettingsPathColor::loadSettings()
@@ -72,6 +76,9 @@ void DlgSettingsPathColor::loadSettings()
     DefaultExtentsColor->onRestore();
     DefaultProbePathColor->onRestore();
     DefaultHighlightPathColor->onRestore();
+    DefaultBBoxSelectionColor->onRestore();
+    DefaultBBoxNormalColor->onRestore();
+	DefaultSelectionStyle->onRestore();
 }
 
 /**

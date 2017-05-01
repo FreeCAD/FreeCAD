@@ -23,65 +23,56 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include<QInputDialog>
-#include<QLineEdit>
-#include <QTextDocument>
+  #include <QGraphicsSceneMouseEvent>
+  #include <QInputDialog>
+  #include <QLineEdit>
+  #include <QTextDocument>
 #endif // #ifndef _PreCmp_
-
-
-
-#include <Base/Console.h>
 
 #include "DlgTemplateField.h"
 #include "TemplateTextField.h"
 
-//#include<QDebug>
-
 using namespace TechDrawGui;
 
-TemplateTextField::TemplateTextField(QGraphicsItem*parent,
+TemplateTextField::TemplateTextField(QGraphicsItem *parent,
                                      TechDraw::DrawTemplate *myTmplte,
-                                     const std::string &myFieldName,
-                                     QWidget* qgview)
+                                     const std::string &myFieldName)
     : QGraphicsRectItem(parent),
-      ui(nullptr),
       tmplte(myTmplte),
-      fieldNameStr(myFieldName),
-      dlgOwner(qgview)
-{
-}
-
-
-TemplateTextField::~TemplateTextField()
-{
-}
-
-void TemplateTextField::execDialog()
-{
-    int uiCode = ui->exec();
-    QString newContent;
-    if(uiCode == QDialog::Accepted) {
-       if (tmplte) {
-           newContent = ui->getFieldContent();
-#if QT_VERSION >= 0x050000
-           QString qsClean = newContent.toHtmlEscaped();
-#else
-           QString qsClean = Qt::escape(newContent);
-#endif
-           std::string utf8Content = qsClean.toUtf8().constData();
-           tmplte->EditableTexts.setValue(fieldNameStr, utf8Content);
-       }
-    }
-    ui = nullptr;               //ui memory will be release by ui's parent Widget
-}
+      fieldNameStr(myFieldName)
+{ }
 
 void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    Q_UNUSED(event);
-    if (!ui) {
-        ui = new DlgTemplateField(dlgOwner);
-        ui->setFieldName(fieldNameStr);
-        ui->setFieldContent(tmplte->EditableTexts[fieldNameStr]);
-        execDialog();
+    if ( tmplte && rect().contains(event->pos()) ) {
+        event->accept();
+    } else {
+        QGraphicsRectItem::mousePressEvent(event);
     }
 }
+
+void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    if ( tmplte && rect().contains(event->pos()) ) {
+        event->accept();
+
+        DlgTemplateField ui;
+
+        ui.setFieldName(fieldNameStr);
+        ui.setFieldContent(tmplte->EditableTexts[fieldNameStr]);
+
+        if (ui.exec() == QDialog::Accepted) {
+#if QT_VERSION >= 0x050000
+            QString qsClean = ui.getFieldContent().toHtmlEscaped();
+#else
+            QString qsClean = Qt::escape( ui.getFieldContent() );
+#endif
+            std::string utf8Content = qsClean.toUtf8().constData();
+            tmplte->EditableTexts.setValue(fieldNameStr, utf8Content);
+        }
+
+    } else {
+        QGraphicsRectItem::mouseReleaseEvent(event);
+    }
+}
+

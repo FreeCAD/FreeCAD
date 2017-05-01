@@ -112,7 +112,12 @@ MergeExporter::~MergeExporter()
         }
     }
 
-    mergingMesh.save(fName.c_str());
+    try {
+        mergingMesh.save(fName.c_str());
+    }
+    catch (const Base::Exception& e) {
+        std::cerr << "Saving mesh failed: " << e.what() << std::endl;
+    }
 }
 
 

@@ -96,7 +96,7 @@ protected:
     private:
         gp_Pln myPlane;
         TopoDS_Face myFace;
-        Handle_Geom_Surface myHPlane;
+        Handle(Geom_Surface) myHPlane;
     };
 };
 

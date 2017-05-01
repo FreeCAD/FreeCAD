@@ -70,6 +70,10 @@ if(BUILD_WEB)
   add_subdirectory(Web)
 endif(BUILD_WEB)
 
+if(BUILD_SURFACE)
+  add_subdirectory(Surface)
+endif(BUILD_SURFACE)
+
 if(BUILD_START)
   add_subdirectory(Start)
 endif(BUILD_START)

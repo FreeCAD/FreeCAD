@@ -40,7 +40,7 @@ class PartTestCases(unittest.TestCase):
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartTest")
-        #print ("omit clos document for debuging")
+        #print ("omit closing document for debugging")
 
 class PartTestBSplineCurve(unittest.TestCase):
     def setUp(self):

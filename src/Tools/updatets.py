@@ -30,7 +30,7 @@ Usage = """updatets - update all .ts files found in the source directories
 Usage:
    updatets 
    
-Autor:
+Author:
   (c) 2010 Werner Mayer
   Licence: GPL
 

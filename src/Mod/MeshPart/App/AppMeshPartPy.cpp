@@ -48,13 +48,64 @@ public:
     Module() : Py::ExtensionModule<Module>("MeshPart")
     {
         add_varargs_method("loftOnCurve",&Module::loftOnCurve,
-            "Loft on curve."
+            "Creates a mesh loft based on a curve and an up vector\n"
+            "\n"
+            "loftOnCurve(curve, poly, upVector, MaxSize)\n"
+            "\n"
+            "Args:\n"
+            "    curve (topology):\n"
+            "    poly (list of (x, y z) or (x, y) tuples of floats):\n"
+            "    upVector ((x, y, z) tuple):\n"
+            "    MaxSize (float):\n"
         );
         add_varargs_method("wireFromSegment",&Module::wireFromSegment,
-            "Create wire(s) from boundary of segment"
+            "Create wire(s) from boundary of segment\n"
         );
         add_keyword_method("meshFromShape",&Module::meshFromShape,
-            "Create mesh from shape"
+            "Create surface mesh from shape\n"
+            "\n"
+            "Multiple signatures are available:\n"
+            "\n"
+            "    meshFromShape(Shape)\n"
+            "    meshFromShape(Shape, LinearDeflection, AngularDeflection=0.5,\n"
+            "                         Segments=False, GroupColors=[])\n"
+            "    meshFromShape(Shape, MaxLength)\n"
+            "    meshFromShape(Shape, MaxArea)\n"
+            "    meshFromShape(Shape, LocalLength)\n"
+            "    meshFromShape(Shape, Deflection)\n"
+            "    meshFromShape(Shape, MinLength, MaxLength)\n"
+            "\n"
+            "Additionally, when FreeCAD is built with netgen, the following\n"
+            "signatures are also available (they are "
+#ifndef HAVE_NETGEN
+            "NOT "
+#endif
+            "currently):\n"
+            "\n"
+            "    meshFromShape(Shape, Fineness, SecondOrder=0,\n"
+            "                         Optimize=1, AllowQuad=0)\n"
+            "    meshFromShape(Shape, GrowthRate=0, SegPerEdge=0,\n"
+            "                  SegPerRadius=0, SecondOrder=0, Optimize=1,\n"
+            "                  AllowQuad=0)\n"
+            "\n"
+            "Args:\n"
+            "    Shape (required, topology) - TopoShape to create mesh of.\n"
+            "    LinearDeflection (required, float)\n"
+            "    AngularDeflection (optional, float)\n"
+            "    Segments (optional, boolean)\n"
+            "    GroupColors (optional, list of (Red, Green, Blue) tuples)\n"
+            "    MaxLength (required, float)\n"
+            "    MaxArea (required, float)\n"
+            "    LocalLength (required, float)\n"
+            "    Deflection (required, float)\n"
+            "    MinLength (required, float)\n"
+            "    Fineness (required, integer)\n"
+            "    SecondOrder (optional, integral boolean)\n"
+            "    Optimize (optional, integeral boolean)\n"
+            "    AllowQuad (optional, integeral boolean)\n"
+            "    GrowthRate (optional, float)\n"
+            "    SegPerEdge (optional, float)\n"
+            "    SegPerRadius (optional, float)\n"
         );
         initialize("This module is the MeshPart module."); // register with Python
     }
@@ -109,26 +160,27 @@ private:
         MeshCore::MeshKernel M;
 
         std::vector<Base::Vector3f> poly;
+        auto exText( "List of Tuples of three or two floats needed as second parameter!" );
 
         if (!PyList_Check(pcListObj))
-            throw Py::Exception(Base::BaseExceptionFreeCADError,"List of Tuble of three or two floats needed as second parameter!");
+            throw Py::Exception(Base::BaseExceptionFreeCADError, exText);
 
         int nSize = PyList_Size(pcListObj);
         for (int i=0; i<nSize;++i) {
             PyObject* item = PyList_GetItem(pcListObj, i);
             if (!PyTuple_Check(item))
-                throw Py::Exception(Base::BaseExceptionFreeCADError,"List of Tuble of three or two floats needed as second parameter!");
+                throw Py::Exception(Base::BaseExceptionFreeCADError, exText);
 
             int nTSize = PyTuple_Size(item);
             if (nTSize != 2 && nTSize != 3)
-                throw Py::Exception(Base::BaseExceptionFreeCADError,"List of Tuble of three or two floats needed as second parameter!");
+                throw Py::Exception(Base::BaseExceptionFreeCADError, exText);
 
             Base::Vector3f vec(0,0,0);
 
             for(int l = 0; l < nTSize;l++) {
                 PyObject* item2 = PyTuple_GetItem(item, l);
                 if (!PyFloat_Check(item2))
-                    throw Py::Exception(Base::BaseExceptionFreeCADError,"List of Tuble of three or two floats needed as second parameter!");
+                    throw Py::Exception(Base::BaseExceptionFreeCADError, exText);
                 vec[l] = (float)PyFloat_AS_DOUBLE(item2);
             }
             poly.push_back(vec);
@@ -282,9 +334,9 @@ private:
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Netgen);
             mesher.setFineness(fineness);
-            mesher.setSecondOrder(secondOrder > 0);
-            mesher.setOptimize(optimize > 0);
-            mesher.setQuadAllowed(allowquad > 0);
+            mesher.setSecondOrder(secondOrder != 0);
+            mesher.setOptimize(optimize != 0);
+            mesher.setQuadAllowed(allowquad != 0);
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
         }
 
@@ -300,9 +352,9 @@ private:
             mesher.setGrowthRate(growthRate);
             mesher.setNbSegPerEdge(nbSegPerEdge);
             mesher.setNbSegPerRadius(nbSegPerRadius);
-            mesher.setSecondOrder(secondOrder > 0);
-            mesher.setOptimize(optimize > 0);
-            mesher.setQuadAllowed(allowquad > 0);
+            mesher.setSecondOrder(secondOrder != 0);
+            mesher.setOptimize(optimize != 0);
+            mesher.setQuadAllowed(allowquad != 0);
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
         }
 #endif

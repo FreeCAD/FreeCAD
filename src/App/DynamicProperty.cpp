@@ -241,7 +241,7 @@ Property* DynamicProperty::addDynamicProperty(const char* type, const char* name
         delete base;
         std::stringstream str;
         str << "'" << type << "' is not a property type";
-        throw Base::Exception(str.str());
+        throw Base::ValueError(str.str());
     }
 
     // get unique name

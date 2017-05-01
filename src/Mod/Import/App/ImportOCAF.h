@@ -54,9 +54,10 @@ namespace Import {
 class ImportExport ImportOCAF
 {
 public:
-    ImportOCAF(Handle_TDocStd_Document h, App::Document* d, const std::string& name);
+    ImportOCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name);
     virtual ~ImportOCAF();
     void loadShapes();
+
 private:
     void loadShapes(const TDF_Label& label, const TopLoc_Location&, const std::string& partname, const std::string& assembly, bool isRef, std::vector<App::DocumentObject*> &);
     void createShape(const TDF_Label& label, const TopLoc_Location&, const std::string&, std::vector<App::DocumentObject*> &, bool);
@@ -64,10 +65,10 @@ private:
     virtual void applyColors(Part::Feature*, const std::vector<App::Color>&){}
 
 private:
-    Handle_TDocStd_Document pDoc;
+    Handle(TDocStd_Document) pDoc;
     App::Document* doc;
-    Handle_XCAFDoc_ShapeTool aShapeTool;
-    Handle_XCAFDoc_ColorTool aColorTool;
+    Handle(XCAFDoc_ShapeTool) aShapeTool;
+    Handle(XCAFDoc_ColorTool) aColorTool;
     std::string default_name;
     std::set<int> myRefShapes;
     static const int HashUpper = INT_MAX;
@@ -76,21 +77,22 @@ private:
 class ImportExport ExportOCAF
 {
 public:
-    ExportOCAF(Handle_TDocStd_Document h);
+    ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement);
     void saveShape(Part::Feature* part, const std::vector<App::Color>&);
 
 private:
-    Handle_TDocStd_Document pDoc;
-    Handle_XCAFDoc_ShapeTool aShapeTool;
-    Handle_XCAFDoc_ColorTool aColorTool;
+    Handle(TDocStd_Document) pDoc;
+    Handle(XCAFDoc_ShapeTool) aShapeTool;
+    Handle(XCAFDoc_ColorTool) aColorTool;
     TDF_Label rootLabel;
+    bool keepExplicitPlacement;
 };
 
 
 class ImportXCAF
 {
 public:
-    ImportXCAF(Handle_TDocStd_Document h, App::Document* d, const std::string& name);
+    ImportXCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name);
     virtual ~ImportXCAF();
     void loadShapes();
 
@@ -100,10 +102,10 @@ private:
     virtual void applyColors(Part::Feature*, const std::vector<App::Color>&){}
 
 private:
-    Handle_TDocStd_Document hdoc;
+    Handle(TDocStd_Document) hdoc;
     App::Document* doc;
-    Handle_XCAFDoc_ShapeTool aShapeTool;
-    Handle_XCAFDoc_ColorTool hColors;
+    Handle(XCAFDoc_ShapeTool) aShapeTool;
+    Handle(XCAFDoc_ColorTool) hColors;
     std::string default_name;
     std::map<Standard_Integer, TopoDS_Shape> mySolids;
     std::map<Standard_Integer, TopoDS_Shape> myShells;

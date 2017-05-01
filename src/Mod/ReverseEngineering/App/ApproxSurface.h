@@ -312,7 +312,7 @@ public:
     /**
      * Berechnet eine B-Spline-Flaeche.aus den geg. Punkten
      */
-    virtual Handle_Geom_BSplineSurface CreateSurface(const TColgp_Array1OfPnt& points,
+    virtual Handle(Geom_BSplineSurface) CreateSurface(const TColgp_Array1OfPnt& points,
                                                      int iIter,
                                                      bool bParaCor,
                                                      double fSizeFactor=0.0f);

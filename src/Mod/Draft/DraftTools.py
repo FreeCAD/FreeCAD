@@ -3239,10 +3239,15 @@ class Trimex(Modifier):
 
         # modifying active edge
         if DraftGeomUtils.geomType(edge) == "Line":
-            perp = DraftGeomUtils.vec(edge).cross(Vector(0,0,1))
+            ve = DraftGeomUtils.vec(edge)
             chord = v1.sub(point)
-            proj = DraftVecUtils.project(chord,perp)
-            self.newpoint = Vector.add(point,proj)
+            n = ve.cross(chord)
+            if n.Length == 0:
+                self.newpoint = point
+            else:
+                perp = ve.cross(n)
+                proj = DraftVecUtils.project(chord,perp)
+                self.newpoint = Vector.add(point,proj)
             dist = v1.sub(self.newpoint).Length
             ghost.p1(self.newpoint)
             ghost.p2(v2)
@@ -3713,6 +3718,11 @@ class Edit(Modifier):
         self.running = False
         self.trackers = []
         self.obj = None
+        self.call = None
+        self.selectstate = None
+        self.originalDisplayMode = None
+        self.originalPoints = None
+        self.originalNodes = None
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Edit',
@@ -3726,22 +3736,50 @@ class Edit(Modifier):
             Modifier.Activated(self,"Edit")
             if FreeCADGui.Selection.getSelection():
                 self.selection = FreeCADGui.Selection.getSelection()
-                if "Proxy" in self.selection[0].PropertiesList:
-                    if hasattr(self.selection[0].Proxy,"Type"):
-                        self.proceed()
+                if len(self.selection) == 1:
+                    if "Proxy" in self.selection[0].PropertiesList:
+                        if hasattr(self.selection[0].Proxy,"Type"):
+                            if not Draft.getType(self.selection[0]) in ["BezCurve","Wire","BSpline","Circle","Rectangle",
+                                                                        "Polygon","Dimension","Space","Structure","PanelCut",
+                                                                        "PanelSheet"]:
+                                msg(translate("draft", "This object type is not editable\n"),'warning')
+                                self.finish()
+                                return
+                            self.proceed()
+                            return
+                        else:
+                            msg(translate("draft", "This object type is not editable\n"),'warning')
+                            self.finish()
+                            return
+                    else:
+                        msg(translate("draft", "This object type is not editable\n"),'warning')
+                        self.finish()
                         return
+                else:
+                    msg(translate("draft", "Please select only one object\n"),'warning')
+                    self.finish()
+                    return
             self.ghost = None
             self.ui.selectUi()
             msg(translate("draft", "Select a Draft object to edit\n"))
+            if self.call:
+                self.view.removeEventCallback("SoEvent",self.call)
             self.call = self.view.addEventCallback("SoEvent",selectObject)
 
     def proceed(self):
         if self.call:
             self.view.removeEventCallback("SoEvent",self.call)
+            self.call = None
         if self.doc:
             self.obj = FreeCADGui.Selection.getSelection()
             if self.obj:
                 self.obj = self.obj[0]
+                if not Draft.getType(self.obj) in ["BezCurve","Wire","BSpline","Circle","Rectangle",
+                                                   "Polygon","Dimension","Space","Structure","PanelCut",
+                                                   "PanelSheet"]:
+                    msg(translate("draft", "This object type is not editable\n"),'warning')
+                    self.finish()
+                    return
                 if (Draft.getType(self.obj) == "BezCurve"):
                     self.ui.editUi("BezCurve")
                 else:
@@ -3862,12 +3900,19 @@ class Edit(Modifier):
                 for t in self.trackers:
                     t.finalize()
         if self.obj:
-            if hasattr(self.obj.ViewObject,"Selectable"):
+            if hasattr(self.obj.ViewObject,"Selectable") and (self.selectstate != None):
                 self.obj.ViewObject.Selectable = self.selectstate
         if Draft.getType(self.obj) == "Structure":
-            self.obj.ViewObject.DisplayMode = self.originalDisplayMode 
-            self.obj.ViewObject.NodeSize = self.originalPoints
-            self.obj.ViewObject.ShowNodes = self.originalNodes
+            if self.originalDisplayMode != None:
+                self.obj.ViewObject.DisplayMode = self.originalDisplayMode
+            if self.originalPoints != None:
+                self.obj.ViewObject.NodeSize = self.originalPoints
+            if self.originalNodes != None:
+                self.obj.ViewObject.ShowNodes = self.originalNodes
+        self.selectstate = None
+        self.originalDisplayMode = None
+        self.originalPoints = None
+        self.originalNodes = None
         Modifier.finish(self)
         plane.restore()
         if FreeCADGui.Snapper.grid:

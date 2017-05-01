@@ -40,6 +40,8 @@
 #include <Base/Vector3D.h>
 #include <Base/Matrix.h>
 
+#define VERTEXTOLERANCE (2.0 * Precision::Confusion())
+
 namespace TechDraw
 {
 
@@ -49,15 +51,15 @@ class TechDrawExport DrawUtil {
         static int getIndexFromName(std::string geomName);
         static std::string getGeomTypeFromName(std::string geomName);
         static std::string makeGeomName(std::string geomType, int index);
-        static bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2);
-        static bool isZeroEdge(TopoDS_Edge e);
+        static bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2, double tolerance = VERTEXTOLERANCE);
+        static bool isZeroEdge(TopoDS_Edge e, double tolerance = VERTEXTOLERANCE);
         static double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2);
         static double sensibleScale(double working_scale);
         static double angleWithX(TopoDS_Edge e, bool reverse);
-        static double angleWithX(TopoDS_Edge e, TopoDS_Vertex v);
-        static bool isFirstVert(TopoDS_Edge e, TopoDS_Vertex v);
-        static bool isLastVert(TopoDS_Edge e, TopoDS_Vertex v);
-        static bool fpCompare(const double& d1, const double& d2);
+        static double angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
+        static bool isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
+        static bool isLastVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
+        static bool fpCompare(const double& d1, const double& d2, double tolerance = FLT_EPSILON);
         static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
         static std::string formatVector(const Base::Vector3d& v);
         static std::string formatVector(const Base::Vector2d& v);

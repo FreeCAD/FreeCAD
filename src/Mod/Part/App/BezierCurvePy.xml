@@ -17,6 +17,18 @@
 				Describes a rational or non-rational Bezier curve:
 				-- a non-rational Bezier curve is defined by a table of poles (also called control points)
 				-- a rational Bezier curve is defined by a table of poles with varying weights
+
+				Constructor takes no arguments.
+
+				Example usage:
+					p1 = Base.Vector(-1, 0, 0)
+					p2 = Base.Vector(0, 1, 0.2)
+					p3 = Base.Vector(1, 0, 0.4)
+					p4 = Base.Vector(0, -1, 1)
+
+					bc = BezierCurve()
+					bc.setPoles([p1, p2, p3, p4])
+					curveShape = bc.toShape()
 			</UserDocu>
 		</Documentation>
 		<Attribute Name="Degree" ReadOnly="true">
@@ -114,12 +126,15 @@ If this Bezier curve is rational, it can become non-rational.</UserDocu>
 		</Methode>
 		<Methode Name="setPoles">
 			<Documentation>
-				<UserDocu>Set the poles of the Bezier curve.</UserDocu>
+				<UserDocu>Set the poles of the Bezier curve.
+
+				Takes a list of 3D Base.Vector objects.</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="setWeight">
 			<Documentation>
-				<UserDocu>Set a weight of the Bezier curve.</UserDocu>
+				<UserDocu>(id, weight) Set a weight of the Bezier curve.
+				</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="getWeight">

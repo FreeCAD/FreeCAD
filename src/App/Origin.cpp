@@ -71,7 +71,7 @@ App::OriginFeature *Origin::getOriginFeature( const char *role) const {
         std::stringstream err;
         err << "Origin \"" << getNameInDocument () << "\" doesn't contain feature with role \""
             << role << '"';
-        throw Base::Exception ( err.str().c_str () );
+        throw Base::RuntimeError ( err.str().c_str () );
     }
 }
 
@@ -83,7 +83,7 @@ App::Line *Origin::getAxis( const char *role ) const {
         std::stringstream err;
         err << "Origin \"" << getNameInDocument () << "\" contains bad Axis object for role \""
             << role << '"';
-        throw Base::Exception ( err.str().c_str () );
+        throw Base::RuntimeError ( err.str().c_str () );
     }
 }
 
@@ -95,7 +95,7 @@ App::Plane *Origin::getPlane( const char *role ) const {
         std::stringstream err;
         err << "Origin \"" << getNameInDocument () << "\" comtains bad Plane object for role \""
             << role << '"';
-        throw Base::Exception ( err.str().c_str () );
+        throw Base::RuntimeError ( err.str().c_str () );
     }
 }
 

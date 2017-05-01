@@ -19,7 +19,7 @@ DistSrc  = DistName + "_src"
 DistDir  = "../../DistTemp/"
 
 #====================================================================
-# script asume to run in src/Tools
+# script assumes to run in src/Tools
 
 DistTools.EnsureDir(DistDir)
 if (DistTools.EnsureDir(DistDir+DistSrc) == 1):
@@ -41,7 +41,7 @@ FileTools.cpallWithFilter('../../src',DistDir+DistSrc+'/src',FileTools.SetUpFilt
 #DistTools.cpfile("../Tools/BuildTool.py",DistDir+DistBin+"/BuildTool.py")
 
 #====================================================================
-# ziping a archiv
+# zipping an archive
 os.popen("7z a -tzip "+ DistDir+DistSrc+".zip "+ DistDir+DistSrc + " -mx9")
 
 FileTools.rmall(DistDir+DistSrc)

@@ -23,47 +23,41 @@
 #ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H
 #define DRAWINGGUI_TEMPLATETEXTFIELD_H
 
-//TODO Precompiled header
-
 #include <QGraphicsRectItem>
 
-
-#include <Mod/TechDraw/App/DrawTemplate.h>
+#include "Mod/TechDraw/App/DrawTemplate.h"
 
 namespace TechDrawGui
 {
-class DlgTemplateField;
     /// QGraphicsRectItem-derived class for the text fields in title blocks
     /*!
-     * This essentially just a way for us to make a rectangular area which
-     * will give us a text editing dialog when clicked so that an appropriate
-     * Property in the Drawing's template can be modified.
-     * Dear English, I'm sorry.
+     * Makes an area on the drawing that's clickable, so appropriate
+     * Properties of the template can be modified.
      */
 class TechDrawGuiExport TemplateTextField : public QGraphicsRectItem
 {
     public:
-        TemplateTextField(QGraphicsItem*parent,
+        TemplateTextField(QGraphicsItem *parent,
                           TechDraw::DrawTemplate *myTmplte,
-                          const std::string &myFieldName,
-                          QWidget* upperWidget=0);
+                          const std::string &myFieldName);
 
-        ~TemplateTextField();
+        virtual ~TemplateTextField() = default;
 
         enum {Type = QGraphicsItem::UserType + 160};
         int type() const { return Type;}
-
 
         /// Returns the field name that this TemplateTextField represents
         std::string fieldName() const { return fieldNameStr; }
 
     protected:
-        void execDialog(void);
-        DlgTemplateField* ui;
-        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
         TechDraw::DrawTemplate *tmplte;
         std::string fieldNameStr;
-        QWidget* dlgOwner;
+
+        /// Need this to properly handle mouse release
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
+        /// Trigger the dialog for editing template text
+        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 };
 }   // namespace TechDrawGui
 

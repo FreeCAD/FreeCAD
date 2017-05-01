@@ -1572,7 +1572,7 @@ def getShapes(filename):
 
 # EXPORT ########################################################################
 
-def projectShape(shape,direction):
+def projectShape(shape,direction,tess=None):
     import Drawing
     edges = []
     try:
@@ -1584,7 +1584,12 @@ def projectShape(shape,direction):
         for g in groups[0:5]:
             if g:
                 edges.append(g)
-        return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
+        #return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
+        if tess:
+            return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),tess[0],tess[1])
+        else:
+            return Part.makeCompound(edges)
+            #return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
 
 def getArcData(edge):
     "returns center, radius, start and end angles of a circle-based edge"
@@ -1818,11 +1823,12 @@ def writePanelCut(ob,dxf,nospline,lwPoly,parent=None):
     if not hasattr(ob.Proxy,"outline"):
         ob.Proxy.execute(ob)
     if hasattr(ob.Proxy,"outline"):
-        outl = ob.Proxy.outline
+        outl = ob.Proxy.outline.copy()
         tag = None
         if hasattr(ob.Proxy,"tag"):
             tag = ob.Proxy.tag
         if tag:
+            tag = tag.copy()
             tag.Placement = ob.Placement.multiply(tag.Placement)
             if parent:
                 tag.Placement = parent.Placement.multiply(tag.Placement)
@@ -1905,6 +1911,10 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                 elif Draft.getType(ob) == "PanelCut":
                     writePanelCut(ob,dxf,nospline,lwPoly)
                 elif ob.isDerivedFrom("Part::Feature"):
+                    tess = None
+                    if hasattr(ob,"Tessellation"):
+                        if ob.Tessellation:
+                            tess = [ob.Tessellation,ob.SegmentLength]
                     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfmesh"):
                         sh = None
                         if not ob.Shape.isNull():
@@ -1912,10 +1922,10 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                     elif gui and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfproject"):
                         direction = FreeCADGui.ActiveDocument.ActiveView.\
                                 getViewDirection().multiply(-1)
-                        sh = projectShape(ob.Shape,direction)
+                        sh = projectShape(ob.Shape,direction,tess)
                     else:
                         if ob.Shape.Volume > 0:
-                            sh = projectShape(ob.Shape,Vector(0,0,1))
+                            sh = projectShape(ob.Shape,Vector(0,0,1),tess)
                         else:
                             sh = ob.Shape
                     if sh:

@@ -58,7 +58,7 @@ Dependency of pcl components:
 common: none
 features: common, kdtree, octree, search, (range_image)
 filters: common, kdtree, octree, sample_consenus, search
-geomety: common
+geometry: common
 io: common, octree
 kdtree: common
 keypoints: common, features, filters, kdtree, octree, search, (range_image)
@@ -221,7 +221,7 @@ private:
             }
 
             Reen::BSplineParameterCorrection pc(uOrder,vOrder,uPoles,vPoles);
-            Handle_Geom_BSplineSurface hSurf;
+            Handle(Geom_BSplineSurface) hSurf;
 
             if (uvdirs) {
                 Py::Tuple t(uvdirs);

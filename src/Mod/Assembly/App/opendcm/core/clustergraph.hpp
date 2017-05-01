@@ -215,7 +215,7 @@ struct 	GlobalEdge {
  * This is basically a boost adjacency_list with single linked lists 'listS' as storage for vertices and
  * edges. The edges are undirected. This allows to use all boost graph algorithms and provides therefore
  * an comprehensive way for analysing and manipulating its content. It further extends the class with the
- * possibility to cluster its content and to add properties and objects to all entitys. For more
+ * possibility to cluster its content and to add properties and objects to all entities. For more
  * information, see the module ClusterGraph
  *
  * @tparam edge_prop a mpl::vector with properties which are added to local edges

@@ -109,6 +109,8 @@ public:
     int delConstraintsToExternal();
     /// transfers all contraints of a point to a new point
     int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId);
+    /// Carbon copy another sketch geometry and constraints
+    int carbonCopy(App::DocumentObject * pObj, bool construction = true);
     /// add an external geometry reference
     int addExternal(App::DocumentObject *Obj, const char* SubName);
     /** delete external
@@ -211,6 +213,15 @@ public:
      \retval bool - returns true if the increase in degree succeeded, or false if it did not succeed.
      */
     bool increaseBSplineDegree(int GeoId, int degreeincrement = 1);
+    
+    /*!
+     \ brief Increases or Decreases the multiplicity of a BSpline knot by the multiplicityincr param, which defaults to 1, if the result is multiplicity zero, the knot is removed
+     \param GeoId - the geometry of type bspline to increase the degree
+     \param knotIndex - the index of the knot to modify (note that index is OCC consistent, so 1<=knotindex<=knots)
+     \param multiplicityincr - the increment (positive value) or decrement (negative value) of multiplicity of the knot
+     \retval bool - returns true if the operation succeeded, or false if it did not succeed.
+     */
+    bool modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr = 1);
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
     void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const;
@@ -291,6 +302,8 @@ public:
 
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;
+    /// Flag to allow carbon copy from misaligned geometry
+    bool allowUnaligned;
 
     enum eReasonList{
         rlAllowed,
@@ -298,10 +311,16 @@ public:
         rlCircularReference,
         rlOtherPart,
         rlOtherBody,
+        rlNotASketch,           // for carbon copy
+        rlNonParallel,          // for carbon copy
+        rlAxesMisaligned,       // for carbon copy
+        rlOriginsMisaligned     // for carbon copy
     };
     /// Return true if this object is allowed as external geometry for the
     /// sketch. rsn argument receives the reason for disallowing.
     bool isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj, eReasonList* rsn = 0) const;
+    
+    bool isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn = 0) const;
 
 protected:
     /// get called by the container when a property has changed

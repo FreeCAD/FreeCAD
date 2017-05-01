@@ -1054,9 +1054,9 @@ void Document::createView(const Base::Type& typeId)
 
     std::list<MDIView*> theViews = this->getMDIViewsOfType(typeId);
     if (typeId == View3DInventor::getClassTypeId()) {
-        View3DInventor* firstView = 0;
         View3DInventor* view3D = new View3DInventor(this, getMainWindow());
-        if (firstView) {
+        if (!theViews.empty()) {
+            View3DInventor* firstView = static_cast<View3DInventor*>(theViews.front());
             std::string overrideMode = firstView->getViewer()->getOverrideMode();
             view3D->getViewer()->setOverrideMode(overrideMode);
         }

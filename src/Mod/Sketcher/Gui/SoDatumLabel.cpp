@@ -289,7 +289,7 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
         // Only the angle intersection point is needed
         SbVec3f p0 = pnts[0];
 
-        // Load the Paramaters
+        // Load the Parameters
         float length     = this->param1.getValue();
         float startangle = this->param2.getValue();
         float range      = this->param3.getValue();
@@ -716,7 +716,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         // Only the angle intersection point is needed
         SbVec3f p0 = pnts[0];
 
-        // Load the Paramaters
+        // Load the Parameters
         float length     = this->param1.getValue();
         float startangle = this->param2.getValue();
         float range      = this->param3.getValue();

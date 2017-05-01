@@ -47,9 +47,8 @@
 
 using namespace TechDrawGui;
 
-QGISVGTemplate::QGISVGTemplate(QGraphicsScene *scene, QWidget* srWidget)
+QGISVGTemplate::QGISVGTemplate(QGraphicsScene *scene)
     : QGITemplate(scene),
-      qgview(srWidget),
       firstTime(true)
 {
 
@@ -188,7 +187,6 @@ void QGISVGTemplate::createClickHandles(void)
 
             QString xStr = QString::fromStdString(xMatch[1].str());
             QString yStr = QString::fromStdString(yMatch[1].str());
-            QString editableName = QString::fromStdString(nameMatch[1].str());
 
             double x = Rez::guiX(xStr.toDouble());
             double y = Rez::guiX(yStr.toDouble());
@@ -200,8 +198,9 @@ void QGISVGTemplate::createClickHandles(void)
             double width = editClickBoxSize;
             double height = editClickBoxSize;
 
-            TemplateTextField *item = new TemplateTextField(this, tmplte, nameMatch[1].str(), qgview);
+            auto item( new TemplateTextField(this, tmplte, nameMatch[1].str()) );
             float pad = 1;
+
             item->setRect(x - pad, Rez::guiX(-tmplte->getHeight()) + y - height - pad,
                           width + 2 * pad, height + 2 * pad);
 

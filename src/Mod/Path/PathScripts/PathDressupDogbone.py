@@ -347,6 +347,8 @@ class Bone:
 class ObjectDressup:
 
     def __init__(self, obj):
+        # Tool Properties
+        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
         obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The base path to modify"))
         obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The side of path to insert bones"))
         obj.Side = [Side.Left, Side.Right]
@@ -780,11 +782,11 @@ class ObjectDressup:
                 obj.Side = 'On'
 
         self.toolRadius = 5
-        toolLoad = PathUtils.getLastToolLoad(obj)
+        toolLoad = obj.ToolController
         if toolLoad is None or toolLoad.ToolNumber == 0:
             self.toolRadius = 5
         else:
-            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
+            tool = toolLoad.Proxy.getTool(toolLoad) #PathUtils.getTool(obj, toolLoad.ToolNumber)
             if not tool or tool.Diameter == 0:
                 self.toolRadius = 5
             else:
@@ -1018,6 +1020,7 @@ class CommandDressupDogbone:
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.Base.ViewObject.Visibility = False')
         FreeCADGui.doCommand('dbo.setup(obj)')
+        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

@@ -128,6 +128,7 @@ class _Stairs(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","StructureThickness","Structure",QT_TRANSLATE_NOOP("App::Property","The thickness of the massive structure or of the stringers"))
         obj.addProperty("App::PropertyLength","StringerWidth","Structure",QT_TRANSLATE_NOOP("App::Property","The width of the stringers"))
         obj.addProperty("App::PropertyLength","StructureOffset","Structure",QT_TRANSLATE_NOOP("App::Property","The offset between the border of the stairs and the structure"))
+        obj.addProperty("App::PropertyLength","StringerOverlap","Structure",QT_TRANSLATE_NOOP("App::Property","The overlap of the stringers above the bottom of the treads"))
 
         obj.Align = ['Left','Right','Center']
         obj.Landings = ["None","At center","At each corner"]
@@ -351,6 +352,10 @@ class _Stairs(ArchComponent.Component):
 
         "builds a simple, straight staircase from a straight edge"
 
+        # Upgrade obj if it is from an older version of FreeCAD
+        if not(hasattr(obj, "StringerOverlap")):
+            obj.addProperty("App::PropertyLength","StringerOverlap","Structure",QT_TRANSLATE_NOOP("App::Property","The overlap of the stringers above the bottom of the treads"))
+
         # general data
         import Part,DraftGeomUtils
         if not numberofsteps:
@@ -417,12 +422,18 @@ class _Stairs(ArchComponent.Component):
             if obj.StringerWidth.Value and obj.StructureThickness.Value:
                 hyp = math.sqrt(vHeight.Length**2 + vLength.Length**2)
                 l1 = Vector(vLength).multiply(numberofsteps-1)
-                h1 = Vector(vHeight).multiply(numberofsteps-1).add(Vector(0,0,-abs(obj.TreadThickness.Value)))
+                h1 = Vector(vHeight).multiply(numberofsteps-1).add(Vector(0,0,-abs(obj.TreadThickness.Value)+obj.StringerOverlap.Value))
                 p1 = vBase.add(l1).add(h1)
                 p1 = self.align(p1,obj.Align,vWidth)
-                lProfile.append(p1)
+                if obj.StringerOverlap.Value <= float(h)/numberofsteps:
+                    lProfile.append(p1)
+                else:
+                    p1b = vBase.add(l1).add(Vector(0,0,float(h)))
+                    p1a = p1b.add(Vector(vLength).multiply((p1b.z-p1.z)/vHeight.Length))
+                    lProfile.append(p1a)
+                    lProfile.append(p1b)
                 h2 = (obj.StructureThickness.Value/vLength.Length)*hyp
-                lProfile.append(lProfile[-1].add(Vector(0,0,-abs(h2))))
+                lProfile.append(p1.add(Vector(0,0,-abs(h2))))
                 h3 = lProfile[-1].z-vBase.z
                 l3 = (h3/vHeight.Length)*vLength.Length
                 v3 = DraftVecUtils.scaleTo(vLength,-l3)

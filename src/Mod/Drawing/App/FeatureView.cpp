@@ -73,7 +73,7 @@ App::DocumentObjectExecReturn *FeatureView::recompute(void)
         return App::DocumentObject::recompute();
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         App::DocumentObjectExecReturn* ret = new App::DocumentObjectExecReturn(e->GetMessageString());
         if (ret->Why.empty()) ret->Why = "Unknown OCC exception";
         return ret;

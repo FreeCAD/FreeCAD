@@ -35,6 +35,7 @@
 
 #include "PropertyPath.h"
 #include "FeaturePath.h"
+#include "FeatureArea.h"
 #include "Area.h"
 
 namespace Path
@@ -52,7 +53,7 @@ public:
     // Part::PropertyPartShape Shape;
     App::PropertyLinkList Sources;
     App::PropertyVector StartPoint;
-    PARAM_PROP_DECLARE(AREA_PARAMS_PATH_CONF)
+    PARAM_PROP_DECLARE(AREA_PARAMS_PATH)
 
     //@{
     /// recalculate the feature

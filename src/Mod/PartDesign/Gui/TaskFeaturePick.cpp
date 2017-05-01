@@ -24,12 +24,14 @@
 
 #ifndef _PreComp_
 # include <QListIterator>
+# include <QTimer>
 #endif
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Document.h>
+#include <Gui/Control.h>
 #include <Gui/ViewProviderOrigin.h>
 #include <App/Document.h>
 #include <App/Origin.h>
@@ -101,6 +103,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     auto statusIt = status.cbegin();
     auto objIt = objects.begin();
     assert(status.size() == objects.size());
+
+    bool attached = false;
     for (; statusIt != status.end(); ++statusIt, ++objIt) {
         QListWidgetItem* item = new QListWidgetItem(
                 QString::fromLatin1("%1 (%2)")
@@ -113,6 +117,10 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
 
         App::Document* pDoc = (*objIt)->getDocument();
         documentName = pDoc->getName();
+        if (!attached) {
+            attached = true;
+            attachDocument(Gui::Application::Instance->getDocument(pDoc));
+        }
 
         //check if we need to set any origin in temporary visibility mode
         if (*statusIt != invalidShape && (*objIt)->isDerivedFrom ( App::OriginFeature::getClassTypeId () )) {
@@ -152,7 +160,6 @@ TaskFeaturePick::~TaskFeaturePick()
 {
     for(Gui::ViewProviderOrigin* vpo : origins)
         vpo->resetTemporaryVisibility();
-
 }
 
 void TaskFeaturePick::updateList()
@@ -217,55 +224,61 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
 {
     int index = 0;
     std::vector<App::DocumentObject*> result;
-    auto activeBody = PartDesignGui::getBody(false);
-    if (!activeBody)
-        return result;
-    auto activePart = PartDesignGui::getPartFor(activeBody, false);
+    try {
+        auto activeBody = PartDesignGui::getBody(false);
+        if (!activeBody)
+            return result;
 
-    for (std::vector<featureStatus>::const_iterator st = statuses.begin(); st != statuses.end(); st++) {
-        QListWidgetItem* item = ui->listWidget->item(index);
+        auto activePart = PartDesignGui::getPartFor(activeBody, false);
 
-        if (item->isSelected() && !item->isHidden()) {
-            QString t = item->data(Qt::UserRole).toString();
-            auto obj = App::GetApplication().getDocument(documentName.c_str())->getObject(t.toLatin1().data());
+        for (std::vector<featureStatus>::const_iterator st = statuses.begin(); st != statuses.end(); st++) {
+            QListWidgetItem* item = ui->listWidget->item(index);
 
-            //build the dependend copy or reference if wanted by the user
-            if (*st == otherBody || *st == otherPart || *st == notInBody) {
-                if (!ui->radioXRef->isChecked()) {
-                    auto copy = makeCopy(obj, "", ui->radioIndependent->isChecked());
+            if (item->isSelected() && !item->isHidden()) {
+                QString t = item->data(Qt::UserRole).toString();
+                auto obj = App::GetApplication().getDocument(documentName.c_str())->getObject(t.toLatin1().data());
 
-                    if (*st == otherBody) {
-                        activeBody->addObject(copy);
-                    }
-                    else if (*st == otherPart) {
-                        auto oBody = PartDesignGui::getBodyFor(obj, false);
-                        if (!oBody)
-                            activePart->addObject(copy);
-                        else
+                //build the dependend copy or reference if wanted by the user
+                if (*st == otherBody || *st == otherPart || *st == notInBody) {
+                    if (!ui->radioXRef->isChecked()) {
+                        auto copy = makeCopy(obj, "", ui->radioIndependent->isChecked());
+
+                        if (*st == otherBody) {
                             activeBody->addObject(copy);
-                    }
-                    else if (*st == notInBody) {
-                        activeBody->addObject(copy);
-                        // doesn't supposed to get here anything but sketch but to be on the safe side better to check
-                        if (copy->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
-                            Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(copy);
-                            PartDesignGui::fixSketchSupport(sketch);
                         }
+                        else if (*st == otherPart) {
+                            auto oBody = PartDesignGui::getBodyFor(obj, false);
+                            if (!oBody)
+                                activePart->addObject(copy);
+                            else
+                                activeBody->addObject(copy);
+                        }
+                        else if (*st == notInBody) {
+                            activeBody->addObject(copy);
+                            // doesn't supposed to get here anything but sketch but to be on the safe side better to check
+                            if (copy->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+                                Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(copy);
+                                PartDesignGui::fixSketchSupport(sketch);
+                            }
+                        }
+                        result.push_back(copy);
                     }
-                    result.push_back(copy);
+                    else {
+                        result.push_back(obj);
+                    }
                 }
                 else {
                     result.push_back(obj);
                 }
-            }
-            else {
-                result.push_back(obj);
+
+                break;
             }
 
-            break;
+            index++;
         }
-
-        index++;
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
     }
 
     return result;
@@ -274,6 +287,9 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
 App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::string sub, bool independent) {
     
     App::DocumentObject* copy = nullptr;
+    // Check for null to avoid segfault
+    if (!obj)
+        return copy;
     if( independent &&
         (obj->isDerivedFrom(Sketcher::SketchObject::getClassTypeId()) ||
         obj->isDerivedFrom(PartDesign::FeaturePrimitive::getClassTypeId()))) {
@@ -426,6 +442,28 @@ void TaskFeaturePick::onItemSelectionChanged()
     doSelection = false;
 }
 
+void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
+{
+    std::vector<Gui::ViewProviderOrigin*>::iterator it;
+    it = std::find(origins.begin(), origins.end(), &Obj);
+    if (it != origins.end()) {
+        origins.erase(it);
+    }
+}
+
+void TaskFeaturePick::slotUndoDocument(const Gui::Document&)
+{
+    if (origins.empty()) {
+        QTimer::singleShot(100, &Gui::Control(), SLOT(closeDialog()));
+    }
+}
+
+void TaskFeaturePick::slotDeleteDocument(const Gui::Document&)
+{
+    origins.clear();
+    QTimer::singleShot(100, &Gui::Control(), SLOT(closeDialog()));
+}
+
 void TaskFeaturePick::showExternal(bool val)
 {
     ui->checkOtherBody->setChecked(val);
@@ -439,10 +477,11 @@ void TaskFeaturePick::showExternal(bool val)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgFeaturePick::TaskDlgFeaturePick(std::vector<App::DocumentObject*> &objects,
+TaskDlgFeaturePick::TaskDlgFeaturePick( std::vector<App::DocumentObject*> &objects,
                                         const std::vector<TaskFeaturePick::featureStatus> &status,
                                         boost::function<bool (std::vector<App::DocumentObject*>)> afunc,
-                                        boost::function<void (std::vector<App::DocumentObject*>)> wfunc)
+                                        boost::function<void (std::vector<App::DocumentObject*>)> wfunc,
+                                        boost::function<void (void)> abortfunc /* = NULL */ )
     : TaskDialog(), accepted(false)
 {
     pick  = new TaskFeaturePick(objects, status);
@@ -450,14 +489,27 @@ TaskDlgFeaturePick::TaskDlgFeaturePick(std::vector<App::DocumentObject*> &object
 
     acceptFunction = afunc;
     workFunction = wfunc;
+    abortFunction = abortfunc;
 }
 
 TaskDlgFeaturePick::~TaskDlgFeaturePick()
 {
     //do the work now as before in accept() the dialog is still open, hence the work
     //function could not open another dialog
-    if (accepted)
+    if (accepted) {
         workFunction(pick->buildFeatures());
+    } else if (abortFunction) {
+
+        // Get rid of the TaskFeaturePick before the TaskDialog dtor does. The
+        // TaskFeaturePick holds pointers to things (ie any implicitly created
+        // Body objects) that might be modified/removed by abortFunction.
+        for (auto it : Content) {
+            delete it;
+        }
+        Content.clear();
+
+        try { abortFunction(); } catch (...) {}
+    }
 }
 
 //==== calls from the TaskView ===============================================================

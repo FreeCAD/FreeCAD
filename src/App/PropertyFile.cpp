@@ -122,7 +122,7 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
 {
     if (sFile && sFile[0] != '\0') {
         if (_cValue == sFile)
-            throw Base::Exception("Not possible to set the same file!");
+            throw Base::FileSystemError("Not possible to set the same file!");
 
         // keep the path to the original file
         _OriginalName = sFile;
@@ -133,7 +133,7 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
         if (!file.exists()) {
             std::stringstream str;
             str << "File " << file.filePath() << " does not exist.";
-            throw Base::Exception(str.str());
+            throw Base::FileSystemError(str.str());
         }
 
         aboutToSetValue(); // undo/redo by moving the file away with temp name
@@ -192,7 +192,7 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
             if (!done) {
                 std::stringstream str;
                 str << "Cannot rename file " << file.filePath() << " to " << _cValue;
-                throw Base::Exception(str.str());
+                throw Base::FileSystemError(str.str());
             }
 
             // make the file read-only
@@ -227,7 +227,7 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
             if (!done) {
                 std::stringstream str;
                 str << "Cannot copy file from " << file.filePath() << " to " << _cValue;
-                throw Base::Exception(str.str());
+                throw Base::FileSystemError(str.str());
             }
 
             // make the file read-only
@@ -247,7 +247,9 @@ const char* PropertyFileIncluded::getValue(void) const
 PyObject *PropertyFileIncluded::getPyObject(void)
 {
     PyObject *p = PyUnicode_DecodeUTF8(_cValue.c_str(),_cValue.size(),0);
-    if (!p) throw Base::Exception("PropertyFileIncluded: UTF-8 conversion failure");
+    if (!p) {
+        throw Base::UnicodeError("PropertyFileIncluded: UTF-8 conversion failure");
+    }
     return p;
 }
 
@@ -398,7 +400,7 @@ void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
         std::stringstream str;
         str << "PropertyFileIncluded::SaveDocFile(): "
             << "File '" << _cValue << "' in transient directory doesn't exist.";
-        throw Base::Exception(str.str());
+        throw Base::FileSystemError(str.str());
     }
 
     // copy plain data
@@ -422,7 +424,7 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
         std::stringstream str;
         str << "PropertyFileIncluded::RestoreDocFile(): "
             << "File '" << _cValue << "' in transient directory cannot be created.";
-        throw Base::Exception(str.str());
+        throw Base::FileSystemError(str.str());
     }
 
     // copy plain data
@@ -457,7 +459,7 @@ Property *PropertyFileIncluded::Copy(void) const
                 str << "PropertyFileIncluded::Copy(): "
                     << "Renaming the file '" << file.filePath() << "' to '"
                     << newName.filePath() << "' failed.";
-                throw Base::Exception(str.str());
+                throw Base::FileSystemError(str.str());
             }
         }
         else {
@@ -468,7 +470,7 @@ Property *PropertyFileIncluded::Copy(void) const
                 str << "PropertyFileIncluded::Copy(): "
                     << "Copying the file '" << file.filePath() << "' to '"
                     << newName.filePath() << "' failed.";
-                throw Base::Exception(str.str());
+                throw Base::FileSystemError(str.str());
             }
         }
 
@@ -511,7 +513,7 @@ void PropertyFileIncluded::Paste(const Property &from)
                     str << "PropertyFileIncluded::Paste(): "
                         << "Renaming the file '" << fiSrc.filePath() << "' to '"
                         << fiDst.filePath() << "' failed.";
-                    throw Base::Exception(str.str());
+                    throw Base::FileSystemError(str.str());
                 }
             }
             else {
@@ -520,7 +522,7 @@ void PropertyFileIncluded::Paste(const Property &from)
                     str << "PropertyFileIncluded::Paste(): "
                         << "Copying the file '" << fiSrc.filePath() << "' to '"
                         << fiDst.filePath() << "' failed.";
-                    throw Base::Exception(str.str());
+                    throw Base::FileSystemError(str.str());
                 }
             }
 

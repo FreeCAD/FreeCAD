@@ -342,7 +342,7 @@ static void MakePolyPoly( const CArea& area, TPolyPolygon &pp, bool reverse = tr
 	}
 }
 
-static void SetFromResult( CCurve& curve, TPolygon& p, bool reverse = true )
+static void SetFromResult( CCurve& curve, TPolygon& p, bool reverse = true, bool is_closed = true )
 {
     if(CArea::m_clipper_clean_distance >= Point::tolerance)
         CleanPolygon(p,CArea::m_clipper_clean_distance);
@@ -355,17 +355,20 @@ static void SetFromResult( CCurve& curve, TPolygon& p, bool reverse = true )
         if(reverse)curve.m_vertices.push_front(vertex);
         else curve.m_vertices.push_back(vertex);
     }
-    // make a copy of the first point at the end
-    if(reverse)curve.m_vertices.push_front(curve.m_vertices.back());
-    else curve.m_vertices.push_back(curve.m_vertices.front());
+    if(is_closed) {
+        // make a copy of the first point at the end
+        if(reverse)curve.m_vertices.push_front(curve.m_vertices.back());
+        else curve.m_vertices.push_back(curve.m_vertices.front());
+    }
 
     if(CArea::m_fit_arcs)curve.FitArcs();
 }
 
-static void SetFromResult( CArea& area, TPolyPolygon& pp, bool reverse = true )
+static void SetFromResult( CArea& area, TPolyPolygon& pp, bool reverse=true, bool is_closed=true, bool clear=true)
 {
 	// delete existing geometry
-	area.m_curves.clear();
+    if(clear) 
+	    area.m_curves.clear();
 
 	for(unsigned int i = 0; i < pp.size(); i++)
 	{
@@ -373,7 +376,7 @@ static void SetFromResult( CArea& area, TPolyPolygon& pp, bool reverse = true )
 
 		area.m_curves.push_back(CCurve());
 		CCurve &curve = area.m_curves.back();
-		SetFromResult(curve, p, reverse);
+		SetFromResult(curve, p, reverse, is_closed);
     }
 }
 
@@ -498,8 +501,11 @@ void CArea::Clip(ClipType op, const CArea *a,
     PolyTree tree;
 	c.Execute(op, tree, subjFillType,clipFillType);
 	TPolyPolygon solution;
-    PolyTreeToPaths(tree,solution);
+    ClosedPathsFromPolyTree(tree,solution);
 	SetFromResult(*this, solution);
+    solution.clear();
+    OpenPathsFromPolyTree(tree,solution);
+	SetFromResult(*this, solution, false, false, false);
 }
 
 void CArea::OffsetWithClipper(double offset, 

@@ -43,7 +43,7 @@ except AttributeError:
 class ObjectCompoundExtended:
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyString","Description",  "Path",QtCore.QT_TRANSLATE_NOOP("App::Property","An ptional description of this compounded operation"))
+        obj.addProperty("App::PropertyString","Description",  "Path",QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description of this compounded operation"))
 #        obj.addProperty("App::PropertySpeed", "FeedRate",     "Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The feed rate of the paths in these compounded operations"))
 #        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The spindle speed, in revolutions per minute, of the tool used in these compounded operations"))
         obj.addProperty("App::PropertyLength","SafeHeight",   "Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The safe height for this operation"))

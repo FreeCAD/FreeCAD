@@ -118,6 +118,8 @@ public:
     mutable boost::signal<void (const Gui::Document& doc)> signalUndoDocument;
     /// signal on redo Document
     mutable boost::signal<void (const Gui::Document& doc)> signalRedoDocument;
+    /// signal on deleting Document
+    mutable boost::signal<void (const Gui::Document& doc)> signalDeleteDocument;
     //@}
 
     /** @name I/O of the document */

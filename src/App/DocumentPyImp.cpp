@@ -573,6 +573,16 @@ Py::String DocumentPy::getName(void) const
     return Py::String(getDocumentPtr()->getName());
 }
 
+Py::Boolean DocumentPy::getRecomputesFrozen(void) const
+{
+    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::SkipRecompute));
+}
+
+void DocumentPy::setRecomputesFrozen(Py::Boolean arg)
+{
+    getDocumentPtr()->setStatus(Document::Status::SkipRecompute, arg.isTrue());
+}
+
 PyObject* DocumentPy::getTempFileName(PyObject *args)
 {
     PyObject *value;
@@ -601,7 +611,9 @@ PyObject* DocumentPy::getTempFileName(PyObject *args)
     fileName.deleteFile();
 
     PyObject *p = PyUnicode_DecodeUTF8(fileName.filePath().c_str(),fileName.filePath().size(),0);
-    if (!p) throw Base::Exception("UTF8 conversion failure at PropertyString::getPyObject()");
+    if (!p) {
+        throw Base::UnicodeError("UTF8 conversion failure at PropertyString::getPyObject()");
+    }
     return p;
 }
 

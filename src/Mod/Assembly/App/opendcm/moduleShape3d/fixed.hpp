@@ -20,8 +20,8 @@
 #ifndef GCM_FIXED_SHAPE3D_H
 #define GCM_FIXED_SHAPE3D_H
 
-//we need constraints to identifie connections between geometries in our shapes, however, if the
-//geometries are linked to each other a calculation is not necessary. Therfore a no-equation constraint
+//we need constraints to identify connections between geometries in our shapes, however, if the
+//geometries are linked to each other a calculation is not necessary. Therefore a no-equation constraint
 //is needed
 
 #include <opendcm/core/equations.hpp>

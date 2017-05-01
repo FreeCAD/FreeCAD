@@ -107,11 +107,15 @@ FemMesh::~FemMesh()
 {
     //Base::Console().Log("FemMesh::~FemMesh():%p\n",this);
 
-    TopoDS_Shape aNull;
-    myMesh->ShapeToMesh(aNull);
-    myMesh->Clear();
-    //myMesh->ClearLog();
-    delete myMesh;
+    try {
+        TopoDS_Shape aNull;
+        myMesh->ShapeToMesh(aNull);
+        myMesh->Clear();
+        //myMesh->ClearLog();
+        delete myMesh;
+    }
+    catch (...) {
+    }
 }
 
 FemMesh &FemMesh::operator=(const FemMesh& mesh)
@@ -1184,6 +1188,7 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
 
     std::ofstream anABAQUS_Output;
     anABAQUS_Output.open(Filename.c_str());
+    anABAQUS_Output.precision(15);
 
     // add nodes
     //

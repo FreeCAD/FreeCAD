@@ -113,7 +113,7 @@ void PropertyQuantity::setPyObject(PyObject *value)
     }
 
     if (unit != _Unit)
-        throw Base::Exception("Not matching Unit!");
+        throw Base::UnitsMismatchError("Not matching Unit!");
 
     PropertyFloat::setValue(quant.getValue());
 }
@@ -178,7 +178,7 @@ void PropertyQuantityConstraint::setPyObject(PyObject *value)
     }
 
     if (unit != _Unit)
-        throw Base::Exception("Not matching Unit!");
+        throw Base::UnitsMismatchError("Not matching Unit!");
 
     PropertyFloat::setValue(quant.getValue());
 }

@@ -42,7 +42,7 @@ extern const char* gce_ErrorStatusText(gce_ErrorType et);
 // returns a string which represents the object e.g. when printed in python
 std::string CirclePy::representation(void) const
 {
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+    Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(getGeomCirclePtr()->handle());
     gp_Ax1 axis = circle->Axis();
     gp_Dir dir = axis.Direction();
     gp_Pnt loc = axis.Location();
@@ -61,7 +61,7 @@ std::string CirclePy::representation(void) const
 PyObject *CirclePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
     // create a new instance of CirclePy and the Twin object 
-    Handle_Geom_Circle circle = new Geom_Circle(gp_Circ());
+    Handle(Geom_Circle) circle = new Geom_Circle(gp_Circ());
     return new CirclePy(new GeomCircle(circle));
 }
 
@@ -74,7 +74,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
     static char* keywords_cd[] = {"Circle","Distance",NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd, &(CirclePy::Type), &pCirc, &dist)) {
         CirclePy* pcCircle = static_cast<CirclePy*>(pCirc);
-        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast
+        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast
             (pcCircle->getGeomCirclePtr()->handle());
         GC_MakeCircle mc(circle->Circ(), dist);
         if (!mc.IsDone()) {
@@ -82,7 +82,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom_Circle circ = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+        Handle(Geom_Circle) circ = Handle(Geom_Circle)::DownCast(getGeomCirclePtr()->handle());
         circ->SetCirc(mc.Value()->Circ());
         return 0;
     }
@@ -105,7 +105,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(getGeomCirclePtr()->handle());
         circle->SetCirc(mc.Value()->Circ());
         return 0;
     }
@@ -114,9 +114,9 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!", keywords_c, &(CirclePy::Type), &pCirc)) {
         CirclePy* pcCircle = static_cast<CirclePy*>(pCirc);
-        Handle_Geom_Circle circ1 = Handle_Geom_Circle::DownCast
+        Handle(Geom_Circle) circ1 = Handle(Geom_Circle)::DownCast
             (pcCircle->getGeomCirclePtr()->handle());
-        Handle_Geom_Circle circ2 = Handle_Geom_Circle::DownCast
+        Handle(Geom_Circle) circ2 = Handle(Geom_Circle)::DownCast
             (this->getGeomCirclePtr()->handle());
         circ2->SetCirc(circ1->Circ());
         return 0;
@@ -139,7 +139,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(getGeomCirclePtr()->handle());
         circle->SetCirc(mc.Value()->Circ());
         return 0;
     }
@@ -148,7 +148,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
     static char* keywords_n[] = {NULL};
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
-        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(getGeomCirclePtr()->handle());
         circle->SetRadius(1.0);
         return 0;
     }
@@ -164,13 +164,13 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
 
 Py::Float CirclePy::getRadius(void) const
 {
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+    Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(getGeomCirclePtr()->handle());
     return Py::Float(circle->Radius()); 
 }
 
 void  CirclePy::setRadius(Py::Float arg)
 {
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+    Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(getGeomCirclePtr()->handle());
     circle->SetRadius((double)arg);
 }
 

@@ -364,6 +364,42 @@ class DocumentBasicCases(unittest.TestCase):
     o.Placement.Base.x=5
     self.assertEqual(o.Placement.Base.x, 5)
 
+  def testNotification_Issue2996(self):
+    if not FreeCAD.GuiUp:
+      return
+    # works only if Gui is shown
+    class ViewProvider:
+      def __init__(self, vobj):
+        vobj.Proxy=self
+
+      def attach(self, vobj):
+        self.ViewObject = vobj
+        self.Object = vobj.Object
+
+      def claimChildren(self):
+        children = [self.Object.Link]
+        return children
+
+    obj=self.Doc.addObject("App::FeaturePython", "Sketch")
+    obj.addProperty("App::PropertyLink","Link")
+    ViewProvider(obj.ViewObject)
+
+    ext=self.Doc.addObject("App::FeatureTest", "Extrude")
+    ext.Link=obj
+
+    sli=self.Doc.addObject("App::FeaturePython", "Slice")
+    sli.addProperty("App::PropertyLink","Link").Link=ext
+    ViewProvider(sli.ViewObject)
+
+    com=self.Doc.addObject("App::FeaturePython", "CompoundFilter")
+    com.addProperty("App::PropertyLink", "Link").Link=sli
+    ViewProvider(com.ViewObject)
+
+    ext.Label="test"
+
+    self.assertEqual(ext.Link, obj)
+    self.assertNotEqual(ext.Link, sli)
+
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument("CreateTest")

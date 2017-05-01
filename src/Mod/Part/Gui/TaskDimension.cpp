@@ -638,10 +638,10 @@ PartGui::VectorAdapter::VectorAdapter() : status(false), vector()
 PartGui::VectorAdapter::VectorAdapter(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn) :
   status(false), vector(), origin(pickedPointIn)
 {
-  Handle_Geom_Surface surface = BRep_Tool::Surface(faceIn);
+  Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
   if (surface->IsKind(STANDARD_TYPE(Geom_ElementarySurface)))
   {
-    Handle_Geom_ElementarySurface eSurface = Handle(Geom_ElementarySurface)::DownCast(surface);
+    Handle(Geom_ElementarySurface) eSurface = Handle(Geom_ElementarySurface)::DownCast(surface);
     gp_Dir direction = eSurface->Axis().Direction();
     vector = direction;
     vector.Normalize();
@@ -708,7 +708,7 @@ PartGui::VectorAdapter::VectorAdapter(const gp_Vec &vector1, const gp_Vec &vecto
 
 void PartGui::VectorAdapter::projectOriginOntoVector(const gp_Vec &pickedPointIn)
 {
-  Handle_Geom_Curve heapLine = new Geom_Line(origin.XYZ(), vector.XYZ());
+  Handle(Geom_Curve) heapLine = new Geom_Line(origin.XYZ(), vector.XYZ());
   gp_Pnt tempPoint(pickedPointIn.XYZ());
   GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine);
   if (projection.NbPoints() < 1)
@@ -869,7 +869,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   if (vector1.IsParallel(vector2, Precision::Angular()))
   {
     //take first point project it onto second vector.
-    Handle_Geom_Curve heapLine2 = new Geom_Line(vector2Adapter);
+    Handle(Geom_Curve) heapLine2 = new Geom_Line(vector2Adapter);
     gp_Pnt tempPoint(vector1Adapter.getPickPoint().XYZ());
     
     GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine2);
@@ -926,8 +926,8 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   }
   else
   {
-    Handle_Geom_Curve heapLine1 = new Geom_Line(vector1Adapter);
-    Handle_Geom_Curve heapLine2 = new Geom_Line(vector2Adapter);
+    Handle(Geom_Curve) heapLine1 = new Geom_Line(vector1Adapter);
+    Handle(Geom_Curve) heapLine2 = new Geom_Line(vector2Adapter);
     
     GeomAPI_ExtremaCurveCurve extrema(heapLine1, heapLine2);
     

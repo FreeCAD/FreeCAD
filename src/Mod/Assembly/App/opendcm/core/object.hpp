@@ -98,7 +98,7 @@ struct SignalOwner {
     /**
     * @brief Disconnects a slot for a specific signal.
     *
-    * Disconnects a slot so that it dosn't get called at signal emittion. It's important to
+    * Disconnects a slot so that it doesn't get called at signal emission. It's important to
     * disconnect the slot by the same boost:function it was connected with.
     *
     * @tparam S the signal type of interest
@@ -110,10 +110,10 @@ struct SignalOwner {
 
 
     /**
-     * @brief Enable or disable signal emittion
+     * @brief Enable or disable signal emission
      *
-     * If you want to suppress all signals emitted by a object you can do this by calling this function.
-     * All calls to emitSignal() will be blocked until signals aer reenabled by using this function with
+     * If you want to suppress all signals emitted by an object you can do this by calling this function.
+     * All calls to emitSignal() will be blocked until signals are reenabled by using this function with
      * onoff = true. Note that signals are not queued, if emitting is disabled all signals are lost.
      *
      * @param onoff bool value if signals shall be emitted or if they are disabled
@@ -145,14 +145,14 @@ protected:
 /**
  * @brief Base class for all object types
  *
- * This class add's property and signal capabilitys to all deriving classes. For properties it is tigthly
+ * This class adds property and signal capabilities to all deriving classes. For properties it is tightly
  * integrated with the system class: It searches systems property map for the derived class as specified by
- * the second template parameter and makes it accessible via appopriate functions. Signals are speciefied by a
+ * the second template parameter and makes it accessible via appropriate functions. Signals are specified by a
  * mpl::map with signal name type as key and a boost::function as values.
  *
  * \tparam Sys class of type System of which the properties are taken
  * \tparam Obj the type of the derived object
- * \tparam Sig a mpl::map specifing the object's signals by (type -  boost::function) pairs
+ * \tparam Sig an mpl::map specifying the object's signals by (type -  boost::function) pairs
  **/
 template<typename Sys, typename Derived, typename Sig>
 struct Object : public PropertyOwner<typename details::properties_by_object<typename Sys::properties, Derived>::type>,
@@ -165,7 +165,7 @@ struct Object : public PropertyOwner<typename details::properties_by_object<type
     /**
       * @brief Create a new object of the same type with the same values
       *
-      * Returns a new shared_ptr for the Drived type with the same properties as the initial one. If
+      * Returns a new shared_ptr for the Derived type with the same properties as the initial one. If
       * the new pointer should be used in a new system the parameter \param newSys needs to be that
       * new system. Overload this function if you have datamembers in any derived class which are not
       * copyconstructable.

@@ -216,7 +216,7 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
         }
       } break;
       case GeomAbs_BezierCurve: {
-          Handle_Geom_BezierCurve bez = adapt.Bezier();
+          Handle(Geom_BezierCurve) bez = adapt.Bezier();
           //if (bez->Degree() < 4) {
           result = new BezierSegment(edge);
           //}
@@ -401,7 +401,7 @@ Generic::Generic(const TopoDS_Edge &e)
     BRepLib::BuildCurve3d(occEdge);
 
     TopLoc_Location location;
-    Handle_Poly_Polygon3D polygon = BRep_Tool::Polygon3D(occEdge, location);
+    Handle(Poly_Polygon3D) polygon = BRep_Tool::Polygon3D(occEdge, location);
 
     if (!polygon.IsNull()) {
         const TColgp_Array1OfPnt &nodes = polygon->Nodes();
@@ -429,7 +429,7 @@ BSpline::BSpline(const TopoDS_Edge &e)
     geomType = BSPLINE;
     BRepAdaptor_Curve c(e);
     occEdge = e;
-    Handle_Geom_BSplineCurve spline = c.BSpline();
+    Handle(Geom_BSplineCurve) spline = c.BSpline();
     bool fail = false;
     double f,l;
     gp_Pnt s,m,ePt;
@@ -440,7 +440,7 @@ BSpline::BSpline(const TopoDS_Edge &e)
     if (spline->Degree() > 3) {                                        //if spline is too complex, approximate it
         Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen can't resolve this
         Standard_Integer maxDegree = 3, maxSegment = 10;
-        Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
+        Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
         // approximate the curve using a tolerance
         //Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C2, maxSegment, maxDegree);   //gives degree == 5  ==> too many poles ==> buffer overrun
         Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
@@ -478,7 +478,7 @@ BSpline::BSpline(const TopoDS_Edge &e)
     } else {
         for (Standard_Integer i = 1; i <= crt.NbArcs(); ++i) {
             BezierSegment tempSegment;
-            Handle_Geom_BezierCurve bezier = crt.Arc(i);
+            Handle(Geom_BezierCurve) bezier = crt.Arc(i);
             if (bezier->Degree() > 3) {
                 Base::Console().Log("Geometry::BSpline - converted curve degree > 3\n");
             }
@@ -499,7 +499,7 @@ bool BSpline::isLine()
 {
     bool result = false;
     BRepAdaptor_Curve c(occEdge);
-    Handle_Geom_BSplineCurve spline = c.BSpline();
+    Handle(Geom_BSplineCurve) spline = c.BSpline();
     if (spline->NbPoles() == 2) {
         result = true;
     }
@@ -511,7 +511,7 @@ BezierSegment::BezierSegment(const TopoDS_Edge &e)
     geomType = BEZIER;
     occEdge = e;
     BRepAdaptor_Curve c(e);
-    Handle_Geom_BezierCurve bez = c.Bezier();
+    Handle(Geom_BezierCurve) bez = c.Bezier();
     poles = bez->NbPoles();
     degree = bez->Degree();
     if (poles > 4)  {

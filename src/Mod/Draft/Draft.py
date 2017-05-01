@@ -244,8 +244,10 @@ def ungroup(obj):
     "removes the current object from any group it belongs to"
     for g in getGroupNames():
         grp = FreeCAD.ActiveDocument.getObject(g)
-        if grp.hasObject(obj):
-            grp.removeObject(obj)
+        if obj in grp.Group:
+            g = grp.Group
+            g.remove(obj)
+            grp.Group = g
             
 def autogroup(obj):
     "adds a given object to the autogroup, if applicable"
@@ -1113,6 +1115,10 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,name="Array"):
     if gui:
         _ViewProviderDraftArray(obj.ViewObject)
         baseobject.ViewObject.hide()
+        formatObject(obj,obj.Base)
+        if len(obj.Base.ViewObject.DiffuseColor) > 1:
+            FreeCAD.ActiveDocument.recompute()
+            obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
 
@@ -1140,6 +1146,9 @@ def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs
         _ViewProviderDraftArray(obj.ViewObject)
         baseobject.ViewObject.hide()
         formatObject(obj,obj.Base)
+        if len(obj.Base.ViewObject.DiffuseColor) > 1:
+            FreeCAD.ActiveDocument.recompute()
+            obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
 
@@ -2066,6 +2075,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     def getArrow(arrowtype,point,arrowsize,color,linewidth,angle=0):
         svg = ""
+        if not obj.ViewObject:
+            return svg
         if obj.ViewObject.ArrowType == "Circle":
             svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
             svg += '" r="'+str(arrowsize)+'" '
@@ -2180,7 +2191,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
 
     elif getType(obj) == "Dimension":
-        if obj.ViewObject.Proxy:
+        if not obj.ViewObject:
+            print ("export of dimensions to SVG is only available in GUI mode")
+        elif obj.ViewObject.Proxy:
             if hasattr(obj.ViewObject.Proxy,"p1"):
                 prx = obj.ViewObject.Proxy
                 ts = (len(prx.string)*obj.ViewObject.FontSize.Value)/4.0
@@ -2250,7 +2263,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
 
     elif getType(obj) == "AngularDimension":
-        if obj.ViewObject.Proxy:
+        if not obj.ViewObject:
+            print ("export of dimensions to SVG is only available in GUI mode")
+        elif obj.ViewObject.Proxy:
             if hasattr(obj.ViewObject.Proxy,"circle"):
                 prx = obj.ViewObject.Proxy
 
@@ -2300,52 +2315,58 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Annotation":
         "returns an svg representation of a document annotation"
-        n = obj.ViewObject.FontName
-        a = obj.ViewObject.Rotation.getValueAs("rad")
-        t = obj.LabelText
-        j = obj.ViewObject.Justification
-        svg += getText(stroke,fontsize,n,a,getProj(obj.Position),t,linespacing,j)
+        if not obj.ViewObject:
+            print ("export of texts to SVG is only available in GUI mode")
+        else:
+            n = obj.ViewObject.FontName
+            a = obj.ViewObject.Rotation.getValueAs("rad")
+            t = obj.LabelText
+            j = obj.ViewObject.Justification
+            svg += getText(stroke,fontsize,n,a,getProj(obj.Position),t,linespacing,j)
 
     elif getType(obj) == "Axis":
         "returns the SVG representation of an Arch Axis system"
-        vobj = obj.ViewObject
-        lorig = getLineStyle()
-        fill = 'none'
-        rad = vobj.BubbleSize.Value/2
-        n = 0
-        for e in obj.Shape.Edges:
-            lstyle = lorig
-            svg += getPath([e])
-            lstyle = "none"
-            pos = ["Start"]
-            if hasattr(vobj,"BubblePosition"):
-                if vobj.BubblePosition == "Both":
-                    pos = ["Start","End"]
-                else:
-                    pos = [vobj.BubblePosition]
-            for p in pos:
-                if p == "Start":
-                    p1 = e.Vertexes[0].Point
-                    p2 = e.Vertexes[1].Point
-                else:
-                    p1 = e.Vertexes[1].Point
-                    p2 = e.Vertexes[0].Point
-                dv = p2.sub(p1)
-                dv.normalize()
-                center = p2.add(dv.scale(rad,rad,rad))
-                svg += getCircle(Part.makeCircle(rad,center))
-                if hasattr(vobj.Proxy,"bubbletexts"):
-                    if len (vobj.Proxy.bubbletexts) >= n:
-                        svg += '<text fill="' + stroke + '" '
-                        svg += 'font-size="' + str(rad) + '" '
-                        svg += 'style="text-anchor:middle;'
-                        svg += 'text-align:center;'
-                        svg += 'font-family: sans;" '
-                        svg += 'transform="translate(' + str(center.x+rad/4.0) + ',' + str(center.y-rad/3.0) + ') '
-                        svg += 'scale(1,-1)"> '
-                        svg += '<tspan>' + obj.ViewObject.Proxy.bubbletexts[n].string.getValues()[0] + '</tspan>\n'
-                        svg += '</text>\n'
-                        n += 1
+        if not obj.ViewObject:
+            print ("export of axes to SVG is only available in GUI mode")
+        else:
+            vobj = obj.ViewObject
+            lorig = getLineStyle()
+            fill = 'none'
+            rad = vobj.BubbleSize.Value/2
+            n = 0
+            for e in obj.Shape.Edges:
+                lstyle = lorig
+                svg += getPath([e])
+                lstyle = "none"
+                pos = ["Start"]
+                if hasattr(vobj,"BubblePosition"):
+                    if vobj.BubblePosition == "Both":
+                        pos = ["Start","End"]
+                    else:
+                        pos = [vobj.BubblePosition]
+                for p in pos:
+                    if p == "Start":
+                        p1 = e.Vertexes[0].Point
+                        p2 = e.Vertexes[1].Point
+                    else:
+                        p1 = e.Vertexes[1].Point
+                        p2 = e.Vertexes[0].Point
+                    dv = p2.sub(p1)
+                    dv.normalize()
+                    center = p2.add(dv.scale(rad,rad,rad))
+                    svg += getCircle(Part.makeCircle(rad,center))
+                    if hasattr(vobj.Proxy,"bubbletexts"):
+                        if len (vobj.Proxy.bubbletexts) >= n:
+                            svg += '<text fill="' + stroke + '" '
+                            svg += 'font-size="' + str(rad) + '" '
+                            svg += 'style="text-anchor:middle;'
+                            svg += 'text-align:center;'
+                            svg += 'font-family: sans;" '
+                            svg += 'transform="translate(' + str(center.x+rad/4.0) + ',' + str(center.y-rad/3.0) + ') '
+                            svg += 'scale(1,-1)"> '
+                            svg += '<tspan>' + obj.ViewObject.Proxy.bubbletexts[n].string.getValues()[0] + '</tspan>\n'
+                            svg += '</text>\n'
+                            n += 1
 
     elif getType(obj) == "Pipe":
         fill = stroke
@@ -2362,25 +2383,28 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Space":
         "returns an SVG fragment for the text of a space"
-        c = getrgb(obj.ViewObject.TextColor)
-        n = obj.ViewObject.FontName
-        a = 0
-        if rotation != 0:
-            a = math.radians(rotation)
-        t1 = obj.ViewObject.Proxy.text1.string.getValues()
-        t2 = obj.ViewObject.Proxy.text2.string.getValues()
-        scale = obj.ViewObject.FirstLine.Value/obj.ViewObject.FontSize.Value
-        f1 = fontsize*scale
-        p2 = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
-        lspc = FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue())
-        p1 = p2.add(lspc)
-        j = obj.ViewObject.TextAlign
-        svg += getText(c,f1,n,a,getProj(p1),t1,linespacing,j,flip=True)
-        if t2:
-            ofs = FreeCAD.Vector(0,lspc.Length,0)
-            if a:
-                ofs = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),-rotation).multVec(ofs)
-            svg += getText(c,fontsize,n,a,getProj(p1).add(ofs),t2,linespacing,j,flip=True)
+        if not obj.ViewObject:
+            print ("export of spaces to SVG is only available in GUI mode")
+        else:
+            c = getrgb(obj.ViewObject.TextColor)
+            n = obj.ViewObject.FontName
+            a = 0
+            if rotation != 0:
+                a = math.radians(rotation)
+            t1 = obj.ViewObject.Proxy.text1.string.getValues()
+            t2 = obj.ViewObject.Proxy.text2.string.getValues()
+            scale = obj.ViewObject.FirstLine.Value/obj.ViewObject.FontSize.Value
+            f1 = fontsize*scale
+            p2 = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
+            lspc = FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue())
+            p1 = p2.add(lspc)
+            j = obj.ViewObject.TextAlign
+            svg += getText(c,f1,n,a,getProj(p1),t1,linespacing,j,flip=True)
+            if t2:
+                ofs = FreeCAD.Vector(0,lspc.Length,0)
+                if a:
+                    ofs = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),-rotation).multVec(ofs)
+                svg += getText(c,fontsize,n,a,getProj(p1).add(ofs),t2,linespacing,j,flip=True)
 
     elif obj.isDerivedFrom('Part::Feature'):
         if obj.Shape.isNull():
@@ -2867,6 +2891,7 @@ def clone(obj,delta=None,forcedraft=False):
             cl.Tag = base.Tag
         except:
             pass
+        select(cl)
         return cl
     else:
         cl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Clone")
@@ -2881,6 +2906,9 @@ def clone(obj,delta=None,forcedraft=False):
     elif len(obj) == 1:
         cl.Placement = obj[0].Placement
     formatObject(cl,obj[0])
+    if gui and (len(obj) > 1):
+        cl.ViewObject.Proxy.resetColors(cl.ViewObject)
+    select(cl)
     return cl
 
 def getCloneBase(obj,strict=False):
@@ -3269,7 +3297,7 @@ def upgrade(objects,delete=False,force=None):
                      "makeShell","makeFaces","draftify","joinFaces","makeSketchFace","makeWires","turnToLine"]:
             result = eval(force)(objects)
         else:
-            msg(translate("Upgrade: Unknow force method:")+" "+force)
+            msg(translate("Upgrade: Unknown force method:")+" "+force)
             result = None
 
     else:
@@ -3373,6 +3401,7 @@ def upgrade(objects,delete=False,force=None):
         deleteList = []
         for n in names:
             FreeCAD.ActiveDocument.removeObject(n)
+    select(addList)
     return [addList,deleteList]
 
 def downgrade(objects,delete=False,force=None):
@@ -3509,7 +3538,7 @@ def downgrade(objects,delete=False,force=None):
         if force in ["explode","shapify","subtr","splitFaces","cut2","getWire","splitWires"]:
             result = eval(force)(objects)
         else:
-            msg(translate("Upgrade: Unknow force method:")+" "+force)
+            msg(translate("Upgrade: Unknown force method:")+" "+force)
             result = None
 
     else:
@@ -3573,6 +3602,7 @@ def downgrade(objects,delete=False,force=None):
         deleteList = []
         for n in names:
             FreeCAD.ActiveDocument.removeObject(n)
+    select(addList)
     return [addList,deleteList]
 
 
@@ -5254,11 +5284,13 @@ class _Shape2DView(_DraftObject):
         obj.addProperty("App::PropertyIntegerList","FaceNumbers","Draft",QT_TRANSLATE_NOOP("App::Property","The indices of the faces to be projected in Individual Faces mode"))
         obj.addProperty("App::PropertyBool","HiddenLines","Draft",QT_TRANSLATE_NOOP("App::Property","Show hidden lines"))
         obj.addProperty("App::PropertyBool","Tessellation","Draft",QT_TRANSLATE_NOOP("App::Property","Tessellate Ellipses and BSplines into line segments"))
+        obj.addProperty("App::PropertyBool","InPlace","Draft",QT_TRANSLATE_NOOP("App::Property","For Cutlines and Cutfaces modes, this leaves the faces at the cut location"))
         obj.addProperty("App::PropertyFloat","SegmentLength","Draft",QT_TRANSLATE_NOOP("App::Property","Length of line segments if tessellating Ellipses or BSplines into line segments"))
         obj.Projection = Vector(0,0,1)
         obj.ProjectionMode = ["Solid","Individual Faces","Cutlines","Cutfaces"]
         obj.HiddenLines = False
         obj.Tessellation = False
+        obj.InPlace = True
         obj.SegmentLength = .05
         _DraftObject.__init__(self,obj,"Shape2DView")
 
@@ -5303,6 +5335,8 @@ class _Shape2DView(_DraftObject):
                                 shapes.append(o.Shape.copy())
                     cutp,cutv,iv =Arch.getCutVolume(obj.Base.Shape,shapes)
                     cuts = []
+                    opl = FreeCAD.Placement(obj.Base.Placement)
+                    proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
                     if obj.ProjectionMode == "Solid":
                         for sh in shapes:
                             if cutv:
@@ -5323,8 +5357,6 @@ class _Shape2DView(_DraftObject):
                                 else:
                                     cuts.append(sh.copy())
                         comp = Part.makeCompound(cuts)
-                        opl = FreeCAD.Placement(obj.Base.Placement)
-                        proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
                         obj.Shape = self.getProjected(obj,comp,proj)
                     elif obj.ProjectionMode in ["Cutlines","Cutfaces"]:
                         for sh in shapes:
@@ -5333,6 +5365,9 @@ class _Shape2DView(_DraftObject):
                             c = sh.section(cutp)
                             faces = []
                             if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
+                                if hasattr(obj,"InPlace"):
+                                    if not obj.InPlace:
+                                        c = self.getProjected(obj,c,proj)
                                 wires = DraftGeomUtils.findWires(c.Edges)
                                 for w in wires:
                                     if w.isClosed():
@@ -5376,6 +5411,8 @@ class _Shape2DView(_DraftObject):
                                 views.append(self.getProjected(obj,f,obj.Projection))
                             if views:
                                 obj.Shape = Part.makeCompound(views)
+                    else:
+                        FreeCAD.Console.PrintWarning(obj.ProjectionMode+" mode not implemented\n")
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
@@ -5765,6 +5802,20 @@ class _ViewProviderClone:
     def setDisplayMode(self, mode):
         return mode
 
+    def resetColors(self, vobj):
+        colors = []
+        for o in getGroupContents(vobj.Object.Objects):
+            if o.isDerivedFrom("Part::Feature"):
+                if len(o.ViewObject.DiffuseColor) > 1:
+                    colors.extend(o.ViewObject.DiffuseColor)
+                else:
+                    c = o.ViewObject.ShapeColor
+                    c = (c[0],c[1],c[2],o.ViewObject.Transparency/100.0)
+                    for f in o.Shape.Faces:
+                        colors.append(c)
+        if colors:
+            vobj.DiffuseColor = colors
+
 class _ViewProviderDraftArray(_ViewProviderDraft):
     "a view provider that displays a Array icon instead of a Draft icon"
 
@@ -5773,6 +5824,29 @@ class _ViewProviderDraftArray(_ViewProviderDraft):
 
     def getIcon(self):
         return ":/icons/Draft_Array.svg"
+        
+    def resetColors(self, vobj):
+        colors = []
+        if vobj.Object.Base:
+            if vobj.Object.Base.isDerivedFrom("Part::Feature"):
+                if len(vobj.Object.Base.ViewObject.DiffuseColor) > 1:
+                    colors = vobj.Object.Base.ViewObject.DiffuseColor
+                else:
+                    c = vobj.Object.Base.ViewObject.ShapeColor
+                    c = (c[0],c[1],c[2],vobj.Object.Base.ViewObject.Transparency/100.0)
+                    for f in vobj.Object.Base.Shape.Faces:
+                        colors.append(c)
+        if colors:
+            n = 1
+            if hasattr(vobj.Object,"ArrayType"):
+                if vobj.Object.ArrayType == "ortho":
+                    n = vobj.Object.NumberX * vobj.Object.NumberY * vobj.Object.NumberZ
+                else:
+                    n = vobj.Object.NumberPolar
+            elif hasattr(vobj.Object,"Count"):
+                n = vobj.Object.Count
+            colors = colors * n
+            vobj.DiffuseColor = colors
 
 class _ShapeString(_DraftObject):
     "The ShapeString object"

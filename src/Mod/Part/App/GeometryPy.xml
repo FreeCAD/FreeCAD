@@ -55,5 +55,11 @@ means that it is not part of a later built shape.</UserDocu>
       </Documentation>
       <Parameter Name="Construction" Type="Boolean"/>
     </Attribute>
+    <Attribute Name="Tag" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Gives the tag of the geometry as string.</UserDocu>
+      </Documentation>
+      <Parameter Name="Tag" Type="String"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>

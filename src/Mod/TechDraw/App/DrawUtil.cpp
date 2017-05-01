@@ -113,29 +113,29 @@ std::string DrawUtil::makeGeomName(std::string geomType, int index)
     return newName.str();
 }
 
-
-bool DrawUtil::isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2)
+//! true if v1 and v2 are the same geometric point within tolerance
+bool DrawUtil::isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2, double tolerance)
 {
     bool result = false;
     gp_Pnt p1 = BRep_Tool::Pnt(v1);
     gp_Pnt p2 = BRep_Tool::Pnt(v2);
-    if (p1.IsEqual(p2,Precision::Confusion())) {
+    if (p1.IsEqual(p2,tolerance)) {
         result = true;
     }
     return result;
 }
 
-bool DrawUtil::isZeroEdge(TopoDS_Edge e)
+bool DrawUtil::isZeroEdge(TopoDS_Edge e, double tolerance)
 {
     TopoDS_Vertex vStart = TopExp::FirstVertex(e);
     TopoDS_Vertex vEnd = TopExp::LastVertex(e);
-    bool result = isSamePoint(vStart,vEnd);
+    bool result = isSamePoint(vStart,vEnd, tolerance);
     if (result) {
         //closed edge will have same V's but non-zero length
         GProp_GProps props;
         BRepGProp::LinearProperties(e, props);
         double len = props.Mass();
-        if (len > Precision::Confusion()) {
+        if (len > tolerance) {
             result = false;
         }
     }
@@ -182,7 +182,8 @@ double DrawUtil::angleWithX(TopoDS_Edge e, bool reverse)
     return result;
 }
 
-double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v)
+//! find angle of edge with x-Axis at First/LastVertex 
+double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
 {
     double result = 0;
     double param = 0;
@@ -190,9 +191,9 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v)
     //find tangent @ v
     double adjust = 1.0;            //occ tangent points in direction of curve. at lastVert we need to reverse it.
     BRepAdaptor_Curve adapt(e);
-    if (isFirstVert(e,v)) {
+    if (isFirstVert(e,v,tolerance)) {
         param = adapt.FirstParameter();
-    } else if (isLastVert(e,v)) {
+    } else if (isLastVert(e,v,tolerance)) {
         param = adapt.LastParameter();
         adjust = -1;
     } else {
@@ -203,7 +204,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v)
 
     Base::Vector3d uVec(0.0,0.0,0.0);
     gp_Dir uDir;
-    BRepLProp_CLProps prop(adapt,param,2,Precision::Confusion());
+    BRepLProp_CLProps prop(adapt,param,2,tolerance);
     if (prop.IsTangentDefined()) {
         prop.Tangent(uDir);
         uVec = Base::Vector3d(uDir.X(),uDir.Y(),uDir.Z()) * adjust;
@@ -213,9 +214,9 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v)
         Base::Vector3d start(gstart.X(),gstart.Y(),gstart.Z());
         gp_Pnt gend    = BRep_Tool::Pnt(TopExp::LastVertex(e));
         Base::Vector3d end(gend.X(),gend.Y(),gend.Z());
-        if (isFirstVert(e,v)) {
+        if (isFirstVert(e,v,tolerance)) {
             uVec = end - start;
-        } else if (isLastVert(e,v)) {
+        } else if (isLastVert(e,v,tolerance)) {
             uVec = end - start;
         } else {
           gp_Pnt errPnt = BRep_Tool::Pnt(v);
@@ -230,30 +231,30 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v)
     return result;
 }
 
-bool DrawUtil::isFirstVert(TopoDS_Edge e, TopoDS_Vertex v)
+bool DrawUtil::isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
 {
     bool result = false;
     TopoDS_Vertex first = TopExp::FirstVertex(e);
-    if (isSamePoint(first,v)) {
+    if (isSamePoint(first,v, tolerance)) {
         result = true;
     }
     return result;
 }
 
-bool DrawUtil::isLastVert(TopoDS_Edge e, TopoDS_Vertex v)
+bool DrawUtil::isLastVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
 {
     bool result = false;
     TopoDS_Vertex last = TopExp::LastVertex(e);
-    if (isSamePoint(last,v)) {
+    if (isSamePoint(last,v, tolerance)) {
         result = true;
     }
     return result;
 }
 
-bool DrawUtil::fpCompare(const double& d1, const double& d2)
+bool DrawUtil::fpCompare(const double& d1, const double& d2, double tolerance)
 {
     bool result = false;
-    if (std::fabs(d1 - d2) < FLT_EPSILON) {
+    if (std::fabs(d1 - d2) < tolerance) {
         result = true;
     }
     return result;

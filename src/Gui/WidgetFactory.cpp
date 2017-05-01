@@ -1149,7 +1149,7 @@ void PyResource::load(const char* name)
         if (!fi.exists()) {
             if (cwd == home) {
                 QString what = QObject::tr("Cannot find file %1").arg(fi.absoluteFilePath());
-                throw Base::Exception(what.toUtf8().constData());
+                throw Base::FileSystemError(what.toUtf8().constData());
             }
             else {
                 fi.setFile( QDir(home), fn );
@@ -1157,7 +1157,7 @@ void PyResource::load(const char* name)
                 if (!fi.exists()) {
                     QString what = QObject::tr("Cannot find file %1 neither in %2 nor in %3")
                         .arg(fn).arg(cwd).arg(home);
-                    throw Base::Exception(what.toUtf8().constData());
+                    throw Base::FileSystemError(what.toUtf8().constData());
                 }
                 else {
                     fn = fi.absoluteFilePath(); // file resides in FreeCAD's home directory
@@ -1168,7 +1168,7 @@ void PyResource::load(const char* name)
     else {
         if (!fi.exists()) {
             QString what = QObject::tr("Cannot find file %1").arg(fn);
-            throw Base::Exception(what.toUtf8().constData());
+            throw Base::FileSystemError(what.toUtf8().constData());
         }
     }
 
@@ -1184,11 +1184,11 @@ void PyResource::load(const char* name)
         file.close();
     }
     catch (...) {
-        throw Base::Exception("Cannot create resource");
+        throw Base::RuntimeError("Cannot create resource");
     }
 
     if (!w)
-        throw Base::Exception("Invalid widget.");
+        throw Base::ValueError("Invalid widget.");
 
     if (w->inherits("QDialog")) {
         myDlg = (QDialog*)w;

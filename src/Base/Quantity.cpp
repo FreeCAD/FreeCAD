@@ -79,7 +79,7 @@ bool Quantity::operator ==(const Quantity& that) const
 bool Quantity::operator <(const Quantity& that) const
 {
     if (this->_Unit != that._Unit)
-        throw Base::Exception("Quantity::operator <(): quantities need to have same unit to compare");
+        throw Base::UnitsMismatchError("Quantity::operator <(): quantities need to have same unit to compare");
 
     return (this->_Value < that._Value) ;
 }
@@ -87,7 +87,7 @@ bool Quantity::operator <(const Quantity& that) const
 bool Quantity::operator >(const Quantity& that) const
 {
     if (this->_Unit != that._Unit)
-        throw Base::Exception("Quantity::operator >(): quantities need to have same unit to compare");
+        throw Base::UnitsMismatchError("Quantity::operator >(): quantities need to have same unit to compare");
 
     return (this->_Value > that._Value) ;
 }
@@ -95,7 +95,7 @@ bool Quantity::operator >(const Quantity& that) const
 bool Quantity::operator <=(const Quantity& that) const
 {
     if (this->_Unit != that._Unit)
-        throw Base::Exception("Quantity::operator <=(): quantities need to have same unit to compare");
+        throw Base::UnitsMismatchError("Quantity::operator <=(): quantities need to have same unit to compare");
 
     return (this->_Value <= that._Value) ;
 }
@@ -103,7 +103,7 @@ bool Quantity::operator <=(const Quantity& that) const
 bool Quantity::operator >=(const Quantity& that) const
 {
     if (this->_Unit != that._Unit)
-        throw Base::Exception("Quantity::operator >=(): quantities need to have same unit to compare");
+        throw Base::UnitsMismatchError("Quantity::operator >=(): quantities need to have same unit to compare");
 
     return (this->_Value >= that._Value) ;
 }
@@ -131,7 +131,7 @@ Quantity Quantity::operator /(double p) const
 Quantity Quantity::pow(const Quantity &p) const
 {
     if (!p._Unit.isEmpty())
-        throw Base::Exception("Quantity::pow(): exponent must not have a unit");
+        throw Base::UnitsMismatchError("Quantity::pow(): exponent must not have a unit");
     return Quantity(
         std::pow(this->_Value, p._Value),
         this->_Unit.pow((short)p._Value)
@@ -148,14 +148,14 @@ Quantity Quantity::pow(double p) const
 Quantity Quantity::operator +(const Quantity &p) const
 {
     if (this->_Unit != p._Unit)
-        throw Base::Exception("Quantity::operator +(): Unit mismatch in plus operation");
+        throw Base::UnitsMismatchError("Quantity::operator +(): Unit mismatch in plus operation");
     return Quantity(this->_Value + p._Value,this->_Unit);
 }
 
 Quantity& Quantity::operator +=(const Quantity &p)
 {
     if (this->_Unit != p._Unit)
-        throw Base::Exception("Quantity::operator +=(): Unit mismatch in plus operation");
+        throw Base::UnitsMismatchError("Quantity::operator +=(): Unit mismatch in plus operation");
 
     _Value += p._Value;
 
@@ -165,14 +165,14 @@ Quantity& Quantity::operator +=(const Quantity &p)
 Quantity Quantity::operator -(const Quantity &p) const
 {
     if (this->_Unit != p._Unit)
-        throw Base::Exception("Quantity::operator +(): Unit mismatch in minus operation");
+        throw Base::UnitsMismatchError("Quantity::operator +(): Unit mismatch in minus operation");
     return Quantity(this->_Value - p._Value,this->_Unit);
 }
 
 Quantity& Quantity::operator -=(const Quantity &p)
 {
     if (this->_Unit != p._Unit)
-        throw Base::Exception("Quantity::operator -=(): Unit mismatch in minus operation");
+        throw Base::UnitsMismatchError("Quantity::operator -=(): Unit mismatch in minus operation");
 
     _Value -= p._Value;
 
@@ -333,8 +333,8 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
 
 // error func
 void Quantity_yyerror(char *errorinfo)
-{  
-    throw Base::Exception(errorinfo);  
+{
+    throw Base::ParserError(errorinfo);
 }
 
 
@@ -385,6 +385,6 @@ Quantity Quantity::parse(const QString &string)
     QuantityParser::yy_delete_buffer (my_string_buffer);
 
     //if (QuantResult == Quantity(DOUBLE_MIN))
-    //    throw Base::Exception("Unknown error in Quantity expression");
+    //    throw Base::ParserError("Unknown error in Quantity expression");
     return QuantResult;
 }

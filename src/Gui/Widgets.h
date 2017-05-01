@@ -33,6 +33,7 @@
 #include <QPlainTextEdit>
 #include <QBasicTimer>
 #include <QTime>
+#include <QToolButton>
 
 namespace Gui {
 class PrefCheckBox;
@@ -130,6 +131,33 @@ protected:
 
 private:
   int keyPressedCount;
+};
+
+// ------------------------------------------------------------------------------
+
+/**
+ * The ClearLineEdit class adds a clear button at the right side.
+ * http://stackoverflow.com/questions/21232224/qlineedit-with-custom-button
+ */
+class GuiExport ClearLineEdit : public QLineEdit
+{
+  Q_OBJECT
+
+public:
+    ClearLineEdit (QWidget * parent=0);
+
+protected:
+    void resizeEvent(QResizeEvent *);
+
+private Q_SLOTS:
+    void updateClearButton(const QString &text);
+
+private:
+#if QT_VERSION >= 0x050200
+    QAction *clearAction;
+#else
+    QToolButton *clearButton;
+#endif
 };
 
 // ------------------------------------------------------------------------------

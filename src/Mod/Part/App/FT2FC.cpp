@@ -187,7 +187,7 @@ struct FTDC_Ctx {
   std::vector<TopoDS_Edge> Edges;
   UNICHAR currchar;
   FT_Vector LastVert;
-  Handle_Geom_Surface surf;
+  Handle(Geom_Surface) surf;
 };
 
 // move_cb called for start of new contour. pt is xy of contour start.

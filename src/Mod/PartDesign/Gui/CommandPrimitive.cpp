@@ -46,6 +46,21 @@ using namespace std;
 
 DEF_STD_CMD_ACL(CmdPrimtiveCompAdditive);
 
+static const char * primitiveIntToName(int id)
+{
+    switch(id) {
+        case 0:  return "Box";
+        case 1:  return "Cylinder";
+        case 2:  return "Sphere";
+        case 3:  return "Cone";
+        case 4:  return "Ellipsoid";
+        case 5:  return "Torus";
+        case 6:  return "Prism";
+        case 7:  return "Wedge";
+        default: return nullptr;
+    };
+};
+
 CmdPrimtiveCompAdditive::CmdPrimtiveCompAdditive()
   : Command("PartDesign_CompPrimitiveAdditive")
 {
@@ -64,80 +79,36 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     if (!PartDesignGui::assureModernWorkflow(doc))
         return;
 
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+    // We need either an active Body, or for there to be no Body objects
+    // (in which case, just make one) to make a new additive shape.
 
-    if (!pcActiveBody)
-        return;
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody( /* messageIfNot = */ false );
+
+    auto shouldMakeBody( false );
+    if (pcActiveBody == nullptr) {
+        if ( doc->getObjectsOfType(PartDesign::Body::getClassTypeId()).empty() ) {
+            shouldMakeBody = true;
+        } else {
+            PartDesignGui::needActiveBodyError();
+            return;
+        }
+    }
 
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
 
-    std::string FeatName;
-    if(iMsg == 0) {
+    auto shapeType( primitiveIntToName(iMsg) );
+    auto FeatName( getUniqueObjectName(shapeType) );
 
-        FeatName = getUniqueObjectName("Box");
-
-        Gui::Command::openCommand("Make additive box");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::AdditiveBox\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 1) {
-
-        FeatName = getUniqueObjectName("Cylinder");
-
-        Gui::Command::openCommand("Make additive cylinder");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::AdditiveCylinder\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 2) {
-
-        FeatName = getUniqueObjectName("Sphere");
-
-        Gui::Command::openCommand("Make additive sphere");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::AdditiveSphere\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 3) {
-
-        FeatName = getUniqueObjectName("Cone");
-
-        Gui::Command::openCommand("Make additive cone");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::AdditiveCone\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 4) {
-
-        FeatName = getUniqueObjectName("Ellipsoid");
-
-        Gui::Command::openCommand("Make additive ellipsoid");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::AdditiveEllipsoid\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 5) {
-
-        FeatName = getUniqueObjectName("Torus");
-
-        Gui::Command::openCommand("Make additive torus");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::AdditiveTorus\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 6) {
-
-        FeatName = getUniqueObjectName("Prism");
-
-        Gui::Command::openCommand("Make additive prism");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::AdditivePrism\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 7) {
-
-        FeatName = getUniqueObjectName("Wedge");
-
-        Gui::Command::openCommand("Make additive wedge");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::AdditiveWedge\',\'%s\')",
-            FeatName.c_str());
+    Gui::Command::openCommand( (std::string("Make additive ") + shapeType).c_str() );
+    if (shouldMakeBody) {
+        pcActiveBody = PartDesignGui::makeBody(doc);
     }
 
+    Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.addObject(\'PartDesign::Additive%s\',\'%s\')",
+            shapeType, FeatName.c_str() );
 
     Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addObject(App.activeDocument().%s)"
                     ,pcActiveBody->getNameInDocument(), FeatName.c_str());
@@ -268,77 +239,20 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
             return;
     }
 
-    std::string FeatName;
-    if(iMsg == 0) {
+    auto shapeType( primitiveIntToName(iMsg) );
+    auto FeatName( getUniqueObjectName(shapeType) );
 
-        FeatName = getUniqueObjectName("Box");
-
-        Gui::Command::openCommand("Make subtractive box");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::SubtractiveBox\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 1) {
-
-        FeatName = getUniqueObjectName("Cylinder");
-
-        Gui::Command::openCommand("Make subtractive cylinder");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::SubtractiveCylinder\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 2) {
-
-        FeatName = getUniqueObjectName("Sphere");
-
-        Gui::Command::openCommand("Make subtractive sphere");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::SubtractiveSphere\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 3) {
-
-        FeatName = getUniqueObjectName("Cone");
-
-        Gui::Command::openCommand("Make subtractive cone");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::SubtractiveCone\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 4) {
-
-        FeatName = getUniqueObjectName("Ellipsoid");
-
-        Gui::Command::openCommand("Make subtractive ellipsoid");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::SubtractiveEllipsoid\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 5) {
-
-        FeatName = getUniqueObjectName("Torus");
-
-        Gui::Command::openCommand("Make subtractive torus");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::SubtractiveTorus\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 6) {
-
-        FeatName = getUniqueObjectName("Prism");
-
-        Gui::Command::openCommand("Make subtractive prism");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::SubtractivePrism\',\'%s\')",
-            FeatName.c_str());
-    }
-    else if(iMsg == 7) {
-
-        FeatName = getUniqueObjectName("Wedge");
-
-        Gui::Command::openCommand("Make subtractive wedge");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::SubtractiveWedge\',\'%s\')",
-            FeatName.c_str());
-    }
+    Gui::Command::openCommand( (std::string("Make subtractive ") + shapeType).c_str() );
+    Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.addObject(\'PartDesign::Subtractive%s\',\'%s\')",
+            shapeType, FeatName.c_str() );
 
     Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addObject(App.activeDocument().%s)"
                     ,pcActiveBody->getNameInDocument(), FeatName.c_str());
     Gui::Command::updateActive();
 
-    if (isActiveObjectValid() && (pcActiveBody != NULL)) {
+    if ( isActiveObjectValid() ) {
         // TODO  (2015-08-05, Fat-Zer)
         if (prevSolid) {
             doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolid->getNameInDocument());

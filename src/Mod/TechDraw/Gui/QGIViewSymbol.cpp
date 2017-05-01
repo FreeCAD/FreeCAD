@@ -45,6 +45,7 @@
 
 #include "QGCustomSvg.h"
 #include "QGIViewSymbol.h"
+#include "Rez.h"
 
 using namespace TechDrawGui;
 
@@ -121,7 +122,9 @@ void QGIViewSymbol::drawSvg()
 //note: svg's are overscaled by (72 pixels(pts actually) /in)*(1 in/25.4 mm) = 2.834645669   (could be 96/25.4(CSS)? 110/25.4?)
 //due to 1 sceneUnit (1mm) = 1 pixel for some QtSvg functions
 
-    m_svgItem->setScale(viewSymbol->Scale.getValue());
+    double rezfactor = Rez::getRezFactor();
+    double scaling = viewSymbol->Scale.getValue() * rezfactor;
+    m_svgItem->setScale(scaling);
 
     QByteArray qba(viewSymbol->Symbol.getValue(),strlen(viewSymbol->Symbol.getValue()));
     symbolToSvg(qba);

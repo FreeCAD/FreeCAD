@@ -31,7 +31,6 @@ SET(Arch_SRCS
     ArchPanel.py
     ArchEquipment.py
     ArchCutPlane.py
-    ArchServer.py
     ArchMaterial.py
     ArchSchedule.py
     ArchProfile.py

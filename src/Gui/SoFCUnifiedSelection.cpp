@@ -64,6 +64,15 @@
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/SoPickedPoint.h>
 
+#ifdef FC_OS_MACOSX
+# include <OpenGL/gl.h>
+#else
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+# endif
+# include <GL/gl.h>
+#endif
+
 #include <QtOpenGL.h>
 
 #include <Base/Console.h>

@@ -711,6 +711,7 @@ class ObjectDressup:
 
     def __init__(self, obj):
         self.obj = obj
+        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
         obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "The base path to modify"))
         obj.addProperty("App::PropertyLength", "Width", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Width of tags."))
         obj.addProperty("App::PropertyLength", "Height", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Height of tags."))
@@ -808,9 +809,39 @@ class ObjectDressup:
                 edge = None
                 t = 0
 
-        #for cmd in commands:
-        #    print(cmd)
-        return Path.Path(commands)
+        lastCmd = Path.Command('G0', {'X': 0.0, 'Y': 0.0, 'Z': 0.0});
+        outCommands = []
+
+        horizFeed = obj.ToolController.HorizFeed.Value
+        vertFeed = obj.ToolController.VertFeed.Value
+        horizRapid = obj.ToolController.HorizRapid.Value
+        vertRapid = obj.ToolController.VertRapid.Value
+
+        for cmd in commands:
+            params = cmd.Parameters
+            zVal = params.get('Z', None)
+            zVal2 = lastCmd.Parameters.get('Z', None)
+
+            zVal = zVal and round(zVal, 8)
+            zVal2 = zVal2 and round(zVal2, 8)
+
+            if cmd.Name in ['G1', 'G2', 'G3', 'G01', 'G02', 'G03']:
+                if zVal is not None and zVal2 != zVal:
+                    params['F'] = vertFeed
+                else:
+                    params['F'] = horizFeed
+                lastCmd = cmd
+
+            elif cmd.Name in ['G0', 'G00']:
+                if zVal is not None and zVal2 != zVal:
+                    params['F'] = vertRapid
+                else:
+                    params['F'] = horizRapid
+                lastCmd = cmd
+
+            outCommands.append(Path.Command(cmd.Name, params))
+            
+        return Path.Path(outCommands)
 
     def problems(self):
         return filter(lambda m: m.haveProblem, self.mappers)
@@ -921,7 +952,7 @@ class ObjectDressup:
         #         self.toolRadius = 5
         #     else:
         #         self.toolRadius = tool.Diameter / 2
-        toolLoad = obj.Base.ToolController
+        toolLoad = obj.ToolController
         if toolLoad is None or toolLoad.ToolNumber == 0:
             PathLog.error(translate("No Tool Controller is selected. We need a tool to build a Path\n"))
             #return
@@ -1431,6 +1462,7 @@ class CommandPathDressupHoldingTags:
         FreeCADGui.doCommand('PathScripts.PathDressupHoldingTags.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
+        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
         FreeCADGui.doCommand('dbo.setup(obj, True)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

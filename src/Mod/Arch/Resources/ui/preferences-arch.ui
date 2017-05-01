@@ -440,7 +440,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Hidden geomety pattern</string>
+           <string>Hidden geometry pattern</string>
           </property>
          </widget>
         </item>

@@ -192,6 +192,7 @@
 #define PARAM_IDEF  3
 #define PARAM_IDOC  4
 #define PARAM_ISEQ  5
+#define PARAM_IPROP  5
 #define PARAM_IINFO 6
 
 #define PARAM_FIELD(_idx,_param) BOOST_PP_TUPLE_ELEM(PARAM_I##_idx,_param)
@@ -202,6 +203,7 @@
 #define PARAM_FDEF(_param) PARAM_FIELD(DEF,_param)
 #define PARAM_FDOC(_param) PARAM_FIELD(DOC,_param)
 #define PARAM_FSEQ(_param) PARAM_FIELD(SEQ,_param)
+#define PARAM_FPROP(_param) PARAM_FIELD(PROP,_param)
 #define PARAM_FINFO(_param) PARAM_FIELD(INFO,_param)
 #define PARAM_FENUM_TYPE(_param) BOOST_PP_TUPLE_ELEM(0,PARAM_FINFO(_param))
 #define PARAM_FENUM_PREFIX(_param) BOOST_PP_TUPLE_ELEM(1,PARAM_FINFO(_param))
@@ -944,17 +946,17 @@
  * Helper macros for FreeCAD properties 
  * \ingroup ParamHelper
  * @{*/
-#define PARAM_PROP_bool(_v) App::PropertyBool _v
-#define PARAM_PROP_double(_v) App::PropertyFloat _v
-#define PARAM_PROP_short(_v) App::PropertyInteger _v
-#define PARAM_PROP_long(_v) App::PropertyInteger _v
-#define PARAM_PROP_enum(_v) App::PropertyEnumeration _v
-#define PARAM_PROP_enum2(_v) App::PropertyEnumeration _v
+#define PARAM_PROP_bool(_param) App::PropertyBool PARAM_FNAME(_param)
+#define PARAM_PROP_double(_param) PARAM_FPROP(_param) PARAM_FNAME(_param)
+#define PARAM_PROP_short(_param) App::PropertyInteger PARAM_FNAME(_param)
+#define PARAM_PROP_long(_param) App::PropertyInteger PARAM_FNAME(_param)
+#define PARAM_PROP_enum(_param) App::PropertyEnumeration PARAM_FNAME(_param)
+#define PARAM_PROP_enum2(_param) App::PropertyEnumeration PARAM_FNAME(_param)
 /** @} */
 
 /** Helper for #PARAM_PROP_DECLARE */
 #define PARAM_PROP_DECLARE_(_param) \
-    PARAM_TYPED(PARAM_PROP_,_param)(PARAM_FNAME(_param));
+    PARAM_TYPED(PARAM_PROP_,_param)(_param);
 
 /** Declare FreeCAD properties 
  * \ingroup ParamProperty

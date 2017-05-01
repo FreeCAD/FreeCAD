@@ -228,12 +228,12 @@ Handle(Geom_BSplineSurface) BSplineFitting::perform()
         vMultArray.SetValue(index, it->second);
     }
 
-    Handle_Geom_BSplineSurface spline = new Geom_BSplineSurface(poles,weights,
+    Handle(Geom_BSplineSurface) spline = new Geom_BSplineSurface(poles,weights,
         uKnotArray, vKnotArray, uMultArray, vMultArray, uDegree, vDegree,
         uPeriodic, vPeriodic);
     return spline;
 #else
-    return Handle_Geom_BSplineSurface();
+    return Handle(Geom_BSplineSurface)();
 #endif
 }
 #endif // HAVE_PCL_OPENNURBS

@@ -397,7 +397,7 @@ class TaskPanel:
         axesList = [plt.axes]
         if form.all.isChecked():
             axesList = plt.axesList
-        # Set new alignement
+        # Set new alignment
         for axes in axesList:
             if form.xAlign.currentIndex() == 0:
                 axes.xaxis.tick_bottom()

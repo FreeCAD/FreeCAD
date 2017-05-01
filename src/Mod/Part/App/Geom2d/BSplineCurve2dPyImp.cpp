@@ -79,7 +79,7 @@ PyObject* BSplineCurve2dPy::isRational(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
-    Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     Standard_Boolean val = curve->IsRational();
     return PyBool_FromLong(val ? 1 : 0);
@@ -89,7 +89,7 @@ PyObject* BSplineCurve2dPy::isPeriodic(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
-    Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     Standard_Boolean val = curve->IsPeriodic();
     return PyBool_FromLong(val ? 1 : 0);
@@ -99,7 +99,7 @@ PyObject* BSplineCurve2dPy::isClosed(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
-    Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     Standard_Boolean val = curve->IsClosed();
     return PyBool_FromLong(val ? 1 : 0);
@@ -111,13 +111,13 @@ PyObject* BSplineCurve2dPy::increaseDegree(PyObject * args)
     if (!PyArg_ParseTuple(args, "i", &degree))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->IncreaseDegree(degree);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -131,7 +131,7 @@ PyObject* BSplineCurve2dPy::increaseMultiplicity(PyObject * args)
         return 0;
 
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         if (mult == -1) {
             mult = end;
@@ -144,7 +144,7 @@ PyObject* BSplineCurve2dPy::increaseMultiplicity(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -157,12 +157,12 @@ PyObject* BSplineCurve2dPy::incrementMultiplicity(PyObject * args)
         return 0;
 
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->IncrementMultiplicity(start, end, mult);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -178,12 +178,12 @@ PyObject* BSplineCurve2dPy::insertKnot(PyObject * args)
         return 0;
 
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->InsertKnot(U,M,tol);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -222,13 +222,13 @@ PyObject* BSplineCurve2dPy::insertKnots(PyObject * args)
             m(index++) = (int)val;
         }
 
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->InsertKnots(k,m,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -244,13 +244,13 @@ PyObject* BSplineCurve2dPy::removeKnot(PyObject * args)
         return 0;
 
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         Standard_Boolean ok = curve->RemoveKnot(Index,M,tol);
         return PyBool_FromLong(ok ? 1 : 0);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -262,13 +262,13 @@ PyObject* BSplineCurve2dPy::segment(PyObject * args)
     if (!PyArg_ParseTuple(args, "dd", &u1,&u2))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->Segment(u1,u2);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -281,7 +281,7 @@ PyObject* BSplineCurve2dPy::setKnot(PyObject * args)
     if (!PyArg_ParseTuple(args, "id|i", &Index, &K, &M))
         return 0;
 
-    Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     if (M == -1) {
         curve->SetKnot(Index, K);
@@ -299,7 +299,7 @@ PyObject* BSplineCurve2dPy::getKnot(PyObject * args)
     if (!PyArg_ParseTuple(args, "i", &Index))
         return 0;
 
-    Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     double M = curve->Knot(Index);
 
@@ -320,13 +320,13 @@ PyObject* BSplineCurve2dPy::setKnots(PyObject * args)
             k(index++) = (double)val;
         }
 
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->SetKnots(k);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -337,7 +337,7 @@ PyObject* BSplineCurve2dPy::getKnots(PyObject * args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         TColStd_Array1OfReal w(1,curve->NbKnots());
         curve->Knots(w);
@@ -348,7 +348,7 @@ PyObject* BSplineCurve2dPy::getKnots(PyObject * args)
         return Py::new_reference_to(knots);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -364,7 +364,7 @@ PyObject* BSplineCurve2dPy::setPole(PyObject * args)
     Base::Vector2d vec = Py::Vector2d(p).getCxxObject()->value();
     gp_Pnt2d pnt(vec.x, vec.y);
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         if (weight < 0.0)
             curve->SetPole(index,pnt);
@@ -373,7 +373,7 @@ PyObject* BSplineCurve2dPy::setPole(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -385,7 +385,7 @@ PyObject* BSplineCurve2dPy::getPole(PyObject * args)
     if (!PyArg_ParseTuple(args, "i", &index))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         Standard_OutOfRange_Raise_if
             (index < 1 || index > curve->NbPoles(), "Pole index out of range");
@@ -399,7 +399,7 @@ PyObject* BSplineCurve2dPy::getPole(PyObject * args)
         return Py::new_reference_to(method.apply(arg));
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -410,7 +410,7 @@ PyObject* BSplineCurve2dPy::getPoles(PyObject * args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         TColgp_Array1OfPnt2d p(1, (int)curve->NbPoles());
         curve->Poles(p);
@@ -429,7 +429,7 @@ PyObject* BSplineCurve2dPy::getPoles(PyObject * args)
         return Py::new_reference_to(poles);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -440,7 +440,7 @@ PyObject* BSplineCurve2dPy::getPolesAndWeights(PyObject * args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         TColgp_Array1OfPnt2d p(1,curve->NbPoles());
         curve->Poles(p);
@@ -460,7 +460,7 @@ PyObject* BSplineCurve2dPy::getPolesAndWeights(PyObject * args)
         return Py::new_reference_to(poles);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -473,13 +473,13 @@ PyObject* BSplineCurve2dPy::setWeight(PyObject * args)
     if (!PyArg_ParseTuple(args, "id", &index,&weight))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->SetWeight(index,weight);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -491,7 +491,7 @@ PyObject* BSplineCurve2dPy::getWeight(PyObject * args)
     if (!PyArg_ParseTuple(args, "i", &index))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         Standard_OutOfRange_Raise_if
             (index < 1 || index > curve->NbPoles() , "Weight index out of range");
@@ -499,7 +499,7 @@ PyObject* BSplineCurve2dPy::getWeight(PyObject * args)
         return Py_BuildValue("d", weight);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -510,7 +510,7 @@ PyObject* BSplineCurve2dPy::getWeights(PyObject * args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         TColStd_Array1OfReal w(1,curve->NbPoles());
         curve->Weights(w);
@@ -521,7 +521,7 @@ PyObject* BSplineCurve2dPy::getWeights(PyObject * args)
         return Py::new_reference_to(weights);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -533,14 +533,14 @@ PyObject* BSplineCurve2dPy::getResolution(PyObject * args)
     if (!PyArg_ParseTuple(args, "d", &tol))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         double utol;
         curve->Resolution(tol,utol);
         return Py_BuildValue("d",utol);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -555,14 +555,14 @@ PyObject* BSplineCurve2dPy::movePoint(PyObject * args)
         return 0;
     try {
         Base::Vector2d p = Py::Vector2d(pnt).getCxxObject()->value();
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         int first, last;
         curve->MovePoint(U, gp_Pnt2d(p.x,p.y), index1, index2, first, last);
         return Py_BuildValue("(ii)",first, last);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -573,13 +573,13 @@ PyObject* BSplineCurve2dPy::setNotPeriodic(PyObject * args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->SetNotPeriodic();
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -590,13 +590,13 @@ PyObject* BSplineCurve2dPy::setPeriodic(PyObject * args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->SetPeriodic();
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -608,13 +608,13 @@ PyObject* BSplineCurve2dPy::setOrigin(PyObject * args)
     if (!PyArg_ParseTuple(args, "i", &index))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         curve->SetOrigin(index);
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -626,13 +626,13 @@ PyObject* BSplineCurve2dPy::getMultiplicity(PyObject * args)
     if (!PyArg_ParseTuple(args, "i", &index))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         int mult = curve->Multiplicity(index);
         return Py_BuildValue("i", mult);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -643,7 +643,7 @@ PyObject* BSplineCurve2dPy::getMultiplicities(PyObject * args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     try {
-        Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+        Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
         TColStd_Array1OfInteger m(1,curve->NbKnots());
         curve->Multiplicities(m);
@@ -658,7 +658,7 @@ PyObject* BSplineCurve2dPy::getMultiplicities(PyObject * args)
         return Py::new_reference_to(mults);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -666,35 +666,35 @@ PyObject* BSplineCurve2dPy::getMultiplicities(PyObject * args)
 
 Py::Long BSplineCurve2dPy::getDegree(void) const
 {
-    Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     return Py::Long(curve->Degree()); 
 }
 
 Py::Long BSplineCurve2dPy::getMaxDegree(void) const
 {
-    Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     return Py::Long(curve->MaxDegree()); 
 }
 
 Py::Long BSplineCurve2dPy::getNbPoles(void) const
 {
-    Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     return Py::Long(curve->NbPoles()); 
 }
 
 Py::Long BSplineCurve2dPy::getNbKnots(void) const
 {
-    Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     return Py::Long(curve->NbKnots()); 
 }
 
 Py::Object BSplineCurve2dPy::getStartPoint(void) const
 {
-    Handle_Geom2d_BSplineCurve c = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) c = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     gp_Pnt2d pnt = c->StartPoint();
 
@@ -708,7 +708,7 @@ Py::Object BSplineCurve2dPy::getStartPoint(void) const
 
 Py::Object BSplineCurve2dPy::getEndPoint(void) const
 {
-    Handle_Geom2d_BSplineCurve c = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) c = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     gp_Pnt2d pnt = c->EndPoint();
 
@@ -722,7 +722,7 @@ Py::Object BSplineCurve2dPy::getEndPoint(void) const
 
 Py::Object BSplineCurve2dPy::getFirstUKnotIndex(void) const
 {
-    Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
 #if PY_MAJOR_VERSION >= 3
     return Py::Long(curve->FirstUKnotIndex()); 
@@ -733,7 +733,7 @@ Py::Object BSplineCurve2dPy::getFirstUKnotIndex(void) const
 
 Py::Object BSplineCurve2dPy::getLastUKnotIndex(void) const
 {
-    Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
 #if PY_MAJOR_VERSION >= 3
     return Py::Long(curve->LastUKnotIndex()); 
@@ -744,7 +744,7 @@ Py::Object BSplineCurve2dPy::getLastUKnotIndex(void) const
 
 Py::List BSplineCurve2dPy::getKnotSequence(void) const
 {
-    Handle_Geom2d_BSplineCurve curve = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     Standard_Integer m = 0;
     if (curve->IsPeriodic()) {
@@ -785,7 +785,7 @@ PyObject* BSplineCurve2dPy::toBiArcs(PyObject * args)
         return Py::new_reference_to(list);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -853,7 +853,7 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
             }
 
             Geom2dAPI_PointsToBSpline fit(pnts, weight1, weight2, weight3, degMax, c, tol3d);
-            Handle_Geom2d_BSplineCurve spline = fit.Curve();
+            Handle(Geom2d_BSplineCurve) spline = fit.Curve();
             if (!spline.IsNull()) {
                 this->getGeom2dBSplineCurvePtr()->setHandle(spline);
                 Py_Return;
@@ -874,7 +874,7 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
             }
             
             Geom2dAPI_PointsToBSpline fit(pnts, parameters, degMin, degMax, c, tol3d);
-            Handle_Geom2d_BSplineCurve spline = fit.Curve();
+            Handle(Geom2d_BSplineCurve) spline = fit.Curve();
             if (!spline.IsNull()) {
                 this->getGeom2dBSplineCurvePtr()->setHandle(spline);
                 Py_Return;
@@ -895,7 +895,7 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
             pt = Approx_ChordLength;
 
         Geom2dAPI_PointsToBSpline fit(pnts, pt, degMin, degMax, c, tol3d);
-        Handle_Geom2d_BSplineCurve spline = fit.Curve();
+        Handle(Geom2d_BSplineCurve) spline = fit.Curve();
         if (!spline.IsNull()) {
             this->getGeom2dBSplineCurvePtr()->setHandle(spline);
             Py_Return;
@@ -906,7 +906,7 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -1003,7 +1003,7 @@ PyObject* BSplineCurve2dPy::interpolate(PyObject *args, PyObject *kwds)
 
     try {
         Py::Sequence list(obj);
-        Handle_TColgp_HArray1OfPnt2d interpolationPoints = new TColgp_HArray1OfPnt2d(1, list.size());
+        Handle(TColgp_HArray1OfPnt2d) interpolationPoints = new TColgp_HArray1OfPnt2d(1, list.size());
         Standard_Integer index = 1;
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Base::Vector2d pnt = Py::Vector2d(*it).getCxxObject()->value();
@@ -1014,7 +1014,7 @@ PyObject* BSplineCurve2dPy::interpolate(PyObject *args, PyObject *kwds)
             Standard_Failure::Raise("not enough points given");
         }
 
-        Handle_TColStd_HArray1OfReal parameters;
+        Handle(TColStd_HArray1OfReal) parameters;
         if (par) {
             Py::Sequence plist(par);
             parameters = new TColStd_HArray1OfReal(1, plist.size());
@@ -1051,7 +1051,7 @@ PyObject* BSplineCurve2dPy::interpolate(PyObject *args, PyObject *kwds)
             }
 
             Py::Sequence flist(fl);
-            Handle_TColStd_HArray1OfBoolean tangentFlags = new TColStd_HArray1OfBoolean(1, flist.size());
+            Handle(TColStd_HArray1OfBoolean) tangentFlags = new TColStd_HArray1OfBoolean(1, flist.size());
             Standard_Integer findex = 1;
             for (Py::Sequence::iterator it = flist.begin(); it != flist.end(); ++it) {
                 Py::Boolean flag(*it);
@@ -1063,7 +1063,7 @@ PyObject* BSplineCurve2dPy::interpolate(PyObject *args, PyObject *kwds)
 
         aBSplineInterpolation->Perform();
         if (aBSplineInterpolation->IsDone()) {
-            Handle_Geom2d_BSplineCurve aBSplineCurve(aBSplineInterpolation->Curve());
+            Handle(Geom2d_BSplineCurve) aBSplineCurve(aBSplineInterpolation->Curve());
             this->getGeom2dBSplineCurvePtr()->setHandle(aBSplineCurve);
             Py_Return;
         }
@@ -1073,7 +1073,7 @@ PyObject* BSplineCurve2dPy::interpolate(PyObject *args, PyObject *kwds)
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         std::string err = e->GetMessageString();
         if (err.empty()) err = e->DynamicType()->Name();
         PyErr_SetString(PartExceptionOCCError, err.c_str());
@@ -1121,7 +1121,7 @@ PyObject* BSplineCurve2dPy::buildFromPoles(PyObject *args)
             mults.SetValue(1, mult);
             mults.SetValue(knots.Length(), mult);
 
-            Handle_Geom2d_BSplineCurve spline = new Geom2d_BSplineCurve(poles, knots, mults, degree, Standard_True);
+            Handle(Geom2d_BSplineCurve) spline = new Geom2d_BSplineCurve(poles, knots, mults, degree, Standard_True);
             if (!spline.IsNull()) {
                 this->getGeom2dBSplineCurvePtr()->setHandle(spline);
                 Py_Return;
@@ -1141,7 +1141,7 @@ PyObject* BSplineCurve2dPy::buildFromPoles(PyObject *args)
             mults.SetValue(1, degree+1);
             mults.SetValue(knots.Length(), degree+1);
 
-            Handle_Geom2d_BSplineCurve spline = new Geom2d_BSplineCurve(poles, knots, mults, degree, Standard_False);
+            Handle(Geom2d_BSplineCurve) spline = new Geom2d_BSplineCurve(poles, knots, mults, degree, Standard_False);
             if (!spline.IsNull()) {
                 this->getGeom2dBSplineCurvePtr()->setHandle(spline);
                 Py_Return;
@@ -1153,7 +1153,7 @@ PyObject* BSplineCurve2dPy::buildFromPoles(PyObject *args)
         }
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
@@ -1283,7 +1283,7 @@ PyObject* BSplineCurve2dPy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
             return(0);
         }
 
-        Handle_Geom2d_BSplineCurve spline = new Geom2d_BSplineCurve(occpoles,occweights,occknots,occmults,degree,
+        Handle(Geom2d_BSplineCurve) spline = new Geom2d_BSplineCurve(occpoles,occweights,occknots,occmults,degree,
             PyObject_IsTrue(periodic) ? Standard_True : Standard_False);
         if (!spline.IsNull()) {
             this->getGeom2dBSplineCurvePtr()->setHandle(spline);
@@ -1295,7 +1295,7 @@ PyObject* BSplineCurve2dPy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         }
     }
     catch (const Standard_Failure & ) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         Standard_CString msg = e->GetMessageString();
         PyErr_SetString(PartExceptionOCCError, msg  ? msg : "");
         return 0;
@@ -1307,14 +1307,14 @@ PyObject* BSplineCurve2dPy::toBezier(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
 
-    Handle_Geom2d_BSplineCurve spline = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) spline = Handle(Geom2d_BSplineCurve)::DownCast
         (this->getGeom2dBSplineCurvePtr()->handle());
     Geom2dConvert_BSplineCurveToBezierCurve crt(spline);
 
     Py::List list;
     Standard_Integer arcs = crt.NbArcs();
     for (Standard_Integer i=1; i<=arcs; i++) {
-        Handle_Geom2d_BezierCurve bezier = crt.Arc(i);
+        Handle(Geom2d_BezierCurve) bezier = crt.Arc(i);
         list.append(Py::asObject(new BezierCurve2dPy(new Geom2dBezierCurve(bezier))));
     }
 
@@ -1329,7 +1329,7 @@ PyObject* BSplineCurve2dPy::join(PyObject *args)
 
     Geom2dBSplineCurve* curve1 = this->getGeom2dBSplineCurvePtr();
     BSplineCurve2dPy* curve2 = static_cast<BSplineCurve2dPy*>(c);
-    Handle_Geom2d_BSplineCurve spline = Handle_Geom2d_BSplineCurve::DownCast
+    Handle(Geom2d_BSplineCurve) spline = Handle(Geom2d_BSplineCurve)::DownCast
         (curve2->getGeom2dBSplineCurvePtr()->handle());
 
     bool ok = curve1->join(spline);
@@ -1349,7 +1349,7 @@ PyObject* BSplineCurve2dPy::makeC1Continuous(PyObject *args)
         Py_Return;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         std::string err = e->GetMessageString();
         if (err.empty()) err = e->DynamicType()->Name();
         PyErr_SetString(PartExceptionOCCError, err.c_str());

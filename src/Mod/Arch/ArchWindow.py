@@ -653,6 +653,7 @@ class _Window(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","LouvreWidth","Louvres",QT_TRANSLATE_NOOP("App::Property","the width of louvre elements"))
         obj.addProperty("App::PropertyLength","LouvreSpacing","Louvres",QT_TRANSLATE_NOOP("App::Property","the space between louvre elements"))
         obj.addProperty("App::PropertyPercent","Opening","Arch",QT_TRANSLATE_NOOP("App::Property","Opens the subcomponents that have a hinge defined"))
+        obj.addProperty("App::PropertyInteger","HoleWire","Arch",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. A value of 0 means automatic"))
         obj.setEditorMode("Preset",2)
         obj.setEditorMode("WindowParts",2)
         self.Type = "Window"
@@ -948,14 +949,21 @@ class _Window(ArchComponent.Component):
             width = 1.1112 # some weird value to have little chance to overlap with an existing face
         if not base:
             return None
-
-        # finding biggest wire in the base shape
-        max_length = 0
+            
+        # finding which wire to use to drill the hole
+        
         f = None
-        for w in base.Shape.Wires:
-            if w.BoundBox.DiagonalLength > max_length:
-                max_length = w.BoundBox.DiagonalLength
-                f = w
+        if hasattr(obj,"HoleWire"):
+            if obj.HoleWire > 0:
+                if obj.HoleWire <= len(base.Shape.Wires):
+                    f = base.Shape.Wires[obj.HoleWire-1]
+        if not f:
+            # finding biggest wire in the base shape
+            max_length = 0
+            for w in base.Shape.Wires:
+                if w.BoundBox.DiagonalLength > max_length:
+                    max_length = w.BoundBox.DiagonalLength
+                    f = w
         if f:
             import Part
             f = Part.Face(f)
@@ -1060,41 +1068,53 @@ class _ArchWindowTaskPanel:
         self.grid.setObjectName("grid")
         self.title = QtGui.QLabel(self.form)
         self.grid.addWidget(self.title, 0, 0, 1, 7)
-
-        # trees
+        
+        # base object
         self.tree = QtGui.QTreeWidget(self.form)
         self.grid.addWidget(self.tree, 1, 0, 1, 7)
         self.tree.setColumnCount(1)
         self.tree.setMaximumSize(QtCore.QSize(500,24))
         self.tree.header().hide()
+        
+        # hole
+        self.holeLabel = QtGui.QLabel(self.form)
+        self.grid.addWidget(self.holeLabel, 2, 0, 1, 1)
 
+        self.holeNumber = QtGui.QLineEdit(self.form)
+        self.grid.addWidget(self.holeNumber, 2, 2, 1, 3)
+
+        self.holeButton = QtGui.QPushButton(self.form)
+        self.grid.addWidget(self.holeButton, 2, 6, 1, 1)
+        self.holeButton.setEnabled(True)
+
+        # trees
         self.wiretree = QtGui.QTreeWidget(self.form)
-        self.grid.addWidget(self.wiretree, 2, 0, 1, 3)
+        self.grid.addWidget(self.wiretree, 3, 0, 1, 3)
         self.wiretree.setColumnCount(1)
         self.wiretree.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
 
         self.comptree = QtGui.QTreeWidget(self.form)
-        self.grid.addWidget(self.comptree, 2, 4, 1, 3)
+        self.grid.addWidget(self.comptree, 3, 4, 1, 3)
         self.comptree.setColumnCount(1)
 
         # buttons
         self.addButton = QtGui.QPushButton(self.form)
         self.addButton.setObjectName("addButton")
         self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
-        self.grid.addWidget(self.addButton, 3, 0, 1, 1)
+        self.grid.addWidget(self.addButton, 4, 0, 1, 1)
         self.addButton.setMaximumSize(QtCore.QSize(70,40))
 
         self.editButton = QtGui.QPushButton(self.form)
         self.editButton.setObjectName("editButton")
         self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
-        self.grid.addWidget(self.editButton, 3, 2, 1, 3)
+        self.grid.addWidget(self.editButton, 4, 2, 1, 3)
         self.editButton.setMaximumSize(QtCore.QSize(60,40))
         self.editButton.setEnabled(False)
 
         self.delButton = QtGui.QPushButton(self.form)
         self.delButton.setObjectName("delButton")
         self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
-        self.grid.addWidget(self.delButton, 3, 6, 1, 1)
+        self.grid.addWidget(self.delButton, 4, 6, 1, 1)
         self.delButton.setMaximumSize(QtCore.QSize(70,40))
         self.delButton.setEnabled(False)
 
@@ -1119,22 +1139,22 @@ class _ArchWindowTaskPanel:
         self.createButton = QtGui.QPushButton(self.form)
         self.createButton.setObjectName("createButton")
         self.createButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
-        self.grid.addWidget(self.newtitle, 6, 0, 1, 7)
-        self.grid.addWidget(self.new1, 7, 0, 1, 1)
-        self.grid.addWidget(self.field1, 7, 2, 1, 5)
-        self.grid.addWidget(self.new2, 8, 0, 1, 1)
-        self.grid.addWidget(self.field2, 8, 2, 1, 5)
-        self.grid.addWidget(self.new3, 9, 0, 1, 1)
-        self.grid.addWidget(self.field3, 9, 2, 1, 5)
-        self.grid.addWidget(self.new4, 10, 0, 1, 1)
-        self.grid.addWidget(self.field4, 10, 2, 1, 5)
-        self.grid.addWidget(self.new5, 11, 0, 1, 1)
-        self.grid.addWidget(self.field5, 11, 2, 1, 5)
-        self.grid.addWidget(self.new6, 12, 0, 1, 1)
-        self.grid.addWidget(self.field6, 12, 2, 1, 5)
-        self.grid.addWidget(self.new7, 13, 0, 1, 1)
-        self.grid.addWidget(self.field7, 13, 2, 1, 5)
-        self.grid.addWidget(self.createButton, 14, 0, 1, 7)
+        self.grid.addWidget(self.newtitle, 7, 0, 1, 7)
+        self.grid.addWidget(self.new1, 8, 0, 1, 1)
+        self.grid.addWidget(self.field1, 8, 2, 1, 5)
+        self.grid.addWidget(self.new2, 9, 0, 1, 1)
+        self.grid.addWidget(self.field2, 9, 2, 1, 5)
+        self.grid.addWidget(self.new3, 10, 0, 1, 1)
+        self.grid.addWidget(self.field3, 10, 2, 1, 5)
+        self.grid.addWidget(self.new4, 11, 0, 1, 1)
+        self.grid.addWidget(self.field4, 11, 2, 1, 5)
+        self.grid.addWidget(self.new5, 12, 0, 1, 1)
+        self.grid.addWidget(self.field5, 12, 2, 1, 5)
+        self.grid.addWidget(self.new6, 13, 0, 1, 1)
+        self.grid.addWidget(self.field6, 13, 2, 1, 5)
+        self.grid.addWidget(self.new7, 14, 0, 1, 1)
+        self.grid.addWidget(self.field7, 14, 2, 1, 5)
+        self.grid.addWidget(self.createButton, 15, 0, 1, 7)
         self.newtitle.setVisible(False)
         self.new1.setVisible(False)
         self.new2.setVisible(False)
@@ -1157,6 +1177,8 @@ class _ArchWindowTaskPanel:
             self.field7.addItem("")
         self.createButton.setVisible(False)
 
+        QtCore.QObject.connect(self.holeButton, QtCore.SIGNAL("clicked()"), self.selectHole)
+        QtCore.QObject.connect(self.holeNumber, QtCore.SIGNAL("textEdited(QString)"), self.setHoleNumber)
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
         QtCore.QObject.connect(self.editButton, QtCore.SIGNAL("clicked()"), self.editElement)
@@ -1197,6 +1219,28 @@ class _ArchWindowTaskPanel:
                                 FreeCADGui.Selection.addSelection(self.obj.Base,"Edge"+str(i+1))
         self.field3.setText(ws)
 
+    def selectHole(self):
+        "takes a selected edge to determine current Hole Wire"
+        s = FreeCADGui.Selection.getSelectionEx()
+        if s and self.obj:
+            if s[0].SubElementNames:
+                if "Edge" in s[0].SubElementNames[0]:
+                    for i,w in enumerate(self.obj.Base.Shape.Wires):
+                        for e in w.Edges:
+                            if e.hashCode() == s[0].SubObjects[0].hashCode():
+                                self.holeNumber.setText(str(i+1))
+                                self.setHoleNumber(str(i+1))
+                                break
+
+    def setHoleNumber(self,val):
+        "sets the HoleWire obj property"
+        if val.isdigit():
+            val = int(val)
+            if self.obj:
+                if not hasattr(self.obj,"HoleWire"):
+                    self.obj.addProperty("App::PropertyInteger","HoleWire","Arch",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. A value of 0 means automatic"))
+                self.obj.HoleWire = val
+
     def getIcon(self,obj):
         if hasattr(obj.ViewObject,"Proxy"):
             return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
@@ -1228,6 +1272,11 @@ class _ArchWindowTaskPanel:
                         item = QtGui.QTreeWidgetItem(self.comptree)
                         item.setText(0,self.obj.WindowParts[p])
                         item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+                if hasattr(self.obj,"HoleWire"):
+                    self.holeNumber.setText(str(self.obj.HoleWire))
+                else:
+                    self.holeNumber.setText("0")
+                        
                 self.retranslateUi(self.form)
 
     def addElement(self):
@@ -1384,6 +1433,9 @@ class _ArchWindowTaskPanel:
 
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Components", None))
+        self.holeLabel.setText(QtGui.QApplication.translate("Arch", "Hole wire", None))
+        self.holeNumber.setToolTip(QtGui.QApplication.translate("Arch", "The number of the wire that defines a hole in the host object. A value of zero will adopt automatically the biggest wire", None))
+        self.holeButton.setText(QtGui.QApplication.translate("Arch", "Pick selected", None))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None))
         self.editButton.setText(QtGui.QApplication.translate("Arch", "Edit", None))

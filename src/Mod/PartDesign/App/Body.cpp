@@ -146,7 +146,8 @@ App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
         return nullptr;
     }
 
-    assert ( hasObject ( start ) );
+    if (!hasObject(start))
+        return nullptr;
 
     const std::vector<App::DocumentObject*> & features = Group.getValues();
 
@@ -372,8 +373,10 @@ void Body::removeObject(App::DocumentObject* feature)
     }
 
     // Erase feature from Group
-    model.erase(it);
-    Group.setValues(model);
+    if (it != model.end()) {
+        model.erase(it);
+        Group.setValues(model);
+    }
 }
 
 

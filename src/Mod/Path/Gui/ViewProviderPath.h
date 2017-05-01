@@ -46,6 +46,7 @@ class PathGuiExport ViewProviderPath : public Gui::ViewProviderGeometryObject
                                      , public Gui::SelectionObserver
 {
     PROPERTY_HEADER(PathGui::ViewProviderPath);
+    typedef ViewProviderGeometryObject inherited;
 
 public:
     /// constructor.
@@ -74,7 +75,7 @@ public:
     void recomputeBoundingBox();
     virtual QIcon getIcon() const;
 
-    virtual bool useNewSelectionModel(void) const {return true;}
+    virtual bool useNewSelectionModel(void) const;
     virtual std::string getElement(const SoDetail *) const;
     SoDetail* getDetail(const char* subelement) const;
 
@@ -82,10 +83,14 @@ public:
 
     void updateShowConstraints();
     void updateVisual(bool rebuild = false);
+    void hideSelection();
+
+    virtual void showBoundingBox(bool show);
 
 protected:
 
     virtual void onChanged(const App::Property* prop);
+    virtual unsigned long getBoundColor() const;
  
     SoCoordinate3         * pcLineCoords;
     SoCoordinate3         * pcMarkerCoords;

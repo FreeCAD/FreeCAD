@@ -635,7 +635,7 @@ RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
 
 RecentFilesAction::~RecentFilesAction()
 {
-    save();
+    try { save(); } catch (...) {}
 }
 
 /** Adds the new item to the recent files. */

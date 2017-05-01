@@ -904,7 +904,7 @@ void MeshKernel::Read (std::istream &rclIn)
         }
         catch (std::exception&) {
             // Special handling of std::length_error
-            throw Base::Exception("Reading from stream failed");
+            throw Base::BadFormatError("Reading from stream failed");
         }
     }
     else {

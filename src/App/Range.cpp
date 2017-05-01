@@ -114,7 +114,7 @@ int App::decodeRow(const std::string &rowstr)
     if (row >= 0)
         return row;
     else
-        throw Base::Exception("Invalid row specification.");
+        throw Base::IndexError("Invalid row specification.");
 }
 
 /**
@@ -133,7 +133,7 @@ int App::decodeColumn(const std::string &colstr)
     if (col >= 0)
         return col;
     else
-        throw Base::Exception("Invalid column specification");
+        throw Base::IndexError("Invalid column specification");
 }
 
 /**
@@ -176,7 +176,7 @@ int App::validColumn(const std::string &colstr)
     }
     else {
         col = 0;
-        for (std::string::const_reverse_iterator i = colstr.rbegin(); i != colstr.rend(); ++i) {
+        for (std::string::const_iterator i = colstr.begin(); i != colstr.end(); ++i) {
             int v;
 
             if ((*i >= 'A' && *i <= 'Z'))
@@ -215,7 +215,7 @@ App::CellAddress App::stringToAddress(const char * strAddress)
         return CellAddress(decodeRow(rowstr.str()), decodeColumn(colstr.str()));
     }
     else
-        throw Base::Exception("Invalid cell specifier.");
+        throw Base::RuntimeError("Invalid cell specifier.");
 }
 
 /**

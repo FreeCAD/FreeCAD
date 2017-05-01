@@ -54,6 +54,8 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
             this, SLOT(setGridSize(double)));
     connect(ui->checkBoxAutoconstraints, SIGNAL(stateChanged(int)),
             this, SIGNAL(emitToggleAutoconstraints(int)));
+    connect(ui->renderingOrder->model(), SIGNAL(layoutChanged()),
+            this, SLOT(renderOrderChanged()));
 }
 
 SketcherGeneralWidget::~SketcherGeneralWidget()
@@ -71,6 +73,8 @@ void SketcherGeneralWidget::saveSettings()
 
     hGrp->SetBool("GridSnap", ui->checkBoxGridSnap->isChecked());
     hGrp->SetBool("AutoConstraints", ui->checkBoxAutoconstraints->isChecked());
+    
+    //not necessary to save renderOrder, as it is already stored in renderOrderChanged on every change.
 }
 
 void SketcherGeneralWidget::loadSettings()
@@ -82,6 +86,28 @@ void SketcherGeneralWidget::loadSettings()
     ui->gridSize->setToLastUsedValue();
     ui->checkBoxGridSnap->setChecked(hGrp->GetBool("GridSnap", ui->checkBoxGridSnap->isChecked()));
     ui->checkBoxAutoconstraints->setChecked(hGrp->GetBool("AutoConstraints", ui->checkBoxAutoconstraints->isChecked()));
+    
+    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    
+    // 1->Normal Geometry, 2->Construction, 3->External
+    int topid = hGrpp->GetInt("TopRenderGeometryId",1);
+    int midid = hGrpp->GetInt("MidRenderGeometryId",2);
+    int lowid = hGrpp->GetInt("LowRenderGeometryId",3);
+    
+    QListWidgetItem *newItem = new QListWidgetItem;
+    newItem->setData(Qt::UserRole, QVariant(topid));
+    newItem->setText( topid==1?tr("Normal Geometry"):topid==2?tr("Construction Geometry"):tr("External Geometry"));
+    ui->renderingOrder->insertItem(0,newItem);
+    
+    newItem = new QListWidgetItem;
+    newItem->setData(Qt::UserRole, QVariant(midid));
+    newItem->setText(midid==1?tr("Normal Geometry"):midid==2?tr("Construction Geometry"):tr("External Geometry"));
+    ui->renderingOrder->insertItem(1,newItem);
+    
+    newItem = new QListWidgetItem;
+    newItem->setData(Qt::UserRole, QVariant(lowid));
+    newItem->setText(lowid==1?tr("Normal Geometry"):lowid==2?tr("Construction Geometry"):tr("External Geometry"));
+    ui->renderingOrder->insertItem(2,newItem);
 }
 
 void SketcherGeneralWidget::toggleGridView(bool on)
@@ -115,6 +141,20 @@ void SketcherGeneralWidget::changeEvent(QEvent *e)
     }
 }
 
+void SketcherGeneralWidget::renderOrderChanged()
+{
+    int topid = ui->renderingOrder->item(0)->data(Qt::UserRole).toInt();
+    int midid = ui->renderingOrder->item(1)->data(Qt::UserRole).toInt();
+    int lowid = ui->renderingOrder->item(2)->data(Qt::UserRole).toInt();
+    
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    hGrp->SetInt("TopRenderGeometryId",topid);
+    hGrp->SetInt("MidRenderGeometryId",midid);
+    hGrp->SetInt("LowRenderGeometryId",lowid);
+    
+    emitRenderOrderChanged();
+}
+
 // ----------------------------------------------------------------------------
 
 TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
@@ -144,6 +184,11 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
         widget, SIGNAL(emitToggleAutoconstraints(int)),
         this  , SLOT  (toggleAutoconstraints(int))
        );
+    
+    QObject::connect(
+        widget, SIGNAL(emitRenderOrderChanged()),
+                     this  , SLOT  (renderOrderChanged())
+    );
     
 
     Gui::Selection().Attach(this);
@@ -191,5 +236,10 @@ void TaskSketcherGeneral::OnChange(Gui::SelectionSingleton::SubjectType &rCaller
     //}
 }
 /// @endcond DOXERR
+
+void TaskSketcherGeneral::renderOrderChanged()
+{
+    sketchView->updateColor();
+}
 
 #include "moc_TaskSketcherGeneral.cpp"

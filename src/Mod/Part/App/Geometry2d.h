@@ -52,7 +52,7 @@ public:
     virtual ~Geometry2d();
 
     virtual TopoDS_Shape toShape() const = 0;
-    virtual const Handle_Geom2d_Geometry& handle() const = 0;
+    virtual const Handle(Geom2d_Geometry)& handle() const = 0;
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
@@ -73,7 +73,7 @@ class PartExport Geom2dPoint : public Geometry2d
     TYPESYSTEM_HEADER();
 public:
     Geom2dPoint();
-    Geom2dPoint(const Handle_Geom2d_CartesianPoint&);
+    Geom2dPoint(const Handle(Geom2d_CartesianPoint)&);
     Geom2dPoint(const Base::Vector2d&);
     virtual ~Geom2dPoint();
     virtual Geometry2d *clone(void) const;
@@ -86,13 +86,13 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    const Handle_Geom2d_Geometry& handle() const;
+    const Handle(Geom2d_Geometry)& handle() const;
 
     Base::Vector2d getPoint(void)const;
     void setPoint(const Base::Vector2d&);
 
 private:
-    Handle_Geom2d_CartesianPoint myPoint;
+    Handle(Geom2d_CartesianPoint) myPoint;
 };
 
 class PartExport Geom2dCurve : public Geometry2d
@@ -117,7 +117,7 @@ class PartExport Geom2dBezierCurve : public Geom2dCurve
     TYPESYSTEM_HEADER();
 public:
     Geom2dBezierCurve();
-    Geom2dBezierCurve(const Handle_Geom2d_BezierCurve&);
+    Geom2dBezierCurve(const Handle(Geom2d_BezierCurve)&);
     virtual ~Geom2dBezierCurve();
     virtual Geometry2d *clone(void) const;
 
@@ -128,11 +128,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom2d_BezierCurve&);
-    const Handle_Geom2d_Geometry& handle() const;
+    void setHandle(const Handle(Geom2d_BezierCurve)&);
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
-    Handle_Geom2d_BezierCurve myCurve;
+    Handle(Geom2d_BezierCurve) myCurve;
 };
 
 class PartExport Geom2dBSplineCurve : public Geom2dCurve
@@ -140,7 +140,7 @@ class PartExport Geom2dBSplineCurve : public Geom2dCurve
     TYPESYSTEM_HEADER();
 public:
     Geom2dBSplineCurve();
-    Geom2dBSplineCurve(const Handle_Geom2d_BSplineCurve&);
+    Geom2dBSplineCurve(const Handle(Geom2d_BSplineCurve)&);
     virtual ~Geom2dBSplineCurve();
     virtual Geometry2d *clone(void) const;
 
@@ -166,7 +166,7 @@ public:
     int countPoles() const;
     void setPole(int index, const Base::Vector2d&, double weight=-1);
     std::vector<Base::Vector2d> getPoles() const;
-    bool join(const Handle_Geom2d_BSplineCurve&);
+    bool join(const Handle(Geom2d_BSplineCurve)&);
     void makeC1Continuous(double);
     std::list<Geometry2d*> toBiArcs(double tolerance) const;
 
@@ -177,8 +177,8 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom2d_BSplineCurve&);
-    const Handle_Geom2d_Geometry& handle() const;
+    void setHandle(const Handle(Geom2d_BSplineCurve)&);
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
     void createArcs(double tolerance, std::list<Geometry2d*>& new_spans,
@@ -188,7 +188,7 @@ private:
                               const gp_Pnt2d& p4, gp_Vec2d v_end,
                               gp_Pnt2d& p1, gp_Pnt2d& p2, gp_Pnt2d& p3) const;
 private:
-    Handle_Geom2d_BSplineCurve myCurve;
+    Handle(Geom2d_BSplineCurve) myCurve;
 };
 
 class PartExport Geom2dConic : public Geom2dCurve
@@ -208,7 +208,7 @@ public:
     virtual unsigned int getMemSize(void) const = 0;
     virtual PyObject *getPyObject(void) = 0;
 
-    const Handle_Geom2d_Geometry& handle() const = 0;
+    const Handle(Geom2d_Geometry)& handle() const = 0;
 
 protected:
     void SaveAxis(Base::Writer& writer, const gp_Ax22d&) const;
@@ -238,7 +238,7 @@ public:
     virtual unsigned int getMemSize(void) const = 0;
     virtual PyObject *getPyObject(void) = 0;
 
-    const Handle_Geom2d_Geometry& handle() const = 0;
+    const Handle(Geom2d_Geometry)& handle() const = 0;
 
 protected:
     void SaveAxis(Base::Writer& writer, const gp_Ax22d&, double u, double v) const;
@@ -250,7 +250,7 @@ class PartExport Geom2dCircle : public Geom2dConic
     TYPESYSTEM_HEADER();
 public:
     Geom2dCircle();
-    Geom2dCircle(const Handle_Geom2d_Circle&);
+    Geom2dCircle(const Handle(Geom2d_Circle)&);
     virtual ~Geom2dCircle();
     virtual Geometry2d *clone(void) const;
 
@@ -264,10 +264,10 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    const Handle_Geom2d_Geometry& handle() const;
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
-    Handle_Geom2d_Circle myCurve;
+    Handle(Geom2d_Circle) myCurve;
 };
 
 class PartExport Geom2dArcOfCircle : public Geom2dArcOfConic
@@ -275,7 +275,7 @@ class PartExport Geom2dArcOfCircle : public Geom2dArcOfConic
     TYPESYSTEM_HEADER();
 public:
     Geom2dArcOfCircle();
-    Geom2dArcOfCircle(const Handle_Geom2d_Circle&);
+    Geom2dArcOfCircle(const Handle(Geom2d_Circle)&);
     virtual ~Geom2dArcOfCircle();
     virtual Geometry2d *clone(void) const;
 
@@ -289,11 +289,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom2d_TrimmedCurve&);
-    const Handle_Geom2d_Geometry& handle() const;
+    void setHandle(const Handle(Geom2d_TrimmedCurve)&);
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
-    Handle_Geom2d_TrimmedCurve myCurve;
+    Handle(Geom2d_TrimmedCurve) myCurve;
 };
 
 class PartExport Geom2dEllipse : public Geom2dConic
@@ -301,7 +301,7 @@ class PartExport Geom2dEllipse : public Geom2dConic
     TYPESYSTEM_HEADER();
 public:
     Geom2dEllipse();
-    Geom2dEllipse(const Handle_Geom2d_Ellipse&);
+    Geom2dEllipse(const Handle(Geom2d_Ellipse)&);
     virtual ~Geom2dEllipse();
     virtual Geometry2d *clone(void) const;
 
@@ -319,11 +319,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom2d_Ellipse &e);
-    const Handle_Geom2d_Geometry& handle() const;
+    void setHandle(const Handle(Geom2d_Ellipse) &e);
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
-    Handle_Geom2d_Ellipse myCurve;
+    Handle(Geom2d_Ellipse) myCurve;
 };
 
 class PartExport Geom2dArcOfEllipse : public Geom2dArcOfConic
@@ -331,7 +331,7 @@ class PartExport Geom2dArcOfEllipse : public Geom2dArcOfConic
     TYPESYSTEM_HEADER();
 public:
     Geom2dArcOfEllipse();
-    Geom2dArcOfEllipse(const Handle_Geom2d_Ellipse&);
+    Geom2dArcOfEllipse(const Handle(Geom2d_Ellipse)&);
     virtual ~Geom2dArcOfEllipse();
     virtual Geometry2d *clone(void) const;
 
@@ -349,11 +349,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom2d_TrimmedCurve&);
-    const Handle_Geom2d_Geometry& handle() const;
+    void setHandle(const Handle(Geom2d_TrimmedCurve)&);
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
-    Handle_Geom2d_TrimmedCurve myCurve;
+    Handle(Geom2d_TrimmedCurve) myCurve;
 };
 
 class PartExport Geom2dHyperbola : public Geom2dConic
@@ -361,7 +361,7 @@ class PartExport Geom2dHyperbola : public Geom2dConic
     TYPESYSTEM_HEADER();
 public:
     Geom2dHyperbola();
-    Geom2dHyperbola(const Handle_Geom2d_Hyperbola&);
+    Geom2dHyperbola(const Handle(Geom2d_Hyperbola)&);
     virtual ~Geom2dHyperbola();
     virtual Geometry2d *clone(void) const;
     
@@ -377,10 +377,10 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    const Handle_Geom2d_Geometry& handle() const;
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
-    Handle_Geom2d_Hyperbola myCurve;
+    Handle(Geom2d_Hyperbola) myCurve;
 };
 
 class PartExport Geom2dArcOfHyperbola : public Geom2dArcOfConic
@@ -388,7 +388,7 @@ class PartExport Geom2dArcOfHyperbola : public Geom2dArcOfConic
     TYPESYSTEM_HEADER();
 public:
     Geom2dArcOfHyperbola();
-    Geom2dArcOfHyperbola(const Handle_Geom2d_Hyperbola&);
+    Geom2dArcOfHyperbola(const Handle(Geom2d_Hyperbola)&);
     virtual ~Geom2dArcOfHyperbola();
     virtual Geometry2d *clone(void) const;
 
@@ -404,11 +404,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom2d_TrimmedCurve&);
-    const Handle_Geom2d_Geometry& handle() const;
+    void setHandle(const Handle(Geom2d_TrimmedCurve)&);
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
-    Handle_Geom2d_TrimmedCurve myCurve;
+    Handle(Geom2d_TrimmedCurve) myCurve;
 };
 
 class PartExport Geom2dParabola : public Geom2dConic
@@ -416,7 +416,7 @@ class PartExport Geom2dParabola : public Geom2dConic
     TYPESYSTEM_HEADER();
 public:
     Geom2dParabola();
-    Geom2dParabola(const Handle_Geom2d_Parabola&);
+    Geom2dParabola(const Handle(Geom2d_Parabola)&);
     virtual ~Geom2dParabola();
     virtual Geometry2d *clone(void) const;
     
@@ -430,10 +430,10 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    const Handle_Geom2d_Geometry& handle() const;
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
-    Handle_Geom2d_Parabola myCurve;
+    Handle(Geom2d_Parabola) myCurve;
 };
 
 class PartExport Geom2dArcOfParabola : public Geom2dArcOfConic
@@ -441,7 +441,7 @@ class PartExport Geom2dArcOfParabola : public Geom2dArcOfConic
     TYPESYSTEM_HEADER();
 public:
     Geom2dArcOfParabola();
-    Geom2dArcOfParabola(const Handle_Geom2d_Parabola&);
+    Geom2dArcOfParabola(const Handle(Geom2d_Parabola)&);
     virtual ~Geom2dArcOfParabola();
     virtual Geometry2d *clone(void) const;
 
@@ -455,11 +455,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom2d_TrimmedCurve&);
-    const Handle_Geom2d_Geometry& handle() const;
+    void setHandle(const Handle(Geom2d_TrimmedCurve)&);
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
-    Handle_Geom2d_TrimmedCurve myCurve;
+    Handle(Geom2d_TrimmedCurve) myCurve;
 };
 
 class PartExport Geom2dLine : public Geom2dCurve
@@ -467,7 +467,7 @@ class PartExport Geom2dLine : public Geom2dCurve
     TYPESYSTEM_HEADER();
 public:
     Geom2dLine();
-    Geom2dLine(const Handle_Geom2d_Line&);
+    Geom2dLine(const Handle(Geom2d_Line)&);
     Geom2dLine(const Base::Vector2d& Pos, const Base::Vector2d& Dir);
     virtual ~Geom2dLine();
     virtual Geometry2d *clone(void) const;
@@ -483,10 +483,10 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    const Handle_Geom2d_Geometry& handle() const;
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
-    Handle_Geom2d_Line myCurve;
+    Handle(Geom2d_Line) myCurve;
 };
 
 class PartExport Geom2dLineSegment : public Geom2dCurve
@@ -510,11 +510,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom2d_TrimmedCurve&);
-    const Handle_Geom2d_Geometry& handle() const;
+    void setHandle(const Handle(Geom2d_TrimmedCurve)&);
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
-    Handle_Geom2d_TrimmedCurve myCurve;
+    Handle(Geom2d_TrimmedCurve) myCurve;
 };
 
 class PartExport Geom2dOffsetCurve : public Geom2dCurve
@@ -522,8 +522,8 @@ class PartExport Geom2dOffsetCurve : public Geom2dCurve
     TYPESYSTEM_HEADER();
 public:
     Geom2dOffsetCurve();
-    Geom2dOffsetCurve(const Handle_Geom2d_Curve&, double);
-    Geom2dOffsetCurve(const Handle_Geom2d_OffsetCurve&);
+    Geom2dOffsetCurve(const Handle(Geom2d_Curve)&, double);
+    Geom2dOffsetCurve(const Handle(Geom2d_OffsetCurve)&);
     virtual ~Geom2dOffsetCurve();
     virtual Geometry2d *clone(void) const;
 
@@ -534,11 +534,11 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom2d_OffsetCurve& c);
-    const Handle_Geom2d_Geometry& handle() const;
+    void setHandle(const Handle(Geom2d_OffsetCurve)& c);
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
-    Handle_Geom2d_OffsetCurve myCurve;
+    Handle(Geom2d_OffsetCurve) myCurve;
 };
 
 class PartExport Geom2dTrimmedCurve : public Geom2dCurve
@@ -546,7 +546,7 @@ class PartExport Geom2dTrimmedCurve : public Geom2dCurve
     TYPESYSTEM_HEADER();
 public:
     Geom2dTrimmedCurve();
-    Geom2dTrimmedCurve(const Handle_Geom2d_TrimmedCurve&);
+    Geom2dTrimmedCurve(const Handle(Geom2d_TrimmedCurve)&);
     virtual ~Geom2dTrimmedCurve();
     virtual Geometry2d *clone(void) const;
 
@@ -557,14 +557,14 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
-    void setHandle(const Handle_Geom2d_TrimmedCurve&);
-    const Handle_Geom2d_Geometry& handle() const;
+    void setHandle(const Handle(Geom2d_TrimmedCurve)&);
+    const Handle(Geom2d_Geometry)& handle() const;
 
 private:
-    Handle_Geom2d_TrimmedCurve myCurve;
+    Handle(Geom2d_TrimmedCurve) myCurve;
 };
 
-std::unique_ptr<Geom2dCurve> getCurve2dFromGeom2d(Handle_Geom2d_Curve);
+std::unique_ptr<Geom2dCurve> getCurve2dFromGeom2d(Handle(Geom2d_Curve));
 
 }
 

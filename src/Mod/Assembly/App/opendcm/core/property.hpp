@@ -67,7 +67,7 @@ namespace dcm {
  * retrieving it's reference with get-methods.
  *
  * Propertys are further designed to fit in the concept of compile-time modularisation. To allow the extension
- * of all data-holding entitys with new data types, propertys store their own purpose. Thats
+ * of all data-holding entities with new data types, propertys store their own purpose. Thats
  * done by extending the property struct with a second typedef which is named kind and which specifies of which
  * kind the property is. That means, that this typedef defines when the property shall be used and for which
  * context it is designed for. Dependend on the propertys kind, it will be added to different places inside the dcm.
@@ -458,11 +458,11 @@ PropertyOwner<PropertyList>::PropertyOwner() {
 };
 
 /**
- * @brief Convienience spezialisation to ease interaction with system class
+ * @brief Convienience specialization to ease interaction with system class
  *
- * Normaly property lists are retrieved from the system class, however, there are no empty lists. If no
+ * Normally property lists are retrieved from the system class, however, there are no empty lists. If no
  * property is supplied for a PropertyOwner derived class, a mpl::void_ type will be retrieved. To
- * remove the burdon of checking for that type in the class definition this spezialisation is supplied.
+ * remove the burden of checking for that type in the class definition this specialization is supplied.
  **/
 template<>
 struct PropertyOwner<mpl::void_> {

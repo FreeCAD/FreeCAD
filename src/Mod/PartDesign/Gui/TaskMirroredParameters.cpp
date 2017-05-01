@@ -287,16 +287,16 @@ void TaskMirroredParameters::apply()
 TaskMirroredParameters::~TaskMirroredParameters()
 {
     //hide the parts coordinate system axis for selection
-    PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
-    if ( body ) {
-        try {
+    try {
+        PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
+        if ( body ) {
             App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
             vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility();
-        } catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what () );
         }
+    } catch (const Base::Exception &ex) {
+        Base::Console().Error ("%s\n", ex.what () );
     }
 
     delete ui;

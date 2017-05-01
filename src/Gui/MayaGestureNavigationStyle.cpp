@@ -445,7 +445,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     this->mousedownConsumedCount = 0;
 
                     // start DRAGGING mode (orbit)
-                    // if not pressing left mouse button then it asumes is right mouse button and starts ZOOMING mode
+                    // if not pressing left mouse button then it assumes is right mouse button and starts ZOOMING mode
                     setViewingMode(this->button1down ? NavigationStyle::DRAGGING : NavigationStyle::ZOOMING);
                     processed = true;
                 } else {

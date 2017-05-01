@@ -537,7 +537,7 @@ CmdAssemblyConstraintAlignment::CmdAssemblyConstraintAlignment()
 {
     sAppModule      = "Assembly";
     sGroup          = QT_TR_NOOP("Assembly");
-    sMenuText       = QT_TR_NOOP("Constraint allignment...");
+    sMenuText       = QT_TR_NOOP("Constraint alignment...");
     sToolTipText    = QT_TR_NOOP("Align the selected entities");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;

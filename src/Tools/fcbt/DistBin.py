@@ -19,7 +19,7 @@ DistBin  = DistName + "_binary_WinX86"
 DistDir  = "../../DistTemp/"
 
 #====================================================================
-# script asume to run in src/Tools
+# script assumes to run in src/Tools
 
 DistTools.EnsureDir(DistDir)
 if (DistTools.EnsureDir(DistDir+DistBin) == 1):

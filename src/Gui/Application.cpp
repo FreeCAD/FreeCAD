@@ -29,6 +29,7 @@
 # include <boost/bind.hpp>
 # include <sstream>
 # include <stdexcept>
+# include <iostream>
 # include <QCloseEvent>
 # include <QDir>
 # include <QFileInfo>
@@ -266,7 +267,7 @@ Application::Application(bool GUIenabled)
                 QLatin1String("Your system uses the same symbol for decimal point and group separator.\n\n"
                               "This causes serious problems and makes the application fail to work properly.\n"
                               "Go to the system configuration panel of the OS and fix this issue, please."));
-            throw Base::Exception("Invalid system settings");
+            throw Base::RuntimeError("Invalid system settings");
         }
 #endif
 #if 0 // QuantitySpinBox and InputField try to handle the group separator now
@@ -385,7 +386,12 @@ Application::~Application()
     }
 
     // save macros
-    MacroCommand::save();
+    try {
+        MacroCommand::save();
+    }
+    catch (const Base::Exception& e) {
+        std::cerr << "Saving macros failed: " << e.what() << std::endl;
+    }
     //App::GetApplication().Detach(this);
 
     delete d;
@@ -593,6 +599,7 @@ void Application::slotDeleteDocument(const App::Document& Doc)
 
     // We must clear the selection here to notify all observers
     Gui::Selection().clearSelection(doc->second->getDocument()->getName());
+    doc->second->signalDeleteDocument(*doc->second);
     signalDeleteDocument(*doc->second);
 
     // If the active document gets destructed we must set it to 0. If there are further existing documents then the 
@@ -1554,7 +1561,7 @@ void Application::runApplication(void)
 #if !defined(HAVE_QT5_OPENGL)
     if (!QGLFormat::hasOpenGL()) {
         QMessageBox::critical(0, QObject::tr("No OpenGL"), QObject::tr("This system does not support OpenGL"));
-        throw Base::Exception("This system does not support OpenGL");
+        throw Base::RuntimeError("This system does not support OpenGL");
     }
     if (!QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         Base::Console().Log("This system does not support framebuffer objects\n");

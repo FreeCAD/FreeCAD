@@ -98,7 +98,7 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (!success) {
         PyErr_Clear(); // set by PyArg_ParseTuple()
         if (PyArg_ParseTuple(args,"O!",&(PointPy::Type), &object)) {
-            Handle_Geom_CartesianPoint this_point = Handle_Geom_CartesianPoint::DownCast
+            Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
                 (static_cast<PointPy*>(object)->getGeomPointPtr()->handle());
             gp_Pnt pnt = this_point->Pnt();
             x = pnt.X();

@@ -44,6 +44,7 @@
 #include <Base/MatrixPy.h>
 #include <Base/Placement.h>
 #include <Base/PlacementPy.h>
+#include <App/DocumentObject.h>
 
 using namespace Gui;
 
@@ -243,6 +244,22 @@ PyObject*  ViewProviderPy::setTransformation(PyObject *args)
 
     PyErr_SetString(Base::BaseExceptionFreeCADError, "Either set matrix or placement to set transformation");
     return 0;
+}
+
+PyObject* ViewProviderPy::claimChildren(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;                     // NULL triggers exception
+
+    std::vector<App::DocumentObject*> children = this->getViewProviderPtr()->claimChildren();
+    Py::List ret;
+    for(App::DocumentObject* child: children){
+        if (child)
+            ret.append(Py::asObject(child->getPyObject()));
+        else
+            ret.append(Py::None());
+    }
+    return Py::new_reference_to(ret);
 }
 
 PyObject *ViewProviderPy::getCustomAttributes(const char* attr) const

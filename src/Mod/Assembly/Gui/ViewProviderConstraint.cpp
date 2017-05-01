@@ -230,7 +230,7 @@ void ViewProviderConstraint::updateData(const App::Property* prop) {
 void ViewProviderConstraint::onChanged(const App::Property* prop)
 {   
     // parent expects the app object to be part::feature, but it isn't. so we have to avoid
-    // the visability prop as this results in accessing of the part::feature and would crash
+    // the visibility prop as this results in accessing of the part::feature and would crash
     if(prop == &Visibility) {
         if(Visibility.getValue() && m_selected) {
             internal_vp.show();

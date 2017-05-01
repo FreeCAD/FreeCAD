@@ -96,6 +96,8 @@ private:
     virtual void slotUndoDocument(const Document& Doc);
     /** Notifies on redo */
     virtual void slotRedoDocument(const Document& Doc);
+    /** Notifies on deletion */
+    virtual void slotDeleteDocument(const Document& Doc);
 
 private:
     typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
@@ -108,6 +110,7 @@ private:
     Connection connectDocumentResetObject;
     Connection connectDocumentUndo;
     Connection connectDocumentRedo;
+    Connection connectDocumentDelete;
 };
 
 } //namespace Gui

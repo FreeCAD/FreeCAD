@@ -25,8 +25,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyGeo.h>
+#include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
 #include "Mod/Part/App/PartFeature.h"
 
@@ -60,10 +59,15 @@ public:
 
     PARAM_PROP_DECLARE(AREA_PARAMS_ALL)
 
+    void setWorkPlane(const TopoDS_Shape &shape) {
+        WorkPlane.setValue(shape);
+        myArea.setPlane(shape);
+    }
+
 private:
-    bool myBuild;
     Area myArea;
     std::vector<TopoDS_Shape> myShapes;
+    bool myInited;
 };
 
 typedef App::FeaturePythonT<FeatureArea> FeatureAreaPython;

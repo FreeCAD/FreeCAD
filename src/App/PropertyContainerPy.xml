@@ -8,7 +8,8 @@
     Include="App/PropertyContainer.h" 
     Namespace="App" 
     FatherInclude="Base/PersistencePy.h" 
-    FatherNamespace="Base">
+    FatherNamespace="Base"
+    DisableNotify="true">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <UserDocu>This is a Persistence class</UserDocu>

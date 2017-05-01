@@ -136,6 +136,8 @@ void TaskThicknessParameters::onRefDeleted(void)
     pcThickness->Base.setValue(base, faces);
     ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
     pcThickness->getDocument()->recomputeFeature(pcThickness);
+    clearButtons(none);
+    exitSelectionMode();
 }
 
 void TaskThicknessParameters::onValueChanged(double angle)

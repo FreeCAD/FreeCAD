@@ -68,7 +68,7 @@ View3DInventorRiftViewer::View3DInventorRiftViewer() : CoinRiftWidget()
     basePosition = SbVec3f(0.0f, 0.5f, 0.8f);
 }
 
-//void saveWinPostion(void)
+//void saveWinPosition(void)
 //{
 //  
 // 

@@ -290,6 +290,7 @@ namespace GCS
         VEC_I mult;
         int degree;
         bool periodic;
+        VEC_I knotpointGeoids; // geoids of knotpoints as to index Geom array
         // interface helpers
         DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
         virtual DeriVector2 Value(double u, double du, double* derivparam = 0);

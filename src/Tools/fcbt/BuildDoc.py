@@ -14,7 +14,7 @@ ps = os.pathsep
 ds = os.sep
 
 #====================================================================
-# script asume to run in src/Doc
+# script assumes to run in src/Doc
 #os.chdir("e:/Develop/FreeCADWin/src/Doc")
 LogFile = open("MakeDoc.log",'w')
 if not os.path.isdir("../../doc"):

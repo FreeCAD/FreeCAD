@@ -85,9 +85,9 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
         int ret;
         // An arc created with Part.Arc will be converted into a Part.ArcOfCircle
         if (geo->getTypeId() == Part::GeomTrimmedCurve::getClassTypeId()) {
-            Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast(geo->handle());
-            Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-            Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(trim->BasisCurve());
+            Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(geo->handle());
+            Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
+            Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
             if (!circle.IsNull()) {
                 // create the definition struct for that geom
                 Part::GeomArcOfCircle aoc;
@@ -137,9 +137,9 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
 
                 // An arc created with Part.Arc will be converted into a Part.ArcOfCircle
                 if (geo->getTypeId() == Part::GeomTrimmedCurve::getClassTypeId()) {
-                    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast(geo->handle());
-                    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-                    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(trim->BasisCurve());
+                    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(geo->handle());
+                    Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
+                    Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
                     if (!circle.IsNull()) {
                         // create the definition struct for that geom
                         boost::shared_ptr<Part::GeomArcOfCircle> aoc(new Part::GeomArcOfCircle());
@@ -371,6 +371,41 @@ PyObject* SketchObjectPy::renameConstraint(PyObject *args)
         this->getSketchObjectPtr()->Constraints.set1Value(Index, copy);
         delete copy;
     }
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::carbonCopy(PyObject *args)
+{
+    char *ObjectName;
+    PyObject *construction = Py_True;
+    if (!PyArg_ParseTuple(args, "s|O!:Give an object", &ObjectName, &PyBool_Type, &construction))
+        return 0;
+
+    Sketcher::SketchObject* skObj = this->getSketchObjectPtr();
+    App::DocumentObject * Obj = skObj->getDocument()->getObject(ObjectName);
+    
+    if (!Obj) {
+        std::stringstream str;
+        str << ObjectName << " does not exist in the document";
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+    // check if this type of external geometry is allowed
+    if (!skObj->isExternalAllowed(Obj->getDocument(), Obj) && (Obj->getTypeId() != Sketcher::SketchObject::getClassTypeId())) {
+        std::stringstream str;
+        str << ObjectName << " is not allowed for a carbon copy operation in this sketch";
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+    
+    // add the external
+    if (skObj->carbonCopy(Obj, PyObject_IsTrue(construction) ? true : false) < 0) {
+        std::stringstream str;
+        str << "Not able to add the requested geometry";
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+    
     Py_Return;
 }
 
@@ -1077,6 +1112,25 @@ PyObject* SketchObjectPy::increaseBSplineDegree(PyObject *args)
     if (this->getSketchObjectPtr()->increaseBSplineDegree(GeoId, incr)==false) {
         std::stringstream str;
         str << "Degree increase failed for: " << GeoId;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+    
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::modifyBSplineKnotMultiplicity(PyObject *args)
+{
+    int GeoId;
+    int knotIndex;
+    int multiplicity = 1;
+
+    if (!PyArg_ParseTuple(args, "ii|i", &GeoId, &knotIndex, &multiplicity))
+        return 0;
+
+    if (this->getSketchObjectPtr()->modifyBSplineKnotMultiplicity(GeoId, knotIndex, multiplicity)==false) {
+        std::stringstream str;
+        str << "Multiplicity modification failed for: " << GeoId;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }

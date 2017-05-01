@@ -42,7 +42,7 @@ class PartDesignPadTestCases(unittest.TestCase):
 	def tearDown(self):
 		#closing doc
 		FreeCAD.closeDocument("PartDesignTest")
-		# print ("omit clos document for debuging")
+		# print ("omit closing document for debugging")
 
 class PartDesignRevolveTestCases(unittest.TestCase):
 	def setUp(self):

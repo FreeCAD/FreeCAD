@@ -67,10 +67,10 @@ int Line2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         // Copy line
         Line2dPy* pcLine = static_cast<Line2dPy*>(pLine);
         // get Geom_Line of line
-        Handle_Geom2d_Line that_line = Handle_Geom2d_Line::DownCast
+        Handle(Geom2d_Line) that_line = Handle(Geom2d_Line)::DownCast
             (pcLine->getGeom2dLinePtr()->handle());
         // get Geom_Line of line
-        Handle_Geom2d_Line this_line = Handle_Geom2d_Line::DownCast
+        Handle(Geom2d_Line) this_line = Handle(Geom2d_Line)::DownCast
             (this->getGeom2dLinePtr()->handle());
 
         // Assign the lines
@@ -97,14 +97,14 @@ int Line2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             // get Geom_Line of line
-            Handle_Geom2d_Line this_line = Handle_Geom2d_Line::DownCast
+            Handle(Geom2d_Line) this_line = Handle(Geom2d_Line)::DownCast
                 (this->getGeom2dLinePtr()->handle());
-            Handle_Geom2d_Line that_line = ms.Value();
+            Handle(Geom2d_Line) that_line = ms.Value();
             this_line->SetLin2d(that_line->Lin2d());
             return 0;
         }
         catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
@@ -123,7 +123,7 @@ int Line2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Object Line2dPy::getLocation(void) const
 {
-    Handle_Geom2d_Line this_curve = Handle_Geom2d_Line::DownCast
+    Handle(Geom2d_Line) this_curve = Handle(Geom2d_Line)::DownCast
         (this->getGeom2dLinePtr()->handle());
     gp_Pnt2d pnt = this_curve->Location();
 
@@ -139,7 +139,7 @@ void Line2dPy::setLocation(Py::Object arg)
 {
     gp_Pnt2d pnt;
     gp_Dir2d dir;
-    Handle_Geom2d_Line this_line = Handle_Geom2d_Line::DownCast
+    Handle(Geom2d_Line) this_line = Handle(Geom2d_Line)::DownCast
         (this->getGeom2dLinePtr()->handle());
     dir = this_line->Direction();
 
@@ -167,18 +167,18 @@ void Line2dPy::setLocation(Py::Object arg)
         }
 
         // get Geom_Line of line
-        Handle_Geom2d_Line that_line = ms.Value();
+        Handle(Geom2d_Line) that_line = ms.Value();
         this_line->SetLin2d(that_line->Lin2d());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Py::Exception(e->GetMessageString());
     }
 }
 
 Py::Object Line2dPy::getDirection(void) const
 {
-    Handle_Geom2d_Line this_curve = Handle_Geom2d_Line::DownCast
+    Handle(Geom2d_Line) this_curve = Handle(Geom2d_Line)::DownCast
         (this->getGeom2dLinePtr()->handle());
     gp_Dir2d dir = this_curve->Direction();
 
@@ -194,7 +194,7 @@ void Line2dPy::setDirection(Py::Object arg)
 {
     gp_Pnt2d pnt;
     gp_Dir2d dir;
-    Handle_Geom2d_Line this_line = Handle_Geom2d_Line::DownCast
+    Handle(Geom2d_Line) this_line = Handle(Geom2d_Line)::DownCast
         (this->getGeom2dLinePtr()->handle());
     pnt = this_line->Location();
 
@@ -222,11 +222,11 @@ void Line2dPy::setDirection(Py::Object arg)
         }
 
         // get Geom_Line of line
-        Handle_Geom2d_Line that_line = ms.Value();
+        Handle(Geom2d_Line) that_line = ms.Value();
         this_line->SetLin2d(that_line->Lin2d());
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
         throw Py::Exception(e->GetMessageString());
     }
 }

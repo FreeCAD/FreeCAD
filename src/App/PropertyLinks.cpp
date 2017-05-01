@@ -168,7 +168,7 @@ Property *PropertyLink::Copy(void) const
 void PropertyLink::Paste(const Property &from)
 {
     if(!from.isDerivedFrom(PropertyLink::getClassTypeId()))
-        throw Base::Exception("Incompatible proeprty to paste to");
+        throw Base::TypeError("Incompatible property to paste to");
 
     setValue(static_cast<const PropertyLink&>(from)._pcLink);
 }
@@ -603,7 +603,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
 void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,const std::vector<const char*>& lSubNames)
 {   
     if (lValue.size() != lSubNames.size())
-        throw Base::Exception("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
+        throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     
 #ifndef USE_OLD_DAG
     //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
@@ -629,7 +629,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
 void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,const std::vector<std::string>& lSubNames)
 {
     if (lValue.size() != lSubNames.size())
-        throw Base::Exception("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
+        throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     
 #ifndef USE_OLD_DAG
     //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
@@ -740,7 +740,7 @@ std::vector<PropertyLinkSubList::SubSet> PropertyLinkSubList::getSubListValues()
 {
     std::vector<PropertyLinkSubList::SubSet> values;
     if (_lValueList.size() != _lSubList.size())
-        throw Base::Exception("PropertyLinkSubList::getSubListValues: size of subelements list != size of objects list");
+        throw Base::ValueError("PropertyLinkSubList::getSubListValues: size of subelements list != size of objects list");
 
     std::map<App::DocumentObject*, std::vector<std::string> > tmp;
     for (std::size_t i = 0; i < _lValueList.size(); i++) {

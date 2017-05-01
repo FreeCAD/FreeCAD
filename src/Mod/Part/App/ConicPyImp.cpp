@@ -57,14 +57,14 @@ int ConicPy::PyInit(PyObject* /*args*/, PyObject* /*kwds*/)
 
 Py::Object ConicPy::getCenter(void) const
 {
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     gp_Pnt loc = conic->Location();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
 
 Py::Object ConicPy::getLocation(void) const
 {
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     gp_Pnt loc = conic->Location();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
@@ -105,7 +105,7 @@ void  ConicPy::setLocation(Py::Object arg)
 
 Py::Float ConicPy::getEccentricity(void) const
 {
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     return Py::Float(conic->Eccentricity());
 }
 
@@ -121,7 +121,7 @@ void ConicPy::setAngleXU(Py::Float arg)
 
 Py::Object ConicPy::getAxis(void) const
 {
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     gp_Ax1 axis = conic->Axis();
     gp_Dir dir = axis.Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
@@ -143,7 +143,7 @@ void  ConicPy::setAxis(Py::Object arg)
         throw Py::TypeError(error);
     }
 
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     try {
         gp_Ax1 axis;
         axis.SetLocation(conic->Location());
@@ -157,7 +157,7 @@ void  ConicPy::setAxis(Py::Object arg)
 
 Py::Object ConicPy::getXAxis(void) const
 {
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     gp_Ax1 axis = conic->XAxis();
     gp_Dir dir = axis.Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
@@ -179,7 +179,7 @@ void  ConicPy::setXAxis(Py::Object arg)
         throw Py::TypeError(error);
     }
 
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     try {
         gp_Ax2 pos;
         pos = conic->Position();
@@ -193,7 +193,7 @@ void  ConicPy::setXAxis(Py::Object arg)
 
 Py::Object ConicPy::getYAxis(void) const
 {
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     gp_Ax1 axis = conic->YAxis();
     gp_Dir dir = axis.Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
@@ -215,7 +215,7 @@ void  ConicPy::setYAxis(Py::Object arg)
         throw Py::TypeError(error);
     }
 
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     try {
         gp_Ax2 pos;
         pos = conic->Position();

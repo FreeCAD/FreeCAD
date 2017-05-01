@@ -43,10 +43,10 @@ CoordinateSystem::~CoordinateSystem()
 void CoordinateSystem::setAxes(const Axis& v, const Vector3d& xd)
 {
     if (xd.Sqr() < Base::Vector3d::epsilon())
-        throw Base::Exception("Direction is null vector");
+        throw Base::ValueError("Direction is null vector");
     Vector3d yd = v.getDirection() % xd;
     if (yd.Sqr() < Base::Vector3d::epsilon())
-        throw Base::Exception("Direction is parallel to Z direction");
+        throw Base::ValueError("Direction is parallel to Z direction");
     ydir = yd;
     xdir = ydir % v.getDirection();
     axis = v;
@@ -55,10 +55,10 @@ void CoordinateSystem::setAxes(const Axis& v, const Vector3d& xd)
 void CoordinateSystem::setAxes(const Vector3d& n, const Vector3d& xd)
 {
     if (xd.Sqr() < Base::Vector3d::epsilon())
-        throw Base::Exception("Direction is null vector");
+        throw Base::ValueError("Direction is null vector");
     Vector3d yd = n % xd;
     if (yd.Sqr() < Base::Vector3d::epsilon())
-        throw Base::Exception("Direction is parallel to Z direction");
+        throw Base::ValueError("Direction is parallel to Z direction");
     ydir = yd;
     xdir = ydir % n;
     axis.setDirection(n);
@@ -73,7 +73,7 @@ void CoordinateSystem::setXDirection(const Vector3d& dir)
 {
     Vector3d yd = axis.getDirection() % dir;
     if (yd.Sqr() < Base::Vector3d::epsilon())
-        throw Base::Exception("Direction is parallel to Z direction");
+        throw Base::ValueError("Direction is parallel to Z direction");
     ydir = yd;
     xdir = ydir % axis.getDirection();
 }
@@ -82,7 +82,7 @@ void CoordinateSystem::setYDirection(const Vector3d& dir)
 {
     Vector3d xd = dir & axis.getDirection();
     if (xd.Sqr() < Base::Vector3d::epsilon())
-        throw Base::Exception("Direction is parallel to Z direction");
+        throw Base::ValueError("Direction is parallel to Z direction");
     xdir = xd;
     ydir = axis.getDirection() % xdir;
 }

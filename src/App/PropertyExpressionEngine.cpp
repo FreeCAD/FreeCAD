@@ -269,17 +269,17 @@ const ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdent
 
     // Am I owned by a DocumentObject?
     if (!docObj)
-        throw Base::Exception("PropertyExpressionEngine must be owned by a DocumentObject.");
+        throw Base::RuntimeError("PropertyExpressionEngine must be owned by a DocumentObject.");
 
     Property * prop = p.getProperty();
 
     // p pointing to a property...?
     if (!prop)
-        throw Base::Exception("Property not found");
+        throw Base::RuntimeError("Property not found");
 
     // ... in the same container as I?
     if (prop->getContainer() != getContainer())
-        throw Base::Exception("Property does not belong to same container as PropertyExpressionEngine");
+        throw Base::RuntimeError("Property does not belong to same container as PropertyExpressionEngine");
 
     // In case someone calls this with p pointing to a PropertyExpressionEngine for some reason
     if (prop->isDerivedFrom(PropertyExpressionEngine::classTypeId))
@@ -399,7 +399,7 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
         std::string error = validateExpression(usePath, expr);
 
         if (error.size() > 0)
-            throw Base::Exception(error.c_str());
+            throw Base::RuntimeError(error.c_str());
 
         AtomicPropertyChange signaller(*this);
         expressions[usePath] = ExpressionInfo(expr, comment);
@@ -496,7 +496,7 @@ void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
     if (has_cycle) {
         std::string s =  revNodes[src].toString() + " reference creates a cyclic dependency.";
 
-        throw Base::Exception(s.c_str());
+        throw Base::RuntimeError(s.c_str());
     }
 }
 
@@ -536,7 +536,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute()
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
 
     if (!docObj)
-        throw Base::Exception("PropertyExpressionEngine must be owned by a DocumentObject.");
+        throw Base::RuntimeError("PropertyExpressionEngine must be owned by a DocumentObject.");
 
     if (running)
         return DocumentObject::StdReturn;
@@ -571,13 +571,13 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute()
         Property * prop = it->getProperty();
 
         if (!prop)
-            throw Base::Exception("Path does not resolve to a property.");
+            throw Base::RuntimeError("Path does not resolve to a property.");
 
         DocumentObject* parent = freecad_dynamic_cast<DocumentObject>(prop->getContainer());
 
         /* Make sure property belongs to the same container as this PropertyExpressionEngine */
         if (parent != docObj)
-            throw Base::Exception("Invalid property owner.");
+            throw Base::RuntimeError("Invalid property owner.");
 
         // Evaluate expression
         std::unique_ptr<Expression> e(expressions[*it].expression->eval());

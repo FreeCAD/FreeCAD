@@ -162,6 +162,9 @@ Py::List DocumentObjectPy::getState(void) const
         uptodate = false;
         list.append(Py::String("Restore"));
     }
+    if (object->testStatus(App::Expand)){
+        list.append(Py::String("Expanded"));
+    }
     if (uptodate) {
         list.append(Py::String("Up-to-date"));
     }

@@ -89,9 +89,11 @@ class Snapper:
         self.forceGridOff = False
         self.lastExtensions = []
         # the trackers are stored in lists because there can be several views, each with its own set
-        self.trackers = [[],[],[],[],[],[],[],[],[]] # view, grid, snap, extline, radius, dim1, dim2, trackLine, extline2
+        self.trackers = [[],[],[],[],[],[],[],[],[],[]] # view, grid, snap, extline, radius, dim1, dim2, trackLine, extline2, crosstrackers
         self.polarAngles = [90,45]
         self.selectMode = False
+        self.holdTracker = None
+        self.holdPoints = []
         
         # the snapmarker has "dot","circle" and "square" available styles
         if self.snapStyle:
@@ -145,7 +147,8 @@ class Snapper:
 
         global Part, DraftGeomUtils
         import Part, DraftGeomUtils
-
+        self.spoint = None
+        
         if not hasattr(self,"toolbar"):
             self.makeSnapToolBar()
         mw = FreeCADGui.getMainWindow()
@@ -243,6 +246,7 @@ class Snapper:
             # set the arch point tracking
             if self.lastArchPoint:
                 self.setArchDims(self.lastArchPoint,fp)
+            self.spoint = fp
             return fp
 
         else:
@@ -251,13 +255,15 @@ class Snapper:
 
             obj = FreeCAD.ActiveDocument.getObject(self.snapInfo['Object'])
             if not obj:
-                return cstr(point)
+                self.spoint = cstr(point)
+                return self.spoint
 
             self.lastSnappedObject = obj
                 
             if hasattr(obj.ViewObject,"Selectable"):
                 if not obj.ViewObject.Selectable:
-                    return cstr(point)
+                    self.spoint = cstr(point)
+                    return self.spoint
                 
             if not active:
                 
@@ -347,7 +353,8 @@ class Snapper:
                 self.lastObj[1] = obj.Name
 
             if not snaps:
-                return cstr(point)
+                self.spoint = cstr(point)
+                return self.spoint
 
             # calculating the nearest snap point
             shortest = 1000000000000000000
@@ -394,7 +401,8 @@ class Snapper:
                     self.lastArchPoint = None
                 
             # return the final point
-            return fp
+            self.spoint = fp
+            return self.spoint
 
     def toWP(self,point):
         "projects the given point on the working plane, if needed"
@@ -421,6 +429,18 @@ class Snapper:
     def snapToExtensions(self,point,last,constrain,eline):
         "returns a point snapped to extension or parallel line to last object, if any"
 
+        tsnap = self.snapToHold(point)
+        if tsnap:
+            if self.tracker and not self.selectMode:
+                self.tracker.setCoords(tsnap[2])
+                self.tracker.setMarker(self.mk[tsnap[1]])
+                self.tracker.on()
+            if self.extLine:
+                self.extLine.p1(tsnap[0])
+                self.extLine.p2(tsnap[2])
+                self.extLine.on()
+            self.setCursor(tsnap[1])
+            return tsnap[2],eline
         if self.isEnabled("extension"):
             tsnap = self.snapToExtOrtho(last,constrain,eline)
             if tsnap:
@@ -686,6 +706,46 @@ class Snapper:
                 except:
                     return None
         return None
+        
+    def snapToHold(self,point):
+        "returns a snap location that is orthogonal to hold points or, if possible, at crossings"
+        if not self.holdPoints:
+            return None
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            u = FreeCAD.DraftWorkingPlane.u
+            v = FreeCAD.DraftWorkingPlane.v
+        else:
+            u = FreeCAD.Vector(1,0,0)
+            v = FreeCAD.Vector(0,1,0)
+        if len(self.holdPoints) > 1:
+            # first try int points
+            ipoints = []
+            l = list(self.holdPoints)
+            while len(l) > 1:
+                p1 = l.pop()
+                for p2 in l:
+                    i1 = DraftGeomUtils.findIntersection(p1,p1.add(u),p2,p2.add(v),True,True)
+                    if i1:
+                        ipoints.append([p1,i1[0]])
+                    i2 = DraftGeomUtils.findIntersection(p1,p1.add(v),p2,p2.add(u),True,True)
+                    if i2:
+                        ipoints.append([p1,i2[0]])
+            for p in ipoints:
+                if (p[1].sub(point)).Length < self.radius:
+                    return [p[0],'ortho',p[1]]
+        # then try to stick to a line
+        for p in self.holdPoints:
+            d = DraftGeomUtils.findDistance(point,[p,p.add(u)])
+            if d:
+                if d.Length < self.radius:
+                    fp = point.add(d)
+                    return [p,'extension',fp]
+            d = DraftGeomUtils.findDistance(point,[p,p.add(v)])
+            if d:
+                if d.Length < self.radius:
+                    fp = point.add(d)
+                    return [p,'extension',fp]
+        return None
 
     def snapToExtPerpendicular(self,last):
         "returns a perpendicular X extension snap location"
@@ -912,6 +972,9 @@ class Snapper:
         if self.grid:
             if not Draft.getParam("alwaysShowGrid",True):
                 self.grid.off()
+        if self.holdTracker:
+            self.holdTracker.clear()
+            self.holdTracker.off()
         self.unconstrain()
         self.radius = 0
         self.setCursor()
@@ -1105,61 +1168,58 @@ class Snapper:
 
     def makeSnapToolBar(self):
         "builds the Snap toolbar"
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
-        bsize = p.GetInt("ToolbarIconSize",24)+2
-        isize = p.GetInt("ToolbarIconSize",24)/3*2
         self.toolbar = QtGui.QToolBar(None)
-        self.toolbar.setIconSize(QtCore.QSize(isize, isize))
         self.toolbar.setObjectName("Draft Snap")
         self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
         self.toolbarButtons = []
         # grid button
-        gridbutton = QtGui.QToolButton(None)
-        gridbutton.setIcon(QtGui.QIcon(":/icons/Draft_Grid.svg"))
-        gridbutton.setMaximumSize(QtCore.QSize(bsize,bsize))
-        gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid on/off"))
-        gridbutton.setObjectName("GridButton")
-        QtCore.QObject.connect(gridbutton,QtCore.SIGNAL("clicked()"),self.toggleGrid)
-        self.toolbar.addWidget(gridbutton)
+        self.gridbutton = QtGui.QAction(None)
+        self.gridbutton.setIcon(QtGui.QIcon(":/icons/Draft_Grid.svg"))
+        self.gridbutton.setText(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Grid"))
+        self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid on/off"))
+        self.gridbutton.setObjectName("GridButton")
+        QtCore.QObject.connect(self.gridbutton,QtCore.SIGNAL("triggered()"),self.toggleGrid)
+        self.toolbar.addAction(self.gridbutton)
         # master button
-        self.masterbutton = QtGui.QToolButton(None)
+        self.masterbutton = QtGui.QAction(None)
         self.masterbutton.setIcon(QtGui.QIcon(":/icons/Snap_Lock.svg"))
-        self.masterbutton.setMaximumSize(QtCore.QSize(bsize,bsize))
+        self.masterbutton.setText(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Lock"))
         self.masterbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Toggle On/Off"))
         self.masterbutton.setObjectName("SnapButtonMain")
         self.masterbutton.setCheckable(True)
         self.masterbutton.setChecked(True)
         QtCore.QObject.connect(self.masterbutton,QtCore.SIGNAL("toggled(bool)"),self.toggle)
-        self.toolbar.addWidget(self.masterbutton)
+        self.toolbar.addAction(self.masterbutton)
         for c,i in self.cursors.items():
             if i:
-                b = QtGui.QToolButton(None)
+                b = QtGui.QAction(None)
                 b.setIcon(QtGui.QIcon(i))
-                b.setMaximumSize(QtCore.QSize(bsize,bsize))
                 if c == "passive":
+                    b.setText(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
                     b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
                 else:
+                    b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+c.capitalize(),c.capitalize()))
                     b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+c.capitalize(),c.capitalize()))
                 b.setObjectName("SnapButton"+c)
                 b.setCheckable(True)
                 b.setChecked(True)
-                self.toolbar.addWidget(b)
+                self.toolbar.addAction(b)
                 self.toolbarButtons.append(b)
                 QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
         # adding non-snap button
         for n in ["Dimensions","WorkingPlane"]:
-            b = QtGui.QToolButton(None)
+            b = QtGui.QAction(None)
             b.setIcon(QtGui.QIcon(":/icons/Snap_"+n+".svg"))
-            b.setMaximumSize(QtCore.QSize(bsize,bsize))
+            b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
             b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
             b.setObjectName("SnapButton"+n)
             b.setCheckable(True)
             b.setChecked(True)
-            self.toolbar.addWidget(b)
+            self.toolbar.addAction(b)
             QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
             self.toolbarButtons.append(b)
         # restoring states 
-        t = Draft.getParam("snapModes","11111111110111")
+        t = Draft.getParam("snapModes","111111111101111")
         if t:
             c = 0
             for b in [self.masterbutton]+self.toolbarButtons:
@@ -1257,6 +1317,7 @@ class Snapper:
             self.dim2 = self.trackers[6][i]
             self.trackLine = self.trackers[7][i]
             self.extLine2 = self.trackers[8][i]
+            self.holdTracker = self.trackers[9][i]
         else:
             if Draft.getParam("grid",True):
                 self.grid = DraftTrackers.gridTracker()
@@ -1274,6 +1335,9 @@ class Snapper:
             self.radiusTracker = DraftTrackers.radiusTracker()
             self.dim1 = DraftTrackers.archDimTracker(mode=2)
             self.dim2 = DraftTrackers.archDimTracker(mode=3)
+            self.holdTracker = DraftTrackers.snapTracker()
+            self.holdTracker.setMarker("cross")
+            self.holdTracker.clear()
             self.trackers[0].append(v)
             self.trackers[1].append(self.grid)
             self.trackers[2].append(self.tracker)
@@ -1283,8 +1347,16 @@ class Snapper:
             self.trackers[6].append(self.dim2)
             self.trackers[7].append(self.trackLine)
             self.trackers[8].append(self.extLine2)
+            self.trackers[9].append(self.holdTracker)
         if self.grid and (not self.forceGridOff):
             self.grid.set()
+            
+    def addHoldPoint(self):
+        if self.spoint:
+            if self.holdTracker:
+                self.holdTracker.addCoords(self.spoint)
+                self.holdTracker.on()
+            self.holdPoints.append(self.spoint)
         
 if not hasattr(FreeCADGui,"Snapper"):
     FreeCADGui.Snapper = Snapper()

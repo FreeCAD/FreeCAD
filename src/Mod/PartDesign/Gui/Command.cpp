@@ -29,6 +29,7 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <TopExp_Explorer.hxx>
 # include <QMessageBox>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 
 #include <sstream>
@@ -44,6 +45,8 @@
 #include <Gui/Selection.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Document.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -121,7 +124,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
                     cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),support.getPyReprString().c_str());
                     cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),AttachEngine::getModeName(sugr.bestFitMode).c_str());
                 } else {
-                    QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit seleted objects. Select something else."));
+                    QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit selected objects. Select something else."));
                 }
             }
             if (pcActiveBody) {
@@ -315,13 +318,26 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *doc = getDocument ();
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
-            /*messageIfNot = */ PartDesignGui::assureModernWorkflow ( doc ) );
+    PartDesign::Body *pcActiveBody( nullptr );
+    auto shouldMakeBody( false );
 
-    // No PartDesign feature without Body past FreeCAD 0.13
-    if ( !pcActiveBody ) {
-        // Call normal sketch command for old workflow
-        if ( PartDesignGui::isLegacyWorkflow ( doc) ) {
+    if ( PartDesignGui::assureModernWorkflow( doc ) ) {
+        // We need either an active Body, or for there to be no Body
+        // objects (in which case, just make one) to make a new sketch.
+
+        pcActiveBody = PartDesignGui::getBody( /* messageIfNot = */ false );
+        if (pcActiveBody == nullptr) {
+            if ( doc->getObjectsOfType(PartDesign::Body::getClassTypeId()).empty() ) {
+                shouldMakeBody = true;
+            } else {
+                PartDesignGui::needActiveBodyError();
+                return;
+            }
+        }
+
+    } else {
+        // No PartDesign feature without Body past FreeCAD 0.13
+        if ( PartDesignGui::isLegacyWorkflow( doc ) ) {
             Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
             rcCmdMgr.runCommandByName("Sketcher_NewSketch");
         }
@@ -332,6 +348,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
     Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
     Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1");
     Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1");
+
     if (PlaneFilter2.match())
         PlaneFilter = PlaneFilter2;
 
@@ -340,7 +357,14 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         openCommand("Edit Sketch");
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",Sketch->getNameInDocument());
     }
-    else if (FaceFilter.match() || PlaneFilter.match()) {
+    else if ( FaceFilter.match() || PlaneFilter.match() ) {
+        if (!pcActiveBody) {
+            // We shouldn't make a new Body in this case, because that means
+            // the source shape of the face/plane would be outside the Body.
+            PartDesignGui::getBody( /* messageIfNot = */ true );
+            return;
+        }
+
         // get the selected object
         std::string supportString;
         App::DocumentObject* obj;
@@ -384,6 +408,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             obj = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
             supportString = std::string("(App.activeDocument().") + obj->getNameInDocument() + ", '')";
         }
+
 
         if (!pcActiveBody->hasObject(obj)) {
             if ( !obj->isDerivedFrom ( App::Plane::getClassTypeId() ) )  {
@@ -436,39 +461,67 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     }
     else {
-        // Get a valid plane from the user
-        unsigned validPlanes = 0;
-
-        auto group = App::GeoFeatureGroupExtension::getGroupOfObject ( pcActiveBody );
-        App::GeoFeatureGroupExtension* geoGroup = nullptr;
-        if(group)
-            geoGroup = group->getExtensionByType<App::GeoFeatureGroupExtension>();
+        App::GeoFeatureGroupExtension *geoGroup( nullptr );
+        if (pcActiveBody) {
+            auto group( App::GeoFeatureGroupExtension::getGroupOfObject(pcActiveBody) );
+            if (group) {
+                geoGroup = group->getExtensionByType<App::GeoFeatureGroupExtension>();
+            }
+        }
 
         std::vector<App::DocumentObject*> planes;
         std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
 
-        // Baseplanes are preaprooved
-        if ( pcActiveBody ) {
-            try {
-                for ( auto plane: pcActiveBody->getOrigin ()->planes() ) {
-                    planes.push_back (plane);
-                    status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
-                    validPlanes++;
-                }
-            } catch (const Base::Exception &ex) {
-                Base::Console().Error ("%s\n", ex.what() );
+        // Start command early, so undo will undo any Body creation
+        Gui::Command::openCommand("Create a new Sketch");
+        if (shouldMakeBody) {
+            pcActiveBody = PartDesignGui::makeBody(doc);
+            if ( !pcActiveBody ) {
+                Base::Console().Error("Failed to create a Body object");
+                return;
             }
+
+            // The method 'SoCamera::viewBoundingBox' is still declared as protected in Coin3d versions
+            // older than 4.0.
+#if COIN_MAJOR_VERSION >= 4
+            // if no part feature was there then auto-adjust the camera
+            Gui::Document* guidoc = Gui::Application::Instance->getDocument(doc);
+            Gui::View3DInventor* view = guidoc ? qobject_cast<Gui::View3DInventor*>(guidoc->getActiveView()) : nullptr;
+            if (view) {
+                SoCamera* camera = view->getViewer()->getCamera();
+                SbViewportRegion vpregion = view->getViewer()->getViewportRegion();
+                float aspectratio = vpregion.getViewportAspectRatio();
+
+                float size = Gui::ViewProviderOrigin::defaultSize();
+                SbBox3f bbox;
+                bbox.setBounds(-size,-size,-size,size,size,size);
+                camera->viewBoundingBox(bbox, aspectratio, 1.0f);
+            }
+#endif
         }
 
-        std::vector<App::DocumentObject*> datumPlanes =
-            getDocument()->getObjectsOfType(PartDesign::Plane::getClassTypeId());
+        // At this point, we have pcActiveBody
 
+        unsigned validPlaneCount = 0;
+
+        // Baseplanes are preaprooved
+        try {
+            for ( auto plane: pcActiveBody->getOrigin ()->planes() ) {
+                planes.push_back (plane);
+                status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
+                validPlaneCount++;
+            }
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what() );
+        }
+
+        auto datumPlanes( getDocument()->getObjectsOfType(PartDesign::Plane::getClassTypeId()) );
         for (auto plane: datumPlanes) {
             planes.push_back ( plane );
             // Check whether this plane belongs to the active body
             if ( pcActiveBody && pcActiveBody->hasObject(plane) ) {
                 if ( !pcActiveBody->isAfterInsertPoint ( plane ) ) {
-                    validPlanes++;
+                    validPlaneCount++;
                     status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
                 } else {
                     status.push_back(PartDesignGui::TaskFeaturePick::afterTip);
@@ -489,34 +542,29 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                     } else if (pcActiveBody) {
                         status.push_back ( PartDesignGui::TaskFeaturePick::notInBody );
                     } else { // if we are outside a body count it as valid
-                        validPlanes++;
+                        validPlaneCount++;
                         status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
                     }
                 }
             }
         }
 
-        if (validPlanes == 0) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid planes in this document"),
-                QObject::tr("Please create a plane first or select a face to sketch on"));
-            return;
-        }
-
-        auto accepter = [=](const std::vector<App::DocumentObject*>& features) -> bool {
-
-            if(features.empty())
-                return false;
-
-            return true;
+        // Determines if user made a valid selection in dialog
+        auto accepter = [](const std::vector<App::DocumentObject*>& features) -> bool {
+            return !features.empty();
         };
 
+        // Called by dialog when user hits "OK" and accepter returns true
         auto worker = [=](const std::vector<App::DocumentObject*>& features) {
+            // may happen when the user switched to an empty document while the
+            // dialog is open
+            if (features.empty())
+                return;
             App::Plane* plane = static_cast<App::Plane*>(features.front());
             std::string FeatName = getUniqueObjectName("Sketch");
             std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() +
                                         ", [''])";
 
-            Gui::Command::openCommand("Create a new Sketch");
             Gui::Command::doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),Attacher::AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
@@ -527,9 +575,25 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             Gui::Command::doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
         };
 
-        // If there is more than one possibility, show dialog and let user pick plane
-        if (validPlanes > 1) {
+        // Called by dialog for "Cancel", or "OK" if accepter returns false
+        std::string docname = doc->getName();
+        auto quitter = [docname]() {
+            Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str());
+            if (document)
+                document->abortCommand();
+        };
 
+        if (validPlaneCount == 0) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid planes in this document"),
+                QObject::tr("Please create a plane first or select a face to sketch on"));
+            quitter();
+            return;
+
+        } else if (validPlaneCount == 1) {
+            worker(planes);
+
+        } else if (validPlaneCount > 1) {
+            // Show dialog and let user pick plane
            Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
            PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
            if (dlg && !pickDlg) {
@@ -541,18 +605,17 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 int ret = msgBox.exec();
                 if (ret == QMessageBox::Yes)
                     Gui::Control().closeDialog();
-                else
+                else {
+                    quitter();
                     return;
+                }
             }
 
             if(dlg)
                 Gui::Control().closeDialog();
 
             Gui::Selection().clearSelection();
-            Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker));
-        }
-        else {
-            worker(planes);
+            Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, quitter));
         }
     }
 }
@@ -609,6 +672,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
         cmd->copyVisual(FeatName.c_str(), "ShapeColor", pcActiveBody->getNameInDocument());
         cmd->copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());
         cmd->copyVisual(FeatName.c_str(), "PointColor", pcActiveBody->getNameInDocument());
+        cmd->copyVisual(FeatName.c_str(), "Transparency", pcActiveBody->getNameInDocument());
     }
 }
 

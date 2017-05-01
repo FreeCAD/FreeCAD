@@ -34,14 +34,20 @@
 #include <gp_GTrsf.hxx>
 
 #include <Base/Console.h>
+#include <Mod/Part/App/TopoShape.h>
 #include "Path.h"
 #include "AreaParams.h"
+
+namespace Part {
+extern PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
+}
 
 #define _AREA_LOG(_l,_msg) do {\
     if(Area::_l##Enabled()){\
         std::stringstream str;\
-        str << "Path.Area: " << _msg;\
-        Base::Console()._l("%s\n",str.str().c_str());\
+        str << _msg;\
+        const char *_f = strrchr(__FILE__, '/');\
+        Base::Console()._l("%s:(%d): %s\n",_f?_f+1:__FILE__,__LINE__,str.str().c_str());\
     }\
     QCoreApplication::sendPostedEvents();\
     if(Area::aborting()) {\
@@ -53,12 +59,14 @@
 #define AREA_LOG(_msg) _AREA_LOG(Log,_msg)
 #define AREA_WARN(_msg) _AREA_LOG(Warning,_msg)
 #define AREA_ERR(_msg) _AREA_LOG(Error,_msg)
-#define AREA_PT(_pt) '('<<(_pt).X()<<", " << (_pt).Y()<<", " << (_pt).Z()<<')'
-#define AREA_PT2(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
+#define AREA_XYZ(_pt) '('<<(_pt).X()<<", " << (_pt).Y()<<", " << (_pt).Z()<<')'
+#define AREA_XY(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
 
 #define AREA_TRACE(_msg) do{\
-    if(Area::TraceEnabled()) AREA_LOG('('<<__LINE__<<"): " <<_msg);\
+    if(Area::TraceEnabled()) AREA_LOG(_msg);\
 }while(0)
+
+#define AREA_DBG AREA_WARN
 
 #define AREA_TIME_ENABLE
 
@@ -66,10 +74,10 @@
 #define TIME_UNIT duration<double>
 #define TIME_CLOCK high_resolution_clock
 #define TIME_POINT std::chrono::TIME_CLOCK::time_point
+#define TIME_DURATION std::chrono::TIME_UNIT
 
-#define TIME_INIT(_t) \
-    auto _t=std::chrono::TIME_CLOCK::now()
-
+#define _TIME_INIT(_t) _t=std::chrono::TIME_CLOCK::now()
+#define TIME_INIT(_t) TIME_POINT _TIME_INIT(_t)
 #define TIME_INIT2(_t1,_t2) TIME_INIT(_t1),_t2=_t1
 #define TIME_INIT3(_t1,_t2,_t3) TIME_INIT(_t1),_t2=_t1,_t3=_t1
 
@@ -85,7 +93,7 @@
     _DURATION_PRINT(TRACE,Path::getDuration(_t),_msg);
 
 #define DURATION_INIT(_d) \
-    std::chrono::TIME_UNIT _d(0)
+    TIME_DURATION _d(0)
 
 #define DURATION_INIT2(_d1,_d2) DURATION_INIT(_d1),_d2(0)
 
@@ -102,7 +110,8 @@ inline std::chrono::TIME_UNIT getDuration(TIME_POINT &t)
 #define DURATION_PLUS(_d,_t) _d += Path::getDuration(_t)
 
 #else
-
+#define TIME_POINT
+#define _TIME_INIT(...) do{}while(0)
 #define TIME_INIT(...) do{}while(0)
 #define TIME_INIT2(...) do{}while(0)
 #define TIME_INIT3(...) do{}while(0)
@@ -235,9 +244,9 @@ protected:
 
     void explode(const TopoDS_Shape &shape);
 
-    bool isBuilt() const;
-
     TopoDS_Shape findPlane(const TopoDS_Shape &shape, gp_Trsf &trsf);
+
+    std::list<TopoDS_Wire> project(const TopoDS_Shape &solid);
 
 public:
     /** Declare all parameters defined in #AREA_PARAMS_ALL as member variable */
@@ -246,6 +255,8 @@ public:
     Area(const AreaParams *params = NULL);
     Area(const Area &other, bool deep_copy=true);
     virtual ~Area();
+
+    bool isBuilt() const;
 
     /** Set a working plane 
      *
@@ -296,10 +307,21 @@ public:
      */
     TopoDS_Shape makePocket(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_POCKET));
 
-
+    /** Make a pocket of the combined shape
+     *
+     * \arg \c heights: optional customized heights of each section. The
+     * meaning of each height depends on section mode. If none is given,
+     * the section heights is determined by the section settings in this
+     * Area object (configured through setParams()).
+     * \arg \c plane: the section plane if the section mode is
+     * SectionModeWorkplane, otherwise ignored
+     *
+     * See #AREA_PARAMS_EXTRA for description of the arguments. Currently, there
+     * is only one argument, namely \c mode for section mode.
+     */
     std::vector<std::shared_ptr<Area> > makeSections(
             PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_SECTION_EXTRA),
-            const std::vector<double> &_heights = std::vector<double>(),
+            const std::vector<double> &heights = std::vector<double>(),
             const TopoDS_Shape &plane = TopoDS_Shape());
 
     /** Config this Area object */
@@ -346,27 +368,8 @@ public:
      * \arg \c to_edges: if true, discretize all curves, and insert as open
      * line segments
      * */
-    static void add(CArea &area, const TopoDS_Wire &wire, const gp_Trsf *trsf=NULL, 
+    static void addWire(CArea &area, const TopoDS_Wire &wire, const gp_Trsf *trsf=NULL, 
             double deflection=0.01, bool to_edges=false); 
-
-    /** Output a list or sorted wire with minimize traval distance
-     *
-     * \arg \c index: index of the section, -1 for all sections. No effect on
-     * non-sectioned area.
-     * \arg \c count: number of the sections to return, <=0 for all sections
-     * after \c index. No effect on non-sectioned area.
-     * \arg \c pstart: optional start point
-     * \arg \c pend: optional output containing the ending point of the returned
-     * wires
-     * \arg \c allow_Break: whether allow to break open wires
-     *
-     * See #AREA_PARAMS_SORT for other arguments
-     *
-     * \return sorted wires
-     * */
-    std::list<TopoDS_Shape> sortWires(int index=-1, int count=0, 
-            const gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL,
-            PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_SORT));
 
     /** Add a OCC generic shape to CArea 
      *
@@ -385,7 +388,7 @@ public:
      * \return Returns the number of non coplaner. Planar testing only happens
      * if \c plane is supplied
      * */
-    static int add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf=NULL,
+    static int addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf=NULL,
             double deflection=0.01,const TopoDS_Shape *plane = NULL,
             bool force_coplanar=true, CArea *areaOpen=NULL, bool to_edges=false, 
             bool reorient=true);
@@ -417,33 +420,33 @@ public:
      * minimize traval distance
      *
      * \arg \c shapes: input list of shapes.
-     * \arg \c params: optional Area parameters for the Area object internally
-     * used for sorting
      * \arg \c pstart: optional start point
      * \arg \c pend: optional output containing the ending point of the returned
+     * \arg \c arc_plane: optional arc plane selection, if given the found plane
+     * will be returned. See #AREA_PARAMS_ARC_PLANE for more details.
      *
      * See #AREA_PARAMS_SORT for other arguments
      *
      * \return sorted wires
      */
     static std::list<TopoDS_Shape> sortWires(const std::list<TopoDS_Shape> &shapes,
-            const AreaParams *params = NULL, const gp_Pnt *pstart=NULL, 
-            gp_Pnt *pend=NULL, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_SORT));
+            const gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL, short *arc_plane = NULL, 
+            PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_SORT));
 
     /** Convert a list of wires to gcode
      *
      * \arg \c path: output toolpath
      * \arg \c shapes: input list of shapes
-     * \arg \c params: optional Area parameters for the Area object internally
-     * used for sorting
      * \arg \c pstart: output start point,
      * \arg \c pend: optional output containing the ending point of the returned
      * 
      * See #AREA_PARAMS_PATH for other arguments
      */
     static void toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
-            const AreaParams *params=NULL, const gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL,
+            const gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL,
             PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_PATH));
+
+    static int getWireDirection(const TopoDS_Shape& wire, const gp_Pln *plane=0);
 
     PARAM_ENUM_DECLARE(AREA_PARAMS_PATH)
 
@@ -452,6 +455,7 @@ public:
 
     static void setDefaultParams(const AreaStaticParams &params);
     static const AreaStaticParams &getDefaultParams();
+
 
 #define AREA_LOG_CHECK_DECLARE(_1,_2,_elem) \
     static bool BOOST_PP_CAT(_elem,Enabled)();

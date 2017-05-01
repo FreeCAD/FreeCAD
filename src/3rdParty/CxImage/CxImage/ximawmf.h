@@ -53,7 +53,7 @@
 	a 6000*4000 Bitmap with 24 Bits/Pixes, the Bitmap would consume
 	about 68MB of memory.
 
-	I have choosen, to limit the size of the Bitmap to max.
+	I have chosen to limit the size of the Bitmap to max.
 	screensize, to avoid memory problems.
 
 	If you want something else,

@@ -502,7 +502,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         return;
     } else if (!body) {
         QMessageBox::warning (0, QObject::tr( "Selection error" ),
-                QObject::tr( "Couldn't determin a body for the selected feature '%s'.", selFeature->Label.getValue() ) );
+                QObject::tr( "Couldn't determine a body for the selected feature '%s'.", selFeature->Label.getValue() ) );
         return;
     } else if ( !selFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId () ) &&
             selFeature != body && body->BaseFeature.getValue() != selFeature ) {
