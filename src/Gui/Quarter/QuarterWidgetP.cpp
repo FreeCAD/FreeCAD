@@ -179,6 +179,14 @@ QuarterWidgetP::removeFromCacheContext(QuarterWidgetP_cachecontext * context, co
   }
 }
 
+void
+QuarterWidgetP::replaceGLWidget(const QtGLWidget * newviewport)
+{
+  QtGLWidget* oldviewport = static_cast<QtGLWidget*>(this->master->viewport());
+  cachecontext->widgetlist.removeItem(oldviewport);
+  cachecontext->widgetlist.append(newviewport);
+}
+
 /*!
 
  */
