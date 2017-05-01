@@ -56,14 +56,12 @@ Q_SIGNALS:
     void emitSetGridSize(double);
     void emitToggleAutoconstraints(int);
     void emitrenderOrderChanged();
-    void emithideconstraints(bool,bool);
 
 public Q_SLOTS:
     void toggleGridView(bool on);
     void setGridSize(double val);
     void toggleGridSnap(int state);
     void renderOrderChanged();
-    void constraintcheckboxes_stateChanged(int state);
 
 protected:
     void changeEvent(QEvent *e);
@@ -93,7 +91,6 @@ public Q_SLOTS:
     void toggleGridSnap(int state);
     void toggleAutoconstraints(int state);
     void renderOrderChanged();
-    void hideconstraints(bool hidedriving, bool hidedriven);
 
 private:
     ViewProviderSketch *sketchView;
