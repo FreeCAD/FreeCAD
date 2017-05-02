@@ -164,11 +164,12 @@ def export(exportList,filename):
 
                     # write material
                     m = False
-                    if hasattr(obj,"BaseMaterial"):
-                        if obj.BaseMaterial:
-                            outfile.write("usemtl " + obj.BaseMaterial.Name + "\n")
-                            materials.append(obj.BaseMaterial)
-                            m = True
+                    if hasattr(obj,"Material"):
+                        if obj.Material:
+                            if hasattr(obj.Material,"Material"):
+                                outfile.write("usemtl " + obj.Material.Name + "\n")
+                                materials.append(obj.Material)
+                                m = True
                     if not m:
                         if FreeCAD.GuiUp:
                             if hasattr(obj.ViewObject,"ShapeColor") and hasattr(obj.ViewObject,"Transparency"):

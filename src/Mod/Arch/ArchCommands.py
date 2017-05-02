@@ -220,9 +220,9 @@ def cloneComponent(obj):
     c.CloneOf = obj
     c.Placement = obj.Placement
     c.Label = obj.Label
-    if hasattr(obj,"BaseMaterial"):
-        if obj.BaseMaterial:
-            c.BaseMaterial = obj.BaseMaterial
+    if hasattr(obj,"Material"):
+        if obj.Material:
+            c.Material = obj.Material
     if hasattr(obj,"IfcAttributes"):
         if obj.IfcAttributes:
             c.IfcAttributes = obj.IfcAttributes
