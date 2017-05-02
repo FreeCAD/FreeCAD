@@ -140,7 +140,7 @@ class PathWorkbench (Workbench):
                 if "Profile" or "Contour" in FreeCADGui.Selection.getSelection()[0].Name:
                     #self.appendContextMenu("", ["Add_Tag"])
                     self.appendContextMenu("", ["Set_StartPoint"])
-                    self.appendContextMenu("", ["Set_EndPoint"])
+                    #self.appendContextMenu("", ["Set_EndPoint"])
                 if "Remote" in FreeCADGui.Selection.getSelection()[0].Name:
                     self.appendContextMenu("", ["Refresh_Path"])
 
