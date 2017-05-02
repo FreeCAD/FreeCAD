@@ -320,6 +320,7 @@ class ObjectPathHelix(object):
         zero = {'xc': 0, 'yc': 0}
 
         out.append(find_closest(jobs, zero, sqdist))
+        jobs.remove(out[-1])
 
         while jobs:
             closest = find_closest(jobs, out[-1], sqdist)
