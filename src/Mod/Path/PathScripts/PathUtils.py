@@ -33,6 +33,7 @@ import numpy
 import PathLog
 #from math import pi
 from FreeCAD import Vector
+import Path
 
 LOG_MODULE = 'PathUtils'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
@@ -193,6 +194,22 @@ def filterArcs(arcEdge):
         pass
     return splitlist
 
+def getEnvelope(partshape, stockheight=None):
+    '''
+    getEnvelop(partshape, stockheight=None)
+    returns a shape corresponding to the partshape silhouette extruded to height.
+    if stockheight is given, the returned shape is extruded to that height otherwise the returned shape
+    is the height of the original shape boundbox
+    partshape = solid object
+    stockheight = float
+    '''
+    area = Path.Area(Fill=1, Coplanar=0).add(partshape)
+    area.setPlane(Part.makeCircle(10))
+    sec = area.makeSections(heights=[1.0], project=True)[0].getShape(rebuild=True)
+    if stockheight is not None:
+        return sec.extrude(FreeCAD.Vector(0, 0, stockheight))
+    else:
+        return sec.extrude(FreeCAD.Vector(0, 0, partshape.BoundBox.ZMax))
 
 def reverseEdge(e):
     if geomType(e) == "Circle":
