@@ -32,6 +32,7 @@ from PySide import QtCore, QtGui
 from PathScripts import PathUtils
 from PathScripts.PathUtils import fmt
 #from math import pi
+import ArchPanel
 
 
 LOG_MODULE = 'PathDrilling'
@@ -160,7 +161,36 @@ class ObjectDrilling:
             if parentJob is None:
                 return
             baseobject = parentJob.Base
-            holes = self.findHoles(obj, baseobject.Shape)
+            if baseobject is None:
+                return
+
+            if hasattr(baseobject, "Proxy"):
+                holes = []
+                if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):
+                    baseobject.Proxy.execute(baseobject)
+                    i=0;
+                    PathLog.debug('Entering new PanelCut')
+                    holeshapes = baseobject.Proxy.getHoles(baseobject, transform=True)
+                    tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
+                    for holeshape in holeshapes:
+                        PathLog.debug('Entering new HoleShape')
+                        for wire in holeshape.Wires:
+                            PathLog.debug('Entering new Wire')
+                            for edge in wire.Edges:
+                                if PathUtils.isDrillable(baseobject, edge, tooldiameter):
+                                    PathLog.debug('Found drillable hole edges: {}'.format(edge))
+                                    x = edge.Curve.Center.x
+                                    y = edge.Curve.Center.y
+                                    diameter = edge.BoundBox.XLength
+                                    holes.append({'x':x, 'y':y, 'featureName':'PanelEdge'+str(i),'d':diameter})
+                                    i=i+1
+
+
+
+
+
+            else:
+                holes = self.findHoles(obj, baseobject.Shape)
             names = []
             positions = []
             enabled = []
@@ -178,11 +208,11 @@ class ObjectDrilling:
 
         locations = []
         output = "(Begin Drilling)\n"
-        if len(obj.Names) > 0:
-            for i in range(len(obj.Names)):
-                if(obj.Enabled[i]>0):
-                    locations.append({'x':obj.Positions[i].x, 'y': obj.Positions[i].y})
 
+        for i in range(len(obj.Names)):
+            if(obj.Enabled[i]>0):
+                locations.append({'x':obj.Positions[i].x, 'y': obj.Positions[i].y})
+        if len(locations) > 0:
             locations = self.sort_locations(locations)
             output += "G90 G98\n"
             # rapid to clearance height
@@ -337,12 +367,12 @@ class TaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.Selection.removeObserver(self.s)
+        #FreeCADGui.Selection.removeObserver(self.s)
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.Selection.removeObserver(self.s)
+        #FreeCADGui.Selection.removeObserver(self.s)
 
     def getFields(self):
         PathLog.track()
@@ -417,17 +447,17 @@ class TaskPanel:
                 self.form.uiToolController.blockSignals(False)
 
     def open(self):
-        self.s = SelObserver()
-        FreeCADGui.Selection.addObserver(self.s)
+        """ """
+        #self.s = SelObserver()
+        #FreeCADGui.Selection.addObserver(self.s)
 
     def itemActivated(self):
         FreeCADGui.Selection.clearSelection()
         slist = self.form.baseList.selectedItems()
+        parentJob = PathUtils.findParentJob(self.obj)
+        obj = parentJob.Base
         for i in slist:
             if i.column() == 0:
-
-                parentJob = PathUtils.findParentJob(self.obj)
-                obj = parentJob.Base
                 if i.text() != "":
                     FreeCADGui.Selection.addSelection(obj, i.text())
                 else:
@@ -482,6 +512,49 @@ class TaskPanel:
         self.updateFeatureList()
         FreeCAD.ActiveDocument.recompute()
 
+    def addSelected(self):
+        for sel in FreeCAD.Gui.Selection.getSelectionEx():
+
+            names = self.obj.Names
+            positions = self.obj.Positions
+            enabled = self.obj.Enabled
+            diameters = self.obj.Diameters
+
+            objectname = sel.ObjectName
+            sobj = sel.Object
+            for i, sub in enumerate(sel.SubObjects):
+                if hasattr(sub, 'ShapeType'):
+                    if sub.ShapeType == 'Vertex':
+                        PathLog.debug("Selection is a vertex, lets drill that")
+                        names.append(objectname+'.'+sel.SubElementNames[i])
+                        positions.append(FreeCAD.Vector(sub.X,sub.Y,0))
+                        enabled.append(1)
+                        diameters.append(0)
+
+                    elif sub.ShapeType == 'Edge':
+                        if PathUtils.isDrillable(sobj, sub):
+                            PathLog.debug("Selection is a drillable edge, lets drill that")
+                            names.append(objectname+'.'+sel.SubElementNames[i])
+                            positions.append(FreeCAD.Vector(sub.Curve.Center.x,sub.Curve.Center.y,0))
+                            enabled.append(1)
+                            diameters.append(sub.BoundBox.XLength)
+                    elif sub.ShapeType == 'Face':
+                        if PathUtils.isDrillable(sobj.Shape, sub):
+                            PathLog.debug("Selection is a drillable face, lets drill that")
+                            names.append(objectname+'.'+sel.SubElementNames[i])
+                            positions.append(FreeCAD.Vector(sub.Surface.Center.x,sub.Surface.Center.y,0))
+                            enabled.append(1)
+                            diameters.append(sub.BoundBox.XLength)
+
+            self.obj.Names = names
+            self.obj.Positions = positions
+            self.obj.Enabled = enabled
+            self.obj.Diameters = diameters
+
+            self.updateFeatureList()
+
+            FreeCAD.ActiveDocument.recompute()
+
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok)
@@ -496,11 +569,12 @@ class TaskPanel:
         self.form.clearanceHeight.editingFinished.connect(self.getFields)
 
         #buttons
-        self.form.uiEnableAll.clicked.connect(self.enableAll)
+        #self.form.uiEnableAll.clicked.connect(self.enableAll)
         self.form.uiEnableSelected.clicked.connect(self.enableSelected)
-        self.form.uiDisableAll.clicked.connect(self.disableAll)
+        #self.form.uiDisableAll.clicked.connect(self.disableAll)
         self.form.uiDisableSelected.clicked.connect(self.disableSelected)
         self.form.uiFindAllHoles.clicked.connect(self.findAll)
+        self.form.uiAddSelected.clicked.connect(self.addSelected)
 
 
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)

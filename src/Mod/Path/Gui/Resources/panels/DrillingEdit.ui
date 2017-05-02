@@ -50,22 +50,22 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QPushButton" name="uiEnableAll">
+        <widget class="QPushButton" name="uiEnableSelected">
          <property name="toolTip">
-          <string>Enable all features in the list.</string>
+          <string>Enable selected items in the list</string>
          </property>
          <property name="text">
-          <string>Enable All</string>
+          <string>Enable</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QPushButton" name="uiDisableAll">
+        <widget class="QPushButton" name="uiDisableSelected">
          <property name="toolTip">
-          <string>Disable all features in the list</string>
+          <string>Disable selected items in the list.</string>
          </property>
          <property name="text">
-          <string>Disable all</string>
+          <string>Disable</string>
          </property>
         </widget>
        </item>
@@ -79,27 +79,30 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QPushButton" name="uiEnableSelected">
-         <property name="toolTip">
-          <string>Enable selected items in the list</string>
-         </property>
+       <item row="2" column="0" colspan="3">
+        <widget class="QLabel" name="label2">
          <property name="text">
-          <string>Enable</string>
+          <string>You can select Points, Edges or Faces to the Feature list.</string>
          </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QPushButton" name="uiDisableSelected">
-         <property name="toolTip">
-          <string>Disable selected items in the list.</string>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
          </property>
-         <property name="text">
-          <string>Disable</string>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
        <item row="3" column="0" colspan="3">
+        <widget class="QPushButton" name="uiAddSelected">
+         <property name="toolTip">
+          <string>Add selected items from Gui View to drill</string>
+         </property>
+         <property name="text">
+          <string>Add selected</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="3">
         <widget class="QLabel" name="label">
          <property name="text">
           <string>All objects will be processed using the same operation properties.</string>
