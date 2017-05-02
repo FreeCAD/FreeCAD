@@ -150,9 +150,8 @@ void Origin::setupObject () {
     };
 
     App::Document *doc = getDocument ();
-
     std::vector<App::DocumentObject *> links;
-    std::vector<const char *> names;
+/*    std::vector<const char *> names;
 
     names.push_back(doc->getUniqueObjectName (setupData[0].role).c_str());
     names.push_back(doc->getUniqueObjectName (setupData[1].role).c_str());
@@ -197,10 +196,9 @@ void Origin::setupObject () {
     feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), setupData[5].rot ) );
     feature->Role.setValue ( setupData[5].role );
     links.push_back (feature);
-
+*/
 
     
-/* vejmarie: original code
     for (auto data: setupData) {
         std::string objName = doc->getUniqueObjectName ( data.role );
         App::DocumentObject *featureObj = doc->addObject ( data.type.getName(), objName.c_str () );
@@ -213,7 +211,6 @@ void Origin::setupObject () {
 
         links.push_back (feature);
     }
-*/
 
     OriginFeatures.setValues (links);
 }
