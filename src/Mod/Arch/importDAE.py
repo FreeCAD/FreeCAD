@@ -224,16 +224,16 @@ def export(exportList,filename,tessellation=1):
         input_list.addInput(1, 'NORMAL', "#cubenormals-array"+str(objind))
         matnode = None
         matref = "materialref"
-        if hasattr(obj,"BaseMaterial"):
-            if obj.BaseMaterial:
-                if hasattr(obj.BaseMaterial,"Material"):
-                    if "DiffuseColor" in obj.BaseMaterial.Material:
-                        kd = tuple([float(k) for k in obj.BaseMaterial.Material["DiffuseColor"].strip("()").split(",")])
-                        effect = collada.material.Effect("effect_"+obj.BaseMaterial.Name, [], "phong", diffuse=kd, specular=(1,1,1))
-                        mat = collada.material.Material("mat_"+obj.BaseMaterial.Name, obj.BaseMaterial.Name, effect)
+        if hasattr(obj,"Material"):
+            if obj.Material:
+                if hasattr(obj.Material,"Material"):
+                    if "DiffuseColor" in obj.Material.Material:
+                        kd = tuple([float(k) for k in obj.Material.Material["DiffuseColor"].strip("()").split(",")])
+                        effect = collada.material.Effect("effect_"+obj.Material.Name, [], "phong", diffuse=kd, specular=(1,1,1))
+                        mat = collada.material.Material("mat_"+obj.Material.Name, obj.Material.Name, effect)
                         colmesh.effects.append(effect)
                         colmesh.materials.append(mat)
-                        matref = "ref_"+obj.BaseMaterial.Name
+                        matref = "ref_"+obj.Material.Name
                         matnode = collada.scene.MaterialNode(matref, mat, inputs=[])
         if not matnode:
             if FreeCAD.GuiUp:

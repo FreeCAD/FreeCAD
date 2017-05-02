@@ -316,7 +316,7 @@ class Component:
         obj.addProperty("App::PropertyString","Description","Arch",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
         obj.addProperty("App::PropertyString","Tag","Arch",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
         obj.addProperty("App::PropertyMap","IfcAttributes","Arch",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
-        obj.addProperty("App::PropertyLink","BaseMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        obj.addProperty("App::PropertyLink","Material","Arch",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
         obj.addProperty("App::PropertyEnumeration","Role","Arch",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
         obj.addProperty("App::PropertyBool","MoveWithHost","Arch",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
         obj.addProperty("App::PropertyLink","IfcProperties","Arch",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
@@ -346,13 +346,16 @@ class Component:
         if state:
             self.Type = state
 
+    def onDocumentRestored(self,obj):
+        if hasattr(obj,"BaseMaterial"):
+            if not hasattr(obj,"Material"):
+                obj.addProperty("App::PropertyLink","Material","Arch",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+                obj.Material = obj.BaseMaterial
+                obj.removeProperty("BaseMaterial")
+                print("Migrated old BaseMaterial property -> Material in ",obj.Label)
+                
     def onChanged(self,obj,prop):
-        if prop == "BaseMaterial":
-            if hasattr(obj,"BaseMaterial"):
-                if obj.BaseMaterial:
-                    if Draft.getType(obj.BaseMaterial) != "Material":
-                        obj.BaseMaterial = None
-                        print("Removing bad BaseMaterial link in ",obj.Name)
+        return
 
     def clone(self,obj):
         "if this object is a clone, sets the shape. Returns True if this is the case"
@@ -441,21 +444,29 @@ class Component:
         
     def rebase(self,shape):
         import DraftGeomUtils,math
-        if hasattr(shape,"CenterOfMass"):
-            v = shape.CenterOfMass
+        if not isinstance(shape,list):
+            shape = [shape]
+        if hasattr(shape[0],"CenterOfMass"):
+            v = shape[0].CenterOfMass
         else:
-            v = shape.BoundBox.Center
-        n = DraftGeomUtils.getNormal(shape)
+            v = shape[0].BoundBox.Center
+        n = DraftGeomUtils.getNormal(shape[0])
         r = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),n)
         if round(r.Angle,8) == round(math.pi,8):
             r = FreeCAD.Rotation()
-        shape = shape.copy()
-        shape.translate(v.negative())
-        shape.rotate(FreeCAD.Vector(0,0,0),r.inverted().Axis,math.degrees(r.inverted().Angle))
+        shapes = []
+        for s in shape:
+            s = s.copy()
+            s.translate(v.negative())
+            s.rotate(FreeCAD.Vector(0,0,0),r.inverted().Axis,math.degrees(r.inverted().Angle))
+            shapes.append(s)
         p = FreeCAD.Placement()
         p.Base = v
         p.Rotation = r
-        return (shape,p)
+        if len(shapes) == 1:
+            return (shapes[0],p)
+        else:
+            return(shapes,p)
 
     def hideSubobjects(self,obj,prop):
         "Hides subobjects when a subobject lists change"
@@ -512,7 +523,10 @@ class Component:
                                 if base.Solids and f.Solids:
                                     if placement:
                                         f.Placement = f.Placement.multiply(placement)
-                                    base = base.cut(f)
+                                    if len(base.Solids) > 1:
+                                        base = Part.makeCompound([sol.cut(f) for sol in base.Solids])
+                                    else:
+                                        base = base.cut(f)
 
                     elif o.isDerivedFrom("Part::Feature"):
                         if o.Shape:
@@ -545,14 +559,20 @@ class Component:
                             if base.Solids and f.Solids:
                                 if placement:
                                     f.Placement = f.Placement.multiply(placement)
-                                base = base.cut(f)
+                                if len(base.Solids) > 1:
+                                    base = Part.makeCompound([sol.cut(f) for sol in base.Solids])
+                                else:
+                                    base = base.cut(f)
 
                 elif (Draft.getType(o) == "Roof") or (Draft.isClone(o,"Roof")):
                     # roofs define their own special subtraction volume
                     f = o.Proxy.getSubVolume(o)
                     if f:
                         if base.Solids and f.Solids:
-                            base = base.cut(f)
+                            if len(base.Solids) > 1:
+                                base = Part.makeCompound([sol.cut(f) for sol in base.Solids])
+                            else:
+                                base = base.cut(f)
 
                 elif o.isDerivedFrom("Part::Feature"):
                     if o.Shape:
@@ -562,7 +582,10 @@ class Component:
                                     if placement:
                                         s.Placement = s.Placement.multiply(placement)
                                     try:
-                                        base = base.cut(s)
+                                        if len(base.Solids) > 1:
+                                            base = Part.makeCompound([sol.cut(s) for sol in base.Solids])
+                                        else:
+                                            base = base.cut(s)
                                     except Part.OCCError:
                                         print("Arch: unable to cut object ",o.Name, " from ", obj.Name)
         return base
@@ -666,14 +689,15 @@ class ViewProviderComponent:
 
     def updateData(self,obj,prop):
         #print(obj.Name," : updating ",prop)
-        if prop == "BaseMaterial":
-            if obj.BaseMaterial:
-                if 'DiffuseColor' in obj.BaseMaterial.Material:
-                    if "(" in obj.BaseMaterial.Material['DiffuseColor']:
-                        c = tuple([float(f) for f in obj.BaseMaterial.Material['DiffuseColor'].strip("()").split(",")])
-                        if obj.ViewObject:
-                            if obj.ViewObject.ShapeColor != c:
-                                obj.ViewObject.ShapeColor = c
+        if prop == "Material":
+            if obj.Material:
+                if hasattr(obj.Material,"Material"):
+                    if 'DiffuseColor' in obj.Material.Material:
+                        if "(" in obj.Material.Material['DiffuseColor']:
+                            c = tuple([float(f) for f in obj.Material.Material['DiffuseColor'].strip("()").split(",")])
+                            if obj.ViewObject:
+                                if obj.ViewObject.ShapeColor != c:
+                                    obj.ViewObject.ShapeColor = c
         elif prop == "Shape":
             if obj.Base:
                 if obj.Base.isDerivedFrom("Part::Compound"):
@@ -683,12 +707,17 @@ class ViewProviderComponent:
                             obj.ViewObject.update()
                         #self.onChanged(obj.ViewObject,"ShapeColor")
         elif prop == "CloneOf":
-            if obj.CloneOf and not(obj.BaseMaterial):
-                if obj.ViewObject.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
-                    if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
-                        obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
-                        obj.ViewObject.update()
-                        #self.onChanged(obj.ViewObject,"ShapeColor")
+            if obj.CloneOf:
+                mat = None
+                if hasattr(obj,"Material"):
+                    if obj.Material:
+                        mat = obj.Material
+                if not mat: 
+                    if obj.ViewObject.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
+                        if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
+                            obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
+                            obj.ViewObject.update()
+                            #self.onChanged(obj.ViewObject,"ShapeColor")
         return
 
     def getIcon(self):
@@ -769,7 +798,7 @@ class ViewProviderComponent:
                         if c.getNumChildren() > 0:
                             if c.getChild(0).getName() == "HiRes":
                                 num = 1
-                        print "getting node ",num," for ",self.Object.Label
+                        #print "getting node ",num," for ",self.Object.Label
                         c.whichChild = num
                         break
                 self.hiresgroup.addChild(self.meshnode)

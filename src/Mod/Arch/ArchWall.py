@@ -449,9 +449,17 @@ class _Wall(ArchComponent.Component):
         extdata = self.getExtrusionData(obj)
         if extdata:
             base = extdata[0]
-            base.Placement = extdata[2].multiply(base.Placement)
             extv = extdata[2].Rotation.multVec(extdata[1])
-            base = base.extrude(extv)
+            if isinstance(base,list):
+                shps = []
+                for b in base:
+                    b.Placement = extdata[2].multiply(b.Placement)
+                    b = b.extrude(extv)
+                    shps.append(b)
+                base = Part.makeCompound(shps)
+            else:
+                base.Placement = extdata[2].multiply(base.Placement)
+                base = base.extrude(extv)
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.isNull():
@@ -524,6 +532,22 @@ class _Wall(ArchComponent.Component):
         base = None
         placement = None
         basewires = None
+        # build wall layers
+        layers = []
+        if hasattr(obj,"Material"):
+            if obj.Material:
+                if hasattr(obj.Material,"Materials"):
+                    varwidth = 0
+                    restwidth = width - sum(obj.Material.Thicknesses)
+                    if restwidth > 0:
+                        varwidth = [t for t in obj.Material.Thicknesses if t == 0]
+                        if varwidth:
+                            varwidth = restwidth/len(varwidth)
+                    for t in obj.Material.Thicknesses:
+                        if t:
+                            layers.append(t)
+                        elif varwidth:
+                            layers.append(varwidth)
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape:
@@ -556,8 +580,11 @@ class _Wall(ArchComponent.Component):
                     elif len(obj.Base.Shape.Edges) == 1:
                         basewires = [Part.Wire(obj.Base.Shape.Edges)]
                     if basewires and width:
+                        if (len(basewires) == 1) and layers:
+                            basewires = [basewires[0] for l in layers]
+                        layeroffset = 0
                         baseface = None
-                        for wire in basewires:
+                        for i,wire in enumerate(basewires):
                             e = wire.Edges[0]
                             if isinstance(e.Curve,Part.Circle):
                                 dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
@@ -567,45 +594,87 @@ class _Wall(ArchComponent.Component):
                                 dvec.normalize()
                             sh = None
                             if obj.Align == "Left":
-                                dvec.multiply(width)
-                                if obj.Offset.Value:
-                                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset.Value)
+                                off = obj.Offset.Value
+                                if layers:
+                                    off = off+layeroffset
+                                    dvec.multiply(layers[i])
+                                    layeroffset += layers[i]
+                                else:
+                                    dvec.multiply(width)
+                                if off:
+                                    dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                     wire = DraftGeomUtils.offsetWire(wire,dvec2)
                                 w2 = DraftGeomUtils.offsetWire(wire,dvec)
                                 w1 = Part.Wire(Part.__sortEdges__(wire.Edges))
                                 sh = DraftGeomUtils.bind(w1,w2)
                             elif obj.Align == "Right":
-                                dvec.multiply(width)
                                 dvec = dvec.negative()
-                                if obj.Offset.Value:
-                                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset.Value)
+                                off = obj.Offset.Value
+                                if layers:
+                                    off = off+layeroffset
+                                    dvec.multiply(layers[i])
+                                    layeroffset += layers[i]
+                                else:
+                                    dvec.multiply(width)
+                                if off:                                
+                                    dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                     wire = DraftGeomUtils.offsetWire(wire,dvec2)
                                 w2 = DraftGeomUtils.offsetWire(wire,dvec)
                                 w1 = Part.Wire(Part.__sortEdges__(wire.Edges))
                                 sh = DraftGeomUtils.bind(w1,w2)
                             elif obj.Align == "Center":
-                                dvec.multiply(width/2)
-                                w1 = DraftGeomUtils.offsetWire(wire,dvec)
-                                dvec = dvec.negative()
-                                w2 = DraftGeomUtils.offsetWire(wire,dvec)
+                                if layers:
+                                    off = width/2-layeroffset
+                                    d1 = Vector(dvec).multiply(off)
+                                    w1 = DraftGeomUtils.offsetWire(wire,d1)
+                                    layeroffset += layers[i]
+                                    off = width/2-layeroffset
+                                    d1 = Vector(dvec).multiply(off)
+                                    w2 = DraftGeomUtils.offsetWire(wire,d1)
+                                else:
+                                    dvec.multiply(width/2)
+                                    w1 = DraftGeomUtils.offsetWire(wire,dvec)
+                                    dvec = dvec.negative()
+                                    w2 = DraftGeomUtils.offsetWire(wire,dvec)
                                 sh = DraftGeomUtils.bind(w1,w2)
                             if sh:
                                 sh.fix(0.1,0,1) # fixes self-intersecting wires
                                 f = Part.Face(sh)
                                 if baseface:
-                                    baseface = baseface.fuse(f)
+                                    if layers:
+                                        baseface.append(f)
+                                    else:
+                                        baseface = baseface.fuse(f)
                                 else:
-                                    baseface = f
+                                    if layers:
+                                        baseface = [f]
+                                    else:
+                                        baseface = f
                         if baseface:
                             base,placement = self.rebase(baseface)
         else:
-            l2 = length/2 or 0.5
-            w2 = width/2 or 0.5
-            v1 = Vector(-l2,-w2,0)
-            v2 = Vector(l2,-w2,0)
-            v3 = Vector(l2,w2,0)
-            v4 = Vector(-l2,w2,0)
-            base = Part.Face(Part.makePolygon([v1,v2,v3,v4,v1]))
+            if layers:
+                totalwidth = sum(layers)
+                offset = 0
+                base = []
+                for l in layers:
+                    l2 = length/2 or 0.5
+                    w1 = -totalwidth/2 + offset
+                    w2 = w1 + l
+                    v1 = Vector(-l2,w1,0)
+                    v2 = Vector(l2,w1,0)
+                    v3 = Vector(l2,w2,0)
+                    v4 = Vector(-l2,w2,0)
+                    base.append(Part.Face(Part.makePolygon([v1,v2,v3,v4,v1])))
+                    offset += l
+            else:
+                l2 = length/2 or 0.5
+                w2 = width/2 or 0.5
+                v1 = Vector(-l2,-w2,0)
+                v2 = Vector(l2,-w2,0)
+                v3 = Vector(l2,w2,0)
+                v4 = Vector(-l2,w2,0)
+                base = Part.Face(Part.makePolygon([v1,v2,v3,v4,v1]))
             placement = FreeCAD.Placement()
         if base and placement:
             extrusion = normal.multiply(height)
@@ -650,6 +719,22 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         if prop in ["Placement","Shape"]:
             if obj.ViewObject.DisplayMode == "Footprint":
                 obj.ViewObject.Proxy.setDisplayMode("Footprint")
+            if hasattr(obj,"Material"):
+                if obj.Material:
+                    if hasattr(obj.Material,"Materials"):
+                        if len(obj.Material.Materials) == len(obj.Shape.Solids):
+                            cols = []
+                            for i,mat in enumerate(obj.Material.Materials):
+                                c = obj.ViewObject.ShapeColor
+                                c = (c[0],c[1],c[2],obj.ViewObject.Transparency/100.0)
+                                if 'DiffuseColor' in mat.Material:
+                                    if "(" in mat.Material['DiffuseColor']:
+                                        c = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
+                                if 'Transparency' in mat.Material:
+                                    c = (c[0],c[1],c[2],float(mat.Material['Transparency']))
+                                cols.extend([c for j in range(len(obj.Shape.Solids[i].Faces))])
+                            if obj.ViewObject.DiffuseColor != cols:
+                                obj.ViewObject.DiffuseColor = cols
         ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
 
     def getDisplayModes(self,vobj):
