@@ -24,3 +24,12 @@
 #*                                                                         *
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
+
+
+import Test
+
+def runTest(test_case, verbosity=2):
+    import unittest
+    suite = unittest.TestLoader().loadTestsFromTestCase(test_case)
+    unittest.TextTestRunner(verbosity=verbosity).run(suite)
+Test.runTest = runTest
