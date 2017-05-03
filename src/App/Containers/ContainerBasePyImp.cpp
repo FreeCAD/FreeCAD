@@ -252,24 +252,7 @@ PyObject* ContainerBasePy::isADocumentObject(PyObject* args)
 
 PyObject* ContainerBasePy::getCustomAttributes(const char* attr) const
 {
-    //objects accessible as attributes of Container...
-
-    if (this->ob_type->tp_dict == NULL) {
-        if (PyType_Ready(this->ob_type) < 0)
-            return 0;
-    }
-    PyObject* item = PyDict_GetItemString(this->ob_type->tp_dict, attr);
-    if (item) return 0; //don't replace an existing attribute if object name happens to match it...
-
-    if (getContainerBasePtr()->isNull())
-        return nullptr;
-    // search for an object with this name
-    try {
-        DocumentObject* obj = getContainerBasePtr()->getObject(attr);
-        return obj->getPyObject();
-    } catch (ObjectNotFoundError&){
-        return nullptr;
-    }
+    return 0;
 }
 
 int ContainerBasePy::setCustomAttributes(const char*,PyObject*)
