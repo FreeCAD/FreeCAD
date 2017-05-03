@@ -337,11 +337,11 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
     } else if (this->datumtype.getValue() == SYMMETRIC) {
 
         // Get the Scale. See GLRender function for details on the viewport width calculation
-        SoState *state = action->getState();
-        const SbViewVolume & vv = SoViewVolumeElement::get(state);
-        float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.0f);
-        SbVec2s vp_size = SoViewportRegionElement::get(state).getViewportSizePixels();
-        scale /= float(vp_size[0]);
+        //SoState *state = action->getState();
+        //const SbViewVolume & vv = SoViewVolumeElement::get(state);
+        //float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.0f);
+        //SbVec2s vp_size = SoViewportRegionElement::get(state).getViewportSizePixels();
+        //scale /= float(vp_size[0]);
 
         SbVec3f dir = (p2-p1);
         dir.normalize();
