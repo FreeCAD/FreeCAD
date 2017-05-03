@@ -127,14 +127,14 @@ void View3DInventorPy::init_type()
         "Return the current cursor position relative to the coordinate system of the\n"
         "viewport region.\n");
     add_varargs_method("getObjectInfo",&View3DInventorPy::getObjectInfo,
-        "getObjectInfo(tuple of integers) -> dictionary or None\n"
+        "getObjectInfo(tuple(int,int), [pick_radius]) -> dictionary or None\n"
         "\n"
         "Return a dictionary with the name of document, object and component. The\n"
         "dictionary also contains the coordinates of the appropriate 3d point of\n"
         "the underlying geometry in the scenegraph.\n"
         "If no geometry was found 'None' is returned, instead.\n");
     add_varargs_method("getObjectsInfo",&View3DInventorPy::getObjectsInfo,
-        "getObjectsInfo(tuple of integers) -> dictionary or None\n"
+        "getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None\n"
         "\n"
         "Does the same as getObjectInfo() but returns a list of dictionaries or None.\n");
     add_varargs_method("getSize",&View3DInventorPy::getSize,"getSize()");
@@ -1172,7 +1172,8 @@ Py::Object View3DInventorPy::getCursorPos(const Py::Tuple& args)
 Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
 {
     PyObject* object;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &object))
+    float r = _view->getViewer()->getPickRadius();
+    if (!PyArg_ParseTuple(args.ptr(), "O|f", &object, &r))
         throw Py::Exception();
 
     try {
@@ -1191,6 +1192,7 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
         // which is regarded as error-prone.
         SoRayPickAction action(_view->getViewer()->getSoRenderManager()->getViewportRegion());
         action.setPoint(SbVec2s((long)x,(long)y));
+        action.setRadius(r);
         action.apply(_view->getViewer()->getSoRenderManager()->getSceneGraph());
         SoPickedPoint *Point = action.getPickedPoint();
 
@@ -1241,7 +1243,8 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
 Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
 {
     PyObject* object;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &object))
+    float r = _view->getViewer()->getPickRadius();
+    if (!PyArg_ParseTuple(args.ptr(), "O|f", &object, &r))
         throw Py::Exception();
 
     try {
@@ -1260,6 +1263,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
         // which is regarded as error-prone.
         SoRayPickAction action(_view->getViewer()->getSoRenderManager()->getViewportRegion());
         action.setPickAll(true);
+        action.setRadius(r);
         action.setPoint(SbVec2s((long)x,(long)y));
         action.apply(_view->getViewer()->getSoRenderManager()->getSceneGraph());
         const SoPickedPointList& pp = action.getPickedPointList();
