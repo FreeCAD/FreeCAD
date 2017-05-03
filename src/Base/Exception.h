@@ -33,6 +33,13 @@
 #include "FileInfo.h"
 #include "BaseClass.h"
 
+/* MACROS FOR THROWING EXCEPTIONS */
+
+#define THROW(exception) throw Base::exception(__FILE__,__LINE__,__PRETTY_FUNCTION__);
+#define THROWM(exception, message) throw Base::exception(message,__FILE__,__LINE__,__PRETTY_FUNCTION__);
+
+#define THROWMF_FILEEXCEPTION(message,filenameorfileinfo) throw Base::FileException(message,filenameorfileinfo,__FILE__,__LINE__,__PRETTY_FUNCTION__);
+
 namespace Base
 {
 
@@ -41,23 +48,45 @@ class BaseExport Exception : public BaseClass
   TYPESYSTEM_HEADER();
 
 public:
+
   virtual ~Exception() throw() {}
 
   Exception &operator=(const Exception &inst);
+
   virtual const char* what(void) const throw();
-  virtual void ReportException (void) const;
+
+  void ReportException (void) const;
+  /// returns the message string used in ReportException
+  virtual std::string report() const;
+
   inline void setMessage(const char * sMessage);
   inline void setMessage(const std::string& sMessage);
+  // what may differ from the message given by the user in
+  // derived classes
+  inline std::string getMessage();
 
 protected:
 public: // FIXME: Remove the public keyword
+ /* sMessage may be:
+  * - an UI compliant string subsceptible of being translated and shown to the user in the UI
+  * - a very technical message not intended to be traslated or shown to the user in the UI
+  * The preferred way of throwing an exception is using the macros above. This way, the file, 
+  * line and function are automatically inserted. */
   Exception(const char * sMessage);
   Exception(const std::string& sMessage);
   Exception(void);
   Exception(const Exception &inst);
-  
+
+  ///intended to use via macro for autofilling of debuging information
+  Exception(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
+  /// intended to use via macro for autofilling of debuging information
+  Exception(const std::string & file, const int line, const std::string & function);
+
 protected:
   std::string _sErrMsg;
+  std::string _file;
+  std::string _line;
+  std::string _function;
 };
 
 
@@ -74,6 +103,11 @@ public:
   AbortException();
   /// Construction
   AbortException(const AbortException &inst);
+
+  /// intended to use via macro for autofilling of debuging information
+  AbortException(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
+  /// intended to use via macro for autofilling of debuging information
+  AbortException(const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~AbortException() throw() {}
   /// Description of the exception
@@ -92,6 +126,9 @@ public:
   XMLBaseException(const std::string& sMessage);
   /// Construction
   XMLBaseException(const XMLBaseException &inst);
+  /// intended to use via macro for autofilling of debuging information
+  XMLBaseException(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
+
   /// Destruction
   virtual ~XMLBaseException() throw() {}
 };
@@ -111,6 +148,10 @@ public:
   XMLParseException();
   /// Construction
   XMLParseException(const XMLParseException &inst);
+  /// intended to use via macro for autofilling of debuging information
+  XMLParseException(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
+  /// intended to use via macro for autofilling of debuging information
+  XMLParseException(const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~XMLParseException() throw() {}
   /// Description of the exception
@@ -132,12 +173,24 @@ public:
   FileException();
   /// Construction
   FileException(const FileException &inst);
+  
+  /// intended to use via macro for autofilling of debuging information
+  FileException(const std::string& sMessage, const char * sFileName, const std::string & file, const int line, const std::string & function);
+  /// intended to use via macro for autofilling of debuging information
+  FileException(const std::string& sMessage, const FileInfo& File, const std::string & file, const int line, const std::string & function);
+  /// intended to use via macro for autofilling of debuging information
+  FileException(const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~FileException() throw() {}
   /// Description of the exception
   virtual const char* what() const throw();
+  /// Report string (for report view)
+  virtual std::string report() const;
+  /// Get file name for use with tranlatable message
+  std::string getFileName() const;
 protected:
   FileInfo file;
+  std::string _sErrMsgAndFileName;
 };
 
 /**
@@ -151,6 +204,8 @@ public:
   /// Construction
   FileSystemError(const char * sMessage);
   FileSystemError(const std::string& sMessage);
+  /// intended to use via macro for autofilling of debuging information
+  FileSystemError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Construction
   FileSystemError(const FileSystemError &inst);
   /// Destruction
@@ -167,6 +222,8 @@ public:
   /// Construction
   BadFormatError(const char * sMessage);
   BadFormatError(const std::string& sMessage);
+  /// intended to use via macro for autofilling of debuging information
+  BadFormatError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Construction
   BadFormatError(const BadFormatError &inst);
   /// Destruction
@@ -189,6 +246,8 @@ public:
   MemoryException();
   /// Construction
   MemoryException(const MemoryException &inst);
+  /// intended to use via macro for autofilling of debuging information
+  MemoryException(const std::string & file, const int line, const std::string & function);  
   /// Destruction
   virtual ~MemoryException() throw() {}
 #if defined (__GNUC__)
@@ -210,6 +269,10 @@ public:
   AccessViolation(const std::string& sMessage);
   /// Construction
   AccessViolation(const AccessViolation &inst);
+  /// intended to use via macro for autofilling of debuging information
+  AccessViolation(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
+  /// intended to use via macro for autofilling of debuging information
+  AccessViolation(const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~AccessViolation() throw() {}
 };
@@ -227,6 +290,10 @@ public:
   AbnormalProgramTermination(const char * sMessage);
   AbnormalProgramTermination(const std::string& sMessage);
   AbnormalProgramTermination(const AbnormalProgramTermination &inst);
+  /// intended to use via macro for autofilling of debuging information
+  AbnormalProgramTermination(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
+  /// intended to use via macro for autofilling of debuging information
+  AbnormalProgramTermination(const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~AbnormalProgramTermination() throw() {}
 };
@@ -243,6 +310,8 @@ public:
   UnknownProgramOption(const std::string& sMessage);
   /// Construction
   UnknownProgramOption(const UnknownProgramOption &inst);
+  /// intended to use via macro for autofilling of debuging information
+  UnknownProgramOption(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~UnknownProgramOption() throw() {}
 };
@@ -259,6 +328,9 @@ public:
   ProgramInformation(const std::string& sMessage);
   /// Construction
   ProgramInformation(const ProgramInformation &inst);
+  /// intended to use via macro for autofilling of debuging information
+  ProgramInformation(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
+
   /// Destruction
   virtual ~ProgramInformation() throw() {}
 };
@@ -275,6 +347,8 @@ public:
   TypeError(const std::string& sMessage);
   /// Construction
   TypeError(const TypeError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  TypeError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~TypeError() throw() {}
 };
@@ -291,6 +365,8 @@ public:
   ValueError(const std::string& sMessage);
   /// Construction
   ValueError(const ValueError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  ValueError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~ValueError() throw() {}
 };
@@ -307,6 +383,8 @@ public:
   IndexError(const std::string& sMessage);
   /// Construction
   IndexError(const IndexError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  IndexError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~IndexError() throw() {}
 };
@@ -323,6 +401,8 @@ public:
   AttributeError(const std::string& sMessage);
   /// Construction
   AttributeError(const AttributeError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  AttributeError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~AttributeError() throw() {}
 };
@@ -339,6 +419,8 @@ public:
   RuntimeError(const std::string& sMessage);
   /// Construction
   RuntimeError(const RuntimeError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  RuntimeError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~RuntimeError() throw() {}
 };
@@ -355,6 +437,8 @@ public:
   NotImplementedError(const std::string& sMessage);
   /// Construction
   NotImplementedError(const NotImplementedError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  NotImplementedError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~NotImplementedError() throw() {}
 };
@@ -371,6 +455,8 @@ public:
   DivisionByZeroError(const std::string& sMessage);
   /// Construction
   DivisionByZeroError(const DivisionByZeroError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  DivisionByZeroError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~DivisionByZeroError() throw() {}
 };
@@ -387,6 +473,8 @@ public:
   ReferencesError(const std::string& sMessage);
   /// Construction
   ReferencesError(const ReferencesError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  ReferencesError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~ReferencesError() throw() {}
 };
@@ -404,6 +492,8 @@ public:
   ExpressionError(const std::string& sMessage);
   /// Construction
   ExpressionError(const ExpressionError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  ExpressionError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~ExpressionError() throw() {}
 };
@@ -420,6 +510,8 @@ public:
   ParserError(const std::string& sMessage);
   /// Construction
   ParserError(const ParserError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  ParserError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~ParserError() throw() {}
 };
@@ -436,6 +528,8 @@ public:
   UnicodeError(const std::string& sMessage);
   /// Construction
   UnicodeError(const UnicodeError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  UnicodeError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~UnicodeError() throw() {}
 };
@@ -452,6 +546,8 @@ public:
   OverflowError(const std::string& sMessage);
   /// Construction
   OverflowError(const OverflowError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  OverflowError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~OverflowError() throw() {}
 };
@@ -468,6 +564,8 @@ public:
   UnderflowError(const std::string& sMessage);
   /// Construction
   UnderflowError(const UnderflowError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  UnderflowError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~UnderflowError() throw() {}
 };
@@ -484,8 +582,29 @@ public:
   UnitsMismatchError(const std::string& sMessage);
   /// Construction
   UnitsMismatchError(const UnitsMismatchError &inst);
+  /// intended to use via macro for autofilling of debuging information
+  UnitsMismatchError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
   /// Destruction
   virtual ~UnitsMismatchError() throw() {}
+};
+
+ /* The CADKernelError can be used to indicate an exception originating in the CAD Kernel
+ * allowing to propagate the error messages of, for example, OCC Standard_Failure exception to
+ * the FreeCAD application without making the FreeCAD application depend on OCC.
+ * @author Abdullah Tahiri
+ */
+class BaseExport CADKernelError : public Exception
+{
+public:
+    /// Construction
+    CADKernelError(const char * sMessage);
+    CADKernelError(const std::string& sMessage);
+    /// Construction
+    CADKernelError(const CADKernelError &inst);
+    /// intended to use via macro for autofilling of debuging information
+    CADKernelError(const std::string& sMessage, const std::string & file, const int line, const std::string & function);
+    /// Destruction
+    virtual ~CADKernelError() throw() {}
 };
 
 
@@ -497,6 +616,11 @@ inline void Exception::setMessage(const char * sMessage)
 inline void Exception::setMessage(const std::string& sMessage)
 {
   _sErrMsg = sMessage;
+}
+
+inline std::string Exception::getMessage()
+{
+    return _sErrMsg;
 }
 
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
