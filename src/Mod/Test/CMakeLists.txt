@@ -1,5 +1,6 @@
 
 SET(Test_SRCS
+    __init__.py
     Init.py
     BaseTests.py
     Document.py
