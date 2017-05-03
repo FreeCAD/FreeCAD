@@ -213,8 +213,6 @@ void CmdSketcherNewSketch::activated(int iMsg)
         doCommand(Gui,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
         doCommand(Gui,"App.activeDocument().recompute()");  // recompute the sketch placement based on its support
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-
-        Part::Feature *part = static_cast<Part::Feature*>(support.getValue());//if multi-part support, this will return 0
     }
     else {
         // ask user for orientation
