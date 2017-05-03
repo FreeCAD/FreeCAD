@@ -359,7 +359,7 @@ PyMethodDef Container::PyMethods[] = {
 };
 
 
-PyObject* Container::sIsAConainer(PyObject* self, PyObject* args, PyObject* kwd)
+PyObject* Container::sIsAConainer(PyObject* /*self*/, PyObject* args, PyObject* /*kwd*/)
 {
     PyObject* obj = nullptr;
     if (!PyArg_ParseTuple(args, "O!", &(PropertyContainerPy::Type), &obj))
@@ -372,7 +372,7 @@ PyObject* Container::sIsAConainer(PyObject* self, PyObject* args, PyObject* kwd)
     } CONTAINERPY_STDCATCH_METH;
 }
 
-PyObject* Container::sFindAllContainers(PyObject* self, PyObject* args, PyObject* kwd)
+PyObject* Container::sFindAllContainers(PyObject* /*self*/, PyObject* args, PyObject* /*kwd*/)
 {
     PyObject* obj = nullptr;
     if (!PyArg_ParseTuple(args, "O!", &(DocumentPy::Type), &obj))
@@ -390,7 +390,7 @@ PyObject* Container::sFindAllContainers(PyObject* self, PyObject* args, PyObject
     } CONTAINERPY_STDCATCH_METH;
 }
 
-PyObject* Container::sGetContainersOf(PyObject* self, PyObject* args, PyObject* kwd)
+PyObject* Container::sGetContainersOf(PyObject* /*self*/, PyObject* args, PyObject* /*kwd*/)
 {
     PyObject* obj = nullptr;
     if (!PyArg_ParseTuple(args, "O!", &(PropertyContainerPy::Type), &obj))
@@ -412,7 +412,7 @@ PyObject* Container::sGetContainersOf(PyObject* self, PyObject* args, PyObject* 
     } CONTAINERPY_STDCATCH_METH;
 }
 
-PyObject* Container::sGetContainerOf(PyObject* self, PyObject* args, PyObject* kwd)
+PyObject* Container::sGetContainerOf(PyObject* /*self*/, PyObject* args, PyObject* /*kwd*/)
 {
     PyObject* obj = nullptr;
     if (!PyArg_ParseTuple(args, "O!", &(PropertyContainerPy::Type), &obj))
