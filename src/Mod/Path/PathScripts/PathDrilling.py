@@ -63,8 +63,7 @@ class ObjectDrilling:
         obj.addProperty("App::PropertyStringList", "Names", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Names of the holes"))
         obj.addProperty("App::PropertyVectorList", "Positions", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Locations of insterted holes"))
         obj.addProperty("App::PropertyIntegerList", "Enabled", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable/disable status of the holes"))
-        obj.addProperty("App::PropertyFloatList", "Diameters", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Diameters holes"))
-
+        obj.addProperty("App::PropertyFloatList", "Diameters", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Diameters of the holes"))
 
         # General Properties
         obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Make False, to prevent operation from generating code"))
@@ -73,8 +72,10 @@ class ObjectDrilling:
 
         # Drilling Properties
         obj.addProperty("App::PropertyLength", "PeckDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Drill depth before retracting to clear chips"))
+        obj.addProperty("App::PropertyBool", "PeckEnabled", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable pecking"))
         obj.addProperty("App::PropertyLength", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
         obj.addProperty("App::PropertyFloat", "DwellTime", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"))
+        obj.addProperty("App::PropertyBool", "DwellEnabled", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable dwell"))
 
         # Heights & Depths
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
@@ -164,12 +165,12 @@ class ObjectDrilling:
             if baseobject is None:
                 return
 
+            #Arch PanelSheet
             if hasattr(baseobject, "Proxy"):
                 holes = []
                 if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):
                     baseobject.Proxy.execute(baseobject)
                     i=0;
-                    PathLog.debug('Entering new PanelCut')
                     holeshapes = baseobject.Proxy.getHoles(baseobject, transform=True)
                     tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
                     for holeshape in holeshapes:
@@ -182,20 +183,22 @@ class ObjectDrilling:
                                     x = edge.Curve.Center.x
                                     y = edge.Curve.Center.y
                                     diameter = edge.BoundBox.XLength
-                                    holes.append({'x':x, 'y':y, 'featureName':'PanelEdge'+str(i),'d':diameter})
+                                    holes.append({'x':x, 'y':y, 'featureName':baseobject.Name+'.'+'Drill'+str(i),'d':diameter})
                                     i=i+1
-
-
 
 
 
             else:
                 holes = self.findHoles(obj, baseobject.Shape)
+                for i in range(len(holes)):
+                    holes[i]['featureName'] = baseobject.Name + '.' + holes[i]['featureName']
             names = []
             positions = []
             enabled = []
             diameters = []
             for h in holes:
+                if len(names)==0:
+                    self.findHeights(obj, baseobject, h)
                 names.append(h['featureName'])
                 positions.append(FreeCAD.Vector(h['x'], h['y'],0))
                 enabled.append(1)
@@ -225,10 +228,10 @@ class ObjectDrilling:
             output += "G0 Z" + fmt(obj.ClearanceHeight.Value)  + "F " + PathUtils.fmt(self.vertRapid) + "\n"
             pword = ""
             qword = ""
-            if obj.PeckDepth.Value > 0:
+            if obj.PeckDepth.Value > 0 and obj.PeckEnabled:
                 cmd = "G83"
                 qword = " Q" + fmt(obj.PeckDepth.Value)
-            elif obj.DwellTime > 0:
+            elif obj.DwellTime > 0 and obj.DwellEnabled:
                 cmd = "G82"
                 pword = " P" + fmt(obj.DwellTime)
             else:
@@ -253,6 +256,27 @@ class ObjectDrilling:
             obj.Path = path
             obj.ViewObject.Visibility = False
 
+    def findHeights(self, obj, bobj, hole):
+        try:
+            bb = bobj.Shape.BoundBox
+            subobj = hole['feature']
+            fbb = subobj.BoundBox
+            obj.StartDepth = bb.ZMax
+            obj.ClearanceHeight = bb.ZMax + 5.0
+            obj.SafeHeight = bb.ZMax + 3.0
+            obj.RetractHeight = bb.ZMax + 1.0
+
+            if fbb.ZMax < bb.ZMax:
+                obj.FinalDepth = fbb.ZMax
+            else:
+                obj.FinalDepth = bb.ZMin
+        except:
+            obj.StartDepth = 5.0
+            obj.ClearanceHeight = 10.0
+            obj.SafeHeight = 8.0
+            obj.RetractHeight = 6.0
+
+
     def findHoles(self, obj, shape):
         import DraftGeomUtils as dgu
         PathLog.track('obj: {} shape: {}'.format(obj, shape))
@@ -265,7 +289,7 @@ class ObjectDrilling:
                 candidateEdgeName = "Edge" + str(i +1)
                 e = shape.getElement(candidateEdgeName)
                 if PathUtils.isDrillable(shape, e, tooldiameter):
-                    PathLog.debug('edge candidate: {} is drillable '.format(e))
+                    PathLog.debug('edge candidate: {} (hash {})is drillable '.format(e, e.hashCode()))
                     x = e.Curve.Center.x
                     y = e.Curve.Center.y
                     diameter = e.BoundBox.XLength
@@ -389,6 +413,14 @@ class TaskPanel:
                 self.obj.ClearanceHeight = FreeCAD.Units.Quantity(self.form.clearanceHeight.text()).Value
             if hasattr(self.obj, "RetractHeight"):
                 self.obj.RetractHeight = FreeCAD.Units.Quantity(self.form.retractHeight.text()).Value
+            if hasattr(self.obj, "DwellTime"):
+                self.obj.DwellTime = FreeCAD.Units.Quantity(self.form.dwellTime.text()).Value
+
+            if hasattr(self.obj, "DwellEnabled"):
+                self.obj.DwellEnabled = self.form.dwellEnabled.isChecked()
+            if hasattr(self.obj, "PeckEnabled"):
+                self.obj.PeckEnabled = self.form.peckEnabled.isChecked()
+
             if hasattr(self.obj, "ToolController"):
                 PathLog.debug("name: {}".format(self.form.uiToolController.currentText()))
                 tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
@@ -402,20 +434,23 @@ class TaskPanel:
         self.form.baseList.setColumnCount(2)
         self.form.baseList.setRowCount(0)
         self.form.baseList.setHorizontalHeaderLabels(["Feature", "Diameter"])
-        self.form.baseList.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
-
+        self.form.baseList.horizontalHeader().setStretchLastSection(True)
+        self.form.baseList.resizeColumnToContents(0)
+        self.form.baseList.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         for i in range(len(self.obj.Names)):
             self.form.baseList.insertRow(self.form.baseList.rowCount())
             item = QtGui.QTableWidgetItem(self.obj.Names[i])
             item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+
             if self.obj.Enabled[i] == True:
                 item.setCheckState(QtCore.Qt.Checked)
             else:
                 item.setCheckState(QtCore.Qt.Unchecked)
             self.form.baseList.setItem(self.form.baseList.rowCount()-1,0,item)
             item = QtGui.QTableWidgetItem("{:.3f}".format(self.obj.Diameters[i]))
-            self.form.baseList.setItem(self.form.baseList.rowCount()-1,1,item)
 
+            self.form.baseList.setItem(self.form.baseList.rowCount()-1,1,item)
+        self.form.baseList.resizeColumnToContents(0)
         self.form.baseList.itemChanged.connect(self.checkedChanged)
 
         self.form.baseList.setSortingEnabled(True)
@@ -428,6 +463,17 @@ class TaskPanel:
         self.form.safeHeight.setText(FreeCAD.Units.Quantity(self.obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
         self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(self.obj.ClearanceHeight.Value, FreeCAD.Units.Length).UserString)
         self.form.retractHeight.setText(FreeCAD.Units.Quantity(self.obj.RetractHeight.Value, FreeCAD.Units.Length).UserString)
+        self.form.dwellTime.setText(str(self.obj.DwellTime))
+
+        if self.obj.DwellEnabled:
+            self.form.dwellEnabled.setCheckState(QtCore.Qt.Checked)
+        else:
+            self.form.dwellEnabled.setCheckState(QtCore.Qt.Unchecked)
+
+        if self.obj.PeckEnabled:
+            self.form.peckEnabled.setCheckState(QtCore.Qt.Checked)
+        else:
+            self.form.peckEnabled.setCheckState(QtCore.Qt.Unchecked)
 
         self.updateFeatureList()
 
@@ -455,13 +501,15 @@ class TaskPanel:
         FreeCADGui.Selection.clearSelection()
         slist = self.form.baseList.selectedItems()
         parentJob = PathUtils.findParentJob(self.obj)
-        obj = parentJob.Base
         for i in slist:
             if i.column() == 0:
-                if i.text() != "":
-                    FreeCADGui.Selection.addSelection(obj, i.text())
-                else:
-                    FreeCADGui.Selection.addSelection(obj)
+                objstring = i.text().partition(".")
+                obj = FreeCAD.ActiveDocument.getObject(objstring[0])
+                if obj is not None:
+                    if objstring[2] != "":
+                        FreeCADGui.Selection.addSelection(obj, objstring[2])
+                    else:
+                        FreeCADGui.Selection.addSelection(obj)
 
         FreeCADGui.updateGui()
 
@@ -566,12 +614,15 @@ class TaskPanel:
         self.form.startDepth.editingFinished.connect(self.getFields)
         self.form.finalDepth.editingFinished.connect(self.getFields)
         self.form.safeHeight.editingFinished.connect(self.getFields)
+        self.form.retractHeight.editingFinished.connect(self.getFields)
+        self.form.peckDepth.editingFinished.connect(self.getFields)
         self.form.clearanceHeight.editingFinished.connect(self.getFields)
+        self.form.dwellTime.editingFinished.connect(self.getFields)
+        self.form.dwellEnabled.stateChanged.connect(self.getFields)
+        self.form.peckEnabled.stateChanged.connect(self.getFields)
 
         #buttons
-        #self.form.uiEnableAll.clicked.connect(self.enableAll)
         self.form.uiEnableSelected.clicked.connect(self.enableSelected)
-        #self.form.uiDisableAll.clicked.connect(self.disableAll)
         self.form.uiDisableSelected.clicked.connect(self.disableSelected)
         self.form.uiFindAllHoles.clicked.connect(self.findAll)
         self.form.uiAddSelected.clicked.connect(self.addSelected)
@@ -583,20 +634,6 @@ class TaskPanel:
         self.form.uiToolController.currentIndexChanged.connect(self.getFields)
 
         self.setFields()
-
-class SelObserver:
-    def __init__(self):
-        import PathScripts.PathSelection as PST
-        PST.drillselect()
-
-    def __del__(self):
-        import PathScripts.PathSelection as PST
-        PST.clear()
-
-    def addSelection(self, doc, obj, sub, pnt):
-        FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ',"' + sub + '")')
-        FreeCADGui.updateGui()
-
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
