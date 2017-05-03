@@ -157,6 +157,10 @@ PyObject* ContainerBasePy::getObject(PyObject* args)
 PyObject* ContainerBasePy::hasObject(PyObject* args)
 {
     PyObject* obj = nullptr;
+    if (PyArg_ParseTuple(args, "O!", &(DocumentPy::Type), &obj))
+        return Py::new_reference_to(Py::False());
+
+    PyErr_Clear();
     if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &obj))
         return 0;
 
