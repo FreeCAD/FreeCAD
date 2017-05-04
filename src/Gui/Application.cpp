@@ -1766,6 +1766,10 @@ void Application::runApplication(void)
     // run the Application event loop
     Base::Console().Log("Init: Entering event loop\n");
 
+    // boot phase reference point
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=21665
+    Gui::getMainWindow()->setProperty("eventLoop", true);
+
     try {
         std::stringstream s;
         s << App::Application::getTempPath() << App::GetApplication().getExecutableName()
