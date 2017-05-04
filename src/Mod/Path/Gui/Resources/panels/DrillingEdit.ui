@@ -72,10 +72,10 @@
        <item row="1" column="2">
         <widget class="QPushButton" name="uiFindAllHoles">
          <property name="toolTip">
-          <string>Update the path with the removed and reordered items.</string>
+          <string>Remove all custom objects and find holes from base object.</string>
          </property>
          <property name="text">
-          <string>Find All</string>
+          <string>Reset Defaults</string>
          </property>
         </widget>
        </item>
