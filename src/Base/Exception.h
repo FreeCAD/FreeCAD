@@ -77,6 +77,9 @@ public:
   // what may differ from the message given by the user in
   // derived classes
   inline std::string getMessage() const;
+  inline std::string getFile() const;
+  inline int getLine() const;
+  inline std::string getFunction() const;
   
   /// setter methods for including debug information
   /// intended to use via macro for autofilling of debugging information
@@ -97,7 +100,7 @@ public: // FIXME: Remove the public keyword
 protected:
   std::string _sErrMsg;
   std::string _file;
-  std::string _line;
+  int _line;
   std::string _function;
 };
 
@@ -572,10 +575,25 @@ inline std::string Exception::getMessage() const
     return _sErrMsg;
 }
 
+inline std::string Exception::getFile() const
+{
+    return _file;
+}
+
+inline int Exception::getLine() const
+{
+    return _line;
+}
+
+inline std::string Exception::getFunction() const
+{
+    return _function;
+}
+
 inline void Exception::setDebugInformation(const std::string & file, const int line, const std::string & function)
 {
     _file = file;
-    _line = std::to_string(line);
+    _line = line;
     _function = function;
 }
 
