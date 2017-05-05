@@ -372,7 +372,10 @@ class _CommandWall:
         return w
         
     def setMat(self,d):
-        if d <= len(self.multimats):
+        if d == 0:
+            self.MultiMat = None
+            del FreeCAD.LastArchMultiMaterial
+        elif d <= len(self.multimats):
             self.MultiMat = self.multimats[d-1]
             FreeCAD.LastArchMultiMaterial = self.MultiMat.Name
         
