@@ -336,6 +336,7 @@ class Snapper:
                 elif Draft.getType(obj) == "Axis":
                     for edge in obj.Shape.Edges:
                         snaps.extend(self.snapToEndpoints(edge))
+                        snaps.extend(self.snapToIntersection(edge))
                         
                 elif Draft.getType(obj) == "Mesh":
                     # for meshes we only snap to vertices
@@ -814,7 +815,7 @@ class Snapper:
             if self.lastObj[0]:
                 obj = FreeCAD.ActiveDocument.getObject(self.lastObj[0])
                 if obj:
-                    if obj.isDerivedFrom("Part::Feature"):
+                    if obj.isDerivedFrom("Part::Feature") or (Draft.getType(obj) == "Axis"):
                         if (not self.maxEdges) or (len(obj.Shape.Edges) <= self.maxEdges):
                             for e in obj.Shape.Edges:
                                 # get the intersection points
