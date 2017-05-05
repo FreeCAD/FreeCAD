@@ -92,9 +92,13 @@ static PyObject * areaGetParamsDesc(PyObject *, PyObject *args, PyObject *kwd) {
     if (!PyArg_ParseTupleAndKeywords(args, kwd, "|O",kwlist,&pcObj))
         return 0;
 
+#if PY_MAJOR_VERSION < 3
     if(PyObject_IsTrue(pcObj)) 
         return PyString_FromString(PARAM_PY_DOC(NAME,AREA_PARAMS_STATIC_CONF));
-
+#else
+    if(PyObject_IsTrue(pcObj)) 
+        return PyUnicode_FromString(PARAM_PY_DOC(NAME,AREA_PARAMS_STATIC_CONF));
+#endif
     PyObject *dict = PyDict_New();
     PARAM_PY_DICT_SET_DOC(dict,NAME,AREA_PARAMS_STATIC_CONF)
     return dict;
