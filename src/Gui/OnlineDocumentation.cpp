@@ -151,7 +151,11 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
         if (result) {
             Py_DECREF(result);
             result = PyDict_GetItemString(dict, "htmldocument");
+#if PY_MAJOR_VERSION >= 3
+            const char* contents = PyUnicode_AsUTF8(result);
+#else
             const char* contents = PyString_AsString(result);
+#endif
             res.append("HTTP/1.0 200 OK\n");
             res.append("Content-type: text/html\n");
             res.append(contents);
@@ -182,7 +186,11 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
         if (result) {
             Py_DECREF(result);
             result = PyDict_GetItemString(dict, "page");
+#if PY_MAJOR_VERSION >= 3
+            const char* page = PyUnicode_AsUTF8(result);
+#else
             const char* page = PyString_AsString(result);
+#endif
             res.append("HTTP/1.0 200 OK\n");
             res.append("Content-type: text/html\n");
             res.append(page);
