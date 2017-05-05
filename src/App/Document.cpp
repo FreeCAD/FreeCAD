@@ -2206,6 +2206,93 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     return pcObject;
 }
 
+std::vector<DocumentObject *> Document::addObjects(const char* sType, const std::vector<std::string>& objectNames, bool isNew)
+{
+    Base::Type::importModule(sType);
+    Base::Type type = Base::Type::fromName(sType);
+    if (!type.isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        std::stringstream str;
+        str << "'" << sType << "' is not a document object type";
+        throw Base::TypeError(str.str());
+    }
+
+    std::vector<DocumentObject *> objects;
+    objects.resize(objectNames.size());
+    std::generate(objects.begin(), objects.end(),
+                  [&]{ return static_cast<App::DocumentObject*>(type.createInstance()); });
+
+    // get all existing object names
+    std::vector<std::string> reservedNames;
+    reservedNames.reserve(d->objectMap.size());
+    for (auto pos = d->objectMap.begin();pos != d->objectMap.end();++pos) {
+        reservedNames.push_back(pos->first);
+    }
+
+    for (auto it = objects.begin(); it != objects.end(); ++it) {
+        auto index = std::distance(objects.begin(), it);
+        App::DocumentObject* pcObject = *it;
+        pcObject->setDocument(this);
+
+        // do no transactions if we do a rollback!
+        if (!d->rollback) {
+            // Undo stuff
+            if (d->activeUndoTransaction) {
+                d->activeUndoTransaction->addObjectDel(pcObject);
+            }
+        }
+
+        // get unique name
+        std::string ObjectName = objectNames[index];
+        if (ObjectName.empty())
+            ObjectName = sType;
+        ObjectName = Base::Tools::getIdentifier(ObjectName);
+        if (d->objectMap.find(ObjectName) != d->objectMap.end()) {
+            // remove also trailing digits from clean name which is to avoid to create lengthy names
+            // like 'Box001001'
+            if (!testStatus(KeepTrailingDigits)) {
+                std::string::size_type index = ObjectName.find_last_not_of("0123456789");
+                if (index+1 < ObjectName.size()) {
+                    ObjectName = ObjectName.substr(0,index+1);
+                }
+            }
+
+            ObjectName = Base::Tools::getUniqueName(ObjectName, reservedNames, 3);
+        }
+
+        reservedNames.push_back(ObjectName);
+
+        // insert in the name map
+        d->objectMap[ObjectName] = pcObject;
+        // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
+        pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
+        // insert in the vector
+        d->objectArray.push_back(pcObject);
+
+        pcObject->Label.setValue(ObjectName);
+
+        // Call the object-specific initialization
+        if (!d->undoing && !d->rollback && isNew) {
+            pcObject->setupObject();
+        }
+
+        // mark the object as new (i.e. set status bit 2) and send the signal
+        pcObject->StatusBits.set(2);
+        signalNewObject(*pcObject);
+
+        // do no transactions if we do a rollback!
+        if (!d->rollback && d->activeUndoTransaction) {
+            signalTransactionAppend(*pcObject, d->activeUndoTransaction);
+        }
+    }
+
+    if (!objects.empty()) {
+        d->activeObject = objects.back();
+        signalActivatedObject(*objects.back());
+    }
+
+    return objects;
+}
+
 void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 {
     if (pcObject->getDocument()) {
