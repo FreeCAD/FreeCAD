@@ -120,6 +120,38 @@ void *Type::createInstanceByName(const char* TypeName, bool bLoadModule)
 
 }
 
+void *Type::createInstanceByKey(unsigned int key, bool bLoadModule)
+{
+    // if not already, load the module
+    if(bLoadModule)
+    {
+        // cut out the module name 
+        string Mod = getModuleName(key);
+        // ignore base modules
+        if(Mod != "App" && Mod != "Gui" && Mod != "Base")
+        {
+            // remember already loaded modules
+            set<string>::const_iterator pos = loadModuleSet.find(Mod);
+            if(pos == loadModuleSet.end())
+            {
+                Interpreter().loadModule(Mod.c_str());
+                #ifdef FC_LOGLOADMODULE
+                Console().Log("Act: Module %s loaded through class %s \n",Mod.c_str(),TypeName);
+                #endif
+                loadModuleSet.insert(Mod);
+            }
+        }
+    }
+    
+    // now the type should be in the type map
+    Type t = fromKey(key);
+    if(t == badType())
+        return 0;
+    
+    return t.createInstance();
+    
+}
+
 string Type::getModuleName(const char* ClassName)
 {
   string temp(ClassName);
@@ -129,6 +161,16 @@ string Type::getModuleName(const char* ClassName)
     return string(temp,0,pos);
   else
     return string();
+}
+
+std::string Type::getModuleName(unsigned int key)
+{
+    if(key < typedata.size()) {
+        string name = typedata[key]->name;
+        return getModuleName(name.c_str());
+    }
+    else
+        return string();
 }
 
 Type Type::badType(void)
@@ -182,6 +224,14 @@ Type Type::fromName(const char *name)
     return typedata[pos->second]->type;
   else
     return Type::badType();
+}
+
+Type Type::fromKey(unsigned int key)
+{
+    if(key < typedata.size())
+        return typedata[key]->type;
+    else
+        return Type::badType();
 }
 
 const char *Type::getName(void) const

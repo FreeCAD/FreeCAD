@@ -87,10 +87,13 @@ public:
   void *createInstance(void);
   /// creates a instance of the named type
   static void *createInstanceByName(const char* TypeName, bool bLoadModule=false);
+  /// creates a instance of the type with the given index key 
+  static void *createInstanceByKey(unsigned int key, bool bLoadModule=false);
 
   typedef void * (*instantiationMethod)(void);
 
   static Type fromName(const char *name);
+  static Type fromKey(unsigned int key);
   const char *getName(void) const;
   const Type getParent(void) const;
   bool isDerivedFrom(const Type type) const;
@@ -119,7 +122,7 @@ public:
 
 protected:
   static std::string getModuleName(const char* ClassName);
-
+  static std::string getModuleName(unsigned int key);
 
 private:
 
