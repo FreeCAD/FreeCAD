@@ -1722,7 +1722,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
     if(!done) {
         CAreaPocketParams params(
                 tool_radius,extra_offset,stepover,from_center,pm,angle);
-        CArea in(*myArea),out;
+        CArea in(*myArea);
         // MakePcoketToolPath internally uses libarea Offset which somehow demands
         // reorder before input, otherwise nothing is shown.
         in.Reorder();
