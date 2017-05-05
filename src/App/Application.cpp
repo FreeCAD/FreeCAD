@@ -1162,6 +1162,33 @@ void Application::initTypes(void)
     Base::Type                      ::init();
     Base::BaseClass                 ::init();
     Base::Exception                 ::init();
+    Base::AbortException            ::init();
+    Base::XMLBaseException          ::init();
+    Base::XMLParseException         ::init();
+    Base::FileException             ::init();
+    Base::FileSystemError           ::init();
+    Base::BadFormatError            ::init();
+    Base::MemoryException           ::init();
+    Base::AccessViolation           ::init();
+    Base::AbnormalProgramTermination::init();
+    Base::UnknownProgramOption      ::init();
+    Base::ProgramInformation        ::init();
+    Base::TypeError                 ::init();
+    Base::ValueError                ::init();
+    Base::IndexError                ::init();
+    Base::AttributeError            ::init();
+    Base::RuntimeError              ::init();
+    Base::NotImplementedError       ::init();
+    Base::DivisionByZeroError       ::init();
+    Base::ReferencesError           ::init();
+    Base::ExpressionError           ::init();
+    Base::ParserError               ::init();
+    Base::UnicodeError              ::init();
+    Base::OverflowError             ::init();
+    Base::UnderflowError            ::init();
+    Base::UnitsMismatchError        ::init();
+    Base::CADKernelError            ::init();
+
     Base::Persistence               ::init();
 
     // Complex data classes

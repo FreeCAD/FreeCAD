@@ -99,6 +99,8 @@ void Exception::ReportException (void) const
 
 // ---------------------------------------------------------
 
+TYPESYSTEM_SOURCE(Base::AbortException,Base::Exception);
+
 AbortException::AbortException(const char * sMessage)
   : Exception( sMessage )
 {
@@ -121,6 +123,13 @@ const char* AbortException::what() const throw()
 
 // ---------------------------------------------------------
 
+TYPESYSTEM_SOURCE(Base::XMLBaseException,Base::Exception);
+
+XMLBaseException::XMLBaseException()
+: Exception()
+{
+}
+
 XMLBaseException::XMLBaseException(const char * sMessage)
   : Exception(sMessage)
 {
@@ -137,6 +146,8 @@ XMLBaseException::XMLBaseException(const XMLBaseException &inst)
 }
 
 // ---------------------------------------------------------
+
+TYPESYSTEM_SOURCE(Base::XMLParseException,Base::Exception);
 
 XMLParseException::XMLParseException(const char * sMessage)
   : Exception(sMessage)
@@ -164,6 +175,8 @@ const char* XMLParseException::what() const throw()
 }
 
 // ---------------------------------------------------------
+
+TYPESYSTEM_SOURCE(Base::FileException,Base::Exception);
 
 FileException::FileException(const char * sMessage, const char * sFileName)
   : Exception( sMessage ),file(sFileName)
@@ -235,6 +248,13 @@ void FileException::ReportException (void) const
 
 // ---------------------------------------------------------
 
+TYPESYSTEM_SOURCE(Base::FileSystemError,Base::Exception);
+
+FileSystemError::FileSystemError()
+: Exception()
+{
+}
+
 FileSystemError::FileSystemError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -252,6 +272,13 @@ FileSystemError::FileSystemError(const FileSystemError &inst)
 
 // ---------------------------------------------------------
 
+TYPESYSTEM_SOURCE(Base::BadFormatError,Base::Exception);
+
+BadFormatError::BadFormatError()
+: Exception()
+{
+}
+
 BadFormatError::BadFormatError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -268,6 +295,8 @@ BadFormatError::BadFormatError(const BadFormatError &inst)
 }
 
 // ---------------------------------------------------------
+
+TYPESYSTEM_SOURCE(Base::MemoryException,Base::Exception);
 
 MemoryException::MemoryException()
 {
@@ -292,6 +321,7 @@ const char* MemoryException::what() const throw()
 #endif
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::AccessViolation,Base::Exception);
 
 AccessViolation::AccessViolation()
 {
@@ -314,6 +344,7 @@ AccessViolation::AccessViolation(const AccessViolation &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::AbnormalProgramTermination,Base::Exception);
 
 AbnormalProgramTermination::AbnormalProgramTermination()
 {
@@ -336,6 +367,12 @@ AbnormalProgramTermination::AbnormalProgramTermination(const AbnormalProgramTerm
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::UnknownProgramOption,Base::Exception);
+
+UnknownProgramOption::UnknownProgramOption()
+: Exception()
+{
+}
 
 UnknownProgramOption::UnknownProgramOption(const char * sMessage)
   : Exception(sMessage)
@@ -353,6 +390,12 @@ UnknownProgramOption::UnknownProgramOption(const UnknownProgramOption &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::ProgramInformation,Base::Exception);
+
+ProgramInformation::ProgramInformation()
+: Exception()
+{
+}
 
 ProgramInformation::ProgramInformation(const char * sMessage)
   : Exception(sMessage)
@@ -370,6 +413,12 @@ ProgramInformation::ProgramInformation(const ProgramInformation &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::TypeError,Base::Exception);
+
+TypeError::TypeError()
+: Exception()
+{
+}
 
 TypeError::TypeError(const char * sMessage)
   : Exception(sMessage)
@@ -387,6 +436,12 @@ TypeError::TypeError(const TypeError &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::ValueError,Base::Exception);
+
+ValueError::ValueError()
+: Exception()
+{
+}
 
 ValueError::ValueError(const char * sMessage)
   : Exception(sMessage)
@@ -404,6 +459,12 @@ ValueError::ValueError(const ValueError &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::IndexError,Base::Exception);
+
+IndexError::IndexError()
+: Exception()
+{
+}
 
 IndexError::IndexError(const char * sMessage)
   : Exception(sMessage)
@@ -421,6 +482,12 @@ IndexError::IndexError(const IndexError &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::AttributeError,Base::Exception);
+
+AttributeError::AttributeError()
+: Exception()
+{
+}
 
 AttributeError::AttributeError(const char * sMessage)
   : Exception(sMessage)
@@ -438,6 +505,12 @@ AttributeError::AttributeError(const AttributeError &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::RuntimeError,Base::Exception);
+
+RuntimeError::RuntimeError()
+: Exception()
+{
+}
 
 RuntimeError::RuntimeError(const char * sMessage)
   : Exception(sMessage)
@@ -455,6 +528,12 @@ RuntimeError::RuntimeError(const RuntimeError &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::NotImplementedError,Base::Exception);
+
+NotImplementedError::NotImplementedError()
+: Exception()
+{
+}
 
 NotImplementedError::NotImplementedError(const char * sMessage)
   : Exception(sMessage)
@@ -472,6 +551,12 @@ NotImplementedError::NotImplementedError(const NotImplementedError &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::DivisionByZeroError,Base::Exception);
+
+DivisionByZeroError::DivisionByZeroError()
+: Exception()
+{
+}
 
 DivisionByZeroError::DivisionByZeroError(const char * sMessage)
   : Exception(sMessage)
@@ -489,6 +574,12 @@ DivisionByZeroError::DivisionByZeroError(const DivisionByZeroError &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::ReferencesError,Base::Exception);
+
+ReferencesError::ReferencesError()
+: Exception()
+{
+}
 
 ReferencesError::ReferencesError(const char * sMessage)
   : Exception(sMessage)
@@ -506,6 +597,12 @@ ReferencesError::ReferencesError(const ReferencesError &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::ExpressionError,Base::Exception);
+
+ExpressionError::ExpressionError()
+: Exception()
+{
+}
 
 ExpressionError::ExpressionError(const char * sMessage)
   : Exception(sMessage)
@@ -523,6 +620,12 @@ ExpressionError::ExpressionError(const ExpressionError &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::ParserError,Base::Exception);
+
+ParserError::ParserError()
+: Exception()
+{
+}
 
 ParserError::ParserError(const char * sMessage)
   : Exception(sMessage)
@@ -540,6 +643,12 @@ ParserError::ParserError(const ParserError &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::UnicodeError,Base::Exception);
+
+UnicodeError::UnicodeError()
+: Exception()
+{
+}
 
 UnicodeError::UnicodeError(const char * sMessage)
   : Exception(sMessage)
@@ -557,6 +666,12 @@ UnicodeError::UnicodeError(const UnicodeError &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::OverflowError,Base::Exception);
+
+OverflowError::OverflowError()
+: Exception()
+{
+}
 
 OverflowError::OverflowError(const char * sMessage)
   : Exception(sMessage)
@@ -574,6 +689,12 @@ OverflowError::OverflowError(const OverflowError &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::UnderflowError,Base::Exception);
+
+UnderflowError::UnderflowError()
+: Exception()
+{
+}
 
 UnderflowError::UnderflowError(const char * sMessage)
   : Exception(sMessage)
@@ -591,6 +712,12 @@ UnderflowError::UnderflowError(const UnderflowError &inst)
 }
 
 // ---------------------------------------------------------
+TYPESYSTEM_SOURCE(Base::UnitsMismatchError,Base::Exception);
+
+UnitsMismatchError::UnitsMismatchError()
+: Exception()
+{
+}
 
 UnitsMismatchError::UnitsMismatchError(const char * sMessage)
   : Exception(sMessage)
@@ -608,7 +735,13 @@ UnitsMismatchError::UnitsMismatchError(const UnitsMismatchError &inst)
 }
 
 // ---------------------------------------------------------
- 
+TYPESYSTEM_SOURCE(Base::CADKernelError,Base::Exception);
+
+CADKernelError::CADKernelError()
+: Exception()
+{
+}
+
 CADKernelError::CADKernelError(const char * sMessage)
 : Exception(sMessage)
 {
