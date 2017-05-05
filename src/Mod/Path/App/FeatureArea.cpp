@@ -34,6 +34,8 @@
 #include <Base/Placement.h>
 #include <Mod/Part/App/PartFeature.h>
 
+FC_LOG_LEVEL_INIT("Path.Area",true,true)
+
 using namespace Path;
 
 PROPERTY_SOURCE(Path::FeatureArea, Part::Feature)
@@ -84,7 +86,7 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
             return new App::DocumentObjectExecReturn("Linked shape object is empty");
     }
 
-    TIME_INIT(t);
+    FC_TIME_INIT(t);
 
     AreaParams params;
 
@@ -129,7 +131,7 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
         Shape.setValue(compound);
     }
 
-    TIME_PRINT(t,"feature execute");
+    FC_TIME_LOG(t,"feature execute");
 
     if(!hasShape)
         return new App::DocumentObjectExecReturn("no output shape");
