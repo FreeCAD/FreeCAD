@@ -87,6 +87,7 @@ public:
   void *createInstance(void);
   /// creates a instance of the named type
   static void *createInstanceByName(const char* TypeName, bool bLoadModule=false);
+  static void importModule(const char* TypeName);
 
   typedef void * (*instantiationMethod)(void);
 
