@@ -920,12 +920,19 @@ const char* PythonCommand::getResource(const char* sName) const
     pcTemp = PyDict_GetItemString(_pcPyResourceDict,sName);
     if (!pcTemp)
         return "";
+#if PY_MAJOR_VERSION >= 3
+    if (!PyUnicode_Check(pcTemp)) {
+#else
     if (!PyString_Check(pcTemp)) {
+#endif
         throw Base::TypeError("PythonCommand::getResource(): Method GetResources() of the Python "
                               "command object returns a dictionary which holds not only strings");
     }
-
+#if PY_MAJOR_VERSION >= 3
+    return PyUnicode_AsUTF8(pcTemp);
+#else
     return PyString_AsString(pcTemp);
+#endif
 }
 
 void PythonCommand::activated(int iMsg)
@@ -988,9 +995,17 @@ const char* PythonCommand::getHelpUrl(void) const
     pcTemp = Interpreter().runMethodObject(_pcPyCommand, "CmdHelpURL");
     if (! pcTemp )
         return "";
+#if PY_MAJOR_VERSION >= 3
+    if (! PyUnicode_Check(pcTemp) )
+#else
     if (! PyString_Check(pcTemp) )
+#endif
         throw Base::TypeError("PythonCommand::CmdHelpURL(): Method CmdHelpURL() of the Python command object returns no string");
+#if PY_MAJOR_VERSION >= 3
+    return PyUnicode_AsUTF8(pcTemp);
+#else
     return PyString_AsString(pcTemp);
+#endif
 }
 
 Action * PythonCommand::createAction(void)
@@ -1298,12 +1313,19 @@ const char* PythonGroupCommand::getResource(const char* sName) const
     pcTemp = PyDict_GetItemString(_pcPyResource, sName);
     if (!pcTemp)
         return "";
+#if PY_MAJOR_VERSION >= 3
+    if (!PyUnicode_Check(pcTemp)) {
+#else
     if (!PyString_Check(pcTemp)) {
+#endif
         throw Base::ValueError("PythonGroupCommand::getResource(): Method GetResources() of the Python "
                                "group command object returns a dictionary which holds not only strings");
     }
-
+#if PY_MAJOR_VERSION >= 3
+    return PyUnicode_AsUTF8(pcTemp);
+#else
     return PyString_AsString(pcTemp);
+#endif
 }
 
 const char* PythonGroupCommand::getWhatsThis() const
