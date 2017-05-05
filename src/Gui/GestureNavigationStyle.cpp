@@ -389,12 +389,16 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     }
                     if(! processed) {
                         //re-synthesize all previously-consumed mouseDowns, if any. They might have been re-synthesized already when threshold was broken.
+                        if (button == SoMouseButtonEvent::BUTTON1)
+                            setViewingMode(NavigationStyle::SELECTION);
                         for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
                             inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
                         }
                         this->mousedownConsumedCount = 0;
                         processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
                         propagated = true;
+                        if (!(this->button1down || this->button2down || this->button3down))
+                            setViewingMode(NavigationStyle::IDLE);
                     }
                 }
             break;
@@ -489,7 +493,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     processed = true;
                 } else { //all buttons are released
                     //end of dragging/panning/whatever
-                    setViewingMode(NavigationStyle::SELECTION);
+                    setViewingMode(NavigationStyle::IDLE);
                     processed = true;
                 } //else of if (some bottons down)
             break;
@@ -529,7 +533,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
             const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
             assert(gesture);
             if (gesture->state == SoGestureEvent::SbGSEnd) {
-                setViewingMode(NavigationStyle::SELECTION);
+                setViewingMode(NavigationStyle::IDLE);
                 processed=true;
             } else if (gesture->state == SoGestureEvent::SbGSUpdate){
                 if(type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())){
@@ -577,7 +581,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         //animation modes
         if (!processed) {
             if (evIsButton || evIsGesture || evIsKeyboard || evIsLoc3)
-                setViewingMode(NavigationStyle::SELECTION);
+                setViewingMode(NavigationStyle::IDLE);
         }
     } break; //end of animation modes
     case NavigationStyle::BOXZOOM:
