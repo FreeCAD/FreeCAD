@@ -174,6 +174,7 @@ class _CommandWall:
 
     def Activated(self):
         self.Align = "Center"
+        self.MultiMat = None
         self.Length = None
         self.lengthValue = 0
         self.continueCmd = False
@@ -275,6 +276,8 @@ class _CommandWall:
         FreeCADGui.doCommand('base.addGeometry(trace)')
         FreeCADGui.doCommand('wall = Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
         FreeCADGui.doCommand('wall.Normal = FreeCAD.DraftWorkingPlane.axis')
+        if self.MultiMat:
+            FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("Draft.autogroup(wall)")
 
@@ -303,31 +306,46 @@ class _CommandWall:
         w.setWindowTitle(translate("Arch","Wall options").decode("utf8"))
         grid = QtGui.QGridLayout(w)
 
+        matCombo = QtGui.QComboBox()
+        matCombo.addItem(translate("Arch","Wall Presets..."))
+        self.multimats = []
+        self.MultiMat = None
+        for o in FreeCAD.ActiveDocument.Objects:
+            if Draft.getType(o) == "MultiMaterial":
+                self.multimats.append(o)
+                matCombo.addItem(o.Label)
+        if hasattr(FreeCAD,"LastArchMultiMaterial"):
+            for i,o in enumerate(self.multimats):
+                if o.Name == FreeCAD.LastArchMultiMaterial:
+                    matCombo.setCurrentIndex(i+1)
+                    self.MultiMat = o
+        grid.addWidget(matCombo,0,0,1,2)
+
         label5 = QtGui.QLabel(translate("Arch","Length").decode("utf8"))
         self.Length = ui.createWidget("Gui::InputField")
         self.Length.setText("0.00 mm")
-        grid.addWidget(label5,0,0,1,1)
-        grid.addWidget(self.Length,0,1,1,1)
+        grid.addWidget(label5,1,0,1,1)
+        grid.addWidget(self.Length,1,1,1,1)
 
         label1 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
         value1 = ui.createWidget("Gui::InputField")
         value1.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
-        grid.addWidget(label1,1,0,1,1)
-        grid.addWidget(value1,1,1,1,1)
+        grid.addWidget(label1,2,0,1,1)
+        grid.addWidget(value1,2,1,1,1)
 
         label2 = QtGui.QLabel(translate("Arch","Height").decode("utf8"))
         value2 = ui.createWidget("Gui::InputField")
         value2.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
-        grid.addWidget(label2,2,0,1,1)
-        grid.addWidget(value2,2,1,1,1)
+        grid.addWidget(label2,3,0,1,1)
+        grid.addWidget(value2,3,1,1,1)
 
         label3 = QtGui.QLabel(translate("Arch","Alignment").decode("utf8"))
         value3 = QtGui.QComboBox()
         items = ["Center","Left","Right"]
         value3.addItems(items)
         value3.setCurrentIndex(items.index(self.Align))
-        grid.addWidget(label3,3,0,1,1)
-        grid.addWidget(value3,3,1,1,1)
+        grid.addWidget(label3,4,0,1,1)
+        grid.addWidget(value3,4,1,1,1)
 
         label4 = QtGui.QLabel(translate("Arch","Con&tinue").decode("utf8"))
         value4 = QtGui.QCheckBox()
@@ -337,8 +355,8 @@ class _CommandWall:
         if hasattr(FreeCADGui,"draftToolBar"):
             value4.setChecked(FreeCADGui.draftToolBar.continueMode)
             self.continueCmd = FreeCADGui.draftToolBar.continueMode
-        grid.addWidget(label4,4,0,1,1)
-        grid.addWidget(value4,4,1,1,1)
+        grid.addWidget(label4,5,0,1,1)
+        grid.addWidget(value4,5,1,1,1)
 
         QtCore.QObject.connect(self.Length,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
         QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
@@ -350,7 +368,13 @@ class _CommandWall:
         QtCore.QObject.connect(value1,QtCore.SIGNAL("returnPressed()"),value2.setFocus)
         QtCore.QObject.connect(value1,QtCore.SIGNAL("returnPressed()"),value2.selectAll)
         QtCore.QObject.connect(value2,QtCore.SIGNAL("returnPressed()"),self.createFromGUI)
+        QtCore.QObject.connect(matCombo,QtCore.SIGNAL("currentIndexChanged(int)"),self.setMat)
         return w
+        
+    def setMat(self,d):
+        if d <= len(self.multimats):
+            self.MultiMat = self.multimats[d-1]
+            FreeCAD.LastArchMultiMaterial = self.MultiMat.Name
         
     def setLength(self,d):
         self.lengthValue = d
@@ -374,7 +398,9 @@ class _CommandWall:
     def createFromGUI(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
         FreeCADGui.addModule("Arch")
-        FreeCADGui.doCommand('Arch.makeWall(length='+str(self.lengthValue)+',width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
+        FreeCADGui.doCommand('wall = Arch.makeWall(length='+str(self.lengthValue)+',width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
+        if self.MultiMat:
+            FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         if hasattr(FreeCADGui,"draftToolBar"):
@@ -436,6 +462,7 @@ class _Wall(ArchComponent.Component):
         obj.Align = ['Left','Right','Center']
         obj.Role = Roles
         self.Type = "Wall"
+        obj.Role = "Wall"
 
     def execute(self,obj):
         "builds the wall shape"
@@ -716,11 +743,11 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         ArchComponent.ViewProviderComponent.attach(self,vobj)
 
     def updateData(self,obj,prop):
-        if prop in ["Placement","Shape"]:
+        if prop in ["Placement","Shape","Material"]:
             if obj.ViewObject.DisplayMode == "Footprint":
                 obj.ViewObject.Proxy.setDisplayMode("Footprint")
             if hasattr(obj,"Material"):
-                if obj.Material:
+                if obj.Material and obj.Shape:
                     if hasattr(obj.Material,"Materials"):
                         if len(obj.Material.Materials) == len(obj.Shape.Solids):
                             cols = []
@@ -733,9 +760,11 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                                 if 'Transparency' in mat.Material:
                                     c = (c[0],c[1],c[2],float(mat.Material['Transparency']))
                                 cols.extend([c for j in range(len(obj.Shape.Solids[i].Faces))])
-                            if obj.ViewObject.DiffuseColor != cols:
-                                obj.ViewObject.DiffuseColor = cols
+                            obj.ViewObject.DiffuseColor = cols
         ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
+        if len(obj.ViewObject.DiffuseColor) > 1:
+            # force-reset colors if changed
+            obj.ViewObject.DiffuseColor = obj.ViewObject.DiffuseColor
 
     def getDisplayModes(self,vobj):
         modes = ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)+["Footprint"]

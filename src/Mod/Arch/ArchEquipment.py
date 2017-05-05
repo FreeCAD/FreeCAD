@@ -267,6 +267,7 @@ class _Equipment(ArchComponent.Component):
         obj.addProperty("App::PropertyFloat","EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by this equipment in Watts"))
         self.Type = "Equipment"
         obj.Role = Roles
+        obj.Role = "Furniture"
         obj.Proxy = self
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
