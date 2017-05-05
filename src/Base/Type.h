@@ -92,6 +92,7 @@ public:
   typedef void * (*instantiationMethod)(void);
 
   static Type fromName(const char *name);
+  static Type fromKey(unsigned int key);
   const char *getName(void) const;
   const Type getParent(void) const;
   bool isDerivedFrom(const Type type) const;
