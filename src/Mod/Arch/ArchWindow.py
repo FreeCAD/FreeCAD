@@ -656,6 +656,7 @@ class _Window(ArchComponent.Component):
         obj.setEditorMode("WindowParts",2)
         self.Type = "Window"
         obj.Role = Roles
+        obj.Role = "Window"
         obj.Proxy = self
         obj.MoveWithHost = True
 

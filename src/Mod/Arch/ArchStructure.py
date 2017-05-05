@@ -411,6 +411,7 @@ class _Structure(ArchComponent.Component):
         self.Type = "Structure"
         obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
         obj.Role = Roles
+        obj.Role = "Beam"
 
     def execute(self,obj):
         "creates the structure shape"
