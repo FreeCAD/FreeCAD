@@ -80,7 +80,9 @@ void Exception::ReportException (void) const
         str+= " ";
     }
     
-    if(!_file.empty() && !_line.empty()) {
+    std::string _linestr = std::to_string(_line);
+    
+    if(!_file.empty() && !_linestr.empty()) {
         // strip absolute path
         std::size_t pos = _file.find("src");
         
@@ -88,7 +90,7 @@ void Exception::ReportException (void) const
             str+="in ";
             str+= _file.substr(pos);
             str+= ":";
-            str+=_line;
+            str+=_linestr;
         }
     }
 
@@ -213,7 +215,9 @@ void FileException::ReportException (void) const
         str+= " ";
     }
     
-    if(!_file.empty() && !_line.empty()) {
+    std::string _linestr = std::to_string(_line);
+    
+    if(!_file.empty() && !_linestr.empty()) {
         // strip absolute path
         std::size_t pos = _file.find("src");
         
@@ -221,7 +225,7 @@ void FileException::ReportException (void) const
             str+="in ";
             str+= _file.substr(pos);
             str+= ":";
-            str+=_line;
+            str+=_linestr;
         }
     }
     
