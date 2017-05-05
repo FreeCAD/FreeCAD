@@ -184,6 +184,14 @@ Type Type::fromName(const char *name)
     return Type::badType();
 }
 
+Type Type::fromKey(unsigned int key)
+{
+  if(key < typedata.size())
+    return typedata[key]->type;
+  else
+    return Type::badType();
+}
+
 const char *Type::getName(void) const
 {
   return typedata[index]->name.c_str();
