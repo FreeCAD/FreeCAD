@@ -1186,7 +1186,11 @@ PyObject *SelectionSingleton::sCountObjectsOfType(PyObject * /*self*/, PyObject 
         return NULL;
 
     unsigned int count = Selection().countObjectsOfType(objecttype, document);
+#if PY_MAJOR_VERSION < 3
     return PyInt_FromLong(count);
+#else
+    return PyLong_FromLong(count);
+#endif
 }
 
 PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
