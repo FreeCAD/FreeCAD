@@ -73,6 +73,8 @@ extern "C" {             /* a C library, but callable from C++ */
 #	undef  _POSIX_C_SOURCE
 #endif // (re-)defined in pyconfig.h
 #include <Python.h>
+    
+//#include <stdbool.h>
 
 extern int PP_RELOAD;    /* 1=reload py modules when attributes referenced */
 extern int PP_DEBUG;     /* 1=start debugger when string/function/member run */
@@ -179,6 +181,15 @@ extern void PP_Fetch_Error_Text();    /* fetch (and clear) exception */
 extern char PP_last_error_type[];     /* exception name text */
 extern char PP_last_error_info[];     /* exception data text */
 extern char PP_last_error_trace[];    /* exception traceback text */
+
+//extern char PP_last_error_file[];               /* exception file text */
+//extern unsigned int PP_last_error_line;            /* exception line */
+//extern unsigned int PP_last_error_classindex;      /* exception class type index (key of Base::Type) */
+//extern char PP_last_error_function[];           /* exception function text */
+//extern char PP_last_error_message[];            /* exception message text */
+//extern bool PP_last_error_isDictType;
+
+extern PyObject *PP_PyDict_Object;   /* saved PyDict object */
 
 extern PyObject *PP_last_traceback;   /* saved exception traceback object */
 
