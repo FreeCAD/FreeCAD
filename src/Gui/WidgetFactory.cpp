@@ -219,14 +219,25 @@ bool PythonWrapper::toCString(const Py::Object& pyobject, std::string& str)
 {
     if (PyUnicode_Check(pyobject.ptr())) {
         PyObject* unicode = PyUnicode_AsUTF8String(pyobject.ptr());
+#if PY_MAJOR_VERSION >= 3
+        str = PyBytes_AsString(unicode);
+#else
         str = PyString_AsString(unicode);
+#endif
         Py_DECREF(unicode);
         return true;
     }
+#if PY_MAJOR_VERSION >= 3
+    else if (PyBytes_Check(pyobject.ptr())) {
+        str = PyBytes_AsString(pyobject.ptr());
+        return true;
+    }
+#else
     else if (PyString_Check(pyobject.ptr())) {
         str = PyString_AsString(pyobject.ptr());
         return true;
     }
+#endif
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     if (Shiboken::String::check(pyobject.ptr())) {
         const char* s = Shiboken::String::toCString(pyobject.ptr());
@@ -853,12 +864,16 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
     // 1st argument
     Py::String str(args[0]);
     std::string className;
+#if PY_MAJOR_VERSION >= 3
+    className = str.as_std_string("utf-8");
+#else
     if (str.isUnicode()) {
         className = str.as_std_string("utf-8");
     }
     else {
         className = (std::string)str;
     }
+#endif
     // 2nd argument
     QWidget* parent = 0;
     if (wrap.loadCoreModule() && args.size() > 1) {
@@ -871,12 +886,16 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
     std::string objectName;
     if (args.size() > 2) {
         Py::String str(args[2]);
+#if PY_MAJOR_VERSION >= 3
+        objectName = str.as_std_string("utf-8");
+#else
         if (str.isUnicode()) {
             objectName = str.as_std_string("utf-8");
         }
         else {
             objectName = (std::string)str;
         }
+#endif
     }
 
     QWidget* widget = loader.createWidget(QString::fromLatin1(className.c_str()), parent,
@@ -1328,13 +1347,25 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
         throw Py::Exception();
 
     QVariant v;
-    if (PyString_Check(psValue)) {
-        v = QString::fromLatin1(PyString_AsString(psValue));
+    if (PyUnicode_Check(psValue)) {
+#if PY_MAJOR_VERSION >= 3
+        v = QString::fromUtf8(PyUnicode_AsUTF8(psValue));
+#else
+        PyObject* unicode = PyUnicode_AsUTF8String(psValue);
+        v = QString::fromUtf8(PyString_AsString(unicode));
+        Py_DECREF(unicode);
     }
+    else if (PyString_Check(psValue)) {
+        v = QString::fromLatin1(PyString_AsString(psValue));
+#endif
+
+    }
+#if PY_MAJOR_VERSION < 3
     else if (PyInt_Check(psValue)) {
         int val = PyInt_AsLong(psValue);
         v = val;
     }
+#endif
     else if (PyLong_Check(psValue)) {
         unsigned int val = PyLong_AsLong(psValue);
         v = val;
@@ -1347,11 +1378,18 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
         int nSize = PyList_Size(psValue);
         for (int i=0; i<nSize;++i) {
             PyObject* item = PyList_GetItem(psValue, i);
+#if PY_MAJOR_VERSION >= 3
+            if (!PyUnicode_Check(item))
+#else
             if (!PyString_Check(item))
+#endif
                 continue;
-
+#if PY_MAJOR_VERSION >= 3
+            char* pItem = PyUnicode_AsUTF8(item);
+#else
             char* pItem = PyString_AsString(item);
-            str.append(QString::fromLatin1(pItem));
+#endif
+            str.append(QString::fromUtf8(pItem));
         }
 
         v = str;

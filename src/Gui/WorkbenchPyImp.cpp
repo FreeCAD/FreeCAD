@@ -56,7 +56,11 @@ PyObject*  WorkbenchPy::name(PyObject *args)
 
     PY_TRY {
         std::string name = getWorkbenchPtr()->name(); 
+#if PY_MAJOR_VERSION >= 3
+        PyObject* pyName = PyUnicode_FromString(name.c_str());
+#else
         PyObject* pyName = PyString_FromString(name.c_str());
+#endif
         return pyName;
     }PY_CATCH;
 }
