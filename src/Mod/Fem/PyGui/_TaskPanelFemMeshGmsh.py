@@ -77,7 +77,7 @@ class _TaskPanelFemMeshGmsh:
         return True
 
     def clicked(self, button):
-        if button == QtGui.QDialogButtonBox.Apply:
+        if button == QtGui.QDialogButtonBox.Apply or (button == QtGui.QDialogButtonBox.Ok and self.gmsh_runs is False):
             self.set_mesh_params()
             self.run_gmsh()
 
