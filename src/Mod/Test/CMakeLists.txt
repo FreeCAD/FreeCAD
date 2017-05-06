@@ -5,7 +5,6 @@ SET(Test_SRCS
     BaseTests.py
     Document.py
     Menu.py
-    TestApp.py
     TestGui.py
     UnicodeTests.py
     UnitTests.py

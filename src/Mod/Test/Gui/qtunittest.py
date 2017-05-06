@@ -184,7 +184,7 @@ class QtTestRunner(BaseGUITestRunner):
         """
         self.root = root
         # Set up values that will be tied to widgets
-        import QtUnitGui
+        from Test import QtUnitGui
         self.gui=QtUnitGui.UnitTest()
         self.gui.setStatusText("Idle")
         self.runCountVar = 0
