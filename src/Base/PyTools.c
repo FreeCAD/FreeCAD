@@ -17,7 +17,6 @@ is provided on an as is basis, without warranties of any kind.
 #include <compile.h>
 #include <eval.h>
 
-
 #if PY_VERSION_HEX <= 0x02050000
 #error "Use Python2.5.x or higher"
 #endif
@@ -214,10 +213,20 @@ FC_OS_LINUX: This is dangerous. How about PY_EXCEPT_MAX?
 */
 
 /* exception text is here after PP_Fetch_Error_Text call */
-char PP_last_error_type[MAX];           /* exception name text */
-char PP_last_error_info[MAX];           /* exception data text */
-char PP_last_error_trace[MAX];          /* exception traceback text */
-PyObject *PP_last_traceback = NULL;     /* saved exception traceback object */
+char PP_last_error_type[MAX];               /* exception name text */
+char PP_last_error_info[MAX];               /* exception data text */
+
+//char PP_last_error_file[MAX];               /* exception file text */
+//unsigned int PP_last_error_line;            /* exception line */
+//unsigned int PP_last_error_classindex;      /* exception class type index (key of Base::Type) */
+//char PP_last_error_function[MAX];           /* exception function text */
+//char PP_last_error_message[MAX];            /* exception message text */
+
+PyObject *PP_PyDict_Object = NULL;          /* saved exception dictionary object */
+
+char PP_last_error_trace[MAX];              /* exception traceback text */
+PyObject *PP_last_traceback = NULL;         /* saved exception traceback object */
+//bool PP_last_error_isDictType = false;
 
 
 void PP_Fetch_Error_Text()
@@ -226,7 +235,7 @@ void PP_Fetch_Error_Text()
     //assert(PyErr_Occurred());
 
     char *tempstr;
-    PyObject *errobj, *errdata, *errtraceback, *pystring;
+    PyObject *errobj, *errdata, *errtraceback, *pystring, *pydict;
 
     /* get latest python exception information */
     /* this also clears the current exception  */
@@ -245,13 +254,47 @@ void PP_Fetch_Error_Text()
         strncpy(PP_last_error_type, PyString_AsString(pystring), MAX); /*Py->C*/
         PP_last_error_type[MAX-1] = '\0';
     }
-    else 
+    else
+    {
         strcpy(PP_last_error_type, "<unknown exception type>");
+    }
+    
     Py_XDECREF(pystring);
 
 
     pystring = NULL;
+    pydict = NULL;
     if (errdata != NULL &&
+        (PyDict_Check(errdata)) )                      /* str() increfs */
+    {
+        /*
+        pystring = PyDict_GetItemString(errdata,"swhat");
+        strncpy(PP_last_error_info, PyString_AsString(pystring), MAX); 
+        PP_last_error_info[MAX-1] = '\0';
+        
+        pystring = PyDict_GetItemString(errdata,"sfile");
+        strncpy(PP_last_error_file, PyString_AsString(pystring), MAX); 
+        PP_last_error_file[MAX-1] = '\0';
+        
+        pystring = PyDict_GetItemString(errdata,"sfunction");
+        strncpy(PP_last_error_function, PyString_AsString(pystring), MAX); 
+        PP_last_error_function[MAX-1] = '\0';
+        
+        pystring = PyDict_GetItemString(errdata,"sErrMsg");
+        strncpy(PP_last_error_message, PyString_AsString(pystring), MAX); 
+        PP_last_error_message[MAX-1] = '\0';
+        
+        pystring = PyDict_GetItemString(errdata,"iline");
+        PP_last_error_line = PyInt_AsLong(pystring);
+        
+        pystring = PyDict_GetItemString(errdata,"classindex");
+        PP_last_error_classindex = PyInt_AsLong(pystring);
+        
+        PP_last_error_isDictType = true;
+        */
+        pydict = errdata;
+    }
+    else if (errdata != NULL &&
        (pystring = PyObject_Str(errdata)) != NULL &&     /* str(): increfs */
        (PyString_Check(pystring)) )
     {
@@ -260,8 +303,8 @@ void PP_Fetch_Error_Text()
     }
     else 
         strcpy(PP_last_error_info, "<unknown exception data>");
+    
     Py_XDECREF(pystring);
-
 
     /* convert traceback to string */ 
     /* print text to a StringIO.StringIO() internal file object, then */
@@ -285,7 +328,9 @@ void PP_Fetch_Error_Text()
     Py_XDECREF(errobj);
     Py_XDECREF(errdata);               /* this function owns all 3 objects */
     Py_XDECREF(PP_last_traceback);     /* they've been NULL'd out in Python */ 
+    Py_XDECREF(PP_PyDict_Object);
     PP_last_traceback = errtraceback;  /* save/export raw traceback object */
+    PP_PyDict_Object = pydict;
 }
 
 
