@@ -69,8 +69,8 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
 #else
                     PyObject* unicode = PyUnicode_AsEncodedString(item, "utf-8", 0);
                     char* pItem = PyString_AsString(unicode);
-                    Py_DECREF(unicode);
                     path.push_back(pItem);
+                    Py_DECREF(unicode);
                 } else if (PyString_Check(item)) {
                     char* pItem = PyString_AsString(item);
                     path.push_back(pItem);
@@ -86,8 +86,8 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
 #else
             PyObject* unicode = PyUnicode_AsEncodedString(pPath, "utf-8", 0);
             char* pItem = PyString_AsString(unicode);
-            Py_DECREF(unicode);
             path.push_back(pItem);
+            Py_DECREF(unicode);
         } else if (PyString_Check(pPath)) {
             // one single item
             char* pItem = PyString_AsString(pPath);
@@ -111,8 +111,8 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
 #else
                     PyObject* unicode = PyUnicode_AsEncodedString(item, "utf-8", 0);
                     char* pItem = PyString_AsString(unicode);
-                    Py_DECREF(unicode);
                     items.push_back(pItem);
+                    Py_DECREF(unicode);
                 } else if (PyString_Check(item)) {
                     char* pItem = PyString_AsString(item);
                     items.push_back(pItem);
@@ -128,8 +128,8 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
 #else
             PyObject* unicode = PyUnicode_AsEncodedString(pItems, "utf-8", 0);
             char* pItem = PyString_AsString(unicode);
-            Py_DECREF(unicode);
             items.push_back(pItem);
+            Py_DECREF(unicode);
         } else if (PyString_Check(pItems)) {
             // one single item
             char* pItem = PyString_AsString(pItems);
@@ -204,8 +204,8 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
 #else
                     PyObject* unicode = PyUnicode_AsEncodedString(item, "utf-8", 0);
                     char* pItem = PyString_AsString(unicode);
-                    Py_DECREF(unicode);
                     path.push_back(pItem);
+                    Py_DECREF(unicode);
                 } else if (PyString_Check(item)) {
                     char* pItem = PyString_AsString(item);
                     path.push_back(pItem);
@@ -221,8 +221,8 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
 #else
             PyObject* unicode = PyUnicode_AsEncodedString(pPath, "utf-8", 0);
             char* pItem = PyString_AsString(unicode);
-            Py_DECREF(unicode);
             path.push_back(pItem);
+            Py_DECREF(unicode);
         } else if (PyString_Check(pPath)) {
             // one single item
             char* pItem = PyString_AsString(pPath);
@@ -246,8 +246,8 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
 #else
                     PyObject* unicode = PyUnicode_AsEncodedString(item, "utf-8", 0);
                     char* pItem = PyString_AsString(unicode);
-                    Py_DECREF(unicode);
                     items.push_back(pItem);
+                    Py_DECREF(unicode);
                 } else if (PyString_Check(item)) {
                     char* pItem = PyString_AsString(item);
                     items.push_back(pItem);
@@ -263,8 +263,8 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
 #else
             PyObject* unicode = PyUnicode_AsEncodedString(pItems, "utf-8", 0);
             char* pItem = PyString_AsString(unicode);
+            items.push_back(pItem);
             Py_DECREF(unicode);
-            items.push_back(pItem);            
         } else if (PyString_Check(pItems)) {
             // one single item
             char* pItem = PyString_AsString(pItems);
@@ -318,8 +318,8 @@ PyObject*  PythonWorkbenchPy::appendToolbar(PyObject *args)
 #else
                 PyObject* unicode = PyUnicode_AsEncodedString(item, "utf-8", 0);
                 char* pItem = PyString_AsString(unicode);
-                Py_DECREF(unicode);
                 items.push_back(pItem);
+                Py_DECREF(unicode);
             } else if (PyString_Check(item)) {
                 char* pItem = PyString_AsString(item);
                 items.push_back(pItem);
@@ -394,8 +394,8 @@ PyObject*  PythonWorkbenchPy::appendCommandbar(PyObject *args)
 #else
                 PyObject* unicode = PyUnicode_AsEncodedString(item, "utf-8", 0);
                 char* pItem = PyString_AsString(unicode);
-                Py_DECREF(unicode);
                 items.push_back(pItem);
+                Py_DECREF(unicode);
             } else if (PyString_Check(item)) {
                 char* pItem = PyString_AsString(item);
                 items.push_back(pItem);
