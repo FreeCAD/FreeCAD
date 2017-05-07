@@ -1046,3 +1046,255 @@ class DocumentPropertyCases(unittest.TestCase):
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument("PropertyTests")
+
+class ContainerCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("ContainerTest")
+
+    def testContainerNesting(self):
+        Container = FreeCAD.Containers.Container
+        doc = self.Doc
+        # set up this structure:
+        # Part
+        #     PartOrigin
+        #         ...
+        #         Part002
+        #             Part002Origin
+        #                 ...
+        #             Cylinder
+        #     Group
+        #         Sphere
+        #         Part003
+        #             Part003Origin
+        #                 ...
+        #             Torus
+        #     Cube
+        part = Container(doc).newObject("App::Part", "Part")
+        group = Container(part).newObject("App::DocumentObjectGroup", "Group")
+        cube = Container(part).newObject("App::FeaturePython","Cube")
+
+        part002 = Container(doc).newObject("App::Part", "Part002")
+        # adding part002 to origin... Containers do not allow this, but we want that for testing StaticChildrenRecursive...
+
+        with self.assertRaises(FreeCAD.Containers.ContainerError):
+            Container(part.Origin).addObject(part002)  # attempting to add anything to origin should fail with ContainerError
+        # ... bypass the rules by modifying proprties
+        part.Origin.OriginFeatures = part.Origin.OriginFeatures + [part002]
+
+        cylinder = Container(part002).newObject("App::FeaturePython","Cylinder")
+
+        sphere = Container(group).newObject("App::FeaturePython","Sphere")
+        part003 = Container(group).newObject("App::Part", "Part003")
+        torus = Container(part003).newObject("App::FeaturePython","Torus")
+
+        #test hasObject
+        self.failUnless(Container(doc).hasObject(part) == True)
+        self.failUnless(Container(doc).hasObject(group) == False)
+        self.failUnless(Container(doc).hasObject(part002) == False)
+        self.failUnless(Container(doc).hasObject(part.Origin) == False)
+        self.failUnless(Container(doc).hasObject(part.Origin.OriginFeatures[0]) == False)
+        self.failUnless(Container(doc).hasObject(part002.Origin) == False)
+        self.failUnless(Container(doc).hasObject(sphere) == False)
+
+        self.failUnless(Container(part).hasObject(part.Origin) == True)
+        self.failUnless(Container(part).hasObject(group) == True)
+        self.failUnless(Container(part).hasObject(cube) == True)
+        self.failUnless(Container(part).hasObject(doc) == False)
+        self.failUnless(Container(part).hasObject(part) == False)
+        self.failUnless(Container(part).hasObject(part002) == False)
+
+        self.failUnless(Container(group).hasObject(part002) == False)
+        self.failUnless(Container(group).hasObject(sphere) == True)
+        self.failUnless(Container(group).hasObject(group) == False)
+
+        self.failUnless(Container(part.Origin).hasObject(part002) == True)
+        self.failUnless(Container(part.Origin).hasObject(part.Origin.OriginFeatures[0]) == True)
+        self.failUnless(Container(part.Origin).hasObject(part.Origin) == False)
+        self.failUnless(Container(part.Origin).hasObject(part) == False)
+
+        #test child lists
+        self.failUnless(len(Container(doc).DynamicChildren) == 1)
+        self.failUnless(Container(doc).DynamicChildren[0] is part)
+        self.failUnless(len(Container(doc).StaticChildren) == 0)
+
+        self.failUnless(len(Container(part).DynamicChildren) == 2)
+        self.failUnless(len(Container(part).StaticChildren) == 1)
+
+        self.failUnless(part002.Origin in Container(part).StaticChildrenRecursive)
+        self.failUnless(part003.Origin not in Container(part).StaticChildrenRecursive)
+        self.failUnless(cube not in Container(part).StaticChildrenRecursive)
+        self.failUnless(cylinder in Container(part).DynamicChildrenRecursive)
+        self.failUnless(part003.Origin in Container(part).DynamicChildrenRecursive)
+        self.failUnless(part002.Origin not in Container(part).DynamicChildrenRecursive)
+
+        self.failUnless(Container(doc).isRoot() == True)
+        self.failUnless(Container(part).isRoot() == False)
+
+        self.failUnless(Container(part).Parent is doc)
+        self.failUnless(Container(part.Origin).Parent is part)
+
+        self.failUnless(Container(doc).canAccept("App::DocumentObject") == True)
+        self.failUnless(Container(doc).canAccept("App::FeaturePython", "whatever =)") == True)
+        self.failUnless(Container(doc).canAccept("Base::Placement") == False)
+
+        self.failUnless(Container(part.Origin).canAccept("App::DocumentObject") == False)
+
+        self.failUnless(Container(doc).canAccept(part) == True)
+        self.failUnless(Container(part).canAccept(part002) == True)
+        self.failUnless(Container(part.Origin).canAccept(part002) == False)
+        # check circular dependency proofing
+        self.failUnless(Container(part).canAccept(part) == False)
+        self.failUnless(Container(part002).canAccept(part) == False)
+
+        self.failUnless(Container(doc).adoptObject(part) == True)
+        self.failUnless(Container(doc).adoptObject(group) == False)
+
+        with self.assertRaises(FreeCAD.Containers.ContainerError):
+            Container(doc).deleteObject(cube) #should fail, because cube is not directly in doc
+        self.failUnless(Container(part).hasObject(cube)) #test that cube wasn't deleted
+
+        with self.assertRaises(FreeCAD.Containers.ContainerError):
+            Container(part).deleteObject(part.Origin) #should fail, because Origin is a static child
+        self.failUnless(Container(part).hasObject(part.Origin)) #test that origin wasn't deleted
+
+        cubename = cube.Name
+        with self.assertRaises(FreeCAD.Containers.ContainerError):
+            Container(doc).getObject(cubename) #should fail, because cube is not directly in doc
+        self.failUnless(Container(part).getObject(cubename) is cube)
+        Container(part).deleteObject(cube)
+        self.failUnless(doc.getObject(cubename) is None)
+
+        with self.assertRaises(FreeCAD.Containers.ContainerError):
+            Container(part).getObject(cubename) #should fail, because cube should have been deleted
+
+        Container(group).addObject(torus) #this should withdraw the torus from part003 and add it to group
+        self.failUnless(Container(group).hasObject(torus) == True)
+        self.failUnless(Container(part003).hasObject(torus) == False)
+
+        with self.assertRaises(FreeCAD.Containers.ContainerError):
+            Container(part).withdrawObject(part.Origin)
+
+        Container(part).withdrawObject(group)
+        self.failUnless(Container(group).Parent is not part)
+        Container(part).adoptObject(group)
+        self.failUnless(Container(group).Parent is part)
+
+        self.failUnless(Container(group).Name == group.Name)
+
+    def testNullContainer(self):
+        Container = FreeCAD.Containers.Container
+        self.failUnless(Container().Object is None)
+        with self.assertRaises(FreeCAD.Containers.ContainerError):
+            Container().Name
+        with self.assertRaises(FreeCAD.Containers.ContainerError):
+            Container().newObject("App::FeaturePython")
+        Container().AllChildren
+        Container().AllChildrenRecursive
+        repr(Container())
+
+    def testDeletedContainer(self):
+        Container = FreeCAD.Containers.Container
+        doc = FreeCAD.newDocument("ContainerDeleteTest")
+        try:
+            part = Container(doc).newObject("App::Part", "Part")
+            c = Container(part)
+            Container(doc).deleteObject(part)
+            doc.clearUndos() # to make sure the object was indeed deleted
+            self.failUnless(doc.getObject("Part") == None)
+            self.failUnless(c.Object is None)
+            c.AllChildren # test that it doesn't crash
+            c.AllChildrenRecursive
+            self.failUnless(c.canAccept("App::FeaturePython") == False)
+        finally:
+            FreeCAD.closeDocument("ContainerDeleteTest")
+
+    def tearDown(self):
+        FreeCAD.closeDocument("ContainerTest")
+
+class ActiveContainerCases(unittest.TestCase):
+
+    def setUp(self):
+        self.observer = None
+        self.docs = []
+
+    def testActiveContainer(self):
+        Container = FreeCAD.Containers.Container #shortcut
+
+        for docname in FreeCAD.listDocuments():
+            FreeCAD.closeDocument(docname)
+        self.failUnless(FreeCAD.ActiveContainer.Object is None)
+
+        class ContainerObserver(object):
+            acc_AAC = 0
+            acc_DAC = 0
+            def slotAppActiveContainer(self, newContainer, oldContainer):
+                self.acc_AAC += 1
+            def slotDocActiveContainer(self, doc, newContainer, oldContainer):
+                self.acc_DAC += 1
+            def pop(self):
+                "returns call counts (App, Doc) and resets counters"
+                ret = (self.acc_AAC, self.acc_DAC)
+                self.acc_AAC = 0
+                self.acc_DAC = 0
+                return ret
+        self.observer = ContainerObserver()
+        FreeCAD.addDocumentObserver(self.observer)
+
+        doc1 = FreeCAD.newDocument("ActiveContainerTest")
+        doc2 = FreeCAD.newDocument("ActiveContainerTest2")
+        self.docs += [doc1, doc2]
+        
+        self.failUnless(self.observer.pop()[0] >= 2) #Gui stuff re-triggers setActiveDocument, so predicting the exact number of observer calls is tricky. Hence use inequality.
+
+        FreeCAD.setActiveContainer(doc2)
+        self.failUnless(FreeCAD.ActiveContainer.Object is doc2)
+        self.failUnless(self.observer.pop()[0] >= 1)
+
+        part1 = doc1.addObject("App::Part", "Part")
+        self.failUnless(self.observer.pop() == (0, 0))
+
+        with self.assertRaises(FreeCAD.Base.FreeCADError):
+            doc2.ActiveContainer = part1 #part1 is from another document, should fail
+        self.failUnless(self.observer.pop() == (0, 0))
+
+        doc1.ActiveContainer = part1.Name #1
+        self.failUnless(doc1.ActiveContainer.Object is part1)
+        doc1.ActiveContainer = None #2
+        self.failUnless(doc1.ActiveContainer.Object is doc1)
+        doc1.ActiveContainer = part1 #3
+        self.failUnless(doc1.ActiveContainer.Object is part1)
+        doc1.ActiveContainer = doc1 #4
+        self.failUnless(doc1.ActiveContainer.Object is doc1)
+        doc1.ActiveContainer = Container(part1) #5
+        self.failUnless(doc1.ActiveContainer.Object is part1)
+
+        #check that all 5 successful assignments have reached right observer
+        self.failUnless(self.observer.pop() == (0, 5))
+
+        self.failUnless(FreeCAD.ActiveContainer.Object is doc2)
+        FreeCAD.setActiveDocument(doc1.Name)
+        self.failUnless(FreeCAD.ActiveContainer.Object is part1)
+        self.failUnless(self.observer.pop()[0] >= 1)
+
+        #test legacy App.ActiveDocument.addObject redirection to active container
+        obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "test")
+        self.failUnless(FreeCAD.ActiveContainer.hasObject(obj) == True)
+        # but not if using newObject()
+        obj2 = FreeCAD.ActiveDocument.newObject("App::FeaturePython", "test2")
+        self.failUnless(FreeCAD.ActiveContainer.hasObject(obj2) == False)
+
+        self.failUnless(self.observer.pop() == (0, 0)) #object addition shouldn't trigger observer
+
+        FreeCAD.removeDocumentObserver(self.observer)
+        FreeCAD.setActiveContainer(doc2)
+        self.failUnless(self.observer.pop() == (0, 0)) #observer was removed, shoudn't be called anymore
+        self.observer = None
+
+    def tearDown(self):
+        if self.observer:
+            FreeCAD.removeDocumentObserver(self.observer)
+            self.observer = None
+        if self.docs:
+            for doc in self.docs:
+                FreeCAD.closeDocument(doc.Name)
+            self.docs = None

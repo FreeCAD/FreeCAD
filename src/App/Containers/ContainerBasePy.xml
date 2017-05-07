@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="BaseClassPy" 
+      Name="ContainerBasePy" 
+      Twin="ContainerBase" 
+      TwinPointer="ContainerBase" 
+      Include="App/Containers/ContainerBase.h" 
+      FatherInclude="Base/BaseClassPy.h" 
+      Namespace="App" 
+      Constructor="false"
+      Delete="false"
+      FatherNamespace="Base"
+      DisableNotify="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+      <DeveloperDocu>ContainerBase</DeveloperDocu>
+      <UserDocu>ContainerBase - base class for container interface</UserDocu>
+    </Documentation>
+    <Attribute Name="Object" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Object the interface is around (either a Document or DocumentObject)</UserDocu>
+      </Documentation>
+      <Parameter Name="Object" Type="Object" />
+    </Attribute>
+    <Attribute Name="StaticChildren" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Objects contained by the container that cannot be removed.</UserDocu>
+      </Documentation>
+      <Parameter Name="StaticChildren" Type="List" />
+    </Attribute>
+    <Attribute Name="DynamicChildren" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Objects contained by the container that can be removed.</UserDocu>
+      </Documentation>
+      <Parameter Name="DynamicChildren" Type="List" />
+    </Attribute>
+    <Attribute Name="AllChildren" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Objects contained by the container directly (static + dynamic).</UserDocu>
+      </Documentation>
+      <Parameter Name="AllChildren" Type="List" />
+    </Attribute>
+    <Attribute Name="StaticChildrenRecursive" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Objects contained by the container (directly and indirectly) that cannot be removed.</UserDocu>
+      </Documentation>
+      <Parameter Name="StaticChildrenRecursive" Type="List" />
+    </Attribute>
+    <Attribute Name="DynamicChildrenRecursive" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Objects contained by the container (directly and indirectly) that can be removed.</UserDocu>
+      </Documentation>
+      <Parameter Name="DynamicChildrenRecursive" Type="List" />
+    </Attribute>
+    <Attribute Name="AllChildrenRecursive" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Objects contained by the container (directly and indirectly).</UserDocu>
+      </Documentation>
+      <Parameter Name="AllChildrenRecursive" Type="List" />
+    </Attribute>
+    <Attribute Name="Name" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Name of the underlying object</UserDocu>
+      </Documentation>
+      <Parameter Name="Name" Type="String" />
+    </Attribute>
+    <Attribute Name="Document" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Document the container is in (or is the document itself)</UserDocu>
+      </Documentation>
+      <Parameter Name="Document" Type="Object" />
+    </Attribute>
+    <Attribute Name="Parent" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Upper level container</UserDocu>
+      </Documentation>
+      <Parameter Name="Parent" Type="Object" />
+    </Attribute>
+    <Attribute Name="Parents" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of upper level containers (useful for correcting non-tree containership).</UserDocu>
+      </Documentation>
+      <Parameter Name="Parents" Type="List" />
+    </Attribute>
+
+
+    <Methode Name="getObject" Const="true">
+      <Documentation>
+        <UserDocu>getObject(name): returns object by name, or raises an exception if object is not found.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="hasObject" Const="true">
+      <Documentation>
+        <UserDocu>hasObject(object): returns True if given object is contained directly by this container.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isRoot" Const="true">
+      <Documentation>
+        <UserDocu>isRoot(): returns true if this container is the root of container tree (== isADocument()).</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isAWorkspace" Const="true">
+      <Documentation>
+        <UserDocu>isAWorkspace(): returns true if this container is a workspace (i.e. a moveable container, or a document).</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isADocument" Const="true">
+      <Documentation>
+        <UserDocu>isADocument(): returns true if this container is a document.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isAGroup" Const="true">
+      <Documentation>
+        <UserDocu>isAGroup(): returns true if this container is an object that has GroupExtension or derivative (e.g. OriginGroup).</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isAGeoGroup" Const="true">
+      <Documentation>
+        <UserDocu>isAGeoGroup(): returns true if this container is an object that has GeoFeatureGroupExtension or derivative.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isAnOrigin" Const="true">
+      <Documentation>
+        <UserDocu>isAnOrigin(): returns true if this container is an Origin (special container for origin features).</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isADocumentObject" Const="true">
+      <Documentation>
+        <UserDocu>isADocumentObject(): returns true if this container is a document object (that is, object contained in a document, not the document itself).</UserDocu>
+      </Documentation>
+    </Methode>
+
+  </PythonExport>
+</GenerateModel>

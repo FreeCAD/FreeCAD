@@ -110,8 +110,6 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
             "App.ActiveDocument.addObject(\'PartDesign::Additive%s\',\'%s\')",
             shapeType, FeatName.c_str() );
 
-    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addObject(App.activeDocument().%s)"
-                    ,pcActiveBody->getNameInDocument(), FeatName.c_str());
     Gui::Command::updateActive();
 
     auto* prm = static_cast<PartDesign::FeaturePrimitive*>(getDocument()->getObject(FeatName.c_str()));
@@ -248,8 +246,6 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
             "App.ActiveDocument.addObject(\'PartDesign::Subtractive%s\',\'%s\')",
             shapeType, FeatName.c_str() );
 
-    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addObject(App.activeDocument().%s)"
-                    ,pcActiveBody->getNameInDocument(), FeatName.c_str());
     Gui::Command::updateActive();
 
     if ( isActiveObjectValid() ) {

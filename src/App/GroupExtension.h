@@ -49,13 +49,25 @@ public:
     /** Adds an object of \a sType with \a pObjectName to the document this group belongs to and
      * append it to this group as well.
      */
-    virtual DocumentObject *addObject(const char* sType, const char* pObjectName);
-    /* Adds the object \a obj to this group.
+    virtual DocumentObject *newObject(const char* sType, const char* pObjectName);
+
+    /** Adds the object \a obj to this group. If the object is already in another group, it is withdrawn first.
      */
     virtual void addObject(DocumentObject* obj);
+
     /*override this function if you want only special objects
      */
-    virtual bool allowObject(DocumentObject* ) {return true;};
+    /**
+     * @brief allowObject(object): tests if given object can be added to this group
+     */
+    virtual bool allowObject(DocumentObject* obj);
+    /**
+     * @brief allowObject(type, pytype): tests if an object of given type can be created in/added to this group.
+     * @param type: c++ type name, e.g. "Part::Primitive"
+     * @param pytype: python type (free-form)
+     * @return
+     */
+    virtual bool allowObject(const char* type, const char* pytype = "");
     
     /** Removes an object from this group.
      */
@@ -80,7 +92,10 @@ public:
     bool isChildOf(const GroupExtension*) const;
     /** Returns a list of all objects this group does have.
      */
-    std::vector<DocumentObject*> getObjects() const;
+    virtual std::vector<DocumentObject*> getObjects() const;
+    virtual std::vector<DocumentObject*> getStaticObjects() const;
+    virtual std::vector<DocumentObject*> getDynamicObjects() const;
+
     /** Returns a list of all objects of \a typeId this group does have.
      */
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
@@ -112,7 +127,7 @@ public:
     virtual ~GroupExtensionPythonT() {}
  
     //override the documentobjectextension functions to make them available in python 
-    virtual bool allowObject(DocumentObject* obj)  override {
+    virtual bool allowObject(DocumentObject* obj) override {
         Py::Object pyobj = Py::asObject(obj->getPyObject());
         EXTENSION_PROXY_ONEARG(allowObject, pyobj);
                 
@@ -122,6 +137,28 @@ public:
         if(result.isBoolean())
             return result.isTrue();
         
+        return false;
+    };
+    virtual bool allowObject(const char* type, const char* pytype) override {
+        Py::String arg0(type);
+        Py::String arg1(pytype ? pytype : "");
+        EXTENSION_PROXY_FIRST(allowObject)
+        Py::Tuple args(2);
+        args.setItem(0, arg0);
+        args.setItem(0, arg1);
+        EXTENSION_PROXY_SECOND(allowObject)
+        Py::Tuple args(3);
+        args.setItem(0, Py::Object(this->getExtensionPyObject(), true));
+        args.setItem(1, arg0);
+        args.setItem(2, arg1);
+        EXTENSION_PROXY_THIRD()
+
+        if(result.isNone())
+            return ExtensionT::allowObject(type, pytype);
+
+        if(result.isBoolean())
+            return result.isTrue();
+
         return false;
     };
 };

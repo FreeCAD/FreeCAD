@@ -1378,11 +1378,21 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
         in.rdbuf(&buf);
         MergeDocuments mimeView(doc);
         std::vector<App::DocumentObject*> newObj = mimeView.importObjects(in);
-        std::vector<App::DocumentObjectGroup*> grp = Gui::Selection().getObjectsOfType<App::DocumentObjectGroup>();
-        if (grp.size() == 1) {
-            Gui::Document* gui = Application::Instance->getDocument(doc);
-            if (gui)
-                gui->addRootObjectsToGroup(newObj, grp.front());
+
+        //add to group - either to selected one, or to active one.
+        App::Container targetContainer;
+        std::vector<App::DocumentObject*> grp = Gui::Selection().getObjectsOfType<App::DocumentObject>();
+        if (grp.size() == 1){
+            if (grp[0]->hasExtension(App::GroupExtension::getExtensionClassTypeId())){
+                targetContainer = App::Container(grp[0]);
+            }
+        }
+        if (!targetContainer.object()){
+            //none selected, use active group
+            targetContainer = App::GetApplication().getActiveContainer();
+        }
+        for (App::DocumentObject* obj: newObj){
+            targetContainer.adoptObject(obj);
         }
         doc->commitTransaction();
     }
@@ -1397,11 +1407,21 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
         MergeDocuments mimeView(doc);
         std::vector<App::DocumentObject*> newObj = mimeView.importObjects(str);
         str.close();
-        std::vector<App::DocumentObjectGroup*> grp = Gui::Selection().getObjectsOfType<App::DocumentObjectGroup>();
-        if (grp.size() == 1) {
-            Gui::Document* gui = Application::Instance->getDocument(doc);
-            if (gui)
-                gui->addRootObjectsToGroup(newObj, grp.front());
+
+        //add to group - either to selected one, or to active one.
+        App::Container targetContainer;
+        std::vector<App::DocumentObject*> grp = Gui::Selection().getObjectsOfType<App::DocumentObject>();
+        if (grp.size() == 1){
+            if (grp[0]->hasExtension(App::GroupExtension::getExtensionClassTypeId())){
+                targetContainer = App::Container(grp[0]);
+            }
+        }
+        if (!targetContainer.object()){
+            //none selected, use active group
+            targetContainer = App::GetApplication().getActiveContainer();
+        }
+        for (App::DocumentObject* obj: newObj){
+            targetContainer.adoptObject(obj);
         }
         doc->commitTransaction();
     }

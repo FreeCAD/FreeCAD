@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="ContainerBasePy" 
+      Name="ContainerPy" 
+      Twin="Container" 
+      TwinPointer="Container" 
+      Include="App/Containers/Container.h" 
+      FatherInclude="App/Containers/ContainerBasePy.h" 
+      Namespace="App" 
+      Constructor="true"
+      Delete="true"
+      FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+      <DeveloperDocu>Container - object container interace</DeveloperDocu>
+<UserDocu>Container - interface class for objects that can contain other objects
+
+Constructor:
+Container(): creates an unbound container interface (useful for testing purposes only).
+Container(documentObject): creates a container interface around object (e.g. App::Part). 
+    If documentObject is not recognized as a container, exception is thrown. If you want 
+    your custom object to be recognized as a container, add GroupExtensionPython (or 
+    derived) to it.
+Container(document): creates a container interface around a document.
+Constructor is cheap, so constructing container interfaces around objects on the fly as 
+needed is all right.
+
+Attributes:
+Apart from built-in attributes and methods, child objects can be accessed as attributes of 
+Container object. E.g. 'Container(App.ActiveDocument).Part' is the same as 
+'App.ActiveDocument.Part', if Part is at the root of Document.
+
+Examples of use:
+Container(App.ActiveDocument).AllChildren - returns list of objects in document root (i.e. 
+   not contained by any container object)
+Container(App.ActiveDocument.Part).newObject('Part::Box', 'Cube') creates a Cube and adds 
+   it to Part.</UserDocu>
+    </Documentation>
+
+    <Methode Name="canAccept">
+      <Documentation>
+<UserDocu>canAccept(object, b_throw = False): tests if the object can be added to this container.
+canAccept(type, pytype = ''): tests if an object of given type can be created in this container.
+
+type: string name of a C++ type, like 'Part::Primitive'.
+
+pytype: string identifier of python type (optional; no specific format). The purpose of 
+this argument is for communication between GUI commands and Py-powered containers. 
+Py-powered containers can hook onto this function by implementing 
+allowObject(self, selfobj, type, pytype) extension method.
+
+b_throw: if True, canAccept will raise an exception instead of returning False.
+This can be used to gain information on why the object is not accepted.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="newObject">
+      <Documentation>
+<UserDocu>newObject(type, name, pytype = ''): creates a new object in this container.
+
+type: string name of a C++ type, like 'Part::Box'.
+
+pytype: string identifier of python type (optional; no specific format). The
+only purpose of this argument is to make canAccept() method happy, since it is
+called before object creation is attempted. See also docstring of canAccept.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="adoptObject">
+      <Documentation>
+        <UserDocu>adoptObject(object): adds the object to this container if it isn't in any group already.
+Returns True if object ends up in this container, either because it was there before, or was added.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addObject">
+      <Documentation>
+        <UserDocu>addObject(object): withdraws the object from the container it's already in (if needed), and adds it to this container.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="withdrawObject">
+      <Documentation>
+        <UserDocu>withdrawObject(object): removes the object from this container, making it free to be adopted by another container (in current implementation, the object ends up directly in the document).</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="deleteObject">
+      <Documentation>
+        <UserDocu>deleteObject(object): deletes the object (removes it from this container and from document).</UserDocu>
+      </Documentation>
+    </Methode>
+
+  </PythonExport>
+</GenerateModel>

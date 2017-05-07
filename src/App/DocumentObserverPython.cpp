@@ -78,6 +78,11 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
         (&DocumentObserverPython::slotDeletedObject, this, _1));
     this->connectDocumentChangedObject = App::GetApplication().signalChangedObject.connect(boost::bind
         (&DocumentObserverPython::slotChangedObject, this, _1, _2));
+
+    this->connectDocActiveContainer = App::GetApplication().signalDocActiveContainer.connect(boost::bind
+        (&DocumentObserverPython::slotDocActiveContainer, this, _1, _2, _3));
+    this->connectAppActiveContainer = App::GetApplication().signalActiveContainer.connect(boost::bind
+        (&DocumentObserverPython::slotAppActiveContainer, this, _1, _2));
 }
 
 DocumentObserverPython::~DocumentObserverPython()
@@ -92,6 +97,9 @@ DocumentObserverPython::~DocumentObserverPython()
     this->connectDocumentCreatedObject.disconnect();
     this->connectDocumentDeletedObject.disconnect();
     this->connectDocumentChangedObject.disconnect();
+
+    this->connectDocActiveContainer.disconnect();
+    this->connectAppActiveContainer.disconnect();
 }
 
 void DocumentObserverPython::slotCreatedDocument(const App::Document& Doc)
@@ -187,6 +195,44 @@ void DocumentObserverPython::slotRedoDocument(const App::Document& Doc)
             Py::Callable method(this->inst.getAttr(std::string("slotRedoDocument")));
             Py::Tuple args(1);
             args.setItem(0, Py::Object(const_cast<App::Document&>(Doc).getPyObject(), true));
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotDocActiveContainer(App::Document* doc, App::Container newContainer, App::Container oldContainer)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotDocActiveContainer"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotDocActiveContainer")));
+            Py::Tuple args(3);
+            if (doc)
+                args.setItem(0, Py::Object(doc->getPyObject(), true));
+            args.setItem(1, Py::Object(newContainer.getPyObject(), true));
+            args.setItem(2, Py::Object(oldContainer.getPyObject(), true));
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotAppActiveContainer(App::Container newContainer, App::Container oldContainer)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotAppActiveContainer"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotAppActiveContainer")));
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(newContainer.getPyObject(), true));
+            args.setItem(1, Py::Object(oldContainer.getPyObject(), true));
             method.apply(args);
         }
     }

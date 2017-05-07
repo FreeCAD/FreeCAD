@@ -151,7 +151,7 @@ void Origin::setupObject () {
     std::vector<App::DocumentObject *> links;
     for (auto data: setupData) {
         std::string objName = doc->getUniqueObjectName ( data.role );
-        App::DocumentObject *featureObj = doc->addObject ( data.type.getName(), objName.c_str () );
+        App::DocumentObject *featureObj = doc->newObject ( data.type.getName(), objName.c_str () );
 
         assert ( featureObj && featureObj->isDerivedFrom ( App::OriginFeature::getClassTypeId () ) );
 

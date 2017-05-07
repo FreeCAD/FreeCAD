@@ -138,41 +138,17 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
 bool ViewProviderBody::doubleClicked(void)
 {
-    //first, check if the body is already active.
-    App::DocumentObject* activeBody = nullptr;
-    Gui::MDIView* activeView = this->getActiveView();
-    if ( activeView ) {
-        activeBody = activeView->getActiveObject<App::DocumentObject*> (PDBODYKEY);
-    }
 
-    if (activeBody == this->getObject()){
-        //active body double-clicked. Deactivate.
+    App::Container ac = this->getObject()->getDocument()->getActiveContainer();
+    if (ac.object() == this->getObject()){
         Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', None)",
-                this->getObject()->getDocument()->getName(),
-                PDBODYKEY);
+                                "App.getDocument('%s').ActiveContainer = None",
+                                this->getObject()->getDocument()->getName());
     } else {
-
-        // assure the PartDesign workbench
-        Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-        // and set correct active objects
-        auto* part = App::Part::getPartOfObject ( getObject() );
-        if ( part && part != getActiveView()->getActiveObject<App::Part*> ( PARTKEY ) ) {
-            Gui::Command::doCommand(Gui::Command::Gui,
-                    "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
-                    part->getDocument()->getName(),
-                    PARTKEY,
-                    part->getDocument()->getName(),
-                    part->getNameInDocument());
-        }
-
         Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
-                this->getObject()->getDocument()->getName(),
-                PDBODYKEY,
-                this->getObject()->getDocument()->getName(),
-                this->getObject()->getNameInDocument());
+                                "App.getDocument('%s').ActiveContainer = '%s'",
+                                this->getObject()->getDocument()->getName(),
+                                this->getObject()->getNameInDocument());
     }
 
     return true;

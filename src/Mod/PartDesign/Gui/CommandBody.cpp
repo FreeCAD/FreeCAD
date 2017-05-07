@@ -58,12 +58,12 @@ namespace PartDesignGui {
 
 /// Returns active part, if there is no such, creates a new part, if it fails, shows a message
 App::Part* assertActivePart () {
-    App::Part* rv= Gui::Application::Instance->activeView()->getActiveObject<App::Part *> ( PARTKEY );
+    App::Part* rv = dynamic_cast<App::Part*>(App::GetApplication().getActiveContainer().object());
 
     if ( !rv ) {
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
         rcCmdMgr.runCommandByName("PartDesign_Part");
-        rv = Gui::Application::Instance->activeView()->getActiveObject<App::Part *> ( PARTKEY );
+        rv = dynamic_cast<App::Part*>(App::GetApplication().getActiveContainer().object());
         if ( !rv ) {
             QMessageBox::critical ( 0, QObject::tr( "Part creation failed" ),
                     QObject::tr( "Failed to create a part object." ) );
@@ -107,8 +107,8 @@ void CmdPartDesignPart::activated(int iMsg)
     // TODO We really must to set label ourselfs? (2015-08-17, Fat-Zer)
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'", PartName.c_str(),
             QObject::tr(PartName.c_str()).toUtf8().data());
-    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
-            PARTKEY, PartName.c_str());
+    doCommand(Gui::Command::Gui, "App.ActiveDocument.ActiveContainer = '%s'",
+            PartName.c_str());
 
     updateActive();
 }
@@ -206,16 +206,12 @@ void CmdPartDesignBody::activated(int iMsg)
                 bodyName.c_str(), baseFeature->getNameInDocument());
     }
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
-    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", 
-            PDBODYKEY, bodyName.c_str());
+    doCommand(Gui::Command::Gui, "App.ActiveDocument.ActiveContainer = '%s'",
+            bodyName.c_str());
 
     // Make the "Create sketch" prompt appear in the task panel
     doCommand(Gui,"Gui.Selection.clearSelection()");
     doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", bodyName.c_str());
-    if (actPart) {
-        doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
-                 actPart->getNameInDocument(), bodyName.c_str());
-    }
 
     // The method 'SoCamera::viewBoundingBox' is still declared as protected in Coin3d versions
     // older than 4.0.
@@ -242,7 +238,7 @@ void CmdPartDesignBody::activated(int iMsg)
 
 bool CmdPartDesignBody::isActive(void)
 {
-    return hasActiveDocument() && !PartDesignGui::isLegacyWorkflow ( getDocument () );
+    return hasActiveDocument() && !PartDesignGui::isLegacyWorkflow ( getDocument () ) && (PartDesign::Body::activeBody() == nullptr);
 }
 
 //===========================================================================
@@ -566,6 +562,7 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
     openCommand("Duplicate a PartDesign object");
     doCommand(Doc,"FreeCADGui.runCommand('Std_DuplicateSelection')");
 
+    //FIXME: make Std_DuplicateSelection do the container management (involved!, skipping now)
     if (pcActiveBody) {
         // Find the features that were added
         std::vector<App::DocumentObject*> afterFeatures = getDocument()->getObjects();
