@@ -132,6 +132,9 @@ App::DocumentObjectExecReturn *Origin::execute(void) {
     return DocumentObject::execute ();
 }
 
+
+// vejmarie this is the Origin setup
+
 void Origin::setupObject () {
     const static struct {
         const Base::Type type;
@@ -147,8 +150,55 @@ void Origin::setupObject () {
     };
 
     App::Document *doc = getDocument ();
-
     std::vector<App::DocumentObject *> links;
+/*    std::vector<const char *> names;
+
+    names.push_back(doc->getUniqueObjectName (setupData[0].role).c_str());
+    names.push_back(doc->getUniqueObjectName (setupData[1].role).c_str());
+    names.push_back(doc->getUniqueObjectName (setupData[2].role).c_str());
+
+    std::vector<App::DocumentObject *>featureObjs = doc->addObjects ( setupData[0].type.getName(), names );
+//    assert ( featureObjs[0] && featureObj[0]->isDerivedFrom ( App::OriginFeature::getClassTypeId () ) );
+    App::OriginFeature *feature = static_cast <App::OriginFeature *> ( featureObjs[0] );
+    feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), setupData[0].rot ) );
+    feature->Role.setValue ( setupData[0].role );
+    links.push_back (feature);
+
+    feature = static_cast <App::OriginFeature *> ( featureObjs[1] );
+    feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), setupData[1].rot ) );
+    feature->Role.setValue ( setupData[1].role );
+    links.push_back (feature);    
+
+    feature = static_cast <App::OriginFeature *> ( featureObjs[2] );
+    feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), setupData[2].rot ) );
+    feature->Role.setValue ( setupData[2].role );
+    links.push_back (feature);
+
+    std::vector<const char *> names_plane;
+
+    names_plane.push_back(doc->getUniqueObjectName (setupData[3].role).c_str());
+    names_plane.push_back(doc->getUniqueObjectName (setupData[4].role).c_str());
+    names_plane.push_back(doc->getUniqueObjectName (setupData[5].role).c_str());
+
+    featureObjs = doc->addObjects ( setupData[3].type.getName(), names_plane );
+
+    feature = static_cast <App::OriginFeature *> ( featureObjs[0] );
+    feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), setupData[3].rot ) );
+    feature->Role.setValue ( setupData[3].role );
+    links.push_back (feature);
+
+    feature = static_cast <App::OriginFeature *> ( featureObjs[1] );
+    feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), setupData[4].rot ) );
+    feature->Role.setValue ( setupData[4].role );
+    links.push_back (feature);
+
+    feature = static_cast <App::OriginFeature *> ( featureObjs[2] );
+    feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), setupData[5].rot ) );
+    feature->Role.setValue ( setupData[5].role );
+    links.push_back (feature);
+*/
+
+    
     for (auto data: setupData) {
         std::string objName = doc->getUniqueObjectName ( data.role );
         App::DocumentObject *featureObj = doc->addObject ( data.type.getName(), objName.c_str () );

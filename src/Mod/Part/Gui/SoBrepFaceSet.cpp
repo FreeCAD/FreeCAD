@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef FC_OS_WIN32
-#define GL_GLEXT_PROTOTYPES
+#define GL_GLEXT_PROTOTYPES 1
 #endif
 
 #ifndef _PreComp_

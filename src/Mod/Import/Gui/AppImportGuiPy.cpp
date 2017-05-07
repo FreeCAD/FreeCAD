@@ -353,7 +353,6 @@ private:
                     if (aReader.ReadFile((const char*)name8bit.c_str()) != IFSelect_RetDone) {
                         throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                     }
-
                     Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.Reader().WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading STEP file...");
@@ -411,7 +410,13 @@ private:
             }
 
             ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
+	    // We must recompute the doc before loading shapes as they are going to be
+	    // inserted into the document and computed at the same time so we are going to
+	    // purge the document before recomputing it to clear it and settle it in the proper
+	    // way. This is drastically improving STEP rendering time on complex STEP files.
+            pcDoc->recompute();
             ocaf.loadShapes();
+	    pcDoc->purgeTouched();
             pcDoc->recompute();
             hApp->Close(hDoc);
         }

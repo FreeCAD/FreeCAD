@@ -53,6 +53,11 @@ namespace App
     class Transaction;
 }
 
+typedef struct {
+       char * label_cache_prefix;
+       long index;
+} label_cache;
+
 namespace App
 {
 
@@ -182,6 +187,7 @@ public:
      * @param isNew       if false don't call the \c DocumentObject::setupObject() callback (default is true)
      */
     DocumentObject *addObject(const char* sType, const char* pObjectName=0, bool isNew=true);
+    std::vector<DocumentObject *>addObjects(const char* sType, std::vector<const char*> pObjectName, bool isNew=true);
     /// Remove a feature out of the document
     void remObject(const char* sName);
     /** Add an existing feature with sName (ASCII) to this document and set it active.
@@ -367,6 +373,8 @@ private:
     std::list<Transaction*> mRedoTransactions;
     // recompute log
     std::vector<App::DocumentObjectExecReturn*> _RecomputeLog;
+    // Label cache structure
+    // std::vector<label_cache *> labels_cache_prefix;
 
     // pointer to the python class
     Py::Object DocumentPythonObject;

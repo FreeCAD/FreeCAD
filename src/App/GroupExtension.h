@@ -53,6 +53,7 @@ public:
     /* Adds the object \a obj to this group.
      */
     virtual void addObject(DocumentObject* obj);
+    virtual void addObjects(std::vector<App::DocumentObject*> obj);
     /*override this function if you want only special objects
      */
     virtual bool allowObject(DocumentObject* ) {return true;};
