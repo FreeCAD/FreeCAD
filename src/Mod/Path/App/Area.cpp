@@ -530,8 +530,9 @@ struct WireJoiner {
 
     BRep_Builder builder;
     TopoDS_Compound comp;
+    gp_Dir dir;
 
-    WireJoiner() {
+    WireJoiner(const gp_Dir &dir = gp_Dir()):dir(dir) {
         builder.MakeCompound(comp);
     }
 
@@ -554,11 +555,10 @@ struct WireJoiner {
         if(BRep_Tool::IsClosed(e)){
             BRepBuilderAPI_MakeWire mkWire;
             mkWire.Add(e);
-            const TopoDS_Wire &wire = mkWire.Wire();
-            if(bbox && Area::getWireDirection(wire)>0)
-                builder.Add(comp,wire.Reversed());
-            else
-                builder.Add(comp,wire);
+            TopoDS_Wire wire = mkWire.Wire();
+            if(bbox)
+                Area::setWireOrientation(wire,dir,true);
+            builder.Add(comp,wire);
             return;
         }
         gp_Pnt p1,p2;
@@ -795,11 +795,9 @@ struct WireJoiner {
                     else
                         mkWire.Add(TopoDS::Edge(info.edge.Reversed()));
                 }
-                const TopoDS_Wire &wire = mkWire.Wire();
-                if(Area::getWireDirection(wire)>0)
-                    builder.Add(comp,wire.Reversed());
-                else
-                    builder.Add(comp,wire);
+                TopoDS_Wire wire = mkWire.Wire();
+                Area::setWireOrientation(wire,dir,true);
+                builder.Add(comp,wire);
                 break;
             }
         }
@@ -932,10 +930,11 @@ std::list<TopoDS_Wire> Area::project(const TopoDS_Shape &solid)
 {
     TIME_INIT2(t,t1);
     Handle_HLRBRep_Algo brep_hlr = NULL;
+    gp_Dir dir(0,0,1);
     try {
         brep_hlr = new HLRBRep_Algo();
         brep_hlr->Add(solid, 0);
-        HLRAlgo_Projector projector(gp_Ax2(gp_Pnt(),gp_Dir(0,0,1)));
+        HLRAlgo_Projector projector(gp_Ax2(gp_Pnt(),dir));
         brep_hlr->Projector(projector);
         brep_hlr->Update();
         brep_hlr->Hide();
@@ -943,7 +942,7 @@ std::list<TopoDS_Wire> Area::project(const TopoDS_Shape &solid)
         AREA_ERR("error occurred while projecting shape");
     }
     TIME_PRINT(t1,"HLRBrep_Algo");
-    WireJoiner joiner;
+    WireJoiner joiner(dir);
     try {
 #define ADD_HLR_SHAPE(_name) \
         shape = hlrToShape._name##Compound();\
@@ -1173,22 +1172,32 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                             continue;
                         }
 
-                        if(myParams.Fill != FillNone) {
-                            Part::FaceMakerBullseye mkFace;
-                            mkFace.setPlane(pln);
-                            for(const TopoDS_Wire &wire : wires)
+                        // always try to make face to normalize wire orientation
+                        Part::FaceMakerBullseye mkFace;
+                        mkFace.setPlane(pln);
+                        for(const TopoDS_Wire &wire : wires) {
+                            if(BRep_Tool::IsClosed(wire))
                                 mkFace.addWire(wire);
-                            try {
-                                mkFace.Build();
-                                if (mkFace.Shape().IsNull())
-                                    AREA_WARN("FaceMakerBullseye return null shape on section");
-                                else {
-                                    builder.Add(comp,mkFace.Shape());
-                                    continue;
+                        }
+                        try {
+                            mkFace.Build();
+                            const TopoDS_Shape &shape = mkFace.Shape();
+                            if (shape.IsNull())
+                                AREA_WARN("FaceMakerBullseye return null shape on section");
+                            else {
+                                for(auto it=wires.begin(),itNext=it;it!=wires.end();it=itNext) {
+                                    ++itNext;
+                                    if(BRep_Tool::IsClosed(*it)) 
+                                        wires.erase(it);
                                 }
-                            }catch (Base::Exception &e){
-                                AREA_WARN("FaceMakerBullseye failed on section: " << e.what());
+                                for(TopExp_Explorer xp(shape,myParams.Fill==FillNone?TopAbs_WIRE:TopAbs_FACE);
+                                        xp.More();xp.Next())
+                                {
+                                    builder.Add(comp,xp.Current());
+                                }
                             }
+                        }catch (Base::Exception &e){
+                            AREA_WARN("FaceMakerBullseye failed on section: " << e.what());
                         }
                         for(const TopoDS_Wire &wire : wires)
                             builder.Add(comp,wire);
@@ -1903,12 +1912,8 @@ struct GetWires {
             info.wire = BRepBuilderAPI_MakeWire(TopoDS::Edge(shape)).Wire();
         info.isClosed = BRep_Tool::IsClosed(info.wire);
 
-        if(info.isClosed && params.orientation != Area::OrientationNone){
-            int dir =Area::getWireDirection(info.wire);
-            if((dir>0&&params.orientation==Area::OrientationCW) || 
-               (dir<0&&params.orientation==Area::OrientationCCW))
-                info.wire.Reverse();
-        }
+        if(info.isClosed && params.orientation == Area::OrientationReversed)
+            info.wire.Reverse();
 
         TIME_INIT(t);
         if(params.abscissa<Precision::Confusion() || !info.isClosed) {
@@ -2252,11 +2257,11 @@ struct ShapeInfo{
 struct ShapeInfoBuilder {
     std::list<ShapeInfo> &myList;
     gp_Trsf &myTrsf;
-    short *myArcPlane;
+    short &myArcPlane;
     bool &myArcPlaneFound;
     ShapeParams &myParams;
 
-    ShapeInfoBuilder(bool &plane_found, short *arc_plane, gp_Trsf &trsf, 
+    ShapeInfoBuilder(bool &plane_found, short &arc_plane, gp_Trsf &trsf, 
             std::list<ShapeInfo> &list, ShapeParams &params)
         :myList(list) ,myTrsf(trsf) ,myArcPlane(arc_plane)
         ,myArcPlaneFound(plane_found), myParams(params)
@@ -2269,9 +2274,9 @@ struct ShapeInfoBuilder {
             return;
         }
         myList.push_back(ShapeInfo(finder,shape,myParams));
-        if(myArcPlane==NULL || myArcPlaneFound ||
-           *myArcPlane==Area::ArcPlaneNone || 
-           *myArcPlane==Area::ArcPlaneVariable)
+        if(myArcPlaneFound ||
+           myArcPlane==Area::ArcPlaneNone || 
+           myArcPlane==Area::ArcPlaneVariable)
             return;
 
         if(type == TopAbs_EDGE) {
@@ -2295,19 +2300,19 @@ struct ShapeInfoBuilder {
         bool x0 = fabs(dir.X())<Precision::Confusion();
         bool y0 = fabs(dir.Y())<Precision::Confusion();
         bool z0 = fabs(dir.Z())<Precision::Confusion();
-        switch(*myArcPlane) {
+        switch(myArcPlane) {
         case Area::ArcPlaneAuto: {
             if(x0&&y0){
                 AREA_TRACE("found arc plane XY");
-                *myArcPlane = Area::ArcPlaneXY;
+                myArcPlane = Area::ArcPlaneXY;
             } else if(x0&&z0) {
                 AREA_TRACE("found arc plane ZX");
-                *myArcPlane = Area::ArcPlaneZX;
+                myArcPlane = Area::ArcPlaneZX;
             } else if(z0&&y0) {
                 AREA_TRACE("found arc plane YZ");
-                *myArcPlane = Area::ArcPlaneYZ;
+                myArcPlane = Area::ArcPlaneYZ;
             } else {
-                *myArcPlane = Area::ArcPlaneXY;
+                myArcPlane = Area::ArcPlaneXY;
                 dstPos = gp_Ax3(pos.Location(),gp_Dir(0,0,1));
                 break;
             }
@@ -2340,11 +2345,12 @@ struct ShapeInfoBuilder {
 
 struct WireOrienter {
     std::list<TopoDS_Shape> &wires;
+    const gp_Dir &dir;
     short orientation;
     short direction;
 
-    WireOrienter(std::list<TopoDS_Shape> &ws, short o, short d)
-        :wires(ws),orientation(o),direction(d)
+    WireOrienter(std::list<TopoDS_Shape> &ws, const gp_Dir &dir, short o, short d)
+        :wires(ws),dir(dir),orientation(o),direction(d)
     {}
 
     void operator()(const TopoDS_Shape &shape, int type) {
@@ -2356,12 +2362,8 @@ struct WireOrienter {
         TopoDS_Shape &wire = wires.back();
 
         if(BRep_Tool::IsClosed(wire)) {
-            if(orientation!=Area::OrientationNone) {
-                int dir = Area::getWireDirection(wire);
-                if((dir>0&&orientation==Area::OrientationCW) || 
-                (dir<0&&orientation==Area::OrientationCCW))
-                    wire.Reverse();
-            }
+            if(orientation==Area::OrientationReversed) 
+                wire.Reverse();
         }else if(direction!=Area::DirectionNone) {
             gp_Pnt p1,p2;
             getEndPoints(TopoDS::Wire(wire),p1,p2);
@@ -2393,18 +2395,36 @@ struct WireOrienter {
 };
 
 std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes, 
-    const gp_Pnt *_pstart, gp_Pnt *_pend, short *arc_plane, 
+    const gp_Pnt *_pstart, gp_Pnt *_pend, short *_parc_plane, 
     PARAM_ARGS(PARAM_FARG,AREA_PARAMS_SORT))
 {
     std::list<TopoDS_Shape> wires;
 
     if(shapes.empty()) return wires;
 
+    short _arc_plane = ArcPlaneNone;
+    short &arc_plane = _parc_plane?*_parc_plane:_arc_plane;
+
     if(sort_mode == SortModeNone) {
+        gp_Dir dir;
+        switch(arc_plane) {
+        case ArcPlaneYZ:
+            dir = gp_Dir(1,0,0);
+            break;
+        case ArcPlaneZX:
+            dir = gp_Dir(0,1,0);
+            break;
+        default:
+            if(arc_plane != ArcPlaneXY)
+                AREA_WARN("Sort mode 'None' without a given arc plane, using XY plane");
+            arc_plane = ArcPlaneXY;
+            dir = gp_Dir(0,0,1);
+            break;
+        }
         for(auto &shape : shapes) {
             if(!shape.IsNull())
                 foreachSubshape(shape,
-                    WireOrienter(wires,orientation,direction), TopAbs_WIRE);
+                    WireOrienter(wires,dir,orientation,direction), TopAbs_WIRE);
         }
         return std::move(wires);
     }
@@ -2627,29 +2647,24 @@ static inline void addGCode(Toolpath &path, const char *name) {
     path.addCommand(cmd);
 }
 
-int Area::getWireDirection(const TopoDS_Shape &shape, const gp_Pln *pln) {
-    gp_Dir dir;
-    if(pln) 
-        dir = pln->Axis().Direction();
-    else{
-        BRepLib_FindSurface finder(shape,-1,Standard_True);
-        if(!finder.Found()) return 0;
-        dir = GeomAdaptor_Surface(finder.Surface()).Plane().Axis().Direction();
-    }
-    const TopoDS_Wire &wire = TopoDS::Wire(shape);
+void Area::setWireOrientation(TopoDS_Wire &wire, const gp_Dir &dir, bool wire_ccw) {
     //make a test face
     BRepBuilderAPI_MakeFace mkFace(wire, /*onlyplane=*/Standard_True);
-    if(!mkFace.IsDone()) return 0;
+    if(!mkFace.IsDone()) {
+        AREA_WARN("setWireOrientation: failed to make test face");
+        return;
+    }
     TopoDS_Face tmpFace = mkFace.Face();
     //compare face surface normal with our plane's one
     BRepAdaptor_Surface surf(tmpFace);
-    bool normal_co = surf.Plane().Axis().Direction().Dot(dir) > 0;
+    bool ccw = surf.Plane().Axis().Direction().Dot(dir) > 0;
 
     //unlikely, but just in case OCC decided to reverse our wire for the face...  take that into account!
     TopoDS_Iterator it(tmpFace, /*CumOri=*/Standard_False);
-    normal_co ^= it.Value().Orientation() != wire.Orientation();
+    ccw ^= it.Value().Orientation() != wire.Orientation();
 
-    return normal_co ? 1 : -1;
+    if(ccw != wire_ccw)
+        wire.Reverse();
 }
 
 void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
