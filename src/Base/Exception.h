@@ -77,6 +77,9 @@ public:
   // what may differ from the message given by the user in
   // derived classes
   inline std::string getMessage() const;
+  inline std::string getFile() const;
+  inline int getLine() const;
+  inline std::string getFunction() const;
   
   /// setter methods for including debug information
   /// intended to use via macro for autofilling of debugging information
@@ -97,7 +100,7 @@ public: // FIXME: Remove the public keyword
 protected:
   std::string _sErrMsg;
   std::string _file;
-  std::string _line;
+  int _line;
   std::string _function;
 };
 
@@ -108,6 +111,7 @@ protected:
  */
 class BaseExport AbortException : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
   AbortException(const char * sMessage);
@@ -128,8 +132,10 @@ public:
  */
 class BaseExport XMLBaseException : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  XMLBaseException();
   XMLBaseException(const char * sMessage);
   XMLBaseException(const std::string& sMessage);
   /// Construction
@@ -145,6 +151,7 @@ public:
  */
 class BaseExport XMLParseException : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
   XMLParseException(const char * sMessage);
@@ -167,6 +174,7 @@ public:
  */
 class BaseExport FileException : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// With massage and file name
   FileException(const char * sMessage, const char * sFileName=0);
@@ -197,8 +205,10 @@ protected:
  */
 class BaseExport FileSystemError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  FileSystemError();
   FileSystemError(const char * sMessage);
   FileSystemError(const std::string& sMessage);
   /// Construction
@@ -213,8 +223,10 @@ public:
  */
 class BaseExport BadFormatError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  BadFormatError();
   BadFormatError(const char * sMessage);
   BadFormatError(const std::string& sMessage);
   /// Construction
@@ -234,6 +246,7 @@ class BaseExport MemoryException : public Exception, virtual public std::bad_all
 class BaseExport MemoryException : public Exception
 #endif
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
   MemoryException();
@@ -253,6 +266,7 @@ public:
  */
 class BaseExport AccessViolation : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
   AccessViolation();
@@ -270,6 +284,7 @@ public:
  */
 class BaseExport AbnormalProgramTermination : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
   AbnormalProgramTermination();
@@ -287,8 +302,10 @@ public:
  */
 class BaseExport UnknownProgramOption : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  UnknownProgramOption();
   UnknownProgramOption(const char * sMessage);
   UnknownProgramOption(const std::string& sMessage);
   /// Construction
@@ -303,8 +320,10 @@ public:
  */
 class BaseExport ProgramInformation : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  ProgramInformation();
   ProgramInformation(const char * sMessage);
   ProgramInformation(const std::string& sMessage);
   /// Construction
@@ -320,8 +339,10 @@ public:
  */
 class BaseExport TypeError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  TypeError();
   TypeError(const char * sMessage);
   TypeError(const std::string& sMessage);
   /// Construction
@@ -336,8 +357,10 @@ public:
  */
 class BaseExport ValueError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  ValueError();
   ValueError(const char * sMessage);
   ValueError(const std::string& sMessage);
   /// Construction
@@ -352,8 +375,10 @@ public:
  */
 class BaseExport IndexError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  IndexError();
   IndexError(const char * sMessage);
   IndexError(const std::string& sMessage);
   /// Construction
@@ -368,8 +393,10 @@ public:
  */
 class BaseExport AttributeError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  AttributeError();
   AttributeError(const char * sMessage);
   AttributeError(const std::string& sMessage);
   /// Construction
@@ -384,8 +411,10 @@ public:
  */
 class BaseExport RuntimeError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  RuntimeError();
   RuntimeError(const char * sMessage);
   RuntimeError(const std::string& sMessage);
   /// Construction
@@ -400,8 +429,10 @@ public:
  */
 class BaseExport NotImplementedError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  NotImplementedError();
   NotImplementedError(const char * sMessage);
   NotImplementedError(const std::string& sMessage);
   /// Construction
@@ -416,8 +447,10 @@ public:
  */
 class BaseExport DivisionByZeroError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  DivisionByZeroError();
   DivisionByZeroError(const char * sMessage);
   DivisionByZeroError(const std::string& sMessage);
   /// Construction
@@ -432,8 +465,10 @@ public:
  */
 class BaseExport ReferencesError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  ReferencesError();
   ReferencesError(const char * sMessage);
   ReferencesError(const std::string& sMessage);
   /// Construction
@@ -449,8 +484,10 @@ public:
  */
 class BaseExport ExpressionError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  ExpressionError();
   ExpressionError(const char * sMessage);
   ExpressionError(const std::string& sMessage);
   /// Construction
@@ -465,8 +502,10 @@ public:
  */
 class BaseExport ParserError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  ParserError();
   ParserError(const char * sMessage);
   ParserError(const std::string& sMessage);
   /// Construction
@@ -481,8 +520,10 @@ public:
  */
 class BaseExport UnicodeError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  UnicodeError();
   UnicodeError(const char * sMessage);
   UnicodeError(const std::string& sMessage);
   /// Construction
@@ -497,8 +538,10 @@ public:
  */
 class BaseExport OverflowError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  OverflowError();
   OverflowError(const char * sMessage);
   OverflowError(const std::string& sMessage);
   /// Construction
@@ -513,8 +556,10 @@ public:
  */
 class BaseExport UnderflowError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  UnderflowError();
   UnderflowError(const char * sMessage);
   UnderflowError(const std::string& sMessage);
   /// Construction
@@ -529,8 +574,10 @@ public:
  */
 class BaseExport UnitsMismatchError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
   /// Construction
+  UnitsMismatchError();
   UnitsMismatchError(const char * sMessage);
   UnitsMismatchError(const std::string& sMessage);
   /// Construction
@@ -546,8 +593,10 @@ public:
  */
 class BaseExport CADKernelError : public Exception
 {
+    TYPESYSTEM_HEADER();
 public:
     /// Construction
+    CADKernelError();
     CADKernelError(const char * sMessage);
     CADKernelError(const std::string& sMessage);
     /// Construction
@@ -572,10 +621,25 @@ inline std::string Exception::getMessage() const
     return _sErrMsg;
 }
 
+inline std::string Exception::getFile() const
+{
+    return _file;
+}
+
+inline int Exception::getLine() const
+{
+    return _line;
+}
+
+inline std::string Exception::getFunction() const
+{
+    return _function;
+}
+
 inline void Exception::setDebugInformation(const std::string & file, const int line, const std::string & function)
 {
     _file = file;
-    _line = std::to_string(line);
+    _line = line;
     _function = function;
 }
 

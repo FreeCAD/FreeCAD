@@ -65,9 +65,19 @@ PyException::PyException(void)
     else
         _sErrMsg = error;
 #endif
-    _sErrMsg = error;
+    _classindex = 0;
     _errorType = prefix;
-
+    
+    if(PP_last_error_isDictType) {
+        _file = std::string(PP_last_error_file);
+        _line = PP_last_error_line;
+        _function = std::string(PP_last_error_function);
+        _sErrMsg = std::string(PP_last_error_message);
+        _classindex = PP_last_error_classindex;
+    }
+    else {
+        _sErrMsg = error;
+    }
 
     _stackTrace = PP_last_error_trace;     /* exception traceback text */
 
@@ -76,7 +86,53 @@ PyException::PyException(void)
     // and thus may clear a Python exception when it should not.
     PyGILStateLocker locker;
     PyErr_Clear(); // must be called to keep Python interpreter in a valid state (Werner)
+    
+    PP_last_error_isDictType=false;
 }
+
+void PyException::ThrowException()
+{
+    PyException myexcp = PyException();
+
+    #define THROWIF(class) if(Base::class::getClassTypeId().getKey() == myexcp._classindex) {               \
+                                Base::class excp;                                                           \
+                                excp.setMessage(myexcp._sErrMsg);                                           \
+                                excp.setDebugInformation(myexcp._file, myexcp._line, myexcp._function);     \
+                                throw excp;                                                                 \
+                           }
+    
+    THROWIF(AbortException)
+    else THROWIF(XMLBaseException)
+    else THROWIF(XMLParseException)
+    else THROWIF(FileException)
+    else THROWIF(FileSystemError)
+    else THROWIF(BadFormatError)
+    else THROWIF(MemoryException)
+    else THROWIF(AccessViolation)
+    else THROWIF(AbnormalProgramTermination)
+    else THROWIF(UnknownProgramOption)
+    else THROWIF(ProgramInformation)
+    else THROWIF(TypeError)
+    else THROWIF(ValueError)
+    else THROWIF(IndexError)
+    else THROWIF(AttributeError)
+    else THROWIF(RuntimeError)
+    else THROWIF(NotImplementedError)
+    else THROWIF(DivisionByZeroError)
+    else THROWIF(ReferencesError)
+    else THROWIF(ExpressionError)
+    else THROWIF(ParserError)
+    else THROWIF(UnicodeError)
+    else THROWIF(OverflowError)
+    else THROWIF(UnderflowError)
+    else THROWIF(UnitsMismatchError)
+    else THROWIF(CADKernelError)
+    else
+        throw myexcp;
+    
+    
+}
+
 
 PyException::~PyException() throw()
 {
@@ -197,8 +253,9 @@ std::string InterpreterSingleton::runString(const char *sCmd)
     if (!presult) {
         if (PyErr_ExceptionMatches(PyExc_SystemExit))
             throw SystemExitException();
-        else
-            throw PyException();
+        else {
+            PyException::ThrowException();
+        }
     }
 
     PyObject* repr = PyObject_Repr(presult);

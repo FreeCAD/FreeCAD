@@ -72,10 +72,13 @@ public:
     const std::string &getStackTrace(void) const {return _stackTrace;}
     const std::string &getErrorType(void) const {return _errorType;}
     void ReportException (void) const;
+    
+    static void ThrowException();
 
 protected:
     std::string _stackTrace;
     std::string _errorType;
+    unsigned int _classindex;
 };
 
 /**
