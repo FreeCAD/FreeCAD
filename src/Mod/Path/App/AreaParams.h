@@ -190,6 +190,11 @@
         "arc encountered.",\
         (None)(Auto)(XY)(ZX)(YZ)(Variable)))
 
+#define AREA_PARAMS_ORIENTATION \
+    ((enum, orientation, Orientation, 0, "Enforce loop orientation\n"\
+        "'Normal' means CCW for outer wires when looking against the positive axis direction, \n"\
+        "and CW for inner wires. 'Reversed' means the other way round", (Normal)(Reversed)))
+
 /** Area wire sorting parameters */
 #define AREA_PARAMS_SORT \
     ((enum, sort_mode, SortMode, 1, "Wire sorting mode to optimize travel distance.\n"\
@@ -202,9 +207,7 @@
     ((double, abscissa, SortAbscissa, 3.0, "Controls vertex sampling on wire for nearest point searching\n"\
         "The sampling is dong using OCC GCPnts_UniformAbscissa",App::PropertyLength))\
     ((short, nearest_k, NearestK, 3, "Nearest k sampling vertices are considered during sorting"))\
-    ((enum, orientation, Orientation, 0, "Enforce loop orientation\n"\
-        "Note the CW/CCW here specifies the outer wire orientation. For inner wires (holes), the\n"\
-        "enforced orientation is reversed", (None)(CW)(CCW)))\
+    AREA_PARAMS_ORIENTATION \
     ((enum, direction, Direction, 0, "Enforce open path direction",\
         (None)(XPositive)(XNegative)(YPositive)(YNegative)(ZPositive)(ZNegative)))
        

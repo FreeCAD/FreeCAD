@@ -446,7 +446,7 @@ public:
             const gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL,
             PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_PATH));
 
-    static int getWireDirection(const TopoDS_Shape& wire, const gp_Pln *plane=0);
+    static void setWireOrientation(TopoDS_Wire& wire, const gp_Dir &dir, bool ccw);
 
     PARAM_ENUM_DECLARE(AREA_PARAMS_PATH)
 
