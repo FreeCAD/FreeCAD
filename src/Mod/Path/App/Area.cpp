@@ -2570,7 +2570,7 @@ typedef void (gp_Pnt::*AxisSetter)(Standard_Real);
 static void addG0(bool verbose, Toolpath &path, 
         gp_Pnt last, const gp_Pnt &next, 
         AxisGetter getter, AxisSetter setter,
-        double retraction, double clearance, 
+        double retraction, double resume_height, 
         double f, double &last_f)
 {
     if(!getter || retraction-(last.*getter)() < Precision::Confusion()) {
@@ -2584,12 +2584,12 @@ static void addG0(bool verbose, Toolpath &path,
     pt = next;
     (pt.*setter)(retraction);
     addGCode(verbose,path,last,pt,"G0");
-    if(clearance>Precision::Confusion() && 
-       clearance+(next.*getter)() < retraction)
+    if(resume_height>Precision::Confusion() && 
+       resume_height+(next.*getter)() < retraction)
     {
         last = pt;
         pt = next;
-        (pt.*setter)((next.*getter)()+clearance);
+        (pt.*setter)((next.*getter)()+resume_height);
         addGCode(verbose,path,last,pt,"G0");
         addG1(verbose,path,pt,next,f,last_f);
     }else
@@ -2679,7 +2679,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     threshold = fabs(threshold);
     if(threshold < Precision::Confusion())
         threshold = Precision::Confusion();
-    clearance = fabs(clearance);
+    resume_height = fabs(resume_height);
 
     AxisGetter getter = &gp_Pnt::Z;
     AxisSetter setter = &gp_Pnt::SetZ;
@@ -2719,8 +2719,8 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         (pTmp.*setter)(0.0);
         (plastTmp.*setter)(0.0);
 
-        if(first||pTmp.SquareDistance(plastTmp)>threshold)
-            addG0(verbose,path,plast,p,getter,setter,retraction,clearance,vf,cur_f);
+        if(first||pTmp.SquareDistance(plastTmp)>threshold) 
+            addG0(verbose,path,plast,p,getter,setter,retraction,resume_height,vf,cur_f);
         else
             addG1(verbose,path,plast,p,vf,cur_f);
         plast = p;

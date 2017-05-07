@@ -219,9 +219,9 @@
     ((double, retraction, Retraction, 0.0,"Tool retraction absolute coordinate along retraction axis",\
         App::PropertyLength))\
     ((enum, retract_axis, RetractAxis, 2,"Tool retraction axis",(X)(Y)(Z)))\
-    ((double, clearance, Clearance, 0.0,\
+    ((double, resume_height, ResumeHeight, 0.0,\
         "When return from last retraction, this gives the pause height relative to the Z\n"\
-        "value of the next move",App::PropertyLength))\
+        "value of the next move.", App::PropertyLength))\
     ((double,segmentation,Segmentation,0.0,\
         "Break long curves into segments of this length. One use case is for PCB autolevel,\n"\
         "so that more correction points can be inserted",App::PropertyLength)) \
