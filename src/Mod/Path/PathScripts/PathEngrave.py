@@ -182,7 +182,8 @@ class ObjectPathEngrave:
                 if not last:
                     # we set the first move to our first point
                     last = edge.Vertexes[0].Point
-                    output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.SafeHeight.Value) + "F " + PathUtils.fmt(self.horizRapid)  # Rapid sto starting position
+                    output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.horizRapid)  # Rapid to starting position
+                    output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.SafeHeight.Value) + "F " + PathUtils.fmt(self.horizRapid)  # Rapid to safe height
                     output += "G1" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.FinalDepth.Value) + "F " + PathUtils.fmt(self.vertFeed) + "\n"  # Vertical feed to depth
                 if isinstance(edge.Curve, Part.Circle):
                     point = edge.Vertexes[-1].Point
@@ -209,7 +210,7 @@ class ObjectPathEngrave:
                     output += " F " + PathUtils.fmt(self.horizFeed)
                     output += "\n"
                     last = point
-            output += "G0 Z " + PathUtils.fmt(obj.SafeHeight.Value)
+            output += "G0 Z " + PathUtils.fmt(obj.ClearanceHeight.Value)
         return output
 
 
