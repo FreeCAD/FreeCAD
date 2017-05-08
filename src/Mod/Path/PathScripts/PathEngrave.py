@@ -118,7 +118,8 @@ class ObjectPathEngrave:
             return
         try:
             if baseobject.isDerivedFrom('Sketcher::SketchObject') or \
-                    baseobject.isDerivedFrom('Part::Part2DObject'):
+                    baseobject.isDerivedFrom('Part::Part2DObject') or \
+                    hasattr(baseobject, 'ArrayType'):
 
                 output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
 
