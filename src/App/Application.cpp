@@ -62,6 +62,7 @@
 #include <Base/Parameter.h>
 #include <Base/Console.h>
 #include <Base/Factory.h>
+#include <Base/ExceptionFactory.h>
 #include <Base/FileInfo.h>
 #include <Base/Type.h>
 #include <Base/BaseClass.h>
@@ -1300,6 +1301,35 @@ void Application::initTypes(void)
     // register transaction type
     new App::TransactionProducer<TransactionDocumentObject>
             (DocumentObject::getClassTypeId());
+
+    // register exception producer types
+    new ExceptionProducer<Base::AbortException>;
+    new ExceptionProducer<Base::XMLBaseException>;
+    new ExceptionProducer<Base::XMLParseException>;
+    new ExceptionProducer<Base::FileException>;
+    new ExceptionProducer<Base::FileSystemError>;
+    new ExceptionProducer<Base::BadFormatError>;
+    new ExceptionProducer<Base::MemoryException>;
+    new ExceptionProducer<Base::MemoryException>;
+    new ExceptionProducer<Base::AccessViolation>;
+    new ExceptionProducer<Base::AbnormalProgramTermination>;
+    new ExceptionProducer<Base::UnknownProgramOption>;
+    new ExceptionProducer<Base::ProgramInformation>;
+    new ExceptionProducer<Base::TypeError>;
+    new ExceptionProducer<Base::ValueError>;
+    new ExceptionProducer<Base::IndexError>;
+    new ExceptionProducer<Base::AttributeError>;
+    new ExceptionProducer<Base::RuntimeError>;
+    new ExceptionProducer<Base::NotImplementedError>;
+    new ExceptionProducer<Base::DivisionByZeroError>;
+    new ExceptionProducer<Base::ReferencesError>;
+    new ExceptionProducer<Base::ExpressionError>;
+    new ExceptionProducer<Base::ParserError>;
+    new ExceptionProducer<Base::UnicodeError>;
+    new ExceptionProducer<Base::OverflowError>;
+    new ExceptionProducer<Base::UnderflowError>;
+    new ExceptionProducer<Base::UnitsMismatchError>;
+    new ExceptionProducer<Base::CADKernelError>;
 }
 
 void Application::initConfig(int argc, char ** argv)
