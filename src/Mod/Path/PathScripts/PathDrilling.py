@@ -401,30 +401,39 @@ class TaskPanel:
     def getFields(self):
         PathLog.track()
         if self.obj:
-            if hasattr(self.obj, "StartDepth"):
-                self.obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
-            if hasattr(self.obj, "FinalDepth"):
-                self.obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
-            if hasattr(self.obj, "PeckDepth"):
-                self.obj.PeckDepth = FreeCAD.Units.Quantity(self.form.peckDepth.text()).Value
-            if hasattr(self.obj, "SafeHeight"):
-                self.obj.SafeHeight = FreeCAD.Units.Quantity(self.form.safeHeight.text()).Value
-            if hasattr(self.obj, "ClearanceHeight"):
-                self.obj.ClearanceHeight = FreeCAD.Units.Quantity(self.form.clearanceHeight.text()).Value
-            if hasattr(self.obj, "RetractHeight"):
-                self.obj.RetractHeight = FreeCAD.Units.Quantity(self.form.retractHeight.text()).Value
-            if hasattr(self.obj, "DwellTime"):
-                self.obj.DwellTime = FreeCAD.Units.Quantity(self.form.dwellTime.text()).Value
+            try:
+                if hasattr(self.obj, "StartDepth"):
+                    self.obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
+                if hasattr(self.obj, "FinalDepth"):
+                    self.obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
+                if hasattr(self.obj, "PeckDepth"):
+                    if FreeCAD.Units.Quantity(self.form.peckDepth.text()).Value >= 0:
+                        self.obj.PeckDepth = FreeCAD.Units.Quantity(self.form.peckDepth.text()).Value
+                    else:
+                        self.form.peckDepth.setText("0.00")
+                if hasattr(self.obj, "SafeHeight"):
+                    self.obj.SafeHeight = FreeCAD.Units.Quantity(self.form.safeHeight.text()).Value
+                if hasattr(self.obj, "ClearanceHeight"):
+                    self.obj.ClearanceHeight = FreeCAD.Units.Quantity(self.form.clearanceHeight.text()).Value
+                if hasattr(self.obj, "RetractHeight"):
+                    self.obj.RetractHeight = FreeCAD.Units.Quantity(self.form.retractHeight.text()).Value
+                if hasattr(self.obj, "DwellTime"):
+                    if FreeCAD.Units.Quantity(self.form.dwellTime.text()).Value >= 0:
+                        self.obj.DwellTime = FreeCAD.Units.Quantity(self.form.dwellTime.text()).Value
+                    else:
+                        self.form.dwellTime.setText("0.00")
 
-            if hasattr(self.obj, "DwellEnabled"):
-                self.obj.DwellEnabled = self.form.dwellEnabled.isChecked()
-            if hasattr(self.obj, "PeckEnabled"):
-                self.obj.PeckEnabled = self.form.peckEnabled.isChecked()
+                if hasattr(self.obj, "DwellEnabled"):
+                    self.obj.DwellEnabled = self.form.dwellEnabled.isChecked()
+                if hasattr(self.obj, "PeckEnabled"):
+                    self.obj.PeckEnabled = self.form.peckEnabled.isChecked()
 
-            if hasattr(self.obj, "ToolController"):
-                PathLog.debug("name: {}".format(self.form.uiToolController.currentText()))
-                tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
-                self.obj.ToolController = tc
+                if hasattr(self.obj, "ToolController"):
+                    PathLog.debug("name: {}".format(self.form.uiToolController.currentText()))
+                    tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
+                    self.obj.ToolController = tc
+            except ValueError:
+                self.setFields()
         self.obj.Proxy.execute(self.obj)
 
     def updateFeatureList(self):
