@@ -99,6 +99,7 @@ void Exception::ReportException (void) const
 
 // ---------------------------------------------------------
 
+
 AbortException::AbortException(const char * sMessage)
   : Exception( sMessage )
 {
@@ -121,6 +122,12 @@ const char* AbortException::what() const throw()
 
 // ---------------------------------------------------------
 
+
+XMLBaseException::XMLBaseException()
+: Exception()
+{
+}
+
 XMLBaseException::XMLBaseException(const char * sMessage)
   : Exception(sMessage)
 {
@@ -137,6 +144,7 @@ XMLBaseException::XMLBaseException(const XMLBaseException &inst)
 }
 
 // ---------------------------------------------------------
+
 
 XMLParseException::XMLParseException(const char * sMessage)
   : Exception(sMessage)
@@ -164,6 +172,7 @@ const char* XMLParseException::what() const throw()
 }
 
 // ---------------------------------------------------------
+
 
 FileException::FileException(const char * sMessage, const char * sFileName)
   : Exception( sMessage ),file(sFileName)
@@ -235,6 +244,12 @@ void FileException::ReportException (void) const
 
 // ---------------------------------------------------------
 
+
+FileSystemError::FileSystemError()
+: Exception()
+{
+}
+
 FileSystemError::FileSystemError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -252,6 +267,12 @@ FileSystemError::FileSystemError(const FileSystemError &inst)
 
 // ---------------------------------------------------------
 
+
+BadFormatError::BadFormatError()
+: Exception()
+{
+}
+
 BadFormatError::BadFormatError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -268,6 +289,7 @@ BadFormatError::BadFormatError(const BadFormatError &inst)
 }
 
 // ---------------------------------------------------------
+
 
 MemoryException::MemoryException()
 {
@@ -337,6 +359,11 @@ AbnormalProgramTermination::AbnormalProgramTermination(const AbnormalProgramTerm
 
 // ---------------------------------------------------------
 
+UnknownProgramOption::UnknownProgramOption()
+: Exception()
+{
+}
+
 UnknownProgramOption::UnknownProgramOption(const char * sMessage)
   : Exception(sMessage)
 {
@@ -353,6 +380,11 @@ UnknownProgramOption::UnknownProgramOption(const UnknownProgramOption &inst)
 }
 
 // ---------------------------------------------------------
+
+ProgramInformation::ProgramInformation()
+: Exception()
+{
+}
 
 ProgramInformation::ProgramInformation(const char * sMessage)
   : Exception(sMessage)
@@ -371,6 +403,11 @@ ProgramInformation::ProgramInformation(const ProgramInformation &inst)
 
 // ---------------------------------------------------------
 
+TypeError::TypeError()
+: Exception()
+{
+}
+
 TypeError::TypeError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -387,6 +424,11 @@ TypeError::TypeError(const TypeError &inst)
 }
 
 // ---------------------------------------------------------
+
+ValueError::ValueError()
+: Exception()
+{
+}
 
 ValueError::ValueError(const char * sMessage)
   : Exception(sMessage)
@@ -405,6 +447,11 @@ ValueError::ValueError(const ValueError &inst)
 
 // ---------------------------------------------------------
 
+IndexError::IndexError()
+: Exception()
+{
+}
+
 IndexError::IndexError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -421,6 +468,11 @@ IndexError::IndexError(const IndexError &inst)
 }
 
 // ---------------------------------------------------------
+
+AttributeError::AttributeError()
+: Exception()
+{
+}
 
 AttributeError::AttributeError(const char * sMessage)
   : Exception(sMessage)
@@ -439,6 +491,11 @@ AttributeError::AttributeError(const AttributeError &inst)
 
 // ---------------------------------------------------------
 
+RuntimeError::RuntimeError()
+: Exception()
+{
+}
+
 RuntimeError::RuntimeError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -455,6 +512,11 @@ RuntimeError::RuntimeError(const RuntimeError &inst)
 }
 
 // ---------------------------------------------------------
+
+NotImplementedError::NotImplementedError()
+: Exception()
+{
+}
 
 NotImplementedError::NotImplementedError(const char * sMessage)
   : Exception(sMessage)
@@ -473,6 +535,11 @@ NotImplementedError::NotImplementedError(const NotImplementedError &inst)
 
 // ---------------------------------------------------------
 
+DivisionByZeroError::DivisionByZeroError()
+: Exception()
+{
+}
+
 DivisionByZeroError::DivisionByZeroError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -489,6 +556,11 @@ DivisionByZeroError::DivisionByZeroError(const DivisionByZeroError &inst)
 }
 
 // ---------------------------------------------------------
+
+ReferencesError::ReferencesError()
+: Exception()
+{
+}
 
 ReferencesError::ReferencesError(const char * sMessage)
   : Exception(sMessage)
@@ -507,6 +579,11 @@ ReferencesError::ReferencesError(const ReferencesError &inst)
 
 // ---------------------------------------------------------
 
+ExpressionError::ExpressionError()
+: Exception()
+{
+}
+
 ExpressionError::ExpressionError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -523,6 +600,11 @@ ExpressionError::ExpressionError(const ExpressionError &inst)
 }
 
 // ---------------------------------------------------------
+
+ParserError::ParserError()
+: Exception()
+{
+}
 
 ParserError::ParserError(const char * sMessage)
   : Exception(sMessage)
@@ -541,6 +623,11 @@ ParserError::ParserError(const ParserError &inst)
 
 // ---------------------------------------------------------
 
+UnicodeError::UnicodeError()
+: Exception()
+{
+}
+
 UnicodeError::UnicodeError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -557,6 +644,11 @@ UnicodeError::UnicodeError(const UnicodeError &inst)
 }
 
 // ---------------------------------------------------------
+
+OverflowError::OverflowError()
+: Exception()
+{
+}
 
 OverflowError::OverflowError(const char * sMessage)
   : Exception(sMessage)
@@ -575,6 +667,11 @@ OverflowError::OverflowError(const OverflowError &inst)
 
 // ---------------------------------------------------------
 
+UnderflowError::UnderflowError()
+: Exception()
+{
+}
+
 UnderflowError::UnderflowError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -592,6 +689,11 @@ UnderflowError::UnderflowError(const UnderflowError &inst)
 
 // ---------------------------------------------------------
 
+UnitsMismatchError::UnitsMismatchError()
+: Exception()
+{
+}
+
 UnitsMismatchError::UnitsMismatchError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -608,7 +710,12 @@ UnitsMismatchError::UnitsMismatchError(const UnitsMismatchError &inst)
 }
 
 // ---------------------------------------------------------
- 
+
+CADKernelError::CADKernelError()
+: Exception()
+{
+}
+
 CADKernelError::CADKernelError(const char * sMessage)
 : Exception(sMessage)
 {
