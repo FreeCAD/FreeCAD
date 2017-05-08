@@ -267,12 +267,14 @@ void PP_Fetch_Error_Text()
     if (errdata != NULL &&
         (PyDict_Check(errdata)) )                      /* str() increfs */
     {
-        /*
         pystring = PyDict_GetItemString(errdata,"swhat");
-        strncpy(PP_last_error_info, PyString_AsString(pystring), MAX); 
-        PP_last_error_info[MAX-1] = '\0';
         
-        pystring = PyDict_GetItemString(errdata,"sfile");
+        if(pystring!=NULL) {
+            strncpy(PP_last_error_info, PyString_AsString(pystring), MAX); 
+            PP_last_error_info[MAX-1] = '\0';
+        }
+        
+        /*pystring = PyDict_GetItemString(errdata,"sfile");
         strncpy(PP_last_error_file, PyString_AsString(pystring), MAX); 
         PP_last_error_file[MAX-1] = '\0';
         
