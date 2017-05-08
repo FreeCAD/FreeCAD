@@ -31,6 +31,7 @@
 
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
+#include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -314,6 +315,48 @@ bool CmdPointsPolyCut::isActive(void)
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
 }
 
+DEF_STD_CMD_A(CmdPointsMerge)
+
+CmdPointsMerge::CmdPointsMerge()
+  :Command("Points_Merge")
+{
+    sAppModule    = "Points";
+    sGroup        = QT_TR_NOOP("Points");
+    sMenuText     = QT_TR_NOOP("Merge point clouds");
+    sToolTipText  = QT_TR_NOOP("Merge several point clouds into one");
+    sWhatsThis    = QT_TR_NOOP("Merge several point clouds into one");
+    sStatusTip    = QT_TR_NOOP("Merge several point clouds into one");
+}
+
+void CmdPointsMerge::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    doc->openTransaction("Merge point clouds");
+    Points::Feature* pts = static_cast<Points::Feature*>(doc->addObject("Points::Feature", "Merged Points"));
+    Points::PointKernel* kernel = pts->Points.startEditing();
+
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
+    for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
+        const Points::PointKernel& k = static_cast<Points::Feature*>(*it)->Points.getValue();
+        std::size_t numPts = kernel->size();
+        kernel->resize(numPts + k.size());
+        for (std::size_t i=0; i<k.size(); ++i) {
+            kernel->setPoint(i+numPts, k.getPoint(i));
+        }
+    }
+
+    pts->Points.finishEditing();
+    doc->commitTransaction();
+    updateActive();
+}
+
+bool CmdPointsMerge::isActive(void)
+{
+    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 1;
+}
+
 void CreatePointsCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -322,4 +365,5 @@ void CreatePointsCommands(void)
     rcCmdMgr.addCommand(new CmdPointsTransform());
     rcCmdMgr.addCommand(new CmdPointsConvert());
     rcCmdMgr.addCommand(new CmdPointsPolyCut());
+    rcCmdMgr.addCommand(new CmdPointsMerge());
 }

@@ -76,7 +76,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, pnts);
  
     pnts->setCommand("&Points");
-    *pnts << "Points_Convert" << "Separator" << "Points_Import" << "Points_Export" << "Separator" << "Points_PolyCut";
+    *pnts << "Points_Convert" << "Separator" << "Points_Import"
+          << "Points_Export" << "Separator" << "Points_PolyCut"
+          << "Points_Merge";
     return root;
 }
 
