@@ -61,7 +61,6 @@ namespace Base
 class BaseExport Exception : public BaseClass
 {
   TYPESYSTEM_HEADER();
-
 public:
 
   virtual ~Exception() throw() {}
@@ -133,6 +132,7 @@ class BaseExport XMLBaseException : public Exception
 {
 public:
   /// Construction
+  XMLBaseException();
   XMLBaseException(const char * sMessage);
   XMLBaseException(const std::string& sMessage);
   /// Construction
@@ -202,6 +202,7 @@ class BaseExport FileSystemError : public Exception
 {
 public:
   /// Construction
+  FileSystemError();
   FileSystemError(const char * sMessage);
   FileSystemError(const std::string& sMessage);
   /// Construction
@@ -218,6 +219,7 @@ class BaseExport BadFormatError : public Exception
 {
 public:
   /// Construction
+  BadFormatError();
   BadFormatError(const char * sMessage);
   BadFormatError(const std::string& sMessage);
   /// Construction
@@ -292,6 +294,7 @@ class BaseExport UnknownProgramOption : public Exception
 {
 public:
   /// Construction
+  UnknownProgramOption();
   UnknownProgramOption(const char * sMessage);
   UnknownProgramOption(const std::string& sMessage);
   /// Construction
@@ -308,6 +311,7 @@ class BaseExport ProgramInformation : public Exception
 {
 public:
   /// Construction
+  ProgramInformation();
   ProgramInformation(const char * sMessage);
   ProgramInformation(const std::string& sMessage);
   /// Construction
@@ -325,6 +329,7 @@ class BaseExport TypeError : public Exception
 {
 public:
   /// Construction
+  TypeError();
   TypeError(const char * sMessage);
   TypeError(const std::string& sMessage);
   /// Construction
@@ -341,6 +346,7 @@ class BaseExport ValueError : public Exception
 {
 public:
   /// Construction
+  ValueError();
   ValueError(const char * sMessage);
   ValueError(const std::string& sMessage);
   /// Construction
@@ -357,6 +363,7 @@ class BaseExport IndexError : public Exception
 {
 public:
   /// Construction
+  IndexError();
   IndexError(const char * sMessage);
   IndexError(const std::string& sMessage);
   /// Construction
@@ -373,6 +380,7 @@ class BaseExport AttributeError : public Exception
 {
 public:
   /// Construction
+  AttributeError();
   AttributeError(const char * sMessage);
   AttributeError(const std::string& sMessage);
   /// Construction
@@ -389,6 +397,7 @@ class BaseExport RuntimeError : public Exception
 {
 public:
   /// Construction
+  RuntimeError();
   RuntimeError(const char * sMessage);
   RuntimeError(const std::string& sMessage);
   /// Construction
@@ -405,6 +414,7 @@ class BaseExport NotImplementedError : public Exception
 {
 public:
   /// Construction
+  NotImplementedError();
   NotImplementedError(const char * sMessage);
   NotImplementedError(const std::string& sMessage);
   /// Construction
@@ -421,6 +431,7 @@ class BaseExport DivisionByZeroError : public Exception
 {
 public:
   /// Construction
+  DivisionByZeroError();
   DivisionByZeroError(const char * sMessage);
   DivisionByZeroError(const std::string& sMessage);
   /// Construction
@@ -437,6 +448,7 @@ class BaseExport ReferencesError : public Exception
 {
 public:
   /// Construction
+  ReferencesError();
   ReferencesError(const char * sMessage);
   ReferencesError(const std::string& sMessage);
   /// Construction
@@ -454,6 +466,7 @@ class BaseExport ExpressionError : public Exception
 {
 public:
   /// Construction
+  ExpressionError();
   ExpressionError(const char * sMessage);
   ExpressionError(const std::string& sMessage);
   /// Construction
@@ -470,6 +483,7 @@ class BaseExport ParserError : public Exception
 {
 public:
   /// Construction
+  ParserError();
   ParserError(const char * sMessage);
   ParserError(const std::string& sMessage);
   /// Construction
@@ -486,6 +500,7 @@ class BaseExport UnicodeError : public Exception
 {
 public:
   /// Construction
+  UnicodeError();
   UnicodeError(const char * sMessage);
   UnicodeError(const std::string& sMessage);
   /// Construction
@@ -502,6 +517,7 @@ class BaseExport OverflowError : public Exception
 {
 public:
   /// Construction
+  OverflowError();
   OverflowError(const char * sMessage);
   OverflowError(const std::string& sMessage);
   /// Construction
@@ -518,6 +534,7 @@ class BaseExport UnderflowError : public Exception
 {
 public:
   /// Construction
+  UnderflowError();
   UnderflowError(const char * sMessage);
   UnderflowError(const std::string& sMessage);
   /// Construction
@@ -534,6 +551,7 @@ class BaseExport UnitsMismatchError : public Exception
 {
 public:
   /// Construction
+  UnitsMismatchError();
   UnitsMismatchError(const char * sMessage);
   UnitsMismatchError(const std::string& sMessage);
   /// Construction
@@ -551,6 +569,7 @@ class BaseExport CADKernelError : public Exception
 {
 public:
     /// Construction
+    CADKernelError();
     CADKernelError(const char * sMessage);
     CADKernelError(const std::string& sMessage);
     /// Construction
