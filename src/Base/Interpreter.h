@@ -53,7 +53,6 @@
 
 #include "Exception.h"
 
-
 namespace Base {
 
     using std::string;
@@ -67,6 +66,11 @@ public:
     /// constructor does the whole job
     PyException(void);
     ~PyException() throw();
+    
+    /// this method determines if the original exception
+    /// can be reconstructed or not, if yes throws the reconstructed version
+    /// if not, throws a generic PyException.
+    static void ThrowException(void);
 
     ///  this function returns the stack trace
     const std::string &getStackTrace(void) const {return _stackTrace;}

@@ -39,6 +39,8 @@
 #include "PyObjectBase.h"
 #include <CXX/Extensions.hxx>
 
+#include "ExceptionFactory.h"
+
 
 char format2[1024];  //Warning! Can't go over 512 characters!!!
 unsigned int format2_len = 1024;
@@ -80,6 +82,52 @@ PyException::PyException(void)
 
 PyException::~PyException() throw()
 {
+}
+
+void PyException::ThrowException(void)
+{
+    PyException myexcp = PyException();
+    
+    if(PP_PyDict_Object!=NULL) {
+
+        Base::ExceptionInfo info;
+
+        PyObject *pystring;
+
+        pystring = PyDict_GetItemString(PP_PyDict_Object,"sclassname");
+        
+        if(pystring==NULL)
+            throw myexcp;
+        
+        info.exceptionname = std::string(PyString_AsString(pystring));
+        
+        if(!Base::ExceptionFactory::Instance().CanProduce(info.exceptionname.c_str()))
+            throw myexcp;
+        
+        pystring = PyDict_GetItemString(PP_PyDict_Object,"sfile");
+        
+        if(pystring!=NULL)
+            info.file = std::string(PyString_AsString(pystring));
+        
+        pystring = PyDict_GetItemString(PP_PyDict_Object,"sfunction");
+        
+        if(pystring!=NULL)
+            info.function = std::string(PyString_AsString(pystring));
+        
+        pystring = PyDict_GetItemString(PP_PyDict_Object,"sErrMsg");
+        
+        if(pystring!=NULL)
+            info.message = std::string(PyString_AsString(pystring));
+        
+        pystring = PyDict_GetItemString(PP_PyDict_Object,"iline");
+        
+        if(pystring!=NULL)
+            info.line = PyInt_AsLong(pystring);
+        
+        Base::ExceptionFactory::Instance().raiseException(info);
+    }
+    else
+        throw myexcp;
 }
 
 void PyException::ReportException (void) const
@@ -197,8 +245,10 @@ std::string InterpreterSingleton::runString(const char *sCmd)
     if (!presult) {
         if (PyErr_ExceptionMatches(PyExc_SystemExit))
             throw SystemExitException();
-        else
-            throw PyException();
+        else {
+            PyException::ThrowException();
+            //throw PyException();
+        }
     }
 
     PyObject* repr = PyObject_Repr(presult);
