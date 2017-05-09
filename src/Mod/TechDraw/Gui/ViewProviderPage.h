@@ -81,10 +81,10 @@ public:
     TechDraw::DrawPage* getDrawPage() const;
     void unsetEdit(int ModNum);
     MDIViewPage* getMDIViewPage();
+    bool showMDIViewPage();
 
 protected:
     bool setEdit(int ModNum);
-    bool showMDIViewPage();
 
 private:
     QPointer<MDIViewPage> m_mdiView;

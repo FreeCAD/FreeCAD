@@ -29,6 +29,8 @@
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
+#include <Base/Interpreter.h>
+
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include <Gui/WidgetFactory.h>
@@ -67,32 +69,22 @@ void loadTechDrawResource()
 }
 
 namespace TechDrawGui {
-class Module : public Py::ExtensionModule<Module>
-{
-public:
-    Module() : Py::ExtensionModule<Module>("TechDrawGui")
-    {
-        initialize("This module is the TechDrawGui module."); // register with Python
-    }
-
-    virtual ~Module() {}
-
-private:
-};
-
-PyObject* initModule()
-{
-    return (new Module)->module().ptr();
+    extern PyObject* initModule();
 }
-
-} // namespace TechDrawGui
-
 
 /* Python entry */
 PyMOD_INIT_FUNC(TechDrawGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
+        PyMOD_Return(0);
+    }
+    // load dependent module
+    try {
+        Base::Interpreter().loadModule("TechDraw");
+    }
+    catch(const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(0);
     }
     PyObject* mod = TechDrawGui::initModule();

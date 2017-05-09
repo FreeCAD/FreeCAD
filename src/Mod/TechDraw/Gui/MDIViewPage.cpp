@@ -451,7 +451,6 @@ void MDIViewPage::findMissingViews(const std::vector<App::DocumentObject*> &list
     }
 }
 
-
 /// Helper function
 bool MDIViewPage::hasQView(App::DocumentObject *obj)
 {
@@ -556,76 +555,35 @@ void MDIViewPage::onRelabel(Gui::Document *pDoc)
 
 void MDIViewPage::printPdf()
 {
-    Gui::FileOptionsDialog dlg(this, 0);
-    dlg.setFileMode(QFileDialog::AnyFile);
-    dlg.setAcceptMode(QFileDialog::AcceptSave);
-    dlg.setWindowTitle(tr("Export PDF"));
-    dlg.setNameFilters(QStringList() << QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
-
-    QGridLayout *gridLayout;
-    QGridLayout *formLayout;
-    QGroupBox *groupBox;
-    QListWidget *listWidget;
-    QListWidgetItem* item;
-    QWidget *form = new QWidget(&dlg);
-    form->resize(40, 300);
-    formLayout = new QGridLayout(form);
-    groupBox = new QGroupBox(form);
-    gridLayout = new QGridLayout(groupBox);
-    listWidget = new QListWidget(groupBox);
-    gridLayout->addWidget(listWidget, 0, 0, 1, 1);
-    formLayout->addWidget(groupBox, 0, 0, 1, 1);
-
-    //the "Extended" part of the dialog
-    //doesn't have any impact on result?
-    groupBox->setTitle(tr("Page sizes"));
-    item = new QListWidgetItem(tr("A0"), listWidget);
-    item->setData(Qt::UserRole, QVariant(QPrinter::A0));
-    item = new QListWidgetItem(tr("A1"), listWidget);
-    item->setData(Qt::UserRole, QVariant(QPrinter::A1));
-    item = new QListWidgetItem(tr("A2"), listWidget);
-    item->setData(Qt::UserRole, QVariant(QPrinter::A2));
-    item = new QListWidgetItem(tr("A3"), listWidget);
-    item->setData(Qt::UserRole, QVariant(QPrinter::A3));
-    item = new QListWidgetItem(tr("A4"), listWidget);
-    item->setData(Qt::UserRole, QVariant(QPrinter::A4));
-    item = new QListWidgetItem(tr("A5"), listWidget);
-    item->setData(Qt::UserRole, QVariant(QPrinter::A5));
-    item = new QListWidgetItem(tr("Letter"), listWidget);
-    item->setData(Qt::UserRole, QVariant(QPrinter::Letter));
-    item = new QListWidgetItem(tr("Legal"), listWidget);
-    item->setData(Qt::UserRole, QVariant(QPrinter::Legal));
-    //listWidget->item(4)->setSelected(true); // by default A4
-    int index = 4; // by default A4
-    for (int i=0; i<listWidget->count(); i++) {
-        if (listWidget->item(i)->data(Qt::UserRole).toInt() == m_paperSize) {
-            index = i;
-            break;
-        }
+    QStringList filter;
+    filter << QObject::tr("PDF (*.pdf)");
+    filter << QObject::tr("All Files (*.*)");
+    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page As PDF"),
+                                                  QString(), filter.join(QLatin1String(";;")));
+    if (fn.isEmpty()) {
+      return;
     }
-    listWidget->item(index)->setSelected(true);
-    dlg.setOptionsWidget(Gui::FileOptionsDialog::ExtensionRight, form, false);
 
-    if (dlg.exec() == QDialog::Accepted) {
-        Gui::WaitCursor wc;
-        QString filename = dlg.selectedFiles().front();
-        QPrinter printer(QPrinter::HighResolution);
-        printer.setFullPage(true);
-        printer.setOutputFormat(QPrinter::PdfFormat);
-        printer.setOutputFileName(filename);
-        printer.setOrientation(m_orientation);
-        printer.setPaperSize(m_paperSize);
-        QList<QListWidgetItem*> items = listWidget->selectedItems();
-
-//        if (items.size() == 1) {
-//            int AX = items.front()->data(Qt::UserRole).toInt();
-//            printer.setPaperSize(QPrinter::PaperSize(AX));
-//        }
-
-        print(&printer);
-    }
+    Gui::WaitCursor wc;
+    std::string utf8Content = fn.toUtf8().constData();
+    printPdf(utf8Content);
 }
 
+void MDIViewPage::printPdf(std::string file)
+{
+    if (file.empty()) {
+        Base::Console().Warning("MDIViewPage - no file specified\n");
+        return;
+    }
+    QString filename = QString::fromUtf8(file.data(),file.size());
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setFullPage(true);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(filename);
+    printer.setOrientation(m_orientation);
+    printer.setPaperSize(m_paperSize);
+    print(&printer);
+}
 
 void MDIViewPage::print()
 {
@@ -852,6 +810,16 @@ void MDIViewPage::saveSVG()
     static_cast<void> (blockConnection(true)); // avoid to be notified by itself
 
     m_view->saveSvg(fn);
+}
+
+void MDIViewPage::saveSVG(std::string file)
+{
+    if (file.empty()) {
+        Base::Console().Warning("MDIViewPage - no file specified\n");
+        return;
+    }
+    QString filename = QString::fromUtf8(file.data(),file.size());
+    m_view->saveSvg(filename);
 }
 
 
