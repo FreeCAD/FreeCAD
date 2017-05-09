@@ -227,7 +227,7 @@ protected:
     void addToBuild(CArea &area, const TopoDS_Shape &shape);
 
     /** Called internally to obtain the combained children shapes */
-    TopoDS_Shape toShape(CArea &area, short fill);
+    TopoDS_Shape toShape(CArea &area, short fill, int reorient=0);
 
     /** Obtain a list of offseted areas
      *
@@ -299,7 +299,7 @@ public:
      * If more than one offset is requested, a compound shape is return
      * containing all offset shapes as wires regardless of \c Fill setting.
      */
-    TopoDS_Shape makeOffset(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET));
+    TopoDS_Shape makeOffset(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET), int reoirent=0);
 
     /** Make a pocket of the combined shape
      *
@@ -401,7 +401,7 @@ public:
      * its original position.
      * */
     static TopoDS_Shape toShape(const CArea &area, bool fill, 
-            const gp_Trsf *trsf=NULL);
+            const gp_Trsf *trsf=NULL, int reoirent=0);
 
     /** Convert a single curve into an OCC wire
      *
@@ -409,7 +409,7 @@ public:
      * \arg \c trsf: optional transform matrix to transform the shape back into
      * its original position.
      * */
-    static TopoDS_Wire toShape(const CCurve &curve, const gp_Trsf *trsf=NULL);
+    static TopoDS_Wire toShape(const CCurve &curve, const gp_Trsf *trsf=NULL, int reorient=0);
 
     /** Check if two OCC shape is coplanar */
     static bool isCoplanar(const TopoDS_Shape &s1, const TopoDS_Shape &s2);
