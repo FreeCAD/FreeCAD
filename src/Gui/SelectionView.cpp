@@ -260,6 +260,22 @@ void SelectionView::toPython(void)
     }
 }
 
+void SelectionView::showPart(void)
+{
+    QListWidgetItem *item = selectionView->currentItem();
+    if (!item)
+        return;
+    QStringList elements = item->text().split(QString::fromLatin1("."));
+    if (elements.length() > 2) {
+        elements[2] = elements[2].split(QString::fromLatin1(" "))[0];
+        if ( elements[2].contains(QString::fromLatin1("Face")) || elements[2].contains(QString::fromLatin1("Edge")) ) {
+            Gui::Command::addModule(Gui::Command::Gui,"Part");
+            QString cmd = QString::fromLatin1("Part.show(App.getDocument(\"%1\").getObject(\"%2\").Shape.%3)").arg(elements[0]).arg(elements[1]).arg(elements[2]);
+            Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+        }
+    }
+}
+
 void SelectionView::onItemContextMenu(const QPoint& point)
 {
     QListWidgetItem *item = selectionView->itemAt(point);
@@ -283,6 +299,15 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     QAction *toPythonAction = menu.addAction(tr("To python console"),this,SLOT(toPython()));
     toPythonAction->setIcon(QIcon::fromTheme(QString::fromLatin1("applications-python")));
     toPythonAction->setToolTip(tr("Reveals this object and its subelements in the python console."));
+    QStringList elements = item->text().split(QString::fromLatin1("."));
+    if (elements.length() > 2) {
+        if ( elements[2].contains(QString::fromLatin1("Face")) || elements[2].contains(QString::fromLatin1("Edge")) ) {
+            // subshape-specific entries
+            QAction *showPart = menu.addAction(tr("Duplicate subshape"),this,SLOT(showPart()));
+            showPart->setIcon(QIcon(QString::fromLatin1(":/icons/ClassBrowser/member.svg")));
+            showPart->setToolTip(tr("Creates a standalone copy of this subshape in the document"));
+        }
+    }
     menu.exec(selectionView->mapToGlobal(point));
 }
 

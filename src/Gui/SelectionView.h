@@ -80,6 +80,7 @@ public Q_SLOTS:
     void treeSelect(void);
     void toPython(void);
     void touch(void);
+    void showPart(void);
 
 };
 
