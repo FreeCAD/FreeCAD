@@ -667,7 +667,7 @@ PyObject *Application::sGetLogLevel(PyObject * /*self*/, PyObject *args, PyObjec
 #ifdef FC_DEBUG
             l = _pcUserParamMngr->GetGroup("BaseApp/LogLevels")->GetInt(tag,-1);
 #endif
-        }else if(strcmp(tag,"DebugDefault")) {
+        }else if(strcmp(tag,"DebugDefault")==0) {
 #ifndef FC_DEBUG
             l = _pcUserParamMngr->GetGroup("BaseApp/LogLevels")->GetInt(tag,-1);
 #endif
