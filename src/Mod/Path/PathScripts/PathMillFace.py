@@ -28,9 +28,6 @@ import Path
 from PySide import QtCore, QtGui
 from PathScripts import PathUtils
 import Part
-import PathScripts.PathKurveUtils
-import area
-import TechDraw
 from FreeCAD import Vector
 import PathScripts.PathLog as PathLog
 
@@ -161,31 +158,25 @@ class ObjectFace:
             return self.getStock(o)
         return None
 
-    def _buildPathArea(self, obj, edgelist):
+    def _buildPathArea(self, obj, baseobject):
         """build the face path using PathArea"""
         from PathScripts.PathUtils import depth_params
 
         PathLog.track()
-        c = Part.Wire(edgelist)
-        f = Part.makeFace([c], 'Part::FaceMakerSimple')
-
-        boundary = Path.Area(PocketMode=4,SectionCount=1)
+        boundary = Path.Area()
         boundary.setPlane(Part.makeCircle(10))
-        boundary.add(f)
-        #toolDiameter = 1.0
+        boundary.add(baseobject)
 
-        #use_zig_zag = obj.UseZigZag
-        #keep_tool_down = obj.KeepToolDown
-        #zig_unidirectional = obj.ZigUnidirectional
-        #start_point = None
-        #cut_mode = obj.CutMode
         stepover = (self.radius * 2) * (float(obj.StepOver)/100)
 
-        boundary.setParams(ZigAngle=obj.ZigZagAngle,
-                FromCenter=(obj.StartAt == "Center"),
-                PocketStepOver = stepover, #(self.radius * 2) * (float(obj.StepOver)/100),
-                PocketExtraOffset=obj.PassExtension.Value,
-                PocketMode=4)
+        pocketparams = {'Fill': 0,
+                         'Coplanar' : 0,
+                         'PocketMode': 4,
+                         'SectionCount':  -1,
+                         'Angle': obj.ZigZagAngle,
+                         'FromCenter': (obj.StartAt == "Center"),
+                         'PocketStepover': stepover,
+                         'PocketExtraOffset': obj.PassExtension.Value }
 
         depthparams = depth_params(
                 clearance_height = obj.ClearanceHeight.Value,
@@ -196,84 +187,32 @@ class ObjectFace:
                 final_depth = obj.FinalDepth.Value,
                 user_depths = None)
 
-        print (depthparams.get_depths())
-        lshapes = [boundary.getShape()]
+        boundary.setParams(**pocketparams)
+        sections = boundary.makeSections(mode=0, project=False, heights=depthparams.get_depths())
+        shapelist = [sec.getShape() for sec in sections]
 
-        # depthparams = depth_params(
-        #         obj.ClearanceHeight.Value,
-        #         obj.SafeHeight.Value,
-        #         obj.StartDepth.Value,
-        #         obj.StepDown,
-        #         obj.FinishDepth.Value,
-        #         obj.FinalDepth.Value)
 
-        for l in depthparams.get_depths():
-                c = lshapes[0].copy()
-                c.Placement.Base.z = l
-                lshapes.append(c)
+        params = {'shapes': shapelist,
+                  'feedrate': self.horizFeed,
+                  'feedrate_v': self.vertFeed,
+                  'verbose': True,
+                  'resume_height': obj.StepDown,
+                  'retraction': obj.ClearanceHeight.Value}
 
-        #if start is None:
-        pp = Path.fromShapes(lshapes)
-        #else:
-        #    pp = Path.fromShapes(lshapes, start)
+        # if obj.Direction == 'CCW':
+        #     params['orientation'] = 1
+        # else:
+        #     params['orientation'] = 0
+
+
+        PathLog.debug("Generating Path with params: {}".format(params))
+        pp = Path.fromShapes(**params)
+
         return pp
-
-    # def buildpathlibarea(self, obj, a):
-    #     """Build the face path using libarea algorithm"""
-
-    #     import PathScripts.PathAreaUtils as PathAreaUtils
-    #     from PathScripts.PathUtils import depth_params
-
-    #     PathLog.track()
-    #     for p in a.getCurves():
-    #         PathLog.debug(p.text())
-
-    #     FreeCAD.Console.PrintMessage(translate("PathMillFace", "Generating toolpath with libarea offsets.\n"))
-
-    #     depthparams = depth_params(
-    #             obj.ClearanceHeight.Value,
-    #             obj.SafeHeight.Value,
-    #             obj.StartDepth.Value,
-    #             obj.StepDown,
-    #             obj.FinishDepth.Value,
-    #             obj.FinalDepth.Value)
-
-    #     extraoffset = - obj.PassExtension.Value
-    #     stepover = (self.radius * 2) * (float(obj.StepOver)/100)
-    #     use_zig_zag = obj.UseZigZag
-    #     zig_angle = obj.ZigZagAngle
-    #     from_center = (obj.StartAt == "Center")
-    #     keep_tool_down = obj.KeepToolDown
-    #     zig_unidirectional = obj.ZigUnidirectional
-    #     start_point = None
-    #     cut_mode = obj.CutMode
-
-    #     PathAreaUtils.flush_nc()
-    #     PathAreaUtils.output('mem')
-    #     PathAreaUtils.feedrate_hv(self.horizFeed, self.vertFeed)
-    #     if obj.UseStartPoint:
-    #         start_point = (obj.StartPoint.x, obj.StartPoint.y)
-
-    #     PathAreaUtils.pocket(
-    #             a,
-    #             self.radius,
-    #             extraoffset,
-    #             stepover,
-    #             depthparams,
-    #             from_center,
-    #             keep_tool_down,
-    #             use_zig_zag,
-    #             zig_angle,
-    #             zig_unidirectional,
-    #             start_point,
-    #             cut_mode)
-    #     return PathAreaUtils.retrieve_gcode()
 
     def execute(self, obj):
         PathLog.track()
         commandlist = []
-
-        #output = ""
 
         toolLoad = obj.ToolController
 
@@ -293,13 +232,7 @@ class ObjectFace:
             else:
                 self.radius = tool.Diameter/2
 
-        # Build preliminary comments
-        # output = ""
-        # output += "(" + obj.Label + ")"
-
-
         commandlist.append(Path.Command("(" + obj.Label + ")"))
-
 
         # Facing is done either against base objects
         if obj.Base:
@@ -334,36 +267,16 @@ class ObjectFace:
         if obj.BoundaryShape == 'Boundbox':
             bb = planeshape.BoundBox
             bbperim = Part.makeBox(bb.XLength, bb.YLength, 1, Vector(bb.XMin, bb.YMin, bb.ZMin), Vector(0, 0, 1))
-            contourwire = TechDraw.findShapeOutline(bbperim, 1, Vector(0, 0, 1))
+            env = PathUtils.getEnvelopeTD(bbperim, obj.StartDepth)
         else:
-            contourwire = TechDraw.findShapeOutline(planeshape, 1, Vector(0, 0, 1))
-
-        # pocket = Path.Area(PocketMode=4,SectionCount=-1,SectionMode=1,Stepdown=0.499)
-        # pocket.setParams(PocketExtraOffset = obj.PassExtension.Value, ToolRadius = self.radius)
-        # pocket.add(planeshape, op=1)
-        # #Part.show(contourwire)
-        # path = Path.fromShapes(pocket.getShape())
-
-        edgelist = contourwire.Edges
-        edgelist = Part.__sortEdges__(edgelist)
-
-
-
-        # # use libarea to build the pattern
-        # a = area.Area()
-        # c = PathScripts.PathKurveUtils.makeAreaCurve(edgelist, 'CW')
-        # PathLog.debug(c.text())
-        # a.append(c)
-        # a.Reorder()
-        # output += self.buildpathlibarea(obj, a)
-
+            env = PathUtils.getEnvelopeTD(planeshape, obj.StartDepth)
 
         try:
-            commandlist.extend(self._buildPathArea(obj, edgelist).Commands)
-        except Exception as e: 
-            print(e) 
+            commandlist.extend(self._buildPathArea(obj, env).Commands)
+        except Exception as e:
+            print(e)
             FreeCAD.Console.PrintWarning(translate("PathMillFace", "The selected settings did not produce a valid path.\n"))
-            
+
             #FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
         if obj.Active:
@@ -375,16 +288,6 @@ class ObjectFace:
             path = Path.Path("(inactive operation)")
             obj.Path = path
             obj.ViewObject.Visibility = False
-
-
-
-
-#         path = Path.Path(output)
-#         if len(path.Commands) == 0:
-#             FreeCAD.Console.PrintMessage(translate("PathMillFace", "The selected settings did not produce a valid path.\n"))
-
-#         obj.Path = path
-#         obj.ViewObject.Visibility = True
 
 
 class _CommandSetFaceStartPoint:
@@ -525,10 +428,6 @@ class TaskPanel:
                 self.obj.PassExtension = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
             if hasattr(self.obj, "CutMode"):
                 self.obj.CutMode = str(self.form.cutMode.currentText())
-            # if hasattr(self.obj, "UseZigZag"):
-            #     self.obj.UseZigZag = self.form.useZigZag.isChecked()
-            # if hasattr(self.obj, "ZigUnidirectional"):
-            #     self.obj.ZigUnidirectional = self.form.zigZagUnidirectional.isChecked()
             if hasattr(self.obj, "ZigZagAngle"):
                 self.obj.ZigZagAngle = FreeCAD.Units.Quantity(self.form.zigZagAngle.text()).Value
             if hasattr(self.obj, "StepOver"):
@@ -552,8 +451,6 @@ class TaskPanel:
         self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(self.obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
 
         self.form.stepOverPercent.setValue(self.obj.StepOver)
-        #self.form.useZigZag.setChecked(self.obj.UseZigZag)
-        #self.form.zigZagUnidirectional.setChecked(self.obj.ZigUnidirectional)
         self.form.zigZagAngle.setValue(FreeCAD.Units.Quantity(self.obj.ZigZagAngle, FreeCAD.Units.Angle))
         self.form.extraOffset.setValue(self.obj.PassExtension.Value)
 
