@@ -977,6 +977,7 @@ std::list<TopoDS_Wire> Area::project(const TopoDS_Shape &solid)
     area.myParams.Explode = false;
     area.myParams.FitArcs = false;
     area.myParams.Reorient = false;
+    area.myParams.Outline = false;
     area.myParams.Coplanar = CoplanarNone;
     area.add(joiner.comp, OperationUnion);
     TopoDS_Shape shape = area.getShape();
@@ -1356,6 +1357,19 @@ void Area::build() {
             area.add(joiner.comp,OperationCompound);
             area.build();
             myArea = std::move(area.myArea);
+        }
+
+        if(myParams.Outline) {
+            myArea->Reorder();
+            for(auto it=myArea->m_curves.begin(),itNext=it;
+                it!=myArea->m_curves.end();
+                it=itNext)
+            {
+                ++itNext;
+                auto &curve = *it;
+                if(curve.IsClosed() && curve.IsClockwise())
+                    myArea->m_curves.erase(it);
+            }
         }
 
         TIME_TRACE(t,"prepare");

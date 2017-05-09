@@ -60,6 +60,8 @@
         "but 'Check' only gives warning.",(None)(Check)(Force)))\
     ((bool,reorient,Reorient,true,\
         "Re-orient closed wires in wire only shapes so that inner wires become holes."))\
+    ((bool,outline,Outline,false,\
+        "Remove all inner wires (holes) before output the final shape"))\
     ((bool,explode,Explode,false,\
         "If true, Area will explode the first shape into disconnected open edges, \n"\
         "with all curves discretized, so that later operations like 'Difference' \n"\
