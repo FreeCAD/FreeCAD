@@ -527,6 +527,24 @@ class _Wall(ArchComponent.Component):
                                 obj.Length = l
 
     def onChanged(self,obj,prop):
+        if prop == "Length":
+            if obj.Base and obj.Length.Value:
+                if obj.Base.isDerivedFrom("Part::Feature"):
+                    if len(obj.Base.Shape.Edges) == 1:
+                        import DraftGeomUtils
+                        e = obj.Base.Shape.Edges[0]
+                        if DraftGeomUtils.geomType(e) == "Line":
+                            if e.Length != obj.Length.Value:
+                                v = e.Vertexes[-1].Point.sub(e.Vertexes[0].Point)
+                                v.normalize()
+                                v.multiply(obj.Length.Value)
+                                p2 = e.Vertexes[0].Point.add(v)
+                                if Draft.getType(obj.Base) == "Wire":
+                                    obj.Base.End = p2
+                                elif Draft.getType(obj.Base) == "Sketch":
+                                    obj.Base.movePoint(0,2,p2,0)
+                                else:
+                                    FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base obect of this wall")+"\n")
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
         
