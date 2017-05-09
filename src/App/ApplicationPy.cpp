@@ -352,7 +352,11 @@ PyObject* Application::sGetConfig(PyObject * /*self*/, PyObject *args,PyObject *
     }
     else {
         // do not set an error because this may break existing python code
+#if PY_MAJOR_VERSION >= 3
+        return PyUnicode_FromString("");
+#else
         return PyString_FromString("");
+#endif
     }
 }
 
@@ -364,7 +368,11 @@ PyObject* Application::sDumpConfig(PyObject * /*self*/, PyObject *args,PyObject 
     PyObject *dict = PyDict_New();
     for (std::map<std::string,std::string>::iterator It= GetApplication()._mConfig.begin();
          It!=GetApplication()._mConfig.end();++It) {
+#if PY_MAJOR_VERSION >= 3
+        PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It->second.c_str()));
+#else
         PyDict_SetItemString(dict,It->first.c_str(), PyString_FromString(It->second.c_str()));
+#endif
     }
     return dict;
 }
@@ -559,7 +567,11 @@ PyObject* Application::sListDocuments(PyObject * /*self*/, PyObject *args,PyObje
 
         for (std::map<std::string,Document*>::const_iterator It = GetApplication().DocMap.begin();
              It != GetApplication().DocMap.end();++It) {
+#if PY_MAJOR_VERSION >= 3
+            pKey   = PyUnicode_FromString(It->first.c_str());
+#else
             pKey   = PyString_FromString(It->first.c_str());
+#endif
             // GetPyObject() increments
             pValue = static_cast<Base::PyObjectBase*>(It->second->getPyObject());
             PyDict_SetItem(pDict, pKey, pValue);
