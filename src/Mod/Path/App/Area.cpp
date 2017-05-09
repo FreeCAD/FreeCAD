@@ -1380,7 +1380,7 @@ void Area::build() {
     }
 }
 
-TopoDS_Shape Area::toShape(CArea &area, short fill) {
+TopoDS_Shape Area::toShape(CArea &area, short fill, int reorient) {
     gp_Trsf trsf(myTrsf.Inverted());
     bool bFill;
     switch(fill){
@@ -1397,11 +1397,11 @@ TopoDS_Shape Area::toShape(CArea &area, short fill) {
         if(&area == myArea.get()) {
             CArea copy(area);
             copy.FitArcs();
-            return toShape(copy,bFill,&trsf);
+            return toShape(copy,bFill,&trsf,reorient);
         }
         area.FitArcs();
     }
-    return toShape(area,bFill,&trsf);
+    return toShape(area,bFill,&trsf,reorient);
 }
 
 
@@ -1515,9 +1515,9 @@ TopoDS_Shape Area::getShape(int index) {
     return myShape;
 }
 
-TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET)) {
+TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET),int reorient) {
     build();
-    AREA_SECTION(makeOffset,index,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET));
+    AREA_SECTION(makeOffset,index,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET),reorient);
 
     std::list<shared_ptr<CArea> > areas;
     makeOffset(areas,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET));
@@ -1527,7 +1527,7 @@ TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET
             TIME_INIT(t);
             area.Thicken(myParams.ToolRadius);
             TIME_PRINT(t,"Thicken");
-            return toShape(area,FillFace);
+            return toShape(area,FillFace,reorient);
         }
         return TopoDS_Shape();
     }
@@ -1536,9 +1536,12 @@ TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET
     builder.MakeCompound(compound);
     TIME_INIT(t);
     DURATION_INIT(d);
+
+    bool thicken = myParams.Thicken && myParams.ToolRadius>Precision::Confusion();
+
     for(shared_ptr<CArea> area : areas) {
         short fill;
-        if(myParams.Thicken && myParams.ToolRadius>Precision::Confusion()) {
+        if(thicken){
             area->Thicken(myParams.ToolRadius);
             DURATION_PLUS(d,t);
             fill = FillFace;
@@ -1546,11 +1549,11 @@ TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET
             fill = myParams.Fill;
         else
             fill = FillNone;
-        const TopoDS_Shape &shape = toShape(*area,fill);
+        const TopoDS_Shape &shape = toShape(*area,fill,reorient);
         if(shape.IsNull()) continue;
         builder.Add(compound,shape);
     }
-    if(myParams.Thicken && myParams.ToolRadius>Precision::Confusion())
+    if(thicken)
         DURATION_PRINT(d,"Thicken");
     for(TopExp_Explorer it(compound,TopAbs_EDGE);it.More();)
         return compound;
@@ -1686,7 +1689,8 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         Offset = -tool_radius-extra_offset-shift;
         ExtraPass = -1;
         Stepover = -stepover;
-        return makeOffset(index,PARAM_FIELDS(PARAM_FNAME,AREA_PARAMS_OFFSET));
+        // make offset and make sure the loop is CW (i.e. inner wires)
+        return makeOffset(index,PARAM_FIELDS(PARAM_FNAME,AREA_PARAMS_OFFSET),-1);
     }case Area::PocketModeZigZagOffset:
         pm = ZigZagThenSingleOffsetPocketMode;
         break;
@@ -1767,8 +1771,22 @@ static inline bool IsLeft(const gp_Pnt &a, const gp_Pnt &b, const gp_Pnt &c) {
     return ((b.X() - a.X())*(c.Y() - a.Y()) - (b.Y() - a.Y())*(c.X() - a.X())) > 0;
 }
 
-TopoDS_Wire Area::toShape(const CCurve &c, const gp_Trsf *trsf) {
+TopoDS_Wire Area::toShape(const CCurve &_c, const gp_Trsf *trsf, int reorient) {
     BRepBuilderAPI_MakeWire mkWire;
+
+    CCurve cReversed;
+    if(reorient) {
+        if(_c.IsClosed() && 
+           ((reorient>0 && _c.IsClockwise()) ||
+            (reorient<0 && !_c.IsClockwise())))
+        {
+            cReversed = _c;
+            cReversed.Reverse();
+        }else
+            reorient = 0;
+    }
+    const CCurve &c = reorient?cReversed:_c;
+
     gp_Pnt pstart,pt;
     bool first = true;
     for(const CVertex &v : c.m_vertices){
@@ -1830,13 +1848,13 @@ TopoDS_Wire Area::toShape(const CCurve &c, const gp_Trsf *trsf) {
         return mkWire.Wire();
 }
 
-TopoDS_Shape Area::toShape(const CArea &area, bool fill, const gp_Trsf *trsf) {
+TopoDS_Shape Area::toShape(const CArea &area, bool fill, const gp_Trsf *trsf, int reorient) {
     BRep_Builder builder;
     TopoDS_Compound compound;
     builder.MakeCompound(compound);
 
     for(const CCurve &c : area.m_curves) {
-        const TopoDS_Wire &wire = toShape(c,trsf);
+        const TopoDS_Wire &wire = toShape(c,trsf,reorient);
         if(!wire.IsNull())
             builder.Add(compound,wire);
     }
