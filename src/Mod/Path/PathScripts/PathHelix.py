@@ -299,36 +299,6 @@ class ObjectPathHelix(object):
     def __setstate__(self, state):
         return None
 
-    def sort_jobs(self, jobs):
-        """ sort holes by the nearest neighbor method """
-        from Queue import PriorityQueue
-
-        def sqdist(a, b):
-            """ square Euclidean distance """
-            return (a['xc'] - b['xc']) ** 2 + (a['yc'] - b['yc']) ** 2
-
-        def find_closest(job_list, job, dist):
-            q = PriorityQueue()
-
-            for j in job_list:
-                q.put((dist(j, job) + job['xc'], j))
-
-            prio, result = q.get()
-            return result
-
-        out = []
-        zero = {'xc': 0, 'yc': 0}
-
-        out.append(find_closest(jobs, zero, sqdist))
-        jobs.remove(out[-1])
-
-        while jobs:
-            closest = find_closest(jobs, out[-1], sqdist)
-            out.append(closest)
-            jobs.remove(closest)
-
-        return out
-
     def execute(self, obj):
         from Part import Circle, Cylinder, Plane
         from PathScripts import PathUtils
@@ -439,8 +409,8 @@ class ObjectPathHelix(object):
                             jobs[-1]["zmin"] -= obj.ThroughDepth.Value
 
                     drill_jobs.extend(jobs)
-
-            drill_jobs = self.sort_jobs(drill_jobs)
+            if len(drill_jobs) > 0:
+                drill_jobs = PathUtils.sort_jobs(drill_jobs, ['xc', 'yc'])
 
             for job in drill_jobs:
                 output += helix_cut((job["xc"], job["yc"]), job["r_out"], job["r_in"], obj.DeltaR.Value,

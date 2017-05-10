@@ -512,6 +512,37 @@ def rampPlunge(edge, rampangle, destZ, startZ):
 
     return rampCmds
 
+def sort_jobs(locations, keys):
+    """ sort holes by the nearest neighbor method
+        keys: two-element list of keys for X and Y coordinates. for example ['x','y']
+        originally written by m0n5t3r for PathHelix
+    """
+    from Queue import PriorityQueue
+
+    def sqdist(a, b):
+        """ square Euclidean distance """
+        return (a[keys[0]] - b[keys[0]] ) ** 2 + (a[keys[1]] - b[keys[1]]) ** 2
+
+    def find_closest(location_list, location, dist):
+        q = PriorityQueue()
+
+        for j in location_list:
+            q.put((dist(j, location) + location[keys[0]], j))
+
+        prio, result = q.get()
+        return result
+
+    out = []
+    zero = {keys[0]: 0,keys[1]: 0}
+
+    out.append(find_closest(locations, zero, sqdist))
+
+    while locations:
+        closest = find_closest(locations, out[-1], sqdist)
+        out.append(closest)
+        locations.remove(closest)
+
+    return out
 
 class depth_params:
     '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters
