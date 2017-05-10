@@ -480,7 +480,8 @@ class Line(Creator):
     def Activated(self,name=translate("draft","Line")):
         Creator.Activated(self,name)
         if self.doc:
-            self.obj = None
+            self.obj = None # stores the temp shape
+            self.oldWP = None # stores the WP if we modify it
             if self.isWire:
                 self.ui.wireUi(name)
             else:
@@ -498,6 +499,12 @@ class Line(Creator):
             old = self.obj.Name
             todo.delay(self.doc.removeObject,old)
         self.obj = None
+        if self.oldWP:
+            FreeCAD.DraftWorkingPlane = self.oldWP
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.setGrid()
+                FreeCADGui.Snapper.restack()
+        self.oldWP = None
         if (len(self.node) > 1):
             if (len(self.node) == 2) and Draft.getParam("UsePartPrimitives",False):
                 # use Part primitive
@@ -603,6 +610,23 @@ class Line(Creator):
             if self.planetrack:
                 self.planetrack.set(self.node[0])
             msg(translate("draft", "Pick next point:\n"))
+
+    def orientWP(self):
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            if (len(self.node) > 1) and self.obj:
+                import DraftGeomUtils
+                n = DraftGeomUtils.getNormal(self.obj.Shape)
+                if not n:
+                    n = FreeCAD.DraftWorkingPlane.axis
+                p = self.node[-1]
+                v = self.node[-2].sub(self.node[-1])
+                v = v.negative()
+                if not self.oldWP:
+                    self.oldWP = FreeCAD.DraftWorkingPlane.copy()
+                FreeCAD.DraftWorkingPlane.alignToPointAndAxis(p,n,upvec=v)
+                if hasattr(FreeCADGui,"Snapper"):
+                    FreeCADGui.Snapper.setGrid()
+                    FreeCADGui.Snapper.restack()
 
     def numericInput(self,numx,numy,numz):
         "this function gets called by the toolbar when valid x, y, and z have been entered there"
