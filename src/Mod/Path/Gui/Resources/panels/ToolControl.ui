@@ -166,13 +166,6 @@
       <property name="fieldGrowthPolicy">
        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
       </property>
-      <item row="0" column="0">
-       <widget class="QSpinBox" name="spindleSpeed">
-        <property name="maximum">
-         <number>99999</number>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="cboSpindleDirection">
         <item>
@@ -186,6 +179,9 @@
          </property>
         </item>
        </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QDoubleSpinBox" name="spindleSpeed"/>
       </item>
      </layout>
     </widget>
