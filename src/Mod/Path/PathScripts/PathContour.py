@@ -23,15 +23,14 @@
 # ***************************************************************************
 
 import FreeCAD
-#from FreeCAD import Vector
 import Path
 import PathScripts.PathLog as PathLog
 from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
 from PySide import QtCore
-#import TechDraw
 import ArchPanel
 import Part
+from PathScripts.PathUtils import waiting_effects
 
 LOG_MODULE = 'PathContour'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
@@ -123,15 +122,15 @@ class ObjectContour:
             obj.ClearanceHeight = 10.0
             obj.SafeHeight = 8.0
 
+    @waiting_effects
     def _buildPathArea(self, obj, baseobject, start=None):
         PathLog.track()
-
         profile = Path.Area()
         profile.setPlane(Part.makeCircle(10))
         profile.add(baseobject)
 
         profileparams = {'Fill': 0,
-                         'Coplanar' : 0}
+                         'Coplanar': 0}
 
         if obj.UseComp is False:
             profileparams['Offset'] = 0.0
@@ -219,17 +218,14 @@ class ObjectContour:
                         for shape in shapes:
                             f = Part.makeFace([shape], 'Part::FaceMakerSimple')
                             thickness = baseobject.Group[0].Source.Thickness
-                            contourshape = f.extrude(FreeCAD.Vector(0,0, thickness))
+                            contourshape = f.extrude(FreeCAD.Vector(0, 0, thickness))
                             try:
                                 commandlist.extend(self._buildPathArea(obj, contourshape).Commands)
                             except Exception as e:
                                 print(e)
                                 FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
         else:
-            #fixbase = baseobject.Shape.copy()
-            #fixbase.fix(0.00001, 0.00001, 0.00001)
             env = PathUtils.getEnvelope(baseobject.Shape, obj.StartDepth)
-
             try:
                 commandlist.extend(self._buildPathArea(obj, env).Commands)
             except Exception as e:
