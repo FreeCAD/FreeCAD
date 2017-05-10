@@ -148,7 +148,7 @@ public:
     //@{
     bool isNull() const;
     bool isValid() const;
-    bool analyze(std::ostream&) const;
+    bool analyze(bool runBopCheck, std::ostream&) const;
     bool isClosed() const;
     //@}
 
