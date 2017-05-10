@@ -30,6 +30,7 @@ from PathScripts import PathUtils
 import Part
 from FreeCAD import Vector
 import PathScripts.PathLog as PathLog
+from PathScripts.PathUtils import waiting_effects
 
 LOG_MODULE = 'PathMillFace'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
@@ -158,6 +159,7 @@ class ObjectFace:
             return self.getStock(o)
         return None
 
+    @waiting_effects
     def _buildPathArea(self, obj, baseobject):
         """build the face path using PathArea"""
         from PathScripts.PathUtils import depth_params
@@ -170,27 +172,26 @@ class ObjectFace:
         stepover = (self.radius * 2) * (float(obj.StepOver)/100)
 
         pocketparams = {'Fill': 0,
-                         'Coplanar' : 0,
-                         'PocketMode': 4,
-                         'SectionCount':  -1,
-                         'Angle': obj.ZigZagAngle,
-                         'FromCenter': (obj.StartAt == "Center"),
-                         'PocketStepover': stepover,
-                         'PocketExtraOffset': obj.PassExtension.Value }
+                        'Coplanar': 0,
+                        'PocketMode': 4,
+                        'SectionCount': -1,
+                        'Angle': obj.ZigZagAngle,
+                        'FromCenter': (obj.StartAt == "Center"),
+                        'PocketStepover': stepover,
+                        'PocketExtraOffset': obj.PassExtension.Value}
 
         depthparams = depth_params(
-                clearance_height = obj.ClearanceHeight.Value,
-                rapid_safety_space = obj.SafeHeight.Value,
-                start_depth = obj.StartDepth.Value,
-                step_down = obj.StepDown,
-                z_finish_step = obj.FinishDepth.Value,
-                final_depth = obj.FinalDepth.Value,
-                user_depths = None)
+                clearance_height=obj.ClearanceHeight.Value,
+                rapid_safety_space=obj.SafeHeight.Value,
+                start_depth=obj.StartDepth.Value,
+                step_down=obj.StepDown,
+                z_finish_step=obj.FinishDepth.Value,
+                final_depth=obj.FinalDepth.Value,
+                user_depths=None)
 
         boundary.setParams(**pocketparams)
         sections = boundary.makeSections(mode=0, project=False, heights=depthparams.get_depths())
         shapelist = [sec.getShape() for sec in sections]
-
 
         params = {'shapes': shapelist,
                   'feedrate': self.horizFeed,
@@ -203,7 +204,6 @@ class ObjectFace:
         #     params['orientation'] = 1
         # else:
         #     params['orientation'] = 0
-
 
         PathLog.debug("Generating Path with params: {}".format(params))
         pp = Path.fromShapes(**params)
@@ -276,8 +276,6 @@ class ObjectFace:
         except Exception as e:
             print(e)
             FreeCAD.Console.PrintWarning(translate("PathMillFace", "The selected settings did not produce a valid path.\n"))
-
-            #FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
         if obj.Active:
             path = Path.Path(commandlist)
@@ -368,7 +366,6 @@ class CommandPathMillFace:
         FreeCADGui.doCommand('obj.StartDepth = ' + str(ztop + 1))
         FreeCADGui.doCommand('obj.FinalDepth =' + str(ztop))
         FreeCADGui.doCommand('obj.ZigZagAngle = 45.0')
-        #FreeCADGui.doCommand('obj.UseZigZag = True')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
         snippet = '''
@@ -468,7 +465,6 @@ class TaskPanel:
             self.form.boundaryShape.blockSignals(True)
             self.form.boundaryShape.setCurrentIndex(index)
             self.form.boundaryShape.blockSignals(False)
-
 
         index = self.form.offsetpattern.findText(
                 self.obj.OffsetPattern, QtCore.Qt.MatchFixedString)
@@ -614,8 +610,6 @@ class TaskPanel:
         self.form.boundaryShape.currentIndexChanged.connect(self.getFields)
         self.form.stepOverPercent.editingFinished.connect(self.getFields)
         self.form.offsetpattern.currentIndexChanged.connect(self.getFields)
-        #self.form.useZigZag.clicked.connect(self.getFields)
-        #self.form.zigZagUnidirectional.clicked.connect(self.getFields)
         self.form.zigZagAngle.editingFinished.connect(self.getFields)
         self.form.uiToolController.currentIndexChanged.connect(self.getFields)
 
