@@ -28,6 +28,7 @@
 // inclusion of the generated files (generated out of GeoFeaturePy.xml)
 #include "GeoFeaturePy.h"
 #include "GeoFeaturePy.cpp"
+#include <CXX/Objects.hxx>
 
 using namespace App;
 
@@ -37,17 +38,24 @@ std::string GeoFeaturePy::representation(void) const
     return std::string("<GeoFeature object>");
 }
 
-
-
 PyObject* GeoFeaturePy::getPaths(PyObject * /*args*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
 }
 
-
-
-
+PyObject* GeoFeaturePy::getPropertyNameOfGeometry(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    GeoFeature* object = this->getGeoFeaturePtr();
+    const PropertyComplexGeoData* prop = object->getPropertyOfGeometry();
+    const char* name = prop ? prop->getName() : 0;
+    if (name) {
+        return Py::new_reference_to(Py::String(std::string(name)));
+    }
+    return Py::new_reference_to(Py::None());
+}
 
 PyObject *GeoFeaturePy::getCustomAttributes(const char* /*attr*/) const
 {
@@ -58,5 +66,3 @@ int GeoFeaturePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
 }
-
-
