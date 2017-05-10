@@ -31,6 +31,10 @@
 
 class QListWidget;
 
+namespace App {
+class DocumentObject;
+}
+
 namespace Gui {
 namespace DockWnd {
 
@@ -82,6 +86,10 @@ public Q_SLOTS:
     void touch(void);
     void showPart(void);
 
+private:
+    QString getModule(const char* type) const;
+    QString getProperty(App::DocumentObject* obj) const;
+    bool supportPart(App::DocumentObject* obj, const QString& part) const;
 };
 
 } // namespace DockWnd
