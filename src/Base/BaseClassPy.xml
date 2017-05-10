@@ -34,7 +34,7 @@
       <Documentation>
         <UserDocu>Module in which this class is defined</UserDocu>
       </Documentation>
-      <Parameter Name="Module" Type="Int"/>
+      <Parameter Name="Module" Type="String"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>
