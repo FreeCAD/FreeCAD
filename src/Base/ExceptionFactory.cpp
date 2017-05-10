@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
+
 #include "ExceptionFactory.h"
 
 using namespace Base;
