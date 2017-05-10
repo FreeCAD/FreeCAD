@@ -125,6 +125,7 @@ inline std::chrono::TIME_UNIT getDuration(TIME_POINT &t)
 
 class CArea;
 class CCurve;
+class Bnd_Box;
 
 namespace Path
 {
@@ -213,7 +214,8 @@ protected:
     bool myHaveFace;
     bool myHaveSolid;
     bool myShapeDone;
-    int mySkippedShapes;
+    bool myProjecting;
+    mutable int mySkippedShapes;
 
     static bool s_aborting;
     static AreaStaticParams s_params;
@@ -246,7 +248,7 @@ protected:
 
     TopoDS_Shape findPlane(const TopoDS_Shape &shape, gp_Trsf &trsf);
 
-    std::list<TopoDS_Wire> project(const TopoDS_Shape &solid);
+    std::list<Shape> getProjectedShapes(const gp_Trsf &trsf, bool inverse=true) const;
 
 public:
     /** Declare all parameters defined in #AREA_PARAMS_ALL as member variable */
@@ -279,7 +281,7 @@ public:
      * If no workplane is set using setPlane(), the active workplane is derived from
      * the added children shapes using the same algorithm empolyed by setPlane().
      */
-    TopoDS_Shape getPlane(gp_Trsf *trsf = NULL);
+    TopoDS_Shape getPlane(gp_Trsf *trsf=0);
 
     /** Add a child shape with given operation code 
      *
@@ -445,6 +447,8 @@ public:
     static void toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
             const gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL,
             PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_PATH));
+
+    static int project(TopoDS_Shape &out, const TopoDS_Shape &in, const AreaParams *params=0);
 
     static void setWireOrientation(TopoDS_Wire& wire, const gp_Dir &dir, bool ccw);
 

@@ -140,6 +140,7 @@ Area::Area(const AreaParams *params)
 ,myHaveFace(false)
 ,myHaveSolid(false)
 ,myShapeDone(false)
+,myProjecting(false)
 {
     if(params)
         setParams(*params);
@@ -426,6 +427,16 @@ void Area::addToBuild(CArea &area, const TopoDS_Shape &shape) {
             myParams.Coplanar==CoplanarNone?NULL:&plane,
             myHaveSolid||myParams.Coplanar==CoplanarForce,&areaOpen,
             myParams.OpenMode==OpenModeEdges,myParams.Reorient);
+
+    if(myProjecting) {
+        // when projecting, we force all wires to be CCW in order to remove
+        // inner holes
+        for(auto &c : area.m_curves) {
+            if(c.IsClosed() && c.IsClockwise())
+                c.Reverse();
+        }
+    }
+
     if(areaOpen.m_curves.size()) {
         if(&area == myArea.get() || myParams.OpenMode == OpenModeNone)
             myAreaOpen->m_curves.splice(myAreaOpen->m_curves.end(),areaOpen.m_curves);
@@ -530,9 +541,8 @@ struct WireJoiner {
 
     BRep_Builder builder;
     TopoDS_Compound comp;
-    gp_Dir dir;
 
-    WireJoiner(const gp_Dir &dir = gp_Dir()):dir(dir) {
+    WireJoiner() {
         builder.MakeCompound(comp);
     }
 
@@ -552,19 +562,17 @@ struct WireJoiner {
     }
 
     void add(const TopoDS_Edge &e, bool bbox=false) {
-        if(BRep_Tool::IsClosed(e)){
-            BRepBuilderAPI_MakeWire mkWire;
-            mkWire.Add(e);
-            TopoDS_Wire wire = mkWire.Wire();
-            if(bbox)
-                Area::setWireOrientation(wire,dir,true);
-            builder.Add(comp,wire);
-            return;
-        }
+        // if(BRep_Tool::IsClosed(e)){
+        //     BRepBuilderAPI_MakeWire mkWire;
+        //     mkWire.Add(e);
+        //     TopoDS_Wire wire = mkWire.Wire();
+        //     builder.Add(comp,wire);
+        //     return;
+        // }
         gp_Pnt p1,p2;
         getEndPoints(e,p1,p2);
-        if(p1.SquareDistance(p2) < Precision::SquareConfusion())
-            return;
+        // if(p1.SquareDistance(p2) < Precision::SquareConfusion())
+        //     return;
         edges.emplace_front(e,p1,p2,bbox);
         add(edges.begin());
     }
@@ -721,8 +729,14 @@ struct WireJoiner {
     // in more than one closed wires if it connects to more than one edges.
     int findClosedWires() {
         std::map<int,TopoDS_Edge> edgesToVisit;
-        for(const auto &info : edges) 
-            edgesToVisit[info.edge.HashCode(INT_MAX)] = info.edge;
+        int count = 0;
+        for(const auto &info : edges) {
+            if(BRep_Tool::IsClosed(info.edge)){
+                builder.Add(comp,BRepBuilderAPI_MakeWire(info.edge).Wire());
+                ++count;
+            }else
+                edgesToVisit[info.edge.HashCode(INT_MAX)] = info.edge;
+        }
 
         std::deque<StackInfo> stack;
         int skips = 0;
@@ -796,11 +810,12 @@ struct WireJoiner {
                         mkWire.Add(TopoDS::Edge(info.edge.Reversed()));
                 }
                 TopoDS_Wire wire = mkWire.Wire();
-                Area::setWireOrientation(wire,dir,true);
                 builder.Add(comp,wire);
+                ++count;
                 break;
             }
         }
+        AREA_TRACE("found " << count << " closed wires, skipped " << skips);
         return skips;
     }
 };
@@ -833,8 +848,10 @@ void Area::explode(const TopoDS_Shape &shape) {
     }
 }
 
+// enable this to show intermediate shapes during projection in FC, for
+// debugging.
 #if 0
-static void show(const TopoDS_Shape &shape, const char *name) {
+static inline void showShape(const TopoDS_Shape &shape, const char *name) {
     App::Document *pcDoc = App::GetApplication().getActiveDocument(); 	 
     if (!pcDoc)
         pcDoc = App::GetApplication().newDocument();
@@ -844,12 +861,21 @@ static void show(const TopoDS_Shape &shape, const char *name) {
     pcFeature->Shape.setValue(shape);
     //pcDoc->recompute();
 }
+#else
+#define showShape(s,name) do{(void)s;}while(0)
 #endif
 
 template<class Func>
 static int foreachSubshape(const TopoDS_Shape &shape, Func func, int type=TopAbs_FACE) {
     bool haveShape = false;
     switch(type) {
+    case TopAbs_SOLID:
+        for(TopExp_Explorer it(shape,TopAbs_SOLID); it.More(); it.Next()) {
+            haveShape = true;
+            func(it.Current(),TopAbs_SOLID);
+        }
+        if(haveShape) return TopAbs_SOLID;
+        //fall through
     case TopAbs_FACE:
         for(TopExp_Explorer it(shape,TopAbs_FACE); it.More(); it.Next()) {
             haveShape = true;
@@ -926,29 +952,32 @@ TopoDS_Shape Area::findPlane(const TopoDS_Shape &shape, gp_Trsf &trsf)
     return plane;
 }
 
-std::list<TopoDS_Wire> Area::project(const TopoDS_Shape &solid)
+int Area::project(TopoDS_Shape &shape_out,
+        const TopoDS_Shape &shape_in, const AreaParams *params)
 {
     TIME_INIT2(t,t1);
     Handle_HLRBRep_Algo brep_hlr = NULL;
     gp_Dir dir(0,0,1);
     try {
         brep_hlr = new HLRBRep_Algo();
-        brep_hlr->Add(solid, 0);
+        brep_hlr->Add(shape_in, 0);
         HLRAlgo_Projector projector(gp_Ax2(gp_Pnt(),dir));
         brep_hlr->Projector(projector);
         brep_hlr->Update();
         brep_hlr->Hide();
     } catch (...) {
         AREA_ERR("error occurred while projecting shape");
+        return -1;
     }
     TIME_PRINT(t1,"HLRBrep_Algo");
-    WireJoiner joiner(dir);
+    WireJoiner joiner;
     try {
 #define ADD_HLR_SHAPE(_name) \
         shape = hlrToShape._name##Compound();\
         if(!shape.IsNull()){\
             BRepLib::BuildCurves3d(shape);\
             joiner.add(shape,true);\
+            showShape(shape,"raw_" #_name);\
         }
         TopoDS_Shape shape;
         HLRBRep_HLRToShape hlrToShape(brep_hlr);
@@ -959,40 +988,40 @@ std::list<TopoDS_Wire> Area::project(const TopoDS_Shape &solid)
     }
     catch (...) {
         AREA_ERR("error occurred while extracting edges");
+        return -1;
     }
     TIME_PRINT(t1,"WireJoiner init");
     joiner.splitEdges();
     TIME_PRINT(t1,"WireJoiner splitEdges");
-    // for(const auto &v : joiner.edges) {
-    //     joiner.builder.Add(joiner.comp,BRepBuilderAPI_MakeWire(v.edge).Wire());
-    // }
+    for(const auto &v : joiner.edges) {
+        // joiner.builder.Add(joiner.comp,BRepBuilderAPI_MakeWire(v.edge).Wire());
+        showShape(v.edge,"split");
+    }
 
     int skips = joiner.findClosedWires();
     TIME_PRINT(t1,"WireJoiner findClosedWires");
-    if(skips) AREA_WARN("skipped " << skips << " open edges");
 
-    std::list<TopoDS_Wire> wires;
-
-    Area area(&myParams);
+    Area area(params);
     area.myParams.Explode = false;
     area.myParams.FitArcs = false;
     area.myParams.Reorient = false;
-    area.myParams.Outline = false;
+    area.myParams.Outline = true;
+    area.myParams.Fill = TopExp_Explorer(shape_in,TopAbs_FACE).More()?FillFace:FillNone;
     area.myParams.Coplanar = CoplanarNone;
+    area.myProjecting = true;
     area.add(joiner.comp, OperationUnion);
-    TopoDS_Shape shape = area.getShape();
+    const TopoDS_Shape &shape = area.getShape();
+    showShape(shape,"projected");
 
     TIME_PRINT(t1,"Clipper wire union");
+    TIME_PRINT(t,"project total");
 
     if(shape.IsNull()) {
         AREA_ERR("poject failed");
-    }else{
-        for(TopExp_Explorer xp(shape, TopAbs_WIRE); xp.More(); xp.Next())
-            wires.push_back(TopoDS::Wire(xp.Current()));
+        return -1;
     }
-
-    TIME_PRINT(t,"project total");
-    return std::move(wires);
+    shape_out = shape;
+    return skips;
 }
 
 std::vector<shared_ptr<Area> > Area::makeSections(
@@ -1123,14 +1152,20 @@ std::vector<shared_ptr<Area> > Area::makeSections(
 
     std::vector<shared_ptr<Area> > sections;
     sections.reserve(heights.size());
+
+    std::list<Shape> projectedShapes;
+    if(project) {
+        projectedShapes = getProjectedShapes(trsf,false);
+        if(projectedShapes.empty()) {
+            AREA_ERR("empty projection");
+            return sections;
+        }
+    }
+
     tolerance *= 2.0;
     bool can_retry = fabs(tolerance)>Precision::Confusion();
     TopLoc_Location locInverse(loc.Inverted());
 
-    std::vector<Shape> projectedShapes;
-    if(project) projectedShapes.reserve(myShapes.size());
-
-    bool aborted = false;
     for(double z : heights) {
         bool retried = !can_retry;
         while(true) {
@@ -1140,10 +1175,11 @@ std::vector<shared_ptr<Area> > Area::makeSections(
             BRepLib_MakeFace mkFace(pln,xMin,xMax,yMin,yMax);
             const TopoDS_Shape &face = mkFace.Face();
 
-            shared_ptr<Area> area(new Area(&myParams));
+            shared_ptr<Area> area(std::make_shared<Area>(&myParams));
+            area->myParams.Outline = false;
             area->setPlane(face.Moved(locInverse));
 
-            if(projectedShapes.size()) {
+            if(project) {
                 for(const auto &s : projectedShapes) {
                     gp_Trsf t;
                     t.SetTranslation(gp_Vec(0,0,-d));
@@ -1152,100 +1188,81 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                 }
                 sections.push_back(area);
                 break;
-            }else{
-                for(auto it=myShapes.begin();it!=myShapes.end();++it) {
-                    const auto &s = *it;
-                    BRep_Builder builder;
-                    TopoDS_Compound comp;
-                    builder.MakeCompound(comp);
+            }
 
-                    for(TopExp_Explorer xp(s.shape.Moved(loc), TopAbs_SOLID); xp.More(); xp.Next()) {
-                        std::list<TopoDS_Wire> wires;
-                        if(project) {
-                            wires = this->project(xp.Current());
-                        }else{
-                            Part::CrossSection section(a,b,c,xp.Current());
-                            wires = section.slice(-d);
-                        }
+            for(auto it=myShapes.begin();it!=myShapes.end();++it) {
+                const auto &s = *it;
+                BRep_Builder builder;
+                TopoDS_Compound comp;
+                builder.MakeCompound(comp);
 
-                        if(wires.empty()) {
-                            AREA_LOG("Section returns no wires");
-                            continue;
-                        }
+                for(TopExp_Explorer xp(s.shape.Moved(loc), TopAbs_SOLID); xp.More(); xp.Next()) {
+                    std::list<TopoDS_Wire> wires;
+                    Part::CrossSection section(a,b,c,xp.Current());
+                    wires = section.slice(-d);
+                    if(wires.empty()) {
+                        AREA_LOG("Section returns no wires");
+                        continue;
+                    }
 
-                        // always try to make face to normalize wire orientation
-                        Part::FaceMakerBullseye mkFace;
-                        mkFace.setPlane(pln);
-                        for(const TopoDS_Wire &wire : wires) {
-                            if(BRep_Tool::IsClosed(wire))
-                                mkFace.addWire(wire);
-                        }
-                        try {
-                            mkFace.Build();
-                            const TopoDS_Shape &shape = mkFace.Shape();
-                            if (shape.IsNull())
-                                AREA_WARN("FaceMakerBullseye return null shape on section");
-                            else {
-                                for(auto it=wires.begin(),itNext=it;it!=wires.end();it=itNext) {
-                                    ++itNext;
-                                    if(BRep_Tool::IsClosed(*it)) 
-                                        wires.erase(it);
-                                }
-                                for(TopExp_Explorer xp(shape,myParams.Fill==FillNone?TopAbs_WIRE:TopAbs_FACE);
-                                        xp.More();xp.Next())
-                                {
-                                    builder.Add(comp,xp.Current());
-                                }
+                    // always try to make face to normalize wire orientation
+                    Part::FaceMakerBullseye mkFace;
+                    mkFace.setPlane(pln);
+                    for(const TopoDS_Wire &wire : wires) {
+                        if(BRep_Tool::IsClosed(wire))
+                            mkFace.addWire(wire);
+                    }
+                    try {
+                        mkFace.Build();
+                        const TopoDS_Shape &shape = mkFace.Shape();
+                        if (shape.IsNull())
+                            AREA_WARN("FaceMakerBullseye return null shape on section");
+                        else {
+                            for(auto it=wires.begin(),itNext=it;it!=wires.end();it=itNext) {
+                                ++itNext;
+                                if(BRep_Tool::IsClosed(*it)) 
+                                    wires.erase(it);
                             }
-                        }catch (Base::Exception &e){
-                            AREA_WARN("FaceMakerBullseye failed on section: " << e.what());
+                            for(TopExp_Explorer xp(shape,myParams.Fill==FillNone?TopAbs_WIRE:TopAbs_FACE);
+                                    xp.More();xp.Next())
+                            {
+                                builder.Add(comp,xp.Current());
+                            }
                         }
-                        for(const TopoDS_Wire &wire : wires)
-                            builder.Add(comp,wire);
+                    }catch (Base::Exception &e){
+                        AREA_WARN("FaceMakerBullseye failed on section: " << e.what());
                     }
+                    for(const TopoDS_Wire &wire : wires)
+                        builder.Add(comp,wire);
+                }
 
-                    // Make sure the compound has at least one edge
-                    TopExp_Explorer xp(comp,TopAbs_EDGE);
-                    if(xp.More()) {
-                        if(project){
-                            projectedShapes.push_back(Shape(s.op,comp));
-
-                            gp_Trsf t;
-                            t.SetTranslation(gp_Vec(0,0,-d));
-                            TopLoc_Location wloc(t);
-                            area->add(comp.Moved(wloc).Moved(locInverse),s.op);
-                        }else
-                            area->add(comp.Moved(locInverse),s.op);
-                    }else if(area->myShapes.empty()){
-                        auto itNext = it;
-                        if(++itNext != myShapes.end() &&
-                            (itNext->op==OperationIntersection ||
-                            itNext->op==OperationDifference))
-                        {
-                            break;
-                        }
+                // Make sure the compound has at least one edge
+                if(TopExp_Explorer(comp,TopAbs_EDGE).More())
+                    area->add(comp.Moved(locInverse),s.op);
+                else if(area->myShapes.empty()){
+                    auto itNext = it;
+                    if(++itNext != myShapes.end() &&
+                        (itNext->op==OperationIntersection ||
+                        itNext->op==OperationDifference))
+                    {
+                        break;
                     }
-                }
-                if(area->myShapes.size()){
-                    sections.push_back(area);
-                    break;
-                }
-                if(project) {
-                    AREA_ERR("empty projection");
-                    aborted = true;
-                }
-                if(retried) {
-                    AREA_WARN("Discard empty section");
-                    break;
-                }else{
-                    AREA_TRACE("retry section " <<z<<"->"<<z+tolerance);
-                    z += tolerance;
-                    retried = true;
                 }
             }
-            TIME_PRINT(t1,"makeSection " << z);
+            if(area->myShapes.size()){
+                sections.push_back(area);
+                TIME_PRINT(t1,"makeSection " << z);
+                break;
+            }
+            if(retried) {
+                AREA_WARN("Discard empty section");
+                break;
+            }else{
+                AREA_TRACE("retry section " <<z<<"->"<<z+tolerance);
+                z += tolerance;
+                retried = true;
+            }
         }
-        if(aborted) break;
     }
     TIME_PRINT(t,"makeSection count: " << sections.size()<<", total");
     return std::move(sections);
@@ -1273,6 +1290,28 @@ bool Area::isBuilt() const {
     return (myArea || mySections.size());
 }
 
+std::list<Area::Shape> Area::getProjectedShapes(const gp_Trsf &trsf, bool inverse) const 
+{
+    std::list<Shape> ret;
+    TopLoc_Location loc(trsf);
+    TopLoc_Location locInverse(loc.Inverted());
+
+    mySkippedShapes = 0;
+    for(auto &s : myShapes) {
+        TopoDS_Shape out;
+        int skipped = Area::project(out,s.shape.Moved(loc),&myParams);
+        if(skipped < 0) {
+            ++mySkippedShapes;
+            continue;
+        }else 
+            mySkippedShapes += skipped;
+        if(!out.IsNull())
+            ret.emplace_back(s.op,inverse?out.Moved(locInverse):out);
+    }
+    if(mySkippedShapes)
+        AREA_WARN("skipped " << mySkippedShapes << " sub shapes during projection");
+    return ret;
+}
 
 void Area::build() {
     if(isBuilt()) return;
@@ -1289,7 +1328,8 @@ void Area::build() {
     }
 
     TIME_INIT(t);
-    getPlane();
+    gp_Trsf trsf;
+    getPlane(&trsf);
 
     try {
         myArea.reset(new CArea());
@@ -1302,7 +1342,8 @@ void Area::build() {
         short op = OperationUnion;
         bool pending = false;
         bool exploding = myParams.Explode;
-        for(const Shape &s : myShapes) {
+        const auto &shapes = (myParams.Outline&&!myProjecting)?getProjectedShapes(trsf):myShapes;
+        for(const Shape &s : shapes) {
             if(exploding) {
                 exploding = false;
                 explode(s.shape);
