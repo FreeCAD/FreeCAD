@@ -25,14 +25,11 @@
 from __future__ import print_function
 import sys
 import FreeCAD
-# from FreeCAD import Vector
 import Path
 import PathScripts.PathLog as PathLog
-# import Part
 from PySide import QtCore, QtGui
 from PathScripts import PathUtils
-from PathScripts.PathUtils import fmt
-# from math import pi
+from PathScripts.PathUtils import fmt, waiting_effects
 import ArchPanel
 
 
@@ -105,9 +102,8 @@ class ObjectDrilling:
 
     def onChanged(self, obj, prop):
         pass
-        # if prop == "UserLabel":
-        #     obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
+    @waiting_effects
     def execute(self, obj):
         PathLog.track()
         output = ""

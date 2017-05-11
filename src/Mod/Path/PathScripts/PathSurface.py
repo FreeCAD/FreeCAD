@@ -27,6 +27,7 @@ import FreeCAD
 import Path
 from PathScripts import PathUtils
 import PathScripts.PathLog as PathLog
+from PathScripts.PathUtils import waiting_effects
 import sys
 
 # xrange is not available in python3
@@ -129,8 +130,7 @@ class ObjectSurface:
         return None
 
     def onChanged(self, obj, prop):
-        if prop == "UserLabel":
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+        pass
 
     def _waterline(self, obj, s, bb):
         import ocl
@@ -262,6 +262,7 @@ class ObjectSurface:
 
         return output
 
+    @waiting_effects
     def execute(self, obj):
         import MeshPart
         FreeCAD.Console.PrintWarning(
