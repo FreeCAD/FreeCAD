@@ -382,7 +382,9 @@ class Twist:
                 facetransform.rotateZ(math.radians(fp.Angle.Value))
                 facetransform.move(FreeCAD.Vector(0,0,fp.Height.Value))
                 faceu.transformShape(facetransform)
-                step = 2 + int(fp.Angle.Value // 90) #resolution in z direction
+                step = 2 + abs(int(fp.Angle.Value // 90)) #resolution in z direction
+                # print abs(int(fp.Angle.Value // 90)) #resolution in z direction
+                # print step
                 zinc = fp.Height.Value/(step-1.0)
                 angleinc = math.radians(fp.Angle.Value)/(step-1.0)
                 spine = Part.makePolygon([(0,0,i*zinc) \
@@ -395,7 +397,9 @@ class Twist:
                     pipeshell=Part.BRepOffsetAPI.MakePipeShell(spine)
                     pipeshell.setSpineSupport(spine)
                     pipeshell.add(wire)
-                    pipeshell.setAuxiliarySpine(auxspine,True,False)
+                    # Was before function change
+                    # pipeshell.setAuxiliarySpine(auxspine,True,False)
+                    pipeshell.setAuxiliarySpine(auxspine,True,long(0))
                     print(pipeshell.getStatus())
                     assert(pipeshell.isReady())
                     #fp.Shape=pipeshell.makeSolid()
