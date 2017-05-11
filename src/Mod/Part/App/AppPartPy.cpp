@@ -1573,7 +1573,6 @@ private:
                                          &dir,
                                          &fontfile,
                                          &height,
-
                                          &track)) {
             useFontSpec = false;
         }
