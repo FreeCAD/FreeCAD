@@ -285,10 +285,10 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
         PyObject* unicode = PyUnicode_AsEncodedString(expr, "utf-8", 0);
         if (unicode) {
             std::string exprStr = PyString_AsString(unicode);
+            Py_DECREF(unicode);
             boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr.c_str()));
 
             getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
-            Py_DECREF(unicode);
         }
         else {
             // utf-8 encoding failed
