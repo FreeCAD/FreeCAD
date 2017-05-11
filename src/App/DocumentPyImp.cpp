@@ -211,7 +211,11 @@ PyObject*  DocumentPy::exportGraphviz(PyObject * args)
     else {
         std::stringstream str;
         getDocumentPtr()->exportGraphviz(str);
+#if PY_MAJOR_VERSION >= 3
+        return PyUnicode_FromString(str.str().c_str());
+#else
         return PyString_FromString(str.str().c_str());
+#endif
     }
 }
 
@@ -326,6 +330,13 @@ PyObject*  DocumentPy::openTransaction(PyObject *args)
     if (!PyArg_ParseTuple(args, "|O",&value))
         return NULL;    // NULL triggers exception
     std::string cmd;
+
+
+#if PY_MAJOR_VERSION >= 3
+    if (PyUnicode_Check(value)) {
+        cmd = PyUnicode_AsUTF8(value);
+    }
+#else
     if (PyUnicode_Check(value)) {
         PyObject* unicode = PyUnicode_AsLatin1String(value);
         cmd = PyString_AsString(unicode);
@@ -334,7 +345,10 @@ PyObject*  DocumentPy::openTransaction(PyObject *args)
     else if (PyString_Check(value)) {
         cmd = PyString_AsString(value);
     }
-    getDocumentPtr()->openTransaction(cmd.c_str());
+#endif
+    else
+        return NULL;
+    getDocumentPtr()->openTransaction(cmd.c_str()); 
     Py_Return; 
 }
 
@@ -521,8 +535,9 @@ Py::Int DocumentPy::getUndoMode(void) const
 
 void  DocumentPy::setUndoMode(Py::Int arg)
 {
-    getDocumentPtr()->setUndoMode(arg); 
+    getDocumentPtr()->setUndoMode(arg);
 }
+
 
 Py::Int DocumentPy::getUndoRedoMemSize(void) const
 {
@@ -591,12 +606,16 @@ PyObject* DocumentPy::getTempFileName(PyObject *args)
 
     std::string string;
     if (PyUnicode_Check(value)) {
+#if PY_MAJOR_VERSION >= 3
+        string = PyUnicode_AsUTF8(value);
+#else
         PyObject* unicode = PyUnicode_AsUTF8String(value);
         string = PyString_AsString(unicode);
         Py_DECREF(unicode);
     }
     else if (PyString_Check(value)) {
         string = PyString_AsString(value);
+#endif
     }
     else {
         std::string error = std::string("type must be a string!");
