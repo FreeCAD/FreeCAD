@@ -731,7 +731,14 @@ struct WireJoiner {
         std::map<int,TopoDS_Edge> edgesToVisit;
         int count = 0;
         for(const auto &info : edges) {
-            if(BRep_Tool::IsClosed(info.edge)){
+#if OCC_VERSION_HEX >= 0x070000
+            if(BRep_Tool::IsClosed(info.edge))
+#else
+            gp_Pnt p1,p2;
+            getEndPoints(info.edge,p1,p2);
+            if(p1.SquareDistance(p2)<Precision::SquareConfusion())
+#endif
+            {
                 builder.Add(comp,BRepBuilderAPI_MakeWire(info.edge).Wire());
                 ++count;
             }else
