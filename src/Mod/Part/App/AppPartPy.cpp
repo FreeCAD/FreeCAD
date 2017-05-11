@@ -288,13 +288,13 @@ public:
         add_varargs_method("makeLine",&Module::makeLine,
             "makeLine(startpnt,endpnt) -- Make a line between two points\n"
             "\n"
-            "Args:\n
+            "Args:\n"
             "    startpnt (Vector or tuple): Vector or 3 element tuple \n"
             "        containing the x,y and z coordinates of the start point,\n"
-            "        i.e. (x1,y1,z1).\n
+            "        i.e. (x1,y1,z1).\n"
             "    endpnt (Vector or tuple): Vector or 3 element tuple \n"
             "        containing the x,y and z coordinates of the start point,\n"
-            "        i.e. (x1,y1,z1).\n
+            "        i.e. (x1,y1,z1).\n"
             "\n"
             "Returns:\n"
             "    Edge: Part.Edge object\n"
