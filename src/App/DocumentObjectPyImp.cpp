@@ -267,25 +267,34 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
 
     if (Py::Object(expr).isNone())
         getDocumentObjectPtr()->setExpression(p, boost::shared_ptr<Expression>());
+#if PY_MAJOR_VERSION >= 3
+    else if (PyUnicode_Check(expr)) {
+        const char * exprStr = PyUnicode_AsUTF8(expr);
+#else
     else if (PyString_Check(expr)) {
         const char * exprStr = PyString_AsString(expr);
+#endif
         boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr));
 
         getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
     }
     else if (PyUnicode_Check(expr)) {
+#if PY_MAJOR_VERSION >= 3
+        std::string exprStr = PyUnicode_AsUTF8(expr);
+#else
         PyObject* unicode = PyUnicode_AsEncodedString(expr, "utf-8", 0);
         if (unicode) {
             std::string exprStr = PyString_AsString(unicode);
-            Py_DECREF(unicode);
             boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr.c_str()));
 
             getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
+            Py_DECREF(unicode);
         }
         else {
             // utf-8 encoding failed
             return 0;
         }
+#endif
     }
     else
         throw Py::TypeError("String or None expected.");
