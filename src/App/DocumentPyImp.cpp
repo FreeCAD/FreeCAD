@@ -346,9 +346,12 @@ PyObject*  DocumentPy::openTransaction(PyObject *args)
         cmd = PyString_AsString(value);
     }
 #endif
-    else
+    else {
+        PyErr_SetString(PyExc_TypeError, "string or unicode expected");
         return NULL;
-    getDocumentPtr()->openTransaction(cmd.c_str()); 
+    }
+
+    getDocumentPtr()->openTransaction(cmd.c_str());
     Py_Return; 
 }
 
