@@ -325,10 +325,14 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
             if (reader.hasAttribute("module") && reader.hasAttribute("class")) {
                 Py::Module mod(PyImport_ImportModule(reader.getAttribute("module")),true);
                 PyObject* cls = mod.getAttr(reader.getAttribute("class")).ptr();
+#if PY_MAJOR_VERSION >= 3
+                if (PyType_Check(cls)) {
+#else
                 if (PyClass_Check(cls)) {
                     this->object = PyInstance_NewRaw(cls, 0);
                 }
                 else if (PyType_Check(cls)) {
+#endif
                     this->object = PyType_GenericAlloc((PyTypeObject*)cls, 0);
                 }
                 else {
@@ -340,7 +344,11 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
                 std::string nam = std::string(what[1].first, what[1].second);
                 std::string cls = std::string(what[2].first, what[2].second);
                 Py::Module mod(PyImport_ImportModule(nam.c_str()),true);
+#if PY_MAJOR_VERSION >= 3
+                this->object = PyObject_CallObject(mod.getAttr(cls).ptr(), NULL);
+#else
                 this->object = PyInstance_NewRaw(mod.getAttr(cls).ptr(), 0);
+#endif
                 load_pickle = true;
                 buffer = std::string(what[2].second, end);
             }
