@@ -181,7 +181,11 @@ PyObject*  ViewProviderPy::listDisplayModes(PyObject *args)
         int i=0;
 
         for ( std::vector<std::string>::iterator it = modes.begin(); it != modes.end(); ++it ) {
+#if PY_MAJOR_VERSION >= 3
+            PyObject* str = PyUnicode_FromString(it->c_str());
+#else
             PyObject* str = PyString_FromString(it->c_str());
+#endif
             PyList_SetItem(pyList, i++, str);
         }
 

@@ -949,8 +949,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
         for o,m in mattable.items():
             if m == material.id():
                 if o in objects:
-                    if hasattr(objects[o],"BaseMaterial"):
-                        objects[o].BaseMaterial = mat
+                    if hasattr(objects[o],"Material"):
+                        objects[o].Material = mat
 
     if DEBUG and materials: print("done")
 
@@ -1319,11 +1319,13 @@ def export(exportList,filename):
     for m in Arch.getDocumentMaterials():
         relobjs = []
         for o in m.InList:
-            if hasattr(o,"BaseMaterial"):
-                if o.BaseMaterial:
-                    if o.BaseMaterial.Name == m.Name:
-                        if o.Name in products:
-                            relobjs.append(products[o.Name])
+            if hasattr(o,"Material"):
+                if o.Material:
+                    if o.Material.isDerivedFrom("App::MaterialObject"):
+                        # TODO : support multimaterials too
+                        if o.Material.Name == m.Name:
+                            if o.Name in products:
+                                relobjs.append(products[o.Name])
         if relobjs:
             mat = ifcfile.createIfcMaterial(m.Label.encode("utf8"))
             materials[m.Label] = mat
@@ -1592,14 +1594,18 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     pl = extdata[2]
                     if not isinstance(pl,list):
                         pl = [pl]
-                    if (len(p) != len(ev)) or (len(p) != len(pl)):
-                        raise ValueError("importIFC: Extrusion data length mismatch: "+obj.Label)
                     for i in range(len(p)):
                         pi = p[i]
                         pi.scale(0.001)
-                        evi = ev[i]
+                        if i < len(ev):
+                            evi = ev[i]
+                        else:
+                            evi = ev[-1]
                         evi.multiply(0.001)
-                        pli = pl[i]
+                        if i < len(pl):
+                            pli = pl[i]
+                        else:
+                            pli = pl[-1]
                         pli.Base = pli.Base.multiply(0.001)
                         pstr = str([v.Point for v in p[i].Vertexes])
                         if pstr in profiledefs:
@@ -1807,9 +1813,9 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             # apparently not needed, no harm in having both.
             # but they must have the same name for revit to see them
             #m = False
-            #if hasattr(obj,"BaseMaterial"):
-            #    if obj.BaseMaterial:
-            #        if "Color" in obj.BaseMaterial.Material:
+            #if hasattr(obj,"Material"):
+            #    if obj.Material:
+            #        if "Color" in obj.Material.Material:
             #            m = True
             #if not m:
             rgb = obj.ViewObject.ShapeColor[:3]
@@ -1817,9 +1823,10 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 psa = surfstyles[rgb]
             else:
                 m = None
-                if hasattr(obj,"BaseMaterial"):
-                    if obj.BaseMaterial:
-                        m = obj.BaseMaterial.Label.encode("utf8")
+                if hasattr(obj,"Material"):
+                    if obj.Material:
+                        if obj.Material.isDerivedFrom("App::MaterialObject"):
+                            m = obj.Material.Label.encode("utf8")
                 col = ifcfile.createIfcColourRgb(None,rgb[0],rgb[1],rgb[2])
                 ssr = ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")
                 iss = ifcfile.createIfcSurfaceStyle(m,"BOTH",[ssr])

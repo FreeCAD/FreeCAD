@@ -147,8 +147,10 @@ using namespace SIM::Coin3D::Quarter;
 #if defined(HAVE_QT5_OPENGL)
 class CustomGLWidget : public QOpenGLWidget {
 public:
+    QSurfaceFormat myFormat;
+
     CustomGLWidget(const QSurfaceFormat& format, QWidget* parent = 0, const QOpenGLWidget* shareWidget = 0, Qt::WindowFlags f = 0)
-     : QOpenGLWidget(parent, f)
+     : QOpenGLWidget(parent, f), myFormat(format)
     {
         Q_UNUSED(shareWidget);
         QSurfaceFormat surfaceFormat(format);
@@ -297,6 +299,20 @@ QuarterWidget::constructor(const QtGLFormat & format, const QtGLWidget * sharewi
   this->installEventFilter(PRIVATE(this)->interactionmode);
   
   initialized = false;
+}
+
+void
+QuarterWidget::replaceViewport()
+{
+#if defined(HAVE_QT5_OPENGL)
+  CustomGLWidget* oldvp = static_cast<CustomGLWidget*>(viewport());
+  CustomGLWidget* newvp = new CustomGLWidget(oldvp->myFormat, this);
+  PRIVATE(this)->replaceGLWidget(newvp);
+  setViewport(newvp);
+
+  setAutoFillBackground(false);
+  viewport()->setAutoFillBackground(false);
+#endif
 }
 
 /*! destructor */

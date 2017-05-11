@@ -189,6 +189,9 @@ public Q_SLOTS:
 Q_SIGNALS:
   void devicePixelRatioChanged(qreal dev_pixel_ratio);
 
+private Q_SLOTS:
+  void replaceViewport();
+
 protected:
   virtual void paintEvent(QPaintEvent*);
   virtual void resizeEvent(QResizeEvent*);

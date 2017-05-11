@@ -41,7 +41,7 @@ Exception::Exception(void)
 }
 
 Exception::Exception(const Exception &inst)
- : BaseClass(),_sErrMsg(inst._sErrMsg)
+: BaseClass(),_sErrMsg(inst._sErrMsg), _file(inst._file), _line(inst._line), _function(inst._function)
 {
 }
 
@@ -69,7 +69,30 @@ const char* Exception::what(void) const throw()
 
 void Exception::ReportException (void) const
 {
-    Console().Error("Exception (%s): %s \n",Console().Time(),what());
+    std::string str = "";
+    
+    if(!_sErrMsg.empty())
+        str+= (_sErrMsg + " ");
+    
+    if(!_function.empty()) {
+        str+="In ";
+        str+=_function;
+        str+= " ";
+    }
+    
+    if(!_file.empty() && !_line.empty()) {
+        // strip absolute path
+        std::size_t pos = _file.find("src");
+        
+        if (pos!=std::string::npos) {
+            str+="in ";
+            str+= _file.substr(pos);
+            str+= ":";
+            str+=_line;
+        }
+    }
+
+    Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
 }
 
 // ---------------------------------------------------------
@@ -92,6 +115,23 @@ AbortException::AbortException(const AbortException &inst)
 const char* AbortException::what() const throw()
 {
     return Exception::what();
+}
+
+// ---------------------------------------------------------
+
+XMLBaseException::XMLBaseException(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+XMLBaseException::XMLBaseException(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+XMLBaseException::XMLBaseException(const XMLBaseException &inst)
+ : Exception(inst)
+{
 }
 
 // ---------------------------------------------------------
@@ -127,31 +167,100 @@ FileException::FileException(const char * sMessage, const char * sFileName)
   : Exception( sMessage ),file(sFileName)
 {
     if (sFileName) {
-        _sErrMsg += ": ";
-        _sErrMsg += sFileName;
+        _sErrMsgAndFileName = _sErrMsg + ": ";
+        _sErrMsgAndFileName += sFileName;
     }
 }
 
 FileException::FileException(const char * sMessage, const FileInfo& File)
   : Exception( sMessage ),file(File)
 {
-    _sErrMsg += ": ";
-    _sErrMsg += File.fileName();
+    _sErrMsgAndFileName = _sErrMsg + ": ";
+    _sErrMsgAndFileName += File.fileName();
 }
 
 FileException::FileException()
-  : Exception( "Unknown file exeption happened" )
+  : Exception( "Unknown file exception happened" )
 {
+    _sErrMsgAndFileName = _sErrMsg;
 }
 
 FileException::FileException(const FileException &inst)
-  : Exception( inst._sErrMsg.c_str() ),file(inst.file)
+: Exception( inst._sErrMsg.c_str() ), file(inst.file), _sErrMsgAndFileName(inst._sErrMsgAndFileName.c_str())
 {
+}
+
+std::string FileException::getFileName() const
+{
+    return file.fileName();
 }
 
 const char* FileException::what() const throw()
 {
-    return Exception::what();
+    return _sErrMsgAndFileName.c_str();
+}
+
+void FileException::ReportException (void) const
+{
+    std::string str = "";
+    
+    if(!_sErrMsgAndFileName.empty())
+        str+= (_sErrMsgAndFileName + " ");
+    
+    if(!_function.empty()) {
+        str+="In ";
+        str+=_function;
+        str+= " ";
+    }
+    
+    if(!_file.empty() && !_line.empty()) {
+        // strip absolute path
+        std::size_t pos = _file.find("src");
+        
+        if (pos!=std::string::npos) {
+            str+="in ";
+            str+= _file.substr(pos);
+            str+= ":";
+            str+=_line;
+        }
+    }
+    
+    Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
+}
+
+
+// ---------------------------------------------------------
+
+FileSystemError::FileSystemError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+FileSystemError::FileSystemError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+FileSystemError::FileSystemError(const FileSystemError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+BadFormatError::BadFormatError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+BadFormatError::BadFormatError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+BadFormatError::BadFormatError(const BadFormatError &inst)
+ : Exception(inst)
+{
 }
 
 // ---------------------------------------------------------
@@ -185,6 +294,16 @@ AccessViolation::AccessViolation()
     _sErrMsg = "Access violation";
 }
 
+AccessViolation::AccessViolation(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+AccessViolation::AccessViolation(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
 AccessViolation::AccessViolation(const AccessViolation &inst)
  : Exception(inst)
 {
@@ -195,6 +314,16 @@ AccessViolation::AccessViolation(const AccessViolation &inst)
 AbnormalProgramTermination::AbnormalProgramTermination()
 {
     _sErrMsg = "Abnormal program termination";
+}
+
+AbnormalProgramTermination::AbnormalProgramTermination(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+AbnormalProgramTermination::AbnormalProgramTermination(const std::string& sMessage)
+  : Exception(sMessage)
+{
 }
 
 AbnormalProgramTermination::AbnormalProgramTermination(const AbnormalProgramTermination &inst)
@@ -272,6 +401,23 @@ ValueError::ValueError(const ValueError &inst)
 
 // ---------------------------------------------------------
 
+IndexError::IndexError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+IndexError::IndexError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+IndexError::IndexError(const IndexError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 AttributeError::AttributeError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -340,6 +486,23 @@ DivisionByZeroError::DivisionByZeroError(const DivisionByZeroError &inst)
 
 // ---------------------------------------------------------
 
+ReferencesError::ReferencesError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+ReferencesError::ReferencesError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+ReferencesError::ReferencesError(const ReferencesError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 ExpressionError::ExpressionError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -371,6 +534,92 @@ ParserError::ParserError(const ParserError &inst)
  : Exception(inst)
 {
 }
+
+// ---------------------------------------------------------
+
+UnicodeError::UnicodeError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnicodeError::UnicodeError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnicodeError::UnicodeError(const UnicodeError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+OverflowError::OverflowError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+OverflowError::OverflowError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+OverflowError::OverflowError(const OverflowError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+UnderflowError::UnderflowError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnderflowError::UnderflowError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnderflowError::UnderflowError(const UnderflowError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+UnitsMismatchError::UnitsMismatchError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnitsMismatchError::UnitsMismatchError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnitsMismatchError::UnitsMismatchError(const UnitsMismatchError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+ 
+CADKernelError::CADKernelError(const char * sMessage)
+: Exception(sMessage)
+{
+}
+
+CADKernelError::CADKernelError(const std::string& sMessage)
+: Exception(sMessage)
+{
+}
+
+CADKernelError::CADKernelError(const CADKernelError &inst)
+: Exception(inst)
+{
+}
+
 
 // ---------------------------------------------------------
 

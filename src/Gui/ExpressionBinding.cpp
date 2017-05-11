@@ -62,7 +62,7 @@ void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
         const std::string error = docObj->ExpressionEngine.validateExpression(path, expr);
 
         if (error.size())
-            throw Base::Exception(error.c_str());
+            throw Base::RuntimeError(error.c_str());
 
     }
 
@@ -108,7 +108,7 @@ boost::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
 std::string ExpressionBinding::getExpressionString() const
 {
     if (!getExpression())
-        throw Base::Exception("No expression found.");
+        throw Base::RuntimeError("No expression found.");
 
     return getExpression()->toString();
 }
@@ -141,7 +141,7 @@ bool ExpressionBinding::apply(const std::string & propName)
         DocumentObject * docObj = path.getDocumentObject();
 
         if (!docObj)
-            throw Base::Exception("Document object not found.");
+            throw Base::RuntimeError("Document object not found.");
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setExpression('%s', u'%s')",
                                 docObj->getDocument()->getName(),
@@ -155,7 +155,7 @@ bool ExpressionBinding::apply(const std::string & propName)
             DocumentObject * docObj = path.getDocumentObject();
 
             if (!docObj)
-                throw Base::Exception("Document object not found.");
+                throw Base::RuntimeError("Document object not found.");
 
             if (lastExpression)
                 Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setExpression('%s', None)",
@@ -178,7 +178,7 @@ bool ExpressionBinding::apply()
     DocumentObject * docObj(path.getDocumentObject());
 
     if (!docObj)
-        throw Base::Exception("Document object not found.");
+        throw Base::RuntimeError("Document object not found.");
 
     std::string name = docObj->getNameInDocument();
 

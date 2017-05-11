@@ -61,6 +61,11 @@ public:
      * The default implementation returns null.
      */
     virtual const PropertyComplexGeoData* getPropertyOfGeometry() const;
+    /**
+     * @brief getPyObject returns the Python binding object
+     * @return the Python binding object
+     */
+    virtual PyObject* getPyObject(void);
 };
 
 } //namespace App

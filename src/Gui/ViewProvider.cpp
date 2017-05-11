@@ -584,7 +584,7 @@ void ViewProvider::dragObject(App::DocumentObject* obj) {
         }
     }
 
-    throw Base::Exception("ViewProvider::dragObject: no extension for dragging given object available.");
+    throw Base::RuntimeError("ViewProvider::dragObject: no extension for dragging given object available.");
 }
 
 
@@ -625,7 +625,7 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
         }
     }
 
-    throw Base::Exception("ViewProvider::dropObject: no extension for dropping given object available.");
+    throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
 }
 
 void ViewProvider::Restore(Base::XMLReader& reader) {

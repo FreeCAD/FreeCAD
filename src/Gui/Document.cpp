@@ -1093,6 +1093,33 @@ void Document::createView(const Base::Type& typeId)
     }
 }
 
+Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
+{
+    if (!oldview)
+        return 0;
+
+    if (oldview->getTypeId() == View3DInventor::getClassTypeId()) {
+        View3DInventor* view3D = new View3DInventor(this, getMainWindow());
+
+        // attach the viewprovider
+        std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
+        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1)
+            view3D->getViewer()->addViewProvider(It1->second);
+        std::map<std::string,ViewProvider*>::const_iterator It2;
+        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2)
+            view3D->getViewer()->addViewProvider(It2->second);
+
+        view3D->setWindowTitle(oldview->windowTitle());
+        view3D->setWindowModified(oldview->isWindowModified());
+        view3D->setWindowIcon(oldview->windowIcon());
+        view3D->resize(oldview->size());
+
+        return view3D;
+    }
+
+    return 0;
+}
+
 void Document::attachView(Gui::BaseView* pcView, bool bPassiv)
 {
     if (!bPassiv)

@@ -447,6 +447,13 @@ class SelectPlane(DraftTool):
 # Geometry constructors
 #---------------------------------------------------------------------------
 
+def redraw3DView():
+    """redraw3DView(): forces a redraw of 3d view."""
+    try:
+        FreeCADGui.ActiveDocument.ActiveView.redraw()            
+    except AttributeError as err:
+        pass
+
 class Creator(DraftTool):
     "A generic Draft Creator Tool used by creation tools such as line or arc"
 
@@ -473,7 +480,8 @@ class Line(Creator):
     def Activated(self,name=translate("draft","Line")):
         Creator.Activated(self,name)
         if self.doc:
-            self.obj = None
+            self.obj = None # stores the temp shape
+            self.oldWP = None # stores the WP if we modify it
             if self.isWire:
                 self.ui.wireUi(name)
             else:
@@ -491,6 +499,12 @@ class Line(Creator):
             old = self.obj.Name
             todo.delay(self.doc.removeObject,old)
         self.obj = None
+        if self.oldWP:
+            FreeCAD.DraftWorkingPlane = self.oldWP
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.setGrid()
+                FreeCADGui.Snapper.restack()
+        self.oldWP = None
         if (len(self.node) > 1):
             if (len(self.node) == 2) and Draft.getParam("UsePartPrimitives",False):
                 # use Part primitive
@@ -527,6 +541,7 @@ class Line(Creator):
         elif arg["Type"] == "SoLocation2Event":
             # mouse movement detection
             self.point,ctrlPoint,info = getPoint(self,arg)
+            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             # mouse button detection
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -595,6 +610,23 @@ class Line(Creator):
             if self.planetrack:
                 self.planetrack.set(self.node[0])
             msg(translate("draft", "Pick next point:\n"))
+
+    def orientWP(self):
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            if (len(self.node) > 1) and self.obj:
+                import DraftGeomUtils
+                n = DraftGeomUtils.getNormal(self.obj.Shape)
+                if not n:
+                    n = FreeCAD.DraftWorkingPlane.axis
+                p = self.node[-1]
+                v = self.node[-2].sub(self.node[-1])
+                v = v.negative()
+                if not self.oldWP:
+                    self.oldWP = FreeCAD.DraftWorkingPlane.copy()
+                FreeCAD.DraftWorkingPlane.alignToPointAndAxis(p,n,upvec=v)
+                if hasattr(FreeCADGui,"Snapper"):
+                    FreeCADGui.Snapper.setGrid()
+                    FreeCADGui.Snapper.restack()
 
     def numericInput(self,numx,numy,numz):
         "this function gets called by the toolbar when valid x, y, and z have been entered there"
@@ -670,6 +702,7 @@ class BSpline(Line):
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
             self.bsplinetrack.update(self.node + [self.point])
+            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if (arg["Position"] == self.pos):
@@ -768,6 +801,7 @@ class BezCurve(Line):
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
             self.bezcurvetrack.update(self.node + [self.point])                 #existing points + this pointer position
+            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):       #left click
                 if (arg["Position"] == self.pos):                               #double click?
@@ -989,6 +1023,7 @@ class Rectangle(Creator):
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             self.point,ctrlPoint,info = getPoint(self,arg,mobile=True,noTracker=True)
             self.rect.update(self.point)
+            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if (arg["Position"] == self.pos):
@@ -1156,6 +1191,8 @@ class Arc(Creator):
                 self.updateAngle(angle)
                 self.ui.setRadiusValue(math.degrees(self.angle),unit="Angle")
                 self.arctrack.setApertureAngle(self.angle)
+
+            redraw3DView()
 
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -1439,6 +1476,8 @@ class Polygon(Creator):
                 self.ui.setRadiusValue(self.rad,'Length')
                 self.arctrack.setRadius(self.rad)
 
+            redraw3DView()
+
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
@@ -1615,6 +1654,7 @@ class Ellipse(Creator):
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             self.point,ctrlPoint,info = getPoint(self,arg,mobile=True,noTracker=True)
             self.rect.update(self.point)
+            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if (arg["Position"] == self.pos):
@@ -1701,6 +1741,7 @@ class Text(Creator):
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             if self.active:
                 self.point,ctrlPoint,info = getPoint(self,arg)
+            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
@@ -1965,6 +2006,7 @@ class Dimension(Creator):
                 # update the dimline
                 if self.node and (not self.arcmode):
                     self.dimtrack.update(self.node+[self.point]+[self.cont])
+            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 import DraftGeomUtils
@@ -2128,6 +2170,7 @@ class ShapeString(Creator):
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             if self.active:
                 self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
+            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if not self.ssBase:
@@ -2269,6 +2312,7 @@ class Move(Modifier):
                     self.ghost.on()
             if self.extendedCopy:
                 if not hasMod(arg,MODALT): self.finish()
+            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
@@ -2457,6 +2501,7 @@ class Rotate(Modifier):
                 self.ui.setRadiusValue(math.degrees(sweep), 'Angle')
                 self.ui.radiusValue.setFocus()
                 self.ui.radiusValue.selectAll()
+            redraw3DView()
 
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -2656,6 +2701,7 @@ class Offset(Modifier):
             self.ui.radiusValue.selectAll()
             if self.extendedCopy:
                 if not hasMod(arg,MODALT): self.finish()
+            redraw3DView()
 
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -2764,6 +2810,7 @@ class Stretch(Modifier):
             point,ctrlPoint,info = getPoint(self,arg) #,mobile=True) #,noTracker=(self.step < 3))
             if self.step == 2:
                 self.rectracker.update(point)
+            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if (arg["Position"] == self.pos):
@@ -3163,6 +3210,7 @@ class Trimex(Modifier):
             self.ui.setRadiusValue(dist,unit="Length")
             self.ui.radiusValue.setFocus()
             self.ui.radiusValue.selectAll()
+            redraw3DView()
 
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -3547,6 +3595,7 @@ class Scale(Modifier):
                     self.ui.zValue.setText("1")
             if self.extendedCopy:
                 if not hasMod(arg,MODALT): self.finish()
+            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
@@ -3937,6 +3986,7 @@ class Edit(Modifier):
                 # commented out the following line to disable updating
                 # the object during edit, otherwise it confuses the snapper
                 #self.update(self.trackers[self.editing].get())
+            redraw3DView() 
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 self.ui.redraw()
@@ -4106,6 +4156,10 @@ class Edit(Modifier):
                 self.obj.TagPosition = self.invpl.multVec(v)
             else:
                 self.obj.Group[self.editing-1].Placement.Base = self.invpl.multVec(v)
+        try:
+            FreeCADGui.ActiveDocument.ActiveView.redraw()            
+        except AttributeError as err:
+            pass
 
     def numericInput(self,v,numy=None,numz=None):
         '''this function gets called by the toolbar
@@ -4968,6 +5022,7 @@ class Mirror(Modifier):
                         self.ghost.setMatrix(m)
             if self.extendedCopy:
                 if not hasMod(arg,MODALT): self.finish()
+            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:

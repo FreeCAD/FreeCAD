@@ -53,7 +53,7 @@ ExtensionContainer::~ExtensionContainer() {
 void ExtensionContainer::registerExtension(Base::Type extension, Extension* ext) {
 
     if(ext->getExtendedContainer() != this)
-        throw Base::Exception("ExtensionContainer::registerExtension: Extension has not this as base object");
+        throw Base::ValueError("ExtensionContainer::registerExtension: Extension has not this as base object");
        
     //no duplicate extensions (including base classes)
     if(hasExtension(extension)) {
@@ -104,7 +104,7 @@ Extension* ExtensionContainer::getExtension(Base::Type t) {
                 return entry.second;
         }
         //if we arive hear we don't have anything matching
-        throw Base::Exception("ExtensionContainer::getExtension: No extension of given type available");
+        throw Base::TypeError("ExtensionContainer::getExtension: No extension of given type available");
     }
     
     return result->second;
@@ -370,7 +370,7 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader) {
                 if (extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
                     std::stringstream str;
                     str << "No extension found of type '" << Type << "'" << std::ends;
-                    throw Base::Exception(str.str());
+                    throw Base::TypeError(str.str());
                 }
 
                 //register the extension
@@ -380,7 +380,7 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader) {
                     delete ext;
                     std::stringstream str;
                     str << "Extension is not a python addable version: '" << Type << "'" << std::ends;
-                    throw Base::Exception(str.str());
+                    throw Base::TypeError(str.str());
                 }
 
                 ext->initExtension(this);

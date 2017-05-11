@@ -212,7 +212,11 @@ FreeCADGui_getSoDBVersion(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
+#if PY_MAJOR_VERSION >= 3
+    return PyUnicode_FromString(SoDB::getVersion());
+#else
     return PyString_FromString(SoDB::getVersion());
+#endif
 }
 
 struct PyMethodDef FreeCADGui_methods[] = {
@@ -267,7 +271,7 @@ Application::Application(bool GUIenabled)
                 QLatin1String("Your system uses the same symbol for decimal point and group separator.\n\n"
                               "This causes serious problems and makes the application fail to work properly.\n"
                               "Go to the system configuration panel of the OS and fix this issue, please."));
-            throw Base::Exception("Invalid system settings");
+            throw Base::RuntimeError("Invalid system settings");
         }
 #endif
 #if 0 // QuantitySpinBox and InputField try to handle the group separator now
@@ -281,7 +285,8 @@ Application::Application(bool GUIenabled)
 
         // setting up Python binding
         Base::PyGILStateLocker lock;
-        PyObject* module = Py_InitModule3("FreeCADGui", Application::Methods,
+
+        PyDoc_STRVAR(FreeCADGui_doc,
             "The functions in the FreeCADGui module allow working with GUI documents,\n"
             "view providers, views, workbenches and much more.\n\n"
             "The FreeCADGui instance provides a list of references of GUI documents which\n"
@@ -289,7 +294,25 @@ Application::Application(bool GUIenabled)
             "objects in the associated App document. An App and GUI document can be\n"
             "accessed with the same name.\n\n"
             "The FreeCADGui module also provides a set of functions to work with so called\n"
-            "workbenches.");
+            "workbenches."
+            );
+
+#if PY_MAJOR_VERSION >= 3
+        // if this returns a valid pointer then the 'FreeCADGui' Python module was loaded,
+        // otherwise the executable was launched
+        PyObject *module = PyImport_AddModule("FreeCADGui");
+        if (!module) {
+            static struct PyModuleDef FreeCADGuiModuleDef = {PyModuleDef_HEAD_INIT,"FreeCADGui", FreeCADGui_doc, -1, Application::Methods};
+            module = PyModule_Create(&FreeCADGuiModuleDef);
+            _PyImport_FixupBuiltin(module, "FreeCADGui");
+        }
+        else {
+            // extend the method list
+            PyModule_AddFunctions(module, Application::Methods);
+        }
+#else
+        PyObject* module = Py_InitModule3("FreeCADGui", Application::Methods, FreeCADGui_doc);
+#endif
         Py::Module(module).setAttr(std::string("ActiveDocument"),Py::None());
 
         UiLoaderPy::init_type();
@@ -303,8 +326,12 @@ Application::Application(bool GUIenabled)
         PyModule_AddObject(module, "PySideUic", pySide->module().ptr());
 
         //insert Selection module
-        PyObject* pSelectionModule = Py_InitModule3("Selection", SelectionSingleton::Methods,
-            "Selection module");
+#if PY_MAJOR_VERSION >= 3
+        static struct PyModuleDef SelectionModuleDef = {PyModuleDef_HEAD_INIT,"Selection", "Selection module", -1, SelectionSingleton::Methods};
+        PyObject* pSelectionModule = PyModule_Create(&SelectionModuleDef);
+#else
+        PyObject* pSelectionModule = Py_InitModule3("Selection", SelectionSingleton::Methods,"Selection module");
+#endif
         Py_INCREF(pSelectionModule);
         PyModule_AddObject(module, "Selection", pSelectionModule);
 
@@ -1204,7 +1231,11 @@ QStringList Application::workbenches(void) const
     // insert all items
     while (PyDict_Next(_pcWorkbenchDictionary, &pos, &key, &value)) {
         /* do something interesting with the values... */
+#if PY_MAJOR_VERSION >= 3
+        const char* wbName = PyUnicode_AsUTF8(key);
+#else
         const char* wbName = PyString_AsString(key);
+#endif
         // add only allowed workbenches
         bool ok = true;
         if (!extra.isEmpty()&&ok) {
@@ -1561,7 +1592,7 @@ void Application::runApplication(void)
 #if !defined(HAVE_QT5_OPENGL)
     if (!QGLFormat::hasOpenGL()) {
         QMessageBox::critical(0, QObject::tr("No OpenGL"), QObject::tr("This system does not support OpenGL"));
-        throw Base::Exception("This system does not support OpenGL");
+        throw Base::RuntimeError("This system does not support OpenGL");
     }
     if (!QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         Base::Console().Log("This system does not support framebuffer objects\n");
@@ -1765,6 +1796,10 @@ void Application::runApplication(void)
 
     // run the Application event loop
     Base::Console().Log("Init: Entering event loop\n");
+
+    // boot phase reference point
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=21665
+    Gui::getMainWindow()->setProperty("eventLoop", true);
 
     try {
         std::stringstream s;

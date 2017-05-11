@@ -240,11 +240,11 @@ void WinNativeGestureRecognizerPinch::TuneWindowsGestures(QWidget* target)
     //dynamic linking - required to be able to run on windows pre-7
     HINSTANCE hinstLib = LoadLibraryA("user32.dll");
     if (hinstLib == 0)
-        throw Base::Exception("LoadLibrary(user32.dll) failed. Could not tune Windows gestures.");
+        throw Base::RuntimeError("LoadLibrary(user32.dll) failed. Could not tune Windows gestures.");
 
     ptrSetGestureConfig dllSetGestureConfig = reinterpret_cast<ptrSetGestureConfig> (GetProcAddress(hinstLib,"SetGestureConfig"));
     if (dllSetGestureConfig == 0)
-        throw Base::Exception("DLL entry point for SetGestureConfig not found in user32.dll. Could not tune Windows gestures.");
+        throw Base::RuntimeError("DLL entry point for SetGestureConfig not found in user32.dll. Could not tune Windows gestures.");
 
     HWND w = target->winId();
 
@@ -264,7 +264,7 @@ void WinNativeGestureRecognizerPinch::TuneWindowsGestures(QWidget* target)
     if(!ret){
         DWORD err = GetLastError();
         QString errMsg = QString::fromLatin1("Error in SetGestureConfig. GetLastError = %1").arg(err);
-        throw Base::Exception(errMsg.toLatin1());
+        throw Base::RuntimeError(errMsg.toLatin1());
     }
 #endif
 }

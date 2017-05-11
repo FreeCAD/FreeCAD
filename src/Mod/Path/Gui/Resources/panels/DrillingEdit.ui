@@ -46,52 +46,63 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0" colspan="3">
-        <widget class="QListWidget" name="baseList">
-         <property name="toolTip">
-          <string>Drag to reorder, then update.</string>
-         </property>
-         <property name="dragDropMode">
-          <enum>QAbstractItemView::DragDrop</enum>
-         </property>
-         <property name="defaultDropAction">
-          <enum>Qt::MoveAction</enum>
-         </property>
-         <property name="sortingEnabled">
-          <bool>false</bool>
-         </property>
+        <widget class="QTableWidget" name="baseList">
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QPushButton" name="addBase">
+        <widget class="QPushButton" name="uiEnableSelected">
          <property name="toolTip">
-          <string>Add item selected in window.</string>
+          <string>Enable selected items in the list</string>
          </property>
          <property name="text">
-          <string>add</string>
+          <string>Enable</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QPushButton" name="deleteBase">
+        <widget class="QPushButton" name="uiDisableSelected">
          <property name="toolTip">
-          <string>Remove Item selected in list, then update.</string>
+          <string>Disable selected items in the list.</string>
          </property>
          <property name="text">
-          <string>Remove</string>
+          <string>Disable</string>
          </property>
         </widget>
        </item>
        <item row="1" column="2">
         <widget class="QPushButton" name="uiFindAllHoles">
          <property name="toolTip">
-          <string>Update the path with the removed and reordered items.</string>
+          <string>Remove all custom objects and find holes from base object.</string>
          </property>
          <property name="text">
-          <string>Find All</string>
+          <string>Reset Defaults</string>
          </property>
         </widget>
        </item>
        <item row="2" column="0" colspan="3">
+        <widget class="QLabel" name="label2">
+         <property name="text">
+          <string>You can select Points, Edges or Faces to the Feature list.</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="3">
+        <widget class="QPushButton" name="uiAddSelected">
+         <property name="toolTip">
+          <string>Add selected items from Gui View to drill</string>
+         </property>
+         <property name="text">
+          <string>Add selected</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="3">
         <widget class="QLabel" name="label">
          <property name="text">
           <string>All objects will be processed using the same operation properties.</string>
@@ -151,20 +162,6 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="Gui::InputField" name="peckDepth">
-         <property name="unit" stdset="0">
-          <string notr="true">mm</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="label_8">
-         <property name="text">
-          <string>Peck Depth</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="Heights">
@@ -209,20 +206,6 @@
         <widget class="QLabel" name="label_6">
          <property name="text">
           <string>Clearance Height</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="Gui::InputField" name="retractHeight">
-         <property name="unit" stdset="0">
-          <string notr="true">mm</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>Retract Height</string>
          </property>
         </widget>
        </item>
@@ -288,9 +271,16 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
-             <widget class="QCheckBox" name="checkBox">
+             <widget class="QCheckBox" name="peckEnabled">
               <property name="text">
-               <string>Peck (using step depth value)</string>
+               <string>Peck</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="Gui::InputField" name="peckDepth">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
               </property>
              </widget>
             </item>
@@ -306,7 +296,7 @@
              </widget>
             </item>
             <item>
-             <widget class="Gui::InputField" name="retractHeight_2">
+             <widget class="Gui::InputField" name="retractHeight">
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -317,14 +307,14 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <widget class="QCheckBox" name="checkBox_2">
+             <widget class="QCheckBox" name="dwellEnabled">
               <property name="text">
                <string>Dwell</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="Gui::InputField" name="retractHeight_3">
+             <widget class="Gui::InputField" name="dwellTime">
               <property name="text">
                <string>0 sec</string>
               </property>

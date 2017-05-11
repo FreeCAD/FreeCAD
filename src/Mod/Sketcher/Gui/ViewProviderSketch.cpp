@@ -2770,6 +2770,16 @@ void ViewProviderSketch::drawConstraintIcons()
                 }
             }
             break;
+        case Horizontal:
+        case Vertical:
+            {   // second icon is available only for point alignment
+                if ((*it)->Second != Constraint::GeoUndef &&
+                    (*it)->FirstPos != Sketcher::none &&
+                    (*it)->SecondPos != Sketcher::none) {
+                    multipleIcons = true;
+                }
+            }
+            break;
         case Parallel:
             multipleIcons = true;
             break;
@@ -3963,26 +3973,62 @@ Restart:
                 case Vertical: // write the new position of the Vertical constraint
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
+                        bool alignment = Constr->Second != Constraint::GeoUndef;
+
                         // get the geometry
                         const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
-                        // Vertical can only be a GeomLineSegment
-                        assert(geo->getTypeId() == Part::GeomLineSegment::getClassTypeId());
-                        const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
 
-                        // calculate the half distance between the start and endpoint
-                        Base::Vector3d midpos = ((lineSeg->getEndPoint()+lineSeg->getStartPoint())/2);
+                        if (!alignment) {
+                            // Vertical can only be a GeomLineSegment
+                            assert(geo->getTypeId() == Part::GeomLineSegment::getClassTypeId());
+                            const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
 
-                        //Get a set of vectors perpendicular and tangential to these
-                        Base::Vector3d dir = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Normalize();
-                        Base::Vector3d norm(-dir.y,dir.x,0);
+                            // calculate the half distance between the start and endpoint
+                            Base::Vector3d midpos = ((lineSeg->getEndPoint()+lineSeg->getStartPoint())/2);
 
-                        Base::Vector3d relpos = seekConstraintPosition(midpos, norm, dir, 2.5, edit->constrGroup->getChild(i));
+                            //Get a set of vectors perpendicular and tangential to these
+                            Base::Vector3d dir = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Normalize();
+                            Base::Vector3d norm(-dir.y,dir.x,0);
 
-                        static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos.x, midpos.y, zConstr); //Absolute Reference
+                            Base::Vector3d relpos = seekConstraintPosition(midpos, norm, dir, 2.5, edit->constrGroup->getChild(i));
 
-                        //Reference Position that is scaled according to zoom
-                        static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos.x, relpos.y, 0);
+                            static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos.x, midpos.y, zConstr); //Absolute Reference
 
+                            //Reference Position that is scaled according to zoom
+                            static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos.x, relpos.y, 0);
+                        }
+                        else {
+                            assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
+                            assert(Constr->FirstPos != Sketcher::none && Constr->SecondPos != Sketcher::none);
+
+                            Base::Vector3d midpos1, dir1, norm1;
+                            Base::Vector3d midpos2, dir2, norm2;
+
+                            if (temp)
+                                midpos1 = getSketchObject()->getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
+                            else
+                                midpos1 = getSketchObject()->getPoint(Constr->First, Constr->FirstPos);
+
+                            if (temp)
+                                midpos2 = getSketchObject()->getSolvedSketch().getPoint(Constr->Second, Constr->SecondPos);
+                            else
+                                midpos2 = getSketchObject()->getPoint(Constr->Second, Constr->SecondPos);
+
+                            dir1 = (midpos2-midpos1).Normalize();
+                            dir2 = -dir1;
+                            norm1 = Base::Vector3d(-dir1.y,dir1.x,0.);
+                            norm2 = norm1;
+
+                            Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
+                            static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
+                            static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
+
+                            Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
+
+                            Base::Vector3d secondPos = midpos2 - midpos1;
+                            static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr);
+                            static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation = SbVec3f(relpos2.x -relpos1.x, relpos2.y -relpos1.y, 0);
+                        }
                     }
                     break;
                 case Perpendicular:
@@ -4794,6 +4840,12 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
                 sep->addChild(new SoImage());
                 // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+                sep->addChild(new SoInfo());
+                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
+                sep->addChild(new SoZoomTranslation());
+                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
+                sep->addChild(new SoImage());
+                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
                 sep->addChild(new SoInfo());
 
                 // remember the type of this constraint node

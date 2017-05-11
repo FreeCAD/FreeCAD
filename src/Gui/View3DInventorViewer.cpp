@@ -1016,7 +1016,7 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
             if (bgColor.isValid())
                 renderer.setBackgroundColor(SbColor4f(bgColor.redF(), bgColor.greenF(), bgColor.blueF(), bgColor.alphaF()));
             if (!renderer.render(root))
-                throw Base::Exception("Offscreen rendering failed");
+                throw Base::RuntimeError("Offscreen rendering failed");
 
             renderer.writeToImage(img);
             root->unref();
@@ -1027,7 +1027,7 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
             if (bgColor.isValid())
                 renderer.setBackgroundColor(SbColor(bgColor.redF(), bgColor.greenF(), bgColor.blueF()));
             if (!renderer.render(root))
-                throw Base::Exception("Offscreen rendering failed");
+                throw Base::RuntimeError("Offscreen rendering failed");
 
             renderer.writeToImage(img);
             root->unref();
@@ -1211,14 +1211,14 @@ bool View3DInventorViewer::dumpToFile(SoNode* node, const char* filename, bool b
             vo = std::unique_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
         }
         else {
-            throw Base::Exception("Not supported vector graphic");
+            throw Base::ValueError("Not supported vector graphic");
         }
 
         SoVectorOutput* out = vo->getOutput();
         if (!out || !out->openFile(filename)) {
             std::ostringstream a_out;
             a_out << "Cannot open file '" << filename << "'";
-            throw Base::Exception(a_out.str());
+            throw Base::FileSystemError(a_out.str());
         }
 
         saveGraphic(ps,c,vo.get());

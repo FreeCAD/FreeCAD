@@ -119,7 +119,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, const 
     if (owner) {
         const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(owner);
         if (!docObj)
-            throw Base::Exception("Property must be owned by a document object.");
+            throw Base::RuntimeError("Property must be owned by a document object.");
 
         if (property.size() > 0) {
             const Document * doc = docObj->getDocument();
@@ -863,7 +863,7 @@ ObjectIdentifier ObjectIdentifier::parse(const DocumentObject *docObj, const std
     if (v)
         return v->getPath();
     else
-        throw Base::Exception("Invalid property specification.");
+        throw Base::RuntimeError("Invalid property specification.");
 }
 
 std::string ObjectIdentifier::resolveErrorString() const
@@ -1034,7 +1034,7 @@ boost::any ObjectIdentifier::getValue() const
     destructor d1(pyvalue);
 
     if (!pyvalue)
-        throw Base::Exception("Failed to get property value.");
+        throw Base::RuntimeError("Failed to get property value.");
 
     if (PyInt_Check(pyvalue))
         return boost::any(PyInt_AsLong(pyvalue));
@@ -1055,7 +1055,7 @@ boost::any ObjectIdentifier::getValue() const
         return boost::any(*q);
     }
     else {
-        throw Base::Exception("Invalid property type.");
+        throw Base::TypeError("Invalid property type.");
     }
 }
 

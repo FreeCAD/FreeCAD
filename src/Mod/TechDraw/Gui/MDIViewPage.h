@@ -73,7 +73,11 @@ public:
     void print();
     void print(QPrinter* printer);
     void printPdf();
+    void printPdf(std::string file);
     void printPreview();
+
+    void saveSVG(std::string file);
+
     void setFrameState(bool state);
     bool getFrameState(void) {return m_frameState;};
 

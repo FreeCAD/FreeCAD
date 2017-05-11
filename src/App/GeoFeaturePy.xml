@@ -15,7 +15,15 @@
     </Documentation>
     <Methode Name="getPaths">
       <Documentation>
-        <UserDocu>returns all posible paths to the root of the document</UserDocu>
+        <UserDocu>returns all possible paths to the root of the document</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getPropertyNameOfGeometry">
+      <Documentation>
+        <UserDocu>Returns the property name of the actual geometry or None.
+For example for a part object it returns the value Shape,
+for a mesh the value Mesh and so on.
+If an object has no such property then None is returned.</UserDocu>
       </Documentation>
     </Methode>
     <CustomAttributes />

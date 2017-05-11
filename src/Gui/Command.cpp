@@ -884,7 +884,7 @@ PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const cha
     _pcPyResourceDict = Interpreter().runMethodObject(_pcPyCommand, "GetResources");
     // check if the "GetResources()" method returns a Dict object
     if (!PyDict_Check(_pcPyResourceDict)) {
-        throw Base::Exception("PythonCommand::PythonCommand(): Method GetResources() of the Python "
+        throw Base::TypeError("PythonCommand::PythonCommand(): Method GetResources() of the Python "
                               "command object returns the wrong type (has to be dict)");
     }
 
@@ -920,12 +920,19 @@ const char* PythonCommand::getResource(const char* sName) const
     pcTemp = PyDict_GetItemString(_pcPyResourceDict,sName);
     if (!pcTemp)
         return "";
+#if PY_MAJOR_VERSION >= 3
+    if (!PyUnicode_Check(pcTemp)) {
+#else
     if (!PyString_Check(pcTemp)) {
-        throw Base::Exception("PythonCommand::getResource(): Method GetResources() of the Python "
+#endif
+        throw Base::TypeError("PythonCommand::getResource(): Method GetResources() of the Python "
                               "command object returns a dictionary which holds not only strings");
     }
-
+#if PY_MAJOR_VERSION >= 3
+    return PyUnicode_AsUTF8(pcTemp);
+#else
     return PyString_AsString(pcTemp);
+#endif
 }
 
 void PythonCommand::activated(int iMsg)
@@ -988,9 +995,17 @@ const char* PythonCommand::getHelpUrl(void) const
     pcTemp = Interpreter().runMethodObject(_pcPyCommand, "CmdHelpURL");
     if (! pcTemp )
         return "";
+#if PY_MAJOR_VERSION >= 3
+    if (! PyUnicode_Check(pcTemp) )
+#else
     if (! PyString_Check(pcTemp) )
-        throw Base::Exception("PythonCommand::CmdHelpURL(): Method CmdHelpURL() of the Python command object returns no string");
+#endif
+        throw Base::TypeError("PythonCommand::CmdHelpURL(): Method CmdHelpURL() of the Python command object returns no string");
+#if PY_MAJOR_VERSION >= 3
+    return PyUnicode_AsUTF8(pcTemp);
+#else
     return PyString_AsString(pcTemp);
+#endif
 }
 
 Action * PythonCommand::createAction(void)
@@ -1064,16 +1079,16 @@ bool PythonCommand::isChecked() const
 {
     PyObject* item = PyDict_GetItemString(_pcPyResourceDict,"Checkable");
     if (!item) {
-        throw Base::Exception("PythonCommand::isChecked(): Method GetResources() of the Python "
-                              "command object doesn't contain the key 'Checkable'");
+        throw Base::ValueError("PythonCommand::isChecked(): Method GetResources() of the Python "
+                               "command object doesn't contain the key 'Checkable'");
     }
 
     if (PyBool_Check(item)) {
         return PyObject_IsTrue(item) ? true : false;
     }
     else {
-        throw Base::Exception("PythonCommand::isChecked(): Method GetResources() of the Python "
-                              "command object contains the key 'Checkable' which is not a boolean");
+        throw Base::ValueError("PythonCommand::isChecked(): Method GetResources() of the Python "
+                               "command object contains the key 'Checkable' which is not a boolean");
     }
 }
 
@@ -1298,12 +1313,19 @@ const char* PythonGroupCommand::getResource(const char* sName) const
     pcTemp = PyDict_GetItemString(_pcPyResource, sName);
     if (!pcTemp)
         return "";
+#if PY_MAJOR_VERSION >= 3
+    if (!PyUnicode_Check(pcTemp)) {
+#else
     if (!PyString_Check(pcTemp)) {
+#endif
         throw Base::ValueError("PythonGroupCommand::getResource(): Method GetResources() of the Python "
                                "group command object returns a dictionary which holds not only strings");
     }
-
+#if PY_MAJOR_VERSION >= 3
+    return PyUnicode_AsUTF8(pcTemp);
+#else
     return PyString_AsString(pcTemp);
+#endif
 }
 
 const char* PythonGroupCommand::getWhatsThis() const
@@ -1351,7 +1373,7 @@ bool PythonGroupCommand::isExclusive() const
         return PyObject_IsTrue(item) ? true : false;
     }
     else {
-        throw Base::Exception("PythonGroupCommand::isExclusive(): Method GetResources() of the Python "
+        throw Base::TypeError("PythonGroupCommand::isExclusive(): Method GetResources() of the Python "
                               "command object contains the key 'Exclusive' which is not a boolean");
     }
 }
@@ -1367,7 +1389,7 @@ bool PythonGroupCommand::hasDropDownMenu() const
         return PyObject_IsTrue(item) ? true : false;
     }
     else {
-        throw Base::Exception("PythonGroupCommand::hasDropDownMenu(): Method GetResources() of the Python "
+        throw Base::TypeError("PythonGroupCommand::hasDropDownMenu(): Method GetResources() of the Python "
                               "command object contains the key 'DropDownMenu' which is not a boolean");
     }
 }

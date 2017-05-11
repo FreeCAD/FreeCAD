@@ -83,9 +83,9 @@ void QGIPrimPath::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QGIPrimPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-    QGIView *view = dynamic_cast<QGIView *> (parentItem());    //this is temp for debug??
-    assert(view != 0);
-    Q_UNUSED(view);
+//    QGIView *view = dynamic_cast<QGIView *> (parentItem());    //this is temp for debug??
+//    assert(view != 0);
+//    Q_UNUSED(view);
     if(!isSelected() && !isHighlighted) {
         setPrettyNormal();
     }

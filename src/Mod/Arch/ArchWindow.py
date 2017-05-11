@@ -647,8 +647,6 @@ class _Window(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this window (for preset windows only)"))
         obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"))
         obj.addProperty("App::PropertyInteger","Preset","Arch","")
-        obj.addProperty("App::PropertyLink","PanelMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
-        obj.addProperty("App::PropertyLink","GlassMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
         obj.addProperty("App::PropertyArea","Area","Arch",QT_TRANSLATE_NOOP("App::Property","The area of this window"))
         obj.addProperty("App::PropertyLength","LouvreWidth","Louvres",QT_TRANSLATE_NOOP("App::Property","the width of louvre elements"))
         obj.addProperty("App::PropertyLength","LouvreSpacing","Louvres",QT_TRANSLATE_NOOP("App::Property","the space between louvre elements"))
@@ -658,6 +656,7 @@ class _Window(ArchComponent.Component):
         obj.setEditorMode("WindowParts",2)
         self.Type = "Window"
         obj.Role = Roles
+        obj.Role = "Window"
         obj.Proxy = self
         obj.MoveWithHost = True
 
@@ -1045,14 +1044,28 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         colors = []
         base = obj.ViewObject.ShapeColor
         for i in range(len(solids)):
-            ccol = base
+            ccol = None
+            name = obj.WindowParts[(i*5)]
             typeidx = (i*5)+1
-            if typeidx < len(obj.WindowParts):
-                typ = obj.WindowParts[typeidx]
-                if typ == WindowPartTypes[2]: # transparent parts
-                    ccol = ArchCommands.getDefaultColor("WindowGlass")
-            for f in solids[i].Faces:
-                colors.append(ccol)
+            if hasattr(obj,"Material"):
+                if obj.Material:
+                    if hasattr(obj.Material,"Materials"):
+                        if obj.Material.Names:
+                            if name in obj.Material.Names:
+                                mat = obj.Material.Materials[obj.Material.Names.index(name)]
+                                if 'DiffuseColor' in mat.Material:
+                                    if "(" in mat.Material['DiffuseColor']:
+                                        ccol = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
+                                if 'Transparency' in mat.Material:
+                                    ccol = (ccol[0],ccol[1],ccol[2],float(mat.Material['Transparency']))
+            if not ccol:
+                if typeidx < len(obj.WindowParts):
+                    typ = obj.WindowParts[typeidx]
+                    if typ == WindowPartTypes[2]: # transparent parts
+                        ccol = ArchCommands.getDefaultColor("WindowGlass")
+            if not ccol:
+                ccol = base
+            colors.extend([ccol for f in solids[i].Faces])
         #print("colors: ",colors)
         if colors:
             obj.ViewObject.DiffuseColor = colors

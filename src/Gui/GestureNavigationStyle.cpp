@@ -59,6 +59,10 @@
 # include <QMenu>
 # include <QMetaObject>
 # include <QRegExp>
+# include <Inventor/actions/SoRayPickAction.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/SoPath.h>
+# include <Inventor/draggers/SoDragger.h>
 #endif
 
 #include <Inventor/sensors/SoTimerSensor.h>
@@ -314,8 +318,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
     //all mode-dependent stuff is within this switch.
     switch(curmode){
     case NavigationStyle::IDLE:
-    case NavigationStyle::SELECTION:
-    case NavigationStyle::INTERACT: {
+    case NavigationStyle::SELECTION: {
         //idle and interaction
 
         //keyboard
@@ -363,7 +366,9 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
             case SoMouseButtonEvent::BUTTON1:
             case SoMouseButtonEvent::BUTTON2:
                 if(press){
-                    if(this->thisClickIsComplex && this->mouseMoveThresholdBroken){
+                    if (this->isDraggerUnderCursor(ev->getPosition())){
+                        setViewingMode(NavigationStyle::INTERACT);
+                    } else if(this->thisClickIsComplex && this->mouseMoveThresholdBroken){
                         //this should prevent re-attempts to enter navigation when doing more clicks after a move.
                     } else {
                         //on LMB-down or RMB-down, we don't know yet if we should propagate it or process it. Save the event to be refired later, when it becomes clear.
@@ -389,12 +394,16 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     }
                     if(! processed) {
                         //re-synthesize all previously-consumed mouseDowns, if any. They might have been re-synthesized already when threshold was broken.
+                        if (button == SoMouseButtonEvent::BUTTON1)
+                            setViewingMode(NavigationStyle::SELECTION);
                         for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
                             inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
                         }
                         this->mousedownConsumedCount = 0;
                         processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
                         propagated = true;
+                        if (!(this->button1down || this->button2down || this->button3down))
+                            setViewingMode(NavigationStyle::IDLE);
                     }
                 }
             break;
@@ -489,7 +498,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     processed = true;
                 } else { //all buttons are released
                     //end of dragging/panning/whatever
-                    setViewingMode(NavigationStyle::SELECTION);
+                    setViewingMode(NavigationStyle::IDLE);
                     processed = true;
                 } //else of if (some bottons down)
             break;
@@ -529,7 +538,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
             const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
             assert(gesture);
             if (gesture->state == SoGestureEvent::SbGSEnd) {
-                setViewingMode(NavigationStyle::SELECTION);
+                setViewingMode(NavigationStyle::IDLE);
                 processed=true;
             } else if (gesture->state == SoGestureEvent::SbGSUpdate){
                 if(type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())){
@@ -577,9 +586,28 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         //animation modes
         if (!processed) {
             if (evIsButton || evIsGesture || evIsKeyboard || evIsLoc3)
-                setViewingMode(NavigationStyle::SELECTION);
+                setViewingMode(NavigationStyle::IDLE);
         }
     } break; //end of animation modes
+    case NavigationStyle::INTERACT:{
+        // Mouse Button / Spaceball Button handling
+        if (evIsButton) {
+            const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+            const int button = event->getButton();
+            //const SbBool press //the button was pressed (if false -> released)
+            //        = event->getState() == SoButtonEvent::DOWN ? true : false;
+            switch(button){
+            case SoMouseButtonEvent::BUTTON1:
+            case SoMouseButtonEvent::BUTTON2:
+                if(!(comboAfter & BUTTON1DOWN || comboAfter & BUTTON2DOWN)) {
+                    //all buttons are released - leave interact mode
+                    setViewingMode(NavigationStyle::IDLE);
+                }
+            break;
+            } //switch(button)
+        } //if(evIsButton)
+
+    } break;
     case NavigationStyle::BOXZOOM:
     default:
         //all the rest - will be pass on to inherited, later.
@@ -596,3 +624,16 @@ finalize:
     return processed;
 }
 
+
+bool GestureNavigationStyle::isDraggerUnderCursor(SbVec2s pos)
+{
+    SoRayPickAction rp(this->viewer->getSoRenderManager()->getViewportRegion());
+    rp.setRadius(viewer->getPickRadius());
+    rp.setPoint(pos);
+    rp.apply(this->viewer->getSoRenderManager()->getSceneGraph());
+    SoPickedPoint* pick = rp.getPickedPoint();
+    if (pick)
+        return pick->getPath()->getTail()->isOfType(SoDragger::getClassTypeId());
+    else
+        return false;
+}

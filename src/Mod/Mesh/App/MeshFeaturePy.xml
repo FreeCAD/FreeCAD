@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
 	<PythonExport 
-		Father="DocumentObjectPy"  
+        Father="GeoFeaturePy"
 		Name="MeshFeaturePy" 
 		Twin="Feature" 
 		TwinPointer="Feature" 
 		Include="Mod/Mesh/App/MeshFeature.h" 
 		Namespace="Mesh" 
-		FatherInclude="App/DocumentObjectPy.h" 
+        FatherInclude="App/GeoFeaturePy.h"
 		FatherNamespace="App">
 		<Documentation>
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />

@@ -1551,6 +1551,49 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
     MDIView* view = getMainWindow()->activeWindow();
     if (!view) return; // no active view
 
+#if defined(HAVE_QT5_OPENGL)
+    // nothing to do when the view is docked and 'Docked' is pressed
+    if (iMsg == 0 && view->currentViewMode() == MDIView::Child)
+        return;
+    // Change the view mode after an mdi view was already visible doesn't
+    // work well with Qt5 any more because of some strange OpenGL behaviour.
+    // A workaround is to clone the mdi view, set its view mode and delete
+    // the original view.
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (doc) {
+        Gui::MDIView* clone = doc->cloneView(view);
+        if (!clone)
+            return;
+
+        const char* ppReturn = 0;
+        if (view->onMsg("GetCamera", &ppReturn)) {
+            std::string sMsg = "SetCamera ";
+            sMsg += ppReturn;
+
+            const char** pReturnIgnore=0;
+            clone->onMsg(sMsg.c_str(), pReturnIgnore);
+        }
+
+        if (iMsg==0) {
+            getMainWindow()->addWindow(clone);
+        }
+        else if (iMsg==1) {
+            if (view->currentViewMode() == MDIView::TopLevel)
+                getMainWindow()->addWindow(clone);
+            else
+                clone->setCurrentViewMode(MDIView::TopLevel);
+        }
+        else if (iMsg==2) {
+            if (view->currentViewMode() == MDIView::FullScreen)
+                getMainWindow()->addWindow(clone);
+            else
+                clone->setCurrentViewMode(MDIView::FullScreen);
+        }
+
+        // destroy the old view
+        view->deleteSelf();
+    }
+#else
     if (iMsg==0) {
         view->setCurrentViewMode(MDIView::Child);
     }
@@ -1566,6 +1609,7 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
         else
             view->setCurrentViewMode(MDIView::FullScreen);
     }
+#endif
 }
 
 bool StdViewDockUndockFullscreen::isActive(void)

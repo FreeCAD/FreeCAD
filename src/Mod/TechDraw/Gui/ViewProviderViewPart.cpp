@@ -124,13 +124,18 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) cons
     try {
       for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
           if((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
-              TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(*it);
-              const std::vector<App::DocumentObject *> &refs = dim->References2D.getValues();
-              for(std::vector<App::DocumentObject *>::const_iterator it = refs.begin(); it != refs.end(); ++it) {
-                  if(strcmp(getViewPart()->getNameInDocument(), (*it)->getNameInDocument()) == 0) {        //wf: isn't this test redundant?
-                     temp.push_back(dim);                                                                  // if a dim is in the inlist,
-                                                                                                           // it's a child of this ViewPart??
+              //TODO: make a list, then prune it.  should be faster?
+              bool skip = false;
+              std::string dimName = (*it)->getNameInDocument();
+              for (auto& t: temp) {                              //only add dim once even if it references 2 geometries
+                  std::string tName = t->getNameInDocument();
+                  if (dimName == tName) {
+                      skip = true;
+                      break;
                   }
+              }
+              if (!skip) {
+                  temp.push_back(*it);
               }
           } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())) {
               temp.push_back((*it));

@@ -745,11 +745,12 @@ PyObject* TopoShapePy::revolve(PyObject *args)
 
 PyObject*  TopoShapePy::check(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    PyObject* runBopCheck = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!", &(PyBool_Type), &runBopCheck))
         return NULL;
     if (!getTopoShapePtr()->getShape().IsNull()) {
         std::stringstream str;
-        if (!getTopoShapePtr()->analyze(str)) {
+        if (!getTopoShapePtr()->analyze(PyObject_IsTrue(runBopCheck) ? true : false, str)) {
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
             PyErr_Print();
         }

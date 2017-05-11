@@ -201,36 +201,39 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
             if (!asm_name.empty())
                 part_name = asm_name;
             if (isRef)
-                createShape(label, loc, part_name, lValue);
+                createShape(label, loc, part_name, lValue, true);
             else
-                createShape(label, part_loc, part_name, localValue);
+                createShape(label, part_loc, part_name, localValue, false);
         }
         else {
-            // This is probably an Assembly let's try to create a Compound with the name
-            App::Part *pcPart = NULL;
-            if (aShapeTool->IsAssembly(label)) {
-                pcPart = static_cast<App::Part*>(doc->addObject
-                            ("App::Part",asm_name.c_str()));
+            if (aShapeTool->IsSimpleShape(label)) {
+                // We are not creating a list of Part::Feature in that case but just
+                // a single Part::Feature which has as a Shape a Compound of the Subshapes contained
+                // within the global shape
+                // This is standard behavior of many STEP reader and avoid to register a crazy amount of
+                // Shape within the Tree as STEP file do mostly contain large assemblies
+                return;
             }
 
+            // This is probably an Assembly let's try to create a Compound with the name
             for (TDF_ChildIterator it(label); it.More(); it.Next()) {
                 loadShapes(it.Value(), part_loc, part_name, asm_name, isRef, localValue);
             }
 
-            if (pcPart) {
-                for (std::size_t i=0; i<localValue.size(); i++) {
-                    pcPart->addObject((localValue[i]));
-                }
-
-                if (!localValue.empty())
+            if (!localValue.empty()) {
+                if (aShapeTool->IsAssembly(label)) {
+                    App::Part *pcPart = NULL;
+                    pcPart = static_cast<App::Part*>(doc->addObject("App::Part",asm_name.c_str()));
+                    pcPart->addObjects(localValue);
                     lValue.push_back(pcPart);
+                }
             }
         }
     }
 }
 
 void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc, const std::string& name,
-                             std::vector<App::DocumentObject*>& lValue)
+                             std::vector<App::DocumentObject*>& lValue, bool merge)
 {
     const TopoDS_Shape& aShape = aShapeTool->GetShape(label);
 #ifdef HAVE_TBB
@@ -242,32 +245,64 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
         TopExp_Explorer xp;
         int ctSolids = 0, ctShells = 0;
         std::vector<App::DocumentObject *> localValue;
-
         App::Part *pcPart = NULL;
-        for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
-            createShape(xp.Current(), loc, name, localValue);
-        }
-        for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
-            createShape(xp.Current(), loc, name, localValue);
-        }
 
-        if (!localValue.empty()) {
-            pcPart = static_cast<App::Part*>(doc->addObject("App::Part",name.c_str()));
-
-            // localValue contain the object that I must add to the local Part
-            // I must add the PartOrigin and the Part itself
-            for (std::size_t i=0; i<localValue.size(); i++) {
-                pcPart->addObject(localValue[i]);
+        if (merge) {
+            // We should do that only if there is more than a single shape inside!
+            // Computing Compounds takes time
+            BRep_Builder builder;
+            TopoDS_Compound comp;
+            builder.MakeCompound(comp);
+            for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
+                const TopoDS_Shape& sh = xp.Current();
+                if (!sh.IsNull()) {
+                    builder.Add(comp, sh);
+                }
             }
 
+            for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
+                const TopoDS_Shape& sh = xp.Current();
+                if (!sh.IsNull()) {
+                    builder.Add(comp, sh);
+                }
+            }
+
+            // Ok we got a Compound which is computed
+            // Just need to add it to a Part::Feature and push it to lValue
+            if (!comp.IsNull() && (ctSolids||ctShells)) {
+                Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
+                if (!loc.IsIdentity())
+                    part->Shape.setValue(comp.Moved(loc));
+                else
+                    part->Shape.setValue(comp);
+                part->Label.setValue(name);
+                lValue.push_back(part);
+            }
+        }
+        else {
+            for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
+                createShape(xp.Current(), loc, name, localValue);
+            }
+            for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
+                createShape(xp.Current(), loc, name, localValue);
+            }
+        }
+
+        if (!localValue.empty() && !merge) {
+            pcPart = static_cast<App::Part*>(doc->addObject("App::Part",name.c_str()));
+
+            // localValue contain the objects that  must added to the local Part
+            // We must add the PartOrigin and the Part itself
+            pcPart->addObjects(localValue);
             lValue.push_back(pcPart);
         }
 
         if (ctSolids > 0 || ctShells > 0)
             return;
     }
-
-    createShape(aShape, loc, name, lValue);
+    else if (!aShape.IsNull()) {
+        createShape(aShape, loc, name, lValue);
+    }
 }
 
 void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& loc, const std::string& name,
@@ -275,8 +310,6 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
 {
     Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
 
-    // I probably have to create a Part copy
-    // as to properly set it up into my new step tree
     if (!loc.IsIdentity())
         part->Shape.setValue(aShape.Moved(loc));
     else
@@ -296,15 +329,6 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
         std::vector<App::Color> colors;
         colors.push_back(color);
         applyColors(part, colors);
-#if 0//TODO
-        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-        if (vp && vp->isDerivedFrom(PartGui::ViewProviderPart::getClassTypeId())) {
-            color.r = aColor.Red();
-            color.g = aColor.Green();
-            color.b = aColor.Blue();
-            static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.setValue(color);
-        }
-#endif
     }
 
     TopTools_IndexedMapOfShape faces;
@@ -333,12 +357,6 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
 
     if (found_face_color) {
         applyColors(part, faceColors);
-#if 0//TODO
-        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-        if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-            static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.setValues(faceColors);
-        }
-#endif
     }
 }
 
@@ -354,6 +372,7 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     if (keepExplicitPlacement) {
         rootLabel = aShapeTool->NewShape();
         TDataStd_Name::Set(rootLabel, "ASSEMBLY");
+        //Interface_Static::SetIVal("write.step.assembly",1);
     }
     else {
         rootLabel = TDF_TagSource::NewChild(pDoc->Main());
