@@ -1218,6 +1218,75 @@ PyObject* TopoShapePy::childShapes(PyObject *args)
     }
 }
 
+namespace Part {
+std::vector<PyTypeObject*> buildShapeEnumTypeMap()
+{
+   std::vector<PyTypeObject*> typeMap;
+   typeMap.push_back(&TopoShapeCompoundPy::Type);             //TopAbs_COMPOUND
+   typeMap.push_back(&TopoShapeCompSolidPy::Type);            //TopAbs_COMPSOLID
+   typeMap.push_back(&TopoShapeSolidPy::Type);                //TopAbs_SOLID
+   typeMap.push_back(&TopoShapeShellPy::Type);                //TopAbs_SHELL
+   typeMap.push_back(&TopoShapeFacePy::Type);                 //TopAbs_FACE
+   typeMap.push_back(&TopoShapeWirePy::Type);                 //TopAbs_WIRE
+   typeMap.push_back(&TopoShapeEdgePy::Type);                 //TopAbs_EDGE
+   typeMap.push_back(&TopoShapeVertexPy::Type);               //TopAbs_VERTEX
+   typeMap.push_back(&TopoShapePy::Type);                     //TopAbs_SHAPE
+   return typeMap;
+}
+}
+
+PyObject*  TopoShapePy::ancestorsOfType(PyObject *args)
+{
+    PyObject *pcObj;
+    PyObject *type;
+    if (!PyArg_ParseTuple(args, "O!O!", &(TopoShapePy::Type), &pcObj, &PyType_Type, &type))
+        return NULL;
+
+    try {
+        const TopoDS_Shape& model = getTopoShapePtr()->getShape();
+        const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pcObj)->
+                getTopoShapePtr()->getShape();
+        if (model.IsNull() || shape.IsNull()) {
+            PyErr_SetString(PyExc_ValueError, "Shape is null");
+            return NULL;
+        }
+
+        static std::vector<PyTypeObject*> typeMap = buildShapeEnumTypeMap();
+        PyTypeObject* pyType = reinterpret_cast<PyTypeObject*>(type);
+        TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
+        for (auto it = typeMap.begin(); it != typeMap.end(); ++it) {
+            if (PyType_IsSubtype(pyType, *it)) {
+                auto index = std::distance(typeMap.begin(), it);
+                shapetype = static_cast<TopAbs_ShapeEnum>(index);
+                break;
+            }
+        }
+
+        TopTools_IndexedDataMapOfShapeListOfShape mapOfShapeShape;
+        TopExp::MapShapesAndAncestors(model, shape.ShapeType(), shapetype, mapOfShapeShape);
+        const TopTools_ListOfShape& ancestors = mapOfShapeShape.FindFromKey(shape);
+
+        Py::List list;
+        std::set<Standard_Integer> hashes;
+        TopTools_ListIteratorOfListOfShape it(ancestors);
+        for (; it.More(); it.Next()) {
+            // make sure to avoid duplicates
+            Standard_Integer code = it.Value().HashCode(INT_MAX);
+            if (hashes.find(code) == hashes.end()) {
+                list.append(shape2pyshape(it.Value()));
+                hashes.insert(code);
+            }
+        }
+
+        return Py::new_reference_to(list);
+    }
+    catch (Standard_Failure) {
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return NULL;
+    }
+}
+
 PyObject*  TopoShapePy::removeInternalWires(PyObject *args)
 {
     double minArea;
