@@ -38,7 +38,12 @@ installed.
 '''
 
 from PySide import QtCore, QtGui
-import FreeCAD,urllib2,re,os,shutil
+import sys, os, re, shutil
+import FreeCAD
+if sys.version_info.major < 3:
+    import urllib2
+else:
+    import urllib.request as urllib2
 
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
@@ -304,6 +309,8 @@ class UpdateWorker(QtCore.QThread):
         self.progressbar_show.emit(True)
         u = urllib2.urlopen("https://github.com/FreeCAD/FreeCAD-addons")
         p = u.read()
+        if isinstance(p, bytes):
+            p = p.decode("utf-8")
         u.close()
         p = p.replace("\n"," ")
         p = re.findall("octicon-file-submodule(.*?)message",p)
@@ -346,6 +353,8 @@ class InfoWorker(QtCore.QThread):
             url = repo[1]
             u = urllib2.urlopen(url)
             p = u.read()
+            if isinstance(p, bytes):
+                p = p.decode("utf-8")
             u.close()
             desc = re.findall("<meta name=\"description\" content=\"(.*?)\">",p)
             if desc:
@@ -374,6 +383,8 @@ class MacroWorker(QtCore.QThread):
         macropath = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
         u = urllib2.urlopen("http://www.freecadweb.org/wiki/Macros_recipes")
         p = u.read()
+        if isinstance(p, bytes):
+            p = p.decode("utf-8")
         u.close()
         macros = re.findall("title=\"(Macro.*?)\"",p)
         macros = [mac for mac in macros if (not("translated" in mac))]
@@ -414,6 +425,8 @@ class ShowWorker(QtCore.QThread):
             self.info_label.emit(translate("AddonsInstaller", "Retrieving info from ") + str(url))
             u = urllib2.urlopen(url)
             p = u.read()
+            if isinstance(p, bytes):
+                p = p.decode("utf-8")
             u.close()
             desc = re.findall("<meta name=\"description\" content=\"(.*?)\">",p)
             if desc:
@@ -456,6 +469,8 @@ class ShowMacroWorker(QtCore.QThread):
             self.info_label.emit("Retrieving info from " + str(url))
             u = urllib2.urlopen(url)
             p = u.read()
+            if isinstance(p, bytes):
+                p = p.decode("utf-8")
             u.close()
             code = re.findall("<pre>(.*?)<\/pre>",p.replace("\n","--endl--"))
             if code:
@@ -559,7 +574,8 @@ class InstallWorker(QtCore.QThread):
 
     def download(self,giturl,clonedir):
         "downloads and unzip from github"
-        import StringIO,zipfile
+        import zipfile
+        import io
         bakdir = None
         if os.path.exists(clonedir):
             bakdir = clonedir+".bak"
@@ -573,7 +589,7 @@ class InstallWorker(QtCore.QThread):
             u = urllib2.urlopen(zipurl)
         except:
             return translate("AddonsInstaller", "Error: Unable to download") + " " + zipurl
-        zfile = StringIO.StringIO()
+        zfile = io.StringIO()
         zfile.write(u.read())
         zfile = zipfile.ZipFile(zfile)
         master = zfile.namelist()[0] # github will put everything in a subfolder
