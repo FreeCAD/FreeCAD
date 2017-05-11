@@ -109,9 +109,6 @@ class ObjectPocket:
                 obj.setEditorMode('RampAngle', 2)  # make this hidden
                 obj.setEditorMode('RampSize', 2)   # make this hidden
 
-        if prop == "UserLabel":
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
-
     def __getstate__(self):
         return None
 
