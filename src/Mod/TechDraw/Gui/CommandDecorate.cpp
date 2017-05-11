@@ -175,13 +175,13 @@ void CmdTechDrawNewGeomHatch::activated(int iMsg)
     geomhatch->Source.setValue(objFeat, subNames);
     Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(geomhatch);
     TechDrawGui::ViewProviderGeomHatch* hvp = dynamic_cast<TechDrawGui::ViewProviderGeomHatch*>(vp);
-    if( hvp == nullptr ) {
+    if (!hvp) {
+        Base::Console().Log("ERROR - CommandDecorate - GeomHatch has no ViewProvider\n");
         return;
     }
-//    if (!hvp) {
 
     // dialog to fill in hatch values
-    Gui::Control().showDialog(new TaskDlgGeomHatch(geomhatch,hvp));
+    Gui::Control().showDialog(new TaskDlgGeomHatch(geomhatch,hvp,true));
 
 
     commitCommand();

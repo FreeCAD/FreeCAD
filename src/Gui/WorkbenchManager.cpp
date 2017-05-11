@@ -83,7 +83,7 @@ Workbench* WorkbenchManager::createWorkbench (const std::string& name, const std
                 delete base;
                 std::stringstream str;
                 str << "'" << className << "' not a workbench type" << std::ends;
-                throw Base::Exception(str.str());
+                throw Base::TypeError(str.str());
             }
 
             wb = static_cast<Workbench*>(base);

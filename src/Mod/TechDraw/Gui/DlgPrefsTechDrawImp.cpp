@@ -62,7 +62,8 @@ void DlgPrefsTechDrawImp::saveSettings()
     pfc_DefTemp->onSave();
     pfc_DefDir->onSave();
     pfc_HatchFile->onSave();
-    //pfc_HatchDir->onSave();
+    pfc_FilePattern->onSave();
+    le_NamePattern->onSave();
 }
 
 void DlgPrefsTechDrawImp::loadSettings()
@@ -88,7 +89,8 @@ void DlgPrefsTechDrawImp::loadSettings()
     pfc_HatchFile->onRestore();
 
 
-    //pfc_HatchDir->onRestore();
+    pfc_FilePattern->onRestore();
+    le_NamePattern->onRestore();
 }
 
 /**

@@ -34,6 +34,7 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include "SelectionView.h"
 #include "Command.h"
 #include "Application.h"
@@ -247,17 +248,112 @@ void SelectionView::toPython(void)
     // remove possible space from object name followed by label
     elements[1] = elements[1].split(QString::fromLatin1(" "))[0];
 
-    QString cmd = QString::fromLatin1("obj = App.getDocument(\"%1\").getObject(\"%2\")").arg(elements[0]).arg(elements[1]);
-    Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
-    if (elements.length() > 2) {
-        elements[2] = elements[2].split(QString::fromLatin1(" "))[0];
-        if ( elements[2].contains(QString::fromLatin1("Face")) || elements[2].contains(QString::fromLatin1("Edge")) ) {
-            cmd = QString::fromLatin1("shp = App.getDocument(\"%1\").getObject(\"%2\").Shape").arg(elements[0]).arg(elements[1]);
+    try {
+        QString cmd = QString::fromLatin1("obj = App.getDocument(\"%1\").getObject(\"%2\")").arg(elements[0]).arg(elements[1]);
+        Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+        if (elements.length() > 2) {
+            elements[2] = elements[2].split(QString::fromLatin1(" "))[0];
+            App::Document* doc = App::GetApplication().getDocument(elements[0].toLatin1());
+            App::DocumentObject* obj = doc->getObject(elements[1].toLatin1());
+            QString property = getProperty(obj);
+
+            cmd = QString::fromLatin1("shp = App.getDocument(\"%1\").getObject(\"%2\").%3")
+                    .arg(elements[0])
+                    .arg(elements[1])
+                    .arg(property);
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
-            cmd = QString::fromLatin1("elt = App.getDocument(\"%1\").getObject(\"%2\").Shape.%3").arg(elements[0]).arg(elements[1]).arg(elements[2]);
-            Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+
+            if (supportPart(obj, elements[2])) {
+                cmd = QString::fromLatin1("elt = App.getDocument(\"%1\").getObject(\"%2\").%3.%4")
+                        .arg(elements[0])
+                        .arg(elements[1])
+                        .arg(property)
+                        .arg(elements[2]);
+                Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+            }
         }
     }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+}
+
+void SelectionView::showPart(void)
+{
+    QListWidgetItem *item = selectionView->currentItem();
+    if (!item)
+        return;
+    QStringList elements = item->text().split(QString::fromLatin1("."));
+    if (elements.length() > 2) {
+        elements[2] = elements[2].split(QString::fromLatin1(" "))[0];
+        App::Document* doc = App::GetApplication().getDocument(elements[0].toLatin1());
+        App::DocumentObject* obj = doc->getObject(elements[1].toLatin1());
+        QString module = getModule(obj->getTypeId().getName());
+        QString property = getProperty(obj);
+        if (!module.isEmpty() && !property.isEmpty() && supportPart(obj, elements[2])) {
+            try {
+                Gui::Command::addModule(Gui::Command::Gui, module.toLatin1());
+                QString cmd = QString::fromLatin1("%1.show(App.getDocument(\"%2\").getObject(\"%3\").%4.%5)")
+                        .arg(module)
+                        .arg(elements[0])
+                        .arg(elements[1])
+                        .arg(property)
+                        .arg(elements[2]);
+                Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+            }
+            catch (const Base::Exception& e) {
+                e.ReportException();
+            }
+        }
+    }
+}
+
+QString SelectionView::getModule(const char* type) const
+{
+    Base::Type partType = Base::Type::fromName("Part::Feature");
+    Base::Type meshType = Base::Type::fromName("Mesh::Feature");
+    Base::Type pntsType = Base::Type::fromName("Points::Feature");
+    Base::Type typeId = Base::Type::fromName(type);
+    if (typeId.isDerivedFrom(partType))
+        return QString::fromLatin1("Part");
+    if (typeId.isDerivedFrom(meshType))
+        return QString::fromLatin1("Mesh");
+    if (typeId.isDerivedFrom(pntsType))
+        return QString::fromLatin1("Points");
+    return QString();
+}
+
+QString SelectionView::getProperty(App::DocumentObject* obj) const
+{
+    QString property;
+    if (obj->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        App::GeoFeature* geo = static_cast<App::GeoFeature*>(obj);
+        const App::PropertyComplexGeoData* data = geo->getPropertyOfGeometry();
+        const char* name = data ? data->getName() : nullptr;
+        if (name) {
+            property = QString::fromLatin1(name);
+        }
+    }
+
+    return property;
+}
+
+bool SelectionView::supportPart(App::DocumentObject* obj, const QString& part) const
+{
+    if (obj->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        App::GeoFeature* geo = static_cast<App::GeoFeature*>(obj);
+        const App::PropertyComplexGeoData* data = geo->getPropertyOfGeometry();
+        if (data) {
+            const Data::ComplexGeoData* geometry = data->getComplexData();
+            std::vector<const char*> types = geometry->getElementTypes();
+            for (auto it : types) {
+                if (part.startsWith(QString::fromLatin1(it)))
+                    return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 void SelectionView::onItemContextMenu(const QPoint& point)
@@ -283,6 +379,13 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     QAction *toPythonAction = menu.addAction(tr("To python console"),this,SLOT(toPython()));
     toPythonAction->setIcon(QIcon::fromTheme(QString::fromLatin1("applications-python")));
     toPythonAction->setToolTip(tr("Reveals this object and its subelements in the python console."));
+    QStringList elements = item->text().split(QString::fromLatin1("."));
+    if (elements.length() > 2) {
+        // subshape-specific entries
+        QAction *showPart = menu.addAction(tr("Duplicate subshape"),this,SLOT(showPart()));
+        showPart->setIcon(QIcon(QString::fromLatin1(":/icons/ClassBrowser/member.svg")));
+        showPart->setToolTip(tr("Creates a standalone copy of this subshape in the document"));
+    }
     menu.exec(selectionView->mapToGlobal(point));
 }
 

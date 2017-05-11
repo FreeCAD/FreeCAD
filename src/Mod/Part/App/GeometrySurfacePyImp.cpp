@@ -536,7 +536,7 @@ PyObject* GeometrySurfacePy::intersectSS(PyObject *args)
             Handle(Geom_Surface) surf2 = Handle(Geom_Surface)::DownCast(static_cast<GeometryPy*>(p)->getGeometryPtr()->handle());
             GeomAPI_IntSS intersector(surf1, surf2, prec);
             if (!intersector.IsDone()) {
-                PyErr_SetString(PyExc_Exception, "Intersection of surfaces failed");
+                PyErr_SetString(PyExc_RuntimeError, "Intersection of surfaces failed");
                 return 0;
             }
 
@@ -551,11 +551,11 @@ PyObject* GeometrySurfacePy::intersectSS(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PyExc_RuntimeError, e->GetMessageString());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "intersectSS(): Geometry is not a surface");
+    PyErr_SetString(PyExc_TypeError, "intersectSS(): Geometry is not a surface");
     return 0;
 }
 
@@ -588,10 +588,10 @@ PyObject* GeometrySurfacePy::intersect(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PyExc_RuntimeError, e->GetMessageString());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "intersect(): Geometry is not a surface");
+    PyErr_SetString(PyExc_TypeError, "intersect(): Geometry is not a surface");
     return 0;
 }

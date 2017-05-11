@@ -110,7 +110,9 @@ Please either enable FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.""")
-            reply = QtGui.QMessageBox.question(None,"",message.decode('utf8'),
+            if not isinstance(message,unicode):
+                message = message.decode('utf8')
+            reply = QtGui.QMessageBox.question(None,"",message,
                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
             if reply == QtGui.QMessageBox.Yes:
                 p.SetBool("dxfAllowDownload",True)

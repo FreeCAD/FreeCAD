@@ -870,7 +870,7 @@ void GLImageBox::renderText(int x, int y, const QString& str, const QFont& fnt)
 
     GLint view[4];
     bool use_scissor_testing = f->glIsEnabled(GL_SCISSOR_TEST);
-    if (!use_scissor_testing)
+    //if (!use_scissor_testing)
         f->glGetIntegerv(GL_VIEWPORT, &view[0]);
 
 

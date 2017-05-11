@@ -58,7 +58,7 @@ PyMOD_INIT_FUNC(Path)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(NULL);
     }
 
     PyObject* pathModule = Path::initModule();

@@ -110,6 +110,7 @@ public:
   mutable ContextMenu * contextmenu;
 
   static bool nativeEventFilter(void * message, long * result);
+  void replaceGLWidget(const QtGLWidget * newviewport);
 
  private:
   QuarterWidgetP_cachecontext * findCacheContext(QuarterWidget * widget, const QtGLWidget * sharewidget);

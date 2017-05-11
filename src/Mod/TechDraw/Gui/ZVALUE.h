@@ -14,6 +14,7 @@ namespace ZVALUE {
     const int SECTIONHATCH = 66;
     const int DIMENSION = 110;
     const int SECTIONLINE = 80;    //TODO: change to "DECORATION"? section lines, symmetry lines, etc?
+    const int HIGHLIGHT = 80;
     const int MATTING = 100;
 }
 #endif

@@ -67,9 +67,17 @@ Py::String BaseClassPy::getTypeId(void) const
     return Py::String(std::string(getBaseClassPtr()->getTypeId().getName()));
 }
 
-Py::Int BaseClassPy::getModule(void) const
+Py::String BaseClassPy::getModule(void) const
 {
-    return Py::Int();
+    std::string module(getBaseClassPtr()->getTypeId().getName());
+    std::string::size_type pos = module.find_first_of("::");
+
+    if (pos != std::string::npos)
+        module = std::string(module, 0, pos);
+    else
+        module.clear();
+
+    return Py::String(module);
 }
 
 PyObject *BaseClassPy::getCustomAttributes(const char* attr) const

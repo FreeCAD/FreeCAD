@@ -93,6 +93,7 @@ public:
     void clearFaceGeom();
     void setIsoCount(int i) { m_isoCount = i; }
     void setParentName(std::string n);                          //for debug messages
+    void pruneVertexGeom(Base::Vector3d center, double radius);
 
 protected:
     //HLR output

@@ -322,7 +322,7 @@ void Builder3D::saveToFile(const char* FileName)
   result <<   "} ";
   std::ofstream  file(FileName);
   if(!file) 
-    throw Exception("Builder3D::saveToFile(): Can not open file...");
+    throw FileException("Builder3D::saveToFile(): Can not open file...");
 
   file << "#Inventor V2.1 ascii " << std::endl;
   file << result.str();

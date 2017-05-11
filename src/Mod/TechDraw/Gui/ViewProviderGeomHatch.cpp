@@ -52,6 +52,7 @@
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawView.h>
+#include "TaskGeomHatch.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderGeomHatch.h"
 
@@ -98,23 +99,53 @@ std::vector<std::string> ViewProviderGeomHatch::getDisplayModes(void) const
     return StrList;
 }
 
-//for VP properties
-void ViewProviderGeomHatch::onChanged(const App::Property* prop)
+bool ViewProviderGeomHatch::setEdit(int ModNum)
 {
-    if (prop == &WeightPattern   ||
-        prop == &ColorPattern ) {
-        updateGraphic();   
+    Q_UNUSED(ModNum);
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    TaskDlgGeomHatch *projDlg = qobject_cast<TaskDlgGeomHatch *>(dlg);
+    if (projDlg && (projDlg->getViewProvider() != this))
+        projDlg = 0; // somebody left task panel open
+
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+
+    // start the edit dialog
+    if (projDlg) {
+        projDlg->setCreateMode(false);
+        Gui::Control().showDialog(projDlg);
+    } else {
+        Gui::Control().showDialog(new TaskDlgGeomHatch(getViewObject(),this,false));
     }
 
+    return true;
+}
+
+void ViewProviderGeomHatch::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderDocumentObject::unsetEdit(ModNum);
+    }
+}
+
+bool ViewProviderGeomHatch::doubleClicked(void)
+{
+    setEdit(0);
+    return true;
+}
+
+//for VP properties - but each letter/digit in property editor triggers this!
+void ViewProviderGeomHatch::onChanged(const App::Property* prop)
+{
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
 
-//for feature properties
+//for feature properties - but each letter/digit in property editor triggers this!
 void ViewProviderGeomHatch::updateData(const App::Property* prop)
 {
-    if (prop == &(getViewObject()->ScalePattern)) {
-        updateGraphic();
-    }
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 

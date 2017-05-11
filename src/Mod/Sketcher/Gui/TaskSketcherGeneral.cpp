@@ -152,7 +152,7 @@ void SketcherGeneralWidget::renderOrderChanged()
     hGrp->SetInt("MidRenderGeometryId",midid);
     hGrp->SetInt("LowRenderGeometryId",lowid);
     
-    emitrenderOrderChanged();
+    emitRenderOrderChanged();
 }
 
 // ----------------------------------------------------------------------------
@@ -186,7 +186,7 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
        );
     
     QObject::connect(
-        widget, SIGNAL(emitrenderOrderChanged()),
+        widget, SIGNAL(emitRenderOrderChanged()),
                      this  , SLOT  (renderOrderChanged())
     );
     

@@ -754,7 +754,7 @@ PyObject* GeometryCurvePy::intersectCS(PyObject *args)
             Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(static_cast<GeometryPy*>(p)->getGeometryPtr()->handle());
             GeomAPI_IntCS intersector(curve, surf);
             if (!intersector.IsDone()) {
-                PyErr_SetString(PyExc_Exception, "Intersection of curve and surface failed");
+                PyErr_SetString(PyExc_RuntimeError, "Intersection of curve and surface failed");
                 return 0;
             }
 
@@ -777,11 +777,11 @@ PyObject* GeometryCurvePy::intersectCS(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PyExc_RuntimeError, e->GetMessageString());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    PyErr_SetString(PyExc_TypeError, "Geometry is not a curve");
     return 0;
 }
 
@@ -815,11 +815,11 @@ PyObject* GeometryCurvePy::intersectCC(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PyExc_RuntimeError, e->GetMessageString());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    PyErr_SetString(PyExc_TypeError, "Geometry is not a curve");
     return 0;
 }
 
@@ -846,10 +846,10 @@ PyObject* GeometryCurvePy::intersect(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PyExc_RuntimeError, e->GetMessageString());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    PyErr_SetString(PyExc_TypeError, "Geometry is not a curve");
     return 0;
 }

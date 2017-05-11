@@ -126,7 +126,7 @@ void DlgExpressionInput::textChanged(const QString &text)
             std::string error = path.getDocumentObject()->ExpressionEngine.validateExpression(path, expr);
 
             if (error.size() > 0)
-                throw Base::Exception(error.c_str());
+                throw Base::RuntimeError(error.c_str());
 
             std::unique_ptr<Expression> result(expr->eval());
 
@@ -139,7 +139,7 @@ void DlgExpressionInput::textChanged(const QString &text)
                 Base::Quantity value = n->getQuantity();
 
                 if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
-                    throw Base::Exception("Unit mismatch between result and required unit");
+                    throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
                 value.setUnit(impliedUnit);
 

@@ -55,7 +55,7 @@ Q_SIGNALS:
     void emitToggleGridSnap(int);
     void emitSetGridSize(double);
     void emitToggleAutoconstraints(int);
-    void emitrenderOrderChanged();
+    void emitRenderOrderChanged();
 
 public Q_SLOTS:
     void toggleGridView(bool on);

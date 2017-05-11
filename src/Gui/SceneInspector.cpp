@@ -105,6 +105,9 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
             if (it != nodeNames.end()) {
                 this->setData(this->index(i, 1, index), QVariant(it.value()));
             }
+            else {
+                this->setData(this->index(i, 1, index), QVariant(QString::fromLatin1(child->getName())));
+            }
         }
     }
     // insert icon

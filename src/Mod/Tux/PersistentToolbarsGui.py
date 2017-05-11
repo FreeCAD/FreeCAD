@@ -233,10 +233,19 @@ def onWorkbenchActivated():
 
 def onStart():
     """Start persistent toolbars."""
-
-    onWorkbenchActivated()
-    mw.mainWindowClosed.connect(onClose)
-    mw.workbenchActivated.connect(onWorkbenchActivated)
+    if mw.property("eventLoop"):
+        start = False
+        try:
+            mw.mainWindowClosed
+            mw.workbenchActivated
+            start = True
+        except AttributeError:
+            pass
+        if start:
+            timer.stop()
+            onWorkbenchActivated()
+            mw.mainWindowClosed.connect(onClose)
+            mw.workbenchActivated.connect(onWorkbenchActivated)
 
 
 def onClose():
@@ -246,6 +255,5 @@ def onClose():
     p.RemGroup("System")
 
 
-timer.setSingleShot(True)
 timer.timeout.connect(onStart)
-timer.start()
+timer.start(500)
