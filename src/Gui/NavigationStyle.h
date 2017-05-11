@@ -370,6 +370,7 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
+    bool isDraggerUnderCursor(SbVec2s pos);
 
     SbVec2s mousedownPos;//the position where some mouse button was pressed (local pixel coordinates).
     short mouseMoveThreshold;//setting. Minimum move required to consider it a move (in pixels).

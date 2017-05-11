@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Draft, Part, os
+import FreeCAD, Draft, os
 from FreeCAD import Vector
 import csv
 
@@ -115,6 +115,7 @@ class _ProfileC(_Profile):
         _Profile.__init__(self,obj,profile)
 
     def execute(self,obj):
+        import Part
         pl = obj.Placement
         c1=Part.Circle()
         c1.Radius=obj.OutDiameter.Value
@@ -137,6 +138,7 @@ class _ProfileH(_Profile):
         _Profile.__init__(self,obj,profile)
 
     def execute(self,obj):
+        import Part
         pl = obj.Placement
         p1 = Vector(-obj.Width.Value/2,-obj.Height.Value/2,0)
         p2 = Vector(obj.Width.Value/2,-obj.Height.Value/2,0)
@@ -165,6 +167,7 @@ class _ProfileR(_Profile):
         _Profile.__init__(self,obj,profile)
 
     def execute(self,obj):
+        import Part
         pl = obj.Placement
         p1 = Vector(-obj.Width.Value/2,-obj.Height.Value/2,0)
         p2 = Vector(obj.Width.Value/2,-obj.Height.Value/2,0)
@@ -186,6 +189,7 @@ class _ProfileRH(_Profile):
         _Profile.__init__(self,obj,profile)
 
     def execute(self,obj):
+        import Part
         pl = obj.Placement
         p1 = Vector(-obj.Width.Value/2,-obj.Height.Value/2,0)
         p2 = Vector(obj.Width.Value/2,-obj.Height.Value/2,0)
@@ -213,6 +217,7 @@ class _ProfileU(_Profile):
         _Profile.__init__(self,obj,profile)
 
     def execute(self,obj):
+        import Part
         pl = obj.Placement
         p1 = Vector(-obj.Width.Value/2,-obj.Height.Value/2,0)
         p2 = Vector(obj.Width.Value/2,-obj.Height.Value/2,0)

@@ -92,24 +92,7 @@ void *Type::createInstanceByName(const char* TypeName, bool bLoadModule)
 {
   // if not already, load the module
   if(bLoadModule)
-  {
-    // cut out the module name 
-    string Mod = getModuleName(TypeName);
-    // ignore base modules
-    if(Mod != "App" && Mod != "Gui" && Mod != "Base")
-    {
-      // remember already loaded modules
-      set<string>::const_iterator pos = loadModuleSet.find(Mod);
-      if(pos == loadModuleSet.end())
-      {
-        Interpreter().loadModule(Mod.c_str());
-#ifdef FC_LOGLOADMODULE
-        Console().Log("Act: Module %s loaded through class %s \n",Mod.c_str(),TypeName);
-#endif
-        loadModuleSet.insert(Mod);
-      }
-    }
-  }
+    importModule(TypeName);
 
   // now the type should be in the type map
   Type t = fromName(TypeName);
@@ -117,7 +100,24 @@ void *Type::createInstanceByName(const char* TypeName, bool bLoadModule)
     return 0;
 
   return t.createInstance();
+}
 
+void Type::importModule(const char* TypeName)
+{
+  // cut out the module name
+  string Mod = getModuleName(TypeName);
+  // ignore base modules
+  if (Mod != "App" && Mod != "Gui" && Mod != "Base") {
+    // remember already loaded modules
+    set<string>::const_iterator pos = loadModuleSet.find(Mod);
+    if (pos == loadModuleSet.end()) {
+      Interpreter().loadModule(Mod.c_str());
+#ifdef FC_LOGLOADMODULE
+      Console().Log("Act: Module %s loaded through class %s \n",Mod.c_str(),TypeName);
+#endif
+      loadModuleSet.insert(Mod);
+    }
+  }
 }
 
 string Type::getModuleName(const char* ClassName)
@@ -180,6 +180,14 @@ Type Type::fromName(const char *name)
   pos = typemap.find(name);
   if(pos != typemap.end())
     return typedata[pos->second]->type;
+  else
+    return Type::badType();
+}
+
+Type Type::fromKey(unsigned int key)
+{
+  if(key < typedata.size())
+    return typedata[key]->type;
   else
     return Type::badType();
 }

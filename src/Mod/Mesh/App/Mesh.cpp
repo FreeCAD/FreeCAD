@@ -1654,7 +1654,7 @@ void MeshObject::addSegment(const std::vector<unsigned long>& inds)
     unsigned long maxIndex = _kernel.CountFacets();
     for (std::vector<unsigned long>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
         if (*it >= maxIndex)
-            throw Base::Exception("Index out of range");
+            throw Base::IndexError("Index out of range");
     }
 
     this->_segments.push_back(Segment(this,inds,true));

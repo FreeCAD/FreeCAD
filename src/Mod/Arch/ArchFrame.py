@@ -105,6 +105,7 @@ class _Frame(ArchComponent.Component):
         self.Type = "Frame"
         obj.Align = True
         obj.Role = Roles
+        obj.Role = "Railing"
 
     def execute(self,obj):
         

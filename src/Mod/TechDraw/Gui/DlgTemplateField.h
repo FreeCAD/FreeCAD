@@ -36,8 +36,8 @@ class DlgTemplateField : public QDialog, public Ui_dlgTemplateField
     Q_OBJECT
 
 public:
-    DlgTemplateField( QWidget* parent = 0 );
-    ~DlgTemplateField();
+    DlgTemplateField( QWidget *parent = nullptr );
+    virtual ~DlgTemplateField() = default;
 
     void setFieldName(std::string name);
     void setFieldContent(std::string content);

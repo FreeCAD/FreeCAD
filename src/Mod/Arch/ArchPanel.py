@@ -401,7 +401,21 @@ class _Panel(ArchComponent.Component):
             elif obj.Base.isDerivedFrom("Part::Feature"):
                 if not obj.Base.Shape.Solids:
                     return
-
+        layers = []
+        if hasattr(obj,"Material"):
+            if obj.Material:
+                if hasattr(obj.Material,"Materials"):
+                    varwidth = 0
+                    restwidth = thickness - sum(obj.Material.Thicknesses)
+                    if restwidth > 0:
+                        varwidth = [t for t in obj.Material.Thicknesses if t == 0]
+                        if varwidth:
+                            varwidth = restwidth/len(varwidth)
+                    for t in obj.Material.Thicknesses:
+                        if t:
+                            layers.append(t)
+                        elif varwidth:
+                            layers.append(varwidth)
         # creating base shape
         pl = obj.Placement
         base = None
@@ -420,13 +434,26 @@ class _Panel(ArchComponent.Component):
                     baseprofile = base
                     if not normal:
                         normal = baseprofile.Faces[0].normalAt(0,0).multiply(thickness)
-                    base = base.extrude(normal)
+                    if layers:
+                        layeroffset = 0
+                        shps = []
+                        for l in layers:
+                            n = Vector(normal).normalize().multiply(l)
+                            b = base.extrude(n)
+                            if layeroffset:
+                                o = Vector(normal).normalize().multiply(layeroffset)
+                                b.translate(o)
+                            shps.append(b)
+                            layeroffset += l
+                        base = Part.makeCompound(shps)
+                    else:
+                        base = base.extrude(normal)
                 elif base.Wires:
                     fm = False
                     if hasattr(obj,"FaceMaker"):
                         if obj.FaceMaker != "None":
                             try:
-                                base = Part.makeFace(base.Wires,"Part::FaceMaker"+str(obj.FaceMaker))
+                                baseprofile = Part.makeFace(base.Wires,"Part::FaceMaker"+str(obj.FaceMaker))
                                 fm = True
                             except:
                                 FreeCAD.Console.PrintError(translate("Arch","Facemaker returned an error")+"\n")
@@ -438,9 +465,22 @@ class _Panel(ArchComponent.Component):
                                 closed = False
                         if closed:
                             baseprofile = ArchCommands.makeFace(base.Wires)
-                            if not normal:
-                                normal = baseprofile.normalAt(0,0).multiply(thickness)
-                            base = baseprofile.extrude(normal)
+                    if not normal:
+                        normal = baseprofile.normalAt(0,0).multiply(thickness)
+                    if layers:
+                        layeroffset = 0
+                        shps = []
+                        for l in layers:
+                            n = Vector(normal).normalize().multiply(l)
+                            b = baseprofile.extrude(n)
+                            if layeroffset:
+                                o = Vector(normal).normalize().multiply(layeroffset)
+                                b.translate(o)
+                            shps.append(b)
+                            layeroffset += l
+                        base = Part.makeCompound(shps)
+                    else:
+                        base = baseprofile.extrude(normal)
                 elif obj.Base.isDerivedFrom("Mesh::Feature"):
                     if obj.Base.Mesh.isSolid():
                         if obj.Base.Mesh.countComponents() == 1:
@@ -448,17 +488,38 @@ class _Panel(ArchComponent.Component):
                             if sh.isClosed() and sh.isValid() and sh.Solids:
                                 base = sh
         else:
-            if not normal:
-                normal = Vector(0,0,1).multiply(thickness)
-            l2 = length/2 or 0.5
-            w2 = width/2 or 0.5
-            v1 = Vector(-l2,-w2,0)
-            v2 = Vector(l2,-w2,0)
-            v3 = Vector(l2,w2,0)
-            v4 = Vector(-l2,w2,0)
-            base = Part.makePolygon([v1,v2,v3,v4,v1])
-            baseprofile = Part.Face(base)
-            base = baseprofile.extrude(normal)
+            if layers:
+                shps = []
+                layeroffset = 0
+                for l in layers:
+                    if normal:
+                        n = Vector(normal).normalize().multiply(l)
+                    else:
+                        n = Vector(0,0,1).multiply(l)
+                    l2 = length/2 or 0.5
+                    w2 = width/2 or 0.5
+                    v1 = Vector(-l2,-w2,layeroffset)
+                    v2 = Vector(l2,-w2,layeroffset)
+                    v3 = Vector(l2,w2,layeroffset)
+                    v4 = Vector(-l2,w2,layeroffset)
+                    base = Part.makePolygon([v1,v2,v3,v4,v1])
+                    basepofile = Part.Face(base)
+                    base = baseprofile.extrude(n)
+                    shps.append(base)
+                    layeroffset += l
+                base = Part.makeCompound(shps)
+            else:
+                if not normal:
+                    normal = Vector(0,0,1).multiply(thickness)
+                l2 = length/2 or 0.5
+                w2 = width/2 or 0.5
+                v1 = Vector(-l2,-w2,0)
+                v2 = Vector(l2,-w2,0)
+                v3 = Vector(l2,w2,0)
+                v4 = Vector(-l2,w2,0)
+                base = Part.makePolygon([v1,v2,v3,v4,v1])
+                baseprofile = Part.Face(base)
+                base = baseprofile.extrude(normal)
             
         if hasattr(obj,"Area"):
             if baseprofile:
@@ -539,12 +600,13 @@ class _Panel(ArchComponent.Component):
         if base:
             if not base.isNull():
                 if base.isValid() and base.Solids:
-                    if base.Volume < 0:
-                        base.reverse()
-                    if base.Volume < 0:
-                        FreeCAD.Console.PrintError(translate("Arch","Couldn't compute a shape"))
-                        return
-                    base = base.removeSplitter()
+                    if len(base.Solids) == 1:
+                        if base.Volume < 0:
+                            base.reverse()
+                        if base.Volume < 0:
+                            FreeCAD.Console.PrintError(translate("Arch","Couldn't compute a shape"))
+                            return
+                        base = base.removeSplitter()
                     obj.Shape = base
                     if not pl.isNull():
                         obj.Placement = pl
@@ -564,6 +626,26 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
                 if self.Object.CloneOf:
                     return ":/icons/Arch_Panel_Clone.svg"
         return ":/icons/Arch_Panel_Tree.svg"
+
+    def updateData(self,obj,prop):
+        if prop in ["Placement","Shape"]:
+            if hasattr(obj,"Material"):
+                if obj.Material:
+                    if hasattr(obj.Material,"Materials"):
+                        if len(obj.Material.Materials) == len(obj.Shape.Solids):
+                            cols = []
+                            for i,mat in enumerate(obj.Material.Materials):
+                                c = obj.ViewObject.ShapeColor
+                                c = (c[0],c[1],c[2],obj.ViewObject.Transparency/100.0)
+                                if 'DiffuseColor' in mat.Material:
+                                    if "(" in mat.Material['DiffuseColor']:
+                                        c = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
+                                if 'Transparency' in mat.Material:
+                                    c = (c[0],c[1],c[2],float(mat.Material['Transparency']))
+                                cols.extend([c for j in range(len(obj.Shape.Solids[i].Faces))])
+                            if obj.ViewObject.DiffuseColor != cols:
+                                obj.ViewObject.DiffuseColor = cols
+        ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
 
 
 class PanelView:

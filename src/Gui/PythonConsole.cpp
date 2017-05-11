@@ -165,9 +165,17 @@ void InteractiveInterpreter::setPrompt()
     Base::PyGILStateLocker lock;
     d->sysmodule = PyImport_ImportModule("sys");
     if (!PyObject_HasAttrString(d->sysmodule, "ps1"))
+#if PY_MAJOR_VERSION >= 3
+        PyObject_SetAttrString(d->sysmodule, "ps1", PyUnicode_FromString(">>> "));
+#else
         PyObject_SetAttrString(d->sysmodule, "ps1", PyString_FromString(">>> "));
+#endif
     if (!PyObject_HasAttrString(d->sysmodule, "ps2"))
+#if PY_MAJOR_VERSION >= 3
+        PyObject_SetAttrString(d->sysmodule, "ps2", PyUnicode_FromString("... "));
+#else
         PyObject_SetAttrString(d->sysmodule, "ps2", PyString_FromString("... "));
+#endif
 }
 
 /**
@@ -195,7 +203,7 @@ PyObject* InteractiveInterpreter::compile(const char* source) const
         return eval;
     } else {
         // do not throw Base::PyException as this clears the error indicator
-        throw Base::Exception();
+        throw Base::RuntimeError("Code evaluation failed");
     }
 
     // can never happen
@@ -301,7 +309,11 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
         throw Base::PyException();                 /* not incref'd */
 
     // It seems that the return value is always 'None' or Null
+#if PY_MAJOR_VERSION >= 3
+    presult = PyEval_EvalCode((PyObject*)code, dict, dict); /* run compiled bytecode */
+#else
     presult = PyEval_EvalCode(code, dict, dict); /* run compiled bytecode */
+#endif
     Py_XDECREF(code);                            /* decref the code object */
     if (!presult) {
         if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
@@ -414,8 +426,13 @@ PythonConsole::PythonConsole(QWidget *parent)
     d->_stdin  = PySys_GetObject("stdin");
     PySys_SetObject("stdin", d->_stdinPy);
 
+#if PY_MAJOR_VERSION >= 3
+    const char* version  = PyUnicode_AsUTF8(PySys_GetObject("version"));
+    const char* platform = PyUnicode_AsUTF8(PySys_GetObject("platform"));
+#else
     const char* version  = PyString_AsString(PySys_GetObject("version"));
     const char* platform = PyString_AsString(PySys_GetObject("platform"));
+#endif
     d->info = QString::fromLatin1("Python %1 on %2\n"
     "Type 'help', 'copyright', 'credits' or 'license' for more information.")
     .arg(QString::fromLatin1(version)).arg(QString::fromLatin1(platform));

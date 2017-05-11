@@ -29,8 +29,10 @@
 #include <QByteArray>
 #include <QBrush>
 #include <QPixmap>
+//#include <QVector>
 
 #include <Mod/TechDraw/App/HatchLine.h>
+#include <Mod/TechDraw/App/Geometry.h>
 
 #include "QGIPrimPath.h"
 
@@ -101,17 +103,31 @@ public:
     
     //PAT fill parms & methods
     void setGeomHatchWeight(double w) { m_geomWeight = w; }
-    void clearLineSets(void);
-    void addLineSet(QPainterPath pp, std::vector<double> dp);
-    QGraphicsPathItem* addFillItem();
-    void clearFillItems(void);
     void setLineWeight(double w);
+
+    void clearLineSets(void);
+    void addLineSet(LineSet ls);
+    void clearFillItems(void);
+
+    void lineSetToFillItems(LineSet ls);
+    QGraphicsPathItem* geomToLine(TechDrawGeometry::BaseGeom* base, LineSet ls);
+    QGraphicsPathItem* geomToOffsetLine(TechDrawGeometry::BaseGeom* base, double offset, LineSet ls);
+    QGraphicsPathItem* geomToStubbyLine(TechDrawGeometry::BaseGeom* base, double offset, LineSet ls);
+    QGraphicsPathItem* lineFromPoints(Base::Vector3d start, Base::Vector3d end, DashSpec ds);
 
     //bitmap texture fill parms method
     QPixmap textureFromBitmap(std::string fileSpec);
     QPixmap textureFromSvg(std::string fillSpec);
 
 protected:
+    void makeMark(double x, double y);
+    double getXForm(void);
+    void getParameters(void);
+
+    std::vector<double> offsetDash(const std::vector<double> dv, const double offset);
+    QPainterPath dashedPPath(const std::vector<double> dv, const Base::Vector3d start, const Base::Vector3d end);
+    double dashRemain(const std::vector<double> dv, const double offset);
+    double calcOffset(TechDrawGeometry::BaseGeom* g,LineSet ls);
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
     QGCustomRect *m_rect;
 
@@ -124,11 +140,13 @@ protected:
     bool m_isHatched;
     QGIFace::fillMode m_mode;
 
-    QPen setGeomPen(int i);
-    QVector<qreal> decodeDashSpec(DashSpec d);
+    QPen setGeomPen(void);
+    std::vector<double> decodeDashSpec(DashSpec d);
     std::vector<QGraphicsPathItem*> m_fillItems;
-    std::vector<QPainterPath> m_geomHatchPaths;     // 0/1 dashspec per hatchpath
+    std::vector<LineSet> m_lineSets;
     std::vector<DashSpec> m_dashSpecs;
+    long int m_segCount;
+    long int m_maxSeg;
 
 
 private:

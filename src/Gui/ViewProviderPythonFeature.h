@@ -72,6 +72,8 @@ public:
 
     /** @name Display methods */
     //@{
+    /// Returns true if the icon must always appear enabled in the tree view
+    bool isShow() const;
     /// get the default display mode
     const char* getDefaultDisplayMode() const;
     /// returns a list of all possible modes
@@ -265,6 +267,12 @@ public:
 
     /** @name Display methods */
     //@{
+    /// Returns true if the icon must always appear enabled in the tree view
+    virtual bool isShow() const {
+        bool ok = imp->isShow();
+        if (ok) return ok;
+        return ViewProviderT::isShow();
+    }
     /// get the default display mode
     virtual const char* getDefaultDisplayMode() const {
         return imp->getDefaultDisplayMode();

@@ -56,7 +56,7 @@ ImageBase::ImageBase(const ImageBase &rhs)
         _pPixelData = NULL;
         _owner = false; // avoids a superfluous delete
         if (createCopy((void *)(rhs._pPixelData), rhs._width, rhs._height, rhs._format, rhs._numSigBitsPerSample) != 0)
-            throw Base::Exception("ImageBase::ImageBase. Error creating copy of image");
+            throw Base::RuntimeError("ImageBase::ImageBase. Error creating copy of image");
     }
     else
     {
@@ -84,7 +84,7 @@ ImageBase & ImageBase::operator=(const ImageBase &rhs)
         // rhs is the owner - do a deep copy
         _owner = false; // avoids a superfluous delete
         if (createCopy((void *)(rhs._pPixelData), rhs._width, rhs._height, rhs._format, rhs._numSigBitsPerSample) != 0)
-            throw Base::Exception("ImageBase::operator=. Error creating copy of image");
+            throw Base::RuntimeError("ImageBase::operator=. Error creating copy of image");
     }
     else
     {

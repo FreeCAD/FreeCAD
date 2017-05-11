@@ -296,7 +296,7 @@ MovableGroup& MovableGroupModel::activeGroup()
 {
     // Make sure that the array is not empty
     if (this->_groups.empty())
-        throw Base::Exception("Empty group");
+        throw Base::RuntimeError("Empty group");
     return *(this->_groups.begin());
 }
 
@@ -304,7 +304,7 @@ const MovableGroup& MovableGroupModel::activeGroup() const
 {
     // Make sure that the array is not empty
     if (this->_groups.empty())
-        throw Base::Exception("Empty group");
+        throw Base::RuntimeError("Empty group");
     return *(this->_groups.begin());
 }
 

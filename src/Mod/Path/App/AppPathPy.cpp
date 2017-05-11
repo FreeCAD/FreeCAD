@@ -416,8 +416,12 @@ private:
             PyTuple_SetItem(ret,0,list);
             PyTuple_SetItem(ret,1,new Base::VectorPy(
                         Base::Vector3d(pend.X(),pend.Y(),pend.Z())));
-            if(need_arc_plane) 
+            if(need_arc_plane)
+#if PY_MAJOR_VERSION < 3
                 PyTuple_SetItem(ret,2,PyInt_FromLong(arc_plane));
+#else
+                PyTuple_SetItem(ret,2,PyLong_FromLong(arc_plane));
+#endif
             return Py::asObject(ret);
         } PATH_CATCH
     }

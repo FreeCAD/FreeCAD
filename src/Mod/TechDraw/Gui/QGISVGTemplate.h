@@ -43,8 +43,8 @@ class TechDrawGuiExport QGISVGTemplate : public QGITemplate
     Q_OBJECT
 
 public:
-    QGISVGTemplate(QGraphicsScene *, QWidget* srWidget=0);
-    ~QGISVGTemplate();
+    QGISVGTemplate(QGraphicsScene *scene);
+    virtual ~QGISVGTemplate();
 
     enum {Type = QGraphicsItem::UserType + 153};
     int type() const { return Type; }
@@ -56,7 +56,6 @@ protected:
     void openFile(const QFile &file);
     void load (const QString & fileName);
     void createClickHandles(void);
-    QWidget* qgview;                                  //for parenting dlgTemplateField
 
 protected:
     bool firstTime;

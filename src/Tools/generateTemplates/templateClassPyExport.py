@@ -621,9 +621,11 @@ int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject *va
 + if (self.export.Reference):
     pcObject->ref();
 -
-    
 + if (self.export.Initialization):
     initialization();
+-
++ if (self.export.DisableNotify):
+    this->setShouldNotify(false);
 -
 }
 

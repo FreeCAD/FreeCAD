@@ -476,6 +476,7 @@ class DraftToolBar:
         self.finishButton = self._pushbutton("finishButton", self.layout, icon='Draft_Finish')
         self.closeButton = self._pushbutton("closeButton", self.layout, icon='Draft_Lock')
         self.wipeButton = self._pushbutton("wipeButton", self.layout, icon='Draft_Wipe')
+        self.orientWPButton = self._pushbutton("orientWPButton", self.layout, icon='Draft_SelectPlane')
         self.selectButton = self._pushbutton("selectButton", self.layout, icon='view-select')
         self.xyButton = self._pushbutton("xyButton", self.layout)
         self.xzButton = self._pushbutton("xzButton", self.layout)
@@ -540,6 +541,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.finishButton,QtCore.SIGNAL("pressed()"),self.finish)
         QtCore.QObject.connect(self.closeButton,QtCore.SIGNAL("pressed()"),self.closeLine)
         QtCore.QObject.connect(self.wipeButton,QtCore.SIGNAL("pressed()"),self.wipeLine)
+        QtCore.QObject.connect(self.orientWPButton,QtCore.SIGNAL("pressed()"),self.orientWP)
         QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
         QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
         QtCore.QObject.connect(self.xyButton,QtCore.SIGNAL("clicked()"),self.selectXY)
@@ -686,6 +688,8 @@ class DraftToolBar:
         self.closeButton.setToolTip(translate("draft", "Finishes and closes the current line (C)"))
         self.wipeButton.setText(translate("draft", "&Wipe"))
         self.wipeButton.setToolTip(translate("draft", "Wipes the existing segments of this line and starts again from the last point (W)"))
+        self.orientWPButton.setText(translate("draft", "&Set WP"))
+        self.orientWPButton.setToolTip(translate("draft", "Reorients the working plane on the last segment (S)"))
         self.selectButton.setText(translate("draft", "&Select edge"))
         self.selectButton.setToolTip(translate("draft", "Selects an existing edge to be measured by this dimension (E)"))
         self.numFacesLabel.setText(translate("draft", "Sides"))
@@ -702,7 +706,7 @@ class DraftToolBar:
         self.resetPlaneButton.setText(translate("draft", "Auto"))
         self.resetPlaneButton.setToolTip(translate("draft", "Do not project points to a drawing plane"))
         self.isCopy.setText(translate("draft", "C&opy"))
-        self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved (C)"))
+        self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved (O)"))
         self.SStringValue.setToolTip(translate("draft", "Text string to draw"))
         self.labelSString.setText(translate("draft", "String"))
         self.SSizeValue.setToolTip(translate("draft", "Height of text"))
@@ -844,6 +848,7 @@ class DraftToolBar:
         self.finishButton.show()
         self.closeButton.show()
         self.wipeButton.show()
+        self.orientWPButton.show()
         self.undoButton.show()
         self.continueCmd.show()
         
@@ -915,6 +920,7 @@ class DraftToolBar:
             self.undoButton.hide()
             self.closeButton.hide()
             self.wipeButton.hide()
+            self.orientWPButton.hide()
             self.selectButton.hide()
             self.xyButton.hide()
             self.xzButton.hide()
@@ -1400,7 +1406,11 @@ class DraftToolBar:
     def wipeLine(self):
         "wipes existing segments of a line"
         self.sourceCmd.wipe()
-        
+
+    def orientWP(self):
+        "reorients the current working plane"
+        self.sourceCmd.orientWP()
+
     def selectEdge(self):
         "allows the dimension command to select an edge"
         if hasattr(self.sourceCmd,"selectEdge"):

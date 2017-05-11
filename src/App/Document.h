@@ -182,6 +182,13 @@ public:
      * @param isNew       if false don't call the \c DocumentObject::setupObject() callback (default is true)
      */
     DocumentObject *addObject(const char* sType, const char* pObjectName=0, bool isNew=true);
+    /** Add an array of features of the given types and names.
+     * Unicode names are set through the Label propery.
+     * @param sType       The type of created object
+     * @param objectNames A list of object names
+     * @param isNew       If false don't call the \c DocumentObject::setupObject() callback (default is true)
+     */
+    std::vector<DocumentObject *>addObjects(const char* sType, const std::vector<std::string>& objectNames, bool isNew=true);
     /// Remove a feature out of the document
     void remObject(const char* sName);
     /** Add an existing feature with sName (ASCII) to this document and set it active.

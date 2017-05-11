@@ -148,7 +148,7 @@ double UnitsApi::toDbl(PyObject *ArgObj, const Base::Unit &u)
         Quantity q = Quantity::parse(str);
         if (q.getUnit() == u)
             return q.getValue();
-        throw Base::Exception("Wrong unit type!");
+        throw Base::UnitsMismatchError("Wrong unit type!");
     }
     else if (PyFloat_Check(ArgObj)) {
         return PyFloat_AsDouble(ArgObj);
@@ -157,7 +157,7 @@ double UnitsApi::toDbl(PyObject *ArgObj, const Base::Unit &u)
         return static_cast<double>(PyInt_AsLong(ArgObj));
     }
     else {
-        throw Base::Exception("Wrong parameter type!");
+        throw Base::UnitsMismatchError("Wrong parameter type!");
     }
 }
 
@@ -177,7 +177,7 @@ Quantity UnitsApi::toQuantity(PyObject *ArgObj, const Base::Unit &u)
         d = static_cast<double>(PyInt_AsLong(ArgObj));
     }
     else {
-        throw Base::Exception("Wrong parameter type!");
+        throw Base::UnitsMismatchError("Wrong parameter type!");
     }
 
     return Quantity(d,u);

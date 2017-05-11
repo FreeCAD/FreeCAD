@@ -116,18 +116,17 @@ void ViewProviderPage::show(void)
 
 void ViewProviderPage::hide(void)
 {
-    // hiding the drawing page should not affect its children but closes the MDI m_mdiView
-    // therefore do not call the method of its direct base class
-    ViewProviderDocumentObject::hide();
-    if (m_mdiView) {
-        m_mdiView->parentWidget()->deleteLater();
+    if (!m_mdiView.isNull()) {                                //m_mdiView is a QPointer
+        Gui::getMainWindow()->activatePreviousWindow();
+        Gui::getMainWindow()->removeWindow(m_mdiView);
     }
+    ViewProviderDocumentObject::hide();
 }
 
 void ViewProviderPage::updateData(const App::Property* prop)
 {
     if (prop == &(getDrawPage()->Views)) {
-        if(m_mdiView &&
+        if(!m_mdiView.isNull() &&
            !getDrawPage()->isDeleting()) {
             m_mdiView->updateDrawing();
         }

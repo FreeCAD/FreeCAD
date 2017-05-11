@@ -41,6 +41,10 @@
 #include <QRectF>
 #include <QPointF>
 
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QTransform>
+
 #include <cmath>
 
 #include <App/Application.h>
@@ -50,9 +54,14 @@
 
 #include <Mod/TechDraw/App/DrawUtil.h>
 
+//debug
+#include "QGICMark.h"
+#include "ZVALUE.h"
+//
 #include "Rez.h"
 #include "QGCustomSvg.h"
 #include "QGCustomRect.h"
+#include "QGIViewPart.h"
 #include "QGIFace.h"
 
 using namespace TechDrawGui;
@@ -60,13 +69,14 @@ using namespace TechDraw;
 
 QGIFace::QGIFace(int index) :
     projIndex(index),
-    m_colDefFill(Qt::white),          //Qt::transparent?  paper colour?
+    m_colDefFill(Qt::white),
     m_styleDef(Qt::SolidPattern),
     m_styleSelect(Qt::SolidPattern)
 {
+    m_segCount = 0;
     setFillMode(NoFill);
     isHatched(false);
-    setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
+    setFlag(QGraphicsItem::ItemClipsChildrenToShape,false);
 
     //setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
     setStyle(Qt::DashLine);
@@ -87,6 +97,8 @@ QGIFace::QGIFace(int index) :
 
     m_svgCol = SVGCOLDEFAULT;
     m_fillScale = 1.0;
+    
+    getParameters();
 }
 
 QGIFace::~QGIFace()
@@ -99,18 +111,13 @@ void QGIFace::draw()
     setPath(m_outline);                         //Face boundary
 
     if (isHatched()) {   
-        if (m_mode == GeomHatchFill) {                             //crosshatch
-            if (!m_geomHatchPaths.empty()) {                                  //surrogate for LineSets.empty
+        if (m_mode == GeomHatchFill) {
+            if (!m_lineSets.empty()) {
                 m_brush.setTexture(QPixmap());
                 m_fillStyle = m_styleDef;
                 m_styleNormal = m_fillStyle;
-                int pathNo = 0;
-                for (auto& pp: m_geomHatchPaths) {
-                    QGraphicsPathItem* fillItem = m_fillItems.at(pathNo);  
-                    fillItem->setPath(pp);                  
-                    QPen geomPen = setGeomPen(pathNo);
-                    fillItem->setPen(geomPen);
-                    pathNo++;
+                for (auto& ls: m_lineSets) {
+                    lineSetToFillItems(ls);
                 }
             }
         } else if ((m_mode == FromFile) ||
@@ -217,27 +224,261 @@ void QGIFace::setOutline(const QPainterPath & path)
 
 void QGIFace::clearLineSets(void) 
 {
-    m_geomHatchPaths.clear();
     m_dashSpecs.clear();
     clearFillItems();
 }
 
-//each line set needs a painterpath, a dashspec and a QGPItem to show them
-void QGIFace::addLineSet(QPainterPath pp, std::vector<double> dp)
+void QGIFace::addLineSet(LineSet ls)
 {
-    m_geomHatchPaths.push_back(pp);
-    m_dashSpecs.push_back(DashSpec(dp));
-    addFillItem();
-}   
+    m_lineSets.push_back(ls);
+}
 
-QGraphicsPathItem*  QGIFace::addFillItem()
+void QGIFace::lineSetToFillItems(LineSet ls)
 {
-    QGraphicsPathItem* fillItem = new QGraphicsPathItem();
-    fillItem->setParentItem(this);
+    m_segCount = 0;
+    QPen pen = setGeomPen();
+    for (auto& g: ls.getGeoms()) {
+        if (ls.isDashed()) {
+            double offset = 0.0;
+            Base::Vector3d pStart = ls.getPatternStartPoint(g, offset,m_fillScale);
+            offset = Rez::guiX(offset);
+            Base::Vector3d gStart(g->getStartPoint().x,
+                                  g->getStartPoint().y,
+                                  0.0);
+            Base::Vector3d gEnd(g->getEndPoint().x,
+                                g->getEndPoint().y,
+                                0.0);
+            if (DrawUtil::fpCompare(offset,0.0, 0.00001)) {                              //no offset
+                QGraphicsPathItem* item1 = lineFromPoints(pStart, gEnd, ls.getDashSpec());
+                item1->setPen(pen);
+                m_fillItems.push_back(item1);
+                if (!pStart.IsEqual(gStart,0.00001)) {
+                    QGraphicsPathItem* item2 = lineFromPoints(pStart, gStart, ls.getDashSpec().reversed());
+                    item2->setPen(pen);
+                    m_fillItems.push_back(item2);
+                }
+            } else {                                                                  //offset - pattern start not in g
+                double remain = dashRemain(decodeDashSpec(ls.getDashSpec()),offset);
+                QGraphicsPathItem* shortItem = geomToStubbyLine(g, remain, ls);
+                shortItem->setPen(pen);
+                m_fillItems.push_back(shortItem);
+            }
+        } else {                                                //not dashed
+            QGraphicsPathItem* fillItem = geomToLine(g, ls);
+            fillItem->setPen(pen);
+            m_fillItems.push_back(fillItem);
+        }
+
+        if (m_segCount > m_maxSeg) {
+            Base::Console().Warning("PAT segment count exceeded: %ld\n",m_segCount);
+            break;
+        }
+    }
+}
+
+QGraphicsPathItem*  QGIFace::lineFromPoints(Base::Vector3d start, Base::Vector3d end, DashSpec ds)
+{
+    QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
+    fillItem->setPath(dashedPPath(decodeDashSpec(ds),
+                                  Rez::guiX(start), 
+                                  Rez::guiX(end)));
+    return fillItem;
+}
+
+QGraphicsPathItem*  QGIFace::geomToLine(TechDrawGeometry::BaseGeom* base, LineSet ls)
+{
+    QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
+    Base::Vector3d start(base->getStartPoint().x,
+                            base->getStartPoint().y,
+                            0.0);
+    Base::Vector3d end(base->getEndPoint().x,
+                            base->getEndPoint().y,
+                            0.0);
+    fillItem->setPath(dashedPPath(decodeDashSpec(ls.getDashSpec()),
+                                  Rez::guiX(start), 
+                                  Rez::guiX(end)));
+    return fillItem;
+}
+
+
+//! make a fragment (length = remain) of a dashed line, with pattern starting at +offset
+QGraphicsPathItem*  QGIFace::geomToStubbyLine(TechDrawGeometry::BaseGeom* base, double remain, LineSet ls)
+{
+    QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
+    Base::Vector3d start(base->getStartPoint().x,
+                         base->getStartPoint().y,
+                         0.0);
+    Base::Vector3d end(base->getEndPoint().x,
+                       base->getEndPoint().y,
+                       0.0);
+    double origLen = (end - start).Length();
+                           
+    double appRemain = Rez::appX(remain);
+    Base::Vector3d newEnd = start + (ls.getUnitDir() * appRemain);
+    
+    double newLen = (newEnd - start).Length();
+
+    if (newLen > origLen) {
+        newEnd = end;
+    }
+
+    double offset = Rez::guiX(m_fillScale * ls.getDashSpec().length()) - remain;
+
+    fillItem->setPath(dashedPPath(offsetDash(decodeDashSpec(ls.getDashSpec()), offset),
+                                  Rez::guiX(start),
+                                  Rez::guiX(newEnd)));
     m_fillItems.push_back(fillItem);
     return fillItem;
 }
-  
+
+QPen QGIFace::setGeomPen(void)
+{
+    QPen result;
+    result.setWidthF(Rez::guiX(m_geomWeight));
+    result.setColor(m_geomColor);
+    result.setStyle(Qt::SolidLine);
+    return result;
+}
+
+//!convert from mm to scene units
+std::vector<double> QGIFace::decodeDashSpec(DashSpec patDash)
+{
+    double penWidth = Rez::guiX(m_geomWeight);
+    double scale = m_fillScale;
+    double minPen = 0.01;                         //avoid trouble with cosmetic pen (zero width)?
+    if (penWidth <= minPen) {
+        penWidth = minPen;
+    }
+    std::vector<double> result;
+    for (auto& d: patDash.get()) {
+        double strokeLength;
+        if (DrawUtil::fpCompare(d,0.0)) {                       //pat dot
+             strokeLength = penWidth;
+        } else {                                                //pat mark/space
+             strokeLength = Rez::guiX(d);
+        }
+        result.push_back(scale * strokeLength);
+    }
+    return result;
+}
+
+//! make a dashed QPainterPath from start to end in scene coords
+QPainterPath QGIFace::dashedPPath(const std::vector<double> dv, const Base::Vector3d start, const Base::Vector3d end)
+{
+      QPainterPath result;
+      Base::Vector3d dir = (end - start);
+      dir.Normalize();
+      result.moveTo(start.x,-start.y);
+      Base::Vector3d currentPos = start;
+      if (dv.empty()) {
+          result.lineTo(end.x,-end.y);
+          m_segCount++;
+      } else {
+         double lineLength = (end - start).Length();
+         double travel = 0.0;
+         Base::Vector3d lineProgress;
+         while (travel < lineLength) {
+             bool stop = false;
+            if (m_segCount > 10000) {
+                Base::Console().Warning("PAT segment count exceeded: %ld\n",m_segCount);
+                break;
+            }
+
+             for (auto& d: dv) {
+                  travel += fabs(d);
+                  Base::Vector3d segmentEnd = (currentPos + dir * fabs(d));
+                  if ((start - segmentEnd).Length() > lineLength)  {            //don't draw past end of line
+                      segmentEnd = end;
+                      stop = true;
+                  }
+                  if (d < 0.0) {
+                      result.moveTo(segmentEnd.x,-segmentEnd.y);                //space
+                  } else {
+                      result.lineTo(segmentEnd.x,-segmentEnd.y);                //mark
+                  }
+                  if (stop) {
+                      break;
+                  }
+                  m_segCount++;
+                  currentPos = segmentEnd;
+              }
+          }
+      }
+      return result;
+}
+
+//! convert a dash pattern to an offset dash pattern  (ie offset -> end)
+// dv & offset are already scaled.
+std::vector<double> QGIFace::offsetDash(const std::vector<double> dv, const double offset)
+{
+    std::vector<double> result;
+    double length = 0.0;
+    for (auto& d: dv) {
+        length += fabs(d);
+    }
+    if (offset > length) {
+        result = dv;
+        return result;
+    }
+    //find the dash cell that includes offset
+    double accum = 0;
+    int i = 0;
+    for (auto& d:dv) {
+        accum += fabs(d);
+        if (accum > offset) {
+           break;
+        }
+        i++;
+    }
+    
+    double firstCell = accum - offset;
+    if (dv.at(i) < 0.0) {                    //offset found in a space cell
+        result.push_back(-1.0* firstCell);
+    } else {
+        result.push_back(firstCell);
+    }
+    unsigned int iCell = i + 1;
+    for ( ; iCell < dv.size() ; iCell++) {
+        result.push_back(dv.at(iCell));
+    }
+    
+    return result;
+}
+
+//! find remaining length of a dash pattern after offset
+double QGIFace::dashRemain(const std::vector<double> dv, const double offset)
+{
+    double result;
+    double length = 0.0;
+    for (auto& d: dv) {
+        length += fabs(d);
+    }
+    if (offset > length) {
+        result = 0.0;
+    } else {
+        result = length - offset;
+    }
+    return result;
+}
+
+//! get zoom level (scale) from QGraphicsView
+// not used currently
+double QGIFace::getXForm(void)
+{
+    //try to keep the pattern the same when View scales
+    double result = 1.0;
+    auto s = scene();
+    if (s) {
+        auto vs = s->views();     //ptrs to views
+        if (!vs.empty()) {
+            auto v = vs.at(0);
+            auto i = v->transform().inverted();
+            result = i.m11();
+        }
+    }
+    return result;
+}
+
 void QGIFace::clearFillItems(void)
 {
     for (auto& f: m_fillItems) {
@@ -247,48 +488,14 @@ void QGIFace::clearFillItems(void)
     }
 }
 
-//convert from PAT style "-1,0,-1,+1" to Qt style "mark,space,mark,space"
-QVector<qreal> QGIFace::decodeDashSpec(DashSpec patDash)
+void QGIFace::makeMark(double x, double y)
 {
-    //Rez::guiX(something)?
-    double dotLength = 3.0;
-    double unitLength = 6.0;
-//    double penWidth = m_geomWeight;    //mark, space and dot lengths are to be in terms of penWidth(Qt) or mm(PAT)??
-//                                        //if we want it in terms of mm, we need to divide by penWidth?
-//    double minPen = 0.01;               //avoid trouble with cosmetic pen (zero width)
-    std::vector<double> result;
-    std::string prim;
-    for (auto& d: patDash.get()) {
-        double strokeLength;
-        if (DrawUtil::fpCompare(d,0.0)) {                       //pat dot
-             strokeLength = dotLength;
-        } else if (Rez::guiX(d) < 0) {                          //pat space
-             strokeLength = fabs(Rez::guiX(d)) * unitLength;
-        } else {                                                //pat dash
-             strokeLength = Rez::guiX(d) * unitLength;
-        }
-        result.push_back(strokeLength);
-    }
-    return QVector<qreal>::fromStdVector( result ); 
-}
-
-
-QPen QGIFace::setGeomPen(int i)
-{
-    //m_dashSpecs[i].dump("spec test");
-    DashSpec ourSpec = m_dashSpecs.at(i);
-    //ourSpec.dump("our spec");
-    
-    QPen result;
-    result.setWidthF(Rez::guiX(m_geomWeight));    //Rez::guiX() ?? line weights are in mm?
-    result.setColor(m_geomColor);
-    if (ourSpec.empty()) {
-       result.setStyle(Qt::SolidLine);
-    } else {
-       result.setStyle(Qt::CustomDashLine);
-       result.setDashPattern(decodeDashSpec(ourSpec));
-    }
-    return result;
+    QGICMark* cmItem = new QGICMark(-1);
+    cmItem->setParentItem(this);
+    cmItem->setPos(x,y);
+    cmItem->setThick(1.0);
+    cmItem->setSize(40.0);
+    cmItem->setZValue(ZVALUE::VERTEX);
 }
 
 void QGIFace::buildSvgHatch()
@@ -396,6 +603,14 @@ void QGIFace::resetFill() {
 
 void QGIFace::setLineWeight(double w) {
     m_geomWeight = w;
+}
+
+void QGIFace::getParameters(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
+
+    m_maxSeg = hGrp->GetInt("MaxSeg",10000l);
 }
 
 

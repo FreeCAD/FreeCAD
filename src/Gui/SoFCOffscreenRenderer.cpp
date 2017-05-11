@@ -128,7 +128,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
         else {
             std::stringstream str;
             str << "Cannot open file '" << filename << "' for writing.";
-            throw Base::Exception(str.str());
+            throw Base::FileSystemError(str.str());
         }
     }
     else {

@@ -59,6 +59,9 @@ class plane:
     def __repr__(self):
         return "Workplane x="+str(DraftVecUtils.rounded(self.u))+" y="+str(DraftVecUtils.rounded(self.v))+" z="+str(DraftVecUtils.rounded(self.axis))
 
+    def copy(self):
+        return plane(u=self.u,v=self.v,w=self.axis,pos=self.position)
+
     def offsetToPoint(self, p, direction=None):
         '''
         Return the signed distance from p to the plane, such

@@ -168,6 +168,11 @@
 # include <ShapeAnalysis_FreeBoundsProperties.hxx>
 # include <ShapeAnalysis_FreeBoundData.hxx>
 
+#if OCC_VERSION_HEX >= 0x060600
+#include <BOPAlgo_ArgumentAnalyzer.hxx>
+#include <BOPAlgo_ListOfCheckResult.hxx>
+#endif
+
 #include <Base/Builder3D.h>
 #include <Base/FileInfo.h>
 #include <Base/Exception.h>
@@ -1122,7 +1127,42 @@ bool TopoShape::isValid() const
     return aChecker.IsValid() ? true : false;
 }
 
-bool TopoShape::analyze(std::ostream& str) const
+namespace Part {
+std::vector<std::string> buildShapeEnumVector()
+{
+   std::vector<std::string> names;
+   names.push_back("Compound");             //TopAbs_COMPOUND
+   names.push_back("Compound Solid");       //TopAbs_COMPSOLID
+   names.push_back("Solid");                //TopAbs_SOLID
+   names.push_back("Shell");                //TopAbs_SHELL
+   names.push_back("Face");                 //TopAbs_FACE
+   names.push_back("Wire");                 //TopAbs_WIRE
+   names.push_back("Edge");                 //TopAbs_EDGE
+   names.push_back("Vertex");               //TopAbs_VERTEX
+   names.push_back("Shape");                //TopAbs_SHAPE
+   return names;
+}
+
+std::vector<std::string> buildBOPCheckResultVector()
+{
+  std::vector<std::string> results;
+  results.push_back("BOPAlgo CheckUnknown");               //BOPAlgo_CheckUnknown
+  results.push_back("BOPAlgo BadType");                    //BOPAlgo_BadType
+  results.push_back("BOPAlgo SelfIntersect");              //BOPAlgo_SelfIntersect
+  results.push_back("BOPAlgo TooSmallEdge");               //BOPAlgo_TooSmallEdge
+  results.push_back("BOPAlgo NonRecoverableFace");         //BOPAlgo_NonRecoverableFace
+  results.push_back("BOPAlgo IncompatibilityOfVertex");    //BOPAlgo_IncompatibilityOfVertex
+  results.push_back("BOPAlgo IncompatibilityOfEdge");      //BOPAlgo_IncompatibilityOfEdge
+  results.push_back("BOPAlgo IncompatibilityOfFace");      //BOPAlgo_IncompatibilityOfFace
+  results.push_back("BOPAlgo OperationAborted");           //BOPAlgo_OperationAborted
+  results.push_back("BOPAlgo GeomAbs_C0");                 //BOPAlgo_GeomAbs_C0
+  results.push_back("BOPAlgo_InvalidCurveOnSurface");      //BOPAlgo_InvalidCurveOnSurface
+  results.push_back("BOPAlgo NotValid");                   //BOPAlgo_NotValid
+  return results;
+}
+}
+
+bool TopoShape::analyze(bool runBopCheck, std::ostream& str) const
 {
     if (!this->_Shape.IsNull()) {
         BRepCheck_Analyzer aChecker(this->_Shape);
@@ -1294,6 +1334,54 @@ bool TopoShape::analyze(std::ostream& str) const
             }
 
             return false; // errors detected
+        }
+        else if (runBopCheck) {
+            // Copied from TaskCheckGeometryResults::goBOPSingleCheck
+#if OCC_VERSION_HEX >= 0x060600
+            TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(this->_Shape).Shape();
+            BOPAlgo_ArgumentAnalyzer BOPCheck;
+          //   BOPCheck.StopOnFirstFaulty() = true; //this doesn't run any faster but gives us less results.
+            BOPCheck.SetShape1(BOPCopy);
+            //all settings are false by default. so only turn on what we want.
+            BOPCheck.ArgumentTypeMode() = true;
+            BOPCheck.SelfInterMode() = true;
+            BOPCheck.SmallEdgeMode() = true;
+            BOPCheck.RebuildFaceMode() = true;
+#if OCC_VERSION_HEX >= 0x060700
+            BOPCheck.ContinuityMode() = true;
+#endif
+#if OCC_VERSION_HEX >= 0x060900
+            BOPCheck.SetParallelMode(true); //this doesn't help for speed right now(occt 6.9.1).
+            BOPCheck.TangentMode() = true; //these 4 new tests add about 5% processing time.
+            BOPCheck.MergeVertexMode() = true;
+            BOPCheck.CurveOnSurfaceMode() = true;
+            BOPCheck.MergeEdgeMode() = true;
+#endif
+
+            BOPCheck.Perform();
+
+            if (!BOPCheck.HasFaulty())
+                return true;
+
+            str << "BOP check found the following errors:" << std::endl;
+            static std::vector<std::string> shapeEnumToString = buildShapeEnumVector();
+            static std::vector<std::string> bopEnumToString = buildBOPCheckResultVector();
+            const BOPAlgo_ListOfCheckResult &BOPResults = BOPCheck.GetCheckResult();
+            BOPAlgo_ListIteratorOfListOfCheckResult BOPResultsIt(BOPResults);
+            for (; BOPResultsIt.More(); BOPResultsIt.Next()) {
+                const BOPAlgo_CheckResult &current = BOPResultsIt.Value();
+
+                const BOPCol_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
+                BOPCol_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
+                for (;faultyShapes1It.More(); faultyShapes1It.Next()) {
+                    const TopoDS_Shape &faultyShape = faultyShapes1It.Value();
+                    str << "Error in " << shapeEnumToString[faultyShape.ShapeType()] << ": ";
+                    str << bopEnumToString[current.GetCheckStatus()] << std::endl;
+                }
+            }
+
+            return false;
+#endif // 0x060600
         }
     }
 

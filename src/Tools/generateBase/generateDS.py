@@ -2387,6 +2387,9 @@ TEMPLATE_HEADER = """\
 
 #
 # Generated %s by generateDS.py.
+# Update it with: python generateDS.py -o generateModel_Module.py generateMetaModel_Module.xsd
+#
+# WARNING! All changes made in this file will be lost!
 #
 
 import sys

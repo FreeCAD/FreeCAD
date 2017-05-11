@@ -55,7 +55,7 @@ GeoFeatureGroupExtension::~GeoFeatureGroupExtension(void)
 void GeoFeatureGroupExtension::initExtension(ExtensionContainer* obj) {
     
     if(!obj->isDerivedFrom(App::GeoFeature::getClassTypeId()))
-        throw Base::Exception("GeoFeatureGroupExtension can only be applied to GeoFeatures");
+        throw Base::RuntimeError("GeoFeatureGroupExtension can only be applied to GeoFeatures");
         
     App::GroupExtension::initExtension(obj);
 }
@@ -63,7 +63,7 @@ void GeoFeatureGroupExtension::initExtension(ExtensionContainer* obj) {
 PropertyPlacement& GeoFeatureGroupExtension::placement() {
 
     if(!getExtendedContainer())
-        throw Base::Exception("GeoFeatureGroupExtension was not applied to GeoFeature");
+        throw Base::RuntimeError("GeoFeatureGroupExtension was not applied to GeoFeature");
     
     return static_cast<App::GeoFeature*>(getExtendedContainer())->Placement;
 }
