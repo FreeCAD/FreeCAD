@@ -913,25 +913,37 @@ struct FindPlane {
         if (!finder.Found()) 
             return;
 
-        gp_Ax3 pos = GeomAdaptor_Surface(finder.Surface()).Plane().Position();
         // TODO: It seemed that FindSurface disregard shape's
         // transformation SOMETIME, so we have to transformed the found
         // plane manually. Need to figure out WHY!
-        pos.Transform(shape.Location().Transformation());
+        gp_Pln pln = GeomAdaptor_Surface(finder.Surface()).Plane();
+        pln.Transform(shape.Location().Transformation());
+        gp_Ax3 pos = pln.Position();
 
         // We only use right hand coordinate, hence gp_Ax2 instead of gp_Ax3
-        // This means that no matter what the work plane face oriented, we 
-        // will treat it as face upward in a right hand coordinate system.
-        if(!pos.Direct())
+        if(!pos.Direct()) {
+            AREA_WARN("left hand coordinate");
             pos = gp_Ax3(pos.Ax2());
+        }
 
         gp_Dir dir(pos.Direction());
 
+        // To make things more 'normalized', we force the plane to face positive
+        // axis direction if it parallels to either X, Y or Z plane.
+        bool x0 = fabs(dir.X())<Precision::Confusion();
+        bool y0 = fabs(dir.Y())<Precision::Confusion();
+        bool z0 = fabs(dir.Z())<Precision::Confusion();
+        if(x0 && y0) 
+            dir.SetZ(fabs(dir.Z()));
+        else if(x0 && z0)
+            dir.SetY(fabs(dir.Y()));
+        else if(y0 && z0)
+            dir.SetX(fabs(dir.X()));
+        pos.SetDirection(dir);
+
         trsf.SetTransformation(pos);
 
-        if(fabs(dir.X())<Precision::Confusion() &&
-            fabs(dir.Y())<Precision::Confusion()) 
-        {
+        if(x0 && y0) {
             TopExp_Explorer it(shape,TopAbs_VERTEX);
             const auto &pt = BRep_Tool::Pnt(TopoDS::Vertex(it.Current()));
             if(!myPlaneShape.IsNull() && myZ > pt.Z())
@@ -941,6 +953,8 @@ struct FindPlane {
             return;
         myPlaneShape = shape;
         myTrsf = trsf;
+        AREA_TRACE("plane pos " << AREA_XYZ(pos.Location()) << 
+                ", " << AREA_XYZ(pos.Direction()));
     }
 };
 
