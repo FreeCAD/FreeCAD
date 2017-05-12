@@ -653,6 +653,10 @@ def p_linear_extrude_with_twist(p):
         t = float(p[3]['twist'])
     else:
         t = 0
+    # Test if null object like from null text
+    if (len(p[6]) == 0) :
+        p[0] = []
+        return
     if (len(p[6]) > 1) :
         obj = fuse(p[6],"Linear Extrude Union")
     else :
