@@ -212,7 +212,7 @@ def export(exportList,filename,tessellation=1):
                 n = f.Normal
                 nindex.extend([n.x,n.y,n.z])
             # face indices
-            for i in range(len(m.Topology[1])):
+            for i in xrange(len(m.Topology[1])):
                 f = m.Topology[1][i]
                 findex.extend([f[0],i,f[1],i,f[2],i])
         print(len(vindex), " vert indices, ", len(nindex), " norm indices, ", len(findex), " face indices.")
