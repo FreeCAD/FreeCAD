@@ -3922,14 +3922,21 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     edit->RootCrossSet->numVertices.set1Value(0,2);
     edit->RootCrossSet->numVertices.set1Value(1,2);
 
-    float MiX = -exp(ceil(log(std::abs(MinX))));
-    MiX = std::min(MiX,(float)-exp(ceil(log(std::abs(0.1f*MaxX)))));
-    float MaX = exp(ceil(log(std::abs(MaxX))));
-    MaX = std::max(MaX,(float)exp(ceil(log(std::abs(0.1f*MinX)))));
-    float MiY = -exp(ceil(log(std::abs(MinY))));
-    MiY = std::min(MiY,(float)-exp(ceil(log(std::abs(0.1f*MaxY)))));
-    float MaY = exp(ceil(log(std::abs(MaxY))));
-    MaY = std::max(MaY,(float)exp(ceil(log(std::abs(0.1f*MinY)))));
+    // make sure that nine of the numbers are exactly zero because log(0)
+    // is not defined
+    float xMin = std::abs(MinX) < FLT_EPSILON ? 0.01f : MinX;
+    float xMax = std::abs(MaxX) < FLT_EPSILON ? 0.01f : MaxX;
+    float yMin = std::abs(MinY) < FLT_EPSILON ? 0.01f : MinY;
+    float yMax = std::abs(MaxY) < FLT_EPSILON ? 0.01f : MaxY;
+
+    float MiX = -exp(ceil(log(std::abs(xMin))));
+    MiX = std::min(MiX,(float)-exp(ceil(log(std::abs(0.1f*xMax)))));
+    float MaX = exp(ceil(log(std::abs(xMax))));
+    MaX = std::max(MaX,(float)exp(ceil(log(std::abs(0.1f*xMin)))));
+    float MiY = -exp(ceil(log(std::abs(yMin))));
+    MiY = std::min(MiY,(float)-exp(ceil(log(std::abs(0.1f*yMax)))));
+    float MaY = exp(ceil(log(std::abs(yMax))));
+    MaY = std::max(MaY,(float)exp(ceil(log(std::abs(0.1f*yMin)))));
 
     edit->RootCrossCoordinate->point.set1Value(0,SbVec3f(MiX, 0.0f, zCross));
     edit->RootCrossCoordinate->point.set1Value(1,SbVec3f(MaX, 0.0f, zCross));
