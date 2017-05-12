@@ -30,6 +30,7 @@
 #include <stdexcept>
 #include <string>
 #include <signal.h>
+#include <Python.h>
 #include "FileInfo.h"
 #include "BaseClass.h"
 
@@ -83,6 +84,10 @@ public:
   /// setter methods for including debug information
   /// intended to use via macro for autofilling of debugging information
   inline void setDebugInformation(const std::string & file, const int line, const std::string & function);
+  /// returns a Python dictionary containing the exception data
+  virtual PyObject * getPyDict() const;
+  /// returns sets the exception data from a Python dictionary
+  virtual void setPyDict( PyObject * pydict);
 
 protected:
 public: // FIXME: Remove the public keyword
@@ -187,6 +192,10 @@ public:
   virtual void ReportException (void) const;
   /// Get file name for use with tranlatable message
   std::string getFileName() const;
+  /// returns a Python dictionary containing the exception data
+  virtual PyObject * getPyDict() const;
+  /// returns sets the exception data from a Python dictionary
+  virtual void setPyDict( PyObject * pydict);
 protected:
   FileInfo file;
   // necesary for what() legacy behaviour as it returns a buffer that can not be of a temporary object to be destroyed at end of what()

@@ -25,6 +25,7 @@
 
 #include "PreCompiled.h"
 
+#include <typeinfo>
 
 #include "Exception.h"
 #include "Console.h"
@@ -95,6 +96,47 @@ void Exception::ReportException (void) const
     }
 
     Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
+}
+
+PyObject * Exception::getPyDict() const
+{
+    PyObject *edict = PyDict_New();
+    
+    PyDict_SetItemString(edict, "sclassname", PyString_FromString(typeid(*this).name()));
+    PyDict_SetItemString(edict, "sErrMsg", PyString_FromString(this->getMessage().c_str()));
+    PyDict_SetItemString(edict, "sfile", PyString_FromString(this->getFile().c_str()));
+    PyDict_SetItemString(edict, "iline", PyInt_FromLong(this->getLine()));
+    PyDict_SetItemString(edict, "sfunction", PyString_FromString(this->getFunction().c_str()));
+    PyDict_SetItemString(edict, "swhat", PyString_FromString(this->what()));
+    
+    return edict;
+}
+
+void Exception::setPyDict( PyObject * pydict)
+{
+    if(pydict!=NULL) {
+        PyObject *pystring;
+
+        pystring = PyDict_GetItemString(pydict,"sfile");
+
+        if(pystring!=NULL)
+            _file = std::string(PyString_AsString(pystring));
+
+        pystring = PyDict_GetItemString(pydict,"sfunction");
+        
+        if(pystring!=NULL)
+            _function = std::string(PyString_AsString(pystring));
+        
+        pystring = PyDict_GetItemString(pydict,"sErrMsg");
+        
+        if(pystring!=NULL)
+            _sErrMsg = std::string(PyString_AsString(pystring));
+        
+        pystring = PyDict_GetItemString(pydict,"iline");
+        
+        if(pystring!=NULL)
+            _line = PyInt_AsLong(pystring);
+    }
 }
 
 // ---------------------------------------------------------
@@ -241,6 +283,52 @@ void FileException::ReportException (void) const
     Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
 }
 
+PyObject * FileException::getPyDict() const
+{
+    PyObject *edict = PyDict_New();
+    
+    PyDict_SetItemString(edict, "sclassname", PyString_FromString(typeid(*this).name()));
+    PyDict_SetItemString(edict, "sErrMsg", PyString_FromString(this->getMessage().c_str()));
+    PyDict_SetItemString(edict, "sfile", PyString_FromString(this->getFile().c_str()));
+    PyDict_SetItemString(edict, "iline", PyInt_FromLong(this->getLine()));
+    PyDict_SetItemString(edict, "sfunction", PyString_FromString(this->getFunction().c_str()));
+    PyDict_SetItemString(edict, "swhat", PyString_FromString(this->what()));
+    PyDict_SetItemString(edict, "filename", PyString_FromString(this->file.fileName().c_str()));
+    
+    return edict;
+}
+
+void FileException::setPyDict( PyObject * pydict)
+{
+    if(pydict!=NULL) {
+        PyObject *pystring;
+        
+        pystring = PyDict_GetItemString(pydict,"sfile");
+        
+        if(pystring!=NULL)
+            _file = std::string(PyString_AsString(pystring));
+        
+        pystring = PyDict_GetItemString(pydict,"sfunction");
+        
+        if(pystring!=NULL)
+            _function = std::string(PyString_AsString(pystring));
+        
+        pystring = PyDict_GetItemString(pydict,"sErrMsg");
+        
+        if(pystring!=NULL)
+            _sErrMsg = std::string(PyString_AsString(pystring));
+        
+        pystring = PyDict_GetItemString(pydict,"iline");
+        
+        if(pystring!=NULL)
+            _line = PyInt_AsLong(pystring);
+        
+        pystring = PyDict_GetItemString(pydict,"filename");
+        
+        if(pystring!=NULL)
+            file = FileInfo(PyString_AsString(pystring));
+    }
+}
 
 // ---------------------------------------------------------
 
