@@ -283,6 +283,13 @@ Return a list of sub-shapes that are direct children of this shape.
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="ancestorsOfType">
+      <Documentation>
+        <UserDocu>ancestorsOfType(shape, shape type) -> list
+For a sub-shape of this shape get its ancestors of a type.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="removeInternalWires">
       <Documentation>
         <UserDocu>Removes internal wires (also holes) from the shape.</UserDocu>

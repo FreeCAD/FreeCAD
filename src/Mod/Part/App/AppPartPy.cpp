@@ -286,10 +286,30 @@ public:
             "By default pnt=Vector(0,0,0) and dir=Vector(0,0,1)"
         );
         add_varargs_method("makeLine",&Module::makeLine,
-            "makeLine((x1,y1,z1),(x2,y2,z2)) -- Make a line of two points"
+            "makeLine(startpnt,endpnt) -- Make a line between two points\n"
+            "\n"
+            "Args:\n"
+            "    startpnt (Vector or tuple): Vector or 3 element tuple \n"
+            "        containing the x,y and z coordinates of the start point,\n"
+            "        i.e. (x1,y1,z1).\n"
+            "    endpnt (Vector or tuple): Vector or 3 element tuple \n"
+            "        containing the x,y and z coordinates of the start point,\n"
+            "        i.e. (x1,y1,z1).\n"
+            "\n"
+            "Returns:\n"
+            "    Edge: Part.Edge object\n"
         );
         add_varargs_method("makePolygon",&Module::makePolygon,
-            "makePolygon(list) -- Make a polygon of a list of points"
+            "makePolygon(pntslist) -- Make a polygon from a list of points\n"
+            "\n"
+            "Args:\n"
+            "    pntslist (list(Vector)): list of Vectors representing the \n"
+            "        points of the polygon.\n"
+            "\n"
+            "Returns:\n"
+            "    Wire: Part.Wire object. If the last point in the list is \n"
+            "        not the same as the first point, the Wire will not be \n"
+            "        closed and cannot be used to create a face.\n"
         );
         add_varargs_method("makeCircle",&Module::makeCircle,
             "makeCircle(radius,[pnt,dir,angle1,angle2]) -- Make a circle with a given radius\n"
