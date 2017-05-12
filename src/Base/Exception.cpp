@@ -98,7 +98,7 @@ void Exception::ReportException (void) const
     Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
 }
 
-PyObject * Exception::getPyDict() const
+PyObject * Exception::getPyObject(void) const
 {
     PyObject *edict = PyDict_New();
     
@@ -112,7 +112,7 @@ PyObject * Exception::getPyDict() const
     return edict;
 }
 
-void Exception::setPyDict( PyObject * pydict)
+void Exception::setPyObject( PyObject * pydict)
 {
     if(pydict!=NULL) {
         PyObject *pystring;
@@ -283,7 +283,7 @@ void FileException::ReportException (void) const
     Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
 }
 
-PyObject * FileException::getPyDict() const
+PyObject * FileException::getPyObject(void) const
 {
     PyObject *edict = PyDict_New();
     
@@ -298,7 +298,7 @@ PyObject * FileException::getPyDict() const
     return edict;
 }
 
-void FileException::setPyDict( PyObject * pydict)
+void FileException::setPyObject( PyObject * pydict)
 {
     if(pydict!=NULL) {
         PyObject *pystring;

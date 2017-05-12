@@ -80,7 +80,7 @@ public:
     {
         CLASS c;
 
-        c.setPyDict(pydict);
+        c.setPyObject(pydict);
 
         throw c;
     }
