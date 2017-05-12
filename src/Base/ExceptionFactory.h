@@ -25,19 +25,12 @@
 #define BASE_EXCEPTIONFACTORY_H
 
 
+#include <Python.h>
 
 #include "Factory.h"
 
 namespace Base
 {
-
-struct ExceptionInfo {
-    std::string exceptionname;
-    std::string function;
-    std::string message;
-    std::string file;
-    unsigned int line;
-};
 
 /// Abstract base class of all exception producers
 class BaseExport AbstractExceptionProducer : public AbstractProducer
@@ -49,7 +42,7 @@ public:
     void* Produce () const {
         return nullptr;
     }
-    virtual void raiseException(const ExceptionInfo& info) const = 0;
+    virtual void raiseException(PyObject * pydict) const = 0;
 };
 
 // --------------------------------------------------------------------
@@ -61,7 +54,7 @@ public:
     static ExceptionFactory& Instance(void);
     static void Destruct (void);
     
-    void raiseException(const ExceptionInfo& info) const;
+    void raiseException(PyObject * pydict) const;
     
 private:
     static ExceptionFactory* _pcSingleton;
@@ -83,13 +76,11 @@ public:
     
     virtual ~ExceptionProducer (){}
     
-    void raiseException(const ExceptionInfo& info) const
+    void raiseException(PyObject * pydict) const
     {
         CLASS c;
-        
-        c.setMessage(info.message);
 
-        c.setDebugInformation(info.file, info.line, info.function);
+        c.setPyDict(pydict);
 
         throw c;
     }
