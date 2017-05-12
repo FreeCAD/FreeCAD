@@ -42,15 +42,22 @@ void ExceptionFactory::Destruct (void)
     _pcSingleton = 0;
 }
 
-void ExceptionFactory::raiseException (const ExceptionInfo& info) const
+void ExceptionFactory::raiseException (PyObject * pydict) const
 {
-    if(this->CanProduce(info.exceptionname.c_str())) {
+    std::string classname;
+    
+    PyObject *pystring;
 
-      std::map<const std::string, AbstractProducer*>::const_iterator pProd;
+    pystring = PyDict_GetItemString(pydict,"sclassname");
 
-      pProd = _mpcProducers.find(info.exceptionname.c_str());
-      if (pProd != _mpcProducers.end())
-          static_cast<AbstractExceptionProducer *>(pProd->second)->raiseException(info);
+    if(pystring!=NULL) {
+        classname = std::string(PyString_AsString(pystring));
+
+        std::map<const std::string, AbstractProducer*>::const_iterator pProd;
+
+        pProd = _mpcProducers.find(classname.c_str());
+        if (pProd != _mpcProducers.end())
+            static_cast<AbstractExceptionProducer *>(pProd->second)->raiseException(pydict);
     }
 }
 

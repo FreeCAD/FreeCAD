@@ -494,14 +494,7 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
     }
     catch(const Base::Exception& e) // catch the FreeCAD exceptions
     {
-        PyObject *edict = PyDict_New();
-
-        PyDict_SetItemString(edict, "sclassname", PyString_FromString(typeid(e).name()));
-        PyDict_SetItemString(edict, "sErrMsg", PyString_FromString(e.getMessage().c_str()));
-        PyDict_SetItemString(edict, "sfile", PyString_FromString(e.getFile().c_str()));
-        PyDict_SetItemString(edict, "iline", PyInt_FromLong(e.getLine()));
-        PyDict_SetItemString(edict, "sfunction", PyString_FromString(e.getFunction().c_str()));
-        PyDict_SetItemString(edict, "swhat", PyString_FromString(e.what()));
+        PyObject *edict = e.getPyDict();
         
         e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
@@ -691,14 +684,7 @@ PyObject *@self.export.Name@::_getattr(char *attr)				// __getattr__ function: n
 #ifndef DONT_CATCH_CXX_EXCEPTIONS 
     catch(const Base::Exception& e) // catch the FreeCAD exceptions
     {
-        PyObject *edict = PyDict_New();
-
-        PyDict_SetItemString(edict, "sclassname", PyString_FromString(typeid(e).name()));
-        PyDict_SetItemString(edict, "sErrMsg", PyString_FromString(e.getMessage().c_str()));
-        PyDict_SetItemString(edict, "sfile", PyString_FromString(e.getFile().c_str()));
-        PyDict_SetItemString(edict, "iline", PyInt_FromLong(e.getLine()));
-        PyDict_SetItemString(edict, "sfunction", PyString_FromString(e.getFunction().c_str()));
-        PyDict_SetItemString(edict, "swhat", PyString_FromString(e.what()));
+        PyObject *edict = e.getPyDict();
         
         e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
@@ -728,14 +714,7 @@ PyObject *@self.export.Name@::_getattr(char *attr)				// __getattr__ function: n
 #else  // DONT_CATCH_CXX_EXCEPTIONS  
     catch(const Base::Exception& e) // catch the FreeCAD exceptions
     {
-        PyObject *edict = PyDict_New();
-
-        PyDict_SetItemString(edict, "sclassname", PyString_FromString(typeid(e).name()));
-        PyDict_SetItemString(edict, "sErrMsg", PyString_FromString(e.getMessage().c_str()));
-        PyDict_SetItemString(edict, "sfile", PyString_FromString(e.getFile().c_str()));
-        PyDict_SetItemString(edict, "iline", PyInt_FromLong(e.getLine()));
-        PyDict_SetItemString(edict, "sfunction", PyString_FromString(e.getFunction().c_str()));
-        PyDict_SetItemString(edict, "swhat", PyString_FromString(e.what()));
+        PyObject *edict = e.getPyDict();
         
         e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
@@ -778,14 +757,7 @@ int @self.export.Name@::_setattr(char *attr, PyObject *value) // __setattr__ fun
 #ifndef DONT_CATCH_CXX_EXCEPTIONS 
     catch(const Base::Exception& e) // catch the FreeCAD exceptions
     {
-        PyObject *edict = PyDict_New();
-
-        PyDict_SetItemString(edict, "sclassname", PyString_FromString(typeid(e).name()));
-        PyDict_SetItemString(edict, "sErrMsg", PyString_FromString(e.getMessage().c_str()));
-        PyDict_SetItemString(edict, "sfile", PyString_FromString(e.getFile().c_str()));
-        PyDict_SetItemString(edict, "iline", PyInt_FromLong(e.getLine()));
-        PyDict_SetItemString(edict, "sfunction", PyString_FromString(e.getFunction().c_str()));
-        PyDict_SetItemString(edict, "swhat", PyString_FromString(e.what()));
+        PyObject *edict = e.getPyDict();
         
         e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
@@ -816,14 +788,7 @@ int @self.export.Name@::_setattr(char *attr, PyObject *value) // __setattr__ fun
 #else  // DONT_CATCH_CXX_EXCEPTIONS  
     catch(const Base::Exception& e) // catch the FreeCAD exceptions
     {
-        PyObject *edict = PyDict_New();
-
-        PyDict_SetItemString(edict, "sclassname", PyString_FromString(typeid(e).name()));
-        PyDict_SetItemString(edict, "sErrMsg", PyString_FromString(e.getMessage().c_str()));
-        PyDict_SetItemString(edict, "sfile", PyString_FromString(e.getFile().c_str()));
-        PyDict_SetItemString(edict, "iline", PyInt_FromLong(e.getLine()));
-        PyDict_SetItemString(edict, "sfunction", PyString_FromString(e.getFunction().c_str()));
-        PyDict_SetItemString(edict, "swhat", PyString_FromString(e.what()));
+        PyObject *edict = e.getPyDict();
         
         e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);

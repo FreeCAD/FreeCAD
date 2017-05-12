@@ -90,41 +90,19 @@ void PyException::ThrowException(void)
     
     if(PP_PyDict_Object!=NULL) {
 
-        Base::ExceptionInfo info;
-
         PyObject *pystring;
 
         pystring = PyDict_GetItemString(PP_PyDict_Object,"sclassname");
-        
+
         if(pystring==NULL)
             throw myexcp;
-        
-        info.exceptionname = std::string(PyString_AsString(pystring));
-        
-        if(!Base::ExceptionFactory::Instance().CanProduce(info.exceptionname.c_str()))
+
+        std::string exceptionname = std::string(PyString_AsString(pystring));
+
+        if(!Base::ExceptionFactory::Instance().CanProduce(exceptionname.c_str()))
             throw myexcp;
-        
-        pystring = PyDict_GetItemString(PP_PyDict_Object,"sfile");
-        
-        if(pystring!=NULL)
-            info.file = std::string(PyString_AsString(pystring));
-        
-        pystring = PyDict_GetItemString(PP_PyDict_Object,"sfunction");
-        
-        if(pystring!=NULL)
-            info.function = std::string(PyString_AsString(pystring));
-        
-        pystring = PyDict_GetItemString(PP_PyDict_Object,"sErrMsg");
-        
-        if(pystring!=NULL)
-            info.message = std::string(PyString_AsString(pystring));
-        
-        pystring = PyDict_GetItemString(PP_PyDict_Object,"iline");
-        
-        if(pystring!=NULL)
-            info.line = PyInt_AsLong(pystring);
-        
-        Base::ExceptionFactory::Instance().raiseException(info);
+
+        Base::ExceptionFactory::Instance().raiseException(PP_PyDict_Object);
     }
     else
         throw myexcp;
