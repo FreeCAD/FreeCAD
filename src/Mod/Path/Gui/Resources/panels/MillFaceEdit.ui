@@ -33,8 +33,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>500</width>
-        <height>282</height>
+        <width>285</width>
+        <height>277</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -111,8 +111,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>500</width>
-        <height>241</height>
+        <width>125</width>
+        <height>124</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -192,8 +192,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>500</width>
-        <height>241</height>
+        <width>154</width>
+        <height>68</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -241,9 +241,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-34</y>
-        <width>486</width>
-        <height>361</height>
+        <y>0</y>
+        <width>500</width>
+        <height>329</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -271,7 +271,7 @@
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="Gui::QuantitySpinBox" name="zigZagAngle" native="true">
+           <widget class="Gui::QuantitySpinBox" name="zigZagAngle">
             <property name="unit" stdset="0">
              <string notr="true"/>
             </property>
@@ -420,6 +420,21 @@
             <item>
              <property name="text">
               <string>ZigZagOffset</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Line</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Grid</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Triangle</string>
              </property>
             </item>
            </widget>
