@@ -321,6 +321,9 @@ private:
     static PyObject* sRemoveDocObserver (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sTranslateUnit     (PyObject *self,PyObject *args,PyObject *kwd);
 
+    static PyObject *sSetLogLevel       (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sGetLogLevel       (PyObject *self,PyObject *args,PyObject *kwd);
+
     static PyMethodDef    Methods[]; 
 
     friend class ApplicationObserver;
