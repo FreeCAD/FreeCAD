@@ -74,10 +74,11 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="add">
+		<Methode Name="add" Keyword="true">
 			<Documentation>
 				<UserDocu>
-					add(shape Profile, bool WithContact, bool WithCorrection)
+					add(shape Profile, bool WithContact=False, bool WithCorrection=False)
+					add(shape Profile, vertex Location, bool WithContact=False, bool WithCorrection=False)
 					Adds the section Profile to this framework.
 					First and last sections may be punctual, so the shape Profile may be both wire and vertex.
 					If WithContact is true, the section is translated to be in contact with the spine.
