@@ -34,6 +34,7 @@
 #endif
 
 #include "TopoShapePy.h"
+#include "TopoShapeVertexPy.h"
 #include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "BRepOffsetAPI_MakePipeShellPy.cpp"
 #include "Tools.h"
@@ -210,26 +211,56 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setAuxiliarySpine(PyObject *args)
 #endif
 }
 
-PyObject* BRepOffsetAPI_MakePipeShellPy::add(PyObject *args)
+PyObject* BRepOffsetAPI_MakePipeShellPy::add(PyObject *args, PyObject *kwds)
 {
     PyObject *prof, *curv=Py_False, *keep=Py_False;
-    if (!PyArg_ParseTuple(args, "O!|O!O!",&Part::TopoShapePy::Type,&prof
-                                         ,&PyBool_Type,&curv
-                                         ,&PyBool_Type,&keep))
-        return 0;
+    static char* keywords_pro[] = {"Profile","WithContact","WithCorrection",NULL};
+    if (PyArg_ParseTupleAndKeywords(args,kwds, "O!|O!O!", keywords_pro
+                                        ,&Part::TopoShapePy::Type,&prof
+                                        ,&PyBool_Type,&curv
+                                        ,&PyBool_Type,&keep)) {
+        try {
+            const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->getShape();
+            this->getBRepOffsetAPI_MakePipeShellPtr()->Add(s,
+                PyObject_IsTrue(curv) ? Standard_True : Standard_False,
+                PyObject_IsTrue(keep) ? Standard_True : Standard_False);
+            Py_Return;
+        }
+        catch (Standard_Failure) {
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return 0;
+        }
+    }
 
-    try {
-        const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->getShape();
-        this->getBRepOffsetAPI_MakePipeShellPtr()->Add(s,
-            PyObject_IsTrue(curv) ? Standard_True : Standard_False,
-            PyObject_IsTrue(keep) ? Standard_True : Standard_False);
-        Py_Return;
+    PyErr_Clear();
+    PyObject *loc;
+    static char* keywords_loc[] = {"Profile","Location","WithContact","WithCorrection",NULL};
+    if (PyArg_ParseTupleAndKeywords(args,kwds, "O!O!|O!O!", keywords_loc
+                                        ,&Part::TopoShapePy::Type,&prof
+                                        ,&Part::TopoShapeVertexPy::Type,&loc
+                                        ,&PyBool_Type,&curv
+                                        ,&PyBool_Type,&keep)) {
+        try {
+            const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->getShape();
+            const TopoDS_Vertex& v = TopoDS::Vertex(static_cast<Part::TopoShapePy*>(loc)->getTopoShapePtr()->getShape());
+            this->getBRepOffsetAPI_MakePipeShellPtr()->Add(s, v,
+                PyObject_IsTrue(curv) ? Standard_True : Standard_False,
+                PyObject_IsTrue(keep) ? Standard_True : Standard_False);
+            Py_Return;
+        }
+        catch (Standard_Failure) {
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return 0;
+        }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
-        return 0;
-    }
+
+    PyErr_SetString(PyExc_TypeError, "Wrong arguments:\n"
+                    "add(Profile, WithContact=False, WithCorrection=False)\n"
+                    "add(Profile, Location, WithContact=False, WithCorrection=False)"
+    );
+    return 0;
 }
 
 PyObject* BRepOffsetAPI_MakePipeShellPy::remove(PyObject *args)
