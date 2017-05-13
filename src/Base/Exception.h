@@ -34,7 +34,22 @@
 #include "FileInfo.h"
 #include "BaseClass.h"
 
+/* ENABLE TRANSLATION AWARENESS */
+#ifndef QT_TRANSLATE_NOOP
+#define QT_TRANSLATE_NOOP(scope, x) x
+#endif
+
 /* MACROS FOR THROWING EXCEPTIONS */
+
+/// the macros do NOT mark any message for translation
+/// If you want to mark text for translation, use the QT_TRANSLATE_NOOP macro
+/// with the context "Exceptions" and the right throwing macro from below (the one ending in T)
+/// example:
+/// THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased beyond the degree of the b-spline."));
+///
+/// N.B.: The QT_TRANSLATE_NOOP macro won't translate your string. It will just allow lupdate to identify that string for translation so that
+/// if you ask for a translation (and the translator have provided one) at that time it gets translated (e.g. in the UI before showing the message
+/// of the exception).
 
 #ifdef _MSC_VER
 
@@ -42,17 +57,30 @@
 # define THROWM(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); throw myexcp;}
 # define THROWMF_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); throw myexcp;}
 
+# define THROWT(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); myexcp.setTranslatable(true); throw myexcp;}
+# define THROWMT(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); myexcp.setTranslatable(true); throw myexcp;}
+# define THROWMFT_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); myexcp.setTranslatable(true); throw myexcp;}
+
 #elif defined(__GNUC__)
 
 # define THROW(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); throw myexcp;}
 # define THROWM(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); throw myexcp;}
 # define THROWMF_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); throw myexcp;}
 
+# define THROWT(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); myexcp.setTranslatable(true); throw myexcp;}
+# define THROWMT(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); myexcp.setTranslatable(true); throw myexcp;}
+# define THROWMFT_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); myexcp.setTranslatable(true); throw myexcp;}
+
 #else
 
 # define THROW(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__func__); throw myexcp;}
 # define THROWM(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__func__); throw myexcp;}
-# define THROWMF_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__func__); throw myexcp;}
+# define THROWMF_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__func__);  throw myexcp;}
+
+# define THROWT(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__func__); myexcp.setTranslatable(true); throw myexcp;}
+# define THROWMT(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__func__); myexcp.setTranslatable(true); throw myexcp;}
+# define THROWMFT_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__func__); myexcp.setTranslatable(true); throw myexcp;}
+
 
 #endif
 
@@ -80,10 +108,13 @@ public:
   inline std::string getFile() const;
   inline int getLine() const;
   inline std::string getFunction() const;
+  inline bool getTranslatable() const;
   
   /// setter methods for including debug information
   /// intended to use via macro for autofilling of debugging information
   inline void setDebugInformation(const std::string & file, const int line, const std::string & function);
+  
+  inline void setTranslatable(const bool translatable);
   /// returns a Python dictionary containing the exception data
   virtual PyObject * getPyObject(void);
   /// returns sets the exception data from a Python dictionary
@@ -106,6 +137,7 @@ protected:
   std::string _file;
   int _line;
   std::string _function;
+  bool _isTranslatable;
 };
 
 
@@ -620,11 +652,21 @@ inline std::string Exception::getFunction() const
     return _function;
 }
 
+inline bool Exception::getTranslatable() const
+{
+    return _isTranslatable;
+}
+
 inline void Exception::setDebugInformation(const std::string & file, const int line, const std::string & function)
 {
     _file = file;
     _line = line;
     _function = function;
+}
+
+inline void Exception::setTranslatable(const bool translatable)
+{
+    _isTranslatable = translatable;
 }
 
 #if defined(__GNUC__) && defined (FC_OS_LINUX)

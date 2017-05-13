@@ -38,24 +38,24 @@ TYPESYSTEM_SOURCE(Base::Exception,Base::BaseClass);
 
 
 Exception::Exception(void)
-  : _line(0)
+  : _line(0), _isTranslatable(false)
 {
   _sErrMsg = "FreeCAD Exception";
 }
 
 Exception::Exception(const Exception &inst)
   : _sErrMsg(inst._sErrMsg), _file(inst._file),
-    _line(inst._line), _function(inst._function)
+  _line(inst._line), _function(inst._function), _isTranslatable(inst._isTranslatable)
 {
 }
 
 Exception::Exception(const char * sMessage)
- : _sErrMsg(sMessage), _line(0)
+: _sErrMsg(sMessage), _line(0), _isTranslatable(false)
 {
 }
 
 Exception::Exception(const std::string& sMessage)
- : _sErrMsg(sMessage), _line(0)
+: _sErrMsg(sMessage), _line(0), _isTranslatable(false)
 {
 }
 
@@ -116,6 +116,7 @@ PyObject * Exception::getPyObject(void)
 #endif
     edict.setItem("sfunction", Py::String(this->getFunction()));
     edict.setItem("swhat", Py::String(this->what()));
+    edict.setItem("btranslatable", Py::Boolean(this->getTranslatable()));
     return Py::new_reference_to(edict);
 }
 
@@ -138,6 +139,8 @@ void Exception::setPyObject( PyObject * pydict)
 #else
             _line = static_cast<int>(Py::Int(edict.getItem("iline")));
 #endif
+        if (edict.hasKey("btranslatable"))
+            _isTranslatable = static_cast<bool>(Py::Boolean(edict.getItem("btranslatable")));
     }
 }
 
