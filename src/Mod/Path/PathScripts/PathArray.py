@@ -42,6 +42,9 @@ class ObjectArray:
                         "Path", "The spacing between the array copies")
         obj.addProperty("App::PropertyInteger", "Copies",
                         "Path", "The number of copies")
+
+        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
+
         obj.Proxy = self
 
     def __getstate__(self):
@@ -56,6 +59,10 @@ class ObjectArray:
                 return
             if not obj.Base.Path:
                 return
+            if not obj.Base.ToolController:
+                return
+
+            obj.ToolController = obj.Base.ToolController
 
             # build copies
             basepath = obj.Base.Path
