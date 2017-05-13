@@ -309,7 +309,7 @@ class UpdateWorker(QtCore.QThread):
         self.progressbar_show.emit(True)
         u = urllib2.urlopen("https://github.com/FreeCAD/FreeCAD-addons")
         p = u.read()
-        if isinstance(p, bytes):
+        if sys.version_info.major >= 3 and isinstance(p, bytes):
             p = p.decode("utf-8")
         u.close()
         p = p.replace("\n"," ")
@@ -353,7 +353,7 @@ class InfoWorker(QtCore.QThread):
             url = repo[1]
             u = urllib2.urlopen(url)
             p = u.read()
-            if isinstance(p, bytes):
+            if sys.version_info.major >= 3 and isinstance(p, bytes):
                 p = p.decode("utf-8")
             u.close()
             desc = re.findall("<meta name=\"description\" content=\"(.*?)\">",p)
@@ -383,7 +383,7 @@ class MacroWorker(QtCore.QThread):
         macropath = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
         u = urllib2.urlopen("http://www.freecadweb.org/wiki/Macros_recipes")
         p = u.read()
-        if isinstance(p, bytes):
+        if sys.version_info.major >= 3 and isinstance(p, bytes):
             p = p.decode("utf-8")
         u.close()
         macros = re.findall("title=\"(Macro.*?)\"",p)
@@ -425,7 +425,7 @@ class ShowWorker(QtCore.QThread):
             self.info_label.emit(translate("AddonsInstaller", "Retrieving info from ") + str(url))
             u = urllib2.urlopen(url)
             p = u.read()
-            if isinstance(p, bytes):
+            if sys.version_info.major >= 3 and isinstance(p, bytes):
                 p = p.decode("utf-8")
             u.close()
             desc = re.findall("<meta name=\"description\" content=\"(.*?)\">",p)
@@ -469,7 +469,7 @@ class ShowMacroWorker(QtCore.QThread):
             self.info_label.emit("Retrieving info from " + str(url))
             u = urllib2.urlopen(url)
             p = u.read()
-            if isinstance(p, bytes):
+            if sys.version_info.major >= 3 and isinstance(p, bytes):
                 p = p.decode("utf-8")
             u.close()
             code = re.findall("<pre>(.*?)<\/pre>",p.replace("\n","--endl--"))
@@ -528,7 +528,7 @@ class InstallWorker(QtCore.QThread):
             self.info_label.emit("python-git not found.")
             FreeCAD.Console.PrintWarning(translate("AddonsInstaller","python-git not found. Using standard download instead.\n"))
             try:
-                import zipfile,StringIO
+                import zipfile,io
             except:
                 self.info_label.emit("no zip support.")
                 FreeCAD.Console.PrintError(translate("AddonsInstaller","Your version of python doesn't appear to support ZIP files. Unable to proceed.\n"))
