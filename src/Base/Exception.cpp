@@ -98,7 +98,7 @@ void Exception::ReportException (void) const
     Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
 }
 
-PyObject * Exception::getPyObject(void) const
+PyObject * Exception::getPyObject(void)
 {
     PyObject *edict = PyDict_New();
 
@@ -279,7 +279,7 @@ void FileException::ReportException (void) const
     Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
 }
 
-PyObject * FileException::getPyObject(void) const
+PyObject * FileException::getPyObject(void)
 {
     PyObject *edict = Exception::getPyObject();
     PyDict_SetItemString(edict, "filename", PyString_FromString(this->file.fileName().c_str()));
