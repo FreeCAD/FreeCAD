@@ -66,7 +66,7 @@ private:
 /* Producers */
 
 template <class CLASS>
-class BaseExport ExceptionProducer : public AbstractExceptionProducer
+class ExceptionProducer : public AbstractExceptionProducer
 {
 public:
     ExceptionProducer ()
@@ -79,7 +79,6 @@ public:
     void raiseException(PyObject * pydict) const
     {
         CLASS c;
-
         c.setPyObject(pydict);
 
         throw c;
