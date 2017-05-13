@@ -576,9 +576,14 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
                     // particularly B-spline GeoID might have changed.
 
                 }
+                catch (const Base::CADKernelError& e) {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("CAD Kernel Error"),
+                                         QObject::tr(e.getMessage().c_str()));
+                    getSelection().clearSelection();
+                }
                 catch (const Base::Exception& e) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
-                                         QObject::tr(getStrippedPythonExceptionString(e).c_str()));
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Input Error"),
+                                         QObject::tr(e.getMessage().c_str()));
                     getSelection().clearSelection();
                 }
 

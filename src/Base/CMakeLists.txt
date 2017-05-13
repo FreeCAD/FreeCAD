@@ -197,6 +197,7 @@ SET(FreeCADBase_CPP_SRCS
     CoordinateSystem.cpp
     Debugger.cpp
     Exception.cpp
+    ExceptionFactory.cpp
     Factory.cpp
     FileInfo.cpp
     FileTemplate.cpp
@@ -251,6 +252,7 @@ SET(FreeCADBase_HPP_SRCS
     CoordinateSystem.h
     Debugger.h
     Exception.h
+    ExceptionFactory.h
     Factory.h
     FileInfo.h
     FileTemplate.h
