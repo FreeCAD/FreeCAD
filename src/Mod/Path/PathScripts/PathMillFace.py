@@ -87,7 +87,7 @@ class ObjectFace:
         obj.addProperty("App::PropertyEnumeration", "BoundaryShape", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Shape to use for calculating Boundary"))
         obj.BoundaryShape = ['Perimeter', 'Boundbox']
         obj.addProperty("App::PropertyEnumeration", "OffsetPattern", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "clearing pattern to use"))
-        obj.OffsetPattern = ['Offset', 'ZigZag', 'Spiral', 'ZigZagOffset']
+        obj.OffsetPattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
 
         # Start Point Properties
         obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
@@ -173,12 +173,15 @@ class ObjectFace:
 
         pocketparams = {'Fill': 0,
                         'Coplanar': 0,
-                        'PocketMode': 4,
+                        'PocketMode': 1,
                         'SectionCount': -1,
                         'Angle': obj.ZigZagAngle,
                         'FromCenter': (obj.StartAt == "Center"),
                         'PocketStepover': stepover,
                         'PocketExtraOffset': obj.PassExtension.Value}
+
+        Pattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
+        pocketparams['PocketMode'] = Pattern.index(obj.OffsetPattern) + 1
 
         depthparams = depth_params(
                 clearance_height=obj.ClearanceHeight.Value,
@@ -199,6 +202,7 @@ class ObjectFace:
                   'verbose': True,
                   'resume_height': obj.StepDown,
                   'retraction': obj.ClearanceHeight.Value}
+
 
         # if obj.Direction == 'CCW':
         #     params['orientation'] = 1
@@ -267,9 +271,9 @@ class ObjectFace:
         if obj.BoundaryShape == 'Boundbox':
             bb = planeshape.BoundBox
             bbperim = Part.makeBox(bb.XLength, bb.YLength, 1, Vector(bb.XMin, bb.YMin, bb.ZMin), Vector(0, 0, 1))
-            env = PathUtils.getEnvelopeTD(bbperim, obj.StartDepth)
+            env = PathUtils.getEnvelope(bbperim, obj.StartDepth)
         else:
-            env = PathUtils.getEnvelopeTD(planeshape, obj.StartDepth)
+            env = PathUtils.getEnvelope(planeshape, obj.StartDepth)
 
         try:
             commandlist.extend(self._buildPathArea(obj, env).Commands)
