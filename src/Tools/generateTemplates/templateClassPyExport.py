@@ -492,7 +492,7 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
 -
         return ret;
     }
-    catch(const Base::Exception& e) // catch the FreeCAD exceptions
+    catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
         PyObject *edict = e.getPyObject();
         
@@ -682,7 +682,7 @@ PyObject *@self.export.Name@::_getattr(char *attr)				// __getattr__ function: n
         if(r) return r;
     }
 #ifndef DONT_CATCH_CXX_EXCEPTIONS 
-    catch(const Base::Exception& e) // catch the FreeCAD exceptions
+    catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
         PyObject *edict = e.getPyObject();
         
@@ -712,7 +712,7 @@ PyObject *@self.export.Name@::_getattr(char *attr)				// __getattr__ function: n
         return NULL;
     }
 #else  // DONT_CATCH_CXX_EXCEPTIONS  
-    catch(const Base::Exception& e) // catch the FreeCAD exceptions
+    catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
         PyObject *edict = e.getPyObject();
         
@@ -755,7 +755,7 @@ int @self.export.Name@::_setattr(char *attr, PyObject *value) // __setattr__ fun
             return -1;
     }
 #ifndef DONT_CATCH_CXX_EXCEPTIONS 
-    catch(const Base::Exception& e) // catch the FreeCAD exceptions
+    catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
         PyObject *edict = e.getPyObject();
         
@@ -786,7 +786,7 @@ int @self.export.Name@::_setattr(char *attr, PyObject *value) // __setattr__ fun
         return -1;
     }
 #else  // DONT_CATCH_CXX_EXCEPTIONS  
-    catch(const Base::Exception& e) // catch the FreeCAD exceptions
+    catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
         PyObject *edict = e.getPyObject();
         
