@@ -57,6 +57,7 @@
 # include <Standard_Version.hxx>
 # include <cmath>
 # include <vector>
+//# include <QtGlobal>
 #endif
 
 #include <boost/bind.hpp>
@@ -4167,7 +4168,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     int curmult = bsp->getMultiplicity(knotIndex);
     
     if ( (curmult + multiplicityincr) > degree ) // zero is removing the knot, degree is just positional continuity
-        THROWM(Base::ValueError,"The multiplicity cannot be increased beyond the degree of the b-spline.");
+        THROWM(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased beyond the degree of the b-spline."));
     
     if ( (curmult + multiplicityincr) < 0) // zero is removing the knot, degree is just positional continuity
         THROWM(Base::ValueError,"The multiplicity cannot be decreased beyond zero.");
