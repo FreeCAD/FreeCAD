@@ -215,18 +215,10 @@ FC_OS_LINUX: This is dangerous. How about PY_EXCEPT_MAX?
 /* exception text is here after PP_Fetch_Error_Text call */
 char PP_last_error_type[MAX];               /* exception name text */
 char PP_last_error_info[MAX];               /* exception data text */
-
-//char PP_last_error_file[MAX];               /* exception file text */
-//unsigned int PP_last_error_line;            /* exception line */
-//unsigned int PP_last_error_classindex;      /* exception class type index (key of Base::Type) */
-//char PP_last_error_function[MAX];           /* exception function text */
-//char PP_last_error_message[MAX];            /* exception message text */
-
-PyObject *PP_PyDict_Object = NULL;          /* saved exception dictionary object */
-
 char PP_last_error_trace[MAX];              /* exception traceback text */
+
 PyObject *PP_last_traceback = NULL;         /* saved exception traceback object */
-//bool PP_last_error_isDictType = false;
+PyObject *PP_PyDict_Object = NULL;          /* saved exception dictionary object */
 
 
 void PP_Fetch_Error_Text()
@@ -273,27 +265,7 @@ void PP_Fetch_Error_Text()
             strncpy(PP_last_error_info, PyString_AsString(pystring), MAX); 
             PP_last_error_info[MAX-1] = '\0';
         }
-        
-        /*pystring = PyDict_GetItemString(errdata,"sfile");
-        strncpy(PP_last_error_file, PyString_AsString(pystring), MAX); 
-        PP_last_error_file[MAX-1] = '\0';
-        
-        pystring = PyDict_GetItemString(errdata,"sfunction");
-        strncpy(PP_last_error_function, PyString_AsString(pystring), MAX); 
-        PP_last_error_function[MAX-1] = '\0';
-        
-        pystring = PyDict_GetItemString(errdata,"sErrMsg");
-        strncpy(PP_last_error_message, PyString_AsString(pystring), MAX); 
-        PP_last_error_message[MAX-1] = '\0';
-        
-        pystring = PyDict_GetItemString(errdata,"iline");
-        PP_last_error_line = PyInt_AsLong(pystring);
-        
-        pystring = PyDict_GetItemString(errdata,"classindex");
-        PP_last_error_classindex = PyInt_AsLong(pystring);
-        
-        PP_last_error_isDictType = true;
-        */
+
         pydict = errdata;
     }
     else if (errdata != NULL &&
