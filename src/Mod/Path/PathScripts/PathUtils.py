@@ -237,24 +237,6 @@ def getEnvelope(partshape, stockheight=None):
         return sec.extrude(FreeCAD.Vector(0, 0, partshape.BoundBox.ZMax))
 
 
-def getEnvelopeTD(partshape, stockheight=None):
-    '''
-    getEnvelopTD(partshape, stockheight=None)
-    Uses the TechDraw findShapeOutline to return a shape corresponding to the
-    partshape silhouette extruded to height.  if stockheight is given, the
-    returned shape is extruded to that height otherwise the returned shape
-    is the height of the original shape boundbox
-    partshape = solid object
-    stockheight = float
-    '''
-    import TechDraw
-    sec = Part.Face(TechDraw.findShapeOutline(partshape, 1, FreeCAD.Vector(0, 0, 1)))
-    if stockheight is not None:
-        return sec.extrude(FreeCAD.Vector(0, 0, stockheight))
-    else:
-        return sec.extrude(FreeCAD.Vector(0, 0, partshape.BoundBox.ZMax))
-
-
 def reverseEdge(e):
     if geomType(e) == "Circle":
         arcstpt = e.valueAt(e.FirstParameter)
