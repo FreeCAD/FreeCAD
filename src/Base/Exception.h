@@ -186,6 +186,8 @@ public:
   FileException(const FileException &inst);
   /// Destruction
   virtual ~FileException() throw() {}
+  /// Assignment operator
+  FileException &operator=(const FileException &inst);
   /// Description of the exception
   virtual const char* what() const throw();
   /// Report generation
