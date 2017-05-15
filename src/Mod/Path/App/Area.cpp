@@ -1032,6 +1032,9 @@ int Area::project(TopoDS_Shape &shape_out,
     FC_TIME_LOG(t1,"WireJoiner findClosedWires");
 
     Area area(params);
+    area.myParams.SectionCount = 0;
+    area.myParams.Offset = 0.0;
+    area.myParams.PocketMode = 0;
     area.myParams.Explode = false;
     area.myParams.FitArcs = false;
     area.myParams.Reorient = false;
