@@ -125,7 +125,9 @@ class ObjectContour:
     @waiting_effects
     def _buildPathArea(self, obj, baseobject, start=None):
         PathLog.track()
+        #Path.Area.setDefaultParams(LogLevel=0)
         profile = Path.Area()
+        #profile.setDefaultParams(LogLevel=3)
         profile.setPlane(Part.makeCircle(10))
         profile.add(baseobject)
 
@@ -138,7 +140,8 @@ class ObjectContour:
             profileparams['Offset'] = self.radius+obj.OffsetExtra.Value
 
         profile.setParams(**profileparams)
-        PathLog.debug("About to profile with params: {}".format(profileparams))
+       # PathLog.debug("About to profile with params: {}".format(profileparams))
+        PathLog.debug("About to profile with params: {}".format(profile.getParams()))
 
         depthparams = depth_params(
                 clearance_height=obj.ClearanceHeight.Value,
@@ -167,8 +170,8 @@ class ObjectContour:
         if obj.UseStartPoint is True and obj.StartPoint is not None:
             params['start'] = obj.StartPoint
 
-        PathLog.debug("Generating Path with params: {}".format(params))
         pp = Path.fromShapes(**params)
+        PathLog.debug("Generating Path with params: {}".format(params))
         PathLog.debug(pp)
 
         return pp
@@ -197,7 +200,7 @@ class ObjectContour:
 
         commandlist.append(Path.Command("(" + obj.Label + ")"))
 
-        if not obj.UseComp:
+        if obj.UseComp:
             commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
         else:
             commandlist.append(Path.Command("(Uncompensated Tool Path)"))
