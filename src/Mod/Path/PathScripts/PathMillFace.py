@@ -35,6 +35,7 @@ from PathScripts.PathUtils import waiting_effects
 LOG_MODULE = 'PathMillFace'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 PathLog.trackModule()
+FreeCAD.setLogLevel('Path.Area',0)
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
