@@ -476,7 +476,7 @@ struct WireJoiner {
         BRepBndLib::Add(e,bound);
         bound.SetGap(0.1);
         if (bound.IsVoid()) {
-            if(Area::TraceEnabled())
+            if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
                 AREA_WARN("failed to get bound of edge");
             return false;
         }
@@ -687,7 +687,7 @@ struct WireJoiner {
                             intersects = true;
                             break;
                         }
-                    }else if(Area::TraceEnabled())
+                    }else if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
                         AREA_WARN("BRepExtrema_DistShapeShape failed");
                 }
             }
@@ -711,7 +711,7 @@ struct WireJoiner {
                 mkEdge2.Init(curve, pt, pend);
             }
             if(!mkEdge1.IsDone() || !mkEdge2.IsDone()) {
-                if(Area::TraceEnabled())
+                if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
                     AREA_WARN((reversed?"reversed ":"")<<"edge split failed "<<
                             AREA_XYZ(pstart)<<", " << AREA_XYZ(pt)<< ", "<<AREA_XYZ(pend)<< 
                             ", "<<", err: " << mkEdge1.Error() << ", " << mkEdge2.Error());
@@ -1134,12 +1134,14 @@ std::vector<shared_ptr<Area> > Area::makeSections(
             double height = z-tolerance;
             if(z-zMin<myParams.SectionTolerance){
                 height = zMin+myParams.SectionTolerance;
-                AREA_WARN("hit bottom " <<z<<','<<zMin<<','<<height);
+                if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                    AREA_WARN("hit bottom " <<z<<','<<zMin<<','<<height);
                 heights.push_back(height);
                 if(myParams.Stepdown>0.0) break;
             }else if(zMax-z<myParams.SectionTolerance) {
                 height = zMax-myParams.SectionTolerance;
-                AREA_WARN("hit top " <<z<<','<<zMax<<','<<height);
+                if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                    AREA_WARN("hit top " <<z<<','<<zMax<<','<<height);
                 heights.push_back(height);
                 if(myParams.Stepdown<0.0) break;
             }else
@@ -2982,7 +2984,6 @@ bool Area::aborting() {
 }
 
 AreaStaticParams::AreaStaticParams()
-    :PARAM_INIT(PARAM_FNAME,AREA_PARAMS_EXTRA_CONF)
 {}
     
 AreaStaticParams Area::s_params;
@@ -2995,8 +2996,3 @@ const AreaStaticParams &Area::getDefaultParams() {
     return s_params;
 }
 
-#define AREA_LOG_CHECK_DEFINE(_1,_2,_elem) \
-bool Area::BOOST_PP_CAT(_elem,Enabled)() {\
-    return s_params.LogLevel >= BOOST_PP_CAT(LogLevel,_elem);\
-}
-BOOST_PP_SEQ_FOR_EACH(AREA_LOG_CHECK_DEFINE,_,AREA_PARAM_LOG_LEVEL)

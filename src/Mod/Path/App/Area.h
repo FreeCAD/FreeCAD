@@ -75,8 +75,6 @@ struct PathExport AreaParams: CAreaParams {
 };
 
 struct PathExport AreaStaticParams: AreaParams {
-    PARAM_DECLARE(PARAM_FNAME,AREA_PARAMS_EXTRA_CONF);
-
     AreaStaticParams();
 };
 
@@ -378,13 +376,6 @@ public:
 
     static void setDefaultParams(const AreaStaticParams &params);
     static const AreaStaticParams &getDefaultParams();
-
-
-#define AREA_LOG_CHECK_DECLARE(_1,_2,_elem) \
-    static bool BOOST_PP_CAT(_elem,Enabled)();
-    BOOST_PP_SEQ_FOR_EACH(AREA_LOG_CHECK_DECLARE,_,AREA_PARAM_LOG_LEVEL)
-
-    PARAM_ENUM_DECLARE(AREA_PARAMS_LOG_LEVEL)
 };
 
 } //namespace Path
