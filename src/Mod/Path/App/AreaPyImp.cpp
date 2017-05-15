@@ -149,10 +149,9 @@ static const PyMethodDef areaOverrides[] = {
     },
     {
         "setDefaultParams",(PyCFunction)areaSetParams, METH_VARARGS|METH_KEYWORDS|METH_STATIC,
-        "setDefaultParams(" PARAM_PY_ARGS_DOC(NAME,AREA_PARAMS_EXTRA_CONF) ", key=value...):\n"
+        "setDefaultParams(key=value...):\n"
         "Static method to set the default parameters of all following Path.Area, plus the following\n"
         "additional parameters.\n"
-        PARAM_PY_DOC(NAME,AREA_PARAMS_EXTRA_CONF)
     },
     {
         "getDefaultParams",(PyCFunction)areaGetParams, METH_VARARGS|METH_STATIC,
