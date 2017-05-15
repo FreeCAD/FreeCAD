@@ -39,7 +39,7 @@ from PySide import QtGui
 LOG_MODULE = 'PathUtils'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 # PathLog.trackModule('PathUtils')
-
+FreeCAD.setLogLevel('Path.Area',0)
 
 def waiting_effects(function):
     def new_function(*args, **kwargs):
