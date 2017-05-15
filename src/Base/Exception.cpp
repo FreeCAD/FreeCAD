@@ -29,6 +29,7 @@
 
 #include "Exception.h"
 #include "Console.h"
+#include <CXX/Objects.hxx>
 
 using namespace Base;
 
@@ -37,30 +38,34 @@ TYPESYSTEM_SOURCE(Base::Exception,Base::BaseClass);
 
 
 Exception::Exception(void)
+  : _line(0)
 {
   _sErrMsg = "FreeCAD Exception";
 }
 
 Exception::Exception(const Exception &inst)
-: BaseClass(),_sErrMsg(inst._sErrMsg), _file(inst._file), _line(inst._line), _function(inst._function)
+  : _sErrMsg(inst._sErrMsg), _file(inst._file),
+    _line(inst._line), _function(inst._function)
 {
 }
 
-
 Exception::Exception(const char * sMessage)
- : _sErrMsg(sMessage)
+ : _sErrMsg(sMessage), _line(0)
 {
 }
 
 Exception::Exception(const std::string& sMessage)
- : _sErrMsg(sMessage)
+ : _sErrMsg(sMessage), _line(0)
 {
 }
 
 Exception &Exception::operator=(const Exception &inst)
 {
-  _sErrMsg = inst._sErrMsg;
-  return *this;
+    _sErrMsg = inst._sErrMsg;
+    _file = inst._file;
+    _line = inst._line;
+    _function = inst._function;
+    return *this;
 }
 
 const char* Exception::what(void) const throw()
@@ -100,38 +105,31 @@ void Exception::ReportException (void) const
 
 PyObject * Exception::getPyObject(void)
 {
-    PyObject *edict = PyDict_New();
-
-    PyDict_SetItemString(edict, "sclassname", PyString_FromString(typeid(*this).name()));
-    PyDict_SetItemString(edict, "sErrMsg", PyString_FromString(this->getMessage().c_str()));
-    PyDict_SetItemString(edict, "sfile", PyString_FromString(this->getFile().c_str()));
-    PyDict_SetItemString(edict, "iline", PyInt_FromLong(this->getLine()));
-    PyDict_SetItemString(edict, "sfunction", PyString_FromString(this->getFunction().c_str()));
-    PyDict_SetItemString(edict, "swhat", PyString_FromString(this->what()));
-
-    return edict;
+    Py::Dict edict;
+    edict.setItem("sclassname", Py::String(typeid(*this).name()));
+    edict.setItem("sErrMsg", Py::String(this->getMessage()));
+    edict.setItem("sfile", Py::String(this->getFile()));
+    edict.setItem("iline", Py::Long(this->getLine()));
+    edict.setItem("sfunction", Py::String(this->getFunction()));
+    edict.setItem("swhat", Py::String(this->what()));
+    return Py::new_reference_to(edict);
 }
 
 void Exception::setPyObject( PyObject * pydict)
 {
-    if(pydict!=NULL) {
-        PyObject *pystring;
+    if (pydict!=NULL) {
+        Py::Dict edict(pydict);
+        if (edict.hasKey("sfile"))
+            _file = static_cast<std::string>(Py::String(edict.getItem("sfile")));
 
-        pystring = PyDict_GetItemString(pydict,"sfile");
-        if(pystring!=NULL)
-            _file = std::string(PyString_AsString(pystring));
+        if (edict.hasKey("sfunction"))
+            _function = static_cast<std::string>(Py::String(edict.getItem("sfunction")));
 
-        pystring = PyDict_GetItemString(pydict,"sfunction");
-        if(pystring!=NULL)
-            _function = std::string(PyString_AsString(pystring));
+        if (edict.hasKey("sErrMsg"))
+            _sErrMsg = static_cast<std::string>(Py::String(edict.getItem("sErrMsg")));
 
-        pystring = PyDict_GetItemString(pydict,"sErrMsg");
-        if(pystring!=NULL)
-            _sErrMsg = std::string(PyString_AsString(pystring));
-
-        pystring = PyDict_GetItemString(pydict,"iline");
-        if(pystring!=NULL)
-            _line = PyInt_AsLong(pystring);
+        if (edict.hasKey("iline"))
+            _line = static_cast<int>(Py::Long(edict.getItem("iline")));
     }
 }
 
@@ -244,6 +242,14 @@ std::string FileException::getFileName() const
     return file.fileName();
 }
 
+FileException & FileException::operator=(const FileException &inst)
+{
+    Exception::operator = (inst);
+    file = inst.file;
+    _sErrMsgAndFileName = inst._sErrMsgAndFileName;
+    return *this;
+}
+
 const char* FileException::what() const throw()
 {
     return _sErrMsgAndFileName.c_str();
@@ -281,20 +287,19 @@ void FileException::ReportException (void) const
 
 PyObject * FileException::getPyObject(void)
 {
-    PyObject *edict = Exception::getPyObject();
-    PyDict_SetItemString(edict, "filename", PyString_FromString(this->file.fileName().c_str()));
-
-    return edict;
+    Py::Dict edict(Exception::getPyObject(), true);
+    edict.setItem("filename", Py::String(this->file.fileName()));
+    return Py::new_reference_to(edict);
 }
 
 void FileException::setPyObject( PyObject * pydict)
 {
-    if(pydict!=NULL) {
+    if (pydict!=NULL) {
         Exception::setPyObject(pydict);
 
-        PyObject *pystring = PyDict_GetItemString(pydict,"filename");
-        if(pystring!=NULL)
-            file = FileInfo(PyString_AsString(pystring));
+        Py::Dict edict(pydict);
+        if (edict.hasKey("filename"))
+            file.setFile(static_cast<std::string>(Py::String(edict.getItem("filename"))));
     }
 }
 

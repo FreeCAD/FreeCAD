@@ -87,22 +87,21 @@ PyException::~PyException() throw()
 void PyException::ThrowException(void)
 {
     PyException myexcp = PyException();
-    
-    if(PP_PyDict_Object!=NULL) {
 
-        PyObject *pystring;
+    PyGILStateLocker locker;
+    if (PP_PyDict_Object!=NULL) {
+        // delete the Python dict upon destruction of edict
+        Py::Dict edict(PP_PyDict_Object, true);
+        PP_PyDict_Object = 0;
 
-        pystring = PyDict_GetItemString(PP_PyDict_Object,"sclassname");
-
-        if(pystring==NULL)
+        if (!edict.hasKey("sclassname"))
             throw myexcp;
 
-        std::string exceptionname = std::string(PyString_AsString(pystring));
-
-        if(!Base::ExceptionFactory::Instance().CanProduce(exceptionname.c_str()))
+        std::string exceptionname = static_cast<std::string>(Py::String(edict.getItem("sclassname")));
+        if (!Base::ExceptionFactory::Instance().CanProduce(exceptionname.c_str()))
             throw myexcp;
 
-        Base::ExceptionFactory::Instance().raiseException(PP_PyDict_Object);
+        Base::ExceptionFactory::Instance().raiseException(edict.ptr());
     }
     else
         throw myexcp;

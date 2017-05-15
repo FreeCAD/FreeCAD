@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include "ExceptionFactory.h"
+#include <CXX/Objects.hxx>
 
 using namespace Base;
 
@@ -46,12 +47,9 @@ void ExceptionFactory::raiseException (PyObject * pydict) const
 {
     std::string classname;
     
-    PyObject *pystring;
-
-    pystring = PyDict_GetItemString(pydict,"sclassname");
-
-    if(pystring!=NULL) {
-        classname = std::string(PyString_AsString(pystring));
+    Py::Dict edict(pydict);
+    if (edict.hasKey("sclassname")) {
+        classname = static_cast<std::string>(Py::String(edict.getItem("sclassname")));
 
         std::map<const std::string, AbstractProducer*>::const_iterator pProd;
 

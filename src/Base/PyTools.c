@@ -259,14 +259,17 @@ void PP_Fetch_Error_Text()
     if (errdata != NULL &&
         (PyDict_Check(errdata)) )                      /* str() increfs */
     {
-        pystring = PyDict_GetItemString(errdata,"swhat");
+        // PyDict_GetItemString returns a borrowed reference
+        // so we must make sure not to decrement the reference
+        PyObject* value = PyDict_GetItemString(errdata,"swhat");
         
-        if(pystring!=NULL) {
-            strncpy(PP_last_error_info, PyString_AsString(pystring), MAX); 
+        if (value!=NULL) {
+            strncpy(PP_last_error_info, PyString_AsString(value), MAX);
             PP_last_error_info[MAX-1] = '\0';
         }
 
         pydict = errdata;
+        Py_INCREF(pydict);
     }
     else if (errdata != NULL &&
        (pystring = PyObject_Str(errdata)) != NULL &&     /* str(): increfs */
