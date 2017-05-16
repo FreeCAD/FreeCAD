@@ -30,6 +30,16 @@ if(MSVC)
         Rpcrt4.lib
         version.lib
     )
+
+    #Universal C runtime introduced in VS 2015 (cl version 19)
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "18")
+        list(APPEND FreeCADBase_LIBS
+            debug vcruntimed.lib
+            debug ucrtd.lib
+            optimized vcruntime.lib
+            optimized ucrt.lib
+        )
+    endif()
 elseif(MINGW)
     set(FreeCADBase_LIBS
         ${PYTHON_LIBRARIES}
@@ -185,6 +195,21 @@ SET(FreeCADBase_UNITAPI_SRCS
 )
 SOURCE_GROUP("Units" FILES ${FreeCADBase_UNITAPI_SRCS})
 
+if(PYTHON_VERSION_MAJOR LESS 3)
+SET(SWIG_SRCS
+    swigpyrun_1.3.25.cpp
+    swigpyrun_1.3.33.cpp
+    swigpyrun_1.3.36.cpp
+    swigpyrun_1.3.38.cpp
+    swigpyrun_1.3.40.cpp
+    swigpyrun.cpp
+)
+else(PYTHON_VERSION_MAJOR LESS 3)
+SET(SWIG_SRCS
+    swigpyrun.cpp
+)
+endif(PYTHON_VERSION_MAJOR LESS 3)
+
 SET(FreeCADBase_CPP_SRCS
     Axis.cpp
     AxisPyImp.cpp
@@ -225,12 +250,7 @@ SET(FreeCADBase_CPP_SRCS
     Sequencer.cpp
     Stream.cpp
     Swap.cpp
-    swigpyrun_1.3.25.cpp
-    swigpyrun_1.3.33.cpp
-    swigpyrun_1.3.36.cpp
-    swigpyrun_1.3.38.cpp
-    swigpyrun_1.3.40.cpp
-    swigpyrun.cpp
+    ${SWIG_SRCS}
     TimeInfo.cpp
     Tools.cpp
     Tools2D.cpp
@@ -241,6 +261,21 @@ SET(FreeCADBase_CPP_SRCS
     Writer.cpp
     XMLTools.cpp
 )
+
+if(PYTHON_VERSION_MAJOR LESS 3)
+SET(SWIG_HEADERS
+    swigpyrun_1.3.25.h
+    swigpyrun_1.3.33.h
+    swigpyrun_1.3.36.h
+    swigpyrun_1.3.38.h
+    swigpyrun_1.3.40.h
+    swigpyrun.inl
+)
+else(PYTHON_VERSION_MAJOR LESS 3)
+SET(SWIG_HEADERS
+    swigpyrun.inl
+)
+endif(PYTHON_VERSION_MAJOR LESS 3)
 
 SET(FreeCADBase_HPP_SRCS
     Axis.h
@@ -276,12 +311,7 @@ SET(FreeCADBase_HPP_SRCS
     Sequencer.h
     Stream.h
     Swap.h
-    swigpyrun_1.3.25.h
-    swigpyrun_1.3.33.h
-    swigpyrun_1.3.36.h
-    swigpyrun_1.3.38.h
-    swigpyrun_1.3.40.h
-    swigpyrun.inl
+    ${SWIG_HEADERS}
     TimeInfo.h
     Tools.h
     Tools2D.h
