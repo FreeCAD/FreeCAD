@@ -429,6 +429,18 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args, PyOb
     if (!PyArg_ParseTuple(args, "O", &output))
         return NULL;
 
+#if PY_MAJOR_VERSION >= 3
+    const char* string=0;
+    PyObject* unicode=0;
+    if (PyUnicode_Check(output)) {
+        string = PyUnicode_AsUTF8(output);
+    }
+    else {
+        unicode = PyObject_Str(output);
+        if (unicode)
+            string = PyUnicode_AsUTF8(unicode);
+    }
+#else
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
@@ -444,6 +456,7 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args, PyOb
         if (unicode)
             string = PyString_AsString(unicode);
     }
+#endif
 
     PY_TRY {
         if (string)
@@ -462,6 +475,18 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args, PyOb
     if (!PyArg_ParseTuple(args, "O", &output))
         return NULL;
 
+#if PY_MAJOR_VERSION >= 3
+    const char* string=0;
+    PyObject* unicode=0;
+    if (PyUnicode_Check(output)) {
+        string = PyUnicode_AsUTF8(output);
+    }
+    else {
+        unicode = PyObject_Str(output);
+        if (unicode)
+            string = PyUnicode_AsUTF8(unicode);
+    }
+#else
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
@@ -477,6 +502,7 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args, PyOb
         if (unicode)
             string = PyString_AsString(unicode);
     }
+#endif
 
     PY_TRY {
         if (string)
@@ -495,6 +521,18 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args, PyObje
     if (!PyArg_ParseTuple(args, "O", &output))
         return NULL;
 
+#if PY_MAJOR_VERSION >= 3
+    const char* string=0;
+    PyObject* unicode=0;
+    if (PyUnicode_Check(output)) {
+        string = PyUnicode_AsUTF8(output);
+    }
+    else {
+        unicode = PyObject_Str(output);
+        if (unicode)
+            string = PyUnicode_AsUTF8(unicode);
+    }
+#else
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
@@ -510,6 +548,7 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args, PyObje
         if (unicode)
             string = PyString_AsString(unicode);
     }
+#endif
 
     PY_TRY {
         if (string)
@@ -528,6 +567,18 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args, PyObject
     if (!PyArg_ParseTuple(args, "O", &output))
         return NULL;
 
+#if PY_MAJOR_VERSION >= 3
+    const char* string=0;
+    PyObject* unicode=0;
+    if (PyUnicode_Check(output)) {
+        string = PyUnicode_AsUTF8(output);
+    }
+    else {
+        unicode = PyObject_Str(output);
+        if (unicode)
+            string = PyUnicode_AsUTF8(unicode);
+    }
+#else
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
@@ -543,6 +594,7 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args, PyObject
         if (unicode)
             string = PyString_AsString(unicode);
     }
+#endif
 
     PY_TRY {
         if (string)
