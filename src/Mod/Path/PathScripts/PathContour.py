@@ -34,7 +34,8 @@ from PathScripts.PathUtils import waiting_effects
 
 LOG_MODULE = 'PathContour'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-PathLog.trackModule('PathContour')
+#PathLog.trackModule('PathContour')
+FreeCAD.setLogLevel('Path.Area',0)
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -125,9 +126,7 @@ class ObjectContour:
     @waiting_effects
     def _buildPathArea(self, obj, baseobject, start=None):
         PathLog.track()
-        #Path.Area.setDefaultParams(LogLevel=0)
         profile = Path.Area()
-        #profile.setDefaultParams(LogLevel=3)
         profile.setPlane(Part.makeCircle(10))
         profile.add(baseobject)
 
