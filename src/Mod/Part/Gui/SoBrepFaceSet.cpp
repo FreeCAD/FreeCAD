@@ -288,6 +288,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
     // So, the alternative way is to write a custom SoAction class.
     else if (action->getTypeId() == Gui::SoUpdateVBOAction::getClassTypeId()) {
         PRIVATE(this)->updateVbo = true;
+        PRIVATE(this)->vboLoaded = false;
     }
 
     inherited::doAction(action);
