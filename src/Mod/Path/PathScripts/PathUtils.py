@@ -43,6 +43,8 @@ FreeCAD.setLogLevel('Path.Area',0)
 
 def waiting_effects(function):
     def new_function(*args, **kwargs):
+        if not FreeCAD.GuiUp:
+            return function(*args, **kwargs)
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         res = None
         try:
