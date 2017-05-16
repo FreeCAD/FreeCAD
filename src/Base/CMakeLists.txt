@@ -32,7 +32,7 @@ if(MSVC)
     )
 
     #Universal C runtime introduced in VS 2015 (cl version 19)
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "18")
+    if (NOT (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "19"))
         list(APPEND FreeCADBase_LIBS
             debug vcruntimed.lib
             debug ucrtd.lib
