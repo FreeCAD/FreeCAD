@@ -38,9 +38,8 @@ from PySide import QtGui
 
 LOG_MODULE = 'PathUtils'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-# PathLog.trackModule('PathUtils')
+PathLog.trackModule('PathUtils')
 FreeCAD.setLogLevel('Path.Area', 0)
-
 
 def waiting_effects(function):
     def new_function(*args, **kwargs):
@@ -253,10 +252,16 @@ def getEnvelope(partshape, stockheight=None):
     #                      partshape.BoundBox.ZMin)
     area.setPlane(makeWorkplane(partshape))
     sec = area.makeSections(heights=[1.0], project=True)[0].getShape()
+
     if stockheight is not None:
-        return sec.extrude(FreeCAD.Vector(0, 0, stockheight))
+        eLength = float(stockheight)-partshape.BoundBox.ZMin
+        envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, eLength))
     else:
-        return sec.extrude(FreeCAD.Vector(0, 0, partshape.BoundBox.ZLength))
+        envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, partshape.BoundBox.ZLength))
+    if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
+        removalshape=FreeCAD.ActiveDocument.addObject("Part::Feature","RemovedMaterial")
+        removalshape.Shape = envelopeshape
+    return envelopeshape
 
 
 def reverseEdge(e):

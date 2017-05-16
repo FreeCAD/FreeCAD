@@ -25,17 +25,17 @@
 import FreeCAD
 import Path
 import numpy
-import TechDraw
 import ArchPanel
+import Part
 
-from FreeCAD import Vector
 from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
 import PathScripts.PathLog as PathLog
 
 LOG_MODULE = 'PathProfile'
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 # PathLog.trackModule('PathProfile')
+FreeCAD.setLogLevel('Path.Area', 0)
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -73,14 +73,6 @@ class ObjectProfile:
         # Start Point Properties
         obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
         obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
-        obj.addProperty("App::PropertyLength", "ExtendAtStart", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "extra length of tool path before start of part edge"))
-        obj.addProperty("App::PropertyLength", "LeadInLineLen", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "length of straight segment of toolpath that comes in at angle to first part edge"))
-
-        # End Point Properties
-        obj.addProperty("App::PropertyBool", "UseEndPoint", "End Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying an End Point"))
-        obj.addProperty("App::PropertyLength", "ExtendAtEnd", "End Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "extra length of tool path after end of part edge"))
-        obj.addProperty("App::PropertyLength", "LeadOutLineLen", "End Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "length of straight segment of toolpath that comes in at angle to last part edge"))
-        obj.addProperty("App::PropertyVector", "EndPoint", "End Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The end point of this path"))
 
         # Profile Properties
         obj.addProperty("App::PropertyEnumeration", "Side", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
@@ -88,8 +80,6 @@ class ObjectProfile:
         obj.addProperty("App::PropertyEnumeration", "Direction", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.Direction = ['CW', 'CCW']  # this is the direction that the profile runs
         obj.addProperty("App::PropertyBool", "UseComp", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
-
-        obj.addProperty("App::PropertyDistance", "RollRadius", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Radius at start and end"))
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final profile- good for roughing toolpath"))
         obj.addProperty("App::PropertyBool", "processHoles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile holes as well as the outline"))
         obj.addProperty("App::PropertyBool", "processPerimeter", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the outline"))
@@ -145,29 +135,45 @@ class ObjectProfile:
         obj.Base = baselist
         self.execute(obj)
 
-    def _buildPathLibarea(self, obj, edgelist, isHole):
-        import PathScripts.PathKurveUtils as PathKurveUtils
-        # import math
-        # import area
+    def _buildPathArea(self, obj, baseobject, isHole, start=None):
+        PathLog.track()
+        profile = Path.Area()
+        profile.setPlane(Part.makeCircle(10))
+        profile.add(baseobject)
 
-        PathLog.track("edgelist: {} \n".format(edgelist))
+        profileparams = {'Fill': 0,
+                         'Coplanar': 0,
+                         'Offset': 0.0,
+                         'SectionCount': -1}
 
-        output = ""
-        if obj.Comment != "":
-            output += '(' + str(obj.Comment)+')\n'
+        if obj.UseComp:
+            if isHole:
+                profileparams['Offset'] = 0 - self.radius+obj.OffsetExtra.Value
+            else:
+                profileparams['Offset'] = self.radius+obj.OffsetExtra.Value
 
-        if obj.StartPoint and obj.UseStartPoint:
-            startpoint = obj.StartPoint
-        else:
-            startpoint = None
+        profile.setParams(**profileparams)
+        # PathLog.debug("About to profile with params: {}".format(profileparams))
+        PathLog.debug("About to profile with params: {}".format(profile.getParams()))
 
-        if obj.EndPoint and obj.UseEndPoint:
-            endpoint = obj.EndPoint
-        else:
-            endpoint = None
+        depthparams = depth_params(
+                clearance_height=obj.ClearanceHeight.Value,
+                rapid_safety_space=obj.SafeHeight.Value,
+                start_depth=obj.StartDepth.Value,
+                step_down=obj.StepDown.Value,
+                z_finish_step=0.0,
+                final_depth=obj.FinalDepth.Value,
+                user_depths=None)
 
-        PathKurveUtils.output('mem')
-        PathKurveUtils.feedrate_hv(self.horizFeed, self.vertFeed)
+        sections = profile.makeSections(mode=0, project=True, heights=depthparams.get_depths())
+        shapelist = [sec.getShape() for sec in sections]
+
+        params = {'shapes': shapelist,
+                  'feedrate': self.horizFeed,
+                  'feedrate_v': self.vertFeed,
+                  'verbose': False,
+                  'resume_height': obj.StepDown.Value,
+                  'retraction': obj.ClearanceHeight.Value}
 
         # Reverse the direction for holes
         if isHole:
@@ -175,50 +181,28 @@ class ObjectProfile:
         else:
             direction = obj.Direction
 
-        output = ""
-        output += "G0 Z" + str(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
-        curve = PathKurveUtils.makeAreaCurve(edgelist, direction, startpoint, endpoint)
+        if direction == 'CCW':
+            params['orientation'] = 1
+        else:
+            params['orientation'] = 0
 
-        '''The following line uses a profile function written for use with FreeCAD.  It's clean but incomplete.  It doesn't handle
-print "x = " + str(point.x)
-print "y - " + str(point.y)
-            holding tags
-            start location
-            CRC
-            or probably other features in heekscnc'''
+        if obj.UseStartPoint is True and obj.StartPoint is not None:
+            params['start'] = obj.StartPoint
 
-        '''The following calls the original procedure from h
-        toolLoad = obj.activeTCeekscnc profile function.  This, in turn, calls many other procedures to modify the profile.
-            This procedure is hacked together from heekscnc and has not been thoroughly reviewed or understood for FreeCAD.  It can probably be
-            thoroughly optimized and improved but it'll take a smarter mind than mine to do it.  -sliptonic Feb16'''
-        roll_radius = 2.0
-        extend_at_start = 0.0
-        extend_at_end = 0.0
-        lead_in_line_len = 0.0
-        lead_out_line_len = 0.0
+        pp = Path.fromShapes(**params)
+        PathLog.debug("Generating Path with params: {}".format(params))
+        PathLog.debug(pp)
 
-        depthparams = depth_params(
-            obj.ClearanceHeight.Value,
-            obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown.Value, 0.0,
-            obj.FinalDepth.Value, None)
-
-        PathKurveUtils.profile2(
-            curve, obj.Side, self.radius, self.vertFeed, self.horizFeed,
-            self.vertRapid, self.horizRapid, obj.OffsetExtra.Value, roll_radius,
-            None, None, depthparams, extend_at_start, extend_at_end,
-            lead_in_line_len, lead_out_line_len)
-
-        output += PathKurveUtils.retrieve_gcode()
-        return output
+        return pp
 
     def execute(self, obj):
-        import Part  # math #DraftGeomUtils
-        output = ""
+        import Part
+        commandlist = []
 
         toolLoad = obj.ToolController
         if toolLoad is None or toolLoad.ToolNumber == 0:
             FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
-            #return
+            return
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
@@ -231,11 +215,12 @@ print "y - " + str(point.y)
             else:
                 self.radius = tool.Diameter/2
 
-        output += "(" + obj.Label + ")"
+        commandlist.append(Path.Command("(" + obj.Label + ")"))
+
         if obj.UseComp:
-            output += "(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"
+            commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
         else:
-            output += "(Uncompensated Tool Path)"
+            commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
         if obj.Base:
             holes = []
@@ -247,25 +232,40 @@ print "y - " + str(point.y)
                         faces.append(shape)
                         if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
                             holes += shape.Wires[1:]
-
                     else:
                         print ("found a base object which is not a face.  Can't continue.")
                         return
-            profileshape = Part.makeCompound(faces)
-            profilewire = TechDraw.findShapeOutline(profileshape, 1, Vector(0, 0, 1))
 
             if obj.processHoles:
                 for wire in holes:
-                    edgelist = wire.Edges
-                    edgelist = Part.__sortEdges__(edgelist)
-                    output += self._buildPathLibarea(obj, edgelist, True)
+                    f = Part.makeFace(wire, 'Part::FaceMakerSimple')
+
+                    # shift the compound to the bottom of the base object for
+                    # proper sectioning
+                    zShift = b[0].Shape.BoundBox.ZMin - f.BoundBox.ZMin
+                    newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), f.Placement.Rotation)
+                    f.Placement = newPlace
+                    env = PathUtils.getEnvelope(f, obj.StartDepth)
+                    try:
+                        commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=True, start=None).Commands)
+                    except Exception as e:
+                        print(e)
+                        FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+
+            profileshape = Part.makeCompound(faces)
+            zShift = b[0].Shape.BoundBox.ZMin - profileshape.BoundBox.ZMin
+            newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), profileshape.Placement.Rotation)
+            profileshape.Placement = newPlace
 
             if obj.processPerimeter:
-                edgelist = profilewire.Edges
-                edgelist = Part.__sortEdges__(edgelist)
-                output += self._buildPathLibarea(obj, edgelist, False)
+                env = PathUtils.getEnvelope(profileshape, obj.StartDepth)
+                try:
+                    commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=False, start=None).Commands)
+                except Exception as e:
+                    print(e)
+                    FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
-        else:  #Try to build targets frorm the job base
+        else:  # Try to build targets frorm the job base
             parentJob = PathUtils.findParentJob(obj)
             if parentJob is None:
                 return
@@ -279,28 +279,29 @@ print "y - " + str(point.y)
                         shapes = baseobject.Proxy.getOutlines(baseobject, transform=True)
                         for shape in shapes:
                             for wire in shape.Wires:
-                                edgelist = wire.Edges
-                                edgelist = Part.__sortEdges__(edgelist)
-                                PathLog.debug("Processing panel perimeter.  edges found: {}".format(len(edgelist)))
-                            try:
-                                output += self._buildPathLibarea(obj, edgelist, isHole=False)
-                            except:
-                                FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+                                f = Part.makeFace(wire, 'Part::FaceMakerSimple')
+                                env = PathUtils.getEnvelope(f, obj.StartDepth)
+                                try:
+                                    commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=False, start=None).Commands)
+                                except Exception as e:
+                                    print(e)
+                                    FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
                     shapes = baseobject.Proxy.getHoles(baseobject, transform=True)
                     for shape in shapes:
                         for wire in shape.Wires:
                             drillable = PathUtils.isDrillable(baseobject.Proxy, wire)
                             if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
-                                edgelist = wire.Edges
-                                edgelist = Part.__sortEdges__(edgelist)
+                                f = Part.makeFace(wire, 'Part::FaceMakerSimple')
+                                env = PathUtils.getEnvelope(f, obj.StartDepth)
                                 try:
-                                    output += self._buildPathLibarea(obj, edgelist, isHole=True)
-                                except:
+                                    commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=True, start=None).Commands)
+                                except Exception as e:
+                                    print(e)
                                     FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
         if obj.Active:
-            path = Path.Path(output)
+            path = Path.Path(commandlist)
             obj.Path = path
             obj.ViewObject.Visibility = True
 
@@ -350,25 +351,6 @@ class _CommandSetStartPoint:
         obj = FreeCADGui.Selection.getSelection()[0]
         obj.StartPoint.x = point.x
         obj.StartPoint.y = point.y
-
-    def Activated(self):
-
-        FreeCADGui.Snapper.getPoint(callback=self.setpoint)
-
-
-class _CommandSetEndPoint:
-    def GetResources(self):
-        return {'Pixmap': 'Path-EndPoint',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Pick End Point"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Pick End Point")}
-
-    def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
-
-    def setpoint(self, point, o):
-        obj = FreeCADGui.Selection.getSelection()[0]
-        obj.EndPoint.x = point.x
-        obj.EndPoint.y = point.y
 
     def Activated(self):
 
@@ -454,14 +436,10 @@ class TaskPanel:
                 self.obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
             if hasattr(self.obj, "OffsetExtra"):
                 self.obj.OffsetExtra = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
-            if hasattr(self.obj, "RollRadius"):
-                self.obj.RollRadius = FreeCAD.Units.Quantity(self.form.rollRadius.text()).Value
             if hasattr(self.obj, "UseComp"):
                 self.obj.UseComp = self.form.useCompensation.isChecked()
             if hasattr(self.obj, "UseStartPoint"):
                 self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
-            if hasattr(self.obj, "UseEndPoint"):
-                self.obj.UseEndPoint = self.form.useEndPoint.isChecked()
             if hasattr(self.obj, "Side"):
                 self.obj.Side = str(self.form.cutSide.currentText())
             if hasattr(self.obj, "Direction"):
@@ -486,10 +464,8 @@ class TaskPanel:
         self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(self.obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
         self.form.stepDown.setText(FreeCAD.Units.Quantity(self.obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
-        self.form.rollRadius.setText(FreeCAD.Units.Quantity(self.obj.RollRadius.Value, FreeCAD.Units.Length).UserString)
         self.form.useCompensation.setChecked(self.obj.UseComp)
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
-        self.form.useEndPoint.setChecked(self.obj.UseEndPoint)
         self.form.processHoles.setChecked(self.obj.processHoles)
         self.form.processPerimeter.setChecked(self.obj.processPerimeter)
         self.form.processCircles.setChecked(self.obj.processCircles)
@@ -513,6 +489,7 @@ class TaskPanel:
         self.form.uiToolController.blockSignals(True)
         self.form.uiToolController.addItems(labels)
         self.form.uiToolController.blockSignals(False)
+
         if self.obj.ToolController is not None:
             index = self.form.uiToolController.findText(
                 self.obj.ToolController.Label, QtCore.Qt.MatchFixedString)
@@ -628,9 +605,7 @@ class TaskPanel:
         self.form.direction.currentIndexChanged.connect(self.getFields)
         self.form.useCompensation.clicked.connect(self.getFields)
         self.form.useStartPoint.clicked.connect(self.getFields)
-        self.form.useEndPoint.clicked.connect(self.getFields)
         self.form.extraOffset.editingFinished.connect(self.getFields)
-        self.form.rollRadius.editingFinished.connect(self.getFields)
         self.form.processHoles.clicked.connect(self.getFields)
         self.form.processPerimeter.clicked.connect(self.getFields)
         self.form.processCircles.clicked.connect(self.getFields)
@@ -660,6 +635,5 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_Profile', CommandPathProfile())
     FreeCADGui.addCommand('Set_StartPoint', _CommandSetStartPoint())
-    FreeCADGui.addCommand('Set_EndPoint', _CommandSetEndPoint())
 
 FreeCAD.Console.PrintLog("Loading PathProfile... done\n")
