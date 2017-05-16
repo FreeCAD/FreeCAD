@@ -1238,7 +1238,8 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
 void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,const Gui::TreeItemMode& mode)
 {
     FOREACH_ITEM(item,obj)
-        if(!item->parent()->isExpanded()) continue;
+        if (!item->parent() || // has no parent (see #0003025)
+            !item->parent()->isExpanded()) continue;
         switch (mode) {
         case Gui::Expand:
             item->setExpanded(true);
@@ -1521,7 +1522,9 @@ void DocumentObjectItem::testStatus()
     }
     else { // invisible
         QStyleOptionViewItem opt;
-        opt.initFrom(this->treeWidget());
+        // it can happen that a tree item is not attached to the tree widget (#0003025)
+        if (this->treeWidget())
+            opt.initFrom(this->treeWidget());
 #if QT_VERSION >= 0x040200
         this->setForeground(0, opt.palette.color(QPalette::Disabled,QPalette::Text));
 #else
