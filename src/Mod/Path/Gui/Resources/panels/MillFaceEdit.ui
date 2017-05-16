@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>518</width>
-    <height>754</height>
+    <width>379</width>
+    <height>523</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -33,7 +33,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>285</width>
+        <width>361</width>
         <height>277</height>
        </rect>
       </property>
@@ -111,8 +111,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>125</width>
-        <height>124</height>
+        <width>361</width>
+        <height>130</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -192,8 +192,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>154</width>
-        <height>68</height>
+        <width>361</width>
+        <height>130</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -242,7 +242,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>500</width>
+        <width>361</width>
         <height>329</height>
        </rect>
       </property>
@@ -254,39 +254,6 @@
        <string>Operation</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3">
-       <item row="3" column="0">
-        <widget class="QFrame" name="frame">
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_6">
-          <item row="1" column="0" colspan="2">
-           <widget class="QCheckBox" name="zigZagUnidirectional">
-            <property name="text">
-             <string>ZigZag Unidirectional</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="Gui::QuantitySpinBox" name="zigZagAngle">
-            <property name="unit" stdset="0">
-             <string notr="true"/>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_10">
-            <property name="text">
-             <string>ZigZag Angle</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="2" column="0">
         <widget class="QWidget" name="widget_4" native="true">
          <layout class="QGridLayout" name="gridLayout_5">
@@ -443,6 +410,20 @@
            <widget class="QLabel" name="label_14">
             <property name="text">
              <string>Pattern</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="Gui::QuantitySpinBox" name="zigZagAngle">
+            <property name="unit" stdset="0">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>ZigZag Angle</string>
             </property>
            </widget>
           </item>
