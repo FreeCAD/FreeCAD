@@ -1011,6 +1011,8 @@ def p_circle_action(p) :
     'circle_action : circle LPAREN keywordargument_list RPAREN SEMICOL'
     if printverbose: print("Circle : "+str(p[3]))
     r = float(p[3]['r'])
+    # Avoid zero radius
+    if r == 0 : r = 0.00001
     n = int(p[3]['$fn'])
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
