@@ -25,9 +25,11 @@
 
 #include "PreCompiled.h"
 
+#include <typeinfo>
 
 #include "Exception.h"
 #include "Console.h"
+#include <CXX/Objects.hxx>
 
 using namespace Base;
 
@@ -36,30 +38,34 @@ TYPESYSTEM_SOURCE(Base::Exception,Base::BaseClass);
 
 
 Exception::Exception(void)
+  : _line(0)
 {
   _sErrMsg = "FreeCAD Exception";
 }
 
 Exception::Exception(const Exception &inst)
-: BaseClass(),_sErrMsg(inst._sErrMsg), _file(inst._file), _line(inst._line), _function(inst._function)
+  : _sErrMsg(inst._sErrMsg), _file(inst._file),
+    _line(inst._line), _function(inst._function)
 {
 }
 
-
 Exception::Exception(const char * sMessage)
- : _sErrMsg(sMessage)
+ : _sErrMsg(sMessage), _line(0)
 {
 }
 
 Exception::Exception(const std::string& sMessage)
- : _sErrMsg(sMessage)
+ : _sErrMsg(sMessage), _line(0)
 {
 }
 
 Exception &Exception::operator=(const Exception &inst)
 {
-  _sErrMsg = inst._sErrMsg;
-  return *this;
+    _sErrMsg = inst._sErrMsg;
+    _file = inst._file;
+    _line = inst._line;
+    _function = inst._function;
+    return *this;
 }
 
 const char* Exception::what(void) const throw()
@@ -80,7 +86,9 @@ void Exception::ReportException (void) const
         str+= " ";
     }
     
-    if(!_file.empty() && !_line.empty()) {
+    std::string _linestr = std::to_string(_line);
+    
+    if(!_file.empty() && !_linestr.empty()) {
         // strip absolute path
         std::size_t pos = _file.find("src");
         
@@ -88,14 +96,53 @@ void Exception::ReportException (void) const
             str+="in ";
             str+= _file.substr(pos);
             str+= ":";
-            str+=_line;
+            str+=_linestr;
         }
     }
 
     Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
 }
 
+PyObject * Exception::getPyObject(void)
+{
+    Py::Dict edict;
+    edict.setItem("sclassname", Py::String(typeid(*this).name()));
+    edict.setItem("sErrMsg", Py::String(this->getMessage()));
+    edict.setItem("sfile", Py::String(this->getFile()));
+#if PY_MAJOR_VERSION >= 3
+    edict.setItem("iline", Py::Long(this->getLine()));
+#else
+    edict.setItem("iline", Py::Int(this->getLine()));
+#endif
+    edict.setItem("sfunction", Py::String(this->getFunction()));
+    edict.setItem("swhat", Py::String(this->what()));
+    return Py::new_reference_to(edict);
+}
+
+void Exception::setPyObject( PyObject * pydict)
+{
+    if (pydict!=NULL) {
+        Py::Dict edict(pydict);
+        if (edict.hasKey("sfile"))
+            _file = static_cast<std::string>(Py::String(edict.getItem("sfile")));
+
+        if (edict.hasKey("sfunction"))
+            _function = static_cast<std::string>(Py::String(edict.getItem("sfunction")));
+
+        if (edict.hasKey("sErrMsg"))
+            _sErrMsg = static_cast<std::string>(Py::String(edict.getItem("sErrMsg")));
+
+        if (edict.hasKey("iline"))
+#if PY_MAJOR_VERSION >= 3
+            _line = static_cast<long>(Py::Long(edict.getItem("iline")));
+#else
+            _line = static_cast<int>(Py::Int(edict.getItem("iline")));
+#endif
+    }
+}
+
 // ---------------------------------------------------------
+
 
 AbortException::AbortException(const char * sMessage)
   : Exception( sMessage )
@@ -119,6 +166,12 @@ const char* AbortException::what() const throw()
 
 // ---------------------------------------------------------
 
+
+XMLBaseException::XMLBaseException()
+: Exception()
+{
+}
+
 XMLBaseException::XMLBaseException(const char * sMessage)
   : Exception(sMessage)
 {
@@ -135,6 +188,7 @@ XMLBaseException::XMLBaseException(const XMLBaseException &inst)
 }
 
 // ---------------------------------------------------------
+
 
 XMLParseException::XMLParseException(const char * sMessage)
   : Exception(sMessage)
@@ -162,6 +216,7 @@ const char* XMLParseException::what() const throw()
 }
 
 // ---------------------------------------------------------
+
 
 FileException::FileException(const char * sMessage, const char * sFileName)
   : Exception( sMessage ),file(sFileName)
@@ -195,6 +250,14 @@ std::string FileException::getFileName() const
     return file.fileName();
 }
 
+FileException & FileException::operator=(const FileException &inst)
+{
+    Exception::operator = (inst);
+    file = inst.file;
+    _sErrMsgAndFileName = inst._sErrMsgAndFileName;
+    return *this;
+}
+
 const char* FileException::what() const throw()
 {
     return _sErrMsgAndFileName.c_str();
@@ -213,7 +276,9 @@ void FileException::ReportException (void) const
         str+= " ";
     }
     
-    if(!_file.empty() && !_line.empty()) {
+    std::string _linestr = std::to_string(_line);
+    
+    if(!_file.empty() && !_linestr.empty()) {
         // strip absolute path
         std::size_t pos = _file.find("src");
         
@@ -221,15 +286,38 @@ void FileException::ReportException (void) const
             str+="in ";
             str+= _file.substr(pos);
             str+= ":";
-            str+=_line;
+            str+=_linestr;
         }
     }
     
     Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
 }
 
+PyObject * FileException::getPyObject(void)
+{
+    Py::Dict edict(Exception::getPyObject(), true);
+    edict.setItem("filename", Py::String(this->file.fileName()));
+    return Py::new_reference_to(edict);
+}
+
+void FileException::setPyObject( PyObject * pydict)
+{
+    if (pydict!=NULL) {
+        Exception::setPyObject(pydict);
+
+        Py::Dict edict(pydict);
+        if (edict.hasKey("filename"))
+            file.setFile(static_cast<std::string>(Py::String(edict.getItem("filename"))));
+    }
+}
 
 // ---------------------------------------------------------
+
+
+FileSystemError::FileSystemError()
+: Exception()
+{
+}
 
 FileSystemError::FileSystemError(const char * sMessage)
   : Exception(sMessage)
@@ -248,6 +336,12 @@ FileSystemError::FileSystemError(const FileSystemError &inst)
 
 // ---------------------------------------------------------
 
+
+BadFormatError::BadFormatError()
+: Exception()
+{
+}
+
 BadFormatError::BadFormatError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -264,6 +358,7 @@ BadFormatError::BadFormatError(const BadFormatError &inst)
 }
 
 // ---------------------------------------------------------
+
 
 MemoryException::MemoryException()
 {
@@ -333,6 +428,11 @@ AbnormalProgramTermination::AbnormalProgramTermination(const AbnormalProgramTerm
 
 // ---------------------------------------------------------
 
+UnknownProgramOption::UnknownProgramOption()
+: Exception()
+{
+}
+
 UnknownProgramOption::UnknownProgramOption(const char * sMessage)
   : Exception(sMessage)
 {
@@ -349,6 +449,11 @@ UnknownProgramOption::UnknownProgramOption(const UnknownProgramOption &inst)
 }
 
 // ---------------------------------------------------------
+
+ProgramInformation::ProgramInformation()
+: Exception()
+{
+}
 
 ProgramInformation::ProgramInformation(const char * sMessage)
   : Exception(sMessage)
@@ -367,6 +472,11 @@ ProgramInformation::ProgramInformation(const ProgramInformation &inst)
 
 // ---------------------------------------------------------
 
+TypeError::TypeError()
+: Exception()
+{
+}
+
 TypeError::TypeError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -383,6 +493,11 @@ TypeError::TypeError(const TypeError &inst)
 }
 
 // ---------------------------------------------------------
+
+ValueError::ValueError()
+: Exception()
+{
+}
 
 ValueError::ValueError(const char * sMessage)
   : Exception(sMessage)
@@ -401,6 +516,11 @@ ValueError::ValueError(const ValueError &inst)
 
 // ---------------------------------------------------------
 
+IndexError::IndexError()
+: Exception()
+{
+}
+
 IndexError::IndexError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -417,6 +537,11 @@ IndexError::IndexError(const IndexError &inst)
 }
 
 // ---------------------------------------------------------
+
+AttributeError::AttributeError()
+: Exception()
+{
+}
 
 AttributeError::AttributeError(const char * sMessage)
   : Exception(sMessage)
@@ -435,6 +560,11 @@ AttributeError::AttributeError(const AttributeError &inst)
 
 // ---------------------------------------------------------
 
+RuntimeError::RuntimeError()
+: Exception()
+{
+}
+
 RuntimeError::RuntimeError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -451,6 +581,11 @@ RuntimeError::RuntimeError(const RuntimeError &inst)
 }
 
 // ---------------------------------------------------------
+
+NotImplementedError::NotImplementedError()
+: Exception()
+{
+}
 
 NotImplementedError::NotImplementedError(const char * sMessage)
   : Exception(sMessage)
@@ -469,6 +604,11 @@ NotImplementedError::NotImplementedError(const NotImplementedError &inst)
 
 // ---------------------------------------------------------
 
+DivisionByZeroError::DivisionByZeroError()
+: Exception()
+{
+}
+
 DivisionByZeroError::DivisionByZeroError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -485,6 +625,11 @@ DivisionByZeroError::DivisionByZeroError(const DivisionByZeroError &inst)
 }
 
 // ---------------------------------------------------------
+
+ReferencesError::ReferencesError()
+: Exception()
+{
+}
 
 ReferencesError::ReferencesError(const char * sMessage)
   : Exception(sMessage)
@@ -503,6 +648,11 @@ ReferencesError::ReferencesError(const ReferencesError &inst)
 
 // ---------------------------------------------------------
 
+ExpressionError::ExpressionError()
+: Exception()
+{
+}
+
 ExpressionError::ExpressionError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -519,6 +669,11 @@ ExpressionError::ExpressionError(const ExpressionError &inst)
 }
 
 // ---------------------------------------------------------
+
+ParserError::ParserError()
+: Exception()
+{
+}
 
 ParserError::ParserError(const char * sMessage)
   : Exception(sMessage)
@@ -537,6 +692,11 @@ ParserError::ParserError(const ParserError &inst)
 
 // ---------------------------------------------------------
 
+UnicodeError::UnicodeError()
+: Exception()
+{
+}
+
 UnicodeError::UnicodeError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -553,6 +713,11 @@ UnicodeError::UnicodeError(const UnicodeError &inst)
 }
 
 // ---------------------------------------------------------
+
+OverflowError::OverflowError()
+: Exception()
+{
+}
 
 OverflowError::OverflowError(const char * sMessage)
   : Exception(sMessage)
@@ -571,6 +736,11 @@ OverflowError::OverflowError(const OverflowError &inst)
 
 // ---------------------------------------------------------
 
+UnderflowError::UnderflowError()
+: Exception()
+{
+}
+
 UnderflowError::UnderflowError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -588,6 +758,11 @@ UnderflowError::UnderflowError(const UnderflowError &inst)
 
 // ---------------------------------------------------------
 
+UnitsMismatchError::UnitsMismatchError()
+: Exception()
+{
+}
+
 UnitsMismatchError::UnitsMismatchError(const char * sMessage)
   : Exception(sMessage)
 {
@@ -604,7 +779,12 @@ UnitsMismatchError::UnitsMismatchError(const UnitsMismatchError &inst)
 }
 
 // ---------------------------------------------------------
- 
+
+CADKernelError::CADKernelError()
+: Exception()
+{
+}
+
 CADKernelError::CADKernelError(const char * sMessage)
 : Exception(sMessage)
 {

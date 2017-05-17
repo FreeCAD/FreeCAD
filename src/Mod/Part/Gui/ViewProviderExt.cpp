@@ -815,9 +815,6 @@ void ViewProviderPartExt::reload()
 void ViewProviderPartExt::updateData(const App::Property* prop)
 {
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
-        Gui::SoUpdateVBOAction action;
-        action.apply(this->faceset);
-
         // get the shape to show
         const TopoDS_Shape &cShape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
 
@@ -876,6 +873,9 @@ void ViewProviderPartExt::unsetEdit(int ModNum)
 
 void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
 {
+    Gui::SoUpdateVBOAction action;
+    action.apply(this->faceset);
+
     // Clear selection
     Gui::SoSelectionElementAction saction(Gui::SoSelectionElementAction::None);
     saction.apply(this->faceset);

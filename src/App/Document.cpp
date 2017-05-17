@@ -1591,8 +1591,13 @@ void Document::restore (void)
     // reset all touched
     for (std::map<std::string,DocumentObject*>::iterator It= d->objectMap.begin();It!=d->objectMap.end();++It) {
         It->second->connectRelabelSignals();
-        It->second->onDocumentRestored();
-        It->second->ExpressionEngine.onDocumentRestored();
+        try {
+            It->second->onDocumentRestored();
+            It->second->ExpressionEngine.onDocumentRestored();
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().Error("Error in %s: %s\n", It->second->Label.getValue(), e.what());
+        }
         It->second->purgeTouched();
     }
 
