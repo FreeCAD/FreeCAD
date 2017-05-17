@@ -31,11 +31,12 @@ import Part
 from FreeCAD import Vector
 import PathScripts.PathLog as PathLog
 from PathScripts.PathUtils import waiting_effects
+from PathScripts.PathUtils import makeWorkplane
 
 LOG_MODULE = 'PathMillFace'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 PathLog.trackModule()
-FreeCAD.setLogLevel('Path.Area',0)
+FreeCAD.setLogLevel('Path.Area', 0)
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -167,7 +168,7 @@ class ObjectFace:
 
         PathLog.track()
         boundary = Path.Area()
-        boundary.setPlane(Part.makeCircle(10))
+        boundary.setPlane(makeWorkplane(baseobject))
         boundary.add(baseobject)
 
         stepover = (self.radius * 2) * (float(obj.StepOver)/100)
@@ -203,7 +204,6 @@ class ObjectFace:
                   'verbose': True,
                   'resume_height': obj.StepDown,
                   'retraction': obj.ClearanceHeight.Value}
-
 
         # if obj.Direction == 'CCW':
         #     params['orientation'] = 1
@@ -269,12 +269,12 @@ class ObjectFace:
 
         # if user wants the boundbox, calculate that
         PathLog.info("Boundary Shape: {}".format(obj.BoundaryShape))
+        bb = planeshape.BoundBox
         if obj.BoundaryShape == 'Boundbox':
-            bb = planeshape.BoundBox
             bbperim = Part.makeBox(bb.XLength, bb.YLength, 1, Vector(bb.XMin, bb.YMin, bb.ZMin), Vector(0, 0, 1))
-            env = PathUtils.getEnvelope(bbperim, obj.StartDepth)
+            env = PathUtils.getEnvelope(bbperim, bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
         else:
-            env = PathUtils.getEnvelope(planeshape, obj.StartDepth)
+            env = PathUtils.getEnvelope(planeshape, bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
 
         try:
             commandlist.extend(self._buildPathArea(obj, env).Commands)
