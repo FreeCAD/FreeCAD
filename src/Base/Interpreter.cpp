@@ -39,6 +39,8 @@
 #include "PyObjectBase.h"
 #include <CXX/Extensions.hxx>
 
+#include "ExceptionFactory.h"
+
 
 char format2[1024];  //Warning! Can't go over 512 characters!!!
 unsigned int format2_len = 1024;
@@ -80,6 +82,29 @@ PyException::PyException(void)
 
 PyException::~PyException() throw()
 {
+}
+
+void PyException::ThrowException(void)
+{
+    PyException myexcp = PyException();
+
+    PyGILStateLocker locker;
+    if (PP_PyDict_Object!=NULL) {
+        // delete the Python dict upon destruction of edict
+        Py::Dict edict(PP_PyDict_Object, true);
+        PP_PyDict_Object = 0;
+
+        if (!edict.hasKey("sclassname"))
+            throw myexcp;
+
+        std::string exceptionname = static_cast<std::string>(Py::String(edict.getItem("sclassname")));
+        if (!Base::ExceptionFactory::Instance().CanProduce(exceptionname.c_str()))
+            throw myexcp;
+
+        Base::ExceptionFactory::Instance().raiseException(edict.ptr());
+    }
+    else
+        throw myexcp;
 }
 
 void PyException::ReportException (void) const
@@ -197,8 +222,10 @@ std::string InterpreterSingleton::runString(const char *sCmd)
     if (!presult) {
         if (PyErr_ExceptionMatches(PyExc_SystemExit))
             throw SystemExitException();
-        else
-            throw PyException();
+        else {
+            PyException::ThrowException();
+            //throw PyException();
+        }
     }
 
     PyObject* repr = PyObject_Repr(presult);

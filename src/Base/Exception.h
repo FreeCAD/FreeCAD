@@ -30,6 +30,7 @@
 #include <stdexcept>
 #include <string>
 #include <signal.h>
+#include <Python.h>
 #include "FileInfo.h"
 #include "BaseClass.h"
 
@@ -61,7 +62,6 @@ namespace Base
 class BaseExport Exception : public BaseClass
 {
   TYPESYSTEM_HEADER();
-
 public:
 
   virtual ~Exception() throw() {}
@@ -77,10 +77,17 @@ public:
   // what may differ from the message given by the user in
   // derived classes
   inline std::string getMessage() const;
+  inline std::string getFile() const;
+  inline int getLine() const;
+  inline std::string getFunction() const;
   
   /// setter methods for including debug information
   /// intended to use via macro for autofilling of debugging information
   inline void setDebugInformation(const std::string & file, const int line, const std::string & function);
+  /// returns a Python dictionary containing the exception data
+  virtual PyObject * getPyObject(void);
+  /// returns sets the exception data from a Python dictionary
+  virtual void setPyObject( PyObject * pydict);
 
 protected:
 public: // FIXME: Remove the public keyword
@@ -97,7 +104,7 @@ public: // FIXME: Remove the public keyword
 protected:
   std::string _sErrMsg;
   std::string _file;
-  std::string _line;
+  int _line;
   std::string _function;
 };
 
@@ -130,6 +137,7 @@ class BaseExport XMLBaseException : public Exception
 {
 public:
   /// Construction
+  XMLBaseException();
   XMLBaseException(const char * sMessage);
   XMLBaseException(const std::string& sMessage);
   /// Construction
@@ -178,12 +186,18 @@ public:
   FileException(const FileException &inst);
   /// Destruction
   virtual ~FileException() throw() {}
+  /// Assignment operator
+  FileException &operator=(const FileException &inst);
   /// Description of the exception
   virtual const char* what() const throw();
   /// Report generation
   virtual void ReportException (void) const;
   /// Get file name for use with tranlatable message
   std::string getFileName() const;
+  /// returns a Python dictionary containing the exception data
+  virtual PyObject * getPyObject(void);
+  /// returns sets the exception data from a Python dictionary
+  virtual void setPyObject( PyObject * pydict);
 protected:
   FileInfo file;
   // necesary for what() legacy behaviour as it returns a buffer that can not be of a temporary object to be destroyed at end of what()
@@ -199,6 +213,7 @@ class BaseExport FileSystemError : public Exception
 {
 public:
   /// Construction
+  FileSystemError();
   FileSystemError(const char * sMessage);
   FileSystemError(const std::string& sMessage);
   /// Construction
@@ -215,6 +230,7 @@ class BaseExport BadFormatError : public Exception
 {
 public:
   /// Construction
+  BadFormatError();
   BadFormatError(const char * sMessage);
   BadFormatError(const std::string& sMessage);
   /// Construction
@@ -289,6 +305,7 @@ class BaseExport UnknownProgramOption : public Exception
 {
 public:
   /// Construction
+  UnknownProgramOption();
   UnknownProgramOption(const char * sMessage);
   UnknownProgramOption(const std::string& sMessage);
   /// Construction
@@ -305,6 +322,7 @@ class BaseExport ProgramInformation : public Exception
 {
 public:
   /// Construction
+  ProgramInformation();
   ProgramInformation(const char * sMessage);
   ProgramInformation(const std::string& sMessage);
   /// Construction
@@ -322,6 +340,7 @@ class BaseExport TypeError : public Exception
 {
 public:
   /// Construction
+  TypeError();
   TypeError(const char * sMessage);
   TypeError(const std::string& sMessage);
   /// Construction
@@ -338,6 +357,7 @@ class BaseExport ValueError : public Exception
 {
 public:
   /// Construction
+  ValueError();
   ValueError(const char * sMessage);
   ValueError(const std::string& sMessage);
   /// Construction
@@ -354,6 +374,7 @@ class BaseExport IndexError : public Exception
 {
 public:
   /// Construction
+  IndexError();
   IndexError(const char * sMessage);
   IndexError(const std::string& sMessage);
   /// Construction
@@ -370,6 +391,7 @@ class BaseExport AttributeError : public Exception
 {
 public:
   /// Construction
+  AttributeError();
   AttributeError(const char * sMessage);
   AttributeError(const std::string& sMessage);
   /// Construction
@@ -386,6 +408,7 @@ class BaseExport RuntimeError : public Exception
 {
 public:
   /// Construction
+  RuntimeError();
   RuntimeError(const char * sMessage);
   RuntimeError(const std::string& sMessage);
   /// Construction
@@ -402,6 +425,7 @@ class BaseExport NotImplementedError : public Exception
 {
 public:
   /// Construction
+  NotImplementedError();
   NotImplementedError(const char * sMessage);
   NotImplementedError(const std::string& sMessage);
   /// Construction
@@ -418,6 +442,7 @@ class BaseExport DivisionByZeroError : public Exception
 {
 public:
   /// Construction
+  DivisionByZeroError();
   DivisionByZeroError(const char * sMessage);
   DivisionByZeroError(const std::string& sMessage);
   /// Construction
@@ -434,6 +459,7 @@ class BaseExport ReferencesError : public Exception
 {
 public:
   /// Construction
+  ReferencesError();
   ReferencesError(const char * sMessage);
   ReferencesError(const std::string& sMessage);
   /// Construction
@@ -451,6 +477,7 @@ class BaseExport ExpressionError : public Exception
 {
 public:
   /// Construction
+  ExpressionError();
   ExpressionError(const char * sMessage);
   ExpressionError(const std::string& sMessage);
   /// Construction
@@ -467,6 +494,7 @@ class BaseExport ParserError : public Exception
 {
 public:
   /// Construction
+  ParserError();
   ParserError(const char * sMessage);
   ParserError(const std::string& sMessage);
   /// Construction
@@ -483,6 +511,7 @@ class BaseExport UnicodeError : public Exception
 {
 public:
   /// Construction
+  UnicodeError();
   UnicodeError(const char * sMessage);
   UnicodeError(const std::string& sMessage);
   /// Construction
@@ -499,6 +528,7 @@ class BaseExport OverflowError : public Exception
 {
 public:
   /// Construction
+  OverflowError();
   OverflowError(const char * sMessage);
   OverflowError(const std::string& sMessage);
   /// Construction
@@ -515,6 +545,7 @@ class BaseExport UnderflowError : public Exception
 {
 public:
   /// Construction
+  UnderflowError();
   UnderflowError(const char * sMessage);
   UnderflowError(const std::string& sMessage);
   /// Construction
@@ -531,6 +562,7 @@ class BaseExport UnitsMismatchError : public Exception
 {
 public:
   /// Construction
+  UnitsMismatchError();
   UnitsMismatchError(const char * sMessage);
   UnitsMismatchError(const std::string& sMessage);
   /// Construction
@@ -548,6 +580,7 @@ class BaseExport CADKernelError : public Exception
 {
 public:
     /// Construction
+    CADKernelError();
     CADKernelError(const char * sMessage);
     CADKernelError(const std::string& sMessage);
     /// Construction
@@ -572,10 +605,25 @@ inline std::string Exception::getMessage() const
     return _sErrMsg;
 }
 
+inline std::string Exception::getFile() const
+{
+    return _file;
+}
+
+inline int Exception::getLine() const
+{
+    return _line;
+}
+
+inline std::string Exception::getFunction() const
+{
+    return _function;
+}
+
 inline void Exception::setDebugInformation(const std::string & file, const int line, const std::string & function)
 {
     _file = file;
-    _line = std::to_string(line);
+    _line = line;
     _function = function;
 }
 

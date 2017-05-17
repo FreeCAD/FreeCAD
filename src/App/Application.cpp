@@ -62,6 +62,7 @@
 #include <Base/Parameter.h>
 #include <Base/Console.h>
 #include <Base/Factory.h>
+#include <Base/ExceptionFactory.h>
 #include <Base/FileInfo.h>
 #include <Base/Type.h>
 #include <Base/BaseClass.h>
@@ -389,6 +390,8 @@ bool Application::closeDocument(const char* name)
     map<string,Document*>::iterator pos = DocMap.find( name );
     if (pos == DocMap.end()) // no such document
         return false;
+
+    Base::ConsoleRefreshDisabler disabler;
 
     // Trigger observers before removing the document from the internal map.
     // Some observers might rely on this document still being there.
@@ -1300,6 +1303,35 @@ void Application::initTypes(void)
     // register transaction type
     new App::TransactionProducer<TransactionDocumentObject>
             (DocumentObject::getClassTypeId());
+
+    // register exception producer types
+    new ExceptionProducer<Base::AbortException>;
+    new ExceptionProducer<Base::XMLBaseException>;
+    new ExceptionProducer<Base::XMLParseException>;
+    new ExceptionProducer<Base::FileException>;
+    new ExceptionProducer<Base::FileSystemError>;
+    new ExceptionProducer<Base::BadFormatError>;
+    new ExceptionProducer<Base::MemoryException>;
+    new ExceptionProducer<Base::MemoryException>;
+    new ExceptionProducer<Base::AccessViolation>;
+    new ExceptionProducer<Base::AbnormalProgramTermination>;
+    new ExceptionProducer<Base::UnknownProgramOption>;
+    new ExceptionProducer<Base::ProgramInformation>;
+    new ExceptionProducer<Base::TypeError>;
+    new ExceptionProducer<Base::ValueError>;
+    new ExceptionProducer<Base::IndexError>;
+    new ExceptionProducer<Base::AttributeError>;
+    new ExceptionProducer<Base::RuntimeError>;
+    new ExceptionProducer<Base::NotImplementedError>;
+    new ExceptionProducer<Base::DivisionByZeroError>;
+    new ExceptionProducer<Base::ReferencesError>;
+    new ExceptionProducer<Base::ExpressionError>;
+    new ExceptionProducer<Base::ParserError>;
+    new ExceptionProducer<Base::UnicodeError>;
+    new ExceptionProducer<Base::OverflowError>;
+    new ExceptionProducer<Base::UnderflowError>;
+    new ExceptionProducer<Base::UnitsMismatchError>;
+    new ExceptionProducer<Base::CADKernelError>;
 }
 
 void Application::initConfig(int argc, char ** argv)
@@ -1386,6 +1418,35 @@ void Application::initConfig(int argc, char ** argv)
                           mConfig["BuildRevision"].c_str());
 
     LoadParameters();
+
+    auto loglevelParam = _pcUserParamMngr->GetGroup("BaseApp/LogLevels");
+    const auto &loglevels = loglevelParam->GetIntMap();
+    bool hasDefault = false;
+    for(const auto &v : loglevels) {
+        if(v.first == "Default") {
+#ifndef FC_DEBUG
+            if(v.second>=0) {
+                hasDefault = true;
+                Base::Console().SetDefaultLogLevel(v.second);
+            }
+#endif
+        }else if(v.first == "DebugDefault") {
+#ifdef FC_DEBUG
+            if(v.second>=0) {
+                hasDefault = true;
+                Base::Console().SetDefaultLogLevel(v.second);
+            }
+#endif
+        }else
+            *Base::Console().GetLogLevel(v.first.c_str()) = v.second;
+    }
+    if(!hasDefault) {
+#ifdef FC_DEBUG
+        loglevelParam->SetInt("DebugDefault",Base::Console().LogLevel(-1));
+#else
+        loglevelParam->SetInt("Default",Base::Console().LogLevel(-1));
+#endif
+    }
 
     // Set application tmp. directory
     mConfig["AppTempPath"] = Base::FileInfo::getTempPath();
