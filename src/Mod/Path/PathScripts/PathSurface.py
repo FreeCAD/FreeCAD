@@ -27,6 +27,11 @@ import FreeCAD
 import Path
 from PathScripts import PathUtils
 import PathScripts.PathLog as PathLog
+import sys
+
+# xrange is not available in python3
+if sys.version_info.major >= 3:
+    xrange = range
 
 LOG_MODULE = 'PathSurface'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
