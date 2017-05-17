@@ -23,6 +23,7 @@
 # ***************************************************************************
 
 from __future__ import print_function
+import sys
 import FreeCAD
 # from FreeCAD import Vector
 import Path
@@ -34,6 +35,10 @@ from PathScripts.PathUtils import fmt
 # from math import pi
 import ArchPanel
 
+
+# xrange is not available in python3
+if sys.version_info.major >= 3:
+    xrange = range
 
 LOG_MODULE = 'PathDrilling'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)

@@ -28,6 +28,11 @@ from PySide import QtCore, QtGui
 from PathScripts.PathPostProcessor import PostProcessor
 from PathScripts.PathPreferences import PathPreferences
 import Draft
+import sys
+
+# xrange is not available in python3
+if sys.version_info.major >= 3:
+    xrange = range
 
 
 FreeCADGui = None

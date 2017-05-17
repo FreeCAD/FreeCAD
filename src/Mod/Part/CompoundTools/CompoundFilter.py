@@ -29,7 +29,11 @@ __doc__ = "Compound Filter: remove some children from a compound (features)."
 import FreeCAD
 import Part
 import math
+import sys
 
+# xrange is not available in python3
+if sys.version_info.major >= 3:
+    xrange = range
 
 # OCC's Precision::Confusion; should have taken this from FreeCAD but haven't found; unlikely to ever change (DeepSOIC)
 DistConfusion = 1e-7
