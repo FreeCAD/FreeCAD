@@ -320,8 +320,20 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
             // throw SystemExit exception
             throw Base::SystemExitException();
         }
-        if ( PyErr_Occurred() )                    /* get latest python exception information */
+        if (PyErr_Occurred()) {                   /* get latest python exception information */
+            PyObject *errobj, *errdata, *errtraceback;
+            PyErr_Fetch(&errobj, &errdata, &errtraceback);
+            if (PyDict_Check(errdata)) {
+                PyObject* value = PyDict_GetItemString(errdata, "swhat");
+                if (value) {
+                    Py_INCREF(value);
+                    Py_DECREF(errdata);
+                    errdata = value;
+                }
+            }
+            PyErr_Restore(errobj, errdata, errtraceback);
             PyErr_Print();                           /* and print the error to the error output */
+        }
     } else {
         Py_DECREF(presult);
     }
