@@ -904,7 +904,8 @@ def p_cylinder_action(p):
     h = float(p[3]['h'])
     r1 = float(p[3]['r1'])
     r2 = float(p[3]['r2'])
-    n = int(p[3]['$fn'])
+    #n = int(p[3]['$fn'])
+    n = int(round(float(p[3]['$fn'])))
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
         GetInt('useMaxFN')
