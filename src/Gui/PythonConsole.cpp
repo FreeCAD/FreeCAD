@@ -326,9 +326,29 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
             if (PyDict_Check(errdata)) {
                 PyObject* value = PyDict_GetItemString(errdata, "swhat");
                 if (value) {
-                    Py_INCREF(value);
+                    Base::Exception e;
+                    e.setPyObject(errdata);
                     Py_DECREF(errdata);
-                    errdata = value;
+
+                    std::stringstream str;
+                    str << e.what();
+                    if (!e.getFunction().empty()) {
+                        str << " In " << e.getFunction();
+                    }
+                    if (!e.getFile().empty() && e.getLine() > 0) {
+                        std::string file = e.getFile();
+                        std::size_t pos = file.find("src");
+                        if (pos!=std::string::npos)
+                            file = file.substr(pos);
+                        str << " in " << file << ":" << e.getLine();
+                    }
+
+                    std::string err = str.str();
+#if PY_MAJOR_VERSION >= 3
+                    errdata = PyUnicode_FromString(err.c_str());
+#else
+                    errdata = PyString_FromString(err.c_str());
+#endif
                 }
             }
             PyErr_Restore(errobj, errdata, errtraceback);
