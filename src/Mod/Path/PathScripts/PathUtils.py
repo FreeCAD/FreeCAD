@@ -39,7 +39,8 @@ from PySide import QtGui
 LOG_MODULE = 'PathUtils'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 # PathLog.trackModule('PathUtils')
-FreeCAD.setLogLevel('Path.Area',0)
+FreeCAD.setLogLevel('Path.Area', 0)
+
 
 def waiting_effects(function):
     def new_function(*args, **kwargs):
@@ -61,6 +62,7 @@ def waiting_effects(function):
 def cleanedges(splines, precision):
     '''cleanedges([splines],precision). Convert BSpline curves, Beziers, to arcs that can be used for cnc paths.
     Returns Lines as is. Filters Circle and Arcs for over 180 degrees. Discretizes Ellipses. Ignores other geometry. '''
+    PathLog.track()
     edges = []
     for spline in splines:
         if geomType(spline) == "BSplineCurve":
@@ -97,6 +99,7 @@ def cleanedges(splines, precision):
 def curvetowire(obj, steps):
     '''adapted from DraftGeomUtils, because the discretize function changed a bit '''
 
+    PathLog.track()
     points = obj.copy().discretize(Distance=eval('steps'))
     p0 = points[0]
     edgelist = []
@@ -186,6 +189,7 @@ def loopdetect(obj, edge1, edge2):
 
 def filterArcs(arcEdge):
     '''filterArcs(Edge) -used to split arcs that over 180 degrees. Returns list '''
+    PathLog.track()
     s = arcEdge
     if isinstance(s.Curve, Part.Circle):
         splitlist = []
@@ -221,6 +225,18 @@ def filterArcs(arcEdge):
     return splitlist
 
 
+def makeWorkplane(shape):
+    """
+    Creates a workplane circle at the ZMin level.
+    """
+    PathLog.track()
+    loc = FreeCAD.Vector(shape.BoundBox.Center.x,
+                         shape.BoundBox.Center.y,
+                         shape.BoundBox.ZMin)
+    c = Part.makeCircle(10, loc)
+    return c
+
+
 def getEnvelope(partshape, stockheight=None):
     '''
     getEnvelop(partshape, stockheight=None)
@@ -230,13 +246,17 @@ def getEnvelope(partshape, stockheight=None):
     partshape = solid object
     stockheight = float
     '''
+    PathLog.track(partshape, stockheight)
     area = Path.Area(Fill=1, Coplanar=0).add(partshape)
-    area.setPlane(Part.makeCircle(10))
-    sec = area.makeSections(heights=[1.0], project=True)[0].getShape(rebuild=True)
+    # loc = FreeCAD.Vector(partshape.BoundBox.Center.x,
+    #                      partshape.BoundBox.Center.y,
+    #                      partshape.BoundBox.ZMin)
+    area.setPlane(makeWorkplane(partshape))
+    sec = area.makeSections(heights=[1.0], project=True)[0].getShape()
     if stockheight is not None:
         return sec.extrude(FreeCAD.Vector(0, 0, stockheight))
     else:
-        return sec.extrude(FreeCAD.Vector(0, 0, partshape.BoundBox.ZMax))
+        return sec.extrude(FreeCAD.Vector(0, 0, partshape.BoundBox.ZLength))
 
 
 def reverseEdge(e):
@@ -617,6 +637,7 @@ def sort_jobs(locations, keys, attractors=[]):
         locations.remove(closest)
 
     return out
+
 
 class depth_params:
     '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters

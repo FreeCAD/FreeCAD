@@ -31,11 +31,12 @@ from PySide import QtCore
 import ArchPanel
 import Part
 from PathScripts.PathUtils import waiting_effects
+from PathScripts.PathUtils import makeWorkplane
 
 LOG_MODULE = 'PathContour'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 #PathLog.trackModule('PathContour')
-FreeCAD.setLogLevel('Path.Area',0)
+FreeCAD.setLogLevel('Path.Area', 0)
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -79,7 +80,6 @@ class ObjectContour:
 
         # Start Point Properties
         obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
-        obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
 
         # Contour Properties
         obj.addProperty("App::PropertyEnumeration", "Direction", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
@@ -92,6 +92,7 @@ class ObjectContour:
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final Contour- good for roughing toolpath"))
 
         obj.Proxy = self
+        self.endVector = None
 
     def __getstate__(self):
         return None
@@ -101,6 +102,8 @@ class ObjectContour:
 
     def onChanged(self, obj, prop):
         pass
+        # if prop in ['ClearanceHeight', 'StartPoint']:
+        #     obj.StartPoint.z = obj.ClearanceHeight.Value
 
     def setDepths(proxy, obj):
         PathLog.track()
@@ -127,7 +130,7 @@ class ObjectContour:
     def _buildPathArea(self, obj, baseobject, start=None):
         PathLog.track()
         profile = Path.Area()
-        profile.setPlane(Part.makeCircle(10))
+        profile.setPlane(makeWorkplane(baseobject))
         profile.add(baseobject)
 
         profileparams = {'Fill': 0,
@@ -138,10 +141,6 @@ class ObjectContour:
         else:
             profileparams['Offset'] = self.radius+obj.OffsetExtra.Value
 
-        profile.setParams(**profileparams)
-       # PathLog.debug("About to profile with params: {}".format(profileparams))
-        PathLog.debug("About to profile with params: {}".format(profile.getParams()))
-
         depthparams = depth_params(
                 clearance_height=obj.ClearanceHeight.Value,
                 rapid_safety_space=obj.SafeHeight.Value,
@@ -151,6 +150,10 @@ class ObjectContour:
                 final_depth=obj.FinalDepth.Value,
                 user_depths=None)
 
+        PathLog.debug('depths: {}'.format(depthparams.get_depths()))
+        profile.setParams(**profileparams)
+        PathLog.debug("Contour with params: {}".format(profile.getParams()))
+
         sections = profile.makeSections(mode=0, project=True, heights=depthparams.get_depths())
         shapelist = [sec.getShape() for sec in sections]
 
@@ -159,25 +162,29 @@ class ObjectContour:
                   'feedrate_v': self.vertFeed,
                   'verbose': True,
                   'resume_height': obj.StepDown.Value,
-                  'retraction': obj.ClearanceHeight.Value}
+                  'retraction': obj.ClearanceHeight.Value,
+                  'return_end': True}
 
         if obj.Direction == 'CCW':
             params['orientation'] = 1
         else:
             params['orientation'] = 0
 
-        if obj.UseStartPoint is True and obj.StartPoint is not None:
-            params['start'] = obj.StartPoint
+        if self.endVector is not None:
+            params['start'] = self.endVector
+        elif start is not None:
+            params['start'] = start
 
-        pp = Path.fromShapes(**params)
+        (pp, end_vector) = Path.fromShapes(**params)
         PathLog.debug("Generating Path with params: {}".format(params))
-        PathLog.debug(pp)
+        PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
+        self.endVector = end_vector
 
         return pp
 
     def execute(self, obj):
         PathLog.track()
-        import Part
+        self.endVector = None
 
         commandlist = []
         toolLoad = obj.ToolController
@@ -211,25 +218,27 @@ class ObjectContour:
         if baseobject is None:
             return
 
+        # Let's always start by rapid to clearance...just for safety
+        commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+
         if hasattr(baseobject, "Proxy"):
             if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
                 baseobject.Proxy.execute(baseobject)
-                for subobj in baseobject.Group:  # process the group of panels
-                    if isinstance(subobj.Proxy, ArchPanel.PanelCut):
-                        shapes = baseobject.Proxy.getOutlines(baseobject, transform=True)
-                        for shape in shapes:
-                            f = Part.makeFace([shape], 'Part::FaceMakerSimple')
-                            thickness = baseobject.Group[0].Source.Thickness
-                            contourshape = f.extrude(FreeCAD.Vector(0, 0, thickness))
-                            try:
-                                commandlist.extend(self._buildPathArea(obj, contourshape).Commands)
-                            except Exception as e:
-                                print(e)
-                                FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+                shapes = baseobject.Proxy.getOutlines(baseobject, transform=True)
+                for shape in shapes:
+                    f = Part.makeFace([shape], 'Part::FaceMakerSimple')
+                    thickness = baseobject.Group[0].Source.Thickness
+                    contourshape = f.extrude(FreeCAD.Vector(0, 0, thickness))
+                    try:
+                        commandlist.extend(self._buildPathArea(obj, contourshape, start=obj.StartPoint).Commands)
+                    except Exception as e:
+                        print(e)
+                        FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
         else:
-            env = PathUtils.getEnvelope(baseobject.Shape, obj.StartDepth)
+            bb = baseobject.Shape.BoundBox
+            env = PathUtils.getEnvelope(baseobject.Shape, bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
             try:
-                commandlist.extend(self._buildPathArea(obj, env).Commands)
+                commandlist.extend(self._buildPathArea(obj, env, start=obj.StartPoint).Commands)
             except Exception as e:
                 print(e)
                 FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
@@ -285,6 +294,7 @@ class _CommandSetStartPoint:
         obj = FreeCADGui.Selection.getSelection()[0]
         obj.StartPoint.x = point.x
         obj.StartPoint.y = point.y
+        obj.StartPoint.z = obj.ClearanceHeight.Value
 
     def Activated(self):
         FreeCADGui.Snapper.getPoint(callback=self.setpoint)
@@ -371,8 +381,8 @@ class TaskPanel:
                 self.obj.OffsetExtra = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
             if hasattr(self.obj, "UseComp"):
                 self.obj.UseComp = self.form.useCompensation.isChecked()
-            if hasattr(self.obj, "UseStartPoint"):
-                self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
+            # if hasattr(self.obj, "UseStartPoint"):
+            #     self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
             if hasattr(self.obj, "Direction"):
                 self.obj.Direction = str(self.form.direction.currentText())
             if hasattr(self.obj, "ToolController"):
@@ -389,7 +399,7 @@ class TaskPanel:
         self.form.stepDown.setText(FreeCAD.Units.Quantity(self.obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
         self.form.useCompensation.setChecked(self.obj.UseComp)
-        self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
+        # self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
 
         index = self.form.direction.findText(
                 self.obj.Direction, QtCore.Qt.MatchFixedString)
