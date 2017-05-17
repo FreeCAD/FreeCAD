@@ -119,10 +119,11 @@ public:
             "fromShape(Shape): Returns a Path object from a Part Shape"
         );
         add_keyword_method("fromShapes",&Module::fromShapes,
-            "fromShapes(shapes, start=Vector(), " PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")\n"
+            "fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")\n"
             "\nReturns a Path object from a list of shapes\n"
             "\n* shapes: input list of shapes.\n"
             "\n* start (Vector()): optional start position.\n"
+            "\n* return_end (False): if True, returns tuple (path, endPosition).\n"
             PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)
         );
         add_keyword_method("sortWires",&Module::sortWires,
@@ -325,11 +326,12 @@ private:
         PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_PATH)
         PyObject *pShapes=NULL;
         PyObject *start=NULL;
-        static char* kwd_list[] = {"shapes", "start", 
+        PyObject *return_end=Py_False;
+        static char* kwd_list[] = {"shapes", "start", "return_end",
                 PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_PATH), NULL};
         if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), 
-                "O|O!" PARAM_PY_KWDS(AREA_PARAMS_PATH), 
-                kwd_list, &pShapes, &(Base::VectorPy::Type), &start, 
+                "O|O!O" PARAM_PY_KWDS(AREA_PARAMS_PATH), 
+                kwd_list, &pShapes, &(Base::VectorPy::Type), &start, &return_end,
                 PARAM_REF(PARAM_FARG,AREA_PARAMS_PATH)))
             throw Py::Exception();
 
@@ -357,10 +359,16 @@ private:
         }
 
         try {
+            gp_Pnt pend;
             std::unique_ptr<Toolpath> path(new Toolpath);
-            Area::toPath(*path,shapes,&pstart, NULL,
+            Area::toPath(*path,shapes,&pstart, &pend,
                     PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_PATH));
-            return Py::asObject(new PathPy(path.release()));
+            if(!PyObject_IsTrue(return_end))
+                return Py::asObject(new PathPy(path.release()));
+            Py::Tuple tuple(2);
+            tuple.setItem(0, Py::asObject(new PathPy(path.release())));
+            tuple.setItem(1, Py::asObject(new Base::VectorPy(Base::Vector3d(pend.X(),pend.Y(),pend.Z()))));
+            return tuple;
         } PATH_CATCH
     }
 
