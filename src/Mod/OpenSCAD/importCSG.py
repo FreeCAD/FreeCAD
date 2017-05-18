@@ -1146,8 +1146,8 @@ def p_polyhedron_action(p) :
         v.append(FreeCAD.Vector(float(i[0]),float(i[1]),float(i[2])))
     if printverbose:
         print(v)
-        print "Polyhedron "+p[9]
-        print(p[12])
+        print ("Polyhedron "+p[9])
+        print (p[12])
     faces_list = []    
     mypolyhed = doc.addObject('Part::Feature',p[1])
     for i in p[12] :
