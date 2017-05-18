@@ -145,7 +145,6 @@ class ObjectContour:
         PathLog.debug('depths: {}'.format(depthparams.get_depths()))
         profile.setParams(**profileparams)
         PathLog.debug("Contour with params: {}".format(profile.getParams()))
-
         sections = profile.makeSections(mode=0, project=True, heights=depthparams.get_depths())
         shapelist = [sec.getShape() for sec in sections]
 
