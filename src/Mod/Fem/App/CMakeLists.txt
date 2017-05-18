@@ -41,10 +41,13 @@ if(BUILD_FEM_NETGEN)
 endif(BUILD_FEM_NETGEN)
 
 generate_from_xml(FemMeshPy)
+generate_from_xml(FemPostPipelinePy)
 
 SET(Python_SRCS
     FemMeshPy.xml
     FemMeshPyImp.cpp
+    FemPostPipelinePy.xml
+    FemPostPipelinePyImp.cpp
     HypothesisPy.cpp
     HypothesisPy.h
 )

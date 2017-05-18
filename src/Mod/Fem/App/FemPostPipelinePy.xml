@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="GeoFeaturePy"
+        Name="FemPostPipelinePy"
+        Twin="FemPostPipeline"
+        TwinPointer="FemPostPipeline"
+        Include="Mod/Fem/App/FemPostPipeline.h"
+        Namespace="Fem"
+        FatherInclude="App/GeoFeaturePy.h"
+        FatherNamespace="App">
+        <Documentation>
+            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+            <UserDocu>The FemPostPipeline class.</UserDocu>
+        </Documentation>
+        <Methode Name="read">
+            <Documentation>
+                <UserDocu>Read in vtk file</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="load">
+            <Documentation>
+                <UserDocu>Load a result object</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getLastPostObject">
+            <Documentation>
+                <UserDocu>Get the last post-processing object</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="holdsPostObject">
+            <Documentation>
+                <UserDocu>Check if this pipeline holds a given post-processing object</UserDocu>
+            </Documentation>
+        </Methode>
+    </PythonExport>
+</GenerateModel>
