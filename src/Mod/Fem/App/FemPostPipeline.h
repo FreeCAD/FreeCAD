@@ -50,7 +50,7 @@ public:
 
     short mustExecute(void) const;
     virtual App::DocumentObjectExecReturn* execute(void);
-    //PyObject* getPyObject();
+    PyObject* getPyObject();
 
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderFemPostPipeline";
