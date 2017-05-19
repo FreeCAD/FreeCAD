@@ -484,7 +484,7 @@ PyObject* MatrixPy::analyze(PyObject * args)
 #if PY_MAJOR_VERSION < 3
         return PyString_FromString(type.c_str());
 #else
-        return PyUniCode_FromString(type.c_str());
+        return PyUnicode_FromString(type.c_str());
 #endif
     }
     PY_CATCH;
