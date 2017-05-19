@@ -271,9 +271,9 @@ void PP_Fetch_Error_Text()
         
         if (value!=NULL) {
 #if PY_MAJOR_VERSION < 3
-            strncpy(PP_last_error_info, PyString_AsString(pystring), MAX);
+            strncpy(PP_last_error_info, PyString_AsString(value), MAX);
 #else
-            strncpy(PP_last_error_info, PyUnicode_AsUTF8(pystring), MAX);
+            strncpy(PP_last_error_info, PyUnicode_AsUTF8(value), MAX);
 #endif
             PP_last_error_info[MAX-1] = '\0';
         }
