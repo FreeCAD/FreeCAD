@@ -38,24 +38,24 @@ TYPESYSTEM_SOURCE(Base::Exception,Base::BaseClass);
 
 
 Exception::Exception(void)
-  : _line(0), _isTranslatable(false)
+: _line(0), _isTranslatable(false), _isReported(false)
 {
   _sErrMsg = "FreeCAD Exception";
 }
 
 Exception::Exception(const Exception &inst)
   : _sErrMsg(inst._sErrMsg), _file(inst._file),
-  _line(inst._line), _function(inst._function), _isTranslatable(inst._isTranslatable)
+  _line(inst._line), _function(inst._function), _isTranslatable(inst._isTranslatable), _isReported(inst._isReported)
 {
 }
 
 Exception::Exception(const char * sMessage)
-: _sErrMsg(sMessage), _line(0), _isTranslatable(false)
+: _sErrMsg(sMessage), _line(0), _isTranslatable(false), _isReported(false)
 {
 }
 
 Exception::Exception(const std::string& sMessage)
-: _sErrMsg(sMessage), _line(0), _isTranslatable(false)
+: _sErrMsg(sMessage), _line(0), _isTranslatable(false), _isReported(false)
 {
 }
 
@@ -73,34 +73,37 @@ const char* Exception::what(void) const throw()
     return _sErrMsg.c_str();
 }
 
-void Exception::ReportException (void) const
+void Exception::ReportException (void)
 {
-    std::string str = "";
-    
-    if(!_sErrMsg.empty())
-        str+= (_sErrMsg + " ");
-    
-    if(!_function.empty()) {
-        str+="In ";
-        str+=_function;
-        str+= " ";
-    }
-    
-    std::string _linestr = std::to_string(_line);
-    
-    if(!_file.empty() && !_linestr.empty()) {
-        // strip absolute path
-        std::size_t pos = _file.find("src");
-        
-        if (pos!=std::string::npos) {
-            str+="in ";
-            str+= _file.substr(pos);
-            str+= ":";
-            str+=_linestr;
-        }
-    }
+    if(!_isReported) {
+        std::string str = "";
 
-    Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
+        if(!_sErrMsg.empty())
+            str+= (_sErrMsg + " ");
+
+        if(!_function.empty()) {
+            str+="In ";
+            str+=_function;
+            str+= " ";
+        }
+
+        std::string _linestr = std::to_string(_line);
+
+        if(!_file.empty() && !_linestr.empty()) {
+            // strip absolute path
+            std::size_t pos = _file.find("src");
+
+            if (pos!=std::string::npos) {
+                str+="in ";
+                str+= _file.substr(pos);
+                str+= ":";
+                str+=_linestr;
+            }
+        }
+
+        Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
+        _isReported = true;
+    }
 }
 
 PyObject * Exception::getPyObject(void)
@@ -117,6 +120,7 @@ PyObject * Exception::getPyObject(void)
     edict.setItem("sfunction", Py::String(this->getFunction()));
     edict.setItem("swhat", Py::String(this->what()));
     edict.setItem("btranslatable", Py::Boolean(this->getTranslatable()));
+    edict.setItem("breported", Py::Boolean(this->_isReported));
     return Py::new_reference_to(edict);
 }
 
@@ -141,6 +145,8 @@ void Exception::setPyObject( PyObject * pydict)
 #endif
         if (edict.hasKey("btranslatable"))
             _isTranslatable = static_cast<bool>(Py::Boolean(edict.getItem("btranslatable")));
+        if (edict.hasKey("breported"))
+            _isReported = static_cast<bool>(Py::Boolean(edict.getItem("breported")));
     }
 }
 
@@ -266,34 +272,37 @@ const char* FileException::what() const throw()
     return _sErrMsgAndFileName.c_str();
 }
 
-void FileException::ReportException (void) const
+void FileException::ReportException (void)
 {
-    std::string str = "";
-    
-    if(!_sErrMsgAndFileName.empty())
-        str+= (_sErrMsgAndFileName + " ");
-    
-    if(!_function.empty()) {
-        str+="In ";
-        str+=_function;
-        str+= " ";
-    }
-    
-    std::string _linestr = std::to_string(_line);
-    
-    if(!_file.empty() && !_linestr.empty()) {
-        // strip absolute path
-        std::size_t pos = _file.find("src");
+    if(!_isReported) {
+        std::string str = "";
         
-        if (pos!=std::string::npos) {
-            str+="in ";
-            str+= _file.substr(pos);
-            str+= ":";
-            str+=_linestr;
+        if(!_sErrMsgAndFileName.empty())
+            str+= (_sErrMsgAndFileName + " ");
+        
+        if(!_function.empty()) {
+            str+="In ";
+            str+=_function;
+            str+= " ";
         }
+        
+        std::string _linestr = std::to_string(_line);
+        
+        if(!_file.empty() && !_linestr.empty()) {
+            // strip absolute path
+            std::size_t pos = _file.find("src");
+            
+            if (pos!=std::string::npos) {
+                str+="in ";
+                str+= _file.substr(pos);
+                str+= ":";
+                str+=_linestr;
+            }
+        }
+        
+        Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
+        _isReported = true;
     }
-    
-    Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
 }
 
 PyObject * FileException::getPyObject(void)

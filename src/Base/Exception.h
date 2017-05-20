@@ -98,7 +98,8 @@ public:
 
   virtual const char* what(void) const throw();
 
-  virtual void ReportException (void) const;
+  /// Reports exception. It includes a mechanism to only report an exception once.
+  virtual void ReportException (void);
 
   inline void setMessage(const char * sMessage);
   inline void setMessage(const std::string& sMessage);
@@ -138,6 +139,7 @@ protected:
   int _line;
   std::string _function;
   bool _isTranslatable;
+  bool _isReported;
 };
 
 
@@ -223,7 +225,7 @@ public:
   /// Description of the exception
   virtual const char* what() const throw();
   /// Report generation
-  virtual void ReportException (void) const;
+  virtual void ReportException (void);
   /// Get file name for use with tranlatable message
   std::string getFileName() const;
   /// returns a Python dictionary containing the exception data
