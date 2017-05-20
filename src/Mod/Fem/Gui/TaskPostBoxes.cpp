@@ -356,7 +356,9 @@ TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* 
 
     //add the function creation command
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-    rcCmdMgr.getCommandByName("Fem_PostCreateFunctions")->getAction()->addTo(ui->CreateButton);
+    Gui::Command* cmd = rcCmdMgr.getCommandByName("FEM_PostCreateFunctions");
+    if (cmd && cmd->getAction())
+        cmd->getAction()->addTo(ui->CreateButton);
     ui->CreateButton->setPopupMode(QToolButton::InstantPopup);
 
     //load the default values
@@ -869,7 +871,9 @@ TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* fu
 
     //add the function creation command
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-    rcCmdMgr.getCommandByName("Fem_PostCreateFunctions")->getAction()->addTo(ui->CreateButton);
+    Gui::Command* cmd = rcCmdMgr.getCommandByName("FEM_PostCreateFunctions");
+    if (cmd && cmd->getAction())
+        cmd->getAction()->addTo(ui->CreateButton);
     ui->CreateButton->setPopupMode(QToolButton::InstantPopup);
 }
 
