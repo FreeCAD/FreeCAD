@@ -242,7 +242,7 @@ int main( int argc, char ** argv )
     catch (const Base::SystemExitException& e) {
         exit(e.getExitCode());
     }
-    catch (const Base::Exception& e) {
+    catch (Base::Exception& e) {
         e.ReportException();
         exit(1);
     }

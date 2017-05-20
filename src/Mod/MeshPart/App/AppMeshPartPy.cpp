@@ -128,7 +128,7 @@ private:
             Base::Console().Error("%s\n", str.c_str());
             throw Py::Exception(Base::BaseExceptionFreeCADError, str);
         }
-        catch (const Base::Exception &e) {
+        catch (Base::Exception &e) {
             std::string str;
             str += "FreeCAD exception thrown (";
             str += e.what();
