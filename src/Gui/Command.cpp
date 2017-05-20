@@ -312,10 +312,51 @@ void Command::invoke(int i)
     }
     catch (Base::AbortException&) {
     }
+    catch (Base::MemoryException& e) {
+        e.ReportException();
+
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Insufficient Memory"), QObject::tr("There is not enough memory available to process the command."));
+    }
+    catch (Base::CADKernelError& e) {
+        e.ReportException();
+        if(e.getTranslatable()) {
+            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("CAD Kernel Error"),
+                                 QObject::tr(e.getMessage().c_str()));
+        }
+        else {
+            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("CAD Kernel Error"), QObject::tr("The CAD Kernel failed to process the command."));
+        }
+    }
+    catch (Base::NotImplementedError& e) {
+        e.ReportException();
+        if(e.getTranslatable()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Feature not implemented"),
+                                  QObject::tr(e.getMessage().c_str()));
+        }
+        else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Feature not implemented"), QObject::tr("The feature you are trying to execute is not yet implemented."));
+        }
+    }
+    catch (Base::ValueError &e) {
+        e.ReportException();
+        if(e.getTranslatable()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Input Data error"),
+                                 QObject::tr(e.getMessage().c_str()));
+        }
+        else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Input Data error"), QLatin1String(e.what()));
+        }
+    }
     catch (Base::Exception &e) {
         e.ReportException();
         // Pop-up a dialog for FreeCAD-specific exceptions
-        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"), QLatin1String(e.what()));
+        if(e.getTranslatable()) {
+            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"),
+                                 QObject::tr(e.getMessage().c_str()));
+        }
+        else {
+            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"), QLatin1String(e.what()));
+        }
     }
     catch (std::exception &e) {
         Base::Console().Error("C++ exception thrown (%s)\n", e.what());
