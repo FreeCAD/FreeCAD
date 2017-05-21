@@ -93,14 +93,31 @@ the location of the centerpoint.
 */
 Base::Vector2d GetCircleCenter (const Base::Vector2d &p1, const Base::Vector2d &p2, const Base::Vector2d &p3)
 {
-  double m12p = (p1.x - p2.x) / (p2.y - p1.y);
-  double m23p = (p2.x - p3.x) / (p3.y - p2.y);
-  double x = 1/( 2*(m12p - m23p) ) * ( m12p*(p1.x + p2.x) -
-                                       m23p*(p2.x + p3.x) +
-                                       p3.y - p1.y );
-  double y = m12p * ( x - (p1.x + p2.x)/2 ) + (p1.y + p2.y)/2;
+    Base::Vector2d u = p2-p1;
+    Base::Vector2d v = p3-p2;
+    Base::Vector2d w = p1-p3;
 
-  return Base::Vector2d(x, y);
+    double uu =  u*u;
+    double vv =  v*v;
+    double ww =  w*w;
+    
+    double uv = -(u*v);
+    double vw = -(v*w);
+    double uw = -(u*w);
+    
+    double w0 = (2 * sqrt(uu * ww - uw * uw) * uw / (uu * ww));
+    double w1 = (2 * sqrt(uu * vv - uv * uv) * uv / (uu * vv));
+    double w2 = (2 * sqrt(vv * ww - vw * vw) * vw / (vv * ww));
+    
+    double wx = w0 + w1 + w2;
+    
+    if( wx == 0)
+        THROWM(Base::ValueError,"Points are collinear");
+
+    double x = (w0*p1.x + w1*p2.x + w2*p3.x)/wx;
+    double y = (w0*p1.y + w1*p2.y + w2*p3.y)/wx;
+
+    return Base::Vector2d(x, y);
 }
 
 void ActivateHandler(Gui::Document *doc,DrawSketchHandler *handler)
@@ -1655,67 +1672,73 @@ public:
             centerline with a point.  It happens because the direction the curve is being drawn
             reverses.
             */
-            CenterPoint = EditCurve[30] = GetCircleCenter(FirstPoint, SecondPoint, onSketchPos);
-            radius = (SecondPoint - CenterPoint).Length();
+            try {
+                CenterPoint = EditCurve[30] = GetCircleCenter(FirstPoint, SecondPoint, onSketchPos);
+                
+                radius = (SecondPoint - CenterPoint).Length();
 
-            double angle1 = GetPointAngle(CenterPoint, FirstPoint);
-            double angle2 = GetPointAngle(CenterPoint, SecondPoint);
-            double angle3 = GetPointAngle(CenterPoint, onSketchPos);
+                double angle1 = GetPointAngle(CenterPoint, FirstPoint);
+                double angle2 = GetPointAngle(CenterPoint, SecondPoint);
+                double angle3 = GetPointAngle(CenterPoint, onSketchPos);
 
-            // Always build arc counter-clockwise
-            // Point 3 is between Point 1 and 2
-            if ( angle3 > min(angle1, angle2) && angle3 < max(angle1, angle2) ) {
-                if (angle2 > angle1) {
-                    EditCurve[0] =  FirstPoint;
-                    EditCurve[29] = SecondPoint;
-                    arcPos1 = Sketcher::start;
-                    arcPos2 = Sketcher::end;
+                // Always build arc counter-clockwise
+                // Point 3 is between Point 1 and 2
+                if ( angle3 > min(angle1, angle2) && angle3 < max(angle1, angle2) ) {
+                    if (angle2 > angle1) {
+                        EditCurve[0] =  FirstPoint;
+                        EditCurve[29] = SecondPoint;
+                        arcPos1 = Sketcher::start;
+                        arcPos2 = Sketcher::end;
+                    }
+                    else {
+                        EditCurve[0] =  SecondPoint;
+                        EditCurve[29] = FirstPoint;
+                        arcPos1 = Sketcher::end;
+                        arcPos2 = Sketcher::start;
+                    }
+                    startAngle = min(angle1, angle2);
+                    endAngle   = max(angle1, angle2);
+                    arcAngle = endAngle - startAngle;
                 }
+                // Point 3 is not between Point 1 and 2
                 else {
-                    EditCurve[0] =  SecondPoint;
-                    EditCurve[29] = FirstPoint;
-                    arcPos1 = Sketcher::end;
-                    arcPos2 = Sketcher::start;
+                    if (angle2 > angle1) {
+                        EditCurve[0] =  SecondPoint;
+                        EditCurve[29] = FirstPoint;
+                        arcPos1 = Sketcher::end;
+                        arcPos2 = Sketcher::start;
+                    }
+                    else {
+                        EditCurve[0] =  FirstPoint;
+                        EditCurve[29] = SecondPoint;
+                        arcPos1 = Sketcher::start;
+                        arcPos2 = Sketcher::end;
+                    }
+                    startAngle = max(angle1, angle2);
+                    endAngle   = min(angle1, angle2);
+                    arcAngle = 2*M_PI - (startAngle - endAngle);
                 }
-                startAngle = min(angle1, angle2);
-                endAngle   = max(angle1, angle2);
-                arcAngle = endAngle - startAngle;
-            }
-            // Point 3 is not between Point 1 and 2
-            else {
-                if (angle2 > angle1) {
-                    EditCurve[0] =  SecondPoint;
-                    EditCurve[29] = FirstPoint;
-                    arcPos1 = Sketcher::end;
-                    arcPos2 = Sketcher::start;
+
+                // Build a 30 point circle ignoring already constructed points
+                for (int i=1; i <= 28; i++) {
+                    double angle = startAngle + i*arcAngle/29.0; // N point arc has N-1 segments
+                    EditCurve[i] = Base::Vector2d(CenterPoint.x + radius*cos(angle),
+                                                CenterPoint.y + radius*sin(angle));
                 }
-                else {
-                    EditCurve[0] =  FirstPoint;
-                    EditCurve[29] = SecondPoint;
-                    arcPos1 = Sketcher::start;
-                    arcPos2 = Sketcher::end;
+
+                SbString text;
+                text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) arcAngle * 180 / M_PI);
+                setPositionText(onSketchPos, text);
+
+                sketchgui->drawEdit(EditCurve);
+                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0),
+                                    AutoConstraint::CURVE)) {
+                    renderSuggestConstraintsCursor(sugConstr3);
+                    return;
                 }
-                startAngle = max(angle1, angle2);
-                endAngle   = min(angle1, angle2);
-                arcAngle = 2*M_PI - (startAngle - endAngle);
             }
-
-            // Build a 30 point circle ignoring already constructed points
-            for (int i=1; i <= 28; i++) {
-                double angle = startAngle + i*arcAngle/29.0; // N point arc has N-1 segments
-                EditCurve[i] = Base::Vector2d(CenterPoint.x + radius*cos(angle),
-                                              CenterPoint.y + radius*sin(angle));
-            }
-
-            SbString text;
-            text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) arcAngle * 180 / M_PI);
-            setPositionText(onSketchPos, text);
-
-            sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0),
-                                   AutoConstraint::CURVE)) {
-                renderSuggestConstraintsCursor(sugConstr3);
-                return;
+            catch(Base::ValueError &e) {
+                e.ReportException();
             }
         }
         applyCursor();
@@ -5000,47 +5023,53 @@ public:
             }
         }
         else if (Mode == STATUS_SEEK_Second || Mode == STATUS_SEEK_Third) {
-            if (Mode == STATUS_SEEK_Second)
-                CenterPoint  = EditCurve[N+1] = (onSketchPos - FirstPoint)/2 + FirstPoint;
-            else
-                CenterPoint = EditCurve[N+1] = GetCircleCenter(FirstPoint, SecondPoint, onSketchPos);
-            radius = (onSketchPos - CenterPoint).Length();
-            double lineAngle = GetPointAngle(CenterPoint, onSketchPos);
+            try 
+            {
+                if (Mode == STATUS_SEEK_Second)
+                    CenterPoint  = EditCurve[N+1] = (onSketchPos - FirstPoint)/2 + FirstPoint;
+                else
+                    CenterPoint = EditCurve[N+1] = GetCircleCenter(FirstPoint, SecondPoint, onSketchPos);
+                radius = (onSketchPos - CenterPoint).Length();
+                double lineAngle = GetPointAngle(CenterPoint, onSketchPos);
 
-            // Build a N point circle
-            for (int i=1; i < N; i++) {
-                // Start at current angle
-                double angle = i*2*M_PI/N + lineAngle; // N point closed circle has N segments
-                EditCurve[i] = Base::Vector2d(CenterPoint.x + radius*cos(angle),
-                                              CenterPoint.y + radius*sin(angle));
-            }
-            // Beginning and end of curve should be exact
-            EditCurve[0] = EditCurve[N] = onSketchPos;
-            
-            // Display radius and start angle
-            // This lineAngle will report counter-clockwise from +X, not relatively
-            SbString text;
-            text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) lineAngle * 180 / M_PI);
-            setPositionText(onSketchPos, text);
+                // Build a N point circle
+                for (int i=1; i < N; i++) {
+                    // Start at current angle
+                    double angle = i*2*M_PI/N + lineAngle; // N point closed circle has N segments
+                    EditCurve[i] = Base::Vector2d(CenterPoint.x + radius*cos(angle),
+                                                CenterPoint.y + radius*sin(angle));
+                }
+                // Beginning and end of curve should be exact
+                EditCurve[0] = EditCurve[N] = onSketchPos;
+                
+                // Display radius and start angle
+                // This lineAngle will report counter-clockwise from +X, not relatively
+                SbString text;
+                text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) lineAngle * 180 / M_PI);
+                setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
-            if (Mode == STATUS_SEEK_Second) {
-                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
-                                       AutoConstraint::CURVE)) {
-                    // Disable tangent snap on 2nd point
-                    if (sugConstr2.back().Type == Sketcher::Tangent)
-                        sugConstr2.pop_back();
-                    else
-                        renderSuggestConstraintsCursor(sugConstr2);
-                    return;
+                sketchgui->drawEdit(EditCurve);
+                if (Mode == STATUS_SEEK_Second) {
+                    if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
+                                        AutoConstraint::CURVE)) {
+                        // Disable tangent snap on 2nd point
+                        if (sugConstr2.back().Type == Sketcher::Tangent)
+                            sugConstr2.pop_back();
+                        else
+                            renderSuggestConstraintsCursor(sugConstr2);
+                        return;
+                    }
+                }
+                else {
+                    if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0),
+                                        AutoConstraint::CURVE)) {
+                        renderSuggestConstraintsCursor(sugConstr3);
+                        return;
+                    }
                 }
             }
-            else {
-                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0),
-                                       AutoConstraint::CURVE)) {
-                    renderSuggestConstraintsCursor(sugConstr3);
-                    return;
-                }
+            catch(Base::ValueError &e) {
+                e.ReportException();
             }
         }
         applyCursor();
