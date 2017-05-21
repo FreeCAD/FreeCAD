@@ -30,6 +30,7 @@
 # include <QTextStream>
 # include <QToolButton>
 # include <QMenu>
+# include <QLabel>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -53,7 +54,7 @@ using namespace Gui::DockWnd;
 SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
   : DockWindow(pcDocument,parent)
 {
-    setWindowTitle(tr("Property View"));
+    setWindowTitle(tr("Selection View"));
 
     QVBoxLayout* vLayout = new QVBoxLayout(this);
     vLayout->setSpacing(0);
@@ -65,14 +66,20 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
 #endif
     searchBox->setToolTip(tr("Searches object labels"));
     QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setSpacing(2);
     QToolButton* clearButton = new QToolButton(this);
     clearButton->setFixedSize(18, 21);
     clearButton->setCursor(Qt::ArrowCursor);
-    clearButton->setStyleSheet(QString::fromLatin1("QToolButton {margin-bottom:6px}"));
+    clearButton->setStyleSheet(QString::fromUtf8("QToolButton {margin-bottom:1px}"));
     clearButton->setIcon(BitmapFactory().pixmap(":/icons/edit-cleartext.svg"));
     clearButton->setToolTip(tr("Clears the search field"));
+    clearButton->setAutoRaise(true);
+    countLabel = new QLabel(this);
+    countLabel->setText(QString::fromUtf8("0"));
+    countLabel->setToolTip(tr("The number of selected items"));
     hLayout->addWidget(searchBox);
     hLayout->addWidget(clearButton,0,Qt::AlignRight);
+    hLayout->addWidget(countLabel,0,Qt::AlignRight);
     vLayout->addLayout(hLayout);
 
     selectionView = new QListWidget(this);
@@ -164,6 +171,7 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
             new QListWidgetItem(selObject, selectionView);
         }
     }
+    countLabel->setText(QString::number(selectionView->count()));
 }
 
 void SelectionView::search(const QString& text)
