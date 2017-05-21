@@ -93,14 +93,28 @@ the location of the centerpoint.
 */
 Base::Vector2d GetCircleCenter (const Base::Vector2d &p1, const Base::Vector2d &p2, const Base::Vector2d &p3)
 {
+  /*
   double m12p = (p1.x - p2.x) / (p2.y - p1.y);
   double m23p = (p2.x - p3.x) / (p3.y - p2.y);
   double x = 1/( 2*(m12p - m23p) ) * ( m12p*(p1.x + p2.x) -
                                        m23p*(p2.x + p3.x) +
                                        p3.y - p1.y );
-  double y = m12p * ( x - (p1.x + p2.x)/2 ) + (p1.y + p2.y)/2;
+  double y = m12p * ( x - (p1.x + p2.x)/2 ) + (p1.y + p2.y)/2; */
 
-  return Base::Vector2d(x, y);
+  // This is just the calculations above expanded and simplified to avoid the problem that slopes can be
+  // infinite and provide bad results (e.g. p2.y = p1.y)
+  // Done via Sage's simplify_radical() function
+  double x = (1.0L/2.0L)*(p1.y*pow(p2.x, 2) + p1.y*pow(p2.y, 2) - p2.y*(pow(p1.x,
+            2) + pow(p1.y, 2)) - pow(p3.x, 2)*(p1.y - p2.y) - pow(p3.y, 2)*(p1.y - p2.y) +
+            p3.y*(pow(p1.x, 2) + pow(p1.y, 2) - pow(p2.x, 2) - pow(p2.y, 2)))/(-p1.x*p2.y +
+            p1.y*p2.x - p3.x*(p1.y - p2.y) + p3.y*(p1.x - p2.x));
+  
+  double y = -1.0L/2.0L*(p1.x*pow(p2.x, 2) + p1.x*pow(p2.y, 2) - p2.x*(pow(p1.x,
+            2) + pow(p1.y, 2)) - pow(p3.x, 2)*(p1.x - p2.x) + p3.x*(pow(p1.x, 2) +
+            pow(p1.y, 2) - pow(p2.x, 2) - pow(p2.y, 2)) - pow(p3.y, 2)*(p1.x -
+            p2.x))/(-p1.x*p2.y + p1.y*p2.x - p3.x*(p1.y - p2.y) + p3.y*(p1.x - p2.x));
+
+    return Base::Vector2d(x, y);
 }
 
 void ActivateHandler(Gui::Document *doc,DrawSketchHandler *handler)
