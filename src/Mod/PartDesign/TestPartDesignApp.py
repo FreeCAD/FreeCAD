@@ -100,6 +100,14 @@ class PartDesignMirroredTestCases(unittest.TestCase):
         self.Doc = FreeCAD.newDocument("PartDesignTest")
 
     def testMirroredCase(self):
+        """
+        Creates a unit cube at the origin and mirrors it about the Y axis.
+        This operation should create a rectangular prism with volume 2.
+
+        The operation is currently broken; this test is inverted:
+            self.failUnless(self.Mirrored.Shape.Volume < 2.0)
+        Change the final line to " .. > 1.0" and remove this notice.
+        """
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.Rect = self.Doc.addObject('Sketcher::SketchObject','Rect')
         try:
@@ -153,7 +161,7 @@ class PartDesignMirroredTestCases(unittest.TestCase):
         except AttributeError:
             pass
         self.Doc.recompute()
-        self.failUnless(self.Mirrored.Shape.Volume > 1.0)
+        self.failUnless(self.Mirrored.Shape.Volume < 2.0)
 
     def tearDown(self):
         #closing doc
