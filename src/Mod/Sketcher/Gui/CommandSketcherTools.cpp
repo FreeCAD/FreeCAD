@@ -1121,6 +1121,8 @@ static const char *cursor_createcopy[]={
                 unsetCursor();
                 resetPositionText();
                 
+                int currentgeoid = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getHighestCurveIndex();
+                
                 Gui::Command::openCommand("Create copy of geometry");
                 
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -1142,7 +1144,7 @@ static const char *cursor_createcopy[]={
                 
                 // add auto constraints for the destination copy
                 if (sugConstr1.size() > 0) {
-                    createAutoConstraints(sugConstr1, OriginGeoId+nElements, OriginPos);
+                    createAutoConstraints(sugConstr1, currentgeoid+nElements, OriginPos);
                     sugConstr1.clear();
                 }
                 
