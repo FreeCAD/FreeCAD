@@ -128,4 +128,9 @@
 #if PY_MINOR_VERSION < 2
 typedef long int Py_hash_t;
 #endif
+
+#ifndef PYCXX_PYTHON_2TO3
+#define PYCXX_PYTHON_2TO3
+#endif
+
 #endif //  __PyCXX_config_hh__

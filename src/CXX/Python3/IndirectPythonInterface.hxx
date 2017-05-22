@@ -175,8 +175,8 @@ PYCXX_EXPORT int &_Py_TabcheckFlag();
 PYCXX_EXPORT int &_Py_VerboseFlag();
 PYCXX_EXPORT int &_Py_UnicodeFlag();
 
-void _XINCREF( PyObject *op );
-void _XDECREF( PyObject *op );
+PYCXX_EXPORT void _XINCREF( PyObject *op );
+PYCXX_EXPORT void _XDECREF( PyObject *op );
 
 PYCXX_EXPORT char *__Py_PackageContext();
 };
