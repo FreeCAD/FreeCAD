@@ -2956,6 +2956,7 @@ def mirror(objlist,p1,p2):
 
     if len(result) == 1:
         result = result[0]
+        select(result)
     return result
 
 

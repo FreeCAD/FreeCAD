@@ -948,6 +948,8 @@ class PanelSheet(Draft._DraftObject):
 
     def execute(self, obj):
         import Part
+        self.sheettag = None
+        self.sheetborder = None
         pl = obj.Placement
         if obj.Width.Value and obj.Height.Value:
             l2 = obj.Width.Value/2

@@ -30,6 +30,7 @@
 #include "Selection.h"
 
 class QListWidget;
+class QLabel;
 
 namespace App {
 class DocumentObject;
@@ -71,6 +72,7 @@ public:
     virtual void onUpdate(void);
 
     QListWidget* selectionView;
+    QLabel*      countLabel;
 
 public Q_SLOTS:
     /// get called when text is entered in the search box

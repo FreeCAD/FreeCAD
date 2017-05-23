@@ -528,11 +528,15 @@ class InstallWorker(QtCore.QThread):
             self.info_label.emit("python-git not found.")
             FreeCAD.Console.PrintWarning(translate("AddonsInstaller","python-git not found. Using standard download instead.\n"))
             try:
-                import zipfile,io
+                import zipfile
             except:
                 self.info_label.emit("no zip support.")
                 FreeCAD.Console.PrintError(translate("AddonsInstaller","Your version of python doesn't appear to support ZIP files. Unable to proceed.\n"))
                 return
+            try:
+                import StringIO as io
+            except ImportError: # StringIO is not available with python3
+                import io
         if self.idx < 0:
             return
         if not self.repos:
@@ -575,7 +579,10 @@ class InstallWorker(QtCore.QThread):
     def download(self,giturl,clonedir):
         "downloads and unzip from github"
         import zipfile
-        import io
+        try:
+            import StringIO as io
+        except ImportError: # StringIO is not available with python3
+            import io
         bakdir = None
         if os.path.exists(clonedir):
             bakdir = clonedir+".bak"

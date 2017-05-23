@@ -1898,11 +1898,13 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                     if not hasattr(ob.Proxy,"sheetborder"):
                         ob.Proxy.execute(ob)
                     sb = ob.Proxy.sheetborder
-                    sb.Placement = ob.Placement
+                    if sb:
+                        sb.Placement = ob.Placement
+                        writeShape(sb,ob,dxf,nospline,lwPoly,layer="Sheets",color=1)
                     ss = ob.Proxy.sheettag
-                    ss.Placement = ob.Placement.multiply(ss.Placement)
-                    writeShape(sb,ob,dxf,nospline,lwPoly,layer="Sheets",color=1)
-                    writeShape(ss,ob,dxf,nospline,lwPoly,layer="SheetTags",color=1)
+                    if ss:
+                        ss.Placement = ob.Placement.multiply(ss.Placement)
+                        writeShape(ss,ob,dxf,nospline,lwPoly,layer="SheetTags",color=1)
                     for subob in ob.Group:
                         if Draft.getType(subob) == "PanelCut":
                             writePanelCut(subob,dxf,nospline,lwPoly,parent=ob)
