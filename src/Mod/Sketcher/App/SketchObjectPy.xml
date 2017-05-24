@@ -137,6 +137,11 @@
         <UserDocu>trim a curve with a given id at a given reference point</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="extend">
+      <Documentation>
+        <UserDocu>extend a curve to new start and end positions</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="addSymmetric">
       <Documentation>
         <UserDocu>add a symmetric geometric objects to the sketch with respect to a reference point or line</UserDocu>
