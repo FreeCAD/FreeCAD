@@ -894,6 +894,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                   << "Sketcher_CreateHexagon"
                                   << "Sketcher_CreateFillet"
                                   << "Sketcher_Trimming"
+                                  << "Sketcher_Extend"
                                   << "Sketcher_External"
                                   << "Sketcher_ToggleConstruction"
                                 /*<< "Sketcher_CreateText"*/
