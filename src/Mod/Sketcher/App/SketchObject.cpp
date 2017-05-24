@@ -1109,6 +1109,50 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
     return -1;
 }
 
+int SketchObject::extend(int GeoId, double increment, int endpoint) {
+    if (GeoId < 0 || GeoId > getHighestCurveIndex())
+        return -1;
+
+    const std::vector<Part::Geometry *> &geomList = getInternalGeometry();
+    Part::Geometry *geom = geomList[GeoId];
+    int retcode = -1;
+    if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        Part::GeomLineSegment *seg = static_cast<Part::GeomLineSegment *>(geom);
+        Base::Vector3d startVec = seg->getStartPoint();
+        Base::Vector3d endVec = seg->getEndPoint();
+        if (endpoint == start) {
+            Base::Vector3d newPoint = startVec - endVec;
+            double scaleFactor = newPoint.Length() + increment;
+            newPoint.Normalize();
+            newPoint.Scale(scaleFactor, scaleFactor, scaleFactor);
+            newPoint = newPoint + endVec;
+            retcode = movePoint(GeoId, Sketcher::start, newPoint, false, true);
+        } else if (endpoint == end) {
+            Base::Vector3d newPoint = endVec - startVec;
+            double scaleFactor = newPoint.Length() + increment;
+            newPoint.Normalize();
+            newPoint.Scale(scaleFactor, scaleFactor, scaleFactor);
+            newPoint = newPoint + startVec;
+            retcode = movePoint(GeoId, Sketcher::end, newPoint, false, true);
+        }
+    } else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        Part::GeomArcOfCircle *arc = static_cast<Part::GeomArcOfCircle *>(geom);
+        double startArc, endArc;
+        arc->getRange(startArc, endArc, true);
+        if (endpoint == start) {
+            arc->setRange(startArc - increment, endArc, true);
+            retcode = 0;
+        } else if (endpoint == end) {
+            arc->setRange(startArc, endArc + increment, true);
+            retcode = 0;
+        }
+    }
+    if (retcode == 0 && noRecomputes) {
+        solve();
+    }
+    return retcode;
+}
+
 int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex())

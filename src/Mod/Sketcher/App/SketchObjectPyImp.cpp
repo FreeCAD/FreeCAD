@@ -823,6 +823,26 @@ PyObject* SketchObjectPy::trim(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::extend(PyObject *args)
+{
+    double increment;
+    int endPoint;
+
+    int GeoId;
+
+    if (PyArg_ParseTuple(args, "idi", &GeoId, &increment, &endPoint)) {
+        if (this->getSketchObjectPtr()->extend(GeoId, increment, endPoint)) {
+            std::stringstream str;
+            str << "Not able to extend geometry with id : (" << GeoId  << ") for increment (" << increment << ") and point position (" << endPoint << ")";
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return 0;
+        }
+    }
+    Py_Return;
+    PyErr_SetString(PyExc_TypeError, "extend() method accepts:\n"
+    "-- int,float,int\n");
+}
+
 PyObject* SketchObjectPy::addSymmetric(PyObject *args)
 {
     PyObject *pcObj;

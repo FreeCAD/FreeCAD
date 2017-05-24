@@ -6084,6 +6084,323 @@ bool CmdSketcherTrimming::isActive(void)
 // ======================================================================================
 
 namespace SketcherGui {
+    class ExtendSelection : public Gui::SelectionFilterGate
+    {
+        App::DocumentObject* object;
+    public:
+        ExtendSelection(App::DocumentObject* obj)
+            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
+			, object(obj)
+			, disabled(false)
+        {}
+
+        bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
+        {
+            if (pObj != this->object)
+                return false;
+            if (!sSubName || sSubName[0] == '\0')
+                return false;
+			if (disabled)
+				return true;
+            std::string element(sSubName);
+            if (element.substr(0, 4) == "Edge") {
+                int GeoId = std::atoi(element.substr(4, 4000).c_str()) - 1;
+                Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
+                const Part::Geometry *geom = Sketch->getGeometry(GeoId);
+                if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
+                    geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
+                )
+                    return true;
+            }
+            return false; 
+        }
+
+        void setDisabled(bool isDisabled) {
+			disabled = isDisabled;
+        }
+    protected:
+        bool disabled;
+    };
+};
+
+/* XPM */
+static const char *cursor_extension[]={
+"32 32 3 1",
+"+ c white",
+"* c red",
+". c None",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"................................",
+"+++++...+++++...................",
+"................................",
+"......+.........................",
+"......+.........................",
+"......+..................******.",
+"......+....................****.",
+"......+..................***.**.",
+"........................**....*.",
+"......................***.......",
+".....................***........",
+"................................",
+"................................",
+".................**.............",
+"...............***..............",
+"..............***...............",
+".............**.................",
+"................................",
+".........***....................",
+"........**......................",
+".......**.......................",
+"....**.*........................",
+"...****.........................",
+"...****.........................",
+"....**..........................",
+"................................",
+"................................"};
+
+class DrawSketchHandlerExtend: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerExtend()
+        : Mode(STATUS_SEEK_First)
+        , EditCurve(2)
+        , BaseGeoId(-1)
+        , ExtendFromStart(false)
+    {
+    }
+    virtual ~DrawSketchHandlerExtend()
+    {
+        Gui::Selection().rmvSelectionGate();
+    }
+    enum SelectMode {
+        STATUS_SEEK_First,
+        STATUS_SEEK_Second,
+    };
+
+    virtual void activated(ViewProviderSketch *sketchgui)
+    {
+        Q_UNUSED(sketchgui)
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+		filterGate = new ExtendSelection(sketchgui->getObject());
+        Gui::Selection().addSelectionGate(filterGate);
+        setCursor(QPixmap(cursor_extension),7,7);
+    }
+
+    virtual void mouseMove(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        if (Mode == STATUS_SEEK_Second) {
+            const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(BaseGeoId);
+            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geom);
+                // project point to the existing curve
+                Base::Vector3d startPoint = lineSeg->getStartPoint();
+                Base::Vector3d endPoint = lineSeg->getEndPoint();
+
+                Base::Vector2d recenteredLine = Base::Vector2d(endPoint.x - startPoint.x,
+                    endPoint.y - startPoint.y);
+                Base::Vector2d recenteredPoint = Base::Vector2d(onSketchPos.x - startPoint.x,
+                    onSketchPos.y - startPoint.y);
+                Base::Vector2d projection;
+                projection.ProjectToLine(recenteredPoint, recenteredLine);
+                if (recenteredPoint.Length() < recenteredPoint.Distance(recenteredLine)) {
+                    EditCurve[0] = Base::Vector2d(startPoint.x + projection.x, startPoint.y + projection.y);
+                    EditCurve[1] = Base::Vector2d(endPoint.x, endPoint.y);
+                } else {
+                    EditCurve[0] = Base::Vector2d(startPoint.x, startPoint.y);
+                    EditCurve[1] = Base::Vector2d(startPoint.x + projection.x, startPoint.y + projection.y);
+                }
+                ExtendFromStart = (onSketchPos.Distance(EditCurve[0]) < onSketchPos.Distance(EditCurve[1]));
+                Increment = ExtendFromStart ? projection.Length() : projection.Length() - recenteredLine.Length();
+                sketchgui->drawEdit(EditCurve);
+
+            } else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geom);
+                Base::Vector3d center = arc->getCenter();
+                double radius = arc->getRadius();
+
+                double start, end;
+                arc->getRange(start, end, true);
+                double arcAngle = end - start;
+
+                Base::Vector2d angle = Base::Vector2d(onSketchPos.x - center.x, onSketchPos.y - center.y);
+                Base::Vector2d startAngle = Base::Vector2d(cos(start), sin(start));
+                Base::Vector2d endAngle = Base::Vector2d(cos(end), sin(end));
+
+                Base::Vector2d arcHalf = Base::Vector2d(cos(start + arcAngle/ 2.0), sin(start+ arcAngle / 2.0));
+                double angleToEndAngle = angle.GetAngle(endAngle);
+                double angleToStartAngle = angle.GetAngle(startAngle);
+
+                if (arcHalf.GetAngle(angle) > arcAngle / 2) {
+                    double modStartAngle = start;
+                    double modArcAngle = end - start;
+                    if (ExtendFromStart) {
+                        if (crossProduct(angle, startAngle) < 0) {
+                            modStartAngle -= 2*M_PI - angleToStartAngle;
+                            modArcAngle += 2*M_PI - angleToStartAngle;
+                        } else {
+                            modStartAngle -= angleToStartAngle;
+                            modArcAngle += angleToStartAngle;
+                        }
+                    } else {
+                        if (crossProduct(angle, endAngle) >= 0) {
+                            modArcAngle += 2*M_PI - angleToEndAngle;
+                        } else {
+                            modArcAngle += angleToEndAngle;
+                        }
+                    }
+                    for (int i = 0; i < 31; i++) {
+                        double angle = modStartAngle + i * modArcAngle/30.0;
+                        EditCurve[i] = Base::Vector2d(center.x + radius * cos(angle), center.y + radius * sin(angle));
+                    }
+                    Increment = modArcAngle - (end- start);
+                    sketchgui->drawEdit(EditCurve);
+                } else {
+                    // draw curve anyway to avoid 'stuck' appearance
+                    for (int i = 0; i < 31; i++) {
+                        double angle = start + i * arcAngle/30.0;
+                        EditCurve[i] = Base::Vector2d(center.x + radius * cos(angle), center.y + radius * sin(angle));
+                    }
+                    Increment = 0;
+                    sketchgui->drawEdit(EditCurve);
+                }
+            }
+            if (seekAutoConstraint(SugConstr, onSketchPos, Base::Vector2d(0.f,0.f))) {
+                renderSuggestConstraintsCursor(SugConstr);
+                return;
+            }
+        }
+    }
+
+    virtual bool pressButton(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        if (Mode == STATUS_SEEK_First) {
+            BaseGeoId = sketchgui->getPreselectCurve();
+            if (BaseGeoId > -1) {
+                const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(BaseGeoId);
+                if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                    Mode = STATUS_SEEK_Second;
+                } else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                    const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geom);
+                    double start, end;
+                    arc->getRange(start, end, true);
+
+                    Base::Vector3d center = arc->getCenter();
+                    Base::Vector2d angle = Base::Vector2d(onSketchPos.x - center.x, onSketchPos.y - center.y);
+                    double angleToStart = angle.GetAngle(Base::Vector2d(cos(start), sin(start)));
+                    double angleToEnd = angle.GetAngle(Base::Vector2d(cos(end), sin(end)));
+                    ExtendFromStart = (angleToStart < angleToEnd); // move start point if closer to angle than end point
+                    EditCurve.resize(31);
+                    Mode = STATUS_SEEK_Second;
+                }
+				filterGate->setDisabled(true);
+            }
+        } else if (Mode == STATUS_SEEK_Second) {
+            try {
+                Gui::Command::openCommand("Extend edge");
+                Gui::Command::doCommand(Gui::Command::Doc, 
+                        "App.ActiveDocument.%s.extend(%d, %f, %d)\n", // GeoId, increment, PointPos
+                    sketchgui->getObject()->getNameInDocument(), BaseGeoId, Increment,
+                    ExtendFromStart ? Sketcher::start : Sketcher::end);
+                    Gui::Command::commitCommand();
+
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                if(autoRecompute)
+                    Gui::Command::updateActive();
+
+                // constrain chosen point
+                if (SugConstr.size() > 0) {
+                    createAutoConstraints(SugConstr, BaseGeoId, (ExtendFromStart) ? Sketcher::start : Sketcher::end);
+                    SugConstr.clear();
+                }
+                bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+
+                if(continuousMode){
+                    // This code enables the continuous creation mode.
+                    Mode=STATUS_SEEK_First;
+					filterGate->setDisabled(false);
+                    EditCurve.clear();
+                    sketchgui->drawEdit(EditCurve);
+                    EditCurve.resize(2);
+                    applyCursor();
+                    /* this is ok not to call to purgeHandler
+                    * in continuous creation mode because the 
+                    * handler is destroyed by the quit() method on pressing the
+                    * right button of the mouse */
+                } else{
+                    sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                }
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("Failed to extend edge: %s\n", e.what());
+                Gui::Command::abortCommand();
+            }
+
+        } else { // exit extension tool if user clicked on empty space
+            BaseGeoId = -1;
+            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+        }
+        return true;
+    }
+
+protected:
+    SelectMode Mode;
+    std::vector<Base::Vector2d> EditCurve;
+    int BaseGeoId;
+	ExtendSelection* filterGate = nullptr;
+    bool ExtendFromStart; // if true, extend from start, else extend from end (circle only)
+    double Increment;
+    std::vector<AutoConstraint> SugConstr;
+
+private:
+    int crossProduct(Base::Vector2d &vec1, Base::Vector2d &vec2) {
+        return vec1.x * vec2.y - vec1.y * vec2.x;
+    }
+};
+
+DEF_STD_CMD_A(CmdSketcherExtend);
+
+//TODO: fix the translations for this
+CmdSketcherExtend::CmdSketcherExtend()
+  : Command("Sketcher_Extend")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Extend edge");
+    sToolTipText    = QT_TR_NOOP("Extend an edge with respect to the picked position");
+    sWhatsThis      = "Sketcher_Extend";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Extend";
+    sAccel          = "T,E";
+    eType           = ForEdit;
+}
+
+void CmdSketcherExtend::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerExtend());
+}
+
+bool CmdSketcherExtend::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
+namespace SketcherGui {
     class ExternalSelection : public Gui::SelectionFilterGate
     {
         App::DocumentObject* object;
@@ -7372,6 +7689,7 @@ void CreateSketcherCommandsCreateGeo(void)
     //rcCmdMgr.addCommand(new CmdSketcherCreateText());
     //rcCmdMgr.addCommand(new CmdSketcherCreateDraftLine());
     rcCmdMgr.addCommand(new CmdSketcherTrimming());
+    rcCmdMgr.addCommand(new CmdSketcherExtend());
     rcCmdMgr.addCommand(new CmdSketcherExternal());
     rcCmdMgr.addCommand(new CmdSketcherCarbonCopy());
 }
