@@ -2270,7 +2270,7 @@ class Move(Modifier):
                 onlyarchgroups = False
         if not onlyarchgroups:
             # arch groups can be moved, no need to add their children
-            self.sel = Draft.getGroupContents(self.sel)
+            self.sel = Draft.getGroupContents(self.sel,spaces=True)
         self.ui.pointUi(self.name)
         self.ui.modUi()
         self.ui.xValue.setFocus()
@@ -2426,7 +2426,7 @@ class Rotate(Modifier):
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = FreeCADGui.Selection.getSelection()
-        self.sel = Draft.getGroupContents(self.sel)
+        self.sel = Draft.getGroupContents(self.sel,spaces=True)
         self.step = 0
         self.center = None
         self.ui.arcUi()

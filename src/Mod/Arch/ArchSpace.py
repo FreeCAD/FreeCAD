@@ -314,6 +314,8 @@ class _Space(ArchComponent.Component):
         import Part
         shape = None
         faces = []
+        
+        pl = obj.Placement
 
         #print("starting compute")
         # 1: if we have a base shape, we use it
@@ -372,6 +374,8 @@ class _Space(ArchComponent.Component):
                 #print("setting objects shape")
                 shape = shape.Solids[0]
                 obj.Shape = shape
+                pl = pl.multiply(obj.Placement)
+                obj.Placement = pl
                 return
 
         print("Arch: error computing space boundary")
