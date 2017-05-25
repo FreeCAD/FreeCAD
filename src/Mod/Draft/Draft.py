@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 #***************************************************************************
 #*                                                                         *
@@ -1891,7 +1891,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += 'id="%s" ' % pathname
         svg += ' d="'
         if not wires:
-            egroups = (Part.__sortEdges__(edges),)
+            egroups = Part.sortEdges(edges)
         else:
             egroups = []
             for w in wires:
