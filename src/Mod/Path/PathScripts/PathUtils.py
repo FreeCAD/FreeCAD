@@ -512,28 +512,45 @@ def rampPlunge(edge, rampangle, destZ, startZ):
 
     return rampCmds
 
-def sort_jobs(locations, keys):
+def sort_jobs(locations, keys, attractors=[]):
     """ sort holes by the nearest neighbor method
         keys: two-element list of keys for X and Y coordinates. for example ['x','y']
         originally written by m0n5t3r for PathHelix
     """
     from Queue import PriorityQueue
+    from collections import defaultdict
+
+    attractors = attractors or [keys[0]]
 
     def sqdist(a, b):
         """ square Euclidean distance """
-        return (a[keys[0]] - b[keys[0]] ) ** 2 + (a[keys[1]] - b[keys[1]]) ** 2
+        d = 0
+        for k in keys:
+            d += (abs(a[k]) - abs(b[k])) ** 2 
+
+        return d
+
+    def weight(location):
+        w = 0
+
+        for k in attractors:
+            w += abs(location[k])
+
+        return w
 
     def find_closest(location_list, location, dist):
         q = PriorityQueue()
 
         for j in location_list:
-            q.put((dist(j, location) + location[keys[0]], j))
+            q.put((dist(j, location) + weight(j), j))
 
         prio, result = q.get()
+
         return result
 
+
     out = []
-    zero = {keys[0]: 0,keys[1]: 0}
+    zero = defaultdict(lambda: 0)
 
     out.append(find_closest(locations, zero, sqdist))
 
