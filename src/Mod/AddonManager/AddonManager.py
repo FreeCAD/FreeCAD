@@ -44,6 +44,8 @@ if sys.version_info.major < 3:
     import urllib2
 else:
     import urllib.request as urllib2
+import ssl
+ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
 
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
@@ -307,7 +309,7 @@ class UpdateWorker(QtCore.QThread):
     def run(self):
         "populates the list of addons"
         self.progressbar_show.emit(True)
-        u = urllib2.urlopen("https://github.com/FreeCAD/FreeCAD-addons")
+        u = urllib2.urlopen("https://github.com/FreeCAD/FreeCAD-addons",context=ctx)
         p = u.read()
         if sys.version_info.major >= 3 and isinstance(p, bytes):
             p = p.decode("utf-8")
@@ -351,7 +353,7 @@ class InfoWorker(QtCore.QThread):
         i = 0
         for repo in self.repos:
             url = repo[1]
-            u = urllib2.urlopen(url)
+            u = urllib2.urlopen(url,context=ctx)
             p = u.read()
             if sys.version_info.major >= 3 and isinstance(p, bytes):
                 p = p.decode("utf-8")
@@ -381,7 +383,7 @@ class MacroWorker(QtCore.QThread):
         self.info_label.emit("Downloading list of macros...")
         self.progressbar_show.emit(True)
         macropath = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
-        u = urllib2.urlopen("http://www.freecadweb.org/wiki/Macros_recipes")
+        u = urllib2.urlopen("https://www.freecadweb.org/wiki/Macros_recipes",context=ctx)
         p = u.read()
         if sys.version_info.major >= 3 and isinstance(p, bytes):
             p = p.decode("utf-8")
@@ -423,7 +425,7 @@ class ShowWorker(QtCore.QThread):
         else:
             url = self.repos[self.idx][1]
             self.info_label.emit(translate("AddonsInstaller", "Retrieving info from ") + str(url))
-            u = urllib2.urlopen(url)
+            u = urllib2.urlopen(url,context=ctx)
             p = u.read()
             if sys.version_info.major >= 3 and isinstance(p, bytes):
                 p = p.decode("utf-8")
@@ -465,9 +467,9 @@ class ShowMacroWorker(QtCore.QThread):
             mac = self.macros[self.idx][0].replace(" ","_")
             mac = mac.replace("&","%26")
             mac = mac.replace("+","%2B")
-            url = "http://www.freecadweb.org/wiki/Macro_"+mac
+            url = "https://www.freecadweb.org/wiki/Macro_"+mac
             self.info_label.emit("Retrieving info from " + str(url))
-            u = urllib2.urlopen(url)
+            u = urllib2.urlopen(url,context=ctx)
             p = u.read()
             if sys.version_info.major >= 3 and isinstance(p, bytes):
                 p = p.decode("utf-8")
