@@ -553,6 +553,7 @@ def sort_jobs(locations, keys, attractors=[]):
     zero = defaultdict(lambda: 0)
 
     out.append(find_closest(locations, zero, sqdist))
+    locations.remove(out[-1])
 
     while locations:
         closest = find_closest(locations, out[-1], sqdist)
