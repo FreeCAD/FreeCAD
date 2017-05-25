@@ -381,7 +381,7 @@
     <message>
         <location line="-177"/>
         <source>Select one Robot to set home position</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner un robot pour lui donner sa position d&apos;origine</translation>
     </message>
     <message>
         <location line="+149"/>
@@ -660,7 +660,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
         <location filename="../../TaskTrajectory.ui" line="+20"/>
         <source>Form</source>
-        <translation>Formulaire</translation>
+        <translation>Forme</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -771,7 +771,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
         <location filename="../../TaskEdge2TracParameter.ui" line="+14"/>
         <source>Form</source>
-        <translation>Formulaire</translation>
+        <translation>Forme</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -815,7 +815,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
         <location filename="../../TaskRobotControl.ui" line="+14"/>
         <source>Form</source>
-        <translation>Formulaire</translation>
+        <translation>Forme</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -937,7 +937,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
         <location filename="../../TaskRobotMessages.ui" line="+14"/>
         <source>Form</source>
-        <translation>Formulaire</translation>
+        <translation>Forme</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -961,7 +961,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
         <location filename="../../TaskTrajectoryDressUpParameter.ui" line="+14"/>
         <source>Form</source>
-        <translation>Formulaire</translation>
+        <translation>Forme</translation>
     </message>
     <message>
         <location line="+6"/>

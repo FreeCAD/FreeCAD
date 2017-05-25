@@ -30,12 +30,12 @@
   <context>
     <name>Plot_Grid</name>
     <message>
-      <location filename="PlotGui.py" line="110"/>
+      <location filename="PlotGui.py" line="109"/>
       <source>Show/Hide grid</source>
       <translation>Mostra/amaga la quadrícula</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="113"/>
+      <location filename="PlotGui.py" line="112"/>
       <source>Show/Hide grid on selected plot</source>
       <translation>Mostra/amaga la quadrícula d'argument seleccionat</translation>
     </message>
@@ -43,12 +43,12 @@
   <context>
     <name>Plot_Labels</name>
     <message>
-      <location filename="PlotGui.py" line="154"/>
+      <location filename="PlotGui.py" line="152"/>
       <source>Set labels</source>
       <translation>Conjunt d'Etiquetes</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="157"/>
+      <location filename="PlotGui.py" line="155"/>
       <source>Set title and axes labels</source>
       <translation>Defineix les etiquetes de títol i eixos</translation>
     </message>
@@ -56,12 +56,12 @@
   <context>
     <name>Plot_Legend</name>
     <message>
-      <location filename="PlotGui.py" line="137"/>
+      <location filename="PlotGui.py" line="135"/>
       <source>Show/Hide legend</source>
       <translation>Mostra o amaga la llegenda</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="140"/>
+      <location filename="PlotGui.py" line="138"/>
       <source>Show/Hide legend on selected plot</source>
       <translation>Mostra o amaga la llegenda sobre Plot seleccionat</translation>
     </message>
@@ -69,12 +69,12 @@
   <context>
     <name>Plot_Positions</name>
     <message>
-      <location filename="PlotGui.py" line="171"/>
+      <location filename="PlotGui.py" line="169"/>
       <source>Set positions and sizes</source>
       <translation>Mides i posicions Paràmetres</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="174"/>
+      <location filename="PlotGui.py" line="172"/>
       <source>Set labels and legend positions and sizes</source>
       <translation>Posar Etiquetes i posicions de llegenda i mides</translation>
     </message>
@@ -113,102 +113,102 @@
       <translation>Configurar els eixos</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="180"/>
+      <location filename="TaskPanel.py" line="179"/>
       <source>Active axes</source>
       <translation>Eixos actius</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="220"/>
+      <location filename="TaskPanel.py" line="211"/>
       <source>Apply to all axes</source>
       <translation>S'apliquen a tots els eixos</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="225"/>
+      <location filename="TaskPanel.py" line="215"/>
       <source>Dimensions</source>
       <translation>Dimensions</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="230"/>
+      <location filename="TaskPanel.py" line="219"/>
       <source>X axis position</source>
       <translation>Posició de l'eix X</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="235"/>
+      <location filename="TaskPanel.py" line="223"/>
       <source>Y axis position</source>
       <translation>Posició de l'eix Y</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="205"/>
+      <location filename="TaskPanel.py" line="199"/>
       <source>Scales</source>
       <translation>Escales</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="210"/>
+      <location filename="TaskPanel.py" line="203"/>
       <source>X auto</source>
       <translation>X auto</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="215"/>
+      <location filename="TaskPanel.py" line="207"/>
       <source>Y auto</source>
       <translation>Y auto</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="240"/>
+      <location filename="TaskPanel.py" line="227"/>
       <source>Index of the active axes</source>
       <translation>Índex dels eixos actius</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="245"/>
+      <location filename="TaskPanel.py" line="231"/>
       <source>Add new axes to the plot</source>
       <translation>Afegir nous eixos al Plot</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="251"/>
+      <location filename="TaskPanel.py" line="236"/>
       <source>Remove selected axes</source>
       <translation>Esborra els eixos seleccionats</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="257"/>
+      <location filename="TaskPanel.py" line="241"/>
       <source>Check it to apply transformations to all axes</source>
       <translation>Comprovar-ho per aplicar transformacions a tots els eixos</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="263"/>
+      <location filename="TaskPanel.py" line="246"/>
       <source>Left bound of axes</source>
       <translation>Esquerra obligat dels eixos</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="269"/>
+      <location filename="TaskPanel.py" line="251"/>
       <source>Right bound of axes</source>
       <translation>Límit Dret dels eixos</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="275"/>
+      <location filename="TaskPanel.py" line="256"/>
       <source>Bottom bound of axes</source>
       <translation>Fons obligat dels eixos</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="281"/>
+      <location filename="TaskPanel.py" line="261"/>
       <source>Top bound of axes</source>
       <translation>Part superior obligat dels eixos</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="287"/>
+      <location filename="TaskPanel.py" line="266"/>
       <source>Outward offset of X axis</source>
       <translation>Desplaçament cap a fora de l'eix X</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="293"/>
+      <location filename="TaskPanel.py" line="271"/>
       <source>Outward offset of Y axis</source>
       <translation>Desplaçament cap a fora de l'eix Y</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="299"/>
+      <location filename="TaskPanel.py" line="276"/>
       <source>X axis scale autoselection</source>
       <translation>Eix X auto seleccionar l'escala</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="305"/>
+      <location filename="TaskPanel.py" line="281"/>
       <source>Y axis scale autoselection</source>
       <translation>Y eix escala autoseleciò</translation>
     </message>
@@ -231,7 +231,7 @@
       <translation>Cal seleccionar Plot document per tal de salvar-lo</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="365"/>
+      <location filename="TaskPanel.py" line="340"/>
       <source>Axes 0 can not be deleted</source>
       <translation>Eixos 0 no es pot suprimir</translation>
     </message>
@@ -241,7 +241,7 @@
       <translation>La xarxa ha d'estar activat a sobre d'un document de plot</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="126"/>
+      <location filename="PlotGui.py" line="125"/>
       <source>The legend must be activated on top of a plot document</source>
       <translation>La llegenda ha d'estar activat a sobre d'un document de Plot</translation>
     </message>
@@ -254,57 +254,57 @@
       <translation>Conjunt d'Etiquetes</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="138"/>
+      <location filename="TaskPanel.py" line="137"/>
       <source>Active axes</source>
       <translation>Eixos actius</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="143"/>
+      <location filename="TaskPanel.py" line="141"/>
       <source>Title</source>
       <translation>Títol</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="148"/>
+      <location filename="TaskPanel.py" line="145"/>
       <source>X label</source>
       <translation>X etiqueta</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="153"/>
+      <location filename="TaskPanel.py" line="149"/>
       <source>Y label</source>
       <translation>Etiquetes d'Y</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="158"/>
+      <location filename="TaskPanel.py" line="153"/>
       <source>Index of the active axes</source>
       <translation>Índex dels eixos actius</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="163"/>
+      <location filename="TaskPanel.py" line="157"/>
       <source>Title (associated to active axes)</source>
       <translation>Títol (associada als eixos actius)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="169"/>
+      <location filename="TaskPanel.py" line="162"/>
       <source>Title font size</source>
       <translation>Lletra de títol</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="175"/>
+      <location filename="TaskPanel.py" line="167"/>
       <source>X axis title</source>
       <translation>X el títol d'eix</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="181"/>
+      <location filename="TaskPanel.py" line="172"/>
       <source>X axis title font size</source>
       <translation>X eix títol de lletra</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="187"/>
+      <location filename="TaskPanel.py" line="177"/>
       <source>Y axis title</source>
       <translation>Títol de l'eix Y</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="193"/>
+      <location filename="TaskPanel.py" line="182"/>
       <source>Y axis title font size</source>
       <translation>Mida de lletra de títol de l'eix Y</translation>
     </message>
@@ -317,32 +317,32 @@
       <translation>Mides i posicions Paràmetres</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="126"/>
+      <location filename="TaskPanel.py" line="125"/>
       <source>Position</source>
       <translation type="unfinished">Position</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="132"/>
+      <location filename="TaskPanel.py" line="130"/>
       <source>Size</source>
       <translation>Mida</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="138"/>
+      <location filename="TaskPanel.py" line="135"/>
       <source>List of modificable items</source>
       <translation>Llista d'elements modificable</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="144"/>
+      <location filename="TaskPanel.py" line="140"/>
       <source>X item position</source>
       <translation>La posició de l'element X</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="150"/>
+      <location filename="TaskPanel.py" line="145"/>
       <source>Y item position</source>
       <translation>Y element posició</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="156"/>
+      <location filename="TaskPanel.py" line="150"/>
       <source>Item size</source>
       <translation>Mida de l'element</translation>
     </message>
@@ -350,42 +350,42 @@
   <context>
     <name>plot_save</name>
     <message>
-      <location filename="TaskPanel.py" line="128"/>
+      <location filename="TaskPanel.py" line="127"/>
       <source>Save figure</source>
       <translation>Salvar la figura</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="133"/>
+      <location filename="TaskPanel.py" line="131"/>
       <source>Inches</source>
       <translation>Polzades</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="139"/>
+      <location filename="TaskPanel.py" line="136"/>
       <source>Dots per Inch</source>
       <translation>Punts per polzada</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="145"/>
+      <location filename="TaskPanel.py" line="141"/>
       <source>Output image file path</source>
       <translation>Camí d'arxiu d'imatge de sortida</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="151"/>
+      <location filename="TaskPanel.py" line="146"/>
       <source>Show a file selection dialog</source>
       <translation>Mostra un diàleg de selecció de fitxer</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="157"/>
+      <location filename="TaskPanel.py" line="151"/>
       <source>X image size</source>
       <translation>X la mida de la imatge</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="163"/>
+      <location filename="TaskPanel.py" line="156"/>
       <source>Y image size</source>
       <translation>Mida d'imatge Y</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="169"/>
+      <location filename="TaskPanel.py" line="161"/>
       <source>Dots per point, with size will define output image resolution</source>
       <translation>Punts per cada punt, amb mida definirà la resolució d'imatge de sortida</translation>
     </message>
@@ -393,22 +393,22 @@
   <context>
     <name>plot_series</name>
     <message>
-      <location filename="TaskPanel.py" line="154"/>
+      <location filename="TaskPanel.py" line="153"/>
       <source>No label</source>
       <translation>Sense etiqueta</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="160"/>
+      <location filename="TaskPanel.py" line="158"/>
       <source>Remove serie</source>
       <translation>Treure la serie</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="196"/>
+      <location filename="TaskPanel.py" line="188"/>
       <source>Line style</source>
       <translation>Estil de línia</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="172"/>
+      <location filename="TaskPanel.py" line="168"/>
       <source>Marker</source>
       <translation>Marcador</translation>
     </message>
@@ -418,42 +418,42 @@
       <translation>Configurar la sèrie</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="178"/>
+      <location filename="TaskPanel.py" line="173"/>
       <source>List of available series</source>
       <translation>Llista de les sèries disponibles</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="184"/>
+      <location filename="TaskPanel.py" line="178"/>
       <source>Line title</source>
       <translation>Títol de línia</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="202"/>
+      <location filename="TaskPanel.py" line="193"/>
       <source>Marker style</source>
       <translation>Estil de marcador</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="208"/>
+      <location filename="TaskPanel.py" line="198"/>
       <source>Line width</source>
       <translation>Amplada de línia</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="214"/>
+      <location filename="TaskPanel.py" line="203"/>
       <source>Marker size</source>
       <translation>Mida del marcador</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="220"/>
+      <location filename="TaskPanel.py" line="208"/>
       <source>Line and marker color</source>
       <translation>Color de línia i marcador</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="226"/>
+      <location filename="TaskPanel.py" line="213"/>
       <source>Removes this serie</source>
       <translation>Treu aquesta serie</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="190"/>
+      <location filename="TaskPanel.py" line="183"/>
       <source>If checked serie will not be considered for legend</source>
       <translation>Si comprovava serie no seran considerats per a la llegenda</translation>
     </message>

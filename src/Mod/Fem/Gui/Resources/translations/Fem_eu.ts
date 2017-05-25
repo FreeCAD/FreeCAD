@@ -2,6 +2,287 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="eu" sourcelanguage="en">
   <context>
+    <name>FEM_Analysis</name>
+    <message>
+      <location filename="_CommandFemAnalysis.py" line="41"/>
+      <source>Analysis container</source>
+      <translation>Analisi-edukiontzia</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemAnalysis.py" line="43"/>
+      <source>Creates a analysis container with standard solver CalculiX</source>
+      <translation>Analisi-edukiontzia sortzen du CalculiX ebazle estandarrarekin</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_BeamSection</name>
+    <message>
+      <location filename="_CommandFemBeamSection.py" line="41"/>
+      <source>Beam cross section</source>
+      <translation>Habearen zeharkako sekzioa</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemBeamSection.py" line="43"/>
+      <source>Creates a FEM beam cross section</source>
+      <translation>FEM habe baten zeharkako sekzioa sortzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintSelfWeight</name>
+    <message>
+      <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
+      <source>Constraint self weigt</source>
+      <translation>Murriztu berezko pisua</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
+      <source>Creates a FEM constraint self weigt</source>
+      <translation>Sortu berezko pisuaren FEM murrizketa bat</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_FEMMesh2Mesh</name>
+    <message>
+      <location filename="_CommandFemMesh2Mesh.py" line="42"/>
+      <source>FEM mesh to mesh</source>
+      <translation>FEM saretik sarera</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMesh2Mesh.py" line="43"/>
+      <source>Convert the surface of a FEM mesh to a mesh</source>
+      <translation>Bihurtu sare FEM sare baten azalera</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_FluidSection</name>
+    <message>
+      <location filename="_CommandFemFluidSection.py" line="42"/>
+      <source>Fluid section for 1D flow</source>
+      <translation>Jariakin-sekzioa 1D jariorako</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemFluidSection.py" line="44"/>
+      <source>Creates a FEM Fluid section for 1D flow</source>
+      <translation>FEM jariakin-sekzio bat sortzen du 1D jariorako</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialFluid</name>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="42"/>
+      <source>FEM material for Fluid</source>
+      <translation>FEM materiala jariakinerako</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="44"/>
+      <source>Creates a FEM material for Fluid</source>
+      <translation>FEM material bat sortzen du jariakinerako</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialMechanicalNonlinear</name>
+    <message>
+      <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="42"/>
+      <source>Nonlinear mechanical material</source>
+      <translation>Material mekaniko ez-lineala</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="44"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation>Material mekaniko ez-lineal bat sortzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialSolid</name>
+    <message>
+      <location filename="_CommandFemMaterialSolid.py" line="42"/>
+      <source>FEM material for solid</source>
+      <translation>FEM materiala solidorako</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialSolid.py" line="44"/>
+      <source>Creates a FEM material for solid</source>
+      <translation>FEM material bat sortzen du solido baterako</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshClear</name>
+    <message>
+      <location filename="_CommandFemMeshClear.py" line="41"/>
+      <source>Clear FEM mesh</source>
+      <translation>Garbitu FEM sarea</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshClear.py" line="43"/>
+      <source>Clear the Mesh of a FEM mesh object</source>
+      <translation>Garbitu FEM sare-objektu baten sarea</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshFromShape</name>
+    <message>
+      <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>FEM sarea formatik, Netgen bidez</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>Sortu FEM bolumen-sare bat solido batetik edo aurpegi-forma batetik, Netgen barneko sare-sortzailea erabiliz</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGmshFromShape</name>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
+      <source>FEM mesh from shape by GMSH</source>
+      <translation>FEM sarea formatik, GMSH bidez</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
+      <source>Create a FEM mesh from a shape by GMSH mesher</source>
+      <translation>Sortu FEM sare bat forma batetik abiatuz, GMSH sare-sortzailea erabiliz</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGroup</name>
+    <message>
+      <location filename="_CommandFemMeshGroup.py" line="41"/>
+      <source>FEM mesh group</source>
+      <translation>FEM sare-taldea</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGroup.py" line="43"/>
+      <source>Creates a FEM mesh group</source>
+      <translation>FEM sare-talde bat sortzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshPrintInfo</name>
+    <message>
+      <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
+      <source>Print FEM mesh info</source>
+      <translation>Inprimatu FEM sare-informazioa</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshRegion</name>
+    <message>
+      <location filename="_CommandFemMeshRegion.py" line="41"/>
+      <source>FEM mesh region</source>
+      <translation>FEM sare-eskualdea</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshRegion.py" line="43"/>
+      <source>Creates a FEM mesh region</source>
+      <translation>FEM sare-eskualde bat sortzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ResultShow</name>
+    <message>
+      <location filename="_CommandFemResultShow.py" line="41"/>
+      <source>Show result</source>
+      <translation>Erakutsi emaitza</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemResultShow.py" line="43"/>
+      <source>Shows and visualizes selected result data</source>
+      <translation>Hautatutako emaitza-datuak erakusten eta bistaratzen ditu</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ResultsPurge</name>
+    <message>
+      <location filename="_CommandFemResultsPurge.py" line="41"/>
+      <source>Purge results</source>
+      <translation>Araztu emaitzak</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemResultsPurge.py" line="43"/>
+      <source>Purges all results from active analysis</source>
+      <translation>Analisi aktiboetako emaitza guztiak arazten ditu</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ShellThickness</name>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="41"/>
+      <source>Shell plate thickness</source>
+      <translation>Oskol-plakaren lodiera</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="43"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation>FEM oskol-plakaren lodiera bat sortzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculix</name>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation>CalculiX ebazlea</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation>FEM CalculiX ebazlea sortzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverControl</name>
+    <message>
+      <location filename="_CommandFemSolverControl.py" line="40"/>
+      <source>Solver job control</source>
+      <translation>Ebazle-lanaren kontrola</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverControl.py" line="42"/>
+      <source>Changes solver attributes and runs the calculations for the selected solver</source>
+      <translation>Ebazlearen atributuak aldatzen ditu eta hautatutako ebazlerako kalkuluak exekutatzen ditu</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverRun</name>
+    <message>
+      <location filename="_CommandFemSolverRun.py" line="40"/>
+      <source>Run solver calculations</source>
+      <translation>Exekutatu ebazlearen kalkuluak</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverRun.py" line="42"/>
+      <source>Runs the calculations for the selected solver</source>
+      <translation>Hautatutako ebazlearen kalkuluak exekutatzen ditu</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverZ88</name>
+    <message>
+      <location filename="_CommandFemSolverZ88.py" line="41"/>
+      <source>Solver Z88</source>
+      <translation>Z88 ebazlea</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverZ88.py" line="43"/>
+      <source>Creates a FEM solver Z88</source>
+      <translation>FEM Z88 ebazlea sortzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Command</name>
+    <message>
+      <location filename="FemCommands.py" line="39"/>
+      <source>Default Fem Command MenuText</source>
+      <translation>Fem komandoaren laster-menu lehenetsia</translation>
+    </message>
+    <message>
+      <location filename="FemCommands.py" line="41"/>
+      <source>Default Fem Command ToolTip</source>
+      <translation>Fem komandoaren argibide lehenetsia</translation>
+    </message>
+  </context>
+  <context>
     <name>Fem_Analysis</name>
     <message>
       <location filename="_CommandAnalysis.py" line="41"/>
@@ -61,29 +342,16 @@
     </message>
   </context>
   <context>
-    <name>Fem_Command</name>
-    <message>
-      <location filename="FemCommands.py" line="39"/>
-      <source>Default Fem Command MenuText</source>
-      <translation type="unfinished">Default Fem Command MenuText</translation>
-    </message>
-    <message>
-      <location filename="FemCommands.py" line="41"/>
-      <source>Default Fem Command ToolTip</source>
-      <translation type="unfinished">Default Fem Command ToolTip</translation>
-    </message>
-  </context>
-  <context>
     <name>Fem_ConstraintSelfWeight</name>
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weigt</source>
-      <translation type="unfinished">Constraint self weigt</translation>
+      <translation>Murriztu berezko pisua</translation>
     </message>
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weigt</source>
-      <translation type="unfinished">Creates a FEM constraint self weigt</translation>
+      <translation>Sortu berezko pisuaren FEM murrizketa bat</translation>
     </message>
   </context>
   <context>
@@ -246,7 +514,7 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM Shell Thickness</source>
-      <translation type="unfinished">Creates a FEM Shell Thickness</translation>
+      <translation>FEM oskol-lodiera sortzen du</translation>
     </message>
   </context>
   <context>
@@ -347,7 +615,7 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
+      <translation>Abiarazi ebazle-lanaren kontrola</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
@@ -360,7 +628,7 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
+      <translation>Abiarazi ebazle-lanaren kontrola</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
@@ -418,12 +686,12 @@
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Create FEM bearing constraint</source>
-      <translation type="unfinished">Create FEM bearing constraint</translation>
+      <translation>Sortu FEM kojinete-murrizketa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create FEM constraint for a bearing</source>
-      <translation type="unfinished">Create FEM constraint for a bearing</translation>
+      <translation>Sortu FEM murrizketa kojinete baterako</translation>
     </message>
   </context>
   <context>
@@ -472,7 +740,7 @@
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Create FEM force constraint</source>
-      <translation type="unfinished">Create FEM force constraint</translation>
+      <translation>Sortu FEM indar-murrizketa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="358"/>
@@ -508,7 +776,7 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create FEM pressure constraint</source>
-      <translation type="unfinished">Create FEM pressure constraint</translation>
+      <translation>Sortu FEM presio-murrizketa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
@@ -526,12 +794,12 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Create FEM pulley constraint</source>
-      <translation type="unfinished">Create FEM pulley constraint</translation>
+      <translation>Sortu FEM polea-murrizketa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Create FEM constraint for a pulley</source>
-      <translation type="unfinished">Create FEM constraint for a pulley</translation>
+      <translation>Sortu FEM murrizketa polea baterako</translation>
     </message>
   </context>
   <context>
@@ -613,7 +881,7 @@
       <location filename="../../Command.cpp" line="664"/>
       <location filename="../../Command.cpp" line="666"/>
       <source>Create node set by Poly</source>
-      <translation type="unfinished">Create node set by Poly</translation>
+      <translation>Sortu nodo multzoa poligono baten arabera</translation>
     </message>
   </context>
   <context>
@@ -676,7 +944,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="244"/>
       <source>Eigenmode number</source>
-      <translation type="unfinished">Eigenmode number</translation>
+      <translation>Eigenmode zenbakia</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="251"/>
@@ -707,7 +975,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="362"/>
       <source>Use built-in materials</source>
-      <translation type="unfinished">Use built-in materials</translation>
+      <translation>Erabili inkorporatutako materialak</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="378"/>
@@ -848,7 +1116,7 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Saretze-hutsegitea</translation>
     </message>
   </context>
   <context>
@@ -887,7 +1155,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
       <source>Please use only a single reference for bearing constraint</source>
-      <translation type="unfinished">Please use only a single reference for bearing constraint</translation>
+      <translation>Erabili erreferentzia bakarra kojinete-murrizketarako</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="178"/>
@@ -977,17 +1245,17 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="142"/>
       <source>Point load</source>
-      <translation type="unfinished">Point load</translation>
+      <translation>Puntu-karga</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
       <source>Line load</source>
-      <translation type="unfinished">Line load</translation>
+      <translation>Lerro-karga</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="146"/>
       <source>Area load</source>
-      <translation type="unfinished">Area load</translation>
+      <translation>Area-karga</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
@@ -1084,7 +1352,7 @@
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="94"/>
       <source>Pulley diameter</source>
-      <translation type="unfinished">Pulley diameter</translation>
+      <translation>Polea-diametroa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="95"/>
@@ -1097,7 +1365,7 @@
     <message>
       <location filename="../../TaskObjectName.cpp" line="48"/>
       <source>TaskObjectName</source>
-      <translation type="unfinished">TaskObjectName</translation>
+      <translation>TaskObjectName</translation>
     </message>
   </context>
   <context>
@@ -1121,7 +1389,7 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="76"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Saretze-hutsegitea</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
@@ -1151,7 +1419,7 @@
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="39"/>
       <source>to edit the cross section values</source>
-      <translation type="unfinished">to edit the cross section values</translation>
+      <translation>zeharkako sekzioaren balioak editatzeko</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="49"/>
@@ -1169,7 +1437,7 @@
       <location filename="../../../TaskPanelFemBeamSection.ui" line="62"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="62"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>geratzen diren gainerako formak aukeratzeko</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="72"/>
@@ -1281,7 +1549,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="67"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>geratzen diren gainerako formak aukeratzeko</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="77"/>
@@ -1390,7 +1658,7 @@
     </message>
     <message>
       <source>Combo View</source>
-      <translation type="unfinished">Combo View</translation>
+      <translation>Bista konbinatua</translation>
     </message>
     <message>
       <source>combiTab</source>
@@ -1434,13 +1702,13 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="343"/>
       <source>Constraint force</source>
-      <translation type="unfinished">Constraint force</translation>
+      <translation>Murrizketa-indarra</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="587"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="243"/>
       <source>Constraint normal stress</source>
-      <translation type="unfinished">Constraint normal stress</translation>
+      <translation>Murriztu normalaren tentsioa</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="98"/>
@@ -1483,17 +1751,17 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="61"/>
       <source>Von Mises stress</source>
-      <translation type="unfinished">Von Mises stress</translation>
+      <translation>Von Mises tentsioa</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="68"/>
       <source>Abs displacement</source>
-      <translation type="unfinished">Abs displacement</translation>
+      <translation>Desplazamendu absolutua</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="79"/>
       <source>Avg:</source>
-      <translation type="unfinished">Avg:</translation>
+      <translation>Batez bestekoa:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="96"/>
@@ -1523,7 +1791,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
-      <translation type="unfinished">Slider max:</translation>
+      <translation>Graduatzailaren maximoa:</translation>
     </message>
     <message>
       <source>Colors</source>
@@ -1577,7 +1845,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="60"/>
       <source>Poly</source>
-      <translation type="unfinished">Poly</translation>
+      <translation>Poligonoa</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
@@ -1597,17 +1865,17 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="96"/>
       <source>Angle-search</source>
-      <translation type="unfinished">Angle-search</translation>
+      <translation>Angelu-bilaketa</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
       <source>Collect adjancent nodes</source>
-      <translation type="unfinished">Collect adjancent nodes</translation>
+      <translation>Bildu elkarren alboko nodoak</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
       <source>Stop angle:</source>
-      <translation type="unfinished">Stop angle:</translation>
+      <translation>Gelditze-angelua:</translation>
     </message>
   </context>
   <context>
@@ -1643,12 +1911,12 @@
     <message>
       <location filename="../../TaskFemConstraint.ui" line="86"/>
       <source>Other diameter</source>
-      <translation type="unfinished">Other diameter</translation>
+      <translation>Beste diametro bat</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="113"/>
       <source>Center distance</source>
-      <translation type="unfinished">Center distance</translation>
+      <translation>Zentratu distantzia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="137"/>
@@ -1691,12 +1959,12 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="62"/>
       <source>Other pulley dia</source>
-      <translation type="unfinished">Other pulley dia</translation>
+      <translation>Beste polea-diametro batzuk</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="86"/>
       <source>Center distance</source>
-      <translation type="unfinished">Center distance</translation>
+      <translation>Zentratu distantzia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="110"/>
@@ -1706,12 +1974,12 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="134"/>
       <source>Belt tension force</source>
-      <translation type="unfinished">Belt tension force</translation>
+      <translation>Uhalaren tentsio-indarra</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="156"/>
       <source>Driven pulley</source>
-      <translation type="unfinished">Driven pulley</translation>
+      <translation>Polea eragilea</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="165"/>
@@ -1726,12 +1994,12 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="204"/>
       <source>Reversed direction</source>
-      <translation type="unfinished">Reversed direction</translation>
+      <translation>Alderantzizko norabidea</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="211"/>
       <source>Axial free</source>
-      <translation type="unfinished">Axial free</translation>
+      <translation>Ardatz askekoa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="220"/>
@@ -1749,7 +2017,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation type="unfinished">Prescribed Displacement</translation>
+      <translation>Agindutako desplazamendua</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
@@ -1909,47 +2177,47 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="28"/>
       <source>Max. Size:</source>
-      <translation type="unfinished">Max. Size:</translation>
+      <translation>Tamaina max.:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="44"/>
       <source>Second order</source>
-      <translation type="unfinished">Second order</translation>
+      <translation>Bigarren ordena</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="53"/>
       <source>Fineness:</source>
-      <translation type="unfinished">Fineness:</translation>
+      <translation>Fintasuna:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="64"/>
       <source>VeryCoarse</source>
-      <translation type="unfinished">VeryCoarse</translation>
+      <translation>Oso latza</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="69"/>
       <source>Coarse</source>
-      <translation type="unfinished">Coarse</translation>
+      <translation>Latza</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="74"/>
       <source>Moderate</source>
-      <translation type="unfinished">Moderate</translation>
+      <translation>Ertaina</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="79"/>
       <source>Fine</source>
-      <translation type="unfinished">Fine</translation>
+      <translation>Fina</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="84"/>
       <source>VeryFine</source>
-      <translation type="unfinished">VeryFine</translation>
+      <translation>Oso fina</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="89"/>
       <source>UserDefined</source>
-      <translation type="unfinished">UserDefined</translation>
+      <translation>Erabiltzaileak definitua</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="97"/>
@@ -1959,12 +2227,12 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="111"/>
       <source>Nbr. Segs per Edge:</source>
-      <translation type="unfinished">Nbr. Segs per Edge:</translation>
+      <translation>Segmentu kopurua ertzeko:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="128"/>
       <source>Nbr. Segs per Radius:</source>
-      <translation type="unfinished">Nbr. Segs per Radius:</translation>
+      <translation>Segmentu kopurua erradioko:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="144"/>
@@ -1974,17 +2242,17 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="166"/>
       <source>Node count: </source>
-      <translation type="unfinished">Node count: </translation>
+      <translation>Nodo-zenbaketa: </translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="180"/>
       <source>Triangle count:</source>
-      <translation type="unfinished">Triangle count:</translation>
+      <translation>Triangelu-zenbaketa:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="194"/>
       <source>Tetraeder count:</source>
-      <translation type="unfinished">Tetraeder count:</translation>
+      <translation>Tetraedro-zenbaketa:</translation>
     </message>
   </context>
   <context>

@@ -401,15 +401,15 @@
     <name>CmdMeshSectionByPlane</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Malla</translation>
+        <translation>Malla</translation>
     </message>
     <message>
         <source>Create section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear sección desde malla y plano</translation>
     </message>
     <message>
         <source>Section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Sección desde malla y plano</translation>
     </message>
 </context>
 <context>
@@ -904,7 +904,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Export AMF files using compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar archivos AMF utilizando compresión</translation>
     </message>
 </context>
 <context>
@@ -1036,7 +1036,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::MeshFillHole</name>
     <message>
         <source>Finish</source>
-        <translation>Finalizar</translation>
+        <translation>Terminado</translation>
     </message>
 </context>
 <context>
@@ -1142,7 +1142,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Sphere</source>
-        <translation>Esféra</translation>
+        <translation>Esfera</translation>
     </message>
 </context>
 <context>
@@ -1157,7 +1157,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Clear</source>
-        <translation>Borrar</translation>
+        <translation>Limpiar</translation>
     </message>
     <message>
         <source>Respect only visible triangles</source>
@@ -1215,7 +1215,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
         <source>Unknown error occurred while running OpenSCAD.</source>
-        <translation type="unfinished"></translation>
+        <translation>Error desconocido ha ocurrido mientras se ejecutaba OpenSCAD.</translation>
     </message>
 </context>
 <context>

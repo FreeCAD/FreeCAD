@@ -68,15 +68,15 @@
     </message>
     <message>
         <source>&lt;empty&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>buit</translation>
     </message>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">Angle</translation>
+        <translation>Angle</translation>
     </message>
     <message>
         <source>Axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Eix</translation>
     </message>
     <message>
         <source>Position</source>
@@ -84,7 +84,7 @@
     </message>
     <message>
         <source>Base</source>
-        <translation type="unfinished"></translation>
+        <translation>Base</translation>
     </message>
 </context>
 <context>
@@ -152,7 +152,7 @@
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">Default</translation>
+        <translation>Predeterminat</translation>
     </message>
     <message>
         <source>Enable</source>
@@ -220,15 +220,15 @@
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Remove</translation>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation type="unfinished">Move up</translation>
+        <translation>Mou amunt</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished">Move down</translation>
+        <translation>Mou avall</translation>
     </message>
 </context>
 <context>
@@ -268,7 +268,7 @@
     <name>Gui::BlenderNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation>Pressionar botó esquerre del ratolí</translation>
     </message>
     <message>
         <source>Press SHIFT and middle mouse button</source>
@@ -276,22 +276,22 @@
     </message>
     <message>
         <source>Press middle mouse button</source>
-        <translation type="unfinished">Press middle mouse button</translation>
+        <translation>Botó central del ratolí</translation>
     </message>
     <message>
         <source>Scroll middle mouse button</source>
-        <translation type="unfinished">Scroll middle mouse button</translation>
+        <translation>Botó central del ratolí</translation>
     </message>
 </context>
 <context>
     <name>Gui::CADNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation>Pressionar botó esquerre del ratolí</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
-        <translation type="unfinished">Press middle mouse button</translation>
+        <translation>Botó central del ratolí</translation>
     </message>
     <message>
         <source>Press middle and left or right mouse button</source>
@@ -332,19 +332,19 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::DAG::Model</name>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">Rename</translation>
+        <translation>Reanomena</translation>
     </message>
     <message>
         <source>Rename object</source>
-        <translation type="unfinished">Rename object</translation>
+        <translation>Reanomenar Objecta</translation>
     </message>
     <message>
         <source>Finish editing</source>
-        <translation type="unfinished">Finish editing</translation>
+        <translation>Acabat d&apos;editar</translation>
     </message>
     <message>
         <source>Finish editing object</source>
-        <translation type="unfinished">Finish editing object</translation>
+        <translation>Acabat d&apos;editar objecte</translation>
     </message>
 </context>
 <context>
@@ -363,7 +363,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source></source>
@@ -387,15 +387,15 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Credits</source>
-        <translation type="unfinished">Credits</translation>
+        <translation>Crèdits</translation>
     </message>
     <message>
         <source>FreeCAD would be nowhere without their efforts:</source>
-        <translation type="unfinished">FreeCAD would be nowhere without their efforts:</translation>
+        <translation>FreeCAD seria no-res sense els seus esforços:</translation>
     </message>
     <message>
         <source>License</source>
-        <translation type="unfinished">License</translation>
+        <translation>Llicències</translation>
     </message>
 </context>
 <context>
@@ -479,11 +479,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation type="unfinished">Fullscreen</translation>
+        <translation>Pantalla completa</translation>
     </message>
     <message>
         <source>Enable timer</source>
-        <translation type="unfinished">Enable timer</translation>
+        <translation>Activar el temporitzador</translation>
     </message>
     <message>
         <source> s</source>
@@ -491,7 +491,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">Angle</translation>
+        <translation>Angle</translation>
     </message>
     <message utf8="true">
         <source>90°</source>
@@ -507,11 +507,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished">Stop</translation>
+        <translation>Aturar</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Close</translation>
+        <translation>Tanca</translation>
     </message>
 </context>
 <context>
@@ -560,22 +560,22 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation>%1 a %2</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCheckableMessageBox</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">Dialog</translation>
+        <translation>Diàleg</translation>
     </message>
     <message>
         <source>TextLabel</source>
-        <translation type="unfinished">TextLabel</translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <source>CheckBox</source>
-        <translation type="unfinished">CheckBox</translation>
+        <translation>Checkbox</translation>
     </message>
 </context>
 <context>
@@ -593,11 +593,11 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgCustomActions</name>
     <message>
         <source>Macros</source>
-        <translation type="unfinished">Macros</translation>
+        <translation>Macros</translation>
     </message>
     <message>
         <source>Setup Custom Macros</source>
-        <translation type="unfinished">Setup Custom Macros</translation>
+        <translation>Configuració personalitzada de Macros</translation>
     </message>
     <message>
         <source>Macro:</source>
@@ -605,7 +605,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Pixmap</source>
@@ -637,7 +637,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Remove</translation>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <source>Replace</source>
@@ -652,7 +652,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Macros</source>
-        <translation type="unfinished">Macros</translation>
+        <translation>Macros</translation>
     </message>
     <message>
         <source>No macro</source>
@@ -660,7 +660,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>No macros found.</source>
-        <translation type="unfinished">No macros found.</translation>
+        <translation>No hem trobat les macros.</translation>
     </message>
     <message>
         <source>Macro not found</source>
@@ -668,15 +668,15 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Sorry, couldn&apos;t find macro file &apos;%1&apos;.</source>
-        <translation type="unfinished">Sorry, couldn&apos;t find macro file &apos;%1&apos;.</translation>
+        <translation>Ho sentim, no puc trobar macro arxiu &apos;%1&apos;.</translation>
     </message>
     <message>
         <source>Empty macro</source>
-        <translation type="unfinished">Empty macro</translation>
+        <translation>Macro buida</translation>
     </message>
     <message>
         <source>Please specify the macro first.</source>
-        <translation type="unfinished">Please specify the macro first.</translation>
+        <translation>Especifiqueu la macro en primer lloc.</translation>
     </message>
     <message>
         <source>Empty text</source>
@@ -718,7 +718,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished">Command</translation>
+        <translation>Ordres</translation>
     </message>
 </context>
 <context>
@@ -733,11 +733,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>&amp;Category:</source>
-        <translation type="unfinished">&amp;Category:</translation>
+        <translation>Categoria:</translation>
     </message>
     <message>
         <source>C&amp;ommands:</source>
-        <translation type="unfinished">C&amp;ommands:</translation>
+        <translation>C&amp;omandaments:</translation>
     </message>
     <message>
         <source>Current shortcut:</source>
@@ -745,7 +745,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Press &amp;new shortcut:</source>
-        <translation type="unfinished">Press &amp;new shortcut:</translation>
+        <translation>Premsa 59 drecera nova:</translation>
     </message>
     <message>
         <source>Currently assigned to:</source>
@@ -753,7 +753,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>&amp;Assign</source>
-        <translation type="unfinished">&amp;Assign</translation>
+        <translation>Assignar</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -761,11 +761,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>&amp;Reset</source>
-        <translation type="unfinished">&amp;Reset</translation>
+        <translation>Reiniciar</translation>
     </message>
     <message>
         <source>Alt+R</source>
-        <translation type="unfinished">Alt+R</translation>
+        <translation>Alt + R</translation>
     </message>
     <message>
         <source>Re&amp;set All</source>
@@ -773,7 +773,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Alt+S</source>
-        <translation type="unfinished">Alt+S</translation>
+        <translation>Alt + S</translation>
     </message>
     <message>
         <source></source>
@@ -792,7 +792,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished">Command</translation>
+        <translation>Ordres</translation>
     </message>
     <message>
         <source>none</source>
@@ -854,7 +854,7 @@ Please define another shortcut.</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished">Move down</translation>
+        <translation>Mou avall</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
@@ -862,7 +862,7 @@ Please define another shortcut.</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation type="unfinished">Move up</translation>
+        <translation>Mou amunt</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
@@ -886,7 +886,7 @@ Please define another shortcut.</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished">Command</translation>
+        <translation>Ordres</translation>
     </message>
     <message>
         <source>&lt;Separator&gt;</source>
@@ -998,7 +998,7 @@ Please define another shortcut.</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Viewing mode</source>
@@ -1037,7 +1037,7 @@ Please define another shortcut.</translation>
     <name>Gui::Dialog::DlgDisplayPropertiesImp</name>
     <message>
         <source>Default</source>
-        <translation type="unfinished">Default</translation>
+        <translation>Predeterminat</translation>
     </message>
     <message>
         <source>Aluminium</source>
@@ -1061,19 +1061,19 @@ Please define another shortcut.</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished">Emerald</translation>
+        <translation>Maragda</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished">Gold</translation>
+        <translation>Daurat</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished">Jade</translation>
+        <translation>Jade</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished">Metalized</translation>
+        <translation>Metalizat</translation>
     </message>
     <message>
         <source>Neon GNC</source>
@@ -1093,15 +1093,15 @@ Please define another shortcut.</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished">Plaster</translation>
+        <translation>Guix</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished">Plastic</translation>
+        <translation>Plàstic</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished">Ruby</translation>
+        <translation>Robí</translation>
     </message>
     <message>
         <source>Satin</source>
@@ -1113,7 +1113,7 @@ Please define another shortcut.</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished">Silver</translation>
+        <translation>Plata</translation>
     </message>
     <message>
         <source>Steel</source>
@@ -1121,22 +1121,22 @@ Please define another shortcut.</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished">Stone</translation>
+        <translation>Pedra</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgEditorSettings</name>
     <message>
         <source>Editor</source>
-        <translation type="unfinished">Editor</translation>
+        <translation>Editor</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">Options</translation>
+        <translation>Opcions</translation>
     </message>
     <message>
         <source>Enable line numbers</source>
-        <translation type="unfinished">Enable line numbers</translation>
+        <translation>Mostra els números de línia</translation>
     </message>
     <message>
         <source>Enable folding</source>
@@ -1207,27 +1207,27 @@ Please define another shortcut.</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished">Language</translation>
+        <translation>Llenguatge</translation>
     </message>
     <message>
         <source>Change language:</source>
-        <translation type="unfinished">Change language:</translation>
+        <translation>Canvia idioma:</translation>
     </message>
     <message>
         <source>Main window</source>
-        <translation type="unfinished">Main window</translation>
+        <translation>Finestra principal</translation>
     </message>
     <message>
         <source>Size of recent file list</source>
-        <translation type="unfinished">Size of recent file list</translation>
+        <translation>Mida de la llista de fitxers recents</translation>
     </message>
     <message>
         <source>Window style:</source>
-        <translation type="unfinished">Window style:</translation>
+        <translation>Estil de finestra:</translation>
     </message>
     <message>
         <source>Size of toolbar icons:</source>
-        <translation type="unfinished">Size of toolbar icons:</translation>
+        <translation>Mida de les icones de la barra d&apos;eines:</translation>
     </message>
     <message>
         <source>Enable tiled background</source>
@@ -1235,65 +1235,49 @@ Please define another shortcut.</translation>
     </message>
     <message>
         <source>Style sheet:</source>
-        <translation type="unfinished">Style sheet:</translation>
+        <translation>Full d’estil:</translation>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Python console</translation>
+        <translation>Consola de Python</translation>
     </message>
     <message>
         <source>Enable word wrap</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enable word wrap</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
-    <message>
-        <source>Default (%1 x %1)</source>
-        <translation type="obsolete">Default (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Small (%1 x %1)</source>
-        <translation type="obsolete">Small (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Large (%1 x %1)</source>
-        <translation type="obsolete">Large (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Extra large (%1 x %1)</source>
-        <translation type="obsolete">Extra large (%1 x %1)</translation>
-    </message>
     <message>
         <source>No style sheet</source>
         <translation type="unfinished">No style sheet</translation>
     </message>
     <message>
         <source>Small (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Small (%1px)</translation>
     </message>
     <message>
         <source>Medium (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Medium (%1px)</translation>
     </message>
     <message>
         <source>Large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Large (%1px)</translation>
     </message>
     <message>
         <source>Extra large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Extra large (%1px)</translation>
     </message>
     <message>
         <source>Custom (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Custom (%1px)</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgInputDialog</name>
     <message>
         <source>Input</source>
-        <translation type="unfinished">Input</translation>
+        <translation>Entrada</translation>
     </message>
     <message>
         <source></source>
@@ -1323,7 +1307,7 @@ Please define another shortcut.</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Close</translation>
+        <translation>Tanca</translation>
     </message>
     <message>
         <source>Create</source>
@@ -1354,7 +1338,7 @@ Please define another shortcut.</translation>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
         <source>Macros</source>
-        <translation type="unfinished">Macros</translation>
+        <translation>Macros</translation>
     </message>
     <message>
         <source>Macro file</source>
@@ -1407,7 +1391,7 @@ This file already exists.</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished">Stop</translation>
+        <translation>Aturar</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1419,7 +1403,7 @@ This file already exists.</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Record</source>
@@ -1756,6 +1740,10 @@ Specify another directory, please.</translation>
     </message>
     <message>
         <source>A search pattern to filter the results above</source>
+        <translation type="unfinished">A search pattern to filter the results above</translation>
+    </message>
+    <message>
+        <source>None (Remove link)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1826,7 +1814,7 @@ Specify another directory, please.</translation>
     </message>
     <message>
         <source>TextLabel</source>
-        <translation type="unfinished">TextLabel</translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <source>Advanced &gt;&gt;</source>
@@ -1834,7 +1822,7 @@ Specify another directory, please.</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Accept changes</source>
@@ -1965,7 +1953,7 @@ Specify another directory, please.</translation>
     </message>
     <message>
         <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Use OpenGL Vertex Buffer Object (experimental)</translation>
     </message>
 </context>
 <context>
@@ -2015,7 +2003,7 @@ Specify another directory, please.</translation>
     </message>
     <message>
         <source>Alt+R</source>
-        <translation type="unfinished">Alt+R</translation>
+        <translation>Alt + R</translation>
     </message>
     <message>
         <source>Out &amp;invisible</source>
@@ -2449,7 +2437,7 @@ Specify another directory, please.</translation>
     </message>
     <message>
         <source>Alt+S</source>
-        <translation type="unfinished">Alt+S</translation>
+        <translation>Alt + S</translation>
     </message>
     <message>
         <source>&amp;4:3</source>
@@ -2489,11 +2477,11 @@ Specify another directory, please.</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Transparent</translation>
     </message>
     <message>
         <source>Add watermark</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Add watermark</translation>
     </message>
 </context>
 <context>
@@ -2640,14 +2628,6 @@ Specify another directory, please.</translation>
         <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
         <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
-    <message>
-        <source>PickRadius</source>
-        <translation type="obsolete">PickRadius</translation>
-    </message>
-    <message>
-        <source>View</source>
-        <translation type="obsolete">Veure</translation>
-    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
@@ -2688,7 +2668,7 @@ Specify another directory, please.</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Close</translation>
+        <translation>Tanca</translation>
     </message>
 </context>
 <context>
@@ -2714,7 +2694,7 @@ Specify another directory, please.</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished">Move down</translation>
+        <translation>Mou avall</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2746,7 +2726,7 @@ Specify another directory, please.</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation type="unfinished">Move up</translation>
+        <translation>Mou amunt</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2778,7 +2758,7 @@ Specify another directory, please.</translation>
         <source>Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
 
 The &apos;Status&apos; column shows whether the document could be recovered.</source>
-        <translation type="unfinished">Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
+        <translation type="obsolete">Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
 
 The &apos;Status&apos; column shows whether the document could be recovered.</translation>
     </message>
@@ -2853,6 +2833,12 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <message>
         <source>Transient directories deleted.</source>
         <translation type="unfinished">Transient directories deleted.</translation>
+    </message>
+    <message>
+        <source>Press &apos;Start Recovery&apos; to start the recovery process of the document listed below.
+
+The &apos;Status&apos; column shows whether the document could be recovered.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3135,7 +3121,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Translation:</source>
@@ -3203,7 +3189,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Close</translation>
+        <translation>Tanca</translation>
     </message>
     <message>
         <source>Incorrect quantity</source>
@@ -3219,7 +3205,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
     <message>
         <source>Use center of mass</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Use center of mass</translation>
     </message>
 </context>
 <context>
@@ -3230,18 +3216,18 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished">Command</translation>
+        <translation>Ordres</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::SceneInspector</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">Dialog</translation>
+        <translation>Diàleg</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Close</translation>
+        <translation>Tanca</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -3317,7 +3303,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <name>Gui::DlgTreeWidget</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">Dialog</translation>
+        <translation>Diàleg</translation>
     </message>
     <message>
         <source>Items</source>
@@ -3370,7 +3356,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">Options</translation>
+        <translation>Opcions</translation>
     </message>
     <message>
         <source>Clear</source>
@@ -3409,14 +3395,14 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Python console</translation>
+        <translation>Consola de Python</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
         <source>Property View</source>
-        <translation type="unfinished">Property View</translation>
+        <translation type="obsolete">Property View</translation>
     </message>
     <message>
         <source>Search</source>
@@ -3477,6 +3463,22 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <message>
         <source>Mark this object to be recomputed</source>
         <translation type="unfinished">Mark this object to be recomputed</translation>
+    </message>
+    <message>
+        <source>Selection View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The number of selected items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate subshape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creates a standalone copy of this subshape in the document</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3600,7 +3602,7 @@ Do you want to save your changes?</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Remove</translation>
+        <translation>Eliminar</translation>
     </message>
 </context>
 <context>
@@ -3672,15 +3674,15 @@ Do you want to save your changes?</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
-        <translation type="unfinished">Press middle mouse button</translation>
+        <translation>Botó central del ratolí</translation>
     </message>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation>Pressionar botó esquerre del ratolí</translation>
     </message>
     <message>
         <source>Scroll middle mouse button</source>
-        <translation type="unfinished">Scroll middle mouse button</translation>
+        <translation>Botó central del ratolí</translation>
     </message>
 </context>
 <context>
@@ -3740,7 +3742,7 @@ Do you want to save your changes?</translation>
     <name>Gui::MacroCommand</name>
     <message>
         <source>Macros</source>
-        <translation type="unfinished">Macros</translation>
+        <translation>Macros</translation>
     </message>
     <message>
         <source>Macro file doesn&apos;t exist</source>
@@ -3785,19 +3787,15 @@ Do you want to copy them, too?</translation>
     </message>
     <message>
         <source>There is a rendering issue on MacOS.</source>
-        <translation type="unfinished">There is a rendering issue on MacOS.</translation>
-    </message>
-    <message>
-        <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="obsolete">See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</translation>
+        <translation type="obsolete">There is a rendering issue on MacOS.</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
-        <translation type="unfinished">Don&apos;t show again</translation>
+        <translation type="obsolete">Don&apos;t show again</translation>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</translation>
     </message>
 </context>
 <context>
@@ -3921,7 +3919,7 @@ How do you want to proceed?</translation>
     <name>Gui::OpenCascadeNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation>Pressionar botó esquerre del ratolí</translation>
     </message>
     <message>
         <source>Press CTRL and middle mouse button</source>
@@ -3985,7 +3983,11 @@ How do you want to proceed?</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation type="unfinished">Edit...</translation>
+        <translation type="obsolete">Edit...</translation>
+    </message>
+    <message>
+        <source>Change the linked object</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4024,7 +4026,7 @@ Do you want to exit without saving your data?</translation>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Python console</translation>
+        <translation>Consola de Python</translation>
     </message>
     <message>
         <source>Unhandled PyCXX exception.</source>
@@ -4213,7 +4215,7 @@ Do you want to specify another directory?</translation>
     <name>Gui::TaskBoxAngle</name>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">Angle</translation>
+        <translation>Angle</translation>
     </message>
 </context>
 <context>
@@ -4287,7 +4289,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>edit selection</source>
@@ -4298,7 +4300,7 @@ Do you want to specify another directory?</translation>
     <name>Gui::TouchpadNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation>Pressionar botó esquerre del ratolí</translation>
     </message>
     <message>
         <source>Press SHIFT button</source>
@@ -4336,11 +4338,11 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">Rename</translation>
+        <translation>Reanomena</translation>
     </message>
     <message>
         <source>Rename object</source>
-        <translation type="unfinished">Rename object</translation>
+        <translation>Reanomenar Objecta</translation>
     </message>
     <message>
         <source>Labels &amp; Attributes</source>
@@ -4352,11 +4354,11 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
         <source>Finish editing</source>
-        <translation type="unfinished">Finish editing</translation>
+        <translation>Acabat d&apos;editar</translation>
     </message>
     <message>
         <source>Finish editing object</source>
-        <translation type="unfinished">Finish editing object</translation>
+        <translation>Acabat d&apos;editar objecte</translation>
     </message>
     <message>
         <source>Activate document</source>
@@ -4384,7 +4386,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
         <source>%1, Internal name: %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1, Internal name: %2</translation>
     </message>
 </context>
 <context>
@@ -4573,7 +4575,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Python console</translation>
+        <translation>Consola de Python</translation>
     </message>
     <message>
         <source>Display properties</source>
@@ -4959,12 +4961,8 @@ Be aware the point where you click matters.</translation>
         <translation type="unfinished">Delete group content?</translation>
     </message>
     <message>
-        <source>The %1 is not empty, delete it&apos;s content as well?</source>
-        <translation type="obsolete">The %1 is not empty, delete it&apos;s content as well?</translation>
-    </message>
-    <message>
         <source>The %1 is not empty, delete its content as well?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
     </message>
 </context>
 <context>
@@ -6806,7 +6804,7 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation type="unfinished">Fullscreen</translation>
+        <translation>Pantalla completa</translation>
     </message>
     <message>
         <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -6928,19 +6926,19 @@ Are you sure you want to continue?
     </message>
     <message>
         <source>Hidden line</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hidden line</translation>
     </message>
     <message>
         <source>Hidden line mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hidden line mode</translation>
     </message>
     <message>
         <source>No shading</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No shading</translation>
     </message>
     <message>
         <source>No shading mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No shading mode</translation>
     </message>
 </context>
 <context>
@@ -7097,7 +7095,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">Default</translation>
+        <translation>Predeterminat</translation>
     </message>
     <message>
         <source>Windows XP</source>

@@ -405,11 +405,11 @@
     </message>
     <message>
         <source>Create section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortu sekzioa saretik eta planotik</translation>
     </message>
     <message>
         <source>Section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Sekzioa saretik eta planotik</translation>
     </message>
 </context>
 <context>
@@ -450,7 +450,7 @@
     </message>
     <message>
         <source>Segment by tool mesh</source>
-        <translation type="unfinished">Segment by tool mesh</translation>
+        <translation>Segmentua tresna-sare batetik</translation>
     </message>
     <message>
         <source>Creates a segment from a given tool mesh</source>
@@ -510,7 +510,7 @@
     </message>
     <message>
         <source>Curvature plot</source>
-        <translation>Kurbaduraren inprimatzea</translation>
+        <translation>Kurbaduraren trazaketa</translation>
     </message>
 </context>
 <context>
@@ -532,7 +532,7 @@
     <name>MeshGui::DlgEvaluateMesh</name>
     <message>
         <source>&amp;Help</source>
-        <translation type="obsolete">&amp;Laguntza</translation>
+        <translation type="obsolete">L&amp;aguntza</translation>
     </message>
     <message>
         <source>F1</source>
@@ -600,7 +600,7 @@
     </message>
     <message>
         <source>Non-manifolds</source>
-        <translation type="unfinished">Non-manifolds</translation>
+        <translation>Ez anizkoitzak</translation>
     </message>
     <message>
         <source>Self-intersections</source>
@@ -608,7 +608,7 @@
     </message>
     <message>
         <source>All above tests together</source>
-        <translation type="unfinished">All above tests together</translation>
+        <translation>Goiko proba guztiak batera</translation>
     </message>
     <message>
         <source>Repetitive repair</source>
@@ -647,11 +647,11 @@
     </message>
     <message>
         <source>Non-manifolds</source>
-        <translation type="unfinished">Non-manifolds</translation>
+        <translation>Ez anizkoitzak</translation>
     </message>
     <message>
         <source>Cannot remove non-manifolds</source>
-        <translation type="unfinished">Cannot remove non-manifolds</translation>
+        <translation>Ezin dira kendu anizkoitzak ez direnak</translation>
     </message>
     <message>
         <source>No selection</source>
@@ -659,19 +659,19 @@
     </message>
     <message>
         <source>No flipped normals</source>
-        <translation type="unfinished">No flipped normals</translation>
+        <translation>Iraulitako normalik ez</translation>
     </message>
     <message>
         <source>%1 flipped normals</source>
-        <translation type="unfinished">%1 flipped normals</translation>
+        <translation>Iraulitako %1 normal</translation>
     </message>
     <message>
         <source>No non-manifolds</source>
-        <translation type="unfinished">No non-manifolds</translation>
+        <translation>Ez dago anizkoitza ez denik</translation>
     </message>
     <message>
         <source>%1 non-manifolds</source>
-        <translation type="unfinished">%1 non-manifolds</translation>
+        <translation>Anizkoitzak ez diren %1</translation>
     </message>
     <message>
         <source>No invalid indices</source>
@@ -727,11 +727,11 @@
     </message>
     <message>
         <source>Mesh repair</source>
-        <translation type="unfinished">Mesh repair</translation>
+        <translation>Sarearen konponketa</translation>
     </message>
     <message>
         <source>Flipped normals found</source>
-        <translation type="unfinished">Flipped normals found</translation>
+        <translation>Iraulitako normalak aurkitu dira</translation>
     </message>
     <message>
         <source>Check failed due to folds on the surface.
@@ -768,15 +768,15 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation type="unfinished">Check for non-manifold points</translation>
+        <translation>Aztertu anizkoitzak ez diren punturik dagoen</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation type="unfinished">Enable check for folds on surface</translation>
+        <translation>Gaitu azalerako tolesturen egiaztapena</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
-        <translation type="unfinished">Only consider zero area faces as degenerated</translation>
+        <translation>Zero area duten aurpegiak soilik hartu degeneratutzat</translation>
     </message>
 </context>
 <context>
@@ -905,7 +905,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
     <message>
         <source>Export AMF files using compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Esportatu AMF fitxategiak konpresioa erabiliz</translation>
     </message>
 </context>
 <context>
@@ -920,7 +920,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
     <message>
         <source>Backface color</source>
-        <translation type="unfinished">Backface color</translation>
+        <translation>Atzeko aurpegiaren kolorea</translation>
     </message>
     <message>
         <source>Smoothing</source>
@@ -940,7 +940,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
     <message>
         <source>Define normal per vertex</source>
-        <translation type="unfinished">Define normal per vertex</translation>
+        <translation>Definitu normala erpineko</translation>
     </message>
     <message utf8="true">
         <source> °</source>
@@ -1060,7 +1060,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
     <message>
         <source>&lt; faces than</source>
-        <translation type="unfinished">&lt; faces than</translation>
+        <translation>baino aurpegi gutxiago</translation>
     </message>
     <message>
         <source>Region</source>
@@ -1084,7 +1084,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
     <message>
         <source>&gt; faces than</source>
-        <translation type="unfinished">&gt; faces than</translation>
+        <translation>baino aurpegi gehiago</translation>
     </message>
     <message>
         <source>Region options</source>
@@ -1092,11 +1092,11 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
     <message>
         <source>Respect only triangles with normals facing screen</source>
-        <translation type="unfinished">Respect only triangles with normals facing screen</translation>
+        <translation>Errespetatu pantailara begira dauden normalak dituzten triangeluak besterik ez</translation>
     </message>
     <message>
         <source>Respect only visible triangles</source>
-        <translation type="unfinished">Respect only visible triangles</translation>
+        <translation>Errespetatu ikusgai dauden triangeluak besterik ez</translation>
     </message>
 </context>
 <context>
@@ -1162,15 +1162,15 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
     <message>
         <source>Respect only visible triangles</source>
-        <translation type="unfinished">Respect only visible triangles</translation>
+        <translation>Errespetatu ikusgai dauden triangeluak besterik ez</translation>
     </message>
     <message>
         <source>Respect only triangles with normals facing screen</source>
-        <translation type="unfinished">Respect only triangles with normals facing screen</translation>
+        <translation>Errespetatu pantailara begira dauden normalak dituzten triangeluak besterik ez</translation>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
-        <translation type="unfinished">Use a brush tool to select the area</translation>
+        <translation>Erabili eskuila-tresna bat area hautatzeko</translation>
     </message>
     <message>
         <source>Clears completely the selected area</source>
@@ -1217,7 +1217,7 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
     </message>
     <message>
         <source>Unknown error occurred while running OpenSCAD.</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore ezezaguna gertatu da OpenSCAD exekutatzean.</translation>
     </message>
 </context>
 <context>
@@ -1399,7 +1399,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Alias Mesh</source>
-        <translation type="unfinished">Alias Mesh</translation>
+        <translation>Alias-sarea</translation>
     </message>
     <message>
         <source>Object File Format</source>
@@ -1411,7 +1411,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Stanford Polygon</source>
-        <translation type="unfinished">Stanford Polygon</translation>
+        <translation>Stanford poligonoa</translation>
     </message>
     <message>
         <source>All Files</source>
@@ -1419,7 +1419,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>
-        <translation type="unfinished">X3D Extensible 3D</translation>
+        <translation>X3D, 3D hedagarria</translation>
     </message>
     <message>
         <source>VRML V2.0</source>
@@ -1435,7 +1435,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Python module def</source>
-        <translation type="unfinished">Python module def</translation>
+        <translation>Phyton moduluaren definizioa</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>

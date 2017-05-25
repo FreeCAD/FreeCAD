@@ -4,7 +4,7 @@
 <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-        <location filename="../../Command.cpp" line="+1176"/>
+        <location filename="../../Command.cpp" line="+1265"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -22,7 +22,7 @@
 <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-        <location line="-96"/>
+        <location line="-102"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -58,7 +58,7 @@
 <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-        <location filename="../../Command.cpp" line="+832"/>
+        <location filename="../../Command.cpp" line="+906"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -84,7 +84,7 @@
         <translation type="obsolete">Chamfer...</translation>
     </message>
     <message>
-        <location line="-531"/>
+        <location line="-579"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -156,7 +156,7 @@
 <context>
     <name>CmdPartDesignGroove</name>
     <message>
-        <location line="-330"/>
+        <location line="-365"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -174,7 +174,7 @@
 <context>
     <name>CmdPartDesignLine</name>
     <message>
-        <location line="-856"/>
+        <location line="-927"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -192,7 +192,7 @@
 <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-        <location line="+1479"/>
+        <location line="+1606"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -232,7 +232,7 @@
 <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-        <location filename="../../Command.cpp" line="-56"/>
+        <location filename="../../Command.cpp" line="-66"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -304,14 +304,14 @@
 <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-        <location filename="../../Command.cpp" line="+205"/>
+        <location filename="../../Command.cpp" line="+235"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create MultiTransform</source>
-        <translation type="unfinished">Create MultiTransform</translation>
+        <translation>Sortu transformazio anitza</translation>
     </message>
     <message>
         <source>MultiTransform</source>
@@ -320,7 +320,7 @@
     <message>
         <location line="+1"/>
         <source>Create a multitransform feature</source>
-        <translation type="unfinished">Create a multitransform feature</translation>
+        <translation>Sortu transformazio anitzeko elementua</translation>
     </message>
     <message>
         <source>create a multitransform feature</source>
@@ -330,7 +330,7 @@
 <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-        <location line="-1508"/>
+        <location line="-1655"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -348,19 +348,19 @@
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="+568"/>
+        <location line="+629"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Pad</source>
-        <translation type="unfinished">Pad</translation>
+        <translation>Estruitu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Pad a selected sketch</source>
-        <translation type="unfinished">Pad a selected sketch</translation>
+        <translation>Estruitu hautatutako krokisa</translation>
     </message>
 </context>
 <context>
@@ -384,7 +384,7 @@
 <context>
     <name>CmdPartDesignPlane</name>
     <message>
-        <location filename="../../Command.cpp" line="-728"/>
+        <location filename="../../Command.cpp" line="-789"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -402,7 +402,7 @@
 <context>
     <name>CmdPartDesignPocket</name>
     <message>
-        <location line="+782"/>
+        <location line="+844"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -424,7 +424,7 @@
 <context>
     <name>CmdPartDesignPoint</name>
     <message>
-        <location line="-730"/>
+        <location line="-792"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -442,19 +442,19 @@
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+1507"/>
+        <location line="+1644"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>PolarPattern</source>
-        <translation type="unfinished">PolarPattern</translation>
+        <translation>Eredu polarra</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a polar pattern feature</source>
-        <translation type="unfinished">Create a polar pattern feature</translation>
+        <translation>Sortu eredu polarreko elementu bat</translation>
     </message>
     <message>
         <source>create a polar pattern feature</source>
@@ -464,25 +464,25 @@
 <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-737"/>
+        <location line="-811"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Revolution</source>
-        <translation type="unfinished">Revolution</translation>
+        <translation>Erreboluzioa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Revolve a selected sketch</source>
-        <translation type="unfinished">Revolve a selected sketch</translation>
+        <translation>Erreboluzionatu hautatutako krokis bat</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+790"/>
+        <location line="+874"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -504,25 +504,25 @@
 <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-        <location line="-1536"/>
+        <location line="-1683"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a shape binder</source>
-        <translation type="unfinished">Create a shape binder</translation>
+        <translation>Sortu forma-zorroa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a new shape binder</source>
-        <translation type="unfinished">Create a new shape binder</translation>
+        <translation>Sortu forma-zorro berria</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-        <location line="+984"/>
+        <location line="+1073"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -540,7 +540,7 @@
 <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-        <location line="-96"/>
+        <location line="-102"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -558,7 +558,7 @@
 <context>
     <name>CmdPartDesignThickness</name>
     <message>
-        <location line="+342"/>
+        <location line="+365"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -570,13 +570,13 @@
     <message>
         <location line="+1"/>
         <source>Make a thick solid</source>
-        <translation type="unfinished">Make a thick solid</translation>
+        <translation>Sortu solido lodi bat</translation>
     </message>
 </context>
 <context>
     <name>CmdPrimtiveCompAdditive</name>
     <message>
-        <location filename="../../CommandPrimitive.cpp" line="+52"/>
+        <location filename="../../CommandPrimitive.cpp" line="+68"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -587,7 +587,7 @@
         <translation>Sortu jatorrizko gehitzaile bat</translation>
     </message>
     <message>
-        <location line="+136"/>
+        <location line="+97"/>
         <source>Additive Box</source>
         <translation>Kutxa gehitzailea</translation>
     </message>
@@ -641,7 +641,7 @@
         <translation>Sortu jatorrizko kentzaile bat</translation>
     </message>
     <message>
-        <location line="+146"/>
+        <location line="+95"/>
         <source>Subtractive Box</source>
         <translation>Kutxa kentzailea</translation>
     </message>
@@ -724,12 +724,12 @@
     <message>
         <location line="+1"/>
         <source>No wire in sketch</source>
-        <translation>Haririk ez krokisean</translation>
+        <translation>Alanbrerik ez krokisean</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sketch already used by other feature</source>
-        <translation type="unfinished">Sketch already used by other feature</translation>
+        <translation>Beste elementu bat dagoeneko krokisa ari da erabiltzen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -744,7 +744,7 @@
     <message>
         <location line="+1"/>
         <source>Feature is located after the Tip feature</source>
-        <translation type="unfinished">Feature is located after the Tip feature</translation>
+        <translation>Elementua puntaren ondoren dago kokatuta</translation>
     </message>
 </context>
 <context>
@@ -770,7 +770,7 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Involute parameter</translation>
+        <translation>Parametro bilkaria</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -948,7 +948,7 @@ Please check one or more edge entities first.</translation>
         <location line="-862"/>
         <location line="+882"/>
         <source>Circumradius:</source>
-        <translation type="unfinished">Circumradius:</translation>
+        <translation>Zirkunskribatutako erradioa:</translation>
     </message>
     <message>
         <location line="-831"/>
@@ -978,7 +978,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+160"/>
         <source>Pitch:</source>
-        <translation type="unfinished">Pitch:</translation>
+        <translation>Buruzkatzea:</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -988,12 +988,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Right-handed</source>
-        <translation type="unfinished">Right-handed</translation>
+        <translation>Eskuina</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Left-handed</source>
-        <translation type="unfinished">Left-handed</translation>
+        <translation>Ezkertia</translation>
     </message>
     <message>
         <location line="+88"/>
@@ -1099,7 +1099,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+16"/>
         <source>Fuse</source>
-        <translation type="unfinished">Fuse</translation>
+        <translation>Fusionatu</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1109,7 +1109,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+5"/>
         <source>Common</source>
-        <translation type="unfinished">Common</translation>
+        <translation>Komuna</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1198,12 +1198,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Add ref</source>
-        <translation type="unfinished">Add ref</translation>
+        <translation>Gehitu ref</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Remove ref</source>
-        <translation type="unfinished">Remove ref</translation>
+        <translation>Kendu ref</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -1233,7 +1233,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
         <source>Boolean: Accept: Input error</source>
-        <translation type="unfinished">Boolean: Accept: Input error</translation>
+        <translation>Boolearra: Onartu: Sarrera-errorea</translation>
     </message>
 </context>
 <context>
@@ -1246,9 +1246,9 @@ Please check one or more edge entities first.</translation>
 <context>
     <name>PartDesignGui::TaskDlgDatumParameters</name>
     <message>
-        <location filename="../../TaskDatumParameters.cpp" line="+48"/>
+        <location filename="../../TaskDatumParameters.cpp" line="+49"/>
         <source>Incompatible reference set</source>
-        <translation type="unfinished">Incompatible reference set</translation>
+        <translation>Bateragarria ez den erreferentzia multzoa</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1384,12 +1384,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+17"/>
         <source>Pull direction</source>
-        <translation type="unfinished">Pull direction</translation>
+        <translation>Tiratze-norabidea</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Reverse pull direction</source>
-        <translation type="unfinished">Reverse pull direction</translation>
+        <translation>Alderantzizko tiratze-norabidea</translation>
     </message>
     <message>
         <source>Draft parameters</source>
@@ -1411,7 +1411,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+9"/>
         <source>Allow used features</source>
-        <translation type="unfinished">Allow used features</translation>
+        <translation>Onartu erabilitako elementuak</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1421,12 +1421,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+12"/>
         <source>From  other bodies of the same part</source>
-        <translation type="unfinished">From  other bodies of the same part</translation>
+        <translation>Pieza bereko beste gorputz batzuetatik</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>From different parts or free features</source>
-        <translation type="unfinished">From different parts or free features</translation>
+        <translation>Elementu askeen pieza desberdinetatik</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1444,7 +1444,7 @@ Please check one or more edge entities first.</translation>
         <translation>Sortu erreferentzia gurutzatua</translation>
     </message>
     <message>
-        <location filename="../../TaskFeaturePick.cpp" line="+62"/>
+        <location filename="../../TaskFeaturePick.cpp" line="+64"/>
         <source>Valid</source>
         <translation>Baliozkoa</translation>
     </message>
@@ -1456,12 +1456,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+1"/>
         <source>No wire in sketch</source>
-        <translation>Haririk ez krokisean</translation>
+        <translation>Alanbrerik ez krokisean</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sketch already used by other feature</source>
-        <translation type="unfinished">Sketch already used by other feature</translation>
+        <translation>Beste elementu bat dagoeneko krokisa ari da erabiltzen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1476,11 +1476,11 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+1"/>
         <source>Doesn&apos;t belong to any body</source>
-        <translation type="unfinished"></translation>
+        <translation>Ez da gorputz batekoa</translation>
     </message>
     <message>
         <source>Doesn&apos;t belongs to any body</source>
-        <translation type="obsolete">Doesn&apos;t belongs to any body</translation>
+        <translation type="obsolete">Ez da gorputz batekoa</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1490,7 +1490,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+1"/>
         <source>Feature is located after the tip feature</source>
-        <translation type="unfinished">Feature is located after the tip feature</translation>
+        <translation>Elementua puntaren ondoren dago kokatuta</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1508,12 +1508,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Add ref</source>
-        <translation type="unfinished">Add ref</translation>
+        <translation>Gehitu ref</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Remove ref</source>
-        <translation type="unfinished">Remove ref</translation>
+        <translation>Kendu ref</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1594,7 +1594,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+5"/>
         <source>Up to first</source>
-        <translation type="unfinished">Up to first</translation>
+        <translation>Gora lehenengora</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1604,7 +1604,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskHoleParameters.cpp" line="+48"/>
         <source>TaskHoleParameters</source>
-        <translation type="unfinished">TaskHoleParameters</translation>
+        <translation>TaskHoleParameters</translation>
     </message>
 </context>
 <context>
@@ -1658,7 +1658,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+21"/>
         <source>Occurrences</source>
-        <translation type="unfinished">Occurrences</translation>
+        <translation>Gertaldiak</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1724,7 +1724,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskLoftParameters.cpp" line="+58"/>
         <source>Loft parameters</source>
-        <translation type="unfinished">Loft parameters</translation>
+        <translation>Goratze-parametroak</translation>
     </message>
 </context>
 <context>
@@ -1834,7 +1834,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+15"/>
         <source>Transformations</source>
-        <translation type="unfinished">Transformations</translation>
+        <translation>Transformazioak</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1859,22 +1859,22 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+4"/>
         <source>Add mirrored transformation</source>
-        <translation type="unfinished">Add mirrored transformation</translation>
+        <translation>Gehitu ispilu-transformazioa</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add linear pattern</source>
-        <translation type="unfinished">Add linear pattern</translation>
+        <translation>Gehitu eredu lineala</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add polar pattern</source>
-        <translation type="unfinished">Add polar pattern</translation>
+        <translation>Gehitu eredu polarra</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add scaled transformation</source>
-        <translation type="unfinished">Add scaled transformation</translation>
+        <translation>Gehitu eskaladun transformazioa</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1889,7 +1889,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+27"/>
         <source>Right-click to add</source>
-        <translation type="unfinished">Right-click to add</translation>
+        <translation>Eskuineko klik gehitzeko</translation>
     </message>
 </context>
 <context>
@@ -1966,15 +1966,15 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
         <source>Plot mode:</source>
-        <translation type="obsolete">Inprimatze modua:</translation>
+        <translation type="obsolete">Trazaketa modua:</translation>
     </message>
     <message>
         <source>Point size:</source>
-        <translation type="obsolete">Point size:</translation>
+        <translation type="obsolete">Puntu-tamaina:</translation>
     </message>
     <message>
         <source>Line width:</source>
-        <translation type="obsolete">Line width:</translation>
+        <translation type="obsolete">Lerro-zabalera:</translation>
     </message>
     <message>
         <source>Transparency:</source>
@@ -1987,7 +1987,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskPadParameters.cpp" line="-306"/>
         <source>Pad parameters</source>
-        <translation type="unfinished">Pad parameters</translation>
+        <translation>Estrusio-parametroak</translation>
     </message>
     <message>
         <location line="+50"/>
@@ -1996,7 +1996,7 @@ Please check one or more edge entities first.</translation>
         <location line="+6"/>
         <location line="+148"/>
         <source>No face selected</source>
-        <translation type="unfinished">No face selected</translation>
+        <translation>Ez da aurpegirik hautatu</translation>
     </message>
     <message>
         <location line="-267"/>
@@ -2008,7 +2008,7 @@ Please check one or more edge entities first.</translation>
         <location line="-252"/>
         <location line="+253"/>
         <source>To first</source>
-        <translation type="unfinished">To first</translation>
+        <translation>Lehenera</translation>
     </message>
     <message>
         <location line="-252"/>
@@ -2084,7 +2084,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+5"/>
         <source>Auxillery</source>
-        <translation type="unfinished">Auxillery</translation>
+        <translation>Laguntzailea</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2094,7 +2094,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+20"/>
         <source>Curvelinear equivalenz</source>
-        <translation type="unfinished">Curvelinear equivalenz</translation>
+        <translation>Lerro-makur baliokidea</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2152,12 +2152,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+11"/>
         <source>Corner Transition</source>
-        <translation type="unfinished">Corner Transition</translation>
+        <translation>Izkina-trantsizioa</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Transformed</source>
-        <translation type="unfinished">Transformed</translation>
+        <translation>Transformatua</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2205,7 +2205,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Transform mode</source>
-        <translation type="unfinished">Transform mode</translation>
+        <translation>Transformazio modua</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2215,7 +2215,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+5"/>
         <source>Multisection</source>
-        <translation type="unfinished">Multisection</translation>
+        <translation>Sekzio anitzekoa</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -2230,7 +2230,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskPipeParameters.cpp" line="+464"/>
         <source>Section transformation</source>
-        <translation type="unfinished">Section transformation</translation>
+        <translation>Sekzioaren transformazioa</translation>
     </message>
 </context>
 <context>
@@ -2301,13 +2301,13 @@ Please check one or more edge entities first.</translation>
         <location line="+47"/>
         <location line="+254"/>
         <source>To first</source>
-        <translation type="unfinished">To first</translation>
+        <translation>Lehenera</translation>
     </message>
     <message>
         <location line="-255"/>
         <location line="+254"/>
         <source>Through all</source>
-        <translation type="unfinished">Through all</translation>
+        <translation>Guztien zehar</translation>
     </message>
     <message>
         <location line="-252"/>
@@ -2322,7 +2322,7 @@ Please check one or more edge entities first.</translation>
         <location line="+6"/>
         <location line="+149"/>
         <source>No face selected</source>
-        <translation type="unfinished">No face selected</translation>
+        <translation>Ez da aurpegirik hautatu</translation>
     </message>
 </context>
 <context>
@@ -2388,7 +2388,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+27"/>
         <source>Occurrences</source>
-        <translation type="unfinished">Occurrences</translation>
+        <translation>Gertaldiak</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2492,7 +2492,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="-132"/>
         <source>Revolution parameters</source>
-        <translation type="unfinished">Revolution parameters</translation>
+        <translation>Erreboluzio-parametroak</translation>
     </message>
     <message>
         <source>Undefined</source>
@@ -2528,7 +2528,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+14"/>
         <source>Occurrences</source>
-        <translation type="unfinished">Occurrences</translation>
+        <translation>Gertaldiak</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2584,7 +2584,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+23"/>
         <source>No face selected</source>
-        <translation type="unfinished">No face selected</translation>
+        <translation>Ez da aurpegirik hautatu</translation>
     </message>
 </context>
 <context>
@@ -2611,7 +2611,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+17"/>
         <source>Thickness</source>
-        <translation type="unfinished">Lodiera</translation>
+        <translation>Lodiera</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -2621,7 +2621,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+7"/>
         <source>Join Type</source>
-        <translation type="unfinished">Join Type</translation>
+        <translation>Elkartze mota</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2636,7 +2636,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+5"/>
         <source>Recto Verso</source>
-        <translation type="unfinished">Recto Verso</translation>
+        <translation>RectoVerso</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -2651,7 +2651,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+10"/>
         <source>Make thickness inwards</source>
-        <translation type="unfinished">Make thickness inwards</translation>
+        <translation>Sortu lodiera barrurantz</translation>
     </message>
     <message>
         <location filename="../../TaskThicknessParameters.cpp" line="+94"/>
@@ -2664,7 +2664,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
         <source>Transformed feature messages</source>
-        <translation type="unfinished">Transformed feature messages</translation>
+        <translation>Transformatutako elementuaren mezuak</translation>
     </message>
 </context>
 <context>
@@ -2688,7 +2688,7 @@ Please check one or more edge entities first.</translation>
         <location line="+2"/>
         <location line="+36"/>
         <source>Construction line %1</source>
-        <translation type="unfinished">Construction line %1</translation>
+        <translation>%1 eraikuntza-lerroa</translation>
     </message>
     <message>
         <location line="-22"/>
@@ -2732,13 +2732,13 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../ViewProviderBody.cpp" line="+135"/>
         <source>Toggle active body</source>
-        <translation type="unfinished">Toggle active body</translation>
+        <translation>Txandakatu gorputz aktiboa</translation>
     </message>
 </context>
 <context>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
-        <location filename="../../CommandPrimitive.cpp" line="-219"/>
+        <location filename="../../CommandPrimitive.cpp" line="-168"/>
         <source>Create an additive box by its with, height and length</source>
         <translation>Sortu kutxa gehitzaile bat bere zabalera, altuera eta luzera erabiliz</translation>
     </message>
@@ -2770,18 +2770,18 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+4"/>
         <source>Create an additive prism</source>
-        <translation type="unfinished">Create an additive prism</translation>
+        <translation>Sortu prisma gehitzailea</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Create an additive wedge</source>
-        <translation type="unfinished">Create an additive wedge</translation>
+        <translation>Sortu falka gehitzaile bat</translation>
     </message>
 </context>
 <context>
     <name>PartDesign_CompPrimitiveSubtractive</name>
     <message>
-        <location line="+164"/>
+        <location line="+113"/>
         <source>Create an subtractive box by its with, height and length</source>
         <translation>Sortu kutxa kentzaile bat bere zabalera, altuera eta luzera erabiliz</translation>
     </message>
@@ -2831,7 +2831,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+1"/>
         <source>Select a body from the list</source>
-        <translation type="unfinished">Select a body from the list</translation>
+        <translation>Hautatu zerrendako gorputz bat</translation>
     </message>
 </context>
 <context>
@@ -2844,15 +2844,15 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+1"/>
         <source>Select a feature from the list</source>
-        <translation type="unfinished">Select a feature from the list</translation>
+        <translation>Hautatu zerrendako elementu bat</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-204"/>
+        <location filename="../../Command.cpp" line="-209"/>
         <location line="+4"/>
-        <location line="+21"/>
+        <location line="+26"/>
         <location line="+12"/>
         <source>Wrong selection</source>
         <translation>Hautapen okerra</translation>
@@ -2969,7 +2969,7 @@ Create the sketch on a face.</translation>
     <message>
         <location filename="../../ViewProviderPad.cpp" line="+54"/>
         <source>Edit pad</source>
-        <translation type="unfinished">Edit pad</translation>
+        <translation>Editatu estrusioa</translation>
     </message>
     <message>
         <location filename="../../ViewProviderPocket.cpp" line="+53"/>
@@ -2981,14 +2981,18 @@ Create the sketch on a face.</translation>
         <translation type="obsolete">Edit chamfer</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-1456"/>
+        <location filename="../../Command.cpp" line="-1562"/>
         <source>Invalid selection</source>
-        <translation type="unfinished">Invalid selection</translation>
+        <translation>Baliogabeko hautapena</translation>
+    </message>
+    <message>
+        <source>There are no attachment modes that fit seleted objects. Select something else.</source>
+        <translation type="obsolete">Ez dago hautatutako objektuei doitzen zaion eranste modurik. Hautatu beste zerbait.</translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>There are no attachment modes that fit seleted objects. Select something else.</source>
-        <translation>Ez dago hautatutako objektuei doitzen zaion eranste modurik. Hautatu beste zerbait.</translation>
+        <source>There are no attachment modes that fit selected objects. Select something else.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2997,7 +3001,7 @@ Create the sketch on a face.</translation>
         <translation>Errorea</translation>
     </message>
     <message>
-        <location line="+222"/>
+        <location line="+243"/>
         <source>Several sub-elements selected</source>
         <translation type="unfinished">Several sub-elements selected</translation>
     </message>
@@ -3027,7 +3031,7 @@ Create the sketch on a face.</translation>
         <translation type="unfinished">You need a planar face as support for a sketch!</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+185"/>
         <source>No valid planes in this document</source>
         <translation>Ez dago baliozko planorik dokumentu honetan</translation>
     </message>
@@ -3037,21 +3041,21 @@ Create the sketch on a face.</translation>
         <translation>Krokisa sortzeko, lehenengo sortu plano bat edo hautatu aurpegi bat</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+13"/>
         <location line="+290"/>
-        <location line="+736"/>
+        <location line="+781"/>
         <location filename="../../ViewProvider.cpp" line="+101"/>
         <location filename="../../ViewProviderBoolean.cpp" line="+74"/>
-        <location filename="../../ViewProviderDatum.cpp" line="+243"/>
+        <location filename="../../ViewProviderDatum.cpp" line="+251"/>
         <location filename="../../ViewProviderPrimitive.cpp" line="+83"/>
         <location filename="../../ViewProviderShapeBinder.cpp" line="+92"/>
         <source>A dialog is already open in the task panel</source>
         <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-        <location line="-1025"/>
+        <location line="-1070"/>
         <location line="+290"/>
-        <location line="+736"/>
+        <location line="+781"/>
         <location filename="../../ViewProvider.cpp" line="+1"/>
         <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
         <location filename="../../ViewProviderDatum.cpp" line="+1"/>
@@ -3061,9 +3065,9 @@ Create the sketch on a face.</translation>
         <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
     <message>
-        <location line="-804"/>
+        <location line="-849"/>
         <source>No sketch to work on</source>
-        <translation type="unfinished">No sketch to work on</translation>
+        <translation>Ez dago krokisik lanerako</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3071,7 +3075,7 @@ Create the sketch on a face.</translation>
         <translation>Ez dago krokisik erabilgarri dokumentuan</translation>
     </message>
     <message>
-        <location line="+511"/>
+        <location line="+551"/>
         <source>Select an edge, face or body.</source>
         <translation>Hautatu ertz, aurpegi edo gorputz bat.</translation>
     </message>
@@ -3081,6 +3085,17 @@ Create the sketch on a face.</translation>
         <translation>Hautatu gorputz bakarreko ertz, aurpegi edo beste gorputz bat.</translation>
     </message>
     <message>
+        <location line="+4"/>
+        <location line="+318"/>
+        <source>Selection is not in Active Body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-317"/>
+        <source>Select an edge, face or body from an active body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+11"/>
         <source>%1 works only on parts.</source>
         <translation>%1 piezetan soilik dabil.</translation>
@@ -3088,7 +3103,7 @@ Create the sketch on a face.</translation>
     <message>
         <location line="+10"/>
         <source>Shape of the selected Part is empty</source>
-        <translation type="unfinished">Shape of the selected Part is empty</translation>
+        <translation>Hautatutako piezaren forma hutsik dago</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3096,9 +3111,24 @@ Create the sketch on a face.</translation>
         <translation> ez da posible hautatutako aurpegitetan/ertzetan.</translation>
     </message>
     <message>
+        <location line="+277"/>
+        <source>Multiple Features Selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please select only one subtractive or additive feature first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Please select only one subtractive or additive feature in an active body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../ViewProviderRevolution.cpp" line="+51"/>
         <source>Edit revolution</source>
-        <translation type="unfinished">Edit revolution</translation>
+        <translation>Editatu erreboluzioa</translation>
     </message>
     <message>
         <source>Edit Groove</source>
@@ -3115,12 +3145,12 @@ Create the sketch on a face.</translation>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+203"/>
         <source>Missing neutral plane</source>
-        <translation type="unfinished">Missing neutral plane</translation>
+        <translation>Plano neutrala falta da</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please select a plane or an edge plus a pull direction</source>
-        <translation type="unfinished">Please select a plane or an edge plus a pull direction</translation>
+        <translation>Hautatu plano bat edo ertz bat, gehi tiratze-norabide bat</translation>
     </message>
     <message>
         <source>Edit draft</source>
@@ -3133,22 +3163,22 @@ Create the sketch on a face.</translation>
     <message>
         <location filename="../../ViewProviderTransformed.cpp" line="+151"/>
         <source>One transformed shape does not intersect support</source>
-        <translation type="unfinished">One transformed shape does not intersect support</translation>
+        <translation>Transformatutako forma batek ez du euskarria ebakitzen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 transformed shapes do not intersect support</source>
-        <translation type="unfinished">%1 transformed shapes do not intersect support</translation>
+        <translation>Transformatutako %1 formak ez dute euskarria ebakitzen</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Transformation succeeded</source>
-        <translation type="unfinished">Transformation succeeded</translation>
+        <translation>Transformazioa ongi burutu da</translation>
     </message>
     <message>
         <location filename="../../ViewProviderGroove.cpp" line="+51"/>
         <source>Edit groove</source>
-        <translation type="unfinished">Edit groove</translation>
+        <translation>Editatu arteka</translation>
     </message>
     <message>
         <source>Edit revolve</source>
@@ -3157,7 +3187,7 @@ Create the sketch on a face.</translation>
     <message>
         <location filename="../../CommandBody.cpp" line="-736"/>
         <source>Part creation failed</source>
-        <translation type="unfinished">Part creation failed</translation>
+        <translation>Piezaren sorrerak huts egin du</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3171,7 +3201,7 @@ Create the sketch on a face.</translation>
         <location line="+8"/>
         <location line="+8"/>
         <source>Bad base feature</source>
-        <translation type="unfinished">Bad base feature</translation>
+        <translation>Oinarri-elementu okerra</translation>
     </message>
     <message>
         <location line="-27"/>
@@ -3185,17 +3215,17 @@ Create the sketch on a face.</translation>
     </message>
     <message>
         <source>Body can&apos;t be based on annother body.</source>
-        <translation type="obsolete">Body can&apos;t be based on annother body.</translation>
+        <translation type="obsolete">Gorputza ezin da oinarritu beste gorputz batean.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Body can&apos;t be based on another body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gorputza ezin da oinarritu beste gorputz batean.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Base feature (%1) belongs to other part.</source>
-        <translation type="unfinished">Base feature (%1) belongs to other part.</translation>
+        <translation>Oinarri-elementua (%1) beste pieza batena da.</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3240,13 +3270,17 @@ Create the sketch on a face.</translation>
     </message>
     <message>
         <location line="+4"/>
+        <source>Couldn&apos;t determine a body for the selected feature &apos;%s&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Couldn&apos;t determin a body for the selected feature &apos;%s&apos;.</source>
-        <translation type="unfinished">Couldn&apos;t determin a body for the selected feature &apos;%s&apos;.</translation>
+        <translation type="obsolete">Ezin izan da zehaztu gorputz bat hautatutako &apos;%s&apos; elementurako.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Only a solid feature can be the tip of a body.</source>
-        <translation type="unfinished">Only a solid feature can be the tip of a body.</translation>
+        <translation>Elementu solido bat soilik izan daiteke gorputz baten punta.</translation>
     </message>
     <message>
         <location line="+116"/>
@@ -3262,12 +3296,12 @@ Create the sketch on a face.</translation>
     <message>
         <location line="+27"/>
         <source>There are no other bodies to move to</source>
-        <translation type="unfinished">There are no other bodies to move to</translation>
+        <translation>Ez dago beste gorputzik hara mugitzeko</translation>
     </message>
     <message>
         <location line="+122"/>
         <source>Impossible to move the base feature of a body.</source>
-        <translation type="unfinished">Impossible to move the base feature of a body.</translation>
+        <translation>Ezin da mugitu gorputz baten oinarri-elementua.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3280,9 +3314,9 @@ Create the sketch on a face.</translation>
         <translation>Gorputzaren hasiera</translation>
     </message>
     <message>
-        <location filename="../../CommandPrimitive.cpp" line="-157"/>
+        <location filename="../../CommandPrimitive.cpp" line="-100"/>
         <source>No previous feature found</source>
-        <translation type="unfinished">No previous feature found</translation>
+        <translation>Ez da aurreko elementurik aurkitu</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3304,7 +3338,7 @@ Create the sketch on a face.</translation>
     <message>
         <location line="+2"/>
         <source>Construction line %1</source>
-        <translation type="unfinished">Construction line %1</translation>
+        <translation>%1 eraikuntza-lerroa</translation>
     </message>
     <message>
         <location filename="../../TaskSketchBasedParameters.cpp" line="-96"/>
@@ -3314,7 +3348,7 @@ Create the sketch on a face.</translation>
     <message>
         <location filename="../../Utils.cpp" line="+72"/>
         <source>No active Body</source>
-        <translation type="unfinished">No active Body</translation>
+        <translation>Ez dago gorputz aktiborik</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3322,7 +3356,17 @@ Create the sketch on a face.</translation>
         <translation>PartDesign erabiltzeko, gorputz-objektu aktibo bat behar duzu dokumentuan. AKtibatu bat (klik bikoitza) edo sortu bat. Bertsio zaharragoan dagoen dokumentu bat baduzu eta gorputzik gabeko PartDesign objektuak baditu, erabili PartDesign-eko transferentzia-funtzioa haiek gorputz batean sartzeko.</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+15"/>
+        <source>Active Body Required</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
         <source>Feature is not in a body</source>
         <translation>Elementua ez dago gorputz batean</translation>
     </message>
@@ -3344,35 +3388,43 @@ Create the sketch on a face.</translation>
     <message>
         <location filename="../../ViewProviderBoolean.cpp" line="-17"/>
         <source>Edit boolean</source>
-        <translation type="unfinished">Edit boolean</translation>
+        <translation>Editatu boolearra</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderDatum.cpp" line="-124"/>
-        <location line="+83"/>
+        <location filename="../../ViewProviderDatum.cpp" line="-131"/>
+        <location line="+90"/>
         <source>Plane</source>
         <translation>Planoa</translation>
     </message>
     <message>
-        <location line="-81"/>
-        <location line="+77"/>
+        <location line="-86"/>
+        <location line="+82"/>
         <source>Line</source>
         <translation>Lerroa</translation>
     </message>
     <message>
-        <location line="-75"/>
-        <location line="+83"/>
+        <location line="-78"/>
+        <location line="+86"/>
         <source>Point</source>
         <translation>Puntua</translation>
     </message>
     <message>
-        <location line="-81"/>
-        <source>CoordinateSystem</source>
-        <translation type="unfinished">CoordinateSystem</translation>
+        <location line="-82"/>
+        <source>Coordinate System</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+98"/>
+        <location line="+99"/>
+        <source>Edit datum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CoordinateSystem</source>
+        <translation type="obsolete">Koordenatu-sistema</translation>
+    </message>
+    <message>
         <source>Edit datum </source>
-        <translation>Editatu zero puntua </translation>
+        <translation type="obsolete">Editatu zero puntua </translation>
     </message>
     <message>
         <location filename="../../ViewProviderDressUp.cpp" line="+70"/>
@@ -3399,7 +3451,7 @@ Elementu hau hautsita dago eta ezin da editatu.</translation>
     <message>
         <location filename="../../ViewProviderShapeBinder.cpp" line="+91"/>
         <source>Edit shape binder</source>
-        <translation type="unfinished">Edit shape binder</translation>
+        <translation>Editatu forma-zorroa</translation>
     </message>
     <message>
         <source>The document &quot;%1&quot; you are editing was design with old version of PartDesign workbench.</source>
@@ -3408,7 +3460,7 @@ Elementu hau hautsita dago eta ezin da editatu.</translation>
     <message>
         <location filename="../../WorkflowManager.cpp" line="+144"/>
         <source>The document &quot;%1&quot; you are editing was designed with an old version of PartDesign workbench.</source>
-        <translation type="unfinished"></translation>
+        <translation>Editatzen ari zaren &quot;%1&quot; dokumentua PartDesign lan-mahaiaren bertsio zaharrago batekin diseinatu zen.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3430,7 +3482,7 @@ Elementu hau hautsita dago eta ezin da editatu.</translation>
         <source>Note: If you choose to migrate you won&apos;t be able to edit the file with an old FreeCAD versions.
 If you refuse to migrate you won&apos;t be able to use new PartDesign features like Bodies and Parts. As a result you also won&apos;t be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with &apos;Part Design-&gt;Migrate...&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Oharra: Bertsioa berritzea aukeratzen baduzu, fitxategia ezin izango duzu FreeCAD bertsio zaharrekin editatu. Ez baduzu bertsioa berritu nahi, ezingo dituzu PartDesign elementu berriak erabili, esaterako gorputzak eta piezak. Hortaz, ezingo dituzu zure piezak muntaketako lan-mahaian erabili. Nahi baduzu, geroago ere berritu dezakezu bertsioa, &apos;Pieza-diseinua &gt; Berritu bertsioa...&apos; aukera erabiliz.</translation>
     </message>
     <message>
         <source>Note If you choose to migrate you won&apos;t be able to edit the file wtih old FreeCAD versions.
@@ -3481,7 +3533,7 @@ Although you will be able to migrate any moment later with &apos;Part Design-&gt
     <message>
         <location line="+8"/>
         <source>Through</source>
-        <translation type="unfinished">Through</translation>
+        <translation>Zehar</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3492,22 +3544,22 @@ Although you will be able to migrate any moment later with &apos;Part Design-&gt
     <message>
         <location line="-331"/>
         <source>Threaded</source>
-        <translation type="unfinished">Threaded</translation>
+        <translation>Harilkatua</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Countersink</source>
-        <translation type="unfinished">Countersink</translation>
+        <translation>Abeilanatzaile konikoa</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Counterbore</source>
-        <translation type="unfinished">Counterbore</translation>
+        <translation>Abeilanatzaile zilindrikoa</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Hole norm</source>
-        <translation type="unfinished">Hole norm</translation>
+        <translation>Zulo-araua</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3529,23 +3581,23 @@ Although you will be able to migrate any moment later with &apos;Part Design-&gt
     <message>
         <location line="-194"/>
         <source>Bolt/Washer</source>
-        <translation type="unfinished">Bolt/Washer</translation>
+        <translation>Torlojua/zirrindola</translation>
     </message>
     <message>
         <location line="+49"/>
         <location line="+8"/>
         <source>Thread norm</source>
-        <translation type="unfinished">Thread norm</translation>
+        <translation>Hari-araua</translation>
     </message>
     <message>
         <location line="+62"/>
         <source> Custom thread length</source>
-        <translation type="unfinished"> Custom thread length</translation>
+        <translation> Hari-luzera pertsonalizatua</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Finish depth</source>
-        <translation type="unfinished">Finish depth</translation>
+        <translation>Amaitu sakonera</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -3555,22 +3607,22 @@ Although you will be able to migrate any moment later with &apos;Part Design-&gt
     <message>
         <location line="+44"/>
         <source>Counterbore/sink dia</source>
-        <translation type="unfinished">Counterbore/sink dia</translation>
+        <translation>Abeilanatzailearen diametroa</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Counterbore depth</source>
-        <translation type="unfinished">Counterbore depth</translation>
+        <translation>Abeilanatze zilindrikoaren sakonera</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Countersink angle</source>
-        <translation type="unfinished">Countersink angle</translation>
+        <translation>Abeilanatze konikoaren angelua</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Thread length</source>
-        <translation type="unfinished">Thread length</translation>
+        <translation>Hari-luzera</translation>
     </message>
 </context>
 <context>

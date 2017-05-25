@@ -401,15 +401,15 @@
     <name>CmdMeshSectionByPlane</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Maillage</translation>
+        <translation>Maillage</translation>
     </message>
     <message>
         <source>Create section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer une section à partir d&apos;un maillage et d&apos;un plan</translation>
     </message>
     <message>
         <source>Section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Section à partir d&apos;un maillage et d&apos;un plan</translation>
     </message>
 </context>
 <context>
@@ -752,14 +752,14 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Settings...</source>
-        <translation type="unfinished">Settings...</translation>
+        <translation>Paramètres...</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
         <source>Evaluation settings</source>
-        <translation type="unfinished">Evaluation settings</translation>
+        <translation>Paramètres d&apos;évaluation</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -767,15 +767,15 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation type="unfinished">Check for non-manifold points</translation>
+        <translation>Recherche les points non multiples</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation type="unfinished">Enable check for folds on surface</translation>
+        <translation>Autorise la recherche de plis sur une surface</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
-        <translation type="unfinished">Only consider zero area faces as degenerated</translation>
+        <translation>Considérer uniquement les faces de surface nulle comme dégénérés</translation>
     </message>
 </context>
 <context>
@@ -790,7 +790,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation>Alt+C</translation>
+        <translation>Alt+F</translation>
     </message>
     <message>
         <source>Cl&amp;ose</source>
@@ -904,7 +904,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Export AMF files using compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter les fichiers AMF en utilisant la compression</translation>
     </message>
 </context>
 <context>
@@ -1216,7 +1216,7 @@ Merci de visiter http://www.openscad.org/index.html pour l&apos;installer.</tran
     </message>
     <message>
         <source>Unknown error occurred while running OpenSCAD.</source>
-        <translation type="unfinished"></translation>
+        <translation>Une erreur inconnue s’est produite lors de l’exécution d&apos;OpenSCAD.</translation>
     </message>
 </context>
 <context>

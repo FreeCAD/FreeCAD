@@ -29,7 +29,7 @@
     <message>
         <location line="+1"/>
         <source>Runs a self-test to check if the application works properly</source>
-        <translation>Uygulamanın düzgün çalışıp çalışmadığını denetlemek için bir sınama çalıştırır</translation>
+        <translation>Uygulamanın düzgün çalışıp çalışmadığını denetlemek için bir özsınama çalıştırır</translation>
     </message>
 </context>
 <context>
@@ -42,7 +42,7 @@
     <message>
         <location line="-1"/>
         <source>S&amp;ketch</source>
-        <translation>&amp;Kroki</translation>
+        <translation>&amp;Eskiz</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -52,7 +52,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Drafting</source>
-        <translation>&amp;Çiziliyor</translation>
+        <translation>&amp;Taslak hazırlama</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -67,7 +67,7 @@
     <message>
         <location line="+1"/>
         <source>Object appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Nesne görünümü</translation>
     </message>
     <message>
         <source>Parametric</source>

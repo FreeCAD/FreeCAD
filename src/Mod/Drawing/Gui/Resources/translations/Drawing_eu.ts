@@ -523,11 +523,11 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
         <source>Front</source>
-        <translation type="obsolete">Aurrea</translation>
+        <translation type="obsolete">Aurrekoa</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="obsolete">Eskuina</translation>
+        <translation type="obsolete">Eskuinekoa</translation>
     </message>
     <message>
         <source>Back</source>
@@ -535,15 +535,15 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="obsolete">Ezkerra</translation>
+        <translation type="obsolete">Ezkerrekoa</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="obsolete">Goia</translation>
+        <translation type="obsolete">Goikoa</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="obsolete">Bottom</translation>
+        <translation type="obsolete">Azpia</translation>
     </message>
     <message>
         <source>- Rotate</source>
@@ -883,7 +883,7 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
         <source>Front</source>
-        <translation type="obsolete">Aurrea</translation>
+        <translation type="obsolete">Aurrekoa</translation>
     </message>
     <message>
         <source>Back</source>
@@ -891,19 +891,19 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="obsolete">Eskuina</translation>
+        <translation type="obsolete">Eskuinekoa</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="obsolete">Ezkerra</translation>
+        <translation type="obsolete">Ezkerrekoa</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="obsolete">Goia</translation>
+        <translation type="obsolete">Goikoa</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="obsolete">Bottom</translation>
+        <translation type="obsolete">Azpia</translation>
     </message>
     <message>
         <location filename="../../TaskOrthoViews.cpp" line="+51"/>

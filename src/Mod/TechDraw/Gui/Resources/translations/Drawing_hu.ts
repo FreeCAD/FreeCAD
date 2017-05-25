@@ -313,7 +313,7 @@
 <context>
     <name>CmdTechDrawImage</name>
     <message>
-        <location filename="../../CommandDecorate.cpp" line="+209"/>
+        <location filename="../../CommandDecorate.cpp" line="+212"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -446,7 +446,7 @@
 <context>
     <name>CmdTechDrawNewGeomHatch</name>
     <message>
-        <location filename="../../CommandDecorate.cpp" line="-90"/>
+        <location filename="../../CommandDecorate.cpp" line="-93"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -676,7 +676,7 @@
 <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-        <location filename="../../CommandDecorate.cpp" line="+179"/>
+        <location filename="../../CommandDecorate.cpp" line="+182"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -848,7 +848,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+195"/>
+        <location filename="../../ViewProviderPage.cpp" line="+194"/>
         <source>Drawing viewer</source>
         <translation type="unfinished">Rajz nézegető</translation>
     </message>
@@ -1021,7 +1021,17 @@
         <translation type="obsolete">Válasszon ki egy oldalas objektumot.</translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="+845"/>
+        <location filename="../../MDIViewPage.cpp" line="+559"/>
+        <source>PDF (*.pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Export Page As PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+242"/>
         <source>SVG (*.svg)</source>
         <translation type="unfinished">SVG (*.svg)</translation>
     </message>
@@ -1031,7 +1041,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+269"/>
+        <location line="+279"/>
         <source> %1.%2.%3 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1040,7 +1050,8 @@
         <translation type="obsolete">SVG(*.svg)</translation>
     </message>
     <message>
-        <location line="-270"/>
+        <location line="-524"/>
+        <location line="+244"/>
         <source>All Files (*.*)</source>
         <translation>Összes fájl (*.*)</translation>
     </message>
@@ -1093,7 +1104,7 @@
         <translation type="unfinished">Make orthographic</translation>
     </message>
     <message>
-        <location filename="../../QGVPage.cpp" line="+584"/>
+        <location filename="../../QGVPage.cpp" line="+579"/>
         <source>FreeCAD SVG Export</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1451,7 +1462,7 @@
         <translation type="obsolete">Körv&amp;onal</translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="-732"/>
+        <location filename="../../MDIViewPage.cpp" line="-690"/>
         <source>&amp;Native</source>
         <translation>&amp;Natív</translation>
     </message>
@@ -1484,16 +1495,15 @@
         <translation>&amp;Renderelő</translation>
     </message>
     <message>
-        <location line="+319"/>
         <source>Export PDF</source>
-        <translation>Exportálás PDF-be</translation>
+        <translation type="obsolete">Exportálás PDF-be</translation>
     </message>
     <message>
         <source>PDF file (*.pdf)</source>
         <translation type="obsolete">PDF fájl (*.pdf)</translation>
     </message>
     <message>
-        <location line="-451"/>
+        <location line="-132"/>
         <source>&amp;Export SVG</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1503,57 +1513,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+419"/>
-        <source>PDF file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+18"/>
         <source>Page sizes</source>
-        <translation>Oldalméretek</translation>
+        <translation type="obsolete">Oldalméretek</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>A0</source>
-        <translation>A0</translation>
+        <translation type="obsolete">A0</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>A1</source>
-        <translation>A1</translation>
+        <translation type="obsolete">A1</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>A2</source>
-        <translation>A2</translation>
+        <translation type="obsolete">A2</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>A3</source>
-        <translation>A3</translation>
+        <translation type="obsolete">A3</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>A4</source>
-        <translation>A4-es</translation>
+        <translation type="obsolete">A4-es</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>A5</source>
-        <translation>A5</translation>
+        <translation type="obsolete">A5</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Letter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Legal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+85"/>
+        <location line="+495"/>
         <source>Different orientation</source>
         <translation type="unfinished">Different orientation</translation>
     </message>
@@ -1592,7 +1580,7 @@ Do you want to continue?</translation>
 <context>
     <name>TechDrawGui::QGVPage</name>
     <message>
-        <location filename="../../QGVPage.cpp" line="-19"/>
+        <location filename="../../QGVPage.cpp" line="-15"/>
         <source>Drawing page: </source>
         <translation type="unfinished"></translation>
     </message>

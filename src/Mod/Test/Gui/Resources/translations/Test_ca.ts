@@ -21,7 +21,7 @@
     </message>
     <message>
         <source>Alt+S</source>
-        <translation type="unfinished">Alt+S</translation>
+        <translation>Alt + S</translation>
     </message>
     <message>
         <source>&amp;Help</source>

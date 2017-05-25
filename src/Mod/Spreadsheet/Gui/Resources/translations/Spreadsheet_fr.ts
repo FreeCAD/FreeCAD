@@ -230,7 +230,7 @@
     <name>ColorPickerPopup</name>
     <message>
         <source>Custom</source>
-        <translation>Personnalisé</translation>
+        <translation>Personnalisée</translation>
     </message>
 </context>
 <context>
@@ -336,7 +336,7 @@
     </message>
     <message>
         <source>Show spreadsheet</source>
-        <translation>Voir la feuille de calcul</translation>
+        <translation>Montrer la feuille de calcul</translation>
     </message>
 </context>
 <context>
@@ -411,7 +411,7 @@
     </message>
     <message>
         <source>Custom</source>
-        <translation>Personnalisé</translation>
+        <translation>Personnalisée</translation>
     </message>
 </context>
 <context>

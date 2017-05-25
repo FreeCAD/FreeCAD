@@ -405,11 +405,11 @@
     </message>
     <message>
         <source>Create section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create section from mesh and plane</translation>
     </message>
     <message>
         <source>Section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Section from mesh and plane</translation>
     </message>
 </context>
 <context>
@@ -753,7 +753,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
         <source>Settings...</source>
-        <translation type="unfinished">Settings...</translation>
+        <translation>Nastavitve...</translation>
     </message>
 </context>
 <context>
@@ -905,7 +905,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
         <source>Export AMF files using compression</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Export AMF files using compression</translation>
     </message>
 </context>
 <context>
@@ -1217,7 +1217,7 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     </message>
     <message>
         <source>Unknown error occurred while running OpenSCAD.</source>
-        <translation type="unfinished"></translation>
+        <translation>Med izvajanjem OpenSCADa je prišlo do neznane napake.</translation>
     </message>
 </context>
 <context>

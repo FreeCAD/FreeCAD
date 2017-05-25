@@ -2,9 +2,27 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="fr" sourcelanguage="en">
 <context>
+    <name>CmdMeshPartCurveOnMesh</name>
+    <message>
+        <location filename="../../Command.cpp" line="+245"/>
+        <source>Mesh</source>
+        <translation type="unfinished">Maillage</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Curve on mesh...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Curve on mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdMeshPartMesher</name>
     <message>
-        <location filename="../../Command.cpp" line="+50"/>
+        <location line="-191"/>
         <source>Mesh</source>
         <translation>Maillage</translation>
     </message>
@@ -24,17 +42,17 @@
     <message>
         <location line="+106"/>
         <source>Mesh</source>
-        <translation type="unfinished">Maillage</translation>
+        <translation>Maillage</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer une section à partir d&apos;un maillage et d&apos;un plan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Section</translation>
     </message>
 </context>
 <context>
@@ -42,17 +60,103 @@
     <message>
         <location line="-85"/>
         <source>Mesh</source>
-        <translation type="unfinished">Maillage</translation>
+        <translation>Maillage</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajuster le maillage avec un plan</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Trims a mesh with a plane</source>
+        <translation>Ajuste le maillage avec un plan</translation>
+    </message>
+</context>
+<context>
+    <name>MeshPartGui::CurveOnMeshHandler</name>
+    <message>
+        <location filename="../../CurveOnMesh.cpp" line="+353"/>
+        <source>Create</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Close wire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+208"/>
+        <source>Wrong mesh picked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>No point was picked</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MeshPartGui::TaskCurveOnMesh</name>
+    <message>
+        <location filename="../../TaskCurveOnMesh.ui" line="+14"/>
+        <source>Curve on mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Wire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Snap tolerance to vertexes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source> px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Split threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Spline Approximation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Tolerance to mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Continuity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Maximum curve degree</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -91,12 +195,12 @@
     <message>
         <location line="+54"/>
         <source>Define segments by face colors</source>
-        <translation type="unfinished">Define segments by face colors</translation>
+        <translation>Définir les segments par les couleurs des faces</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Apply face colors to mesh</source>
-        <translation type="unfinished">Apply face colors to mesh</translation>
+        <translation>Appliquer les couleurs des faces au maillage</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -197,12 +301,12 @@
     <message>
         <location filename="../../Command.cpp" line="+93"/>
         <source>Select plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionnez un plan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please select a plane at which you section the mesh.</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez sélectionner un plan à partir duquel sectionner le maillage.</translation>
     </message>
 </context>
 <context>
@@ -210,12 +314,12 @@
     <message>
         <location line="-85"/>
         <source>Select plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionnez un plan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner un plan pour ajuster le maillage.</translation>
     </message>
 </context>
 <context>

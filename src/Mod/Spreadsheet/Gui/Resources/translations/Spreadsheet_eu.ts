@@ -261,7 +261,7 @@
     </message>
     <message>
         <source>Left</source>
-        <translation>Ezkerra</translation>
+        <translation>Ezkerrekoa</translation>
     </message>
     <message>
         <source>Center</source>
@@ -269,7 +269,7 @@
     </message>
     <message>
         <source>Right</source>
-        <translation>Eskuina</translation>
+        <translation>Eskuinekoa</translation>
     </message>
     <message>
         <source>Vertical</source>
@@ -277,11 +277,11 @@
     </message>
     <message>
         <source>Top</source>
-        <translation>Goia</translation>
+        <translation>Goikoa</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">Bottom</translation>
+        <translation>Azpia</translation>
     </message>
     <message>
         <source>&amp;Style</source>

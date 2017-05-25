@@ -60,31 +60,31 @@
     <name>App::Property</name>
     <message>
         <source>The displayed size of the origin</source>
-        <translation type="unfinished">The displayed size of the origin</translation>
+        <translation>A kezdőpont megjelenített mérete</translation>
     </message>
     <message>
         <source>Visual size of the feature</source>
-        <translation type="unfinished">Visual size of the feature</translation>
+        <translation>A tulajdonság megjelenő mérete</translation>
     </message>
     <message>
         <source>&lt;empty&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;empty&gt;</translation>
     </message>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">Szög</translation>
+        <translation>Szög</translation>
     </message>
     <message>
         <source>Axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Tengely</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Pozíció</translation>
+        <translation>Pozíció</translation>
     </message>
     <message>
         <source>Base</source>
-        <translation type="unfinished"></translation>
+        <translation>Alap</translation>
     </message>
 </context>
 <context>
@@ -387,15 +387,15 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Credits</source>
-        <translation type="unfinished">Credits</translation>
+        <translation>Készítők listája</translation>
     </message>
     <message>
         <source>FreeCAD would be nowhere without their efforts:</source>
-        <translation type="unfinished">FreeCAD would be nowhere without their efforts:</translation>
+        <translation>FreeCAD sehol nem lenne az erőfeszítéseik nélkül:</translation>
     </message>
     <message>
         <source>License</source>
-        <translation type="unfinished">License</translation>
+        <translation>Licensz</translation>
     </message>
 </context>
 <context>
@@ -575,7 +575,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>CheckBox</source>
-        <translation type="unfinished">CheckBox</translation>
+        <translation>Jelölőnégyzet</translation>
     </message>
 </context>
 <context>
@@ -1239,54 +1239,38 @@ Kérem másik elérési utat definiálni.</translation>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Python konzol</translation>
+        <translation>Python konzol</translation>
     </message>
     <message>
         <source>Enable word wrap</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortörés engedélyezése</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
-    <message>
-        <source>Default (%1 x %1)</source>
-        <translation type="obsolete">Alapértelmezett (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Small (%1 x %1)</source>
-        <translation type="obsolete">Kicsi (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Large (%1 x %1)</source>
-        <translation type="obsolete">Nagy (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Extra large (%1 x %1)</source>
-        <translation type="obsolete">Extra nagy (%1 x %1)</translation>
-    </message>
     <message>
         <source>No style sheet</source>
         <translation>Nincs stíluslap</translation>
     </message>
     <message>
         <source>Small (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kicsi (%1px)</translation>
     </message>
     <message>
         <source>Medium (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Közepes (%1px)</translation>
     </message>
     <message>
         <source>Large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Nagy (%1px)</translation>
     </message>
     <message>
         <source>Extra large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Extra nagy (%1px)</translation>
     </message>
     <message>
         <source>Custom (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyéni (%1px)</translation>
     </message>
 </context>
 <context>
@@ -1752,10 +1736,14 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Keresés</translation>
+        <translation>Keresés</translation>
     </message>
     <message>
         <source>A search pattern to filter the results above</source>
+        <translation>Egy keresési minta a fenti eredmények szűréséhez</translation>
+    </message>
+    <message>
+        <source>None (Remove link)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1965,7 +1953,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>Használja az OpenGL Vertex Buffer Objektumot (kísérleti)</translation>
     </message>
 </context>
 <context>
@@ -2489,11 +2477,11 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"></translation>
+        <translation>Átlátszó</translation>
     </message>
     <message>
         <source>Add watermark</source>
-        <translation type="unfinished"></translation>
+        <translation>Vízjel hozzáadása</translation>
     </message>
 </context>
 <context>
@@ -2591,11 +2579,11 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message utf8="true">
         <source>Building Euro (cm/m²/m³)</source>
-        <translation type="unfinished">Building Euro (cm/m²/m³)</translation>
+        <translation>Épület Euro (cm/m²/m³)</translation>
     </message>
     <message>
         <source>Building US (ft-in/sqft/cuft)</source>
-        <translation type="unfinished">Building US (ft-in/sqft/cuft)</translation>
+        <translation>Épület US (ft-ban/négyzetláb/cu-ft)</translation>
     </message>
 </context>
 <context>
@@ -2634,19 +2622,11 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Pick radius (px):</source>
-        <translation type="unfinished">Pick radius (px):</translation>
+        <translation>Kiválasztott rádiusz (px):</translation>
     </message>
     <message>
         <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-        <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
-    </message>
-    <message>
-        <source>PickRadius</source>
-        <translation type="obsolete">PickRadius</translation>
-    </message>
-    <message>
-        <source>View</source>
-        <translation type="obsolete">Nézet</translation>
+        <translation>Beállítja a tűrés határt a kiválasztott elemekre a 3D-s nézetben. Nagyobb érték egyszerűbbé teszi a dolgot kiválasztását, de néhány kisebb elem elérhetőségét lehetetlenné teszi.</translation>
     </message>
 </context>
 <context>
@@ -2672,11 +2652,11 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Quantity:</source>
-        <translation type="unfinished">Quantity:</translation>
+        <translation>Mennyiség:</translation>
     </message>
     <message>
         <source>Units:</source>
-        <translation type="unfinished">Units:</translation>
+        <translation>Mértékegységek:</translation>
     </message>
     <message>
         <source>Help</source>
@@ -2778,7 +2758,7 @@ Kérem válasszon másik könyvtárat.</translation>
         <source>Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
 
 The &apos;Status&apos; column shows whether the document could be recovered.</source>
-        <translation>Nyomja meg a &apos;Helyreállítás indítása&apos; az alább listázott dokumentumok helyreállítási folyamatának elindításához.
+        <translation type="obsolete">Nyomja meg a &apos;Helyreállítás indítása&apos; az alább listázott dokumentumok helyreállítási folyamatának elindításához.
 
 Az &apos;Állapot&apos; oszlop tájékoztatja a visszaállítás sikerességéről.</translation>
     </message>
@@ -2820,7 +2800,7 @@ Az &apos;Állapot&apos; oszlop tájékoztatja a visszaállítás sikerességér�
     </message>
     <message>
         <source>Cleanup...</source>
-        <translation type="unfinished">Cleanup...</translation>
+        <translation>Takarítás...</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -2828,31 +2808,37 @@ Az &apos;Állapot&apos; oszlop tájékoztatja a visszaállítás sikerességér�
     </message>
     <message>
         <source>Cleanup</source>
-        <translation type="unfinished">Cleanup</translation>
+        <translation>Takarítás</translation>
     </message>
     <message>
         <source>Are you sure you want to delete the selected transient directories?</source>
-        <translation type="unfinished">Are you sure you want to delete the selected transient directories?</translation>
+        <translation>Biztosan törli az ideiglenesen kijelölt könyvtárakat?</translation>
     </message>
     <message>
         <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
-        <translation type="unfinished">When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</translation>
+        <translation>Ha a kijelölt átmeneti könyvtárakat törli, nem lesz képes visszaszerezni a fájlokat utána.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete all transient directories?</source>
-        <translation type="unfinished">Are you sure you want to delete all transient directories?</translation>
+        <translation>Biztosan törli az összes átmeneti könyvtárakat?</translation>
     </message>
     <message>
         <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
-        <translation type="unfinished">When deleting all transient directory you won&apos;t be able to recover any files afterwards.</translation>
+        <translation>Ha a kijelölt átmeneti könyvtárakat törli, nem lesz képes visszaszerezni a fájlokat utána.</translation>
     </message>
     <message>
         <source>Finished</source>
-        <translation type="unfinished">Finished</translation>
+        <translation>Kész</translation>
     </message>
     <message>
         <source>Transient directories deleted.</source>
-        <translation type="unfinished">Transient directories deleted.</translation>
+        <translation>Átmeneti könyvtárak törölve.</translation>
+    </message>
+    <message>
+        <source>Press &apos;Start Recovery&apos; to start the recovery process of the document listed below.
+
+The &apos;Status&apos; column shows whether the document could be recovered.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3219,7 +3205,7 @@ Az &apos;Állapot&apos; oszlop tájékoztatja a visszaállítás sikerességér�
     </message>
     <message>
         <source>Use center of mass</source>
-        <translation type="unfinished"></translation>
+        <translation>Használja a tömegközéppontot</translation>
     </message>
 </context>
 <context>
@@ -3416,7 +3402,7 @@ Az &apos;Állapot&apos; oszlop tájékoztatja a visszaállítás sikerességér�
     <name>Gui::DockWnd::SelectionView</name>
     <message>
         <source>Property View</source>
-        <translation>Tulajdonságok nézet</translation>
+        <translation type="obsolete">Tulajdonságok nézet</translation>
     </message>
     <message>
         <source>Search</source>
@@ -3472,11 +3458,27 @@ Az &apos;Állapot&apos; oszlop tájékoztatja a visszaállítás sikerességér�
     </message>
     <message>
         <source>Mark to recompute</source>
-        <translation type="unfinished">Mark to recompute</translation>
+        <translation>Jelölje, újraszámításhoz</translation>
     </message>
     <message>
         <source>Mark this object to be recomputed</source>
-        <translation type="unfinished">Mark this object to be recomputed</translation>
+        <translation>Jelölje ezt az objektumot az újraszámoláshoz</translation>
+    </message>
+    <message>
+        <source>Selection View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The number of selected items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate subshape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creates a standalone copy of this subshape in the document</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3784,19 +3786,15 @@ Do you want to copy them, too?</source>
     </message>
     <message>
         <source>There is a rendering issue on MacOS.</source>
-        <translation>MacOS fordítóval probléma van.</translation>
-    </message>
-    <message>
-        <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="obsolete">See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; további információért</translation>
+        <translation type="obsolete">MacOS fordítóval probléma van.</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
-        <translation>Ne mutassa többször</translation>
+        <translation type="obsolete">Ne mutassa többször</translation>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Lásd &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; a wiki&lt;/a&gt; további információért</translation>
     </message>
 </context>
 <context>
@@ -3985,7 +3983,11 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation>Szerkesztés...</translation>
+        <translation type="obsolete">Szerkesztés...</translation>
+    </message>
+    <message>
+        <source>Change the linked object</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4225,15 +4227,15 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     <name>Gui::TaskCSysDragger</name>
     <message>
         <source>Increments</source>
-        <translation type="unfinished">Increments</translation>
+        <translation>Növekmény</translation>
     </message>
     <message>
         <source>Translation Increment: </source>
-        <translation type="unfinished">Translation Increment: </translation>
+        <translation>Fordítás növelés: </translation>
     </message>
     <message>
         <source>Rotation Increment: </source>
-        <translation type="unfinished">Rotation Increment: </translation>
+        <translation>Forgatás növelés: </translation>
     </message>
 </context>
 <context>
@@ -4366,23 +4368,23 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
         <source>Skip recomputes</source>
-        <translation type="unfinished">Skip recomputes</translation>
+        <translation>Újraszámítás átugrása</translation>
     </message>
     <message>
         <source>Enable or disable recomputations of document</source>
-        <translation type="unfinished">Enable or disable recomputations of document</translation>
+        <translation>Dokumentum újraszámításának engedélyezése vagy letiltása</translation>
     </message>
     <message>
         <source>Mark to recompute</source>
-        <translation type="unfinished">Mark to recompute</translation>
+        <translation>Jelölje, újraszámításhoz</translation>
     </message>
     <message>
         <source>Mark this object to be recomputed</source>
-        <translation type="unfinished">Mark this object to be recomputed</translation>
+        <translation>Jelölje ezt az objektumot az újraszámoláshoz</translation>
     </message>
     <message>
         <source>%1, Internal name: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1, Belső név: %2</translation>
     </message>
 </context>
 <context>
@@ -4415,27 +4417,27 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     <name>MAC_APPLICATION_MENU</name>
     <message>
         <source>Services</source>
-        <translation type="unfinished">Services</translation>
+        <translation>Szolgáltatások</translation>
     </message>
     <message>
         <source>Hide %1</source>
-        <translation type="unfinished">Hide %1</translation>
+        <translation>%1 elrejtése</translation>
     </message>
     <message>
         <source>Hide Others</source>
-        <translation type="unfinished">Hide Others</translation>
+        <translation>Minden más elrejtése</translation>
     </message>
     <message>
         <source>Show All</source>
-        <translation type="unfinished">Show All</translation>
+        <translation>Összes megjelenítése</translation>
     </message>
     <message>
         <source>Preferences...</source>
-        <translation type="unfinished">Preferences...</translation>
+        <translation>Beállítások...</translation>
     </message>
     <message>
         <source>Quit %1</source>
-        <translation type="unfinished">Quit %1</translation>
+        <translation>Kilépés %1</translation>
     </message>
     <message>
         <source>About %1</source>
@@ -4579,7 +4581,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
         <source>DAG View</source>
-        <translation type="unfinished">DAG View</translation>
+        <translation>DAG nézet</translation>
     </message>
 </context>
 <context>
@@ -4941,38 +4943,34 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
     <message>
         <source> %1.%2.%3 </source>
-        <translation type="unfinished"> %1.%2.%3 </translation>
+        <translation> %1.%2.%3 </translation>
     </message>
     <message>
         <source>Translation: </source>
-        <translation type="unfinished">Translation: </translation>
+        <translation>Fordítás: </translation>
     </message>
     <message>
         <source>Rotation: </source>
-        <translation type="unfinished">Rotation: </translation>
+        <translation>Elforgatás: </translation>
     </message>
     <message>
         <source>Delete group content?</source>
-        <translation type="unfinished">Delete group content?</translation>
-    </message>
-    <message>
-        <source>The %1 is not empty, delete it&apos;s content as well?</source>
-        <translation type="obsolete">The %1 is not empty, delete it&apos;s content as well?</translation>
+        <translation>Törli a csoport tartalmát?</translation>
     </message>
     <message>
         <source>The %1 is not empty, delete its content as well?</source>
-        <translation type="unfinished"></translation>
+        <translation>A %1 nem üres, törölheti annak tartalmát is?</translation>
     </message>
 </context>
 <context>
     <name>SelectionFilter</name>
     <message>
         <source>Not allowed:</source>
-        <translation type="unfinished">Not allowed:</translation>
+        <translation>Nem engedélyezett:</translation>
     </message>
     <message>
         <source>Selection not allowed by filter</source>
-        <translation type="unfinished">Selection not allowed by filter</translation>
+        <translation>Kiválasztást nem engedi a szűrő</translation>
     </message>
 </context>
 <context>
@@ -6050,11 +6048,11 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
     <message>
         <source>Select visible objects</source>
-        <translation type="unfinished">Select visible objects</translation>
+        <translation>Látható objektumok kijelölése</translation>
     </message>
     <message>
         <source>Select visible objects in the active document</source>
-        <translation type="unfinished">Select visible objects in the active document</translation>
+        <translation>Az aktív dokumentumban látható objektumok kijelölése</translation>
     </message>
 </context>
 <context>
@@ -6874,9 +6872,7 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
 Are you sure you want to continue?
 
 </source>
-        <translation type="unfinished">The following, referencing objects might break.
-
-Are you sure you want to continue?
+        <translation>A következő, hivatkozási objektumok töröttek lehetnek. Biztosan folytatni kívánja?
 
 </translation>
     </message>
@@ -6925,19 +6921,19 @@ Are you sure you want to continue?
     </message>
     <message>
         <source>Hidden line</source>
-        <translation type="unfinished"></translation>
+        <translation>Rejtett vonal</translation>
     </message>
     <message>
         <source>Hidden line mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Rejtett vonal mód</translation>
     </message>
     <message>
         <source>No shading</source>
-        <translation type="unfinished"></translation>
+        <translation>Nincs árnyalás</translation>
     </message>
     <message>
         <source>No shading mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Nincs árnyalás mód</translation>
     </message>
 </context>
 <context>
@@ -6988,11 +6984,11 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>Revert document</source>
-        <translation type="unfinished">Revert document</translation>
+        <translation>Dokumentum visszaállítás</translation>
     </message>
     <message>
         <source>Do you want to continue?</source>
-        <translation type="unfinished">Do you want to continue?</translation>
+        <translation>Folytatni szeretné?</translation>
     </message>
 </context>
 <context>

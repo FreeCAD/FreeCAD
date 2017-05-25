@@ -120,7 +120,7 @@
     <message>
         <location line="+1"/>
         <source>Insert a new View of a Part in the active drawing</source>
-        <translation>Inserisce una nuova vista di una parte del disegno attivo</translation>
+        <translation>Inserisce una nuova vista di una parte nel disegno attivo</translation>
     </message>
 </context>
 <context>
@@ -157,7 +157,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Opens the selected page in a browser view</source>
-        <translation>Visualizza la pagina selezionata in una nuova vista browser</translation>
+        <translation>Visualizza la pagina selezionata in una vista browser</translation>
     </message>
 </context>
 <context>
@@ -175,7 +175,7 @@
     <message>
         <location line="+1"/>
         <source>Insert an orthographic projection of a part in the active drawing</source>
-        <translation>Inserisce una proiezione ortogonale di una parte del disegno attivo</translation>
+        <translation>Inserisce una proiezione ortogonale di una parte nel disegno attivo</translation>
     </message>
 </context>
 <context>
@@ -280,7 +280,7 @@
     <message>
         <location line="+87"/>
         <source>&amp;Renderer</source>
-        <translation>&amp;Render</translation>
+        <translation>&amp;Renderizzatore</translation>
     </message>
     <message>
         <location line="+105"/>
@@ -600,12 +600,12 @@ Do you want to continue?</source>
     <message>
         <location line="+7"/>
         <source>Show smooth lines</source>
-        <translation>Visualizza le linee di tangenza</translation>
+        <translation>Visualizza le linee levigate</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Axonometric</source>
-        <translation>Assonometria</translation>
+        <translation>Assonometrica</translation>
     </message>
 </context>
 <context>
@@ -881,7 +881,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Front</source>
-        <translation type="obsolete">Frontale</translation>
+        <translation type="obsolete">Di fronte</translation>
     </message>
     <message>
         <source>Back</source>
@@ -893,7 +893,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Left</source>
-        <translation type="obsolete">Sinistra</translation>
+        <translation type="obsolete">Da sinistra</translation>
     </message>
     <message>
         <source>Top</source>
@@ -919,7 +919,7 @@ Do you want to continue?</source>
         <location line="-925"/>
         <location line="+926"/>
         <source>Make orthographic</source>
-        <translation>Rendi ortografica</translation>
+        <translation>Rendi ortogonale</translation>
     </message>
 </context>
 <context>

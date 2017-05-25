@@ -66,7 +66,7 @@
     <message>
         <location line="+1"/>
         <source>Insert a new part object into a Raytracing project</source>
-        <translation>Einfügen eines neuen Part-Objektes in ein Raytracing-Projekt</translation>
+        <translation>Einfügen eines neuen Teil-Objektes in ein Raytracing-Projekt</translation>
     </message>
     <message>
         <source>Insert a new part object into a Povray project</source>
@@ -160,7 +160,7 @@
     <message>
         <location line="+1"/>
         <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportiere die Kameraposition der aktiven 3D-Ansicht im POV-Ray-Format in eine Datei</translation>
     </message>
     <message>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
@@ -190,7 +190,7 @@
     <message>
         <location line="+1"/>
         <source>Write the selected Part (object) as a POV-Ray file</source>
-        <translation>Speichern Sie das ausgewählte Teil (Objekt) als eine POV-Ray-Datei</translation>
+        <translation>Speichern des ausgewählten Teils (Objekt) als eine POV-Ray-Datei</translation>
     </message>
     <message>
         <source>Export part to povray...</source>
@@ -217,13 +217,13 @@
         <location line="+93"/>
         <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
-        <translation>Die aktuelle Kamera ist nicht perspektivisch und damit kann das Ergebnis anders aussehen als Sie es erwarten.
+        <translation>Die aktuelle Kamera ist nicht perspektivisch und damit kann das Ergebnis anders aussehen als erwartet.
 Möchten Sie fortfahren?</translation>
     </message>
     <message>
         <location line="-109"/>
         <source>Export view to POV-Ray...</source>
-        <translation>Exportieren Sie die Ansicht in POV-Ray...</translation>
+        <translation>Exportieren der Ansicht in POV-Ray...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -253,7 +253,7 @@ Möchten Sie fortfahren?</translation>
         <location line="+501"/>
         <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
-        <translation>Die aktuelle Kamera-Ansicht ist keine Perspektive und somit wird das Ergebnis des Luxrender-Bildes später möglicherweise anders aussehen, als Sie erwarten. Möchten Sie fortfahren?</translation>
+        <translation>Die aktuelle Kamera-Ansicht ist keine Perspektive und somit wird das Ergebnis des Luxrender-Bildes später möglicherweise anders aussehen, als erwartet. Möchten Sie fortfahren?</translation>
     </message>
 </context>
 <context>
@@ -304,19 +304,19 @@ Do you want to continue?</source>
     <message>
         <location line="-11"/>
         <source>Create a Raytracing project to insert a view.</source>
-        <translation>Erstellen Sie ein Raytracing-Projekt um eine Ansicht einzufügen.</translation>
+        <translation>Erstellen eines Raytracing-Projekts um eine Ansicht einzufügen.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Select a Raytracing project to insert the view.</source>
-        <translation>Wählen Sie ein Raytracing-Projekt um die Ansicht einzufügen.</translation>
+        <translation>Wählen eines Raytracing-Projekts um die Ansicht einzufügen.</translation>
     </message>
     <message>
         <location line="+64"/>
         <location line="+63"/>
         <location line="+243"/>
         <source>Select one Raytracing project object.</source>
-        <translation>Wählen Sie ein Raytracing-Projekt-Objekt.</translation>
+        <translation>Wählen eines Raytracing-Projekt-Objekts.</translation>
     </message>
     <message>
         <location line="-302"/>
@@ -332,12 +332,12 @@ Do you want to continue?</source>
     <message>
         <location line="-5"/>
         <source>Please set the path to the POV-Ray executable in the preferences.</source>
-        <translation>Bitte setzen Sie den Pfad auf die Povray Programm-Datei in den &quot;Einstellungen&quot;.</translation>
+        <translation>Bitte setze den Pfad auf die Povray Programm-Datei in den &quot;Einstellungen&quot;.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-        <translation>Bitte korrigieren Sie den Pfad zu der POVRay Programm-Datei in den Voreinstellungen.</translation>
+        <translation>Bitte korrigiere den Pfad zu der POVRay Programm-Datei in den Voreinstellungen.</translation>
     </message>
     <message>
         <location line="+75"/>
@@ -375,7 +375,7 @@ Do you want to continue?</source>
     <message>
         <location line="-29"/>
         <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-        <translation>Bitte setzen Sie den Pfad zu der Luxrender- oder Luxconsole-Programm-Datei in den &quot;Einstellungen&quot;.</translation>
+        <translation>Bitte setze den Pfad zu der Luxrender- oder Luxconsole-Programm-Datei in den &quot;Einstellungen&quot;.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -434,7 +434,7 @@ Do you want to continue?</source>
     <message>
         <location line="+103"/>
         <source>The path to the POV-Ray executable, if you want to render from FreeCAD</source>
-        <translation>Der Pfad zur POVRay-Programm-Datei, wenn Sie von FreeCAD aus rendern möchten</translation>
+        <translation>Der Pfad zur POVRay-Programm-Datei, um aus FreeCAD zu rendern.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -444,12 +444,12 @@ Do you want to continue?</source>
     <message>
         <location line="+7"/>
         <source>POV-Ray output parameters:</source>
-        <translation>POV-Ray-Output-Parameter:</translation>
+        <translation>POV-Ray-Ausgabe-Einstellungen:</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>The POV-Ray parameters to be passed to the render.</source>
-        <translation>Die POV-Ray-Parameter die an das Rendering übergeben werden sollen.</translation>
+        <translation>POV-Ray-Einstellungen, die an das Rendering übergeben werden.</translation>
     </message>
     <message>
         <location line="+95"/>

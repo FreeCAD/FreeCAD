@@ -181,22 +181,32 @@
         <translation>A la vora</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation>Punt és posat a vora, MapPathParametr controla on. Addicionalment, vèrtex pot estar vinculada en fer una projecció.</translation>
+        <translation type="obsolete">Punt és posat a vora, MapPathParametr controla on. Addicionalment, vèrtex pot estar vinculada en fer una projecció.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Center of curvature</source>
         <comment>AttachmentPoint mode caption</comment>
         <translation>Centre de curvatura</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation>El centre del cercle osculador d&apos;una vora. vèrtex enllaç opcional defineix on.</translation>
+        <translation type="obsolete">El centre del cercle osculador d&apos;una vora. vèrtex enllaç opcional defineix on.</translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -636,9 +646,14 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation>Pla és prependicular a la vora, i eix Y es correspon amb l&apos;eix de osculating cercle. Enllaç vèrtex opcional defineix on.</translation>
+        <translation type="obsolete">Pla és prependicular a la vora, i eix Y es correspon amb l&apos;eix de osculating cercle. Enllaç vèrtex opcional defineix on.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2869,7 +2884,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+40"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -2911,7 +2926,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgPartImportStep.ui" line="+54"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -3400,7 +3415,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+12"/>
         <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si està marcat, les línies de revolució produirant sòlids. Si no, les línies de revolució donaran lloc a una closca.</translation>
     </message>
     <message>
         <location line="+79"/>
@@ -4284,7 +4299,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <source>Command</source>
-        <translation type="obsolete">Command</translation>
+        <translation type="obsolete">Ordres</translation>
     </message>
     <message>
         <source>Stretch</source>
@@ -4480,7 +4495,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <source>Move up</source>
-        <translation type="obsolete">Move up</translation>
+        <translation type="obsolete">Mou amunt</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
@@ -4488,7 +4503,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="obsolete">Move down</translation>
+        <translation type="obsolete">Mou avall</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
@@ -4876,7 +4891,7 @@ Do you want to continue?</source>
         <translation>Editar les vores de Fil</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+829"/>
+        <location filename="../../ViewProviderExt.cpp" line="+840"/>
         <source>Set colors...</source>
         <translation>Conjunts de colors...</translation>
     </message>

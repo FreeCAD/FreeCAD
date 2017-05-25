@@ -181,22 +181,32 @@
         <translation>Sul bordo</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation>Il punto è messo sul bordo, e il parametro MapPath controlla dove. Inoltre, può essere collegato a un vertice per creare una proiezione.</translation>
+        <translation type="obsolete">Il punto è messo sul bordo, e il parametro MapPath controlla dove. Inoltre, può essere collegato a un vertice per creare una proiezione.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Center of curvature</source>
         <comment>AttachmentPoint mode caption</comment>
         <translation>Centro di curvatura</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation>Centro del cerchio osculatore di un bordo. Un collegamento opzionale a un vertice definisce dove.</translation>
+        <translation type="obsolete">Centro del cerchio osculatore di un bordo. Un collegamento opzionale a un vertice definisce dove.</translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -636,9 +646,14 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation>Il piano è perpendicolare al bordo, e l&apos;asse Y è abbinato con l&apos;asse del cerchio osculatore. Un collegamento opzionale a un vertice definisce dove.</translation>
+        <translation type="obsolete">Il piano è perpendicolare al bordo, e l&apos;asse Y è abbinato con l&apos;asse del cerchio osculatore. Un collegamento opzionale a un vertice definisce dove.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2721,7 +2736,7 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
     <message>
         <location line="+26"/>
         <source>Write out curves in parametric space of surface</source>
-        <translation type="unfinished">Write out curves in parametric space of surface</translation>
+        <translation>Scrivi curve rispetto al sistema di riferimento della superficie</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3402,7 +3417,7 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
     <message>
         <location line="+12"/>
         <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Se selezionato, rivoluzionando dei wire si producono dei solidi. Altrimenti, si produce un guscio.</translation>
     </message>
     <message>
         <location line="+79"/>
@@ -4877,7 +4892,7 @@ Do you want to continue?</source>
         <translation>Modifica gli spigoli raccordati</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+829"/>
+        <location filename="../../ViewProviderExt.cpp" line="+840"/>
         <source>Set colors...</source>
         <translation>Imposta colori...</translation>
     </message>

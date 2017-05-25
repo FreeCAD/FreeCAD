@@ -97,13 +97,13 @@
         <location line="+1"/>
         <source>Torus</source>
         <comment>Attacher reference type</comment>
-        <translation>環状体</translation>
+        <translation>トーラス</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cone</source>
         <comment>Attacher reference type</comment>
-        <translation>三角錐</translation>
+        <translation>円錐</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -181,22 +181,32 @@
         <translation>エッジ上</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation>点がエッジ上、MapPathParametr コントロール位置に配置されます。また投影するために節点をリンクすることができます。</translation>
+        <translation type="obsolete">点がエッジ上、MapPathParametr コントロール位置に配置されます。また投影するために節点をリンクすることができます。</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Center of curvature</source>
         <comment>AttachmentPoint mode caption</comment>
         <translation>曲線の中心</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation>エッジの接触円の中心。オプションの節点リンクで位置を定義。</translation>
+        <translation type="obsolete">エッジの接触円の中心。オプションの節点リンクで位置を定義。</translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -636,9 +646,14 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation>平面をエッジに垂直となるよう配置。Y軸は接触円の軸と一致させられます。オプションの頂点リンクで位置を定義。</translation>
+        <translation type="obsolete">平面をエッジに垂直となるよう配置。Y軸は接触円の軸と一致させられます。オプションの頂点リンクで位置を定義。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1148,7 +1163,7 @@
     <message>
         <location line="+1"/>
         <source>Run a boolean operation with two shapes selected</source>
-        <translation>選択された二つの図形のブーリアン演算を実行します</translation>
+        <translation>選択された二つの図形のブーリアン演算を実行</translation>
     </message>
 </context>
 <context>
@@ -1353,7 +1368,7 @@
         <location line="+11"/>
         <location line="+5"/>
         <source>Cone</source>
-        <translation>三角錐</translation>
+        <translation>円錐</translation>
     </message>
     <message>
         <location line="-15"/>
@@ -1468,7 +1483,7 @@
     <message>
         <location line="+1"/>
         <source>Fillet the selected edges of a shape</source>
-        <translation>選択した図形のエッジをフィレットします。</translation>
+        <translation>選択した図形のエッジをフィレット</translation>
     </message>
 </context>
 <context>
@@ -1842,7 +1857,7 @@
     <message>
         <location filename="../../CommandParametric.cpp" line="+67"/>
         <source>Create a sphere solid</source>
-        <translation>球形ソリッドを作成する</translation>
+        <translation>球形のソリッドを作成</translation>
     </message>
     <message>
         <location line="-2"/>
@@ -1914,7 +1929,7 @@
     <message>
         <location filename="../../CommandParametric.cpp" line="+67"/>
         <source>Create a torus solid</source>
-        <translation>環状体ソリッドを作成する</translation>
+        <translation>トーラスのソリッドを作成</translation>
     </message>
     <message>
         <location line="-2"/>
@@ -1926,7 +1941,7 @@
         <location line="+11"/>
         <location line="+5"/>
         <source>Torus</source>
-        <translation>環状体</translation>
+        <translation>トーラス</translation>
     </message>
 </context>
 <context>
@@ -3102,7 +3117,7 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+9"/>
         <location filename="../../DlgPrimitives.cpp" line="+18"/>
         <source>Cone</source>
-        <translation>三角錐</translation>
+        <translation>円錐</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3120,7 +3135,7 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+9"/>
         <location filename="../../DlgPrimitives.cpp" line="+20"/>
         <source>Torus</source>
-        <translation>環状体</translation>
+        <translation>トーラス</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3406,7 +3421,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+12"/>
         <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-        <translation type="unfinished"></translation>
+        <translation>チェックした場合、ワイヤーの回転押し出しでソリッドを作成。チェックされていない場合、シェルを作成。</translation>
     </message>
     <message>
         <location line="+79"/>
@@ -4884,7 +4899,7 @@ Do you want to continue?</source>
         <translation>フィレットエッジを編集</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+829"/>
+        <location filename="../../ViewProviderExt.cpp" line="+840"/>
         <source>Set colors...</source>
         <translation>色を設定...</translation>
     </message>

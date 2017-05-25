@@ -37,12 +37,12 @@
     <message>
         <location line="-9"/>
         <source>Dr&amp;awing</source>
-        <translation>Tekening</translation>
+        <translation>&amp;Tekening</translation>
     </message>
     <message>
         <location line="-1"/>
         <source>S&amp;ketch</source>
-        <translation>Schetsen</translation>
+        <translation>S&amp;chets</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -52,7 +52,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Drafting</source>
-        <translation>Opstellen</translation>
+        <translation>&amp;Opstellen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -67,7 +67,7 @@
     <message>
         <location line="+1"/>
         <source>Object appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Object uiterlijk</translation>
     </message>
     <message>
         <source>Parametric</source>

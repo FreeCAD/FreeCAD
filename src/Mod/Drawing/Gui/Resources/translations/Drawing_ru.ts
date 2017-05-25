@@ -457,12 +457,12 @@ Do you want to continue?</source>
     <message>
         <location line="+5"/>
         <source>Dimetric</source>
-        <translation type="unfinished">Dimetric</translation>
+        <translation>Диметрическая</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Trimetric</source>
-        <translation type="unfinished">Trimetric</translation>
+        <translation>Триметрическая</translation>
     </message>
     <message>
         <location line="+8"/>

@@ -7,7 +7,7 @@
         <location filename="../../AttacherTexts.cpp" line="+273"/>
         <source>Any</source>
         <comment>Attacher reference type</comment>
-        <translation type="unfinished">Any</translation>
+        <translation>任意</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -37,7 +37,7 @@
         <location line="+1"/>
         <source>Curve</source>
         <comment>Attacher reference type</comment>
-        <translation type="unfinished">Curve</translation>
+        <translation>曲线</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -109,7 +109,7 @@
         <location line="+2"/>
         <source>Object</source>
         <comment>Attacher reference type</comment>
-        <translation type="unfinished">Object</translation>
+        <translation>对象</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -130,7 +130,7 @@
         <location line="-65"/>
         <source>Deactivated</source>
         <comment>AttachmentPoint mode caption</comment>
-        <translation type="unfinished">Deactivated</translation>
+        <translation>未激活</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -142,7 +142,7 @@
         <location line="+2"/>
         <source>Object&apos;s origin</source>
         <comment>AttachmentPoint mode caption</comment>
-        <translation type="unfinished">Object&apos;s origin</translation>
+        <translation>对象的起源</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -178,31 +178,41 @@
         <location line="+2"/>
         <source>On edge</source>
         <comment>AttachmentPoint mode caption</comment>
-        <translation type="unfinished">On edge</translation>
+        <translation>在边缘上</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation type="unfinished">Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</translation>
+        <translation type="obsolete">Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Center of curvature</source>
         <comment>AttachmentPoint mode caption</comment>
         <translation type="unfinished">Center of curvature</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation type="unfinished">Center of osculating circle of an edge. Optinal vertex link defines where.</translation>
+        <translation type="obsolete">Center of osculating circle of an edge. Optinal vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Center of mass</source>
         <comment>AttachmentPoint mode caption</comment>
-        <translation type="unfinished">Center of mass</translation>
+        <translation>质量中心</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -265,7 +275,7 @@
         <location line="-97"/>
         <source>Deactivated</source>
         <comment>AttachmentLine mode caption</comment>
-        <translation type="unfinished">Deactivated</translation>
+        <translation>未激活</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -423,7 +433,7 @@
         <location line="+3"/>
         <source>Through two points</source>
         <comment>AttachmentLine mode caption</comment>
-        <translation type="unfinished">Through two points</translation>
+        <translation>通过两个点</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -483,7 +493,7 @@
         <location line="+2"/>
         <source>3rd principal axis</source>
         <comment>AttachmentLine mode caption</comment>
-        <translation type="unfinished">3rd principal axis</translation>
+        <translation>第三主轴</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -498,7 +508,7 @@
         <location line="-115"/>
         <source>Deactivated</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Deactivated</translation>
+        <translation>未激活</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -522,7 +532,7 @@
         <location line="+2"/>
         <source>Object&apos;s XY</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Object&apos;s XY</translation>
+        <translation>对象的 XY 轴</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -534,7 +544,7 @@
         <location line="+2"/>
         <source>Object&apos;s XZ</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Object&apos;s XZ</translation>
+        <translation>对象的 XZ 轴</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -546,7 +556,7 @@
         <location line="+2"/>
         <source>Object&apos;s  YZ</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Object&apos;s  YZ</translation>
+        <translation>对象的 YZ 轴</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -558,7 +568,7 @@
         <location line="+2"/>
         <source>Plane face</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Plane face</translation>
+        <translation>平面</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -636,9 +646,14 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+        <translation type="obsolete">Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -695,7 +710,7 @@
         <location line="-106"/>
         <source>Deactivated</source>
         <comment>Attachment3D mode caption</comment>
-        <translation type="unfinished">Deactivated</translation>
+        <translation>未激活</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1102,7 +1117,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle 3d</source>
-        <translation type="unfinished">Toggle 3d</translation>
+        <translation>切换 3d</translation>
     </message>
 </context>
 <context>
@@ -1116,7 +1131,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle All</source>
-        <translation type="unfinished">Toggle All</translation>
+        <translation>切换所有</translation>
     </message>
 </context>
 <context>
@@ -1279,7 +1294,7 @@
     <message>
         <location line="+1"/>
         <source>Join objects...</source>
-        <translation type="unfinished">Join objects...</translation>
+        <translation>合并目标</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1315,7 +1330,7 @@
     <message>
         <location line="+1"/>
         <source>Split objects...</source>
-        <translation type="unfinished">Split objects...</translation>
+        <translation>拆分目标</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2292,7 +2307,7 @@
     <message>
         <location line="+10"/>
         <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-        <translation type="unfinished">Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</translation>
+        <translation>设置匹配直边的方向。提示︰ 计算边的长度，设置这两个长度为零。</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2893,7 +2908,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <source></source>
-        <translation>空</translation>
+        <translation>关于</translation>
     </message>
 </context>
 <context>
@@ -2940,7 +2955,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <source></source>
-        <translation>空</translation>
+        <translation>关于</translation>
     </message>
 </context>
 <context>
@@ -3407,7 +3422,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+12"/>
         <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</translation>
     </message>
     <message>
         <location line="+79"/>
@@ -4887,7 +4902,7 @@ Do you want to continue?</translation>
         <translation>编辑圆角边</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+829"/>
+        <location filename="../../ViewProviderExt.cpp" line="+840"/>
         <source>Set colors...</source>
         <translation>设置颜色...</translation>
     </message>
@@ -5211,7 +5226,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+4"/>
         <source>Toggle 3d</source>
-        <translation type="unfinished">Toggle 3d</translation>
+        <translation>切换 3d</translation>
     </message>
     <message>
         <location line="+5"/>

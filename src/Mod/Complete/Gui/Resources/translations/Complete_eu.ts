@@ -67,7 +67,7 @@
     <message>
         <location line="+1"/>
         <source>Object appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Objektu-itxura</translation>
     </message>
     <message>
         <source>Parametric</source>
@@ -80,7 +80,7 @@
     <message>
         <location line="+1"/>
         <source>Wire Tools</source>
-        <translation>Hari-tresnak</translation>
+        <translation>Alanbre-tresnak</translation>
     </message>
 </context>
 </TS>

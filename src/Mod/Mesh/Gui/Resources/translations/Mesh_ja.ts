@@ -405,11 +405,11 @@
     </message>
     <message>
         <source>Create section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>メッシュと平面から断面を作成</translation>
     </message>
     <message>
         <source>Section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>メッシュと平面による断面</translation>
     </message>
 </context>
 <context>
@@ -905,7 +905,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Export AMF files using compression</source>
-        <translation type="unfinished"></translation>
+        <translation>圧縮を使用してAMFファイルをエクスポート</translation>
     </message>
 </context>
 <context>
@@ -1143,7 +1143,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Sphere</source>
-        <translation>球</translation>
+        <translation>球体</translation>
     </message>
 </context>
 <context>
@@ -1217,7 +1217,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
         <source>Unknown error occurred while running OpenSCAD.</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenSCAD の実行中に、不明なエラーが発生しました。</translation>
     </message>
 </context>
 <context>

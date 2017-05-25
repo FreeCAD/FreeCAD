@@ -2,6 +2,287 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh-TW" sourcelanguage="en">
   <context>
+    <name>FEM_Analysis</name>
+    <message>
+      <location filename="_CommandFemAnalysis.py" line="41"/>
+      <source>Analysis container</source>
+      <translation>分析容器</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemAnalysis.py" line="43"/>
+      <source>Creates a analysis container with standard solver CalculiX</source>
+      <translation>以標準求解器CalculiX建立一個分析容器</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_BeamSection</name>
+    <message>
+      <location filename="_CommandFemBeamSection.py" line="41"/>
+      <source>Beam cross section</source>
+      <translation>樑之截面</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemBeamSection.py" line="43"/>
+      <source>Creates a FEM beam cross section</source>
+      <translation>建立一個FEM樑之截面</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintSelfWeight</name>
+    <message>
+      <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
+      <source>Constraint self weigt</source>
+      <translation>本體重量拘束</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
+      <source>Creates a FEM constraint self weigt</source>
+      <translation>建立一個本體重量拘束</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_FEMMesh2Mesh</name>
+    <message>
+      <location filename="_CommandFemMesh2Mesh.py" line="42"/>
+      <source>FEM mesh to mesh</source>
+      <translation>FEM網格轉換為網格</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMesh2Mesh.py" line="43"/>
+      <source>Convert the surface of a FEM mesh to a mesh</source>
+      <translation>將FEM網格之面轉換為網格</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_FluidSection</name>
+    <message>
+      <location filename="_CommandFemFluidSection.py" line="42"/>
+      <source>Fluid section for 1D flow</source>
+      <translation type="unfinished">Fluid section for 1D flow</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemFluidSection.py" line="44"/>
+      <source>Creates a FEM Fluid section for 1D flow</source>
+      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialFluid</name>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="42"/>
+      <source>FEM material for Fluid</source>
+      <translation type="unfinished">FEM material for Fluid</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="44"/>
+      <source>Creates a FEM material for Fluid</source>
+      <translation type="unfinished">Creates a FEM material for Fluid</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialMechanicalNonlinear</name>
+    <message>
+      <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="42"/>
+      <source>Nonlinear mechanical material</source>
+      <translation>非線性機械材料</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="44"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation>建立一種非線性機械材料</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialSolid</name>
+    <message>
+      <location filename="_CommandFemMaterialSolid.py" line="42"/>
+      <source>FEM material for solid</source>
+      <translation type="unfinished">FEM material for solid</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialSolid.py" line="44"/>
+      <source>Creates a FEM material for solid</source>
+      <translation type="unfinished">Creates a FEM material for solid</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshClear</name>
+    <message>
+      <location filename="_CommandFemMeshClear.py" line="41"/>
+      <source>Clear FEM mesh</source>
+      <translation>清除FEM網格</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshClear.py" line="43"/>
+      <source>Clear the Mesh of a FEM mesh object</source>
+      <translation>清除FEM網格物件之網格</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshFromShape</name>
+    <message>
+      <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>以Netgen從造型建立FEM網格</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>以Netgen內部網格產生器由實體或造型之面建立一個FAM體積網格</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGmshFromShape</name>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
+      <source>FEM mesh from shape by GMSH</source>
+      <translation>以GMSH從造型建立FEM網格</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
+      <source>Create a FEM mesh from a shape by GMSH mesher</source>
+      <translation>以GMSH網格產生器由造型建立一個FAM網格</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGroup</name>
+    <message>
+      <location filename="_CommandFemMeshGroup.py" line="41"/>
+      <source>FEM mesh group</source>
+      <translation type="unfinished">FEM mesh group</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGroup.py" line="43"/>
+      <source>Creates a FEM mesh group</source>
+      <translation type="unfinished">Creates a FEM mesh group</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshPrintInfo</name>
+    <message>
+      <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
+      <source>Print FEM mesh info</source>
+      <translation>輸出FEM網格資訊</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshRegion</name>
+    <message>
+      <location filename="_CommandFemMeshRegion.py" line="41"/>
+      <source>FEM mesh region</source>
+      <translation>FEM網格區域</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshRegion.py" line="43"/>
+      <source>Creates a FEM mesh region</source>
+      <translation>建立FEM網格區域</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ResultShow</name>
+    <message>
+      <location filename="_CommandFemResultShow.py" line="41"/>
+      <source>Show result</source>
+      <translation>顯示結果</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemResultShow.py" line="43"/>
+      <source>Shows and visualizes selected result data</source>
+      <translation>顯示並視覺化結果資料</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ResultsPurge</name>
+    <message>
+      <location filename="_CommandFemResultsPurge.py" line="41"/>
+      <source>Purge results</source>
+      <translation>清除結果</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemResultsPurge.py" line="43"/>
+      <source>Purges all results from active analysis</source>
+      <translation>從此分析中清除所有結果</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ShellThickness</name>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="41"/>
+      <source>Shell plate thickness</source>
+      <translation>板殼厚度</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="43"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation>建立FEM板殼厚度</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculix</name>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation>CalculiX求解器</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation>建立一個CalculiX求解器</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverControl</name>
+    <message>
+      <location filename="_CommandFemSolverControl.py" line="40"/>
+      <source>Solver job control</source>
+      <translation>求解器任務設定</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverControl.py" line="42"/>
+      <source>Changes solver attributes and runs the calculations for the selected solver</source>
+      <translation>變更求解器屬性並以所選求解器進行運算</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverRun</name>
+    <message>
+      <location filename="_CommandFemSolverRun.py" line="40"/>
+      <source>Run solver calculations</source>
+      <translation>執行求解器運算</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverRun.py" line="42"/>
+      <source>Runs the calculations for the selected solver</source>
+      <translation>以所選之求解器執行運算</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverZ88</name>
+    <message>
+      <location filename="_CommandFemSolverZ88.py" line="41"/>
+      <source>Solver Z88</source>
+      <translation>Z88求解器</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverZ88.py" line="43"/>
+      <source>Creates a FEM solver Z88</source>
+      <translation>建立一個Z88求解器</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Command</name>
+    <message>
+      <location filename="FemCommands.py" line="39"/>
+      <source>Default Fem Command MenuText</source>
+      <translation type="unfinished">Default Fem Command MenuText</translation>
+    </message>
+    <message>
+      <location filename="FemCommands.py" line="41"/>
+      <source>Default Fem Command ToolTip</source>
+      <translation type="unfinished">Default Fem Command ToolTip</translation>
+    </message>
+  </context>
+  <context>
     <name>Fem_Analysis</name>
     <message>
       <location filename="_CommandAnalysis.py" line="41"/>
@@ -58,19 +339,6 @@
       <location filename="_CommandClearMesh.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
       <translation>清除FEM網格物件之網格</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_Command</name>
-    <message>
-      <location filename="FemCommands.py" line="39"/>
-      <source>Default Fem Command MenuText</source>
-      <translation type="unfinished">Default Fem Command MenuText</translation>
-    </message>
-    <message>
-      <location filename="FemCommands.py" line="41"/>
-      <source>Default Fem Command ToolTip</source>
-      <translation type="unfinished">Default Fem Command ToolTip</translation>
     </message>
   </context>
   <context>

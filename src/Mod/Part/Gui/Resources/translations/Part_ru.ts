@@ -130,7 +130,7 @@
         <location line="-65"/>
         <source>Deactivated</source>
         <comment>AttachmentPoint mode caption</comment>
-        <translation type="unfinished">Deactivated</translation>
+        <translation>Выключено</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -181,22 +181,32 @@
         <translation>На грани</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation type="unfinished">Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</translation>
+        <translation type="obsolete">Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Center of curvature</source>
         <comment>AttachmentPoint mode caption</comment>
         <translation>Центр кривизны</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation type="unfinished">Center of osculating circle of an edge. Optinal vertex link defines where.</translation>
+        <translation type="obsolete">Center of osculating circle of an edge. Optinal vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -265,7 +275,7 @@
         <location line="-97"/>
         <source>Deactivated</source>
         <comment>AttachmentLine mode caption</comment>
-        <translation type="unfinished">Deactivated</translation>
+        <translation>Выключено</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -498,7 +508,7 @@
         <location line="-115"/>
         <source>Deactivated</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Deactivated</translation>
+        <translation>Выключено</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -636,9 +646,14 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+        <translation type="obsolete">Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -695,7 +710,7 @@
         <location line="-106"/>
         <source>Deactivated</source>
         <comment>Attachment3D mode caption</comment>
-        <translation type="unfinished">Deactivated</translation>
+        <translation>Выключено</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2893,7 +2908,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <source></source>
-        <translation>*</translation>
+        <translation>О программе</translation>
     </message>
 </context>
 <context>
@@ -2940,7 +2955,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <source></source>
-        <translation>*</translation>
+        <translation>О программе</translation>
     </message>
 </context>
 <context>
@@ -3407,7 +3422,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+12"/>
         <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</translation>
     </message>
     <message>
         <location line="+79"/>
@@ -4475,7 +4490,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <source>Move right</source>
-        <translation type="obsolete">Добавить</translation>
+        <translation type="obsolete">Переместить вправо</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
@@ -4483,7 +4498,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <source>Move left</source>
-        <translation type="obsolete">Удалить</translation>
+        <translation type="obsolete">Переместить влево</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
@@ -4495,7 +4510,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;b&gt;Переместите выбранный элемент вверх.&lt;/b&gt;&lt;p&gt;Элемент будет перемещен внутри уровня иерархии.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move down</source>
@@ -4503,7 +4518,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;b&gt;Переместите выбранный элемент вниз.&lt;/b&gt;&lt;p&gt;Элемент будет перемещен внутри уровня иерархии.&lt;/p&gt;</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -4637,7 +4652,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+32"/>
         <source>Create</source>
-        <translation>Запаковать</translation>
+        <translation>Создать</translation>
     </message>
     <message>
         <location line="-22"/>
@@ -4886,7 +4901,7 @@ Do you want to continue?</source>
         <translation>Изменение краев ленты</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+829"/>
+        <location filename="../../ViewProviderExt.cpp" line="+840"/>
         <source>Set colors...</source>
         <translation>Установите цвета ...</translation>
     </message>

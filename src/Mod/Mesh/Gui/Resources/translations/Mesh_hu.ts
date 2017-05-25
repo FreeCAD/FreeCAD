@@ -405,11 +405,11 @@
     </message>
     <message>
         <source>Create section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Létrehoz egy szakaszt a hálóból és a síkból</translation>
     </message>
     <message>
         <source>Section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Szakasz a hálóból és a síkból</translation>
     </message>
 </context>
 <context>
@@ -753,14 +753,14 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
         <source>Settings...</source>
-        <translation type="unfinished">Settings...</translation>
+        <translation>Beállítások...</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
         <source>Evaluation settings</source>
-        <translation type="unfinished">Evaluation settings</translation>
+        <translation>Értékelési beállítások</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -768,15 +768,15 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation type="unfinished">Check for non-manifold points</translation>
+        <translation>Ellenőrizze a nem-szétágazó pontokat</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation type="unfinished">Enable check for folds on surface</translation>
+        <translation>A felületek és behajtások ellenőrzésének engedélyezése</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
-        <translation type="unfinished">Only consider zero area faces as degenerated</translation>
+        <translation>Csak a nulla területű felületek legyenek érvénytelenek</translation>
     </message>
 </context>
 <context>
@@ -791,7 +791,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation>Alt+C</translation>
+        <translation>Alt + C</translation>
     </message>
     <message>
         <source>Cl&amp;ose</source>
@@ -905,7 +905,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
         <source>Export AMF files using compression</source>
-        <translation type="unfinished"></translation>
+        <translation>AMF-fájlok exportálása tömörítéssel</translation>
     </message>
 </context>
 <context>
@@ -1158,7 +1158,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation>Tiszta</translation>
+        <translation>Törlés</translation>
     </message>
     <message>
         <source>Respect only visible triangles</source>
@@ -1216,7 +1216,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
         <source>Unknown error occurred while running OpenSCAD.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ismeretlen hiba történt az OpenSCAD futása közben.</translation>
     </message>
 </context>
 <context>

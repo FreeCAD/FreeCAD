@@ -468,7 +468,7 @@ Do you want to continue?</source>
     <message>
         <location line="+8"/>
         <source> Scale</source>
-        <translation type="unfinished"> Scale</translation>
+        <translation> Schaal</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -596,7 +596,7 @@ Do you want to continue?</source>
     <message>
         <location line="+125"/>
         <source>Show hidden lines</source>
-        <translation type="unfinished">Show hidden lines</translation>
+        <translation>Toon verborgen lijnen</translation>
     </message>
     <message>
         <location line="+7"/>

@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="eu" sourcelanguage="en">
   <context>
+    <name>Active</name>
+    <message>
+      <location filename="PathHelix.py" line="253"/>
+      <source>Set to False to disable code generation</source>
+      <translation>Ezarri 'Gezurra' kodearen sorrera desgaitzeko</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="51"/>
+      <source>Make False, to prevent operation from generating code</source>
+      <translation>Markatu 'Gezurra', eragiketak koderik sortu dezan saihestu nahi baduzu</translation>
+    </message>
+  </context>
+  <context>
     <name>App::Property</name>
     <message>
       <location filename="PathFromShape.py" line="46"/>
@@ -21,7 +34,7 @@
     <message>
       <location filename="PathProfileEdges.py" line="58"/>
       <source>An optional comment for this profile</source>
-      <translation type="unfinished">An optional comment for this profile</translation>
+      <translation>Profil honetarako aukerako iruzkin bat</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="59"/>
@@ -66,17 +79,17 @@
     <message>
       <location filename="PathProfileEdges.py" line="75"/>
       <source>Starting Depth of Tool- first cut depth in Z</source>
-      <translation type="unfinished">Starting Depth of Tool- first cut depth in Z</translation>
+      <translation>Tresnaren hasierako sakonera - lehen mozketaren sakonera Z ardatzean</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="76"/>
       <source>Final Depth of Tool- lowest value in Z</source>
-      <translation type="unfinished">Final Depth of Tool- lowest value in Z</translation>
+      <translation>Tresnaren azken sakonera - baliorik baxuena Z ardatzean</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="72"/>
       <source>Maximum material removed on final pass.</source>
-      <translation type="unfinished">Maximum material removed on final pass.</translation>
+      <translation>Azken igaroaldian kenduko den material kopuru maximoa.</translation>
     </message>
     <message>
       <location filename="PathCopy.py" line="45"/>
@@ -96,7 +109,7 @@
     <message>
       <location filename="PathDressupDragknife.py" line="58"/>
       <source>Distance the point trails behind the spindle</source>
-      <translation type="unfinished">Distance the point trails behind the spindle</translation>
+      <translation>Puntua haxaren atzetik zein distantziara doan</translation>
     </message>
     <message>
       <location filename="PathDressupDragknife.py" line="59"/>
@@ -126,7 +139,7 @@
     <message>
       <location filename="PathCompoundExtended.py" line="48"/>
       <source>The safe height for this operation</source>
-      <translation type="unfinished">The safe height for this operation</translation>
+      <translation>Eragiketa honetarako segurtasun-altuera</translation>
     </message>
     <message>
       <location filename="PathCompoundExtended.py" line="49"/>
@@ -156,7 +169,7 @@
     <message>
       <location filename="PathProfileEdges.py" line="81"/>
       <source>extra length of tool path before start of part edge</source>
-      <translation type="unfinished">extra length of tool path before start of part edge</translation>
+      <translation>tresna-bidearen luzera gehigarria pieza-ertzaren hasiera baino lehen</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="82"/>
@@ -171,7 +184,7 @@
     <message>
       <location filename="PathProfileEdges.py" line="86"/>
       <source>extra length of tool path after end of part edge</source>
-      <translation type="unfinished">extra length of tool path after end of part edge</translation>
+      <translation>tresna-bidearen luzera gehigarria pieza-ertzaren amaieraren ondoren</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="87"/>
@@ -194,21 +207,6 @@
       <translation>Markatu 'Egia', ebakigailuaren erradio-konpentsazioa erabili nahi bada</translation>
     </message>
     <message>
-      <location filename="PathProfileEdges.py" line="91"/>
-      <source>Side of edge that tool should cut</source>
-      <translation type="unfinished">Side of edge that tool should cut</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="97"/>
-      <source>Radius at start and end</source>
-      <translation>Erradioa hasieran eta amaieran</translation>
-    </message>
-    <message>
-      <location filename="PathContour.py" line="96"/>
-      <source>Extra value to stay away from final Contour- good for roughing toolpath</source>
-      <translation type="unfinished">Extra value to stay away from final Contour- good for roughing toolpath</translation>
-    </message>
-    <message>
       <location filename="PathProfileEdges.py" line="99"/>
       <source>Tesselation  value for tool paths made from beziers, bsplines, and ellipses</source>
       <translation>Bezier, bspline eta elipseetatik sortutako tresna-bideen teselazio-balioa</translation>
@@ -229,6 +227,21 @@
       <translation>Euste-etiketen angeluen zerrenda</translation>
     </message>
     <message>
+      <location filename="PathProfileEdges.py" line="91"/>
+      <source>Side of edge that tool should cut</source>
+      <translation>Tresnak moztu beharko lukeen ertz-alboa</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="97"/>
+      <source>Radius at start and end</source>
+      <translation>Erradioa hasieran eta amaieran</translation>
+    </message>
+    <message>
+      <location filename="PathContour.py" line="96"/>
+      <source>Extra value to stay away from final Contour- good for roughing toolpath</source>
+      <translation>Amaierako ingeradatik aldentzeko balio gehigarria - ona arbastatzeko tresna-bidearentzako</translation>
+    </message>
+    <message>
       <location filename="PathDrilling.py" line="57"/>
       <source>Incremental Drill depth before retracting to clear chips</source>
       <translation>Zulatze-sakonera hazkorra, txirbilak garbitzeko atzeraka egin baino lehen</translation>
@@ -236,7 +249,7 @@
     <message>
       <location filename="PathDrilling.py" line="61"/>
       <source>Height to clear top of materil</source>
-      <translation type="unfinished">Height to clear top of materil</translation>
+      <translation>Materialaren goiko aldea garbitzeko altuera</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="62"/>
@@ -246,7 +259,7 @@
     <message>
       <location filename="PathDrilling.py" line="63"/>
       <source>The time to dwell between peck cycles</source>
-      <translation type="unfinished">The time to dwell between peck cycles</translation>
+      <translation>Txirbiltze-zikloen arteko itxarote-denbora</translation>
     </message>
     <message>
       <location filename="PathPlane.py" line="44"/>
@@ -266,7 +279,7 @@
     <message>
       <location filename="PathMillFace.py" line="80"/>
       <source>Start Faceing at center or boundary</source>
-      <translation type="unfinished">Start Faceing at center or boundary</translation>
+      <translation>Hasi aurpegiaren sorrera erdian edo mugan</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="80"/>
@@ -281,7 +294,7 @@
     <message>
       <location filename="PathPocket.py" line="83"/>
       <source>Lifts tool at the end of each pass to respect cut mode.</source>
-      <translation type="unfinished">Lifts tool at the end of each pass to respect cut mode.</translation>
+      <translation>Tresna igotzen du igaroaldi bakoitzaren amaieran, mozte modua errespetatzeko.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="84"/>
@@ -306,12 +319,12 @@
     <message>
       <location filename="PathLoadTool.py" line="49"/>
       <source>The speed of the cutting spindle in RPM</source>
-      <translation type="unfinished">The speed of the cutting spindle in RPM</translation>
+      <translation>Mozte-haxaren abiadura, RPMetan</translation>
     </message>
     <message>
       <location filename="PathLoadTool.py" line="50"/>
       <source>Direction of spindle rotation</source>
-      <translation type="unfinished">Direction of spindle rotation</translation>
+      <translation>Hax-biraketaren norabidea</translation>
     </message>
     <message>
       <location filename="PathLoadTool.py" line="52"/>
@@ -371,7 +384,7 @@
     <message>
       <location filename="PathEngrave.py" line="72"/>
       <source>The vertex index to start the path from</source>
-      <translation type="unfinished">The vertex index to start the path from</translation>
+      <translation>Bidea hasiko den erpinaren indizea</translation>
     </message>
     <message>
       <location filename="PathFacePocket.py" line="48"/>
@@ -391,17 +404,17 @@
     <message>
       <location filename="PathStop.py" line="43"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation type="unfinished">Add Optional or Mandatory Stop to the program</translation>
+      <translation>Gehitu aukerako edo derrigorrezko etena programari</translation>
     </message>
     <message>
       <location filename="PathStock.py" line="47"/>
       <source>extra allownace from part width</source>
-      <translation type="unfinished">extra allownace from part width</translation>
+      <translation>piezaren zabaleraren perdoi gehigarria</translation>
     </message>
     <message>
       <location filename="PathStock.py" line="48"/>
       <source>The base object this represents</source>
-      <translation type="unfinished">The base object this represents</translation>
+      <translation>Honek ordezkatzen duen oinarri-objektua</translation>
     </message>
     <message>
       <location filename="PathToolLenOffset.py" line="44"/>
@@ -416,12 +429,12 @@
     <message>
       <location filename="PathJob.py" line="53"/>
       <source>The NC output file for this project</source>
-      <translation type="unfinished">The NC output file for this project</translation>
+      <translation>Proiektu honen NC irteera-fitxategia</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="57"/>
       <source>An optional description for this job</source>
-      <translation type="unfinished">An optional description for this job</translation>
+      <translation>Lan honen aukerako deskribapen bat</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="58"/>
@@ -461,7 +474,7 @@
     <message>
       <location filename="PathFacePocket.py" line="49"/>
       <source>The height to travel at between loops</source>
-      <translation type="unfinished">The height to travel at between loops</translation>
+      <translation>Begizta artean desplazatu behar den altuera</translation>
     </message>
     <message>
       <location filename="PathFacePocket.py" line="50"/>
@@ -471,7 +484,7 @@
     <message>
       <location filename="PathProfileEdges.py" line="98"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
-      <translation type="unfinished">Extra value to stay away from final profile- good for roughing toolpath</translation>
+      <translation>Amaierako profiletik aldentzeko balio gehigarria - ona arbastatzeko tresna-bidearentzako</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="99"/>
@@ -491,7 +504,7 @@
     <message>
       <location filename="PathEngrave.py" line="59"/>
       <source>The tool controller to use</source>
-      <translation type="unfinished">The tool controller to use</translation>
+      <translation>Erabiliko den tresna-kontrolatzailea</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="67"/>
@@ -502,6 +515,79 @@
       <location filename="PathProfileEdges.py" line="72"/>
       <source>Rapid Safety Height between locations</source>
       <translation>Kokapenen arteko segurtasun-altuera azkarra</translation>
+    </message>
+  </context>
+  <context>
+    <name>Clearance</name>
+    <message>
+      <location filename="PathHelix.py" line="271"/>
+      <source>Safe distance above the top of the hole to which to retract the tool</source>
+      <translation>Zuloaren goiko aldearen gainean tresna atzeratzeko dagoen distantzia segurua</translation>
+    </message>
+  </context>
+  <context>
+    <name>Comment</name>
+    <message>
+      <location filename="PathHelix.py" line="255"/>
+      <source>An optional comment for this profile, will appear in G-Code</source>
+      <translation>Profil honentzako aukerako iruzkin ba, G-Code kodean agertuko da</translation>
+    </message>
+    <message>
+      <location filename="PathComment.py" line="41"/>
+      <source>Comment or note for CNC program</source>
+      <translation>Iruzkina edo oharra CNC programarako</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="65"/>
+      <source>An optional comment for this profile</source>
+      <translation>Profil honetarako aukerako iruzkin bat</translation>
+    </message>
+  </context>
+  <context>
+    <name>DeltaR</name>
+    <message>
+      <location filename="PathHelix.py" line="267"/>
+      <source>Radius increment (must be smaller than tool diameter)</source>
+      <translation>Erradio-gehikuntza (tresnaren diametroa baino txikiagoa izan behar du)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Direction</name>
+    <message>
+      <location filename="PathHelix.py" line="259"/>
+      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
+      <translation>Mozte zirkularren norabidea, erlojuaren orratzen noranzkoan (CW) edo aurkakoan (CCW)</translation>
+    </message>
+    <message>
+      <location filename="PathHelix.py" line="263"/>
+      <source>Start cutting from the inside or outside</source>
+      <translation>Hasi mozten barrutik edo kanpotik</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="86"/>
+      <source>The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW</source>
+      <translation>Tresna-bideak piezaren inguruan izan behar duen norabidea: erlojuaren noranzkoan (CW), edo aurka (CCW)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Features</name>
+    <message>
+      <location filename="PathHelix.py" line="251"/>
+      <source>Selected features for the drill operation</source>
+      <translation>Zulaketa-eragiketarako hautatutako elementuak</translation>
+    </message>
+  </context>
+  <context>
+    <name>Final Depth</name>
+    <message>
+      <location filename="PathHelix.py" line="281"/>
+      <source>Final Depth of Tool - lowest value in Z</source>
+      <translation>Tresnaren azken sakonera - baliorik baxuena Z ardatzean</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="63"/>
+      <source>Final Depth of Tool- lowest value in Z</source>
+      <translation>Tresnaren azken sakonera - baliorik baxuena Z ardatzean</translation>
     </message>
   </context>
   <context>
@@ -522,8 +608,7 @@
       <location filename="PathMillFace.py" line="148"/>
       <source>Please select features from the Job model object
 </source>
-      <translation type="unfinished">Please select features from the Job model object
-</translation>
+      <translation>Hautatu elementuak lan-eredu objektutik</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="444"/>
@@ -612,12 +697,12 @@
     <message>
       <location filename="PathDressupDogbone.py" line="358"/>
       <source>The side of path to insert bones</source>
-      <translation type="unfinished">The side of path to insert bones</translation>
+      <translation>Hezurrak txertatuko diren bidearen alboa</translation>
     </message>
     <message>
-      <location filename="PathDressupDogbone.py" line="361"/>
-      <source>The style of boness</source>
-      <translation type="unfinished">The style of boness</translation>
+      <location filename="PathDressupDogbone.py" line="354"/>
+      <source>The style of bones</source>
+      <translation>Hezurren estiloa</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="364"/>
@@ -630,24 +715,29 @@
       <translation>Hezur-luzera zehaztuko duen algoritmoa</translation>
     </message>
     <message>
+      <location filename="PathDressupDogbone.py" line="361"/>
+      <source>The style of boness</source>
+      <translation>Hezurren estiloa</translation>
+    </message>
+    <message>
       <location filename="PathDressupDogbone.py" line="370"/>
       <source>Dressup length if Incision == custom</source>
-      <translation type="unfinished">Dressup length if Incision == custom</translation>
+      <translation>Jantziaren luzera ebakia == pertsonalizatua bada</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="808"/>
       <source>Edit Dogbone Dress-up</source>
-      <translation type="unfinished">Edit Dogbone Dress-up</translation>
+      <translation>Editatu txakur-hezurraren jantzia</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="974"/>
       <source>Dogbone Dress-up</source>
-      <translation type="unfinished">Dogbone Dress-up</translation>
+      <translation>Txakur-hezurraren jantzia</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="975"/>
       <source>Creates a Dogbone Dress-up object from a selected path</source>
-      <translation type="unfinished">Creates a Dogbone Dress-up object from a selected path</translation>
+      <translation>Txakur-hezurraren jantzi-objektu bat sortzen du hautatutako bide bat erabiliz</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="989"/>
@@ -666,12 +756,12 @@
     <message>
       <location filename="PathDressupDogbone.py" line="999"/>
       <source>Please select a Profile or Dogbone Dressup object</source>
-      <translation type="unfinished">Please select a Profile or Dogbone Dressup object</translation>
+      <translation>Hautatu profilaren edo txakur-hezurraen jantzi-objektu bat</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="1003"/>
       <source>Create Dogbone Dress-up</source>
-      <translation type="unfinished">Create Dogbone Dress-up</translation>
+      <translation>Sortu txakur-hezurraren jantzia</translation>
     </message>
   </context>
   <context>
@@ -679,12 +769,12 @@
     <message>
       <location filename="PathDressupDragknife.py" line="474"/>
       <source>DragKnife Dress-up</source>
-      <translation>DragKnife jantzia</translation>
+      <translation>Arraste-hortzeko jantzia</translation>
     </message>
     <message>
       <location filename="PathDressupDragknife.py" line="475"/>
       <source>Modifies a path to add dragknife corner actions</source>
-      <translation type="unfinished">Modifies a path to add dragknife corner actions</translation>
+      <translation>Bide bat aldatzen du arraste-hortz erako izkina-ekintzak gehitzeko</translation>
     </message>
     <message>
       <location filename="PathDressupDragknife.py" line="489"/>
@@ -712,12 +802,65 @@
     </message>
   </context>
   <context>
+    <name>PathDressup_HoldingTags</name>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="714"/>
+      <source>The base path to modify</source>
+      <translation>Aldatuko den oinarri-bidea</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="715"/>
+      <source>Width of tags.</source>
+      <translation>Etiketen zabalera.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="716"/>
+      <source>Height of tags.</source>
+      <translation>Etiketen altuera.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="717"/>
+      <source>Angle of tag plunge and ascent.</source>
+      <translation>Etiketaren sakontze- eta igotze-angelua.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="718"/>
+      <source>Radius of the fillet for the tag.</source>
+      <translation>Biribiltze-erradioa etiketarako.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="719"/>
+      <source>Locations of insterted holding tags</source>
+      <translation>Txertatutako euste-etiketen kokapenak</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="720"/>
+      <source>Ids of disabled holding tags</source>
+      <translation>Desgaitutako euste-etiketen IDak</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="721"/>
+      <source>Factor determining the # segments used to approximate rounded tags.</source>
+      <translation>Etiketa biribilduetara hurbiltzeko erabiliko diren # segmentuak zehazteko faktorea.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="1383"/>
+      <source>HoldingTags Dress-up</source>
+      <translation>Euste-etiketen jantzia</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="1384"/>
+      <source>Creates a HoldingTags Dress-up object from a selected path</source>
+      <translation>Euste-etiketen jantzi-objektu bat sortzen du hautatutako bide bat erabiliz</translation>
+    </message>
+  </context>
+  <context>
     <name>PathFace</name>
     <message>
       <location filename="PathMillFace.py" line="171"/>
       <source>Generating toolpath with libarea offsets.
 </source>
-      <translation type="unfinished">Generating toolpath with libarea offsets.
+      <translation>Tresna-bidea sortzen libarea desplazamenduekin.
 </translation>
     </message>
     <message>
@@ -733,12 +876,30 @@
     <message>
       <location filename="PathMillFace.py" line="352"/>
       <source>Create a Facing Operation from a model or face</source>
-      <translation type="unfinished">Create a Facing Operation from a model or face</translation>
+      <translation>Aurpegia sortzeko eragiketa bat, eredu batetik edo beste aurpegi batetik abiatuta</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="367"/>
       <source>Create Face</source>
       <translation>Sortu aurpegia</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathHelix</name>
+    <message>
+      <location filename="PathHelix.py" line="449"/>
+      <source>PathHelix</source>
+      <translation>Helize-bidea</translation>
+    </message>
+    <message>
+      <location filename="PathHelix.py" line="450"/>
+      <source>Creates a helix cut from selected circles</source>
+      <translation>Helize-mozketa bat sortzen du hautatutako zirkuluetatik abiatuz</translation>
+    </message>
+    <message>
+      <location filename="PathHelix.py" line="464"/>
+      <source>Create a helix cut</source>
+      <translation>Sortu helize-mozketa bat</translation>
     </message>
   </context>
   <context>
@@ -773,14 +934,14 @@
       <location filename="PathPocket.py" line="177"/>
       <source>Generating toolpath with libarea offsets.
 </source>
-      <translation type="unfinished">Generating toolpath with libarea offsets.
+      <translation>Tresna-bidea sortzen libarea desplazamenduekin.
 </translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="226"/>
       <source>Generating toolpath with OCC native offsets.
 </source>
-      <translation type="unfinished">Generating toolpath with OCC native offsets.
+      <translation>Tresna-bidea sortzen OCCren jatorrizko desplazamenduekin.
 </translation>
     </message>
     <message>
@@ -826,7 +987,20 @@
     </message>
   </context>
   <context>
+    <name>PathPreferencesPathDressup</name>
+    <message>
+      <location filename="PathPreferencesPathDressup.py" line="50"/>
+      <source>Dressups</source>
+      <translation>Jantziak</translation>
+    </message>
+  </context>
+  <context>
     <name>PathProfile</name>
+    <message>
+      <location filename="PathHelix.py" line="289"/>
+      <source>The current tool in use</source>
+      <translation>Unean erabilitako tresna</translation>
+    </message>
     <message>
       <location filename="PathProfile.py" line="54"/>
       <source>The tool number in use</source>
@@ -859,7 +1033,7 @@
       <location filename="PathDrilling.py" line="443"/>
       <source>Please select at least one Drillable Location
 </source>
-      <translation type="unfinished">Please select at least one Drillable Location
+      <translation>Hautatu zulagarria den kokapen bat gutxienez
 </translation>
     </message>
     <message>
@@ -880,7 +1054,7 @@
       <location filename="PathProfileEdges.py" line="564"/>
       <source>Please select only Edges from the Base model
 </source>
-      <translation type="unfinished">Please select only Edges from the Base model
+      <translation>Hautatu oinarri-ereduaren ertzak soilik
 </translation>
     </message>
     <message>
@@ -908,7 +1082,7 @@
     <message>
       <location filename="PathPocket.py" line="86"/>
       <source>Starting Depth of Tool- first cut depth in Z</source>
-      <translation type="unfinished">Starting Depth of Tool- first cut depth in Z</translation>
+      <translation>Tresnaren hasierako sakonera - lehen mozketaren sakonera Z ardatzean</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="87"/>
@@ -918,7 +1092,7 @@
     <message>
       <location filename="PathPocket.py" line="88"/>
       <source>Final Depth of Tool- lowest value in Z</source>
-      <translation type="unfinished">Final Depth of Tool- lowest value in Z</translation>
+      <translation>Tresnaren azken sakonera - baliorik baxuena Z ardatzean</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="89"/>
@@ -938,7 +1112,7 @@
     <message>
       <location filename="PathPocket.py" line="94"/>
       <source>Maximum material removed on final pass.</source>
-      <translation type="unfinished">Maximum material removed on final pass.</translation>
+      <translation>Azken igaroaldian kenduko den material kopuru maximoa.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="96"/>
@@ -953,7 +1127,7 @@
     <message>
       <location filename="PathPocket.py" line="107"/>
       <source>An optional comment for this profile</source>
-      <translation type="unfinished">An optional comment for this profile</translation>
+      <translation>Profil honetarako aukerako iruzkin bat</translation>
     </message>
     <message>
       <location filename="PathProject.py" line="53"/>
@@ -966,12 +1140,12 @@
     <message>
       <location filename="PathStock.py" line="96"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Soberakina</translation>
     </message>
     <message>
       <location filename="PathStock.py" line="104"/>
       <source>Creates a 3D object to represent raw stock to mill the part out of</source>
-      <translation type="unfinished">Creates a 3D object to represent raw stock to mill the part out of</translation>
+      <translation>Sortu 3D objektu bat adierazteko fresaketa bidez modelatu behar den pieza gordina</translation>
     </message>
   </context>
   <context>
@@ -1053,7 +1227,7 @@
     <message>
       <location filename="PathCompoundExtended.py" line="97"/>
       <source>Creates a Path Compound object</source>
-      <translation type="unfinished">Creates a Path Compound object</translation>
+      <translation>Bide-konposatuko objektu bat sortzen du</translation>
     </message>
     <message>
       <location filename="PathCompoundExtended.py" line="104"/>
@@ -1064,11 +1238,6 @@
   <context>
     <name>Path_Contour</name>
     <message>
-      <location filename="PathContour.py" line="308"/>
-      <source>Add Holding Tag</source>
-      <translation>Gehitu euste-etiketa</translation>
-    </message>
-    <message>
       <location filename="PathContour.py" line="344"/>
       <source>Pick Start Point</source>
       <translation>Aukeratu hasiera-puntua</translation>
@@ -1077,6 +1246,11 @@
       <location filename="PathContour.py" line="363"/>
       <source>Pick End Point</source>
       <translation>Aukeratu amaiera-puntua</translation>
+    </message>
+    <message>
+      <location filename="PathContour.py" line="308"/>
+      <source>Add Holding Tag</source>
+      <translation>Gehitu euste-etiketa</translation>
     </message>
   </context>
   <context>
@@ -1162,7 +1336,7 @@
     <message>
       <location filename="PathDrilling.py" line="152"/>
       <source>Creates a Path Drilling object</source>
-      <translation type="unfinished">Creates a Path Drilling object</translation>
+      <translation>Bide-zulatzeko objektuko bat sortzen du</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="168"/>
@@ -1175,18 +1349,18 @@
     <message>
       <location filename="PathEngrave.py" line="272"/>
       <source>ShapeString Engrave</source>
-      <translation type="unfinished">ShapeString Engrave</translation>
+      <translation>Testu-formaren grabazioa</translation>
     </message>
     <message>
       <location filename="PathEngrave.py" line="273"/>
       <source>Creates an Engraving Path around a Draft ShapeString</source>
-      <translation type="unfinished">Creates an Engraving Path around a Draft ShapeString</translation>
+      <translation>Grabazio-bide bat sortzen du zirriborroko testu-forma baten inguruan</translation>
     </message>
     <message>
       <location filename="PathEngrave.py" line="352"/>
       <source>Please select engraveable geometry
 </source>
-      <translation type="unfinished">Please select engraveable geometry
+      <translation>Hautatu grabatuko den geometria
 </translation>
     </message>
     <message>
@@ -1213,7 +1387,7 @@
       <location filename="PathFacePocket.py" line="156"/>
       <source>Please select an edges loop from one object, or a single face
 </source>
-      <translation type="unfinished">Please select an edges loop from one object, or a single face
+      <translation>Hautatu objektu bateko ertz-begizta bat, edo aurpegi bakar bat
 </translation>
     </message>
     <message>
@@ -1247,21 +1421,21 @@
       <location filename="PathFaceProfile.py" line="125"/>
       <source>Please select one face or wire
 </source>
-      <translation>Hautatu aurpegi edo hari bat
+      <translation>Hautatu aurpegi edo alanbre bat
 </translation>
     </message>
     <message>
       <location filename="PathFaceProfile.py" line="128"/>
       <source>Please select only one face or wire
 </source>
-      <translation>Hautatu aurpegi edo hari bakar bat
+      <translation>Hautatu aurpegi edo alanbre bakar bat
 </translation>
     </message>
     <message>
       <location filename="PathFaceProfile.py" line="131"/>
       <source>Please select only a face or a wire
 </source>
-      <translation>Hautatu aurpegi edo hari bakar bat
+      <translation>Hautatu aurpegi edo alanbre bakar bat
 </translation>
     </message>
   </context>
@@ -1293,7 +1467,7 @@
     <message>
       <location filename="PathFromShape.py" line="81"/>
       <source>Creates a Path from a wire/curve</source>
-      <translation>Bide bat sortzen du hari/kurba batetik</translation>
+      <translation>Bide bat sortzen du alanbre/kurba batetik</translation>
     </message>
     <message>
       <location filename="PathFromShape.py" line="94"/>
@@ -1393,22 +1567,22 @@
     <message>
       <location filename="PathLoadTool.py" line="132"/>
       <source>Tool Number to Load</source>
-      <translation type="unfinished">Tool Number to Load</translation>
+      <translation>Kargatuko den tresnaren zenbakia</translation>
     </message>
     <message>
       <location filename="PathLoadTool.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
-      <translation type="unfinished">Add Tool Controller to the Job</translation>
+      <translation>Gehitu tresna-kontrolatzailea lanari</translation>
     </message>
     <message>
       <location filename="PathLoadTool.py" line="157"/>
       <source>Add Tool Controller</source>
-      <translation type="unfinished">Add Tool Controller</translation>
+      <translation>Gehitu tresna-kontrolatzailea</translation>
     </message>
     <message>
       <location filename="PathLoadTool.py" line="167"/>
       <source>Create Tool Controller Object</source>
-      <translation type="unfinished">Create Tool Controller Object</translation>
+      <translation>Sortu tresna-kontrolatzaileko objektu bat</translation>
     </message>
   </context>
   <context>
@@ -1421,7 +1595,7 @@
     <message>
       <location filename="PathPlane.py" line="122"/>
       <source>Create a Selection Plane object</source>
-      <translation type="unfinished">Create a Selection Plane object</translation>
+      <translation>Sortu hautapen-plano objektu bat</translation>
     </message>
   </context>
   <context>
@@ -1429,31 +1603,26 @@
     <message>
       <location filename="PathPost.py" line="45"/>
       <source>Post Process</source>
-      <translation type="unfinished">Post Process</translation>
+      <translation>Post-prozesua</translation>
     </message>
     <message>
       <location filename="PathPost.py" line="47"/>
       <source>Post Process the selected Project</source>
-      <translation type="unfinished">Post Process the selected Project</translation>
+      <translation>Post-prozesatu hautatutako proiektua</translation>
     </message>
     <message>
       <location filename="PathPost.py" line="155"/>
       <source>Post Process the selected Job</source>
-      <translation type="unfinished">Post Process the selected Job</translation>
+      <translation>Post-prozesatu hautatutako lana</translation>
     </message>
     <message>
       <location filename="PathPost.py" line="53"/>
       <source>Post Process the Selected path(s)</source>
-      <translation type="unfinished">Post Process the Selected path(s)</translation>
+      <translation>Post-prozesatu hautatutako bidea(k)</translation>
     </message>
   </context>
   <context>
     <name>Path_Profile</name>
-    <message>
-      <location filename="PathProfileEdges.py" line="342"/>
-      <source>Add Holding Tag</source>
-      <translation>Gehitu euste-etiketa</translation>
-    </message>
     <message>
       <location filename="PathProfileEdges.py" line="378"/>
       <source>Pick Start Point</source>
@@ -1463,6 +1632,11 @@
       <location filename="PathProfileEdges.py" line="397"/>
       <source>Pick End Point</source>
       <translation>Aukeratu amaiera-puntua</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="342"/>
+      <source>Add Holding Tag</source>
+      <translation>Gehitu euste-etiketa</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="203"/>
@@ -1499,25 +1673,25 @@
     <message>
       <location filename="PathSanity.py" line="79"/>
       <source>Check the Path project for common errors</source>
-      <translation type="unfinished">Check the Path project for common errors</translation>
+      <translation>Aztertu bide-objektua errore arruntak bilatzeko</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="80"/>
       <source>Check the Path Project for common errors</source>
-      <translation type="unfinished">Check the Path Project for common errors</translation>
+      <translation>Aztertu bide-objektua errore arruntak bilatzeko</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="93"/>
       <source>Please select a path Project to check
 </source>
-      <translation type="unfinished">Please select a path Project to check
+      <translation>Hautatu bide bat, hura aztertzeko
 </translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="96"/>
       <source>Please select a path project to check
 </source>
-      <translation type="unfinished">Please select a path project to check
+      <translation>Hautatu bide-proiektu bat, hura aztertzeko
 </translation>
     </message>
   </context>
@@ -1526,12 +1700,12 @@
     <message>
       <location filename="PathCommands.py" line="44"/>
       <source>Finish Selecting Loop</source>
-      <translation type="unfinished">Finish Selecting Loop</translation>
+      <translation>Amaitu begizta-hautapena</translation>
     </message>
     <message>
       <location filename="PathCommands.py" line="45"/>
       <source>Complete loop selection from two edges</source>
-      <translation type="unfinished">Complete loop selection from two edges</translation>
+      <translation>Osatu begizta-hautapena bi ertzetatik</translation>
     </message>
   </context>
   <context>
@@ -1564,7 +1738,7 @@
     <message>
       <location filename="PathStop.py" line="122"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation type="unfinished">Add Optional or Mandatory Stop to the program</translation>
+      <translation>Gehitu aukerako edo derrigorrezko etena programari</translation>
     </message>
   </context>
   <context>
@@ -1572,12 +1746,12 @@
     <message>
       <location filename="PathSurface.py" line="387"/>
       <source>Surfacing</source>
-      <translation type="unfinished">Surfacing</translation>
+      <translation>Artezketa</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="389"/>
       <source>Creates a Path Surfacing object</source>
-      <translation type="unfinished">Creates a Path Surfacing object</translation>
+      <translation>Artezketa-bide objektu bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -1593,17 +1767,17 @@
     <message>
       <location filename="PathToolLenOffset.py" line="126"/>
       <source>Tool Length Offset</source>
-      <translation type="unfinished">Tool Length Offset</translation>
+      <translation>Tresna-luzeraren desplazamendua</translation>
     </message>
     <message>
       <location filename="PathToolLenOffset.py" line="128"/>
       <source>Create a Tool Length Offset object</source>
-      <translation type="unfinished">Create a Tool Length Offset object</translation>
+      <translation>Sortu tresna-luzeraren desplazamenduko objektu bat</translation>
     </message>
     <message>
       <location filename="PathToolLenOffset.py" line="134"/>
       <source>Create a Selection Plane object</source>
-      <translation type="unfinished">Create a Selection Plane object</translation>
+      <translation>Sortu hautapen-plano objektu bat</translation>
     </message>
   </context>
   <context>
@@ -1619,12 +1793,41 @@
     <message>
       <location filename="PathToolTableEdit.py" line="40"/>
       <source>EditToolTable</source>
-      <translation type="unfinished">EditToolTable</translation>
+      <translation>Editatu tresna-mahaia</translation>
     </message>
     <message>
       <location filename="PathToolTableEdit.py" line="48"/>
       <source>Edits a Tool Table in a selected Project</source>
       <translation>Hautatutako proiektu baten tresna-mahai bat editatzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>Start Depth</name>
+    <message>
+      <location filename="PathHelix.py" line="277"/>
+      <source>Starting Depth of Tool - first cut depth in Z</source>
+      <translation>Tresnaren hasierako sakonera - lehen mozketaren sakonera Z ardatzean</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="62"/>
+      <source>Starting Depth of Tool- first cut depth in Z</source>
+      <translation>Tresnaren hasierako sakonera - lehen mozketaren sakonera Z ardatzean</translation>
+    </message>
+  </context>
+  <context>
+    <name>StepDown</name>
+    <message>
+      <location filename="PathProfile.py" line="60"/>
+      <source>Incremental Step Down of Tool</source>
+      <translation>Tresnaren beheratze hazkorra</translation>
+    </message>
+  </context>
+  <context>
+    <name>Through Depth</name>
+    <message>
+      <location filename="PathHelix.py" line="283"/>
+      <source>Add this amount of additional cutting depth to open-ended holes. Only used if UseFinalDepth is False</source>
+      <translation>Gehitu mozte-sakonera gehigarri hau amaiera irekiko zuloei. Amaierako sakonera erabiltzea 'Gezurra' bada soilik erabiliko da</translation>
     </message>
   </context>
   <context>
@@ -1652,7 +1855,7 @@
     <message>
       <location filename="TooltableEditor.py" line="388"/>
       <source>Tooltable editor</source>
-      <translation type="unfinished">Tooltable editor</translation>
+      <translation>Tresna-mahaiaren editorea</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="389"/>
@@ -1722,37 +1925,37 @@
     <message>
       <location filename="TooltableEditor.py" line="402"/>
       <source>Drill</source>
-      <translation type="unfinished">Drill</translation>
+      <translation>Barautsa</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="403"/>
       <source>Center Drill</source>
-      <translation type="unfinished">Center Drill</translation>
+      <translation>Zentratzeko barautsa</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="404"/>
       <source>Counter Sink</source>
-      <translation type="unfinished">Counter Sink</translation>
+      <translation>Abeilanatzaile konikoa</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="405"/>
       <source>Counter Bore</source>
-      <translation type="unfinished">Counter Bore</translation>
+      <translation>Abeilanatzaile zilindrikoa</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="406"/>
       <source>Reamer</source>
-      <translation type="unfinished">Reamer</translation>
+      <translation>Otxabua</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="407"/>
       <source>Tap</source>
-      <translation type="unfinished">Tap</translation>
+      <translation>Hariduna</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="408"/>
       <source>End Mill</source>
-      <translation type="unfinished">End Mill</translation>
+      <translation>Amaierako fresatzea</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="409"/>
@@ -1762,22 +1965,22 @@
     <message>
       <location filename="TooltableEditor.py" line="410"/>
       <source>Ball End Mill</source>
-      <translation type="unfinished">Ball End Mill</translation>
+      <translation>Fresatze biribildua</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="411"/>
       <source>Chamfer Mill</source>
-      <translation type="unfinished">Chamfer Mill</translation>
+      <translation>Fresatze alakatua</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="412"/>
       <source>Corner Round</source>
-      <translation type="unfinished">Corner Round</translation>
+      <translation>Izkina biribila</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="413"/>
       <source>Engraver</source>
-      <translation type="unfinished">Engraver</translation>
+      <translation>Grabagailua</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="414"/>
@@ -1787,7 +1990,7 @@
     <message>
       <location filename="TooltableEditor.py" line="416"/>
       <source>High Speed Steel</source>
-      <translation type="unfinished">High Speed Steel</translation>
+      <translation>Abiadura handiko altzairua</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="417"/>
@@ -1852,7 +2055,7 @@
     <message>
       <location filename="TooltableEditor.py" line="432"/>
       <source>Cutting edge angle</source>
-      <translation type="unfinished">Cutting edge angle</translation>
+      <translation>Mozte-ertzaren angelua</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="433"/>
@@ -1862,7 +2065,7 @@
     <message>
       <location filename="TooltableEditor.py" line="434"/>
       <source>Cutting edge height</source>
-      <translation type="unfinished">Cutting edge height</translation>
+      <translation>Mozte-ertzaren altuera</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="651"/>
@@ -1876,11 +2079,24 @@
     </message>
   </context>
   <context>
-    <name>Active</name>
+    <name>Use Final Depth</name>
     <message>
-      <location filename="PathProfile.py" line="51"/>
-      <source>Make False, to prevent operation from generating code</source>
-      <translation>Markatu 'Gezurra', eragiketak koderik sortu dezan saihestu nahi baduzu</translation>
+      <location filename="PathHelix.py" line="279"/>
+      <source>Set to True to manually specify a final depth</source>
+      <translation>Ezarri 'Egia', amaierako sakonera eskuz adierazi nahi baduzu</translation>
+    </message>
+  </context>
+  <context>
+    <name>Use Start Depth</name>
+    <message>
+      <location filename="PathHelix.py" line="275"/>
+      <source>Set to True to manually specify a start depth</source>
+      <translation>Ezarri 'Egia', hasierako sakonera eskuz adierazi nahi baduzu</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="61"/>
+      <source>make True, if manually specifying a Start Start Depth</source>
+      <translation>Markatu 'Egia', hasierako sakonera eskuz adierazi nahi bada</translation>
     </message>
   </context>
   <context>
@@ -1892,32 +2108,11 @@
     </message>
   </context>
   <context>
-    <name>Comment</name>
-    <message>
-      <location filename="PathComment.py" line="41"/>
-      <source>Comment or note for CNC program</source>
-      <translation>Iruzkina edo oharra CNC programarako</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="65"/>
-      <source>An optional comment for this profile</source>
-      <translation type="unfinished">An optional comment for this profile</translation>
-    </message>
-  </context>
-  <context>
     <name>Current Tool</name>
     <message>
       <location filename="PathLoadTool.py" line="137"/>
       <source>Tool Number to Load</source>
-      <translation type="unfinished">Tool Number to Load</translation>
-    </message>
-  </context>
-  <context>
-    <name>Direction</name>
-    <message>
-      <location filename="PathProfile.py" line="86"/>
-      <source>The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW</source>
-      <translation>Tresna-bideak piezaren inguruan izan behar duen norabidea: erlojuaren noranzkoan (CW), edo aurka (CCW)</translation>
+      <translation>Kargatuko den tresnaren zenbakia</translation>
     </message>
   </context>
   <context>
@@ -1949,7 +2144,7 @@
     <message>
       <location filename="PathKurve.py" line="45"/>
       <source>Linked End Point of Profile</source>
-      <translation type="unfinished">Linked End Point of Profile</translation>
+      <translation>Profilaren amaiera-puntu estekatua</translation>
     </message>
     <message>
       <location filename="PathKurve.py" line="81"/>
@@ -1979,14 +2174,6 @@
     </message>
   </context>
   <context>
-    <name>Final Depth</name>
-    <message>
-      <location filename="PathProfile.py" line="63"/>
-      <source>Final Depth of Tool- lowest value in Z</source>
-      <translation type="unfinished">Final Depth of Tool- lowest value in Z</translation>
-    </message>
-  </context>
-  <context>
     <name>Fixture Offset</name>
     <message>
       <location filename="PathFixture.py" line="41"/>
@@ -2007,7 +2194,7 @@
     <message>
       <location filename="PathStock.py" line="45"/>
       <source>extra allownace from part width</source>
-      <translation type="unfinished">extra allownace from part width</translation>
+      <translation>piezaren zabaleraren perdoi gehigarria</translation>
     </message>
   </context>
   <context>
@@ -2036,7 +2223,7 @@
     <message>
       <location filename="PathStock.py" line="43"/>
       <source>extra allownace from part width</source>
-      <translation type="unfinished">extra allownace from part width</translation>
+      <translation>piezaren zabaleraren perdoi gehigarria</translation>
     </message>
   </context>
   <context>
@@ -2044,7 +2231,7 @@
     <message>
       <location filename="PathProfile.py" line="90"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
-      <translation type="unfinished">Extra value to stay away from final profile- good for roughing toolpath</translation>
+      <translation>Amaierako profiletik aldentzeko balio gehigarria - ona arbastatzeko tresna-bidearentzako</translation>
     </message>
   </context>
   <context>
@@ -2052,7 +2239,7 @@
     <message>
       <location filename="PathProject.py" line="49"/>
       <source>The NC output file for this project</source>
-      <translation type="unfinished">The NC output file for this project</translation>
+      <translation>Proiektu honen NC irteera-fitxategia</translation>
     </message>
   </context>
   <context>
@@ -2081,7 +2268,7 @@
     <message>
       <location filename="PathCompoundExtended.py" line="47"/>
       <source>The safe height for this operation</source>
-      <translation type="unfinished">The safe height for this operation</translation>
+      <translation>Eragiketa honetarako segurtasun-altuera</translation>
     </message>
     <message>
       <location filename="PathCompoundExtended.py" line="48"/>
@@ -2220,7 +2407,7 @@
       <location filename="PathPocket.py" line="280"/>
       <source>Please select an edges loop from one object, or a single face
 </source>
-      <translation type="unfinished">Please select an edges loop from one object, or a single face
+      <translation>Hautatu objektu bateko ertz-begizta bat, edo aurpegi bakar bat
 </translation>
     </message>
     <message>
@@ -2253,7 +2440,7 @@
     <message>
       <location filename="PathProject.py" line="124"/>
       <source>Creates a Path Project object</source>
-      <translation type="unfinished">Creates a Path Project object</translation>
+      <translation>Bide-proiektu objektu bat sortzen du</translation>
     </message>
     <message>
       <location filename="PathProject.py" line="135"/>
@@ -2287,7 +2474,7 @@
     <message>
       <location filename="PathStop.py" line="41"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation type="unfinished">Add Optional or Mandatory Stop to the program</translation>
+      <translation>Gehitu aukerako edo derrigorrezko etena programari</translation>
     </message>
   </context>
   <context>
@@ -2340,7 +2527,7 @@
     <message>
       <location filename="PathMachine.py" line="112"/>
       <source>Switch the machine max and minimum travel bounding box on/off</source>
-      <translation type="unfinished">Switch the machine max and minimum travel bounding box on/off</translation>
+      <translation>Aktibatu/desaktibatu makinaren bidaia minimoaren eta maximoaren muga-kutxa</translation>
     </message>
   </context>
   <context>
@@ -2348,7 +2535,7 @@
     <message>
       <location filename="PathProfile.py" line="84"/>
       <source>Side of edge that tool should cut</source>
-      <translation type="unfinished">Side of edge that tool should cut</translation>
+      <translation>Tresnak moztu beharko lukeen ertz-alboa</translation>
     </message>
   </context>
   <context>
@@ -2356,7 +2543,7 @@
     <message>
       <location filename="PathLoadTool.py" line="45"/>
       <source>Direction of spindle rotation</source>
-      <translation type="unfinished">Direction of spindle rotation</translation>
+      <translation>Hax-biraketaren norabidea</translation>
     </message>
   </context>
   <context>
@@ -2364,15 +2551,7 @@
     <message>
       <location filename="PathLoadTool.py" line="44"/>
       <source>The speed of the cutting spindle in RPM</source>
-      <translation type="unfinished">The speed of the cutting spindle in RPM</translation>
-    </message>
-  </context>
-  <context>
-    <name>Start Depth</name>
-    <message>
-      <location filename="PathProfile.py" line="62"/>
-      <source>Starting Depth of Tool- first cut depth in Z</source>
-      <translation type="unfinished">Starting Depth of Tool- first cut depth in Z</translation>
+      <translation>Mozte-haxaren abiadura, RPMetan</translation>
     </message>
   </context>
   <context>
@@ -2380,7 +2559,7 @@
     <message>
       <location filename="PathKurve.py" line="44"/>
       <source>Linked Start Point of Profile</source>
-      <translation type="unfinished">Linked Start Point of Profile</translation>
+      <translation>Profilaren hasiera-puntu estekatua</translation>
     </message>
     <message>
       <location filename="PathKurve.py" line="75"/>
@@ -2391,14 +2570,6 @@
       <location filename="PathProfile.py" line="72"/>
       <source>The start point of this path</source>
       <translation>Bide honen hasiera-puntua</translation>
-    </message>
-  </context>
-  <context>
-    <name>StepDown</name>
-    <message>
-      <location filename="PathProfile.py" line="60"/>
-      <source>Incremental Step Down of Tool</source>
-      <translation>Tresnaren beheratze hazkorra</translation>
     </message>
   </context>
   <context>
@@ -2439,14 +2610,6 @@
     </message>
   </context>
   <context>
-    <name>Use Start Depth</name>
-    <message>
-      <location filename="PathProfile.py" line="61"/>
-      <source>make True, if manually specifying a Start Start Depth</source>
-      <translation>Markatu 'Egia', hasierako sakonera eskuz adierazi nahi bada</translation>
-    </message>
-  </context>
-  <context>
     <name>Use Start Point</name>
     <message>
       <location filename="PathKurve.py" line="76"/>
@@ -2477,7 +2640,7 @@
     <message>
       <location filename="PathStock.py" line="44"/>
       <source>extra allownace from part width</source>
-      <translation type="unfinished">extra allownace from part width</translation>
+      <translation>piezaren zabaleraren perdoi gehigarria</translation>
     </message>
   </context>
   <context>
@@ -2485,7 +2648,7 @@
     <message>
       <location filename="PathProfile.py" line="79"/>
       <source>extra length of tool path after end of part edge</source>
-      <translation type="unfinished">extra length of tool path after end of part edge</translation>
+      <translation>tresna-bidearen luzera gehigarria pieza-ertzaren amaieraren ondoren</translation>
     </message>
   </context>
   <context>
@@ -2493,7 +2656,7 @@
     <message>
       <location filename="PathProfile.py" line="74"/>
       <source>extra length of tool path before start of part edge</source>
-      <translation type="unfinished">extra length of tool path before start of part edge</translation>
+      <translation>tresna-bidearen luzera gehigarria pieza-ertzaren hasiera baino lehen</translation>
     </message>
   </context>
   <context>
@@ -2527,7 +2690,7 @@
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Creates a compound from selected paths</source>
-      <translation type="unfinished">Creates a compound from selected paths</translation>
+      <translation>Konposatu bat sortzen du hautatutako bideak erabiliz</translation>
     </message>
   </context>
   <context>
@@ -2553,7 +2716,7 @@
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="14"/>
       <source>Choose a processor</source>
-      <translation>Hautatu prozesatzaile bat</translation>
+      <translation>Hautatu prozesadore bat</translation>
     </message>
   </context>
   <context>
@@ -2640,7 +2803,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="162"/>
       <source>Machine extents color</source>
-      <translation type="unfinished">Machine extents color</translation>
+      <translation>Makina-hedaduren kolorea</translation>
     </message>
   </context>
   <context>
