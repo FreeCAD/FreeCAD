@@ -697,6 +697,13 @@ class _Window(ArchComponent.Component):
     def execute(self,obj):
         
         if self.clone(obj):
+            clonedProxy = obj.CloneOf.Proxy
+            if not (hasattr(clonedProxy, "sshapes") and hasattr(clonedProxy, "vshapes")):
+                clonedProxy.execute(obj.CloneOf)
+            self.sshapes = clonedProxy.sshapes
+            self.vshapes = clonedProxy.vshapes
+            if hasattr(clonedProxy, "boxes"):
+                self.boxes = clonedProxy.boxes
             return
         
         import Part,DraftGeomUtils,math
