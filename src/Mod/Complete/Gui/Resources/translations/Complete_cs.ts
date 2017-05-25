@@ -24,7 +24,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="+57"/>
         <source>Self-test...</source>
-        <translation>Test sebe sama...</translation>
+        <translation>Samočinný test...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -67,7 +67,7 @@
     <message>
         <location line="+1"/>
         <source>Object appearance</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Object appearance</translation>
     </message>
     <message>
         <source>Parametric</source>

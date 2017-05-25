@@ -4,19 +4,19 @@
 <context>
     <name>CmdSketcherBSplineComb</name>
     <message>
-        <location filename="../../CommandSketcherBSpline.cpp" line="+175"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="+176"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show/Hide B-spline curvature comb</source>
-        <translation type="unfinished"></translation>
+        <translation>Erakutsi/ezkutatu B-spline elementuen kurbadura-orrazia</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-        <translation type="unfinished"></translation>
+        <translation>B-spline guztien kurbadura-orrazia erakusten/ezkutatzen ditu</translation>
     </message>
 </context>
 <context>
@@ -29,29 +29,65 @@
     <message>
         <location line="+1"/>
         <source>Show/Hide B-spline degree</source>
-        <translation type="unfinished"></translation>
+        <translation>Erakutsi/ezkutatu B-spline funtzioaren gradua</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Switches between showing and hiding the degree for all B-splines</source>
+        <translation>B-spline guztien gradua erakusten/ezkutatzen ditu</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherBSplineKnotMultiplicity</name>
+    <message>
+        <location line="+100"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Show/Hide B-spline knot multiplicity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherBSplinePolygon</name>
     <message>
-        <location line="+32"/>
+        <location line="-70"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show/Hide B-spline control polygon</source>
-        <translation type="unfinished"></translation>
+        <translation>Erakutsi/ezkutatu B-spline kontrol-poligonoa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Switches between showing and hiding the control polygons for all B-splines</source>
+        <translation>B-spline guztien kontrol-poligonoak erakusten/ezkutatzen ditu</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCarbonCopy</name>
+    <message>
+        <location filename="../../CommandCreateGeo.cpp" line="+6388"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>CarbonCopy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copies the geometry of another sketch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -94,7 +130,7 @@
 <context>
     <name>CmdSketcherCompBSplineShowHideGeometryInformation</name>
     <message>
-        <location filename="../../CommandSketcherBSpline.cpp" line="+66"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="+100"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -102,21 +138,26 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Show/hide B-spline information layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Erakutsi/ezkutatu B-spline funtzioaren informazio-geruza</translation>
     </message>
     <message>
-        <location line="+65"/>
+        <location line="+69"/>
         <source>Show/Hide B-spline degree</source>
-        <translation type="unfinished"></translation>
+        <translation>Erakutsi/ezkutatu B-spline funtzioaren gradua</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Show/Hide B-spline control polygon</source>
-        <translation type="unfinished"></translation>
+        <translation>Erakutsi/ezkutatu B-spline kontrol-poligonoa</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Show/Hide B-spline curvature comb</source>
+        <translation>Erakutsi/ezkutatu B-spline elementuen kurbadura-orrazia</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Show/Hide B-spline knot multiplicity</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -141,7 +182,7 @@
 <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="+1867"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-4523"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -169,19 +210,19 @@
 <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-        <location line="+2855"/>
+        <location line="+2877"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a B-spline</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortu B-spline bat</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a B-spline in the sketch</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortu B-spline bat krokisean</translation>
     </message>
 </context>
 <context>
@@ -215,7 +256,7 @@
 <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-        <location line="-1053"/>
+        <location line="-1071"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -252,13 +293,13 @@
     <message>
         <location line="+4"/>
         <source>Arc of parabola by focus, vertex, endpoints</source>
-        <translation type="unfinished"></translation>
+        <translation>Parabola-arku bat fokua, erpina eta amaiera-puntuak erabiliz</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-        <location line="+2503"/>
+        <location line="+2755"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -304,6 +345,34 @@
     </message>
 </context>
 <context>
+    <name>CmdSketcherCompModifyKnotMultiplicity</name>
+    <message>
+        <location filename="../../CommandSketcherBSpline.cpp" line="+493"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Modify knot multiplicity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Modifies the multiplicity of the selected knot of a B-spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+62"/>
+        <source>Increase knot multiplicity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Decrease knot multiplicity</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherConnect</name>
     <message>
         <location filename="../../CommandSketcherTools.cpp" line="-1169"/>
@@ -324,7 +393,7 @@
 <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+5053"/>
+        <location filename="../../CommandConstraints.cpp" line="+5183"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -342,7 +411,7 @@
 <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-        <location line="-3217"/>
+        <location line="-3221"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -422,14 +491,14 @@
 <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-        <location line="+2775"/>
+        <location line="+2779"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constrain equal</source>
-        <translation type="unfinished">Constrain equal</translation>
+        <translation>Murriztu berdin</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -440,7 +509,7 @@
 <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-        <location line="-4457"/>
+        <location line="-4558"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -458,7 +527,7 @@
 <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-        <location line="+5080"/>
+        <location line="+5181"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -476,7 +545,7 @@
 <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-        <location line="-4662"/>
+        <location line="-4708"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -494,7 +563,7 @@
 <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-        <location line="+1534"/>
+        <location line="+1576"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -541,7 +610,7 @@
     <message>
         <location line="+1"/>
         <source>Constrain point onto object</source>
-        <translation type="unfinished">Constrain point onto object</translation>
+        <translation>Murriztu puntua objektuan</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -552,7 +621,7 @@
 <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-        <location line="+2205"/>
+        <location line="+2209"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -628,7 +697,7 @@
 <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-        <location line="-2613"/>
+        <location line="-2685"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -646,19 +715,19 @@
 <context>
     <name>CmdSketcherConvertToNURB</name>
     <message>
-        <location filename="../../CommandSketcherBSpline.cpp" line="+22"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="-540"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Convert Geometry to B-spline</source>
-        <translation type="unfinished"></translation>
+        <translation>Bihurtu geometria B-spline</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Converts the given Geometry to a B-spline</source>
-        <translation type="unfinished"></translation>
+        <translation>Emandako geometria B-spline bihurtzen du</translation>
     </message>
 </context>
 <context>
@@ -682,7 +751,7 @@
 <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-5106"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-5362"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -694,13 +763,13 @@
     <message>
         <location line="+1"/>
         <source>Create an arc by its end points and a point along the arc</source>
-        <translation type="unfinished">Create an arc by its end points and a point along the arc</translation>
+        <translation>Sortu arku bat amaiera-puntuak eta arkuan dagoen puntu bat erabiliz</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-        <location line="+3296"/>
+        <location line="+3318"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -718,7 +787,7 @@
 <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-        <location line="-3612"/>
+        <location line="-3634"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -774,49 +843,49 @@
     <message>
         <location line="+1"/>
         <source>Create an arc of hyperbola in the sketch</source>
-        <translation type="unfinished">Create an arc of hyperbola in the sketch</translation>
+        <translation>Sortu hiperbola-arku bat krokisean</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
-        <location line="+350"/>
+        <location line="+354"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc of parabola</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortu parabola-arku bat</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc of parabola in the sketch</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortu parabola-arku bat krokisean</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-        <location line="+565"/>
+        <location line="+583"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create B-spline</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortu B-spline elementua</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a B-spline via control point in the sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortu B-spline bat krokiseko kontrol-puntuetatik abiatuz.</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-        <location line="-2583"/>
+        <location line="-2605"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -834,7 +903,7 @@
 <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-        <location line="+3297"/>
+        <location line="+3319"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -852,7 +921,7 @@
 <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-        <location line="-2419"/>
+        <location line="-2441"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -888,7 +957,7 @@
 <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-        <location line="+2742"/>
+        <location line="+2764"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -910,7 +979,7 @@
 <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-        <location line="+1020"/>
+        <location line="+1254"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -946,7 +1015,7 @@
 <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-        <location line="-6427"/>
+        <location line="-6683"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -964,7 +1033,7 @@
 <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-        <location line="+6475"/>
+        <location line="+6731"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1000,19 +1069,19 @@
 <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-        <location line="-1942"/>
+        <location line="-2176"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create periodic B-spline</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortu B-spline periodikoa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a periodic B-spline via control point in the sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortu B-spline periodiko bat krokiseko kontrol-puntuetatik abiatuz.</translation>
     </message>
 </context>
 <context>
@@ -1036,7 +1105,7 @@
 <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-        <location line="-4156"/>
+        <location line="-4178"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1048,7 +1117,7 @@
     <message>
         <location line="+1"/>
         <source>Create a polyline in the sketch. &apos;M&apos; Key cycles behaviour</source>
-        <translation type="unfinished">Create a polyline in the sketch. &apos;M&apos; Key cycles behaviour</translation>
+        <translation>Sortu polilerro bat krokisean. &apos;M&apos; teklak portaera ziklikoa sortzen du</translation>
     </message>
     <message>
         <source>Create a polyline in the sketch</source>
@@ -1076,7 +1145,7 @@
 <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-        <location line="+5857"/>
+        <location line="+6113"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1112,7 +1181,7 @@
 <context>
     <name>CmdSketcherCreateText</name>
     <message>
-        <location line="-1270"/>
+        <location line="-1504"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1130,7 +1199,7 @@
 <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-        <location line="+1240"/>
+        <location line="+1474"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1142,7 +1211,25 @@
     <message>
         <location line="+1"/>
         <source>Create an equilateral triangle in the sketch</source>
-        <translation type="unfinished">Create an equilateral triangle in the sketch</translation>
+        <translation>Sortu triangelu aldeberdin bat krokisean</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherDecreaseKnotMultiplicity</name>
+    <message>
+        <location filename="../../CommandSketcherBSpline.cpp" line="+315"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Decrease multiplicity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Decreases the multiplicity of the selected knot of a B-spline</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1166,7 +1253,7 @@
 <context>
     <name>CmdSketcherExternal</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-518"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-752"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1184,18 +1271,36 @@
 <context>
     <name>CmdSketcherIncreaseDegree</name>
     <message>
-        <location filename="../../CommandSketcherBSpline.cpp" line="+85"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="-232"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Increase degree</source>
-        <translation type="unfinished"></translation>
+        <translation>Handitu gradua</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Increases the degree of the B-spline</source>
+        <translation>B-spline elementuaren gradua handitzen du</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherIncreaseKnotMultiplicity</name>
+    <message>
+        <location line="+69"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Increase degree</source>
+        <translation type="unfinished">Handitu gradua</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Increases the multiplicity of the selected knot of a B-spline</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1227,12 +1332,12 @@
     <message>
         <location line="+1"/>
         <source>Map sketch to face...</source>
-        <translation type="unfinished">Map sketch to face...</translation>
+        <translation>Mapatu krokisa aurpegira...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Map a sketch to a face</source>
-        <translation type="unfinished">Map a sketch to a face</translation>
+        <translation>Mapatu krokis bat aurpegi batera</translation>
     </message>
     <message>
         <location line="+50"/>
@@ -1353,12 +1458,12 @@
     <message>
         <location line="+1"/>
         <source>Reorient sketch...</source>
-        <translation type="unfinished">Reorient sketch...</translation>
+        <translation>Aldatu krokisaren orientazioa...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Reorient the selected sketch</source>
-        <translation type="unfinished">Reorient the selected sketch</translation>
+        <translation>Aldatu hautatutako krokisaren orientazioa</translation>
     </message>
 </context>
 <context>
@@ -1390,7 +1495,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Conflicting Constraints</source>
-        <translation type="unfinished">Select Conflicting Constraints</translation>
+        <translation>Hautatu gatazkan dauden murrizketak</translation>
     </message>
 </context>
 <context>
@@ -1540,14 +1645,14 @@
 <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+5296"/>
+        <location filename="../../CommandConstraints.cpp" line="+5368"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Toggle reference/driving constraint</source>
-        <translation type="unfinished">Toggle reference/driving constraint</translation>
+        <translation>Txandakatu erreferentziako/gidatzeko murrizketa</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1620,7 +1725,7 @@
     <message>
         <location line="+1"/>
         <source>View sketch perpendicular to sketch plane</source>
-        <translation type="unfinished">View sketch perpendicular to sketch plane</translation>
+        <translation>Bistaratu krokisa krokis-planoarekiko perpendikularrean</translation>
     </message>
 </context>
 <context>
@@ -1634,15 +1739,15 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../CommandAlterGeometry.cpp" line="+44"/>
+        <location filename="../../CommandAlterGeometry.cpp" line="+45"/>
         <location line="+8"/>
-        <location filename="../../CommandConstraints.cpp" line="-6372"/>
-        <location line="+893"/>
-        <location line="+209"/>
-        <location line="+212"/>
-        <location line="+11"/>
-        <location line="+14"/>
-        <location line="+282"/>
+        <location filename="../../CommandConstraints.cpp" line="-6502"/>
+        <location line="+922"/>
+        <location line="+238"/>
+        <location line="+238"/>
+        <location line="+23"/>
+        <location line="+4"/>
+        <location line="+322"/>
         <location line="+11"/>
         <location line="+10"/>
         <location line="+125"/>
@@ -1678,11 +1783,11 @@
         <location line="+91"/>
         <location line="+43"/>
         <location line="+9"/>
-        <location line="+27"/>
-        <location line="+10"/>
+        <location line="+30"/>
+        <location line="+9"/>
         <location line="+148"/>
-        <location line="+26"/>
-        <location line="+10"/>
+        <location line="+29"/>
+        <location line="+9"/>
         <location line="+286"/>
         <location line="+13"/>
         <location line="+90"/>
@@ -1733,7 +1838,11 @@
         <location line="+53"/>
         <location line="+8"/>
         <location line="+30"/>
-        <location filename="../../CommandSketcherBSpline.cpp" line="-31"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="-102"/>
+        <location line="+133"/>
+        <location line="+60"/>
+        <location line="+99"/>
+        <location line="+54"/>
         <location filename="../../CommandSketcherTools.cpp" line="-716"/>
         <location line="+8"/>
         <location line="+42"/>
@@ -1758,36 +1867,36 @@
         <translation>Hautatu krokiseko ertza(k).</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-5549"/>
-        <location line="+209"/>
+        <location filename="../../CommandConstraints.cpp" line="-5650"/>
+        <location line="+238"/>
         <source>Select an edge from the sketch.</source>
         <translation>Hautatu krokiseko ertz bat.</translation>
     </message>
     <message>
-        <location line="-181"/>
-        <location line="+63"/>
-        <location line="+154"/>
-        <location line="+63"/>
+        <location line="-204"/>
+        <location line="+86"/>
+        <location line="+152"/>
+        <location line="+91"/>
         <source>Double constraint</source>
         <translation>Murrizketa bikoitza</translation>
     </message>
     <message>
-        <location line="-279"/>
-        <location line="+63"/>
-        <location line="+149"/>
-        <location line="+63"/>
+        <location line="-328"/>
+        <location line="+86"/>
+        <location line="+238"/>
         <source>The selected edge has already a horizontal constraint!</source>
         <translation>Hautatutako ertzak badauka murrizketa horizontal bat!</translation>
     </message>
     <message>
-        <location line="-285"/>
+        <location line="-334"/>
         <location line="+14"/>
-        <location line="+10"/>
-        <location line="+39"/>
+        <location line="+19"/>
+        <location line="+53"/>
         <location line="+14"/>
-        <location line="+144"/>
-        <location line="+15"/>
-        <location line="+39"/>
+        <location line="+138"/>
+        <location line="+14"/>
+        <location line="+19"/>
+        <location line="+53"/>
         <location line="+9"/>
         <location filename="../../CommandSketcherTools.cpp" line="-1559"/>
         <location line="+103"/>
@@ -1795,16 +1904,16 @@
         <translation>Ezinezko murrizketa</translation>
     </message>
     <message>
-        <location line="-1196"/>
+        <location line="-1280"/>
         <source>Cannot add a constraint between two external geometries!</source>
         <translation>Ezin da murrizketa bat gehitu bi kanpo-geometriaren artean!</translation>
     </message>
     <message>
-        <location line="+449"/>
+        <location line="+477"/>
         <location line="+11"/>
         <location line="+12"/>
         <source>Only sketch and its support is allowed to select</source>
-        <translation type="unfinished">Only sketch and its support is allowed to select</translation>
+        <translation>Krokisa eta bere euskarria soilik hauta daitezke</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1812,47 +1921,52 @@
         <translation>Hautatuetako batek krokisean egon behar du</translation>
     </message>
     <message>
-        <location line="+432"/>
-        <location line="+63"/>
-        <location line="+212"/>
+        <location line="+439"/>
+        <location line="+86"/>
+        <location line="+152"/>
+        <location line="+86"/>
         <source>The selected edge is not a line segment</source>
         <translation>Hautatutako ertza ez da lerro-segmentu bat</translation>
     </message>
     <message>
-        <location line="-261"/>
-        <location line="+63"/>
-        <location line="+149"/>
-        <location line="+63"/>
+        <location line="-310"/>
+        <location line="+86"/>
+        <location line="+147"/>
+        <location line="+91"/>
         <source>The selected edge has already a vertical constraint!</source>
         <translation>Hautatutako ertzak badauka murrizketa bertikal bat!</translation>
     </message>
     <message>
-        <location line="-265"/>
+        <location line="-305"/>
         <source>The selected item(s) can&apos;t accept a horizontal constraint!</source>
         <translation>Hautatutako elementua(e)k ez du(te) murrizketa horizontal bat onartzen!</translation>
     </message>
     <message>
-        <location line="+212"/>
+        <location line="+219"/>
+        <source>The selected edge has already a horizontral constraint!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>The selected item(s) can&apos;t accept a vertical constraint!</source>
         <translation>Hautatutako elementua(e)k ez du(te) murrizketa bertikal bat onartzen!</translation>
     </message>
     <message>
         <source>Select entities from the sketch.</source>
-        <translation type="obsolete">Select entities from the sketch.</translation>
+        <translation type="obsolete">Hautatu krokiseko entitateak.</translation>
     </message>
     <message>
-        <location line="+176"/>
         <source>Select exactly one entity from the sketch.</source>
-        <translation type="unfinished">Select exactly one entity from the sketch.</translation>
+        <translation type="obsolete">Hautatu krokiseko entitate bakar bat soilik.</translation>
     </message>
     <message>
         <source>Select one vertex from the sketch.</source>
         <translation type="obsolete">Select one vertex from the sketch.</translation>
     </message>
     <message>
-        <location line="+442"/>
+        <location line="+674"/>
         <source>Select vertexes from the sketch.</source>
-        <translation type="unfinished">Select vertexes from the sketch.</translation>
+        <translation>Hautatu krokiseko erpinak.</translation>
     </message>
     <message>
         <source>Cannot add a fixed x-coordinate constraint on an external geometry!</source>
@@ -1868,12 +1982,23 @@
         <translation type="obsolete">Cannot add a fixed y-coordinate constraint on an external geometry!</translation>
     </message>
     <message>
-        <location line="-1074"/>
+        <location line="-1118"/>
         <source>Select one vertex from the sketch other than the origin.</source>
         <translation>Hautatu krokiseko erpin bat, jatorria ez dena.</translation>
     </message>
     <message>
-        <location line="+857"/>
+        <location line="+4"/>
+        <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+881"/>
+        <location line="+69"/>
+        <source>Point on B-spline edge currently unsupported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-53"/>
         <location line="+75"/>
         <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
         <translation>Hautatutako puntuetako bat ere ez dago murriztuta bakoitzari dagokion kurban, bai elementu bereko osagai direlako bai kanpo-geometria direlako.</translation>
@@ -1889,7 +2014,21 @@
         <translation>Ezin zaio Y koordenatu finkoko murrizketa bat gehitu teilatu-puntuari!</translation>
     </message>
     <message>
-        <location line="+1698"/>
+        <location line="+568"/>
+        <location line="+39"/>
+        <location line="+186"/>
+        <source>Perpendicular to B-spline edge currently unsupported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+441"/>
+        <location line="+30"/>
+        <location line="+144"/>
+        <source>Tangency to B-spline edge currently unsupported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+294"/>
         <location line="+41"/>
         <source>Select one or more arcs or circles from the sketch.</source>
         <translation>Hautatu krokiseko arku edo zirkulu bat edo gehiago.</translation>
@@ -1897,7 +2036,7 @@
     <message>
         <location line="+52"/>
         <source>Constrain equal</source>
-        <translation type="unfinished">Constrain equal</translation>
+        <translation>Murriztu berdin</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1909,67 +2048,61 @@
         <translation type="obsolete">Hautatu krokiseko entitateak soilik.</translation>
     </message>
     <message>
-        <location line="-3134"/>
+        <location line="-3180"/>
         <source>Select vertices from the sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hautatu krokiseko erpinak.</translation>
     </message>
     <message>
-        <location line="+307"/>
+        <location line="+349"/>
         <source>Select two or more points from the sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hautatu krokiseko bi puntu edo gehiago.</translation>
     </message>
     <message>
         <location line="+365"/>
         <source>This constraint does not make sense for non-linear curves</source>
-        <translation type="unfinished"></translation>
+        <translation>Murrizketa honek ez du zentzurik linealak ez diren kurbekin</translation>
     </message>
     <message>
         <location line="+154"/>
         <location line="+188"/>
         <location line="+244"/>
-        <location line="+1771"/>
+        <location line="+1775"/>
         <location line="+505"/>
         <source>Select the right things from the sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hautatu krokiseko elementu egokiak.</translation>
     </message>
     <message>
-        <location line="-2668"/>
-        <location line="+69"/>
         <source>Point on BSpline edge currently unsupported.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Oraindik ez da onartzen puntua BSpline ertzean.</translation>
     </message>
     <message>
-        <location line="+219"/>
+        <location line="-2384"/>
         <location line="+243"/>
         <source>This constraint only makes sense on a line segment or a pair of points</source>
-        <translation type="unfinished"></translation>
+        <translation>Murriztapen honek lerro-segmentuetan edo puntu-bikoteetan soilik du zentzua</translation>
     </message>
     <message>
-        <location line="+513"/>
-        <location line="+37"/>
-        <location line="+184"/>
         <source>Perpendicular to BSpline edge currently unsupported.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Oraindik ez da onartzen perpendikularra BSpline ertzean.</translation>
     </message>
     <message>
-        <location line="+264"/>
+        <location line="+1002"/>
         <source>There are a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished"></translation>
+        <translation>Murrizketa hau hainbat modutan aplika daiteke.
+
+Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-puntu; bi kurba eta puntu bat.</translation>
     </message>
     <message>
-        <location line="+177"/>
-        <location line="+30"/>
-        <location line="+144"/>
         <source>Tangency to BSpline edge currently unsupported.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Oraindik ez da onartzen tangentea BSpline ertzean.</translation>
     </message>
     <message>
-        <location line="+589"/>
+        <location line="+940"/>
         <source>Constraint only applies to arcs or circles.</source>
-        <translation type="unfinished"></translation>
+        <translation>Murrizketa arkuei edo zirkuluei soilik aplikatzen zaie.</translation>
     </message>
     <message>
         <location line="+211"/>
@@ -1990,12 +2123,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation>Ezin da angelu-murrizketa bat ezarri bi lerro paralelotarako.</translation>
     </message>
     <message>
-        <location line="+223"/>
         <source>Equality for BSpline edge currently unsupported.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Momentuz ez dago onartuta BSpline ertzen berdintasuna.</translation>
     </message>
     <message>
-        <location line="+400"/>
+        <location line="+623"/>
         <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</source>
         <comment>Constraint_SnellsLaw</comment>
         <translation>Hautatu lerroen bi amaiera-puntu izpi gisa joka dezaten, eta muga bat ordezkatuko duen ertz bat. Hautatutako lehen puntua n1 indizeari dagokio, bigarrena n2 indizeari, eta zero puntuaren balioak n2/n1 erlazioa ezartzen du.</translation>
@@ -2018,11 +2150,15 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+7"/>
         <source>Incompatible geometry is selected!</source>
-        <translation type="unfinished">Incompatible geometry is selected!</translation>
+        <translation>Bateragarria ez den geometria hautatu da!</translation>
+    </message>
+    <message>
+        <source>SnellsLaw on BSpline edge currently unsupported.</source>
+        <translation type="obsolete">Oraindik ez da onartzen Snell-en legea BSpline ertzean.</translation>
     </message>
     <message>
         <location line="+9"/>
-        <source>SnellsLaw on BSpline edge currently unsupported.</source>
+        <source>SnellsLaw on B-spline edge currently unsupported.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2051,7 +2187,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="-158"/>
         <location line="+164"/>
         <source>Maximum 2 lines are supported.</source>
-        <translation type="unfinished">Maximum 2 lines are supported.</translation>
+        <translation>Gehienez 2 lerro onartzen dira.</translation>
     </message>
     <message>
         <location line="-127"/>
@@ -2116,7 +2252,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="obsolete">Select exactly two vertexes from the sketch.</translation>
     </message>
     <message>
-        <location line="-4811"/>
+        <location line="-4815"/>
         <location line="+10"/>
         <source>Select two or more vertexes from the sketch.</source>
         <translation>Hautatu krokiseko bi erpin edo gehiago.</translation>
@@ -2189,12 +2325,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
         <location line="+13"/>
-        <location line="+2495"/>
+        <location line="+2499"/>
         <source>Select at least two lines from the sketch.</source>
         <translation>Hautatu krokiseko bi lerro, gutxienez.</translation>
     </message>
     <message>
-        <location line="-2481"/>
+        <location line="-2485"/>
         <source>Select a valid line</source>
         <translation>Hautatu baliozko lerro bat</translation>
     </message>
@@ -2224,26 +2360,27 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
         <location line="+13"/>
         <source>Wrong number of selected objects!</source>
         <comment>perpendicular constraint</comment>
-        <translation type="unfinished">Wrong number of selected objects!</translation>
+        <translation>Hautatutako objektu kopuru okerra!</translation>
     </message>
     <message>
         <location line="+59"/>
-        <location line="+499"/>
+        <location line="+503"/>
         <location line="+164"/>
         <location line="+467"/>
         <location line="+1660"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="-13"/>
         <source>Error</source>
         <translation>Errorea</translation>
     </message>
     <message>
-        <location line="-2764"/>
-        <location line="+662"/>
+        <location line="-2768"/>
+        <location line="+666"/>
         <source>With 3 objects, there must be 2 curves and 1 point.</source>
         <comment>tangent constraint</comment>
         <translation>3 objektu badira, 2 kurba eta puntu1 egon behar dute.</translation>
     </message>
     <message>
-        <location line="-653"/>
+        <location line="-657"/>
         <location line="+43"/>
         <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
         <translation>Ezin zaio perpendikulartasun-murrizketa bat gehitu konektatu gabeko puntu bati!</translation>
@@ -2261,8 +2398,8 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
         <translation type="obsolete">The selected edge should be an arc, line or circle.</translation>
     </message>
     <message>
-        <location line="+36"/>
-        <location line="+184"/>
+        <location line="+39"/>
+        <location line="+186"/>
         <source>One of the selected edges should be a line.</source>
         <translation>Hautatutako ertzetako batek lerroa izan behar du.</translation>
     </message>
@@ -2276,7 +2413,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-puntu; bi kurba eta puntu bat.</translation>
     </message>
     <message>
-        <location line="+293"/>
+        <location line="+292"/>
         <source>Select some geometry from the sketch.</source>
         <comment>tangent constraint</comment>
         <translation>Hautatu krokiseko geometriaren bat.</translation>
@@ -2285,7 +2422,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
         <location line="+13"/>
         <source>Wrong number of selected objects!</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished">Wrong number of selected objects!</translation>
+        <translation>Hautatutako objektu kopuru okerra!</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -2336,7 +2473,12 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
         <translation>Krokis-ardatzak ezin dira erabili berdintasun-murrizketetan</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+16"/>
+        <source>Equality for B-spline edge currently unsupported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <location line="+9"/>
         <source>Select two or more edges of similar type</source>
         <translation>Hautatu antzekoak diren bi ertz edo gehiago</translation>
@@ -2446,8 +2588,8 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
         <translation>Ezin da zero puntua editatu krokisak gatazkan dauden murrizketak dituelako</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-5786"/>
-        <location line="+4650"/>
+        <location filename="../../CommandConstraints.cpp" line="-5916"/>
+        <location line="+4780"/>
         <location line="+149"/>
         <location filename="../../EditDatumDialog.cpp" line="+97"/>
         <source>Dimensional constraint</source>
@@ -2523,7 +2665,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location line="+3"/>
         <source>Broken link to support subelements</source>
-        <translation type="unfinished">Broken link to support subelements</translation>
+        <translation>Subelements onartzen To hautsi esteka</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2534,7 +2676,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location line="-5"/>
         <source>Face is non-planar</source>
-        <translation type="unfinished">Face is non-planar</translation>
+        <translation>Aurpegia ez da planarra</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2544,12 +2686,16 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location line="+41"/>
         <source>Sketch mapping</source>
-        <translation type="unfinished">Sketch mapping</translation>
+        <translation>Krokisaren mapatzea</translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Can&apos;t map the sketch to selected object. %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Can&apos;t map the skecth to selected object. %1.</source>
-        <translation type="unfinished">Can&apos;t map the skecth to selected object. %1.</translation>
+        <translation type="obsolete">Ezin da mapatu hautatutako objektuaren krokisa. %1.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2564,8 +2710,42 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
-        <location filename="../../CommandSketcherBSpline.cpp" line="+1"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="-332"/>
         <source>None of the selected elements is an edge.</source>
+        <translation>Hautatutako elementuetako bat ere ez da ertza.</translation>
+    </message>
+    <message>
+        <location line="+114"/>
+        <location line="+159"/>
+        <source>Wrong OCE/OCC version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-158"/>
+        <location line="+159"/>
+        <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-141"/>
+        <location line="+159"/>
+        <source>The selection comprises more than one item. Please select just one knot.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-119"/>
+        <source>CAD Kernel Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Input Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <location line="+153"/>
+        <source>None of the selected elements is a knot of a B-spline</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2601,11 +2781,49 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     </message>
 </context>
 <context>
+    <name>SketcherGui::CarbonCopySelection</name>
+    <message>
+        <location filename="../../CommandCreateGeo.cpp" line="+279"/>
+        <source>Carbon copy would cause a circular dependency.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>This object is in another document.</source>
+        <translation type="unfinished">Objektu hau beste dokumentu batean dago.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>This object belongs to another body. Hold Ctrl to allow crossreferences.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>This object belongs to another part.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketchs.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-        <location filename="../../TaskSketcherConstrains.cpp" line="+399"/>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+400"/>
         <source>Toggle to/from reference</source>
-        <translation type="unfinished">Toggle to/from reference</translation>
+        <translation>Txandakatu nondik/nora erreferentzia</translation>
     </message>
     <message>
         <location line="-4"/>
@@ -2630,7 +2848,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location line="+4"/>
         <source>Swap constraint names</source>
-        <translation type="unfinished">Swap constraint names</translation>
+        <translation>Trukatu murrizketen izenak</translation>
     </message>
     <message>
         <location line="+70"/>
@@ -2646,7 +2864,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
 <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-4867"/>
+        <location filename="../../CommandConstraints.cpp" line="-4997"/>
         <location filename="../../EditDatumDialog.cpp" line="-81"/>
         <source>Insert angle</source>
         <translation>Txertatu angelua</translation>
@@ -2668,24 +2886,24 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
         <location filename="../../EditDatumDialog.cpp" line="+6"/>
         <source>Refractive index ratio</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation type="unfinished">Refractive index ratio</translation>
+        <translation>Errefrakzio-indizea</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../EditDatumDialog.cpp" line="+1"/>
         <source>Ratio n2/n1:</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation type="unfinished">Ratio n2/n1:</translation>
+        <translation>n2/n1 erlazioa:</translation>
     </message>
     <message>
-        <location line="+4649"/>
+        <location line="+4779"/>
         <location line="+162"/>
         <source>Change radius</source>
         <translation>Aldatu erradioa</translation>
     </message>
     <message>
-        <location line="-4816"/>
-        <location line="+4655"/>
+        <location line="-4946"/>
+        <location line="+4785"/>
         <location line="+162"/>
         <location filename="../../EditDatumDialog.cpp" line="-5"/>
         <source>Radius:</source>
@@ -2694,15 +2912,15 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location line="+1184"/>
         <source>Refractive index ratio</source>
-        <translation type="unfinished">Refractive index ratio</translation>
+        <translation>Errefrakzio-indizea</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ratio n2/n1:</source>
-        <translation type="unfinished">Ratio n2/n1:</translation>
+        <translation>n2/n1 erlazioa:</translation>
     </message>
     <message>
-        <location line="-5993"/>
+        <location line="-6123"/>
         <location filename="../../EditDatumDialog.cpp" line="+9"/>
         <source>Insert length</source>
         <translation>Txertatu luzera</translation>
@@ -2725,7 +2943,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
 <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="+41"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-256"/>
         <source>Linking this will cause circular dependency.</source>
         <translation>Hau estekatzeak mendekotasun zirkularra sortuko du.</translation>
     </message>
@@ -2736,8 +2954,12 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     </message>
     <message>
         <location line="+3"/>
+        <source>This object belongs to another body, can&apos;t link. Hold Ctrl to allow cross-references.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>This object belongs to another body, can&apos;t link. Hold Ctrl to allow crossreferences.</source>
-        <translation>Objektu hau beste gorputz batekoa da, ezin da estekatu. Mantendu Ctrl sakatuta erreferentzia gurutzatuak ahalbidetzeko.</translation>
+        <translation type="obsolete">Objektu hau beste gorputz batekoa da, ezin da estekatu. Mantendu Ctrl sakatuta erreferentzia gurutzatuak ahalbidetzeko.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2777,7 +2999,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
         <location filename="../../SketchMirrorDialog.ui" line="+14"/>
         <location line="+6"/>
         <source>Select Mirror Axis/Point</source>
-        <translation type="unfinished">Select Mirror Axis/Point</translation>
+        <translation>Hautatu ispilatze-ardatza/-puntua</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2858,17 +3080,17 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location line="+7"/>
         <source>Number of rows of the linear array</source>
-        <translation type="unfinished">Number of rows of the linear array</translation>
+        <translation>Errenkada kopurua matrize linealean</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Makes the inter-row and inter-col spacing the same if clicked</source>
-        <translation type="unfinished">Makes the inter-row and inter-col spacing the same if clicked</translation>
+        <translation>Errenkaden arteko eta zutabeen arteko tarteak berdintzen ditu klik egitean</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Equal vertical/horizontal spacing</source>
-        <translation type="unfinished">Equal vertical/horizontal spacing</translation>
+        <translation>Tarte bertikal/horizontal bera</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2878,7 +3100,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location line="+6"/>
         <source>Constrain inter-element separation</source>
-        <translation type="unfinished">Constrain inter-element separation</translation>
+        <translation>Murriztu elementuen arteko tartea</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2892,6 +3114,30 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     </message>
 </context>
 <context>
+    <name>SketcherGui::SketcherGeneralWidget</name>
+    <message>
+        <location filename="../../TaskSketcherGeneral.cpp" line="+99"/>
+        <location line="+5"/>
+        <location line="+5"/>
+        <source>Normal Geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-10"/>
+        <location line="+5"/>
+        <location line="+5"/>
+        <source>Construction Geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-10"/>
+        <location line="+5"/>
+        <location line="+5"/>
+        <source>External Geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SketcherGui::SketcherSettings</name>
     <message>
         <location filename="../../SketcherSettings.cpp" line="+188"/>
@@ -2900,7 +3146,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     </message>
     <message>
         <source>Sketcher colors</source>
-        <translation type="obsolete">Sketcher colors</translation>
+        <translation type="obsolete">Krokisgilearen koloreak</translation>
     </message>
     <message>
         <source>Default edge color</source>
@@ -2949,7 +3195,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location filename="../../SketcherSettings.ui" line="+14"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Orokorra</translation>
     </message>
     <message>
         <location line="+53"/>
@@ -2959,17 +3205,17 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location line="+40"/>
         <source>Geometry Creation &quot;Continue Mode&quot;</source>
-        <translation type="unfinished">Geometry Creation &quot;Continue Mode&quot;</translation>
+        <translation>&quot;Modu jarraituko&quot; geometria-sorrera</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Constraint Creation &quot;Continue Mode&quot; (Experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;Modu jarraituko&quot; murrizketa-sorrera (esperimentala)</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Visibility automation</source>
-        <translation type="unfinished">Visibility automation</translation>
+        <translation>Ikusgaitasunaren automatizazioa</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2989,7 +3235,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location line="+3"/>
         <source>Show objects used for external geometry</source>
-        <translation type="unfinished">Show objects used for external geometry</translation>
+        <translation>Erakutsi kanpo-geometriarako erabili diren objektuak</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2999,7 +3245,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location line="+3"/>
         <source>Show object(s) sketch is attached to</source>
-        <translation type="unfinished">Show object(s) sketch is attached to</translation>
+        <translation>Erakutsi krokisa erantsita du(t)en objektua(k)</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -3029,7 +3275,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location line="+10"/>
         <source>Segments per geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>Segmentuak geometria bakoitzeko</translation>
     </message>
     <message>
         <location line="+39"/>
@@ -3047,7 +3293,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     </message>
     <message>
         <source>Constraint color</source>
-        <translation type="obsolete">Constraint color</translation>
+        <translation type="obsolete">Murrizketa-kolorea</translation>
     </message>
     <message>
         <source>Datum color</source>
@@ -3068,7 +3314,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     </message>
     <message>
         <source>Default vertex size</source>
-        <translation type="obsolete">Default vertex size</translation>
+        <translation type="obsolete">Erpin-tamaina lehenetsia</translation>
     </message>
     <message>
         <source>Default line width</source>
@@ -3076,24 +3322,24 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     </message>
     <message>
         <source>Cursor text color</source>
-        <translation type="obsolete">Cursor text color</translation>
+        <translation type="obsolete">Kurtsore-testuaren kolorea</translation>
     </message>
     <message>
         <source>Non-driving Datum color</source>
-        <translation type="obsolete">Non-driving Datum color</translation>
+        <translation type="obsolete">Gidatzeko ez den zero puntuaren kolorea</translation>
     </message>
     <message>
         <source>The color of driving constraints in edit mode</source>
-        <translation type="obsolete">The color of driving constraints in edit mode</translation>
+        <translation type="obsolete">Gidatzeko murrizketen kolorea edizio moduan</translation>
     </message>
     <message>
         <source>The color of non-driving constrains or dimensions in edit mode</source>
-        <translation type="obsolete">The color of non-driving constrains or dimensions in edit mode</translation>
+        <translation type="obsolete">Gidatzeko ez diren murrizketen edo koten kolorea edizio moduan</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>Sketch editing</source>
-        <translation type="unfinished">Sketch editing</translation>
+        <translation>Krokis-edizioa</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3103,7 +3349,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location line="+65"/>
         <source>Grid line pattern</source>
-        <translation type="unfinished">Grid line pattern</translation>
+        <translation>Sareta-lerroaren eredua</translation>
     </message>
     <message>
         <location line="-16"/>
@@ -3126,157 +3372,169 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location filename="../../SketcherSettingsColors.ui" line="+14"/>
         <source>Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Koloreak</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Sketcher colors</source>
-        <translation type="unfinished">Sketcher colors</translation>
+        <translation>Krokisgilearen koloreak</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default edge color</source>
-        <translation type="unfinished">Ertz-kolore lehenetsia</translation>
+        <translation>Ertz-kolore lehenetsia</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+66"/>
         <source>The color of edges being edited</source>
-        <translation type="unfinished">Edizioan dauden ertzen kolorea</translation>
+        <translation>Edizioan dauden ertzen kolorea</translation>
     </message>
     <message>
         <location line="-40"/>
         <source>Default vertex color</source>
-        <translation type="unfinished">Erpinen kolore lehenetsia</translation>
+        <translation>Erpinen kolore lehenetsia</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+66"/>
         <source>The color of vertices being edited</source>
-        <translation type="unfinished">Edizioan dauden erpinen kolorea</translation>
+        <translation>Edizioan dauden erpinen kolorea</translation>
     </message>
     <message>
         <location line="-40"/>
         <source>Edit edge color</source>
-        <translation type="unfinished">Editatu ertz-kolorea</translation>
+        <translation>Editatu ertz-kolorea</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Edit vertex color</source>
-        <translation type="unfinished">Editatu erpin-kolorea</translation>
+        <translation>Editatu erpin-kolorea</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Construction geometry</source>
-        <translation type="unfinished">Eraikuntza-geometria</translation>
+        <translation>Eraikuntza-geometria</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location line="+99"/>
+        <location line="+106"/>
         <source>The color of fully constrained geometry in edit mode</source>
-        <translation type="unfinished">Erabat murriztutako geometriaren kolorea edizio moduan</translation>
+        <translation>Erabat murriztutako geometriaren kolorea edizio moduan</translation>
     </message>
     <message>
         <location line="-79"/>
         <source>The color of construction geometry in edit mode</source>
-        <translation type="unfinished">Eraikuntza-geometriaren kolorea edizio moduan</translation>
+        <translation>Eraikuntza-geometriaren kolorea edizio moduan</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="-20"/>
+        <source>The color of the datum portion of a driving constraint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
         <source>External geometry</source>
-        <translation type="unfinished">Kanpo-geometria</translation>
+        <translation>Kanpo-geometria</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The color of external geometry in edit mode</source>
-        <translation type="unfinished">Kanpo-geometriaren kolorea edizio moduan</translation>
+        <translation>Kanpo-geometriaren kolorea edizio moduan</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Fully constrained geometry</source>
-        <translation type="unfinished">Osorik murriztutako geometria</translation>
+        <translation>Osorik murriztutako geometria</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Constraint color</source>
-        <translation type="unfinished">Constraint color</translation>
+        <translation>Murrizketa-kolorea</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Datum color</source>
-        <translation type="unfinished">Zero puntuaren kolorea</translation>
+        <translation>Zero puntuaren kolorea</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Datum text size</source>
-        <translation type="unfinished">Zero puntuaren testu-tamaina</translation>
+        <translation>Zero puntuaren testu-tamaina</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Default vertex size</source>
-        <translation type="unfinished">Default vertex size</translation>
+        <translation>Erpin-tamaina lehenetsia</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+35"/>
         <location line="+52"/>
         <source>The default line thickness for new shapes</source>
-        <translation type="unfinished">Forma berrien lerro-lodiera lehenetsia</translation>
+        <translation>Forma berrien lerro-lodiera lehenetsia</translation>
     </message>
     <message>
         <location line="-84"/>
         <location line="+35"/>
         <location line="+52"/>
         <source>px</source>
-        <translation type="unfinished">px</translation>
+        <translation>px</translation>
     </message>
     <message>
         <location line="-62"/>
         <source>Default line width</source>
-        <translation type="unfinished">Lerro-zabalera lehenetsia</translation>
+        <translation>Lerro-zabalera lehenetsia</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Cursor text color</source>
-        <translation type="unfinished">Cursor text color</translation>
+        <translation>Kurtsore-testuaren kolorea</translation>
     </message>
     <message>
         <location line="+46"/>
+        <source>Reference Constraint color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>The color of reference constrains and datum in edit mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Non-driving Datum color</source>
-        <translation type="unfinished">Non-driving Datum color</translation>
+        <translation type="obsolete">Gidatzeko ez den zero puntuaren kolorea</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="-20"/>
         <source>The color of driving constraints in edit mode</source>
-        <translation type="unfinished">The color of driving constraints in edit mode</translation>
+        <translation>Gidatzeko murrizketen kolorea edizio moduan</translation>
     </message>
     <message>
-        <location line="+20"/>
         <source>The color of non-driving constrains or dimensions in edit mode</source>
-        <translation type="unfinished">The color of non-driving constrains or dimensions in edit mode</translation>
+        <translation type="obsolete">Gidatzeko ez diren murrizketen edo koten kolorea edizio moduan</translation>
     </message>
 </context>
 <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-        <location filename="../../TaskSketcherValidation.cpp" line="+322"/>
+        <location filename="../../TaskSketcherValidation.cpp" line="+325"/>
         <source>No missing coincidences</source>
-        <translation type="unfinished">No missing coincidences</translation>
+        <translation>Ez dago falta den bat etortzerik</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No missing coincidences found</source>
-        <translation type="unfinished">No missing coincidences found</translation>
+        <translation>Ez da aurkitu falta den bat etortzerik</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Missing coincidences</source>
-        <translation type="unfinished">Missing coincidences</translation>
+        <translation>Falta diren bat etortzeak</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 missing coincidences found</source>
-        <translation type="unfinished">%1 missing coincidences found</translation>
+        <translation>Falta diren %1 bat etortze aurkitu dira</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -3296,7 +3554,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
         <location line="+1"/>
         <source>Invalid constraints found</source>
-        <translation type="unfinished">Invalid constraints found</translation>
+        <translation>Baliogabeko murrizketak aurkitu dira</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -3342,7 +3600,7 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
         <location line="+13"/>
         <location line="+14"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished">Constraint orientation locking</translation>
+        <translation>Orientazio-blokearen murrizketa</translation>
     </message>
     <message>
         <location line="-13"/>
@@ -3358,7 +3616,7 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
         <location line="+12"/>
         <location line="+12"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished">Delete constraints to external geom.</translation>
+        <translation>Ezabatu kanpo-geometrien murrizketak</translation>
     </message>
     <message>
         <location line="-11"/>
@@ -3409,12 +3667,17 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
         <translation>Erreferentzia</translation>
     </message>
     <message>
+        <location line="+10"/>
+        <source>Hide Internal Aligment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../TaskSketcherConstrains.cpp" line="+24"/>
         <source>Constraints</source>
         <translation type="unfinished">Constraints</translation>
     </message>
     <message>
-        <location line="+177"/>
+        <location line="+190"/>
         <source>Error</source>
         <translation>Errorea</translation>
     </message>
@@ -3449,17 +3712,17 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
     <message>
         <location line="+5"/>
         <source>Center Point</source>
-        <translation type="unfinished">Center Point</translation>
+        <translation>Erdiko puntua</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Extended Naming</source>
-        <translation type="unfinished">Extended Naming</translation>
+        <translation>Izendatze hedatua</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Auto-switch to Edge</source>
-        <translation type="unfinished">Auto-switch to Edge</translation>
+        <translation>Automatikoki txandakatu ertzera</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -3473,74 +3736,97 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
     <message>
         <location line="+21"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: hautapen anizkoitza&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: aldatu hurrengo baliozko motara&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location line="+458"/>
+        <location line="+463"/>
         <location line="+1"/>
-        <location line="+55"/>
+        <location line="+81"/>
         <location line="+1"/>
         <source>Point</source>
         <translation>Puntua</translation>
     </message>
     <message>
-        <location line="-54"/>
-        <location line="+1"/>
-        <location line="+55"/>
+        <location line="-80"/>
+        <location line="+2"/>
+        <location line="+80"/>
         <location line="+1"/>
         <source>Line</source>
         <translation>Lerroa</translation>
     </message>
     <message>
-        <location line="-54"/>
-        <location line="+1"/>
-        <location line="+55"/>
+        <location line="-82"/>
+        <location line="+4"/>
+        <location line="+4"/>
+        <location line="+4"/>
+        <location line="+4"/>
+        <location line="+4"/>
+        <location line="+4"/>
+        <location line="+4"/>
+        <location line="+4"/>
+        <source>Construction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-29"/>
+        <location line="+2"/>
+        <location line="+79"/>
         <location line="+1"/>
         <source>Arc</source>
         <translation>Arkua</translation>
     </message>
     <message>
-        <location line="-54"/>
-        <location line="+1"/>
-        <location line="+55"/>
+        <location line="-78"/>
+        <location line="+2"/>
+        <location line="+78"/>
         <location line="+1"/>
         <source>Circle</source>
         <translation>Zirkulua</translation>
     </message>
     <message>
-        <location line="-54"/>
+        <location line="-77"/>
+        <location line="+2"/>
+        <location line="+77"/>
         <location line="+1"/>
         <source>Ellipse</source>
         <translation>Elipsea</translation>
     </message>
     <message>
+        <location line="-76"/>
         <location line="+2"/>
+        <location line="+76"/>
         <location line="+1"/>
         <source>Elliptical Arc</source>
         <translation>Arku eliptikoa</translation>
     </message>
     <message>
+        <location line="-75"/>
         <location line="+2"/>
+        <location line="+75"/>
         <location line="+1"/>
         <source>Hyperbolic Arc</source>
-        <translation type="unfinished">Hyperbolic Arc</translation>
+        <translation>Arku hiperbolikoa</translation>
     </message>
     <message>
+        <location line="-74"/>
         <location line="+2"/>
+        <location line="+74"/>
         <location line="+1"/>
         <source>Parabolic Arc</source>
-        <translation type="unfinished"></translation>
+        <translation>Arku parabolikoa</translation>
     </message>
     <message>
+        <location line="-73"/>
         <location line="+2"/>
+        <location line="+73"/>
         <location line="+1"/>
         <source>BSpline</source>
-        <translation type="unfinished"></translation>
+        <translation>BSpline</translation>
     </message>
     <message>
+        <location line="-72"/>
         <location line="+2"/>
-        <location line="+1"/>
-        <location line="+40"/>
+        <location line="+72"/>
         <location line="+1"/>
         <source>Other</source>
         <translation>Beste bat</translation>
@@ -3566,7 +3852,12 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
     <message>
         <location line="+34"/>
         <source>Grid snap</source>
-        <translation type="unfinished">Grid snap</translation>
+        <translation>Sareta-atxikitzea</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Rendering order:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unsolved</source>
@@ -3645,16 +3936,16 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
         <translation type="obsolete">20 m</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="-10"/>
         <source>Auto constraints</source>
-        <translation type="unfinished">Auto constraints</translation>
+        <translation>Murrizketa automatikoak</translation>
     </message>
     <message>
         <source>auto constraints</source>
         <translation type="obsolete">auto constraints</translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherGeneral.cpp" line="+121"/>
+        <location filename="../../TaskSketcherGeneral.cpp" line="+52"/>
         <source>Edit controls</source>
         <translation type="unfinished">Edit controls</translation>
     </message>
@@ -3672,7 +3963,7 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
     <message>
         <location filename="../../TaskSketcherSolverAdvanced.cpp" line="+67"/>
         <source>Advanced solver control</source>
-        <translation type="unfinished">Advanced solver control</translation>
+        <translation>Ebazle-kontrol aurreratua</translation>
     </message>
 </context>
 <context>
@@ -3680,17 +3971,17 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
     <message>
         <location filename="../../TaskSketcherValidation.ui" line="+14"/>
         <source>Sketcher validation</source>
-        <translation type="unfinished">Sketcher validation</translation>
+        <translation>Krokisgilearen balidazioa</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished">Delete constraints to external geom.</translation>
+        <translation>Ezabatu kanpo-geometrien murrizketak</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Missing coincidences</source>
-        <translation type="unfinished">Missing coincidences</translation>
+        <translation>Falta diren bat etortzeak</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3715,7 +4006,7 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
     <message>
         <location line="+10"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished">Constraint orientation locking</translation>
+        <translation>Orientazio-blokearen murrizketa</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3749,7 +4040,7 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
 <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="+4846"/>
+        <location filename="../../ViewProviderSketch.cpp" line="+5054"/>
         <source>Invalid sketch</source>
         <translation>Baliogabeko krokisa</translation>
     </message>
@@ -3812,14 +4103,14 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="+7"/>
         <source>Over-constrained sketch </source>
-        <translation type="unfinished">Over-constrained sketch </translation>
+        <translation>Gehiegi murriztutako krokisa </translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+7"/>
         <location line="+8"/>
         <source>(click to select)</source>
-        <translation type="unfinished">(click to select)</translation>
+        <translation>(klik hautatzeko)</translation>
     </message>
     <message>
         <location line="-9"/>
@@ -3851,49 +4142,76 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="+5"/>
         <source>Under-constrained sketch with 1 degree of freedom</source>
-        <translation type="unfinished">Under-constrained sketch with 1 degree of freedom</translation>
+        <translation>Gutxiegi murriztutako krokisa, askatasun-gradu bat duena</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Under-constrained sketch with %1 degrees of freedom</source>
-        <translation type="unfinished">Under-constrained sketch with %1 degrees of freedom</translation>
+        <translation>Gutxiegi murriztutako krokisa, %1 askatasun-gradu dituena</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Solved in %1 sec</source>
-        <translation type="unfinished">Solved in %1 sec</translation>
+        <translation>%1 segundotan ebatzi da</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unsolved (%1 sec)</source>
-        <translation type="unfinished">Unsolved (%1 sec)</translation>
+        <translation>Ebatzi gabea (%1 seg)</translation>
     </message>
 </context>
 <context>
     <name>Sketcher_BSplineComb</name>
     <message>
-        <location filename="../../CommandSketcherBSpline.cpp" line="-80"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="-429"/>
         <location line="+1"/>
         <source>Switches between showing and hiding the curvature comb for all B-splines</source>
+        <translation>B-spline guztien kurbadura-orrazia erakusten/ezkutatzen ditu</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_BSplineDecreaseKnotMultiplicity</name>
+    <message>
+        <location line="+564"/>
+        <location line="+1"/>
+        <source>Decreases the multiplicity of the selected knot of a B-spline</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Sketcher_BSplineDegree</name>
     <message>
-        <location line="-9"/>
+        <location line="-574"/>
         <location line="+1"/>
         <source>Switches between showing and hiding the degree for all B-splines</source>
+        <translation>B-spline guztien gradua erakusten/ezkutatzen ditu</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_BSplineIncreaseKnotMultiplicity</name>
+    <message>
+        <location line="+568"/>
+        <location line="+1"/>
+        <source>Increases the multiplicity of the selected knot of a B-spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_BSplineKnotMultiplicity</name>
+    <message>
+        <location line="-558"/>
+        <location line="+1"/>
+        <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Sketcher_BSplinePolygon</name>
     <message>
-        <location line="+3"/>
+        <location line="-9"/>
         <location line="+1"/>
         <source>Switches between showing and hiding the control polygons for all B-splines</source>
-        <translation type="unfinished"></translation>
+        <translation>B-spline guztien kontrol-poligonoak erakusten/ezkutatzen ditu</translation>
     </message>
 </context>
 <context>
@@ -3930,25 +4248,25 @@ Use the sketch validation tool.</translation>
 <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-4013"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-4035"/>
         <location line="+1"/>
         <source>Create an arc by its end points and a point along the arc</source>
-        <translation type="unfinished">Create an arc by its end points and a point along the arc</translation>
+        <translation>Sortu arku bat amaiera-puntuak eta arkuan dagoen puntu bat erabiliz</translation>
     </message>
 </context>
 <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-        <location line="+3297"/>
+        <location line="+3319"/>
         <location line="+1"/>
         <source>Create a circle by 3 rim points</source>
-        <translation type="unfinished">Create a circle by 3 rim points</translation>
+        <translation>Sortu zirkulu bat 3 ertz-puntutik abiatuz</translation>
     </message>
 </context>
 <context>
     <name>Sketcher_CreateArc</name>
     <message>
-        <location line="-3303"/>
+        <location line="-3325"/>
         <location line="+1"/>
         <source>Create an arc by its center and by its end points</source>
         <translation>Sortu arku bat erdiko puntua eta amaiera-puntuak erabiliz</translation>
@@ -3957,7 +4275,7 @@ Use the sketch validation tool.</translation>
 <context>
     <name>Sketcher_CreateArcOfEllipse</name>
     <message>
-        <location line="+2363"/>
+        <location line="+2367"/>
         <location line="+1"/>
         <source>Create an arc of ellipse by its center, major radius, endpoints</source>
         <translation>Sortu elipse-arku bat erdiko puntua, erradio handia eta amaiera-puntuak erabiliz</translation>
@@ -3978,21 +4296,21 @@ Use the sketch validation tool.</translation>
         <location line="+3"/>
         <location line="+1"/>
         <source>Create an arc of parabola by its focus, vertex, endpoints</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortu parabola-arku bat fokua, erpina eta amaiera-puntuak erabiliz</translation>
     </message>
 </context>
 <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
-        <location line="+571"/>
+        <location line="+589"/>
         <source>B-spline by control points or poles</source>
-        <translation type="unfinished"></translation>
+        <translation>B-spline kontrol-puntuetatik edo poloetatik abiatuz</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Create a B-spline by control points or poles</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortu B-spline bat kontrol-puntuetatik edo poloetatik abiatuz</translation>
     </message>
 </context>
 <context>
@@ -4001,13 +4319,13 @@ Use the sketch validation tool.</translation>
         <location line="+352"/>
         <location line="+1"/>
         <source>Create a circle by its center and by a rim point</source>
-        <translation type="unfinished">Create a circle by its center and by a rim point</translation>
+        <translation>Sortu zirkulu bat erdiko puntua eta ertz-puntu bat erabiliz</translation>
     </message>
 </context>
 <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-        <location line="-939"/>
+        <location line="-957"/>
         <location line="+1"/>
         <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
         <translation>Sortu elipse bat periapsia, apoapsia eta erradio txikia erabiliz</translation>
@@ -4025,7 +4343,7 @@ Use the sketch validation tool.</translation>
 <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-        <location line="+2639"/>
+        <location line="+2891"/>
         <location line="+1"/>
         <source>Create a heptagon by its center and by one corner</source>
         <translation>Sortu heptagono bat bere erdigunea eta izkina bat erabiliz</translation>
@@ -4073,21 +4391,21 @@ Use the sketch validation tool.</translation>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create an equilateral triangle by its center and by one corner</source>
-        <translation>Sortu triangelu ekilatero bat bere erdigunea eta izkina bat erabiliz</translation>
+        <translation>Sortu triangelu aldeberdin bat bere erdigunea eta izkina bat erabiliz</translation>
     </message>
 </context>
 <context>
     <name>Sketcher_Create_Periodic_BSpline</name>
     <message>
-        <location line="-2033"/>
+        <location line="-2267"/>
         <source>Periodic B-spline by control points or poles</source>
-        <translation type="unfinished"></translation>
+        <translation>B-spline periodikoa kontrol-puntuetatik edo poloetatik abiatuz</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Create a periodic B-spline by control points or poles</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortu B-spline periodiko bat krokiseko kontrol-puntuetatik edo poloetatik abiatuz</translation>
     </message>
 </context>
 <context>
@@ -4115,7 +4433,7 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="+53"/>
         <source> (incompatible with selection)</source>
-        <translation type="unfinished"> (incompatible with selection)</translation>
+        <translation> (bateraezina hautapenarekin)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4125,12 +4443,12 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="+7"/>
         <source> (suggested)</source>
-        <translation type="unfinished"> (suggested)</translation>
+        <translation> (iradokia)</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Sketch attachment</source>
-        <translation type="unfinished">Sketch attachment</translation>
+        <translation>Krokis-eranskina</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4145,13 +4463,13 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="+35"/>
         <source>Map sketch</source>
-        <translation type="unfinished">Map sketch</translation>
+        <translation>Mapatu krokisa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Can&apos;t map a sketch to support:
 %1</source>
-        <translation type="unfinished">Can&apos;t map a sketch to support:
+        <translation>Ezin da mapatu euskarrirako krokis bat:
 %1</translation>
     </message>
 </context>
@@ -4160,7 +4478,7 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="-406"/>
         <source>Sketch attachment</source>
-        <translation type="unfinished">Sketch attachment</translation>
+        <translation>Krokis-eranskina</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4173,7 +4491,7 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="+192"/>
         <source>Sketch has support</source>
-        <translation type="unfinished">Sketch has support</translation>
+        <translation>Krokisak euskarria du</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4214,12 +4532,12 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+12"/>
         <source>Undefined degrees of freedom</source>
-        <translation type="unfinished">Undefined degrees of freedom</translation>
+        <translation>Askatasun-gradu definitu gabeak</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Not solved yet</source>
-        <translation type="unfinished">Not solved yet</translation>
+        <translation>Oraindik ez da ebatzi</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -4229,7 +4547,7 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+3"/>
         <source>Auto Update</source>
-        <translation type="unfinished">Auto Update</translation>
+        <translation>Automatikoki eguneratu</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4269,7 +4587,7 @@ Euskarritik askatu nahi duzu?</translation>
         <location line="-317"/>
         <location line="+322"/>
         <source>LevenbergMarquardt</source>
-        <translation type="unfinished">LevenbergMarquardt</translation>
+        <translation>LevenbergMarquardt</translation>
     </message>
     <message>
         <location line="-317"/>
@@ -4280,12 +4598,12 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="-310"/>
         <source>Type of function to apply in DogLeg for the Gauss step</source>
-        <translation type="unfinished">Type of function to apply in DogLeg for the Gauss step</translation>
+        <translation>Hanka funtzio-mota ere egin daiteke, agertokian Gauss aplikatuko</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>DogLeg Gauss step:</source>
-        <translation type="unfinished">DogLeg Gauss step:</translation>
+        <translation>Urratsa Gauss:</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -4295,12 +4613,12 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+5"/>
         <source>LeastNorm-FullPivLU</source>
-        <translation type="unfinished">LeastNorm-FullPivLU</translation>
+        <translation>LeastNorm-FullPivLU</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LeastNorm-LDLT</source>
-        <translation type="unfinished">LeastNorm-LDLT</translation>
+        <translation>LeastNorm-LDLT</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4310,7 +4628,7 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+3"/>
         <source>Maximum Iterations:</source>
-        <translation type="unfinished">Maximum Iterations:</translation>
+        <translation>Iterazio kopuru maximoa:</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -4320,7 +4638,7 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+3"/>
         <source>Sketch size multiplier:</source>
-        <translation type="unfinished">Sketch size multiplier:</translation>
+        <translation>Krokis-tamainaren biderkatzailea:</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -4330,22 +4648,22 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+3"/>
         <source>Convergence:</source>
-        <translation type="unfinished">Convergence:</translation>
+        <translation>Konbergentzia:</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Param1</source>
-        <translation type="unfinished">Param1</translation>
+        <translation>1. parametroa</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Param2</source>
-        <translation type="unfinished">Param2</translation>
+        <translation>2. parametrao</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Param3</source>
-        <translation type="unfinished">Param3</translation>
+        <translation>2. parametroa</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -4360,17 +4678,17 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+17"/>
         <source>Eigen Dense QR</source>
-        <translation type="unfinished">Eigen Dense QR</translation>
+        <translation>QR dentsitate handiagoa</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Eigen Sparse QR</source>
-        <translation type="unfinished">Eigen Sparse QR</translation>
+        <translation>QR txikiagoa dentsitate</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Pivot threshold</source>
-        <translation type="unfinished">Pivot threshold</translation>
+        <translation>Pibot-atalasea</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4385,7 +4703,7 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+3"/>
         <source>Redundant Solver:</source>
-        <translation type="unfinished">Redundant Solver:</translation>
+        <translation>Ebazle erredundantea:</translation>
     </message>
     <message>
         <location line="+39"/>
@@ -4395,7 +4713,7 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+3"/>
         <source>Red. Max Iterations:</source>
-        <translation type="unfinished">Red. Max Iterations:</translation>
+        <translation>Gorria. Iterazio kopuru maximoa:</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -4405,7 +4723,7 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+3"/>
         <source>Red. Sketch size multiplier:</source>
-        <translation type="unfinished">Red. Sketch size multiplier:</translation>
+        <translation>Krokis-tamainaren biderkatzailea:</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -4415,7 +4733,7 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+3"/>
         <source>Red. Convergence</source>
-        <translation type="unfinished">Red. Convergence</translation>
+        <translation>Gorria. Konbergentzia</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4425,17 +4743,17 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+20"/>
         <source>Red. Param1</source>
-        <translation type="unfinished">Red. Param1</translation>
+        <translation>1. erredundantzia-parametroa</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Red. Param2</source>
-        <translation type="unfinished">Red. Param2</translation>
+        <translation>2. erredundantzia-parametroa</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Red. Param3</source>
-        <translation type="unfinished">Red. Param3</translation>
+        <translation>3. erredundantzia-parametroa</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -4445,7 +4763,7 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+3"/>
         <source>Console  Debug mode:</source>
-        <translation type="unfinished">Console  Debug mode:</translation>
+        <translation>Kontsolaren arazketa modua:</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -4488,7 +4806,7 @@ Euskarritik askatu nahi duzu?</translation>
     <message>
         <location line="+1"/>
         <source>Sketcher geometries</source>
-        <translation type="unfinished">Sketcher geometries</translation>
+        <translation>Krokisgile-geometriak</translation>
     </message>
     <message>
         <location line="+2"/>

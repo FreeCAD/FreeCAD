@@ -114,11 +114,11 @@
     </message>
     <message>
         <source>Export spreadsheet</source>
-        <translation type="unfinished">Export spreadsheet</translation>
+        <translation>Exportar full de càlcul</translation>
     </message>
     <message>
         <source>Export spreadsheet to CSV file</source>
-        <translation type="unfinished">Export spreadsheet to CSV file</translation>
+        <translation>Exportar full de càlcul a CSV</translation>
     </message>
 </context>
 <context>
@@ -129,11 +129,11 @@
     </message>
     <message>
         <source>Import spreadsheet</source>
-        <translation type="unfinished">Import spreadsheet</translation>
+        <translation>Importar full de càlcul</translation>
     </message>
     <message>
         <source>Import CSV file into spreadsheet</source>
-        <translation type="unfinished">Import CSV file into spreadsheet</translation>
+        <translation>Importar CSV a un full de càlcul</translation>
     </message>
 </context>
 <context>

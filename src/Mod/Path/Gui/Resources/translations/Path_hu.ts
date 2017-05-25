@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hu" sourcelanguage="en">
   <context>
+    <name>Active</name>
+    <message>
+      <location filename="PathHelix.py" line="253"/>
+      <source>Set to False to disable code generation</source>
+      <translation>Letiltja a kódgenerálást Hamis értékre állítással</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="51"/>
+      <source>Make False, to prevent operation from generating code</source>
+      <translation>Állítsa hamisra annak megakadályozására, hogy a művelet, kódot generálhasson</translation>
+    </message>
+  </context>
+  <context>
     <name>App::Property</name>
     <message>
       <location filename="PathFromShape.py" line="46"/>
@@ -26,12 +39,12 @@
     <message>
       <location filename="PathProfileEdges.py" line="59"/>
       <source>User Assigned Label</source>
-      <translation type="unfinished">User Assigned Label</translation>
+      <translation>Felhasználó által hozzárendelt címke</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="55"/>
       <source>The library to use to generate the path</source>
-      <translation type="unfinished">The library to use to generate the path</translation>
+      <translation>Az elérési út létrehozásához használt könyvtár</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="64"/>
@@ -41,12 +54,12 @@
     <message>
       <location filename="PathEngrave.py" line="65"/>
       <source>The description of the tool </source>
-      <translation type="unfinished">The description of the tool </translation>
+      <translation>Az eszköz leírása </translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="69"/>
       <source>The Sample Interval.  Small values cause long wait</source>
-      <translation type="unfinished">The Sample Interval.  Small values cause long wait</translation>
+      <translation>A Mintavételezési időköz.  Kisebb értékek hosszú várakozást okoznak</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="71"/>
@@ -56,7 +69,7 @@
     <message>
       <location filename="PathEngrave.py" line="70"/>
       <source>Rapid Safety Height between locations.</source>
-      <translation type="unfinished">Rapid Safety Height between locations.</translation>
+      <translation>Gyorsmenet biztonsági magassága a helyek között.</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="73"/>
@@ -91,17 +104,17 @@
     <message>
       <location filename="PathDressupDragknife.py" line="57"/>
       <source>Angles less than filter angle will not receive corner actions</source>
-      <translation type="unfinished">Angles less than filter angle will not receive corner actions</translation>
+      <translation>Szűrési szögnél kisebb szögek nem kapják meg a sarok műveleteket</translation>
     </message>
     <message>
       <location filename="PathDressupDragknife.py" line="58"/>
       <source>Distance the point trails behind the spindle</source>
-      <translation type="unfinished">Distance the point trails behind the spindle</translation>
+      <translation>Orsó mögötti pont nyomvonalak távolsága</translation>
     </message>
     <message>
       <location filename="PathDressupDragknife.py" line="59"/>
       <source>Height to raise during corner action</source>
-      <translation type="unfinished">Height to raise during corner action</translation>
+      <translation>Sarok műveletek alatti emelési magasság</translation>
     </message>
     <message>
       <location filename="PathHop.py" line="46"/>
@@ -121,7 +134,7 @@
     <message>
       <location filename="PathCompoundExtended.py" line="45"/>
       <source>An ptional description of this compounded operation</source>
-      <translation type="unfinished">An ptional description of this compounded operation</translation>
+      <translation>Összetett művelet egy lehetséges leírása</translation>
     </message>
     <message>
       <location filename="PathCompoundExtended.py" line="48"/>
@@ -136,12 +149,12 @@
     <message>
       <location filename="PathCustom.py" line="46"/>
       <source>The gcode to be inserted</source>
-      <translation type="unfinished">The gcode to be inserted</translation>
+      <translation>A beillesztendő gcode</translation>
     </message>
     <message>
       <location filename="PathContour.py" line="58"/>
       <source>An optional comment for this Contour</source>
-      <translation type="unfinished">An optional comment for this Contour</translation>
+      <translation>Választható megjegyzés ehhez a kontúrhoz</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="79"/>
@@ -194,6 +207,26 @@
       <translation>állítsa igazra, ha sugár vágó kompenzációt alkalmaz</translation>
     </message>
     <message>
+      <location filename="PathProfileEdges.py" line="99"/>
+      <source>Tesselation  value for tool paths made from beziers, bsplines, and ellipses</source>
+      <translation>Mozgáspályák közelítő értéke a Bézier-görbékből, B-görbékből és ellipszisekből</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="100"/>
+      <source>Plunge angle with which the tool enters the work piece. Straight down is 90 degrees, if set small enough or zero the tool will descent exactly one layer depth down per turn</source>
+      <translation>Belépési szög, mellyel az eszköz behatol a munkadarabba. Egyenesen le 90 fok, ha elég kicsire állított vagy nulla, a szerszám pontosan egy réteg mélységig hatol lefelé, fordulatonként</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="102"/>
+      <source>List of holding tag locations</source>
+      <translation>Címke tartó helyek listája</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="106"/>
+      <source>List of angles for the holding tags</source>
+      <translation>Címke tartók dőlésszögeinek listája</translation>
+    </message>
+    <message>
       <location filename="PathProfileEdges.py" line="91"/>
       <source>Side of edge that tool should cut</source>
       <translation>Szerszámsugár-korrekció, az él eszközzel vágni kívánt oldala</translation>
@@ -206,27 +239,7 @@
     <message>
       <location filename="PathContour.py" line="96"/>
       <source>Extra value to stay away from final Contour- good for roughing toolpath</source>
-      <translation type="unfinished">Extra value to stay away from final Contour- good for roughing toolpath</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="99"/>
-      <source>Tesselation  value for tool paths made from beziers, bsplines, and ellipses</source>
-      <translation>Mozgáspályák közelítő értéke a Bézier-görbékből, B-görbékből és ellipszisekből</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="100"/>
-      <source>Plunge angle with which the tool enters the work piece. Straight down is 90 degrees, if set small enough or zero the tool will descent exactly one layer depth down per turn</source>
-      <translation type="unfinished">Plunge angle with which the tool enters the work piece. Straight down is 90 degrees, if set small enough or zero the tool will descent exactly one layer depth down per turn</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="102"/>
-      <source>List of holding tag locations</source>
-      <translation type="unfinished">List of holding tag locations</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="106"/>
-      <source>List of angles for the holding tags</source>
-      <translation type="unfinished">List of angles for the holding tags</translation>
+      <translation>Extra érték ami távol tart a záró kontúrtól- jó a nagyoló szerszámmozgáshoz</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="57"/>
@@ -236,7 +249,7 @@
     <message>
       <location filename="PathDrilling.py" line="61"/>
       <source>Height to clear top of materil</source>
-      <translation type="unfinished">Height to clear top of materil</translation>
+      <translation>Az anyag tetejének tisztításához használt magasság</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="62"/>
@@ -246,7 +259,7 @@
     <message>
       <location filename="PathDrilling.py" line="63"/>
       <source>The time to dwell between peck cycles</source>
-      <translation type="unfinished">The time to dwell between peck cycles</translation>
+      <translation>Vagdosási ciklusok közti nyugalmi időszak</translation>
     </message>
     <message>
       <location filename="PathPlane.py" line="44"/>
@@ -261,42 +274,42 @@
     <message>
       <location filename="PathMillFace.py" line="79"/>
       <source>How far the cutter should extend past the boundary</source>
-      <translation type="unfinished">How far the cutter should extend past the boundary</translation>
+      <translation>Meddig mozoghat ki a maró, a határvonalon túl</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="80"/>
       <source>Start Faceing at center or boundary</source>
-      <translation type="unfinished">Start Faceing at center or boundary</translation>
+      <translation>Felület létrehozása a határvonal közepénél</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="80"/>
       <source>Percent of cutter diameter to step over on each pass</source>
-      <translation type="unfinished">Percent of cutter diameter to step over on each pass</translation>
+      <translation>Maró átmérő százaléka mellyel átlép minden elhaladáskor</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="82"/>
       <source>Attempts to avoid unnecessary retractions.</source>
-      <translation type="unfinished">Attempts to avoid unnecessary retractions.</translation>
+      <translation>Megkísérli, hogy elkerülje a felesleges visszahúzásokat.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="83"/>
       <source>Lifts tool at the end of each pass to respect cut mode.</source>
-      <translation type="unfinished">Lifts tool at the end of each pass to respect cut mode.</translation>
+      <translation>Felemeli az eszközt minden fázis végére, tekintettel a vágási módra.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="84"/>
       <source>Use Zig Zag pattern to clear area.</source>
-      <translation type="unfinished">Use Zig Zag pattern to clear area.</translation>
+      <translation>Cikk-cakk minta segítségével törölheti a területet.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="85"/>
       <source>Angle of the zigzag pattern</source>
-      <translation type="unfinished">Angle of the zigzag pattern</translation>
+      <translation>Cikk-cakk minta szöge</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="88"/>
       <source>Shape to use for calculating Boundary</source>
-      <translation type="unfinished">Shape to use for calculating Boundary</translation>
+      <translation>Határ számításához használandó alakzat</translation>
     </message>
     <message>
       <location filename="PathLoadTool.py" line="47"/>
@@ -326,12 +339,12 @@
     <message>
       <location filename="PathLoadTool.py" line="54"/>
       <source>Rapid rate for vertical moves in Z</source>
-      <translation type="unfinished">Rapid rate for vertical moves in Z</translation>
+      <translation>Gyors ütem a függőleges Z tengely előtoláshoz</translation>
     </message>
     <message>
       <location filename="PathLoadTool.py" line="55"/>
       <source>Rapid rate for horizontal moves</source>
-      <translation type="unfinished">Rapid rate for horizontal moves</translation>
+      <translation>Gyors ütem a vízszintes előtoláshoz</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="77"/>
@@ -346,37 +359,37 @@
     <message>
       <location filename="PathPocket.py" line="88"/>
       <source>Allow Cutter enter material with a straight plunge.</source>
-      <translation type="unfinished">Allow Cutter enter material with a straight plunge.</translation>
+      <translation>Lehetővé teszi a maró anyagba belépését egy egyenes vonalon.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="89"/>
       <source>The minimum fraction of tool diameter to use for ramp length</source>
-      <translation type="unfinished">The minimum fraction of tool diameter to use for ramp length</translation>
+      <translation>A legkisebb része az eszköz átmérőnek amit a futtatási hosszon használhat</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="91"/>
       <source>The fraction of tool diameter to use for calculating helix size.</source>
-      <translation type="unfinished">The fraction of tool diameter to use for calculating helix size.</translation>
+      <translation>A legkisebb része a szerszám átmérőnek, amit a helix méret számításához használhat.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="93"/>
       <source>The Angle of the ramp entry.</source>
-      <translation type="unfinished">The Angle of the ramp entry.</translation>
+      <translation>A futtatás belépési szöge.</translation>
     </message>
     <message>
       <location filename="PathFacePocket.py" line="46"/>
       <source>The distance between the face and the path</source>
-      <translation type="unfinished">The distance between the face and the path</translation>
+      <translation>Felület és útvonal közti távolság</translation>
     </message>
     <message>
       <location filename="PathEngrave.py" line="72"/>
       <source>The vertex index to start the path from</source>
-      <translation type="unfinished">The vertex index to start the path from</translation>
+      <translation>Az útvonal indulási pontjától a végpont index</translation>
     </message>
     <message>
       <location filename="PathFacePocket.py" line="48"/>
       <source>The type of the first move</source>
-      <translation type="unfinished">The type of the first move</translation>
+      <translation>Első lépés típusa</translation>
     </message>
     <message>
       <location filename="PathDressup.py" line="49"/>
@@ -401,7 +414,7 @@
     <message>
       <location filename="PathStock.py" line="48"/>
       <source>The base object this represents</source>
-      <translation type="unfinished">The base object this represents</translation>
+      <translation>Ennek a képviselt nézetnek az alappontja</translation>
     </message>
     <message>
       <location filename="PathToolLenOffset.py" line="44"/>
@@ -421,17 +434,17 @@
     <message>
       <location filename="PathJob.py" line="57"/>
       <source>An optional description for this job</source>
-      <translation type="unfinished">An optional description for this job</translation>
+      <translation>Egy lehetséges leírás ehhez a feladathoz</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="58"/>
       <source>Select the Post Processor</source>
-      <translation type="unfinished">Select the Post Processor</translation>
+      <translation>Válassza ki az utó végrehajtót</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="61"/>
       <source>Arguments for the Post Processor (specific to the script)</source>
-      <translation type="unfinished">Arguments for the Post Processor (specific to the script)</translation>
+      <translation>Érvek az utólagos végrehajtóhoz (jellemző a scripthez)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="63"/>
@@ -461,47 +474,120 @@
     <message>
       <location filename="PathFacePocket.py" line="49"/>
       <source>The height to travel at between loops</source>
-      <translation type="unfinished">The height to travel at between loops</translation>
+      <translation>A magasság az ismétlések közötti átálláshoz</translation>
     </message>
     <message>
       <location filename="PathFacePocket.py" line="50"/>
       <source>Perform only one loop or fill the whole shape</source>
-      <translation type="unfinished">Perform only one loop or fill the whole shape</translation>
+      <translation>Csak egy hurkot hajtson végre, vagy az egész alakzat kitöltése</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="98"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
-      <translation>Extra érték ami távol tart a záró profiltól- jó a szerszámmozgás nagyolásához</translation>
+      <translation>Extra érték ami távol tart a záró profiltól- jó a nagyoló szerszámmozgáshoz</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="99"/>
       <source>Profile holes as well as the outline</source>
-      <translation type="unfinished">Profile holes as well as the outline</translation>
+      <translation>Felület furatokat, valamint a körvonalat</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="100"/>
       <source>Profile the outline</source>
-      <translation type="unfinished">Profile the outline</translation>
+      <translation>Körvonalakat felületté</translation>
     </message>
     <message>
       <location filename="PathEngrave.py" line="55"/>
       <source>The library or Algorithm used to generate the path</source>
-      <translation type="unfinished">The library or Algorithm used to generate the path</translation>
+      <translation>Az elérési út létrehozásához használt könyvtár vagy algoritmus</translation>
     </message>
     <message>
       <location filename="PathEngrave.py" line="59"/>
       <source>The tool controller to use</source>
-      <translation type="unfinished">The tool controller to use</translation>
+      <translation>Az eszköz vezérlő használata</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="67"/>
       <source>The description of the tool</source>
-      <translation type="unfinished">The description of the tool</translation>
+      <translation>Az eszköz leírása</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="72"/>
       <source>Rapid Safety Height between locations</source>
-      <translation type="unfinished">Rapid Safety Height between locations</translation>
+      <translation>Gyorsmenet biztonsági magasság, a helyek között</translation>
+    </message>
+  </context>
+  <context>
+    <name>Clearance</name>
+    <message>
+      <location filename="PathHelix.py" line="271"/>
+      <source>Safe distance above the top of the hole to which to retract the tool</source>
+      <translation>A furatok feletti biztonsági távolság, melyre visszíhúzza az eszközt</translation>
+    </message>
+  </context>
+  <context>
+    <name>Comment</name>
+    <message>
+      <location filename="PathHelix.py" line="255"/>
+      <source>An optional comment for this profile, will appear in G-Code</source>
+      <translation>Egy választható megjegyzés a felülethez, a G-kódban fog megjelenni</translation>
+    </message>
+    <message>
+      <location filename="PathComment.py" line="41"/>
+      <source>Comment or note for CNC program</source>
+      <translation>Megjegyzés vagy jegyzet a CNC programhoz</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="65"/>
+      <source>An optional comment for this profile</source>
+      <translation>Választható megjegyzés ehhez a profilhoz</translation>
+    </message>
+  </context>
+  <context>
+    <name>DeltaR</name>
+    <message>
+      <location filename="PathHelix.py" line="267"/>
+      <source>Radius increment (must be smaller than tool diameter)</source>
+      <translation>Radius-növekmény (szerszám átmérőnél kisebbnek kell lennie)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Direction</name>
+    <message>
+      <location filename="PathHelix.py" line="259"/>
+      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
+      <translation>Körkivágás iránya, óramutató járásával megegyező irányban (CW), vagy az óramutató járásával elentétes irányban (CCW)</translation>
+    </message>
+    <message>
+      <location filename="PathHelix.py" line="263"/>
+      <source>Start cutting from the inside or outside</source>
+      <translation>Kivágás kezdése belülről vagy kívülről</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="86"/>
+      <source>The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW</source>
+      <translation>Szerszámmozgás iránya: Óramutató járásával megegyező CW vagy ellentétes CCW</translation>
+    </message>
+  </context>
+  <context>
+    <name>Features</name>
+    <message>
+      <location filename="PathHelix.py" line="251"/>
+      <source>Selected features for the drill operation</source>
+      <translation>Kiválasztot jellemzők a fúró-művelethez</translation>
+    </message>
+  </context>
+  <context>
+    <name>Final Depth</name>
+    <message>
+      <location filename="PathHelix.py" line="281"/>
+      <source>Final Depth of Tool - lowest value in Z</source>
+      <translation>Végső szerszám mélység - Z tengely legalacsonyabb értéke</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="63"/>
+      <source>Final Depth of Tool- lowest value in Z</source>
+      <translation>Vég-fúrásmélység a Z tengelyen</translation>
     </message>
   </context>
   <context>
@@ -509,13 +595,13 @@
     <message>
       <location filename="PathContour.py" line="396"/>
       <source>Create a Contour</source>
-      <translation type="unfinished">Create a Contour</translation>
+      <translation>Körvonal létrehozása</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
       <source>this object already in the list
 </source>
-      <translation type="unfinished">this object already in the list
+      <translation>ez az elem már a listában van
 </translation>
     </message>
     <message>
@@ -615,9 +701,9 @@
       <translation type="unfinished">The side of path to insert bones</translation>
     </message>
     <message>
-      <location filename="PathDressupDogbone.py" line="361"/>
-      <source>The style of boness</source>
-      <translation type="unfinished">The style of boness</translation>
+      <location filename="PathDressupDogbone.py" line="354"/>
+      <source>The style of bones</source>
+      <translation type="unfinished">The style of bones</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="364"/>
@@ -627,27 +713,32 @@
     <message>
       <location filename="PathDressupDogbone.py" line="367"/>
       <source>The algorithm to determine the bone length</source>
-      <translation type="unfinished">The algorithm to determine the bone length</translation>
+      <translation>Algoritmus a halszálka hosszának meghatározásához</translation>
+    </message>
+    <message>
+      <location filename="PathDressupDogbone.py" line="361"/>
+      <source>The style of boness</source>
+      <translation>Halszálka stílusa</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="370"/>
       <source>Dressup length if Incision == custom</source>
-      <translation type="unfinished">Dressup length if Incision == custom</translation>
+      <translation>Felépítés hossza ha metszéssel == egyéni</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="808"/>
       <source>Edit Dogbone Dress-up</source>
-      <translation type="unfinished">Edit Dogbone Dress-up</translation>
+      <translation>Kutyacsont felépítés szerkesztése</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="974"/>
       <source>Dogbone Dress-up</source>
-      <translation type="unfinished">Dogbone Dress-up</translation>
+      <translation>Kutyacsont felépítés</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="975"/>
       <source>Creates a Dogbone Dress-up object from a selected path</source>
-      <translation type="unfinished">Creates a Dogbone Dress-up object from a selected path</translation>
+      <translation>Létrehoz egy kutyacsont felépítésű objektumot a kiválasztott útvonalból</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="989"/>
@@ -666,12 +757,12 @@
     <message>
       <location filename="PathDressupDogbone.py" line="999"/>
       <source>Please select a Profile or Dogbone Dressup object</source>
-      <translation type="unfinished">Please select a Profile or Dogbone Dressup object</translation>
+      <translation>Kérem jelöljön ki egy profilt vagy kutyacsont felépítésű tárgyat</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="1003"/>
       <source>Create Dogbone Dress-up</source>
-      <translation type="unfinished">Create Dogbone Dress-up</translation>
+      <translation>Kutyacsont felépítés létrehozása</translation>
     </message>
   </context>
   <context>
@@ -712,6 +803,59 @@
     </message>
   </context>
   <context>
+    <name>PathDressup_HoldingTags</name>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="714"/>
+      <source>The base path to modify</source>
+      <translation>A megváltoztatni kívánt alap pálya útvonal</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="715"/>
+      <source>Width of tags.</source>
+      <translation>Címkék szélessége.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="716"/>
+      <source>Height of tags.</source>
+      <translation>Címkék magassága.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="717"/>
+      <source>Angle of tag plunge and ascent.</source>
+      <translation type="unfinished">Angle of tag plunge and ascent.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="718"/>
+      <source>Radius of the fillet for the tag.</source>
+      <translation type="unfinished">Radius of the fillet for the tag.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="719"/>
+      <source>Locations of insterted holding tags</source>
+      <translation type="unfinished">Locations of insterted holding tags</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="720"/>
+      <source>Ids of disabled holding tags</source>
+      <translation type="unfinished">Ids of disabled holding tags</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="721"/>
+      <source>Factor determining the # segments used to approximate rounded tags.</source>
+      <translation type="unfinished">Factor determining the # segments used to approximate rounded tags.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="1383"/>
+      <source>HoldingTags Dress-up</source>
+      <translation type="unfinished">HoldingTags Dress-up</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="1384"/>
+      <source>Creates a HoldingTags Dress-up object from a selected path</source>
+      <translation type="unfinished">Creates a HoldingTags Dress-up object from a selected path</translation>
+    </message>
+  </context>
+  <context>
     <name>PathFace</name>
     <message>
       <location filename="PathMillFace.py" line="171"/>
@@ -739,6 +883,24 @@
       <location filename="PathMillFace.py" line="367"/>
       <source>Create Face</source>
       <translation type="unfinished">Create Face</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathHelix</name>
+    <message>
+      <location filename="PathHelix.py" line="449"/>
+      <source>PathHelix</source>
+      <translation type="unfinished">PathHelix</translation>
+    </message>
+    <message>
+      <location filename="PathHelix.py" line="450"/>
+      <source>Creates a helix cut from selected circles</source>
+      <translation type="unfinished">Creates a helix cut from selected circles</translation>
+    </message>
+    <message>
+      <location filename="PathHelix.py" line="464"/>
+      <source>Create a helix cut</source>
+      <translation type="unfinished">Create a helix cut</translation>
     </message>
   </context>
   <context>
@@ -826,7 +988,20 @@
     </message>
   </context>
   <context>
+    <name>PathPreferencesPathDressup</name>
+    <message>
+      <location filename="PathPreferencesPathDressup.py" line="50"/>
+      <source>Dressups</source>
+      <translation type="unfinished">Dressups</translation>
+    </message>
+  </context>
+  <context>
     <name>PathProfile</name>
+    <message>
+      <location filename="PathHelix.py" line="289"/>
+      <source>The current tool in use</source>
+      <translation type="unfinished">The current tool in use</translation>
+    </message>
     <message>
       <location filename="PathProfile.py" line="54"/>
       <source>The tool number in use</source>
@@ -1064,11 +1239,6 @@
   <context>
     <name>Path_Contour</name>
     <message>
-      <location filename="PathContour.py" line="308"/>
-      <source>Add Holding Tag</source>
-      <translation type="unfinished">Add Holding Tag</translation>
-    </message>
-    <message>
       <location filename="PathContour.py" line="344"/>
       <source>Pick Start Point</source>
       <translation type="unfinished">Pick Start Point</translation>
@@ -1077,6 +1247,11 @@
       <location filename="PathContour.py" line="363"/>
       <source>Pick End Point</source>
       <translation type="unfinished">Pick End Point</translation>
+    </message>
+    <message>
+      <location filename="PathContour.py" line="308"/>
+      <source>Add Holding Tag</source>
+      <translation type="unfinished">Add Holding Tag</translation>
     </message>
   </context>
   <context>
@@ -1450,11 +1625,6 @@
   <context>
     <name>Path_Profile</name>
     <message>
-      <location filename="PathProfileEdges.py" line="342"/>
-      <source>Add Holding Tag</source>
-      <translation type="unfinished">Add Holding Tag</translation>
-    </message>
-    <message>
       <location filename="PathProfileEdges.py" line="378"/>
       <source>Pick Start Point</source>
       <translation type="unfinished">Pick Start Point</translation>
@@ -1463,6 +1633,11 @@
       <location filename="PathProfileEdges.py" line="397"/>
       <source>Pick End Point</source>
       <translation type="unfinished">Pick End Point</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="342"/>
+      <source>Add Holding Tag</source>
+      <translation type="unfinished">Add Holding Tag</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="203"/>
@@ -1625,6 +1800,35 @@
       <location filename="PathToolTableEdit.py" line="48"/>
       <source>Edits a Tool Table in a selected Project</source>
       <translation>Szerszámlista szerkesztése a kiválasztott feladathoz</translation>
+    </message>
+  </context>
+  <context>
+    <name>Start Depth</name>
+    <message>
+      <location filename="PathHelix.py" line="277"/>
+      <source>Starting Depth of Tool - first cut depth in Z</source>
+      <translation type="unfinished">Starting Depth of Tool - first cut depth in Z</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="62"/>
+      <source>Starting Depth of Tool- first cut depth in Z</source>
+      <translation>A szerszám első vágási mélysége - Indítási mélység a Z tengelyen</translation>
+    </message>
+  </context>
+  <context>
+    <name>StepDown</name>
+    <message>
+      <location filename="PathProfile.py" line="60"/>
+      <source>Incremental Step Down of Tool</source>
+      <translation>Visszaléptetés növekménye ehhez szerszámhoz</translation>
+    </message>
+  </context>
+  <context>
+    <name>Through Depth</name>
+    <message>
+      <location filename="PathHelix.py" line="283"/>
+      <source>Add this amount of additional cutting depth to open-ended holes. Only used if UseFinalDepth is False</source>
+      <translation type="unfinished">Add this amount of additional cutting depth to open-ended holes. Only used if UseFinalDepth is False</translation>
     </message>
   </context>
   <context>
@@ -1876,11 +2080,24 @@
     </message>
   </context>
   <context>
-    <name>Active</name>
+    <name>Use Final Depth</name>
     <message>
-      <location filename="PathProfile.py" line="51"/>
-      <source>Make False, to prevent operation from generating code</source>
-      <translation>Állítsa hamisra annak megakadályozására, hogy a művelet, kódot generálhasson</translation>
+      <location filename="PathHelix.py" line="279"/>
+      <source>Set to True to manually specify a final depth</source>
+      <translation type="unfinished">Set to True to manually specify a final depth</translation>
+    </message>
+  </context>
+  <context>
+    <name>Use Start Depth</name>
+    <message>
+      <location filename="PathHelix.py" line="275"/>
+      <source>Set to True to manually specify a start depth</source>
+      <translation type="unfinished">Set to True to manually specify a start depth</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="61"/>
+      <source>make True, if manually specifying a Start Start Depth</source>
+      <translation>állítsa igazra, ha manuálisan adja meg az indítási mélységet</translation>
     </message>
   </context>
   <context>
@@ -1892,32 +2109,11 @@
     </message>
   </context>
   <context>
-    <name>Comment</name>
-    <message>
-      <location filename="PathComment.py" line="41"/>
-      <source>Comment or note for CNC program</source>
-      <translation>Megjegyzés vagy jegyzet a CNC programhoz</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="65"/>
-      <source>An optional comment for this profile</source>
-      <translation>Választható megjegyzés ehhez a profilhoz</translation>
-    </message>
-  </context>
-  <context>
     <name>Current Tool</name>
     <message>
       <location filename="PathLoadTool.py" line="137"/>
       <source>Tool Number to Load</source>
       <translation>Betöltendő szerszám száma</translation>
-    </message>
-  </context>
-  <context>
-    <name>Direction</name>
-    <message>
-      <location filename="PathProfile.py" line="86"/>
-      <source>The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW</source>
-      <translation>Szerszámmozgás iránya: Óramutató járásával megegyező CW vagy ellentétes CCW</translation>
     </message>
   </context>
   <context>
@@ -1979,14 +2175,6 @@
     </message>
   </context>
   <context>
-    <name>Final Depth</name>
-    <message>
-      <location filename="PathProfile.py" line="63"/>
-      <source>Final Depth of Tool- lowest value in Z</source>
-      <translation>Vég-fúrásmélység a Z tengelyen</translation>
-    </message>
-  </context>
-  <context>
     <name>Fixture Offset</name>
     <message>
       <location filename="PathFixture.py" line="41"/>
@@ -2044,7 +2232,7 @@
     <message>
       <location filename="PathProfile.py" line="90"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
-      <translation>Extra érték ami távol tart a záró profiltól- jó a szerszámmozgás nagyolásához</translation>
+      <translation>Extra érték ami távol tart a záró profiltól- jó a nagyoló szerszámmozgáshoz</translation>
     </message>
   </context>
   <context>
@@ -2368,14 +2556,6 @@
     </message>
   </context>
   <context>
-    <name>Start Depth</name>
-    <message>
-      <location filename="PathProfile.py" line="62"/>
-      <source>Starting Depth of Tool- first cut depth in Z</source>
-      <translation>A szerszám első vágási mélysége - Indítási mélység a Z tengelyen</translation>
-    </message>
-  </context>
-  <context>
     <name>Start Point</name>
     <message>
       <location filename="PathKurve.py" line="44"/>
@@ -2391,14 +2571,6 @@
       <location filename="PathProfile.py" line="72"/>
       <source>The start point of this path</source>
       <translation>Ennek a szerszámpályának az induló pontja</translation>
-    </message>
-  </context>
-  <context>
-    <name>StepDown</name>
-    <message>
-      <location filename="PathProfile.py" line="60"/>
-      <source>Incremental Step Down of Tool</source>
-      <translation>Visszaléptetés növekménye ehhez szerszámhoz</translation>
     </message>
   </context>
   <context>
@@ -2436,14 +2608,6 @@
       <location filename="PathProfile.py" line="52"/>
       <source>make True, if using the profile operation placement properties to transform toolpath in post processor</source>
       <translation>állítsa igazra, ha profil művelet elhelyezés tulajdonságot használ az utólagos post processzor feldolgozásban a szerszámpálya átalakításánál</translation>
-    </message>
-  </context>
-  <context>
-    <name>Use Start Depth</name>
-    <message>
-      <location filename="PathProfile.py" line="61"/>
-      <source>make True, if manually specifying a Start Start Depth</source>
-      <translation>állítsa igazra, ha manuálisan adja meg az indítási mélységet</translation>
     </message>
   </context>
   <context>

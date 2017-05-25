@@ -68,15 +68,15 @@
     </message>
     <message>
         <source>&lt;empty&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;hutsik&gt;</translation>
     </message>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">Angelua</translation>
+        <translation>Angelua</translation>
     </message>
     <message>
         <source>Axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Ardatza</translation>
     </message>
     <message>
         <source>Position</source>
@@ -84,7 +84,7 @@
     </message>
     <message>
         <source>Base</source>
-        <translation type="unfinished"></translation>
+        <translation>Oinarria</translation>
     </message>
 </context>
 <context>
@@ -268,7 +268,7 @@
     <name>Gui::BlenderNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation>Sakatu saguaren ezkerreko botoia</translation>
     </message>
     <message>
         <source>Press SHIFT and middle mouse button</source>
@@ -287,7 +287,7 @@
     <name>Gui::CADNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation>Sakatu saguaren ezkerreko botoia</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
@@ -295,12 +295,12 @@
     </message>
     <message>
         <source>Press middle and left or right mouse button</source>
-        <translation>Sakatu xaguaren erdiko eta ezkerreko edo eskubiko botoia</translation>
+        <translation>Sakatu saguaren erdiko eta ezkerreko edo eskuineko botoia</translation>
     </message>
     <message>
         <source>Scroll middle mouse button or keep middle button pressed
 while doing a left or right click and move the mouse up or down</source>
-        <translation>Korritu xaguaren erdiko botoia edo mantendu sakatuta erdiko botoia ezker edo eskubiko klik egiten duzun bitartean xagua gora edo behera mugituz</translation>
+        <translation>Korritu saguaren erdiko botoia edo mantendu sakatuta erdiko botoia ezker edo eskuinekoko klik egiten duzun bitartean sagua gora edo behera mugituz</translation>
     </message>
 </context>
 <context>
@@ -336,11 +336,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Rename object</source>
-        <translation type="unfinished">Rename object</translation>
+        <translation>Berrizendatu objektua</translation>
     </message>
     <message>
         <source>Finish editing</source>
-        <translation type="unfinished">Finish editing</translation>
+        <translation>Amaitu edizioa</translation>
     </message>
     <message>
         <source>Finish editing object</source>
@@ -463,7 +463,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DemoMode</name>
     <message>
         <source>View Turntable</source>
-        <translation>Biragailua erakutsi</translation>
+        <translation>Ikusi tornua</translation>
     </message>
     <message>
         <source>Speed</source>
@@ -821,14 +821,14 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgCustomToolBoxbarsImp</name>
     <message>
         <source>Toolbox bars</source>
-        <translation>Erreminta-kutxa barrak</translation>
+        <translation>Tresna-kutxen barrak</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomToolbars</name>
     <message>
         <source>Toolbars</source>
-        <translation>Erreminta barrak</translation>
+        <translation>Tresna-barrak</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -836,7 +836,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Move right</source>
-        <translation>Mugitu eskubira</translation>
+        <translation>Mugitu eskuinera</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
@@ -892,23 +892,23 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>New toolbar</source>
-        <translation>Erreminta barra berria</translation>
+        <translation>Tresna-barra berria</translation>
     </message>
     <message>
         <source>Toolbar name:</source>
-        <translation>Erreminta barra izena:</translation>
+        <translation>Tresna-barraren izena:</translation>
     </message>
     <message>
         <source>Duplicated name</source>
-        <translation>Izena bikoiztu</translation>
+        <translation>Izen bikoiztua</translation>
     </message>
     <message>
         <source>The toolbar name &apos;%1&apos; is already used</source>
-        <translation>&apos;%1&apos; erreminta barra izena erabilia izan da</translation>
+        <translation>Dagoeneko badago &apos;%1&apos; izena duen tresna-barra</translation>
     </message>
     <message>
         <source>Rename toolbar</source>
-        <translation>Berrizendatu erreminta barra</translation>
+        <translation>Berrizendatu tresna-barra</translation>
     </message>
     <message>
         <source></source>
@@ -927,7 +927,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation>&amp;Laguntza</translation>
+        <translation>L&amp;aguntza</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -972,7 +972,7 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgDisplayProperties</name>
     <message>
         <source>Display properties</source>
-        <translation type="unfinished">Display properties</translation>
+        <translation>Bistaratze-propietateak</translation>
     </message>
     <message>
         <source>Display</source>
@@ -984,11 +984,11 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Line width:</source>
-        <translation type="unfinished">Line width:</translation>
+        <translation>Lerro-zabalera:</translation>
     </message>
     <message>
         <source>Point size:</source>
-        <translation type="unfinished">Point size:</translation>
+        <translation>Puntu-tamaina:</translation>
     </message>
     <message>
         <source>Material</source>
@@ -1004,7 +1004,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Plot mode:</source>
-        <translation>Inprimatze modua:</translation>
+        <translation>Trazaketa modua:</translation>
     </message>
     <message>
         <source></source>
@@ -1024,11 +1024,11 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Color plot:</source>
-        <translation>Inprimatzeko kolorea:</translation>
+        <translation>Trazaketa-kolorea:</translation>
     </message>
     <message>
         <source>Document window:</source>
-        <translation type="unfinished">Document window:</translation>
+        <translation>Dokumentuaren leihoa:</translation>
     </message>
 </context>
 <context>
@@ -1193,7 +1193,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Enable splash screen at start up</source>
-        <translation>Ongi etorri pantaila gaitu abairaztean</translation>
+        <translation>Gaitu abioko ongietorri-pantaila</translation>
     </message>
     <message>
         <source>Switch to tab of report window:</source>
@@ -1209,7 +1209,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Change language:</source>
-        <translation>Hizkuntza aldatu:</translation>
+        <translation>Aldatu hizkuntza:</translation>
     </message>
     <message>
         <source>Main window</source>
@@ -1217,7 +1217,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Size of recent file list</source>
-        <translation>Azken fitxategien zerrendan neurria</translation>
+        <translation>Azken fitxategien zerrendaren neurria</translation>
     </message>
     <message>
         <source>Window style:</source>
@@ -1225,7 +1225,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Size of toolbar icons:</source>
-        <translation>Erreminta barran ikonoen neurria:</translation>
+        <translation>Tresna-barrako ikonoen tamaina:</translation>
     </message>
     <message>
         <source>Enable tiled background</source>
@@ -1237,54 +1237,38 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Python kontsola</translation>
+        <translation>Python kontsola</translation>
     </message>
     <message>
         <source>Enable word wrap</source>
-        <translation type="unfinished"></translation>
+        <translation>Gaitu testuaren egokitzea</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
-    <message>
-        <source>Default (%1 x %1)</source>
-        <translation type="obsolete">Lehenetsia (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Small (%1 x %1)</source>
-        <translation type="obsolete">Txikia (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Large (%1 x %1)</source>
-        <translation type="obsolete">Handia (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Extra large (%1 x %1)</source>
-        <translation type="obsolete">Oso handia (%1 x %1)</translation>
-    </message>
     <message>
         <source>No style sheet</source>
         <translation>Estilo-orririk ez</translation>
     </message>
     <message>
         <source>Small (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Txikia (%1px)</translation>
     </message>
     <message>
         <source>Medium (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ertaina (%1px)</translation>
     </message>
     <message>
         <source>Large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Handia (%1px)</translation>
     </message>
     <message>
         <source>Extra large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Oso handia (%1px)</translation>
     </message>
     <message>
         <source>Custom (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pertsonalizatua (%1px)</translation>
     </message>
 </context>
 <context>
@@ -1749,10 +1733,14 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Bilatu</translation>
+        <translation>Bilatu</translation>
     </message>
     <message>
         <source>A search pattern to filter the results above</source>
+        <translation>Goiko emaitzak iragazteko erabiliko den bilaketa-eredu bat</translation>
+    </message>
+    <message>
+        <source>None (Remove link)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1760,7 +1748,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     <name>Gui::Dialog::DlgReportView</name>
     <message>
         <source>Output window</source>
-        <translation>Irteera leihoa</translation>
+        <translation>Irteera-leihoa</translation>
     </message>
     <message>
         <source>Output</source>
@@ -1804,11 +1792,11 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Redirect internal Python errors to report view</source>
-        <translation>Birbideratu Pythoneko barne erroreak txosten ikuspegira</translation>
+        <translation>Birbideratu Pythoneko barne-erroreak txosten-bistara</translation>
     </message>
     <message>
         <source>Redirect internal Python output to report view</source>
-        <translation>Birbideratu Pythoneko barne irteerak txosten ikuspegira</translation>
+        <translation>Birbideratu Pythoneko barne-irteerak txosten-bistara</translation>
     </message>
     <message>
         <source>Python interpreter</source>
@@ -1851,7 +1839,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Select a file</source>
-        <translation type="unfinished">Select a file</translation>
+        <translation>Hautatu fitxategi bat</translation>
     </message>
 </context>
 <context>
@@ -1878,7 +1866,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Eye to eye distance for stereo modes:</source>
-        <translation type="unfinished">Eye to eye distance for stereo modes:</translation>
+        <translation>Begien arteko distantzia modu estereotarako:</translation>
     </message>
     <message>
         <source>Camera type</source>
@@ -1910,11 +1898,11 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Turntable</source>
-        <translation type="unfinished">Turntable</translation>
+        <translation>Tornua</translation>
     </message>
     <message>
         <source>Trackball</source>
-        <translation type="unfinished">Trackball</translation>
+        <translation>Trackball</translation>
     </message>
     <message>
         <source>Invert zoom</source>
@@ -1962,7 +1950,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>Erabili OpenGL Vertex Buffer Object (esperimentala)</translation>
     </message>
 </context>
 <context>
@@ -2008,7 +1996,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Out g&amp;rayed</source>
-        <translation type="unfinished">Out g&amp;rayed</translation>
+        <translation>Irteera grisa</translation>
     </message>
     <message>
         <source>Alt+R</source>
@@ -2016,7 +2004,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Out &amp;invisible</source>
-        <translation type="unfinished">Out &amp;invisible</translation>
+        <translation>Irteera ikustezina</translation>
     </message>
     <message>
         <source>Alt+I</source>
@@ -2100,7 +2088,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Create new document at start up</source>
-        <translation>Sortu dokumentu berria hastean</translation>
+        <translation>Sortu dokumentu berria abioan</translation>
     </message>
     <message>
         <source>Storage</source>
@@ -2136,7 +2124,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Using Undo/Redo on documents</source>
-        <translation>Desegin/berregin erabiltzen dokumentuetan</translation>
+        <translation>Erabili desegin/berregin dokumentuetan</translation>
     </message>
     <message>
         <source>Authoring and License</source>
@@ -2172,7 +2160,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation>Eskubi guztiak erreserbatuta</translation>
+        <translation>Eskubide guztiak erreserbatuta</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
@@ -2224,11 +2212,11 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Run AutoRecovery at startup</source>
-        <translation type="unfinished">Run AutoRecovery at startup</translation>
+        <translation>Exekutatu berreskuratze automatikoa abioan</translation>
     </message>
     <message>
         <source>Save AutoRecovery information every</source>
-        <translation type="unfinished">Save AutoRecovery information every</translation>
+        <translation>Gorde berreskuratze automatikoaren informazioa aldiro</translation>
     </message>
 </context>
 <context>
@@ -2243,7 +2231,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Breakpoint</source>
-        <translation type="unfinished">Breakpoint</translation>
+        <translation>Eten-puntua</translation>
     </message>
     <message>
         <source>Keyword</source>
@@ -2255,7 +2243,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Block comment</source>
-        <translation type="unfinished">Block comment</translation>
+        <translation>Bloke iruzkina</translation>
     </message>
     <message>
         <source>Number</source>
@@ -2275,11 +2263,11 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Define name</source>
-        <translation>Definitu izena</translation>
+        <translation>Definizio-izena</translation>
     </message>
     <message>
         <source>Operator</source>
-        <translation>Eragilera</translation>
+        <translation>Eragilea</translation>
     </message>
     <message>
         <source>Python output</source>
@@ -2434,7 +2422,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>&amp;Height:</source>
-        <translation type="unfinished">&amp;Height:</translation>
+        <translation>&amp;Altuera:</translation>
     </message>
     <message>
         <source>Aspect ratio:</source>
@@ -2478,7 +2466,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Insert MIBA</source>
-        <translation type="unfinished">Insert MIBA</translation>
+        <translation>Txertatu MIBA</translation>
     </message>
     <message>
         <source>Insert comment</source>
@@ -2486,11 +2474,11 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"></translation>
+        <translation>Gardena</translation>
     </message>
     <message>
         <source>Add watermark</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehitu ur-marka</translation>
     </message>
 </context>
 <context>
@@ -2505,15 +2493,15 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Logging Commands</source>
-        <translation type="unfinished">Logging Commands</translation>
+        <translation>Saio hasierako komandoak</translation>
     </message>
     <message>
         <source>Show script commands in python console</source>
-        <translation type="unfinished">Show script commands in python console</translation>
+        <translation>Erakutsi scriptaren komandoak Python kontsolan</translation>
     </message>
     <message>
         <source>Log all commands issued by menus to file:</source>
-        <translation type="unfinished">Log all commands issued by menus to file:</translation>
+        <translation>Erregistratu menuek emandako komandoak fitxategian:</translation>
     </message>
     <message>
         <source>FullScript.FCScript</source>
@@ -2525,7 +2513,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Recording GUI commands</source>
-        <translation>GUI komandoak grabatzen</translation>
+        <translation>GUI komandoen grabazioa</translation>
     </message>
     <message>
         <source>Record as comment</source>
@@ -2576,7 +2564,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>US customary (in/lb)</source>
-        <translation type="unfinished">US customary (in/lb)</translation>
+        <translation>AEBko pertsonalizatua (in/lb)</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
@@ -2584,7 +2572,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Imperial decimal (in/lb)</source>
-        <translation type="unfinished">Imperial decimal (in/lb)</translation>
+        <translation>Dezimal inperiala (in/lb)</translation>
     </message>
     <message utf8="true">
         <source>Building Euro (cm/m²/m³)</source>
@@ -2611,7 +2599,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Enable preselection highlighting</source>
-        <translation type="unfinished">Enable preselection highlighting</translation>
+        <translation>Gaitu nabarmentze bidezko aurretiko hautaketa</translation>
     </message>
     <message>
         <source>Background color</source>
@@ -2636,14 +2624,6 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
         <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
         <translation>Area lausoa ezartzen du 3D bistan elementuak aukeratzeko. Balio handiagoarekin errazagoa da elementuak aukeratzea, baina zenbait elementu txiki hautatzea ezinezko bihurtuko du.</translation>
-    </message>
-    <message>
-        <source>PickRadius</source>
-        <translation type="obsolete">PickRadius</translation>
-    </message>
-    <message>
-        <source>View</source>
-        <translation type="obsolete">Bista</translation>
     </message>
 </context>
 <context>
@@ -2692,7 +2672,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
         <source>Unit mismatch</source>
-        <translation type="unfinished">Unit mismatch</translation>
+        <translation>Unitateak ez datoz bat</translation>
     </message>
 </context>
 <context>
@@ -2727,7 +2707,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
         <source>Move right</source>
-        <translation>Mugitu eskubira</translation>
+        <translation>Mugitu eskuinera</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2775,7 +2755,7 @@ Zehaztu beste direktorio, mesedez.</translation>
         <source>Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
 
 The &apos;Status&apos; column shows whether the document could be recovered.</source>
-        <translation>Sakatu &apos;Hasi berreskurapena&apos; behean zerrendatu diren dokumentuen berreskuratze-prozesuari ekiteko.
+        <translation type="obsolete">Sakatu &apos;Hasi berreskurapena&apos; behean zerrendatu diren dokumentuen berreskuratze-prozesuari ekiteko.
 
 &apos;Egoera&apos; zutabeak dokumentua berreskura daitekeen ala ez erakusten du.</translation>
     </message>
@@ -2851,6 +2831,12 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
         <source>Transient directories deleted.</source>
         <translation>Aldi baterako direktorioak ezabatu dira.</translation>
     </message>
+    <message>
+        <source>Press &apos;Start Recovery&apos; to start the recovery process of the document listed below.
+
+The &apos;Status&apos; column shows whether the document could be recovered.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadItem</name>
@@ -2864,19 +2850,19 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Open containing folder</source>
-        <translation type="unfinished">Open containing folder</translation>
+        <translation>Ireki edukiaren karpeta</translation>
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation type="unfinished">Error opening save file: %1</translation>
+        <translation>Errorea gordetako fitxategia irekitzen: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished">Error saving: %1</translation>
+        <translation>Errorea gordetzean: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished">Network Error: %1</translation>
+        <translation>Sareko errorea: %1</translation>
     </message>
     <message>
         <source>seconds</source>
@@ -2888,11 +2874,11 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished">- %4 %5 remaining</translation>
+        <translation>- %4 %5 falta da</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished">%1 of %2 (%3/sec) %4</translation>
+        <translation>%2-tik %1 (%3/seg) %4</translation>
     </message>
     <message>
         <source>?</source>
@@ -2900,7 +2886,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished">%1 of %2 - Stopped</translation>
+        <translation>%2-tik %1- Geldituta</translation>
     </message>
     <message>
         <source>bytes</source>
@@ -2923,7 +2909,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Clean up</source>
-        <translation type="unfinished">Clean up</translation>
+        <translation>Garbitu</translation>
     </message>
     <message>
         <source>0 Items</source>
@@ -2931,15 +2917,15 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Download Manager</source>
-        <translation type="unfinished">Download Manager</translation>
+        <translation>Deskarga-kudeatzailea</translation>
     </message>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished">1 Download</translation>
+        <translation>Deskarga 1</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
-        <translation type="unfinished">%1 Downloads</translation>
+        <translation>%1 deskarga</translation>
     </message>
 </context>
 <context>
@@ -2950,7 +2936,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished">Add icon folder</translation>
+        <translation>Gehitu ikonoen karpeta</translation>
     </message>
 </context>
 <context>
@@ -2995,11 +2981,11 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <name>Gui::Dialog::MouseButtons</name>
     <message>
         <source>Mouse buttons</source>
-        <translation type="unfinished">Mouse buttons</translation>
+        <translation>Saguaren botoiak</translation>
     </message>
     <message>
         <source>Configuration</source>
-        <translation type="unfinished">Configuration</translation>
+        <translation>Konfigurazioa</translation>
     </message>
     <message>
         <source>Selection:</source>
@@ -3007,7 +2993,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Panning</source>
-        <translation type="unfinished">Panning</translation>
+        <translation>Panoramika</translation>
     </message>
     <message>
         <source>Rotation:</source>
@@ -3015,7 +3001,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Zooming:</source>
-        <translation type="unfinished">Zooming:</translation>
+        <translation>Zooma:</translation>
     </message>
 </context>
 <context>
@@ -3026,7 +3012,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Add sub-group</source>
-        <translation type="unfinished">Add sub-group</translation>
+        <translation>Gehitu azpi-taldea</translation>
     </message>
     <message>
         <source>Remove group</source>
@@ -3046,7 +3032,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Collapse</source>
-        <translation type="unfinished">Collapse</translation>
+        <translation>Tolestu</translation>
     </message>
     <message>
         <source>Do really want to remove this parameter group?</source>
@@ -3054,11 +3040,11 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Existing sub-group</source>
-        <translation type="unfinished">Existing sub-group</translation>
+        <translation>Badago azpi-taldea</translation>
     </message>
     <message>
         <source>The sub-group &apos;%1&apos; already exists.</source>
-        <translation type="unfinished">The sub-group &apos;%1&apos; already exists.</translation>
+        <translation>&apos;%1&apos; azpitaldea badago lehendik ere.</translation>
     </message>
     <message>
         <source>Export parameter to file</source>
@@ -3074,7 +3060,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Reading from &apos;%1&apos; failed.</source>
-        <translation type="unfinished">Reading from &apos;%1&apos; failed.</translation>
+        <translation>Huts egin du &apos;%1&apos; irakurtzen.</translation>
     </message>
 </context>
 <context>
@@ -3101,7 +3087,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>New float item</source>
-        <translation type="unfinished">New float item</translation>
+        <translation>Elementu mugikor berria</translation>
     </message>
     <message>
         <source>New integer item</source>
@@ -3109,7 +3095,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>New unsigned item</source>
-        <translation type="unfinished">New unsigned item</translation>
+        <translation>Sinatu gabeko elementu berria</translation>
     </message>
     <message>
         <source>New Boolean item</source>
@@ -3168,19 +3154,19 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Pitch:</source>
-        <translation type="unfinished">Pitch:</translation>
+        <translation>Buruzkatzea:</translation>
     </message>
     <message>
         <source>Roll:</source>
-        <translation type="unfinished">Roll:</translation>
+        <translation>Kulunkatzea:</translation>
     </message>
     <message>
         <source>Yaw:</source>
-        <translation type="unfinished">Yaw:</translation>
+        <translation>Keinadatzea:</translation>
     </message>
     <message>
         <source>Rotation axis with angle</source>
-        <translation type="unfinished">Rotation axis with angle</translation>
+        <translation>Angelu bidezko ardatz biraketa</translation>
     </message>
     <message>
         <source>Apply placement changes immediately</source>
@@ -3204,7 +3190,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished">Incorrect quantity</translation>
+        <translation>Kantitate okerra</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
@@ -3216,7 +3202,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Use center of mass</source>
-        <translation type="unfinished"></translation>
+        <translation>Erabili masa-zentroa</translation>
     </message>
 </context>
 <context>
@@ -3249,7 +3235,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <name>Gui::Dialog::SceneModel</name>
     <message>
         <source>Inventor Tree</source>
-        <translation type="unfinished">Inventor Tree</translation>
+        <translation>Asmatzaile-zuhaitza</translation>
     </message>
     <message>
         <source>Nodes</source>
@@ -3264,11 +3250,11 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <name>Gui::Dialog::TextureMapping</name>
     <message>
         <source>Texture</source>
-        <translation type="unfinished">Texture</translation>
+        <translation>Testura</translation>
     </message>
     <message>
         <source>Texture mapping</source>
-        <translation type="unfinished">Texture mapping</translation>
+        <translation>Testuraren mapatzea</translation>
     </message>
     <message>
         <source>Global</source>
@@ -3329,7 +3315,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <name>Gui::DockWnd::CombiView</name>
     <message>
         <source>CombiView</source>
-        <translation type="unfinished">CombiView</translation>
+        <translation>Ikuspegi konbinatua</translation>
     </message>
     <message>
         <source>Project</source>
@@ -3379,7 +3365,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Save Report Output</source>
-        <translation type="unfinished">Save Report Output</translation>
+        <translation>Gorde txostenaren irteera</translation>
     </message>
     <message>
         <source>Go to end</source>
@@ -3413,7 +3399,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <name>Gui::DockWnd::SelectionView</name>
     <message>
         <source>Property View</source>
-        <translation>Propietate-bista</translation>
+        <translation type="obsolete">Propietate-bista</translation>
     </message>
     <message>
         <source>Search</source>
@@ -3429,7 +3415,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished">Select only</translation>
+        <translation>Hautatu soilik</translation>
     </message>
     <message>
         <source>Selects only this object</source>
@@ -3445,7 +3431,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished">Zoom fit</translation>
+        <translation>Zooma doitu</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
@@ -3461,7 +3447,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>To python console</source>
-        <translation type="unfinished">To python console</translation>
+        <translation>Python kontsolara</translation>
     </message>
     <message>
         <source>Reveals this object and its subelements in the python console.</source>
@@ -3469,11 +3455,27 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Mark to recompute</source>
-        <translation type="unfinished">Mark to recompute</translation>
+        <translation>Markatu birkalkulurako</translation>
     </message>
     <message>
         <source>Mark this object to be recomputed</source>
-        <translation type="unfinished">Mark this object to be recomputed</translation>
+        <translation>Markatu objektu hau birkalkulatua izan dadin</translation>
+    </message>
+    <message>
+        <source>Selection View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The number of selected items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate subshape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creates a standalone copy of this subshape in the document</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3491,7 +3493,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <name>Gui::EditorView</name>
     <message>
         <source>Modified file</source>
-        <translation type="unfinished">Modified file</translation>
+        <translation>Aldatutako fitxategia</translation>
     </message>
     <message>
         <source>%1.
@@ -3525,7 +3527,7 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
         <source>%1 chars removed</source>
-        <translation type="unfinished">%1 chars removed</translation>
+        <translation>%1 karakterea ezabatuta</translation>
     </message>
     <message>
         <source>%1 chars added</source>
@@ -3548,7 +3550,7 @@ Aldaketak gorde nahi dituzu?</translation>
     <name>Gui::FileChooser</name>
     <message>
         <source>Select a file</source>
-        <translation type="unfinished">Select a file</translation>
+        <translation>Hautatu fitxategi bat</translation>
     </message>
     <message>
         <source>Select a directory</source>
@@ -3585,11 +3587,11 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
         <source>Bottom left</source>
-        <translation type="unfinished">Bottom left</translation>
+        <translation>Behean ezkerrean</translation>
     </message>
     <message>
         <source>Top right</source>
-        <translation type="unfinished">Top right</translation>
+        <translation>Goian eskuinean</translation>
     </message>
     <message>
         <source>Bottom right</source>
@@ -3604,7 +3606,7 @@ Aldaketak gorde nahi dituzu?</translation>
     <name>Gui::GestureNavigationStyle</name>
     <message>
         <source>Tap. Or click left mouse button.</source>
-        <translation type="unfinished">Tap. Or click left mouse button.</translation>
+        <translation>Kolpetxoa eman edo egin klik saguaren ezkerreko botoian.</translation>
     </message>
     <message>
         <source>Drag screen with two fingers. Or press right mouse button.</source>
@@ -3665,7 +3667,7 @@ Aldaketak gorde nahi dituzu?</translation>
     <name>Gui::InventorNavigationStyle</name>
     <message>
         <source>Press CTRL and left mouse button</source>
-        <translation type="unfinished">Press CTRL and left mouse button</translation>
+        <translation>Sakatu CTRL eta saguaren ezkerreko botoia</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
@@ -3673,7 +3675,7 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation>Sakatu saguaren ezkerreko botoia</translation>
     </message>
     <message>
         <source>Scroll middle mouse button</source>
@@ -3695,7 +3697,7 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
         <source>Direction must not be the null vector</source>
-        <translation type="unfinished">Direction must not be the null vector</translation>
+        <translation>Norabidea ezin da bektore nulua izan</translation>
     </message>
     <message>
         <source>X</source>
@@ -3745,7 +3747,7 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
         <source>No such macro file: &apos;%1&apos;</source>
-        <translation type="unfinished">No such macro file: &apos;%1&apos;</translation>
+        <translation>Ez dago makro fitxategi hori: &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -3760,11 +3762,11 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
         <source>Toggles this toolbar</source>
-        <translation>Tresna-barra hau txandakatzen du</translation>
+        <translation>Tresna-barra hau aktibatzen/desaktibatzen du</translation>
     </message>
     <message>
         <source>Toggles this dockable window</source>
-        <translation type="unfinished">Toggles this dockable window</translation>
+        <translation>Aktibatu/desaktibatu leiho atrakagarri hau</translation>
     </message>
     <message>
         <source>Close All</source>
@@ -3772,7 +3774,7 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation>Objektuaren dependentziak</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
@@ -3782,26 +3784,22 @@ objektu batekiko. Horiek ere kopiatu nahi dituzu?</translation>
     </message>
     <message>
         <source>There is a rendering issue on MacOS.</source>
-        <translation type="unfinished">There is a rendering issue on MacOS.</translation>
-    </message>
-    <message>
-        <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="obsolete">Begiratu &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki-a&lt;/a&gt; informazio gehiago jasotzeko</translation>
+        <translation type="obsolete">Errendatze-akats bat dago MacOS sisteman.</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
-        <translation>Ez erakutsi berriro</translation>
+        <translation type="obsolete">Ez erakutsi berriro</translation>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Begiratu &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt;wiki-a&lt;/a&gt; informazio gehiago jasotzeko</translation>
     </message>
 </context>
 <context>
     <name>Gui::ManualAlignment</name>
     <message>
         <source>Manual alignment</source>
-        <translation type="unfinished">Manual alignment</translation>
+        <translation>Eskuzko lerrokatzea</translation>
     </message>
     <message>
         <source>The alignment is already in progress.</source>
@@ -3849,7 +3847,7 @@ eskuineko bistan %2 puntu aukeratu dira.</translation>
     </message>
     <message>
         <source>Try to align group of views</source>
-        <translation type="unfinished">Try to align group of views</translation>
+        <translation>Saiatu bista-taldea lerrokatzen</translation>
     </message>
     <message>
         <source>The alignment failed.
@@ -3875,7 +3873,7 @@ Nola jarraitu nahi duzu?</translation>
     </message>
     <message>
         <source>Point picked at (%1,%2,%3)</source>
-        <translation type="unfinished">Point picked at (%1,%2,%3)</translation>
+        <translation>Puntu hautatua (%1,%2,%3)</translation>
     </message>
     <message>
         <source>No point was picked</source>
@@ -3890,7 +3888,7 @@ Nola jarraitu nahi duzu?</translation>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
         <source>Tap. Or click left mouse button.</source>
-        <translation type="unfinished">Tap. Or click left mouse button.</translation>
+        <translation>Kolpetxoa eman edo egin klik saguaren ezkerreko botoian.</translation>
     </message>
     <message>
         <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
@@ -3918,19 +3916,19 @@ Nola jarraitu nahi duzu?</translation>
     <name>Gui::OpenCascadeNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation>Sakatu saguaren ezkerreko botoia</translation>
     </message>
     <message>
         <source>Press CTRL and middle mouse button</source>
-        <translation type="unfinished">Press CTRL and middle mouse button</translation>
+        <translation>Sakatu Ctrl eta saguaren erdiko botoia</translation>
     </message>
     <message>
         <source>Press CTRL and right mouse button</source>
-        <translation type="unfinished">Press CTRL and right mouse button</translation>
+        <translation>Sakatu Ctrl eta saguaren eskuineko botoia</translation>
     </message>
     <message>
         <source>Press CTRL and left mouse button</source>
-        <translation type="unfinished">Press CTRL and left mouse button</translation>
+        <translation>Sakatu CTRL eta saguaren ezkerreko botoia</translation>
     </message>
 </context>
 <context>
@@ -3952,7 +3950,7 @@ Nola jarraitu nahi duzu?</translation>
     <name>Gui::ProgressBar</name>
     <message>
         <source>Remaining: %1</source>
-        <translation type="unfinished">Remaining: %1</translation>
+        <translation>Falta da: %1</translation>
     </message>
     <message>
         <source>Aborting</source>
@@ -3967,7 +3965,7 @@ Nola jarraitu nahi duzu?</translation>
     <name>Gui::ProgressDialog</name>
     <message>
         <source>Remaining: %1</source>
-        <translation type="unfinished">Remaining: %1</translation>
+        <translation>Falta da: %1</translation>
     </message>
     <message>
         <source>Aborting</source>
@@ -3982,7 +3980,11 @@ Nola jarraitu nahi duzu?</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation>Editatu...</translation>
+        <translation type="obsolete">Editatu...</translation>
+    </message>
+    <message>
+        <source>Change the linked object</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4011,7 +4013,7 @@ Nola jarraitu nahi duzu?</translation>
     <name>Gui::PythonConsole</name>
     <message>
         <source>System exit</source>
-        <translation type="unfinished">System exit</translation>
+        <translation>Sistemaren irteera</translation>
     </message>
     <message>
         <source>The application is still running.
@@ -4025,23 +4027,23 @@ Datuak gorde gabe irten nahi duzu?</translation>
     </message>
     <message>
         <source>Unhandled PyCXX exception.</source>
-        <translation type="unfinished">Unhandled PyCXX exception.</translation>
+        <translation>Kudeatu gabeko PyCXX salbuespena.</translation>
     </message>
     <message>
         <source>Unhandled FreeCAD exception.</source>
-        <translation type="unfinished">Unhandled FreeCAD exception.</translation>
+        <translation>Kudeatu gabeko FreeCAD salbuespena.</translation>
     </message>
     <message>
         <source>Unhandled unknown C++ exception.</source>
-        <translation type="unfinished">Unhandled unknown C++ exception.</translation>
+        <translation>Kudeatu gabeko C++ salbuespena.</translation>
     </message>
     <message>
         <source>&amp;Copy command</source>
-        <translation type="unfinished">&amp;Copy command</translation>
+        <translation>&amp;Kopiatu komandoa</translation>
     </message>
     <message>
         <source>&amp;Copy history</source>
-        <translation type="unfinished">&amp;Copy history</translation>
+        <translation>Kopiatu &amp;historia</translation>
     </message>
     <message>
         <source>Save history as...</source>
@@ -4061,7 +4063,7 @@ Datuak gorde gabe irten nahi duzu?</translation>
     </message>
     <message>
         <source>Unhandled std C++ exception.</source>
-        <translation type="unfinished">Unhandled std C++ exception.</translation>
+        <translation>Kudeatu gabeko std C++ salbuespena.</translation>
     </message>
     <message>
         <source>Word wrap</source>
@@ -4100,7 +4102,7 @@ Datuak gorde gabe irten nahi duzu?</translation>
     </message>
     <message>
         <source>Uncomment</source>
-        <translation type="unfinished">Uncomment</translation>
+        <translation>Kendu iruzkina</translation>
     </message>
 </context>
 <context>
@@ -4122,7 +4124,7 @@ Datuak gorde gabe irten nahi duzu?</translation>
     <name>Gui::SelectModule</name>
     <message>
         <source>Select module</source>
-        <translation type="unfinished">Select module</translation>
+        <translation>Hautatu modulua</translation>
     </message>
     <message>
         <source>Open %1 as</source>
@@ -4156,11 +4158,11 @@ Datuak gorde gabe irten nahi duzu?</translation>
     </message>
     <message>
         <source>Download online help</source>
-        <translation type="unfinished">Download online help</translation>
+        <translation>Deskargatu lineako laguntza</translation>
     </message>
     <message>
         <source>Download %1&apos;s online help</source>
-        <translation type="unfinished">Download %1&apos;s online help</translation>
+        <translation>Deskargatu %1-ren lineako laguntza</translation>
     </message>
     <message>
         <source>Non-existing directory</source>
@@ -4176,7 +4178,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Missing permission</source>
-        <translation type="unfinished">Missing permission</translation>
+        <translation>Baimena falta da</translation>
     </message>
     <message>
         <source>You don&apos;t have write permission to &apos;%1&apos;
@@ -4199,7 +4201,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Automatic python modules documentation</source>
-        <translation type="unfinished">Automatic python modules documentation</translation>
+        <translation>Python moduluen dokumentazio automatikoa</translation>
     </message>
     <message>
         <source>Opens a browser to show the Python modules documentation</source>
@@ -4224,7 +4226,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     <name>Gui::TaskCSysDragger</name>
     <message>
         <source>Increments</source>
-        <translation type="unfinished">Increments</translation>
+        <translation>Hazkundeak</translation>
     </message>
     <message>
         <source>Translation Increment: </source>
@@ -4239,15 +4241,15 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
         <source>Plot mode:</source>
-        <translation>Inprimatze modua:</translation>
+        <translation>Trazaketa modua:</translation>
     </message>
     <message>
         <source>Point size:</source>
-        <translation type="unfinished">Point size:</translation>
+        <translation>Puntu-tamaina:</translation>
     </message>
     <message>
         <source>Line width:</source>
-        <translation type="unfinished">Line width:</translation>
+        <translation>Lerro-zabalera:</translation>
     </message>
     <message>
         <source>Transparency:</source>
@@ -4259,7 +4261,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Document window:</source>
-        <translation type="unfinished">Document window:</translation>
+        <translation>Dokumentuaren leihoa:</translation>
     </message>
 </context>
 <context>
@@ -4288,18 +4290,18 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>edit selection</source>
-        <translation type="unfinished">edit selection</translation>
+        <translation>editatu hautapena</translation>
     </message>
 </context>
 <context>
     <name>Gui::TouchpadNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation>Sakatu saguaren ezkerreko botoia</translation>
     </message>
     <message>
         <source>Press SHIFT button</source>
-        <translation type="unfinished">Press SHIFT button</translation>
+        <translation>Sakatu Shift botoia</translation>
     </message>
     <message>
         <source>Press ALT button</source>
@@ -4307,7 +4309,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Press CTRL and SHIFT buttons</source>
-        <translation type="unfinished">Press CTRL and SHIFT buttons</translation>
+        <translation>Sakatu Ctrl eta Shift botoiak</translation>
     </message>
 </context>
 <context>
@@ -4337,7 +4339,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Rename object</source>
-        <translation type="unfinished">Rename object</translation>
+        <translation>Berrizendatu objektua</translation>
     </message>
     <message>
         <source>Labels &amp; Attributes</source>
@@ -4349,7 +4351,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Finish editing</source>
-        <translation type="unfinished">Finish editing</translation>
+        <translation>Amaitu edizioa</translation>
     </message>
     <message>
         <source>Finish editing object</source>
@@ -4365,7 +4367,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Skip recomputes</source>
-        <translation type="unfinished">Skip recomputes</translation>
+        <translation>Saltatu birkalkuluak</translation>
     </message>
     <message>
         <source>Enable or disable recomputations of document</source>
@@ -4373,15 +4375,15 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Mark to recompute</source>
-        <translation type="unfinished">Mark to recompute</translation>
+        <translation>Markatu birkalkulurako</translation>
     </message>
     <message>
         <source>Mark this object to be recomputed</source>
-        <translation type="unfinished">Mark this object to be recomputed</translation>
+        <translation>Markatu objektu hau birkalkulatua izan dadin</translation>
     </message>
     <message>
         <source>%1, Internal name: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1, barne-izena: %2</translation>
     </message>
 </context>
 <context>
@@ -4407,7 +4409,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     <name>Gui::WorkbenchGroup</name>
     <message>
         <source>Select the &apos;%1&apos; workbench</source>
-        <translation type="unfinished">Select the &apos;%1&apos; workbench</translation>
+        <translation>Hautatu &apos;%1&apos; lan-mahaia</translation>
     </message>
 </context>
 <context>
@@ -4528,7 +4530,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Grid Snap in</source>
-        <translation type="unfinished">Grid Snap in</translation>
+        <translation>Saretako atxikipena</translation>
     </message>
 </context>
 <context>
@@ -4550,19 +4552,19 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Property view</source>
-        <translation type="unfinished">Property view</translation>
+        <translation>Propietateen bista</translation>
     </message>
     <message>
         <source>Selection view</source>
-        <translation type="unfinished">Selection view</translation>
+        <translation>Hautapen-bista</translation>
     </message>
     <message>
         <source>Report view</source>
-        <translation type="unfinished">Report view</translation>
+        <translation>Txosten-bista</translation>
     </message>
     <message>
         <source>Combo View</source>
-        <translation type="unfinished">Combo View</translation>
+        <translation>Bista konbinatua</translation>
     </message>
     <message>
         <source>Toolbox</source>
@@ -4574,7 +4576,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Display properties</source>
-        <translation type="unfinished">Display properties</translation>
+        <translation>Bistaratze-propietateak</translation>
     </message>
     <message>
         <source>DAG View</source>
@@ -4597,15 +4599,15 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Cannot open unknown filetype: %1</source>
-        <translation type="unfinished">Cannot open unknown filetype: %1</translation>
+        <translation>Ezin da ireki formatu mota ezezaguna: %1</translation>
     </message>
     <message>
         <source>Cannot save to unknown filetype: %1</source>
-        <translation type="unfinished">Cannot save to unknown filetype: %1</translation>
+        <translation>Ezin da gorde formatu mota ezezagunera: %1</translation>
     </message>
     <message>
         <source>Workbench failure</source>
-        <translation type="unfinished">Workbench failure</translation>
+        <translation>Lan-mahaiaren hutsegitea</translation>
     </message>
     <message>
         <source>%1</source>
@@ -4617,7 +4619,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Open document</source>
-        <translation type="unfinished">Open document</translation>
+        <translation>Ireki dokumentua</translation>
     </message>
     <message>
         <source>Import file</source>
@@ -4641,11 +4643,11 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Save views...</source>
-        <translation type="unfinished">Save views...</translation>
+        <translation>Gorde bistak...</translation>
     </message>
     <message>
         <source>Load views...</source>
-        <translation type="unfinished">Load views...</translation>
+        <translation>Kargatu bistak...</translation>
     </message>
     <message>
         <source>Freeze view</source>
@@ -4657,15 +4659,15 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
         <source>Restore view &amp;%1</source>
-        <translation type="unfinished">Restore view &amp;%1</translation>
+        <translation>Leheneratu &amp;%1 bista</translation>
     </message>
     <message>
         <source>Save frozen views</source>
-        <translation type="unfinished">Save frozen views</translation>
+        <translation>Gorde izoztutako bistak</translation>
     </message>
     <message>
         <source>Restore views</source>
-        <translation type="unfinished">Restore views</translation>
+        <translation>Berrezarri bistak</translation>
     </message>
     <message>
         <source>Importing the restored views would clear the already stored views.
@@ -4691,7 +4693,7 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
         <source>New sub-group</source>
-        <translation type="unfinished">New sub-group</translation>
+        <translation>Azpitalde berria</translation>
     </message>
     <message>
         <source>Enter the name:</source>
@@ -4699,7 +4701,7 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
         <source>New text item</source>
-        <translation type="unfinished">New text item</translation>
+        <translation>Testu-elementu berria</translation>
     </message>
     <message>
         <source>Enter your text:</source>
@@ -4715,11 +4717,11 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
         <source>New unsigned item</source>
-        <translation type="unfinished">New unsigned item</translation>
+        <translation>Sinatu gabeko elementu berria</translation>
     </message>
     <message>
         <source>New float item</source>
-        <translation type="unfinished">New float item</translation>
+        <translation>Elementu mugikor berria</translation>
     </message>
     <message>
         <source>New Boolean item</source>
@@ -4735,15 +4737,15 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
         <source>The group &apos;%1&apos; cannot be renamed.</source>
-        <translation type="unfinished">The group &apos;%1&apos; cannot be renamed.</translation>
+        <translation>&apos;%1&apos; fitxategia ezin da berrizendatu.</translation>
     </message>
     <message>
         <source>Existing group</source>
-        <translation type="unfinished">Existing group</translation>
+        <translation>Lehendik dagoen taldea</translation>
     </message>
     <message>
         <source>The group &apos;%1&apos; already exists.</source>
-        <translation type="unfinished">The group &apos;%1&apos; already exists.</translation>
+        <translation>&apos;%1&apos; taldea badago lehendik ere.</translation>
     </message>
     <message>
         <source>Change value</source>
@@ -4755,7 +4757,7 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
         <source>Saving aborted</source>
-        <translation type="unfinished">Saving aborted</translation>
+        <translation>Gordetzea abortatu da</translation>
     </message>
     <message>
         <source>Unsaved document</source>
@@ -4815,7 +4817,7 @@ Mesedez, ireki nabigatzaile-leiho bat eta idatzi: http://localhost:%1.</translat
     </message>
     <message>
         <source>Out of memory</source>
-        <translation type="unfinished">Out of memory</translation>
+        <translation>Memoria gutxiegi</translation>
     </message>
     <message>
         <source>Not enough memory available to display the data.</source>
@@ -4827,7 +4829,7 @@ Mesedez, ireki nabigatzaile-leiho bat eta idatzi: http://localhost:%1.</translat
     </message>
     <message>
         <source>Cannot find file %1 neither in %2 nor in %3</source>
-        <translation type="unfinished">Cannot find file %1 neither in %2 nor in %3</translation>
+        <translation>Ez da %1 fitxategia aurkitu ez %2 ez %3 tokietan</translation>
     </message>
     <message>
         <source>Save %1 Document</source>
@@ -4885,7 +4887,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>New boolean item</source>
-        <translation type="unfinished">New boolean item</translation>
+        <translation>Elementu boolear berria</translation>
     </message>
     <message>
         <source>Navigation styles</source>
@@ -4893,7 +4895,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Move annotation</source>
-        <translation type="unfinished">Move annotation</translation>
+        <translation>Mugitu oharpena</translation>
     </message>
     <message>
         <source>Transform</source>
@@ -4941,7 +4943,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source> %1.%2.%3 </source>
-        <translation type="unfinished"> %1.%2.%3 </translation>
+        <translation> %1.%2.%3 </translation>
     </message>
     <message>
         <source>Translation: </source>
@@ -4956,19 +4958,15 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
         <translation>Ezabatu talde-edukia?</translation>
     </message>
     <message>
-        <source>The %1 is not empty, delete it&apos;s content as well?</source>
-        <translation type="obsolete">%1 ez dago hutsik, bere edukiak ere ezabatu nahi dituzu?</translation>
-    </message>
-    <message>
         <source>The %1 is not empty, delete its content as well?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ez dago hutsik, bere edukiak ere ezabatu nahi dituzu?</translation>
     </message>
 </context>
 <context>
     <name>SelectionFilter</name>
     <message>
         <source>Not allowed:</source>
-        <translation type="unfinished">Not allowed:</translation>
+        <translation>Ez dago onartuta:</translation>
     </message>
     <message>
         <source>Selection not allowed by filter</source>
@@ -4979,11 +4977,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdBoxSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Box selection</source>
-        <translation type="unfinished">Box selection</translation>
+        <translation>Kutxa bidezko hautapena</translation>
     </message>
 </context>
 <context>
@@ -5069,22 +5067,22 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Arrange &amp;Icons</source>
-        <translation type="unfinished">Arrange &amp;Icons</translation>
+        <translation>Antolatu &amp;ikonoak</translation>
     </message>
     <message>
         <source>Arrange Icons</source>
-        <translation type="unfinished">Arrange Icons</translation>
+        <translation>Antolatu ikonoak</translation>
     </message>
 </context>
 <context>
     <name>StdCmdAxisCross</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Toggle axis cross</source>
-        <translation type="unfinished">Toggle axis cross</translation>
+        <translation>Aktibatu/desaktibatu zeharkako ardatza</translation>
     </message>
 </context>
 <context>
@@ -5095,11 +5093,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>&amp;Cascade</source>
-        <translation type="unfinished">&amp;Cascade</translation>
+        <translation>&amp;Teilakatua</translation>
     </message>
     <message>
         <source>Tile pragmatic</source>
-        <translation type="unfinished">Tile pragmatic</translation>
+        <translation>Teilakatu leihoak</translation>
     </message>
 </context>
 <context>
@@ -5159,7 +5157,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Copy operation</source>
-        <translation type="unfinished">Copy operation</translation>
+        <translation>Kopia-eragiketa</translation>
     </message>
 </context>
 <context>
@@ -5170,11 +5168,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>&amp;Cut</source>
-        <translation>&amp;Moztu</translation>
+        <translation>&amp;Ebaki</translation>
     </message>
     <message>
         <source>Cut out</source>
-        <translation type="unfinished">Cut out</translation>
+        <translation>Kendu</translation>
     </message>
 </context>
 <context>
@@ -5196,15 +5194,15 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdDemoMode</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>View turntable...</source>
-        <translation type="unfinished">View turntable...</translation>
+        <translation>Ikusi tornua...</translation>
     </message>
     <message>
         <source>View turntable</source>
-        <translation type="unfinished">View turntable</translation>
+        <translation>Ikusi tornua</translation>
     </message>
 </context>
 <context>
@@ -5215,7 +5213,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Cu&amp;stomize...</source>
-        <translation type="unfinished">Cu&amp;stomize...</translation>
+        <translation>Pert&amp;sonalizatu...</translation>
     </message>
     <message>
         <source>Customize toolbars and command bars</source>
@@ -5260,7 +5258,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Opens a dialog to record a macro</source>
-        <translation type="unfinished">Opens a dialog to record a macro</translation>
+        <translation>Elkarrizketa-koadro bat irekitzen du makro bat grabatzeko</translation>
     </message>
     <message>
         <source>Macro</source>
@@ -5294,7 +5292,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Opens a Dialog to edit the preferences</source>
-        <translation type="unfinished">Opens a Dialog to edit the preferences</translation>
+        <translation>Elkarrizketa-koadro bat irekitzen du hobespenak editatzeko</translation>
     </message>
 </context>
 <context>
@@ -5309,14 +5307,14 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>List of available dock panels</source>
-        <translation type="unfinished">List of available dock panels</translation>
+        <translation>Panel eskuragarrien zerrenda</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDrawStyle</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Draw style</source>
@@ -5388,7 +5386,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Dependency graph...</source>
-        <translation type="unfinished">Dependency graph...</translation>
+        <translation>Mendekotasun-grafikoa...</translation>
     </message>
     <message>
         <source>Show the dependency graph of the objects in the active document</source>
@@ -5456,7 +5454,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Python scripting documentation</source>
-        <translation type="unfinished">Python scripting documentation</translation>
+        <translation>Python scripting dokumentazioa</translation>
     </message>
     <message>
         <source>Python scripting documentation on the FreeCAD website</source>
@@ -5464,7 +5462,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>PowerUsers documentation</source>
-        <translation type="unfinished">PowerUsers documentation</translation>
+        <translation>Erabiltzaile aurreratuentzako dokumentazioa</translation>
     </message>
 </context>
 <context>
@@ -5475,7 +5473,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Users documentation</source>
-        <translation type="unfinished">Users documentation</translation>
+        <translation>Erabiltzaile-dokumentazioa</translation>
     </message>
     <message>
         <source>Documentation for users on the FreeCAD website</source>
@@ -5501,11 +5499,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdFreezeViews</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Freeze display</source>
-        <translation type="unfinished">Freeze display</translation>
+        <translation>Izoztu bistaratzea</translation>
     </message>
     <message>
         <source>Freezes the current view position</source>
@@ -5516,7 +5514,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdHideObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Hide all objects</source>
@@ -5524,14 +5522,14 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Hide all objects in the document</source>
-        <translation type="unfinished">Hide all objects in the document</translation>
+        <translation>Ezkutatu dokumentuko objektu guztiak</translation>
     </message>
 </context>
 <context>
     <name>StdCmdHideSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Hide selection</source>
@@ -5550,7 +5548,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>&amp;Import...</source>
-        <translation>&amp;Inportatu...</translation>
+        <translation>I&amp;nportatu...</translation>
     </message>
     <message>
         <source>Import a file in the active document</source>
@@ -5577,7 +5575,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Start debugging of macro</source>
-        <translation type="unfinished">Start debugging of macro</translation>
+        <translation>Hasi makroa arazten</translation>
     </message>
 </context>
 <context>
@@ -5588,7 +5586,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Step into</source>
-        <translation type="unfinished">Step into</translation>
+        <translation>Urrats bat barrura</translation>
     </message>
 </context>
 <context>
@@ -5599,7 +5597,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Step over</source>
-        <translation type="unfinished">Step over</translation>
+        <translation>Urrats bat aurrera</translation>
     </message>
 </context>
 <context>
@@ -5610,11 +5608,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Stop debugging</source>
-        <translation type="unfinished">Stop debugging</translation>
+        <translation>Gelditu arazketa</translation>
     </message>
     <message>
         <source>Stop debugging of macro</source>
-        <translation type="unfinished">Stop debugging of macro</translation>
+        <translation>Gelditu makroaren arazketa</translation>
     </message>
 </context>
 <context>
@@ -5629,7 +5627,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Stop the macro recording session</source>
-        <translation type="unfinished">Stop the macro recording session</translation>
+        <translation>Gelditu makroa grabatzeko saioa</translation>
     </message>
 </context>
 <context>
@@ -5666,7 +5664,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Merge project...</source>
-        <translation type="unfinished">Merge project...</translation>
+        <translation>Fusionatu proiektua...</translation>
     </message>
     <message>
         <source>Merge project</source>
@@ -5708,7 +5706,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Show help to the application</source>
-        <translation type="unfinished">Show help to the application</translation>
+        <translation>Erakutsi aplikazioaren laguntza</translation>
     </message>
 </context>
 <context>
@@ -5750,7 +5748,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Cannot open file</source>
-        <translation type="unfinished">Cannot open file</translation>
+        <translation>Ezin da fitxategia ireki</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
@@ -5769,7 +5767,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Paste operation</source>
-        <translation type="unfinished">Paste operation</translation>
+        <translation>Itsaste-eragiketa</translation>
     </message>
 </context>
 <context>
@@ -5859,7 +5857,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Project utility...</source>
-        <translation type="unfinished">Project utility...</translation>
+        <translation>Proiektuaren utilitatea...</translation>
     </message>
     <message>
         <source>Utility to extract or create project files</source>
@@ -5949,7 +5947,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Recomputes the current active document</source>
-        <translation type="unfinished">Recomputes the current active document</translation>
+        <translation>Uneko dokumentu aktiboa birkalkulatzen du</translation>
     </message>
 </context>
 <context>
@@ -6005,7 +6003,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Save a &amp;Copy...</source>
-        <translation type="unfinished">Save a &amp;Copy...</translation>
+        <translation>Gorde &amp;kopia bat...</translation>
     </message>
     <message>
         <source>Save a copy of the active document under a new file name</source>
@@ -6020,11 +6018,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Scene inspector...</source>
-        <translation type="unfinished">Scene inspector...</translation>
+        <translation>Eszena-ikuskatzailea...</translation>
     </message>
     <message>
         <source>Scene inspector</source>
-        <translation type="unfinished">Scene inspector</translation>
+        <translation>Eszena-ikuskatzailea</translation>
     </message>
 </context>
 <context>
@@ -6046,7 +6044,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Select visible objects</source>
@@ -6061,11 +6059,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdSetAppearance</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Appearance...</source>
-        <translation type="unfinished">Appearance...</translation>
+        <translation>Itxura...</translation>
     </message>
     <message>
         <source>Sets the display properties of the selected object</source>
@@ -6076,7 +6074,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdShowObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Show all objects</source>
@@ -6084,14 +6082,14 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Show all objects in the document</source>
-        <translation type="unfinished">Show all objects in the document</translation>
+        <translation>Erakutsi dokumentuko objektu guztiak</translation>
     </message>
 </context>
 <context>
     <name>StdCmdShowSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Show selection</source>
@@ -6125,11 +6123,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Texture mapping...</source>
-        <translation type="unfinished">Texture mapping...</translation>
+        <translation>Testuraren mapatzea...</translation>
     </message>
     <message>
         <source>Texture mapping</source>
-        <translation type="unfinished">Texture mapping</translation>
+        <translation>Testuraren mapatzea</translation>
     </message>
 </context>
 <context>
@@ -6144,7 +6142,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Tile the windows</source>
-        <translation type="unfinished">Tile the windows</translation>
+        <translation>Jarri leihoak lauza moduan</translation>
     </message>
 </context>
 <context>
@@ -6155,29 +6153,29 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Toggle breakpoint</source>
-        <translation type="unfinished">Toggle breakpoint</translation>
+        <translation>Txandakatu eten-puntua</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Clipping plane</source>
-        <translation type="unfinished">Clipping plane</translation>
+        <translation>Mozte-planoa</translation>
     </message>
     <message>
         <source>Toggles clipping plane for active view</source>
-        <translation type="unfinished">Toggles clipping plane for active view</translation>
+        <translation>Bista aktiboaren mozte-planoa txandakatzen du</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleNavigation</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Toggle navigation/Edit mode</source>
@@ -6192,7 +6190,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdToggleObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Toggle all objects</source>
@@ -6207,7 +6205,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdToggleSelectability</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Toggle selectability</source>
@@ -6222,7 +6220,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdToggleVisibility</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Toggle visibility</source>
@@ -6245,7 +6243,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Toggles this window</source>
-        <translation>Leiho hau txandakatzen du</translation>
+        <translation>Leiho hau aktibatzen/deskatibatzen du</translation>
     </message>
 </context>
 <context>
@@ -6275,7 +6273,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Transform the selected object in the 3d view</source>
-        <translation type="unfinished">Transform the selected object in the 3d view</translation>
+        <translation>Transformatu 3D bistan hautatutako objektua</translation>
     </message>
 </context>
 <context>
@@ -6290,7 +6288,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Scroll to first selected item</source>
-        <translation type="unfinished">Scroll to first selected item</translation>
+        <translation>Joan hautatutako lehen elementura</translation>
     </message>
 </context>
 <context>
@@ -6305,7 +6303,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Undo exactly one action</source>
-        <translation type="unfinished">Undo exactly one action</translation>
+        <translation>Desegin ekintza bakar bat</translation>
     </message>
 </context>
 <context>
@@ -6316,7 +6314,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>&amp;Units calculator...</source>
-        <translation type="unfinished">&amp;Units calculator...</translation>
+        <translation>&amp;Unitate-kalkulagailua...</translation>
     </message>
     <message>
         <source>Start the units calculator</source>
@@ -6342,7 +6340,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdViewAxo</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Axonometric</source>
@@ -6357,22 +6355,22 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdViewBottom</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">Bottom</translation>
+        <translation>Azpia</translation>
     </message>
     <message>
         <source>Set to bottom view</source>
-        <translation type="unfinished">Set to bottom view</translation>
+        <translation>Ikusi behetik</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewCreate</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Create new view</source>
@@ -6387,56 +6385,56 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdViewExample1</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Inventor example #1</source>
-        <translation type="unfinished">Inventor example #1</translation>
+        <translation>Asmatzaile adibidea #1</translation>
     </message>
     <message>
         <source>Shows a 3D texture with manipulator</source>
-        <translation type="unfinished">Shows a 3D texture with manipulator</translation>
+        <translation>Manipulatzailea duen 3D testura erakusten du</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewExample2</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Inventor example #2</source>
-        <translation type="unfinished">Inventor example #2</translation>
+        <translation>Asmatzaile adibidea #2</translation>
     </message>
     <message>
         <source>Shows spheres and drag-lights</source>
-        <translation type="unfinished">Shows spheres and drag-lights</translation>
+        <translation>Esferak eta argi mugikorrak erakusten ditu</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewExample3</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Inventor example #3</source>
-        <translation type="unfinished">Inventor example #3</translation>
+        <translation>Asmatzaile adibidea #3</translation>
     </message>
     <message>
         <source>Shows a animated texture</source>
-        <translation type="unfinished">Shows a animated texture</translation>
+        <translation>Testura animatu bat erakusten du</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewFitAll</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Fit all</source>
-        <translation>Doitu dena</translation>
+        <translation>Ikusi dena</translation>
     </message>
     <message>
         <source>Fits the whole content on the screen</source>
@@ -6447,11 +6445,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdViewFitSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Fit selection</source>
-        <translation type="unfinished">Fit selection</translation>
+        <translation>Ikusi hautapena</translation>
     </message>
     <message>
         <source>Fits the selected content on the screen</source>
@@ -6462,26 +6460,26 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdViewFront</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Front</source>
-        <translation>Aurrea</translation>
+        <translation>Aurrekoa</translation>
     </message>
     <message>
         <source>Set to front view</source>
-        <translation type="unfinished">Set to front view</translation>
+        <translation>Ikusi aurretik</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Issue camera position</source>
-        <translation type="unfinished">Issue camera position</translation>
+        <translation>Argitaratu kameraren posizioa</translation>
     </message>
     <message>
         <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
@@ -6492,97 +6490,97 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Stereo Interleaved Columns</source>
-        <translation type="unfinished">Stereo Interleaved Columns</translation>
+        <translation>Estereoa tartekatutako zutabeak</translation>
     </message>
     <message>
         <source>Switch stereo viewing to Interleaved Columns</source>
-        <translation type="unfinished">Switch stereo viewing to Interleaved Columns</translation>
+        <translation>Aldatu bista estereoa tartekatutako zutabeetara</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Stereo Interleaved Rows</source>
-        <translation type="unfinished">Stereo Interleaved Rows</translation>
+        <translation>Estereoa tartekatutako errenkadak</translation>
     </message>
     <message>
         <source>Switch stereo viewing to Interleaved Rows</source>
-        <translation type="unfinished">Switch stereo viewing to Interleaved Rows</translation>
+        <translation>Aldatu bista estereoa tartekatutako errenkadetara</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Stereo Off</source>
-        <translation type="unfinished">Stereo Off</translation>
+        <translation>Estereoa desgaituta</translation>
     </message>
     <message>
         <source>Switch stereo viewing off</source>
-        <translation type="unfinished">Switch stereo viewing off</translation>
+        <translation>Desgaitu bista estereoa</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Stereo quad buffer</source>
-        <translation type="unfinished">Stereo quad buffer</translation>
+        <translation>Buffer laukoitzeko estereoa</translation>
     </message>
     <message>
         <source>Switch stereo viewing to quad buffer</source>
-        <translation type="unfinished">Switch stereo viewing to quad buffer</translation>
+        <translation>Aldatu bista estereoa buffer laukoitzera</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished">Stereo red/cyan</translation>
+        <translation>Estereoa gorria/zian</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished">Switch stereo viewing to red/cyan</translation>
+        <translation>Aldatu bista estereoa gorria/zian modura</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewLeft</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation>Ezkerra</translation>
+        <translation>Ezkerrekoa</translation>
     </message>
     <message>
         <source>Set to left view</source>
-        <translation type="unfinished">Set to left view</translation>
+        <translation>Ikusi ezkerretik</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRear</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Rear</source>
@@ -6590,29 +6588,29 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Set to rear view</source>
-        <translation type="unfinished">Set to rear view</translation>
+        <translation>Ikusi atzetik</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRight</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation>Eskuina</translation>
+        <translation>Eskuinekoa</translation>
     </message>
     <message>
         <source>Set to right view</source>
-        <translation type="unfinished">Set to right view</translation>
+        <translation>Ikusi eskuinetik</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Rotate Left</source>
@@ -6627,7 +6625,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdViewRotateRight</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Rotate Right</source>
@@ -6642,22 +6640,22 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdCmdViewTop</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation>Goia</translation>
+        <translation>Goikoa</translation>
     </message>
     <message>
         <source>Set to top view</source>
-        <translation type="unfinished">Set to top view</translation>
+        <translation>Ikusi goitik</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewVR</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>FreeCAD-VR</source>
@@ -6676,7 +6674,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>&amp;What&apos;s This?</source>
-        <translation type="unfinished">&amp;What&apos;s This?</translation>
+        <translation>&amp;Zer da hau?</translation>
     </message>
     <message>
         <source>What&apos;s This</source>
@@ -6691,7 +6689,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>&amp;Windows...</source>
-        <translation>&amp;Leihoak...</translation>
+        <translation>Lei&amp;hoak...</translation>
     </message>
     <message>
         <source>Windows list</source>
@@ -6721,59 +6719,59 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
         <source>Switch between workbenches</source>
-        <translation type="unfinished">Switch between workbenches</translation>
+        <translation>Trukatu lan-mahaiak</translation>
     </message>
 </context>
 <context>
     <name>StdOrthographicCamera</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Orthographic view</source>
-        <translation type="unfinished">Orthographic view</translation>
+        <translation>Bista ortografikoa</translation>
     </message>
     <message>
         <source>Switches to orthographic view mode</source>
-        <translation type="unfinished">Switches to orthographic view mode</translation>
+        <translation>Bista ortografikoko modura aldatzen da</translation>
     </message>
 </context>
 <context>
     <name>StdPerspectiveCamera</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Perspective view</source>
-        <translation type="unfinished">Perspective view</translation>
+        <translation>Perspektiba-bista</translation>
     </message>
     <message>
         <source>Switches to perspective view mode</source>
-        <translation type="unfinished">Switches to perspective view mode</translation>
+        <translation>Perspektiba-bistaren modura aldatzen da</translation>
     </message>
 </context>
 <context>
     <name>StdViewBoxZoom</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Box zoom</source>
-        <translation type="unfinished">Box zoom</translation>
+        <translation>Zoom kutxara</translation>
     </message>
 </context>
 <context>
     <name>StdViewDock</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Docked</source>
-        <translation type="unfinished">Docked</translation>
+        <translation>Atrakatua</translation>
     </message>
     <message>
         <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -6784,7 +6782,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdViewDockUndockFullscreen</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Document window</source>
@@ -6799,7 +6797,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdViewFullscreen</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Fullscreen</source>
@@ -6814,7 +6812,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdViewScreenShot</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Save picture...</source>
@@ -6829,7 +6827,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdViewUndock</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Undocked</source>
@@ -6844,7 +6842,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdViewZoomIn</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Zoom In</source>
@@ -6855,18 +6853,18 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <name>StdViewZoomOut</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation>Bista estandarra</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation type="unfinished">Zoom Out</translation>
+        <translation>Txikiagotu</translation>
     </message>
 </context>
 <context>
     <name>Std_Delete</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation>Objektuaren dependentziak</translation>
     </message>
     <message>
         <source>The following, referencing objects might break.
@@ -6885,7 +6883,7 @@ Ziur zaude jarraitu nahi duzula?
     <name>Std_DrawStyle</name>
     <message>
         <source>As is</source>
-        <translation type="unfinished">As is</translation>
+        <translation>Bere hartan</translation>
     </message>
     <message>
         <source>Normal mode</source>
@@ -6893,11 +6891,11 @@ Ziur zaude jarraitu nahi duzula?
     </message>
     <message>
         <source>Wireframe</source>
-        <translation type="unfinished">Wireframe</translation>
+        <translation>Alanbre-bilbea</translation>
     </message>
     <message>
         <source>Wireframe mode</source>
-        <translation type="unfinished">Wireframe mode</translation>
+        <translation>Alanbre-bilbearen modua</translation>
     </message>
     <message>
         <source>Flat lines</source>
@@ -6905,15 +6903,15 @@ Ziur zaude jarraitu nahi duzula?
     </message>
     <message>
         <source>Flat lines mode</source>
-        <translation type="unfinished">Flat lines mode</translation>
+        <translation>Lerro lauen modua</translation>
     </message>
     <message>
         <source>Shaded</source>
-        <translation type="unfinished">Shaded</translation>
+        <translation>Itzaldurarekin</translation>
     </message>
     <message>
         <source>Shaded mode</source>
-        <translation type="unfinished">Shaded mode</translation>
+        <translation>Itzaleztadura modua</translation>
     </message>
     <message>
         <source>Points</source>
@@ -6921,30 +6919,30 @@ Ziur zaude jarraitu nahi duzula?
     </message>
     <message>
         <source>Points mode</source>
-        <translation type="unfinished">Points mode</translation>
+        <translation>Puntuen modua</translation>
     </message>
     <message>
         <source>Hidden line</source>
-        <translation type="unfinished"></translation>
+        <translation>Lerro ezkutua</translation>
     </message>
     <message>
         <source>Hidden line mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Lerro ezkutuaren modua</translation>
     </message>
     <message>
         <source>No shading</source>
-        <translation type="unfinished"></translation>
+        <translation>Itzalik ez</translation>
     </message>
     <message>
         <source>No shading mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Itzalik gabeko modua</translation>
     </message>
 </context>
 <context>
     <name>Std_DuplicateSelection</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation>Objektuaren dependentziak</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
@@ -6971,7 +6969,7 @@ Haren instalazio-bidea adierazi nahi duzu, jadanik instalatuta badago?</translat
     </message>
     <message>
         <source>Dependency graph</source>
-        <translation type="unfinished">Dependency graph</translation>
+        <translation>Mendekotasun-grafikoa</translation>
     </message>
     <message>
         <source>Graphviz failed</source>
@@ -6990,7 +6988,7 @@ Haren instalazio-bidea adierazi nahi duzu, jadanik instalatuta badago?</translat
     </message>
     <message>
         <source>Revert document</source>
-        <translation type="unfinished">Revert document</translation>
+        <translation>Leheneratu dokumentua</translation>
     </message>
     <message>
         <source>Do you want to continue?</source>
@@ -7013,7 +7011,7 @@ Haren instalazio-bidea adierazi nahi duzu, jadanik instalatuta badago?</translat
     </message>
     <message>
         <source>&amp;Stereo</source>
-        <translation type="unfinished">&amp;Stereo</translation>
+        <translation>&amp;Estereoa</translation>
     </message>
     <message>
         <source>&amp;Zoom</source>
@@ -7037,15 +7035,15 @@ Haren instalazio-bidea adierazi nahi duzu, jadanik instalatuta badago?</translat
     </message>
     <message>
         <source>&amp;Windows</source>
-        <translation>&amp;Leihoak</translation>
+        <translation>Lei&amp;hoak</translation>
     </message>
     <message>
         <source>&amp;On-line help</source>
-        <translation type="unfinished">&amp;On-line help</translation>
+        <translation>&amp;Lineako laguntza</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation>&amp;Laguntza</translation>
+        <translation>L&amp;aguntza</translation>
     </message>
     <message>
         <source>File</source>
@@ -7061,7 +7059,7 @@ Haren instalazio-bidea adierazi nahi duzu, jadanik instalatuta badago?</translat
     </message>
     <message>
         <source>Special Ops</source>
-        <translation type="unfinished">Special Ops</translation>
+        <translation>Eragiketa bereziak</translation>
     </message>
 </context>
 <context>
@@ -7090,7 +7088,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Choose the style of the Task Panel</source>
-        <translation type="unfinished">Choose the style of the Task Panel</translation>
+        <translation>Hautatu ataza-panelaren estiloa</translation>
     </message>
     <message>
         <source>Default</source>

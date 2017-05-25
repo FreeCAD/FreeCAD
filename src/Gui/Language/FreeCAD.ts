@@ -1737,6 +1737,10 @@ Specify another directory, please.</source>
         <source>A search pattern to filter the results above</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>None (Remove link)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgReportView</name>
@@ -2745,12 +2749,6 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
-
-The &apos;Status&apos; column shows whether the document could be recovered.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Status of recovered documents:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2820,6 +2818,12 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press &apos;Start Recovery&apos; to start the recovery process of the document listed below.
+
+The &apos;Status&apos; column shows whether the document could be recovered.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3383,10 +3387,6 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
 <context>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
-        <source>Property View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3444,6 +3444,22 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Mark this object to be recomputed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The number of selected items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate subshape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creates a standalone copy of this subshape in the document</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3747,18 +3763,6 @@ Do you want to save your changes?</source>
 Do you want to copy them, too?</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>There is a rendering issue on MacOS.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Don&apos;t show again</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Gui::ManualAlignment</name>
@@ -3940,7 +3944,7 @@ How do you want to proceed?</source>
 <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-        <source>Edit...</source>
+        <source>Change the linked object</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

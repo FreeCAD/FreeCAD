@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="sv-SE" sourcelanguage="en">
   <context>
+    <name>Active</name>
+    <message>
+      <location filename="PathHelix.py" line="253"/>
+      <source>Set to False to disable code generation</source>
+      <translation>Inställd på falsk för att inaktivera kodgenerering</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="51"/>
+      <source>Make False, to prevent operation from generating code</source>
+      <translation type="unfinished">Make False, to prevent operation from generating code</translation>
+    </message>
+  </context>
+  <context>
     <name>App::Property</name>
     <message>
       <location filename="PathFromShape.py" line="46"/>
@@ -26,7 +39,7 @@
     <message>
       <location filename="PathProfileEdges.py" line="59"/>
       <source>User Assigned Label</source>
-      <translation type="unfinished">User Assigned Label</translation>
+      <translation>Användartilldelad etikett</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="55"/>
@@ -194,21 +207,6 @@
       <translation type="unfinished">make True, if using Cutter Radius Compensation</translation>
     </message>
     <message>
-      <location filename="PathProfileEdges.py" line="91"/>
-      <source>Side of edge that tool should cut</source>
-      <translation type="unfinished">Side of edge that tool should cut</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="97"/>
-      <source>Radius at start and end</source>
-      <translation type="unfinished">Radius at start and end</translation>
-    </message>
-    <message>
-      <location filename="PathContour.py" line="96"/>
-      <source>Extra value to stay away from final Contour- good for roughing toolpath</source>
-      <translation type="unfinished">Extra value to stay away from final Contour- good for roughing toolpath</translation>
-    </message>
-    <message>
       <location filename="PathProfileEdges.py" line="99"/>
       <source>Tesselation  value for tool paths made from beziers, bsplines, and ellipses</source>
       <translation type="unfinished">Tesselation  value for tool paths made from beziers, bsplines, and ellipses</translation>
@@ -227,6 +225,21 @@
       <location filename="PathProfileEdges.py" line="106"/>
       <source>List of angles for the holding tags</source>
       <translation type="unfinished">List of angles for the holding tags</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="91"/>
+      <source>Side of edge that tool should cut</source>
+      <translation type="unfinished">Side of edge that tool should cut</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="97"/>
+      <source>Radius at start and end</source>
+      <translation type="unfinished">Radius at start and end</translation>
+    </message>
+    <message>
+      <location filename="PathContour.py" line="96"/>
+      <source>Extra value to stay away from final Contour- good for roughing toolpath</source>
+      <translation type="unfinished">Extra value to stay away from final Contour- good for roughing toolpath</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="57"/>
@@ -505,6 +518,79 @@
     </message>
   </context>
   <context>
+    <name>Clearance</name>
+    <message>
+      <location filename="PathHelix.py" line="271"/>
+      <source>Safe distance above the top of the hole to which to retract the tool</source>
+      <translation type="unfinished">Safe distance above the top of the hole to which to retract the tool</translation>
+    </message>
+  </context>
+  <context>
+    <name>Comment</name>
+    <message>
+      <location filename="PathHelix.py" line="255"/>
+      <source>An optional comment for this profile, will appear in G-Code</source>
+      <translation type="unfinished">An optional comment for this profile, will appear in G-Code</translation>
+    </message>
+    <message>
+      <location filename="PathComment.py" line="41"/>
+      <source>Comment or note for CNC program</source>
+      <translation type="unfinished">Comment or note for CNC program</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="65"/>
+      <source>An optional comment for this profile</source>
+      <translation type="unfinished">An optional comment for this profile</translation>
+    </message>
+  </context>
+  <context>
+    <name>DeltaR</name>
+    <message>
+      <location filename="PathHelix.py" line="267"/>
+      <source>Radius increment (must be smaller than tool diameter)</source>
+      <translation type="unfinished">Radius increment (must be smaller than tool diameter)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Direction</name>
+    <message>
+      <location filename="PathHelix.py" line="259"/>
+      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
+      <translation type="unfinished">The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</translation>
+    </message>
+    <message>
+      <location filename="PathHelix.py" line="263"/>
+      <source>Start cutting from the inside or outside</source>
+      <translation type="unfinished">Start cutting from the inside or outside</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="86"/>
+      <source>The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW</source>
+      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW</translation>
+    </message>
+  </context>
+  <context>
+    <name>Features</name>
+    <message>
+      <location filename="PathHelix.py" line="251"/>
+      <source>Selected features for the drill operation</source>
+      <translation type="unfinished">Selected features for the drill operation</translation>
+    </message>
+  </context>
+  <context>
+    <name>Final Depth</name>
+    <message>
+      <location filename="PathHelix.py" line="281"/>
+      <source>Final Depth of Tool - lowest value in Z</source>
+      <translation type="unfinished">Final Depth of Tool - lowest value in Z</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="63"/>
+      <source>Final Depth of Tool- lowest value in Z</source>
+      <translation type="unfinished">Final Depth of Tool- lowest value in Z</translation>
+    </message>
+  </context>
+  <context>
     <name>Path</name>
     <message>
       <location filename="PathContour.py" line="396"/>
@@ -515,7 +601,7 @@
       <location filename="PathPocket.py" line="153"/>
       <source>this object already in the list
 </source>
-      <translation type="unfinished">this object already in the list
+      <translation>detta objekt finns redan i listan
 </translation>
     </message>
     <message>
@@ -538,12 +624,12 @@
     <message>
       <location filename="InitGui.py" line="85"/>
       <source>Project Setup</source>
-      <translation type="unfinished">Project Setup</translation>
+      <translation>Projektinställning</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="97"/>
       <source>Tool Commands</source>
-      <translation type="unfinished">Tool Commands</translation>
+      <translation>Verktygskommandon</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="87"/>
@@ -563,7 +649,7 @@
     <message>
       <location filename="InitGui.py" line="101"/>
       <source>Helpful Tools</source>
-      <translation type="unfinished">Helpful Tools</translation>
+      <translation>Hjälpsamma verktyg</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="118"/>
@@ -594,7 +680,7 @@
     <message>
       <location filename="PathContour.py" line="381"/>
       <source>Contour</source>
-      <translation type="unfinished">Contour</translation>
+      <translation>Kontur</translation>
     </message>
     <message>
       <location filename="PathContour.py" line="383"/>
@@ -615,9 +701,9 @@
       <translation type="unfinished">The side of path to insert bones</translation>
     </message>
     <message>
-      <location filename="PathDressupDogbone.py" line="361"/>
-      <source>The style of boness</source>
-      <translation type="unfinished">The style of boness</translation>
+      <location filename="PathDressupDogbone.py" line="354"/>
+      <source>The style of bones</source>
+      <translation type="unfinished">The style of bones</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="364"/>
@@ -628,6 +714,11 @@
       <location filename="PathDressupDogbone.py" line="367"/>
       <source>The algorithm to determine the bone length</source>
       <translation type="unfinished">The algorithm to determine the bone length</translation>
+    </message>
+    <message>
+      <location filename="PathDressupDogbone.py" line="361"/>
+      <source>The style of boness</source>
+      <translation type="unfinished">The style of boness</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="370"/>
@@ -712,6 +803,59 @@
     </message>
   </context>
   <context>
+    <name>PathDressup_HoldingTags</name>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="714"/>
+      <source>The base path to modify</source>
+      <translation type="unfinished">The base path to modify</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="715"/>
+      <source>Width of tags.</source>
+      <translation type="unfinished">Width of tags.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="716"/>
+      <source>Height of tags.</source>
+      <translation type="unfinished">Height of tags.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="717"/>
+      <source>Angle of tag plunge and ascent.</source>
+      <translation type="unfinished">Angle of tag plunge and ascent.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="718"/>
+      <source>Radius of the fillet for the tag.</source>
+      <translation type="unfinished">Radius of the fillet for the tag.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="719"/>
+      <source>Locations of insterted holding tags</source>
+      <translation type="unfinished">Locations of insterted holding tags</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="720"/>
+      <source>Ids of disabled holding tags</source>
+      <translation type="unfinished">Ids of disabled holding tags</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="721"/>
+      <source>Factor determining the # segments used to approximate rounded tags.</source>
+      <translation type="unfinished">Factor determining the # segments used to approximate rounded tags.</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="1383"/>
+      <source>HoldingTags Dress-up</source>
+      <translation type="unfinished">HoldingTags Dress-up</translation>
+    </message>
+    <message>
+      <location filename="PathDressupHoldingTags.py" line="1384"/>
+      <source>Creates a HoldingTags Dress-up object from a selected path</source>
+      <translation type="unfinished">Creates a HoldingTags Dress-up object from a selected path</translation>
+    </message>
+  </context>
+  <context>
     <name>PathFace</name>
     <message>
       <location filename="PathMillFace.py" line="171"/>
@@ -739,6 +883,24 @@
       <location filename="PathMillFace.py" line="367"/>
       <source>Create Face</source>
       <translation type="unfinished">Create Face</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathHelix</name>
+    <message>
+      <location filename="PathHelix.py" line="449"/>
+      <source>PathHelix</source>
+      <translation type="unfinished">PathHelix</translation>
+    </message>
+    <message>
+      <location filename="PathHelix.py" line="450"/>
+      <source>Creates a helix cut from selected circles</source>
+      <translation type="unfinished">Creates a helix cut from selected circles</translation>
+    </message>
+    <message>
+      <location filename="PathHelix.py" line="464"/>
+      <source>Create a helix cut</source>
+      <translation type="unfinished">Create a helix cut</translation>
     </message>
   </context>
   <context>
@@ -822,11 +984,24 @@
     <message>
       <location filename="PathPocket.py" line="503"/>
       <source>Create Pocket</source>
-      <translation type="unfinished">Create Pocket</translation>
+      <translation>Skapa ficka</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathPreferencesPathDressup</name>
+    <message>
+      <location filename="PathPreferencesPathDressup.py" line="50"/>
+      <source>Dressups</source>
+      <translation type="unfinished">Dressups</translation>
     </message>
   </context>
   <context>
     <name>PathProfile</name>
+    <message>
+      <location filename="PathHelix.py" line="289"/>
+      <source>The current tool in use</source>
+      <translation type="unfinished">The current tool in use</translation>
+    </message>
     <message>
       <location filename="PathProfile.py" line="54"/>
       <source>The tool number in use</source>
@@ -845,7 +1020,7 @@
     <message>
       <location filename="PathProfileEdges.py" line="415"/>
       <source>Edge Profile</source>
-      <translation type="unfinished">Edge Profile</translation>
+      <translation>Kantprofil</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="417"/>
@@ -1064,11 +1239,6 @@
   <context>
     <name>Path_Contour</name>
     <message>
-      <location filename="PathContour.py" line="308"/>
-      <source>Add Holding Tag</source>
-      <translation type="unfinished">Add Holding Tag</translation>
-    </message>
-    <message>
       <location filename="PathContour.py" line="344"/>
       <source>Pick Start Point</source>
       <translation>Välj startpunkt</translation>
@@ -1077,6 +1247,11 @@
       <location filename="PathContour.py" line="363"/>
       <source>Pick End Point</source>
       <translation type="unfinished">Pick End Point</translation>
+    </message>
+    <message>
+      <location filename="PathContour.py" line="308"/>
+      <source>Add Holding Tag</source>
+      <translation type="unfinished">Add Holding Tag</translation>
     </message>
   </context>
   <context>
@@ -1270,7 +1445,7 @@
     <message>
       <location filename="PathFixture.py" line="119"/>
       <source>Fixture</source>
-      <translation type="unfinished">Fixture</translation>
+      <translation>Fixtur</translation>
     </message>
     <message>
       <location filename="PathFixture.py" line="121"/>
@@ -1450,11 +1625,6 @@
   <context>
     <name>Path_Profile</name>
     <message>
-      <location filename="PathProfileEdges.py" line="342"/>
-      <source>Add Holding Tag</source>
-      <translation type="unfinished">Add Holding Tag</translation>
-    </message>
-    <message>
       <location filename="PathProfileEdges.py" line="378"/>
       <source>Pick Start Point</source>
       <translation>Välj startpunkt</translation>
@@ -1463,6 +1633,11 @@
       <location filename="PathProfileEdges.py" line="397"/>
       <source>Pick End Point</source>
       <translation type="unfinished">Pick End Point</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="342"/>
+      <source>Add Holding Tag</source>
+      <translation type="unfinished">Add Holding Tag</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="203"/>
@@ -1628,6 +1803,35 @@
     </message>
   </context>
   <context>
+    <name>Start Depth</name>
+    <message>
+      <location filename="PathHelix.py" line="277"/>
+      <source>Starting Depth of Tool - first cut depth in Z</source>
+      <translation type="unfinished">Starting Depth of Tool - first cut depth in Z</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="62"/>
+      <source>Starting Depth of Tool- first cut depth in Z</source>
+      <translation type="unfinished">Starting Depth of Tool- first cut depth in Z</translation>
+    </message>
+  </context>
+  <context>
+    <name>StepDown</name>
+    <message>
+      <location filename="PathProfile.py" line="60"/>
+      <source>Incremental Step Down of Tool</source>
+      <translation type="unfinished">Incremental Step Down of Tool</translation>
+    </message>
+  </context>
+  <context>
+    <name>Through Depth</name>
+    <message>
+      <location filename="PathHelix.py" line="283"/>
+      <source>Add this amount of additional cutting depth to open-ended holes. Only used if UseFinalDepth is False</source>
+      <translation type="unfinished">Add this amount of additional cutting depth to open-ended holes. Only used if UseFinalDepth is False</translation>
+    </message>
+  </context>
+  <context>
     <name>TooltableEditor</name>
     <message>
       <location filename="TooltableEditor.py" line="593"/>
@@ -1657,7 +1861,7 @@
     <message>
       <location filename="TooltableEditor.py" line="389"/>
       <source>Tools list</source>
-      <translation type="unfinished">Tools list</translation>
+      <translation>Verktygslista</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="390"/>
@@ -1876,11 +2080,24 @@
     </message>
   </context>
   <context>
-    <name>Active</name>
+    <name>Use Final Depth</name>
     <message>
-      <location filename="PathProfile.py" line="51"/>
-      <source>Make False, to prevent operation from generating code</source>
-      <translation type="unfinished">Make False, to prevent operation from generating code</translation>
+      <location filename="PathHelix.py" line="279"/>
+      <source>Set to True to manually specify a final depth</source>
+      <translation type="unfinished">Set to True to manually specify a final depth</translation>
+    </message>
+  </context>
+  <context>
+    <name>Use Start Depth</name>
+    <message>
+      <location filename="PathHelix.py" line="275"/>
+      <source>Set to True to manually specify a start depth</source>
+      <translation type="unfinished">Set to True to manually specify a start depth</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="61"/>
+      <source>make True, if manually specifying a Start Start Depth</source>
+      <translation type="unfinished">make True, if manually specifying a Start Start Depth</translation>
     </message>
   </context>
   <context>
@@ -1892,32 +2109,11 @@
     </message>
   </context>
   <context>
-    <name>Comment</name>
-    <message>
-      <location filename="PathComment.py" line="41"/>
-      <source>Comment or note for CNC program</source>
-      <translation type="unfinished">Comment or note for CNC program</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="65"/>
-      <source>An optional comment for this profile</source>
-      <translation type="unfinished">An optional comment for this profile</translation>
-    </message>
-  </context>
-  <context>
     <name>Current Tool</name>
     <message>
       <location filename="PathLoadTool.py" line="137"/>
       <source>Tool Number to Load</source>
       <translation type="unfinished">Tool Number to Load</translation>
-    </message>
-  </context>
-  <context>
-    <name>Direction</name>
-    <message>
-      <location filename="PathProfile.py" line="86"/>
-      <source>The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW</source>
-      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW</translation>
     </message>
   </context>
   <context>
@@ -1976,14 +2172,6 @@
       <location filename="PathProfile.py" line="47"/>
       <source>Second Selected Face to help determine where the upper level of tool path is</source>
       <translation type="unfinished">Second Selected Face to help determine where the upper level of tool path is</translation>
-    </message>
-  </context>
-  <context>
-    <name>Final Depth</name>
-    <message>
-      <location filename="PathProfile.py" line="63"/>
-      <source>Final Depth of Tool- lowest value in Z</source>
-      <translation type="unfinished">Final Depth of Tool- lowest value in Z</translation>
     </message>
   </context>
   <context>
@@ -2240,7 +2428,7 @@
     <message>
       <location filename="PathPocket.py" line="296"/>
       <source>Create Pocket</source>
-      <translation type="unfinished">Create Pocket</translation>
+      <translation>Skapa ficka</translation>
     </message>
   </context>
   <context>
@@ -2368,14 +2556,6 @@
     </message>
   </context>
   <context>
-    <name>Start Depth</name>
-    <message>
-      <location filename="PathProfile.py" line="62"/>
-      <source>Starting Depth of Tool- first cut depth in Z</source>
-      <translation type="unfinished">Starting Depth of Tool- first cut depth in Z</translation>
-    </message>
-  </context>
-  <context>
     <name>Start Point</name>
     <message>
       <location filename="PathKurve.py" line="44"/>
@@ -2391,14 +2571,6 @@
       <location filename="PathProfile.py" line="72"/>
       <source>The start point of this path</source>
       <translation type="unfinished">The start point of this path</translation>
-    </message>
-  </context>
-  <context>
-    <name>StepDown</name>
-    <message>
-      <location filename="PathProfile.py" line="60"/>
-      <source>Incremental Step Down of Tool</source>
-      <translation type="unfinished">Incremental Step Down of Tool</translation>
     </message>
   </context>
   <context>
@@ -2436,14 +2608,6 @@
       <location filename="PathProfile.py" line="52"/>
       <source>make True, if using the profile operation placement properties to transform toolpath in post processor</source>
       <translation type="unfinished">make True, if using the profile operation placement properties to transform toolpath in post processor</translation>
-    </message>
-  </context>
-  <context>
-    <name>Use Start Depth</name>
-    <message>
-      <location filename="PathProfile.py" line="61"/>
-      <source>make True, if manually specifying a Start Start Depth</source>
-      <translation type="unfinished">make True, if manually specifying a Start Start Depth</translation>
     </message>
   </context>
   <context>

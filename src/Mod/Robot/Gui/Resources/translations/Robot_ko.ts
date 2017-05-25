@@ -6,17 +6,17 @@
     <message>
         <location filename="../../CommandInsertRobot.cpp" line="+215"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Add tool</source>
-        <translation type="unfinished">Add tool</translation>
+        <translation>추가 도구</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Add a tool shape to the robot</source>
-        <translation type="unfinished">Add a tool shape to the robot</translation>
+        <translation>로봇을 도구 셰이프 추가</translation>
     </message>
 </context>
 <context>
@@ -24,12 +24,12 @@
     <message>
         <location filename="../../Command.cpp" line="+158"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Place robot...</source>
-        <translation type="unfinished">Place robot...</translation>
+        <translation>장소 로봇...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -42,7 +42,7 @@
     <message>
         <location filename="../../CommandTrajectory.cpp" line="+62"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -60,7 +60,7 @@
     <message>
         <location line="+257"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -78,7 +78,7 @@
     <message>
         <location filename="../../CommandExport.cpp" line="+50"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -96,7 +96,7 @@
     <message>
         <location line="+60"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -114,7 +114,7 @@
     <message>
         <location filename="../../CommandInsertRobot.cpp" line="-43"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -132,7 +132,7 @@
     <message>
         <location line="-83"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -150,7 +150,7 @@
     <message>
         <location line="+39"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -168,7 +168,7 @@
     <message>
         <location line="-85"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -186,7 +186,7 @@
     <message>
         <location filename="../../CommandTrajectory.cpp" line="-228"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -204,7 +204,7 @@
     <message>
         <location line="+55"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -222,7 +222,7 @@
     <message>
         <location filename="../../Command.cpp" line="-56"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -236,7 +236,7 @@
     <message>
         <location filename="../../CommandTrajectory.cpp" line="+62"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -254,7 +254,7 @@
     <message>
         <location line="+37"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -272,7 +272,7 @@
     <message>
         <location filename="../../Command.cpp" line="-51"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -286,7 +286,7 @@
     <message>
         <location line="+142"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -304,7 +304,7 @@
     <message>
         <location filename="../../CommandTrajectory.cpp" line="+175"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -322,7 +322,7 @@
     <message>
         <location line="-49"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -381,7 +381,7 @@
     <message>
         <location line="-177"/>
         <source>Select one Robot to set home position</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one Robot to set home position</translation>
     </message>
     <message>
         <location line="+149"/>
@@ -1043,7 +1043,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="-33"/>
         <source>Robot</source>
-        <translation type="unfinished">Robot</translation>
+        <translation>Robot</translation>
     </message>
     <message>
         <location line="+1"/>

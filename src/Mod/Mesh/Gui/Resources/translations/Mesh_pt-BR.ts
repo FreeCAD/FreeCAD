@@ -401,15 +401,15 @@
     <name>CmdMeshSectionByPlane</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Malha</translation>
+        <translation>Malha</translation>
     </message>
     <message>
         <source>Create section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Criar a seção a partir da malha e plano</translation>
     </message>
     <message>
         <source>Section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Seção a partir da malha e plano</translation>
     </message>
 </context>
 <context>
@@ -767,11 +767,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation>Verificar se há pontos de malhas (meshes) não sólidas</translation>
+        <translation>Verificar se há pontos de malhas não sólidas</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation>Ativar verificação de dobras na superfície</translation>
+        <translation>Habilitar verificação de dobras na superfície</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
@@ -790,7 +790,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation>Alt+F</translation>
+        <translation>Alt + C</translation>
     </message>
     <message>
         <source>Cl&amp;ose</source>
@@ -904,7 +904,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Export AMF files using compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar arquivos AMF usando compressão</translation>
     </message>
 </context>
 <context>
@@ -1216,7 +1216,7 @@ Favor visitar http://www.openscad.org/index.html para instalá-lo.</translation>
     </message>
     <message>
         <source>Unknown error occurred while running OpenSCAD.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocorreu um erro desconhecido ao executar o OpenSCAD.</translation>
     </message>
 </context>
 <context>

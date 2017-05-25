@@ -4,7 +4,7 @@
 <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-        <location filename="../../Command.cpp" line="+1176"/>
+        <location filename="../../Command.cpp" line="+1265"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -22,7 +22,7 @@
 <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-        <location line="-96"/>
+        <location line="-102"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -58,7 +58,7 @@
 <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-        <location filename="../../Command.cpp" line="+832"/>
+        <location filename="../../Command.cpp" line="+906"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -84,7 +84,7 @@
         <translation type="obsolete">Фаска...</translation>
     </message>
     <message>
-        <location line="-531"/>
+        <location line="-579"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -156,7 +156,7 @@
 <context>
     <name>CmdPartDesignGroove</name>
     <message>
-        <location line="-330"/>
+        <location line="-365"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -174,7 +174,7 @@
 <context>
     <name>CmdPartDesignLine</name>
     <message>
-        <location line="-856"/>
+        <location line="-927"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -192,7 +192,7 @@
 <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-        <location line="+1479"/>
+        <location line="+1606"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -232,7 +232,7 @@
 <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-        <location filename="../../Command.cpp" line="-56"/>
+        <location filename="../../Command.cpp" line="-66"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -304,7 +304,7 @@
 <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-        <location filename="../../Command.cpp" line="+205"/>
+        <location filename="../../Command.cpp" line="+235"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -330,7 +330,7 @@
 <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-        <location line="-1508"/>
+        <location line="-1655"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -348,7 +348,7 @@
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="+568"/>
+        <location line="+629"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -384,7 +384,7 @@
 <context>
     <name>CmdPartDesignPlane</name>
     <message>
-        <location filename="../../Command.cpp" line="-728"/>
+        <location filename="../../Command.cpp" line="-789"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -402,7 +402,7 @@
 <context>
     <name>CmdPartDesignPocket</name>
     <message>
-        <location line="+782"/>
+        <location line="+844"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -424,7 +424,7 @@
 <context>
     <name>CmdPartDesignPoint</name>
     <message>
-        <location line="-730"/>
+        <location line="-792"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -442,7 +442,7 @@
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+1507"/>
+        <location line="+1644"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -464,7 +464,7 @@
 <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-737"/>
+        <location line="-811"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -482,7 +482,7 @@
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+790"/>
+        <location line="+874"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -504,7 +504,7 @@
 <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-        <location line="-1536"/>
+        <location line="-1683"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -522,7 +522,7 @@
 <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-        <location line="+984"/>
+        <location line="+1073"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -540,7 +540,7 @@
 <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-        <location line="-96"/>
+        <location line="-102"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -558,7 +558,7 @@
 <context>
     <name>CmdPartDesignThickness</name>
     <message>
-        <location line="+342"/>
+        <location line="+365"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -576,7 +576,7 @@
 <context>
     <name>CmdPrimtiveCompAdditive</name>
     <message>
-        <location filename="../../CommandPrimitive.cpp" line="+52"/>
+        <location filename="../../CommandPrimitive.cpp" line="+68"/>
         <source>PartDesign</source>
         <translation>ДизайнДеталі</translation>
     </message>
@@ -587,7 +587,7 @@
         <translation type="unfinished">Create an additive primitive</translation>
     </message>
     <message>
-        <location line="+136"/>
+        <location line="+97"/>
         <source>Additive Box</source>
         <translation type="unfinished">Additive Box</translation>
     </message>
@@ -641,7 +641,7 @@
         <translation type="unfinished">Create an subtractive primitive</translation>
     </message>
     <message>
-        <location line="+146"/>
+        <location line="+95"/>
         <source>Subtractive Box</source>
         <translation type="unfinished">Subtractive Box</translation>
     </message>
@@ -1246,7 +1246,7 @@ Please check one or more edge entities first.</source>
 <context>
     <name>PartDesignGui::TaskDlgDatumParameters</name>
     <message>
-        <location filename="../../TaskDatumParameters.cpp" line="+48"/>
+        <location filename="../../TaskDatumParameters.cpp" line="+49"/>
         <source>Incompatible reference set</source>
         <translation type="unfinished">Incompatible reference set</translation>
     </message>
@@ -1444,7 +1444,7 @@ Please check one or more edge entities first.</source>
         <translation type="unfinished">Create cross-reference</translation>
     </message>
     <message>
-        <location filename="../../TaskFeaturePick.cpp" line="+62"/>
+        <location filename="../../TaskFeaturePick.cpp" line="+64"/>
         <source>Valid</source>
         <translation type="unfinished">Valid</translation>
     </message>
@@ -1476,7 +1476,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+1"/>
         <source>Doesn&apos;t belong to any body</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Doesn&apos;t belong to any body</translation>
     </message>
     <message>
         <source>Doesn&apos;t belongs to any body</source>
@@ -2611,7 +2611,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+17"/>
         <source>Thickness</source>
-        <translation type="unfinished">Товщина</translation>
+        <translation>Товщина</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -2738,7 +2738,7 @@ Please check one or more edge entities first.</source>
 <context>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
-        <location filename="../../CommandPrimitive.cpp" line="-219"/>
+        <location filename="../../CommandPrimitive.cpp" line="-168"/>
         <source>Create an additive box by its with, height and length</source>
         <translation type="unfinished">Create an additive box by its with, height and length</translation>
     </message>
@@ -2781,7 +2781,7 @@ Please check one or more edge entities first.</source>
 <context>
     <name>PartDesign_CompPrimitiveSubtractive</name>
     <message>
-        <location line="+164"/>
+        <location line="+113"/>
         <source>Create an subtractive box by its with, height and length</source>
         <translation type="unfinished">Create an subtractive box by its with, height and length</translation>
     </message>
@@ -2850,9 +2850,9 @@ Please check one or more edge entities first.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-204"/>
+        <location filename="../../Command.cpp" line="-209"/>
         <location line="+4"/>
-        <location line="+21"/>
+        <location line="+26"/>
         <location line="+12"/>
         <source>Wrong selection</source>
         <translation>Невірний вибір</translation>
@@ -2980,14 +2980,18 @@ Create the sketch on a face.</source>
         <translation type="obsolete">Редагувати фаску</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-1456"/>
+        <location filename="../../Command.cpp" line="-1562"/>
         <source>Invalid selection</source>
         <translation type="unfinished">Invalid selection</translation>
     </message>
     <message>
-        <location line="+0"/>
         <source>There are no attachment modes that fit seleted objects. Select something else.</source>
-        <translation type="unfinished">There are no attachment modes that fit seleted objects. Select something else.</translation>
+        <translation type="obsolete">There are no attachment modes that fit seleted objects. Select something else.</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>There are no attachment modes that fit selected objects. Select something else.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2996,7 +3000,7 @@ Create the sketch on a face.</source>
         <translation>Помилка</translation>
     </message>
     <message>
-        <location line="+222"/>
+        <location line="+243"/>
         <source>Several sub-elements selected</source>
         <translation>Обрано декілька вкладених елементів</translation>
     </message>
@@ -3026,7 +3030,7 @@ Create the sketch on a face.</source>
         <translation>Потрібна пласка поверхня для створення ескізу!</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+185"/>
         <source>No valid planes in this document</source>
         <translation type="unfinished">No valid planes in this document</translation>
     </message>
@@ -3036,21 +3040,21 @@ Create the sketch on a face.</source>
         <translation type="unfinished">Please create a plane first or select a face to sketch on</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+13"/>
         <location line="+290"/>
-        <location line="+736"/>
+        <location line="+781"/>
         <location filename="../../ViewProvider.cpp" line="+101"/>
         <location filename="../../ViewProviderBoolean.cpp" line="+74"/>
-        <location filename="../../ViewProviderDatum.cpp" line="+243"/>
+        <location filename="../../ViewProviderDatum.cpp" line="+251"/>
         <location filename="../../ViewProviderPrimitive.cpp" line="+83"/>
         <location filename="../../ViewProviderShapeBinder.cpp" line="+92"/>
         <source>A dialog is already open in the task panel</source>
         <translation>Діалогове вікно вже відкрито в панелі задач</translation>
     </message>
     <message>
-        <location line="-1025"/>
+        <location line="-1070"/>
         <location line="+290"/>
-        <location line="+736"/>
+        <location line="+781"/>
         <location filename="../../ViewProvider.cpp" line="+1"/>
         <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
         <location filename="../../ViewProviderDatum.cpp" line="+1"/>
@@ -3060,7 +3064,7 @@ Create the sketch on a face.</source>
         <translation>Ви бажаєте закрити це діалогове вікно?</translation>
     </message>
     <message>
-        <location line="-804"/>
+        <location line="-849"/>
         <source>No sketch to work on</source>
         <translation type="unfinished">No sketch to work on</translation>
     </message>
@@ -3070,7 +3074,7 @@ Create the sketch on a face.</source>
         <translation type="unfinished">No sketch is available in the document</translation>
     </message>
     <message>
-        <location line="+511"/>
+        <location line="+551"/>
         <source>Select an edge, face or body.</source>
         <translation type="unfinished">Select an edge, face or body.</translation>
     </message>
@@ -3078,6 +3082,17 @@ Create the sketch on a face.</source>
         <location line="+4"/>
         <source>Select an edge, face or body from a single body.</source>
         <translation type="unfinished">Select an edge, face or body from a single body.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <location line="+318"/>
+        <source>Selection is not in Active Body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-317"/>
+        <source>Select an edge, face or body from an active body.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
@@ -3093,6 +3108,21 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <source> not possible on selected faces/edges.</source>
         <translation type="unfinished"> not possible on selected faces/edges.</translation>
+    </message>
+    <message>
+        <location line="+277"/>
+        <source>Multiple Features Selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please select only one subtractive or additive feature first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Please select only one subtractive or additive feature in an active body.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../ViewProviderRevolution.cpp" line="+51"/>
@@ -3189,7 +3219,7 @@ Create the sketch on a face.</source>
     <message>
         <location line="+7"/>
         <source>Body can&apos;t be based on another body.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Body can&apos;t be based on another body.</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3239,8 +3269,12 @@ Create the sketch on a face.</source>
     </message>
     <message>
         <location line="+4"/>
+        <source>Couldn&apos;t determine a body for the selected feature &apos;%s&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Couldn&apos;t determin a body for the selected feature &apos;%s&apos;.</source>
-        <translation type="unfinished">Couldn&apos;t determin a body for the selected feature &apos;%s&apos;.</translation>
+        <translation type="obsolete">Couldn&apos;t determin a body for the selected feature &apos;%s&apos;.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3279,7 +3313,7 @@ Create the sketch on a face.</source>
         <translation type="unfinished">Beginning of the body</translation>
     </message>
     <message>
-        <location filename="../../CommandPrimitive.cpp" line="-157"/>
+        <location filename="../../CommandPrimitive.cpp" line="-100"/>
         <source>No previous feature found</source>
         <translation type="unfinished">No previous feature found</translation>
     </message>
@@ -3321,7 +3355,17 @@ Create the sketch on a face.</source>
         <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+15"/>
+        <source>Active Body Required</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
         <source>Feature is not in a body</source>
         <translation type="unfinished">Feature is not in a body</translation>
     </message>
@@ -3346,32 +3390,40 @@ Create the sketch on a face.</source>
         <translation type="unfinished">Edit boolean</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderDatum.cpp" line="-124"/>
-        <location line="+83"/>
+        <location filename="../../ViewProviderDatum.cpp" line="-131"/>
+        <location line="+90"/>
         <source>Plane</source>
         <translation>Площини</translation>
     </message>
     <message>
-        <location line="-81"/>
-        <location line="+77"/>
+        <location line="-86"/>
+        <location line="+82"/>
         <source>Line</source>
         <translation>Лінія</translation>
     </message>
     <message>
-        <location line="-75"/>
-        <location line="+83"/>
+        <location line="-78"/>
+        <location line="+86"/>
         <source>Point</source>
         <translation>Точка</translation>
     </message>
     <message>
-        <location line="-81"/>
-        <source>CoordinateSystem</source>
-        <translation type="unfinished">CoordinateSystem</translation>
+        <location line="-82"/>
+        <source>Coordinate System</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+98"/>
+        <location line="+99"/>
+        <source>Edit datum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CoordinateSystem</source>
+        <translation type="obsolete">CoordinateSystem</translation>
+    </message>
+    <message>
         <source>Edit datum </source>
-        <translation type="unfinished">Edit datum </translation>
+        <translation type="obsolete">Edit datum </translation>
     </message>
     <message>
         <location filename="../../ViewProviderDressUp.cpp" line="+70"/>
@@ -3407,7 +3459,7 @@ This feature is broken and can&apos;t be edited.</translation>
     <message>
         <location filename="../../WorkflowManager.cpp" line="+144"/>
         <source>The document &quot;%1&quot; you are editing was designed with an old version of PartDesign workbench.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The document &quot;%1&quot; you are editing was designed with an old version of PartDesign workbench.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3429,7 +3481,9 @@ This feature is broken and can&apos;t be edited.</translation>
         <source>Note: If you choose to migrate you won&apos;t be able to edit the file with an old FreeCAD versions.
 If you refuse to migrate you won&apos;t be able to use new PartDesign features like Bodies and Parts. As a result you also won&apos;t be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with &apos;Part Design-&gt;Migrate...&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Note: If you choose to migrate you won&apos;t be able to edit the file with an old FreeCAD versions.
+If you refuse to migrate you won&apos;t be able to use new PartDesign features like Bodies and Parts. As a result you also won&apos;t be able to use your parts in the assembly workbench.
+Although you will be able to migrate any moment later with &apos;Part Design-&gt;Migrate...&apos;.</translation>
     </message>
     <message>
         <source>Note If you choose to migrate you won&apos;t be able to edit the file wtih old FreeCAD versions.

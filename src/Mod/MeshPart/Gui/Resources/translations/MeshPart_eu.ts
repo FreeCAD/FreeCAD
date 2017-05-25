@@ -2,9 +2,27 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="eu" sourcelanguage="en">
 <context>
+    <name>CmdMeshPartCurveOnMesh</name>
+    <message>
+        <location filename="../../Command.cpp" line="+245"/>
+        <source>Mesh</source>
+        <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Curve on mesh...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Curve on mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdMeshPartMesher</name>
     <message>
-        <location filename="../../Command.cpp" line="+50"/>
+        <location line="-191"/>
         <source>Mesh</source>
         <translation type="unfinished">Mesh</translation>
     </message>
@@ -29,12 +47,12 @@
     <message>
         <location line="+1"/>
         <source>Create section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortu sekzioa saretik eta planotik</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Sekzioa</translation>
     </message>
 </context>
 <context>
@@ -47,12 +65,98 @@
     <message>
         <location line="+1"/>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Muxarratu sarea plano batekin</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Trims a mesh with a plane</source>
+        <translation>Sare bat muxarratzen du plano batekin</translation>
+    </message>
+</context>
+<context>
+    <name>MeshPartGui::CurveOnMeshHandler</name>
+    <message>
+        <location filename="../../CurveOnMesh.cpp" line="+353"/>
+        <source>Create</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Close wire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+208"/>
+        <source>Wrong mesh picked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>No point was picked</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MeshPartGui::TaskCurveOnMesh</name>
+    <message>
+        <location filename="../../TaskCurveOnMesh.ui" line="+14"/>
+        <source>Curve on mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Wire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Snap tolerance to vertexes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source> px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Split threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Spline Approximation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Tolerance to mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Continuity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Maximum curve degree</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -106,7 +210,7 @@
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Fineness:</translation>
+        <translation>Fintasuna:</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -116,17 +220,17 @@
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Coarse</translation>
+        <translation>Latza</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Moderate</translation>
+        <translation>Ertaina</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fine</translation>
+        <translation>Fina</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -197,12 +301,12 @@
     <message>
         <location filename="../../Command.cpp" line="+93"/>
         <source>Select plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Hautatu planoa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please select a plane at which you section the mesh.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hautatu sarea ebakitzeko erabiliko duzun planoa.</translation>
     </message>
 </context>
 <context>
@@ -210,12 +314,12 @@
     <message>
         <location line="-85"/>
         <source>Select plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Hautatu planoa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hautatu sarea muxarratzeko erabiliko duzun planoa.</translation>
     </message>
 </context>
 <context>

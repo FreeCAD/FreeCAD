@@ -47,23 +47,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathProfileEdges.py" line="64"/>
-        <source>The tool number in use</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathEngrave.py" line="65"/>
-        <source>The description of the tool </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="PathSurface.py" line="69"/>
         <source>The Sample Interval.  Small values cause long wait</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="PathProfileEdges.py" line="70"/>
+        <source>The tool controller that will be used to calculate the path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="PathProfileEdges.py" line="71"/>
         <source>The height needed to clear clamps and obstructions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathEngrave.py" line="59"/>
+        <source>The tool controller to use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathEngrave.py" line="65"/>
+        <source>The description of the tool </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -134,6 +139,11 @@
     <message>
         <location filename="PathCompoundExtended.py" line="45"/>
         <source>An ptional description of this compounded operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathCompoundExtended.py" line="46"/>
+        <source>An optional description of this compounded operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -232,6 +242,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="PathProfileEdges.py" line="64"/>
+        <source>The tool number in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathProfileEdges.py" line="67"/>
+        <source>The description of the tool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="PathProfileEdges.py" line="97"/>
         <source>Radius at start and end</source>
         <translation type="unfinished"></translation>
@@ -239,6 +259,26 @@
     <message>
         <location filename="PathContour.py" line="96"/>
         <source>Extra value to stay away from final Contour- good for roughing toolpath</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathDrilling.py" line="68"/>
+        <source>Names of the holes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathDrilling.py" line="69"/>
+        <source>Locations of insterted holes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathDrilling.py" line="70"/>
+        <source>Enable/disable status of the holes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathDrilling.py" line="71"/>
+        <source>Diameters of the holes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -252,13 +292,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathDrilling.py" line="62"/>
-        <source>The height where feed starts and height during retract tool when path is finished</source>
+        <location filename="PathDrilling.py" line="80"/>
+        <source>Enable pecking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="PathDrilling.py" line="63"/>
         <source>The time to dwell between peck cycles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathDrilling.py" line="83"/>
+        <source>Enable dwell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathDrilling.py" line="88"/>
+        <source>Height to clear top of material</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathDrilling.py" line="62"/>
+        <source>The height where feed starts and height during retract tool when path is finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -314,6 +369,11 @@
     <message>
         <location filename="PathLoadTool.py" line="47"/>
         <source>The active tool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathJob.py" line="65"/>
+        <source>The tooltable used for this CNC program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -408,6 +468,11 @@
     </message>
     <message>
         <location filename="PathStock.py" line="47"/>
+        <source>extra allowance from part width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathStock.py" line="47"/>
         <source>extra allownace from part width</source>
         <translation type="unfinished"></translation>
     </message>
@@ -452,13 +517,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathJob.py" line="65"/>
-        <source>The tooltable used for this CNC program</source>
+        <location filename="PathJob.py" line="67"/>
+        <source>Units that the machine works in, ie Metric or Inch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathJob.py" line="67"/>
-        <source>Units that the machine works in, ie Metric or Inch</source>
+        <location filename="PathJob.py" line="80"/>
+        <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -497,18 +562,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="PathProfile.py" line="104"/>
+        <source>Profile round holes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="PathEngrave.py" line="55"/>
         <source>The library or Algorithm used to generate the path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathEngrave.py" line="59"/>
-        <source>The tool controller to use</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathProfileEdges.py" line="67"/>
-        <source>The description of the tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -704,6 +764,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="PathDressupDogbone.py" line="361"/>
+        <source>The style of boness</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="PathDressupDogbone.py" line="364"/>
         <source>Bones that aren&apos;t dressed up</source>
         <translation type="unfinished"></translation>
@@ -711,11 +776,6 @@
     <message>
         <location filename="PathDressupDogbone.py" line="367"/>
         <source>The algorithm to determine the bone length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathDressupDogbone.py" line="361"/>
-        <source>The style of boness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -922,6 +982,21 @@
     </message>
 </context>
 <context>
+    <name>PathMillFace</name>
+    <message>
+        <location filename="PathMillFace.py" line="172"/>
+        <source>Generating toolpath with libarea offsets.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathMillFace.py" line="297"/>
+        <source>The selected settings did not produce a valid path.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PathPocket</name>
     <message>
         <location filename="PathPocket.py" line="177"/>
@@ -1018,12 +1093,6 @@
 <context>
     <name>PathProject</name>
     <message>
-        <location filename="PathDrilling.py" line="443"/>
-        <source>Please select at least one Drillable Location
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="PathProfile.py" line="587"/>
         <source>Please select only faces from one solid
 </source>
@@ -1044,6 +1113,12 @@
     <message>
         <location filename="PathProfileEdges.py" line="571"/>
         <source>Please select one or more edges from the Base model
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathDrilling.py" line="443"/>
+        <source>Please select at least one Drillable Location
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1221,13 +1296,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathContour.py" line="363"/>
-        <source>Pick End Point</source>
+        <location filename="PathContour.py" line="308"/>
+        <source>Add Holding Tag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathContour.py" line="308"/>
-        <source>Add Holding Tag</source>
+        <location filename="PathContour.py" line="363"/>
+        <source>Pick End Point</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1746,6 +1821,11 @@
         <source>Edit the Tool Library</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="PathToolLibraryManager.py" line="614"/>
+        <source>Tool Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Path_ToolTableEdit</name>
@@ -1807,8 +1887,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TooltableEditor.py" line="610"/>
-        <source>Tooltable XML (*.xml)</source>
+        <location filename="PathToolLibraryManager.py" line="514"/>
+        <source>Tooltable XML (*.xml);;LinuxCNC tooltable (*.tbl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2024,6 +2104,11 @@
     <message>
         <location filename="TooltableEditor.py" line="434"/>
         <source>Cutting edge height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TooltableEditor.py" line="610"/>
+        <source>Tooltable XML (*.xml)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

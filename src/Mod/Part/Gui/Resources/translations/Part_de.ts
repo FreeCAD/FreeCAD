@@ -181,22 +181,32 @@
         <translation>Am Rand</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation type="unfinished">Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</translation>
+        <translation type="obsolete">Punkt wird auf Rand gesetzt, MapPathParametr steuert wo. Zusätzlich kann der Scheitelpunkt für eine Projektion verknüpft werden.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Center of curvature</source>
         <comment>AttachmentPoint mode caption</comment>
         <translation>Zentrum der Krümmung</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation type="unfinished">Center of osculating circle of an edge. Optinal vertex link defines where.</translation>
+        <translation type="obsolete">Mitte des osculierenden Kreises einer Kante. Optionale Scheitelpunkt Verknüpfung definiert wo.</translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -208,7 +218,7 @@
         <location line="+1"/>
         <source>Center of mass of all references (equal densities are assumed).</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation type="unfinished">Center of mass of all references (equal densities are assumed).</translation>
+        <translation>Mittelpunkt der Masse aller Referenzen (gleiche Dichten werden angenommen).</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -232,7 +242,7 @@
         <location line="+1"/>
         <source>Put Datum point coincident with another vertex.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation type="unfinished">Put Datum point coincident with another vertex.</translation>
+        <translation>Setzen von Datumspunkt mit einem anderen Scheitelpunkt zusammen.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -244,7 +254,7 @@
         <location line="+1"/>
         <source>Point on first reference that is closest to second reference.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation type="unfinished">Point on first reference that is closest to second reference.</translation>
+        <translation>Zeigen auf die erste Referenz, die der zweiten Referenz am nächsten liegt.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -256,7 +266,7 @@
         <location line="+1"/>
         <source>Point on second reference that is closest to first reference.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation type="unfinished">Point on second reference that is closest to first reference.</translation>
+        <translation>Zeigen auf die zweite Referenz, die der ersten Referenz am nächsten liegt.</translation>
     </message>
 </context>
 <context>
@@ -271,7 +281,7 @@
         <location line="+1"/>
         <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Attachment is disabled. Line can be moved by editing Placement property.</translation>
+        <translation>Anhängen ist deaktiviert. Zeile kann durch Bearbeiten von Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -284,7 +294,7 @@
         <location line="+6"/>
         <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+        <translation>Die Linie ist entlang der lokalen X-Achse des Objekts ausgerichtet. Funktioniert an Objekten mit Placements und Ellipsen / Parabel / Hyperbolenkanten.</translation>
     </message>
     <message>
         <location line="-4"/>
@@ -296,7 +306,7 @@
         <location line="+1"/>
         <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+        <translation>Die Linie ist entlang der lokalen Y-Achse des Objekts ausgerichtet. Funktioniert an Objekten mit Placements und Ellipsen / Parabel / Hyperbolenkanten.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -314,31 +324,31 @@
         <location line="+1"/>
         <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</translation>
+        <translation>Linie, die eine Achse des oszillierenden Kreises der gekrümmten Kante ist. Optional Spitze definiert wo.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Directrix1</source>
         <comment>AttachmentLine mode caption</comment>
-        <translation type="unfinished">Directrix1</translation>
+        <translation>Directrix1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Directrix line for ellipse, parabola, hyperbola.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Directrix line for ellipse, parabola, hyperbola.</translation>
+        <translation>Directrix Linie für Ellipse, Parabel, Hyperbel.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Directrix2</source>
         <comment>AttachmentLine mode caption</comment>
-        <translation type="unfinished">Directrix2</translation>
+        <translation>Directrix2</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Second directrix line for ellipse and hyperbola.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Second directrix line for ellipse and hyperbola.</translation>
+        <translation>Zweite Directrix Linie für Ellipse und Hyperbel.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -350,7 +360,7 @@
         <location line="+1"/>
         <source>Asymptote of a hyperbola.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Asymptote of a hyperbola.</translation>
+        <translation>Asymptote einer Hyperbel.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -362,7 +372,7 @@
         <location line="+1"/>
         <source>Second asymptote of hyperbola.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Second asymptote of hyperbola.</translation>
+        <translation>Zweite Asymptote der Hyperbel.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -374,7 +384,7 @@
         <location line="+1"/>
         <source>Line tangent to an edge. Optional vertex link defines where.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Line tangent to an edge. Optional vertex link defines where.</translation>
+        <translation>Linie tangential zu einer Kante. Optionale Spitzenverknüpfung definiert wo.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -386,38 +396,38 @@
         <location line="+1"/>
         <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+        <translation>Ausrichten des N-Vektors des Frenet-Serret-Koordinatensystems der gekrümmten Kante. Optional Spitzen-Verknüpfung definiert wo.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Binormal</source>
         <comment>AttachmentLine mode caption</comment>
-        <translation type="unfinished">Binormal</translation>
+        <translation>Binormale</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+        <translation>Ausrichten auf B-Vektor des Frenet-Serret-Koordinatensystems der gekrümmten Kante. Optional Spitzenverknüpfung definiert wo.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Tangent to surface (U)</source>
         <comment>AttachmentLine mode caption</comment>
-        <translation type="unfinished">Tangent to surface (U)</translation>
+        <translation>Tangential zur Oberfläche (U)</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+3"/>
         <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Tangent to surface, along U parameter. Vertex link defines where.</translation>
+        <translation>Tangential zur Oberfläche, entlang der U-Parameter. Spitzen-Verbindung definiert wo.</translation>
     </message>
     <message>
         <location line="-1"/>
         <source>Tangent to surface (V)</source>
         <comment>AttachmentLine mode caption</comment>
-        <translation type="unfinished">Tangent to surface (V)</translation>
+        <translation>Tangential zur Oberfläche (V)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -429,7 +439,7 @@
         <location line="+1"/>
         <source>Line that passes through two vertices.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Line that passes through two vertices.</translation>
+        <translation>Linie, die durch zwei Ecken geht.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -453,7 +463,7 @@
         <location line="+1"/>
         <source>Line that spans the shortest distance between shapes.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Line that spans the shortest distance between shapes.</translation>
+        <translation>Linie, die den kürzesten Abstand zwischen den Formen spannt.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -465,7 +475,7 @@
         <location line="+1"/>
         <source>Line follows first principal axis of inertia.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Line follows first principal axis of inertia.</translation>
+        <translation>Die Linie folgt der ersten Hauptachse der Trägheit.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -477,7 +487,7 @@
         <location line="+1"/>
         <source>Line follows second principal axis of inertia.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Line follows second principal axis of inertia.</translation>
+        <translation>Die Linie folgt der zweiten Hauptachse der Trägheit.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -489,7 +499,7 @@
         <location line="+1"/>
         <source>Line follows third principal axis of inertia.</source>
         <comment>AttachmentLine mode tooltip</comment>
-        <translation type="unfinished">Line follows third principal axis of inertia.</translation>
+        <translation>Die Linie folgt der dritten Hauptträgheitsachse.</translation>
     </message>
 </context>
 <context>
@@ -504,19 +514,19 @@
         <location line="+1"/>
         <source>Attachment is disabled. Plane can be moved by editing Placement property.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Attachment is disabled. Plane can be moved by editing Placement property.</translation>
+        <translation>Anhang ist deaktiviert. Die Ebene kann durch Bearbeiten von Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Translate origin</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Translate origin</translation>
+        <translation>Ursprung versetzen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+        <translation>Ursprung ist ausgerichtet um auf Scheitelpunkt zu passen. Die Orientierung wird durch die Placement-Eigenschaft gesteuert.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -528,7 +538,7 @@
         <location line="+1"/>
         <source>Plane is aligned to XY local plane of linked object.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane is aligned to XY local plane of linked object.</translation>
+        <translation>Ebene ist auf XY lokaler Ebene des verknüpften Objekts ausgerichtet.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -540,7 +550,7 @@
         <location line="+1"/>
         <source>Plane is aligned to XZ local plane of linked object.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane is aligned to XZ local plane of linked object.</translation>
+        <translation>Ebene ist auf XZ lokaler Ebene des verknüpften Objekts ausgerichtet.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -552,31 +562,31 @@
         <location line="+1"/>
         <source>Plane is aligned to YZ local plane of linked object.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane is aligned to YZ local plane of linked object.</translation>
+        <translation>Ebene ist auf YZ lokaler Ebene des verknüpften Objekts ausgerichtet.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Plane face</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Plane face</translation>
+        <translation>Ebenen Fläche</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Plane is aligned to coincide planar face.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane is aligned to coincide planar face.</translation>
+        <translation>Die Ebene ist ausgerichtet, um die Ebene Fläche zu decken.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Tangent to surface</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Tangent to surface</translation>
+        <translation>Tangente zur Oberfläche</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Plane is made tangent to surface at vertex.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane is made tangent to surface at vertex.</translation>
+        <translation>Die Ebene ist tangential zur Oberfläche am Scheitelpunkt gemacht.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -588,13 +598,13 @@
         <location line="+1"/>
         <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane is made tangent to edge. Optional vertex link defines where.</translation>
+        <translation>Ebene ist tangential zur Kante gemacht. Optionale Vertex-Link definiert wo.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Frenet NB</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Frenet NB</translation>
+        <translation>Frenet NB</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -602,91 +612,96 @@
         <location line="+3"/>
         <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+        <translation>Ausrichten zum Frenet-Serret-Koordinatensystem der gekrümmten Kante. Optionale Vertex-Link definiert wo.</translation>
     </message>
     <message>
         <location line="-4"/>
         <source>Frenet TN</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Frenet TN</translation>
+        <translation>Frenet TN</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Frenet TB</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Frenet TB</translation>
+        <translation>Frenet TB</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Concentric</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Concentric</translation>
+        <translation>Konzentrisch</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
+        <translation>Ausrichten zur Ebene zum osculierenden Kreis einer Kante. Der Ursprung ist auf den Krümmungspunkt ausgerichtet. Optionale Vertex-Link definiert wo.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Revolution Section</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Revolution Section</translation>
+        <translation>Revolution Abschnitt</translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+        <translation type="obsolete">Die Ebene ist senkrecht zur Kante, und die Y-Achse ist mit der Achse des Schwingkreises übereinstimmt. Optionale Vertex-Link definiert wo.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Plane by 3 points</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Plane by 3 points</translation>
+        <translation>Ebene durch 3 Punkte</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Align plane to pass through three vertices.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Align plane to pass through three vertices.</translation>
+        <translation>Richten Sie die Ebene aus, um durch drei Ecken zu passieren.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Normal to 3 points</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Normal to 3 points</translation>
+        <translation>Normale zu 3 Punkten</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</translation>
+        <translation>Die Ebene wird durch die ersten zwei Ecken gehen und senkrecht zur Ebene, die durch drei Ecken geht.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Folding</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Folding</translation>
+        <translation>Zusammenklappbar</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</translation>
+        <translation>Spezialmodus zum Falten von Polyedern Wählen Sie 4 Kanten in der Reihenfolge: faltbare Kante, Faltlinie, andere Faltlinie, andere faltbare Kante. Die Ebene wird auf die Faltung der ersten Kante ausgerichtet.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Inertia 2-3</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Inertia 2-3</translation>
+        <translation>Trägheit 2-3</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane constructed on second and third principal axes of inertia (passes through center of mass).</translation>
+        <translation>Ebene, die auf der zweiten und dritten Hauptachse der Trägheit konstruiert ist (geht durch den Mittelpunkt der Masse).</translation>
     </message>
 </context>
 <context>
@@ -701,19 +716,19 @@
         <location line="+1"/>
         <source>Attachment is disabled. CS can be moved by editing Placement property.</source>
         <comment>Attachment3D mode tooltip</comment>
-        <translation type="unfinished">Attachment is disabled. CS can be moved by editing Placement property.</translation>
+        <translation>Anhang ist deaktiviert. CS kann durch Bearbeiten von Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Translate origin</source>
         <comment>Attachment3D mode caption</comment>
-        <translation type="unfinished">Translate origin</translation>
+        <translation>Ursprung versetzen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
         <comment>Attachment3D mode tooltip</comment>
-        <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+        <translation>Ursprung ist ausgerichtet um auf Scheitelpunkt zu passen. Die Orientierung wird durch die Placement-Eigenschaft gesteuert.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -725,7 +740,7 @@
         <location line="+1"/>
         <source>Placement is made equal to Placement of linked object.</source>
         <comment>Attachment3D mode tooltip</comment>
-        <translation type="unfinished">Placement is made equal to Placement of linked object.</translation>
+        <translation>Die Platzierung erfolgt gleich zu der Platzierung des verknüpften Objekts.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -737,7 +752,7 @@
         <location line="+1"/>
         <source>X&apos;, Y&apos;, Z&apos; axes are matched with object&apos;s local X, Z, -Y, respectively.</source>
         <comment>Attachment3D mode tooltip</comment>
-        <translation type="unfinished">X&apos;, Y&apos;, Z&apos; axes are matched with object&apos;s local X, Z, -Y, respectively.</translation>
+        <translation>X &apos;, Y&apos;, Z&apos;-Achsen werden mit der X, Z, -Y Lokalen des Objekts abgeglichen.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -749,37 +764,37 @@
         <location line="+1"/>
         <source>X&apos;, Y&apos;, Z&apos; axes are matched with object&apos;s local Y, Z, X, respectively.</source>
         <comment>Attachment3D mode tooltip</comment>
-        <translation type="unfinished">X&apos;, Y&apos;, Z&apos; axes are matched with object&apos;s local Y, Z, X, respectively.</translation>
+        <translation>X &apos;, Y&apos;, Z&apos;-Achsen werden mit der Y, Z, X Lokalen des Objekts abgeglichen.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>XY on plane</source>
         <comment>Attachment3D mode caption</comment>
-        <translation type="unfinished">XY on plane</translation>
+        <translation>XY auf Ebene</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>X&apos; Y&apos; plane is aligned to coincide planar face.</source>
         <comment>Attachment3D mode tooltip</comment>
-        <translation type="unfinished">X&apos; Y&apos; plane is aligned to coincide planar face.</translation>
+        <translation>Die X&apos;-Y-Ebene ist so ausgerichtet, dass sie mit der ebene Fläche übereinstimmt.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>XY tangent to surface</source>
         <comment>Attachment3D mode caption</comment>
-        <translation type="unfinished">XY tangent to surface</translation>
+        <translation>XY Tangente zur Oberfläche</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>X&apos; Y&apos; plane is made tangent to surface at vertex.</source>
         <comment>Attachment3D mode tooltip</comment>
-        <translation type="unfinished">X&apos; Y&apos; plane is made tangent to surface at vertex.</translation>
+        <translation>X &apos;Y&apos; Ebene wird tangential zur Oberfläche am Scheitelpunkt gemacht.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Z tangent to edge</source>
         <comment>Attachment3D mode caption</comment>
-        <translation type="unfinished">Z tangent to edge</translation>
+        <translation>Z tangential zum Rand</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -799,7 +814,7 @@
         <location line="+3"/>
         <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
         <comment>Attachment3D mode tooltip</comment>
-        <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+        <translation>Ausrichten zum Frenet-Serret-Koordinatensystem der gekrümmten Kante. Optionale Vertex-Link definiert wo.</translation>
     </message>
     <message>
         <location line="-4"/>
@@ -817,7 +832,7 @@
         <location line="+3"/>
         <source>Concentric</source>
         <comment>Attachment3D mode caption</comment>
-        <translation type="unfinished">Concentric</translation>
+        <translation>Konzentrisch</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -829,7 +844,7 @@
         <location line="+2"/>
         <source>Revolution Section</source>
         <comment>Attachment3D mode caption</comment>
-        <translation type="unfinished">Revolution Section</translation>
+        <translation>Revolution Abschnitt</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -865,7 +880,7 @@
         <location line="+2"/>
         <source>Folding</source>
         <comment>Attachment3D mode caption</comment>
-        <translation type="unfinished">Folding</translation>
+        <translation>Zusammenklappbar</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1968,7 +1983,7 @@
     <message>
         <location line="+6"/>
         <source>Selection accepted</source>
-        <translation type="unfinished">Selection accepted</translation>
+        <translation>Auswahl akzeptiert</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -2003,7 +2018,7 @@
     <message>
         <location line="+3"/>
         <source>Extra placement:</source>
-        <translation type="unfinished">Extra placement:</translation>
+        <translation>Zusätzliche Platzierung:</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2038,7 +2053,7 @@
     <message>
         <location line="+92"/>
         <source>Flip sides</source>
-        <translation type="unfinished">Flip sides</translation>
+        <translation>Seiten spiegeln</translation>
     </message>
 </context>
 <context>
@@ -2229,7 +2244,7 @@
     <message>
         <location line="+6"/>
         <source>If checked, direction of extrusion is reversed.</source>
-        <translation type="unfinished">If checked, direction of extrusion is reversed.</translation>
+        <translation>Wenn aktiviert, ist die Richtung der Extrusion umgekehrt.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2239,7 +2254,7 @@
     <message>
         <location line="+7"/>
         <source>Specify direction manually using X,Y,Z values.</source>
-        <translation type="unfinished">Specify direction manually using X,Y,Z values.</translation>
+        <translation>Richtung manuell mittels X-, Y-und Z-Wert angeben.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2281,7 +2296,7 @@
     <message>
         <location line="-211"/>
         <source>Click to start selecting an edge in 3d view.</source>
-        <translation type="unfinished">Click to start selecting an edge in 3d view.</translation>
+        <translation>Klicken um mit der Auswahl einer Kante in der 3D-Ansicht zu beginnen.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2376,7 +2391,7 @@
     <message>
         <location filename="../../DlgExtrusion.cpp" line="-26"/>
         <source>Selecting...</source>
-        <translation type="unfinished">Selecting...</translation>
+        <translation>Auswählen...</translation>
     </message>
     <message>
         <location line="+241"/>
@@ -2389,9 +2404,7 @@
         <source>Creating Extrusion failed.
 
 %1</source>
-        <translation type="unfinished">Creating Extrusion failed.
-
-%1</translation>
+        <translation>Fehler beim Erstellen der Extrusion. %1</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -3408,7 +3421,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
         <location line="+12"/>
         <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</translation>
     </message>
     <message>
         <location line="+79"/>
@@ -3434,7 +3447,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <location line="+42"/>
         <location line="+41"/>
         <source>Click to set this as axis</source>
-        <translation type="unfinished">Click to set this as axis</translation>
+        <translation>Klicken, um dieses als Achse zu setzen</translation>
     </message>
     <message>
         <location line="-38"/>
@@ -3805,7 +3818,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
         <location line="+24"/>
         <source>3D View</source>
-        <translation>3D-Ansicht</translation>
+        <translation>3D-Viewer</translation>
     </message>
 </context>
 <context>
@@ -4097,7 +4110,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
         <location line="+6"/>
         <source>Selection accepted</source>
-        <translation type="unfinished">Selection accepted</translation>
+        <translation>Auswahl akzeptiert</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -4133,7 +4146,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <location line="+3"/>
         <location filename="../../TaskAttacher.cpp" line="+297"/>
         <source>Extra placement:</source>
-        <translation type="unfinished">Extra placement:</translation>
+        <translation>Zusätzliche Platzierung:</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4168,7 +4181,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
         <location line="+92"/>
         <source>Flip sides</source>
-        <translation type="unfinished">Flip sides</translation>
+        <translation>Seiten spiegeln</translation>
     </message>
     <message>
         <location filename="../../TaskAttacher.cpp" line="-17"/>
@@ -4218,7 +4231,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
         <location line="+58"/>
         <source>Selecting...</source>
-        <translation type="unfinished">Selecting...</translation>
+        <translation>Auswählen...</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4887,7 +4900,7 @@ Do you want to continue?</source>
         <translation>Abgerundete Kanten bearbeiten</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+829"/>
+        <location filename="../../ViewProviderExt.cpp" line="+840"/>
         <source>Set colors...</source>
         <translation>Legen sie Farben fest...</translation>
     </message>

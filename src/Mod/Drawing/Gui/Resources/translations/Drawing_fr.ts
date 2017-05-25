@@ -881,7 +881,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Front</source>
-        <translation type="obsolete">Frontal</translation>
+        <translation type="obsolete">Face</translation>
     </message>
     <message>
         <source>Back</source>

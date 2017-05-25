@@ -60,31 +60,31 @@
     <name>App::Property</name>
     <message>
         <source>The displayed size of the origin</source>
-        <translation type="unfinished">The displayed size of the origin</translation>
+        <translation>De weergegeven grootte van de oorsprong</translation>
     </message>
     <message>
         <source>Visual size of the feature</source>
-        <translation type="unfinished">Visual size of the feature</translation>
+        <translation>Visuele grootte van de functie</translation>
     </message>
     <message>
         <source>&lt;empty&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;empty&gt;</translation>
     </message>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">Hoek</translation>
+        <translation>Hoek</translation>
     </message>
     <message>
         <source>Axis</source>
-        <translation type="unfinished"></translation>
+        <translation>As</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Positie</translation>
+        <translation>Positie</translation>
     </message>
     <message>
         <source>Base</source>
-        <translation type="unfinished"></translation>
+        <translation>Basis</translation>
     </message>
 </context>
 <context>
@@ -387,15 +387,15 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Credits</source>
-        <translation type="unfinished">Credits</translation>
+        <translation>Credits</translation>
     </message>
     <message>
         <source>FreeCAD would be nowhere without their efforts:</source>
-        <translation type="unfinished">FreeCAD would be nowhere without their efforts:</translation>
+        <translation>FreeCAD zou nergens zonder de inspanning van:</translation>
     </message>
     <message>
         <source>License</source>
-        <translation type="unfinished">License</translation>
+        <translation>Licentie</translation>
     </message>
 </context>
 <context>
@@ -575,7 +575,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>CheckBox</source>
-        <translation type="unfinished">CheckBox</translation>
+        <translation>Selectievakje</translation>
     </message>
 </context>
 <context>
@@ -1238,54 +1238,38 @@ Gelieve een andere snelkoppeling te kiezen.</translation>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Python Console</translation>
+        <translation>Python Console</translation>
     </message>
     <message>
         <source>Enable word wrap</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekstterugloop inschakelen</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
-    <message>
-        <source>Default (%1 x %1)</source>
-        <translation type="obsolete">Standaard (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Small (%1 x %1)</source>
-        <translation type="obsolete">Klein (1% x %1)</translation>
-    </message>
-    <message>
-        <source>Large (%1 x %1)</source>
-        <translation type="obsolete">Groot (1% x %1)</translation>
-    </message>
-    <message>
-        <source>Extra large (%1 x %1)</source>
-        <translation type="obsolete">Extra groot (1% x %1)</translation>
-    </message>
     <message>
         <source>No style sheet</source>
         <translation>Geen stylesheet</translation>
     </message>
     <message>
         <source>Small (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleine (%1px)</translation>
     </message>
     <message>
         <source>Medium (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Medium (%1px)</translation>
     </message>
     <message>
         <source>Large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Grote (%1px)</translation>
     </message>
     <message>
         <source>Extra large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Extra groot (%1px)</translation>
     </message>
     <message>
         <source>Custom (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aangepaste (%1px)</translation>
     </message>
 </context>
 <context>
@@ -1749,10 +1733,14 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Zoeken</translation>
+        <translation>Zoeken</translation>
     </message>
     <message>
         <source>A search pattern to filter the results above</source>
+        <translation>Een zoekpatroon om de bovenstaande resultaten te filteren</translation>
+    </message>
+    <message>
+        <source>None (Remove link)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1938,7 +1926,7 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>Line Smoothing</source>
-        <translation type="unfinished">Line Smoothing</translation>
+        <translation>Lijn vloeiend maken</translation>
     </message>
     <message>
         <source>MSAA 2x</source>
@@ -1954,15 +1942,15 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished">Or&amp;thographic rendering</translation>
+        <translation>Or&amp;thografische weergave</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished">Perspective renderin&amp;g</translation>
+        <translation>Perspectief renderin&amp;g</translation>
     </message>
     <message>
         <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik OpenGL Buffer Object Vertex (experimenteel)</translation>
     </message>
 </context>
 <context>
@@ -2485,11 +2473,11 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"></translation>
+        <translation>Transparantie</translation>
     </message>
     <message>
         <source>Add watermark</source>
-        <translation type="unfinished"></translation>
+        <translation>Watermerk toevoegen</translation>
     </message>
 </context>
 <context>
@@ -2587,11 +2575,11 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message utf8="true">
         <source>Building Euro (cm/m²/m³)</source>
-        <translation type="unfinished">Building Euro (cm/m²/m³)</translation>
+        <translation>Euro bouwen (cm/m²/m³)</translation>
     </message>
     <message>
         <source>Building US (ft-in/sqft/cuft)</source>
-        <translation type="unfinished">Building US (ft-in/sqft/cuft)</translation>
+        <translation>US bouwen (ft-in/sqft/cuft)</translation>
     </message>
 </context>
 <context>
@@ -2630,19 +2618,11 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>Pick radius (px):</source>
-        <translation type="unfinished">Pick radius (px):</translation>
+        <translation>Kies straal (px):</translation>
     </message>
     <message>
         <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-        <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
-    </message>
-    <message>
-        <source>PickRadius</source>
-        <translation type="obsolete">PickRadius</translation>
-    </message>
-    <message>
-        <source>View</source>
-        <translation type="obsolete">Aanzicht</translation>
+        <translation>Stel het gebied in voor de selectie van elementen in de 3D-weergave. Een grotere waarde maakt selectie makkelijker, maar zal kleine objecten elementen niet selecteerbaar maken.</translation>
     </message>
 </context>
 <context>
@@ -2668,11 +2648,11 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>Quantity:</source>
-        <translation type="unfinished">Quantity:</translation>
+        <translation>Aantal:</translation>
     </message>
     <message>
         <source>Units:</source>
-        <translation type="unfinished">Units:</translation>
+        <translation>Eenheden:</translation>
     </message>
     <message>
         <source>Help</source>
@@ -2774,7 +2754,7 @@ Kies een andere map, alstublieft.</translation>
         <source>Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
 
 The &apos;Status&apos; column shows whether the document could be recovered.</source>
-        <translation>Druk op &apos;Herstel starten&apos; om met het proces van herstel van de document hieronder beginnen. 
+        <translation type="obsolete">Druk op &apos;Herstel starten&apos; om met het proces van herstel van de document hieronder beginnen. 
 
 De kolom &apos;Status&apos; toont als het document kan hersteld worden.</translation>
     </message>
@@ -2816,7 +2796,7 @@ De kolom &apos;Status&apos; toont als het document kan hersteld worden.</transla
     </message>
     <message>
         <source>Cleanup...</source>
-        <translation type="unfinished">Cleanup...</translation>
+        <translation>Opruimen...</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -2824,31 +2804,37 @@ De kolom &apos;Status&apos; toont als het document kan hersteld worden.</transla
     </message>
     <message>
         <source>Cleanup</source>
-        <translation type="unfinished">Cleanup</translation>
+        <translation>Opruimen</translation>
     </message>
     <message>
         <source>Are you sure you want to delete the selected transient directories?</source>
-        <translation type="unfinished">Are you sure you want to delete the selected transient directories?</translation>
+        <translation>Weet je zeker dat selectie tijdelijke mappen verwijderd mogen worden?</translation>
     </message>
     <message>
         <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
-        <translation type="unfinished">When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</translation>
+        <translation>Na het verwijderen van alle tijdelijke mappen is het herstellen van bestanden niet mogelijk.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete all transient directories?</source>
-        <translation type="unfinished">Are you sure you want to delete all transient directories?</translation>
+        <translation>Weet u zeker dat u alle voorbijgaande mappen wilt verwijderen?</translation>
     </message>
     <message>
         <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
-        <translation type="unfinished">When deleting all transient directory you won&apos;t be able to recover any files afterwards.</translation>
+        <translation>Herstel van bestanden is niet mogelijk na het verwijderen van alle tijdelijke mappen.</translation>
     </message>
     <message>
         <source>Finished</source>
-        <translation type="unfinished">Finished</translation>
+        <translation>Afgerond</translation>
     </message>
     <message>
         <source>Transient directories deleted.</source>
-        <translation type="unfinished">Transient directories deleted.</translation>
+        <translation>Tijdelijke mappen verwijderd.</translation>
+    </message>
+    <message>
+        <source>Press &apos;Start Recovery&apos; to start the recovery process of the document listed below.
+
+The &apos;Status&apos; column shows whether the document could be recovered.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3215,7 +3201,7 @@ De kolom &apos;Status&apos; toont als het document kan hersteld worden.</transla
     </message>
     <message>
         <source>Use center of mass</source>
-        <translation type="unfinished"></translation>
+        <translation>Zwaartepunt gebruiken</translation>
     </message>
 </context>
 <context>
@@ -3412,7 +3398,7 @@ De kolom &apos;Status&apos; toont als het document kan hersteld worden.</transla
     <name>Gui::DockWnd::SelectionView</name>
     <message>
         <source>Property View</source>
-        <translation>Eigenschappen-aanzicht</translation>
+        <translation type="obsolete">Eigenschappen-aanzicht</translation>
     </message>
     <message>
         <source>Search</source>
@@ -3468,11 +3454,27 @@ De kolom &apos;Status&apos; toont als het document kan hersteld worden.</transla
     </message>
     <message>
         <source>Mark to recompute</source>
-        <translation type="unfinished">Mark to recompute</translation>
+        <translation>Markeren om te herberekenen</translation>
     </message>
     <message>
         <source>Mark this object to be recomputed</source>
-        <translation type="unfinished">Mark this object to be recomputed</translation>
+        <translation>Object opnieuw berekenen</translation>
+    </message>
+    <message>
+        <source>Selection View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The number of selected items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate subshape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creates a standalone copy of this subshape in the document</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3601,19 +3603,19 @@ Wilt u uw wijzigingen opslaan?</translation>
     <name>Gui::GestureNavigationStyle</name>
     <message>
         <source>Tap. Or click left mouse button.</source>
-        <translation type="unfinished">Tap. Or click left mouse button.</translation>
+        <translation>Tik op. Of klik op de linker muisknop.</translation>
     </message>
     <message>
         <source>Drag screen with two fingers. Or press right mouse button.</source>
-        <translation type="unfinished">Drag screen with two fingers. Or press right mouse button.</translation>
+        <translation>Sleep het scherm met twee vingers. Of klik op de rechter muisknop.</translation>
     </message>
     <message>
         <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-        <translation type="unfinished">Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+        <translation>Sleep het scherm met één vinger. Of druk op de linker muisknop. Gebruik Alt bij de Sketcher of andere bewerkingsmodellen.</translation>
     </message>
     <message>
         <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-        <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</translation>
+        <translation>Knijp (zet twee vingers op het scherm en sleep ze uit/in elkaar). Of scroll middelste muisknop. Of PgUp/PgDown op het toetsenbord.</translation>
     </message>
 </context>
 <context>
@@ -3738,11 +3740,11 @@ Wilt u uw wijzigingen opslaan?</translation>
     </message>
     <message>
         <source>Macro file doesn&apos;t exist</source>
-        <translation type="unfinished">Macro file doesn&apos;t exist</translation>
+        <translation>Macro-bestand bestaat niet</translation>
     </message>
     <message>
         <source>No such macro file: &apos;%1&apos;</source>
-        <translation type="unfinished">No such macro file: &apos;%1&apos;</translation>
+        <translation>Geen dergelijke macro-bestand: &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -3774,24 +3776,19 @@ Wilt u uw wijzigingen opslaan?</translation>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to copy them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to copy them, too?</translation>
+        <translation>Geselecteerde objecten hebben een afhankelijkheid van niet-geselecteerde objecten. Wilt u ze ook kopiëren?</translation>
     </message>
     <message>
         <source>There is a rendering issue on MacOS.</source>
-        <translation type="unfinished">There is a rendering issue on MacOS.</translation>
-    </message>
-    <message>
-        <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="obsolete">See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</translation>
+        <translation type="obsolete">Er is een rendering probleem op MacOS.</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
-        <translation>Niet meer tonen</translation>
+        <translation type="obsolete">Niet meer tonen</translation>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Zie &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; de wiki&lt;/a&gt; voor meer informatie</translation>
     </message>
 </context>
 <context>
@@ -3810,15 +3807,15 @@ Do you want to copy them, too?</translation>
     </message>
     <message>
         <source>Please, select at least one point in the left and the right view</source>
-        <translation type="unfinished">Please, select at least one point in the left and the right view</translation>
+        <translation>Selecteer ten minste één punt in de linker- en rechter weergave</translation>
     </message>
     <message>
         <source>Please, select at least %1 points in the left and the right view</source>
-        <translation type="unfinished">Please, select at least %1 points in the left and the right view</translation>
+        <translation>Selecteer ten minste %1 punten in de linker- en rechter weergave</translation>
     </message>
     <message>
         <source>Please pick points in the left and right view</source>
-        <translation type="unfinished">Please pick points in the left and right view</translation>
+        <translation>Kies punten in de linker- en rechter weergave</translation>
     </message>
     <message>
         <source>The alignment has finished</source>
@@ -3830,23 +3827,23 @@ Do you want to copy them, too?</translation>
     </message>
     <message>
         <source>Too few points picked in the left view. At least %1 points are needed.</source>
-        <translation type="unfinished">Too few points picked in the left view. At least %1 points are needed.</translation>
+        <translation>Te weinig punten geselecteerd in de linker weergave. Ten minste %1 punten nodig zijn.</translation>
     </message>
     <message>
         <source>Too few points picked in the right view. At least %1 points are needed.</source>
-        <translation type="unfinished">Too few points picked in the right view. At least %1 points are needed.</translation>
+        <translation>Te weinig punten geselecteerd in de rechter weergave. Ten minste %1 punten nodig zijn.</translation>
     </message>
     <message>
         <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
-        <translation type="unfinished">Different number of points picked in left and right view.
-On the left view %1 points are picked,
-on the right view %2 points are picked.</translation>
+        <translation>Verschillend aantal punten geselecteerd in de linker- en rechterweergave.
+De linker weergave heeft %1 selecties
+en de rechter weergave heeft %2 selecties.</translation>
     </message>
     <message>
         <source>Try to align group of views</source>
-        <translation type="unfinished">Try to align group of views</translation>
+        <translation>Groep van weergaven uitlijnen</translation>
     </message>
     <message>
         <source>The alignment failed.
@@ -3867,11 +3864,11 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
-        <translation type="unfinished">Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</translation>
+        <translation>Verschillend aantal punten geselecteerd in de linker- en rechterweergave. De linker weergave heeft %1 punten en de rechter weergave %2 worden punten.</translation>
     </message>
     <message>
         <source>Point picked at (%1,%2,%3)</source>
-        <translation type="unfinished">Point picked at (%1,%2,%3)</translation>
+        <translation>Punt gepakt bij (%1,%2,%3)</translation>
     </message>
     <message>
         <source>No point was picked</source>
@@ -3879,26 +3876,26 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>No point was found on model</source>
-        <translation type="unfinished">No point was found on model</translation>
+        <translation>Op het model is geen punt gevonden</translation>
     </message>
 </context>
 <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
         <source>Tap. Or click left mouse button.</source>
-        <translation type="unfinished">Tap. Or click left mouse button.</translation>
+        <translation>Tik op. Of klik op de linker muisknop.</translation>
     </message>
     <message>
         <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-        <translation type="unfinished">Drag screen with two fingers. Or press ALT + middle mouse button.</translation>
+        <translation>Sleep het scherm met twee vingers. Of klik op ALT + middelste muisknop.</translation>
     </message>
     <message>
         <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-        <translation type="unfinished">Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+        <translation>Sleep het scherm met één vinger. Of druk op ALT + linker muisknop. Gebruik bij Sketcher of andere bewerkingsmethodes de ALT.</translation>
     </message>
     <message>
         <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-        <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</translation>
+        <translation>Knijp (zet twee vingers op het scherm en sleep ze uit/in elkaar). Of scroll middelste muisknop. Of klik ALT + rechter muisknop. Of PgUp/PgDown op het toetsenbord.</translation>
     </message>
 </context>
 <context>
@@ -3918,11 +3915,11 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Press CTRL and middle mouse button</source>
-        <translation type="unfinished">Press CTRL and middle mouse button</translation>
+        <translation>Druk op CTRL en de middelste muisknop</translation>
     </message>
     <message>
         <source>Press CTRL and right mouse button</source>
-        <translation type="unfinished">Press CTRL and right mouse button</translation>
+        <translation>Druk op CTRL en de middelste muisknop</translation>
     </message>
     <message>
         <source>Press CTRL and left mouse button</source>
@@ -3978,7 +3975,11 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation>Bewerken...</translation>
+        <translation type="obsolete">Bewerken...</translation>
+    </message>
+    <message>
+        <source>Change the linked object</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3996,7 +3997,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyView</name>
     <message>
         <source>View</source>
-        <translation>Aanzicht</translation>
+        <translation>Weergave</translation>
     </message>
     <message>
         <source>Data</source>
@@ -4192,11 +4193,11 @@ Wilt u een andere map opgeven?</translation>
     </message>
     <message>
         <source>Automatic python modules documentation</source>
-        <translation type="unfinished">Automatic python modules documentation</translation>
+        <translation>Automatische python module documentatie</translation>
     </message>
     <message>
         <source>Opens a browser to show the Python modules documentation</source>
-        <translation type="unfinished">Opens a browser to show the Python modules documentation</translation>
+        <translation>Opent een browser om de Python module documentatie weer te geven</translation>
     </message>
 </context>
 <context>
@@ -4217,15 +4218,15 @@ Wilt u een andere map opgeven?</translation>
     <name>Gui::TaskCSysDragger</name>
     <message>
         <source>Increments</source>
-        <translation type="unfinished">Increments</translation>
+        <translation>Stappen</translation>
     </message>
     <message>
         <source>Translation Increment: </source>
-        <translation type="unfinished">Translation Increment: </translation>
+        <translation>Vertalingsstappen: </translation>
     </message>
     <message>
         <source>Rotation Increment: </source>
-        <translation type="unfinished">Rotation Increment: </translation>
+        <translation>Rotatie stappen: </translation>
     </message>
 </context>
 <context>
@@ -4300,7 +4301,7 @@ Wilt u een andere map opgeven?</translation>
     </message>
     <message>
         <source>Press CTRL and SHIFT buttons</source>
-        <translation type="unfinished">Press CTRL and SHIFT buttons</translation>
+        <translation>CTRL en SHIFT indrukken</translation>
     </message>
 </context>
 <context>
@@ -4358,23 +4359,23 @@ Wilt u een andere map opgeven?</translation>
     </message>
     <message>
         <source>Skip recomputes</source>
-        <translation type="unfinished">Skip recomputes</translation>
+        <translation>Herberekening overslaan</translation>
     </message>
     <message>
         <source>Enable or disable recomputations of document</source>
-        <translation type="unfinished">Enable or disable recomputations of document</translation>
+        <translation>Herberekening van het document in- of uitschakelen</translation>
     </message>
     <message>
         <source>Mark to recompute</source>
-        <translation type="unfinished">Mark to recompute</translation>
+        <translation>Markeren om te herberekenen</translation>
     </message>
     <message>
         <source>Mark this object to be recomputed</source>
-        <translation type="unfinished">Mark this object to be recomputed</translation>
+        <translation>Object opnieuw berekenen</translation>
     </message>
     <message>
         <source>%1, Internal name: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1, interne naam: %2</translation>
     </message>
 </context>
 <context>
@@ -4407,27 +4408,27 @@ Wilt u een andere map opgeven?</translation>
     <name>MAC_APPLICATION_MENU</name>
     <message>
         <source>Services</source>
-        <translation type="unfinished">Services</translation>
+        <translation>Diensten</translation>
     </message>
     <message>
         <source>Hide %1</source>
-        <translation type="unfinished">Hide %1</translation>
+        <translation>%1 verbergen</translation>
     </message>
     <message>
         <source>Hide Others</source>
-        <translation type="unfinished">Hide Others</translation>
+        <translation>Andere verbergen</translation>
     </message>
     <message>
         <source>Show All</source>
-        <translation type="unfinished">Show All</translation>
+        <translation>Alles tonen</translation>
     </message>
     <message>
         <source>Preferences...</source>
-        <translation type="unfinished">Preferences...</translation>
+        <translation>Voorkeuren...</translation>
     </message>
     <message>
         <source>Quit %1</source>
-        <translation type="unfinished">Quit %1</translation>
+        <translation>Stoppen met %1</translation>
     </message>
     <message>
         <source>About %1</source>
@@ -4438,11 +4439,11 @@ Wilt u een andere map opgeven?</translation>
     <name>NetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;Gebruikersnaam en wachtwoord voor &quot;%1&quot; bij %2 ingeven&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;Verbinden met proxy: &quot;%1&quot;&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
@@ -4532,7 +4533,7 @@ Wilt u een andere map opgeven?</translation>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished">Input in line %1 is not a number</translation>
+        <translation>Input in lijn %1 is geen getal</translation>
     </message>
 </context>
 <context>
@@ -4571,7 +4572,7 @@ Wilt u een andere map opgeven?</translation>
     </message>
     <message>
         <source>DAG View</source>
-        <translation type="unfinished">DAG View</translation>
+        <translation>DAG weergave</translation>
     </message>
 </context>
 <context>
@@ -4896,15 +4897,15 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
-        <translation type="unfinished">Do you want to save your changes to document &apos;%1&apos; before closing?</translation>
+        <translation>Wil je de wijzigingen in het document &apos;%1&apos; opslaan alvorens te sluiten?</translation>
     </message>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
-        <translation type="unfinished">If you don&apos;t save, your changes will be lost.</translation>
+        <translation>Als u niet opslaat, zullen uw wijzigingen verloren gaan.</translation>
     </message>
     <message>
         <source>Save a copy of the document under new filename...</source>
-        <translation type="unfinished">Save a copy of the document under new filename...</translation>
+        <translation>Bewaar een copy van het actieve document onder een nieuwe naam...</translation>
     </message>
     <message>
         <source>Frozen views</source>
@@ -4924,7 +4925,7 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
+        <translation>Niet toegestaan om systeem macro&apos;s te verwijderen</translation>
     </message>
     <message>
         <source>Origin</source>
@@ -4932,38 +4933,34 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source> %1.%2.%3 </source>
-        <translation type="unfinished"> %1.%2.%3 </translation>
+        <translation> %1.%2.%3 </translation>
     </message>
     <message>
         <source>Translation: </source>
-        <translation type="unfinished">Translation: </translation>
+        <translation>Vertalingen: </translation>
     </message>
     <message>
         <source>Rotation: </source>
-        <translation type="unfinished">Rotation: </translation>
+        <translation>Rotatie: </translation>
     </message>
     <message>
         <source>Delete group content?</source>
-        <translation type="unfinished">Delete group content?</translation>
-    </message>
-    <message>
-        <source>The %1 is not empty, delete it&apos;s content as well?</source>
-        <translation type="obsolete">The %1 is not empty, delete it&apos;s content as well?</translation>
+        <translation>Groepsinhoud verwijderen?</translation>
     </message>
     <message>
         <source>The %1 is not empty, delete its content as well?</source>
-        <translation type="unfinished"></translation>
+        <translation>De %1 is niet leeg. Mag de inhoud worden verwijderd?</translation>
     </message>
 </context>
 <context>
     <name>SelectionFilter</name>
     <message>
         <source>Not allowed:</source>
-        <translation type="unfinished">Not allowed:</translation>
+        <translation>Niet toegestaan:</translation>
     </message>
     <message>
         <source>Selection not allowed by filter</source>
-        <translation type="unfinished">Selection not allowed by filter</translation>
+        <translation>Selectie niet toegestaan door de filter</translation>
     </message>
 </context>
 <context>
@@ -5292,7 +5289,7 @@ Let op, het maakt uit waar je klikt.</translation>
     <name>StdCmdDockViewMenu</name>
     <message>
         <source>View</source>
-        <translation>Aanzicht</translation>
+        <translation>Weergave</translation>
     </message>
     <message>
         <source>Panels</source>
@@ -5300,7 +5297,7 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>List of available dock panels</source>
-        <translation type="unfinished">List of available dock panels</translation>
+        <translation>Lijst van beschikbare dok panelen</translation>
     </message>
 </context>
 <context>
@@ -5345,7 +5342,7 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Enters or leaves the selected object&apos;s edit mode</source>
-        <translation type="unfinished">Enters or leaves the selected object&apos;s edit mode</translation>
+        <translation>Verander de bewerkingsmode van geselecteerde bewerkingsmodus</translation>
     </message>
 </context>
 <context>
@@ -5413,7 +5410,7 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Frequently Asked Questions on the FreeCAD website</source>
-        <translation type="unfinished">Frequently Asked Questions on the FreeCAD website</translation>
+        <translation>Veel gestelde vragen op de FreeCAD site</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
@@ -5432,7 +5429,7 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>The FreeCAD forum, where you can find help from other users</source>
-        <translation type="unfinished">The FreeCAD forum, where you can find help from other users</translation>
+        <translation>Het FreeCAD-forum is de plek om hulp van andere gebruikers te vinden</translation>
     </message>
     <message>
         <source>The FreeCAD Forum</source>
@@ -5447,15 +5444,15 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Python scripting documentation</source>
-        <translation type="unfinished">Python scripting documentation</translation>
+        <translation>Python scripting documentatie</translation>
     </message>
     <message>
         <source>Python scripting documentation on the FreeCAD website</source>
-        <translation type="unfinished">Python scripting documentation on the FreeCAD website</translation>
+        <translation>Python scripting documentatie op de FreeCAD site</translation>
     </message>
     <message>
         <source>PowerUsers documentation</source>
-        <translation type="unfinished">PowerUsers documentation</translation>
+        <translation>Gebruikersdocumentatie</translation>
     </message>
 </context>
 <context>
@@ -5470,7 +5467,7 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Documentation for users on the FreeCAD website</source>
-        <translation type="unfinished">Documentation for users on the FreeCAD website</translation>
+        <translation>Documentatie voor gebruikers op de FreeCAD site</translation>
     </message>
 </context>
 <context>
@@ -5627,7 +5624,7 @@ Let op, het maakt uit waar je klikt.</translation>
     <name>StdCmdMeasureDistance</name>
     <message>
         <source>View</source>
-        <translation>Aanzicht</translation>
+        <translation>Weergave</translation>
     </message>
     <message>
         <source>Measure distance</source>
@@ -5745,7 +5742,7 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
-        <translation type="unfinished">Loading the file %1 is not supported</translation>
+        <translation>Het laden van bestand %1 is niet ondersteund</translation>
     </message>
 </context>
 <context>
@@ -6041,11 +6038,11 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Select visible objects</source>
-        <translation type="unfinished">Select visible objects</translation>
+        <translation>Selecteer zichtbare objecten</translation>
     </message>
     <message>
         <source>Select visible objects in the active document</source>
-        <translation type="unfinished">Select visible objects in the active document</translation>
+        <translation>Selecteer zichtbare objecten in het actieve document</translation>
     </message>
 </context>
 <context>
@@ -6097,7 +6094,7 @@ Let op, het maakt uit waar je klikt.</translation>
     <name>StdCmdStatusBar</name>
     <message>
         <source>View</source>
-        <translation>Aanzicht</translation>
+        <translation>Weergave</translation>
     </message>
     <message>
         <source>Status bar</source>
@@ -6228,7 +6225,7 @@ Let op, het maakt uit waar je klikt.</translation>
     <name>StdCmdToolBarMenu</name>
     <message>
         <source>View</source>
-        <translation>Aanzicht</translation>
+        <translation>Weergave</translation>
     </message>
     <message>
         <source>Tool&amp;bars</source>
@@ -6273,7 +6270,7 @@ Let op, het maakt uit waar je klikt.</translation>
     <name>StdCmdTreeSelection</name>
     <message>
         <source>View</source>
-        <translation>Aanzicht</translation>
+        <translation>Weergave</translation>
     </message>
     <message>
         <source>Go to selection</source>
@@ -6307,18 +6304,18 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>&amp;Units calculator...</source>
-        <translation type="unfinished">&amp;Units calculator...</translation>
+        <translation>&amp;Eenheden rekenmachine...</translation>
     </message>
     <message>
         <source>Start the units calculator</source>
-        <translation type="unfinished">Start the units calculator</translation>
+        <translation>Start de eenheden rekenmachine</translation>
     </message>
 </context>
 <context>
     <name>StdCmdUserInterface</name>
     <message>
         <source>View</source>
-        <translation>Aanzicht</translation>
+        <translation>Weergave</translation>
     </message>
     <message>
         <source>Dock views</source>
@@ -6341,7 +6338,7 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Set to axonometric view</source>
-        <translation type="unfinished">Set to axonometric view</translation>
+        <translation>Ingesteld op de axonometrisch aanzicht</translation>
     </message>
 </context>
 <context>
@@ -6551,7 +6548,7 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished">Switch stereo viewing to red/cyan</translation>
+        <translation>Stereo weergave naar rood/cyaan overschakelen</translation>
     </message>
 </context>
 <context>
@@ -6656,7 +6653,7 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished">Extend the FreeCAD 3D Window to a Oculus Rift</translation>
+        <translation>Het 3D-venster FreeCAD uitbreiden naar een Oculus Rift</translation>
     </message>
 </context>
 <context>
@@ -6704,7 +6701,7 @@ Let op, het maakt uit waar je klikt.</translation>
     <name>StdCmdWorkbench</name>
     <message>
         <source>View</source>
-        <translation>Aanzicht</translation>
+        <translation>Weergave</translation>
     </message>
     <message>
         <source>Workbench</source>
@@ -6865,9 +6862,9 @@ Let op, het maakt uit waar je klikt.</translation>
 Are you sure you want to continue?
 
 </source>
-        <translation type="unfinished">The following, referencing objects might break.
+        <translation>De volgende, verwijzende objecten kunnen breken.
 
-Are you sure you want to continue?
+Weet u zeker dat u wilt doorgaan?
 
 </translation>
     </message>
@@ -6892,19 +6889,19 @@ Are you sure you want to continue?
     </message>
     <message>
         <source>Flat lines</source>
-        <translation type="unfinished">Flat lines</translation>
+        <translation>Platte lijn</translation>
     </message>
     <message>
         <source>Flat lines mode</source>
-        <translation type="unfinished">Flat lines mode</translation>
+        <translation>Platte lijnen modus</translation>
     </message>
     <message>
         <source>Shaded</source>
-        <translation type="unfinished">Shaded</translation>
+        <translation>Schaduw</translation>
     </message>
     <message>
         <source>Shaded mode</source>
-        <translation type="unfinished">Shaded mode</translation>
+        <translation>Schaduw modus</translation>
     </message>
     <message>
         <source>Points</source>
@@ -6916,19 +6913,19 @@ Are you sure you want to continue?
     </message>
     <message>
         <source>Hidden line</source>
-        <translation type="unfinished"></translation>
+        <translation>Verborgen lijn</translation>
     </message>
     <message>
         <source>Hidden line mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Verborgen lijn modus</translation>
     </message>
     <message>
         <source>No shading</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen schaduw</translation>
     </message>
     <message>
         <source>No shading mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen schaduw modus</translation>
     </message>
 </context>
 <context>
@@ -6980,11 +6977,11 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>Revert document</source>
-        <translation type="unfinished">Revert document</translation>
+        <translation>Document herstellen</translation>
     </message>
     <message>
         <source>Do you want to continue?</source>
-        <translation type="unfinished">Do you want to continue?</translation>
+        <translation>Wilt u doorgaan?</translation>
     </message>
 </context>
 <context>
@@ -7047,7 +7044,7 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>View</source>
-        <translation>Aanzicht</translation>
+        <translation>Weergave</translation>
     </message>
     <message>
         <source>Special Ops</source>

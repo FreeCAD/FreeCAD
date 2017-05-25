@@ -401,15 +401,15 @@
     <name>CmdMeshSectionByPlane</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Netz</translation>
+        <translation>Netz</translation>
     </message>
     <message>
         <source>Create section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Erstellen von Abschnitt aus Mesh und Ebene</translation>
     </message>
     <message>
         <source>Section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Abschnitt aus Mesh und Ebene</translation>
     </message>
 </context>
 <context>
@@ -768,15 +768,15 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     </message>
     <message>
         <source>Check for non-manifold points</source>
-        <translation type="unfinished">Check for non-manifold points</translation>
+        <translation>Überprüfen auf nicht verteilte Punkte</translation>
     </message>
     <message>
         <source>Enable check for folds on surface</source>
-        <translation type="unfinished">Enable check for folds on surface</translation>
+        <translation>Aktivieren von Kontrolle auf Falten auf der Oberfläche</translation>
     </message>
     <message>
         <source>Only consider zero area faces as degenerated</source>
-        <translation type="unfinished">Only consider zero area faces as degenerated</translation>
+        <translation>Nur Null Flächen Faces als degeneriert betrachten</translation>
     </message>
 </context>
 <context>
@@ -791,7 +791,7 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation>Alt+S</translation>
+        <translation>Alt+I</translation>
     </message>
     <message>
         <source>Cl&amp;ose</source>
@@ -905,7 +905,7 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     </message>
     <message>
         <source>Export AMF files using compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Export von AMF-Dateien mit Komprimierung</translation>
     </message>
 </context>
 <context>
@@ -1217,7 +1217,7 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
     </message>
     <message>
         <source>Unknown error occurred while running OpenSCAD.</source>
-        <translation type="unfinished"></translation>
+        <translation>Beim Ausführen von OpenSCAD ist ein unbekannter Fehler aufgetreten.</translation>
     </message>
 </context>
 <context>

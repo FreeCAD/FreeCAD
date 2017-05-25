@@ -67,7 +67,7 @@
     <message>
         <location line="+1"/>
         <source>Object appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Aspetto dell&apos;oggetto</translation>
     </message>
     <message>
         <source>Parametric</source>

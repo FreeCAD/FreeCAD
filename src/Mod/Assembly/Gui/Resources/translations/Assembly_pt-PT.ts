@@ -98,13 +98,17 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Constraint alignment...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Constraint allignment...</source>
-        <translation>Restringir alinhamento...</translation>
+        <translation type="obsolete">Restringir alinhamento...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Align the selected entities</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Align the selected entities</translation>
     </message>
     <message>
         <source>Align the selected entitys</source>
@@ -126,7 +130,7 @@
     <message>
         <location line="+1"/>
         <source>Set the angle between two selected entities</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set the angle between two selected entities</translation>
     </message>
     <message>
         <source>Set the angle between two selected entitys</source>
@@ -163,7 +167,7 @@
     <message>
         <location line="+1"/>
         <source>Make the selected entities coincident</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Make the selected entities coincident</translation>
     </message>
     <message>
         <source>Make the selected entitys coincident</source>
@@ -185,7 +189,7 @@
     <message>
         <location line="+1"/>
         <source>Set the distance between two selected entities</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set the distance between two selected entities</translation>
     </message>
     <message>
         <source>Set the distance between two selected entitys</source>
@@ -225,7 +229,7 @@
     <message>
         <location line="+1"/>
         <source>Set the orientation of two selected entities in regard to each other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set the orientation of two selected entities in regard to each other</translation>
     </message>
     <message>
         <source>Set the orientation of two selected entitys in regard to each other</source>
@@ -344,7 +348,7 @@
     <message>
         <location line="+38"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblys, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblys, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -352,9 +356,13 @@
         <translation>Corrigir</translation>
     </message>
     <message>
-        <location line="+38"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setthe distance between first and second geometrie. Note that in many cases the shortes distance is used (e.g. line - line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setthe distance between first and second geometrie. Note that in many cases the shortes distance is used (e.g. line - line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setthe distance between first and second geometrie. Note that in many cases the shortes distance is used (e.g. line - line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the distance between first and second geometry. Note that in many cases the shortest distance is used (e.g. line - line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -424,12 +432,12 @@
     <message>
         <location line="+38"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Makes the geometries normals  point in the opposite direction. Note that for cylinders the base circles normal is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Makes the geometries normals  point in the opposite direction. Note that for cylinders the base circles normal is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Makes the geometries normals perpendicular. Note that for cylinders the base circles normal is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Makes the geometries normals perpendicular. Note that for cylinders the base circles normal is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Makes the geometries normals  point in the opposite direction. Note that for cylinders the base cirles normal is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>

@@ -18,11 +18,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="openscadprefs-base.ui" line="47"/>
-        <source>The path to the OpenSCAD executeable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="openscadprefs-base.ui" line="65"/>
         <source>OpenSCAD import</source>
         <translation type="unfinished"></translation>
@@ -127,6 +122,11 @@
         <source>Print debug information in the Console</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="openscadprefs-base.ui" line="47"/>
+        <source>The path to the OpenSCAD executable</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>OpenSCAD</name>
@@ -141,12 +141,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importCSG.py" line="1167"/>
+        <location filename="importCSG.py" line="1200"/>
         <source>Unsupported Function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importCSG.py" line="1167"/>
+        <location filename="importCSG.py" line="1200"/>
         <source>Press OK</source>
         <translation type="unfinished"></translation>
     </message>

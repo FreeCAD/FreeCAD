@@ -37,7 +37,7 @@
         <location line="+1"/>
         <source>Curve</source>
         <comment>Attacher reference type</comment>
-        <translation type="unfinished">Curve</translation>
+        <translation>Krivulja</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -61,13 +61,13 @@
         <location line="+1"/>
         <source>Parabola</source>
         <comment>Attacher reference type</comment>
-        <translation type="unfinished">Parabola</translation>
+        <translation>Parabola</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hyperbola</source>
         <comment>Attacher reference type</comment>
-        <translation type="unfinished">Hyperbola</translation>
+        <translation>Hiperbola</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -109,7 +109,7 @@
         <location line="+2"/>
         <source>Object</source>
         <comment>Attacher reference type</comment>
-        <translation type="unfinished">Object</translation>
+        <translation>Objekt</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -181,28 +181,38 @@
         <translation type="unfinished">On edge</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation type="unfinished">Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</translation>
+        <translation type="obsolete">Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Center of curvature</source>
         <comment>AttachmentPoint mode caption</comment>
-        <translation type="unfinished">Center of curvature</translation>
+        <translation>Središče krivulje</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation type="unfinished">Center of osculating circle of an edge. Optinal vertex link defines where.</translation>
+        <translation type="obsolete">Center of osculating circle of an edge. Optinal vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Center of mass</source>
         <comment>AttachmentPoint mode caption</comment>
-        <translation type="unfinished">Center of mass</translation>
+        <translation>Težišče</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -570,7 +580,7 @@
         <location line="+2"/>
         <source>Tangent to surface</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Tangent to surface</translation>
+        <translation>Tangentno na površino</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -636,9 +646,14 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+        <translation type="obsolete">Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1619,7 +1634,7 @@
     <message>
         <location line="+1"/>
         <source>3D Offset...</source>
-        <translation type="unfinished">3D Offset...</translation>
+        <translation>3D odmik...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1645,7 +1660,7 @@
     <message>
         <location line="+1"/>
         <source>2D Offset...</source>
-        <translation type="unfinished">2D Offset...</translation>
+        <translation>2D odmik...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2332,7 +2347,7 @@
     <message>
         <location line="+3"/>
         <source>Symmetric</source>
-        <translation type="unfinished">Symmetric</translation>
+        <translation>Simetrično</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -3408,7 +3423,7 @@ Najprej izberite veljavno obliko iz spustnega seznama.</translation>
     <message>
         <location line="+12"/>
         <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</translation>
     </message>
     <message>
         <location line="+79"/>
@@ -4173,12 +4188,12 @@ Najprej izberite veljavno obliko iz spustnega seznama.</translation>
     <message>
         <location filename="../../TaskAttacher.cpp" line="-17"/>
         <source>OCC error: %1</source>
-        <translation type="unfinished">OCC error: %1</translation>
+        <translation>OCC napaka: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>unknown error</source>
-        <translation type="unfinished">unknown error</translation>
+        <translation>neznana napaka</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4888,7 +4903,7 @@ Do you want to continue?</source>
         <translation>Uredi zaokrožene robove</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+829"/>
+        <location filename="../../ViewProviderExt.cpp" line="+840"/>
         <source>Set colors...</source>
         <translation>Nastavi barve …</translation>
     </message>

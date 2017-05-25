@@ -2,9 +2,27 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="it" sourcelanguage="en">
 <context>
+    <name>CmdMeshPartCurveOnMesh</name>
+    <message>
+        <location filename="../../Command.cpp" line="+245"/>
+        <source>Mesh</source>
+        <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Curve on mesh...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Curve on mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdMeshPartMesher</name>
     <message>
-        <location filename="../../Command.cpp" line="+50"/>
+        <location line="-191"/>
         <source>Mesh</source>
         <translation>Mesh</translation>
     </message>
@@ -24,17 +42,17 @@
     <message>
         <location line="+106"/>
         <source>Mesh</source>
-        <translation type="unfinished">Mesh</translation>
+        <translation>Mesh</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Crea una sezione da mesh e piano</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Sezione</translation>
     </message>
 </context>
 <context>
@@ -42,17 +60,103 @@
     <message>
         <location line="-85"/>
         <source>Mesh</source>
-        <translation type="unfinished">Mesh</translation>
+        <translation>Mesh</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Taglia mesh con un piano</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Trims a mesh with a plane</source>
+        <translation>Taglia una mesh con un piano</translation>
+    </message>
+</context>
+<context>
+    <name>MeshPartGui::CurveOnMeshHandler</name>
+    <message>
+        <location filename="../../CurveOnMesh.cpp" line="+353"/>
+        <source>Create</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Close wire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+208"/>
+        <source>Wrong mesh picked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>No point was picked</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MeshPartGui::TaskCurveOnMesh</name>
+    <message>
+        <location filename="../../TaskCurveOnMesh.ui" line="+14"/>
+        <source>Curve on mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Wire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Snap tolerance to vertexes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source> px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Split threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Spline Approximation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Tolerance to mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Continuity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Maximum curve degree</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -197,12 +301,12 @@
     <message>
         <location filename="../../Command.cpp" line="+93"/>
         <source>Select plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona piano</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please select a plane at which you section the mesh.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selezionare un piano con il quale tagliare la mesh.</translation>
     </message>
 </context>
 <context>
@@ -210,12 +314,12 @@
     <message>
         <location line="-85"/>
         <source>Select plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona piano</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona un piano con il quale tagliare la mesh.</translation>
     </message>
 </context>
 <context>

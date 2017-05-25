@@ -85,7 +85,7 @@
         <location line="+1"/>
         <source>Revolve</source>
         <comment>Attacher reference type</comment>
-        <translation>Eraitsi</translation>
+        <translation>Erreboluzionatu</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -121,7 +121,7 @@
         <location line="+1"/>
         <source>Wire</source>
         <comment>Attacher reference type</comment>
-        <translation>Haria</translation>
+        <translation>Alanbrea</translation>
     </message>
 </context>
 <context>
@@ -181,22 +181,32 @@
         <translation>Ertzean</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation>Puntua ertzean kokatzen da, MapPathParametr parametroak kontrolatzen du non. Horrez gain, erpina estekatuta egon daiteke, proiekzio bat egiteko.</translation>
+        <translation type="obsolete">Puntua ertzean kokatzen da, MapPathParametr parametroak kontrolatzen du non. Horrez gain, erpina estekatuta egon daiteke, proiekzio bat egiteko.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Center of curvature</source>
         <comment>AttachmentPoint mode caption</comment>
         <translation>Kurbadura-zentroa</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
         <comment>AttachmentPoint mode tooltip</comment>
-        <translation>Ertz baten zirkulu oskulatzailearen erdigunea. Aukerako erpin-esteka batek definituko du zein puntutan.</translation>
+        <translation type="obsolete">Ertz baten zirkulu oskulatzailearen erdigunea. Aukerako erpin-esteka batek definituko du zein puntutan.</translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -558,13 +568,13 @@
         <location line="+2"/>
         <source>Plane face</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Plane face</translation>
+        <translation>Plano-aurpegia</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Plane is aligned to coincide planar face.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane is aligned to coincide planar face.</translation>
+        <translation>Planoa aurpegi planarrarekin bat etortzeko lerrokatu da.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -576,13 +586,13 @@
         <location line="+1"/>
         <source>Plane is made tangent to surface at vertex.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation type="unfinished">Plane is made tangent to surface at vertex.</translation>
+        <translation>Planoa azaleraren tangentea da erpinean.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Normal to edge</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Normal to edge</translation>
+        <translation>Normaletik ertzera</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -632,19 +642,24 @@
         <location line="+2"/>
         <source>Revolution Section</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Revolution Section</translation>
+        <translation>Erreboluzio-sekzioa</translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
         <comment>AttachmentPlane mode tooltip</comment>
-        <translation>Planoa ertzarekiko perpendikularra da, eta Y ardatza zirkulu oskulatzailearekin bat dator. Aukerako erpin-esteka batek definituko du zein puntutan.</translation>
+        <translation type="obsolete">Planoa ertzarekiko perpendikularra da, eta Y ardatza zirkulu oskulatzailearekin bat dator. Aukerako erpin-esteka batek definituko du zein puntutan.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Plane by 3 points</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Plane by 3 points</translation>
+        <translation>Plano 3 punturen arabera</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -656,7 +671,7 @@
         <location line="+2"/>
         <source>Normal to 3 points</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Normal to 3 points</translation>
+        <translation>Normala 3 puntutara</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -680,7 +695,7 @@
         <location line="+2"/>
         <source>Inertia 2-3</source>
         <comment>AttachmentPlane mode caption</comment>
-        <translation type="unfinished">Inertia 2-3</translation>
+        <translation>2-3 inertzia</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -725,7 +740,7 @@
         <location line="+1"/>
         <source>Placement is made equal to Placement of linked object.</source>
         <comment>Attachment3D mode tooltip</comment>
-        <translation type="unfinished">Placement is made equal to Placement of linked object.</translation>
+        <translation>Kokapena estekatutako objektuaren kokapenaren berdina izango da.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -761,25 +776,25 @@
         <location line="+1"/>
         <source>X&apos; Y&apos; plane is aligned to coincide planar face.</source>
         <comment>Attachment3D mode tooltip</comment>
-        <translation type="unfinished">X&apos; Y&apos; plane is aligned to coincide planar face.</translation>
+        <translation>X&apos; Y&apos; planoa aurpegi planarrarekin bat etortzeko lerrokatu da.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>XY tangent to surface</source>
         <comment>Attachment3D mode caption</comment>
-        <translation type="unfinished">XY tangent to surface</translation>
+        <translation>Azaleraren XY tangentea</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>X&apos; Y&apos; plane is made tangent to surface at vertex.</source>
         <comment>Attachment3D mode tooltip</comment>
-        <translation type="unfinished">X&apos; Y&apos; plane is made tangent to surface at vertex.</translation>
+        <translation>X&apos; Y&apos; planoa azaleraren tangentea da erpinean.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Z tangent to edge</source>
         <comment>Attachment3D mode caption</comment>
-        <translation type="unfinished">Z tangent to edge</translation>
+        <translation>Ertzaren Z tangentea</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -829,7 +844,7 @@
         <location line="+2"/>
         <source>Revolution Section</source>
         <comment>Attachment3D mode caption</comment>
-        <translation type="unfinished">Revolution Section</translation>
+        <translation>Erreboluzio-sekzioa</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -841,7 +856,7 @@
         <location line="+2"/>
         <source>XY plane by 3 points</source>
         <comment>Attachment3D mode caption</comment>
-        <translation type="unfinished">XY plane by 3 points</translation>
+        <translation>XY planoa 3 punturen arabera</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -993,7 +1008,7 @@
     <message>
         <location line="+12"/>
         <source>Perpendicular to sketch</source>
-        <translation type="unfinished">Perpendicular to sketch</translation>
+        <translation>Krokisarekiko perpendikularra</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1023,12 +1038,12 @@
     <message>
         <location line="+1"/>
         <source>Check Geometry</source>
-        <translation type="unfinished">Check Geometry</translation>
+        <translation>Egiaztatu geometria</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Analyzes Geometry For Errors</source>
-        <translation type="unfinished">Analyzes Geometry For Errors</translation>
+        <translation>Geometria analizatzen du errore bila</translation>
     </message>
 </context>
 <context>
@@ -1046,7 +1061,7 @@
     <message>
         <location line="+1"/>
         <source>Set color per face</source>
-        <translation type="unfinished">Set color per face</translation>
+        <translation>Ezarri kolorea aurpegi bakoitzeko</translation>
     </message>
 </context>
 <context>
@@ -1060,7 +1075,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Measure Angular</source>
-        <translation type="unfinished">Measure Angular</translation>
+        <translation>Neurketa angeluarra</translation>
     </message>
 </context>
 <context>
@@ -1088,7 +1103,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Measure Linear</source>
-        <translation type="unfinished">Measure Linear</translation>
+        <translation>Neurketa lineala</translation>
     </message>
 </context>
 <context>
@@ -1102,7 +1117,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle 3d</source>
-        <translation type="unfinished">Toggle 3d</translation>
+        <translation>Txandakatu 3D</translation>
     </message>
 </context>
 <context>
@@ -1130,7 +1145,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle Delta</source>
-        <translation type="unfinished">Toggle Delta</translation>
+        <translation>Txandakatu delta</translation>
     </message>
 </context>
 <context>
@@ -1168,7 +1183,7 @@
     <message>
         <location line="-15"/>
         <source>Create a cube solid</source>
-        <translation type="unfinished">Create a cube solid</translation>
+        <translation>Sortu kubo solido bat</translation>
     </message>
     <message>
         <source>Box</source>
@@ -1189,12 +1204,12 @@
     <message>
         <location line="+1"/>
         <source>Box fix 1</source>
-        <translation type="unfinished">Box fix 1</translation>
+        <translation>Kutxa finkoa 1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a box solid without dialog</source>
-        <translation type="unfinished">Create a box solid without dialog</translation>
+        <translation>Sortu solido-kutza bat elkarrizketa-koadrorik gabe</translation>
     </message>
 </context>
 <context>
@@ -1207,12 +1222,12 @@
     <message>
         <location line="+1"/>
         <source>Box fix 2</source>
-        <translation type="unfinished">Box fix 2</translation>
+        <translation>Kutxa finkoa 2</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a box solid without dialog</source>
-        <translation type="unfinished">Create a box solid without dialog</translation>
+        <translation>Sortu solido-kutza bat elkarrizketa-koadrorik gabe</translation>
     </message>
 </context>
 <context>
@@ -1284,7 +1299,7 @@
     <message>
         <location line="+1"/>
         <source>Join walled objects</source>
-        <translation type="unfinished">Join walled objects</translation>
+        <translation>Elkartu pareta osatzen duten objektuak</translation>
     </message>
 </context>
 <context>
@@ -1394,7 +1409,7 @@
     <message>
         <location line="+1"/>
         <source>Make a cut of two shapes</source>
-        <translation type="unfinished">Make a cut of two shapes</translation>
+        <translation>Egin bi formaren mozketa bat</translation>
     </message>
 </context>
 <context>
@@ -1557,12 +1572,12 @@
     <message>
         <location line="+1"/>
         <source>Make face from wires</source>
-        <translation>Sortu aurpegia harietatik</translation>
+        <translation>Sortu aurpegia alanbreetatik</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
-        <translation>Part_MakeFace: Sortu aurpegia harien multzo batetik (adib. krokis batetik).</translation>
+        <translation>Part_MakeFace: Sortu aurpegia alanbreen multzo batetik (adib. krokis batetik).</translation>
     </message>
     <message>
         <source>Make face from sketch</source>
@@ -1663,7 +1678,7 @@
     <message>
         <location line="+1"/>
         <source>Pick curve network</source>
-        <translation type="unfinished">Pick curve network</translation>
+        <translation>Aukeratu kurba-sarea</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1735,12 +1750,12 @@
     <message>
         <location line="+1"/>
         <source>Revolve...</source>
-        <translation>Eraitsi...</translation>
+        <translation>Erreboluzionatu...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Revolve a selected shape</source>
-        <translation>Eraitsi hautatutako forma bat</translation>
+        <translation>Erreboluzionatu hautatutako forma bat</translation>
     </message>
 </context>
 <context>
@@ -1758,7 +1773,7 @@
     <message>
         <location line="+1"/>
         <source>Create a ruled surface from either two Edges or two wires</source>
-        <translation>Sortu gainazal erregelatua bi ertz edo bi hari erabiliz</translation>
+        <translation>Sortu gainazal erregelatua bi ertz edo bi alanbre erabiliz</translation>
     </message>
     <message>
         <source>Create a ruled surface from two curves</source>
@@ -1968,7 +1983,7 @@
     <message>
         <location line="+6"/>
         <source>Selection accepted</source>
-        <translation type="unfinished">Selection accepted</translation>
+        <translation>Hautapena onartu da</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1993,7 +2008,7 @@
     <message>
         <location line="+15"/>
         <source>Attachment mode:</source>
-        <translation type="unfinished">Attachment mode:</translation>
+        <translation>Eranste modua:</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -2003,7 +2018,7 @@
     <message>
         <location line="+3"/>
         <source>Extra placement:</source>
-        <translation type="unfinished">Extra placement:</translation>
+        <translation>Kokapen gehigarria:</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2023,22 +2038,22 @@
     <message>
         <location line="+29"/>
         <source>Yaw:</source>
-        <translation type="unfinished">Yaw:</translation>
+        <translation>Keinadatzea:</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Pitch:</source>
-        <translation type="unfinished">Pitch:</translation>
+        <translation>Buruzkatzea:</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Roll:</source>
-        <translation type="unfinished">Roll:</translation>
+        <translation>Kulunkatzea:</translation>
     </message>
     <message>
         <location line="+92"/>
         <source>Flip sides</source>
-        <translation type="unfinished">Flip sides</translation>
+        <translation>Irauli aldeak</translation>
     </message>
 </context>
 <context>
@@ -2276,12 +2291,12 @@
     <message>
         <location line="-62"/>
         <source>Taper outward angle</source>
-        <translation type="unfinished">Taper outward angle</translation>
+        <translation>Konoaren kanporanzko angelua</translation>
     </message>
     <message>
         <location line="-211"/>
         <source>Click to start selecting an edge in 3d view.</source>
-        <translation type="unfinished">Click to start selecting an edge in 3d view.</translation>
+        <translation>Klikatu hasteko ertzaren hautaketa 3d ikuspegian.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2307,7 +2322,7 @@
     <message>
         <location line="+6"/>
         <source>Along:</source>
-        <translation type="unfinished">Along:</translation>
+        <translation>Luzetara:</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2317,12 +2332,12 @@
     <message>
         <location line="+19"/>
         <source>Against:</source>
-        <translation type="unfinished">Against:</translation>
+        <translation>Aurka:</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Length to extrude against direction (can be negative).</source>
-        <translation type="unfinished">Length to extrude against direction (can be negative).</translation>
+        <translation>Norabidearen aurka estruituko den luzera (negatiboa izan daiteke).</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2343,7 +2358,7 @@
     <message>
         <location line="+21"/>
         <source>If checked, extruding closed wires will give solids, not shells.</source>
-        <translation>Markatuta badago, hari itxiak estruitzean solidoak sortuko dira, ez oskolak.</translation>
+        <translation>Markatuta badago, alanbre itxiak estruitzean solidoak sortuko dira, ez oskolak.</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2389,7 +2404,7 @@
         <source>Creating Extrusion failed.
 
 %1</source>
-        <translation type="unfinished">Creating Extrusion failed.
+        <translation>Estrusioaren sorrerak huts egin du.
 
 %1</translation>
     </message>
@@ -2408,14 +2423,14 @@
         <source>Revolution axis link is invalid.
 
 %1</source>
-        <translation type="unfinished">Revolution axis link is invalid.
+        <translation>Erreboluzio-ardatzaren esteka baliogabea da.
 
 %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Direction mode is to use an edge, but no edge is linked.</source>
-        <translation type="unfinished">Direction mode is to use an edge, but no edge is linked.</translation>
+        <translation>Norabide modua ertz bat erabiltzeko da, baina ez dago ertzik estekatuta.</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -2541,7 +2556,7 @@
     <message>
         <location line="+3"/>
         <source>Edges to fillet</source>
-        <translation type="unfinished">Edges to fillet</translation>
+        <translation>Biribilduko diren ertzak</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2640,12 +2655,12 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+8"/>
         <source>Write solids and shells as</source>
-        <translation type="unfinished">Write solids and shells as</translation>
+        <translation>Idatzi solidoak eta oskolak honela:</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Groups of Trimmed Surfaces (type 144)</source>
-        <translation type="unfinished">Groups of Trimmed Surfaces (type 144)</translation>
+        <translation>Muxarratutako azaleren taldeak (144 mota)</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2664,7 +2679,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+6"/>
         <source>Skip blank entities</source>
-        <translation type="unfinished">Skip blank entities</translation>
+        <translation>Saltatu hutsik dauden entitateak</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2727,7 +2742,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+26"/>
         <source>Write out curves in parametric space of surface</source>
-        <translation type="unfinished">Write out curves in parametric space of surface</translation>
+        <translation>Idatzi kurbak azaleraren espazio parametrikoan</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3040,7 +3055,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
         <location line="+91"/>
         <location filename="../../DlgPrimitives.cpp" line="+540"/>
         <source>Wedge</source>
-        <translation type="unfinished">Wedge</translation>
+        <translation>Falka</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3260,7 +3275,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
         <location line="-862"/>
         <location line="+882"/>
         <source>Circumradius:</source>
-        <translation type="unfinished">Circumradius:</translation>
+        <translation>Zirkunskribatutako erradioa:</translation>
     </message>
     <message>
         <location line="-831"/>
@@ -3295,12 +3310,12 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+8"/>
         <source>Right-handed</source>
-        <translation type="unfinished">Right-handed</translation>
+        <translation>Eskuina</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Left-handed</source>
-        <translation type="unfinished">Left-handed</translation>
+        <translation>Ezkertia</translation>
     </message>
     <message>
         <location line="+88"/>
@@ -3381,7 +3396,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location filename="../../DlgPrimitives.ui" line="-493"/>
         <source>Pitch:</source>
-        <translation type="unfinished">Pitch:</translation>
+        <translation>Buruzkatzea:</translation>
     </message>
     <message>
         <location line="-1200"/>
@@ -3399,21 +3414,21 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location filename="../../DlgRevolution.ui" line="+20"/>
         <source>Revolve</source>
-        <translation>Eraitsi</translation>
+        <translation>Erreboluzionatu</translation>
     </message>
     <message>
         <source>If checked, revolving wires will produce solids. If not, revolving a wire yeilds a shell.</source>
-        <translation type="obsolete">Markatuta badago, hariak eraistean solidoak sortuko dira. Bestela, haria eraisteak oskol bat sortuko du.</translation>
+        <translation type="obsolete">Markatuta badago, alanbreak erreboluzionatzean solidoak sortuko dira. Bestela, alanbrea erreboluzionatzeak oskol bat sortuko du.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Markatuta badago, alanbreak erreboluzionatzean solidoak sortuko dira. Bestela, alanbrea erreboluzionatzeak oskol bat sortuko du.</translation>
     </message>
     <message>
         <location line="+79"/>
         <source>Revolution axis</source>
-        <translation type="unfinished">Revolution axis</translation>
+        <translation>Erreboluzio-ardatza</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3439,17 +3454,17 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="-38"/>
         <source>Dir. X:</source>
-        <translation type="unfinished">Dir. X:</translation>
+        <translation>X nor.:</translation>
     </message>
     <message>
         <location line="+41"/>
         <source>Dir. Y:</source>
-        <translation type="unfinished">Dir. Y:</translation>
+        <translation>Y nor.:</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Dir. Z:</source>
-        <translation type="unfinished">Dir. Z:</translation>
+        <translation>Z nor.:</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -3460,7 +3475,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+20"/>
         <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-        <translation>Markatuta badago, biraketa aurrerantz eta atzerantz hedatuko da angelu erdia erabilita.</translation>
+        <translation>Markatuta badago, erreboluzioa aurrerantz eta atzerantz hedatuko da angelu erdia erabilita.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3519,19 +3534,19 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
         <source>Revolution axis link is invalid.
 
 %1</source>
-        <translation type="unfinished">Revolution axis link is invalid.
+        <translation>Erreboluzio-ardatzaren esteka baliogabea da.
 
 %1</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-        <translation>Biraketa-ardatzaren norabidearen luzera zero da, zero ez den beste bat izan behar du.</translation>
+        <translation>Erreboluzio-ardatzaren norabidearen luzera zero da, zero ez den beste bat izan behar du.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Revolution angle span is zero. It must be non-zero.</source>
-        <translation>Biraketaren angelu-tartearen luzera zero da, zero ez den beste bat izan behar du.</translation>
+        <translation>Erreboluzioaren angelu-tartearen luzera zero da, zero ez den beste bat izan behar du.</translation>
     </message>
     <message>
         <location line="+122"/>
@@ -3539,7 +3554,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
         <source>Creating Revolve failed.
 
 %1</source>
-        <translation type="unfinished">Creating Revolve failed.
+        <translation>Erreboluzioaren sorrerak huts egin du.
 
 %1</translation>
     </message>
@@ -3574,7 +3589,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location filename="../../DlgSettings3DViewPart.ui" line="+14"/>
         <source>Shape view</source>
-        <translation type="unfinished">Shape view</translation>
+        <translation>Formaren bista</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -3584,7 +3599,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+61"/>
         <source>Maximum angular deflection</source>
-        <translation type="unfinished">Maximum angular deflection</translation>
+        <translation>Deflexio angeluar maximoa</translation>
     </message>
     <message utf8="true">
         <location line="+7"/>
@@ -3668,7 +3683,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+6"/>
         <source>Model settings</source>
-        <translation type="unfinished">Model settings</translation>
+        <translation>Eredu-ezarpenak</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -3683,12 +3698,12 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+16"/>
         <source>Object naming</source>
-        <translation type="unfinished">Object naming</translation>
+        <translation>Objektu-izendatzea</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add name of base object</source>
-        <translation type="unfinished">Add name of base object</translation>
+        <translation>Gehitu oinarri-objektuaren izena</translation>
     </message>
     <message>
         <location line="-48"/>
@@ -3701,17 +3716,17 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location filename="../../DlgSettingsObjectColor.ui" line="+14"/>
         <source>Part colors</source>
-        <translation type="unfinished">Part colors</translation>
+        <translation>Pieza-koloreak</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Default Part colors</source>
-        <translation type="unfinished">Default Part colors</translation>
+        <translation>Pieza-kolore lehenetsiak</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default shape color</source>
-        <translation type="unfinished">Default shape color</translation>
+        <translation>Forma-kolore lehenetsia</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3754,12 +3769,12 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+33"/>
         <source>Default vertex size</source>
-        <translation type="unfinished">Default vertex size</translation>
+        <translation>Erpin-tamaina lehenetsia</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Bounding box color</source>
-        <translation type="unfinished">Bounding box color</translation>
+        <translation>Muga-kutxaren kolorea</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3818,7 +3833,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
         <location filename="../../TaskLoft.cpp" line="+75"/>
         <location line="+145"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation>Erpina/Ertza/Haria/Aurpegia</translation>
+        <translation>Erpina/Ertza/Alanbrea/Aurpegia</translation>
     </message>
     <message>
         <location line="-144"/>
@@ -3834,7 +3849,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+0"/>
         <source>At least two vertices, edges, wires or faces are required.</source>
-        <translation>Gutxienez bi erpin, ertz, hari edo aurpegi behar dira.</translation>
+        <translation>Gutxienez bi erpin, ertz, alanbre edo aurpegi behar dira.</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -3983,7 +3998,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+63"/>
         <source>Select only one part object</source>
-        <translation type="unfinished">Select only one part object</translation>
+        <translation>Hautatu pieza-objektu bakar bat</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -4027,7 +4042,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="-281"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation>Erpina/Ertza/Haria/Aurpegia</translation>
+        <translation>Erpina/Ertza/Alanbrea/Aurpegia</translation>
     </message>
     <message>
         <location line="+129"/>
@@ -4043,7 +4058,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="-139"/>
         <source>Select one or more connected edges you want to sweep along.</source>
-        <translation type="unfinished">Select one or more connected edges you want to sweep along.</translation>
+        <translation>Hautatu konektatutako ertz bat edo gehiago, ekorketa haien luzeran gautzatzeko.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -4053,7 +4068,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+0"/>
         <source>At least one edge or wire is required.</source>
-        <translation>Gutxienez ertz bat edo hari bat behar da.</translation>
+        <translation>Gutxienez ertz bat edo alanbre bat behar da.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4063,7 +4078,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+0"/>
         <source>&apos;%1&apos; cannot be used as profile and path.</source>
-        <translation type="unfinished">&apos;%1&apos; cannot be used as profile and path.</translation>
+        <translation>&apos;%1&apos; ezin da erabili profil eta bide gisa.</translation>
     </message>
     <message>
         <location line="+37"/>
@@ -4084,7 +4099,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
         <location line="+24"/>
         <location line="+8"/>
         <source>The selected sweep path is invalid.</source>
-        <translation type="unfinished">The selected sweep path is invalid.</translation>
+        <translation>Hautatutako ekortze-bidea baliogabea da.</translation>
     </message>
 </context>
 <context>
@@ -4097,7 +4112,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+6"/>
         <source>Selection accepted</source>
-        <translation type="unfinished">Selection accepted</translation>
+        <translation>Hautapena onartu da</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -4122,7 +4137,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+15"/>
         <source>Attachment mode:</source>
-        <translation type="unfinished">Attachment mode:</translation>
+        <translation>Eranste modua:</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -4133,7 +4148,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
         <location line="+3"/>
         <location filename="../../TaskAttacher.cpp" line="+297"/>
         <source>Extra placement:</source>
-        <translation type="unfinished">Extra placement:</translation>
+        <translation>Kokapen gehigarria:</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4153,22 +4168,22 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+29"/>
         <source>Yaw:</source>
-        <translation type="unfinished">Yaw:</translation>
+        <translation>Keinadatzea:</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Pitch:</source>
-        <translation type="unfinished">Pitch:</translation>
+        <translation>Buruzkatzea:</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Roll:</source>
-        <translation type="unfinished">Roll:</translation>
+        <translation>Kulunkatzea:</translation>
     </message>
     <message>
         <location line="+92"/>
         <source>Flip sides</source>
-        <translation type="unfinished">Flip sides</translation>
+        <translation>Irauli aldeak</translation>
     </message>
     <message>
         <location filename="../../TaskAttacher.cpp" line="-17"/>
@@ -4183,22 +4198,22 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+3"/>
         <source>Attachment mode failed: %1</source>
-        <translation type="unfinished">Attachment mode failed: %1</translation>
+        <translation>Eranste moduak huts egin du: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Not attached</source>
-        <translation type="unfinished">Not attached</translation>
+        <translation>Ez erantsia</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Attached with mode %1</source>
-        <translation type="unfinished">Attached with mode %1</translation>
+        <translation>%1 moduan erantsia</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Extra placement (inactive - not attached):</source>
-        <translation type="unfinished">Extra placement (inactive - not attached):</translation>
+        <translation>Kokapen gehigarria (inaktiboa - ez erantsia):</translation>
     </message>
     <message>
         <location line="+272"/>
@@ -4223,7 +4238,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+4"/>
         <source>Reference%1</source>
-        <translation type="unfinished">Reference%1</translation>
+        <translation>%1. erreferentzia</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -4234,18 +4249,18 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
         <location line="+55"/>
         <source>Reference combinations:
 </source>
-        <translation type="unfinished">Reference combinations:
+        <translation>Erreferentzia-konbinazioak:
 </translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 (add %2)</source>
-        <translation type="unfinished">%1 (add %2)</translation>
+        <translation>%1 (gehitu %2)</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 (add more references)</source>
-        <translation type="unfinished">%1 (add more references)</translation>
+        <translation>%1 (gehitu erreferentzia gehiago)</translation>
     </message>
 </context>
 <context>
@@ -4253,7 +4268,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="+567"/>
         <source>Shape Content</source>
-        <translation type="unfinished">Shape Content</translation>
+        <translation>Formaren edukia</translation>
     </message>
 </context>
 <context>
@@ -4261,7 +4276,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="-530"/>
         <source>Check Geometry</source>
-        <translation type="unfinished">Check Geometry</translation>
+        <translation>Egiaztatu geometria</translation>
     </message>
 </context>
 <context>
@@ -4440,7 +4455,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location filename="../../TaskFaceColors.ui" line="+14"/>
         <source>Set color per face</source>
-        <translation type="unfinished">Set color per face</translation>
+        <translation>Ezarri kolorea aurpegi bakoitzeko</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -4460,7 +4475,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+7"/>
         <source>Box selection</source>
-        <translation type="unfinished">Box selection</translation>
+        <translation>Kutxa bidezko hautapena</translation>
     </message>
 </context>
 <context>
@@ -4476,7 +4491,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
         <source>Move right</source>
-        <translation type="obsolete">Mugitu eskubira</translation>
+        <translation type="obsolete">Mugitu eskuinera</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
@@ -4548,12 +4563,12 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+5"/>
         <source>RectoVerso</source>
-        <translation type="unfinished">RectoVerso</translation>
+        <translation>RectoVerso</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Join type</source>
-        <translation type="unfinished">Join type</translation>
+        <translation>Elkartze mota</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -4579,7 +4594,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="+7"/>
         <source>Fill offset</source>
-        <translation type="unfinished">Fill offset</translation>
+        <translation>Bete desplazamendua</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -4623,12 +4638,12 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
         <location line="-21"/>
         <source>Shell from faces</source>
-        <translation type="unfinished">Shell from faces</translation>
+        <translation>Oskola aurpegietatik abiatuz</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Solid from shell</source>
-        <translation type="unfinished">Solid from shell</translation>
+        <translation>Solidoa oskoletik abiatuz</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -4672,7 +4687,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
         <location filename="../../TaskSweep.cpp" line="+42"/>
         <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-        <translation>Hautatu profil bat edo gehiago eta hautatu ertz bat edo hari bat
+        <translation>Hautatu profil bat edo gehiago eta hautatu ertz bat edo alanbre bat
 3D bistan ekortze-biderako.</translation>
     </message>
 </context>
@@ -4711,12 +4726,12 @@ in the 3D view for the sweep path.</source>
     <message>
         <location line="+5"/>
         <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-        <translation>Plano-aurpegi independente bana egiten du hari bakoitzerako. Ez dira zuloak onartzen; hariak plano desberdinetan egon daitezke.</translation>
+        <translation>Plano-aurpegi independente bana egiten du alanbre bakoitzerako. Ez dira zuloak onartzen; alanbreak plano desberdinetan egon daitezke.</translation>
     </message>
     <message>
         <location filename="../../../App/FaceMakerBullseye.cpp" line="+69"/>
         <source>Bull&apos;s-eye facemaker</source>
-        <translation type="unfinished">Bull&apos;s-eye facemaker</translation>
+        <translation>Idi-begien aurpegi-sortzailea</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4726,7 +4741,7 @@ in the 3D view for the sweep path.</source>
     <message>
         <location filename="../../../App/FaceMakerCheese.cpp" line="+248"/>
         <source>Cheese facemaker</source>
-        <translation type="unfinished">Cheese facemaker</translation>
+        <translation>Gazten aurpegi-sortzailea</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4736,7 +4751,7 @@ in the 3D view for the sweep path.</source>
     <message>
         <location filename="../../../App/FeatureExtrusion.cpp" line="+507"/>
         <source>Part Extrude facemaker</source>
-        <translation type="unfinished">Part Extrude facemaker</translation>
+        <translation>Pieza-estrusioen aurpegi-sortzailea</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4815,12 +4830,12 @@ Do you want to continue?</source>
     <message>
         <location filename="../../CommandSimple.cpp" line="+61"/>
         <source>Sewing Tolerance</source>
-        <translation type="unfinished">Sewing Tolerance</translation>
+        <translation>Joste-tolerantzia</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter tolerance for sewing shape:</source>
-        <translation type="unfinished">Enter tolerance for sewing shape:</translation>
+        <translation>Sartu forma josteko tolerantzia:</translation>
     </message>
     <message>
         <location filename="../../ViewProviderMirror.cpp" line="+78"/>
@@ -4880,15 +4895,15 @@ Do you want to continue?</source>
     <message>
         <location line="+963"/>
         <source>You have to select either two edges or two wires.</source>
-        <translation>Bi ertz edo bi hari hautatu behar dituzu.</translation>
+        <translation>Bi ertz edo bi alanbre hautatu behar dituzu.</translation>
     </message>
     <message>
         <location filename="../../ViewProviderMirror.cpp" line="-332"/>
         <source>Edit fillet edges</source>
-        <translation type="unfinished">Edit fillet edges</translation>
+        <translation>Editatu ertz biribilduak</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+829"/>
+        <location filename="../../ViewProviderExt.cpp" line="+840"/>
         <source>Set colors...</source>
         <translation>Ezarri koloreak...</translation>
     </message>
@@ -4921,7 +4936,7 @@ Do you want to continue?</source>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
         <source>Wire</source>
-        <translation>Haria</translation>
+        <translation>Alanbrea</translation>
     </message>
     <message>
         <location filename="../../TaskAttacher.cpp" line="-9"/>
@@ -4954,17 +4969,17 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>Invalid Point On Curve</source>
-        <translation type="unfinished">Invalid Point On Curve</translation>
+        <translation>Kurbako puntu baliogabea</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Point On Curve On Surface</source>
-        <translation type="unfinished">Invalid Point On Curve On Surface</translation>
+        <translation>Kurbako edo azalerako puntu baliogabea</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Point On Surface</source>
-        <translation type="unfinished">Invalid Point On Surface</translation>
+        <translation>Azalerako puntu baliogabea</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4974,7 +4989,7 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>Multiple 3D Curve</source>
-        <translation type="unfinished">Multiple 3D Curve</translation>
+        <translation>3D kurba anizkoitza</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4984,62 +4999,62 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>No Curve On Surface</source>
-        <translation type="unfinished">No Curve On Surface</translation>
+        <translation>Kurbarik ez azaleran</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Curve On Surface</source>
-        <translation type="unfinished">Invalid Curve On Surface</translation>
+        <translation>Kurba baliogabea azaleran</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Curve On Closed Surface</source>
-        <translation type="unfinished">Invalid Curve On Closed Surface</translation>
+        <translation>Kurba baliogabea azalera itxian</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Same Range Flag</source>
-        <translation type="unfinished">Invalid Same Range Flag</translation>
+        <translation>Baliogabeko barruti bereko bandera</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Same Parameter Flag</source>
-        <translation type="unfinished">Invalid Same Parameter Flag</translation>
+        <translation>Baliogabeko parametro bereko bandera</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Degenerated Flag</source>
-        <translation type="unfinished">Invalid Degenerated Flag</translation>
+        <translation>Bandera degeneratu baliogabea</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Free Edge</source>
-        <translation type="unfinished">Free Edge</translation>
+        <translation>Ertz askea</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid MultiConnexity</source>
-        <translation type="unfinished">Invalid MultiConnexity</translation>
+        <translation>Baliogabeko konektagarritasun anitza</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Range</source>
-        <translation type="unfinished">Invalid Range</translation>
+        <translation>Baliogabeko barrutia</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Empty Wire</source>
-        <translation>Hari hutsa</translation>
+        <translation>Alanbre hutsa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Redundant Edge</source>
-        <translation type="unfinished">Redundant Edge</translation>
+        <translation>Ertz erredundantea</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Self Intersecting Wire</source>
-        <translation type="unfinished">Self Intersecting Wire</translation>
+        <translation>Auto ebakidurako alanbrea</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5049,22 +5064,22 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>Invalid Wire</source>
-        <translation>Baliogabeko haria</translation>
+        <translation>Baliogabeko alanbrea</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Redundant Wire</source>
-        <translation type="unfinished">Redundant Wire</translation>
+        <translation>Alanbre erredundantea</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Intersecting Wires</source>
-        <translation type="unfinished">Intersecting Wires</translation>
+        <translation>Ebakitzen diren alanbreak</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Imbrication Of Wires</source>
-        <translation type="unfinished">Invalid Imbrication Of Wires</translation>
+        <translation>Alanbreen baliogabeko teilakatzea</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5074,12 +5089,12 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>Redundant Face</source>
-        <translation type="unfinished">Redundant Face</translation>
+        <translation>Aurpegi erredundantea</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Unorientable Shape</source>
-        <translation type="unfinished">Unorientable Shape</translation>
+        <translation>Forma orientaezina</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5089,27 +5104,27 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>Not Connected</source>
-        <translation type="unfinished">Not Connected</translation>
+        <translation>Konektatu gabea</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sub Shape Not In Shape</source>
-        <translation type="unfinished">Sub Shape Not In Shape</translation>
+        <translation>Azpiforma ez dago forman</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Bad Orientation</source>
-        <translation type="unfinished">Bad Orientation</translation>
+        <translation>Orientazio okerra</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Bad Orientation Of Sub Shape</source>
-        <translation type="unfinished">Bad Orientation Of Sub Shape</translation>
+        <translation>Azpiformaren orientazio okerra</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Tolerance Value</source>
-        <translation type="unfinished">Invalid Tolerance Value</translation>
+        <translation>Baliogabeko tolerantzia-balioa</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5124,67 +5139,67 @@ Do you want to continue?</source>
     <message>
         <location line="+4"/>
         <source>Out Of Enum Range: </source>
-        <translation type="unfinished">Out Of Enum Range: </translation>
+        <translation>Zerrendatze tartetik kanpo: </translation>
     </message>
     <message>
         <location line="+12"/>
         <source>BOPAlgo CheckUnknown</source>
-        <translation type="unfinished">BOPAlgo CheckUnknown</translation>
+        <translation>BOPAlgo - Egiaztatze ezezaguna</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo BadType</source>
-        <translation type="unfinished">BOPAlgo BadType</translation>
+        <translation>BOPAlgo - Mota okerra</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo SelfIntersect</source>
-        <translation type="unfinished">BOPAlgo SelfIntersect</translation>
+        <translation>BOPAlgo - Autoebaketa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo TooSmallEdge</source>
-        <translation type="unfinished">BOPAlgo TooSmallEdge</translation>
+        <translation>BOPAlgo - Ertz txikiegia</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo NonRecoverableFace</source>
-        <translation type="unfinished">BOPAlgo NonRecoverableFace</translation>
+        <translation>BOPAlgo -Aurpegi berreskuraezina</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfVertex</source>
-        <translation type="unfinished">BOPAlgo IncompatibilityOfVertex</translation>
+        <translation>BOPAlgo - Erpinen bateraezintasuna</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfEdge</source>
-        <translation type="unfinished">BOPAlgo IncompatibilityOfEdge</translation>
+        <translation>BOPAlgo - Ertz-bateraezintasuna</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfFace</source>
-        <translation type="unfinished">BOPAlgo IncompatibilityOfFace</translation>
+        <translation>BOPAlgo - Aupergi-bateraezintasuna</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo OperationAborted</source>
-        <translation type="unfinished">BOPAlgo OperationAborted</translation>
+        <translation>BOPAlgo - Eragiketa abortatu da</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo GeomAbs_C0</source>
-        <translation type="unfinished">BOPAlgo GeomAbs_C0</translation>
+        <translation>BOPAlgo - GeomAbs_C0</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo_InvalidCurveOnSurface</source>
-        <translation type="unfinished">BOPAlgo_InvalidCurveOnSurface</translation>
+        <translation>BOPAlgo - Baliogabeko kurba azaleran</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo NotValid</source>
-        <translation type="unfinished">BOPAlgo NotValid</translation>
+        <translation>BOPAlgo - Baliogabea</translation>
     </message>
     <message>
         <location line="+285"/>
@@ -5212,12 +5227,12 @@ Do you want to continue?</source>
     <message>
         <location line="+4"/>
         <source>Toggle 3d</source>
-        <translation type="unfinished">Toggle 3d</translation>
+        <translation>Txandakatu 3D</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Toggle Delta</source>
-        <translation type="unfinished">Toggle Delta</translation>
+        <translation>Txandakatu delta</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -5227,7 +5242,7 @@ Do you want to continue?</source>
     <message>
         <location filename="../../ViewProviderSpline.cpp" line="+80"/>
         <source>Show control points</source>
-        <translation type="unfinished">Show control points</translation>
+        <translation>Erakutsi kontrol-puntuak</translation>
     </message>
 </context>
 <context>
@@ -5250,7 +5265,7 @@ Do you want to continue?</source>
     <message>
         <location line="+2"/>
         <source>Part tools</source>
-        <translation type="unfinished">Part tools</translation>
+        <translation>Pieza-tresnak</translation>
     </message>
     <message>
         <location line="-1"/>
