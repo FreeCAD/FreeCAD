@@ -78,7 +78,7 @@ class PathPostTestCases(unittest.TestCase):
         contour.OffsetExtra = 0.0
         contour.Direction = 'CW'
         contour.ToolController = tc
-        contour.UseComp = True
+        contour.UseComp = False
         PathScripts.PathUtils.addToJob(contour)
         PathScripts.PathContour.ObjectContour.setDepths(contour.Proxy, contour)
         self.doc.recompute()
