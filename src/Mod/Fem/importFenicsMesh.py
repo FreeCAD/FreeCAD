@@ -35,7 +35,6 @@ import os
 
 import readFenicsXML
 import writeFenicsXML
-import readFenicsXDMF
 import writeFenicsXDMF
 
 
