@@ -175,6 +175,6 @@ class FemInputWriter():
             pressure_faces = FemMeshTools.get_pressure_obj_faces(self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj)
             # print(len(pressure_faces))
             femobj['PressureFaces'] = [(femobj['Object'].Name + ': face load', pressure_faces)]
-            # print(femobj['PressureFaces'])
+            print(femobj['PressureFaces'])
 
 ##  @}

@@ -373,6 +373,20 @@ def get_femnode_set_from_group_data(femmesh, fem_object):
     return group_nodes
 
 
+def get_femelementface_sets_from_group_data(femmesh, fem_object):
+    # get femfaceelements from femmesh face groupdata for reference shapes of obj.References
+    obj = fem_object['Object']
+    group_faces = None
+    if femmesh.GroupCount:
+        for g in femmesh.Groups:
+            grp_name = femmesh.getGroupName(g)
+            if grp_name.startswith(obj.Name + "_"):
+                if femmesh.getGroupElementType(g) == "Face":
+                    print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
+                    group_faces = femmesh.getGroupElements(g)  # == ref_shape_femelements
+    return group_faces
+
+
 def get_femelement_sets_from_group_data(femmesh, fem_objects):
     # get femelements from femmesh groupdata for reference shapes of each obj.References
     count_femelements = 0
@@ -537,12 +551,27 @@ def get_pressure_obj_faces_depreciated(femmesh, femobj):
 
 
 def get_pressure_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
-    # get the nodes
-    prs_face_node_set = get_femnodes_by_femobj_with_references(femmesh, femobj)  # sorted and duplicates removed
-    # print('prs_face_node_set: ', prs_face_node_set)
-    # fill the bit_pattern_dict and search for the faces
-    bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, prs_face_node_set)
-    pressure_faces = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
+    if is_solid_femmesh(femmesh):
+        # get the nodes
+        prs_face_node_set = get_femnodes_by_femobj_with_references(femmesh, femobj)  # sorted and duplicates removed
+        # print('prs_face_node_set: ', prs_face_node_set)
+        # fill the bit_pattern_dict and search for the faces
+        bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, prs_face_node_set)
+        pressure_faces = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
+    elif is_face_femmesh(femmesh):
+        pressure_faces = []
+        # normaly we should call get_femelements_by_references and the group check should be integrated there
+        if femmesh.GroupCount:
+            meshfaces = get_femelementface_sets_from_group_data(femmesh, femobj)
+            # print(meshfaces)
+            for mf in meshfaces:
+                # pressure_faces.append([mf, 0])
+                pressure_faces.append([mf, -1])
+                # 0 if femmeshface normal == reference face normal direction
+                # -1 if femmeshface normal opposite reference face normal direction
+                # easy on plane faces, but on a half sphere ... ?!?
+        else:
+            print("Pressure on shell mesh at the moment only supported for meshes with appropriate group data.")
     return pressure_faces
 
 
