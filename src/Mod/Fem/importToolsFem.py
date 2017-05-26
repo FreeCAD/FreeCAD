@@ -33,6 +33,78 @@ from math import pow, sqrt
 import numpy as np
 
 
+def get_FemMeshObjectOrder(fem_mesh_obj):
+    """
+        Gets element order. Element order counting based on number of nodes on
+        edges. Edge with 2 nodes -> linear elements, Edge with 3 nodes ->
+        quadratic elements, and so on. No edges in mesh -> not determined.
+        (Is this possible? Seems to be a very degenerate case.)
+        If there are edges with different number of nodes appearing, return
+        list of orders.
+    """
+    presumable_order = None
+
+    edges = fem_mesh_obj.FemMesh.Edges
+
+    if edges != ():
+        edges_length_set = list({len(fem_mesh_obj.FemMesh.getElementNodes(e)) for e in edges})
+        # only need set to eliminate double entries
+
+        if len(edges_length_set) == 1:
+            presumable_order = edges_length_set[0] - 1
+        else:
+            presumable_order = [el - 1 for el in edges_length_set]
+    else:
+        print("Found no edges in mesh: Element order determination does not work without them.")
+    print(presumable_order)
+
+    return presumable_order
+
+
+def get_FemMeshObjectDimension(fem_mesh_obj):
+    """ Count all entities in an abstract sense, to distinguish which dimension the mesh is
+        (i.e. linemesh, facemesh, volumemesh)
+    """
+    dim = None
+
+    if fem_mesh_obj.FemMesh.Nodes != ():
+        dim = 0
+    if fem_mesh_obj.FemMesh.Edges != ():
+        dim = 1
+    if fem_mesh_obj.FemMesh.Faces != ():
+        dim = 2
+    if fem_mesh_obj.FemMesh.Volumes != ():
+        dim = 3
+
+    return dim
+
+
+def get_FemMeshObjectElementTypes(fem_mesh_obj, remove_zero_element_entries=True):
+    """
+        Spit out all elements in the mesh with their appropriate dimension.
+    """
+    FreeCAD_element_names_dims = {
+        "Node": 0, "Edge": 1, "Hexa": 3, "Polygon": 2, "Polyhedron": 3,
+        "Prism": 3, "Pyramid": 3, "Quadrangle": 2, "Tetra": 3, "Triangle": 2}
+
+    elements_list_with_zero = [(eval("fem_mesh_obj.FemMesh." + s + "Count"), s, d) for (s, d) in FreeCAD_element_names_dims.iteritems()]
+    # ugly but necessary
+    if remove_zero_element_entries:
+        elements_list = [(num, s, d) for (num, s, d) in elements_list_with_zero if num > 0]
+    else:
+        elements_list = elements_list_with_zero
+
+    return elements_list
+
+
+def get_MaxDimElementFromList(elem_list):
+    """
+        Gets element with the maximal dimension in the mesh to determine cells.
+    """
+    elem_list.sort(key=lambda (num, s, d): d)
+    return elem_list[-1]
+
+
 def make_femmesh(mesh_data):
     ''' makes an FreeCAD FEM Mesh object from FEM Mesh data
     '''
