@@ -111,69 +111,69 @@ class FemCcxAnalysisTest(unittest.TestCase):
     def test_static_freq_analysis(self):
         # static
         fcc_print('--------------- Start of FEM tests ---------------')
-        self.box = self.active_doc.addObject("Part::Box", "Box")
+        box = self.active_doc.addObject("Part::Box", "Box")
         fcc_print('Checking FEM new analysis...')
-        self.analysis = ObjectsFem.makeAnalysis('Analysis')
-        self.assertTrue(self.analysis, "FemTest of new analysis failed")
+        analysis = ObjectsFem.makeAnalysis('Analysis')
+        self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        self.solver_object = ObjectsFem.makeSolverCalculix('CalculiX')
-        self.solver_object.GeometricalNonlinearity = 'linear'
-        self.solver_object.ThermoMechSteadyState = False
-        self.solver_object.MatrixSolverType = 'default'
-        self.solver_object.IterationsControlParameterTimeUse = False
-        self.solver_object.EigenmodesCount = 10
-        self.solver_object.EigenmodeHighLimit = 1000000.0
-        self.solver_object.EigenmodeLowLimit = 0.0
-        self.assertTrue(self.solver_object, "FemTest of new solver failed")
-        self.analysis.Member = self.analysis.Member + [self.solver_object]
+        solver_object = ObjectsFem.makeSolverCalculix('CalculiX')
+        solver_object.GeometricalNonlinearity = 'linear'
+        solver_object.ThermoMechSteadyState = False
+        solver_object.MatrixSolverType = 'default'
+        solver_object.IterationsControlParameterTimeUse = False
+        solver_object.EigenmodesCount = 10
+        solver_object.EigenmodeHighLimit = 1000000.0
+        solver_object.EigenmodeLowLimit = 0.0
+        self.assertTrue(solver_object, "FemTest of new solver failed")
+        analysis.Member = analysis.Member + [solver_object]
 
         fcc_print('Checking FEM new mesh...')
-        self.mesh = import_csv_mesh(mesh_points_file, mesh_volumes_file)
-        self.mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
-        self.mesh_object.FemMesh = self.mesh
-        self.assertTrue(self.mesh, "FemTest of new mesh failed")
-        self.analysis.Member = self.analysis.Member + [self.mesh_object]
+        mesh = import_csv_mesh(mesh_points_file, mesh_volumes_file)
+        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object.FemMesh = mesh
+        self.assertTrue(mesh, "FemTest of new mesh failed")
+        analysis.Member = analysis.Member + [mesh_object]
 
         fcc_print('Checking FEM new material...')
-        self.new_material_object = ObjectsFem.makeMaterialSolid('MechanicalMaterial')
-        mat = self.new_material_object.Material
+        new_material_object = ObjectsFem.makeMaterialSolid('MechanicalMaterial')
+        mat = new_material_object.Material
         mat['Name'] = "Steel-Generic"
         mat['YoungsModulus'] = "200000 MPa"
         mat['PoissonRatio'] = "0.30"
         mat['Density'] = "7900 kg/m^3"
-        self.new_material_object.Material = mat
-        self.assertTrue(self.new_material_object, "FemTest of new material failed")
-        self.analysis.Member = self.analysis.Member + [self.new_material_object]
+        new_material_object.Material = mat
+        self.assertTrue(new_material_object, "FemTest of new material failed")
+        analysis.Member = analysis.Member + [new_material_object]
 
         fcc_print('Checking FEM new fixed constraint...')
-        self.fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
-        self.fixed_constraint.References = [(self.box, "Face1")]
-        self.assertTrue(self.fixed_constraint, "FemTest of new fixed constraint failed")
-        self.analysis.Member = self.analysis.Member + [self.fixed_constraint]
+        fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
+        fixed_constraint.References = [(box, "Face1")]
+        self.assertTrue(fixed_constraint, "FemTest of new fixed constraint failed")
+        analysis.Member = analysis.Member + [fixed_constraint]
 
         fcc_print('Checking FEM new force constraint...')
-        self.force_constraint = self.active_doc.addObject("Fem::ConstraintForce", "FemConstraintForce")
-        self.force_constraint.References = [(self.box, "Face6")]
-        self.force_constraint.Force = 40000.0
-        self.force_constraint.Direction = (self.box, ["Edge5"])
+        force_constraint = self.active_doc.addObject("Fem::ConstraintForce", "FemConstraintForce")
+        force_constraint.References = [(box, "Face6")]
+        force_constraint.Force = 40000.0
+        force_constraint.Direction = (box, ["Edge5"])
         self.active_doc.recompute()
-        self.force_constraint.Reversed = True
+        force_constraint.Reversed = True
         self.active_doc.recompute()
-        self.assertTrue(self.force_constraint, "FemTest of new force constraint failed")
-        self.analysis.Member = self.analysis.Member + [self.force_constraint]
+        self.assertTrue(force_constraint, "FemTest of new force constraint failed")
+        analysis.Member = analysis.Member + [force_constraint]
 
         fcc_print('Checking FEM new pressure constraint...')
-        self.pressure_constraint = self.active_doc.addObject("Fem::ConstraintPressure", "FemConstraintPressure")
-        self.pressure_constraint.References = [(self.box, "Face2")]
-        self.pressure_constraint.Pressure = 1000.0
-        self.pressure_constraint.Reversed = False
-        self.assertTrue(self.pressure_constraint, "FemTest of new pressure constraint failed")
-        self.analysis.Member = self.analysis.Member + [self.pressure_constraint]
+        pressure_constraint = self.active_doc.addObject("Fem::ConstraintPressure", "FemConstraintPressure")
+        pressure_constraint.References = [(box, "Face2")]
+        pressure_constraint.Pressure = 1000.0
+        pressure_constraint.Reversed = False
+        self.assertTrue(pressure_constraint, "FemTest of new pressure constraint failed")
+        analysis.Member = analysis.Member + [pressure_constraint]
 
         self.active_doc.recompute()
 
-        fea = FemToolsCcx.FemToolsCcx(self.analysis, self.solver_object, test_mode=True)
+        fea = FemToolsCcx.FemToolsCcx(analysis, solver_object, test_mode=True)
         fcc_print('Setting up working directory {}'.format(static_analysis_dir))
         fea.setup_working_dir(static_analysis_dir)
         self.assertTrue(True if fea.working_dir == static_analysis_dir else False,
@@ -275,35 +275,35 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
     def test_thermomech_analysis(self):
         fcc_print('--------------- Start of FEM tests ---------------')
-        self.box = self.active_doc.addObject("Part::Box", "Box")
-        self.box.Height = 25.4
-        self.box.Width = 25.4
-        self.box.Length = 203.2
+        box = self.active_doc.addObject("Part::Box", "Box")
+        box.Height = 25.4
+        box.Width = 25.4
+        box.Length = 203.2
         fcc_print('Checking FEM new analysis...')
-        self.analysis = ObjectsFem.makeAnalysis('Analysis')
-        self.assertTrue(self.analysis, "FemTest of new analysis failed")
+        analysis = ObjectsFem.makeAnalysis('Analysis')
+        self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        self.solver_object = ObjectsFem.makeSolverCalculix('CalculiX')
-        self.solver_object.AnalysisType = 'thermomech'
-        self.solver_object.GeometricalNonlinearity = 'linear'
-        self.solver_object.ThermoMechSteadyState = True
-        self.solver_object.MatrixSolverType = 'default'
-        self.solver_object.IterationsThermoMechMaximum = 2000
-        self.solver_object.IterationsControlParameterTimeUse = True
-        self.assertTrue(self.solver_object, "FemTest of new solver failed")
-        self.analysis.Member = self.analysis.Member + [self.solver_object]
+        solver_object = ObjectsFem.makeSolverCalculix('CalculiX')
+        solver_object.AnalysisType = 'thermomech'
+        solver_object.GeometricalNonlinearity = 'linear'
+        solver_object.ThermoMechSteadyState = True
+        solver_object.MatrixSolverType = 'default'
+        solver_object.IterationsThermoMechMaximum = 2000
+        solver_object.IterationsControlParameterTimeUse = True
+        self.assertTrue(solver_object, "FemTest of new solver failed")
+        analysis.Member = analysis.Member + [solver_object]
 
         fcc_print('Checking FEM new mesh...')
-        self.mesh = import_csv_mesh(spine_points_file, spine_volumes_file)
-        self.mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
-        self.mesh_object.FemMesh = self.mesh
-        self.assertTrue(self.mesh, "FemTest of new mesh failed")
-        self.analysis.Member = self.analysis.Member + [self.mesh_object]
+        mesh = import_csv_mesh(spine_points_file, spine_volumes_file)
+        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object.FemMesh = mesh
+        self.assertTrue(mesh, "FemTest of new mesh failed")
+        analysis.Member = analysis.Member + [mesh_object]
 
         fcc_print('Checking FEM new material...')
-        self.new_material_object = ObjectsFem.makeMaterialSolid('MechanicalMaterial')
-        mat = self.new_material_object.Material
+        new_material_object = ObjectsFem.makeMaterialSolid('MechanicalMaterial')
+        mat = new_material_object.Material
         mat['Name'] = "Steel-Generic"
         mat['YoungsModulus'] = "200000 MPa"
         mat['PoissonRatio'] = "0.30"
@@ -311,40 +311,40 @@ class FemCcxAnalysisTest(unittest.TestCase):
         mat['ThermalConductivity'] = "43.27 W/m/K"  # SvdW: Change to Ansys model values
         mat['ThermalExpansionCoefficient'] = "12 um/m/K"
         mat['SpecificHeat'] = "500 J/kg/K"  # SvdW: Change to Ansys model values
-        self.new_material_object.Material = mat
-        self.assertTrue(self.new_material_object, "FemTest of new material failed")
-        self.analysis.Member = self.analysis.Member + [self.new_material_object]
+        new_material_object.Material = mat
+        self.assertTrue(new_material_object, "FemTest of new material failed")
+        analysis.Member = analysis.Member + [new_material_object]
 
         fcc_print('Checking FEM new fixed constraint...')
-        self.fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
-        self.fixed_constraint.References = [(self.box, "Face1")]
-        self.assertTrue(self.fixed_constraint, "FemTest of new fixed constraint failed")
-        self.analysis.Member = self.analysis.Member + [self.fixed_constraint]
+        fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
+        fixed_constraint.References = [(box, "Face1")]
+        self.assertTrue(fixed_constraint, "FemTest of new fixed constraint failed")
+        analysis.Member = analysis.Member + [fixed_constraint]
 
         fcc_print('Checking FEM new initial temperature constraint...')
-        self.initialtemperature_constraint = self.active_doc.addObject("Fem::ConstraintInitialTemperature", "FemConstraintInitialTemperature")
-        self.initialtemperature_constraint.initialTemperature = 300.0
-        self.assertTrue(self.initialtemperature_constraint, "FemTest of new initial temperature constraint failed")
-        self.analysis.Member = self.analysis.Member + [self.initialtemperature_constraint]
+        initialtemperature_constraint = self.active_doc.addObject("Fem::ConstraintInitialTemperature", "FemConstraintInitialTemperature")
+        initialtemperature_constraint.initialTemperature = 300.0
+        self.assertTrue(initialtemperature_constraint, "FemTest of new initial temperature constraint failed")
+        analysis.Member = analysis.Member + [initialtemperature_constraint]
 
         fcc_print('Checking FEM new temperature constraint...')
-        self.temperature_constraint = self.active_doc.addObject("Fem::ConstraintTemperature", "FemConstraintTemperature")
-        self.temperature_constraint.References = [(self.box, "Face1")]
-        self.temperature_constraint.Temperature = 310.93
-        self.assertTrue(self.temperature_constraint, "FemTest of new temperature constraint failed")
-        self.analysis.Member = self.analysis.Member + [self.temperature_constraint]
+        temperature_constraint = self.active_doc.addObject("Fem::ConstraintTemperature", "FemConstraintTemperature")
+        temperature_constraint.References = [(box, "Face1")]
+        temperature_constraint.Temperature = 310.93
+        self.assertTrue(temperature_constraint, "FemTest of new temperature constraint failed")
+        analysis.Member = analysis.Member + [temperature_constraint]
 
         fcc_print('Checking FEM new heatflux constraint...')
-        self.heatflux_constraint = self.active_doc.addObject("Fem::ConstraintHeatflux", "FemConstraintHeatflux")
-        self.heatflux_constraint.References = [(self.box, "Face3"), (self.box, "Face4"), (self.box, "Face5"), (self.box, "Face6")]
-        self.heatflux_constraint.AmbientTemp = 255.3722
-        self.heatflux_constraint.FilmCoef = 5.678
-        self.assertTrue(self.heatflux_constraint, "FemTest of new heatflux constraint failed")
-        self.analysis.Member = self.analysis.Member + [self.heatflux_constraint]
+        heatflux_constraint = self.active_doc.addObject("Fem::ConstraintHeatflux", "FemConstraintHeatflux")
+        heatflux_constraint.References = [(box, "Face3"), (box, "Face4"), (box, "Face5"), (box, "Face6")]
+        heatflux_constraint.AmbientTemp = 255.3722
+        heatflux_constraint.FilmCoef = 5.678
+        self.assertTrue(heatflux_constraint, "FemTest of new heatflux constraint failed")
+        analysis.Member = analysis.Member + [heatflux_constraint]
 
         self.active_doc.recompute()
 
-        fea = FemToolsCcx.FemToolsCcx(self.analysis, test_mode=True)
+        fea = FemToolsCcx.FemToolsCcx(analysis, test_mode=True)
         fcc_print('Setting up working directory {}'.format(thermomech_analysis_dir))
         fea.setup_working_dir(thermomech_analysis_dir)
         self.assertTrue(True if fea.working_dir == thermomech_analysis_dir else False,
