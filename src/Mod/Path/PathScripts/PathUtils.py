@@ -526,7 +526,7 @@ def sort_jobs(locations, keys, attractors=[]):
         """ square Euclidean distance """
         d = 0
         for k in keys:
-            d += (abs(a[k]) - abs(b[k])) ** 2 
+            d += (a[k] - b[k]) ** 2 
 
         return d
 
