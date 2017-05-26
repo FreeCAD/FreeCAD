@@ -28,7 +28,6 @@ import Fem
 import FemToolsCcx
 import FreeCAD
 import ObjectsFem
-import csv
 import tempfile
 import unittest
 
@@ -61,10 +60,6 @@ mesh_points_file = test_file_dir + '/mesh_points.csv'
 mesh_volumes_file = test_file_dir + '/mesh_volumes.csv'
 spine_points_file = test_file_dir + '/spine_points.csv'
 spine_volumes_file = test_file_dir + '/spine_volumes.csv'
-
-
-def fcc_print(message):
-    FreeCAD.Console.PrintMessage('{} \n'.format(message))
 
 
 class FemTest(unittest.TestCase):
@@ -131,20 +126,8 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_mesh(self):
+        self.mesh = import_csv_mesh(mesh_points_file, mesh_volumes_file)
         self.mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
-        self.mesh = Fem.FemMesh()
-        with open(mesh_points_file, 'r') as points_file:
-            reader = csv.reader(points_file)
-            for p in reader:
-                self.mesh.addNode(float(p[1]), float(p[2]), float(p[3]), int(p[0]))
-
-        with open(mesh_volumes_file, 'r') as volumes_file:
-            reader = csv.reader(volumes_file)
-            for v in reader:
-                self.mesh.addVolume([int(v[2]), int(v[1]), int(v[3]), int(v[4]), int(v[5]),
-                                    int(v[7]), int(v[6]), int(v[9]), int(v[8]), int(v[10])],
-                                    int(v[0]))
-
         self.mesh_object.FemMesh = self.mesh
         self.active_doc.recompute()
 
@@ -352,20 +335,8 @@ class TherMechFemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_mesh(self):
+        self.mesh = import_csv_mesh(spine_points_file, spine_volumes_file)
         self.mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
-        self.mesh = Fem.FemMesh()
-        with open(spine_points_file, 'r') as points_file:
-            reader = csv.reader(points_file)
-            for p in reader:
-                self.mesh.addNode(float(p[1]), float(p[2]), float(p[3]), int(p[0]))
-
-        with open(spine_volumes_file, 'r') as volumes_file:
-            reader = csv.reader(volumes_file)
-            for v in reader:
-                self.mesh.addVolume([int(v[2]), int(v[1]), int(v[3]), int(v[4]), int(v[5]),
-                                    int(v[7]), int(v[6]), int(v[9]), int(v[8]), int(v[10])],
-                                    int(v[0]))
-
         self.mesh_object.FemMesh = self.mesh
         self.active_doc.recompute()
 
@@ -503,6 +474,26 @@ class TherMechFemTest(unittest.TestCase):
 
 
 # helpers
+def fcc_print(message):
+    FreeCAD.Console.PrintMessage('{} \n'.format(message))
+
+
+def import_csv_mesh(import_points_file, import_volumes_file):
+    import csv
+    the_fem_mesh = Fem.FemMesh()
+    with open(import_points_file, 'r') as points_file:
+        reader = csv.reader(points_file)
+        for p in reader:
+            the_fem_mesh.addNode(float(p[1]), float(p[2]), float(p[3]), int(p[0]))
+    with open(import_volumes_file, 'r') as volumes_file:
+        reader = csv.reader(volumes_file)
+        for v in reader:
+            the_fem_mesh.addVolume([int(v[2]), int(v[1]), int(v[3]), int(v[4]), int(v[5]),
+                                   int(v[7]), int(v[6]), int(v[9]), int(v[8]), int(v[10])],
+                                   int(v[0]))
+    return the_fem_mesh
+
+
 def compare_inp_files(file_name1, file_name2):
     file1 = open(file_name1, 'r')
     f1 = file1.readlines()
