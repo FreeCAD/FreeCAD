@@ -128,13 +128,6 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(solver_object, "FemTest of new solver failed")
         analysis.Member = analysis.Member + [solver_object]
 
-        fcc_print('Checking FEM new mesh...')
-        mesh = import_csv_mesh(mesh_points_file, mesh_volumes_file)
-        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
-        mesh_object.FemMesh = mesh
-        self.assertTrue(mesh, "FemTest of new mesh failed")
-        analysis.Member = analysis.Member + [mesh_object]
-
         fcc_print('Checking FEM new material...')
         new_material_object = ObjectsFem.makeMaterialSolid('MechanicalMaterial')
         mat = new_material_object.Material
@@ -170,6 +163,13 @@ class FemCcxAnalysisTest(unittest.TestCase):
         pressure_constraint.Reversed = False
         self.assertTrue(pressure_constraint, "FemTest of new pressure constraint failed")
         analysis.Member = analysis.Member + [pressure_constraint]
+
+        fcc_print('Checking FEM new mesh...')
+        mesh = import_csv_mesh(mesh_points_file, mesh_volumes_file)
+        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object.FemMesh = mesh
+        self.assertTrue(mesh, "FemTest of new mesh failed")
+        analysis.Member = analysis.Member + [mesh_object]
 
         self.active_doc.recompute()
 
@@ -294,13 +294,6 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(solver_object, "FemTest of new solver failed")
         analysis.Member = analysis.Member + [solver_object]
 
-        fcc_print('Checking FEM new mesh...')
-        mesh = import_csv_mesh(spine_points_file, spine_volumes_file)
-        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
-        mesh_object.FemMesh = mesh
-        self.assertTrue(mesh, "FemTest of new mesh failed")
-        analysis.Member = analysis.Member + [mesh_object]
-
         fcc_print('Checking FEM new material...')
         new_material_object = ObjectsFem.makeMaterialSolid('MechanicalMaterial')
         mat = new_material_object.Material
@@ -341,6 +334,13 @@ class FemCcxAnalysisTest(unittest.TestCase):
         heatflux_constraint.FilmCoef = 5.678
         self.assertTrue(heatflux_constraint, "FemTest of new heatflux constraint failed")
         analysis.Member = analysis.Member + [heatflux_constraint]
+
+        fcc_print('Checking FEM new mesh...')
+        mesh = import_csv_mesh(spine_points_file, spine_volumes_file)
+        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object.FemMesh = mesh
+        self.assertTrue(mesh, "FemTest of new mesh failed")
+        analysis.Member = analysis.Member + [mesh_object]
 
         self.active_doc.recompute()
 
