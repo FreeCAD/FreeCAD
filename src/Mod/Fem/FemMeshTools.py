@@ -366,7 +366,7 @@ def get_femnode_set_from_group_data(femmesh, fem_object):
     if femmesh.GroupCount:
         for g in femmesh.Groups:
             grp_name = femmesh.getGroupName(g)
-            if grp_name.startswith(obj.Name):
+            if grp_name.startswith(obj.Name + "_"):
                 if femmesh.getGroupElementType(g) == "Node":
                     print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
                     group_nodes = femmesh.getGroupElements(g)  # == ref_shape_femelements
@@ -385,7 +385,7 @@ def get_femelement_sets_from_group_data(femmesh, fem_objects):
         if femmesh.GroupCount:
             for g in femmesh.Groups:
                 grp_name = femmesh.getGroupName(g)
-                if grp_name.startswith(obj.Name):
+                if grp_name.startswith(obj.Name + "_"):
                     if femmesh.getGroupElementType(g) == "Volume":
                         print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
                         group_elements = femmesh.getGroupElements(g)  # == ref_shape_femelements
