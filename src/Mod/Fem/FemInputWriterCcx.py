@@ -897,7 +897,12 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             for ref_shape in femobj['PressureFaces']:
                 f.write('** ' + ref_shape[0] + '\n')
                 for face, fno in ref_shape[1]:
-                    f.write("{},P{},{}\n".format(face, fno, rev * prs_obj.Pressure))
+                    if fno > 0:  # solid mesh face
+                        f.write("{},P{},{}\n".format(face, fno, rev * prs_obj.Pressure))
+                    elif fno == 0:  # on shell mesh face: fno == 0 --> normal of element face == face normal
+                        f.write("{},P,{}\n".format(face, rev * prs_obj.Pressure))
+                    elif fno == -1:  # on shell mesh face: fno == -1 --> normal of element face oposite direction face normal
+                        f.write("{},P,{}\n".format(face, -1 * rev * prs_obj.Pressure))
 
     def write_constraints_temperature(self, f):
         f.write('\n***********************************************************\n')
