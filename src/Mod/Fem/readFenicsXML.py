@@ -31,7 +31,6 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-import importToolsFem
 from lxml import etree  # parsing xml files and exporting
 import itertools
 
