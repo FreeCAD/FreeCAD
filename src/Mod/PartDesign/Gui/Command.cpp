@@ -1034,6 +1034,53 @@ bool CmdPartDesignPocket::isActive(void)
 }
 
 //===========================================================================
+// PartDesign_Hole
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignHole);
+
+CmdPartDesignHole::CmdPartDesignHole()
+  : Command("PartDesign_Hole")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Hole");
+    sToolTipText  = QT_TR_NOOP("Create a hole with the selected sketch");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Hole";
+}
+
+void CmdPartDesignHole::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document *doc = getDocument();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
+        /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+
+    // No PartDesign feature without Body past FreeCAD 0.16
+    if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
+        return;
+
+    Gui::Command* cmd = this;
+    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
+
+        if (FeatName.empty()) return;
+
+        Gui::Command::doCommand(Doc,"App.activeDocument().%s.Depth = 5.0",FeatName.c_str());
+
+        finishProfileBased(cmd, sketch, FeatName);
+        cmd->adjustCameraPosition();
+    };
+
+    prepareProfileBased(this, "Hole", worker);
+}
+
+bool CmdPartDesignHole::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
 // PartDesign_Revolution
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignRevolution);
@@ -2133,6 +2180,7 @@ void CreatePartDesignCommands(void)
 
     rcCmdMgr.addCommand(new CmdPartDesignPad());
     rcCmdMgr.addCommand(new CmdPartDesignPocket());
+    rcCmdMgr.addCommand(new CmdPartDesignHole());
     rcCmdMgr.addCommand(new CmdPartDesignRevolution());
     rcCmdMgr.addCommand(new CmdPartDesignGroove());
     rcCmdMgr.addCommand(new CmdPartDesignAdditivePipe);
