@@ -2584,8 +2584,10 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
     Geometry.setValues(newgeoVals);
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
+    
+    int cid = 0;
 
-    for (std::vector<Constraint *>::const_iterator it = constrvals.begin(); it != constrvals.end(); ++it) {
+    for (std::vector<Constraint *>::const_iterator it = constrvals.begin(); it != constrvals.end(); ++it, cid++) {
 
         std::vector<int>::const_iterator fit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->First);
 
