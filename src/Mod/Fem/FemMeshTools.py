@@ -1063,15 +1063,25 @@ def get_analysis_group_elements(aAnalysis, aPart):
             for er in empty_references:
                 print(er.Name)
             group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aPart.Shape)
-    # check if all groups have elements:
+    # check if all groups have at least one element, it does not mean ALL reference shapes for a group have been found
     for g in group_elements:
         # print(group_elements[g])
         if len(group_elements[g]) == 0:
-            FreeCAD.Console.PrintError('Error: shapes for: ' + g + 'not found!\n')
+            FreeCAD.Console.PrintError('Error: The shapes for the mesh group for the reference shapes of analysis member: ' + g + ' could not be found!\n')
     return group_elements
 
 
 def get_reference_group_elements(obj, aPart):
+    ''' obj is an FEM object which has reference shapes like the group object, the material, most of the constraints
+    aPart is geometry feature normaly CompSolid, the method searches all reference shapes of obj inside aPart even if
+    the reference shapes are a totally different geometry feature.
+    a tuple is returned ('Name or Label of the FEMobject', ['Element1', 'Element2', ...])
+    The names in the list are the Elements of the geometry aPart whereas 'Solid1' == aPart.Shape.Solids[0]
+    !!! It is strongly recommended to use as reference shapes the Solids of a CompSolid an not the Solids the CompSolid is made of !!!
+    see https://forum.freecadweb.org/viewtopic.php?f=18&t=12212&p=175777#p175777 and following posts
+    Occt might change the Solids a CompSolid is made of during creation of the CompSolid by adding Edges and vertices
+    Thus the Elements do not have the same geometry anymore
+    '''
     aShape = aPart.Shape
     if hasattr(obj, "UseLabel") and obj.UseLabel:
         key = obj.Label  # TODO check the character of the Label, only allow underline and standard english character
@@ -1089,16 +1099,28 @@ def get_reference_group_elements(obj, aPart):
             if not stype:
                 stype = ref_shape.ShapeType
             elif stype != ref_shape.ShapeType:
-                FreeCAD.Console.PrintError('Error, two refschapes in References with different ShapeTypes.\n')
+                FreeCAD.Console.PrintError('Error, two refshapes in References with different ShapeTypes.\n')
             # print(ref_shape)
             found_element = find_element_in_shape(aShape, ref_shape)
             if found_element is not None:
                 elements.append(found_element)
             else:
-                FreeCAD.Console.PrintError('Problem: No element found for: ' + str(ref_shape) + '\n')
+                FreeCAD.Console.PrintError('Problem: For the geometry of the following shape was no Shape found: ' + str(ref_shape) + '\n')
                 print('    ' + obj.Name)
                 print('    ' + str(obj.References))
                 print('    ' + r[0].Name)
+                if parent.Name != aPart.Name:
+                    FreeCAD.Console.PrintError('The reference Shape is not a child nor it is the shape the mesh is made of. : ' + str(ref_shape) + '\n')
+                    print(aPart.Name + '--> Name of the Feature we where searching in.')
+                    print(parent.Name + '--> Name of the parent Feature of reference Shape (Use the same as in the line before and you will have less trouble :-) !!!!!!).')
+                    # import Part
+                    # Part.show(aShape)
+                    # Part.show(ref_shape)
+                else:
+                    FreeCAD.Console.PrintError('This should not happen, please debugg!\n')
+                    # in this case we would not have needed to use the is_same_geometry() inside find_element_in_shape()
+                    # AFAIK we could have used the Part methods isPartner() or even isSame()
+                    # We gone find out when we need to debugg this :-)!
     return (key, sorted(elements))
 
 
