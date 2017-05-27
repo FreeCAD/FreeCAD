@@ -185,6 +185,8 @@ public:
 
     /// Recompute only this feature
     bool recomputeFeature();
+    
+    virtual void onRecomputeFailed(void);
 
     /// get the status Message
     const char *getStatusString(void) const;

@@ -114,6 +114,10 @@ short DocumentObject::mustExecute(void) const
     
 }
 
+void DocumentObject::onRecomputeFailed(void)
+{
+}
+
 const char* DocumentObject::getStatusString(void) const
 {
     if (isError()) {

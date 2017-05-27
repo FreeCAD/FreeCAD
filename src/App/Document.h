@@ -255,6 +255,8 @@ public:
     int recompute();
     /// Recompute only one feature
     void recomputeFeature(DocumentObject* Feat);
+    /// On recompute fails
+    void onRecomputeFailed(void);
     /// get the error log from the recompute run
     const std::vector<App::DocumentObjectExecReturn*> &getRecomputeLog(void)const{return _RecomputeLog;}
     /// get the text of the error of a spezified object
