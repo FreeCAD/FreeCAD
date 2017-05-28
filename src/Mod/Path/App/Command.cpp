@@ -26,6 +26,8 @@
 #ifndef _PreComp_
 
 #endif
+#include <cinttypes>
+#include <iomanip>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <Base/Vector3D.h>
@@ -99,12 +101,33 @@ bool Command::has(const std::string& attr) const
 std::string Command::toGCode (int precision, bool padzero) const
 {
     std::stringstream str;
-    if(padzero) str.setf(std::ios::fixed);
-    str.precision(precision);
+    str.fill('0');
     str << Name;
+    if(precision<=0) 
+        precision = 1;
+    double scale = std::pow(10.0,precision);
+    std::int64_t iscale = static_cast<std::int64_t>(scale)/10;
     for(std::map<std::string,double>::const_iterator i = Parameters.begin(); i != Parameters.end(); ++i) {
         if(i->first == "N") continue;
-        str << " " << i->first << i->second;
+
+        std::int64_t v = static_cast<std::int64_t>(i->second*scale);
+        if(v>=0)
+            v+=5;
+        else
+            v-=5;
+        v /= 10;
+        str << " " << i->first << (v/iscale);
+        if(precision==1) continue;
+        int width = precision-1;
+        std::int64_t digits = v%iscale;
+        if(!padzero) {
+            if(!digits) continue;
+            while(digits%10 == 0) {
+                digits/=10;
+                --width;
+            }
+        }
+        str << '.' << std::setw(width) << std::right << digits;
     }
     return str.str();
 }
