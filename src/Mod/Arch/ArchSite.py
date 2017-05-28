@@ -63,7 +63,11 @@ def makeSite(objectslist=None,baseobj=None,name="Site"):
     if objectslist:
         obj.Group = objectslist
     if baseobj:
-        obj.Terrain = baseobj
+        import Part
+        if isinstance(baseobj,Part.Shape):
+            obj.Shape = baseobj
+        else:
+            obj.Terrain = baseobj
     return obj
 
 
