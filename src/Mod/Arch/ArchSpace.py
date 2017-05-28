@@ -420,7 +420,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.LineColor = (1.0,0.0,0.0,1.0)
         vobj.DrawStyle = "Dotted"
         vobj.addProperty("App::PropertyStringList",    "Text",        "Arch",QT_TRANSLATE_NOOP("App::Property","The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data"))
-        vobj.addProperty("App::PropertyString",        "FontName",    "Arch",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
+        vobj.addProperty("App::PropertyFont",        "FontName",    "Arch",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
         vobj.addProperty("App::PropertyColor",         "TextColor",   "Arch",QT_TRANSLATE_NOOP("App::Property","The color of the area text"))
         vobj.addProperty("App::PropertyLength",        "FontSize",    "Arch",QT_TRANSLATE_NOOP("App::Property","The size of the text font"))
         vobj.addProperty("App::PropertyLength",        "FirstLine",   "Arch",QT_TRANSLATE_NOOP("App::Property","The size of the first line of text"))
