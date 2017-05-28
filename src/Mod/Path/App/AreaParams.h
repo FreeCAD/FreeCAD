@@ -90,7 +90,7 @@
     ((double,units,Unit,1.0,"Scaling factor for conversion to inch",App::PropertyFloat))\
     ((short,min_arc_points,MinArcPoints,4,"Minimum segments for arc discretization"))\
     ((short,max_arc_points,MaxArcPoints,100,"Maximum segments for arc discretization"))\
-    ((double,clipper_scale,ClipperScale,10000.0,\
+    ((double,clipper_scale,ClipperScale,1e6,\
         "ClipperLib operate on intergers. This is the scale factor to convert\n"\
         "floating points.",App::PropertyFloat))
 
@@ -150,7 +150,7 @@
     ((double,offset,SectionOffset,0.0,"Offset for the first section. The direction of the offset is\n"\
         "determined by the section direction (i.e. the signess of Stepdown). If going from top down,\n"\
         "a positive value means offset downward, and if bottom up, it means upward",App::PropertyDistance))\
-    ((double,tolerance,SectionTolerance,1e-5,"Offset value added when hitting the boundary.\n"\
+    ((double,tolerance,SectionTolerance,1e-6,"Offset value added when hitting the boundary.\n"\
         "When the section hits or over the shape boundary, a section with the height of that boundary\n"\
         "will be created. A small offset is usually required to avoid the tagnetial cut.",\
         App::PropertyPrecision))\
