@@ -433,13 +433,10 @@ BSpline::BSpline(const TopoDS_Edge &e)
     bool fail = false;
     double f,l;
     gp_Pnt s,m,ePt;
-    //if startpoint == endpoint conversion to BSpline will fail
-    //Base::Console().Message("TRACE - Geometry::BSpline - start(%.3f,%.3f,%.3f) end(%.3f,%.3f,%.3f)\n",
-    //                        s.X(),s.Y(),s.Z(),ePt.X(),ePt.Y(),ePt.Z());
 
-    if (spline->Degree() > 3) {                                        //if spline is too complex, approximate it
+    if (spline->Degree() > 3 || spline->IsRational()) {                //if spline is too complex, approximate it
         Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen can't resolve this
-        Standard_Integer maxDegree = 3, maxSegment = 10;
+        Standard_Integer maxDegree = 3, maxSegment = 100;
         Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
         // approximate the curve using a tolerance
         //Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C2, maxSegment, maxDegree);   //gives degree == 5  ==> too many poles ==> buffer overrun
