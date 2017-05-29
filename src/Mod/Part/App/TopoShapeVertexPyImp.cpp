@@ -32,6 +32,7 @@
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <Geom_CartesianPoint.hxx>
+# include <Standard_Failure.hxx>
 #endif
 
 #include <Mod/Part/App/TopoShape.h>
@@ -158,27 +159,51 @@ void TopoShapeVertexPy::setTolerance(Py::Float tol)
 
 Py::Float TopoShapeVertexPy::getX(void) const
 {
-    const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
-    return Py::Float(BRep_Tool::Pnt(v).X());
+    try {
+        const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
+        return Py::Float(BRep_Tool::Pnt(v).X());
+    }
+    catch (Standard_Failure) {
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
+        throw Py::RuntimeError(e->GetMessageString());
+    }
 }
 
 Py::Float TopoShapeVertexPy::getY(void) const
 {
-    const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
-    return Py::Float(BRep_Tool::Pnt(v).Y());
+    try {
+        const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
+        return Py::Float(BRep_Tool::Pnt(v).Y());
+    }
+    catch (Standard_Failure) {
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
+        throw Py::RuntimeError(e->GetMessageString());
+    }
 }
 
 Py::Float TopoShapeVertexPy::getZ(void) const
 {
-    const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
-    return Py::Float(BRep_Tool::Pnt(v).Z());
+    try {
+        const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
+        return Py::Float(BRep_Tool::Pnt(v).Z());
+    }
+    catch (Standard_Failure) {
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
+        throw Py::RuntimeError(e->GetMessageString());
+    }
 }
 
 Py::Object TopoShapeVertexPy::getPoint(void) const
 {
-    const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
-    gp_Pnt p = BRep_Tool::Pnt(v);
-    return Py::asObject(new Base::VectorPy(new Base::Vector3d(p.X(),p.Y(),p.Z())));
+    try {
+        const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
+        gp_Pnt p = BRep_Tool::Pnt(v);
+        return Py::asObject(new Base::VectorPy(new Base::Vector3d(p.X(),p.Y(),p.Z())));
+    }
+    catch (Standard_Failure) {
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
+        throw Py::RuntimeError(e->GetMessageString());
+    }
 }
 
 PyObject *TopoShapeVertexPy::getCustomAttributes(const char* /*attr*/) const
