@@ -1521,8 +1521,12 @@ PartGui::VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::
 	return VectorAdapter();
       TopoDS_Edge edge = TopoDS::Edge(edgeShape);
       // make edge orientation so that end of edge closest to pick is head of vector.
-      gp_Vec firstPoint = PartGui::convert(TopExp::FirstVertex(edge, Standard_True));
-      gp_Vec lastPoint = PartGui::convert(TopExp::LastVertex(edge, Standard_True));
+      TopoDS_Vertex firstVertex = TopExp::FirstVertex(edge, Standard_True);
+      TopoDS_Vertex lastVertex = TopExp::LastVertex(edge, Standard_True);
+      if (firstVertex.IsNull() || lastVertex.IsNull())
+        return VectorAdapter();
+      gp_Vec firstPoint = PartGui::convert(firstVertex);
+      gp_Vec lastPoint = PartGui::convert(lastVertex);
       gp_Vec pickPoint(current.x, current.y, current.z);
       double firstDistance = (firstPoint - pickPoint).Magnitude();
       double lastDistance = (lastPoint - pickPoint).Magnitude();
