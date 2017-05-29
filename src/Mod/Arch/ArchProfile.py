@@ -154,7 +154,7 @@ class _ProfileH(_Profile):
         p12 = Vector(-obj.Width.Value/2,(-obj.Height.Value/2)+obj.FlangeThickness.Value,0)
         p = Part.makePolygon([p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p1])
         p = Part.Face(p)
-        p.reverse()
+        #p.reverse()
         obj.Shape = p
         obj.Placement = pl
 
@@ -175,7 +175,7 @@ class _ProfileR(_Profile):
         p4 = Vector(-obj.Width.Value/2,obj.Height.Value/2,0)
         p = Part.makePolygon([p1,p2,p3,p4,p1])
         p = Part.Face(p)
-        p.reverse()
+        #p.reverse()
         obj.Shape = p
         obj.Placement = pl
 
@@ -202,7 +202,7 @@ class _ProfileRH(_Profile):
         p = Part.makePolygon([p1,p2,p3,p4,p1])
         q = Part.makePolygon([q1,q2,q3,q4,q1])
         r = Part.Face([p,q])
-        r.reverse()
+        #r.reverse()
         obj.Shape = r
         obj.Placement = pl
         
@@ -229,7 +229,7 @@ class _ProfileU(_Profile):
         p8 = Vector(-obj.Width.Value/2,obj.Height.Value/2,0)
         p = Part.makePolygon([p1,p2,p3,p4,p5,p6,p7,p8,p1])
         p = Part.Face(p)
-        p.reverse()
+        #p.reverse()
         obj.Shape = p
         obj.Placement = pl
         
