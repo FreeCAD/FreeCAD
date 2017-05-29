@@ -164,6 +164,7 @@ struct DocumentP
         undoing = false;
         StatusBits.set((size_t)Document::Closable, true);
         StatusBits.set((size_t)Document::KeepTrailingDigits, true);
+        StatusBits.set((size_t)Document::Restoring, false);
         iUndoMode = 0;
         UndoMemSize = 0;
         UndoMaxStackSize = 20;
@@ -1573,6 +1574,7 @@ void Document::restore (void)
         throw Base::FileException("Error reading compression file",FileName.getValue());
 
     GetApplication().signalStartRestoreDocument(*this);
+    setStatus(Document::Restoring, true);
 
     try {
         Document::Restore(reader);
@@ -1602,6 +1604,7 @@ void Document::restore (void)
     }
 
     GetApplication().signalFinishRestoreDocument(*this);
+    setStatus(Document::Restoring, false);
 }
 
 bool Document::isSaved() const
