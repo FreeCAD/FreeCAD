@@ -880,6 +880,18 @@ class DraftToolBar:
         if rel: self.isRelative.show()
         todo.delay(self.xValue.setFocus,None)
         self.xValue.selectAll()
+        
+    def labelUi(self,title=translate("draft","Label"),callback=None):
+        w = QtGui.QWidget()
+        w.setWindowTitle(translate("draft","Label type").decode("utf8"))
+        l = QtGui.QVBoxLayout(w)
+        combo = QtGui.QComboBox()
+        for s in ["Custom","Name","Label","Position","Length","Area","Volume","Tag","Material"]:
+            combo.addItem(s)
+        combo.setCurrentIndex(["Custom","Name","Label","Position","Length","Area","Volume","Tag","Material"].index(Draft.getParam("labeltype","Custom")))
+        l.addWidget(combo)
+        QtCore.QObject.connect(combo,QtCore.SIGNAL("currentIndexChanged(int)"),callback)
+        self.pointUi(title=title,extra=w)
 
     def extraUi(self):
         pass
