@@ -1520,20 +1520,24 @@ PartGui::VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::
     {
       TopoDS_Shape edgeShape;
       if (!getShapeFromStrings(edgeShape, current.documentName, current.objectName, current.subObjectName))
-	return VectorAdapter();
+        return VectorAdapter();
       TopoDS_Edge edge = TopoDS::Edge(edgeShape);
       // make edge orientation so that end of edge closest to pick is head of vector.
-      gp_Vec firstPoint = PartGui::convert(TopExp::FirstVertex(edge, Standard_True));
-      gp_Vec lastPoint = PartGui::convert(TopExp::LastVertex(edge, Standard_True));
+      TopoDS_Vertex firstVertex = TopExp::FirstVertex(edge, Standard_True);
+      TopoDS_Vertex lastVertex = TopExp::LastVertex(edge, Standard_True);
+      if (firstVertex.IsNull() || lastVertex.IsNull())
+        return VectorAdapter();
+      gp_Vec firstPoint = PartGui::convert(firstVertex);
+      gp_Vec lastPoint = PartGui::convert(lastVertex);
       gp_Vec pickPoint(current.x, current.y, current.z);
       double firstDistance = (firstPoint - pickPoint).Magnitude();
       double lastDistance = (lastPoint - pickPoint).Magnitude();
       if (lastDistance > firstDistance)
       {
-	if (edge.Orientation() == TopAbs_FORWARD)
-	  edge.Orientation(TopAbs_REVERSED);
-	else
-	  edge.Orientation(TopAbs_FORWARD);
+        if (edge.Orientation() == TopAbs_FORWARD)
+          edge.Orientation(TopAbs_REVERSED);
+        else
+          edge.Orientation(TopAbs_FORWARD);
       }
       return VectorAdapter(edge, pickPoint);
     }
