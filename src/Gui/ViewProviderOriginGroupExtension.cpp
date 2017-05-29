@@ -153,7 +153,9 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
         assert ( vp->isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) );
         vpOrigin = static_cast <Gui::ViewProviderOrigin *> ( vp );
     } catch (const Base::Exception &ex) {
-        Base::Console().Error ("%s\n", ex.what() );
+        // if is restoring it is normal that the origin property is null until after restored, so no need to report this.
+        if(!getExtendedViewProvider()->getDocument()->getDocument()->testStatus(App::Document::Restoring))
+            Base::Console().Error ("%s\n", ex.what() );
         return;
     }
 
