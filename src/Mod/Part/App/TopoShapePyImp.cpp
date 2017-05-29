@@ -752,7 +752,7 @@ PyObject*  TopoShapePy::check(PyObject *args)
         std::stringstream str;
         if (!getTopoShapePtr()->analyze(PyObject_IsTrue(runBopCheck) ? true : false, str)) {
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
-            PyErr_Print();
+            return NULL;
         }
     }
 
