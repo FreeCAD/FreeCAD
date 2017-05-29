@@ -230,7 +230,7 @@ class DraftTool:
         else:
             return False
 
-    def Activated(self,name="None"):
+    def Activated(self,name="None",noplanesetup=False):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
 
@@ -253,7 +253,8 @@ class DraftTool:
         self.ui.sourceCmd = self
         self.ui.setTitle(name)
         self.ui.show()
-        plane.setup()
+        if not noplanesetup:
+            plane.setup()
         self.node = []
         self.pos = []
         self.constrain = None
@@ -471,9 +472,10 @@ class Creator(DraftTool):
     def __init__(self):
         DraftTool.__init__(self)
 
-    def Activated(self,name="None"):
-        DraftTool.Activated(self)
-        self.support = getSupport()
+    def Activated(self,name="None",noplanesetup=False):
+        DraftTool.Activated(self,name,noplanesetup)
+        if not noplanesetup:
+            self.support = getSupport()
 
 class Line(Creator):
     "The Line FreeCAD command definition"
@@ -638,6 +640,8 @@ class Line(Creator):
                 if hasattr(FreeCADGui,"Snapper"):
                     FreeCADGui.Snapper.setGrid()
                     FreeCADGui.Snapper.restack()
+                if self.planetrack:
+                    self.planetrack.set(self.node[-1])
 
     def numericInput(self,numx,numy,numz):
         "this function gets called by the toolbar when valid x, y, and z have been entered there"
@@ -5198,6 +5202,141 @@ class SetWorkingPlaneProxy():
             FreeCAD.ActiveDocument.recompute()
             FreeCAD.ActiveDocument.commitTransaction()
 
+
+class Draft_Label(Creator):
+    "The Draft_Label command definition"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Label',
+                'Accel' : "D, L",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Label", "Label"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Label", "Creates a label, optionally attached to a selected object or element")}
+
+    def Activated(self):
+        self.name = translate("draft","Label").decode("utf8")
+        Creator.Activated(self,self.name,noplanesetup=True)
+        self.ghost = None
+        self.labeltype = Draft.getParam("labeltype","Custom")
+        self.sel = FreeCADGui.Selection.getSelectionEx()
+        if self.sel:
+            self.sel = self.sel[0]
+        self.ui.labelUi(self.name,callback=self.setmode)
+        self.ui.xValue.setFocus()
+        self.ui.xValue.selectAll()
+        self.ghost = DraftTrackers.lineTracker()
+        self.call = self.view.addEventCallback("SoEvent",self.action)
+        msg(translate("draft", "Pick target point:\n"))
+        self.ui.isCopy.hide()
+        
+    def setmode(self,i):
+        self.labeltype = ["Custom","Name","Label","Position","Length","Area","Volume","Tag","Material"][i]
+        Draft.setParam("labeltype",self.labeltype)
+
+    def finish(self,closed=False,cont=False):
+        if self.ghost:
+            self.ghost.finalize()
+        Creator.finish(self)
+        
+    def create(self):
+        if len(self.node) == 3:
+            targetpoint = self.node[0]
+            basepoint = self.node[2]
+            v = self.node[2].sub(self.node[1])
+            dist = v.Length
+            if hasattr(FreeCAD,"DraftWorkingPlane"):
+                h = FreeCAD.DraftWorkingPlane.u
+                n = FreeCAD.DraftWorkingPlane.axis
+                r = FreeCAD.DraftWorkingPlane.getRotation().Rotation
+            else:
+                h = Vector(1,0,0)
+                n = Vector(0,0,1)
+                r = FreeCAD.Rotation()
+            if abs(DraftVecUtils.angle(v,h,n)) <= math.pi/4:
+                direction = "Horizontal"
+                dist = -dist
+            elif abs(DraftVecUtils.angle(v,h,n)) >= math.pi*3/4:
+                direction = "Horizontal"
+            elif DraftVecUtils.angle(v,h,n) > 0:
+                direction = "Vertical"
+            else:
+                direction = "Vertical"
+                dist = -dist
+            tp = "targetpoint=FreeCAD."+str(targetpoint)+","
+            sel = ""
+            if self.sel:
+                if self.sel.SubElementNames:
+                    sub = "'"+self.sel.SubElementNames[0]+"'"
+                else:
+                    sub = "()"
+                sel="target=(FreeCAD.ActiveDocument."+self.sel.Object.Name+","+sub+"),"
+            pl = "placement=FreeCAD.Placement(FreeCAD."+str(basepoint)+",FreeCAD.Rotation"+str(r.Q)+")"
+            FreeCAD.ActiveDocument.openTransaction("Create Label")
+            FreeCADGui.addModule("Draft")
+            FreeCADGui.doCommand("l = Draft.makeLabel("+tp+sel+"direction='"+direction+"',distance="+str(dist)+",labeltype='"+self.labeltype+"',"+pl+")")
+            FreeCAD.ActiveDocument.recompute()
+            FreeCAD.ActiveDocument.commitTransaction()
+        self.finish()
+
+    def action(self,arg):
+        "scene event handler"
+        if arg["Type"] == "SoKeyboardEvent":
+            if arg["Key"] == "ESCAPE":
+                self.finish()
+        elif arg["Type"] == "SoLocation2Event":
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.affinity = None # don't keep affinity 
+            if len(self.node) == 2:
+                setMod(arg,MODCONSTRAIN,True)
+            self.point,ctrlPoint,info = getPoint(self,arg)
+            redraw3DView()
+        elif arg["Type"] == "SoMouseButtonEvent":
+            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
+                if self.point:
+                    self.ui.redraw()
+                    if not self.node:
+                        # first click
+                        self.node.append(self.point)
+                        self.ui.isRelative.show()
+                        msg(translate("draft", "Pick endpoint of leader line:\n"))
+                        if self.planetrack:
+                            self.planetrack.set(self.point)
+                    elif len(self.node) == 1:
+                        # second click
+                        self.node.append(self.point)
+                        if self.ghost:
+                            self.ghost.p1(self.node[0])
+                            self.ghost.p2(self.node[1])
+                            self.ghost.on()
+                        msg(translate("draft", "Pick text position:\n"))
+                    else:
+                        # third click
+                        self.node.append(self.point)
+                        self.create()
+
+    def numericInput(self,numx,numy,numz):
+        "this function gets called by the toolbar when valid x, y, and z have been entered there"
+        self.point = Vector(numx,numy,numz)
+        if not self.node:
+            # first click
+            self.node.append(self.point)
+            self.ui.isRelative.show()
+            msg(translate("draft", "Pick endpoint of leader line:\n"))
+            if self.planetrack:
+                self.planetrack.set(self.point)
+        elif len(self.node) == 1:
+            # second click
+            self.node.append(self.point)
+            if self.ghost:
+                self.ghost.p1(self.node[0])
+                self.ghost.p2(self.node[1])
+                self.ghost.on()
+            msg(translate("draft", "Pick text position:\n"))
+        else:
+            # third click
+            self.node.append(self.point)
+            self.create()
+
+
 #---------------------------------------------------------------------------
 # Snap tools
 #---------------------------------------------------------------------------
@@ -5401,6 +5540,7 @@ FreeCADGui.addCommand('Draft_Point',Point())
 FreeCADGui.addCommand('Draft_Ellipse',Ellipse())
 FreeCADGui.addCommand('Draft_ShapeString',ShapeString())
 FreeCADGui.addCommand('Draft_Facebinder',Draft_Facebinder())
+FreeCADGui.addCommand('Draft_Label',Draft_Label())
 
 # modification commands
 FreeCADGui.addCommand('Draft_Move',Move())
