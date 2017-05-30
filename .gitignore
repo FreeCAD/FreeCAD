@@ -33,3 +33,5 @@ install_manifest.txt
 OpenSCAD_rc.py
 .subuser-dev
 /\.idea/
+.tags
+tags
