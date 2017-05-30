@@ -1214,9 +1214,9 @@ void Document::Restore(Base::XMLReader &reader)
         // read the feature types
         readObjects(reader);
 
-		// tip object handling. First the whole document has to be read, then we
-		// can restore the Tip link out of the TipName Property:
-		Tip.setValue(getObject(TipName.getValue()));
+        // tip object handling. First the whole document has to be read, then we
+        // can restore the Tip link out of the TipName Property:
+        Tip.setValue(getObject(TipName.getValue()));
     }
 
     reader.readEndElement("Document");
@@ -1344,6 +1344,7 @@ Document::readObjects(Base::XMLReader& reader)
 std::vector<App::DocumentObject*>
 Document::importObjects(Base::XMLReader& reader)
 {
+    setStatus(Document::Restoring, true);
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
     reader.DocumentSchema = scheme;
@@ -1369,6 +1370,8 @@ Document::importObjects(Base::XMLReader& reader)
         (*it)->ExpressionEngine.onDocumentRestored();
         (*it)->purgeTouched();
     }
+
+    setStatus(Document::Restoring, false);
     return objs;
 }
 
