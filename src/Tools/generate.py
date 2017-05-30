@@ -39,14 +39,14 @@ def generate(filename,path):
     Module.path = path
     Module.module = GenerateModelInst.Module[0]
     Module.Generate()
-    print "Done generating: " + GenerateModelInst.Module[0].Name
+    print("Done generating: " + GenerateModelInst.Module[0].Name)
   else:
     Export = generateTemplates.templateClassPyExport.TemplateClassPyExport()
     Export.path = path+"/"
     Export.dirname = os.path.dirname(filename)+"/";
     Export.export = GenerateModelInst.PythonExport[0]
     Export.Generate()
-    print "Done generating: " + GenerateModelInst.PythonExport[0].Name
+    print("Done generating: " + GenerateModelInst.PythonExport[0].Name)
     
   
   
@@ -55,42 +55,44 @@ def generate(filename,path):
 
 
 def main():
-	defaultPath = ""
-	class generateOutput:
-		def write(self, data):
-			pass  
-	sys.stdout=generateOutput()
-	
-	try:
-		opts, args = getopt.getopt(sys.argv[1:], "ho:", ["help","outputPath="])
-	except getopt.GetoptError:
-		# print help information and exit:
-		sys.stderr.write(Usage)
-		sys.exit(2)
+    defaultPath = ""
+    class generateOutput:
+        def write(self, data):
+            pass  
+        def flush(self): # mandatory for file-like objects
+            pass
+    sys.stdout=generateOutput()
+    
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "ho:", ["help","outputPath="])
+    except getopt.GetoptError:
+        # print help information and exit:
+        sys.stderr.write(Usage)
+        sys.exit(2)
 
-	# checking on the options
-	for o, a in opts:
-		if o in ("-h", "--help"):
-			sys.stderr.write(Usage)
-			sys.exit()
-		if o in ("-o", "--outputPath"):
-			defaultPath = a
+    # checking on the options
+    for o, a in opts:
+        if o in ("-h", "--help"):
+            sys.stderr.write(Usage)
+            sys.exit()
+        if o in ("-o", "--outputPath"):
+            defaultPath = a
 
 
-	# runing through the files
-	if (len(args) ==0):
-		#sys.stderr.write(Usage)
-		generate("../Mod/PartDesign/PartDesign_Model.xml")                  
-	else:
-		for i in args:
-			filename = os.path.abspath(i)
-			if(defaultPath == ""):
-				head,tail = os.path.split(filename)
-				print head,tail
-				generate(filename,head)
-			else:
-				generate(filename,defaultPath)
+    # runing through the files
+    if (len(args) ==0):
+        #sys.stderr.write(Usage)
+        generate("../Mod/PartDesign/PartDesign_Model.xml")
+    else:
+        for i in args:
+            filename = os.path.abspath(i)
+            if(defaultPath == ""):
+                head,tail = os.path.split(filename)
+                print(head,tail)
+                generate(filename,head)
+            else:
+                generate(filename,defaultPath)
 
-	
+
 if __name__ == "__main__":
-	main()
+    main()
