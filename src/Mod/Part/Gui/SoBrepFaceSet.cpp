@@ -320,6 +320,8 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     // correctly.
     if (!this->shouldGLRender(action))
         return;
+    inherited::GLRender(action);
+    retunr;
 
 #ifdef RENDER_GLARRAYS
     if (!doTextures && index_array.size() && hl_idx < 0 && num_selected <= 0) {
@@ -463,6 +465,12 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     // correctly.
     if (!this->shouldGLRender(action))
         return;
+    SbBool hasVBO = PRIVATE(this)->vboAvailable;
+    if ( !hasVBO)
+    {
+	    inherited::GLRender(action);
+	    return;
+    }
 
     SoState * state = action->getState();
 
@@ -498,7 +506,6 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if (!nindices) nindices = cindices;
     pindices = this->partIndex.getValues(0);
     numparts = this->partIndex.getNum();
-    SbBool hasVBO = PRIVATE(this)->vboAvailable;
     if (hasVBO) {
         // get the VBO status of the viewer
         Gui::SoGLVBOActivatedElement::get(state, hasVBO);
