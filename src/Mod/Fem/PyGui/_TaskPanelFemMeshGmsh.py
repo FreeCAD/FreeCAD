@@ -42,7 +42,10 @@ class _TaskPanelFemMeshGmsh:
     def __init__(self, obj):
         self.mesh_obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemMeshGmsh.ui")
-
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        no_calc_mesh_on_ok = self.fem_prefs.GetBool("NoCalcMeshOnOk", False)
+        if no_calc_mesh_on_ok:
+            self.form.cb_no_mesh_calc.setCheckState(QtCore.Qt.CheckState.Checked)
         self.Timer = QtCore.QTimer()
         self.Timer.start(100)  # 100 milli seconds
         self.gmsh_runs = False
@@ -77,7 +80,16 @@ class _TaskPanelFemMeshGmsh:
         return True
 
     def clicked(self, button):
-        if button == QtGui.QDialogButtonBox.Apply:
+        calc_mesh_gen_pref = self.fem_prefs.GetBool("CalcMeshGenPref", False)
+        if not calc_mesh_gen_pref:
+            self.fem_prefs.SetBool('CalcMeshGenPref',True)
+            if QtGui.QMessageBox.warning(None,"FreeCAD",QtGui.QApplication.translate("FEMMeshWarning", "Mesh generation can take a long time. Do you want to store parameters without generating mesh by default upon clicking OK?", None, QtGui.QApplication.UnicodeUTF8), QtGui.QMessageBox.Cancel | QtGui.QMessageBox.Ok) != QtGui.QMessageBox.StandardButton.Cancel:
+                 self.fem_prefs.SetBool("NoCalcMeshOnOk", True)
+                 return
+        form_no_calc_mesh = self.form.cb_no_mesh_calc.isChecked()
+        calc_ok = button == QtGui.QDialogButtonBox.Ok and self.gmsh_runs is False and not form_no_calc_mesh
+        calc_ok = button == QtGui.QDialogButtonBox.Apply or calc_ok
+        if calc_ok:
             self.set_mesh_params()
             self.run_gmsh()
 
