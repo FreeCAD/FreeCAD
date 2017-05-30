@@ -78,6 +78,9 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         return new App::DocumentObjectExecReturn("Fillet not possible on selected shapes");
     
     double radius = Radius.getValue();
+    
+    if(radius <= 0)
+        return new App::DocumentObjectExecReturn("Fillet radius must be greater than zero");
 
     this->positionByBaseFeature();
 
