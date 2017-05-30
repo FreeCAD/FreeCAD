@@ -2,15 +2,31 @@
 # -*- coding: utf-8 -*-
 # (c) 2007 Jürgen Riegel 
 
+from __future__ import print_function # this allows py2 to print(str1,str2) correctly
+
 import os, errno
 
 
-def ensureDir(path,mode=0777):
+def temporary_exec(text, globals, locals):
+    """this function is a dirty hack to allow using the copier from
+       python2 and python3. Once the support of python2 has stopped
+       feel free to remove this function and use the std exec function 
+       instead"""
+    # maybe this should be fixed by rewriting the generators.
+    if sys.version_info[0] < 3:
+        from .__exec_old import __exec_old__
+        __exec_old__(text, globals, locals)
+    else:
+        from .__exec_new import __exec_new__
+        __exec_new__(text, globals, locals)
+
+
+def ensureDir(path,mode=0o777):
 	try: 
 		os.makedirs(path,mode)
-	except OSError, err:
+	except OSError(err):
 		#  raise an error unless it's about a alredy existing directory
-		print "Dir Exist"
+		print("Dir Exist")
 		#if errno != 17 or not os.path.isdir(path):
 		#	raise
 			
@@ -43,7 +59,7 @@ class copier:
         "Main copy method: process lines [i,last) of block"
         def repl(match, self=self):
             "return the eval of a found expression, for replacement"
-            # uncomment for debug: print '!!! replacing',match.group(1)
+            # uncomment for debug: print ('!!! replacing',match.group(1))
             expr = self.preproc(match.group(1), 'eval')
             try: return str(eval(expr, self.globals, self.locals))
             except: return str(self.handle(expr))
@@ -74,11 +90,14 @@ class copier:
                     j=j+1
                 stat = self.preproc(stat, 'exec')
                 stat = '%s _cb(%s,%s)' % (stat,i+1,j)
-                # for debugging, uncomment...: print "-> Executing: {"+stat+"}"
-                exec stat in self.globals,self.locals
+                # for debugging, uncomment...: print("-> Executing: {"+stat+"}")
+                temporary_exec(stat, self.globals, self.locals)
                 i=j+1
             else:       # normal line, just copy with substitution
-                self.ouf.write(self.regex.sub(repl,line))
+                try:
+                    self.ouf.write(self.regex.sub(repl, line).encode("utf8"))
+                except TypeError:
+                    self.ouf.write(self.regex.sub(repl, line))
                 i=i+1
     def __init__(self, regex=_never, dict={},
             restat=_never, restend=_never, recont=_never, 
@@ -86,6 +105,7 @@ class copier:
         "Initialize self's attributes"
         self.regex   = regex
         self.globals = dict
+        self.globals['sys'] = sys
         self.locals  = { '_cb':self.copyblock }
         self.restat  = restat
         self.restend = restend
@@ -136,8 +156,8 @@ After all, @x@ is rather small!
   Also, @i@ times @x@ is @i*x@.
 -
 One last, plain line at the end.""".split('\n')]
-    print "*** input:"
-    print ''.join(lines_block)
-    print "*** output:"
+    print("*** input:")
+    print(''.join(lines_block))
+    print("*** output:")
     cop.copy(lines_block)
 
