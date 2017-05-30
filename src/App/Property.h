@@ -122,11 +122,11 @@ public:
     void touch();
     /// Test if this property is touched 
     inline bool isTouched(void) const {
-        return StatusBits.test(0);
+        return StatusBits.test(Touched);
     }
     /// Reset this property touched 
     inline void purgeTouched(void) {
-        StatusBits.reset(0);
+        StatusBits.reset(Touched);
     }
     /// return the status bits
     inline unsigned long getStatus() const {
