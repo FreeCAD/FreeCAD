@@ -559,24 +559,66 @@ class InstallWorker(QtCore.QThread):
             else:
                 answer = self.download(self.repos[self.idx][1],clonedir)
         else:
-            if git:
-                self.info_label.emit("Cloning module...")
-                repo = git.Repo.clone_from(self.repos[self.idx][1], clonedir, branch='master')
-            else:
-                self.info_label.emit("Downloading module...")
-                self.download(self.repos[self.idx][1],clonedir)
-            answer = translate("AddonsInstaller", "Workbench successfully installed. Please restart FreeCAD to apply the changes.")
-            # symlink any macro contained in the module to the macros folder
-            macrodir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")
-            for f in os.listdir(clonedir):
-                if f.lower().endswith(".fcmacro"):
-                    symlink(clonedir+os.sep+f,macrodir+os.sep+f)
-                    FreeCAD.ParamGet('User parameter:Plugins/'+self.repos[self.idx][0]).SetString("destination",clonedir)
-                    answer += translate("AddonsInstaller", "A macro has been installed and is available the Macros menu") + ": <b>"
-                    answer += f + "</b>"
+            self.info_label.emit("Checking module dependencies...")
+            depsok,answer = self.checkDependencies(self.repos[self.idx][1])
+            if depsok:
+                if git:
+                    self.info_label.emit("Cloning module...")
+                    repo = git.Repo.clone_from(self.repos[self.idx][1], clonedir, branch='master')
+                else:
+                    self.info_label.emit("Downloading module...")
+                    self.download(self.repos[self.idx][1],clonedir)
+                answer = translate("AddonsInstaller", "Workbench successfully installed. Please restart FreeCAD to apply the changes.")
+                # symlink any macro contained in the module to the macros folder
+                macrodir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")
+                for f in os.listdir(clonedir):
+                    if f.lower().endswith(".fcmacro"):
+                        symlink(clonedir+os.sep+f,macrodir+os.sep+f)
+                        FreeCAD.ParamGet('User parameter:Plugins/'+self.repos[self.idx][0]).SetString("destination",clonedir)
+                        answer += translate("AddonsInstaller", "A macro has been installed and is available the Macros menu") + ": <b>"
+                        answer += f + "</b>"
         self.info_label.emit(answer)
         self.progressbar_show.emit(False)
         self.stop = True
+
+    def checkDependencies(self,baseurl):
+        "checks if the repo contains a metadata.txt and check its contents"
+        import FreeCADGui
+        ok = True
+        message = ""
+        depsurl = baseurl.replace("github.com","raw.githubusercontent.com")
+        if not depsurl.endswith("/"):
+            depsurl += "/"
+        depsurl += "master/metadata.txt"
+        try:
+            mu = urllib2.urlopen(depsurl)
+        except urllib2.HTTPError:
+            # no metadata.txt, we just continue without deps checking
+            pass
+        else:
+            # metadata.txt found
+            depsfile = mu.read()
+            mu.close()
+            deps = depsfile.split("\n")
+            for l in deps:
+                if l.startswith("workbenches="):
+                    depswb = l.split("=")[1].split(",")
+                    for wb in depswb:
+                        if not wb in FreeCADGui.listWorkbenches().keys():
+                            ok = False
+                            message += translate("AddonsInstaller","Missing workbench") + ": " + wb + ", "
+                elif l.startswith("pylibs="):
+                    depspy = l.split("=")[1].split(",")
+                    for pl in depspy:
+                        try:
+                            __import__(pl)
+                        except:
+                            ok = False
+                            message += translate("AddonsInstaller","Missing python module") +": " + pl + ", "
+        if message:
+            message = translate("AddonsInstaller", "Some errors were found that prevent to install this workbench") + ": <b>" + message + "</b>. "
+            message += translate("AddonsInstaller","Please install the missing components first.")
+        return ok, message
 
     def download(self,giturl,clonedir):
         "downloads and unzip from github"
