@@ -84,7 +84,7 @@ class PathPostTestCases(unittest.TestCase):
         self.doc.recompute()
 
         job.PostProcessor = 'linuxcnc'
-        job.PostProcessorArgs = '--no-header --no-line-numbers --no-comments --no-show-editor'
+        job.PostProcessorArgs = '--no-header --no-line-numbers --no-comments --no-show-editor --output-precision=2'
 
         post = PathScripts.PathPost.CommandPathPost()
         (fail, gcode) = post.exportObjectsWith([job], job, False)
