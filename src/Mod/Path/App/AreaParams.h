@@ -90,7 +90,7 @@
     ((double,units,Unit,1.0,"Scaling factor for conversion to inch",App::PropertyFloat))\
     ((short,min_arc_points,MinArcPoints,4,"Minimum segments for arc discretization"))\
     ((short,max_arc_points,MaxArcPoints,100,"Maximum segments for arc discretization"))\
-    ((double,clipper_scale,ClipperScale,1e6,\
+    ((double,clipper_scale,ClipperScale,1e7,\
         "ClipperLib operate on intergers. This is the scale factor to convert\n"\
         "floating points.",App::PropertyFloat))
 
