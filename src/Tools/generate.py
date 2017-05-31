@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 # (c) 2006 Jürgen Riegel  GPL
 
+from __future__ import print_function # this allows py2 to print(str1, str2) correctly
+
 Usage = """generate - generates a FreeCAD Module out of an XML model
 
 Usage:
