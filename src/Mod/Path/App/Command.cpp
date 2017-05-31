@@ -103,22 +103,26 @@ std::string Command::toGCode (int precision, bool padzero) const
     std::stringstream str;
     str.fill('0');
     str << Name;
-    if(precision<=0) 
-        precision = 1;
-    double scale = std::pow(10.0,precision);
+    if(precision<0) 
+        precision = 0;
+    double scale = std::pow(10.0,precision+1);
     std::int64_t iscale = static_cast<std::int64_t>(scale)/10;
     for(std::map<std::string,double>::const_iterator i = Parameters.begin(); i != Parameters.end(); ++i) {
         if(i->first == "N") continue;
 
+        str << " " << i->first;
+
         std::int64_t v = static_cast<std::int64_t>(i->second*scale);
-        if(v>=0)
-            v+=5;
-        else
-            v-=5;
+        if(v<0) {
+            v = -v;
+            str << '-'; //shall we allow -0 ?
+        }
+        v+=5;
         v /= 10;
-        str << " " << i->first << (v/iscale);
-        if(precision==1) continue;
-        int width = precision-1;
+        str << (v/iscale);
+        if(!precision) continue;
+
+        int width = precision;
         std::int64_t digits = v%iscale;
         if(!padzero) {
             if(!digits) continue;
