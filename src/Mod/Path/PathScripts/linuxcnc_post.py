@@ -39,6 +39,7 @@ Arguments for linuxcnc:
     --comments,--no-comments         ... output comments (--comments)
     --line-numbers,--no-line-numbers ... prefix with line numbers (--no-lin-numbers)
     --show-editor, --no-show-editor  ... pop up editor before writing output(--show-editor)
+    --output-precision=4             ... number of digits of precision.  Default=4
 '''
 import FreeCAD
 from FreeCAD import Units
@@ -66,6 +67,7 @@ UNIT_FORMAT = 'mm/min'
 MACHINE_NAME = "LinuxCNC"
 CORNER_MIN = {'x': 0, 'y': 0, 'z': 0}
 CORNER_MAX = {'x': 500, 'y': 300, 'z': 300}
+PRECISION=4
 
 # Preamble text will appear at the beginning of the GCODE output file.
 PREAMBLE = '''G17 G90
@@ -98,6 +100,8 @@ def processArguments(argstring):
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
     global SHOW_EDITOR
+    global PRECISION
+
     for arg in argstring.split():
         if arg == '--header':
             OUTPUT_HEADER = True
@@ -115,6 +119,8 @@ def processArguments(argstring):
             SHOW_EDITOR = True
         elif arg == '--no-show-editor':
             SHOW_EDITOR = False
+        elif arg.split('=')[0] == '--output-precision':
+            PRECISION = arg.split('=')[1]
 
 def export(objectslist, filename, argstring):
     processArguments(argstring)
@@ -211,8 +217,10 @@ def linenumber():
     return ""
 
 def parse(pathobj):
+    global PRECISION
     out = ""
     lastcommand = None
+    precision_string = '.' + str(PRECISION) +'f'
 
     # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control
     # the order of parameters
@@ -251,12 +259,12 @@ def parse(pathobj):
                         if c.Name not in ["G0", "G00"]: #linuxcnc doesn't use rapid speeds
                             speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
                             outstring.append(
-                                param + format(float(speed.getValueAs(UNIT_FORMAT)), '.2f') )
+                                param + format(float(speed.getValueAs(UNIT_FORMAT)), precision_string) )
                     elif param == 'T':
                         outstring.append(param + str(c.Parameters['T']))
                     else:
                         outstring.append(
-                            param + format(c.Parameters[param], '.4f'))
+                            param + format(c.Parameters[param], precision_string))
 
             # store the latest command
             lastcommand = command
