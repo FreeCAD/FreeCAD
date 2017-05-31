@@ -1259,8 +1259,10 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
     std::vector<DocumentObject*>::const_iterator it;
     for (it = obj.begin(); it != obj.end(); ++it) {
         writer.Stream() << writer.ind() << "<Object "
-        << "type=\"" << (*it)->getTypeId().getName() << "\" "
-        << "name=\"" << (*it)->getNameInDocument()       << "\" "
+        << "type=\"" << (*it)->getTypeId().getName()        << "\" "
+        << "name=\"" << (*it)->getNameInDocument()          << "\" "
+        << "isTouch=\"" << (*it)->testStatus(App::Touch)    << "\" "
+        << "isError=\"" << (*it)->testStatus(App::Error)    << "\" "
         << "/>" << endl;
     }
 
@@ -1312,6 +1314,12 @@ Document::readObjects(Base::XMLReader& reader)
                 // use this name for the later access because an object with
                 // the given name may already exist
                 reader.addName(name.c_str(), obj->getNameInDocument());
+
+                // restore touch/error status flags
+                if(reader.hasAttribute("isTouch"))
+                    obj->setStatus(App::Touch, (bool) reader.getAttributeAsInteger("isTouch"));
+                if(reader.hasAttribute("isError"))
+                    obj->setStatus(App::Error, (bool) reader.getAttributeAsInteger("isError"));
             }
         }
         catch (const Base::Exception& e) {
