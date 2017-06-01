@@ -1259,9 +1259,15 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
     std::vector<DocumentObject*>::const_iterator it;
     for (it = obj.begin(); it != obj.end(); ++it) {
         writer.Stream() << writer.ind() << "<Object "
-        << "type=\"" << (*it)->getTypeId().getName() << "\" "
-        << "name=\"" << (*it)->getNameInDocument()       << "\" "
-        << "/>" << endl;
+        << "type=\"" << (*it)->getTypeId().getName()     << "\" "
+        << "name=\"" << (*it)->getNameInDocument()       << "\" ";
+
+        // See DocumentObjectPy::getState
+        if ((*it)->testStatus(ObjectStatus::Touch))
+            writer.Stream() << "Touched=\"1\" ";
+        if ((*it)->testStatus(ObjectStatus::Error))
+            writer.Stream() << "Invalid=\"1\" ";
+        writer.Stream() << "/>" << endl;
     }
 
     writer.decInd();  // indentation for 'Object type'
@@ -1312,6 +1318,12 @@ Document::readObjects(Base::XMLReader& reader)
                 // use this name for the later access because an object with
                 // the given name may already exist
                 reader.addName(name.c_str(), obj->getNameInDocument());
+
+                // restore touch/error status flags
+                if (reader.hasAttribute("Touched"))
+                    obj->setStatus(ObjectStatus::Touch, reader.getAttributeAsInteger("Touched") != 0);
+                if (reader.hasAttribute("Invalid"))
+                    obj->setStatus(ObjectStatus::Error, reader.getAttributeAsInteger("Invalid") != 0);
             }
         }
         catch (const Base::Exception& e) {
