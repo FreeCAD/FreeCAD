@@ -35,8 +35,9 @@ def translate(context, text, disambig=None):
 
 class ObjectPathCopy:
 
-    def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The path to be copied"))
+    def __init__(self, obj):
+        obj.addProperty("App::PropertyLink", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The path to be copied"))
+        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
         obj.Proxy = self
 
     def __getstate__(self):
@@ -47,6 +48,8 @@ class ObjectPathCopy:
 
     def execute(self, obj):
         if obj.Base:
+            if hasattr(obj.Base, 'ToolController'):
+                obj.ToolController = obj.Base.ToolController
             if obj.Base.Path:
                 obj.Path = obj.Base.Path.copy()
 
@@ -113,6 +116,8 @@ if selGood:
     PathScripts.PathCopy.ObjectPathCopy(obj)
     PathScripts.PathCopy.ViewProviderPathCopy(obj.ViewObject)
     obj.Base = FreeCAD.ActiveDocument.getObject(selection[0].Name)
+    if hasattr(obj.Base, 'ToolController'):
+        obj.ToolController = obj.Base.ToolController
 
 g = proj.Group
 g.append(obj)
