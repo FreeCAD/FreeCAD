@@ -113,6 +113,11 @@ class AddonsInstaller(QtGui.QDialog):
         self.horizontalLayout = QtGui.QHBoxLayout()
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
+        self.buttonCheck = QtGui.QPushButton()
+        icon = QtGui.QIcon.fromTheme("reload")
+        self.buttonCheck.setIcon(icon)
+        self.horizontalLayout.addWidget(self.buttonCheck)
+        self.buttonCheck.hide()
         self.buttonInstall = QtGui.QPushButton()
         icon = QtGui.QIcon.fromTheme("download")
         self.buttonInstall.setIcon(icon)
@@ -124,6 +129,7 @@ class AddonsInstaller(QtGui.QDialog):
         self.buttonCancel = QtGui.QPushButton()
         icon = QtGui.QIcon.fromTheme("cancel")
         self.buttonCancel.setIcon(icon)
+        self.buttonCancel.setDefault(True)
         self.horizontalLayout.addWidget(self.buttonCancel)
         self.verticalLayout.addLayout(self.horizontalLayout)
 
@@ -136,12 +142,23 @@ class AddonsInstaller(QtGui.QDialog):
         QtCore.QObject.connect(self.listWorkbenches, QtCore.SIGNAL("currentRowChanged(int)"), self.show)
         QtCore.QObject.connect(self.tabWidget, QtCore.SIGNAL("currentChanged(int)"), self.switchtab)
         QtCore.QObject.connect(self.listMacros, QtCore.SIGNAL("currentRowChanged(int)"), self.show_macro)
+        QtCore.QObject.connect(self.buttonCheck, QtCore.SIGNAL("clicked()"), self.check_updates)
         QtCore.QMetaObject.connectSlotsByName(self)
+        
         self.update()
+        
+        if not NOGIT:
+            try:
+                import git
+            except:
+                self.buttonCheck.hide()
+            else:
+                self.buttonCheck.show()
 
     def retranslateUi(self):
         self.setWindowTitle(translate("AddonsInstaller","Addon manager"))
         self.labelDescription.setText(translate("AddonsInstaller", "Downloading addon list..."))
+        self.buttonCheck.setToolTip(translate("AddonsInstaller", "Check for available updates"))
         self.buttonCancel.setText(translate("AddonsInstaller", "Close"))
         self.buttonInstall.setText(translate("AddonsInstaller", "Install / update"))
         self.buttonRemove.setText(translate("AddonsInstaller", "Remove"))
@@ -158,6 +175,14 @@ class AddonsInstaller(QtGui.QDialog):
         self.update_worker.addon_repo.connect(self.add_addon_repo)
         self.update_worker.progressbar_show.connect(self.show_progress_bar)
         self.update_worker.start()
+
+    def check_updates(self):
+        if self.tabWidget.currentIndex() == 0:
+            self.check_worker = CheckWBWorker(self.repos)
+            self.check_worker.mark.connect(self.mark)
+            self.check_worker.info_label.connect(self.set_information_label)
+            self.check_worker.progressbar_show.connect(self.show_progress_bar)
+            self.check_worker.start()
 
     def add_addon_repo(self, addon_repo):
         self.repos.append(addon_repo)
@@ -195,6 +220,9 @@ class AddonsInstaller(QtGui.QDialog):
                 self.macro_worker.info_label.connect(self.set_information_label)
                 self.macro_worker.progressbar_show.connect(self.show_progress_bar)
                 self.macro_worker.start()
+            self.buttonCheck.setEnabled(False)
+        else:
+            self.buttonCheck.setEnabled(True)
 
     def update_repos(self, repos):
         self.repos = repos
@@ -244,6 +272,7 @@ class AddonsInstaller(QtGui.QDialog):
             self.listMacros.setEnabled(False)
             self.buttonInstall.setEnabled(False)
             self.buttonRemove.setEnabled(False)
+            self.buttonCheck.setEnabled(False)
             self.progressBar.show()
         else:
             self.progressBar.hide()
@@ -251,6 +280,8 @@ class AddonsInstaller(QtGui.QDialog):
             self.listMacros.setEnabled(True)
             self.buttonInstall.setEnabled(True)
             self.buttonRemove.setEnabled(True)
+            if self.tabWidget.currentIndex() == 0:
+                self.buttonCheck.setEnabled(True)
 
     def remove(self):
         if self.tabWidget.currentIndex() == 0:
@@ -295,6 +326,13 @@ class AddonsInstaller(QtGui.QDialog):
             else:
                 self.listMacros.addItem("        "+str(macro[0]))
                 macro[1] = 0
+
+    def mark(self,repo):
+        for i in range(self.listWorkbenches.count()):
+            w = self.listWorkbenches.item(i)
+            if w.text().startswith(str(repo)):
+                w.setText(str(repo) + str(" (Update available)"))
+                w.setIcon(QtGui.QIcon.fromTheme("reload"))
 
 
 class UpdateWorker(QtCore.QThread):
@@ -366,6 +404,47 @@ class InfoWorker(QtCore.QThread):
             self.repos[i].append(desc)
             i += 1
             self.addon_repos.emit(self.repos)
+        self.stop = True
+
+
+class CheckWBWorker(QtCore.QThread):
+    info_label = QtCore.Signal(str)
+    mark = QtCore.Signal(str)
+    progressbar_show = QtCore.Signal(bool)
+
+    def __init__(self,repos):
+        QtCore.QThread.__init__(self)
+        self.repos = repos
+
+    def run(self):
+        if NOGIT:
+            self.stop = True
+            return
+        try:
+            import git
+        except:
+            self.stop = True
+            return
+        self.progressbar_show.emit(True)
+        basedir = FreeCAD.ConfigGet("UserAppData")
+        moddir = basedir + os.sep + "Mod" 
+        self.info_label.emit(translate("AddonsInstaller", "Checking for new versions..."))
+        upds = 0
+        for repo in self.repos:
+            if repo[2] == 1: #installed
+                self.info_label.emit(translate("AddonsInstaller","Checking repo")+" "+repo[0]+"...")
+                clonedir = moddir + os.sep + repo[0]
+                if os.path.exists(clonedir):
+                    gitrepo = git.Git(clonedir)
+                    gitrepo.fetch()
+                    if "git pull" in gitrepo.status():
+                        self.mark.emit(repo[0])
+                        upds += 1
+        self.progressbar_show.emit(False)
+        if upds:
+            self.info_label.emit(str(upds)+" "+translate("AddonsInstaller", "update(s) available"))
+        else:
+            self.info_label.emit(translate("AddonsInstaller","Everything is up to date"))
         self.stop = True
 
 
