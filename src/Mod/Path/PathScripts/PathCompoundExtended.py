@@ -41,6 +41,7 @@ class ObjectCompoundExtended:
 #        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The spindle speed, in revolutions per minute, of the tool used in these compounded operations"))
         obj.addProperty("App::PropertyLength","SafeHeight",   "Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The safe height for this operation"))
         obj.addProperty("App::PropertyLength","RetractHeight","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The retract height, above top surface of part, between compounded operations inside clamping area"))
+        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
         obj.Proxy = self
 
     def __getstate__(self):
@@ -114,12 +115,14 @@ import PathScripts
 from PathScripts import PathUtils
 incl = []
 prjexists = False
+tc = None
 sel = FreeCADGui.Selection.getSelection()
 for s in sel:
     if s.isDerivedFrom("Path::Feature"):
         incl.append(s)
 
 obj = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython","Compound")
+
 PathScripts.PathCompoundExtended.ObjectCompoundExtended(obj)
 PathScripts.PathCompoundExtended.ViewProviderCompoundExtended(obj.ViewObject)
 project = PathUtils.addToJob(obj)
@@ -130,10 +133,15 @@ if incl:
     g = obj.Group
     for child in incl:
         p.remove(child)
-        children.append(FreeCAD.ActiveDocument.getObject(child.Name))
+        childobj = FreeCAD.ActiveDocument.getObject(child.Name)
+        if hasattr(childobj, 'ToolController'):
+            tc = childobj.ToolController
+        children.append(childobj)
+
     project.Group = p
     g.append(children)
     obj.Group = children
+    obj.ToolController = tc
 '''
         FreeCADGui.doCommand(snippet)
         FreeCAD.ActiveDocument.commitTransaction()
