@@ -20,6 +20,10 @@ INSTALL(
         convert2TetGen.py
         importCcxDatResults.py
         importCcxFrdResults.py
+        readFenicsXML.py
+        writeFenicsXML.py
+        readFenicsXDMF.py
+        writeFenicsXDMF.py
         importFenicsMesh.py
         importInpMesh.py
         importToolsFem.py

@@ -366,11 +366,25 @@ def get_femnode_set_from_group_data(femmesh, fem_object):
     if femmesh.GroupCount:
         for g in femmesh.Groups:
             grp_name = femmesh.getGroupName(g)
-            if grp_name.startswith(obj.Name):
+            if grp_name.startswith(obj.Name + "_"):
                 if femmesh.getGroupElementType(g) == "Node":
                     print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
                     group_nodes = femmesh.getGroupElements(g)  # == ref_shape_femelements
     return group_nodes
+
+
+def get_femelementface_sets_from_group_data(femmesh, fem_object):
+    # get femfaceelements from femmesh face groupdata for reference shapes of obj.References
+    obj = fem_object['Object']
+    group_faces = None
+    if femmesh.GroupCount:
+        for g in femmesh.Groups:
+            grp_name = femmesh.getGroupName(g)
+            if grp_name.startswith(obj.Name + "_"):
+                if femmesh.getGroupElementType(g) == "Face":
+                    print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
+                    group_faces = femmesh.getGroupElements(g)  # == ref_shape_femelements
+    return group_faces
 
 
 def get_femelement_sets_from_group_data(femmesh, fem_objects):
@@ -385,7 +399,7 @@ def get_femelement_sets_from_group_data(femmesh, fem_objects):
         if femmesh.GroupCount:
             for g in femmesh.Groups:
                 grp_name = femmesh.getGroupName(g)
-                if grp_name.startswith(obj.Name):
+                if grp_name.startswith(obj.Name + "_"):
                     if femmesh.getGroupElementType(g) == "Volume":
                         print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
                         group_elements = femmesh.getGroupElements(g)  # == ref_shape_femelements
@@ -537,12 +551,27 @@ def get_pressure_obj_faces_depreciated(femmesh, femobj):
 
 
 def get_pressure_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
-    # get the nodes
-    prs_face_node_set = get_femnodes_by_femobj_with_references(femmesh, femobj)  # sorted and duplicates removed
-    # print('prs_face_node_set: ', prs_face_node_set)
-    # fill the bit_pattern_dict and search for the faces
-    bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, prs_face_node_set)
-    pressure_faces = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
+    if is_solid_femmesh(femmesh):
+        # get the nodes
+        prs_face_node_set = get_femnodes_by_femobj_with_references(femmesh, femobj)  # sorted and duplicates removed
+        # print('prs_face_node_set: ', prs_face_node_set)
+        # fill the bit_pattern_dict and search for the faces
+        bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, prs_face_node_set)
+        pressure_faces = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
+    elif is_face_femmesh(femmesh):
+        pressure_faces = []
+        # normaly we should call get_femelements_by_references and the group check should be integrated there
+        if femmesh.GroupCount:
+            meshfaces = get_femelementface_sets_from_group_data(femmesh, femobj)
+            # print(meshfaces)
+            for mf in meshfaces:
+                # pressure_faces.append([mf, 0])
+                pressure_faces.append([mf, -1])
+                # 0 if femmeshface normal == reference face normal direction
+                # -1 if femmeshface normal opposite reference face normal direction
+                # easy on plane faces, but on a half sphere ... ?!?
+        else:
+            print("Pressure on shell mesh at the moment only supported for meshes with appropriate group data.")
     return pressure_faces
 
 
@@ -1034,15 +1063,25 @@ def get_analysis_group_elements(aAnalysis, aPart):
             for er in empty_references:
                 print(er.Name)
             group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aPart.Shape)
-    # check if all groups have elements:
+    # check if all groups have at least one element, it does not mean ALL reference shapes for a group have been found
     for g in group_elements:
         # print(group_elements[g])
         if len(group_elements[g]) == 0:
-            FreeCAD.Console.PrintError('Error: shapes for: ' + g + 'not found!\n')
+            FreeCAD.Console.PrintError('Error: The shapes for the mesh group for the reference shapes of analysis member: ' + g + ' could not be found!\n')
     return group_elements
 
 
 def get_reference_group_elements(obj, aPart):
+    ''' obj is an FEM object which has reference shapes like the group object, the material, most of the constraints
+    aPart is geometry feature normaly CompSolid, the method searches all reference shapes of obj inside aPart even if
+    the reference shapes are a totally different geometry feature.
+    a tuple is returned ('Name or Label of the FEMobject', ['Element1', 'Element2', ...])
+    The names in the list are the Elements of the geometry aPart whereas 'Solid1' == aPart.Shape.Solids[0]
+    !!! It is strongly recommended to use as reference shapes the Solids of a CompSolid an not the Solids the CompSolid is made of !!!
+    see https://forum.freecadweb.org/viewtopic.php?f=18&t=12212&p=175777#p175777 and following posts
+    Occt might change the Solids a CompSolid is made of during creation of the CompSolid by adding Edges and vertices
+    Thus the Elements do not have the same geometry anymore
+    '''
     aShape = aPart.Shape
     if hasattr(obj, "UseLabel") and obj.UseLabel:
         key = obj.Label  # TODO check the character of the Label, only allow underline and standard english character
@@ -1060,16 +1099,28 @@ def get_reference_group_elements(obj, aPart):
             if not stype:
                 stype = ref_shape.ShapeType
             elif stype != ref_shape.ShapeType:
-                FreeCAD.Console.PrintError('Error, two refschapes in References with different ShapeTypes.\n')
+                FreeCAD.Console.PrintError('Error, two refshapes in References with different ShapeTypes.\n')
             # print(ref_shape)
             found_element = find_element_in_shape(aShape, ref_shape)
             if found_element is not None:
                 elements.append(found_element)
             else:
-                FreeCAD.Console.PrintError('Problem: No element found for: ' + str(ref_shape) + '\n')
+                FreeCAD.Console.PrintError('Problem: For the geometry of the following shape was no Shape found: ' + str(ref_shape) + '\n')
                 print('    ' + obj.Name)
                 print('    ' + str(obj.References))
                 print('    ' + r[0].Name)
+                if parent.Name != aPart.Name:
+                    FreeCAD.Console.PrintError('The reference Shape is not a child nor it is the shape the mesh is made of. : ' + str(ref_shape) + '\n')
+                    print(aPart.Name + '--> Name of the Feature we where searching in.')
+                    print(parent.Name + '--> Name of the parent Feature of reference Shape (Use the same as in the line before and you will have less trouble :-) !!!!!!).')
+                    # import Part
+                    # Part.show(aShape)
+                    # Part.show(ref_shape)
+                else:
+                    FreeCAD.Console.PrintError('This should not happen, please debugg!\n')
+                    # in this case we would not have needed to use the is_same_geometry() inside find_element_in_shape()
+                    # AFAIK we could have used the Part methods isPartner() or even isSame()
+                    # We gone find out when we need to debugg this :-)!
     return (key, sorted(elements))
 
 

@@ -164,6 +164,7 @@ struct DocumentP
         undoing = false;
         StatusBits.set((size_t)Document::Closable, true);
         StatusBits.set((size_t)Document::KeepTrailingDigits, true);
+        StatusBits.set((size_t)Document::Restoring, false);
         iUndoMode = 0;
         UndoMemSize = 0;
         UndoMaxStackSize = 20;
@@ -1201,9 +1202,9 @@ void Document::Restore(Base::XMLReader &reader)
             string name = reader.getAttribute("name");
             DocumentObject* pObj = getObject(name.c_str());
             if (pObj) { // check if this feature has been registered
-                pObj->StatusBits.set(4);
+                pObj->setStatus(ObjectStatus::Restore, true);
                 pObj->Restore(reader);
-                pObj->StatusBits.reset(4);
+                pObj->setStatus(ObjectStatus::Restore, false);
             }
             reader.readEndElement("Feature");
         }
@@ -1213,9 +1214,9 @@ void Document::Restore(Base::XMLReader &reader)
         // read the feature types
         readObjects(reader);
 
-		// tip object handling. First the whole document has to be read, then we
-		// can restore the Tip link out of the TipName Property:
-		Tip.setValue(getObject(TipName.getValue()));
+        // tip object handling. First the whole document has to be read, then we
+        // can restore the Tip link out of the TipName Property:
+        Tip.setValue(getObject(TipName.getValue()));
     }
 
     reader.readEndElement("Document");
@@ -1329,9 +1330,9 @@ Document::readObjects(Base::XMLReader& reader)
         std::string name = reader.getName(reader.getAttribute("name"));
         DocumentObject* pObj = getObject(name.c_str());
         if (pObj) { // check if this feature has been registered
-            pObj->StatusBits.set(4);
+            pObj->setStatus(ObjectStatus::Restore, true);
             pObj->Restore(reader);
-            pObj->StatusBits.reset(4);
+            pObj->setStatus(ObjectStatus::Restore, false);
         }
         reader.readEndElement("Object");
     }
@@ -1343,6 +1344,7 @@ Document::readObjects(Base::XMLReader& reader)
 std::vector<App::DocumentObject*>
 Document::importObjects(Base::XMLReader& reader)
 {
+    setStatus(Document::Restoring, true);
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
     reader.DocumentSchema = scheme;
@@ -1368,6 +1370,8 @@ Document::importObjects(Base::XMLReader& reader)
         (*it)->ExpressionEngine.onDocumentRestored();
         (*it)->purgeTouched();
     }
+
+    setStatus(Document::Restoring, false);
     return objs;
 }
 
@@ -1573,6 +1577,7 @@ void Document::restore (void)
         throw Base::FileException("Error reading compression file",FileName.getValue());
 
     GetApplication().signalStartRestoreDocument(*this);
+    setStatus(Document::Restoring, true);
 
     try {
         Document::Restore(reader);
@@ -1602,6 +1607,7 @@ void Document::restore (void)
     }
 
     GetApplication().signalFinishRestoreDocument(*this);
+    setStatus(Document::Restoring, false);
 }
 
 bool Document::isSaved() const
@@ -2197,7 +2203,7 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     }
 
     // mark the object as new (i.e. set status bit 2) and send the signal
-    pcObject->StatusBits.set(2);
+    pcObject->setStatus(ObjectStatus::New, true);
     signalNewObject(*pcObject);
 
     // do no transactions if we do a rollback!
@@ -2281,7 +2287,7 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
         }
 
         // mark the object as new (i.e. set status bit 2) and send the signal
-        pcObject->StatusBits.set(2);
+        pcObject->setStatus(ObjectStatus::New, true);
         signalNewObject(*pcObject);
 
         // do no transactions if we do a rollback!
@@ -2332,7 +2338,7 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
     pcObject->Label.setValue( ObjectName );
 
     // mark the object as new (i.e. set status bit 2) and send the signal
-    pcObject->StatusBits.set(2);
+    pcObject->setStatus(ObjectStatus::New, true);
     signalNewObject(*pcObject);
 
     // do no transactions if we do a rollback!
@@ -2385,13 +2391,13 @@ void Document::remObject(const char* sName)
         d->activeObject = 0;
 
     // Mark the object as about to be deleted
-    pos->second->StatusBits.set (ObjectStatus::Delete);
+    pos->second->setStatus(ObjectStatus::Delete, true);
     if (!d->undoing && !d->rollback) {
         pos->second->unsetupObject();
     }
 
     signalDeletedObject(*(pos->second));
-    pos->second->StatusBits.reset (ObjectStatus::Delete); // Unset the bit to be on the safe side
+    pos->second->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
 
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
@@ -2462,13 +2468,13 @@ void Document::_remObject(DocumentObject* pcObject)
         d->activeObject = 0;
 
     // Mark the object as about to be deleted
-    pcObject->StatusBits.set (ObjectStatus::Delete);
+    pcObject->setStatus(ObjectStatus::Delete, true);
     if (!d->undoing && !d->rollback) {
         pcObject->unsetupObject();
     }
     signalDeletedObject(*pcObject);
     // TODO Check me if it's needed (2015-09-01, Fat-Zer)
-    pcObject->StatusBits.reset (ObjectStatus::Delete); // Unset the bit to be on the safe side
+    pcObject->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
 
     //remove the tip if needed
     if (Tip.getValue() == pcObject) {

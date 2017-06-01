@@ -409,8 +409,9 @@ class ObjectPathHelix(object):
                             jobs[-1]["zmin"] -= obj.ThroughDepth.Value
 
                     drill_jobs.extend(jobs)
+
             if len(drill_jobs) > 0:
-                drill_jobs = PathUtils.sort_jobs(drill_jobs, ['xc', 'yc'])
+                drill_jobs = PathUtils.sort_jobs(drill_jobs, ['xc', 'yc'], ['xc', 'zmax'])
 
             for job in drill_jobs:
                 output += helix_cut((job["xc"], job["yc"]), job["r_out"], job["r_in"], obj.DeltaR.Value,

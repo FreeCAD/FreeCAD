@@ -66,6 +66,7 @@ public:
         SkipRecompute = 0,
         KeepTrailingDigits = 1,
         Closable = 2,
+        Restoring = 3
     };
 
     /** @name Properties */
@@ -360,6 +361,7 @@ protected:
     /// callback from the Document objects after property was changed
     void onChangedProperty(const DocumentObject *Who, const Property *What);
     /// helper which Recompute only this feature
+    /// @return True if the recompute process of the Document shall be stopped, False if it shall be continued.
     bool _recomputeFeature(DocumentObject* Feat);
     void _clearRedos();
 

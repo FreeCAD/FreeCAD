@@ -398,7 +398,8 @@ void ViewProviderBody::updateOriginDatumSize () {
         assert ( vp->isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) );
         vpOrigin = static_cast <Gui::ViewProviderOrigin *> ( vp );
     } catch (const Base::Exception &ex) {
-        Base::Console().Error ("%s\n", ex.what() );
+        if(!getExtendedViewProvider()->getDocument()->getDocument()->testStatus(App::Document::Restoring))
+            Base::Console().Error ("%s\n", ex.what() );
         return;
     }
 

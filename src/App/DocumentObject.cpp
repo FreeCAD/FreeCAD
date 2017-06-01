@@ -425,7 +425,7 @@ void DocumentObject::onChanged(const Property* prop)
     if (prop->getType() & Prop_Output)
         return;
     // set object touched
-    StatusBits.set(0);
+    StatusBits.set(ObjectStatus::Touch);
 }
 
 PyObject *DocumentObject::getPyObject(void)
@@ -445,7 +445,7 @@ std::vector<PyObject *> DocumentObject::getPySubObjects(const std::vector<std::s
 
 void DocumentObject::touch(void)
 {
-    StatusBits.set(0);
+    StatusBits.set(ObjectStatus::Touch);
 }
 
 /**
@@ -455,7 +455,7 @@ void DocumentObject::touch(void)
 
 bool DocumentObject::isTouched() const
 {
-    return ExpressionEngine.isTouched() || StatusBits.test(0);
+    return ExpressionEngine.isTouched() || StatusBits.test(ObjectStatus::Touch);
 }
 
 void DocumentObject::Save (Base::Writer &writer) const
