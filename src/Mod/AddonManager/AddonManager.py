@@ -617,7 +617,15 @@ class InstallWorker(QtCore.QThread):
                             except:
                                 ok = False
                                 message += translate("AddonsInstaller","Missing python module") +": " + pl + ", "
-        if message:
+                elif l.startswith("optionalpylibs="):
+                    opspy = l.split("=")[1].split(",")
+                    for pl in opspy:
+                        if pl.strip():
+                            try:
+                                __import__(pl.strip())
+                            except:
+                                message += translate("AddonsInstaller","Missing optional python module (doesn't prevent installing)") +": " + pl + ", "
+        if message and (not ok):
             message = translate("AddonsInstaller", "Some errors were found that prevent to install this workbench") + ": <b>" + message + "</b>. "
             message += translate("AddonsInstaller","Please install the missing components first.")
         return ok, message
