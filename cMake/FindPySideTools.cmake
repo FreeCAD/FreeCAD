@@ -57,16 +57,21 @@ MACRO(PYSIDE_WRAP_RC outfiles)
     #ADD_CUSTOM_TARGET(${it} ALL
     #  DEPENDS ${outfile}
     #)
+    if (${PYTHON_VERSION_MAJOR} LESS 3)
+      SET(PY_ATTRIBUTE "")
+    else (${PYTHON_VERSION_MAJOR} LESS 3)
+      SET(PY_ATTRIBUTE "-py3")
+    endif (${PYTHON_VERSION_MAJOR} LESS 3)
     if(WIN32)
         ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
-          COMMAND ${PYSIDERCC4BINARY} ${infile} -o ${outfile}
+          COMMAND ${PYSIDERCC4BINARY} ${infile} ${PY_ATTRIBUTE} -o ${outfile}
           MAIN_DEPENDENCY ${infile}
         )
     else(WIN32)
         # Especially on Open Build Service we don't want changing date like
         # pyside-rcc generates in comments at beginning.
         EXECUTE_PROCESS(
-          COMMAND ${PYSIDERCC4BINARY} ${infile}
+          COMMAND ${PYSIDERCC4BINARY} ${infile} ${PY_ATTRIBUTE}
           COMMAND sed "/^# /d"
           OUTPUT_FILE ${outfile}
        )

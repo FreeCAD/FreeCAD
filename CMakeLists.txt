@@ -620,7 +620,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         )
 
         # check which modules are available
-        if(UNIX)
+        if(UNIX OR WIN32)
             find_package(VTK COMPONENTS vtkCommonCore REQUIRED NO_MODULE)
             list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI vtkhdf5)
             foreach(_module ${VTK_COMPONENTS})

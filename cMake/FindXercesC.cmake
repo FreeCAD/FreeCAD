@@ -9,6 +9,7 @@
 # XercesC_FOUND, If false, don't try to use pwlib.
 
 FIND_PATH(XercesC_INCLUDE_DIRS xercesc/dom/DOM.hpp
+  ${CMAKE_INCLUDE_PATH}
   "[HKEY_CURRENT_USER\\software\\xerces-c\\src]"
   "[HKEY_CURRENT_USER\\xerces-c\\src]"
   $ENV{XERCESCROOT}/src/
@@ -19,7 +20,9 @@ FIND_PATH(XercesC_INCLUDE_DIRS xercesc/dom/DOM.hpp
 FIND_LIBRARY(XercesC_LIBRARIES
   NAMES
     xerces-c
+    xerces-c_3
   PATHS
+    ${CMAKE_LIBRARY_PATH}
     "[HKEY_CURRENT_USER\\software\\xerces-c\\lib]"
     "[HKEY_CURRENT_USER\\xerces-c\\lib]"
     $ENV{XERCESCROOT}/${LIB_DESTINATION}
