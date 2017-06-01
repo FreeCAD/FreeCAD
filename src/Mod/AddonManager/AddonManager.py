@@ -604,17 +604,19 @@ class InstallWorker(QtCore.QThread):
                 if l.startswith("workbenches="):
                     depswb = l.split("=")[1].split(",")
                     for wb in depswb:
-                        if not wb.strip() in FreeCADGui.listWorkbenches().keys():
-                            ok = False
-                            message += translate("AddonsInstaller","Missing workbench") + ": " + wb + ", "
+                        if wb.strip():
+                            if not wb.strip() in FreeCADGui.listWorkbenches().keys():
+                                ok = False
+                                message += translate("AddonsInstaller","Missing workbench") + ": " + wb + ", "
                 elif l.startswith("pylibs="):
                     depspy = l.split("=")[1].split(",")
                     for pl in depspy:
-                        try:
-                            __import__(pl.strip())
-                        except:
-                            ok = False
-                            message += translate("AddonsInstaller","Missing python module") +": " + pl + ", "
+                        if pl.strip():
+                            try:
+                                __import__(pl.strip())
+                            except:
+                                ok = False
+                                message += translate("AddonsInstaller","Missing python module") +": " + pl + ", "
         if message:
             message = translate("AddonsInstaller", "Some errors were found that prevent to install this workbench") + ": <b>" + message + "</b>. "
             message += translate("AddonsInstaller","Please install the missing components first.")
