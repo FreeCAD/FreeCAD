@@ -64,7 +64,6 @@ SET(PathScripts_SRCS
     PathScripts/PathToolLibraryManager.py
     PathScripts/PathUtils.py
     PathScripts/PostUtils.py
-    PathScripts/TooltableEditor.py
     PathScripts/__init__.py
     PathScripts/centroid_post.py
     PathScripts/comparams_post.py
