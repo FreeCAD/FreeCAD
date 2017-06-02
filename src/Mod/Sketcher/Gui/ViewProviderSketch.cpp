@@ -111,6 +111,7 @@
 #include "DrawSketchHandler.h"
 #include "TaskDlgEditSketch.h"
 #include "TaskSketcherValidation.h"
+#include "CommandConstraints.h"
 
 // The first is used to point at a SoDatumLabel for some
 // constraints, and at a SoMaterial for others...
@@ -769,13 +770,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                        );
                                 Gui::Command::commitCommand();
                                 
-                                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-                                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                            
-                                if(autoRecompute)
-                                    Gui::Command::updateActive();
-                                else
-                                    getSketchObject()->solve();
+                                getSketchObject()->solve();
+                                tryAutoRecompute();
                             }
                             catch (const Base::Exception& e) {
                                 Gui::Command::abortCommand();
@@ -807,13 +803,9 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                        ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0
                                                        );
                                 Gui::Command::commitCommand();
-                                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-                                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                            
-                                if(autoRecompute)
-                                    Gui::Command::updateActive();
-                                else
-                                    getSketchObject()->solve();
+
+                                getSketchObject()->solve();
+                                tryAutoRecompute();
                             }
                             catch (const Base::Exception& e) {
                                 Gui::Command::abortCommand();
