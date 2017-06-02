@@ -44,14 +44,8 @@ PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 PathLog.trackModule(LOG_MODULE)
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(text, context = "Path_Post", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class DlgSelectPostProcessor:
 
@@ -202,7 +196,7 @@ class CommandPathPost:
     def Activated(self):
         PathLog.track()
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_Post", "Post Process the Selected path(s)"))
+            translate("Post Process the Selected path(s)"))
         FreeCADGui.addModule("PathScripts.PathPost")
 
         # Attempt to figure out what the user wants to post-process

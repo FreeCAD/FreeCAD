@@ -30,15 +30,8 @@ from PySide import QtCore, QtGui
 """Path Compound Extended object and FreeCAD command"""
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
-
+def translate(text, context = "Path_CompoundExtended", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class ObjectCompoundExtended:
 
@@ -114,7 +107,7 @@ class CommandCompoundExtended:
     def Activated(self):
 
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_CompoundExtended", "Create Compound"))
+            translate("Create Compound"))
         FreeCADGui.addModule("PathScripts.PathCompoundExtended")
         snippet = '''
 import Path

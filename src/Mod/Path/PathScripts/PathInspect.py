@@ -26,16 +26,10 @@ from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
 import Path
+
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
-
+def translate(text, context = "Path_Inspect", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 # class OldHighlighter(QtGui.QSyntaxHighlighter):
 
@@ -138,7 +132,7 @@ class GCodeEditorDialog(QtGui.QDialog):
 
         # Note
         lab = QtGui.QLabel()
-        lab.setText(translate("PathInspect", "<b>Note</b>: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute."))
+        lab.setText(translate("<b>Note</b>: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute."))
         lab.setWordWrap(True)
         layout.addWidget(lab)
 
@@ -236,11 +230,11 @@ class CommandPathInspect:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_Inspect", "Please select exactly one path object\n"))
+                translate("Please select exactly one path object\n"))
             return
         if not(selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("Path_Inspect", "Please select exactly one path object\n"))
+                translate("Please select exactly one path object\n"))
             return
 
         # if everything is ok, execute

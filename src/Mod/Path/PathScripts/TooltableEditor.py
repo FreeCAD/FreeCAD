@@ -38,15 +38,9 @@ try:
 except AttributeError:
     def _fromUtf8(s):
         return s
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
 
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
-
+def translate(text, context = "Path_ToolTableEditor", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 # Tooltable XML readers
 

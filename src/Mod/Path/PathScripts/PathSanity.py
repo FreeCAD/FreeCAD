@@ -32,13 +32,8 @@ import FreeCADGui
 import PathScripts.PathUtils as PU
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(text, context = "Path_Sanity", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 def review(obj):
@@ -46,31 +41,31 @@ def review(obj):
     toolcontrolcount = 0
 
     if len(obj.Tooltable.Tools) == 0:
-        FreeCAD.Console.PrintWarning(translate("Path_Sanity",  "Machine: " + str(obj.Label) + " has no tools defined in the tool table\n"))
+        FreeCAD.Console.PrintWarning(translate("Machine: " + str(obj.Label) + " has no tools defined in the tool table\n"))
     if obj.X_Max == obj.X_Min or obj.Y_Max == obj.Y_Min:
-        FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
+        FreeCAD.Console.PrintWarning(translate("It appears the machine limits haven't been set.  Not able to check path extents.\n"))
 
     for item in obj.Group:
         print("Checking: " + item.Label)
         if item.Name[:2] == "TC":
             toolcontrolcount += 1
             if item.ToolNumber == 0:
-                FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " is using ID 0 which the undefined default. Please set a real tool.\n"))
+                FreeCAD.Console.PrintWarning(translate("Tool Controller: " + str(item.Label) + " is using ID 0 which the undefined default. Please set a real tool.\n"))
             else:
                 tool = PU.getTool(item, item.ToolNumber)
                 if tool is None:
-                    FreeCAD.Console.PrintError(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " is using tool: " + str(item.ToolNumber) + " which is invalid\n"))
+                    FreeCAD.Console.PrintError(translate("Tool Controller: " + str(item.Label) + " is using tool: " + str(item.ToolNumber) + " which is invalid\n"))
                 elif tool.Diameter == 0:
-                    FreeCAD.Console.PrintError(translate("Path_Sanity", "Tool Controller: " +  str(item.Label) + " is using tool: " + str(item.ToolNumber) + " which has a zero diameter\n"))
+                    FreeCAD.Console.PrintError(translate("Tool Controller: " +  str(item.Label) + " is using tool: " + str(item.ToolNumber) + " which has a zero diameter\n"))
             if item.HorizFeed == 0:
-                FreeCAD.Console.PrintWarning(translate("Path_Sanity",  "Tool Controller: " + str(item.Label) + " has a 0 value for the Horizontal feed rate\n"))
+                FreeCAD.Console.PrintWarning(translate("Tool Controller: " + str(item.Label) + " has a 0 value for the Horizontal feed rate\n"))
             if item.VertFeed == 0:
-                FreeCAD.Console.PrintWarning(translate("Path_Sanity",  "Tool Controller: " + str(item.Label) + " has a 0 value for the Vertical feed rate\n"))
+                FreeCAD.Console.PrintWarning(translate("Tool Controller: " + str(item.Label) + " has a 0 value for the Vertical feed rate\n"))
             if item.SpindleSpeed == 0:
-               FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " has a 0 value for the spindle speed\n"))
+               FreeCAD.Console.PrintWarning(translate("Tool Controller: " + str(item.Label) + " has a 0 value for the spindle speed\n"))
 
     if toolcontrolcount == 0:
-        FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.\n"))
+        FreeCAD.Console.PrintWarning(translate("A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.\n"))
 
 
 class CommandPathSanity:
@@ -91,10 +86,10 @@ class CommandPathSanity:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("Path_Sanity","Please select a path Project to check\n"))
+            FreeCAD.Console.PrintError(translate("Please select a path Project to check\n"))
             return
         if not(selection[0].TypeId == "Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("Path_Sanity","Please select a path project to check\n"))
+            FreeCAD.Console.PrintError(translate("Please select a path project to check\n"))
             return
 
         # if everything is ok, execute

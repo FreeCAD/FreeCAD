@@ -29,14 +29,8 @@ from PySide import QtCore, QtGui
 """Path Copy object and FreeCAD command"""
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(text, context = "Path_Copy", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class ObjectPathCopy:
@@ -94,7 +88,7 @@ class CommandPathCopy:
     def Activated(self):
 
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_Copy", "Create Copy"))
+            translate("Create Copy"))
         FreeCADGui.addModule("PathScripts.PathCopy")
 
         consolecode = '''
@@ -107,11 +101,11 @@ selection = FreeCADGui.Selection.getSelection()
 proj = selection[0].InList[0] #get the group that the selectied object is inside
 
 if len(selection) != 1:
-    FreeCAD.Console.PrintError(translate("PathCopy","Please select one path object\\n"))
+    FreeCAD.Console.PrintError(translate("Please select one path object\\n"))
     selGood = False
 
 if not selection[0].isDerivedFrom("Path::Feature"):
-    FreeCAD.Console.PrintError(translate("PathCopy","The selected object is not a path\\n"))
+    FreeCAD.Console.PrintError(translate("The selected object is not a path\\n"))
     selGood = False
 
 if selGood:

@@ -46,14 +46,8 @@ if FreeCAD.GuiUp:
 """Path Job object and FreeCAD command"""
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(text, context = "Path_Job", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class ObjectPathJob:
 
@@ -182,7 +176,7 @@ class CommandJob:
 
     @staticmethod
     def Create():
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Create Job"))
         FreeCADGui.addModule('PathScripts.PathUtils')
         FreeCADGui.addModule('PathScripts.PathLoadTool')
         snippet = '''
@@ -199,7 +193,7 @@ obj.ViewObject.startEditing()
 
 class TaskPanel:
     def __init__(self, obj, deleteOnReject):
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Edit Job"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Edit Job"))
         self.obj = obj
         self.deleteOnReject = deleteOnReject
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/JobEdit.ui")
@@ -233,7 +227,7 @@ class TaskPanel:
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
-            FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Uncreate Job"))
+            FreeCAD.ActiveDocument.openTransaction(translate("Uncreate Job"))
             for child in self.obj.Group:
                 FreeCAD.ActiveDocument.removeObject(child.Name)
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
@@ -315,7 +309,7 @@ class TaskPanel:
         pass
 
     def setFile(self):
-        filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("PathJob", "Select Output File", None), None, translate("Path Job", "All Files (*.*)", None))
+        filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Select Output File"), None, translate("All Files (*.*)"))
         if filename and filename[0]:
             self.obj.PostProcessorOutputFile = str(filename[0])
             self.setFields()

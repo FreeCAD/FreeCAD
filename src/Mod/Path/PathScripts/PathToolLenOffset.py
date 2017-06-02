@@ -29,14 +29,8 @@ from PathScripts import PathUtils
 from PySide import QtCore, QtGui
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(text, context = "Path_ToolLenOffset", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class ToolLenOffset:
@@ -139,7 +133,7 @@ class CommandPathToolLenOffset:
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_ToolLenOffset", "Create a Selection Plane object"))
+            translate("Create a Selection Plane object"))
         FreeCADGui.addModule("PathScripts.PathToolLenOffset")
         snippet = '''
 import Path

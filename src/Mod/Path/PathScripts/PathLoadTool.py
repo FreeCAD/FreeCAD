@@ -38,14 +38,8 @@ PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 #PathLog.trackModule('PathLoadTool')
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(text, context = "Path_LoadTool", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class LoadTool():
@@ -184,7 +178,7 @@ class CommandPathLoadTool:
         PathLog.track()
         self.Create()
 
-#         FreeCAD.ActiveDocument.openTransaction(translate("Path_LoadTool", "Create Tool Controller Object"))
+#         FreeCAD.ActiveDocument.openTransaction(translate("Create Tool Controller Object"))
 
 #         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "TC")
 #         PathScripts.PathLoadTool.LoadTool(obj)
