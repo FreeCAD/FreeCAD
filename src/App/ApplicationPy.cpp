@@ -618,8 +618,13 @@ PyObject *Application::sSetLogLevel(PyObject * /*self*/, PyObject *args, PyObjec
         return NULL;
     PY_TRY{
         int l;
+#if PY_MAJOR_VERSION < 3
         if (PyString_Check(pcObj)) {
             const char *pstr = PyString_AsString(pcObj);
+#else
+        if (PyUnicode_Check(pcObj)) {
+            const char *pstr = PyUnicode_AsUTF8(pcObj);
+#endif
             if(strcmp(pstr,"Log") == 0)
                 l = FC_LOGLEVEL_LOG;
             else if(strcmp(pstr,"Warning") == 0)

@@ -122,11 +122,20 @@ PyObject *ExtensionContainerPy::getCustomAttributes(const char* attr) const
         // The PyTypeObject is shared by all instances of this type and therefore
         // we have to add new methods only once.
         PyObject* obj = (*it).second->getExtensionPyObject();
-        PyMethodDef* meth = reinterpret_cast<PyMethodDef*>(obj->ob_type->tp_methods);
-        func = Py_FindMethod(meth, obj, attr);
+        PyObject *nameobj = PyUnicode_FromString(attr);
+        func = PyObject_GenericGetAttr(obj, nameobj);
+        Py_DECREF(nameobj);
         Py_DECREF(obj);
-        if (func)
-            break;
+        if (func && PyCFunction_Check(func)) {
+            PyCFunctionObject* cfunc = reinterpret_cast<PyCFunctionObject*>(func);
+
+            // OK, that's what we wanted
+            if (cfunc->m_self == obj)
+                break;
+            // otherwise cleanup the result again
+            Py_DECREF(func);
+            func = 0;
+        }
         PyErr_Clear(); // clear the error set inside Py_FindMethod
     }
 
