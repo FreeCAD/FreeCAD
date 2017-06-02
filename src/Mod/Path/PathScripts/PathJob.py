@@ -22,18 +22,22 @@
 # *                                                                         *
 # ***************************************************************************
 
+import Draft
 import FreeCAD
 import Path
+import PathScripts.PathLog as PathLog
+import sys
+
 from PySide import QtCore, QtGui
 from PathScripts.PathPostProcessor import PostProcessor
 from PathScripts.PathPreferences import PathPreferences
-import Draft
-import sys
 
 # xrange is not available in python3
 if sys.version_info.major >= 3:
     xrange = range
 
+LOG_MODULE = PathLog.thisModule()
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -54,12 +58,10 @@ except AttributeError:
 class ObjectPathJob:
 
     def __init__(self, obj):
-        #        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", "Select the Post Processor file for this project")
-        obj.addProperty("App::PropertyFile", "OutputFile", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
-        obj.OutputFile = PathPreferences.defaultOutputFile()
-        obj.setEditorMode("OutputFile", 0)  # set to default mode
+        obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
+        obj.PostProcessorOutputFile = PathPreferences.defaultOutputFile()
+        obj.setEditorMode("PostProcessorOutputFile", 0)  # set to default mode
 
-        obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this job"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor"))
         obj.PostProcessor = postProcessors = PathPreferences.allEnabledPostProcessors()
         defaultPostProcessor = PathPreferences.defaultPostProcessor()
@@ -70,24 +72,11 @@ class ObjectPathJob:
             obj.PostProcessor = postProcessors[0]
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property", "Arguments for the Post Processor (specific to the script)"))
         obj.PostProcessorArgs = PathPreferences.defaultPostProcessorArgs()
-        obj.addProperty("App::PropertyString",    "MachineName", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Name of the Machine that will use the CNC program"))
 
-        #obj.addProperty("Path::PropertyTooltable", "Tooltable", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property","The tooltable used for this CNC program"))
-
-        obj.addProperty("App::PropertyEnumeration", "MachineUnits", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Units that the machine works in, ie Metric or Inch"))
-        obj.MachineUnits = ['Metric', 'Inch']
-
+        obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this job"))
         obj.addProperty("App::PropertyDistance", "GeometryTolerance", "Geometry",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "For computing Paths; smaller increases accuracy, but slows down computation"))
         obj.GeometryTolerance = PathPreferences.defaultGeometryTolerance()
-
-        obj.addProperty("App::PropertyDistance", "X_Max", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Maximum distance in X the machine can travel"))
-        obj.addProperty("App::PropertyDistance", "Y_Max", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Maximum distance in X the machine can travel"))
-        obj.addProperty("App::PropertyDistance", "Z_Max", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Maximum distance in X the machine can travel"))
-
-        obj.addProperty("App::PropertyDistance", "X_Min", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Minimum distance in X the machine can travel"))
-        obj.addProperty("App::PropertyDistance", "Y_Min", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Minimum distance in X the machine can travel"))
-        obj.addProperty("App::PropertyDistance", "Z_Min", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Minimum distance in X the machine can travel"))
 
         obj.addProperty("App::PropertyLink", "Base", "Base", "The base object for all operations")
 
@@ -109,22 +98,8 @@ class ObjectPathJob:
 
         if prop == "PostProcessor" and obj.PostProcessor:
             processor = PostProcessor.load(obj.PostProcessor)
-            if processor.units:
-                obj.MachineUnits = processor.units
-            if processor.machineName:
-                obj.MachineName = processor.machineName
-            if processor.cornerMax:
-                obj.X_Max = processor.cornerMax['x']
-                obj.Y_Max = processor.cornerMax['y']
-                obj.Z_Max = processor.cornerMax['z']
-            if processor.cornerMin:
-                obj.X_Min = processor.cornerMin['x']
-                obj.Y_Min = processor.cornerMin['y']
-                obj.Z_Min = processor.cornerMin['z']
             self.tooltip = processor.tooltip
             self.tooltipArgs = processor.tooltipArgs
-
-            self.PostProcessorArgs = ''
 
     # def getToolControllers(self, obj):
     #     '''returns a list of ToolControllers for the current job'''
@@ -270,14 +245,11 @@ class TaskPanel:
             self.form.cboPostProcessor.setToolTip(self.obj.Proxy.tooltip)
             if hasattr(self.obj.Proxy, "tooltipArgs") and self.obj.Proxy.tooltipArgs:
                 self.form.cboPostProcessorArgs.setToolTip(self.obj.Proxy.tooltipArgs)
-                self.form.cboPostProcessorArgs.setText(self.obj.PostProcessorArgs)
             else:
                 self.form.cboPostProcessorArgs.setToolTip(self.postProcessorArgsDefaultTooltip)
-                self.form.cboPostProcessorArgs.setText('')
         else:
             self.form.cboPostProcessor.setToolTip(self.postProcessorDefaultTooltip)
             self.form.cboPostProcessorArgs.setToolTip(self.postProcessorArgsDefaultTooltip)
-            self.form.cboPostProcessorArgs.setText('')
 
     def getFields(self):
         '''sets properties in the object to match the form'''
@@ -285,7 +257,7 @@ class TaskPanel:
             self.obj.PostProcessor = str(self.form.cboPostProcessor.currentText())
             self.obj.PostProcessorArgs = str(self.form.cboPostProcessorArgs.displayText())
             self.obj.Label = str(self.form.leLabel.text())
-            self.obj.OutputFile = str(self.form.leOutputFile.text())
+            self.obj.PostProcessorOutputFile = str(self.form.leOutputFile.text())
 
             oldlist = self.obj.Group
             newlist = []
@@ -318,9 +290,10 @@ class TaskPanel:
         '''sets fields in the form to match the object'''
 
         self.form.leLabel.setText(self.obj.Label)
-        self.form.leOutputFile.setText(self.obj.OutputFile)
+        self.form.leOutputFile.setText(self.obj.PostProcessorOutputFile)
 
         self.selectComboBoxText(self.form.cboPostProcessor, self.obj.PostProcessor)
+        self.form.cboPostProcessorArgs.setText(self.obj.PostProcessorArgs)
         self.obj.Proxy.onChanged(self.obj, "PostProcessor")
         self.updateTooltips()
 
@@ -344,12 +317,13 @@ class TaskPanel:
     def setFile(self):
         filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("PathJob", "Select Output File", None), None, translate("Path Job", "All Files (*.*)", None))
         if filename and filename[0]:
-            self.obj.OutputFile = str(filename[0])
+            self.obj.PostProcessorOutputFile = str(filename[0])
             self.setFields()
 
     def setupUi(self):
         # Connect Signals and Slots
         self.form.cboPostProcessor.currentIndexChanged.connect(self.getFields)
+        self.form.cboPostProcessorArgs.editingFinished.connect(self.getFields)
         self.form.leOutputFile.editingFinished.connect(self.getFields)
         self.form.leLabel.editingFinished.connect(self.getFields)
         self.form.btnSelectFile.clicked.connect(self.setFile)
