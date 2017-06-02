@@ -171,6 +171,23 @@ class ObjectContour:
         PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
         self.endVector = end_vector
 
+        if True:
+            from PathScripts.PathUtils import CollisionTester
+            parentJob = PathUtils.findParentJob(obj)
+            if parentJob is None:
+                pass
+            base = parentJob.Base
+            if base is None:
+                pass
+
+            profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
+            profileparams['ToolRadius']= self.radius - self.radius *.005
+            profile.setParams(**profileparams)
+            sec = profile.makeSections(heights=[0.0])[0].getShape()
+            cutPath = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
+            c = CollisionTester()
+            c.getCollisionSim(base.Shape, cutPath)
+
         return pp
 
     def execute(self, obj):
@@ -227,7 +244,7 @@ class ObjectContour:
                         FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
         else:
             bb = baseobject.Shape.BoundBox
-            env = PathUtils.getEnvelope(baseobject.Shape, bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
+            env = PathUtils.getEnvelope(partshape=baseobject.Shape, stockheight=bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
             try:
                 commandlist.extend(self._buildPathArea(obj, env, start=obj.StartPoint).Commands)
             except Exception as e:
