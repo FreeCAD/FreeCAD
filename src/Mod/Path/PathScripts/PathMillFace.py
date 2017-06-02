@@ -206,7 +206,22 @@ class ObjectFace:
 
         PathLog.debug("Generating Path with params: {}".format(params))
         pp = Path.fromShapes(**params)
+        # if True:
+        #     from PathScripts.PathUtils import CollisionTester
+        #     parentJob = PathUtils.findParentJob(obj)
+        #     if parentJob is None:
+        #         pass
+        #     base = parentJob.Base
+        #     if base is None:
+        #         pass
 
+        #     pocketparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
+        #     pocketparams['ToolRadius']= self.radius - self.radius *.005
+        #     boundary.setParams(**pocketparams)
+        #     sec = boundary.makeSections(heights=[0.0])[0].getShape()
+        #     cutPath = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
+        #     c = CollisionTester()
+        #     c.getCollisionSim(base.Shape, cutPath)
         return pp
 
     def execute(self, obj):
@@ -266,9 +281,9 @@ class ObjectFace:
         bb = planeshape.BoundBox
         if obj.BoundaryShape == 'Boundbox':
             bbperim = Part.makeBox(bb.XLength, bb.YLength, 1, Vector(bb.XMin, bb.YMin, bb.ZMin), Vector(0, 0, 1))
-            env = PathUtils.getEnvelope(bbperim, bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
+            env = PathUtils.getEnvelope(partshape=bbperim, stockheight=bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
         else:
-            env = PathUtils.getEnvelope(planeshape, bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
+            env = PathUtils.getEnvelope(partshape=planeshape, stockheight=bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
 
         try:
             commandlist.extend(self._buildPathArea(obj, env).Commands)

@@ -189,6 +189,22 @@ class ObjectProfile:
         PathLog.debug("Generating Path with params: {}".format(params))
         PathLog.debug(pp)
 
+        if True:
+            from PathScripts.PathUtils import CollisionTester
+            parentJob = PathUtils.findParentJob(obj)
+            if parentJob is None:
+                pass
+            base = parentJob.Base
+            if base is None:
+                pass
+
+            profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
+            profileparams['ToolRadius']= self.radius - self.radius *.005
+            profile.setParams(**profileparams)
+            sec = profile.makeSections(heights=[0.0])[0].getShape()
+            cutPath = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
+            c = CollisionTester()
+            c.getCollisionSim(base.Shape, cutPath)
         return pp
 
 
