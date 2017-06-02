@@ -319,11 +319,7 @@ QWidget* setupMainWindow()
     return Gui::getMainWindow();
 }
 
-#if PY_MAJOR_VERSION >= 3
-PyMODINIT_FUNC PyInit_FreeCADGui()
-#else
-PyMODINIT_FUNC initFreeCADGui()
-#endif
+PyMOD_INIT_FUNC(FreeCADGui)
 {
     try {
         Base::Interpreter().loadModule("FreeCAD");
