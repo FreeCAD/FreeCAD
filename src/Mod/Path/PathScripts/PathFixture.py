@@ -28,15 +28,8 @@ import Path
 from PySide import QtCore, QtGui
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
-
+def translate(text, context = "Path_Fixture", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class Fixture:
     def __init__(self,obj):
@@ -130,8 +123,7 @@ class CommandPathFixture:
         return False
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_Fixture", "Create a Fixture Offset"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Create a Fixture Offset"))
         FreeCADGui.addModule("PathScripts.PathFixture")
         snippet = '''
 import Path

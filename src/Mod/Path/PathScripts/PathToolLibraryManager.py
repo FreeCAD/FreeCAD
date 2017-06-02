@@ -38,15 +38,8 @@ LOG_MODULE = 'PathToolLibraryManager'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 #PathLog.trackModule('PathToolLibraryManager')
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
-
+def translate(text, context = "Path_ToolLibraryManager", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 # Tooltable XML readers
 class FreeCADTooltableHandler(xml.sax.ContentHandler):

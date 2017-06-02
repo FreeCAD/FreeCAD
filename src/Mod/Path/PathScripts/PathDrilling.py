@@ -48,14 +48,8 @@ if FreeCAD.GuiUp:
 """Path Drilling object and FreeCAD command"""
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(text, context = "Path_Drilling", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class ObjectDrilling:
@@ -326,7 +320,7 @@ class CommandPathDrilling:
     def Activated(self):
 
         # if everything is ok, execute and register the transaction in the undo/redo stack
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Drilling", "Create Drilling"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Create Drilling"))
         FreeCADGui.addModule("PathScripts.PathDrilling")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Drilling")')
         FreeCADGui.doCommand('PathScripts.PathDrilling.ObjectDrilling(obj)')

@@ -41,18 +41,10 @@ FreeCAD.setLogLevel('Path.Area', 0)
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui
-    # Qt tanslation handling
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
 
-        def translate(context, text, disambig=None):
-            return QtGui.QApplication.translate(context, text, disambig, _encoding)
-    except AttributeError:
-        def translate(context, text, disambig=None):
-            return QtGui.QApplication.translate(context, text, disambig)
-else:
-    def translate(ctxt, txt):
-        return txt
+# Qt tanslation handling
+def translate(text, context = "Path", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 __title__ = "Path Contour Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -318,7 +310,7 @@ class CommandPathContour:
         ztop = 10.0
         zbottom = 0.0
 
-        FreeCAD.ActiveDocument.openTransaction(translate("Path", "Create a Contour"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Create a Contour"))
         FreeCADGui.addModule("PathScripts.PathContour")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Contour")')
         FreeCADGui.doCommand('PathScripts.PathContour.ObjectContour(obj)')

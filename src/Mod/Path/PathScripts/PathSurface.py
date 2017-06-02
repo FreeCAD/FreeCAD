@@ -49,15 +49,8 @@ __url__ = "http://www.freecadweb.org"
 """Path surface object and FreeCAD command"""
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
-
+def translate(text, context = "Path_Surface", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class ObjectSurface:
 
@@ -266,7 +259,7 @@ class ObjectSurface:
     def execute(self, obj):
         import MeshPart
         FreeCAD.Console.PrintWarning(
-            translate("PathSurface", "Hold on.  This might take a minute.\n"))
+            translate("Hold on.  This might take a minute.\n"))
         output = ""
         if obj.Comment != "":
             output += '(' + str(obj.Comment)+')\n'
@@ -305,7 +298,7 @@ class ObjectSurface:
                 import ocl
             except:
                 FreeCAD.Console.PrintError(translate(
-                    "PathSurface", "This operation requires OpenCamLib to be installed.\n"))
+                    "This operation requires OpenCamLib to be installed.\n"))
                 return
 
         if mesh.TypeId.startswith('Mesh'):
@@ -404,7 +397,7 @@ class CommandPathSurfacing:
         zbottom = 0
 
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_Surfacing", "Create Surface"))
+            translate("Create Surface"))
         FreeCADGui.addModule("PathScripts.PathSurface")
         FreeCADGui.doCommand(
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Surface")')
@@ -516,12 +509,12 @@ class TaskPanel:
         selection = FreeCADGui.Selection.getSelectionEx()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(translate(
-                "PathSurface", "Please select a single solid object from the project tree\n"))
+                "Please select a single solid object from the project tree\n"))
             return
 
         if not len(selection[0].SubObjects) == 0:
             FreeCAD.Console.PrintError(translate(
-                "PathSurface", "Please select a single solid object from the project tree\n"))
+                "Please select a single solid object from the project tree\n"))
             return
 
         sel = selection[0].Object
@@ -538,7 +531,7 @@ class TaskPanel:
 
         else:
             FreeCAD.Console.PrintError(
-                translate("PathSurface", "Cannot work with this object\n"))
+                translate("Cannot work with this object\n"))
             return
 
         self.obj.Proxy.addsurfacebase(self.obj, sel)

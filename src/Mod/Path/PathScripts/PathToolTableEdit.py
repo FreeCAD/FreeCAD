@@ -26,13 +26,8 @@ import FreeCAD,FreeCADGui
 from PySide import QtCore,QtGui
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(text, context = "Path_ToolTableEdit", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class CommandPathToolTableEdit:
     def GetResources(self):
@@ -45,7 +40,7 @@ class CommandPathToolTableEdit:
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_ToolTableEdit","Edits a Tool Table in a selected Project"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Edits a Tool Table in a selected Project"))
         FreeCADGui.doCommand("from PathScripts import TooltableEditor")
         FreeCADGui.doCommand("from PathScripts import PathUtils")
         FreeCADGui.doCommand('machine = PathUtils.findMachine()')

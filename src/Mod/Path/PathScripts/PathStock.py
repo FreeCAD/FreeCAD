@@ -27,15 +27,10 @@ import FreeCADGui
 from FreeCAD import Vector
 from PySide import QtCore, QtGui
 import Part
-# Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
 
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+# Qt tanslation handling
+def translate(text, context = "Path_Stock", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class Stock:
@@ -105,8 +100,7 @@ class CommandPathStock:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate(
-            "PathStock", "Creates a 3D object to represent raw stock to mill the part out of"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Creates a 3D object to represent raw stock to mill the part out of"))
         FreeCADGui.addModule("PathScripts.PathStock")
         snippet = '''
 import FreeCADGui

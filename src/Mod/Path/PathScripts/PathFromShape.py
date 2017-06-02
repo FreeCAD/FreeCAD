@@ -27,15 +27,8 @@ import FreeCADGui
 from PySide import QtCore, QtGui
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
-
+def translate(text, context = "Path_FromShape", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 # TODO make the shape parametric
 
 
@@ -91,15 +84,15 @@ class CommandFromShape:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_FromShape", "Please select exactly one Part-based object\n"))
+                translate("Please select exactly one Part-based object\n"))
             return
         if not(selection[0].isDerivedFrom("Part::Feature")):
             FreeCAD.Console.PrintError(
-                translate("Path_FromShape", "Please select exactly one Part-based object\n"))
+                translate("Please select exactly one Part-based object\n"))
             return
 
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_FromShape", "Create path from shape"))
+            translate("Create path from shape"))
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
             "obj = FreeCAD.activeDocument().addObject('Path::FeatureShape','PathShape')")

@@ -28,16 +28,8 @@ from PySide import QtCore, QtGui
 from PathScripts.PathPreferences import PathPreferences
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-
-except AttributeError:
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(text, context = "Path_PreferencesPathDressup", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 _dressups = []
 
@@ -47,7 +39,7 @@ def RegisterDressup(dressup):
 class DressupPreferencesPage:
     def __init__(self, parent=None):
         self.form = QtGui.QToolBox()
-        self.form.setWindowTitle(translate('PathPreferencesPathDressup', 'Dressups'))
+        self.form.setWindowTitle(translate('Dressups'))
         pages = []
         for dressup in _dressups:
             page = dressup.preferencesPage()
