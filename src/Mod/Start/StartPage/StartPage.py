@@ -59,13 +59,13 @@ html_filename = os.path.join(resources_dir, "StartPage.html")
 js_filename = os.path.join(resources_dir, "StartPage.js")
 css_filename = os.path.join(resources_dir, "StartPage.css")
 
-with open(html_filename, 'rb') as f:
+with open(html_filename, 'r') as f:
     startpage_html = f.read()
 
-with open(js_filename, 'rb') as f:
+with open(js_filename, 'r') as f:
     startpage_js = f.read()
 
-with open(css_filename, 'rb') as f:
+with open(css_filename, 'r') as f:
     startpage_css = f.read()
 
 def getInfo(filename):
@@ -102,7 +102,7 @@ def getInfo(filename):
             if files[0] == "Document.xml":
                 html += "<p><b>" + text65 + "</b></p>"
                 image="thumbnails/Thumbnail.png"
-                doc = zfile.read(files[0])
+                doc = str(zfile.read(files[0]))
                 doc = doc.replace("\n"," ")
                 author = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"\/>",doc)
                 if author: 
