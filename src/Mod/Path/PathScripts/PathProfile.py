@@ -34,7 +34,7 @@ import PathScripts.PathLog as PathLog
 
 LOG_MODULE = 'PathProfile'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-# PathLog.trackModule('PathProfile')
+PathLog.trackModule('PathProfile')
 FreeCAD.setLogLevel('Path.Area', 0)
 
 if FreeCAD.GuiUp:
@@ -76,7 +76,7 @@ class ObjectProfile:
 
         # Profile Properties
         obj.addProperty("App::PropertyEnumeration", "Side", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
-        obj.Side = ['Left', 'Right', 'On']  # side of profile that cutter is on in relation to direction of profile
+        obj.Side = ['Left', 'Right']  # side of profile that cutter is on in relation to direction of profile
         obj.addProperty("App::PropertyEnumeration", "Direction", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.Direction = ['CW', 'CCW']  # this is the direction that the profile runs
         obj.addProperty("App::PropertyBool", "UseComp", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
@@ -94,7 +94,11 @@ class ObjectProfile:
         return None
 
     def onChanged(self, obj, prop):
-        pass
+        if prop == "UseComp":
+            if not obj.UseComp:
+                obj.setEditorMode('Side', 2)
+            else:
+                obj.setEditorMode('Side', 0)
 
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
@@ -135,22 +139,29 @@ class ObjectProfile:
         obj.Base = baselist
         self.execute(obj)
 
-    def _buildPathArea(self, obj, baseobject, isHole, start=None):
+    def _buildPathArea(self, obj, baseobject, isHole=False, start=None):
         PathLog.track()
         profile = Path.Area()
         profile.setPlane(Part.makeCircle(10))
         profile.add(baseobject)
 
         profileparams = {'Fill': 0,
-                         'Coplanar': 0,
+                         'Coplanar': 2,
                          'Offset': 0.0,
                          'SectionCount': -1}
 
+        offsetval = 0
+
         if obj.UseComp:
-            if isHole:
-                profileparams['Offset'] = 0 - self.radius+obj.OffsetExtra.Value
-            else:
-                profileparams['Offset'] = self.radius+obj.OffsetExtra.Value
+            offsetval = self.radius+obj.OffsetExtra.Value
+
+        if obj.Side == 'Right':
+            offsetval = 0 - offsetval
+
+        if isHole:
+            offsetval = 0 - offsetval
+
+        profileparams['Offset'] = offsetval
 
         profile.setParams(**profileparams)
         # PathLog.debug("About to profile with params: {}".format(profileparams))
@@ -175,7 +186,7 @@ class ObjectProfile:
                   'resume_height': obj.StepDown.Value,
                   'retraction': obj.ClearanceHeight.Value}
 
-        # Reverse the direction for holes
+        #Reverse the direction for holes
         if isHole:
             direction = "CW" if obj.Direction == "CCW" else "CCW"
         else:
@@ -197,8 +208,14 @@ class ObjectProfile:
 
     def execute(self, obj):
         import Part
-        commandlist = []
 
+        if not obj.Active:
+            path = Path.Path("(inactive operation)")
+            obj.Path = path
+            obj.ViewObject.Visibility = False
+            return
+
+        commandlist = []
         toolLoad = obj.ToolController
         if toolLoad is None or toolLoad.ToolNumber == 0:
             FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
@@ -222,7 +239,14 @@ class ObjectProfile:
         else:
             commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
-        if obj.Base:
+        parentJob = PathUtils.findParentJob(obj)
+        if parentJob is None:
+            return
+        baseobject = parentJob.Base
+        if baseobject is None:
+            return
+
+        if obj.Base: # The user has selected subobjects from the base.  Process each.
             holes = []
             faces = []
             for b in obj.Base:
@@ -233,46 +257,34 @@ class ObjectProfile:
                         if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
                             holes += shape.Wires[1:]
                     else:
-                        print ("found a base object which is not a face.  Can't continue.")
+                        FreeCAD.Console.PrintWarning ("found a base object which is not a face.  Can't continue.")
                         return
 
             if obj.processHoles:
                 for wire in holes:
                     f = Part.makeFace(wire, 'Part::FaceMakerSimple')
+                    drillable = PathUtils.isDrillable(baseobject.Shape, wire)
+                    if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
 
-                    # shift the compound to the bottom of the base object for
-                    # proper sectioning
-                    zShift = b[0].Shape.BoundBox.ZMin - f.BoundBox.ZMin
-                    newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), f.Placement.Rotation)
-                    f.Placement = newPlace
-                    env = PathUtils.getEnvelope(f, obj.StartDepth)
-                    try:
-                        commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=True, start=None).Commands)
-                    except Exception as e:
-                        print(e)
-                        FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+                        env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
+                        try:
+                            commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=True, start=None).Commands)
+                        except Exception as e:
+                            FreeCAD.Console.PrintError(e)
+                            FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
-            profileshape = Part.makeCompound(faces)
-            zShift = b[0].Shape.BoundBox.ZMin - profileshape.BoundBox.ZMin
-            newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), profileshape.Placement.Rotation)
-            profileshape.Placement = newPlace
+            if len(faces) > 0:
+                profileshape = Part.makeCompound(faces)
 
             if obj.processPerimeter:
-                env = PathUtils.getEnvelope(profileshape, obj.StartDepth)
+                env = PathUtils.getEnvelope(baseobject.Shape, subshape=profileshape, stockheight=obj.StartDepth)
                 try:
-                    commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=False, start=None).Commands)
+                    commandlist.extend(self._buildPathArea(obj, baseobject=env, start=None).Commands)
                 except Exception as e:
-                    print(e)
+                    FreeCAD.Console.PrintError(e)
                     FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
-        else:  # Try to build targets frorm the job base
-            parentJob = PathUtils.findParentJob(obj)
-            if parentJob is None:
-                return
-            baseobject = parentJob.Base
-            if baseobject is None:
-                return
-
+        else:  # Try to build targets from the job base
             if hasattr(baseobject, "Proxy"):
                 if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
                     if obj.processPerimeter:
@@ -280,11 +292,11 @@ class ObjectProfile:
                         for shape in shapes:
                             for wire in shape.Wires:
                                 f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                                env = PathUtils.getEnvelope(f, obj.StartDepth)
+                                env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
                                 try:
                                     commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=False, start=None).Commands)
                                 except Exception as e:
-                                    print(e)
+                                    FreeCAD.Console.PrintError(e)
                                     FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
                     shapes = baseobject.Proxy.getHoles(baseobject, transform=True)
@@ -293,22 +305,16 @@ class ObjectProfile:
                             drillable = PathUtils.isDrillable(baseobject.Proxy, wire)
                             if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
                                 f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                                env = PathUtils.getEnvelope(f, obj.StartDepth)
+                                env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
                                 try:
                                     commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=True, start=None).Commands)
                                 except Exception as e:
-                                    print(e)
+                                    FreeCAD.Console.PrintError(e)
                                     FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
-        if obj.Active:
-            path = Path.Path(commandlist)
-            obj.Path = path
-            obj.ViewObject.Visibility = True
-
-        else:
-            path = Path.Path("(inactive operation)")
-            obj.Path = path
-            obj.ViewObject.Visibility = False
+        path = Path.Path(commandlist)
+        obj.Path = path
+        obj.ViewObject.Visibility = True
 
 
 class _ViewProviderProfile:
