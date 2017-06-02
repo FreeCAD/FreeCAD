@@ -227,7 +227,4 @@ after_success:
      deployContext=$(create_helper_context repo=${TRAVIS_REPO_SLUG} auth_token=${GH_TOKEN} release=${DEPLOY_RELEASE})
      gitHub_deploy_asset_to_release_named $deployContext ${DEPLOYMENT_ARCHIVE}
      gitHub_prune_assets_for_release_named $deployContext "-${QT}" 1
-  elif [ "${TRAVIS_OS_NAME}" == "linux" -a "${TRAVIS_PULL_REQUEST}" == "false" ]; then
-     wget https://raw.githubusercontent.com/probonopd/AppImages/master/recipes/meta/Recipe
-     bash Recipe FreeCAD-nightly
   fi
