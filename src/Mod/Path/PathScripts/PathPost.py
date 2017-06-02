@@ -22,20 +22,26 @@
 # *                                                                         *
 # ***************************************************************************
 ''' Post Process command that will make use of the Output File and Post Processor entries in PathJob '''
+
 from __future__ import print_function
+
 import FreeCAD
 import FreeCADGui
-from PySide import QtCore, QtGui
-from PathScripts import PathUtils
-from PathScripts import PathJob
-from PathScripts import PathLoadTool
-from PathScripts.PathPreferences import PathPreferences
-from PathScripts.PathPostProcessor import PostProcessor
 import os
 import PathScripts.PathLog as PathLog
-LOG_MODULE = 'PathPost'
+
+from PathScripts import PathJob
+from PathScripts import PathLoadTool
+from PathScripts import PathUtils
+from PathScripts.PathPostProcessor import PostProcessor
+from PathScripts.PathPreferences import PathPreferences
+from PySide import QtCore, QtGui
+
+
+LOG_MODULE = PathLog.thisModule()
+
 PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-PathLog.trackModule('PathPost')
+PathLog.trackModule(LOG_MODULE)
 
 # Qt tanslation handling
 try:
@@ -86,13 +92,16 @@ class CommandPathPost:
 
     def resolveFileName(self, job):
         path = PathPreferences.defaultOutputFile()
-        if job.OutputFile:
-            path = job.OutputFile
+        if job.PostProcessorOutputFile:
+            path = job.PostProcessorOutputFile
         filename = path
         if '%D' in filename:
             D = FreeCAD.ActiveDocument.FileName
             if D:
                 D = os.path.dirname(D)
+                # in case the document is in the current working directory
+                if not D:
+                    D = '.'
             else:
                 FreeCAD.Console.PrintError("Please save document in order to resolve output path!\n")
                 return None
