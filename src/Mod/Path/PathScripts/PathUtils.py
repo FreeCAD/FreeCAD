@@ -38,7 +38,7 @@ from PySide import QtGui
 
 LOG_MODULE = 'PathUtils'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-PathLog.trackModule('PathUtils')
+#PathLog.trackModule('PathUtils')
 FreeCAD.setLogLevel('Path.Area', 0)
 
 def waiting_effects(function):
@@ -236,33 +236,50 @@ def makeWorkplane(shape):
     return c
 
 
-def getEnvelope(partshape, stockheight=None):
+def getEnvelope(partshape, subshape=None, stockheight=None):
     '''
-    getEnvelop(partshape, stockheight=None)
+    getEnvelope(partshape, stockheight=None)
     returns a shape corresponding to the partshape silhouette extruded to height.
     if stockheight is given, the returned shape is extruded to that height otherwise the returned shape
     is the height of the original shape boundbox
     partshape = solid object
-    stockheight = float
+    stockheight = float - Absolute Z height of the top of material before cutting.
     '''
-    PathLog.track(partshape, stockheight)
-    area = Path.Area(Fill=1, Coplanar=0).add(partshape)
-    # loc = FreeCAD.Vector(partshape.BoundBox.Center.x,
-    #                      partshape.BoundBox.Center.y,
-    #                      partshape.BoundBox.ZMin)
-    area.setPlane(makeWorkplane(partshape))
-    sec = area.makeSections(heights=[1.0], project=True)[0].getShape()
+    PathLog.track(partshape, subshape, stockheight)
+
+    # if partshape.Volume == 0.0:  #Not a 3D object
+    #     return None
+
+    if subshape is not None:
+        if isinstance(subshape, Part.Face):
+            PathLog.debug('processing a face')
+            sec = Part.makeCompound([subshape])
+        else:
+            area = Path.Area(Fill=2, Coplanar=0).add(subshape)
+            area.setPlane(makeWorkplane(partshape))
+            PathLog.debug("About to section with params: {}".format(area.getParams()))
+            sec = area.makeSections(heights=[0.0], project=True)[0].getShape()
+
+        zShift = partshape.BoundBox.ZMin - subshape.BoundBox.ZMin
+        PathLog.debug('partshapeZmin: {}, subshapeZMin: {}, zShift: {}'.format(partshape.BoundBox.ZMin, subshape.BoundBox.ZMin, zShift))
+        newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), sec.Placement.Rotation)
+        sec.Placement = newPlace
+
+    else:
+        area = Path.Area(Fill=2, Coplanar=0).add(partshape)
+        area.setPlane(makeWorkplane(partshape))
+        sec = area.makeSections(heights=[0.0], project=True)[0].getShape()
 
     if stockheight is not None:
         eLength = float(stockheight)-partshape.BoundBox.ZMin
+        PathLog.debug('boundbox zMIN: {} elength: {}'.format(partshape.BoundBox.ZMin, eLength))
         envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, eLength))
     else:
         envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, partshape.BoundBox.ZLength))
     if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
-        removalshape=FreeCAD.ActiveDocument.addObject("Part::Feature","RemovedMaterial")
+        removalshape=FreeCAD.ActiveDocument.addObject("Part::Feature","Envelope")
         removalshape.Shape = envelopeshape
     return envelopeshape
-
 
 def reverseEdge(e):
     if geomType(e) == "Circle":

@@ -37,13 +37,15 @@ if FreeCAD.GuiUp:
 """Path Pocket object and FreeCAD command"""
 
 LOG_MODULE = 'PathPocket'
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-PathLog.trackModule('PathPocket')
-FreeCAD.setLogLevel('Path.Area',0)
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+#PathLog.trackModule('PathPocket')
+FreeCAD.setLogLevel('Path.Area', 0)
+
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class ObjectPocket:
 
@@ -74,7 +76,6 @@ class ObjectPocket:
         obj.addProperty("App::PropertyFloat", "ZigZagAngle", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Angle of the zigzag pattern"))
         obj.addProperty("App::PropertyEnumeration", "OffsetPattern", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "clearing pattern to use"))
         obj.OffsetPattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
-
 
         # Start Point Properties
         obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
@@ -163,11 +164,11 @@ class ObjectPocket:
         return None
 
     @waiting_effects
-    def _buildPathArea(self, obj, baseobject):
+    def _buildPathArea(self, obj, envelopeshape):
         PathLog.track()
         pocket = Path.Area()
         pocket.setPlane(Part.makeCircle(10))
-        pocket.add(baseobject)
+        pocket.add(envelopeshape)
 
         stepover = (self.radius * 2) * (float(obj.StepOver)/100)
 
@@ -205,15 +206,10 @@ class ObjectPocket:
                   'resume_height': obj.StepDown.Value,
                   'retraction': obj.ClearanceHeight.Value}
 
-
-        # if obj.UseStartPoint is True and obj.StartPoint is not None:
-        #     params['start'] = obj.StartPoint
-
         pp = Path.fromShapes(**params)
         PathLog.debug("Generating Path with params: {}".format(params))
         PathLog.debug(pp)
         return pp
-
 
     def execute(self, obj):
         PathLog.track()
@@ -223,6 +219,13 @@ class ObjectPocket:
             path = Path.Path("(inactive operation)")
             obj.Path = path
             obj.ViewObject.Visibility = False
+            return
+
+        parentJob = PathUtils.findParentJob(obj)
+        if parentJob is None:
+            return
+        baseobject = parentJob.Base
+        if baseobject is None:
             return
 
         toolLoad = obj.ToolController
@@ -251,25 +254,20 @@ class ObjectPocket:
                         edges = [getattr(b[0].Shape, sub) for sub in b[1]]
                         shape = Part.makeFace(edges, 'Part::FaceMakerSimple')
 
-                    env = PathUtils.getEnvelope(shape, obj.StartDepth)
+                    env = PathUtils.getEnvelope(baseobject.Shape, subshape=shape, stockheight=obj.StartDepth)
                     try:
-                        commandlist.extend(self._buildPathArea(obj, env.cut(b[0].Shape)).Commands)
+                        commandlist.extend(self._buildPathArea(obj, env.cut(baseobject.Shape)).Commands)
                     except Exception as e:
-                        print(e)
+                        FreeCAD.Console.PrintError(e)
                         FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a pocket path. Check project and tool config.")
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
-            parentJob = PathUtils.findParentJob(obj)
-            if parentJob is None:
-                return
-            baseobject = parentJob.Base
-            if baseobject is None:
-                return
-            env = PathUtils.getEnvelope(baseobject.Shape, obj.StartDepth)
+
+            env = PathUtils.getEnvelope(baseobject.Shape, subshape=None, stockheight=obj.StartDepth)
             try:
                 commandlist.extend(self._buildPathArea(obj, env.cut(baseobject.Shape)).Commands)
             except Exception as e:
-                print(e)
+                FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a pocket path. Check project and tool config.")
 
         path = Path.Path(commandlist)
@@ -362,7 +360,7 @@ class CommandPathPocket:
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
 
-        #FreeCAD.ActiveDocument.recompute()
+        # FreeCAD.ActiveDocument.recompute()
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
 
@@ -403,6 +401,8 @@ class TaskPanel:
                 self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
             if hasattr(self.obj, "CutMode"):
                 self.obj.CutMode = str(self.form.cutMode.currentText())
+            if hasattr(self.obj, "OffsetPattern"):
+                self.obj.OffsetPattern = str(self.form.offsetpattern.currentText())
             if hasattr(self.obj, "ZigZagAngle"):
                 self.obj.ZigZagAngle = FreeCAD.Units.Quantity(self.form.zigZagAngle.text()).Value
             if hasattr(self.obj, "StepOver"):
@@ -425,11 +425,12 @@ class TaskPanel:
         self.form.zigZagAngle.setText(FreeCAD.Units.Quantity(self.obj.ZigZagAngle, FreeCAD.Units.Angle).UserString)
         self.form.stepOverPercent.setValue(self.obj.StepOver)
 
-        # index = self.form.algorithmSelect.findText(self.obj.Algorithm, QtCore.Qt.MatchFixedString)
-        # if index >= 0:
-        #     self.form.algorithmSelect.blockSignals(True)
-        #     self.form.algorithmSelect.setCurrentIndex(index)
-        #     self.form.algorithmSelect.blockSignals(False)
+        index = self.form.offsetpattern.findText(
+                self.obj.OffsetPattern, QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            self.form.offsetpattern.blockSignals(True)
+            self.form.offsetpattern.setCurrentIndex(index)
+            self.form.offsetpattern.blockSignals(False)
 
         index = self.form.cutMode.findText(
                 self.obj.CutMode, QtCore.Qt.MatchFixedString)
