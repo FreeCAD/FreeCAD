@@ -72,6 +72,16 @@ if(MSVC)
             ${OCC_OCAF_LIBRARIES}
         )
     endif(BUILD_FEM_NETGEN)
+
+    #Universal C runtime introduced in VS 2015 (cl version 19)
+    if (NOT (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "19"))
+        list(APPEND SMESH_LIBS
+            debug vcruntimed.lib
+            debug ucrtd.lib
+            optimized vcruntime.lib
+            optimized ucrt.lib
+        )
+    endif()
 else(MSVC)
     if(BUILD_FEM_NETGEN)
         set(SMESH_LIBS
