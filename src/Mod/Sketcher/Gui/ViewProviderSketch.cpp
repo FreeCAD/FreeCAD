@@ -2796,6 +2796,12 @@ void ViewProviderSketch::drawConstraintIcons()
             break;
         }
 
+        // Double-check that we can safely access the Inventor nodes
+        if (constrId >= edit->constrGroup->getNumChildren()) {
+            Base::Console().Warning("Can't update constraint icons because view is not in sync with sketch\n");
+            break;
+        }
+
         // Find the Constraint Icon SoImage Node
         SoSeparator *sep = static_cast<SoSeparator *>(edit->constrGroup->getChild(constrId));
 
