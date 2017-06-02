@@ -226,6 +226,12 @@ class ObjectFace:
 
     def execute(self, obj):
         PathLog.track()
+        if not obj.Active:
+            path = Path.Path("(inactive operation)")
+            obj.Path = path
+            obj.ViewObject.Visibility = False
+            return
+
         commandlist = []
 
         toolLoad = obj.ToolController
@@ -288,18 +294,12 @@ class ObjectFace:
         try:
             commandlist.extend(self._buildPathArea(obj, env).Commands)
         except Exception as e:
-            print(e)
-            FreeCAD.Console.PrintWarning(translate("Path_MillFace", "The selected settings did not produce a valid path.\n"))
+            FreeCAD.Console.PrintError(e)
+            FreeCAD.Console.PrintError(translate("Path_MillFace", "The selected settings did not produce a valid path.\n"))
 
-        if obj.Active:
-            path = Path.Path(commandlist)
-            obj.Path = path
-            if obj.ViewObject:
-                obj.ViewObject.Visibility = True
-        else:
-            path = Path.Path("(inactive operation)")
-            obj.Path = path
-            obj.ViewObject.Visibility = False
+        path = Path.Path(commandlist)
+        obj.Path = path
+        obj.ViewObject.Visibility = True
 
 
 class _CommandSetFaceStartPoint:

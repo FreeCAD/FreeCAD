@@ -28,6 +28,7 @@ import Part
 from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
 from DraftGeomUtils import findWires
+from DraftGeomUtils import isReallyClosed
 import PathScripts.PathLog as PathLog
 from PathScripts.PathUtils import waiting_effects
 
@@ -92,7 +93,11 @@ class ObjectProfile:
         return None
 
     def onChanged(self, obj, prop):
-        pass
+        if prop == "UseComp":
+            if not obj.UseComp:
+                obj.setEditorMode('Side', 2)
+            else:
+                obj.setEditorMode('Side', 0)
 
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
@@ -218,6 +223,12 @@ class ObjectProfile:
             obj.ViewObject.Visibility = False
             return
 
+        parentJob = PathUtils.findParentJob(obj)
+        if parentJob is None:
+            return
+        baseobject = parentJob.Base
+        if baseobject is None:
+            return
 
         toolLoad = obj.ToolController
         if toolLoad is None or toolLoad.ToolNumber == 0:
@@ -235,12 +246,12 @@ class ObjectProfile:
                 self.radius = tool.Diameter/2
 
         commandlist.append(Path.Command("(" + obj.Label + ")"))
-        
+
         if obj.UseComp:
             commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
         else:
             commandlist.append(Path.Command("(Uncompensated Tool Path)"))
-            
+
         if obj.Base:
             wires = []
 
@@ -258,14 +269,14 @@ class ObjectProfile:
                 zShift = b[0].Shape.BoundBox.ZMin - f.BoundBox.ZMin
                 newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), f.Placement.Rotation)
                 f.Placement = newPlace
-                env = PathUtils.getEnvelope(f, obj.StartDepth)
+                env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
 
                 try:
                  #   commandlist.extend(self._buildPathArea(obj, wire).Commands)
                     commandlist.extend(self._buildPathArea(obj, baseobject=env, start=None).Commands)
-                    
+
                 except Exception as e:
-                    print(e)
+                    FreeCAD.Console.PrintError(e)
                     FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
         path = Path.Path(commandlist)
@@ -491,6 +502,14 @@ class TaskPanel:
             return
         if not selection[0].SubObjects[0].ShapeType == "Edge":
             FreeCAD.Console.PrintError(translate("PathProject", "Please select one or more edges from the Base model\n"))
+            return
+        try:
+            theWire = Part.Wire(sel.SubObjects)
+        except:
+            FreeCAD.Console.PrintError(translate("PathProject", "The selected edges don't form a closed loop\n"))
+            return
+        if not isReallyClosed(theWire):
+            FreeCAD.Console.PrintError(translate("PathProject", "The selected edges don't form a closed loop\n"))
             return
 
         for i in sel.SubElementNames:

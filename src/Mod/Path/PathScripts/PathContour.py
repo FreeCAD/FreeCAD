@@ -34,8 +34,8 @@ from PathScripts.PathUtils import waiting_effects
 from PathScripts.PathUtils import makeWorkplane
 
 LOG_MODULE = 'PathContour'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-#PathLog.trackModule('PathContour')
+PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+PathLog.trackModule('PathContour')
 FreeCAD.setLogLevel('Path.Area', 0)
 
 if FreeCAD.GuiUp:
@@ -77,9 +77,9 @@ class ObjectContour:
         obj.addProperty("App::PropertyEnumeration", "Direction", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.Direction = ['CW', 'CCW']  # this is the direction that the Contour runs
         obj.addProperty("App::PropertyBool", "UseComp", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
-        obj.addProperty("App::PropertyEnumeration", "Side", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
-        obj.Side = ['Left', 'Right', 'On']  # side of profile that cutter is on in relation to direction of profile
-        obj.setEditorMode('Side', 2)  # hide
+        # obj.addProperty("App::PropertyEnumeration", "Side", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
+        # obj.Side = ['Left', 'Right']  # side of profile that cutter is on in relation to direction of profile
+        # obj.setEditorMode('Side', 2)  # hide
 
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final Contour- good for roughing toolpath"))
 
@@ -94,8 +94,11 @@ class ObjectContour:
 
     def onChanged(self, obj, prop):
         pass
-        # if prop in ['ClearanceHeight', 'StartPoint']:
-        #     obj.StartPoint.z = obj.ClearanceHeight.Value
+        # if prop == "UseComp":
+        #     if not obj.UseComp:
+        #         obj.setEditorMode('Side', 2)
+        #     else:
+        #         obj.setEditorMode('Side', 0)
 
     def setDepths(proxy, obj):
         PathLog.track()
@@ -171,28 +174,34 @@ class ObjectContour:
         PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
         self.endVector = end_vector
 
-        if True:
-            from PathScripts.PathUtils import CollisionTester
-            parentJob = PathUtils.findParentJob(obj)
-            if parentJob is None:
-                pass
-            base = parentJob.Base
-            if base is None:
-                pass
+#         if True:
+#             from PathScripts.PathUtils import CollisionTester
+#             parentJob = PathUtils.findParentJob(obj)
+#             if parentJob is None:
+#                 pass
+#             base = parentJob.Base
+#             if base is None:
+#                 pass
 
-            profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
-            profileparams['ToolRadius']= self.radius - self.radius *.005
-            profile.setParams(**profileparams)
-            sec = profile.makeSections(heights=[0.0])[0].getShape()
-            cutPath = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
-            c = CollisionTester()
-            c.getCollisionSim(base.Shape, cutPath)
+#             profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
+#             profileparams['ToolRadius']= self.radius - self.radius *.005
+#             profile.setParams(**profileparams)
+#             sec = profile.makeSections(heights=[0.0])[0].getShape()
+#             cutPath = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
+#             c = CollisionTester()
+#             c.getCollisionSim(base.Shape, cutPath)
 
         return pp
 
     def execute(self, obj):
         PathLog.track()
         self.endVector = None
+
+        if not obj.Active:
+            path = Path.Path("(inactive operation)")
+            obj.Path = path
+            obj.ViewObject.Visibility = False
+            return
 
         commandlist = []
         toolLoad = obj.ToolController
@@ -244,22 +253,16 @@ class ObjectContour:
                         FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
         else:
             bb = baseobject.Shape.BoundBox
-            env = PathUtils.getEnvelope(partshape=baseobject.Shape, stockheight=bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
+            env = PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, stockheight=bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
             try:
                 commandlist.extend(self._buildPathArea(obj, env, start=obj.StartPoint).Commands)
             except Exception as e:
                 print(e)
                 FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
-        if obj.Active:
-            path = Path.Path(commandlist)
-            obj.Path = path
-            if obj.ViewObject:
-                obj.ViewObject.Visibility = True
-        else:
-            path = Path.Path("(inactive operation)")
-            obj.Path = path
-            obj.ViewObject.Visibility = False
+        path = Path.Path(commandlist)
+        obj.Path = path
+        obj.ViewObject.Visibility = True
 
 
 class _ViewProviderContour:
