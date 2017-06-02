@@ -410,14 +410,8 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
         commitCommand();
     }
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-
-    if (autoRecompute)
-        Gui::Command::updateActive();
-    else
-        Obj->solve();
-
+    Obj->solve();
+    tryAutoRecompute();
 }
 
 bool CmdSketcherConvertToNURB::isActive(void)
@@ -480,16 +474,10 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
 
     commitCommand();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+    Obj->solve();
+    tryAutoRecompute();
 
-    if (autoRecompute)
-        Gui::Command::updateActive();
-    else
-        Obj->solve();
-    
     getSelection().clearSelection();
-
 }
 
 bool CmdSketcherIncreaseDegree::isActive(void)
@@ -645,15 +633,10 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     else {
         commitCommand();
     }
-    
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-    
-    if (autoRecompute)
-        Gui::Command::updateActive();
-    else
-        Obj->solve();
-    
+
+    Obj->solve();
+    tryAutoRecompute();
+
     getSelection().clearSelection();
     
 }
@@ -798,17 +781,11 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     else {
         commitCommand();
     }
-    
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-    
-    if (autoRecompute)
-        Gui::Command::updateActive();
-    else
-        Obj->solve();
-    
+
+    Obj->solve();
+    tryAutoRecompute();
+
     getSelection().clearSelection();
-    
 }
 
 bool CmdSketcherDecreaseKnotMultiplicity::isActive(void)
