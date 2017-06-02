@@ -201,7 +201,11 @@ int main( int argc, char ** argv )
                           "Python is searching for its files in the following directories:\n%3\n\n"
                           "Python version information:\n%4\n")
                           .arg(appName).arg(QString::fromUtf8(e.what()))
+#if PY_MAJOR_VERSION >= 3
+                          .arg(QString::fromUtf8(Py_EncodeLocale(Py_GetPath(),NULL))).arg(QString::fromLatin1(Py_GetVersion()));
+#else
                           .arg(QString::fromUtf8(Py_GetPath())).arg(QString::fromLatin1(Py_GetVersion()));
+#endif
         const char* pythonhome = getenv("PYTHONHOME");
         if (pythonhome) {
             msg += QObject::tr("\nThe environment variable PYTHONHOME is set to '%1'.")
