@@ -40,7 +40,7 @@ from PySide import QtCore
 """Holding Tags Dressup object and FreeCAD command"""
 
 # Qt tanslation handling
-def translate(text, context = "PathDressup_HoldingTags", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
@@ -136,7 +136,7 @@ class HoldingTagsPreferences:
 
     def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(":/preferences/PathDressupHoldingTags.ui")
-        self.label = translate('Holding Tags')
+        self.label = translate("PathDressup_HoldingTags", 'Holding Tags')
 
     def loadSettings(self):
         self.form.ifWidth.setText(FreeCAD.Units.Quantity(self.defaultWidth(0), FreeCAD.Units.Length).UserString)
@@ -939,7 +939,7 @@ class ObjectDressup:
         try:
             pathData = PathData(obj)
         except ValueError:
-            PathLog.error(translate("Cannot insert holding tags for this path - please select a Profile path\n"))
+            PathLog.error(translate("PathDressup_HoldingTags", "Cannot insert holding tags for this path - please select a Profile path\n"))
             return None
 
         self.toolRadius = 5
@@ -954,7 +954,7 @@ class ObjectDressup:
         #         self.toolRadius = tool.Diameter / 2
         toolLoad = obj.ToolController
         if toolLoad is None or toolLoad.ToolNumber == 0:
-            PathLog.error(translate("No Tool Controller is selected. We need a tool to build a Path\n"))
+            PathLog.error(translate("PathDressup_HoldingTags", "No Tool Controller is selected. We need a tool to build a Path\n"))
             #return
         else:
             # self.vertFeed = toolLoad.VertFeed.Value
@@ -963,7 +963,7 @@ class ObjectDressup:
             # self.horizRapid = toolLoad.HorizRapid.Value
             tool = toolLoad.Proxy.getTool(toolLoad)
             if not tool or tool.Diameter == 0:
-                PathLog.error(translate("No Tool found or diameter is zero. We need a tool to build a Path.\n"))
+                PathLog.error(translate("PathDressup_HoldingTags", "No Tool found or diameter is zero. We need a tool to build a Path.\n"))
                 return
             else:
                 self.toolRadius = tool.Diameter/2
@@ -1027,7 +1027,7 @@ class TaskPanel:
         self.formPoint.hide()
         self.jvo = PathUtils.findParentJob(obj).ViewObject
         if jvoVisibility is None:
-            FreeCAD.ActiveDocument.openTransaction(translate("Edit HoldingTags Dress-up"))
+            FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Edit HoldingTags Dress-up"))
             self.jvoVisible = self.jvo.isVisible()
             if self.jvoVisible:
                 self.jvo.hide()
@@ -1442,18 +1442,18 @@ class CommandPathDressupHoldingTags:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(translate("Please select one path object\n"))
+            PathLog.error(translate("PathDressup_HoldingTags", "Please select one path object\n"))
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            PathLog.error(translate("The selected object is not a path\n"))
+            PathLog.error(translate("PathDressup_HoldingTags", "The selected object is not a path\n"))
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            PathLog.error(translate("Please select a Profile object"))
+            PathLog.error(translate("PathDressup_HoldingTags", "Please select a Profile object"))
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("Create HoldingTags Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Create HoldingTags Dress-up"))
         FreeCADGui.addModule("PathScripts.PathDressupHoldingTags")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "HoldingTagsDressup")')

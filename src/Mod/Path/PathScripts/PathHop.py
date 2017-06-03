@@ -30,7 +30,7 @@ from PySide import QtCore, QtGui
 """Path Hop object and FreeCAD command"""
 
 # Qt tanslation handling
-def translate(text, context = "Path_Hop", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class ObjectHop:
@@ -110,15 +110,15 @@ class CommandPathHop:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Please select one path object\n"))
+                translate("Path_Hop", "Please select one path object\n"))
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("The selected object is not a path\n"))
+                translate("Path_Hop", "The selected object is not a path\n"))
             return
 
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Create Hop"))
+            translate("Path_Hop", "Create Hop"))
         FreeCADGui.addModule("PathScripts.PathHop")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(

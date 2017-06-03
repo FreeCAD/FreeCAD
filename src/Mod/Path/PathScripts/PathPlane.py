@@ -29,7 +29,7 @@ import Path
 from PySide import QtCore, QtGui
 
 # Qt tanslation handling
-def translate(text, context = "Path_Plane", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
@@ -120,7 +120,7 @@ class CommandPathPlane:
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Create a Selection Plane object"))
+            translate("Path_Plane", "Create a Selection Plane object"))
         FreeCADGui.addModule("PathScripts.PathPlane")
         snippet = '''
 import Path

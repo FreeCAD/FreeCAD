@@ -28,7 +28,7 @@ import FreeCADGui
 import Path
 
 # Qt tanslation handling
-def translate(text, context = "Path_Inspect", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 # class OldHighlighter(QtGui.QSyntaxHighlighter):
@@ -132,7 +132,7 @@ class GCodeEditorDialog(QtGui.QDialog):
 
         # Note
         lab = QtGui.QLabel()
-        lab.setText(translate("<b>Note</b>: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute."))
+        lab.setText(translate("Path_Inspect", "<b>Note</b>: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute."))
         lab.setWordWrap(True)
         layout.addWidget(lab)
 
@@ -230,11 +230,11 @@ class CommandPathInspect:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Please select exactly one path object\n"))
+                translate("Path_Inspect", "Please select exactly one path object\n"))
             return
         if not(selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("Please select exactly one path object\n"))
+                translate("Path_Inspect", "Please select exactly one path object\n"))
             return
 
         # if everything is ok, execute

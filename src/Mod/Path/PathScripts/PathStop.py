@@ -28,7 +28,7 @@ import Path
 from PySide import QtCore, QtGui
 
 # Qt tanslation handling
-def translate(text, context = "Path_Stop", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class Stop:
@@ -116,7 +116,7 @@ class CommandPathStop:
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Add Optional or Mandatory Stop to the program"))
+            translate("Path_Stop", "Add Optional or Mandatory Stop to the program"))
         FreeCADGui.addModule("PathScripts.PathStop")
         snippet = '''
 import Path

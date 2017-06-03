@@ -29,7 +29,7 @@ from PySide import QtCore, QtGui
 import Part
 
 # Qt tanslation handling
-def translate(text, context = "Path_Stock", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
@@ -100,7 +100,7 @@ class CommandPathStock:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("Creates a 3D object to represent raw stock to mill the part out of"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Stock", "Creates a 3D object to represent raw stock to mill the part out of"))
         FreeCADGui.addModule("PathScripts.PathStock")
         snippet = '''
 import FreeCADGui

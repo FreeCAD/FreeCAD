@@ -38,7 +38,7 @@ LOG_MODULE = 'PathToolLibraryManager'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 #PathLog.trackModule('PathToolLibraryManager')
 
-def translate(text, context = "Path_ToolLibraryManager", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 # Tooltable XML readers

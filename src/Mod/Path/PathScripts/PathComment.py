@@ -29,7 +29,7 @@ import Path
 from PySide import QtCore, QtGui
 
 # Qt tanslation handling
-def translate(text, context = "Path_Comment", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class Comment:
@@ -111,7 +111,7 @@ class CommandPathComment:
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Create a Comment in your CNC program"))
+            translate("Path_Comment", "Create a Comment in your CNC program"))
         FreeCADGui.addModule("PathScripts.PathComment")
         snippet = '''
 import Path

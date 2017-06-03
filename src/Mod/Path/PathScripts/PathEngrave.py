@@ -40,7 +40,7 @@ PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 # PathLog.trackModule('PathEngrave')
 
 # Qt tanslation handling
-def translate(text, context = "Path_Engrave", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class ObjectPathEngrave:
