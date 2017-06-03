@@ -88,8 +88,6 @@ public:
      * Returns the part which contains this object.
      * In case this object is not belongs to any Part 0 is returned.
      * @param obj       the object to search for
-     * @param indirect  if true return if the part that so-called geoHas the object, @see geoHasObject()
-     *                  default is true
      */
     static App::Part* getPartOfObject (const DocumentObject* obj);
 
