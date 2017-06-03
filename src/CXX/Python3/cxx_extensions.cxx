@@ -1487,7 +1487,7 @@ int PythonExtensionBase::buffer_get( Py_buffer * /* buf */, int /* flags */ )
     return -1;
 }
 
-int PythonExtensionBase::buffer_release( Py_buffer *buf )
+int PythonExtensionBase::buffer_release( Py_buffer * /*buf*/ )
 {
     /* This method is optional and only required if the buffer's
        memory is dynamic. */

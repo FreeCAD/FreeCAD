@@ -328,7 +328,12 @@ PyMOD_INIT_FUNC(FreeCADGui)
         App::Application::Config()["CopyrightInfo"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2017\n";
         Gui::Application::initApplication();
 #if PY_MAJOR_VERSION >= 3
-        static struct PyModuleDef FreeCADGuiModuleDef = {PyModuleDef_HEAD_INIT,"FreeCADGui", "FreeCAD GUI module\n", -1, FreeCADGui_methods};
+        static struct PyModuleDef FreeCADGuiModuleDef = {
+            PyModuleDef_HEAD_INIT,
+            "FreeCADGui", "FreeCAD GUI module\n", -1,
+            FreeCADGui_methods,
+            NULL, NULL, NULL, NULL
+        };
         PyObject* module = PyModule_Create(&FreeCADGuiModuleDef);
         return module;
 #else
