@@ -1,10 +1,10 @@
 G17 G90
 G21
 (Default_Tool)
-M6 T1.0
+M6 T1
 M3 S0.00
 (TC)
-M6 T2.0
+M6 T2
 M3 S0.00
 (Contour)
 (Uncompensated Tool Path)
