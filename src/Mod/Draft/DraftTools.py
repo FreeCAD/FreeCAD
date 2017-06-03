@@ -4682,7 +4682,8 @@ class Array(Modifier):
             obj = FreeCADGui.Selection.getSelection()[0]
             FreeCADGui.addModule("Draft")
             self.commit(translate("draft","Array"),
-                        ['Draft.makeArray(FreeCAD.ActiveDocument.'+obj.Name+',FreeCAD.Vector(1,0,0),FreeCAD.Vector(0,1,0),2,2)',
+                        ['obj = Draft.makeArray(FreeCAD.ActiveDocument.'+obj.Name+',FreeCAD.Vector(1,0,0),FreeCAD.Vector(0,1,0),2,2)',
+                         'Draft.autogroup(obj)',
                          'FreeCAD.ActiveDocument.recompute()'])
         self.finish()
 
