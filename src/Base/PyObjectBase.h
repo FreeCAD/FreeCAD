@@ -222,11 +222,11 @@ public:
      *  If you want to implement attributes in your class, reimplement
      *  this method.
      *  You have to call the method of the base class.
-     *  Note: if you reimplement _gettattro() in a inheriting class you
+     *  Note: if you reimplement _gettattr() in a inheriting class you
      *  need to call the method of the base class! Otherwise even the 
      *  methods of the object will disappear!
      */
-    virtual PyObject *_getattro(PyObject *attro);
+    virtual PyObject *_getattr(char *attr);
     /// static wrapper for pythons _getattro()
     static  PyObject *__getattro(PyObject * PyObj, PyObject *attro);
 
@@ -236,7 +236,7 @@ public:
      *  this method.
      *  You have to call the method of the base class.
      */
-    virtual int _setattro(PyObject *attro, PyObject *value);    // _setattro method
+    virtual int _setattr(char *attro, PyObject *value);    // _setattr method
     /// static wrapper for pythons _setattro(). // This should be the entry in Type. 
     static  int __setattro(PyObject *PyObj, PyObject *attro, PyObject *value);
 

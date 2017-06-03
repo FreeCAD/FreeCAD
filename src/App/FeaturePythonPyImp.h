@@ -103,8 +103,8 @@ public:
     //@{
     static  int __setattro(PyObject *PyObj, PyObject *attro, PyObject *value);
     //@}
-    PyObject *_getattro(PyObject *attr);              // __getattr__ function
-    int _setattro(PyObject *attro, PyObject *value);        // __setattr__ function
+    PyObject *_getattr(char *attr);              // __getattr__ function
+    int _setattr(char *attr, PyObject *value);        // __setattr__ function
 
 protected:
     PyObject * dict_methods;

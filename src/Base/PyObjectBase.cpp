@@ -95,7 +95,11 @@ PyTypeObject PyObjectBase::Type = {
     /* --- Functions to access object as input/output buffer ---------*/
     0,                                                      /* tp_as_buffer */
     /* --- Flags to define presence of optional/expanded features */
+#if PY_MAJOR_VERSION >= 3
     Py_TPFLAGS_BASETYPE|Py_TPFLAGS_DEFAULT,                 /*tp_flags */
+#else
+    Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_CLASS,              /*tp_flags */
+#endif
     "The most base class for Python binding",               /*tp_doc */
     0,                                                      /*tp_traverse */
     0,                                                      /*tp_clear */
@@ -139,12 +143,11 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
 {
     char *attr;
 #if PY_MAJOR_VERSION >= 3
-    if (PyUnicode_Check(attro))
-        attr = PyUnicode_AsUTF8(attro);
+    attr = PyUnicode_AsUTF8(attro);
 #else
-    if (PyString_Check(attro))
-        attr = PyString_AsString(attro);
+    attr = PyString_AsString(attro);
 #endif
+
     // This should be the entry in Type
     PyObjectBase* pyObj = static_cast<PyObjectBase*>(obj);
     if (!pyObj->isValid()){
@@ -162,7 +165,7 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
         }
     }
 
-    PyObject* value = pyObj->_getattro(attro);
+    PyObject* value = pyObj->_getattr(attr);
 #if 1
     if (value && PyObject_TypeCheck(value, &(PyObjectBase::Type))) {
         if (!static_cast<PyObjectBase*>(value)->isConst()) {
@@ -194,14 +197,13 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 {
     char *attr;
 #if PY_MAJOR_VERSION >= 3
-    if (PyUnicode_Check(attro))
-        attr = PyUnicode_AsUTF8(attro);
+    attr = PyUnicode_AsUTF8(attro);
 #else
-    if (PyString_Check(attro))
-        attr = PyString_AsString(attro);
+    attr = PyString_AsString(attro);
 #endif
+
     //FIXME: In general we don't allow to delete attributes (i.e. value=0). However, if we want to allow
-    //we must check then in _setattro() of all subclasses whether value is 0.
+    //we must check then in _setattr() of all subclasses whether value is 0.
     if ( value==0 ) {
         PyErr_Format(PyExc_AttributeError, "Cannot delete attribute: '%s'", attr);
         return -1;
@@ -222,7 +224,7 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
         }
     }
 
-    int ret = static_cast<PyObjectBase*>(obj)->_setattro(attro, value);
+    int ret = static_cast<PyObjectBase*>(obj)->_setattr(attr, value);
 #if 1
     if (ret == 0) {
         static_cast<PyObjectBase*>(obj)->startNotify();
@@ -234,16 +236,8 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 /*------------------------------
  * PyObjectBase attributes	-- attributes
 ------------------------------*/
-PyObject *PyObjectBase::_getattro(PyObject *attro)
+PyObject *PyObjectBase::_getattr(char *attr)
 {
-    char *attr;
-#if PY_MAJOR_VERSION >= 3
-    if (PyUnicode_Check(attro))
-        attr = PyUnicode_AsUTF8(attro);
-#else
-    if (PyString_Check(attro))
-        attr = PyString_AsString(attro);
-#endif
     if (streq(attr, "__class__")) {
         // Note: We must return the type object here, 
         // so that our own types feel as really Python objects 
@@ -266,9 +260,15 @@ PyObject *PyObjectBase::_getattro(PyObject *attro)
     }
     else {
         // As fallback solution use Python's default method to get generic attributes
-        PyObject *res;
-        if (attro != NULL) {
-            res = PyObject_GenericGetAttr(this, attro);
+        PyObject *w, *res;
+#if PY_MAJOR_VERSION >= 3
+        w = PyUnicode_InternFromString(attr);
+#else
+        w = PyString_InternFromString(attr);
+#endif
+        if (w != NULL) {
+            res = PyObject_GenericGetAttr(this, w);
+            Py_XDECREF(w);
             return res;
         } else {
             // Throw an exception for unknown attributes
@@ -279,22 +279,21 @@ PyObject *PyObjectBase::_getattro(PyObject *attro)
     }
 }
 
-int PyObjectBase::_setattro(PyObject *attro, PyObject *value)
+int PyObjectBase::_setattr(char *attr, PyObject *value)
 {
-    char *attr;
-#if PY_MAJOR_VERSION >= 3
-    if (PyUnicode_Check(attro))
-        attr = PyUnicode_AsUTF8(attro);
-#else
-    if (PyString_Check(attro))
-        attr = PyString_AsString(attro);
-#endif
     if (streq(attr,"softspace"))
         return -1; // filter out softspace
+    PyObject *w;
     // As fallback solution use Python's default method to get generic attributes
-    if (attro != NULL) {
+#if PY_MAJOR_VERSION >= 3
+    w = PyUnicode_InternFromString(attr); // new reference
+#else
+    w = PyString_InternFromString(attr); // new reference
+#endif
+    if (w != NULL) {
         // call methods from tp_getset if defined
-        int res = PyObject_GenericSetAttr(this, attro, value);
+        int res = PyObject_GenericSetAttr(this, w, value);
+        Py_DECREF(w);
         return res;
     } else {
         // Throw an exception for unknown attributes
