@@ -4836,6 +4836,7 @@ class Draft_Clone(Modifier):
             self.view.removeEventCallback("SoEvent",self.call)
         if FreeCADGui.Selection.getSelection():
             l = len(FreeCADGui.Selection.getSelection())
+            FreeCADGui.addModule("Draft")
             FreeCAD.ActiveDocument.openTransaction("Clone")
             for obj in FreeCADGui.Selection.getSelection():
                 FreeCADGui.doCommand("Draft.clone(FreeCAD.ActiveDocument."+obj.Name+")")
