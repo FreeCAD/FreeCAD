@@ -6139,26 +6139,26 @@ static const char *cursor_extension[]={
 "................................",
 "......+.........................",
 "......+.........................",
-"......+..................******.",
-"......+....................****.",
-"......+..................***.**.",
-"........................**....*.",
-"......................***.......",
-".....................***........",
+"......+.........................",
+"......+.........................",
+"......+..........****...........",
+"..................***...........",
+".................*.**...........",
+"................*...*...........",
 "................................",
+"..............*.................",
+".............*..................",
 "................................",
-".................**.............",
-"...............***..............",
-"..............***...............",
-".............**.................",
+"...........*....................",
+"..........*.....................",
 "................................",
-".........***....................",
-"........**......................",
-".......**.......................",
-"....**.*........................",
-"...****.........................",
-"...****.........................",
+"........*.......................",
+".......*........................",
+"......*.........................",
+"...***..........................",
+"...***..........................",
 "....**..........................",
+"................................",
 "................................",
 "................................"};
 
@@ -6199,24 +6199,38 @@ public:
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                 const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geom);
                 // project point to the existing curve
-                Base::Vector3d startPoint = lineSeg->getStartPoint();
-                Base::Vector3d endPoint = lineSeg->getEndPoint();
+                Base::Vector3d start3d = lineSeg->getStartPoint();
+                Base::Vector3d end3d = lineSeg->getEndPoint();
 
-                Base::Vector2d recenteredLine = Base::Vector2d(endPoint.x - startPoint.x,
-                    endPoint.y - startPoint.y);
-                Base::Vector2d recenteredPoint = Base::Vector2d(onSketchPos.x - startPoint.x,
-                    onSketchPos.y - startPoint.y);
+                Base::Vector2d startPoint = Base::Vector2d(start3d.x, start3d.y);
+                Base::Vector2d endPoint = Base::Vector2d(end3d.x, end3d.y);
+                Base::Vector2d recenteredLine = endPoint - startPoint;
+                Base::Vector2d recenteredPoint = onSketchPos - startPoint;
                 Base::Vector2d projection;
                 projection.ProjectToLine(recenteredPoint, recenteredLine);
                 if (recenteredPoint.Length() < recenteredPoint.Distance(recenteredLine)) {
-                    EditCurve[0] = Base::Vector2d(startPoint.x + projection.x, startPoint.y + projection.y);
-                    EditCurve[1] = Base::Vector2d(endPoint.x, endPoint.y);
+                    EditCurve[0] = startPoint + projection;
+                    EditCurve[1] = endPoint;
                 } else {
-                    EditCurve[0] = Base::Vector2d(startPoint.x, startPoint.y);
-                    EditCurve[1] = Base::Vector2d(startPoint.x + projection.x, startPoint.y + projection.y);
+                    EditCurve[0] = startPoint;
+                    EditCurve[1] = startPoint + projection;
                 }
-                ExtendFromStart = (onSketchPos.Distance(EditCurve[0]) < onSketchPos.Distance(EditCurve[1]));
-                Increment = ExtendFromStart ? projection.Length() : projection.Length() - recenteredLine.Length();
+                /**
+                 * If in-curve, the intuitive behavior is for the line to shrink an amount from
+                 * the original click-point.
+                 *
+                 * If out-of-curve, the intuitive behavior is for the closest line endpoint to
+                 * expand.
+                 */
+                bool inCurve = (projection.Length() < recenteredLine.Length()
+                    && projection.GetAngle(recenteredLine) < 0.1); // Two possible values here, M_PI and 0, but 0.1 is to avoid floating point problems.
+                if (inCurve) {
+                    Increment = SavedExtendFromStart ? -1 * projection.Length() : projection.Length() - recenteredLine.Length();
+                    ExtendFromStart = SavedExtendFromStart;
+                } else {
+                    ExtendFromStart = onSketchPos.Distance(startPoint) < onSketchPos.Distance(endPoint);
+                    Increment = ExtendFromStart ? projection.Length() : projection.Length() - recenteredLine.Length();
+                }
                 sketchgui->drawEdit(EditCurve);
 
             } else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
@@ -6236,11 +6250,14 @@ public:
                 double angleToEndAngle = angle.GetAngle(endAngle);
                 double angleToStartAngle = angle.GetAngle(startAngle);
 
-                if (arcHalf.GetAngle(angle) > arcAngle / 2) {
-                    double modStartAngle = start;
-                    double modArcAngle = end - start;
-                    if (ExtendFromStart) {
-                        if (crossProduct(angle, startAngle) < 0) {
+
+                double modStartAngle = start;
+                double modArcAngle = end - start;
+                bool outOfArc = arcHalf.GetAngle(angle) * 2.0 > arcAngle;
+                if (ExtendFromStart) {
+                    bool isCCWFromStart = crossProduct(angle, startAngle) < 0;
+                    if (outOfArc) {
+                        if (isCCWFromStart) {
                             modStartAngle -= 2*M_PI - angleToStartAngle;
                             modArcAngle += 2*M_PI - angleToStartAngle;
                         } else {
@@ -6248,29 +6265,39 @@ public:
                             modArcAngle += angleToStartAngle;
                         }
                     } else {
-                        if (crossProduct(angle, endAngle) >= 0) {
+                        if (isCCWFromStart) {
+                            modStartAngle += angleToStartAngle;
+                            modArcAngle -= angleToStartAngle;
+                        } else {
+                            modStartAngle += 2*M_PI - angleToStartAngle;
+                            modArcAngle -= 2*M_PI - angleToStartAngle;
+                        }
+                    }
+                } else {
+                    bool isCWFromEnd = crossProduct(angle, endAngle) >= 0;
+                    if (outOfArc) {
+                        if (isCWFromEnd) {
                             modArcAngle += 2*M_PI - angleToEndAngle;
                         } else {
                             modArcAngle += angleToEndAngle;
                         }
+                    } else {
+                        if (isCWFromEnd) {
+                            modArcAngle -= angleToEndAngle;
+                        } else {
+                            modArcAngle -= 2*M_PI - angleToEndAngle;
+                        }
                     }
-                    for (int i = 0; i < 31; i++) {
-                        double angle = modStartAngle + i * modArcAngle/30.0;
-                        EditCurve[i] = Base::Vector2d(center.x + radius * cos(angle), center.y + radius * sin(angle));
-                    }
-                    Increment = modArcAngle - (end- start);
-                    sketchgui->drawEdit(EditCurve);
-                } else {
-                    // draw curve anyway to avoid 'stuck' appearance
-                    for (int i = 0; i < 31; i++) {
-                        double angle = start + i * arcAngle/30.0;
-                        EditCurve[i] = Base::Vector2d(center.x + radius * cos(angle), center.y + radius * sin(angle));
-                    }
-                    Increment = 0;
-                    sketchgui->drawEdit(EditCurve);
                 }
+                Increment = modArcAngle - (end - start);
+                for (int i = 0; i < 31; i++) {
+                    double angle = modStartAngle + i * modArcAngle/30.0;
+                    EditCurve[i] = Base::Vector2d(center.x + radius * cos(angle), center.y + radius * sin(angle));
+                }
+                sketchgui->drawEdit(EditCurve);
             }
-            if (seekAutoConstraint(SugConstr, onSketchPos, Base::Vector2d(0.f,0.f))) {
+            int curveId = sketchgui->getPreselectCurve();
+            if (BaseGeoId != curveId && seekAutoConstraint(SugConstr, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(SugConstr);
                 return;
             }
@@ -6291,6 +6318,13 @@ public:
             if (BaseGeoId > -1) {
                 const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(BaseGeoId);
                 if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                    const Part::GeomLineSegment *seg = static_cast<const Part::GeomLineSegment *>(geom);
+                    Base::Vector3d start3d = seg->getStartPoint();
+                    Base::Vector3d end3d = seg->getEndPoint();
+                    Base::Vector2d start = Base::Vector2d(start3d.x, start3d.y);
+                    Base::Vector2d end = Base::Vector2d(end3d.x, end3d.y);
+                    SavedExtendFromStart = (onSketchPos.Distance(start) < onSketchPos.Distance(end));
+                    ExtendFromStart = SavedExtendFromStart;
                     Mode = STATUS_SEEK_Second;
                 } else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                     const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geom);
@@ -6362,6 +6396,7 @@ protected:
     int BaseGeoId;
 	ExtendSelection* filterGate = nullptr;
     bool ExtendFromStart; // if true, extend from start, else extend from end (circle only)
+    bool SavedExtendFromStart;
     double Increment;
     std::vector<AutoConstraint> SugConstr;
 
