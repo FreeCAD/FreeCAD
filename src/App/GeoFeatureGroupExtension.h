@@ -73,8 +73,6 @@ public:
      * In case this object is not part of any geoFeatureGroup 0 is returned.
      * Unlike DocumentObjectGroup::getGroupOfObject serches only for GeoFeatureGroups
      * @param obj       the object to search for
-     * @param indirect  if true return if the group that so-called geoHas the object, @see geoHasObject()
-     *                  default is true
      */
     static DocumentObject* getGroupOfObject(const DocumentObject* obj);
     
@@ -99,18 +97,18 @@ public:
     virtual std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
     virtual std::vector< DocumentObject* > removeObjects(std::vector< DocumentObject* > obj) override;
     
-    /// returns GeoFeatureGroup relevant objects that are linked from the given one. That meas all linked objects
+    /// Collects GeoFeatureGroup relevant objects that are linked from the given one. That meas all linked objects
     /// including their linkes (recursively) except GeoFeatureGroups, where the recursion stops. Expressions 
-    /// links are ignored.
-    static std::vector<App::DocumentObject*> getCSOutList(App::DocumentObject* obj);
-    ///returns GeoFeatureGroup relevant objects that link to the given one. That meas all objects 
+    /// links are ignored. A exception is thrown when there are dependency loops.
+    static void getCSOutList(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    /// Collects GeoFeatureGroup relevant objects that link to the given one. That meas all objects 
     /// including their parents (recursively) except GeoFeatureGroups, where the recursion stops. Expression 
-    /// links are ignored
-    static std::vector<App::DocumentObject*> getCSInList(App::DocumentObject* obj);
-    /// Returns all links that are relevant for the coordinate system, meaning all recursive links to 
+    /// links are ignored. A exception is thrown when there are dependency loops.
+    static void getCSInList(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    /// Collects all links that are relevant for the coordinate system, meaning all recursive links to 
     /// obj and from obj excluding expressions and stopping the recursion at other geofeaturegroups. 
     /// The result is the combination of CSOutList and CSInList.
-    static std::vector<App::DocumentObject*> getCSRelevantLinks(App::DocumentObject* obj);
+    static void getCSRelevantLinks(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
     
 private:
     Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group);

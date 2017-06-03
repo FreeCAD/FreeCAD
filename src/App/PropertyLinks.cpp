@@ -108,7 +108,8 @@ void ensureCorrectGroups(PropertyContainer* container, App::DocumentObject* obje
     if(cont->isRestoring() || object->isRestoring())
         return;
     
-    auto objs = GeoFeatureGroupExtension::getCSRelevantLinks(object);
+    std::vector< DocumentObject* > objs;
+    GeoFeatureGroupExtension::getCSRelevantLinks(object, objs);
     objs.push_back(object);
     
     for(auto obj : objs) {
