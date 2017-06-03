@@ -225,8 +225,8 @@ public:
     /// setter for special attributes (e.g. dynamic ones)
     /// Output: Success=1, Failure=-1, Ignore=0
     int setCustomAttributes(const char* attr, PyObject *obj);
-    PyObject *_getattro(PyObject *attro);              // __getattr__ function
-    int _setattro(PyObject *attro, PyObject *value);   // __setattr__ function
+    PyObject *_getattr(char *attr);              // __getattr__ function
+    int _setattr(char *attr, PyObject *value);        // __setattr__ function
 -
 
     /// getter for the object handled by this class
@@ -712,14 +712,8 @@ PyObject *@self.export.Name@::_repr(void)
 //--------------------------------------------------------------------------
 // @self.export.Name@ Attributes
 //--------------------------------------------------------------------------
-PyObject *@self.export.Name@::_getattro(PyObject *attro)				// __getattr__ function: note only need to handle new state
+PyObject *@self.export.Name@::_getattr(char *attr)				// __getattr__ function: note only need to handle new state
 {
-    char *attr;
-#if PY_MAJOR_VERSION >= 3
-    attr = PyUnicode_AsUTF8(attro);
-#else
-    attr = PyString_AsString(attro);
-#endif
     try {
         // getter method for special Attributes (e.g. dynamic ones)
         PyObject *r = getCustomAttributes(attr);
@@ -781,18 +775,11 @@ PyObject *@self.export.Name@::_getattro(PyObject *attro)				// __getattr__ funct
     }
 
     PyErr_Clear();
-    return @self.export.Father@::_getattro(attro);
+    return @self.export.Father@::_getattr(attr);
 }
 
-int @self.export.Name@::_setattro(PyObject *attro, PyObject *value) 	// __setattr__ function: note only need to handle new state
-
+int @self.export.Name@::_setattr(char *attr, PyObject *value) // __setattr__ function: note only need to handle new state
 {
-    char *attr;
-#if PY_MAJOR_VERSION >= 3
-    attr = PyUnicode_AsUTF8(attro);
-#else
-    attr = PyString_AsString(attro);
-#endif
     try {
         // setter for  special Attributes (e.g. dynamic ones)
         int r = setCustomAttributes(attr, value);
@@ -852,7 +839,7 @@ int @self.export.Name@::_setattro(PyObject *attro, PyObject *value) 	// __setatt
     }
 #endif  // DONT_CATCH_CXX_EXCEPTIONS
 
-    return @self.export.Father@::_setattro(attro, value);
+    return @self.export.Father@::_setattr(attr, value);
 }
 -
 
