@@ -30,7 +30,7 @@ from PySide import QtCore, QtGui
 """Path Array object and FreeCAD command"""
 
 # Qt tanslation handling
-def translate(text, context = "Path_Array", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class ObjectArray:
@@ -116,11 +116,11 @@ class CommandPathArray:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Please select exactly one path object\n"))
+                translate("Path_Array", "Please select exactly one path object\n"))
             return
         if not(selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("Please select exactly one path object\n"))
+                translate("Path_Array", "Please select exactly one path object\n"))
             return
 
         # if everything is ok, execute and register the transaction in the

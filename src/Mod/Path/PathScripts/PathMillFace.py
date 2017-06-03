@@ -274,7 +274,7 @@ class ObjectFace:
             commandlist.extend(self._buildPathArea(obj, env).Commands)
         except Exception as e:
             print(e)
-            FreeCAD.Console.PrintWarning(translate("PathMillFace", "The selected settings did not produce a valid path.\n"))
+            FreeCAD.Console.PrintWarning(translate("Path_MillFace", "The selected settings did not produce a valid path.\n"))
 
         if obj.Active:
             path = Path.Path(commandlist)

@@ -29,7 +29,7 @@ from PySide import QtCore, QtGui
 """Path Profile object and FreeCAD command"""
 
 # Qt tanslation handling
-def translate(text, context = "Path_FaceProfile", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
@@ -123,13 +123,13 @@ class CommandPathFaceProfile:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelectionEx()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("Please select one face or wire\n"))
+            FreeCAD.Console.PrintError(translate("Path_FaceProfile", "Please select one face or wire\n"))
             return
         if len(selection[0].SubObjects) != 1:
-            FreeCAD.Console.PrintError(translate("Please select only one face or wire\n"))
+            FreeCAD.Console.PrintError(translate("Path_FaceProfile", "Please select only one face or wire\n"))
             return
         if not selection[0].SubObjects[0].ShapeType in ["Face", "Wire"]:
-            FreeCAD.Console.PrintError(translate("Please select only a face or a wire\n"))
+            FreeCAD.Console.PrintError(translate("Path_FaceProfile", "Please select only a face or a wire\n"))
             return
 
         # if everything is ok, execute and register the transaction in the

@@ -35,7 +35,7 @@ import PathScripts.PathUtils as P
 """Dragknife Dressup object and FreeCAD command"""
 
 # Qt tanslation handling
-def translate(text, context = "PathDressup_DragKnife", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 movecommands = ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']
@@ -482,19 +482,19 @@ class CommandDressupDragknife:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Please select one path object\n"))
+                translate("PathDressup_DragKnife", "Please select one path object\n"))
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("The selected object is not a path\n"))
+                translate("PathDressup_DragKnife", "The selected object is not a path\n"))
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
             FreeCAD.Console.PrintError(
-                translate("Please select a Path object"))
+                translate("PathDressup_DragKnife", "Please select a Path object"))
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("Create Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_DragKnife", "Create Dress-up"))
         FreeCADGui.addModule("PathScripts.PathDressupDragknife")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","DragknifeDressup")')

@@ -44,7 +44,7 @@ PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 PathLog.trackModule(LOG_MODULE)
 
 # Qt tanslation handling
-def translate(text, context = "Path_Post", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class DlgSelectPostProcessor:
@@ -196,7 +196,7 @@ class CommandPathPost:
     def Activated(self):
         PathLog.track()
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Post Process the Selected path(s)"))
+            translate("Path_Post", "Post Process the Selected path(s)"))
         FreeCADGui.addModule("PathScripts.PathPost")
 
         # Attempt to figure out what the user wants to post-process

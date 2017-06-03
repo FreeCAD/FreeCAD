@@ -43,7 +43,7 @@ if FreeCAD.GuiUp:
     from PySide import QtGui
 
 # Qt tanslation handling
-def translate(text, context = "Path", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 __title__ = "Path Contour Operation"
@@ -310,7 +310,7 @@ class CommandPathContour:
         ztop = 10.0
         zbottom = 0.0
 
-        FreeCAD.ActiveDocument.openTransaction(translate("Create a Contour"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path", "Create a Contour"))
         FreeCADGui.addModule("PathScripts.PathContour")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Contour")')
         FreeCADGui.doCommand('PathScripts.PathContour.ObjectContour(obj)')

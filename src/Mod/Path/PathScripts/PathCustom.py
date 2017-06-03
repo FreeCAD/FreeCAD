@@ -29,7 +29,7 @@ from PySide import QtCore, QtGui
 """Path Custom object and FreeCAD command"""
 
 # Qt tanslation handling
-def translate(text, context = "Path_Custom", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 

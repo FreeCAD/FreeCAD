@@ -28,7 +28,7 @@ from PySide import QtCore, QtGui
 """Path SimpleCopy command"""
 
 # Qt tanslation handling
-def translate(text, context = "Path_SimpleCopy", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class CommandPathSimpleCopy:
@@ -51,15 +51,15 @@ class CommandPathSimpleCopy:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Please select exactly one path object\n"))
+                translate("Path_SimpleCopy", "Please select exactly one path object\n"))
             return
         if not(selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("Please select exactly one path object\n"))
+                translate("Path_SimpleCopy", "Please select exactly one path object\n"))
             return
 
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Simple Copy"))
+            translate("Path_SimpleCopy", "Simple Copy"))
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
             'obj = FreeCAD.ActiveDocument.addObject("Path::Feature","' + selection[0].Name + '_copy")')
