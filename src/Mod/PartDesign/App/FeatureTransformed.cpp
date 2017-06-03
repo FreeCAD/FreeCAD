@@ -256,9 +256,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         }
 
         // Transform the add/subshape and collect the resulting shapes for overlap testing
-        typedef std::vector<std::vector<gp_Trsf>::const_iterator> trsf_it_vec;
+        /*typedef std::vector<std::vector<gp_Trsf>::const_iterator> trsf_it_vec;
         trsf_it_vec v_transformations;
-        std::vector<TopoDS_Shape> v_transformedShapes;
+        std::vector<TopoDS_Shape> v_transformedShapes;*/
 
         std::vector<gp_Trsf>::const_iterator t = transformations.begin();
         ++t; // Skip first transformation, which is always the identity transformation
@@ -276,15 +276,75 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
             // Check for intersection with support
             try {
+
                 if (!Part::checkIntersection(support, mkTrf.Shape(), false, true)) {
 #ifdef FC_DEBUG // do not write this in release mode because a message appears already in the task view
                     Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
 #endif
                     nointersect_trsfms[*o].insert(t);
                 } else {
-                    v_transformations.push_back(t);
-                    v_transformedShapes.push_back(mkTrf.Shape());
+                    // We cannot wait to fuse a transformation with the support until all the transformations are done,
+                    // because the "support" potentially changes with every transformation, basically when checking intersection
+                    // above you need:
+                    // 1. The original support
+                    // 2. Any extra support gained by any previous transformation of any previous feature (multi-feature transform)
+                    // 3. Any extra support gained by any previous tranformation of this feature (feature multi-trasform)
+                    //
+                    // Therefore, if the transformation succeeded, then we fuse it with the support now, before checking the intersection
+                    // of the next transformation.
+                    
+                    /*v_transformations.push_back(t);
+                    v_transformedShapes.push_back(mkTrf.Shape());*/
+
                     // Note: Transformations that do not intersect the support are ignored in the overlap tests
+                    
+                    //insert scheme here.
+                    /*TopoDS_Compound compoundTool;
+                    std::vector<TopoDS_Shape> individualTools;
+                    divideTools(v_transformedShapes, individualTools, compoundTool);*/
+                    
+                    // Fuse/Cut the compounded transformed shapes with the support
+                    //TopoDS_Shape result;
+                    TopoDS_Shape current = support;
+                    
+                    if (fuse) {
+                        BRepAlgoAPI_Fuse mkFuse(current, mkTrf.Shape());
+                        if (!mkFuse.IsDone())
+                            return new App::DocumentObjectExecReturn("Fusion with support failed", *o);
+                        // we have to get the solids (fuse sometimes creates compounds)
+                        current = this->getSolid(mkFuse.Shape());
+                        // lets check if the result is a solid
+                        if (current.IsNull())
+                            return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
+                        /*std::vector<TopoDS_Shape>::const_iterator individualIt;
+                        for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
+                        {
+                            BRepAlgoAPI_Fuse mkFuse2(current, *individualIt);
+                            if (!mkFuse2.IsDone())
+                                return new App::DocumentObjectExecReturn("Fusion with support failed", *o);
+                            // we have to get the solids (fuse sometimes creates compounds)
+                            current = this->getSolid(mkFuse2.Shape());
+                            // lets check if the result is a solid
+                            if (current.IsNull())
+                                return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
+                        }*/
+                    } else {
+                        BRepAlgoAPI_Cut mkCut(current, mkTrf.Shape());
+                        if (!mkCut.IsDone())
+                            return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
+                        current = mkCut.Shape();
+                        /*std::vector<TopoDS_Shape>::const_iterator individualIt;
+                        for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
+                        {
+                            BRepAlgoAPI_Cut mkCut2(current, *individualIt);
+                            if (!mkCut2.IsDone())
+                                return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
+                            current = this->getSolid(mkCut2.Shape());
+                            if (current.IsNull())
+                                return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
+                        }*/
+                    }
+                    support = current; // Use result of this operation for fuse/cut of next original
                 }
             } catch (Standard_Failure) {
                 // Note: Ignoring this failure is probably pointless because if the intersection check fails, the later
@@ -296,61 +356,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 return new App::DocumentObjectExecReturn(msg.c_str());
             }
         }
-
-        if (v_transformedShapes.empty())
-            continue; // Skip the overlap check and go on to next original
-
-        if (v_transformedShapes.empty())
-            continue; // Skip the boolean operation and go on to next original
-            
-            
-        //insert scheme here.
-        TopoDS_Compound compoundTool;
-	std::vector<TopoDS_Shape> individualTools;
-	divideTools(v_transformedShapes, individualTools, compoundTool);
-
-        // Fuse/Cut the compounded transformed shapes with the support
-        TopoDS_Shape result;
-	TopoDS_Shape current = support;
-
-        if (fuse) {
-            BRepAlgoAPI_Fuse mkFuse(current, compoundTool);
-            if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Fusion with support failed", *o);
-            // we have to get the solids (fuse sometimes creates compounds)
-            current = this->getSolid(mkFuse.Shape());
-            // lets check if the result is a solid
-            if (current.IsNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
-            std::vector<TopoDS_Shape>::const_iterator individualIt;
-            for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
-            {
-              BRepAlgoAPI_Fuse mkFuse2(current, *individualIt);
-              if (!mkFuse2.IsDone())
-                  return new App::DocumentObjectExecReturn("Fusion with support failed", *o);
-              // we have to get the solids (fuse sometimes creates compounds)
-              current = this->getSolid(mkFuse2.Shape());
-              // lets check if the result is a solid
-              if (current.IsNull())
-                  return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
-            }
-        } else {
-            BRepAlgoAPI_Cut mkCut(current, compoundTool);
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
-            current = mkCut.Shape();
-            std::vector<TopoDS_Shape>::const_iterator individualIt;
-            for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
-            {
-              BRepAlgoAPI_Cut mkCut2(current, *individualIt);
-              if (!mkCut2.IsDone())
-                  return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
-              current = this->getSolid(mkCut2.Shape());
-              if (current.IsNull())
-                  return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
-            }
-        }
-        support = current; // Use result of this operation for fuse/cut of next original
     }
     support = refineShapeIfActive(support);
 
