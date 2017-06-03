@@ -248,9 +248,9 @@ def tool_change(command):
         txt += "'a tool change happens now\n"
     for line in TOOL_CHANGE.splitlines(True):
         txt += line
-    txt += "&ToolName=" + str(command.Parameters['T'])
+    txt += "&ToolName=" + str(int(command.Parameters['T']))
     txt += "\n"
-    txt += "&Tool=" + str(command.Parameters['T'])
+    txt += "&Tool=" + str(int(command.Parameters['T']))
     txt += "\n"
     return txt
 

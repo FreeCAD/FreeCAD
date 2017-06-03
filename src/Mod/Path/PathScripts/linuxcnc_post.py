@@ -261,7 +261,7 @@ def parse(pathobj):
                             outstring.append(
                                 param + format(float(speed.getValueAs(UNIT_FORMAT)), precision_string) )
                     elif param == 'T':
-                        outstring.append(param + str(c.Parameters['T']))
+                        outstring.append(param + str(int(c.Parameters['T'])))
                     else:
                         outstring.append(
                             param + format(c.Parameters[param], precision_string))
