@@ -56,6 +56,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 # include <sstream>
 # include <climits>
 # include <bitset>
+# include <random>
 #endif
 
 #include <boost/graph/adjacency_list.hpp>
