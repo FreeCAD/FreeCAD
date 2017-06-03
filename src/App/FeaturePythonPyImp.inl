@@ -27,16 +27,15 @@ namespace App
 /// Type structure of FeaturePythonPyT
 template<class FeaturePyT>
 PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
-    PyObject_HEAD_INIT(&PyType_Type)
-    0,                                                /*ob_size*/
+    PyVarObject_HEAD_INIT(&PyType_Type,0)
     "FeaturePython",                                  /*tp_name*/
     sizeof(FeaturePythonPyT),                         /*tp_basicsize*/
     0,                                                /*tp_itemsize*/
     /* methods */
     FeaturePyT::PyDestructor,                         /*tp_dealloc*/
     0,                                                /*tp_print*/
-    FeaturePyT::__getattr,                            /*tp_getattr*/
-    __setattr,                                        /*tp_setattr*/
+    0,                                                /*tp_getattr*/
+    0,                                                /*tp_setattr*/
     0,                                                /*tp_compare*/
     0,                                                /*tp_repr*/
     0,                                                /*tp_as_number*/
@@ -45,12 +44,16 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_hash*/
     0,                                                /*tp_call */
     0,                                                /*tp_str  */
-    0,                                                /*tp_getattro*/
-    0,                                                /*tp_setattro*/
+    FeaturePyT::__getattro,                           /*tp_getattro*/
+    __setattro,                                       /*tp_setattro*/
     /* --- Functions to access object as input/output buffer ---------*/
     0,                                                /* tp_as_buffer */
     /* --- Flags to define presence of optional/expanded features */
+#if PY_MAJOR_VERSION >= 3
+    Py_TPFLAGS_BASETYPE|Py_TPFLAGS_DEFAULT,           /*tp_flags */
+#else
     Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_CLASS,        /*tp_flags */
+#endif
     "This is the father of all Feature classes",      /*tp_doc */
     0,                                                /*tp_traverse */
     0,                                                /*tp_clear */
@@ -58,7 +61,7 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_weaklistoffset */
     0,                                                /*tp_iter */
     0,                                                /*tp_iternext */
-    0,                                                /*tp_methods */
+    App::FeaturePythonPyT<FeaturePyT>::Methods,       /*tp_methods */
     0,                                                /*tp_members */
     0,                                                /*tp_getset */
     &FeaturePyT::Type,                                /*tp_base */
@@ -78,6 +81,9 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_weaklist */
     0,                                                /*tp_del */
     0                                                 /*tp_version_tag */
+#if PY_MAJOR_VERSION >= 3
+    ,0                                                /*tp_finalize */
+#endif
 };
 
 template<class FeaturePyT>
@@ -96,38 +102,56 @@ FeaturePythonPyT<FeaturePyT>::~FeaturePythonPyT()
 }
 
 template<class FeaturePyT>
-int FeaturePythonPyT<FeaturePyT>::__setattr(PyObject *obj, char *attr, PyObject *value)
+int FeaturePythonPyT<FeaturePyT>::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 {
+    char *attr;
+#if PY_MAJOR_VERSION >= 3
+    attr = PyUnicode_AsUTF8(attro);
+#else
+    attr = PyString_AsString(attro);
+#endif
     // This overwrites PyObjectBase::__setattr because this actively disallows to delete an attribute
     //
+
     if (!static_cast<Base::PyObjectBase*>(obj)->isValid()){
         PyErr_Format(PyExc_ReferenceError, "Cannot access attribute '%s' of deleted object", attr);
         return -1;
     }
 
-    int ret = static_cast<Base::PyObjectBase*>(obj)->_setattr(attr, value);
+    int ret = static_cast<Base::PyObjectBase*>(obj)->_setattro(attro, value);
     if (ret == 0) {
         static_cast<Base::PyObjectBase*>(obj)->startNotify();
     }
     return ret;
 }
 
+
 template<class FeaturePyT>
-int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
+int FeaturePythonPyT<FeaturePyT>::_setattro(PyObject *attro, PyObject *value)
 {
+    char *attr;
+#if PY_MAJOR_VERSION >= 3
+    attr = PyUnicode_AsUTF8(attro);
+#else
+    attr = PyString_AsString(attro);
+#endif
     App::Property *prop = FeaturePyT::getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop && !value) {
         PyErr_Format(PyExc_AttributeError, "Cannot delete attribute: '%s'", attr);
         return -1;
     }
 
-    int returnValue = FeaturePyT::_setattr(attr, value);
+    int returnValue = FeaturePyT::_setattro(attro, value);
     if (returnValue == -1) {
         PyObject* dict_item = value;
         if (value) {
             if (PyFunction_Check(value)) {
                 PyErr_Clear();
+#if PY_MAJOR_VERSION < 3
                 dict_item = PyMethod_New(value, this, 0);
+#else
+                dict_item = PyMethod_New(value, this);
+#endif
                 returnValue = PyDict_SetItemString(dict_methods, attr, dict_item);
                 Py_XDECREF(dict_item);
             }
@@ -144,8 +168,14 @@ int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
 }
 
 template<class FeaturePyT>
-PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
+PyObject *FeaturePythonPyT<FeaturePyT>::_getattro(PyObject *attro)
 {
+    char *attr;
+#if PY_MAJOR_VERSION >= 3
+    attr = PyUnicode_AsUTF8(attro);
+#else
+    attr = PyString_AsString(attro);
+#endif
     // See CallTipsList::extractTips
     if (Base::streq(attr, "__fc_template__")) {
         Py_INCREF(Py_None);
@@ -162,7 +192,7 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
                 return 0;
         }
 
-        PyObject* dict = FeaturePyT::_getattr(attr);
+        PyObject* dict = FeaturePyT::_getattro(attro);
         if (dict && PyDict_CheckExact(dict)) {
             PyObject* dict_old = dict;
             dict = PyDict_Copy(dict_old);
@@ -182,7 +212,7 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
 
     // search for the attribute in the base class
     PyErr_Clear();
-    return FeaturePyT::_getattr(attr);
+    return FeaturePyT::_getattro(attro);
 }
 
 } //namespace App
