@@ -33,21 +33,6 @@
 # imports the one and only
 import FreeCAD
 
-def removeFromPath(module_name):
-	"""removes the module from the sys.path. The entry point for imports
-		will therfor always be FreeCAD.
-		eg.: from FreeCAD.Module.submodule import function"""
-	import sys, os
-	paths = sys.path
-	for path in paths:
-		if module_name in path:
-			sys.path.remove(path)
-			return
-	else:
-		Wrn(module_name + " not found in sys.path\n")
-
-FreeCAD._importFromFreeCAD = removeFromPath
-
 
 def InitApplications():
 	try:
@@ -103,8 +88,7 @@ def InitApplications():
 	PathExtension = BinDir + os.pathsep
 
 	# prepend all module paths to Python search path
-	Log('Init:   Searching for modules...\n')
-
+	Log('Init: Searching for modules...\n')
 
 	# to have all the module-paths available in FreeCADGuiInit.py:
 	FreeCAD.__ModDirs__ = list(ModDict.values())
@@ -119,7 +103,7 @@ def InitApplications():
 	sys.path = [ModDir, Lib64Dir, LibDir] + sys.path
 
 	for Dir in ModDict.values():
-		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
+		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py') & (Dir != 'freecad')):
 			sys.path.insert(0,Dir)
 			PathExtension += Dir + os.pathsep
 			InstallFile = os.path.join(Dir,"Init.py")
@@ -130,16 +114,34 @@ def InitApplications():
 					with open(InstallFile) as f:
 						exec(f.read())
 				except Exception as inst:
-					Log('Init:      Initializing ' + Dir + '... failed\n')
+					Log('Init: Initializing ' + Dir + '... failed\n')
 					Log('-'*100+'\n')
 					Log(traceback.format_exc())
 					Log('-'*100+'\n')
 					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
 					Err('Please look into the log file for further information')
 				else:
-					Log('Init:      Initializing ' + Dir + '... done\n')
+					Log('Init: Initializing ' + Dir + '... done\n')
 			else:
-				Log('Init:      Initializing ' + Dir + '(Init.py not found)... ignore\n')
+				Log('Init: Initializing ' + Dir + '(Init.py not found)... ignore\n')
+
+	Log('Init: Searching for modules...\n')
+
+	import pkgutil
+	import importlib
+	import freecad.modules
+	for _, freecad_module_name, freecad_module_ispkg in pkgutil.iter_modules(freecad.modules.__path__, "freecad.modules."):
+		if freecad_module_ispkg:
+			Log('Init: Initializing ' + freecad_module_name + '\n')
+			freecad_module = importlib.import_module(freecad_module_name)
+			if any (module_name == 'init' for _, module_name, ispkg in pkgutil.iter_modules(freecad_module.__path__)):
+				try:
+					importlib.import_module(freecad_module_name + '.init')
+					Log('Init: Initializing ' + freecad_module_name + '... done\n')
+				except ImportError as error:
+					Err('During initialization the error ' + str(error) + ' occurred in ' + freecad_module_name + '\n')
+			else:
+				Log('Init: No init module found in ' + freecad_module_name + ', skipping\n')
 
 	Log("Using "+ModDir+" as module path!\n")
 	# new paths must be prepended to avoid to load a wrong version of a library
