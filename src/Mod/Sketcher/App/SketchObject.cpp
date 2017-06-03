@@ -2097,8 +2097,8 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
     //App::DocumentObject *support = this->Support.getValue();
     Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
     Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
-    App::Part* part_this = App::Part::getPartOfObject(this, true);
-    App::Part* part_obj = App::Part::getPartOfObject(pObj, true);
+    App::Part* part_this = App::Part::getPartOfObject(this);
+    App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj){ //either in the same part, or in the root of document
         if (body_this != NULL) {
             if ((body_this != body_obj) && !this->allowOtherBody) {

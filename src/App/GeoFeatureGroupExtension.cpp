@@ -130,7 +130,8 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::addObjects(std::vector<Ap
             continue;
         
         //cross CoordinateSystem links are not allowed, so we need to move the whole link group 
-        auto links = getCSRelevantLinks(object);
+        std::vector<App::DocumentObject*> links;
+        getCSRelevantLinks(object, links);
         links.push_back(object);
         
         for( auto obj : links) {
@@ -157,7 +158,8 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::removeObjects(std::vector
     
     for(auto object : objects) {
         //cross CoordinateSystem links are not allowed, so we need to remove the whole link group 
-        auto links = getCSRelevantLinks(object);
+        std::vector< DocumentObject* > links;
+        getCSRelevantLinks(object, links);
         links.push_back(object);
         
         //remove all links out of group       
@@ -206,14 +208,14 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getObjectsFromLinks(Doc
 }
 
 
-std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSOutList(App::DocumentObject* obj) {
+void GeoFeatureGroupExtension::getCSOutList(App::DocumentObject* obj, std::vector< DocumentObject* >& vec) {
 
     if(!obj)
-        return std::vector< App::DocumentObject* >();
+        return;
 
     //if the object is a geofeaturegroup than all dependencies belong to that CS,  we don't want them
     if(obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
-        return std::vector< App::DocumentObject* >();
+        return;
     
     //we get all linked objects. We can't use outList() as this includes the links from expressions
     auto result = getObjectsFromLinks(obj);
@@ -224,36 +226,42 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSOutList(App::Docum
                 obj->isDerivedFrom(App::Origin::getClassTypeId()));
     }), result.end());
 
-    //collect all dependencies of those objects
-    std::vector< App::DocumentObject* > links;
+    //collect all dependencies of those objects and store them in the result vector
     for(App::DocumentObject *obj : result) { 
-        auto vec = getCSOutList(obj);
-        links.insert(links.end(), vec.begin(), vec.end());
+        
+        //prevent infinite recursion
+        if(std::find(vec.begin(), vec.end(), obj) != vec.end())
+            throw Base::Exception("Graph is not DAG");
+        
+        vec.push_back(obj);        
+        std::vector< DocumentObject* > links;
+        getCSOutList(obj, links);
+        vec.insert(vec.end(), links.begin(), links.end());
     }
 
-    if (!links.empty()) {
-        result.insert(result.end(), links.begin(), links.end());
-        std::sort(result.begin(), result.end());
-        result.erase(std::unique(result.begin(), result.end()), result.end());
-    }
-
-    return result;
+    //post process the vector
+    std::sort(vec.begin(), vec.end());
+    vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
 }
 
-std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSInList(DocumentObject* obj) {
+void GeoFeatureGroupExtension::getCSInList(DocumentObject* obj, std::vector< DocumentObject* >& vec) {
 
     if(!obj)
-        return std::vector< App::DocumentObject* >();
+        return;
     
     //we get all objects that link to it
     std::vector< App::DocumentObject* > result;
     
     //search the inlist for objects that have non-expression links to us
     for(App::DocumentObject* parent : obj->getInList()) {
-                
+                       
         //not interested in other groups (and here we mean all groups, normal ones and geofeaturegroup)
         if(parent->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
             continue;
+        
+        //prevent infinite recursion
+        if(std::find(vec.begin(), vec.end(), parent) != vec.end())
+            throw Base::Exception("Graph is not DAG");
         
         //check if the link is real or if it is a expression one (could also be both, so it is not 
         //enough to check the expressions)
@@ -262,46 +270,39 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSInList(DocumentObj
             result.push_back(parent);
     }
     
-    //clear all douplicates
+    //clear all duplicates
     std::sort(result.begin(), result.end());
     result.erase(std::unique(result.begin(), result.end()), result.end());
 
     //collect all links to those objects
-    std::vector< App::DocumentObject* > links;
     for(App::DocumentObject *obj : result) { 
-        auto vec = getCSInList(obj);
-        links.insert(links.end(), vec.begin(), vec.end());
+        vec.push_back(obj);
+        getCSInList(obj, vec);
     }
 
-    if (!links.empty()) {
-        result.insert(result.end(), links.begin(), links.end());
-        std::sort(result.begin(), result.end());
-        result.erase(std::unique(result.begin(), result.end()), result.end());
-    }
+    std::sort(vec.begin(), vec.end());
+    vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
 
-    return result;
 }
 
-std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSRelevantLinks(DocumentObject* obj) {
+void GeoFeatureGroupExtension::getCSRelevantLinks(DocumentObject* obj, std::vector< DocumentObject* >& vec ) {
 
-    //we need to get the outlist of all inlist objects and ourself. This is needed to handle things
+    //get all out links 
+    getCSOutList(obj, vec); 
+    
+    //we need to get the outlist of all inlist objects. This is needed to handle things
     //like Booleans: the boolean is our parent, than there is a second object under it which relates 
     //to obj and needs to be handled.
-    auto in = getCSInList(obj);
-    in.push_back(obj); //there may be nothing in inlist
-    std::vector<App::DocumentObject*> result;
-    for(auto o : in) {
-        
-        auto out = getCSOutList(o);
-        result.insert(result.end(), out.begin(), out.end());
+    std::vector< DocumentObject* > in;
+    getCSInList(obj, in);
+    for(auto o : in) {      
+        vec.push_back(o);
+        getCSOutList(o, vec);
     }
     
-    //there will be many douplicates and also the passed obj in
-    std::sort(result.begin(), result.end());
-    result.erase(std::unique(result.begin(), result.end()), result.end());
-    result.erase(std::remove(result.begin(), result.end(), obj), result.end());
-    
-    return result;
+    //post process
+    std::sort(vec.begin(), vec.end());
+    vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
 }
 
 // Python feature ---------------------------------------------------------

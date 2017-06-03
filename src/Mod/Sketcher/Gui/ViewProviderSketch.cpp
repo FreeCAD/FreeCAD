@@ -5819,9 +5819,9 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
     return PartGui::ViewProviderPart::onDelete(subList);
 }
 
-}
-
 void ViewProviderSketch::showRestoreInformationLayer() {
 
     visibleInformationChanged = true ;
     draw(false,false);
+    
+}

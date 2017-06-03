@@ -52,8 +52,6 @@ public:
      * Returns the origin group which contains this object.
      * In case this object is not part of any geoFeatureGroup 0 is returned.
      * @param obj       the object to search for
-     * @param indirect  if true return if the group that so-called geoHas the object, @see geoHasObject()
-     *                  default is true
      */
     static DocumentObject* getGroupOfObject (const DocumentObject* obj);
 

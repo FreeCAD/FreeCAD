@@ -104,29 +104,6 @@ std::vector< DocumentObject* > GroupExtension::addObjects(std::vector< DocumentO
     return added;
 }
 
-void GroupExtension::addObjects(const std::vector<App::DocumentObject*>& objs)
-{
-    bool objectAdded = false;
-    std::vector<DocumentObject*> grp = Group.getValues();
-    for (auto obj : objs) {
-        if (allowObject(obj)) {
-
-            //only one group per object
-            auto *group = App::GroupExtension::getGroupOfObject(obj);
-            if (group && group != getExtendedObject())
-                group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
-
-            if (std::find(grp.begin(), grp.end(), obj) == grp.end()) {
-                grp.push_back(obj);
-                objectAdded = true;
-            }
-        }
-    }
-
-    if (objectAdded)
-        Group.setValues(grp);
-}
-
 std::vector<DocumentObject*> GroupExtension::removeObject(DocumentObject* obj)
 {
     std::vector<DocumentObject*> vec = {obj};
