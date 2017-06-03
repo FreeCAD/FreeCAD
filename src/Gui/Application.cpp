@@ -302,7 +302,12 @@ Application::Application(bool GUIenabled)
         // otherwise the executable was launched
         PyObject *module = PyImport_AddModule("FreeCADGui");
         if (!module) {
-            static struct PyModuleDef FreeCADGuiModuleDef = {PyModuleDef_HEAD_INIT,"FreeCADGui", FreeCADGui_doc, -1, Application::Methods};
+            static struct PyModuleDef FreeCADGuiModuleDef = {
+                PyModuleDef_HEAD_INIT,
+                "FreeCADGui", FreeCADGui_doc, -1,
+                Application::Methods,
+                NULL, NULL, NULL, NULL
+            };
             module = PyModule_Create(&FreeCADGuiModuleDef);
             _PyImport_FixupBuiltin(module, "FreeCADGui");
         }
@@ -327,7 +332,12 @@ Application::Application(bool GUIenabled)
 
         //insert Selection module
 #if PY_MAJOR_VERSION >= 3
-        static struct PyModuleDef SelectionModuleDef = {PyModuleDef_HEAD_INIT,"Selection", "Selection module", -1, SelectionSingleton::Methods};
+        static struct PyModuleDef SelectionModuleDef = {
+            PyModuleDef_HEAD_INIT,
+            "Selection", "Selection module", -1,
+            SelectionSingleton::Methods,
+            NULL, NULL, NULL, NULL
+        };
         PyObject* pSelectionModule = PyModule_Create(&SelectionModuleDef);
 #else
         PyObject* pSelectionModule = Py_InitModule3("Selection", SelectionSingleton::Methods,"Selection module");

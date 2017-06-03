@@ -48,7 +48,7 @@
         ""#_class_"", \
         0, 0, 0, 0, 0, 0, 0, 0, 0, \
         &_subclass_::Type, \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 \
     }; \
     _class_::_class_(Base::BaseClass *pcObject, PyTypeObject *T) \
         : _subclass_(reinterpret_cast<_subclass_::PointerType>(pcObject), T) \
