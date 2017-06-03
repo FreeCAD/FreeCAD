@@ -399,8 +399,12 @@ void Document::exportGraphviz(std::ostream& out) const
             if(CSSubgraphs) {
                 if(!sgraph) {
                     auto group = GeoFeatureGroupExtension::getGroupOfObject(docObj);
-                    if(group)
-                        sgraph = GraphList[group];
+                    if(group) {
+                        if(docObj->isDerivedFrom(App::OriginFeature::getClassTypeId()))
+                            sgraph = GraphList[group->getExtensionByType<OriginGroupExtension>()->Origin.getValue()];
+                        else 
+                            sgraph = GraphList[group];
+                    }
                 }
                 if(!sgraph) {
                     if(docObj->isDerivedFrom(OriginFeature::getClassTypeId()))
