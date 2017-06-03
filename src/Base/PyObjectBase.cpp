@@ -349,11 +349,12 @@ void PyObjectBase::setAttributeOf(const char* attr, PyObject* par)
 #if PY_MAJOR_VERSION < 3
     PyObject* key1 = PyString_FromString("__attribute_of_parent__");
     PyObject* key2 = PyString_FromString("__instance_of_parent__");
+    PyObject* attro = PyString_FromString(attr);
 #else
     PyObject* key1 = PyBytes_FromString("__attribute_of_parent__");
     PyObject* key2 = PyBytes_FromString("__instance_of_parent__");
-#endif
     PyObject* attro = PyUnicode_FromString(attr);
+#endif
     PyDict_SetItem(attrDict, key1, attro);
     PyDict_SetItem(attrDict, key2, par);
     Py_DECREF(attro);
