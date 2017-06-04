@@ -2199,8 +2199,8 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
     ret.reserve(d->objectArray.size());
     map < App::DocumentObject*,int > countMap;
 
-    for (auto objectIt : d->objectArray)
-        countMap[objectIt] = objectIt->getInList().size();
+    for (auto objectIt : d->objectMap)
+        countMap[objectIt.second] = objectIt.second->getInList().size();
 
     auto rootObjeIt = find_if(countMap.begin(), countMap.end(), [](pair < App::DocumentObject*, int > count)->bool {
         return count.second == 0;
@@ -2213,7 +2213,13 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
 
     while (rootObjeIt != countMap.end()){
         rootObjeIt->second = rootObjeIt->second - 1;
-        for (auto outListIt : rootObjeIt->first->getOutList()){
+        
+        //we need outlist with unique entries, as inlist also has unique entries
+        auto out = rootObjeIt->first->getOutList();
+        std::sort(out.begin(), out.end());
+        out.erase(std::unique(out.begin(), out.end()), out.end());
+        
+        for (auto outListIt : out) {
             auto outListMapIt = countMap.find(outListIt);
             outListMapIt->second = outListMapIt->second - 1;
         }
