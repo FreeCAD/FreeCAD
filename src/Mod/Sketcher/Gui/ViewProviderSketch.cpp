@@ -5808,6 +5808,11 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             signalElementsChanged();
         }
         
+        // Notes on solving and recomputing:
+        //
+        // This function is generally called from StdCmdDelete::activated
+        // Since 2015-05-03 that function includes a recompute at the end.
+        
         /*this->drawConstraintIcons();
         this->updateColor();*/
 
