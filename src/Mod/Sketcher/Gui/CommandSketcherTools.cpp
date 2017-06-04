@@ -783,16 +783,14 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                     Base::Console().Error("%s\n", e.what());
                     Gui::Command::abortCommand();
 
-                    static_cast<Sketcher::SketchObject *>(Obj)->solve();
-                    tryAutoRecompute();
+                    tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(Obj));
 
                     return;
                 }
 
                 Gui::Command::commitCommand();
 
-                static_cast<Sketcher::SketchObject *>(Obj)->solve();
-                tryAutoRecompute();
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(Obj));
             }
         }
     }
@@ -982,8 +980,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
         Gui::Command::abortCommand();
     }
 
-    Obj->solve();
-    tryAutoRecompute();
+    tryAutoRecomputeIfNotSolve(Obj);
 }
 
 bool CmdSketcherSymmetry::isActive(void)
@@ -1123,8 +1120,7 @@ static const char *cursor_createcopy[]={
                     sugConstr1.clear();
                 }
                 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                tryAutoRecompute();
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
                 
                 EditCurve.clear();
                 sketchgui->drawEdit(EditCurve);
@@ -1566,8 +1562,8 @@ static const char *cursor_createrectangulararray[]={
                     sugConstr1.clear();
                 }
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                tryAutoRecompute();
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+                
 
                 EditCurve.clear();
                 sketchgui->drawEdit(EditCurve);
