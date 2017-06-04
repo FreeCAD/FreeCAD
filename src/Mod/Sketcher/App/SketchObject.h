@@ -152,7 +152,8 @@ public:
     /** solves the sketch and updates the geometry, but not all the dependent features (does not recompute)
         When a recompute is necessary, recompute triggers execute() which solves the sketch and updates all dependent features
         When a solve only is necessary (e.g. DoF changed), solve() solves the sketch and 
-        updates the geometry (if updateGeoAfterSolving==true), but does not trigger any updates
+        updates the geometry (if updateGeoAfterSolving==true), but does not trigger any recompute.
+        @return 0
     */
     int solve(bool updateGeoAfterSolving=true);   
     /// set the datum of a Distance or Angle constraint and solve
