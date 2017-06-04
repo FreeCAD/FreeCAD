@@ -40,15 +40,8 @@ PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 # PathLog.trackModule('PathEngrave')
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
-
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class ObjectPathEngrave:
 
@@ -118,7 +111,8 @@ class ObjectPathEngrave:
             return
         try:
             if baseobject.isDerivedFrom('Sketcher::SketchObject') or \
-                    baseobject.isDerivedFrom('Part::Part2DObject'):
+                    baseobject.isDerivedFrom('Part::Part2DObject') or \
+                    hasattr(baseobject, 'ArrayType'):
 
                 output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
 
@@ -181,7 +175,8 @@ class ObjectPathEngrave:
                 if not last:
                     # we set the first move to our first point
                     last = edge.Vertexes[0].Point
-                    output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.SafeHeight.Value) + "F " + PathUtils.fmt(self.horizRapid)  # Rapid sto starting position
+                    output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.horizRapid)  # Rapid to starting position
+                    output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.SafeHeight.Value) + "F " + PathUtils.fmt(self.horizRapid)  # Rapid to safe height
                     output += "G1" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.FinalDepth.Value) + "F " + PathUtils.fmt(self.vertFeed) + "\n"  # Vertical feed to depth
                 if isinstance(edge.Curve, Part.Circle):
                     point = edge.Vertexes[-1].Point
@@ -208,7 +203,7 @@ class ObjectPathEngrave:
                     output += " F " + PathUtils.fmt(self.horizFeed)
                     output += "\n"
                     last = point
-            output += "G0 Z " + PathUtils.fmt(obj.SafeHeight.Value)
+            output += "G0 Z " + PathUtils.fmt(obj.ClearanceHeight.Value)
         return output
 
 

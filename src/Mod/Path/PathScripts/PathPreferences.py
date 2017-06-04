@@ -93,21 +93,21 @@ class PathPreferences:
         pref.SetFloat(cls.GeometryTolerance, geometryTolerance)
 
 
-    DefaultOutputFile = "DefaultOutputFile"
-    DefaultOutputPolicy = "DefaultOutputPolicy"
+    PostProcessorOutputFile = "PostProcessorOutputFile"
+    PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 
     @classmethod
     def saveOutputFileDefaults(cls, file, policy):
         pref = cls.preferences()
-        pref.SetString(cls.DefaultOutputFile, file)
-        pref.SetString(cls.DefaultOutputPolicy, policy)
+        pref.SetString(cls.PostProcessorOutputFile, file)
+        pref.SetString(cls.PostProcessorOutputPolicy, policy)
 
     @classmethod
     def defaultOutputFile(cls):
         pref = cls.preferences()
-        return pref.GetString(cls.DefaultOutputFile, "")
+        return pref.GetString(cls.PostProcessorOutputFile, "")
 
     @classmethod
     def defaultOutputPolicy(cls):
         pref = cls.preferences()
-        return pref.GetString(cls.DefaultOutputPolicy, "")
+        return pref.GetString(cls.PostProcessorOutputPolicy, "")

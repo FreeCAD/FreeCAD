@@ -348,7 +348,11 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Attacher::AttachEnginePy   ::Type,partModule,"AttachEngine");
 
 #if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef BRepOffsetAPIDef = {PyModuleDef_HEAD_INIT,"BRepOffsetAPI", "BRepOffsetAPI", -1, 0};
+    static struct PyModuleDef BRepOffsetAPIDef = {
+        PyModuleDef_HEAD_INIT,
+        "BRepOffsetAPI", "BRepOffsetAPI", -1, 0,
+        NULL, NULL, NULL, NULL
+    };
     PyObject* brepModule = PyModule_Create(&BRepOffsetAPIDef);
 #else
     PyObject* brepModule = Py_InitModule3("BRepOffsetAPI", 0, "BrepOffsetAPI");
@@ -359,7 +363,11 @@ PyMOD_INIT_FUNC(Part)
 
     // Geom2d package
 #if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef geom2dDef = {PyModuleDef_HEAD_INIT,"Geom2dD", "Geom2d", -1, 0};
+    static struct PyModuleDef geom2dDef = {
+        PyModuleDef_HEAD_INIT,
+        "Geom2dD", "Geom2d", -1, 0,
+        NULL, NULL, NULL, NULL
+    };
     PyObject* geom2dModule = PyModule_Create(&geom2dDef);
 #else
      PyObject* geom2dModule = Py_InitModule3("Geom2d", 0, "Geom2d");

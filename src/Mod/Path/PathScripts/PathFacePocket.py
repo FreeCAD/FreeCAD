@@ -29,14 +29,8 @@ from PySide import QtCore, QtGui
 """Path Pocket object and FreeCAD command"""
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class ObjectFacePocket:
@@ -162,26 +156,22 @@ class CommandPathFacePocket:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelectionEx()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate(
-                "Path_FacePocket", "Please select an edges loop from one object, or a single face\n"))
+            FreeCAD.Console.PrintError(translate("Path_FacePocket", "Please select an edges loop from one object, or a single face\n"))
             return
         if len(selection[0].SubObjects) == 0:
-            FreeCAD.Console.PrintError(translate(
-                "Path_FacePocket", "Please select an edges loop from one object, or a single face\n"))
+            FreeCAD.Console.PrintError(translate("Path_FacePocket", "Please select an edges loop from one object, or a single face\n"))
             return
         for s in selection[0].SubObjects:
             if s.ShapeType != "Edge":
                 if (s.ShapeType != "Face") or (len(selection[0].SubObjects) != 1):
-                    FreeCAD.Console.PrintError(
-                        translate("Path_FacePocket", "Please select only edges or a single face\n"))
+                    FreeCAD.Console.PrintError(translate("Path_FacePocket", "Please select only edges or a single face\n"))
                     return
         if selection[0].SubObjects[0].ShapeType == "Edge":
             try:
                 import Part
                 # w = Part.Wire(selection[0].SubObjects)
             except:
-                FreeCAD.Console.PrintError(
-                    translate("Path_FacePocket", "The selected edges don't form a loop\n"))
+                FreeCAD.Console.PrintError(translate("Path_FacePocket", "The selected edges don't form a loop\n"))
                 return
 
         # if everything is ok, execute and register the transaction in the

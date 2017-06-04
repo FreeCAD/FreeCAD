@@ -12,12 +12,14 @@ IF (WIN32)
   IF (CYGWIN)
 
     FIND_PATH(COIN3D_INCLUDE_DIRS Inventor/So.h
+      ${CMAKE_INCLUDE_PATH}
       /usr/include
       /usr/local/include
       /usr/include/coin
     )
 
     FIND_LIBRARY(COIN3D_LIBRARIES Coin
+      ${CMAKE_LIBRARY_PATH}
       /usr/lib
       /usr/local/lib
     )
@@ -32,8 +34,13 @@ IF (WIN32)
       "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\Coin3D\\2;Installation Path]/lib"
     )
 
-    FIND_LIBRARY(COIN3D_LIBRARY_RELEASE coin2
-      "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\Coin3D\\2;Installation Path]/lib"
+    FIND_LIBRARY(COIN3D_LIBRARY_RELEASE
+      NAMES
+        coin2
+        Coin4
+      PATHS
+        ${CMAKE_LIBRARY_PATH}
+        "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\Coin3D\\2;Installation Path]/lib"
     )
 
     IF (COIN3D_LIBRARY_DEBUG AND COIN3D_LIBRARY_RELEASE)
@@ -76,6 +83,7 @@ ELSE (WIN32)
     # ... then fall back to manual lookup
     IF(NOT COIN3D_FOUND)
       FIND_PATH(COIN3D_INCLUDE_DIRS Inventor/So.h
+        ${CMAKE_INCLUDE_PATH}
         /usr/include/Coin3
         /usr/include
         /usr/include/coin
@@ -83,6 +91,7 @@ ELSE (WIN32)
       )
 
       FIND_LIBRARY(COIN3D_LIBRARIES Coin
+        ${CMAKE_LIBRARY_PATH}
         /usr/lib
         /usr/local/lib
         PATH_SUFFIXES Coin2 Coin3

@@ -84,6 +84,17 @@ if(MSVC)
         optimized MSVCRT.LIB
         optimized MSVCPRT.LIB
     )
+
+    #Universal C runtime introduced in VS 2015 (cl version 19)
+    if (NOT (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "19"))
+        list(APPEND area_native_LIBS
+            debug vcruntimed.lib
+            debug ucrtd.lib
+            optimized vcruntime.lib
+            optimized ucrt.lib
+        )
+    endif()
+
     set(area_LIBS
         ${Boost_LIBRARIES}
         ${PYTHON_LIBRARIES}

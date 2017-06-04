@@ -790,6 +790,8 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
         result = Swig_1_3_40::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
         break;
     default:
+#else
+    (void)Module;
 #endif
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     result = Swig_python::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
@@ -842,6 +844,8 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
         result = Swig_1_3_40::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
         break;
     default:
+#else
+    (void)Module;
 #endif
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
         result = Swig_python::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);

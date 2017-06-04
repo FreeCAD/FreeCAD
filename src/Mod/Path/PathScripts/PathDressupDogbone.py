@@ -40,7 +40,7 @@ LOG_MODULE = 'PathDressupDogbone'
 #PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 
 # Qt tanslation handling
-def translate(text, context = "PathDressup_Dogbone", disambig=None):
+def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 movecommands = ['G0', 'G00', 'G1', 'G01', 'G2', 'G02', 'G3', 'G03']

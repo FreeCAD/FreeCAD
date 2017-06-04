@@ -78,13 +78,13 @@ class PathPostTestCases(unittest.TestCase):
         contour.OffsetExtra = 0.0
         contour.Direction = 'CW'
         contour.ToolController = tc
-        contour.UseComp = True
+        contour.UseComp = False
         PathScripts.PathUtils.addToJob(contour)
         PathScripts.PathContour.ObjectContour.setDepths(contour.Proxy, contour)
         self.doc.recompute()
 
         job.PostProcessor = 'linuxcnc'
-        job.PostProcessorArgs = '--no-header --no-line-numbers --no-comments --no-show-editor'
+        job.PostProcessorArgs = '--no-header --no-line-numbers --no-comments --no-show-editor --output-precision=2'
 
         post = PathScripts.PathPost.CommandPathPost()
         (fail, gcode) = post.exportObjectsWith([job], job, False)

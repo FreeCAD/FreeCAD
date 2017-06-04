@@ -35,14 +35,8 @@ import PathScripts.PathUtils as P
 """Dragknife Dressup object and FreeCAD command"""
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 movecommands = ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']
 rapidcommands = ['G0', 'G00']

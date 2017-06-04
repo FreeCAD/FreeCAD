@@ -34,22 +34,8 @@ if FreeCAD.GuiUp:
 
 """Helix Drill object and FreeCAD command"""
 
-if FreeCAD.GuiUp:
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
-
-        def translate(context, text, disambig=None):
-            return QtGui.QApplication.translate(context, text, disambig,
-                                                _encoding)
-
-    except AttributeError:
-
-        def translate(context, text, disambig=None):
-            return QtGui.QApplication.translate(context, text, disambig)
-else:
-    def translate(context, text, disambig=None):
-        return text
-
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 def z_cylinder(cyl):
     """ Test if cylinder is aligned to z-Axis"""

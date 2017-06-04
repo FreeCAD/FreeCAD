@@ -25,14 +25,11 @@
 from __future__ import print_function
 import sys
 import FreeCAD
-# from FreeCAD import Vector
 import Path
 import PathScripts.PathLog as PathLog
-# import Part
 from PySide import QtCore, QtGui
 from PathScripts import PathUtils
-from PathScripts.PathUtils import fmt
-# from math import pi
+from PathScripts.PathUtils import fmt, waiting_effects
 import ArchPanel
 
 
@@ -51,14 +48,8 @@ if FreeCAD.GuiUp:
 """Path Drilling object and FreeCAD command"""
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class ObjectDrilling:
@@ -105,9 +96,8 @@ class ObjectDrilling:
 
     def onChanged(self, obj, prop):
         pass
-        # if prop == "UserLabel":
-        #     obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
+    @waiting_effects
     def execute(self, obj):
         PathLog.track()
         output = ""

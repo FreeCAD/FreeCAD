@@ -40,18 +40,10 @@ PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    # Qt tanslation handling
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
 
-        def translate(context, text, disambig=None):
-            return QtGui.QApplication.translate(context, text, disambig, _encoding)
-    except AttributeError:
-        def translate(context, text, disambig=None):
-            return QtGui.QApplication.translate(context, text, disambig)
-else:
-    def translate(ctxt, txt):
-        return txt
+# Qt tanslation handling
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 __title__ = "Path Profile Operation"
 __author__ = "sliptonic (Brad Collette)"

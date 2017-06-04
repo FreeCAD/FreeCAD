@@ -48,7 +48,7 @@
         ""#_class_"", \
         0, 0, 0, 0, 0, 0, 0, 0, 0, \
         &_subclass_::Type, \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 \
     }; \
     _class_::_class_(Base::BaseClass *pcObject, PyTypeObject *T) \
         : _subclass_(reinterpret_cast<_subclass_::PointerType>(pcObject), T) \
@@ -101,7 +101,7 @@ public:
 
     /** @name callbacks and implementers for the python object methods */
     //@{
-    static  int __setattr(PyObject *PyObj, char *attr, PyObject *value);
+    static  int __setattro(PyObject *PyObj, PyObject *attro, PyObject *value);
     //@}
     PyObject *_getattr(char *attr);              // __getattr__ function
     int _setattr(char *attr, PyObject *value);        // __setattr__ function

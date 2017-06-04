@@ -39,15 +39,8 @@ PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 # PathLog.trackModule('PathPocket')
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
-
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class ObjectPocket:
 
@@ -108,9 +101,6 @@ class ObjectPocket:
                 obj.setEditorMode('HelixSize', 2)  # make this hidden
                 obj.setEditorMode('RampAngle', 2)  # make this hidden
                 obj.setEditorMode('RampSize', 2)   # make this hidden
-
-        if prop == "UserLabel":
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
     def __getstate__(self):
         return None

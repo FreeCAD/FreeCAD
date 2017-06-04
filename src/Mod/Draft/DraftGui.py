@@ -1248,12 +1248,13 @@ class DraftToolBar:
         
     def apply(self):
         for i in FreeCADGui.Selection.getSelection():
-            Draft.formatObject(i)	
+            Draft.formatObject(i)
 
     def checkx(self):
         if self.yValue.isEnabled():
             self.yValue.setFocus()
             self.yValue.selectAll()
+            self.updateSnapper()
         else:
             self.checky()
 
@@ -1261,12 +1262,14 @@ class DraftToolBar:
         if self.zValue.isEnabled():
             self.zValue.setFocus()
             self.zValue.selectAll()
+            self.updateSnapper()
         else:
             self.validatePoint()
             
     def checkangle(self):
         self.angleValue.setFocus()
         self.angleValue.selectAll()
+        self.updateSnapper()
 
     def validatePoint(self):
         "function for checking and sending numbers entered manually"
@@ -1520,6 +1523,23 @@ class DraftToolBar:
                     i.setProperty("text",txt[:-1])
                     i.setFocus()
                     i.selectAll()
+        self.updateSnapper()
+                    
+    def updateSnapper(self):
+        "updates the snapper track line if applicable"
+        if hasattr(FreeCADGui,"Snapper"):
+            if FreeCADGui.Snapper.trackLine:
+                if FreeCADGui.Snapper.trackLine.Visible:
+                    last = FreeCAD.Vector(0,0,0)
+                    if not self.xValue.isVisible():
+                        return
+                    if self.isRelative.isChecked():
+                        if self.sourceCmd:
+                            if hasattr(self.sourceCmd,"node"):
+                                if self.sourceCmd.node:
+                                    last = self.sourceCmd.node[-1]
+                    delta = FreeCAD.DraftWorkingPlane.getGlobalCoords(FreeCAD.Vector(self.x,self.y,self.z))
+                    FreeCADGui.Snapper.trackLine.p2(last.add(delta))
 
     def storeCurrentText(self,qstr):
         self.currEditText = self.textValue.text()

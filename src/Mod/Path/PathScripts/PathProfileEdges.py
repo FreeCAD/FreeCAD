@@ -28,6 +28,7 @@ from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
 from DraftGeomUtils import findWires
 import PathScripts.PathLog as PathLog
+from PathScripts.PathUtils import waiting_effects
 
 """Path Profile from Edges Object and Command"""
 
@@ -38,18 +39,10 @@ PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    # Qt tanslation handling
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
 
-        def translate(context, text, disambig=None):
-            return QtGui.QApplication.translate(context, text, disambig, _encoding)
-    except AttributeError:
-        def translate(context, text, disambig=None):
-            return QtGui.QApplication.translate(context, text, disambig)
-else:
-    def translate(ctxt, txt):
-        return txt
+# Qt tanslation handling
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 __title__ = "Path Profile Edges Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -107,8 +100,7 @@ class ObjectProfile:
         return None
 
     def onChanged(self, obj, prop):
-        if prop == "UserLabel":
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+        pass
 
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
@@ -144,6 +136,7 @@ class ObjectProfile:
         obj.Base = baselist
         self.execute(obj)
 
+    @waiting_effects
     def _buildPathLibarea(self, obj, edgelist):
         import PathScripts.PathKurveUtils as PathKurveUtils
         # import math

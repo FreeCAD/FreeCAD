@@ -1163,7 +1163,12 @@ PyObject* TopoShapePy::childShapes(PyObject *args)
         return NULL;
 
     try {
-        TopoDS_Iterator it(getTopoShapePtr()->getShape(),
+        const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
+        if (shape.IsNull()) {
+            PyErr_SetString(PyExc_ValueError, "Shape is null");
+            return NULL;
+        }
+        TopoDS_Iterator it(shape,
             PyObject_IsTrue(cumOri) ? Standard_True : Standard_False,
             PyObject_IsTrue(cumLoc) ? Standard_True : Standard_False);
         Py::List list;
