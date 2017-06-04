@@ -769,9 +769,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                        ,GeoId, PosId, x-xInit, y-yInit, relative ? 1 : 0
                                                        );
                                 Gui::Command::commitCommand();
-                                
-                                getSketchObject()->solve();
-                                tryAutoRecompute();
+
+                                tryAutoRecomputeIfNotSolve(getSketchObject());
                             }
                             catch (const Base::Exception& e) {
                                 Gui::Command::abortCommand();
@@ -804,8 +803,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                        );
                                 Gui::Command::commitCommand();
 
-                                getSketchObject()->solve();
-                                tryAutoRecompute();
+                                tryAutoRecomputeIfNotSolve(getSketchObject());
                             }
                             catch (const Base::Exception& e) {
                                 Gui::Command::abortCommand();

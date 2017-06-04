@@ -175,8 +175,7 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
                     Gui::Command::abortCommand();
 
-                    sketch->solve(); // we have to update the solver after this aborted addition.
-                    tryAutoRecompute();
+                    tryAutoRecomputeIfNotSolve(sketch);
                 }
             }
         }
@@ -184,8 +183,7 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
             // command canceled
             Gui::Command::abortCommand();
 
-            sketch->solve(); // we have to update the solver after this aborted addition.
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(sketch); // we have to update the solver after this aborted addition.
         }
     }
 }
@@ -627,14 +625,23 @@ std::string SketcherGui::getStrippedPythonExceptionString(const Base::Exception 
         return msg;
 }
 
-void SketcherGui::tryAutoRecompute()
+bool SketcherGui::tryAutoRecompute()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
 
     if (autoRecompute)
         Gui::Command::updateActive();
+
+    return autoRecompute;
 }
+
+void SketcherGui::tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj)
+{
+    if(!tryAutoRecompute())
+        obj->solve();
+}
+
 
 namespace SketcherGui {
 
@@ -4767,8 +4774,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
                     abortCommand();
                     
-                    Obj->solve(); // we have to update the solver after this aborted addition.
-                    tryAutoRecompute();
+                    tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
                 }
             }
             else {
@@ -4791,8 +4797,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         commitCommand();
     
     if(updateNeeded) {
-        Obj->solve();
-        tryAutoRecompute();
+        tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
     }
 }
 
@@ -4902,8 +4907,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
                     abortCommand();
 
-                    Obj->solve(); // we have to update the solver after this aborted addition.
-                    tryAutoRecompute();
+                    tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
                 }
             }
             else {
@@ -4925,8 +4929,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
             commitCommand();
 
         if(updateNeeded) {
-            Obj->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
         }
     }
     }
