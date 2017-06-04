@@ -516,7 +516,7 @@ Py::List DocumentPy::getObjects(void) const
     return res;
 }
 
-Py::List DocumentPy::getToplogicalSortedObjects(void) const
+Py::List DocumentPy::getTopologicalSortedObjects(void) const
 {
     std::vector<DocumentObject*> objs = getDocumentPtr()->topologicalSort();
     Py::List res;
