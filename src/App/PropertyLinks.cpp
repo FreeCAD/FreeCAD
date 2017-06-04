@@ -74,11 +74,13 @@ void PropertyLink::setValue(App::DocumentObject * lValue)
 {
     aboutToSetValue();
 #ifndef USE_OLD_DAG
-    // maintain the back link in the DocumentObject class
-    if(_pcLink)
-        _pcLink->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    if(lValue)
-        lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    // maintain the back link in the DocumentObject class if it is from a document object
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        if(_pcLink)
+            _pcLink->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        if(lValue)
+            lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     _pcLink=lValue;
     hasSetValue();
@@ -207,10 +209,12 @@ void PropertyLinkList::setValue(DocumentObject* lValue)
 {
 #ifndef USE_OLD_DAG   
     //maintain the back link in the DocumentObject class
-    for(auto *obj : _lValueList)
-        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    if(lValue)
-        lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        for(auto *obj : _lValueList)
+            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        if(lValue)
+            lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     
     if (lValue){
@@ -231,10 +235,12 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue)
     aboutToSetValue();
 #ifndef USE_OLD_DAG
     //maintain the back link in the DocumentObject class
-    for(auto *obj : _lValueList)
-        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    for(auto *obj : lValue)
-        obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        for(auto *obj : _lValueList)
+            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        for(auto *obj : lValue)
+            obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     _lValueList = lValue;
     hasSetValue();
@@ -382,10 +388,12 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<s
 {
     aboutToSetValue();
 #ifndef USE_OLD_DAG
-    if (_pcLinkSub)
-        _pcLinkSub->_removeBackLink(static_cast<App::DocumentObject*>(getContainer()));
-    if (lValue)
-        lValue->_addBackLink(static_cast<App::DocumentObject*>(getContainer()));
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        if (_pcLinkSub)
+            _pcLinkSub->_removeBackLink(static_cast<App::DocumentObject*>(getContainer()));
+        if (lValue)
+            lValue->_addBackLink(static_cast<App::DocumentObject*>(getContainer()));
+    }
 #endif
     _pcLinkSub=lValue;
     _cSubList = SubList;
@@ -578,10 +586,12 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
 {
 #ifndef USE_OLD_DAG
     //maintain backlinks
-    for(auto *obj : _lValueList)
-        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    if (lValue)
-        lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        for(auto *obj : _lValueList)
+            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        if (lValue)
+            lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     
     if (lValue) {
@@ -606,15 +616,19 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
         throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     
 #ifndef USE_OLD_DAG
-    //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
-    //object to ensure that this works
-    for(auto *obj : _lValueList)
-        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    
-    //maintain backlinks. lValue can contain items multiple times, but we trust the document 
-    //object to ensure that the backlink is only added once
-    for(auto *obj : lValue)
-        obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    //maintain backlinks. 
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        
+        //_lValueList can contain items multiple times, but we trust the document 
+        //object to ensure that this works
+        for(auto *obj : _lValueList)
+            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        
+        //maintain backlinks. lValue can contain items multiple times, but we trust the document 
+        //object to ensure that the backlink is only added once
+        for(auto *obj : lValue)
+            obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     
     aboutToSetValue();
@@ -632,15 +646,19 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
         throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     
 #ifndef USE_OLD_DAG
-    //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
-    //object to ensure that this works
-    for(auto *obj : _lValueList)
-        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    
-    //maintain backlinks. lValue can contain items multiple times, but we trust the document 
-    //object to ensure that the backlink is only added once
-    for(auto *obj : lValue)
-        obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    //maintain backlinks. 
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        
+        //_lValueList can contain items multiple times, but we trust the document 
+        //object to ensure that this works
+        for(auto *obj : _lValueList)
+            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        
+        //maintain backlinks. lValue can contain items multiple times, but we trust the document 
+        //object to ensure that the backlink is only added once
+        for(auto *obj : lValue)
+            obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     
     aboutToSetValue();
@@ -651,16 +669,20 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
 
 void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
 {
-#ifndef USE_OLD_DAG    
-    //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
-    //object to ensure that this works
-    for(auto *obj : _lValueList)
-        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    
-    //maintain backlinks. lValue can contain items multiple times, but we trust the document 
-    //object to ensure that the backlink is only added once
-    if(lValue)
-        lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+#ifndef USE_OLD_DAG   
+    //maintain backlinks.
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        
+        //_lValueList can contain items multiple times, but we trust the document 
+        //object to ensure that this works
+        for(auto *obj : _lValueList)
+            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        
+        //maintain backlinks. lValue can contain items multiple times, but we trust the document 
+        //object to ensure that the backlink is only added once
+        if(lValue)
+            lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     
     aboutToSetValue();
