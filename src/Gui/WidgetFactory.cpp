@@ -263,8 +263,13 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
     }
 #else // does the same using shiboken's Python interface
     // https://github.com/PySide/Shiboken/blob/master/shibokenmodule/typesystem_shiboken.xml
-    Py::Module mainmod(PyImport_ImportModule((char*)"shiboken"), true);
+    PyObject* module = PyImport_ImportModule((char*)"shiboken");
+    if (!module)
+        throw Py::Exception(PyExc_ImportError, "Cannot load shiboken module");
+
+    Py::Module mainmod(module, true);
     Py::Callable func = mainmod.getDict().getItem("getCppPointer");
+
     Py::Tuple arguments(1);
     arguments[0] = pyobject; //PySide pointer
     Py::Tuple result(func.apply(arguments));
@@ -272,8 +277,13 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
     return reinterpret_cast<QObject*>(ptr);
 #endif
 #else
-    Py::Module mainmod(PyImport_ImportModule((char*)"sip"), true);
+    PyObject* module = PyImport_ImportModule((char*)"sip");
+    if (!module)
+        throw Py::Exception(PyExc_ImportError, "Cannot load sip module");
+
+    Py::Module mainmod(module, true);
     Py::Callable func = mainmod.getDict().getItem("unwrapinstance");
+
     Py::Tuple arguments(1);
     arguments[0] = pyobject; //PyQt pointer
     Py::Object result = func.apply(arguments);
@@ -313,25 +323,47 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
     }
     throw Py::RuntimeError("Failed to wrap widget");
 #else // does the same using shiboken's Python interface
-    Py::Module mainmod(PyImport_ImportModule((char*)"shiboken"), true);
+    PyObject* module = PyImport_ImportModule((char*)"shiboken");
+    if (!module)
+        throw Py::Exception(PyExc_ImportError, "Cannot load shiboken module");
+
+    Py::Module mainmod(module, true);
     Py::Callable func = mainmod.getDict().getItem("wrapInstance");
+
     Py::Tuple arguments(2);
     arguments[0] = Py::asObject(PyLong_FromVoidPtr(widget));
-    Py::Module qtmod(PyImport_ImportModule((char*)"PySide.QtGui"));
+
+    module = PyImport_ImportModule((char*)"PySide.QtGui");
+    if (!module)
+        throw Py::Exception(PyExc_ImportError, "Cannot load PySide.QtGui module");
+
+    Py::Module qtmod(module);
     arguments[1] = qtmod.getDict().getItem(className);
     return func.apply(arguments);
 #endif
 #else
     Q_UNUSED(className);
-    Py::Module sipmod(PyImport_ImportModule((char*)"sip"), true);
+    PyObject* module = PyImport_ImportModule((char*)"sip");
+    if (!module)
+        throw Py::Exception(PyExc_ImportError, "Cannot load sip module");
+
+    Py::Module sipmod(module, true);
     Py::Callable func = sipmod.getDict().getItem("wrapinstance");
+
     Py::Tuple arguments(2);
     arguments[0] = Py::asObject(PyLong_FromVoidPtr(widget));
+
 #if QT_VERSION >= 0x050000
-    Py::Module qtmod(PyImport_ImportModule((char*)"PyQt5.QtWidgets"));
+    module = PyImport_ImportModule((char*)"PyQt5.QtWidgets");
+    if (!module)
+        throw Py::Exception(PyExc_ImportError, "Cannot load PyQt5.QtWidgets module");
 #else
-    Py::Module qtmod(PyImport_ImportModule((char*)"PyQt4.Qt"));
+    module = PyImport_ImportModule((char*)"PyQt4.Qt");
+    if (!module)
+        throw Py::Exception(PyExc_ImportError, "Cannot load PyQt4.Qt module");
 #endif
+
+    Py::Module qtmod(module);
     arguments[1] = qtmod.getDict().getItem("QWidget");
     return func.apply(arguments);
 #endif
@@ -348,6 +380,8 @@ const char* PythonWrapper::getWrapperName(QObject* obj) const
             return typeName;
         meta = meta->superClass();
     }
+#else
+    Q_UNUSED(obj);
 #endif
 
     return nullptr;
