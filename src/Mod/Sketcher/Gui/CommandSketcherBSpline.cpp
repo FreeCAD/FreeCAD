@@ -410,8 +410,7 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
         commitCommand();
     }
 
-    Obj->solve();
-    tryAutoRecompute();
+    tryAutoRecomputeIfNotSolve(Obj);
 }
 
 bool CmdSketcherConvertToNURB::isActive(void)
@@ -474,8 +473,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
 
     commitCommand();
 
-    Obj->solve();
-    tryAutoRecompute();
+    tryAutoRecomputeIfNotSolve(Obj);
 
     getSelection().clearSelection();
 }
@@ -634,8 +632,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         commitCommand();
     }
 
-    Obj->solve();
-    tryAutoRecompute();
+    tryAutoRecomputeIfNotSolve(Obj);
 
     getSelection().clearSelection();
     
@@ -782,8 +779,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
         commitCommand();
     }
 
-    Obj->solve();
-    tryAutoRecompute();
+    tryAutoRecomputeIfNotSolve(Obj);
 
     getSelection().clearSelection();
 }

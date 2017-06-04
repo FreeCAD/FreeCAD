@@ -361,8 +361,7 @@ public:
                 sugConstr2.clear();
             }
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             EditCurve.clear();
             sketchgui->drawEdit(EditCurve);
@@ -598,8 +597,7 @@ public:
                 sugConstr2.clear();
             }
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -1118,8 +1116,7 @@ public:
                 }
                 Gui::Command::commitCommand();
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                tryAutoRecompute();
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
             }
             
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -1205,8 +1202,7 @@ public:
                     sugConstr2.clear();
                 }
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                tryAutoRecompute();
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
                 // remember the vertex for the next rounds constraint..
                 previousCurve = getHighestCurveIndex();
@@ -1578,8 +1574,7 @@ public:
             }
 
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -1889,8 +1884,7 @@ public:
                 sugConstr3.clear();
             }
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -2194,8 +2188,7 @@ public:
                 sugConstr2.clear();
             }
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -2989,8 +2982,7 @@ private:
             Base::Console().Error("%s\n", e.what());
             Gui::Command::abortCommand();
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             return;
         }
@@ -3028,8 +3020,7 @@ private:
             }
         }
 
-        static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-        tryAutoRecompute();
+        tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
         // This code enables the continuous creation mode.
         if (constrMethod == 0) {
@@ -3407,8 +3398,7 @@ public:
                 Base::Console().Error("%s\n", e.what());
                 Gui::Command::abortCommand();
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                tryAutoRecompute();
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
                 return false;
             }
@@ -3439,8 +3429,7 @@ public:
                 sugConstr4.clear();
             }
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -3790,8 +3779,7 @@ public:
                 Base::Console().Error("%s\n", e.what());
                 Gui::Command::abortCommand();
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                tryAutoRecompute();
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
                 return false;
             }
@@ -3822,8 +3810,7 @@ public:
                 sugConstr4.clear();
             }
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -4137,8 +4124,7 @@ public:
                 Base::Console().Error("%s\n", e.what());
                 Gui::Command::abortCommand();
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                tryAutoRecompute();
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
                 return false;
             }
@@ -4169,8 +4155,7 @@ public:
                 sugConstr4.clear();
             }
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -4669,16 +4654,14 @@ public:
                 Base::Console().Error("%s\n", e.what());
                 Gui::Command::abortCommand();
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                tryAutoRecompute();
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
                 return false;
             }
 
             Gui::Command::commitCommand();
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -4731,8 +4714,7 @@ public:
             
             Gui::Command::abortCommand();
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             if(!continuousMode){
                 DrawSketchHandler::quit();
@@ -5149,8 +5131,7 @@ public:
                 sugConstr3.clear();
             }
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -5402,8 +5383,7 @@ public:
                 sugConstr.clear();
             }
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-            tryAutoRecompute();
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -5688,8 +5668,7 @@ public:
                     Gui::Command::abortCommand();
                 }
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                tryAutoRecompute();
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
             }
             return true;
         }
@@ -6494,8 +6473,7 @@ public:
                     // redraw a changed Sketch if the solver geometry amount is the same as the SkethObject
                     // geometry amount (as this avoids other issues).
                     // This solver is a very low cost one anyway (there is actually nothing to solve).
-                    static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                    tryAutoRecompute();
+                    tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
                     
                     Gui::Selection().clearSelection();
                 /* this is ok not to call to purgeHandler
@@ -6708,8 +6686,7 @@ static const char *cursor_carboncopy[]={
                         
                         Gui::Command::commitCommand();
                         
-                        static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                        tryAutoRecompute();
+                        tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
                         
                         Gui::Selection().clearSelection();
                         /* this is ok not to call to purgeHandler
@@ -6970,8 +6947,7 @@ public:
                     sugConstr2.clear();
                 }
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                tryAutoRecompute();
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("Failed to add slot: %s\n", e.what());
@@ -7200,8 +7176,7 @@ public:
                     sugConstr2.clear();
                 }
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                tryAutoRecompute();
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("Failed to add hexagon: %s\n", e.what());
