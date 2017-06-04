@@ -226,12 +226,18 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     // updated. It is useful to avoid triggering an OnChange when the goeometry did not change but
     // the solver needs to be updated.
     
-    // We should have an updated Sketcher geometry or this solver should not have happened
-    // therefore we update our sketch object geometry with the SketchObject one.
+    // We should have an updated Sketcher (sketchobject) geometry or this solve() should not have happened
+    // therefore we update our sketch solver geometry with the SketchObject one.
     //
     // set up a sketch (including dofs counting and diagnosing of conflicts)
     lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
+    
+    // At this point we have the solver information about conflicting/redundant/over-constrained, but the sketch is NOT solved.
+    // Some examples:
+    // Redundant: a vertical line, a horizontal line and an angle constraint of 90 degrees between the two lines
+    // Conflicting: a 80 degrees angle between a vertical line and another line, then adding a horizontal constraint to that other line
+    // OverConstrained: a conflicting constraint when all other DoF are already constraint (it has more constrains than parameters and the extra constraints are not redundant)
     
     solverNeedsUpdate=false;
     
@@ -241,23 +247,25 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     if (lastDoF < 0) { // over-constrained sketch
         err = -3;
         // if lastDoF<0, then an over-constrained situation has ensued.
-        // Geometry is not to be updated, as geometry can not follow the constraints.
-        // However, solver information must be updated.
+        // The solver has the updated geometry of the SketchObject (see setUpSketch above).
+        // However we are not trying to solve for a geometry that cannot fulfil the constraints.
+        // Therefore there is no need to update the geometry at the end of this function, as it is the same.
+        // However, solver information (e.g. at UI level) must be updated, so trigger an update.
         this->Constraints.touch();
     }
     else if (lastHasConflict) { // conflicting constraints
+        // The situation is exactly the same as in the over-constrained situation.
         err = -3;
+        this->Constraints.touch();
     }
     else {
         lastSolverStatus=solvedSketch.solve();
         if (lastSolverStatus != 0){ // solving
             err = -2;
-            // if solver failed, geometry was never updated, but invalid constraints were likely added before
-            // solving (see solve in addConstraint), so solver information is definitely invalid.
+            // if solver failed, invalid constraints were likely added before solving
+            // (see solve in addConstraint), so solver information is definitely invalid.
             this->Constraints.touch();
-            
         }
-            
     }
     
     lastHasRedundancies = solvedSketch.hasRedundancies();
