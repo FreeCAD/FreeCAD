@@ -232,20 +232,33 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     // set up a sketch (including dofs counting and diagnosing of conflicts)
     lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
-    
+
     // At this point we have the solver information about conflicting/redundant/over-constrained, but the sketch is NOT solved.
     // Some examples:
     // Redundant: a vertical line, a horizontal line and an angle constraint of 90 degrees between the two lines
     // Conflicting: a 80 degrees angle between a vertical line and another line, then adding a horizontal constraint to that other line
     // OverConstrained: a conflicting constraint when all other DoF are already constraint (it has more constrains than parameters and the extra constraints are not redundant)
-    
+
     solverNeedsUpdate=false;
-    
+
     lastHasConflict = solvedSketch.hasConflicts();
-    
+    lastHasRedundancies = solvedSketch.hasRedundancies();
+    lastConflicting=solvedSketch.getConflicting();
+    lastRedundant=solvedSketch.getRedundant();
+    lastSolveTime=0.0;
+
+    lastSolverStatus=GCS::Failed; // Failure is default for notifying the user unless otherwise proven
+
     int err=0;
+
+    // redundancy is a lower priority problem than conflict/over-constraint/solver error
+    // we set it here because we are indeed going to solve, as we can. However, we still want to
+    // provide the right error code.
+    if (lastHasRedundancies) // redundant constraints
+        err = -2;
+    
     if (lastDoF < 0) { // over-constrained sketch
-        err = -3;
+        err = -4;
         // if lastDoF<0, then an over-constrained situation has ensued.
         // The solver has the updated geometry of the SketchObject (see setUpSketch above).
         // However we are not trying to solve for a geometry that cannot fulfil the constraints.
@@ -261,17 +274,13 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     else {
         lastSolverStatus=solvedSketch.solve();
         if (lastSolverStatus != 0){ // solving
-            err = -2;
+            err = -1;
             // if solver failed, invalid constraints were likely added before solving
             // (see solve in addConstraint), so solver information is definitely invalid.
             this->Constraints.touch();
         }
     }
     
-    lastHasRedundancies = solvedSketch.hasRedundancies();
-    
-    lastConflicting=solvedSketch.getConflicting();
-    lastRedundant=solvedSketch.getRedundant();
     lastSolveTime=solvedSketch.SolveTime;
 
     if (err == 0 && updateGeoAfterSolving) {
