@@ -1071,6 +1071,7 @@ const char* PythonCommand::getAccel() const
 
 bool PythonCommand::isCheckable() const
 {
+    Base::PyGILStateLocker lock;
     PyObject* item = PyDict_GetItemString(_pcPyResourceDict,"Checkable");
     return item ? true : false;
 }
