@@ -153,7 +153,8 @@ public:
         When a recompute is necessary, recompute triggers execute() which solves the sketch and updates all dependent features
         When a solve only is necessary (e.g. DoF changed), solve() solves the sketch and 
         updates the geometry (if updateGeoAfterSolving==true), but does not trigger any recompute.
-        @return 0
+        @return 0 if no error, if error, the following codes in this order of priority: -4 if overconstrained,
+                -3 if conflicting, -1 if solver error, -2 if redundant constraints
     */
     int solve(bool updateGeoAfterSolving=true);   
     /// set the datum of a Distance or Angle constraint and solve
