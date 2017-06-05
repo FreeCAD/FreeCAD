@@ -35,7 +35,7 @@ class ArchWorkbench(Workbench):
         # arch tools
         self.archtools = ["Arch_Wall","Arch_Structure","Arch_Rebar",
                      "Arch_Floor","Arch_Building","Arch_Site",
-                     "Arch_Window","Arch_Roof","Arch_Axis",
+                     "Arch_Window","Arch_Roof","Arch_AxisTools",
                      "Arch_SectionPlane","Arch_Space","Arch_Stairs",
                      "Arch_PanelTools","Arch_Equipment",
                      "Arch_Frame","Arch_MaterialTools","Arch_Schedule","Arch_PipeTools",
