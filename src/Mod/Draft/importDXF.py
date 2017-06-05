@@ -87,14 +87,22 @@ def errorDXFLib(gui):
                 if gui:
                     from PySide import QtGui, QtCore
                     from DraftTools import translate
-                    message = translate("Draft","""Download of dxf libraries failed.
+                    if float(FreeCAD.Version()[0]+"."+FreeCAD.Version()[1]) >= 0.17:
+                        message = translate("Draft","""Download of dxf libraries failed.
+Please install the dxf Library addon manually
+from menu Tools -> Addon Manager""")
+                    else:
+                        message = translate("Draft","""Download of dxf libraries failed.
 Please download and install them manually.
 See complete instructions at
 http://www.freecadweb.org/wiki/Dxf_Importer_Install""")
                     QtGui.QMessageBox.information(None,"",message)
                 else:
                     FreeCAD.Console.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
-                    FreeCAD.Console.PrintWarning("Please check https://github.com/yorikvanhavre/Draft-dxf-importer\n")
+                    if float(FreeCAD.Version()[0]+"."+FreeCAD.Version()[1]) >= 0.17:
+                        FreeCAD.Console.PrintWarning("Please install the dxf Library addon from Tools -> Addons Manager\n")
+                    else:
+                        FreeCAD.Console.PrintWarning("Please check https://github.com/yorikvanhavre/Draft-dxf-importer\n")
                 break
         progressbar.stop()
         sys.path.append(FreeCAD.ConfigGet("UserAppData"))
@@ -102,7 +110,17 @@ http://www.freecadweb.org/wiki/Dxf_Importer_Install""")
         if gui:
             from PySide import QtGui, QtCore
             from DraftTools import translate
-            message = translate('draft',"""The DXF import/export libraries needed by FreeCAD to handle
+            if float(FreeCAD.Version()[0]+"."+FreeCAD.Version()[1]) >= 0.17:
+                message = translate('draft',"""The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either enable FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit > Preferences > Import-Export > DXF > Enable downloads
+Or install the libraries manually by installing the dxf-Library addon
+from menu Tools -> Addon Manager.
+To enabled FreeCAD to download these libraries, answer Yes.""")
+            else:
+                message = translate('draft',"""The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either enable FreeCAD to download these libraries:
   1 - Load Draft workbench
@@ -121,7 +139,10 @@ To enabled FreeCAD to download these libraries, answer Yes.""")
                 pass
         else:
             FreeCAD.Console.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
-            FreeCAD.Console.PrintWarning("Please check https://github.com/yorikvanhavre/Draft-dxf-importer\n")
+            if float(FreeCAD.Version()[0]+"."+FreeCAD.Version()[1]) >= 0.17:
+                FreeCAD.Console.PrintWarning("Please install the dxf Library addon from Tools -> Addons Manager\n")
+            else:
+                FreeCAD.Console.PrintWarning("Please check https://github.com/yorikvanhavre/Draft-dxf-importer\n")
 
 
 def getDXFlibs():
