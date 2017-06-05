@@ -272,7 +272,6 @@ void GroupExtension::extensionOnChanged(const Property* p) {
                     in != getExtendedObject()) {
                     error = true;
                     corrected.erase(std::remove(corrected.begin(), corrected.end(), obj), corrected.end());
-                    break;
                 }
             }
         }
