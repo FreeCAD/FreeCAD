@@ -894,17 +894,32 @@ class UndoRedoCases(unittest.TestCase):
     else:
         self.fail("No exception thrown when object is in multiple Groups")
    
-    #to test: try add obj to second group by .Group = []
-    grp = prt1.Group
-    grp.append(grp2)
-    
-    try:
-        prt1.Group=grp
-        self.Doc.recompute()
-    except:
-        pass
-    else:
-        self.fail("No exception at cross geofeaturegroup links") 
+    #cross linking between GeoFeatureGroups is not allowed
+    self.Doc.recompute()
+    box = self.Doc.addObject("Part::Box","Box")
+    cyl = self.Doc.addObject("Part::Cylinder","Cylinder")
+    fus = self.Doc.addObject("Part::MultiFuse","Fusion")
+    fus.Shapes = [cyl, box]
+    self.Doc.recompute()
+    self.failUnless(fus.State[0] == 'Up-to-date')
+    fus.Shapes = [] #remove all links as addObject would otherwise transfer all linked objects
+    prt1.addObject(cyl)
+    fus.Shapes = [cyl, box]
+    self.Doc.recompute()
+    self.failUnless(fus.State[0] == 'Invalid')
+    fus.Shapes = []
+    prt1.addObject(box)
+    fus.Shapes = [cyl, box]
+    self.Doc.recompute()
+    self.failUnless(fus.State[0] == 'Invalid')
+    fus.Shapes = []
+    prt1.addObject(fus)
+    fus.Shapes = [cyl, box]
+    self.Doc.recompute()
+    self.failUnless(fus.State[0] == 'Up-to-date')
+    prt2.addObject(box) #this time addObject should move all dependencies to the new part
+    self.Doc.recompute()
+    self.failUnless(fus.State[0] == 'Up-to-date')
 
   def tearDown(self):
     # closing doc
