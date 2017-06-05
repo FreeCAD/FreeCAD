@@ -175,32 +175,43 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     
     solverNeedsUpdate=false;
     
+    auto updateGeometry = [&]() {
+        
+        std::vector<Part::Geometry *> geomlist = solvedSketch.extractGeometry();
+        Geometry.setValues(geomlist);
+        for (std::vector<Part::Geometry *>::iterator it=geomlist.begin(); it != geomlist.end(); ++it)
+            if (*it) delete *it;
+        
+    };
+    
     if (lastDoF < 0) { // over-constrained sketch
         std::string msg="Over-constrained sketch\n";
         appendConflictMsg(lastConflicting, msg);
+        updateGeometry();
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
     if (lastHasConflict) { // conflicting constraints
         std::string msg="Sketch with conflicting constraints\n";
         appendConflictMsg(lastConflicting, msg);
+        updateGeometry();
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
     if (lastHasRedundancies) { // redundant constraints
         std::string msg="Sketch with redundant constraints\n";
         appendRedundantMsg(lastRedundant, msg);
+        updateGeometry();
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
     // solve the sketch
     lastSolverStatus=solvedSketch.solve();
     lastSolveTime=solvedSketch.SolveTime;
     
-    if (lastSolverStatus != 0)
+    if (lastSolverStatus != 0) {
+        updateGeometry();
         return new App::DocumentObjectExecReturn("Solving the sketch failed",this);
+    }
 
-    std::vector<Part::Geometry *> geomlist = solvedSketch.extractGeometry();
-    Geometry.setValues(geomlist);
-    for (std::vector<Part::Geometry *>::iterator it=geomlist.begin(); it != geomlist.end(); ++it)
-        if (*it) delete *it;
+    updateGeometry();
 
     // this is not necessary for sketch representation in edit mode, unless we want to trigger an update of 
     // the objects that depend on this sketch (like pads)
