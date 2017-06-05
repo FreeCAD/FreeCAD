@@ -1064,6 +1064,8 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
 #ifdef FC_OS_WIN32
         PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glBindBufferARB");
         PFNGLMAPBUFFERARBPROC glMapBufferARB = (PFNGLMAPBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glMapBufferARB");
+        PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
+        PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
 #endif
 	// We must manage buffer size increase let's clear everything and re-init to test the
 	// clearing process
@@ -1265,11 +1267,6 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                 trinr = 0;
             }
         }
-
-#ifdef FC_OS_WIN32
-        PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
-        PFNGLBUFFERDATAARBPROC glBufferDataARB = (PFNGLBUFFERDATAARBPROC)cc_glglue_getprocaddress(glue, "glBufferDataARB");
-#endif
 
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, buf.myvbo[0]);
         glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float) * indice , vertex_array, GL_DYNAMIC_DRAW_ARB);
