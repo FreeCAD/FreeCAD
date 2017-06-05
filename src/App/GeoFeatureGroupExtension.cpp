@@ -305,6 +305,20 @@ void GeoFeatureGroupExtension::getCSRelevantLinks(DocumentObject* obj, std::vect
     vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
 }
 
+bool GeoFeatureGroupExtension::areLinksValid(DocumentObject* obj) {
+
+    //we get all linked objects. We can't use outList() as this includes the links from expressions
+    auto result = getObjectsFromLinks(obj);
+    
+    //no cross CS links.
+    auto group = obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()) ? obj : getGroupOfObject(obj);
+    for(auto link : result) {
+        if(getGroupOfObject(link) != group)
+            return false;
+    }
+    return true;
+}
+
 // Python feature ---------------------------------------------------------
 
 namespace App {

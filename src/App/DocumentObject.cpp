@@ -34,6 +34,7 @@
 #include "PropertyLinks.h"
 #include "PropertyExpressionEngine.h"
 #include "DocumentObjectExtension.h"
+#include "GeoFeatureGroupExtension.h"
 #include <App/DocumentObjectPy.h>
 #include <boost/signals/connection.hpp>
 #include <boost/bind.hpp>
@@ -73,6 +74,10 @@ DocumentObject::~DocumentObject(void)
 
 App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
+    //check if the links are valid before making the recompute
+    if(!GeoFeatureGroupExtension::areLinksValid(this))
+        return new App::DocumentObjectExecReturn("Links between different GeoFeatureGroups are not valid", this);
+
     // set/unset the execution bit
     ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::Recompute, this);
     return this->execute();

@@ -297,11 +297,11 @@ class DocumentBasicCases(unittest.TestCase):
     self.failUnless(L7 in self.Doc.RootObjects)
     self.failUnless(L1 in self.Doc.RootObjects)
 
-    self.failUnless(len(self.Doc.Objects) == len(self.Doc.ToplogicalSortedObjects))
+    self.failUnless(len(self.Doc.Objects) == len(self.Doc.TopologicalSortedObjects))
 
     seqDic = {}
     i = 0
-    for obj in self.Doc.ToplogicalSortedObjects:
+    for obj in self.Doc.TopologicalSortedObjects:
         seqDic[obj] = i
         print(obj)
         i += 1
@@ -878,13 +878,13 @@ class UndoRedoCases(unittest.TestCase):
     grp = prt1.Group
     grp.append(grp2)
     
-    #to test: check if cross CS link works
-    #try:
-    #    prt1.Group=grp
-    #except:
-    #    pass
-    #else:
-    #    self.fail("No exception at cross geofeaturegroup links")
+    try:
+        prt1.Group=grp
+        self.Doc.recompute()
+    except:
+        pass
+    else:
+        self.fail("No exception at cross geofeaturegroup links")
     
     prt2.addObject(grp1)
     grp = grp1.Group
