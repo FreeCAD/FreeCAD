@@ -68,6 +68,8 @@ public:
     /// Constructor
     GeoFeatureGroupExtension(void);
     virtual ~GeoFeatureGroupExtension();
+    
+    virtual void extensionOnChanged(const Property* p);
 
     /** Returns the geo feature group which contains this object.
      * In case this object is not part of any geoFeatureGroup 0 is returned.

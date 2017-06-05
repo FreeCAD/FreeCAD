@@ -178,6 +178,38 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::removeObjects(std::vector
     return removed;
 }
 
+void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
+        
+    //objects are only allowed in a single GeoFeatureGroup
+    if((strcmp(p->getName(), "Group")==0)) {
+     
+        bool error = false;
+        auto corrected = Group.getValues();
+        for(auto obj : Group.getValues()) {
+            
+            //we have already set the obj into the group, so in a case of multiple groups getGroupOfObject
+            //would return anyone of it and hence it is possible that we miss an error. We need a custom check
+            auto list = obj->getInList();
+            for (auto in : list) {
+                if(in->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()) &&
+                    in != getExtendedObject()) {
+                    error = true;
+                    corrected.erase(std::remove(corrected.begin(), corrected.end(), obj), corrected.end());
+                }
+            }
+        }
+        
+        //if an error was found we need to correct the values and inform the user
+        if(error) {
+            Group.setValues(corrected);
+            throw Base::Exception("Object can only be in a single GeoFeatureGroup");
+        }
+    }
+    
+    App::GroupExtension::extensionOnChanged(p);
+}
+
+
 std::vector< DocumentObject* > GeoFeatureGroupExtension::getObjectsFromLinks(DocumentObject* obj) {
 
     //we get all linked objects. We can't use outList() as this includes the links from expressions
