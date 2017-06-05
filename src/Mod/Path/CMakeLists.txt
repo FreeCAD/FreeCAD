@@ -41,7 +41,6 @@ SET(PathScripts_SRCS
     PathScripts/PathInspect.py
     PathScripts/PathJob.py
     PathScripts/PathKurveUtils.py
-    PathScripts/PathLoadTool.py
     PathScripts/PathLog.py
     PathScripts/PathMillFace.py
     PathScripts/PathPlane.py
@@ -61,6 +60,7 @@ SET(PathScripts_SRCS
     PathScripts/PathHelix.py
     PathScripts/kdtree.py
     PathScripts/PathSurface.py
+    PathScripts/PathToolController.py
     PathScripts/PathToolLenOffset.py
     PathScripts/PathToolLibraryManager.py
     PathScripts/PathUtils.py

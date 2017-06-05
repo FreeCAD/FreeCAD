@@ -56,7 +56,7 @@ class ToolLenOffset:
             obj.Path = Path.Path("(inactive operation)")
             obj.ViewObject.Visibility = False
 
-        # tie the HeightNumber to the PathLoadTool object ToolNumber
+        # tie the HeightNumber to the PathToolController object ToolNumber
         if len(obj.InList) > 0:  # check to see if obj is in the Project group yet
             project = obj.InList[0]
             tl = int(PathUtils.changeTool(obj, project))

@@ -31,7 +31,7 @@ import os
 import PathScripts.PathLog as PathLog
 
 from PathScripts import PathJob
-from PathScripts import PathLoadTool
+from PathScripts import PathToolController
 from PathScripts import PathUtils
 from PathScripts.PathPostProcessor import PostProcessor
 from PathScripts.PathPreferences import PathPreferences
@@ -247,7 +247,7 @@ class CommandPathPost:
         currTool = None
         for obj in job.Group:
             PathLog.debug("obj: {}".format(obj.Name))
-            if not isinstance(obj.Proxy, PathLoadTool.LoadTool):
+            if not isinstance(obj.Proxy, PathToolController.ToolController):
                 if obj.ToolController.ToolNumber != currTool:
                     postlist.append(obj.ToolController)
                 postlist.append(obj)

@@ -63,7 +63,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathHop
         from PathScripts import PathInspect
         from PathScripts import PathJob
-        from PathScripts import PathLoadTool
         from PathScripts import PathMillFace
         from PathScripts import PathPlane
         from PathScripts import PathPocket
@@ -75,6 +74,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathStock
         from PathScripts import PathStop
         from PathScripts import PathSurface
+        from PathScripts import PathToolController
         from PathScripts import PathToolLenOffset
         from PathScripts import PathToolLibraryManager
         import PathCommands

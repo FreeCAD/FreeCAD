@@ -100,7 +100,7 @@ class ObjectPathJob:
     #     controllers = []
     #     for o in obj.Group:
     #         if "Proxy" in o.PropertiesList:
-    #             if isinstance(o.Proxy, PathLoadTool.LoadTool):
+    #             if isinstance(o.Proxy, PathToolController.ToolController):
     #                 controllers.append (o.Name)
     #     return controllers
 
@@ -178,12 +178,12 @@ class CommandJob:
     def Create():
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
         FreeCADGui.addModule('PathScripts.PathUtils')
-        FreeCADGui.addModule('PathScripts.PathLoadTool')
+        FreeCADGui.addModule('PathScripts.PathToolController')
         snippet = '''
-import PathScripts.PathLoadTool as PathLoadTool
+import PathScripts.PathToolController as PathToolController
 obj = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")
 PathScripts.PathJob.ObjectPathJob(obj)
-PathLoadTool.CommandPathLoadTool.Create(obj.Name)
+PathToolController.CommandPathToolController.Create(obj.Name)
 obj.ViewObject.Proxy.deleteOnReject = True
 obj.ViewObject.startEditing()
 '''

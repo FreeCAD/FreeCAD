@@ -24,7 +24,6 @@
         <file>icons/Path-Job.svg</file>
         <file>icons/Path-Kurve.svg</file>
         <file>icons/Path-LengthOffset.svg</file>
-        <file>icons/Path-LoadTool.svg</file>
         <file>icons/Path-MachineLathe.svg</file>
         <file>icons/Path-MachineMill.svg</file>
         <file>icons/Path-Machine.svg</file>
@@ -44,6 +43,7 @@
         <file>icons/Path-Stock.svg</file>
         <file>icons/Path-Stop.svg</file>
         <file>icons/Path-ToolChange.svg</file>
+        <file>icons/Path-ToolController.svg</file>
         <file>icons/Path-Toolpath.svg</file>
         <file>icons/Path-ToolTable.svg</file>
         <file>icons/Path-Area.svg</file>
