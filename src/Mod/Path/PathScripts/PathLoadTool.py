@@ -24,18 +24,21 @@
 ''' Tool Controller defines tool, spindle speed and feed rates for Path Operations '''
 
 import FreeCAD
-from FreeCAD import Units
 import FreeCADGui
-import Path
 import Part
+import Path
 import PathScripts
-from PySide import QtCore, QtGui
 import PathScripts.PathLog as PathLog
-import PathScripts.PathUtils as PathUtils
+import PathUtils
 
-LOG_MODULE = 'PathLoadTool'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-#PathLog.trackModule('PathLoadTool')
+from FreeCAD import Units
+from PySide import QtCore, QtGui
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -48,7 +51,7 @@ class LoadTool():
 
         obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The active tool"))
         obj.ToolNumber = (0, 0, 10000, 1)
-        obj.addProperty("Path::PropertyTooltable", "Tooltable", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tooltable used for this CNC program"))
+        obj.addProperty("Path::PropertyTool", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool used by this controller"))
 
         obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The speed of the cutting spindle in RPM"))
         obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"))
@@ -64,7 +67,6 @@ class LoadTool():
     def execute(self, obj):
         PathLog.track()
 
-        #toolnum = obj.Tooltable.Tools.keys()[0]
         commands = ""
         commands += "(" + obj.Label + ")"+'\n'
         commands += 'M6 T'+str(obj.ToolNumber)+'\n'
@@ -87,24 +89,16 @@ class LoadTool():
 
 
         if 'Restore' not in obj.State:
-            if prop == "ToolNumber":
-                toolitem = obj.Tooltable.Tools.popitem()
-                oldtoolnum = toolitem[0]
-                tool = toolitem[1]
-                obj.Tooltable.deleteTool(oldtoolnum)
-                obj.Tooltable.setTool(obj.ToolNumber, tool)
-            else:
-                job = PathUtils.findParentJob(obj)
-                if job is not None:
-                    for g in job.Group:
-                        if not(isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool)):
-                            g.touch()
+            job = PathUtils.findParentJob(obj)
+            if job is not None:
+                for g in job.Group:
+                    if not(isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool)):
+                        g.touch()
 
     def getTool(self, obj):
         '''returns the tool associated with this tool controller'''
         PathLog.track()
-        toolitem = obj.Tooltable.Tools.popitem()
-        return toolitem[1]
+        return obj.Tool
 
 
 class _ViewProviderLoadTool:
@@ -193,9 +187,6 @@ class CommandPathLoadTool:
     def Create(jobname=None, assignViewProvider=True, tool=None, toolNumber=1):
         PathLog.track("tool: {} with toolNumber: {}".format(tool, toolNumber))
 
-        import PathScripts
-        from PathScripts import PathUtils
-
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Default Tool")
         PathScripts.PathLoadTool.LoadTool(obj)
         if assignViewProvider:
@@ -208,7 +199,7 @@ class CommandPathLoadTool:
             tool.CuttingEdgeHeight = 15.0
             tool.ToolType = "EndMill"
             tool.Material = "HighSpeedSteel"
-        obj.Tooltable.setTool(toolNumber, tool)
+	obj.Tool = tool
         obj.ToolNumber = toolNumber
         PathUtils.addToJob(obj, jobname)
 
@@ -273,11 +264,9 @@ class TaskPanel:
         index = self.form.cboSpindleDirection.findText(self.obj.SpindleDir, QtCore.Qt.MatchFixedString)
         if index >= 0:
             self.form.cboSpindleDirection.setCurrentIndex(index)
-        tooltable = self.obj.Tooltable
 
         try:
-            toolnum = tooltable.Tools.keys()[0]
-            tool = tooltable.getTool(toolnum)
+            tool = self.obj.Tool
             self.form.txtToolType.setText(tool.ToolType)
             self.form.txtToolMaterial.setText(tool.Material)
             diam = Units.Quantity(tool.Diameter, FreeCAD.Units.Length)
@@ -345,8 +334,8 @@ class TaskPanel:
             return matslist[material]
 
     def editTool(self):
-        toolnum = self.obj.Tooltable.Tools.keys()[0]
-        tool = self.obj.Tooltable.getTool(toolnum)
+        toolnum = self.obj.ToolNumber
+        tool = self.obj.Tool
         editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
 
         editform.NameField.setText(tool.Name)
@@ -371,7 +360,7 @@ class TaskPanel:
             tool.CornerRadius = FreeCAD.Units.parseQuantity(editform.CornerRadiusField.text())
             tool.CuttingEdgeAngle = FreeCAD.Units.Quantity(editform.CuttingEdgeAngleField.text())
             tool.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(editform.CuttingEdgeHeightField.text())
-            self.obj.Tooltable.setTool(toolnum, tool)
+            self.obj.Tool = tool
             self.setFields()
 
 

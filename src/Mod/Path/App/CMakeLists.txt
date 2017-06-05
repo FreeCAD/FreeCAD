@@ -71,6 +71,8 @@ SET(Path_SRCS
     PropertyPath.h
     FeaturePath.cpp
     FeaturePath.h
+    PropertyTool.cpp
+    PropertyTool.h
     PropertyTooltable.cpp
     PropertyTooltable.h
     FeaturePathCompound.cpp

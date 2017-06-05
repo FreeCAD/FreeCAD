@@ -59,7 +59,7 @@ class PathPostTestCases(unittest.TestCase):
         tc = FreeCAD.ActiveDocument.addObject("Path::FeaturePython",'TC')
         PathScripts.PathLoadTool.LoadTool(tc)
         PathScripts.PathUtils.addToJob(tc, "Job")
-        tc.Tooltable.setTool(2, tool1)
+        tc.Tool = tool1
         tc.ToolNumber = 2
 
         self.failUnless(True)
