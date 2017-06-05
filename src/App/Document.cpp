@@ -2165,7 +2165,6 @@ int Document::recompute()
                     inObjIt->touch();
             }
         }
-
     }
 #ifdef FC_DEBUG
     // check if all objects are recalculated which were thouched 
