@@ -30,7 +30,7 @@
 # import FreeCAD modules
 import FreeCAD,FreeCADGui
 # import the App Test module
-import TestApp               #Test as Module name not possible
+import Test
 import sys
 
 #---------------------------------------------------------------------------
@@ -39,15 +39,15 @@ import sys
 class TestCmd:
     """Opens a Qt dialog with all inserted unit tests"""
     def Activated(self):
-        import QtUnitGui
+        from . import QtUnitGui
         QtUnitGui.addTest("TestApp.All")
         QtUnitGui.setTest("TestApp.All")
-        QtUnitGui.addTest("BaseTests")
-        QtUnitGui.addTest("UnitTests")
-        QtUnitGui.addTest("Document")
-        QtUnitGui.addTest("UnicodeTests")
+        QtUnitGui.addTest("Test.BaseTests")
+        QtUnitGui.addTest("Test.UnitTests")
+        QtUnitGui.addTest("Test.Document")
+        QtUnitGui.addTest("Test.UnicodeTests")
         QtUnitGui.addTest("MeshTestsApp")
-        QtUnitGui.addTest("TestFem")
+        QtUnitGui.addTest("Fem.TestFem")
         QtUnitGui.addTest("TestSketcherApp")
         QtUnitGui.addTest("TestPartApp")
         QtUnitGui.addTest("TestPartDesignApp")
@@ -68,7 +68,7 @@ class TestCmd:
 class TestAllCmd:
     "Test all commando object"
     def Activated(self):
-        import QtUnitGui
+        from . import QtUnitGui
         QtUnitGui.addTest("TestApp.All")
         QtUnitGui.setTest("TestApp.All")
 
@@ -78,7 +78,7 @@ class TestAllCmd:
 class TestDocCmd:
     "Document test commando object"
     def Activated(self):
-        import QtUnitGui
+        from . import QtUnitGui
         QtUnitGui.addTest("Document")
         QtUnitGui.setTest("Document")
 
@@ -90,7 +90,7 @@ class TestDocCmd:
 class TestBaseCmd:
     "Base test commando object"
     def Activated(self):
-        import QtUnitGui
+        from . import QtUnitGui
         QtUnitGui.addTest("BaseTests")
         QtUnitGui.setTest("BaseTests")
 

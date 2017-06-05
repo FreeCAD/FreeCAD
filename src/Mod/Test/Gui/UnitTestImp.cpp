@@ -171,7 +171,8 @@ void UnitTestDialog::on_startButton_clicked()
     this->startButton->setDisabled(true);
     try {
         Base::Interpreter().runString(
-            "import qtunittest, gc\n"
+            "import gc\n"
+            "from Test import qtunittest\n"
             "__qt_test__=qtunittest.QtTestRunner(0,\"\")\n"
             "__qt_test__.runClicked()\n"
             "del __qt_test__\n"

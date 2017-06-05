@@ -36,7 +36,7 @@ class TestWorkbench ( Workbench ):
         self.__class__.ToolTip = "Test framework"
 
     def Initialize(self):
-        import TestGui
+        from Test import gui
 
         list = ["Test_Test","Test_TestAll","Test_TestDoc","Test_TestBase"]
         self.appendToolbar("TestTools",list)
