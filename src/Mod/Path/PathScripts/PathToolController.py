@@ -45,7 +45,7 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-class LoadTool():
+class ToolController():
     def __init__(self, obj, tool=1):
         PathLog.track('tool: {}'.format(tool))
 
@@ -92,7 +92,7 @@ class LoadTool():
             job = PathUtils.findParentJob(obj)
             if job is not None:
                 for g in job.Group:
-                    if not(isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool)):
+                    if not(isinstance(g.Proxy, PathScripts.PathToolController.ToolController)):
                         g.touch()
 
     def getTool(self, obj):
@@ -101,7 +101,7 @@ class LoadTool():
         return obj.Tool
 
 
-class _ViewProviderLoadTool:
+class _ViewProviderToolController:
 
     def __init__(self, vobj):
         vobj.Proxy = self
@@ -155,11 +155,11 @@ class _ViewProviderLoadTool:
         return False
 
 
-class CommandPathLoadTool:
+class CommandPathToolController:
     def GetResources(self):
         return {'Pixmap': 'Path-LengthOffset',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_LoadTool", "Add Tool Controller to the Job"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_LoadTool", "Add Tool Controller")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller to the Job"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller")}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -172,11 +172,11 @@ class CommandPathLoadTool:
         PathLog.track()
         self.Create()
 
-#         FreeCAD.ActiveDocument.openTransaction(translate("Path_LoadTool", "Create Tool Controller Object"))
+#         FreeCAD.ActiveDocument.openTransaction(translate("Path_ToolController", "Create Tool Controller Object"))
 
 #         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "TC")
-#         PathScripts.PathLoadTool.LoadTool(obj)
-#         PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
+#         PathScripts.PathToolController.ToolController(obj)
+#         PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
 
 #         PathUtils.addToJob(obj)
 
@@ -188,9 +188,9 @@ class CommandPathLoadTool:
         PathLog.track("tool: {} with toolNumber: {}".format(tool, toolNumber))
 
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Default Tool")
-        PathScripts.PathLoadTool.LoadTool(obj)
+        PathScripts.PathToolController.ToolController(obj)
         if assignViewProvider:
-            PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
+            PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
 
         if tool is None:
             tool = Path.Tool()
@@ -374,6 +374,6 @@ class SelObserver:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_LoadTool', CommandPathLoadTool())
+    FreeCADGui.addCommand('Path_ToolController', CommandPathToolController())
 
-FreeCAD.Console.PrintLog("Loading PathLoadTool... done\n")
+FreeCAD.Console.PrintLog("Loading PathToolController... done\n")

@@ -550,8 +550,8 @@ class EditorPanel():
 
                     label = "T{}: {}".format(toolnum, tool.Name)
                     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython",label)
-                    PathScripts.PathLoadTool.LoadTool(obj)
-                    PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
+                    PathScripts.PathToolController.ToolController(obj)
+                    PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
                     PathUtils.addToJob(obj, targetlist)
                     FreeCAD.activeDocument().recompute()
                     obj.Tool = tool.copy()

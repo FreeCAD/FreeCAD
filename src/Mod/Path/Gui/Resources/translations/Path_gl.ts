@@ -312,37 +312,37 @@
       <translation>Forma a usar para calcular a contorna</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="47"/>
+      <location filename="PathToolController.py" line="47"/>
       <source>The active tool</source>
       <translation>A ferramenta activa</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="49"/>
+      <location filename="PathToolController.py" line="49"/>
       <source>The speed of the cutting spindle in RPM</source>
       <translation>A velocidade do fuso de corte en RPM</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="50"/>
+      <location filename="PathToolController.py" line="50"/>
       <source>Direction of spindle rotation</source>
       <translation>Sentido de xiro do fuso</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="52"/>
+      <location filename="PathToolController.py" line="52"/>
       <source>Feed rate for vertical moves in Z</source>
       <translation>Relación de avance para movementos verticais en Z</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="53"/>
+      <location filename="PathToolController.py" line="53"/>
       <source>Feed rate for horizontal moves</source>
       <translation>Taxa de avance para movementos horizontais</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="54"/>
+      <location filename="PathToolController.py" line="54"/>
       <source>Rapid rate for vertical moves in Z</source>
       <translation>Relación de avance rápido para movementos verticais en Z</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="55"/>
+      <location filename="PathToolController.py" line="55"/>
       <source>Rapid rate for horizontal moves</source>
       <translation>Relación de avance para movementos horizontais</translation>
     </message>
@@ -1564,24 +1564,24 @@
     </message>
   </context>
   <context>
-    <name>Path_LoadTool</name>
+    <name>Path_ToolController</name>
     <message>
-      <location filename="PathLoadTool.py" line="132"/>
+      <location filename="PathToolController.py" line="132"/>
       <source>Tool Number to Load</source>
       <translation>Número de ferramenta a cargar</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="156"/>
+      <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
       <translation>Engadir Controlador de Ferramenta para o traballo</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="157"/>
+      <location filename="PathToolController.py" line="157"/>
       <source>Add Tool Controller</source>
       <translation>Engadir Controlador de Ferramenta</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="167"/>
+      <location filename="PathToolController.py" line="167"/>
       <source>Create Tool Controller Object</source>
       <translation>Crear obxecto Controlador de Ferramenta</translation>
     </message>
@@ -2111,7 +2111,7 @@
   <context>
     <name>Current Tool</name>
     <message>
-      <location filename="PathLoadTool.py" line="137"/>
+      <location filename="PathToolController.py" line="137"/>
       <source>Tool Number to Load</source>
       <translation>Número de ferramenta a cargar</translation>
     </message>
@@ -2542,7 +2542,7 @@
   <context>
     <name>Spindle Dir</name>
     <message>
-      <location filename="PathLoadTool.py" line="45"/>
+      <location filename="PathToolController.py" line="45"/>
       <source>Direction of spindle rotation</source>
       <translation>Sentido de xiro do fuso</translation>
     </message>
@@ -2550,7 +2550,7 @@
   <context>
     <name>Spindle Speed</name>
     <message>
-      <location filename="PathLoadTool.py" line="44"/>
+      <location filename="PathToolController.py" line="44"/>
       <source>The speed of the cutting spindle in RPM</source>
       <translation>A velocidade do fuso de corte en RPM</translation>
     </message>
@@ -2576,7 +2576,7 @@
   <context>
     <name>Tool Number</name>
     <message>
-      <location filename="PathLoadTool.py" line="42"/>
+      <location filename="PathToolController.py" line="42"/>
       <source>The active tool</source>
       <translation>A ferramenta activa</translation>
     </message>

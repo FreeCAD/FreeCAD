@@ -312,37 +312,37 @@
       <translation type="unfinished">Shape to use for calculating Boundary</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="47"/>
+      <location filename="PathToolController.py" line="47"/>
       <source>The active tool</source>
       <translation>アクティブなツール</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="49"/>
+      <location filename="PathToolController.py" line="49"/>
       <source>The speed of the cutting spindle in RPM</source>
       <translation>RPM単位での切削スピンドルの回転速度</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="50"/>
+      <location filename="PathToolController.py" line="50"/>
       <source>Direction of spindle rotation</source>
       <translation>スピンドルの回転方向</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="52"/>
+      <location filename="PathToolController.py" line="52"/>
       <source>Feed rate for vertical moves in Z</source>
       <translation>Z方向での垂直移動の送り速度</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="53"/>
+      <location filename="PathToolController.py" line="53"/>
       <source>Feed rate for horizontal moves</source>
       <translation type="unfinished">Feed rate for horizontal moves</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="54"/>
+      <location filename="PathToolController.py" line="54"/>
       <source>Rapid rate for vertical moves in Z</source>
       <translation>Z方向での垂直移動の高速速度</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="55"/>
+      <location filename="PathToolController.py" line="55"/>
       <source>Rapid rate for horizontal moves</source>
       <translation>水平移動の高速速度</translation>
     </message>
@@ -1564,24 +1564,24 @@
     </message>
   </context>
   <context>
-    <name>Path_LoadTool</name>
+    <name>Path_ToolController</name>
     <message>
-      <location filename="PathLoadTool.py" line="132"/>
+      <location filename="PathToolController.py" line="132"/>
       <source>Tool Number to Load</source>
       <translation>読み込む工具番号</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="156"/>
+      <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
       <translation>ジョブにツールコント ローラーを追加</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="157"/>
+      <location filename="PathToolController.py" line="157"/>
       <source>Add Tool Controller</source>
       <translation>ツールコント ローラーを追加</translation>
     </message>
     <message>
-      <location filename="PathLoadTool.py" line="167"/>
+      <location filename="PathToolController.py" line="167"/>
       <source>Create Tool Controller Object</source>
       <translation>ツールコント ローラーオブジェクトを作成</translation>
     </message>
@@ -2111,7 +2111,7 @@
   <context>
     <name>Current Tool</name>
     <message>
-      <location filename="PathLoadTool.py" line="137"/>
+      <location filename="PathToolController.py" line="137"/>
       <source>Tool Number to Load</source>
       <translation>読み込む工具番号</translation>
     </message>
@@ -2542,7 +2542,7 @@
   <context>
     <name>Spindle Dir</name>
     <message>
-      <location filename="PathLoadTool.py" line="45"/>
+      <location filename="PathToolController.py" line="45"/>
       <source>Direction of spindle rotation</source>
       <translation>スピンドルの回転方向</translation>
     </message>
@@ -2550,7 +2550,7 @@
   <context>
     <name>Spindle Speed</name>
     <message>
-      <location filename="PathLoadTool.py" line="44"/>
+      <location filename="PathToolController.py" line="44"/>
       <source>The speed of the cutting spindle in RPM</source>
       <translation>RPM単位での切削スピンドルの回転速度</translation>
     </message>
@@ -2576,7 +2576,7 @@
   <context>
     <name>Tool Number</name>
     <message>
-      <location filename="PathLoadTool.py" line="42"/>
+      <location filename="PathToolController.py" line="42"/>
       <source>The active tool</source>
       <translation>アクティブなツール</translation>
     </message>
