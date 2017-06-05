@@ -95,6 +95,7 @@ class _Axis:
     def __init__(self,obj):
         obj.addProperty("App::PropertyFloatList","Distances","Arch", QT_TRANSLATE_NOOP("App::Property","The intervals between axes"))
         obj.addProperty("App::PropertyFloatList","Angles","Arch", QT_TRANSLATE_NOOP("App::Property","The angles of each axis"))
+        obj.addProperty("App::PropertyStringList","Labels","Arch", QT_TRANSLATE_NOOP("App::Property","The label of each axis"))
         obj.addProperty("App::PropertyLength","Length","Arch", QT_TRANSLATE_NOOP("App::Property","The length of the axes"))
         obj.addProperty("App::PropertyPlacement","Placement","Base","")
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
@@ -145,11 +146,13 @@ class _ViewProviderAxis:
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
         vobj.addProperty("App::PropertyInteger","StartNumber","Base","")
-        vobj.addProperty("App::PropertyString","FontName","Base","")
+        vobj.addProperty("App::PropertyFont","FontName","Base","")
         vobj.addProperty("App::PropertyLength","FontSize","Base","")
+        vobj.addProperty("App::PropertyBool","ShowLabel","Base",QT_TRANSLATE_NOOP("App::Property","If true, show the labels"))
+        vobj.addProperty("App::PropertyPlacement","LabelOffset","Base",QT_TRANSLATE_NOOP("App::Property","A transformation to apply to each label"))
         vobj.NumberingStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
         vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"]
-        vobj.BubblePosition = ["Start","End","Both"]
+        vobj.BubblePosition = ["Start","End","Both","None"]
         vobj.Proxy = self
         vobj.BubbleSize = 500
         vobj.LineWidth = 1
@@ -159,6 +162,7 @@ class _ViewProviderAxis:
         vobj.StartNumber = 1
         vobj.FontName = Draft.getParam("textfont","Arial,Sans")
         vobj.FontSize = 350
+        vobj.ShowLabel = False
 
     def getIcon(self):
         import Arch_rc
@@ -176,13 +180,16 @@ class _ViewProviderAxis:
         self.linecoords = coin.SoCoordinate3()
         self.lineset = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         self.bubbleset = coin.SoSeparator()
+        self.labelset = coin.SoSeparator()
         sep.addChild(self.mat)
         sep.addChild(self.linestyle)
         sep.addChild(self.linecoords)
         sep.addChild(self.lineset)
         sep.addChild(self.bubbleset)
+        sep.addChild(self.labelset)
         vobj.addDisplayMode(sep,"Default")
         self.onChanged(vobj,"BubbleSize")
+        self.onChanged(vobj,"ShowLabel")
 
     def getDisplayModes(self,vobj):
         return ["Default"]
@@ -210,6 +217,7 @@ class _ViewProviderAxis:
                     self.lineset.coordIndex.setValues(0,len(vset),vset)
                     self.lineset.coordIndex.setNum(len(vset))
             self.onChanged(obj.ViewObject,"BubbleSize")
+            self.onChanged(obj.ViewObject,"ShowLabel")
 
     def onChanged(self, vobj, prop):
         if prop == "LineColor":
@@ -243,6 +251,8 @@ class _ViewProviderAxis:
                         if hasattr(vobj,"BubblePosition"):
                             if vobj.BubblePosition == "Both":
                                 pos = ["Start","End"]
+                            elif vobj.BubblePosition == "None":
+                                pos = []
                             else:
                                 pos = [vobj.BubblePosition]
                         for i in range(len(vobj.Object.Shape.Edges)):
@@ -310,6 +320,8 @@ class _ViewProviderAxis:
                                 self.bubbles.addChild(st)
                         self.bubbleset.addChild(self.bubbles)
                         self.onChanged(vobj,"NumberingStyle")
+            if prop in ["FontName","FontSize"]:
+                self.onChanged(vobj,"ShowLabel")
         elif prop in ["NumberingStyle","StartNumber"]:
             if hasattr(self,"bubbletexts"):
                 chars = "abcdefghijklmnopqrstuvwxyz"
@@ -364,6 +376,53 @@ class _ViewProviderAxis:
                             if not alt:
                                 num -= 1
                     alt = not alt
+        elif prop in ["ShowLabel", "LabelOffset"]:
+            if hasattr(self,"labels"):
+                if self.labels:
+                    self.labelset.removeChild(self.labels)
+            self.labels = None
+            if hasattr(vobj,"ShowLabel") and hasattr(vobj.Object,"Labels"):
+                if vobj.ShowLabel:
+                    self.labels = coin.SoSeparator()
+                    for i in range(len(vobj.Object.Shape.Edges)):
+                        if len(vobj.Object.Labels) > i:
+                            if vobj.Object.Labels[i]:
+                                import Draft
+                                vert = vobj.Object.Shape.Edges[i].Vertexes[0].Point
+                                if hasattr(vobj,"LabelOffset"):
+                                    pl = FreeCAD.Placement(vobj.LabelOffset)
+                                    pl.Base = vert.add(pl.Base)
+                                st = coin.SoSeparator()
+                                tr = coin.SoTransform()
+                                fo = coin.SoFont()
+                                tx = coin.SoAsciiText()
+                                tx.justification = coin.SoText2.LEFT
+                                t = vobj.Object.Labels[i]
+                                if isinstance(t,unicode):
+                                    t = t.encode("utf8")
+                                tx.string.setValue(t)
+                                if hasattr(vobj,"FontSize"):
+                                    fs = vobj.FontSize.Value
+                                elif hasattr(vobj.BubbleSize,"Value"):
+                                    fs = vobj.BubbleSize.Value*0.75
+                                else:
+                                    fs = vobj.BubbleSize*0.75
+                                tr.translation.setValue(tuple(pl.Base))
+                                tr.rotation.setValue(pl.Rotation.Q)
+                                fn = Draft.getParam("textfont","Arial,Sans")
+                                if hasattr(vobj,"FontName"):
+                                    if vobj.FontName:
+                                        try:
+                                            fn = str(vobj.FontName)
+                                        except:
+                                            pass
+                                fo.name = fn
+                                fo.size = fs
+                                st.addChild(tr)
+                                st.addChild(fo)
+                                st.addChild(tx)
+                                self.labels.addChild(st)
+                    self.labelset.addChild(self.labels)
 
 
     def setEdit(self,vobj,mode=0):
@@ -407,7 +466,7 @@ class _AxisTaskPanel:
         # tree
         self.tree = QtGui.QTreeWidget(self.form)
         self.grid.addWidget(self.tree, 1, 0, 1, 2)
-        self.tree.setColumnCount(3)
+        self.tree.setColumnCount(4)
         self.tree.header().resizeSection(0,50)
         self.tree.header().resizeSection(1,80)
         self.tree.header().resizeSection(2,60)
@@ -447,8 +506,13 @@ class _AxisTaskPanel:
             for i in range(len(self.obj.Distances)):
                 item = QtGui.QTreeWidgetItem(self.tree)
                 item.setText(0,str(i+1))
-                item.setText(1,str(self.obj.Distances[i]))
-                item.setText(2,str(self.obj.Angles[i]))
+                if len(self.obj.Distances) > i:
+                    item.setText(1,str(self.obj.Distances[i]))
+                if len(self.obj.Angles) > i:
+                    item.setText(2,str(self.obj.Angles[i]))
+                if hasattr(self.obj,"Labels"):
+                    if len(self.obj.Labels) > i:
+                        item.setText(3,str(self.obj.Labels[i]))
                 item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
                 item.setTextAlignment(0,QtCore.Qt.AlignLeft)
         self.retranslateUi(self.form)
@@ -477,6 +541,7 @@ class _AxisTaskPanel:
         "transfers the values from the widget to the object"
         d = []
         a = []
+        l = []
         for i in range(self.tree.topLevelItemCount()):
             it = self.tree.findItems(str(i+1),QtCore.Qt.MatchExactly,0)[0]
             if (remove == None) or (remove != i):
@@ -488,8 +553,10 @@ class _AxisTaskPanel:
                     a.append(float(it.text(2)))
                 else:
                     a.append(0.0)
+                l.append(it.text(3))
         self.obj.Distances = d
         self.obj.Angles = a
+        self.obj.Labels = l
         self.obj.touch()
         FreeCAD.ActiveDocument.recompute()
 
@@ -505,7 +572,8 @@ class _AxisTaskPanel:
         self.title.setText(QtGui.QApplication.translate("Arch", "Distances (mm) and angles (deg) between axes", None))
         self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Axis", None),
                                    QtGui.QApplication.translate("Arch", "Distance", None),
-                                   QtGui.QApplication.translate("Arch", "Angle", None)])
+                                   QtGui.QApplication.translate("Arch", "Angle", None),
+                                   QtGui.QApplication.translate("Arch", "Label", None)])
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Axis',_CommandAxis())
