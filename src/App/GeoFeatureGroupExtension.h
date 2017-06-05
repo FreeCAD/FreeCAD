@@ -44,7 +44,7 @@ namespace App
  *   also be added to the GeoFeatureGroup
  * - Objects can be only in a single GeoFeatureGroup. It is not allowed to have a document object in 
  *   multiple GeoFeatureGroups
- * - PropertyLinks between different GeoFeatureGroups are forbidden. There are special link proeprties 
+ * - PropertyLinks between different GeoFeatureGroups are forbidden. There are special link properties 
  *   that allow such cross-CS links.
  * - Expressions can cross GeoFeatureGroup borders
  */
@@ -109,7 +109,9 @@ public:
     /// obj and from obj excluding expressions and stopping the recursion at other geofeaturegroups. 
     /// The result is the combination of CSOutList and CSInList.
     static void getCSRelevantLinks(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
-    
+    /// Checks if the links of the given object comply with all GeoFeatureGroup requrirements, that means
+    /// if normal links are only withing the parent GeoFeatureGroup. 
+    static bool areLinksValid(App::DocumentObject* obj);
 private:
     Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group);
     static std::vector<App::DocumentObject*> getObjectsFromLinks(App::DocumentObject*);
