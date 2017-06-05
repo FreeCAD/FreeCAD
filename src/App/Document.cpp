@@ -58,7 +58,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 # include <bitset>
 #endif
 
-#include <boost/graph/adjacency_list.hpp>
+
 #include <boost/graph/subgraph.hpp>
 #include <boost/graph/graphviz.hpp>
 
@@ -68,6 +68,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/graph/visitors.hpp>
 #include <boost/graph/copy.hpp>
+#include <boost/graph/iteration_macros.hpp>
 #endif //USE_OLD_DAG
 
 #include <boost/bind.hpp>
@@ -120,19 +121,7 @@ using namespace zipios;
 #  define FC_LOGFEATUREUPDATE
 #endif
 
-// typedef boost::property<boost::vertex_root_t, DocumentObject* > VertexProperty;
-typedef boost::adjacency_list <
-boost::vecS,           // class OutEdgeListS  : a Sequence or an AssociativeContainer
-boost::vecS,           // class VertexListS   : a Sequence or a RandomAccessContainer
-boost::directedS,      // class DirectedS     : This is a directed graph
-boost::no_property,    // class VertexProperty:
-boost::no_property,    // class EdgeProperty:
-boost::no_property,    // class GraphProperty:
-boost::listS           // class EdgeListS:
-> DependencyList;
-typedef boost::graph_traits<DependencyList> Traits;
-typedef Traits::vertex_descriptor Vertex;
-typedef Traits::edge_descriptor Edge;
+
 
 namespace App {
 
@@ -1875,7 +1864,6 @@ void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App
 #ifdef USE_OLD_DAG
 int Document::recompute()
 {
-    int objectCount = 0;
     
     // The 'SkipRecompute' flag can be (tmp.) set to avoid to many
     // time expensive recomputes
@@ -1926,36 +1914,33 @@ int Document::recompute()
         // the list into a new adjacency list having ListS instead of VecS, just when not_a_dag. When doing this, it makes sense to make it in addition
         // bidirectional, so that we can isolate the cyclic dependency easily.
         
-        typedef boost::adjacency_list <
-        boost::listS,           // class OutEdgeListS  : a Sequence or an AssociativeContainer
-        boost::listS,           // class VertexListS   : a Sequence or a RandomAccessContainer
-        boost::bidirectionalS,      // class DirectedS     : This is a directed graph
-        boost::no_property,    // class VertexProperty:
-        boost::no_property,    // class EdgeProperty:
-        boost::no_property,    // class GraphProperty:
-        boost::listS           // class EdgeListS:
-        > ListBasedDependencyList;
-        typedef boost::graph_traits<ListBasedDependencyList> ListBasedTraits;
-        typedef ListBasedTraits::vertex_descriptor ListBasedVertex;
-        //typedef ListBasedTraits::edge_descriptor ListBasedEdge;
-        
-        ListBasedDependencyList copy;
 
-        copy_graph(d->DepList,copy);
+        
+        ListBasedDependencyList cyclicdependencies;
+        ListBasedDependencyList acyclicdependencies;
+
+        copy_graph(d->DepList,cyclicdependencies);
+        copy_graph(d->DepList,acyclicdependencies);
         
         ListBasedDependencyList::vertex_iterator lbvertexIt, lbvertexEnd, lbnext;
+        ListBasedDependencyList::vertex_iterator albvertexIt, albvertexEnd, albnext;
         DependencyList::vertex_iterator vertexIt, vertexEnd;
         
-        std::map<ListBasedVertex,Vertex> interListVertexmap;
+        std::map<ListBasedVertex,DocumentObject *> acyclicVertexmap;
+        std::map<ListBasedVertex,DocumentObject *> cyclicVertexmap;
+        std::map<ListBasedVertex,ListBasedVertex> cyclic2acyclicVertexmap;
         
         boost::tie(vertexIt, vertexEnd) = vertices(d->DepList);
-        boost::tie(lbvertexIt, lbvertexEnd) = vertices(copy);
+        boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies);
+        boost::tie(albvertexIt, albvertexEnd) = vertices(acyclicdependencies);
         
         // map vertex descriptors of copy and original
-        for (; vertexIt != vertexEnd && lbvertexIt != lbvertexEnd; ++vertexIt, ++lbvertexIt) {
-            interListVertexmap[*lbvertexIt]=*vertexIt;
+        for (; vertexIt != vertexEnd && lbvertexIt != lbvertexEnd && albvertexIt != albvertexEnd; ++vertexIt, ++lbvertexIt, ++albvertexIt) {
+            cyclicVertexmap[*lbvertexIt]=d->vertexMap[*vertexIt];
+            acyclicVertexmap[*albvertexIt] = d->vertexMap[*vertexIt];
+            cyclic2acyclicVertexmap[*lbvertexIt]=*albvertexIt;
         }
-
+        
         // our Graph is direct unidirectional, so we only have access to the outlist, not an inlist
         // let's start removing nodes with an empty out list
         bool changed = true;
@@ -1964,19 +1949,19 @@ int Document::recompute()
 
             changed = false;
 
-            boost::tie(lbvertexIt, lbvertexEnd) = vertices(copy);
+            boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies);
 
             // for unconventional loop see: http://www.boost.org/doc/libs/1_37_0/libs/graph/doc/adjacency_list.html
             for (lbnext=lbvertexIt; lbvertexIt != lbvertexEnd; lbvertexIt=lbnext) {
                 ++lbnext;
-                if(out_degree(*lbvertexIt, copy) == 0 ) {
-                    clear_vertex(*lbvertexIt, copy); // remove all in/out edges from this Vertex
-                    remove_vertex(*lbvertexIt, copy);
+                if(out_degree(*lbvertexIt, cyclicdependencies) == 0 ) {
+                    clear_vertex(*lbvertexIt, cyclicdependencies); // remove all in/out edges from this Vertex
+                    remove_vertex(*lbvertexIt, cyclicdependencies);
                     changed = true;
                 }
-                else if(in_degree(*lbvertexIt, copy) == 0 ) {
-                    clear_vertex(*lbvertexIt, copy); // remove all in/out edges from this Vertex
-                    remove_vertex(*lbvertexIt, copy);
+                else if(in_degree(*lbvertexIt, cyclicdependencies) == 0 ) {
+                    clear_vertex(*lbvertexIt, cyclicdependencies); // remove all in/out edges from this Vertex
+                    remove_vertex(*lbvertexIt, cyclicdependencies);
                     changed = true;
                 }
 
@@ -1991,15 +1976,15 @@ int Document::recompute()
         // notify report view of the dependency
         ListBasedDependencyList::out_edge_iterator lbj, lbjend;
 
-        for (boost::tie(lbvertexIt, lbvertexEnd) = vertices(copy); lbvertexIt != lbvertexEnd; ++lbvertexIt) {
-            DocumentObject* Cur = d->vertexMap[interListVertexmap[*lbvertexIt]];
+        for (boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies); lbvertexIt != lbvertexEnd; ++lbvertexIt) {
+            DocumentObject* Cur = cyclicVertexmap[*lbvertexIt];
 
             if (Cur) {
                 std::cerr << Cur->getNameInDocument() << " dep on:" ;
 
-                for (boost::tie(lbj, lbjend) = out_edges(*lbvertexIt, copy); lbj != lbjend; ++lbj) {
+                for (boost::tie(lbj, lbjend) = out_edges(*lbvertexIt, cyclicdependencies); lbj != lbjend; ++lbj) {
 
-                    DocumentObject* Test = d->vertexMap[interListVertexmap[target(*lbj, copy)]];
+                    DocumentObject* Test = cyclicVertexmap[target(*lbj, cyclicdependencies)];
 
                     std::cerr << " " << Test->getNameInDocument();
                 }
@@ -2007,24 +1992,83 @@ int Document::recompute()
                 std::cerr << std::endl;
             }
         }
+        
+        // construct acyclic dependency list
+        boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies);
+        
+        // for unconventional loop see: http://www.boost.org/doc/libs/1_37_0/libs/graph/doc/adjacency_list.html
+        for (; lbvertexIt != lbvertexEnd; ++lbvertexIt) {
+            clear_vertex(cyclic2acyclicVertexmap[*lbvertexIt], acyclicdependencies); // remove all in/out edges from this Vertex
+            remove_vertex(cyclic2acyclicVertexmap[*lbvertexIt], acyclicdependencies); // remove all in/out edges from this Vertex
+        }
+        
+        std::list<ListBasedVertex> lbmake_order;
+        
+        try {
+            // The acyclicdepencies vertex is of listS type, and listS does not have an internal index map:
+            // http://www.boost.org/doc/libs/1_61_0/libs/graph/doc/topological_sort.html
+            // so we have to provide our own.
 
+            typedef map<ListBasedVertex, size_t> IndexMap;
+            IndexMap mapIndex;
+            associative_property_map<IndexMap> propmapIndex(mapIndex);
+            
+            int i=0;
+            BGL_FORALL_VERTICES(v, acyclicdependencies, ListBasedDependencyList)
+            {
+                put(propmapIndex, v, i++);
+            }
 
+            // this sort gives the execute
+            boost::topological_sort(acyclicdependencies, std::front_inserter(lbmake_order),vertex_index_map(propmapIndex));
+        }
+        catch (const std::exception& excp) {
+            std::cerr << "Error during recompute of computed acyclic dependencies in Document::recompute: " << excp.what() << std::endl;
+            return -1;
+        }
+        
+        #ifdef FC_LOGFEATUREUPDATE
+        std::clog << "computed acyclic make ordering: " << std::endl;
+        #endif
+        
+        int objects = _recomputeOrderedDependencyList<ListBasedDependencyList,ListBasedVertex>(acyclicdependencies,acyclicVertexmap,lbmake_order);
+        
+        d->vertexMap.clear();
+        
+        signalRecomputed(*this);
+        
+        return objects;
 
-        return -1;
     }
     catch (const std::exception& e) {
         std::cerr << "Document::recompute: " << e.what() << std::endl;
         return -1;
     }
+    
+    int objects = _recomputeOrderedDependencyList<DependencyList,Vertex>(d->DepList,d->vertexMap,make_order);
+    
+    d->vertexMap.clear();
+    
+    signalRecomputed(*this);
+    
+    return objects;
+    
+}
 
+template<typename T1,typename T2>
+int Document::_recomputeOrderedDependencyList(T1 &dependencylist, std::map<T2,DocumentObject *> &vertexmap, std::list<T2> &make_order)
+{
+    int objectCount = 0;
+    typename T1::out_edge_iterator j, jend;
+    
 #ifdef FC_LOGFEATUREUPDATE
     std::clog << "make ordering: " << std::endl;
 #endif
 
     std::set<DocumentObject*> recomputeList;
 
-    for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
-        DocumentObject* Cur = d->vertexMap[*i];
+    for (typename std::list<T2>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
+        DocumentObject* Cur = vertexmap[*i];
         if (!Cur || !isIn(Cur)) continue;
 #ifdef FC_LOGFEATUREUPDATE
         std::clog << Cur->getNameInDocument() << " dep on:" ;
@@ -2040,8 +2084,8 @@ int Document::recompute()
         }
         else {// if (Cur->mustExecute() == -1)
             // update if one of the dependencies is touched
-            for (boost::tie(j, jend) = out_edges(*i, d->DepList); j != jend; ++j) {
-                DocumentObject* Test = d->vertexMap[target(*j, d->DepList)];
+            for (boost::tie(j, jend) = out_edges(*i, dependencylist); j != jend; ++j) {
+                DocumentObject* Test = vertexmap[target(*j, dependencylist)];
 
                 if (!Test) continue;
 #ifdef FC_LOGFEATUREUPDATE
@@ -2075,14 +2119,14 @@ int Document::recompute()
     }
 #endif
 
-    for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
-        DocumentObject* Cur = d->vertexMap[*i];
+for (typename std::list<T2>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
+        DocumentObject* Cur = vertexmap[*i];
 
         if (recomputeList.find(Cur) != recomputeList.end() ||
                 Cur->ExpressionEngine.depsAreTouched()) {
             if ( _recomputeFeature(Cur)) {
                 // if somthing happen break execution of recompute
-                d->vertexMap.clear();
+                //vertexmap.clear();
                 return -1;
             }
             ++objectCount;
@@ -2090,14 +2134,11 @@ int Document::recompute()
     }
 
     // reset all touched
-    for (std::map<Vertex,DocumentObject*>::iterator it = d->vertexMap.begin(); it != d->vertexMap.end(); ++it) {
+    for (typename std::map<T2,DocumentObject*>::iterator it = vertexmap.begin(); it != vertexmap.end(); ++it) {
         if ((it->second) && isIn(it->second))
             it->second->purgeTouched();
     }
-    d->vertexMap.clear();
 
-    signalRecomputed(*this);
-    
     return objectCount;
 }
 
@@ -2146,7 +2187,7 @@ int Document::recompute()
 
         return objectCount;
 }
-
+*/
 #endif // USE_OLD_DAG
 
 std::vector<App::DocumentObject*> Document::topologicalSort() const
