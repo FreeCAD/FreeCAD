@@ -67,6 +67,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/graph/visitors.hpp>
+#include <boost/graph/copy.hpp>
 #endif //USE_OLD_DAG
 
 #include <boost/bind.hpp>
@@ -1893,19 +1894,128 @@ int Document::recompute()
     std::list<Vertex> make_order;
     DependencyList::out_edge_iterator j, jend;
 
+    // caching vertex to DocObject
+    for (std::map<DocumentObject*,Vertex>::const_iterator It1= d->VertexObjectList.begin();It1 != d->VertexObjectList.end(); ++It1)
+        d->vertexMap[It1->second] = It1->first;
 
     try {
         // this sort gives the execute
         boost::topological_sort(d->DepList, std::front_inserter(make_order));
     }
+    catch (not_a_dag const& e) {
+        std::cerr << "Document::recompute: " << e.what() << std::endl;
+
+        // The graph is not a DAG, so handle the situation so that individual objects are recomputed.
+
+        // One option for detecting the nodes in the cyclic dependency involves removing vertices with zero out_edges sucessively. So we
+        // could make a copy of the dependency list for node removal. 
+        //
+        // However, the stock DependencyList is optimized for speed and lower memory footprint and uses vectors instead of lists form vertices 
+        // and edges (VecS instead Lists) this causes two major problems when removing nodes:
+        //  1. When removing an object iterators are invalidated (all iterators), which can be solved by appropriate nested looping
+        //  2. When removing an object descriptors are invalidated (also those of the non-removed vertices), so vertexMap and VertexObjectList
+        //  are invalidated, because their "Vertex" data becomes invalidated.
+        //
+        // The stock implementation does not remove vertices, when the graph changes it just rebuilds the dependency list but we can not do this, 
+        // because we still need to be able to link between the copied dependency list and the original DocumentObjects).
+        //
+        // More on:
+        // http://www.boost.org/doc/libs/1_37_0/libs/graph/doc/adjacency_list.html
+        //
+        // A solution to this problem is either to modify the adjacency list to use ListS instead of VecS for Vertices/Edges. Another is to copy
+        // the list into a new adjacency list having ListS instead of VecS, just when not_a_dag. When doing this, it makes sense to make it in addition
+        // bidirectional, so that we can isolate the cyclic dependency easily.
+        
+        typedef boost::adjacency_list <
+        boost::listS,           // class OutEdgeListS  : a Sequence or an AssociativeContainer
+        boost::listS,           // class VertexListS   : a Sequence or a RandomAccessContainer
+        boost::bidirectionalS,      // class DirectedS     : This is a directed graph
+        boost::no_property,    // class VertexProperty:
+        boost::no_property,    // class EdgeProperty:
+        boost::no_property,    // class GraphProperty:
+        boost::listS           // class EdgeListS:
+        > ListBasedDependencyList;
+        typedef boost::graph_traits<ListBasedDependencyList> ListBasedTraits;
+        typedef ListBasedTraits::vertex_descriptor ListBasedVertex;
+        //typedef ListBasedTraits::edge_descriptor ListBasedEdge;
+        
+        ListBasedDependencyList copy;
+
+        copy_graph(d->DepList,copy);
+        
+        ListBasedDependencyList::vertex_iterator lbvertexIt, lbvertexEnd, lbnext;
+        DependencyList::vertex_iterator vertexIt, vertexEnd;
+        
+        std::map<ListBasedVertex,Vertex> interListVertexmap;
+        
+        boost::tie(vertexIt, vertexEnd) = vertices(d->DepList);
+        boost::tie(lbvertexIt, lbvertexEnd) = vertices(copy);
+        
+        // map vertex descriptors of copy and original
+        for (; vertexIt != vertexEnd && lbvertexIt != lbvertexEnd; ++vertexIt, ++lbvertexIt) {
+            interListVertexmap[*lbvertexIt]=*vertexIt;
+        }
+
+        // our Graph is direct unidirectional, so we only have access to the outlist, not an inlist
+        // let's start removing nodes with an empty out list
+        bool changed = true;
+
+        while(changed) {
+
+            changed = false;
+
+            boost::tie(lbvertexIt, lbvertexEnd) = vertices(copy);
+
+            // for unconventional loop see: http://www.boost.org/doc/libs/1_37_0/libs/graph/doc/adjacency_list.html
+            for (lbnext=lbvertexIt; lbvertexIt != lbvertexEnd; lbvertexIt=lbnext) {
+                ++lbnext;
+                if(out_degree(*lbvertexIt, copy) == 0 ) {
+                    clear_vertex(*lbvertexIt, copy); // remove all in/out edges from this Vertex
+                    remove_vertex(*lbvertexIt, copy);
+                    changed = true;
+                }
+                else if(in_degree(*lbvertexIt, copy) == 0 ) {
+                    clear_vertex(*lbvertexIt, copy); // remove all in/out edges from this Vertex
+                    remove_vertex(*lbvertexIt, copy);
+                    changed = true;
+                }
+
+            }
+
+        }
+
+        // at this point we should have only the nodes with the cyclic loop
+
+        //notify_redundancy_to_UI()
+
+        // notify report view of the dependency
+        ListBasedDependencyList::out_edge_iterator lbj, lbjend;
+
+        for (boost::tie(lbvertexIt, lbvertexEnd) = vertices(copy); lbvertexIt != lbvertexEnd; ++lbvertexIt) {
+            DocumentObject* Cur = d->vertexMap[interListVertexmap[*lbvertexIt]];
+
+            if (Cur) {
+                std::cerr << Cur->getNameInDocument() << " dep on:" ;
+
+                for (boost::tie(lbj, lbjend) = out_edges(*lbvertexIt, copy); lbj != lbjend; ++lbj) {
+
+                    DocumentObject* Test = d->vertexMap[interListVertexmap[target(*lbj, copy)]];
+
+                    std::cerr << " " << Test->getNameInDocument();
+                }
+
+                std::cerr << std::endl;
+            }
+        }
+
+
+
+        return -1;
+    }
     catch (const std::exception& e) {
         std::cerr << "Document::recompute: " << e.what() << std::endl;
         return -1;
     }
-
-    // caching vertex to DocObject
-    for (std::map<DocumentObject*,Vertex>::const_iterator It1= d->VertexObjectList.begin();It1 != d->VertexObjectList.end(); ++It1)
-        d->vertexMap[It1->second] = It1->first;
 
 #ifdef FC_LOGFEATUREUPDATE
     std::clog << "make ordering: " << std::endl;
