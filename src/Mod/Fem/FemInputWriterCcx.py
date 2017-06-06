@@ -34,6 +34,7 @@ import sys
 import time
 import FemMeshTools
 import FemInputWriter
+import six
 
 
 class FemInputWriterCcx(FemInputWriter.FemInputWriter):
@@ -369,7 +370,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
 
         # TODO: some elemetIDs are collected for 1D-Flow calculation, this should be a def somewhere else, preferable inside the get_ccx_elsets_... methods
         for ccx_elset in self.ccx_elsets:
-            if ccx_elset['ccx_elset'] and ccx_elset['ccx_elset'] != self.ccx_eall:
+            if ccx_elset['ccx_elset'] and not isinstance(ccx_elset['ccx_elset'], six.string_types):  # use six to be sure to be Python 2.7 and 3.x compatible
                 if 'fluidsection_obj'in ccx_elset:
                     fluidsec_obj = ccx_elset['fluidsection_obj']
                     if fluidsec_obj.SectionType == 'Liquid':
@@ -388,8 +389,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         for ccx_elset in self.ccx_elsets:
             f.write('*ELSET,ELSET=' + ccx_elset['ccx_elset_name'] + '\n')
             if ccx_elset['ccx_elset']:
-                if ccx_elset['ccx_elset'] == self.ccx_eall:
-                    f.write(self.ccx_eall + '\n')
+                if isinstance(ccx_elset['ccx_elset'], six.string_types):  # use six to be sure to be Python 2.7 and 3.x compatible
+                    f.write(ccx_elset['ccx_elset'] + '\n')
                 else:
                     for elid in ccx_elset['ccx_elset']:
                         f.write(str(elid) + ',\n')
