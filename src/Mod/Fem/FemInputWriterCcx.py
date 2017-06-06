@@ -107,15 +107,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.write_femelementsets(inpfile)
         # Fluid section: Inlet and Outlet requires special element definition
         if self.fluidsection_objects:
-            InOuttest = False
-            for ccx_elset in self.ccx_elsets:
-                if ccx_elset['ccx_elset']:
-                    if 'fluidsection_obj'in ccx_elset:  # fluid mesh
-                        fluidsec_obj = ccx_elset['fluidsection_obj']
-                        if fluidsec_obj.SectionType == "Liquid":
-                            if (fluidsec_obj.LiquidSectionType == "PIPE INLET") or (fluidsec_obj.LiquidSectionType == "PIPE OUTLET"):
-                                InOuttest = True
-            if InOuttest is True:
+            if is_fluid_section_inlet_outlet(self.ccx_elsets) is True:
                 inpfile.close()
                 FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, self.file_name)
                 inpfile = open(self.file_name, 'a')
@@ -267,15 +259,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.write_femelementsets(inpfileMain)
         # Fluid section: Inlet and Outlet requires special element definition
         if self.fluidsection_objects:
-            InOuttest = False
-            for ccx_elset in self.ccx_elsets:
-                if ccx_elset['ccx_elset']:
-                    if 'fluidsection_obj'in ccx_elset:  # fluid mesh
-                        fluidsec_obj = ccx_elset['fluidsection_obj']
-                        if fluidsec_obj.SectionType == "Liquid":
-                            if (fluidsec_obj.LiquidSectionType == "PIPE INLET") or (fluidsec_obj.LiquidSectionType == "PIPE OUTLET"):
-                                InOuttest = True
-            if InOuttest is True:
+            if is_fluid_section_inlet_outlet(self.ccx_elsets) is True:
                 FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, name + "_Node_Elem_sets.inp")
 
         # constraints independent from steps
@@ -1315,6 +1299,19 @@ def get_ccx_elset_solid_name(mat_name, solid_name=None, mat_short_name=None):
         return mat_short_name + solid_name
     else:
         return mat_name + solid_name
+
+
+def is_fluid_section_inlet_outlet(ccx_elsets):
+    ''' Fluid section: Inlet and Outlet requires special element definition
+    '''
+    for ccx_elset in ccx_elsets:
+        if ccx_elset['ccx_elset']:
+            if 'fluidsection_obj'in ccx_elset:  # fluid mesh
+                fluidsec_obj = ccx_elset['fluidsection_obj']
+                if fluidsec_obj.SectionType == "Liquid":
+                    if (fluidsec_obj.LiquidSectionType == "PIPE INLET") or (fluidsec_obj.LiquidSectionType == "PIPE OUTLET"):
+                        return True
+    return False
 
 
 def liquid_section_def(obj, section_type):
