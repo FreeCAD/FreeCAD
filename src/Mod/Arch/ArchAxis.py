@@ -237,6 +237,9 @@ class _ViewProviderAxis:
         vobj.addDisplayMode(sep,"Default")
         self.onChanged(vobj,"BubbleSize")
         self.onChanged(vobj,"ShowLabel")
+        self.onChanged(vobj,"LineColor")
+        self.onChanged(vobj,"LineWidth")
+        self.onChanged(vobj,"DrawStyle")
 
     def getDisplayModes(self,vobj):
         return ["Default"]
@@ -679,8 +682,8 @@ class _AxisSystem:
                     cv = e3.Vertexes[0].Point
                     pts.extend(bset)
                 else:
-                    cv = e3.Vertexes[0].Point.sub(vc)
-                    pts.extend([p.add(cv) for p in bset])
+                    v = e3.Vertexes[0].Point.sub(cv)
+                    pts.extend([p.add(v) for p in bset])
         return pts
 
 
