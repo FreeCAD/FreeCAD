@@ -37,6 +37,9 @@ home_path = FreeCAD.getHomePath()
 temp_dir = tempfile.gettempdir() + '/FEM_unittests'
 test_file_dir = home_path + 'Mod/Fem/test_files/ccx'
 
+
+# define some locations fot the analysis tests
+# since they are also used in the helper def which create results they should stay global for the module
 static_base_name = 'cube_static'
 static_analysis_dir = temp_dir + '/FEM_static'
 static_save_fc_file = static_analysis_dir + '/' + static_base_name + '.fcstd'
@@ -575,4 +578,5 @@ start FreeCAD and run FEM unit test
 if FEM unit test is fine --> commit new FEM unit test results
 
 TODO compare the inp file of the helper with the inp file of FEM unit tests
+TODO the better way: move the result creation inside the TestFem and add some preference to deactivate this because it needs ccx
 '''
