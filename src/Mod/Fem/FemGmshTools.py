@@ -147,9 +147,8 @@ class FemGmshTools():
                 FreeCAD.Console.PrintError("You can not mesh a Vertex.\n")
                 self.dimension = '0'
             elif shty == 'Compound':
-                print('  Found a ' + shty)
-                err = "A Compound could contain anything. GMSH may not return the expected mesh. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
-                FreeCAD.Console.PrintError(err + "\n")
+                # print('  Found a ' + shty)
+                FreeCAD.Console.PrintLog("  Found a Compound. Since it could contain any kind of shape dimension 3 is used.\n")
                 self.dimension = '3'  # dimension 3 works for 2D and 1d shapes as well
             else:
                 self.dimension = '0'
@@ -252,10 +251,16 @@ class FemGmshTools():
             print ('  No mesh regions.')
         else:
             print ('  Mesh regions, we need to get the elements.')
-            if self.part_obj.Shape.ShapeType == 'Compound':
-                # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
-                err = "GMSH could return unexpected meshes for a boolean split tools Compound. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
-                FreeCAD.Console.PrintError(err + "\n")
+            # by the use of MeshRegion object and a BooleanSplitCompound there could be problems with node numbers see
+            # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
+            # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+            part = self.part_obj
+            if self.mesh_obj.MeshRegionList:
+                if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):  # other part obj might not have a Proxy, thus an exception would be raised
+                    if (part.Proxy.Type == "FeatureBooleanFragments" or part.Proxy.Type == "FeatureSlice" or part.Proxy.Type == "FeatureXOR"):
+                        error_message = "  The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. GMSH could return unexpected meshes in such circumstances. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
+                        FreeCAD.Console.PrintError(error_message + "\n")
+                        # TODO no gui popup because FreeCAD will be in a endless prind loop as long as the pop up is on --> my be find a better solution for either of both --> thus the pop up is in task panel
             for mr_obj in self.mesh_obj.MeshRegionList:
                 # print(mr_obj.Name)
                 # print(mr_obj.CharacteristicLength)
