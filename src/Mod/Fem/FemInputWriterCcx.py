@@ -341,31 +341,44 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             if self.beamsection_objects and len(self.beamsection_objects) == 1:          # single mat, single beam
                 self.get_ccx_elsets_single_mat_single_beam()
             elif self.beamsection_objects and len(self.beamsection_objects) > 1:         # single mat, multiple beams
+                self.get_element_geometry1D_elements()
                 self.get_ccx_elsets_single_mat_multiple_beam()
             elif self.fluidsection_objects and len(self.fluidsection_objects) == 1:      # single mat, single fluid
                 self.get_ccx_elsets_single_mat_single_fluid()
             elif self.fluidsection_objects and len(self.fluidsection_objects) > 1:       # single mat, multiple fluids
+                self.get_element_fluid1D_elements()
                 self.get_ccx_elsets_single_mat_multiple_fluid()
             elif self.shellthickness_objects and len(self.shellthickness_objects) == 1:  # single mat, single shell
                 self.get_ccx_elsets_single_mat_single_shell()
             elif self.shellthickness_objects and len(self.shellthickness_objects) > 1:   # single mat, multiple shells
+                self.get_element_geometry2D_elements()
                 self.get_ccx_elsets_single_mat_multiple_shell()
             else:                                                                        # single mat, solid
                 self.get_ccx_elsets_single_mat_solid()
         else:
             if self.beamsection_objects and len(self.beamsection_objects) == 1:          # multiple mats, single beam
+                self.get_material_elements()
                 self.get_ccx_elsets_multiple_mat_single_beam()
             elif self.beamsection_objects and len(self.beamsection_objects) > 1:         # multiple mats, multiple beams
+                self.get_element_geometry1D_elements()
+                self.get_material_elements()
                 self.get_ccx_elsets_multiple_mat_multiple_beam()
             elif self.fluidsection_objects and len(self.fluidsection_objects) == 1:      # multiple mats, single fluid
+                self.get_material_elements()
                 self.get_ccx_elsets_multiple_mat_single_fluid()
             elif self.fluidsection_objects and len(self.fluidsection_objects) > 1:       # multiple mats, multiple fluids
+                self.get_element_fluid1D_elements()
+                self.get_material_elements()
                 self.get_ccx_elsets_multiple_mat_multiple_fluid()
             elif self.shellthickness_objects and len(self.shellthickness_objects) == 1:  # multiple mats, single shell
+                self.get_material_elements()
                 self.get_ccx_elsets_multiple_mat_single_shell()
             elif self.shellthickness_objects and len(self.shellthickness_objects) > 1:   # multiple mats, multiple shells
+                self.get_element_geometry2D_elements()
+                self.get_material_elements()
                 self.get_ccx_elsets_multiple_mat_multiple_shell()
             else:                                                                        # multiple mats, solid
+                self.get_material_elements()
                 self.get_ccx_elsets_multiple_mat_solid()
 
         # TODO: some elemetIDs are collected for 1D-Flow calculation, this should be a def somewhere else, preferable inside the get_ccx_elsets_... methods
@@ -1085,10 +1098,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_single_mat_multiple_beam(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         mat_obj = self.material_objects[0]['Object']
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.beamsection_objects)
         for beamsec_data in self.beamsection_objects:
             beamsec_obj = beamsec_data['Object']
             ccx_elset = {}
@@ -1100,10 +1110,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_single_mat_multiple_fluid(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         mat_obj = self.material_objects[0]['Object']
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.fluidsection_objects)
         for fluidsec_data in self.fluidsection_objects:
             fluidsec_obj = fluidsec_data['Object']
             ccx_elset = {}
@@ -1115,10 +1122,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_single_mat_multiple_shell(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         mat_obj = self.material_objects[0]['Object']
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.shellthickness_objects)
         for shellth_data in self.shellthickness_objects:
             shellth_obj = shellth_data['Object']
             ccx_elset = {}
@@ -1130,10 +1134,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_single_beam(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         beamsec_obj = self.beamsection_objects[0]['Object']
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}
@@ -1145,10 +1146,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_single_fluid(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         fluidsec_obj = self.fluidsection_objects[0]['Object']
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}
@@ -1160,10 +1158,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_single_shell(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         shellth_obj = self.shellthickness_objects[0]['Object']
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}
@@ -1175,19 +1170,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_solid(self):
-        all_found = False
-        if self.femmesh.GroupCount:
-            all_found = FemMeshTools.get_femelement_sets_from_group_data(self.femmesh, self.material_objects)
-            print(all_found)
-        if all_found is False:
-            if not self.femelement_table:
-                self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-            # we gone use the binary search for get_femelements_by_femnodes(), thus we need the parameter values self.femnodes_ele_table
-            if not self.femnodes_mesh:
-                self.femnodes_mesh = self.femmesh.Nodes
-            if not self.femnodes_ele_table:
-                self.femnodes_ele_table = FemMeshTools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
-            FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects, self.femnodes_ele_table)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}
@@ -1198,10 +1180,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_multiple_beam(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.beamsection_objects)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
         for beamsec_data in self.beamsection_objects:
             beamsec_obj = beamsec_data['Object']
             for mat_data in self.material_objects:
@@ -1219,10 +1197,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_multiple_fluid(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.fluidsection_objects)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
         for fluidsec_data in self.fluidsection_objects:
             fluidsec_obj = fluidsec_data['Object']
             for mat_data in self.material_objects:
@@ -1240,10 +1214,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_multiple_shell(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.shellthickness_objects)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
         for shellth_data in self.shellthickness_objects:
             shellth_obj = shellth_data['Object']
             for mat_data in self.material_objects:
