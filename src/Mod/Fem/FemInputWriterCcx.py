@@ -357,7 +357,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 self.get_ccx_elsets_multiple_mat_single_beam()
             elif self.beamsection_objects and len(self.beamsection_objects) > 1:         # multiple mats, multiple beams
                 self.get_ccx_elsets_multiple_mat_multiple_beam()
-            if self.fluidsection_objects and len(self.fluidsection_objects) == 1:        # multiple mats, single fluid
+            elif self.fluidsection_objects and len(self.fluidsection_objects) == 1:      # multiple mats, single fluid
                 self.get_ccx_elsets_multiple_mat_single_fluid()
             elif self.fluidsection_objects and len(self.fluidsection_objects) > 1:       # multiple mats, multiple fluids
                 self.get_ccx_elsets_multiple_mat_multiple_fluid()
