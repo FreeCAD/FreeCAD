@@ -426,7 +426,7 @@ Evolumes
 ** Element sets for materials and FEM element type (solid, shell, beam, fluid)
 ** written by write_element_sets_material_and_femelement_type function
 *ELSET,ELSET=MechanicalMaterialSolid
-Eall
+Evolumes
 
 ***********************************************************
 ** Node sets for fixed constraint
@@ -588,9 +588,9 @@ U
 *EL FILE
 S, E
 ** outputs --> dat file
-*NODE PRINT , NSET=Nall 
+*NODE PRINT , NSET=Nall
 U 
-*EL PRINT , ELSET=Eall 
+*EL PRINT , ELSET=Eall
 S 
 
 ***********************************************************
