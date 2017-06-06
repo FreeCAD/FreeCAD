@@ -1900,6 +1900,7 @@ int Document::recompute()
     }
     catch (const std::exception& e) {
         std::cerr << "Document::recompute: " << e.what() << std::endl;
+        onRecomputeFailed();
         return -1;
     }
 
@@ -1973,6 +1974,7 @@ int Document::recompute()
             if ( _recomputeFeature(Cur)) {
                 // if somthing happen break execution of recompute
                 d->vertexMap.clear();
+                onRecomputeFailed();
                 return -1;
             }
             ++objectCount;
@@ -2121,12 +2123,14 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
         e.ReportException();
         _RecomputeLog.push_back(new DocumentObjectExecReturn(e.what(),Feat));
         Feat->setError();
+        Feat->onRecomputeFailed();
         return false;
     }
     catch (std::exception &e) {
         Base::Console().Warning("exception in Feature \"%s\" thrown: %s\n",Feat->getNameInDocument(),e.what());
         _RecomputeLog.push_back(new DocumentObjectExecReturn(e.what(),Feat));
         Feat->setError();
+        Feat->onRecomputeFailed();
         return false;
     }
 #ifndef FC_DEBUG
@@ -2149,6 +2153,7 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
         Base::Console().Error("%s\n",returnCode->Why.c_str());
 #endif
         Feat->setError();
+        Feat->onRecomputeFailed();
     }
     return false;
 }
@@ -2163,6 +2168,21 @@ void Document::recomputeFeature(DocumentObject* Feat)
     // verify that the feature is (active) part of the document
     if (Feat->getNameInDocument())
         _recomputeFeature(Feat);
+}
+
+void Document::onRecomputeFailed(void)
+{
+    for (std::map<DocumentObject*,Vertex>::const_iterator It1= d->VertexObjectList.begin();It1 != d->VertexObjectList.end(); ++It1) {
+
+        DocumentObject* Cur = It1->first;
+        
+        if (!Cur || !isIn(Cur)) continue;
+
+        // ask the object if it should be recomputed
+        if (Cur->mustExecute() == 1) {
+            Cur->onRecomputeFailed();
+        }
+    }
 }
 
 DocumentObject * Document::addObject(const char* sType, const char* pObjectName, bool isNew)

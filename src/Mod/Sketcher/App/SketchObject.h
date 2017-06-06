@@ -62,6 +62,9 @@ public:
     //@{
     /// recalculate the Feature (if no recompute is needed see also solve() and solverNeedsUpdate boolean)
     App::DocumentObjectExecReturn *execute(void);
+    
+    /// function to execute in case a recompute fails
+    virtual void onRecomputeFailed(void);
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName(void) const {

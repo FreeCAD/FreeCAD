@@ -209,6 +209,12 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
+void SketchObject::onRecomputeFailed(void)
+{
+    solve(true);
+}
+
+
 int SketchObject::hasConflicts(void) const
 {    
     if (lastDoF < 0) // over-constrained sketch
