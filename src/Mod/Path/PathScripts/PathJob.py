@@ -27,6 +27,7 @@ import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
 import sys
+import lxml.etree as xml
 
 from PySide import QtCore, QtGui
 from PathScripts.PathPostProcessor import PostProcessor
@@ -157,38 +158,6 @@ class ViewProviderJob:
         vobj.setEditorMode('Selectable', mode)
         vobj.setEditorMode('ShapeColor', mode)
         vobj.setEditorMode('Transparency', mode)
-
-
-class CommandJob:
-
-    def GetResources(self):
-        return {'Pixmap': 'Path-Job',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Job"),
-                'Accel': "P, J",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Creates a Path Job object")}
-
-    def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
-
-    def Activated(self):
-        CommandJob.Create()
-        FreeCAD.ActiveDocument.recompute()
-
-    @staticmethod
-    def Create():
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
-        FreeCADGui.addModule('PathScripts.PathUtils')
-        FreeCADGui.addModule('PathScripts.PathToolController')
-        snippet = '''
-import PathScripts.PathToolController as PathToolController
-obj = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")
-PathScripts.PathJob.ObjectPathJob(obj)
-PathToolController.CommandPathToolController.Create(obj.Name)
-obj.ViewObject.Proxy.deleteOnReject = True
-obj.ViewObject.startEditing()
-'''
-        FreeCADGui.doCommand(snippet)
-        FreeCAD.ActiveDocument.commitTransaction()
 
 
 class TaskPanel:
@@ -326,9 +295,81 @@ class TaskPanel:
 
         self.setFields()
 
+class CommandJobCreate:
+
+    def GetResources(self):
+        return {'Pixmap': 'Path-Job',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Job"),
+                #'Accel': "P, J",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Creates a Path Job object")}
+
+    def IsActive(self):
+        return FreeCAD.ActiveDocument is not None
+
+    def Activated(self):
+        self.Create()
+        FreeCAD.ActiveDocument.recompute()
+
+    @classmethod
+    def Execute(cls):
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
+        FreeCADGui.addModule('PathScripts.PathUtils')
+        FreeCADGui.addModule('PathScripts.PathToolController')
+        snippet = '''
+import PathScripts.PathToolController as PathToolController
+obj = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")
+PathScripts.PathJob.ObjectPathJob(obj)
+PathToolController.CommandPathToolController.Create(obj.Name)
+obj.ViewObject.Proxy.deleteOnReject = True
+obj.ViewObject.startEditing()
+'''
+        FreeCADGui.doCommand(snippet)
+        FreeCAD.ActiveDocument.commitTransaction()
+
+class CommandJobExportTemplate:
+
+    def GetResources(self):
+        return {'Pixmap': 'Path-Job',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Export Template"),
+                #'Accel': "P, T",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Exports Path Job as a template to be used for other jobs")}
+
+    def IsActive(self):
+        return FreeCAD.ActiveDocument is not None
+
+    def Activated(self):
+        job = FreeCADGui.Selection.getSelection()[0]
+        self.Execute(job)
+        FreeCAD.ActiveDocument.recompute()
+
+    @classmethod
+    def Execute(cls, job):
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Export Job template"))
+        root = xml.Element('PathJobConfiguration')
+        for obj in job.Group:
+            if hasattr(obj, 'Tool') and hasattr(obj, 'SpindleDir'):
+                tc = xml.SubElement(root, 'ToolController', {'Label': obj.Label})
+                attrs = {}
+                attrs['nr']     = ("%d" % (obj.ToolNumber))
+                attrs['vfeed']  = ("%s" % (obj.VertFeed))
+                attrs['hfeed']  = ("%s" % (obj.HorizFeed))
+                attrs['vrapid'] = ("%s" % (obj.VertRapid))
+                attrs['hrapid'] = ("%s" % (obj.HorizRapid))
+                attrs['speed']  = ("%f" % (obj.SpindleSpeed))
+                attrs['dir']    = ("%s" % (obj.SpindleDir))
+
+                xml.SubElement(tc, 'Controller', attrs)
+                tc.append(xml.fromstring(obj.Tool.Content))
+                xml.ElementTree(root).write("./%s.xml" % job.Label, pretty_print=True)
+
+        FreeCAD.ActiveDocument.commitTransaction()
+
+
+
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_Job', CommandJob())
+    FreeCADGui.addCommand('Path_Job', CommandJobCreate())
+    FreeCADGui.addCommand('Path_ExportTemplate', CommandJobExportTemplate())
 
 FreeCAD.Console.PrintLog("Loading PathJob... done\n")

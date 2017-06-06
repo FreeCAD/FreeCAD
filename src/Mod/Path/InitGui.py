@@ -138,11 +138,14 @@ class PathWorkbench (Workbench):
         if len(FreeCADGui.Selection.getSelection()) == 1:
             if FreeCADGui.Selection.getSelection()[0].isDerivedFrom("Path::Feature"):
                 self.appendContextMenu("", ["Path_Inspect"])
-                if "Profile" or "Contour" in FreeCADGui.Selection.getSelection()[0].Name:
+                selectedName = FreeCADGui.Selection.getSelection()[0].Name
+                if "Job" in selectedName:
+                    self.appendContextMenu("", ["Path_ExportTemplate"])
+                if "Profile" in selectedName or "Contour" in selectedName:
                     #self.appendContextMenu("", ["Add_Tag"])
                     self.appendContextMenu("", ["Set_StartPoint"])
                     #self.appendContextMenu("", ["Set_EndPoint"])
-                if "Remote" in FreeCADGui.Selection.getSelection()[0].Name:
+                if "Remote" in selectedName:
                     self.appendContextMenu("", ["Refresh_Path"])
 
 Gui.addWorkbench(PathWorkbench())
