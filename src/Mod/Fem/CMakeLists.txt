@@ -129,8 +129,16 @@ INSTALL(
 INSTALL(
     FILES
         # changes on the file list here needs to be made in App/CMakeLists.txt as well
-        test_files/ccx/mesh_points.csv
-        test_files/ccx/mesh_volumes.csv
+        test_files/__init__.py
+    DESTINATION
+        Mod/Fem/test_files
+)
+
+INSTALL(
+    FILES
+        # changes on the file list here needs to be made in App/CMakeLists.txt as well
+        test_files/ccx/__init__.py
+        test_files/ccx/cube_mesh.py
         test_files/ccx/cube_frequency.inp
         test_files/ccx/cube_frequency.dat
         test_files/ccx/cube_frequency.frd
@@ -140,8 +148,7 @@ INSTALL(
         test_files/ccx/cube_static.frd
         test_files/ccx/cube_static_expected_values
         test_files/ccx/cube.fcstd
-        test_files/ccx/spine_points.csv
-        test_files/ccx/spine_volumes.csv
+        test_files/ccx/spine_mesh.py
         test_files/ccx/spine_thermomech.inp
         test_files/ccx/spine_thermomech.dat
         test_files/ccx/spine_thermomech.frd
