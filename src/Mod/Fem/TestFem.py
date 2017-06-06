@@ -55,11 +55,6 @@ thermomech_save_fc_file = thermomech_analysis_dir + '/' + thermomech_base_name +
 thermomech_analysis_inp_file = test_file_dir + '/' + thermomech_base_name + '.inp'
 thermomech_expected_values = test_file_dir + "/spine_thermomech_expected_values"
 
-mesh_points_file = test_file_dir + '/mesh_points.csv'
-mesh_volumes_file = test_file_dir + '/mesh_volumes.csv'
-spine_points_file = test_file_dir + '/spine_points.csv'
-spine_volumes_file = test_file_dir + '/spine_volumes.csv'
-
 
 class FemTest(unittest.TestCase):
     def setUp(self):
@@ -166,7 +161,12 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [pressure_constraint]
 
         fcc_print('Checking FEM new mesh...')
-        mesh = import_csv_mesh(mesh_points_file, mesh_volumes_file)
+        from test_files.ccx.cube_mesh import create_nodes_cube, create_elements_cube
+        mesh = Fem.FemMesh()
+        ret = create_nodes_cube(mesh)
+        self.assertTrue(ret, "Import of mesh nodes failed")
+        ret = create_elements_cube(mesh)
+        self.assertTrue(ret, "Import of mesh volumes failed")
         mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
         mesh_object.FemMesh = mesh
         self.assertTrue(mesh, "FemTest of new mesh failed")
@@ -337,7 +337,12 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [heatflux_constraint]
 
         fcc_print('Checking FEM new mesh...')
-        mesh = import_csv_mesh(spine_points_file, spine_volumes_file)
+        from test_files.ccx.spine_mesh import create_nodes_spine, create_elements_spine
+        mesh = Fem.FemMesh()
+        ret = create_nodes_spine(mesh)
+        self.assertTrue(ret, "Import of mesh nodes failed")
+        ret = create_elements_spine(mesh)
+        self.assertTrue(ret, "Import of mesh volumes failed")
         mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
         mesh_object.FemMesh = mesh
         self.assertTrue(mesh, "FemTest of new mesh failed")
@@ -405,22 +410,6 @@ class FemCcxAnalysisTest(unittest.TestCase):
 # helpers
 def fcc_print(message):
     FreeCAD.Console.PrintMessage('{} \n'.format(message))
-
-
-def import_csv_mesh(import_points_file, import_volumes_file):
-    import csv
-    the_fem_mesh = Fem.FemMesh()
-    with open(import_points_file, 'r') as points_file:
-        reader = csv.reader(points_file)
-        for p in reader:
-            the_fem_mesh.addNode(float(p[1]), float(p[2]), float(p[3]), int(p[0]))
-    with open(import_volumes_file, 'r') as volumes_file:
-        reader = csv.reader(volumes_file)
-        for v in reader:
-            the_fem_mesh.addVolume([int(v[2]), int(v[1]), int(v[3]), int(v[4]), int(v[5]),
-                                   int(v[7]), int(v[6]), int(v[9]), int(v[8]), int(v[10])],
-                                   int(v[0]))
-    return the_fem_mesh
 
 
 def compare_inp_files(file_name1, file_name2):
