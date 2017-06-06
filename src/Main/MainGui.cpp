@@ -202,7 +202,11 @@ int main( int argc, char ** argv )
                           "Python version information:\n%4\n")
                           .arg(appName).arg(QString::fromUtf8(e.what()))
 #if PY_MAJOR_VERSION >= 3
+#if PY_MINOR_VERSION >= 5
                           .arg(QString::fromUtf8(Py_EncodeLocale(Py_GetPath(),NULL))).arg(QString::fromLatin1(Py_GetVersion()));
+#else
+                          .arg(QString::fromUtf8(_Py_wchar2char(Py_GetPath(),NULL))).arg(QString::fromLatin1(Py_GetVersion()));
+#endif
 #else
                           .arg(QString::fromUtf8(Py_GetPath())).arg(QString::fromLatin1(Py_GetVersion()));
 #endif

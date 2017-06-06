@@ -476,7 +476,11 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
 {
     if (!Py_IsInitialized()) {
 #if PY_MAJOR_VERSION >= 3
+#if PY_MINOR_VERSION >= 5
         Py_SetProgramName(Py_DecodeLocale(argv[0],NULL));
+#else
+        Py_SetProgramName(_Py_char2wchar(argv[0],NULL));
+#endif
 #else
         Py_SetProgramName(argv[0]);
 #endif
@@ -486,7 +490,11 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
         size_t size = argc;
         wchar_t **_argv = new wchar_t*[size];
         for (int i = 0; i < argc; i++) {
+#if PY_MINOR_VERSION >= 5
             _argv[i] = Py_DecodeLocale(argv[i],NULL);
+#else
+            _argv[i] = _Py_char2wchar(argv[i],NULL);
+#endif
         }
         PySys_SetArgv(argc, _argv);
 #else
@@ -496,7 +504,11 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
         this->_global = PyEval_SaveThread();
     }
 #if PY_MAJOR_VERSION >= 3
+#if PY_MINOR_VERSION >= 5
     return Py_EncodeLocale(Py_GetPath(),NULL);
+#else
+    return _Py_wchar2char(Py_GetPath(),NULL);
+#endif
 #else
     return Py_GetPath();
 #endif

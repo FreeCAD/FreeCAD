@@ -219,6 +219,53 @@ FreeCADGui_getSoDBVersion(PyObject * /*self*/, PyObject *args)
 #endif
 }
 
+// Copied from https://github.com/python/cpython/blob/master/Objects/moduleobject.c
+#if PY_MAJOR_VERSION >= 3
+#if PY_MINOR_VERSION <= 4
+static int
+_add_methods_to_object(PyObject *module, PyObject *name, PyMethodDef *functions)
+{
+    PyObject *func;
+    PyMethodDef *fdef;
+
+    for (fdef = functions; fdef->ml_name != NULL; fdef++) {
+        if ((fdef->ml_flags & METH_CLASS) ||
+            (fdef->ml_flags & METH_STATIC)) {
+            PyErr_SetString(PyExc_ValueError,
+                            "module functions cannot set"
+                            " METH_CLASS or METH_STATIC");
+            return -1;
+        }
+        func = PyCFunction_NewEx(fdef, (PyObject*)module, name);
+        if (func == NULL) {
+            return -1;
+        }
+        if (PyObject_SetAttrString(module, fdef->ml_name, func) != 0) {
+            Py_DECREF(func);
+            return -1;
+        }
+        Py_DECREF(func);
+    }
+
+    return 0;
+}
+
+int
+PyModule_AddFunctions(PyObject *m, PyMethodDef *functions)
+{
+    int res;
+    PyObject *name = PyModule_GetNameObject(m);
+    if (name == NULL) {
+        return -1;
+    }
+
+    res = _add_methods_to_object(m, name, functions);
+    Py_DECREF(name);
+    return res;
+}
+#endif
+#endif
+
 struct PyMethodDef FreeCADGui_methods[] = {
     {"subgraphFromObject",FreeCADGui_subgraphFromObject,METH_VARARGS,
      "subgraphFromObject(object) -> Node\n\n"
