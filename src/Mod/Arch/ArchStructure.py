@@ -493,6 +493,7 @@ class _Structure(ArchComponent.Component):
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
                             normal = obj.Base.Shape.Faces[0].normalAt(0,0)
+                            normal = placement.inverse().Rotation.multVec(normal)
                     elif obj.Base.Shape.Wires:
                         baseface = None
                         if hasattr(obj,"FaceMaker"):
@@ -505,6 +506,7 @@ class _Structure(ArchComponent.Component):
                                 if len(baseface.Faces) > 1:
                                     baseface = baseface.Faces[0]
                                 normal = baseface.normalAt(0,0)
+                                normal = placement.inverse().Rotation.multVec(normal)
                         if not baseface:
                             for w in obj.Base.Shape.Wires:
                                 w.fix(0.1,0,1) # fixes self-intersecting wires
