@@ -471,17 +471,21 @@ def force_unix_line_ends(line_list):
     return new_line_list
 
 
-def run_fem_unittests():
-    import unittest
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestFem"))
-    r = unittest.TextTestRunner()
-    r.run(suite)
+def runTestFem():
+    '''run FEM unit test
+    for more information on how to run a specific test class or a test def see
+    file src/Mod/Test/__init__
+    https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546
+    '''
+    import Test
+    import sys
+    current_module = sys.modules[__name__]
+    Test.runTestsFromModule(current_module)
 
 
 def create_test_results():
     # run FEM unit tests
-    run_fem_unittests()
+    runTestFem()
 
     import os
     import shutil
