@@ -1918,89 +1918,15 @@ int Document::recompute()
         
         ListBasedDependencyList cyclicdependencies;
         ListBasedDependencyList acyclicdependencies;
-
-        copy_graph(d->DepList,cyclicdependencies);
-        copy_graph(d->DepList,acyclicdependencies);
-        
-        ListBasedDependencyList::vertex_iterator lbvertexIt, lbvertexEnd, lbnext;
-        ListBasedDependencyList::vertex_iterator albvertexIt, albvertexEnd, albnext;
-        DependencyList::vertex_iterator vertexIt, vertexEnd;
         
         std::map<ListBasedVertex,DocumentObject *> acyclicVertexmap;
         std::map<ListBasedVertex,DocumentObject *> cyclicVertexmap;
-        std::map<ListBasedVertex,ListBasedVertex> cyclic2acyclicVertexmap;
+
+        splitGraphIntoCyclicACyclic(d->DepList, d->vertexMap,  
+                                    acyclicdependencies, acyclicVertexmap,
+                                    cyclicdependencies, cyclicVertexmap);
         
-        boost::tie(vertexIt, vertexEnd) = vertices(d->DepList);
-        boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies);
-        boost::tie(albvertexIt, albvertexEnd) = vertices(acyclicdependencies);
-        
-        // map vertex descriptors of copy and original
-        for (; vertexIt != vertexEnd && lbvertexIt != lbvertexEnd && albvertexIt != albvertexEnd; ++vertexIt, ++lbvertexIt, ++albvertexIt) {
-            cyclicVertexmap[*lbvertexIt]=d->vertexMap[*vertexIt];
-            acyclicVertexmap[*albvertexIt] = d->vertexMap[*vertexIt];
-            cyclic2acyclicVertexmap[*lbvertexIt]=*albvertexIt;
-        }
-        
-        // our Graph is direct unidirectional, so we only have access to the outlist, not an inlist
-        // let's start removing nodes with an empty out list
-        bool changed = true;
 
-        while(changed) {
-
-            changed = false;
-
-            boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies);
-
-            // for unconventional loop see: http://www.boost.org/doc/libs/1_37_0/libs/graph/doc/adjacency_list.html
-            for (lbnext=lbvertexIt; lbvertexIt != lbvertexEnd; lbvertexIt=lbnext) {
-                ++lbnext;
-                if(out_degree(*lbvertexIt, cyclicdependencies) == 0 ) {
-                    clear_vertex(*lbvertexIt, cyclicdependencies); // remove all in/out edges from this Vertex
-                    remove_vertex(*lbvertexIt, cyclicdependencies);
-                    changed = true;
-                }
-                else if(in_degree(*lbvertexIt, cyclicdependencies) == 0 ) {
-                    clear_vertex(*lbvertexIt, cyclicdependencies); // remove all in/out edges from this Vertex
-                    remove_vertex(*lbvertexIt, cyclicdependencies);
-                    changed = true;
-                }
-
-            }
-
-        }
-
-        // at this point we should have only the nodes with the cyclic loop
-
-        //notify_redundancy_to_UI()
-
-        // notify report view of the dependency
-        ListBasedDependencyList::out_edge_iterator lbj, lbjend;
-
-        for (boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies); lbvertexIt != lbvertexEnd; ++lbvertexIt) {
-            DocumentObject* Cur = cyclicVertexmap[*lbvertexIt];
-
-            if (Cur) {
-                std::cerr << Cur->getNameInDocument() << " dep on:" ;
-
-                for (boost::tie(lbj, lbjend) = out_edges(*lbvertexIt, cyclicdependencies); lbj != lbjend; ++lbj) {
-
-                    DocumentObject* Test = cyclicVertexmap[target(*lbj, cyclicdependencies)];
-
-                    std::cerr << " " << Test->getNameInDocument();
-                }
-
-                std::cerr << std::endl;
-            }
-        }
-        
-        // construct acyclic dependency list
-        boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies);
-        
-        // for unconventional loop see: http://www.boost.org/doc/libs/1_37_0/libs/graph/doc/adjacency_list.html
-        for (; lbvertexIt != lbvertexEnd; ++lbvertexIt) {
-            clear_vertex(cyclic2acyclicVertexmap[*lbvertexIt], acyclicdependencies); // remove all in/out edges from this Vertex
-            remove_vertex(cyclic2acyclicVertexmap[*lbvertexIt], acyclicdependencies); // remove all in/out edges from this Vertex
-        }
         
         std::list<ListBasedVertex> lbmake_order;
         
@@ -2045,6 +1971,10 @@ int Document::recompute()
         return -1;
     }
     
+    #ifdef FC_LOGFEATUREUPDATE
+    std::clog << "make ordering: " << std::endl;
+    #endif
+    
     int objects = _recomputeOrderedDependencyList<DependencyList,Vertex>(d->DepList,d->vertexMap,make_order);
     
     d->vertexMap.clear();
@@ -2055,15 +1985,97 @@ int Document::recompute()
     
 }
 
+void Document::splitGraphIntoCyclicACyclic( DependencyList &nondag, std::map<Vertex,DocumentObject *> &vertexmap,
+                                            ListBasedDependencyList &acyclicdependencies, std::map<ListBasedVertex,DocumentObject *> &acyclicvertexmap,
+                                            ListBasedDependencyList &cyclicdependencies, std::map<ListBasedVertex,DocumentObject *> &cyclicvertexmap)
+{
+    copy_graph(nondag,cyclicdependencies);
+    copy_graph(nondag,acyclicdependencies);
+    
+    ListBasedDependencyList::vertex_iterator lbvertexIt, lbvertexEnd, lbnext;
+    ListBasedDependencyList::vertex_iterator albvertexIt, albvertexEnd, albnext;
+    DependencyList::vertex_iterator vertexIt, vertexEnd;
+    
+    
+    std::map<ListBasedVertex,ListBasedVertex> cyclic2acyclicVertexmap;
+    
+    boost::tie(vertexIt, vertexEnd) = vertices(nondag);
+    boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies);
+    boost::tie(albvertexIt, albvertexEnd) = vertices(acyclicdependencies);
+    
+    // map vertex descriptors of copy and original
+    for (; vertexIt != vertexEnd && lbvertexIt != lbvertexEnd && albvertexIt != albvertexEnd; ++vertexIt, ++lbvertexIt, ++albvertexIt) {
+        cyclicvertexmap[*lbvertexIt]= vertexmap[*vertexIt];
+        acyclicvertexmap[*albvertexIt] = vertexmap[*vertexIt];
+        cyclic2acyclicVertexmap[*lbvertexIt]=*albvertexIt;
+    }
+    
+    // our Graph is direct unidirectional, so we only have access to the outlist, not an inlist
+    // let's start removing nodes with an empty out list
+    bool changed = true;
+    
+    while(changed) {
+        
+        changed = false;
+        
+        boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies);
+        
+        // for unconventional loop see: http://www.boost.org/doc/libs/1_37_0/libs/graph/doc/adjacency_list.html
+        for (lbnext=lbvertexIt; lbvertexIt != lbvertexEnd; lbvertexIt=lbnext) {
+            ++lbnext;
+            if(out_degree(*lbvertexIt, cyclicdependencies) == 0 ) {
+                clear_vertex(*lbvertexIt, cyclicdependencies); // remove all in/out edges from this Vertex
+                remove_vertex(*lbvertexIt, cyclicdependencies);
+                changed = true;
+            }
+            else if(in_degree(*lbvertexIt, cyclicdependencies) == 0 ) {
+                clear_vertex(*lbvertexIt, cyclicdependencies); // remove all in/out edges from this Vertex
+                remove_vertex(*lbvertexIt, cyclicdependencies);
+                changed = true;
+            }
+            
+        }
+        
+    }
+    
+    // at this point we should have only the nodes with the cyclic loop
+    
+    //notify_redundancy_to_UI()
+    
+    // notify report view of the dependency
+    ListBasedDependencyList::out_edge_iterator lbj, lbjend;
+    
+    for (boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies); lbvertexIt != lbvertexEnd; ++lbvertexIt) {
+        DocumentObject* Cur = cyclicvertexmap[*lbvertexIt];
+        
+        if (Cur) {
+            std::cerr << Cur->getNameInDocument() << " dep on:" ;
+            
+            for (boost::tie(lbj, lbjend) = out_edges(*lbvertexIt, cyclicdependencies); lbj != lbjend; ++lbj) {
+                
+                DocumentObject* Test = cyclicvertexmap[target(*lbj, cyclicdependencies)];
+                
+                std::cerr << " " << Test->getNameInDocument();
+            }
+            
+            std::cerr << std::endl;
+        }
+    }
+    
+    // construct acyclic dependency list
+    boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies);
+    
+    for (; lbvertexIt != lbvertexEnd; ++lbvertexIt) {
+        clear_vertex(cyclic2acyclicVertexmap[*lbvertexIt], acyclicdependencies); // remove all in/out edges from this Vertex
+        remove_vertex(cyclic2acyclicVertexmap[*lbvertexIt], acyclicdependencies); // remove all in/out edges from this Vertex
+    }
+}
+
 template<typename T1,typename T2>
 int Document::_recomputeOrderedDependencyList(T1 &dependencylist, std::map<T2,DocumentObject *> &vertexmap, std::list<T2> &make_order)
 {
     int objectCount = 0;
     typename T1::out_edge_iterator j, jend;
-    
-#ifdef FC_LOGFEATUREUPDATE
-    std::clog << "make ordering: " << std::endl;
-#endif
 
     std::set<DocumentObject*> recomputeList;
 

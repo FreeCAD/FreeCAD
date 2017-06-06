@@ -400,6 +400,17 @@ protected:
     
     
     #ifdef USE_OLD_DAG
+    /// splits a DependencyList into a cyclic and acyclic part
+    /// @nondag the non-dag dependency list to split
+    /// @vertexmap the vertex map mapping @nondag vertex descriptors to DocumentObjects
+    /// @acyclic output parameter containing a list with the cyclic portion
+    /// @acyclicVertexmap output parameter containing the mapping between @acyclic vertex descriptors and documentobject    
+    /// @cyclic output parameter containing a list with the cyclic portion
+    /// @cyclicVertexmap output parameter containing the mapping between @cyclic vertex descriptors and documentobject
+    void splitGraphIntoCyclicACyclic(DependencyList &nondag, std::map<Vertex,DocumentObject *> &vertexmap,  
+                                     ListBasedDependencyList &acyclic, std::map<ListBasedVertex,DocumentObject *> &acyclicvertexmap,
+                                     ListBasedDependencyList &cyclic, std::map<ListBasedVertex,DocumentObject *> &cyclicvertexmap);
+    
     template<typename T1,typename T2>
     int _recomputeOrderedDependencyList(T1 &dependencylist, std::map<T2,DocumentObject *> &vertexmap, std::list<T2> &make_order);
     #endif
