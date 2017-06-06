@@ -337,49 +337,56 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('\n***********************************************************\n')
         f.write('** Element sets for materials and FEM element type (solid, shell, beam, fluid)\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+
+        # get the element ids for face and edge elements and write them into the objects
+        if len(self.shellthickness_objects) > 1:
+            self.get_element_geometry2D_elements()
+        elif len(self.beamsection_objects) > 1:
+            self.get_element_geometry1D_elements()
+            # we will need to split the beams even for one beamobj because no beam in z-direction can be used in ccx without a special adjustment
+            # thus they need an own ccx_elset --> but this is ccx specific and thus should not be in input writer!
+        elif len(self.fluidsection_objects) > 1:
+            self.get_element_fluid1D_elements()
+
+        # get the element ids for material objects and write them into the material object
+        if len(self.material_objects) > 1:
+            self.get_material_elements()
+
+        # create the ccx_elsets
         if len(self.material_objects) == 1:
-            if self.beamsection_objects and len(self.beamsection_objects) == 1:          # single mat, single beam
-                self.get_ccx_elsets_single_mat_single_beam()
-            elif self.beamsection_objects and len(self.beamsection_objects) > 1:         # single mat, multiple beams
-                self.get_element_geometry1D_elements()
-                self.get_ccx_elsets_single_mat_multiple_beam()
-            elif self.fluidsection_objects and len(self.fluidsection_objects) == 1:      # single mat, single fluid
-                self.get_ccx_elsets_single_mat_single_fluid()
-            elif self.fluidsection_objects and len(self.fluidsection_objects) > 1:       # single mat, multiple fluids
-                self.get_element_fluid1D_elements()
-                self.get_ccx_elsets_single_mat_multiple_fluid()
-            elif self.shellthickness_objects and len(self.shellthickness_objects) == 1:  # single mat, single shell
-                self.get_ccx_elsets_single_mat_single_shell()
-            elif self.shellthickness_objects and len(self.shellthickness_objects) > 1:   # single mat, multiple shells
-                self.get_element_geometry2D_elements()
-                self.get_ccx_elsets_single_mat_multiple_shell()
-            else:                                                                        # single mat, solid
+            if self.femmesh.Volumes:
+                # we only could do this for volumes, if a mseh contains volumes we gone use them in the analysis
+                # but a mesh could contain the element faces of the volumes as faces and the edges of the faces as edges, there we have to check of some gemetric objects
                 self.get_ccx_elsets_single_mat_solid()
-        else:
-            if self.beamsection_objects and len(self.beamsection_objects) == 1:          # multiple mats, single beam
-                self.get_material_elements()
-                self.get_ccx_elsets_multiple_mat_single_beam()
-            elif self.beamsection_objects and len(self.beamsection_objects) > 1:         # multiple mats, multiple beams
-                self.get_element_geometry1D_elements()
-                self.get_material_elements()
-                self.get_ccx_elsets_multiple_mat_multiple_beam()
-            elif self.fluidsection_objects and len(self.fluidsection_objects) == 1:      # multiple mats, single fluid
-                self.get_material_elements()
-                self.get_ccx_elsets_multiple_mat_single_fluid()
-            elif self.fluidsection_objects and len(self.fluidsection_objects) > 1:       # multiple mats, multiple fluids
-                self.get_element_fluid1D_elements()
-                self.get_material_elements()
-                self.get_ccx_elsets_multiple_mat_multiple_fluid()
-            elif self.shellthickness_objects and len(self.shellthickness_objects) == 1:  # multiple mats, single shell
-                self.get_material_elements()
+            elif len(self.shellthickness_objects) == 1:
+                self.get_ccx_elsets_single_mat_single_shell()
+            elif len(self.shellthickness_objects) > 1:
+                self.get_ccx_elsets_single_mat_multiple_shell()
+            elif len(self.beamsection_objects) == 1:
+                self.get_ccx_elsets_single_mat_single_beam()
+            elif len(self.beamsection_objects) > 1:
+                self.get_ccx_elsets_single_mat_multiple_beam()
+            elif len(self.fluidsection_objects) == 1:
+                self.get_ccx_elsets_single_mat_single_fluid()
+            elif len(self.fluidsection_objects) > 1:
+                self.get_ccx_elsets_single_mat_multiple_fluid()
+        elif len(self.material_objects) > 1:
+            if self.femmesh.Volumes:
+                # we only could do this for volumes, if a mseh contains volumes we gone use them in the analysis
+                # but a mesh could contain the element faces of the volumes as faces and the edges of the faces as edges, there we have to check of some gemetric objects
+                self.get_ccx_elsets_multiple_mat_solid()  # volume is a bit special, because retriving ids from group mesh data is implemented
+            elif len(self.shellthickness_objects) == 1:
                 self.get_ccx_elsets_multiple_mat_single_shell()
-            elif self.shellthickness_objects and len(self.shellthickness_objects) > 1:   # multiple mats, multiple shells
-                self.get_element_geometry2D_elements()
-                self.get_material_elements()
+            elif len(self.shellthickness_objects) > 1:
                 self.get_ccx_elsets_multiple_mat_multiple_shell()
-            else:                                                                        # multiple mats, solid
-                self.get_material_elements()
-                self.get_ccx_elsets_multiple_mat_solid()
+            elif len(self.beamsection_objects) == 1:
+                self.get_ccx_elsets_multiple_mat_single_beam()
+            elif len(self.beamsection_objects) > 1:
+                self.get_ccx_elsets_multiple_mat_multiple_beam()
+            elif len(self.fluidsection_objects) == 1:
+                self.get_ccx_elsets_multiple_mat_single_fluid()
+            elif len(self.fluidsection_objects) > 1:
+                self.get_ccx_elsets_multiple_mat_multiple_fluid()
 
         # TODO: some elemetIDs are collected for 1D-Flow calculation, this should be a def somewhere else, preferable inside the get_ccx_elsets_... methods
         for ccx_elset in self.ccx_elsets:
