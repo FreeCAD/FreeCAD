@@ -42,7 +42,6 @@ static_analysis_dir = temp_dir + '/FEM_static'
 static_save_fc_file = static_analysis_dir + '/' + static_base_name + '.fcstd'
 static_analysis_inp_file = test_file_dir + '/' + static_base_name + '.inp'
 static_expected_values = test_file_dir + "/cube_static_expected_values"
-static_save_unv_file = static_analysis_dir + '/' + static_base_name + '.unv'
 
 frequency_base_name = 'cube_frequency'
 frequency_analysis_dir = temp_dir + '/FEM_frequency'
@@ -87,8 +86,10 @@ class FemTest(unittest.TestCase):
         tetra10.addNode(3, 3, 9, 9)
         tetra10.addNode(9, 3, 9, 10)
         tetra10.addVolume([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-        tetra10.write(static_save_unv_file)
-        newmesh = Fem.read(static_save_unv_file)
+
+        unv_file = temp_dir + '/tetra10_mesh.unv'
+        tetra10.write(unv_file)
+        newmesh = Fem.read(unv_file)
         expected = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
         self.assertEqual(newmesh.getElementNodes(1), expected, "Nodes order of quadratic volume element is unexpected")
 
