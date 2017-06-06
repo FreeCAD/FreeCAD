@@ -366,29 +366,33 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 self.get_ccx_elsets_multiple_mat_multiple_shell()
             else:                                                                        # multiple mats, solid
                 self.get_ccx_elsets_multiple_mat_solid()
+
+        # TODO: some elemetIDs are collected for 1D-Flow calculation, this should be a def somewhere else, preferable inside the get_ccx_elsets_... methods
         for ccx_elset in self.ccx_elsets:
-            f.write('*ELSET,ELSET=' + ccx_elset['ccx_elset_name'] + '\n')
-            collect_ele = False
-            if ccx_elset['ccx_elset']:
+            if ccx_elset['ccx_elset'] and ccx_elset['ccx_elset'] != self.ccx_eall:
                 if 'fluidsection_obj'in ccx_elset:
                     fluidsec_obj = ccx_elset['fluidsection_obj']
                     if fluidsec_obj.SectionType == 'Liquid':
                         if (fluidsec_obj.LiquidSectionType == "PIPE INLET") or (fluidsec_obj.LiquidSectionType == "PIPE OUTLET"):
-                            collect_ele = True
+                            elsetchanged = False
+                            counter = 0
+                            for elid in ccx_elset['ccx_elset']:
+                                counter = counter + 1
+                                if (elsetchanged is False) and (fluidsec_obj.LiquidSectionType == "PIPE INLET"):
+                                    self.FluidInletoutlet_ele.append([str(elid), fluidsec_obj.LiquidSectionType, 0])  # 3rd index is to track which line number the element is defined
+                                    elsetchanged = True
+                                elif (fluidsec_obj.LiquidSectionType == "PIPE OUTLET") and (counter == len(ccx_elset['ccx_elset'])):
+                                    self.FluidInletoutlet_ele.append([str(elid), fluidsec_obj.LiquidSectionType, 0])  # 3rd index is to track which line number the element is defined
+
+        # write ccx_elsets to file
+        for ccx_elset in self.ccx_elsets:
+            f.write('*ELSET,ELSET=' + ccx_elset['ccx_elset_name'] + '\n')
             if ccx_elset['ccx_elset']:
                 if ccx_elset['ccx_elset'] == self.ccx_eall:
                     f.write(self.ccx_eall + '\n')
                 else:
-                    elsetchanged = 0
-                    counter = 0
                     for elid in ccx_elset['ccx_elset']:
                         f.write(str(elid) + ',\n')
-                        counter = counter + 1
-                        if collect_ele is True and elsetchanged == 0 and fluidsec_obj.LiquidSectionType == "PIPE INLET":
-                            self.FluidInletoutlet_ele.append([str(elid), fluidsec_obj.LiquidSectionType, 0])  # 3rd index is to track which line number the element is defined
-                            elsetchanged = 1
-                        elif collect_ele is True and fluidsec_obj.LiquidSectionType == "PIPE OUTLET" and counter == len(ccx_elset['ccx_elset']):
-                            self.FluidInletoutlet_ele.append([str(elid), fluidsec_obj.LiquidSectionType, 0])  # 3rd index is to track which line number the element is defined
             else:
                 f.write('**No elements found for these objects\n')
 
