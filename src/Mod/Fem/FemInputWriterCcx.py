@@ -105,7 +105,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         if self.analysis_type == "thermomech" and self.initialtemperature_objects:
             self.write_constraints_initialtemperature(inpfile)
         self.write_femelementsets(inpfile)
-
         # Fluid section: Inlet and Outlet requires special element definition
         if self.fluidsection_objects:
             InOuttest = False
@@ -266,7 +265,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         if self.analysis_type == "thermomech" and self.initialtemperature_objects:
             self.write_constraints_initialtemperature(inpfileMain)
         self.write_femelementsets(inpfileMain)
-
         # Fluid section: Inlet and Outlet requires special element definition
         if self.fluidsection_objects:
             InOuttest = False
@@ -359,9 +357,9 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 self.get_ccx_elsets_single_mat_single_beam()
             elif self.beamsection_objects and len(self.beamsection_objects) > 1:         # single mat, multiple beams
                 self.get_ccx_elsets_single_mat_multiple_beam()
-            elif self.fluidsection_objects and len(self.fluidsection_objects) == 1:          # single mat, single fluid
+            elif self.fluidsection_objects and len(self.fluidsection_objects) == 1:      # single mat, single fluid
                 self.get_ccx_elsets_single_mat_single_fluid()
-            elif self.fluidsection_objects and len(self.fluidsection_objects) > 1:         # single mat, multiple fluids
+            elif self.fluidsection_objects and len(self.fluidsection_objects) > 1:       # single mat, multiple fluids
                 self.get_ccx_elsets_single_mat_multiple_fluid()
             elif self.shellthickness_objects and len(self.shellthickness_objects) == 1:  # single mat, single shell
                 self.get_ccx_elsets_single_mat_single_shell()
@@ -370,19 +368,19 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             else:                                                                        # single mat, solid
                 self.get_ccx_elsets_single_mat_solid()
         else:
-            if self.beamsection_objects and len(self.beamsection_objects) == 1:         # multiple mats, single beam
+            if self.beamsection_objects and len(self.beamsection_objects) == 1:          # multiple mats, single beam
                 self.get_ccx_elsets_multiple_mat_single_beam()
-            elif self.beamsection_objects and len(self.beamsection_objects) > 1:        # multiple mats, multiple beams
+            elif self.beamsection_objects and len(self.beamsection_objects) > 1:         # multiple mats, multiple beams
                 self.get_ccx_elsets_multiple_mat_multiple_beam()
-            if self.fluidsection_objects and len(self.fluidsection_objects) == 1:         # multiple mats, single fluid
+            if self.fluidsection_objects and len(self.fluidsection_objects) == 1:        # multiple mats, single fluid
                 self.get_ccx_elsets_multiple_mat_single_fluid()
-            elif self.fluidsection_objects and len(self.fluidsection_objects) > 1:        # multiple mats, multiple fluids
+            elif self.fluidsection_objects and len(self.fluidsection_objects) > 1:       # multiple mats, multiple fluids
                 self.get_ccx_elsets_multiple_mat_multiple_fluid()
-            elif self.shellthickness_objects and len(self.shellthickness_objects) == 1:   # multiple mats, single shell
+            elif self.shellthickness_objects and len(self.shellthickness_objects) == 1:  # multiple mats, single shell
                 self.get_ccx_elsets_multiple_mat_single_shell()
-            elif self.shellthickness_objects and len(self.shellthickness_objects) > 1:  # multiple mats, multiple shells
+            elif self.shellthickness_objects and len(self.shellthickness_objects) > 1:   # multiple mats, multiple shells
                 self.get_ccx_elsets_multiple_mat_multiple_shell()
-            else:                                                                       # multiple mats, solid
+            else:                                                                        # multiple mats, solid
                 self.get_ccx_elsets_multiple_mat_solid()
         for ccx_elset in self.ccx_elsets:
             f.write('*ELSET,ELSET=' + ccx_elset['ccx_elset_name'] + '\n')
