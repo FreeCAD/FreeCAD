@@ -1972,7 +1972,7 @@ int Document::recompute()
             boost::topological_sort(acyclicdependencies, std::front_inserter(lbmake_order),vertex_index_map(propmapIndex));
         }
         catch (const std::exception& excp) {
-            std::cerr << "Error during recompute of computed acyclic dependencies in Document::recompute: " << excp.what() << std::endl;
+            std::cerr << "Error when sorting the acyclic portion of the document in Document::recompute: " << excp.what() << std::endl;
             return -1;
         }
         
@@ -1982,10 +1982,26 @@ int Document::recompute()
         
         int objects = _recomputeOrderedDependencyList<ListBasedDependencyList,ListBasedVertex>(acyclicdependencies,acyclicVertexmap,lbmake_order);
         
+        #ifdef FC_LOGFEATUREUPDATE
+        std::clog << "Linearly recomputing the following objects in the cyclic portion of the dependency list: " << std::endl;
+        #endif
+        
+        // recompute cyclic features linearly
+        for (boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies); lbvertexIt != lbvertexEnd; ++lbvertexIt) {
+            DocumentObject* Cur = cyclicVertexmap[*lbvertexIt];
+            
+            if (Cur) {
+                #ifdef FC_LOGFEATUREUPDATE
+                std::clog << "  " << Cur->getNameInDocument() << std::endl;
+                #endif
+                _recomputeFeature(Cur);
+            }
+        }
+
         d->vertexMap.clear();
-        
+
         signalRecomputed(*this);
-        
+
         return objects;
 
     }
