@@ -594,10 +594,10 @@ class Line(Creator):
 
     def drawSegment(self,point):
         "draws a new segment"
+        if self.planetrack and self.node:
+            self.planetrack.set(self.node[-1])
         if (len(self.node) == 1):
             msg(translate("draft", "Pick next point:\n"))
-            if self.planetrack:
-                self.planetrack.set(self.node[0])
         elif (len(self.node) == 2):
             last = self.node[len(self.node)-2]
             newseg = Part.LineSegment(last,point).toShape()
