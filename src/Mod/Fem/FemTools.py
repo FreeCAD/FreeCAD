@@ -269,6 +269,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             elif m.isDerivedFrom("Fem::ConstraintForce"):
                 force_constraint_dict = {}
                 force_constraint_dict['Object'] = m
+                force_constraint_dict['RefShapeType'] = get_refshape_type(m)
                 self.force_constraints.append(force_constraint_dict)
             elif m.isDerivedFrom("Fem::ConstraintPressure"):
                 PressureObjectDict = {}
@@ -576,5 +577,26 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                          "None": (0.0, 0.0, 0.0)}
                 stats = match[result_type]
         return stats
+
+
+# helper
+def get_refshape_type(fem_doc_object):
+    # returns the reference shape type
+    # for force object:
+    # in GUI defined frc_obj all frc_obj have at leas one ref_shape and ref_shape have all the same shape type
+    # for material object:
+    # in GUI defined material_obj could have no RefShape and RefShapes could be different type
+    # we gone need the RefShapes to be the same type inside one fem_doc_object
+    # TODO here: check if all RefShapes inside the object really have the same type
+    import FemMeshTools
+    if hasattr(fem_doc_object, 'References') and fem_doc_object.References:
+        first_ref_obj = fem_doc_object.References[0]
+        first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
+        st = first_ref_shape.ShapeType
+        print(fem_doc_object.Name + ' has ' + st + ' reference shapes.')
+        return st
+    else:
+        print(fem_doc_object.Name + ' has empty References.')
+        return ''
 
 ##  @}

@@ -118,16 +118,6 @@ class FemInputWriter():
         # check shape type of reference shape
         for femobj in self.force_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             frc_obj = femobj['Object']
-            # in GUI defined frc_obj all ref_shape have the same shape type
-            # TODO in FemTools: check if all RefShapes really have the same type an write type to dictionary
-            femobj['RefShapeType'] = ''
-            if frc_obj.References:
-                first_ref_obj = frc_obj.References[0]
-                first_ref_shape = first_ref_obj[0].Shape.getElement(first_ref_obj[1][0])
-                femobj['RefShapeType'] = first_ref_shape.ShapeType
-            else:
-                # frc_obj.References could be empty ! # TODO in FemTools: check
-                FreeCAD.Console.PrintError('At least one Force Object has empty References!\n')
             if femobj['RefShapeType'] == 'Vertex':
                 # print("load on vertices --> we do not need the femelement_table and femnodes_mesh for node load calculation")
                 pass
