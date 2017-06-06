@@ -594,7 +594,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('*INITIAL CONDITIONS,TYPE=TEMPERATURE\n')
         for itobj in self.initialtemperature_objects:  # Should only be one
             inittemp_obj = itobj['Object']
-            f.write('Nall,{}\n'.format(inittemp_obj.initialTemperature))  # OvG: Initial temperature
+            f.write('{0},{1}\n'.format(self.ccx_nall, inittemp_obj.initialTemperature))  # OvG: Initial temperature
 
     def write_femelementsets(self, f):
         f.write('\n***********************************************************\n')
@@ -836,7 +836,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             selwei_obj = femobj['Object']
             f.write('** ' + selwei_obj.Label + '\n')
             f.write('*DLOAD\n')
-            f.write('Eall,GRAV,9810,' + str(selwei_obj.Gravity_x) + ',' + str(selwei_obj.Gravity_y) + ',' + str(selwei_obj.Gravity_z) + '\n')
+            f.write(self.ccx_eall + ',GRAV,9810,' + str(selwei_obj.Gravity_x) + ',' + str(selwei_obj.Gravity_y) + ',' + str(selwei_obj.Gravity_z) + '\n')
             f.write('\n')
         # grav (erdbeschleunigung) is equal for all elements
         # should be only one constraint
@@ -1005,9 +1005,9 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             else:
                 f.write('S, E\n')
             f.write('** outputs --> dat file\n')
-            f.write('*NODE PRINT , NSET=Nall \n')
+            f.write('*NODE PRINT , NSET=' + self.ccx_nall + '\n')
             f.write('U \n')
-            f.write('*EL PRINT , ELSET=Eall \n')
+            f.write('*EL PRINT , ELSET=' + self.ccx_eall + '\n')
             f.write('S \n')
 
     def write_step_end(self, f):
@@ -1036,7 +1036,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     # self.ccx_elsets = [ {
     #                        'beamsection_obj' : 'beamsection_obj'       if exists
     #                        'shellthickness_obj' : shellthickness_obj'  if exists
-    #                        'ccx_elset' : [e1, e2, e3, ... , en] or string self.ccx_eall
+    #                        'ccx_elset' : [e1, e2, e3, ... , en] or elements set name strings
     #                        'ccx_elset_name' : 'ccx_identifier_elset'
     #                        'mat_obj_name' : 'mat_obj.Name'
     #                        'ccx_mat_name' : 'mat_obj.Material['Name']'   !!! not unique !!!
@@ -1047,7 +1047,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         beamsec_obj = self.beamsection_objects[0]['Object']
         ccx_elset = {}
         ccx_elset['beamsection_obj'] = beamsec_obj
-        ccx_elset['ccx_elset'] = self.ccx_eall
+        ccx_elset['ccx_elset'] = self.ccx_eedges
         ccx_elset['ccx_elset_name'] = get_ccx_elset_beam_name(mat_obj.Name, beamsec_obj.Name)
         ccx_elset['mat_obj_name'] = mat_obj.Name
         ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
@@ -1058,7 +1058,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         fluidsec_obj = self.fluidsection_objects[0]['Object']
         ccx_elset = {}
         ccx_elset['fluidsection_obj'] = fluidsec_obj
-        ccx_elset['ccx_elset'] = self.ccx_eall
+        ccx_elset['ccx_elset'] = self.ccx_eedges
         ccx_elset['ccx_elset_name'] = get_ccx_elset_fluid_name(mat_obj.Name, fluidsec_obj.Name)
         ccx_elset['mat_obj_name'] = mat_obj.Name
         ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
@@ -1069,7 +1069,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         shellth_obj = self.shellthickness_objects[0]['Object']
         ccx_elset = {}
         ccx_elset['shellthickness_obj'] = shellth_obj
-        ccx_elset['ccx_elset'] = self.ccx_eall
+        ccx_elset['ccx_elset'] = self.ccx_efaces
         ccx_elset['ccx_elset_name'] = get_ccx_elset_shell_name(mat_obj.Name, shellth_obj.Name)
         ccx_elset['mat_obj_name'] = mat_obj.Name
         ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
@@ -1078,7 +1078,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     def get_ccx_elsets_single_mat_solid(self):
         mat_obj = self.material_objects[0]['Object']
         ccx_elset = {}
-        ccx_elset['ccx_elset'] = self.ccx_eall
+        ccx_elset['ccx_elset'] = self.ccx_evolumes
         ccx_elset['ccx_elset_name'] = get_ccx_elset_solid_name(mat_obj.Name)
         ccx_elset['mat_obj_name'] = mat_obj.Name
         ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
