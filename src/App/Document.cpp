@@ -1926,6 +1926,29 @@ int Document::recompute()
                                     acyclicdependencies, acyclicVertexmap,
                                     cyclicdependencies, cyclicVertexmap);
         
+        // notify_redundancy_to_UI() ?
+        
+        // notify report view of the dependency
+        ListBasedDependencyList::vertex_iterator lbvertexIt, lbvertexEnd;
+        ListBasedDependencyList::out_edge_iterator lbj, lbjend;
+        
+        for (boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies); lbvertexIt != lbvertexEnd; ++lbvertexIt) {
+            DocumentObject* Cur = cyclicVertexmap[*lbvertexIt];
+            
+            if (Cur) {
+                std::cerr << "Cyclic dependency! ";
+                std::cerr << Cur->getNameInDocument() << " dep on:" ;
+                
+                for (boost::tie(lbj, lbjend) = out_edges(*lbvertexIt, cyclicdependencies); lbj != lbjend; ++lbj) {
+                    
+                    DocumentObject* Test = cyclicVertexmap[target(*lbj, cyclicdependencies)];
+                    
+                    std::cerr << " " << Test->getNameInDocument();
+                }
+                
+                std::cerr << std::endl;
+            }
+        }
 
         
         std::list<ListBasedVertex> lbmake_order;
@@ -2039,28 +2062,6 @@ void Document::splitGraphIntoCyclicACyclic( DependencyList &nondag, std::map<Ver
     }
     
     // at this point we should have only the nodes with the cyclic loop
-    
-    //notify_redundancy_to_UI()
-    
-    // notify report view of the dependency
-    ListBasedDependencyList::out_edge_iterator lbj, lbjend;
-    
-    for (boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies); lbvertexIt != lbvertexEnd; ++lbvertexIt) {
-        DocumentObject* Cur = cyclicvertexmap[*lbvertexIt];
-        
-        if (Cur) {
-            std::cerr << Cur->getNameInDocument() << " dep on:" ;
-            
-            for (boost::tie(lbj, lbjend) = out_edges(*lbvertexIt, cyclicdependencies); lbj != lbjend; ++lbj) {
-                
-                DocumentObject* Test = cyclicvertexmap[target(*lbj, cyclicdependencies)];
-                
-                std::cerr << " " << Test->getNameInDocument();
-            }
-            
-            std::cerr << std::endl;
-        }
-    }
     
     // construct acyclic dependency list
     boost::tie(lbvertexIt, lbvertexEnd) = vertices(cyclicdependencies);
