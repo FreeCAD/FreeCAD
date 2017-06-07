@@ -35,12 +35,14 @@ INSTALL(
         FemGmshTools.py
         FemInputWriter.py
         FemInputWriterCcx.py
+        FemInputWriterElmer.py
         FemInputWriterZ88.py
         FemMesh2Mesh.py
         FemMeshTools.py
         FemSelectionObserver.py
         FemTools.py
         FemToolsCcx.py
+        FemToolsElmer.py
         FemToolsZ88.py
         ObjectsFem.py
         TestFem.py
