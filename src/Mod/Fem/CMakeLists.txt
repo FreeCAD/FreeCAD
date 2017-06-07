@@ -94,6 +94,7 @@ INSTALL(
         PyGui/_CommandFemResultsPurge.py
         PyGui/_CommandFemSolverCalculix.py
         PyGui/_CommandFemSolverControl.py
+        PyGui/_CommandFemSolverElmer.py
         PyGui/_CommandFemSolverRun.py
         PyGui/_CommandFemSolverZ88.py
         PyGui/_TaskPanelFemElementFluid1D.py
