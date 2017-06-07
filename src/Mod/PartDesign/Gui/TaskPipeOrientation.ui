@@ -48,7 +48,7 @@
        </item>
        <item>
         <property name="text">
-         <string>Auxillery</string>
+         <string>Auxiliary</string>
         </property>
        </item>
        <item>
@@ -73,7 +73,7 @@
        <item>
         <widget class="QCheckBox" name="curvelinear">
          <property name="text">
-          <string>Curvelinear equivalenz</string>
+          <string>Curvelinear equivalence</string>
          </property>
         </widget>
        </item>
