@@ -322,6 +322,17 @@ def makeSolverCalculix(name="CalculiX"):
     return obj
 
 
+def makeSolverElmer(name="Elmer"):
+    '''makeSolverElmer(name): makes a Elmer solver object'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", name)
+    import PyObjects._FemSolverElmer
+    PyObjects._FemSolverElmer._FemSolverElmer(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemSolverElmer
+        PyGui._ViewProviderFemSolverElmer._ViewProviderFemSolverElmer(obj.ViewObject)
+    return obj
+
+
 def makeSolverZ88(name="Z88"):
     '''makeSolverZ88(name): makes a Z88 solver object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", name)
