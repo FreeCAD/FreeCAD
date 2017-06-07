@@ -398,24 +398,27 @@ PyNumberMethods @self.export.Name@::Number[] = { {
     number_oct_handler,
     number_hex_handler,
 #endif
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL
-#if PY_MAJOR_VERSION >= 3
-    ,NULL    /*nb_inplace_matrix_multiply*/
+    NULL,    /*nb_inplace_add*/
+    NULL,    /*nb_inplace_subtract*/
+    NULL,    /*nb_inplace_multiply*/
+#if PY_MAJOR_VERSION < 3
+    NULL,    /*nb_inplace_divide*/
+#endif
+    NULL,    /*nb_inplace_remainder*/
+    NULL,    /*nb_inplace_power*/
+    NULL,    /*nb_inplace_lshift*/
+    NULL,    /*nb_inplace_rshift*/
+    NULL,    /*nb_inplace_and*/
+    NULL,    /*nb_inplace_xor*/
+    NULL,    /*nb_inplace_or*/
+    NULL,    /*nb_floor_divide*/
+    NULL,    /*nb_true_divide*/
+    NULL,    /*nb_inplace_floor_divide*/
+    NULL,    /*nb_inplace_true_divide*/
+    NULL     /*nb_index*/
+#if PY_VERSION_HEX >= 0x03050000
+   ,NULL     /*nb_matrix_multiply*/
+   ,NULL     /*nb_inplace_matrix_multiply*/
 #endif
 } };
 -
