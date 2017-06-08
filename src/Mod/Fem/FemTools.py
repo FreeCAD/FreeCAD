@@ -361,6 +361,12 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 if has_no_references is True:
                     message += "More than one material has an empty references list (Only one empty references list is allowed!).\n"
                 has_no_references = True
+        mat_ref_shty = ''
+        for m in self.materials_linear:
+            if not mat_ref_shty:
+                mat_ref_shty = get_refshape_type(m['Object'])
+            if get_refshape_type(m['Object']) != mat_ref_shty:
+                message += 'Some material objects do not have the same reference shape type (all material objects must have the same reference shape type, at the moment).\n'
         for m in self.materials_linear:
             mat_map = m['Object'].Material
             mat_obj = m['Object']
