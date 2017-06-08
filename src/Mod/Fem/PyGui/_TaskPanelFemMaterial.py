@@ -29,11 +29,9 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-from PySide import QtGui
-from PySide.QtGui import QFileDialog
-# from PySide.QtGui import QMessageBox
-from PySide import QtCore
 import Units
+from PySide import QtCore, QtGui
+from PySide.QtGui import QFileDialog, QMessageBox
 
 
 class _TaskPanelFemMaterial:
@@ -50,7 +48,6 @@ class _TaskPanelFemMaterial:
         if self.obj.References:
             self.tuplereferences = self.obj.References
             self.get_references()
-        self.references_shape_type = None
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemMaterial.ui")
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goto_MatWeb)
@@ -144,15 +141,16 @@ class _TaskPanelFemMaterial:
 
     def has_equal_references_shape_types(self):
         import FemMeshTools
-        if not self.references:
-            self.references_shape_type = None
+        ref_shty = ''
         for ref in self.references:
             r = FemMeshTools.get_element(ref[0], ref[1])  # the method getElement(element) does not return Solid elements
             # print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
-            if self.references_shape_type is None:
-                self.references_shape_type = r.ShapeType
-            if r.ShapeType != self.references_shape_type:
-                FreeCAD.Console.PrintError('Different ShapeTypes in Reference List not allowed\n')
+            if not ref_shty:
+                ref_shty = r.ShapeType
+            if r.ShapeType != ref_shty:
+                message = 'Multiple shape types are not allowed in the reference list.\n'
+                FreeCAD.Console.PrintError(message)
+                QMessageBox.critical(None, "Multiple ShapeTypes not allowed", message)
                 return False
         return True
 
