@@ -364,6 +364,11 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             rejected[it->first].push_back(**it2);
 
     this->Shape.setValue(getSolid(support));
+
+    if (rejected.size() > 0) {
+        return new App::DocumentObjectExecReturn("Transformation failed");
+    }
+
     return App::DocumentObject::StdReturn;
 }
 
