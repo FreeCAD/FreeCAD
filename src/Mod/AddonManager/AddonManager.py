@@ -44,8 +44,14 @@ if sys.version_info.major < 3:
     import urllib2
 else:
     import urllib.request as urllib2
-import ssl
-ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+ctx = None
+try:
+    import ssl
+except:
+    pass
+else:
+    if hasattr(ssl,"create_default_context"):
+        ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
 
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
