@@ -26,12 +26,23 @@ import FreeCAD
 import os
 import glob
 
+import PathScripts.PathLog as PathLog
+
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.trackModule()
+
 class PathPreferences:
-    PostProcessorDefault     = "PostProcessorDefault"
-    PostProcessorDefaultArgs = "PostProcessorDefaultArgs"
-    PostProcessorBlacklist   = "PostProcessorBlacklist"
+    DefaultFilePath           = "DefaultFilePath"
+    DefaultJobTemplate        = "DefaultJobTemplate"
+
+    PostProcessorDefault      = "PostProcessorDefault"
+    PostProcessorDefaultArgs  = "PostProcessorDefaultArgs"
+    PostProcessorBlacklist    = "PostProcessorBlacklist"
+    PostProcessorOutputFile   = "PostProcessorOutputFile"
+    PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
+
     # Linear tolerance to use when generating Paths, eg when tesselating geometry
-    GeometryTolerance  = "GeometryTolerance"
+    GeometryTolerance   = "GeometryTolerance"
 
     @classmethod
     def preferences(cls):
@@ -77,6 +88,30 @@ class PathPreferences:
         return cls.preferences().GetFloat(cls.GeometryTolerance, 0.01)
 
     @classmethod
+    def defaultFilePath(cls):
+        return cls.preferences().GetString(cls.DefaultFilePath)
+
+    @classmethod
+    def filePath(cls):
+        path = cls.defaultFilePath()
+        if not path:
+            grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
+            path = grp.GetString("MacroPath", FreeCAD.getUserAppDataDir())
+        return path
+
+    @classmethod
+    def defaultJobTemplate(cls):
+        return cls.preferences().GetString(cls.DefaultJobTemplate)
+
+    @classmethod
+    def setJobDefaults(cls, filePath, jobTemplate, geometryTolerance):
+        PathLog.track("(%s='%s', %s, %s)" % (cls.DefaultFilePath, filePath, jobTemplate, geometryTolerance))
+        pref = cls.preferences()
+        pref.SetString(cls.DefaultFilePath, filePath)
+        pref.SetString(cls.DefaultJobTemplate, jobTemplate)
+        pref.SetFloat(cls.GeometryTolerance, geometryTolerance)
+
+    @classmethod
     def postProcessorBlacklist(cls):
         pref = cls.preferences()
         blacklist = pref.GetString(cls.PostProcessorBlacklist, "")
@@ -85,19 +120,15 @@ class PathPreferences:
         return eval(blacklist)
 
     @classmethod
-    def savePostProcessorDefaults(cls, processor, args, blacklist, geometryTolerance):
+    def setPostProcessorDefaults(cls, processor, args, blacklist):
         pref = cls.preferences()
         pref.SetString(cls.PostProcessorDefault, processor)
         pref.SetString(cls.PostProcessorDefaultArgs, args)
         pref.SetString(cls.PostProcessorBlacklist, "%s" % (blacklist))
-        pref.SetFloat(cls.GeometryTolerance, geometryTolerance)
 
-
-    PostProcessorOutputFile = "PostProcessorOutputFile"
-    PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 
     @classmethod
-    def saveOutputFileDefaults(cls, file, policy):
+    def setOutputFileDefaults(cls, file, policy):
         pref = cls.preferences()
         pref.SetString(cls.PostProcessorOutputFile, file)
         pref.SetString(cls.PostProcessorOutputPolicy, policy)
@@ -111,3 +142,4 @@ class PathPreferences:
     def defaultOutputPolicy(cls):
         pref = cls.preferences()
         return pref.GetString(cls.PostProcessorOutputPolicy, "")
+
