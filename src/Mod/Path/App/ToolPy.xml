@@ -86,6 +86,11 @@ HighCarbonToolSteel CastAlloy, Ceramics, Diamond, Sialon or Undefined</UserDocu>
                 <UserDocu>returns a copy of this tool</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="fromTemplate">
+            <Documentation>
+                <UserDocu>fills receiver with values from the template string</UserDocu>
+            </Documentation>
+        </Methode>
         <!--<ClassDeclarations>
             bool touched;
         </ClassDeclarations>-->
