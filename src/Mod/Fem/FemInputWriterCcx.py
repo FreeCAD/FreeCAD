@@ -738,7 +738,10 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             if self.solver_obj.IterationsUserDefinedIncrementations:
                 analysis_parameter = self.solver_obj.IterationsUserDefinedTimeStepLength
         elif self.analysis_type == 'frequency':
-            analysis_parameter = '{},{},{}\n'.format(self.solver_obj.EigenmodesCount, self.solver_obj.EigenmodeLowLimit, self.solver_obj.EigenmodeHighLimit)
+            if self.solver_obj.EigenmodeLowLimit == -1.0 and self.solver_obj.EigenmodeHighLimit == -1.0:
+                analysis_parameter = '{}\n'.format(self.solver_obj.EigenmodesCount)
+            else:
+                analysis_parameter = '{},{},{}\n'.format(self.solver_obj.EigenmodesCount, self.solver_obj.EigenmodeLowLimit, self.solver_obj.EigenmodeHighLimit)
         elif self.analysis_type == 'thermomech':
             analysis_parameter = '{},{}'.format(self.solver_obj.TimeInitialStep, self.solver_obj.TimeEnd)  # OvG: 1.0 increment, total time 1 for steady state will cut back automatically
         # write analysis type line, analysis parameter line
