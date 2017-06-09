@@ -1717,7 +1717,7 @@ def getWire(wire,nospline=False,lw=True,asis=False):
 
 def getBlock(sh,obj,lwPoly=False):
     "returns a dxf block with the contents of the object"
-    block = dxfLibrary.Block(name=obj.Name,layer=getGroup(obj))
+    block = dxfLibrary.Block(name=obj.Name,layer=getStrGroup(obj))
     writeShape(sh,obj,block,lwPoly)
     return block
 
@@ -1725,7 +1725,7 @@ def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False,layer=None,color=None
     "writes the object's shape contents in the given dxf object"
     processededges = []
     if not layer:
-        layer=getGroup(ob)
+        layer=getStrGroup(ob)
     if not color:
         color = getACI(ob)
     for wire in sh.Wires: # polylines
@@ -1885,6 +1885,21 @@ def writePanelCut(ob,dxf,nospline,lwPoly,parent=None):
             #    pts = [(v.X,v.Y,v.Z) for v in w.Vertexes]
             #    dxf.append(dxfLibrary.Line(pts,color=getACI(ob),layer="Tags"))
 
+def getStrGroup(ob):
+    "gets a string version of the group name"
+    l = getGroup(ob)
+    if isinstance(l,unicode):
+        # dxf R12 files are rather over-sensitive with utf8...
+        try:
+            import unicodedata
+        except:
+            # fallback
+            return l.encode("ascii",errors="replace")
+        else:
+            # better encoding, replaces accented latin characters with corrsponding ascii letter
+            return ''.join((c for c in unicodedata.normalize('NFD', l) if unicodedata.category(c) != 'Mn')).encode("ascii",errors="replace")
+    return l
+
 def export(objectslist,filename,nospline=False,lwPoly=False):
     "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs lwPoly=True for OpenSCAD DXF"
     readPreferences()
@@ -1966,14 +1981,14 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                                         dxf.blocks.append(block)
                                         dxf.append(dxfLibrary.Insert(name=ob.Name.upper(),
                                                                      color=getACI(ob),
-                                                                     layer=getGroup(ob)))
+                                                                     layer=getStrGroup(ob)))
                                 else:
                                     # all other cases: block
                                     block = getBlock(sh,ob,lwPoly)
                                     dxf.blocks.append(block)
                                     dxf.append(dxfLibrary.Insert(name=ob.Name.upper(),
                                                                       color=getACI(ob),
-                                                                      layer=getGroup(ob)))
+                                                                      layer=getStrGroup(ob)))
 
                             else:
                                 writeShape(sh,ob,dxf,nospline,lwPoly)
@@ -1992,7 +2007,7 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                         dxf.append(dxfLibrary.Text(text,point,height=height,
                                                    color=getACI(ob,text=True),
                                                    style='STANDARD',
-                                                   layer=getGroup(ob)))
+                                                   layer=getStrGroup(ob)))
 
                 elif Draft.getType(ob) == "Dimension":
                     p1 = DraftVecUtils.tup(ob.Start)
@@ -2004,8 +2019,10 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                     else:
                         pbase = DraftVecUtils.tup(ob.End.add(proj.negative()))
                     dxf.append(dxfLibrary.Dimension(pbase,p1,p2,color=getACI(ob),
-                                                    layer=getGroup(ob)))
+                                                    layer=getStrGroup(ob)))
 
+            if isinstance(filename,unicode):
+                filename = filename.encode("utf8")
             dxf.saveas(filename)
         FreeCAD.Console.PrintMessage("successfully exported "+filename+"\r\n")
     else:
