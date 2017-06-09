@@ -30,6 +30,7 @@ import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
 import PathUtils
+import lxml.etree as xml
 
 from FreeCAD import Units
 from PySide import QtCore, QtGui
@@ -202,6 +203,37 @@ class CommandPathToolController:
 	obj.Tool = tool
         obj.ToolNumber = toolNumber
         PathUtils.addToJob(obj, jobname)
+
+    @staticmethod
+    def FromTemplate(job, template, assignViewProvider=True):
+        PathLog.track()
+
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", template.get('label'))
+        PathScripts.PathToolController.ToolController(obj)
+        if assignViewProvider:
+            PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
+
+        if template.get('vfeed'):
+            obj.HorizFeed = template.get('vfeed')
+        if template.get('hfeed'):
+            obj.HorizFeed = template.get('hfeed')
+        if template.get('vrapid'):
+            obj.HorizRapid = template.get('vrapid')
+        if template.get('hrapid'):
+            obj.HorizRapid = template.get('hrapid')
+        if template.get('speed'):
+            obj.SpindleSpeed = float(template.get('speed'))
+        if template.get('dir'):
+            obj.SpindleDir = template.get('dir')
+        if template.get('nr'):
+            obj.ToolNumber = int(template.get('nr'))
+
+        for t in template.iter('Tool'):
+            tool = Path.Tool()
+            tool.fromTemplate(xml.tostring(t))
+            obj.Tool = tool
+
+        PathUtils.addToJob(obj, job.Name)
 
 
 class TaskPanel:

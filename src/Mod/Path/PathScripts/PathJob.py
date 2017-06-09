@@ -26,8 +26,9 @@ import Draft
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
-import sys
+import PathScripts.PathToolController as PathToolController
 import lxml.etree as xml
+import sys
 
 from PySide import QtCore, QtGui
 from PathScripts.PathPostProcessor import PostProcessor
@@ -52,7 +53,8 @@ def translate(context, text, disambig=None):
 
 class ObjectPathJob:
 
-    def __init__(self, obj):
+    def __init__(self, obj, base):
+        self.obj = obj
         obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
         obj.PostProcessorOutputFile = PathPreferences.defaultOutputFile()
         obj.setEditorMode("PostProcessorOutputFile", 0)  # set to default mode
@@ -74,12 +76,20 @@ class ObjectPathJob:
         obj.GeometryTolerance = PathPreferences.defaultGeometryTolerance()
 
         obj.addProperty("App::PropertyLink", "Base", "Base", "The base object for all operations")
+        obj.Base = base
 
         obj.Proxy = self
 
         if FreeCAD.GuiUp:
             ViewProviderJob(obj.ViewObject)
 
+    def assignTemplate(self, template):
+        if template:
+            tree = xml.parse(template)
+            for tc in tree.getroot().iter('ToolController'):
+                PathToolController.CommandPathToolController.FromTemplate(self.obj, tc)
+        else:
+            PathToolController.CommandPathToolController.Create(self.obj.Name)
 
     def __getstate__(self):
         return None
@@ -95,16 +105,6 @@ class ObjectPathJob:
             processor = PostProcessor.load(obj.PostProcessor)
             self.tooltip = processor.tooltip
             self.tooltipArgs = processor.tooltipArgs
-
-    # def getToolControllers(self, obj):
-    #     '''returns a list of ToolControllers for the current job'''
-    #     controllers = []
-    #     for o in obj.Group:
-    #         if "Proxy" in o.PropertiesList:
-    #             if isinstance(o.Proxy, PathToolController.ToolController):
-    #                 controllers.append (o.Name)
-    #     return controllers
-
 
     def execute(self, obj):
         cmds = []
@@ -162,6 +162,7 @@ class ViewProviderJob:
 
 class TaskPanel:
     def __init__(self, obj, deleteOnReject):
+        PathLog.error("Edit Job")
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Edit Job"))
         self.obj = obj
         self.deleteOnReject = deleteOnReject
@@ -196,6 +197,7 @@ class TaskPanel:
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
+            PathLog.error("Uncreate Job")
             FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Uncreate Job"))
             for child in self.obj.Group:
                 FreeCAD.ActiveDocument.removeObject(child.Name)
@@ -295,6 +297,32 @@ class TaskPanel:
 
         self.setFields()
 
+class DlgJobCreate:
+
+    def __init__(self, parent=None):
+        self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
+        sel = FreeCADGui.Selection.getSelection()
+        if sel:
+            selected = sel[0].Label
+        else:
+            selected = None
+        index = 0
+        for solid in sorted(filter(lambda obj: hasattr(obj, 'Shape') and obj.Shape.isClosed(), FreeCAD.ActiveDocument.Objects), key=lambda o: o.Label):
+            if solid.Label == selected:
+                index = self.dialog.cbModel.count()
+            self.dialog.cbModel.addItem(solid.Label)
+        self.dialog.cbModel.setCurrentIndex(index)
+
+    def getModel(self):
+        label = self.dialog.cbModel.currentText()
+        return filter(lambda obj: obj.Label == label, FreeCAD.ActiveDocument.Objects)[0]
+
+    def getTemplate(self):
+        return self.dialog.cbTemplate.currentText()
+
+    def exec_(self):
+        return self.dialog.exec_()
+
 class CommandJobCreate:
 
     def GetResources(self):
@@ -307,22 +335,17 @@ class CommandJobCreate:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        self.Create()
-        FreeCAD.ActiveDocument.recompute()
+        dialog = DlgJobCreate()
+        if dialog.exec_() == 1:
+            self.Create(dialog.getModel(), dialog.getTemplate())
+            FreeCAD.ActiveDocument.recompute()
 
     @classmethod
-    def Execute(cls):
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
+    def Create(cls, base, template):
         FreeCADGui.addModule('PathScripts.PathUtils')
-        FreeCADGui.addModule('PathScripts.PathToolController')
-        snippet = '''
-import PathScripts.PathToolController as PathToolController
-obj = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")
-PathScripts.PathJob.ObjectPathJob(obj)
-PathToolController.CommandPathToolController.Create(obj.Name)
-obj.ViewObject.Proxy.deleteOnReject = True
-obj.ViewObject.startEditing()
-'''
+        FreeCADGui.addModule('PathScripts.PathJob')
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
+        snippet = 'PathScripts.PathJob.ObjectPathJob(FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job"), FreeCAD.ActiveDocument.%s).assignTemplate("%s")' % (base.Name, template)
         FreeCADGui.doCommand(snippet)
         FreeCAD.ActiveDocument.commitTransaction()
 
@@ -344,12 +367,13 @@ class CommandJobExportTemplate:
 
     @classmethod
     def Execute(cls, job):
+        PathLog.error("Export Job template")
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Export Job template"))
         root = xml.Element('PathJobConfiguration')
         for obj in job.Group:
             if hasattr(obj, 'Tool') and hasattr(obj, 'SpindleDir'):
-                tc = xml.SubElement(root, 'ToolController', {'Label': obj.Label})
                 attrs = {}
+                attrs['label']  = ("%s" % (obj.Label))
                 attrs['nr']     = ("%d" % (obj.ToolNumber))
                 attrs['vfeed']  = ("%s" % (obj.VertFeed))
                 attrs['hfeed']  = ("%s" % (obj.HorizFeed))
@@ -358,14 +382,11 @@ class CommandJobExportTemplate:
                 attrs['speed']  = ("%f" % (obj.SpindleSpeed))
                 attrs['dir']    = ("%s" % (obj.SpindleDir))
 
-                xml.SubElement(tc, 'Controller', attrs)
+                tc = xml.SubElement(root, 'ToolController', attrs)
                 tc.append(xml.fromstring(obj.Tool.Content))
-                xml.ElementTree(root).write("./%s.xml" % job.Label, pretty_print=True)
 
+        xml.ElementTree(root).write("./%s.xml" % job.Label, pretty_print=True)
         FreeCAD.ActiveDocument.commitTransaction()
-
-
-
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
