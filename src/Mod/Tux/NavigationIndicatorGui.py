@@ -50,6 +50,7 @@ text06 = translate("NavigationIndicator", "navigation style")
 text07 = translate("NavigationIndicator", "Page Up or Page Down key.")
 text08 = translate("NavigationIndicator", "Rotation focus")
 text09 = translate("NavigationIndicator", "Middle mouse button or key H.")
+text10 = translate("NavigationIndicator", "Middle mouse button.")
 
 t0 = translate("NavigationIndicator", "Navigation style not recognized.")
 
@@ -69,7 +70,8 @@ t1 = "<p align='center'><b>OpenInventor</b> " + text06 + """</p>
   <td align='center'><img src=':/icons/NavigationOpenInventor_Rotate.svg'></td>
   <td align='center'><img src=':/icons/NavigationOpenInventor_Pan.svg'></td>
  </tr>
-</table>"""
+</table>
+<b>""" + text08 + ":</b> " + text10 + "</small></p>"
 
 t2 = "<p align='center'><b>CAD</b> " + text06 + """</p>
 <table>
@@ -87,7 +89,8 @@ t2 = "<p align='center'><b>CAD</b> " + text06 + """</p>
   <td align='center'><img src=':/icons/NavigationCAD_RotateAlt.svg'></td>
   <td align='center'><img src=':/icons/NavigationCAD_Pan.svg'></td>
  </tr>
-</table>"""
+</table>
+<b>""" + text08 + ":</b> " + text10 + "</small></p>"
 
 t3 = "<p align='center'><b>Blender</b> " + text06 + """</p>
 <table>
@@ -105,7 +108,8 @@ t3 = "<p align='center'><b>Blender</b> " + text06 + """</p>
   <td align='center'><img src=':/icons/NavigationBlender_Pan.svg'></td>
   <td align='center'><img src=':/icons/NavigationBlender_PanAlt.svg'></td>
  </tr>
-</table>"""
+</table>
+<b>""" + text08 + ":</b> " + text10 + "</small></p>"
 
 t4 = "<p align='center'><b>MayaGesture</b> " + text06 + """</p>
 <table>
@@ -258,9 +262,11 @@ aTooltip.setCheckable(True)
 gOrbit = QtGui.QActionGroup(menuSettings)
 
 aTurntable = QtGui.QAction(gOrbit)
+aTurntable.setObjectName("NavigationIndicator_Turntable")
 aTurntable.setText(translate("NavigationIndicator", "Turntable"))
 aTurntable.setCheckable(True)
 aTrackball = QtGui.QAction(gOrbit)
+aTrackball.setObjectName("NavigationIndicator_Trackball")
 aTrackball.setText(translate("NavigationIndicator", "Trackball"))
 aTrackball.setCheckable(True)
 
@@ -379,9 +385,20 @@ def onOrbit():
     """Use turntable or trackball orbit style."""
 
     if aTurntable.isChecked():
-        pView.SetInt("OrbitStyle", 1)
-    else:
         pView.SetInt("OrbitStyle", 0)
+    else:
+        pView.SetInt("OrbitStyle", 1)
+
+
+def onOrbitShow():
+    """Set turntable or trackball orbit style."""
+
+    gOrbit.blockSignals(True)
+    if pView.GetInt("OrbitStyle", 1):
+        aTrackball.setChecked(True)
+    else:
+        aTurntable.setChecked(True)
+    gOrbit.blockSignals(False)
 
 
 def onMenu(action):
@@ -455,14 +472,9 @@ if p.GetBool("Compact", 0):
 if p.GetBool("Tooltip", 1):
     aTooltip.setChecked(True)
 
-if pView.GetInt("OrbitStyle", 1):
-    aTurntable.setChecked(True)
-else:
-    aTrackball.setChecked(True)
-
 onCompact()
 onTooltip()
-onOrbit()
+onOrbitShow()
 
 statusBar.addPermanentWidget(indicator)
 statusBar.addPermanentWidget(statusBar.children()[2])
@@ -473,6 +485,7 @@ gStyle.triggered.connect(onMenu)
 gOrbit.triggered.connect(onOrbit)
 aCompact.triggered.connect(onCompact)
 aTooltip.triggered.connect(onTooltip)
+menuOrbit.aboutToShow.connect(onOrbitShow)
 menu.aboutToHide.connect(indicator.clearFocus)
 
 timer.timeout.connect(setCurrent)
