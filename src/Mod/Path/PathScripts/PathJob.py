@@ -53,7 +53,7 @@ def translate(context, text, disambig=None):
 
 class ObjectPathJob:
 
-    def __init__(self, obj, base):
+    def __init__(self, obj, base, template = ""):
         self.obj = obj
         obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
         obj.PostProcessorOutputFile = PathPreferences.defaultOutputFile()
@@ -82,6 +82,7 @@ class ObjectPathJob:
 
         if FreeCAD.GuiUp:
             ViewProviderJob(obj.ViewObject)
+        self.assignTemplate(template)
 
     def assignTemplate(self, template):
         if template:
@@ -342,10 +343,10 @@ class CommandJobCreate:
 
     @classmethod
     def Create(cls, base, template):
-        FreeCADGui.addModule('PathScripts.PathUtils')
         FreeCADGui.addModule('PathScripts.PathJob')
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
-        snippet = 'PathScripts.PathJob.ObjectPathJob(FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job"), FreeCAD.ActiveDocument.%s).assignTemplate("%s")' % (base.Name, template)
+        snippet = '''App.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")
+PathScripts.PathJob.ObjectPathJob(App.ActiveDocument.ActiveObject, App.ActiveDocument.%s, "%s")''' % (base.Name, template)
         FreeCADGui.doCommand(snippet)
         FreeCAD.ActiveDocument.commitTransaction()
 
