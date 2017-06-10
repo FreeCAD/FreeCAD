@@ -156,7 +156,8 @@ SketcherGui::ViewProviderSketch* getSketchViewprovider(Gui::Document *doc)
     return 0;
 }
 
-void removeRedundantHorizontalVertical(std::vector<AutoConstraint> &sug1, std::vector<AutoConstraint> &sug2) {
+void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch, std::vector<AutoConstraint> &sug1, std::vector<AutoConstraint> &sug2) {
+    
     if(sug1.size()>0 && sug2.size()>0) {
         
         bool rmvhorvert = false;
@@ -164,14 +165,34 @@ void removeRedundantHorizontalVertical(std::vector<AutoConstraint> &sug1, std::v
         // we look for:
         // 1. Coincident to external on both endpoints
         // 2. Coincident in one endpoint to origin and pointonobject/tangent to an axis on the other
-        auto detectredundant = [](std::vector<AutoConstraint> &sug, bool &ext, bool &orig, bool &axis) {
+        auto detectredundant = [psketch](std::vector<AutoConstraint> &sug, bool &ext, bool &orig, bool &axis) {
+            
+            ext = false;
+            orig = false;
+            axis = false;
             
             for(std::vector<AutoConstraint>::const_iterator it = sug.begin(); it!=sug.end(); ++it) {
-                if( (*it).Type == Sketcher::Coincident) {
-                    ext = (*it).GeoId < 0;
-                    orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::start);
+                if( (*it).Type == Sketcher::Coincident && ext == false) {
+                    const std::map<int, Sketcher::PointPos> coincidents = psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
+
+                    if(!coincidents.empty()) {
+                        ext = coincidents.begin()->first < 0; // the keys are ordered, so if the first is negative, it is coincident with external
+                        
+                        std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
+                        
+                        geoId1iterator = coincidents.find(-1);
+                        
+                        if( geoId1iterator != coincidents.end()) {
+                            if( (*geoId1iterator).second == Sketcher::start )
+                                orig = true;
+                        }
+                    }
+                    else { // it may be that there is no constraint at all, but there is external geometry
+                        ext = (*it).GeoId < 0;
+                        orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::start);
+                    }
                 }
-                if( (*it).Type == Sketcher::PointOnObject) {
+                else if( (*it).Type == Sketcher::PointOnObject && axis == false) {
                     axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::none) || ((*it).GeoId == -2 && (*it).PosId == Sketcher::none));
                 }
                 
@@ -319,7 +340,7 @@ public:
                 Gui::Command::abortCommand();
             }
 
-            removeRedundantHorizontalVertical(sugConstr1,sugConstr2);
+            removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
 
             // add auto constraints for the line segment start
             if (sugConstr1.size() > 0) {
@@ -1117,9 +1138,9 @@ public:
 
                 if (SegmentMode == SEGMENT_MODE_Line) { // avoid redundant constraints.
                     if (sugConstr1.size() > 0)
-                        removeRedundantHorizontalVertical(sugConstr1,sugConstr2);
+                        removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
                     else
-                        removeRedundantHorizontalVertical(virtualsugConstr1,sugConstr2);
+                        removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),virtualsugConstr1,sugConstr2);
                 }
 
                 if (sugConstr2.size() > 0) {
@@ -1176,9 +1197,9 @@ public:
                 
                 if (SegmentMode == SEGMENT_MODE_Line) { // avoid redundant constraints.
                     if (sugConstr1.size() > 0)
-                        removeRedundantHorizontalVertical(sugConstr1,sugConstr2);
+                        removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
                     else
-                        removeRedundantHorizontalVertical(virtualsugConstr1,sugConstr2);
+                        removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),virtualsugConstr1,sugConstr2);
                 }
                 
                 virtualsugConstr1 = sugConstr2; // these are the initial constraints for the next iteration.
