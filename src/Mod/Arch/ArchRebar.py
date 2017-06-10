@@ -330,11 +330,24 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
 
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
+        vobj.addProperty("App::PropertyString","RebarShape","Arch",QT_TRANSLATE_NOOP("App::Property","Shape of rebar")).RebarShape
         vobj.ShapeColor = ArchCommands.getDefaultColor("Rebar")
+        vobj.setEditorMode("RebarShape",2)
 
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Rebar_Tree.svg"
+
+    def setEdit(self, vobj, mode):
+        if mode == 0:
+            if vobj.RebarShape:
+                try:
+                    # Import module of RebarShape
+                    module = __import__(vobj.RebarShape)
+                except ImportError:
+                    FreeCAD.Console.PrintError("Unable to import RebarShape module\n")
+                    return
+                module.editDialog(vobj)
 
 def CalculatePlacement(baramount, barnumber, size, axis, rotation, offsetstart, offsetend):
     """ CalculatePlacement([baramount, barnumber, size, axis, rotation, offsetstart, offsetend]):
