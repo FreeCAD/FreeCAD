@@ -62,6 +62,7 @@ public Q_SLOTS:
     void setGridSize(double val);
     void toggleGridSnap(int state);
     void renderOrderChanged();
+    void on_checkBoxRedundantAutoconstraints_stateChanged(int);
 
 protected:
     void changeEvent(QEvent *e);
