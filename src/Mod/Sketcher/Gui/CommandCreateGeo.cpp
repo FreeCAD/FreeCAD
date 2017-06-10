@@ -941,6 +941,8 @@ public:
 
             EditCurve[0] = onSketchPos; // this may be overwritten if previousCurve is found
 
+            virtualsugConstr1 = sugConstr1; // store original autoconstraints.
+            
             // here we check if there is a preselected point and
             // we set up a transition from the neighbouring segment.
             // (peviousCurve, previousPosId, dirVec, TransitionMode)
@@ -1112,6 +1114,14 @@ public:
             }
 
             if (Mode == STATUS_Close) {
+
+                if (SegmentMode == SEGMENT_MODE_Line) { // avoid redundant constraints.
+                    if (sugConstr1.size() > 0)
+                        removeRedundantHorizontalVertical(sugConstr1,sugConstr2);
+                    else
+                        removeRedundantHorizontalVertical(virtualsugConstr1,sugConstr2);
+                }
+
                 if (sugConstr2.size() > 0) {
                     // exclude any coincidence constraints
                     std::vector<AutoConstraint> sugConstr;
@@ -1163,6 +1173,15 @@ public:
                     createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::start);
                     sugConstr1.clear();
                 }
+                
+                if (SegmentMode == SEGMENT_MODE_Line) { // avoid redundant constraints.
+                    if (sugConstr1.size() > 0)
+                        removeRedundantHorizontalVertical(sugConstr1,sugConstr2);
+                    else
+                        removeRedundantHorizontalVertical(virtualsugConstr1,sugConstr2);
+                }
+                
+                virtualsugConstr1 = sugConstr2; // these are the initial constraints for the next iteration.
 
                 if (sugConstr2.size() > 0) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::end);
@@ -1252,7 +1271,8 @@ protected:
     int previousCurve;
     Sketcher::PointPos firstPosId;
     Sketcher::PointPos previousPosId;
-    std::vector<AutoConstraint> sugConstr1, sugConstr2;
+    // the latter stores those constraints that a first point would have been given in abscence of the transition mechanism
+    std::vector<AutoConstraint> sugConstr1, sugConstr2, virtualsugConstr1; 
 
     Base::Vector2d CenterPoint;
     Base::Vector3d dirVec;
