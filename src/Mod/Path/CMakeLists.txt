@@ -63,6 +63,7 @@ SET(PathScripts_SRCS
     PathScripts/PathToolController.py
     PathScripts/PathToolLenOffset.py
     PathScripts/PathToolLibraryManager.py
+    PathScripts/PathUtil.py
     PathScripts/PathUtils.py
     PathScripts/PostUtils.py
     PathScripts/__init__.py
@@ -83,15 +84,16 @@ SET(PathScripts_SRCS
 
 
 SET(PathTests_SRCS
+    PathTests/__init__.py
     PathTests/PathTestUtils.py
+    PathTests/test_linuxcnc_00.ngc
     PathTests/TestPathCore.py
     PathTests/TestPathDepthParams.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathGeom.py
     PathTests/TestPathLog.py
     PathTests/TestPathPost.py
-    PathTests/__init__.py
-    PathTests/test_linuxcnc_00.ngc
+    PathTests/TestPathUtil.py
 )
 
 SET(all_files

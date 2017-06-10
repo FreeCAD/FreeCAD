@@ -28,6 +28,7 @@ import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathToolController as PathToolController
+import PathScripts.PathUtil as PathUtil
 import glob
 import lxml.etree as xml
 import os
@@ -66,7 +67,7 @@ class JobTemplate:
 
 class ObjectPathJob:
 
-    def __init__(self, obj, base, template = ""):
+    def __init__(self, obj, base, template = None):
         self.obj = obj
         obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
         obj.PostProcessorOutputFile = PathPreferences.defaultOutputFile()
@@ -117,7 +118,7 @@ class ObjectPathJob:
                     obj.Description = job.get(JobTemplate.Description)
             for tc in tree.getroot().iter(JobTemplate.ToolController):
                 PathToolController.CommandPathToolController.FromTemplate(obj, tc)
-        else:
+        elif template is not None:
             PathToolController.CommandPathToolController.Create(obj.Name)
 
     def templateAttrs(self, obj):
@@ -159,6 +160,16 @@ class ObjectPathJob:
         if cmds:
             path = Path.Path(cmds)
             obj.Path = path
+
+    @classmethod
+    def baseCandidates(cls):
+        '''Answer all objects in the current document which could serve as a Base for a job.'''
+        return sorted(filter(lambda obj: cls.isBaseCandidate(obj) , FreeCAD.ActiveDocument.Objects), key=lambda o: o.Label)
+
+    @classmethod
+    def isBaseCandidate(cls, obj):
+        '''Answer true if the given object can be used as a Base for a job.'''
+        return PathUtil.isSolid(obj) or (hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet))
 
 
 class ViewProviderJob:
@@ -218,10 +229,8 @@ class TaskPanel:
         self.obj.PostProcessor = postProcessors
         self.obj.PostProcessor = currentPostProcessor
 
-        self.form.cboBaseObject.addItem("")
-        for o in FreeCAD.ActiveDocument.Objects:
-            if hasattr(o, "Shape"):
-                self.form.cboBaseObject.addItem(o.Name)
+        for o in ObjectPathJob.baseCandidates():
+            self.form.cboBaseObject.addItem(o.Label)
 
 
         self.postProcessorDefaultTooltip = self.form.cboPostProcessor.toolTip()
@@ -271,7 +280,7 @@ class TaskPanel:
             for index in xrange(self.form.PathsList.count()):
                 item = self.form.PathsList.item(index)
                 for olditem in oldlist:
-                    if olditem.Name == item.text():
+                    if olditem.Label == item.text():
                         newlist.append(olditem)
             self.obj.Group = newlist
 
@@ -305,14 +314,14 @@ class TaskPanel:
 
         self.form.PathsList.clear()
         for child in self.obj.Group:
-            self.form.PathsList.addItem(child.Name)
+            self.form.PathsList.addItem(child.Label)
 
         baseindex = -1
         if self.obj.Base:
-            baseindex = self.form.cboBaseObject.findText(self.obj.Base.Name, QtCore.Qt.MatchFixedString)
+            baseindex = self.form.cboBaseObject.findText(self.obj.Base.Label, QtCore.Qt.MatchFixedString)
         else:
             for o in FreeCADGui.Selection.getCompleteSelection():
-                baseindex = self.form.cboBaseObject.findText(o.Name, QtCore.Qt.MatchFixedString)
+                baseindex = self.form.cboBaseObject.findText(o.Label, QtCore.Qt.MatchFixedString)
         if baseindex >= 0:
             self.form.cboBaseObject.setCurrentIndex(baseindex)
 
@@ -348,10 +357,10 @@ class DlgJobCreate:
         else:
             selected = None
         index = 0
-        for solid in sorted(filter(lambda obj: (hasattr(obj, 'Shape') and obj.Shape.isClosed()) or (hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet)), FreeCAD.ActiveDocument.Objects), key=lambda o: o.Label):
-            if solid.Label == selected:
+        for base in ObjectPathJob.baseCandidates():
+            if base.Label == selected:
                 index = self.dialog.cbModel.count()
-            self.dialog.cbModel.addItem(solid.Label)
+            self.dialog.cbModel.addItem(base.Label)
         self.dialog.cbModel.setCurrentIndex(index)
 
         templateFiles = []
