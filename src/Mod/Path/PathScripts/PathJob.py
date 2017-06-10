@@ -214,7 +214,6 @@ class ViewProviderJob:
 
 class TaskPanel:
     def __init__(self, obj, deleteOnReject):
-        PathLog.error("Edit Job")
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Edit Job"))
         self.obj = obj
         self.deleteOnReject = deleteOnReject
