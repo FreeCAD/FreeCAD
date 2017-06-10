@@ -34,7 +34,7 @@ other than PathLog, then it probably doesn't belong here.
 
 import PathScripts.PathLog as PathLog
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 def isSolid(obj):
     '''isSolid(obj) ... returns true if an object represents a solid.'''

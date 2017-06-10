@@ -79,11 +79,11 @@ class ToolController:
     def assignTemplate(self, obj, template):
         '''assignTemplate(obj, xmlItem) ... extract properties from xmlItem and assign to receiver.'''
         if template.get(ToolControllerTemplate.VertFeed):
-            obj.HorizFeed = template.get(ToolControllerTemplate.VertFeed)
+            obj.VertFeed = template.get(ToolControllerTemplate.VertFeed)
         if template.get(ToolControllerTemplate.HorizFeed):
             obj.HorizFeed = template.get(ToolControllerTemplate.HorizFeed)
         if template.get(ToolControllerTemplate.VertRapid):
-            obj.HorizRapid = template.get(ToolControllerTemplate.VertRapid)
+            obj.VertRapid = template.get(ToolControllerTemplate.VertRapid)
         if template.get(ToolControllerTemplate.HorizRapid):
             obj.HorizRapid = template.get(ToolControllerTemplate.HorizRapid)
         if template.get(ToolControllerTemplate.SpindleSpeed):
