@@ -53,6 +53,14 @@ if FreeCAD.GuiUp:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+class JobTemplate:
+    Job = 'Job'
+    PostProcessor = 'post'
+    PostProcessorArgs = 'post_args'
+    PostProcessorOutputFile = 'output'
+    GeometryTolerance = 'tol'
+    Description = 'desc'
+
 class ObjectPathJob:
 
     def __init__(self, obj, base, template = ""):
@@ -84,15 +92,28 @@ class ObjectPathJob:
 
         if FreeCAD.GuiUp:
             ViewProviderJob(obj.ViewObject)
-        self.assignTemplate(template)
+        self.assignTemplate(obj, template)
 
-    def assignTemplate(self, template):
+    def assignTemplate(self, obj, template):
         if template:
             tree = xml.parse(template)
+            for job in tree.getroot().iter(JobTemplate.Job):
+                if job.get(JobTemplate.GeometryTolerance):
+                    obj.GeometryTolerance = float(job.get(JobTemplate.GeometryTolerance))
+                if job.get(JobTemplate.PostProcessor):
+                    obj.PostProcessor = job.get(JobTemplate.PostProcessor)
+                    if job.get(JobTemplate.PostProcessorArgs):
+                        obj.PostProcessorArgs = job.get(JobTemplate.PostProcessorArgs)
+                    else:
+                        obj.PostProcessorArgs = ''
+                if job.get(JobTemplate.PostProcessorOutputFile):
+                    obj.PostProcessorOutputFile = job.get(JobTemplate.PostProcessorOutputFile)
+                if job.get(JobTemplate.Description):
+                    obj.Description = job.get(JobTemplate.Description)
             for tc in tree.getroot().iter('ToolController'):
-                PathToolController.CommandPathToolController.FromTemplate(self.obj, tc)
+                PathToolController.CommandPathToolController.FromTemplate(obj, tc)
         else:
-            PathToolController.CommandPathToolController.Create(self.obj.Name)
+            PathToolController.CommandPathToolController.Create(obj.Name)
 
     def __getstate__(self):
         return None
@@ -377,8 +398,12 @@ class CommandJobCreate:
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
         snippet = '''App.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")
 PathScripts.PathJob.ObjectPathJob(App.ActiveDocument.ActiveObject, App.ActiveDocument.%s, "%s")''' % (base.Name, template)
-        FreeCADGui.doCommand(snippet)
-        FreeCAD.ActiveDocument.commitTransaction()
+        try:
+            FreeCADGui.doCommand(snippet)
+            FreeCAD.ActiveDocument.commitTransaction()
+        except:
+            PathLog.error(sys.exc_info())
+            FreeCAD.ActiveDocument.abortTransaction()
 
 class CommandJobExportTemplate:
 
@@ -402,7 +427,21 @@ class CommandJobExportTemplate:
 
     @classmethod
     def Execute(cls, job, path):
-        root = xml.Element('PathJobConfiguration')
+        root = xml.Element('PathJobTemplate')
+
+        # first collect all attributes of a job to be stored
+        attrs = {}
+        if job.PostProcessor:
+            attrs[JobTemplate.PostProcessor]           = job.PostProcessor
+            attrs[JobTemplate.PostProcessorArgs]       = job.PostProcessorArgs
+        if job.PostProcessorOutputFile:
+            attrs[JobTemplate.PostProcessorOutputFile] = job.PostProcessorOutputFile
+        attrs[JobTemplate.GeometryTolerance]           = str(job.GeometryTolerance.Value)
+        if job.Description:
+            attrs[JobTemplate.Description]             = job.Description
+        xml.SubElement(root, JobTemplate.Job, attrs)
+
+        # then store all tool controllers
         for obj in job.Group:
             if hasattr(obj, 'Tool') and hasattr(obj, 'SpindleDir'):
                 attrs = {}
@@ -417,6 +456,7 @@ class CommandJobExportTemplate:
 
                 tc = xml.SubElement(root, 'ToolController', attrs)
                 tc.append(xml.fromstring(obj.Tool.Content))
+
         xml.ElementTree(root).write(path, pretty_print=True)
 
 if FreeCAD.GuiUp:
