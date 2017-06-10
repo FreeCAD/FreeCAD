@@ -78,7 +78,7 @@ bool ViewProviderTransformed::setEdit(int ModNum)
     rejectedPickStyle->style = SoPickStyle::UNPICKABLE;
 
     SoShapeHints* rejectedHints = new SoShapeHints();
-    rejectedHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    rejectedHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
     rejectedHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
 
     SoMaterialBinding* rejectedBind = new SoMaterialBinding();
