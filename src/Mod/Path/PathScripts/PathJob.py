@@ -380,7 +380,7 @@ class DlgJobCreate:
             template[name] = tFile
         selectTemplate = PathPreferences.defaultJobTemplate()
         index = 0
-        self.dialog.cbTemplate.addItem('', '')
+        self.dialog.cbTemplate.addItem('<none>', '')
         for name in sorted(template.keys()):
             if template[name] == selectTemplate:
                 index = self.dialog.cbTemplate.count()
