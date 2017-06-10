@@ -340,7 +340,11 @@ public:
                 Gui::Command::abortCommand();
             }
 
-            removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool avoidredundant = hGrp->GetBool("AvoidRedundantAutoconstraints",true);
+            
+            if(avoidredundant) 
+                removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
 
             // add auto constraints for the line segment start
             if (sugConstr1.size() > 0) {
@@ -354,8 +358,6 @@ public:
                 sugConstr2.clear();
             }
 
-
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
 
             if(autoRecompute)
@@ -1133,14 +1135,19 @@ public:
                 else
                     static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();                
             }
+            
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool avoidredundant = hGrp->GetBool("AvoidRedundantAutoconstraints",true);
 
             if (Mode == STATUS_Close) {
 
-                if (SegmentMode == SEGMENT_MODE_Line) { // avoid redundant constraints.
-                    if (sugConstr1.size() > 0)
-                        removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
-                    else
-                        removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),virtualsugConstr1,sugConstr2);
+                if(avoidredundant) {
+                    if (SegmentMode == SEGMENT_MODE_Line) { // avoid redundant constraints.
+                        if (sugConstr1.size() > 0)
+                            removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
+                        else
+                            removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),virtualsugConstr1,sugConstr2);
+                    }
                 }
 
                 if (sugConstr2.size() > 0) {
@@ -1195,13 +1202,16 @@ public:
                     sugConstr1.clear();
                 }
                 
-                if (SegmentMode == SEGMENT_MODE_Line) { // avoid redundant constraints.
-                    if (sugConstr1.size() > 0)
-                        removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
-                    else
-                        removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),virtualsugConstr1,sugConstr2);
+
+                if(avoidredundant) {
+                    if (SegmentMode == SEGMENT_MODE_Line) { // avoid redundant constraints.
+                        if (sugConstr1.size() > 0)
+                            removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
+                        else
+                            removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),virtualsugConstr1,sugConstr2);
+                    }
                 }
-                
+
                 virtualsugConstr1 = sugConstr2; // these are the initial constraints for the next iteration.
 
                 if (sugConstr2.size() > 0) {
@@ -1211,7 +1221,7 @@ public:
 
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                 bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                
+
                 if(autoRecompute)
                     Gui::Command::updateActive();
                 else
