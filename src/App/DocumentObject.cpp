@@ -76,7 +76,7 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
     //check if the links are valid before making the recompute
     if(!GeoFeatureGroupExtension::areLinksValid(this))
-        return new App::DocumentObjectExecReturn("Links between different GeoFeatureGroups are not valid", this);
+        return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
 
     // set/unset the execution bit
     ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::Recompute, this);
