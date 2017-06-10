@@ -424,36 +424,20 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                                        );
                 } break;
             case Sketcher::Horizontal: {
-                
-                bool start_external;
-                bool mid_external;
-                bool end_external;
-                
-                static_cast<Sketcher::SketchObject*>((sketchgui->getObject()))->isCoincidentWithExternalGeometry(geoId1, start_external, mid_external, end_external);
-                
-                if( !(start_external && end_external) ) {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
-                    ,sketchgui->getObject()->getNameInDocument()
-                    ,geoId1
-                    );
-                }
+
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
+                ,sketchgui->getObject()->getNameInDocument()
+                ,geoId1
+                );
 
                 } break;
             case Sketcher::Vertical: {
-                
-                bool start_external;
-                bool mid_external;
-                bool end_external;
-                
-                static_cast<Sketcher::SketchObject*>((sketchgui->getObject()))->isCoincidentWithExternalGeometry(geoId1, start_external, mid_external, end_external);
-                
-                if( !(start_external && end_external) ) {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
-                    ,sketchgui->getObject()->getNameInDocument()
-                    ,geoId1
-                    );
-                }
-                
+
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
+                ,sketchgui->getObject()->getNameInDocument()
+                ,geoId1
+                );
+
                 } break;
             case Sketcher::Tangent: {
                 Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
