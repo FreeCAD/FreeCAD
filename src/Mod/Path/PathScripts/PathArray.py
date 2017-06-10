@@ -26,6 +26,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 from PySide import QtCore, QtGui
+import math
 
 """Path Array object and FreeCAD command"""
 
@@ -38,13 +39,26 @@ class ObjectArray:
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink", "Base",
                         "Path", "The path to array")
+        obj.addProperty("App::PropertyEnumeration", "Type",
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Pattern method"))
         obj.addProperty("App::PropertyVectorDistance", "Offset",
-                        "Path", "The spacing between the array copies")
+                        "Path", "The spacing between the array copies in Linear pattern")
+        obj.addProperty("App::PropertyInteger", "CopiesX",
+                        "Path", "The number of copies in X direction in Linear pattern")
+        obj.addProperty("App::PropertyInteger", "CopiesY",
+                        "Path", "The number of copies in Y direction in Linear pattern")
+        obj.addProperty("App::PropertyAngle", "Angle",
+                        "Path", "Total angle in Polar pattern")
         obj.addProperty("App::PropertyInteger", "Copies",
-                        "Path", "The number of copies")
+                        "Path", "The number of copies in Linear 1D and Polar pattern")
+        obj.addProperty("App::PropertyVector", "Centre",
+                        "Path", "The centre of rotation in Polar pattern")
+        obj.addProperty("App::PropertyLink", "ToolController",
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
-        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
+        obj.Type = ['Linear1D', 'Linear2D', 'Polar']
 
+        self.setEditorProperties(obj)
         obj.Proxy = self
 
     def __getstate__(self):
@@ -52,6 +66,95 @@ class ObjectArray:
 
     def __setstate__(self, state):
         return None
+
+    def setEditorProperties(self, obj):
+        if obj.Type == 'Linear2D':
+            obj.setEditorMode('Angle', 2)
+            obj.setEditorMode('Copies', 2)
+            obj.setEditorMode('Centre', 2)
+
+            obj.setEditorMode('CopiesX', 0)
+            obj.setEditorMode('CopiesY', 0)
+            obj.setEditorMode('Offset', 0)
+        elif obj.Type == 'Polar':
+            obj.setEditorMode('Angle', 0)
+            obj.setEditorMode('Copies', 0)
+            obj.setEditorMode('Centre', 0)
+
+            obj.setEditorMode('CopiesX', 2)
+            obj.setEditorMode('CopiesY', 2)
+            obj.setEditorMode('Offset', 2)
+        elif obj.Type == 'Linear1D':
+            obj.setEditorMode('Angle', 2)
+            obj.setEditorMode('Copies', 0)
+            obj.setEditorMode('Centre', 2)
+
+            obj.setEditorMode('CopiesX', 2)
+            obj.setEditorMode('CopiesY', 2)
+            obj.setEditorMode('Offset', 0)
+
+    def onChanged(self, obj, prop):
+        if prop == "Type":
+            self.setEditorProperties(obj)
+
+    def rotatePath(self, path, angle, centre):
+        '''
+            Rotates Path around given centre vector
+            Only X and Y is considered
+        '''
+        CmdMoveRapid    = ['G0', 'G00']
+        CmdMoveStraight = ['G1', 'G01']
+        CmdMoveCW       = ['G2', 'G02']
+        CmdMoveCCW      = ['G3', 'G03']
+        CmdDrill        = ['G81', 'G82', 'G83']
+        CmdMoveArc      = CmdMoveCW + CmdMoveCCW
+        CmdMove         = CmdMoveStraight + CmdMoveArc
+
+        commands = []
+        ang = angle / 180 * math.pi
+        currX = 0
+        currY = 0
+        for cmd in path.Commands:
+            if (cmd.Name in CmdMoveRapid) or (cmd.Name in CmdMove) or (cmd.Name in CmdDrill):
+                params = cmd.Parameters
+                x = params.get("X")
+                if x is None:
+                    x = currX
+                currX = x
+                y = params.get("Y")
+                if y is None:
+                    y = currY
+                currY = y
+
+                # "move" the centre to origin
+                x = x - centre.x
+                y = y - centre.y
+
+                # rotation around origin:
+                nx = x * math.cos(ang) - y * math.sin(ang)
+                ny = y * math.cos(ang) + x * math.sin(ang)
+
+                # "move" the centre back and update
+                params.update({'X': nx + centre.x, 'Y': ny + centre.y})
+
+                # Arcs need to have the I and J params rotated as well
+                if cmd.Name in CmdMoveArc:
+                    i = params.get("I")
+                    if i is None:
+                        i = 0
+                    j = params.get("J")
+                    if j is None:
+                        j = 0
+
+                    ni = i * math.cos(ang) - j * math.sin(ang)
+                    nj = j * math.cos(ang) + i * math.sin(ang)
+                    params.update({'I': ni, 'J': nj})
+
+                cmd.Parameters = params
+            commands.append(cmd)
+        newPath = Path.Path(commands)
+
+        return newPath
 
     def execute(self, obj):
         if obj.Base:
@@ -67,14 +170,40 @@ class ObjectArray:
             # build copies
             basepath = obj.Base.Path
             output = ""
-            pl = FreeCAD.Placement()
-            if obj.Offset != FreeCAD.Vector():
+            if obj.Type == 'Linear1D':
                 for i in range(obj.Copies):
-                    pl.move(obj.Offset)
+                    pl = FreeCAD.Placement()
+                    pos = FreeCAD.Vector(obj.Offset.x * (i + 1), obj.Offset.y * (i + 1), 0)
+                    pl.move(pos)
                     np = Path.Path([cm.transform(pl)
                                     for cm in basepath.Commands])
                     output += np.toGCode()
 
+            elif obj.Type == 'Linear2D':
+                for i in range(obj.CopiesX + 1):
+                    for j in range(obj.CopiesY + 1):
+                        pl = FreeCAD.Placement()
+                        # do not process the index 0,0. It will be processed at basepath
+                        if not (i == 0 and j == 0):
+                            if (i % 2) == 0:
+                                pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * j, 0)
+                            else:
+                                pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * (obj.CopiesY - j), 0)
+
+                            pl.move(pos)
+                            np = Path.Path([cm.transform(pl)
+                                            for cm in basepath.Commands])
+                            output += np.toGCode()
+
+            else:
+                for i in range(obj.Copies):
+
+                    ang = 360
+                    if obj.CopiesPolar > 0:
+                        ang = obj.Angle / obj.Copies * (1 + i)
+
+                    np = self.rotatePath(basepath, ang, obj.Centre)
+                    output += np.toGCode()
             # print output
             path = Path.Path(output)
             obj.Path = path
