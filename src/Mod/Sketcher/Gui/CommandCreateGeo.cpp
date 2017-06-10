@@ -156,6 +156,49 @@ SketcherGui::ViewProviderSketch* getSketchViewprovider(Gui::Document *doc)
     return 0;
 }
 
+void removeRedundantHorizontalVertical(std::vector<AutoConstraint> &sug1, std::vector<AutoConstraint> &sug2) {
+    if(sug1.size()>0 && sug2.size()>0) {
+        
+        bool rmvhorvert = false;
+        
+        // we look for:
+        // 1. Coincident to external on both endpoints
+        // 2. Coincident in one endpoint to origin and pointonobject/tangent to an axis on the other
+        auto detectredundant = [](std::vector<AutoConstraint> &sug, bool &ext, bool &orig, bool &axis) {
+            
+            for(std::vector<AutoConstraint>::const_iterator it = sug.begin(); it!=sug.end(); ++it) {
+                if( (*it).Type == Sketcher::Coincident) {
+                    ext = (*it).GeoId < 0;
+                    orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::start);
+                }
+                if( (*it).Type == Sketcher::PointOnObject) {
+                    axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::none) || ((*it).GeoId == -2 && (*it).PosId == Sketcher::none));
+                }
+                
+            }
+        };
+        
+        bool firstext = false, secondext = false, firstorig = false, secondorig = false, firstaxis = false, secondaxis = false;
+        
+        detectredundant(sug1, firstext, firstorig, firstaxis);
+        detectredundant(sug2, secondext, secondorig, secondaxis);
+        
+        
+        rmvhorvert = (   (firstext && secondext)     ||  // coincident with external on both endpoints
+        (firstorig && secondaxis)   ||  // coincident origin and point on object on other
+        (secondorig && firstaxis) );
+        
+        if(rmvhorvert) {
+            for(std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin(); it!=sug2.rend(); ++it) {
+                if( (*it).Type == Sketcher::Horizontal || (*it).Type == Sketcher::Vertical) {
+                    sug2.erase(std::next(it).base());
+                }
+            }
+        }
+        
+    }
+}
+
 
 /* Sketch commands =======================================================*/
 
@@ -276,6 +319,8 @@ public:
                 Gui::Command::abortCommand();
             }
 
+            removeRedundantHorizontalVertical(sugConstr1,sugConstr2);
+
             // add auto constraints for the line segment start
             if (sugConstr1.size() > 0) {
                 createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::start);
@@ -287,6 +332,7 @@ public:
                 createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::end);
                 sugConstr2.clear();
             }
+
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
@@ -1111,7 +1157,7 @@ public:
             }
             else {
                 Gui::Command::commitCommand();
-                            
+
                 // Add auto constraints
                 if (sugConstr1.size() > 0) { // this is relevant only to the very first point
                     createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::start);
