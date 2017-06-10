@@ -2,7 +2,7 @@
 
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,12 +22,30 @@
 # *                                                                         *
 # ***************************************************************************
 
-import TestApp
+'''
+The purpose of this file is to collect some handy functions. The reason they
+are not in PathUtils (and there is this confusing naming going on) is that
+PathUtils depends on PathJob. Which makes it impossible to use the functions
+and classes defined there in PathJob.
 
-from PathTests.TestPathLog   import TestPathLog
-from PathTests.TestPathCore  import TestPathCore
-from PathTests.TestPathPost  import PathPostTestCases
-from PathTests.TestPathGeom  import TestPathGeom
-from PathTests.TestPathUtil  import TestPathUtil
-from PathTests.TestPathDepthParams        import depthTestCases
-from PathTests.TestPathDressupHoldingTags import TestHoldingTags
+So if you add to this file and think about importing anything from PathScripts
+other than PathLog, then it probably doesn't belong here.
+'''
+
+import PathScripts.PathLog as PathLog
+
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+
+def isSolid(obj):
+    '''isSolid(obj) ... returns true if an object represents a solid.'''
+
+    if hasattr(obj, 'Tip'):
+        return isSolid(obj.Tip)
+    if hasattr(obj, 'Shape'):
+        if obj.Shape.ShapeType == 'Solid' and obj.Shape.isClosed():
+            return True
+        if obj.Shape.ShapeType == 'Compound':
+            if hasattr(obj, 'Base') and hasattr(obj, 'Tool'):
+                return isSolid(obj.Base) and isSolid(obj.Tool)
+    return False
+

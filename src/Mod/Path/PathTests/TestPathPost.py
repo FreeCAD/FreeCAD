@@ -46,8 +46,7 @@ class PathPostTestCases(unittest.TestCase):
 
         # Create job and setup tool library + default tool
         job = self.doc.addObject("Path::FeatureCompoundPython", "Job")
-        PathScripts.PathJob.ObjectPathJob(job)
-        job.Base = self.doc.Box
+        PathScripts.PathJob.ObjectPathJob(job, box, None)
         PathScripts.PathToolController.CommandPathToolController.Create(job.Name, False)
         tool1 = Path.Tool()
         tool1.Diameter = 5.0
