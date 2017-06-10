@@ -56,6 +56,8 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
             this, SIGNAL(emitToggleAutoconstraints(int)));
     connect(ui->renderingOrder->model(), SIGNAL(layoutChanged()),
             this, SLOT(renderOrderChanged()));
+    connect(ui->checkBoxRedundantAutoconstraints, SIGNAL(stateChanged(int)),
+            this, SLOT(on_checkBoxRedundantAutoconstraints_stateChanged(int)));
 }
 
 SketcherGeneralWidget::~SketcherGeneralWidget()
@@ -108,6 +110,8 @@ void SketcherGeneralWidget::loadSettings()
     newItem->setData(Qt::UserRole, QVariant(lowid));
     newItem->setText(lowid==1?tr("Normal Geometry"):lowid==2?tr("Construction Geometry"):tr("External Geometry"));
     ui->renderingOrder->insertItem(2,newItem);
+    
+    ui->checkBoxRedundantAutoconstraints->onRestore();
 }
 
 void SketcherGeneralWidget::toggleGridView(bool on)
@@ -153,6 +157,11 @@ void SketcherGeneralWidget::renderOrderChanged()
     hGrp->SetInt("LowRenderGeometryId",lowid);
     
     emitRenderOrderChanged();
+}
+
+void SketcherGeneralWidget::on_checkBoxRedundantAutoconstraints_stateChanged(int state)
+{
+    ui->checkBoxRedundantAutoconstraints->onSave();
 }
 
 // ----------------------------------------------------------------------------
