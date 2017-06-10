@@ -39,9 +39,19 @@ namespace App
 {
 class DocumentObject;
 
+enum class LinkScope {
+    Local,
+    SubGroup,
+    Global
+};
 
-/** the general Link Poperty
- *  Main Purpose of this property is to Link Objects and Feautures in a document.
+/** The general Link Property
+ *  Main Purpose of this property is to Link Objects and Feautures in a document. Like all links this 
+ *  property is scope aware, meaning it does define which objects are allowed to be linked depending 
+ *  of the GeoFeatureGroup where it is in. 
+ * 
+ *  @note Links that invalid in respect to the scope this property is set to are not rejected. They 
+ *        are only detected to be invalid and prevent the feature from recomputing.
  */
 class AppExport PropertyLink : public Property
 {
@@ -93,9 +103,23 @@ public:
     }
     virtual const char* getEditorName(void) const
     { return "Gui::PropertyEditor::PropertyLinkItem"; }
+    
+    /**
+     * @brief Set the links scope
+     * Allows to define what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
+     * all SubGroups or to all object within the Glocal scope.
+     */
+    void setScope(LinkScope scope) {_pcScope = scope;};    
+    /**
+     * @brief Get the links scope
+     * Retreive what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
+     * all SubGroups or to all object within the Glocal scope.
+     */
+    LinkScope getScope() {return _pcScope;};
 
 protected:
     App::DocumentObject *_pcLink;
+    LinkScope            _pcScope = LinkScope::Local;
 };
 
 class AppExport PropertyLinkList : public PropertyLists
@@ -148,8 +172,22 @@ public:
 
     virtual unsigned int getMemSize(void) const;
 
+    /**
+     * @brief Set the links scope
+     * Allows to define what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
+     * all SubGroups or to all object within the Glocal scope.
+     */
+    void setScope(LinkScope scope) {_pcScope = scope;};    
+    /**
+     * @brief Get the links scope
+     * Retreive what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
+     * all SubGroups or to all object within the Glocal scope.
+     */
+    LinkScope getScope() {return _pcScope;};
+    
 private:
     std::vector<DocumentObject*> _lValueList;
+    LinkScope                    _pcScope = LinkScope::Local;
 };
 
 /** the Link Poperty with sub elements
@@ -212,11 +250,24 @@ public:
     virtual unsigned int getMemSize (void) const{
         return sizeof(App::DocumentObject *);
     }
+    
+    /**
+     * @brief Set the links scope
+     * Allows to define what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
+     * all SubGroups or to all object within the Glocal scope.
+     */
+    void setScope(LinkScope scope) {_pcScope = scope;};    
+    /**
+     * @brief Get the links scope
+     * Retreive what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
+     * all SubGroups or to all object within the Glocal scope.
+     */
+    LinkScope getScope() {return _pcScope;};
 
 protected:
-    App::DocumentObject *_pcLinkSub;
+    App::DocumentObject*     _pcLinkSub;
     std::vector<std::string> _cSubList;
-
+    LinkScope                _pcScope = LinkScope::Local;
 };
 
 class AppExport PropertyLinkSubList: public PropertyLists
@@ -285,10 +336,24 @@ public:
 
     virtual unsigned int getMemSize (void) const;
 
+    /**
+     * @brief Set the links scope
+     * Allows to define what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
+     * all SubGroups or to all object within the Glocal scope.
+     */
+    void setScope(LinkScope scope) {_pcScope = scope;};    
+    /**
+     * @brief Get the links scope
+     * Retreive what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
+     * all SubGroups or to all object within the Glocal scope.
+     */
+    LinkScope getScope() {return _pcScope;};
+    
 private:
     //FIXME: Do not make two independent lists because this will lead to some inconsistencies!
     std::vector<DocumentObject*> _lValueList;
     std::vector<std::string>     _lSubList;
+    LinkScope                    _pcScope = LinkScope::Local;
 };
 
 } // namespace App

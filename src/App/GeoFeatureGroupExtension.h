@@ -116,7 +116,7 @@ public:
     static bool areLinksValid(App::DocumentObject* obj);
 private:
     Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group);
-    static std::vector<App::DocumentObject*> getObjectsFromLinks(App::DocumentObject*);
+    static std::vector<App::DocumentObject*> getScopedObjectsFromLinks(App::DocumentObject*, LinkScope scope = LinkScope::Local);
 };
 
 typedef ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>> GeoFeatureGroupExtensionPython;
