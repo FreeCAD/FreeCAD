@@ -45,8 +45,19 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+class ToolControllerTemplate:
+    '''Attribute and sub element strings for template export/import.'''
+    Label        = 'label'
+    ToolNumber   = 'nr'
+    VertFeed     = 'vfeed'
+    HorizFeed    = 'hfeed'
+    VertRapid    = 'vrapid'
+    HorizRapid   = 'hrapid'
+    SpindleSpeed = 'speed'
+    SpindleDir   = 'dir'
+    Tool         = 'Tool'
 
-class ToolController():
+class ToolController:
     def __init__(self, obj, tool=1):
         PathLog.track('tool: {}'.format(tool))
 
@@ -64,6 +75,41 @@ class ToolController():
         obj.Proxy = self
         mode = 2
         obj.setEditorMode('Placement', mode)
+
+    def assignTemplate(self, obj, template):
+        '''assignTemplate(obj, xmlItem) ... extract properties from xmlItem and assign to receiver.'''
+        if template.get(ToolControllerTemplate.VertFeed):
+            obj.HorizFeed = template.get(ToolControllerTemplate.VertFeed)
+        if template.get(ToolControllerTemplate.HorizFeed):
+            obj.HorizFeed = template.get(ToolControllerTemplate.HorizFeed)
+        if template.get(ToolControllerTemplate.VertRapid):
+            obj.HorizRapid = template.get(ToolControllerTemplate.VertRapid)
+        if template.get(ToolControllerTemplate.HorizRapid):
+            obj.HorizRapid = template.get(ToolControllerTemplate.HorizRapid)
+        if template.get(ToolControllerTemplate.SpindleSpeed):
+            obj.SpindleSpeed = float(template.get(ToolControllerTemplate.SpindleSpeed))
+        if template.get(ToolControllerTemplate.SpindleDir):
+            obj.SpindleDir = template.get(ToolControllerTemplate.SpindleDir)
+        if template.get(ToolControllerTemplate.ToolNumber):
+            obj.ToolNumber = int(template.get(ToolControllerTemplate.ToolNumber))
+
+        for t in template.iter(ToolControllerTemplate.Tool):
+            tool = Path.Tool()
+            tool.fromTemplate(xml.tostring(t))
+            obj.Tool = tool
+
+    def templateAttrs(self, obj):
+        '''templateAttrs(obj) ... answer a dictionary with all properties that should be stored for a template.'''
+        attrs = {}
+        attrs[ToolControllerTemplate.Label]        = ("%s" % (obj.Label))
+        attrs[ToolControllerTemplate.ToolNumber]   = ("%d" % (obj.ToolNumber))
+        attrs[ToolControllerTemplate.VertFeed]     = ("%s" % (obj.VertFeed))
+        attrs[ToolControllerTemplate.HorizFeed]    = ("%s" % (obj.HorizFeed))
+        attrs[ToolControllerTemplate.VertRapid]    = ("%s" % (obj.VertRapid))
+        attrs[ToolControllerTemplate.HorizRapid]   = ("%s" % (obj.HorizRapid))
+        attrs[ToolControllerTemplate.SpindleSpeed] = ("%f" % (obj.SpindleSpeed))
+        attrs[ToolControllerTemplate.SpindleDir]   = ("%s" % (obj.SpindleDir))
+        return attrs
 
     def execute(self, obj):
         PathLog.track()
@@ -208,30 +254,12 @@ class CommandPathToolController:
     def FromTemplate(job, template, assignViewProvider=True):
         PathLog.track()
 
-        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", template.get('label'))
-        PathScripts.PathToolController.ToolController(obj)
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", template.get(ToolControllerTemplate.Label))
+        tc  = PathScripts.PathToolController.ToolController(obj)
         if assignViewProvider:
             PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
 
-        if template.get('vfeed'):
-            obj.HorizFeed = template.get('vfeed')
-        if template.get('hfeed'):
-            obj.HorizFeed = template.get('hfeed')
-        if template.get('vrapid'):
-            obj.HorizRapid = template.get('vrapid')
-        if template.get('hrapid'):
-            obj.HorizRapid = template.get('hrapid')
-        if template.get('speed'):
-            obj.SpindleSpeed = float(template.get('speed'))
-        if template.get('dir'):
-            obj.SpindleDir = template.get('dir')
-        if template.get('nr'):
-            obj.ToolNumber = int(template.get('nr'))
-
-        for t in template.iter('Tool'):
-            tool = Path.Tool()
-            tool.fromTemplate(xml.tostring(t))
-            obj.Tool = tool
+        tc.assignTemplate(obj, template)
 
         PathUtils.addToJob(obj, job.Name)
 

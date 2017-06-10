@@ -28,7 +28,7 @@ import os
 import PathScripts.PathLog as PathLog
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-PathLog.trackModule()
+#PathLog.trackModule()
 
 class PathPreferences:
     DefaultFilePath           = "DefaultFilePath"

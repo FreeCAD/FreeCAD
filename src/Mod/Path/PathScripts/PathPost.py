@@ -41,7 +41,7 @@ from PySide import QtCore, QtGui
 LOG_MODULE = PathLog.thisModule()
 
 PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-PathLog.trackModule(LOG_MODULE)
+#PathLog.trackModule(LOG_MODULE)
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):

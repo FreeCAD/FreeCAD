@@ -41,7 +41,7 @@ if sys.version_info.major >= 3:
     xrange = range
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-PathLog.trackModule()
+#PathLog.trackModule()
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -54,12 +54,14 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class JobTemplate:
+    '''Attribute and sub element strings for template export/import.'''
     Job = 'Job'
     PostProcessor = 'post'
     PostProcessorArgs = 'post_args'
     PostProcessorOutputFile = 'output'
     GeometryTolerance = 'tol'
     Description = 'desc'
+    ToolController = 'ToolController'
 
 class ObjectPathJob:
 
@@ -95,6 +97,8 @@ class ObjectPathJob:
         self.assignTemplate(obj, template)
 
     def assignTemplate(self, obj, template):
+        '''assignTemplate(obj, template) ... extract the properties from the given template file and assign to receiver.
+        This will also create any TCs stored in the template.'''
         if template:
             tree = xml.parse(template)
             for job in tree.getroot().iter(JobTemplate.Job):
@@ -110,10 +114,22 @@ class ObjectPathJob:
                     obj.PostProcessorOutputFile = job.get(JobTemplate.PostProcessorOutputFile)
                 if job.get(JobTemplate.Description):
                     obj.Description = job.get(JobTemplate.Description)
-            for tc in tree.getroot().iter('ToolController'):
+            for tc in tree.getroot().iter(JobTemplate.ToolController):
                 PathToolController.CommandPathToolController.FromTemplate(obj, tc)
         else:
             PathToolController.CommandPathToolController.Create(obj.Name)
+
+    def templateAttrs(self, obj):
+        '''templateAttrs(obj) ... answer a dictionary with all properties of the receiver that should be stored in a template file.'''
+        attrs = {}
+        if obj.PostProcessor:
+            attrs[JobTemplate.PostProcessor]           = obj.PostProcessor
+            attrs[JobTemplate.PostProcessorArgs]       = obj.PostProcessorArgs
+        if obj.PostProcessorOutputFile:
+            attrs[JobTemplate.PostProcessorOutputFile] = obj.PostProcessorOutputFile
+        attrs[JobTemplate.GeometryTolerance]           = str(obj.GeometryTolerance.Value)
+        if obj.Description:
+            attrs[JobTemplate.Description]             = obj.Description
 
     def __getstate__(self):
         return None
@@ -362,20 +378,29 @@ class DlgJobCreate:
         self.dialog.cbTemplate.setCurrentIndex(index)
 
     def templateFilesIn(self, path):
+        '''templateFilesIn(path) ... answer all file in the given directory which fit the job template naming convention.
+        PathJob template files are name job_*.xml'''
         PathLog.track(path)
         return glob.glob(path + '/job_*.xml')
 
     def getModel(self):
+        '''answer the base model selected for the job'''
         label = self.dialog.cbModel.currentText()
         return filter(lambda obj: obj.Label == label, FreeCAD.ActiveDocument.Objects)[0]
 
     def getTemplate(self):
+        '''answer the file name of the template to be assigned'''
         return self.dialog.cbTemplate.itemData(self.dialog.cbTemplate.currentIndex())
 
     def exec_(self):
         return self.dialog.exec_()
 
 class CommandJobCreate:
+    '''
+    Command used to creat a command.
+    When activated the command opens a dialog allowing the user to select a base object (has to be a solid)
+    and a template to be used for the initial creation.
+    '''
 
     def GetResources(self):
         return {'Pixmap': 'Path-Job',
@@ -389,11 +414,11 @@ class CommandJobCreate:
     def Activated(self):
         dialog = DlgJobCreate()
         if dialog.exec_() == 1:
-            self.Create(dialog.getModel(), dialog.getTemplate())
+            self.Execute(dialog.getModel(), dialog.getTemplate())
             FreeCAD.ActiveDocument.recompute()
 
     @classmethod
-    def Create(cls, base, template):
+    def Execute(cls, base, template):
         FreeCADGui.addModule('PathScripts.PathJob')
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
         snippet = '''App.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")
@@ -406,6 +431,12 @@ PathScripts.PathJob.ObjectPathJob(App.ActiveDocument.ActiveObject, App.ActiveDoc
             FreeCAD.ActiveDocument.abortTransaction()
 
 class CommandJobExportTemplate:
+    '''
+    Command to export a template of a given job.
+    Opens a dialog to select the file to store the template in. If the template is stored in Path's
+    file path (see preferences) and named in accordance with job_*.xml it will automatically be found
+    on Job creation and be available for selection.
+    '''
 
     def GetResources(self):
         return {'Pixmap': 'Path-Job',
@@ -422,41 +453,17 @@ class CommandJobExportTemplate:
                 "Path - Job Template",
                 PathPreferences.filePath(),
                 "job_*.xml")[0]
-        if foo:
+        if foo: 
             self.Execute(job, foo)
 
     @classmethod
     def Execute(cls, job, path):
         root = xml.Element('PathJobTemplate')
-
-        # first collect all attributes of a job to be stored
-        attrs = {}
-        if job.PostProcessor:
-            attrs[JobTemplate.PostProcessor]           = job.PostProcessor
-            attrs[JobTemplate.PostProcessorArgs]       = job.PostProcessorArgs
-        if job.PostProcessorOutputFile:
-            attrs[JobTemplate.PostProcessorOutputFile] = job.PostProcessorOutputFile
-        attrs[JobTemplate.GeometryTolerance]           = str(job.GeometryTolerance.Value)
-        if job.Description:
-            attrs[JobTemplate.Description]             = job.Description
-        xml.SubElement(root, JobTemplate.Job, attrs)
-
-        # then store all tool controllers
+        xml.SubElement(root, JobTemplate.Job, job.Proxy.templateAttrs(job))
         for obj in job.Group:
             if hasattr(obj, 'Tool') and hasattr(obj, 'SpindleDir'):
-                attrs = {}
-                attrs['label']  = ("%s" % (obj.Label))
-                attrs['nr']     = ("%d" % (obj.ToolNumber))
-                attrs['vfeed']  = ("%s" % (obj.VertFeed))
-                attrs['hfeed']  = ("%s" % (obj.HorizFeed))
-                attrs['vrapid'] = ("%s" % (obj.VertRapid))
-                attrs['hrapid'] = ("%s" % (obj.HorizRapid))
-                attrs['speed']  = ("%f" % (obj.SpindleSpeed))
-                attrs['dir']    = ("%s" % (obj.SpindleDir))
-
-                tc = xml.SubElement(root, 'ToolController', attrs)
+                tc = xml.SubElement(root, JobTemplate.ToolController, obj.Proxy.templateAttrs(obj))
                 tc.append(xml.fromstring(obj.Tool.Content))
-
         xml.ElementTree(root).write(path, pretty_print=True)
 
 if FreeCAD.GuiUp:
