@@ -23,9 +23,8 @@
 # ***************************************************************************
 
 import FreeCAD
-import os
 import glob
-
+import os
 import PathScripts.PathLog as PathLog
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
@@ -49,14 +48,15 @@ class PathPreferences:
         return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
 
     @classmethod
+    def pathScriptsSourcePath(cls):
+        return FreeCAD.getHomePath() + ("Mod/Path/PathScripts/")
+
+    @classmethod
     def allAvailablePostProcessors(cls):
-        path = FreeCAD.getHomePath() + ("Mod/Path/PathScripts/")
-        posts = glob.glob(path + '/*_post.py')
+        posts = glob.glob(cls.pathScriptsSourcePath() + '/*_post.py')
         allposts = [ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts]
 
-        grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-        path = grp.GetString("MacroPath", FreeCAD.getUserAppDataDir())
-        posts = glob.glob(path + '/*_post.py')
+        posts = glob.glob(cls.macroFilePath() + '/*_post.py')
 
         allposts.extend([ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts])
         allposts.sort()
@@ -95,9 +95,23 @@ class PathPreferences:
     def filePath(cls):
         path = cls.defaultFilePath()
         if not path:
-            grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-            path = grp.GetString("MacroPath", FreeCAD.getUserAppDataDir())
+            path = cls.macroFilePath()
         return path
+
+    @classmethod
+    def macroFilePath(cls):
+        grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
+        return grp.GetString("MacroPath", FreeCAD.getUserAppDataDir())
+
+    @classmethod
+    def searchPaths(cls):
+        paths = []
+        p = cls.defaultFilePath()
+        if p:
+            paths.append(p)
+        paths.append(cls.macroFilePath())
+        paths.append(cls.pathScriptsSourcePath())
+        return paths
 
     @classmethod
     def defaultJobTemplate(cls):

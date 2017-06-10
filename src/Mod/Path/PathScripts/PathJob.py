@@ -27,7 +27,9 @@ import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathToolController as PathToolController
+import glob
 import lxml.etree as xml
+import os
 import sys
 
 from PySide import QtCore, QtGui
@@ -38,8 +40,8 @@ from PathScripts.PathPreferences import PathPreferences
 if sys.version_info.major >= 3:
     xrange = range
 
-LOG_MODULE = PathLog.thisModule()
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.trackModule()
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -314,12 +316,40 @@ class DlgJobCreate:
             self.dialog.cbModel.addItem(solid.Label)
         self.dialog.cbModel.setCurrentIndex(index)
 
+        templateFiles = []
+        for path in PathPreferences.searchPaths():
+            templateFiles.extend(self.templateFilesIn(path))
+
+        template = {}
+        for tFile in templateFiles:
+            name = os.path.split(os.path.splitext(tFile)[0])[1][4:]
+            if name in template:
+                basename = name
+                i = 0
+                while name in template:
+                    i = i + 1
+                    name = basename + " (%s)" % i
+            PathLog.track(name, tFile)
+            template[name] = tFile
+        selectTemplate = PathPreferences.defaultJobTemplate()
+        index = 0
+        self.dialog.cbTemplate.addItem('', '')
+        for name in sorted(template.keys()):
+            if template[name] == selectTemplate:
+                index = self.dialog.cbTemplate.count()
+            self.dialog.cbTemplate.addItem(name, template[name])
+        self.dialog.cbTemplate.setCurrentIndex(index)
+
+    def templateFilesIn(self, path):
+        PathLog.track(path)
+        return glob.glob(path + '/job_*.xml')
+
     def getModel(self):
         label = self.dialog.cbModel.currentText()
         return filter(lambda obj: obj.Label == label, FreeCAD.ActiveDocument.Objects)[0]
 
     def getTemplate(self):
-        return self.dialog.cbTemplate.currentText()
+        return self.dialog.cbTemplate.itemData(self.dialog.cbTemplate.currentIndex())
 
     def exec_(self):
         return self.dialog.exec_()
