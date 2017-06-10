@@ -77,6 +77,9 @@
 #include <HLRBRep_Algo.hxx>
 #include <HLRBRep_HLRToShape.hxx>
 #include <HLRAlgo_Projector.hxx>
+#include <ShapeFix_ShapeTolerance.hxx>
+#include <ShapeExtend_WireData.hxx>
+#include <ShapeFix_Wire.hxx>
 
 #include <Base/Exception.h>
 #include <Base/Tools.h>
@@ -103,6 +106,12 @@ BOOST_GEOMETRY_REGISTER_POINT_3D_GET_SET(
 #define AREA_TRACE FC_TRACE
 #define AREA_XYZ FC_XYZ
 #define AREA_XY AREA_XY
+
+#ifdef FC_DEBUG
+#   define AREA_DBG FC_WARN
+#else
+#   define AREA_DBG(...) do{}while(0)
+#endif
 
 FC_LOG_LEVEL_INIT("Path.Area",true,true)
 
@@ -737,6 +746,11 @@ struct WireJoiner {
     // edges (added by calling add() ) as possible. One edge may be included
     // in more than one closed wires if it connects to more than one edges.
     int findClosedWires() {
+        // It seems OCC projector sometimes mess up the tolerance of edges
+        // which are supposed to be connected. So use a lesser preceision
+        // below, and call makeCleanWire to fix the tolerance
+        const double tol = 1e-10;
+
         std::map<int,TopoDS_Edge> edgesToVisit;
         int count = 0;
         for(const auto &info : edges) {
@@ -745,7 +759,7 @@ struct WireJoiner {
 #else
             gp_Pnt p1,p2;
             getEndPoints(info.edge,p1,p2);
-            if(p1.SquareDistance(p2)<Precision::SquareConfusion())
+            if(p1.SquareDistance(p2)<tol)
 #endif
             {
                 builder.Add(comp,BRepBuilderAPI_MakeWire(info.edge).Wire());
@@ -766,14 +780,17 @@ struct WireJoiner {
             bool skip_me = true;
             stack.clear();
 
+            // pstart and pend is the start and end vertex of the current wire
             while(true) {
+                // push a new stack entry
                 stack.emplace_back();
                 auto &r = stack.back();
 
+                // this loop is to find all edges connected to pend, and save them into stack.back()
                 for(auto vit=vmap.qbegin(bgi::nearest(pend,INT_MAX));
                     vit!=vmap.qend();++vit)
                 {
-                    if(vit->pt().SquareDistance(pend) > Precision::SquareConfusion())
+                    if(vit->pt().SquareDistance(pend) > tol)
                         break;
 
                     auto &info = *vit->it;
@@ -793,9 +810,12 @@ struct WireJoiner {
                 while(stack.size()) {
                     auto &r = stack.back();
                     if(r.idx<(int)r.ret.size()) {
+                        // now pick one edge from stack.back(), connect it to
+                        // pend, then extend pend
                         pend = r.ret[r.idx].ptOther();
                         break;
                     }
+                    // if no edge left in stack.back(), then pop it, and try again
                     for(auto &v : r.ret)
                         --v.it->iteration;
                     stack.pop_back();
@@ -803,14 +823,18 @@ struct WireJoiner {
                         ++stack.back().idx;
                 }
                 if(stack.empty()) {
+                    // If stack is empty, it means this wire is open. Try a new
+                    // starting edge
                     ++skips;
                     break;
                 }
-                if(pstart.SquareDistance(pend) > Precision::SquareConfusion()) 
+                if(pstart.SquareDistance(pend) > tol) {
+                    // check if the wire is closed
                     continue;
+                }
 
-                BRepBuilderAPI_MakeWire mkWire;
-                mkWire.Add(e);
+                Handle(ShapeExtend_WireData) wireData = new ShapeExtend_WireData();
+                wireData->Add(e);
                 for(auto &r : stack) {
                     const auto &v = r.ret[r.idx];
                     auto &info = *v.it;
@@ -821,11 +845,14 @@ struct WireJoiner {
                             edgesToVisit.erase(it);
                     }
                     if(v.start)
-                        mkWire.Add(info.edge);
+                        wireData->Add(info.edge);
                     else
-                        mkWire.Add(TopoDS::Edge(info.edge.Reversed()));
+                        wireData->Add(TopoDS::Edge(info.edge.Reversed()));
                 }
-                TopoDS_Wire wire = mkWire.Wire();
+                // TechDraw even uses 0.1 as tolerance. Really? Why?
+                TopoDS_Wire wire = makeCleanWire(wireData,0.01);
+                if(!BRep_Tool::IsClosed(wire)) 
+                    throw Base::RuntimeError("Area: failed to close projection wire");
                 builder.Add(comp,wire);
                 ++count;
                 break;
@@ -834,6 +861,33 @@ struct WireJoiner {
         AREA_TRACE("found " << count << " closed wires, skipped " << skips);
         return skips;
     }
+
+    //! make a clean wire with sorted, oriented, connected, etc edges
+    // Copied from TechDraw::EdgeWalker
+    static TopoDS_Wire makeCleanWire(Handle(ShapeExtend_WireData) wireData, double tol) {
+        TopoDS_Wire result;
+        BRepBuilderAPI_MakeWire mkWire;
+        ShapeFix_ShapeTolerance sTol;
+
+        Handle(ShapeFix_Wire) fixer = new ShapeFix_Wire;
+        fixer->Load(wireData);
+        fixer->Perform();
+        fixer->FixReorder();
+        fixer->SetMaxTolerance(tol);
+        fixer->ClosedWireMode() = Standard_True;
+        fixer->FixConnected(Precision::Confusion());
+        fixer->FixClosed(Precision::Confusion());
+
+        for (int i = 1; i <= wireData->NbEdges(); i ++) {
+            TopoDS_Edge edge = fixer->WireData()->Edge(i);
+            sTol.SetTolerance(edge, tol, TopAbs_VERTEX);
+            mkWire.Add(edge);
+        }
+
+        result = mkWire.Wire();
+        return result;
+    }
+
 };
 
 void Area::explode(const TopoDS_Shape &shape) {
@@ -866,16 +920,15 @@ void Area::explode(const TopoDS_Shape &shape) {
 
 // enable this to show intermediate shapes during projection in FC, for
 // debugging.
-#if 0
+#if 1
 static inline void showShape(const TopoDS_Shape &shape, const char *name) {
-    App::Document *pcDoc = App::GetApplication().getActiveDocument(); 	 
-    if (!pcDoc)
-        pcDoc = App::GetApplication().newDocument();
-    Part::Feature *pcFeature = (Part::Feature *)pcDoc->addObject("Part::Feature", name);
-    // copy the data
-    //TopoShape* shape = new MeshObject(*pShape->getTopoShapeObjectPtr());
-    pcFeature->Shape.setValue(shape);
-    //pcDoc->recompute();
+    if(FC_LOG_INSTANCE.level()>FC_LOGLEVEL_TRACE) {
+        App::Document *pcDoc = App::GetApplication().getActiveDocument(); 	 
+        if (!pcDoc)
+            pcDoc = App::GetApplication().newDocument();
+        Part::Feature *pcFeature = (Part::Feature *)pcDoc->addObject("Part::Feature", name);
+        pcFeature->Shape.setValue(shape);
+    }
 }
 #else
 #define showShape(s,name) do{(void)s;}while(0)
