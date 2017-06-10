@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import ArchPanel
 import Draft
 import FreeCAD
 import Path
@@ -347,7 +348,7 @@ class DlgJobCreate:
         else:
             selected = None
         index = 0
-        for solid in sorted(filter(lambda obj: hasattr(obj, 'Shape') and obj.Shape.isClosed(), FreeCAD.ActiveDocument.Objects), key=lambda o: o.Label):
+        for solid in sorted(filter(lambda obj: (hasattr(obj, 'Shape') and obj.Shape.isClosed()) or (hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet)), FreeCAD.ActiveDocument.Objects), key=lambda o: o.Label):
             if solid.Label == selected:
                 index = self.dialog.cbModel.count()
             self.dialog.cbModel.addItem(solid.Label)

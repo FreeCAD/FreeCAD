@@ -39,6 +39,9 @@
      <property name="enabled">
       <bool>true</bool>
      </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a template to be used for the job.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.xml and place it in the macro or the path directory (see preferences) in order to be selectable from this list.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that the result is a plain xml file and can be edited by hand. Any properties not specified in the template will be set to their default value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
     </widget>
    </item>
    <item row="3" column="0">
