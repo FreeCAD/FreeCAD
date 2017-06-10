@@ -363,13 +363,15 @@ class CommandJobExportTemplate:
 
     def Activated(self):
         job = FreeCADGui.Selection.getSelection()[0]
-        self.Execute(job)
-        FreeCAD.ActiveDocument.recompute()
+        foo = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(),
+                "Path - Job Template",
+                PathPreferences.filePath(),
+                "job_*.xml")[0]
+        if foo:
+            self.Execute(job, foo)
 
     @classmethod
-    def Execute(cls, job):
-        PathLog.error("Export Job template")
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Export Job template"))
+    def Execute(cls, job, path):
         root = xml.Element('PathJobConfiguration')
         for obj in job.Group:
             if hasattr(obj, 'Tool') and hasattr(obj, 'SpindleDir'):
@@ -385,9 +387,7 @@ class CommandJobExportTemplate:
 
                 tc = xml.SubElement(root, 'ToolController', attrs)
                 tc.append(xml.fromstring(obj.Tool.Content))
-
-        xml.ElementTree(root).write("./%s.xml" % job.Label, pretty_print=True)
-        FreeCAD.ActiveDocument.commitTransaction()
+        xml.ElementTree(root).write(path, pretty_print=True)
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
