@@ -333,6 +333,10 @@ public:
     //@}
     
 protected:
+    /** Helper method to check that the node is valid, i.e. it must not cause
+     * and infinite recursion.
+     */
+    bool checkRecursion(SoNode*);
     /** Helper method to get picked entities while editing.
      * It's in the responsibility of the caller to delete the returned instance.
      */

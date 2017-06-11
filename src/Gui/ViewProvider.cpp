@@ -433,6 +433,68 @@ PyObject* ViewProvider::getPyObject()
     return pyViewObject;
 }
 
+#include <boost/graph/topological_sort.hpp>
+
+namespace Gui {
+typedef boost::adjacency_list <
+        boost::vecS,           // class OutEdgeListS  : a Sequence or an AssociativeContainer
+        boost::vecS,           // class VertexListS   : a Sequence or a RandomAccessContainer
+        boost::directedS,      // class DirectedS     : This is a directed graph
+        boost::no_property,    // class VertexProperty:
+        boost::no_property,    // class EdgeProperty:
+        boost::no_property,    // class GraphProperty:
+        boost::listS           // class EdgeListS:
+> Graph;
+typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
+typedef boost::graph_traits<Graph>::edge_descriptor Edge;
+
+void addNodes(Graph& graph, std::map<SoNode*, Vertex>& vertexNodeMap, SoNode* node)
+{
+    if (node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
+        SoGroup* group = static_cast<SoGroup*>(node);
+        Vertex groupV = vertexNodeMap[group];
+
+        for (int i=0; i<group->getNumChildren(); i++) {
+            SoNode* child = group->getChild(i);
+            auto it = vertexNodeMap.find(child);
+
+            // the child node is not yet added to the map
+            if (it == vertexNodeMap.end()) {
+                Vertex childV = add_vertex(graph);
+                vertexNodeMap[child] = childV;
+                add_edge(groupV, childV, graph);
+                addNodes(graph, vertexNodeMap, child);
+            }
+            // the child is already there, only add the edge then
+            else {
+                add_edge(groupV, it->second, graph);
+            }
+        }
+    }
+}
+}
+
+bool ViewProvider::checkRecursion(SoNode* node)
+{
+    if (node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
+        std::list<Vertex> make_order;
+        Graph graph;
+        std::map<SoNode*, Vertex> vertexNodeMap;
+        Vertex groupV = add_vertex(graph);
+        vertexNodeMap[node] = groupV;
+        addNodes(graph, vertexNodeMap, node);
+
+        try {
+            boost::topological_sort(graph, std::front_inserter(make_order));
+        }
+        catch (const std::exception&) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 SoPickedPoint* ViewProvider::getPointOnRay(const SbVec2s& pos, const View3DInventorViewer* viewer) const
 {
     //first get the path to this node and calculate the current transformation
