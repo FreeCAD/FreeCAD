@@ -81,13 +81,6 @@ SET(PathScripts_SRCS
     PathScripts/smoothie_post.py
 )
 
-SET(PathScripts_NC_SRCS
-    PathScripts/nc/nc.py
-    PathScripts/nc/iso.py
-    PathScripts/nc/__init__.py
-    PathScripts/nc/format.py
-    PathScripts/nc/iso_codes.py
-)
 
 SET(PathTests_SRCS
     PathTests/PathTestUtils.py
@@ -127,13 +120,6 @@ INSTALL(
         ${PathScripts_SRCS}
     DESTINATION
         Mod/Path/PathScripts
-)
-
-INSTALL(
-    FILES
-        ${PathScripts_NC_SRCS}
-    DESTINATION
-        Mod/Path/PathScripts/nc
 )
 
 INSTALL(
