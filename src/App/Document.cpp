@@ -2002,7 +2002,7 @@ int Document::recompute()
 
         signalRecomputed(*this);
 
-        return objects;
+        return -1; // the return code is actually only use for testing purposes. If we have a non-DAG, then we have a problem, so returning -1 makes more sense than returning a number of recomputed objects
 
     }
     catch (const std::exception& e) {
