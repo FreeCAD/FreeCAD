@@ -105,7 +105,7 @@ public:
                         const std::vector<TaskFeaturePick::featureStatus> &status,
                         boost::function<bool (std::vector<App::DocumentObject*>)> acceptfunc,
                         boost::function<void (std::vector<App::DocumentObject*>)> workfunc,
-                        boost::function<void (void)> abortfunc = NULL );
+                        boost::function<void (void)> abortfunc = 0 );
     ~TaskDlgFeaturePick();
 
 public:
