@@ -39,7 +39,7 @@ if sys.version_info.major >= 3:
 
 LOG_MODULE = 'PathDrilling'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-PathLog.trackModule('PathDrilling')
+#PathLog.trackModule('PathDrilling')
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
