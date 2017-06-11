@@ -38,7 +38,7 @@ if FreeCAD.GuiUp:
 
 LOG_MODULE = 'PathPocket'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-#PathLog.trackModule('PathPocket')
+PathLog.trackModule('PathPocket')
 FreeCAD.setLogLevel('Path.Area', 0)
 
 
@@ -172,7 +172,7 @@ class ObjectPocket:
 
         stepover = (self.radius * 2) * (float(obj.StepOver)/100)
 
-        pocketparams = {'Fill': 0,
+        pocketparams = {'Fill': 2,
                         'Coplanar': 0,
                         'PocketMode': 1,
                         'SectionCount': -1,
@@ -249,12 +249,17 @@ class ObjectPocket:
                 PathLog.debug("Base item: {}".format(b))
                 for sub in b[1]:
                     if "Face" in sub:
-                        shape = getattr(b[0].Shape, sub)
+                        shape = Part.makeCompound([getattr(b[0].Shape, sub)])
+                        #shape = getattr(b[0].Shape, sub)
                     else:
                         edges = [getattr(b[0].Shape, sub) for sub in b[1]]
                         shape = Part.makeFace(edges, 'Part::FaceMakerSimple')
 
                     env = PathUtils.getEnvelope(baseobject.Shape, subshape=shape, stockheight=obj.StartDepth)
+                    if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
+                        removalshape=FreeCAD.ActiveDocument.addObject("Part::Feature","removalshape")
+                        removalshape.Shape = env.cut(baseobject.Shape)
+
                     try:
                         commandlist.extend(self._buildPathArea(obj, env.cut(baseobject.Shape)).Commands)
                     except Exception as e:

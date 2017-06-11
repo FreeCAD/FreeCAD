@@ -260,18 +260,16 @@ class ObjectProfile:
                         FreeCAD.Console.PrintWarning ("found a base object which is not a face.  Can't continue.")
                         return
 
-            if obj.processHoles:
-                for wire in holes:
-                    f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                    drillable = PathUtils.isDrillable(baseobject.Shape, wire)
-                    if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
-
-                        env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
-                        try:
-                            commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=True, start=None).Commands)
-                        except Exception as e:
-                            FreeCAD.Console.PrintError(e)
-                            FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+            for wire in holes:
+                f = Part.makeFace(wire, 'Part::FaceMakerSimple')
+                drillable = PathUtils.isDrillable(baseobject.Shape, wire)
+                if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
+                    env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
+                    try:
+                        commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=True, start=None).Commands)
+                    except Exception as e:
+                        FreeCAD.Console.PrintError(e)
+                        FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
             if len(faces) > 0:
                 profileshape = Part.makeCompound(faces)
