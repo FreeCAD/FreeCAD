@@ -36,7 +36,7 @@ App = FreeCAD
 
 class PartDesignPadTestCases(unittest.TestCase):
     def setUp(self):
-        self.Doc = FreeCAD.newDocument("PartDesignTest")
+        self.Doc = FreeCAD.newDocument("PartDesignTestPad")
 
     def testBoxCase(self):
         self.PadSketch = self.Doc.addObject('Sketcher::SketchObject','SketchPad')
@@ -49,12 +49,12 @@ class PartDesignPadTestCases(unittest.TestCase):
 
     def tearDown(self):
         #closing doc
-        FreeCAD.closeDocument("PartDesignTest")
+        FreeCAD.closeDocument("PartDesignTestPad")
         # print ("omit closing document for debugging")
 
 class PartDesignRevolveTestCases(unittest.TestCase):
     def setUp(self):
-        self.Doc = FreeCAD.newDocument("PartDesignTest")
+        self.Doc = FreeCAD.newDocument("PartDesignTestRevolve")
 
     def testRevolveFace(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -92,39 +92,32 @@ class PartDesignRevolveTestCases(unittest.TestCase):
 
     def tearDown(self):
         #closing doc
-        FreeCAD.closeDocument("PartDesignTest")
+        FreeCAD.closeDocument("PartDesignTestRevolve")
         # print ("omit closing document for debugging")
 
 class PartDesignMirroredTestCases(unittest.TestCase):
     def setUp(self):
-        self.Doc = FreeCAD.newDocument("PartDesignTest")
+        self.Doc = FreeCAD.newDocument("PartDesignTestMirrored")
 
-    def testMirroredCase(self):
+    def testMirroredSketchCase(self):
         """
-        Creates a unit cube at the origin and mirrors it about the Y axis.
-        This operation should create a rectangular prism with volume 2.
+        Creates a unit cube cornered at the origin and mirrors it about the Y axis.
+        This operation should create a rectangular prism with volume 2.0.
 
-        The operation is currently broken; this test is inverted:
-            self.failUnless(self.Mirrored.Shape.Volume < 2.0)
-        Change the final line to " .. > 1.0" and remove this notice.
+        The precision is currently broken and the volume created
+        is 1.9999999999999993. so this test will fail if code is
+        introduced to change it. If you've submitted code which fixes
+        the precision and causes this bug to fail, please remove this
+        message and update this test as well as testMirroredPrimitiveCase.
         """
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.Rect = self.Doc.addObject('Sketcher::SketchObject','Rect')
-        try:
-            self.Body.addObject(self.Rect)
-        except AttributeError:
-            pass
+        self.Body.addObject(self.Rect)
         geoList = []
-        try:
-            geoList.append(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(1, 0, 0)))
-            geoList.append(Part.LineSegment(App.Vector(1, 0, 0), App.Vector(1, 1, 0)))
-            geoList.append(Part.LineSegment(App.Vector(1, 1, 0), App.Vector(0, 1, 0)))
-            geoList.append(Part.LineSegment(App.Vector(0, 1, 0), App.Vector(0, 0, 0)))
-        except AttributeError:
-            geoList.append(Part.Line(App.Vector(0, 0, 0), App.Vector(1, 0, 0)))
-            geoList.append(Part.Line(App.Vector(1, 0, 0), App.Vector(1, 1, 0)))
-            geoList.append(Part.Line(App.Vector(1, 1, 0), App.Vector(0, 1, 0)))
-            geoList.append(Part.Line(App.Vector(0, 1, 0), App.Vector(0, 0, 0)))
+        geoList.append(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(1, 0, 0)))
+        geoList.append(Part.LineSegment(App.Vector(1, 0, 0), App.Vector(1, 1, 0)))
+        geoList.append(Part.LineSegment(App.Vector(1, 1, 0), App.Vector(0, 1, 0)))
+        geoList.append(Part.LineSegment(App.Vector(0, 1, 0), App.Vector(0, 0, 0)))
         self.Rect.addGeometry(geoList,False)
         conList = []
         conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
@@ -143,27 +136,61 @@ class PartDesignMirroredTestCases(unittest.TestCase):
         self.Rect.setDatum(10,App.Units.Quantity('1.0 mm'))
         self.Doc.recompute()
         self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
-        try:
-            self.Pad.Profile = self.Rect
-        except AttributeError:
-            self.Pad.Sketch = self.Rect
+        self.Pad.Profile = self.Rect
         self.Pad.Length = 1
-        try:
-            self.Body.addObject(self.Pad)
-        except AttributeError:
-            pass
+        self.Body.addObject(self.Pad)
         self.Doc.recompute()
         self.Mirrored = self.Doc.addObject("PartDesign::Mirrored","Mirrored")
         self.Mirrored.Originals = [self.Pad]
         self.Mirrored.MirrorPlane = (self.Rect, ["V_Axis"])
-        try:
-            self.Body.addObject(self.Mirrored)
-        except AttributeError:
-            pass
+        self.Body.addObject(self.Mirrored)
         self.Doc.recompute()
-        self.failUnless(self.Mirrored.Shape.Volume < 2.0)
+        self.failUnless(self.Mirrored.Shape.Volume == 1.9999999999999993)
+
+    def testMirroredOffsetFailureCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.Rect = self.Doc.addObject('Sketcher::SketchObject','Rect')
+        self.Body.addObject(self.Rect)
+        geoList = []
+        geoList.append(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(1, 0, 0)))
+        geoList.append(Part.LineSegment(App.Vector(1, 0, 0), App.Vector(1, 1, 0)))
+        geoList.append(Part.LineSegment(App.Vector(1, 1, 0), App.Vector(0, 1, 0)))
+        geoList.append(Part.LineSegment(App.Vector(0, 1, 0), App.Vector(0, 0, 0)))
+        self.Rect.addGeometry(geoList,False)
+        conList = []
+
+        conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
+        conList.append(Sketcher.Constraint('Coincident',1,2,2,1))
+        conList.append(Sketcher.Constraint('Coincident',2,2,3,1))
+        conList.append(Sketcher.Constraint('Coincident',3,2,0,1))
+        conList.append(Sketcher.Constraint('Horizontal',0))
+        conList.append(Sketcher.Constraint('Horizontal',2))
+        conList.append(Sketcher.Constraint('Vertical',1))
+        conList.append(Sketcher.Constraint('Vertical',3))
+        self.Rect.addConstraint(conList)
+
+        self.Rect.addConstraint(Sketcher.Constraint('PointOnObject',0,1,-2)) 
+        self.Rect.addConstraint(Sketcher.Constraint('Equal',3,0)) 
+        self.Rect.addConstraint(Sketcher.Constraint('DistanceX',0,1,0,2,1))
+        self.Rect.setDatum(10,App.Units.Quantity('1.0 mm'))
+        self.Rect.addConstraint(Sketcher.Constraint('DistanceY',-1,1,0,1,1)) 
+        self.Rect.setDatum(11,App.Units.Quantity('1.0 mm'))
+        self.Doc.recompute()
+
+        self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
+        self.Pad.Profile = self.Rect
+        self.Pad.Length = 1
+        self.Body.addObject(self.Pad)
+        self.Doc.recompute()
+
+        self.Mirrored = self.Doc.addObject("PartDesign::Mirrored","Mirrored")
+        self.Mirrored.Originals = [self.Pad]
+        self.Mirrored.MirrorPlane = (self.Rect, ["H_Axis"])
+        self.Body.addObject(self.Mirrored)
+        self.Doc.recompute()
+        self.failUnless(self.Mirrored.State == ["Invalid"])
 
     def tearDown(self):
         #closing doc
-        FreeCAD.closeDocument("PartDesignTest")
-        # print ("omit closing document for debugging")
+        FreeCAD.closeDocument("PartDesignTestMirrored")
+        #print ("omit closing document for debugging")
