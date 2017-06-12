@@ -147,6 +147,28 @@ class PartDesignMirroredTestCases(unittest.TestCase):
         self.Doc.recompute()
         self.failUnless(self.Mirrored.Shape.Volume == 1.9999999999999993)
 
+    def testMirroredPrimitiveCase(self):
+        """
+        Tests the same mirroring scenario as in the sketch case,
+        but is designed to ensure the same end result occurs with
+        a different base object.
+        """
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+
+        self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        self.Box.Length=1
+        self.Box.Width=1
+        self.Box.Height=1
+        self.Body.addObject(self.Box)
+        self.Doc.recompute()
+
+        self.Mirrored = self.Doc.addObject("PartDesign::Mirrored", "Mirrored")
+        self.Mirrored.Originals = [self.Box]
+        self.Mirrored.MirrorPlane = (self.Doc.XY_Plane, [""])
+        self.Body.addObject(self.Mirrored)
+        self.Doc.recompute()
+        self.failUnless(self.Mirrored.Shape.Volume == 1.9999999999999993)
+
     def testMirroredOffsetFailureCase(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.Rect = self.Doc.addObject('Sketcher::SketchObject','Rect')
