@@ -604,7 +604,7 @@ class CommandPathDressupRampEntry:
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction(translate("Create RampEntry Dress-up"))
-        FreeCADGui.addModule("PathScripts.PathDressUpRampEntry")
+        FreeCADGui.addModule("PathScripts.PathDressupRampEntry")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "RampEntryDressup")')
         FreeCADGui.doCommand('dbo = PathScripts.PathDressupRampEntry.ObjectDressup(obj)')
