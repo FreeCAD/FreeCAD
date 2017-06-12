@@ -29,6 +29,7 @@ SET(PathScripts_SRCS
     PathScripts/PathDressupDogbone.py
     PathScripts/PathDressupDragknife.py
     PathScripts/PathDressupHoldingTags.py
+    PathScripts/PathDressupRampEntry.py
     PathScripts/PathDrilling.py
     PathScripts/PathEngrave.py
     PathScripts/PathFacePocket.py
@@ -141,4 +142,3 @@ INSTALL(
     DESTINATION
         Mod/Path/PathTests
 )
-
