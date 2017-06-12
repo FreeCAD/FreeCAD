@@ -85,6 +85,10 @@ class ObjectProfile:
         obj.addProperty("App::PropertyBool", "processPerimeter", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the outline"))
         obj.addProperty("App::PropertyBool", "processCircles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile round holes"))
 
+        # Debug Parameters
+        obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.setEditorMode('AreaParams', 2)  # hide
+
         obj.Proxy = self
 
     def __getstate__(self):
@@ -164,6 +168,8 @@ class ObjectProfile:
         profileparams['Offset'] = offsetval
 
         profile.setParams(**profileparams)
+        obj.AreaParams = str(profile.getParams())
+        
         # PathLog.debug("About to profile with params: {}".format(profileparams))
         PathLog.debug("About to profile with params: {}".format(profile.getParams()))
 

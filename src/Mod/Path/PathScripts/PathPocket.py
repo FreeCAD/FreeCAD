@@ -81,6 +81,10 @@ class ObjectPocket:
         obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
         obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
 
+        # Debug Parameters
+        obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.setEditorMode('AreaParams', 2)  # hide
+
         obj.Proxy = self
 
     def onChanged(self, obj, prop):
@@ -185,6 +189,7 @@ class ObjectPocket:
         pocketparams['PocketMode'] = Pattern.index(obj.OffsetPattern) + 1
 
         pocket.setParams(**pocketparams)
+        obj.AreaParams = str(pocket.getParams())
         PathLog.debug("Pocketing with params: {}".format(pocket.getParams()))
 
         depthparams = depth_params(
