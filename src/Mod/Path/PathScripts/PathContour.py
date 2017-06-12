@@ -83,6 +83,10 @@ class ObjectContour:
 
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final Contour- good for roughing toolpath"))
 
+        # Debug Parameters
+        obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.setEditorMode('AreaParams', 2)  # hide
+
         obj.Proxy = self
         self.endVector = None
 
@@ -147,6 +151,8 @@ class ObjectContour:
 
         PathLog.debug('depths: {}'.format(depthparams.get_depths()))
         profile.setParams(**profileparams)
+        obj.AreaParams = str(profile.getParams())
+
         PathLog.debug("Contour with params: {}".format(profile.getParams()))
         sections = profile.makeSections(mode=0, project=True, heights=depthparams.get_depths())
         shapelist = [sec.getShape() for sec in sections]

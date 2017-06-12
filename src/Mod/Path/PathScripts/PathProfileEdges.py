@@ -84,6 +84,10 @@ class ObjectProfile:
 
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final profile- good for roughing toolpath"))
 
+        # Debug Parameters
+        obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.setEditorMode('AreaParams', 2)  # hide
+
         obj.Proxy = self
 
     def __getstate__(self):
@@ -155,6 +159,8 @@ class ObjectProfile:
 
         profile.setParams(**profileparams)
         # PathLog.debug("About to profile with params: {}".format(profileparams))
+        obj.AreaParams = str(profile.getParams())
+
         PathLog.debug("About to profile with params: {}".format(profile.getParams()))
 
         depthparams = depth_params(
