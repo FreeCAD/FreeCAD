@@ -319,12 +319,12 @@ Base::Vector3d DrawUtil::toR3(const gp_Ax2 fromSystem, const Base::Vector3d from
 }
 
 //! check if two vectors are parallel
-bool DrawUtil::checkParallel(const Base::Vector3d v1, Base::Vector3d v2)
+bool DrawUtil::checkParallel(const Base::Vector3d v1, Base::Vector3d v2, double tolerance)
 {
     bool result = false;
     double dot = fabs(v1.Dot(v2));
     double mag = v1.Length() * v2.Length();
-    if (DrawUtil::fpCompare(dot,mag)) {
+    if (DrawUtil::fpCompare(dot,mag,tolerance)) {
         result = true;
     }
     return result;
