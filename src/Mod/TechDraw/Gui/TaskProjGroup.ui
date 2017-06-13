@@ -309,10 +309,10 @@
           <item row="2" column="2">
            <widget class="QPushButton" name="but3D">
             <property name="enabled">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="toolTip">
-             <string>Try to match Primary Direction to 3D view</string>
+             <string>This function is temporarily unavailable.</string>
             </property>
             <property name="text">
              <string>Match 3D</string>

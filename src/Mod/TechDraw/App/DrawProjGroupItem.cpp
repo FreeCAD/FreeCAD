@@ -62,8 +62,8 @@ DrawProjGroupItem::DrawProjGroupItem(void)
     ADD_PROPERTY_TYPE(RotationVector ,(1.0,0.0,0.0)    ,"Base",App::Prop_None,"Controls rotation of item in view. ");
 
     //projection group controls these
-    Direction.setStatus(App::Property::ReadOnly,true);
-    RotationVector.setStatus(App::Property::ReadOnly,true);
+//    Direction.setStatus(App::Property::ReadOnly,true);
+//    RotationVector.setStatus(App::Property::ReadOnly,true);
     Scale.setStatus(App::Property::ReadOnly,true);
     ScaleType.setStatus(App::Property::ReadOnly,true);
 }

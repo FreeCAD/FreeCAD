@@ -63,6 +63,8 @@ public:
     App::PropertyFloat spacingY;
 
     App::PropertyLink Anchor; /// Anchor Element to align views to
+    App::PropertyVectorList  CubeDirs;
+    App::PropertyVectorList  CubeRotations;
 
     Base::BoundBox3d getBoundingBox() const;
     double calculateAutomaticScale() const;
@@ -95,7 +97,6 @@ public:
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
-    virtual void onDocumentRestored() override;
     virtual App::DocumentObjectExecReturn *execute(void) override;
     //@}
 
@@ -118,6 +119,7 @@ public:
     TechDraw::DrawProjGroupItem* getAnchor(void);
 
     void updateSecondaryDirs();
+    void resetCube(void);
 
     void rotateRight(void);
     void rotateLeft(void);
@@ -126,9 +128,6 @@ public:
     void spinCW(void);
     void spinCCW(void);
     
-    void setTable(Base::Vector3d dir, Base::Vector3d rot);
-    void setConfig(std::string cfg);
-    void resetTable(void);
     void dumpISO(char * title);
 
 protected:
@@ -166,13 +165,10 @@ protected:
     /// Returns pointer to our page, or NULL if it couldn't be located
     TechDraw::DrawPage * getPage(void) const;
     void updateChildren(double scale);
+    void setPropsFromCube(void);
+    void setCubeFromProps(void);
     
-    //TechDraw::Cube m_cube;
     TechDraw::Cube* m_cube;
-    static const std::map<std::string,Base::Vector3d> m_frameToStdDir;    //for initializing cube and
-    static const std::map<std::string,Base::Vector3d> m_frameToStdRot;    //creating DPGI's
-    static const std::map<std::string,std::string> m_dirRotToConfig;
-    static const std::map<std::string,std::string> m_frontTopToConfig;
 };
 
 } //namespace TechDraw
