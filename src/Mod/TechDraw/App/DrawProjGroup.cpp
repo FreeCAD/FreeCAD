@@ -53,87 +53,6 @@ const char* DrawProjGroup::ProjectionTypeEnums[] = {"Default",
                                                               "Third Angle",
                                                               NULL};
 
-//default starting dirs & rots
-const std::map<std::string,Base::Vector3d> DrawProjGroup::m_frameToStdDir = {
-        { "Front",            Base::Vector3d(0, -1, 0) },    //front
-        { "Rear",             Base::Vector3d(0, 1, 0) },     //rear
-        { "Right",            Base::Vector3d(1, 0, 0) },     //right
-        { "Left",             Base::Vector3d(-1, 0, 0) },    //left
-        { "Top",              Base::Vector3d(0, 0, 1) },     //top
-        { "Bottom",           Base::Vector3d(0, 0, -1) },    //bottom
-        { "FrontBottomLeft",  Base::Vector3d(-1, -1, -1) },  //FBL
-        { "FrontBottomRight", Base::Vector3d(1, -1, -1) },   //FBR
-        { "FrontTopLeft",     Base::Vector3d(-1,-1,1) },     //FTL
-        { "FrontTopRight",    Base::Vector3d(1, -1, 1) }     //FTR
-        };
-                                                              
-const std::map<std::string,Base::Vector3d> DrawProjGroup::m_frameToStdRot = {
-        { "Front",            Base::Vector3d(1,  0, 0) },     //front
-        { "Rear",             Base::Vector3d(-1, 0, 0) },     //rear
-        { "Right",            Base::Vector3d(0, -1, 0) },     //right
-        { "Left",             Base::Vector3d(0,  1, 0) },     //left 
-        { "Top",              Base::Vector3d(1,  0, 0) },     //top
-        { "Bottom",           Base::Vector3d(1,  0, 0) },     //bottom
-        { "FrontBottomLeft",  Base::Vector3d(2, 1, 0.5) },
-        { "FrontBottomRight", Base::Vector3d(2, -1, -0.5) },
-        { "FrontTopLeft",     Base::Vector3d(2, 1, -0.5) },
-        { "FrontTopRight",    Base::Vector3d(2, -1, 0.5) }
-        }; 
-
-//one of these is obs??
-// map of front.dir+front.rot onto config
-const std::map<std::string,std::string> DrawProjGroup::m_dirRotToConfig = {
-    {"AB","AB"},
-    {"AC","AC"},
-    {"AD","AD"},
-    {"AE","AE"},
-    {"BF","BA"},
-    {"BC","BC"},
-    {"BD","BD"},
-    {"BA","BF"},
-    {"CD","CA"},
-    {"CB","CB"},
-    {"CE","CE"},
-    {"CA","CF"},
-    {"DF","DA"},
-    {"DB","DB"},
-    {"DE","DE"},
-    {"DC","DF"},
-    {"EF","EA"},
-    {"EC","EC"},
-    {"ED","ED"},
-    {"EA","EF"},
-    {"FB","FB"},
-    {"FF","FC"},
-    {"FD","FD"},
-    {"FE","FE"}  };
-
-// map frontDir + topDir onto config
-const std::map<std::string,std::string> DrawProjGroup::m_frontTopToConfig = {
-    { "AC" , "AB" },
-    { "AE" , "AC" },
-    { "AB" , "AD" },
-    { "AD" , "AE" },
-    { "BD" , "BA" },
-    { "BA" , "BC" },
-    { "BF" , "BD" },
-    { "BC" , "BF" },
-    { "CB" , "CA" },
-    { "CF" , "CB" },
-    { "CA" , "CE" },
-    { "CE" , "CF" },
-    { "DE" , "DA" },
-    { "DA" , "DB" },
-    { "DF" , "DE" },
-    { "DB" , "DF" },
-    { "EC" , "EA" },
-    { "EF" , "EC" },
-    { "EA" , "ED" },
-    { "ED" , "EF" },
-    { "FD" , "FB" },
-    { "FB" , "FC" },
-    { "FE" , "FD" },
-    { "FC" , "FE" } };
 
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroup, TechDraw::DrawViewCollection)
@@ -152,21 +71,21 @@ DrawProjGroup::DrawProjGroup(void)
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
 
+    ADD_PROPERTY_TYPE(CubeDirs,(Base::Vector3d()) ,agroup, App::Prop_None, "Current view directions");
+    ADD_PROPERTY_TYPE(CubeRotations,(Base::Vector3d()),agroup, App::Prop_None, "Current rotations");
     m_cube = new Cube();
-    // D/C/A/F/B/E/FBL/
-    m_cube->initialize(m_frameToStdDir.at("Right"), m_frameToStdRot.at("Right"), 
-                      m_frameToStdDir.at("Left"),   m_frameToStdRot.at("Left"),
-                      m_frameToStdDir.at("Front"), m_frameToStdRot.at("Front"), m_frameToStdDir.at("Rear"),   m_frameToStdRot.at("Rear"),
-                      m_frameToStdDir.at("Top"),   m_frameToStdRot.at("Top"),   m_frameToStdDir.at("Bottom"), m_frameToStdRot.at("Bottom"),
-                      m_frameToStdDir.at("FrontBottomLeft"), m_frameToStdRot.at("FrontBottomLeft"),
-                      m_frameToStdDir.at("FrontBottomRight"), m_frameToStdRot.at("FrontBottomRight"),
-                      m_frameToStdDir.at("FrontTopLeft"), m_frameToStdRot.at("FrontTopLeft"),
-                      m_frameToStdDir.at("FrontTopRight"), m_frameToStdRot.at("FrontTopRight") );
+    m_cube->initialize();       //set default dirs & rots
 }
 
 DrawProjGroup::~DrawProjGroup()
 {
     delete m_cube;
+}
+
+void DrawProjGroup::resetCube(void)
+{
+    m_cube->initialize();
+    updateSecondaryDirs();
 }
 
 void DrawProjGroup::onChanged(const App::Property* prop)
@@ -201,9 +120,28 @@ void DrawProjGroup::onChanged(const App::Property* prop)
             recompute();
         }
     }
+    if (isRestoring() && (prop == &CubeDirs)) {
+        m_cube->setAllDirs(CubeDirs.getValues());                    //override defaults from saved value if valid
+    }
+    if (isRestoring() && (prop == &CubeRotations)) {
+        m_cube->setAllRots(CubeRotations.getValues());               //override defaults from saved value if valid
+    }
+    
     TechDraw::DrawViewCollection::onChanged(prop);
 }
 
+//! call this after changing the Cube
+void DrawProjGroup::setPropsFromCube(void)
+{
+    CubeDirs.setValues(m_cube->getAllDirs());
+    CubeRotations.setValues(m_cube->getAllRots());
+}
+
+void DrawProjGroup::setCubeFromProps(void)
+{
+    m_cube->setAllDirs(CubeDirs.getValues());
+    m_cube->setAllRots(CubeRotations.getValues());
+}
 App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 {
     //if group hasn't been added to page yet, can't scale or distribute projItems
@@ -461,8 +399,8 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         view->Type.setValue( viewProjType );
         view->Label.setValue( viewProjType );
         view->Source.setValue( Source.getValue() );
-        view->Direction.setValue(m_frameToStdDir.at(viewProjType));
-        view->RotationVector.setValue(m_frameToStdRot.at(viewProjType));
+        view->Direction.setValue(m_cube->getViewDir(viewProjType));
+        view->RotationVector.setValue(m_cube->getRotationDir(viewProjType));
         addView(view);         //from DrawViewCollection - add to ProjGroup Views
         moveToCentre();
         view->recomputeFeature();
@@ -896,8 +834,9 @@ void DrawProjGroup::updateSecondaryDirs()
         }
         v->Direction.setValue(newDir);
         v->RotationVector.setValue(newAxis);
-        v->recomputeFeature();
+//        v->recomputeFeature();
     }
+    setPropsFromCube();
 }
 
 
@@ -943,50 +882,10 @@ void DrawProjGroup::spinCCW()
     updateSecondaryDirs();
 }
 
-// find a config with Dir as Front view and Up as Top view
-// used in setting view to match OpenInventor
-void DrawProjGroup::setTable(Base::Vector3d dir, Base::Vector3d up)
-{
-    std::string viewFront = Cube::dirToView(dir);    //convert to closest basis vector?
-    std::string viewUp    = Cube::dirToView(up);     //convert to closest basis vector
-    std::string altKey    = viewFront + viewUp;
-    std::string config;
-    try {
-        config = m_frontTopToConfig.at(altKey);
-    }
-    catch (const std::out_of_range& oor) {
-       Base::Console().Error("Error - DPG::setTable - no match for alt config: %s - %s\n",altKey.c_str(),oor.what());
-       return;
-    }
-    setConfig(config);
-}
-
-// set config to a specific value
-void DrawProjGroup::setConfig(std::string cfg)
-{
-    m_cube->updateDirsToConfig(cfg);
-    m_cube->updateRotsToConfig(cfg);
-    updateSecondaryDirs();
-}
-
-void DrawProjGroup::resetTable(void)
-{
-    m_cube->initialize(m_frameToStdDir.at("Right"), m_frameToStdRot.at("Right"), 
-                      m_frameToStdDir.at("Left"),   m_frameToStdRot.at("Left"),
-                      m_frameToStdDir.at("Front"), m_frameToStdRot.at("Front"), m_frameToStdDir.at("Rear"),   m_frameToStdRot.at("Rear"),
-                      m_frameToStdDir.at("Top"),   m_frameToStdRot.at("Top"),   m_frameToStdDir.at("Bottom"), m_frameToStdRot.at("Bottom"),
-                      m_frameToStdDir.at("FrontBottomLeft"), m_frameToStdRot.at("FrontBottomLeft"),
-                      m_frameToStdDir.at("FrontBottomRight"), m_frameToStdRot.at("FrontBottomRight"),
-                      m_frameToStdDir.at("FrontTopLeft"), m_frameToStdRot.at("FrontTopLeft"),
-                      m_frameToStdDir.at("FrontTopRight"), m_frameToStdRot.at("FrontTopRight") );
-    updateSecondaryDirs();
-}
 
 //dumps the current iso DPGI's 
 void DrawProjGroup::dumpISO(char * title)
 {
-//FBL/FBR/FTL/FTR
-//
     Base::Console().Message("DPG ISO: %s\n", title); 
     for (auto& docObj: Views.getValues()) {
         Base::Vector3d dir;
@@ -998,45 +897,6 @@ void DrawProjGroup::dumpISO(char * title)
 
         Base::Console().Message("%s:  %s/%s\n", 
                                 t.c_str(),DrawUtil::formatVector(dir).c_str(),DrawUtil::formatVector(axis).c_str());
-    }
-}
-
-//*************************************
-//! rebuild view direction map from existing DPGI's
-void DrawProjGroup::onDocumentRestored()
-{
-    if (hasProjection("Front") && hasProjection("Right")) {
-       Base::Vector3d dirFront = getProjItem("Front")->Direction.getValue();
-       std::string viewFront = Cube::dirToView(dirFront);
-       Base::Vector3d dirRight = getProjItem("Right")->Direction.getValue();
-       std::string viewRight = Cube::dirToView(dirRight);
-       std::string config = viewFront + viewRight;
-       setConfig(config);
-    } else if (hasProjection("Front")) {
-       Base::Vector3d dirFront = getProjItem("Front")->Direction.getValue();
-       std::string viewDir = Cube::dirToView(dirFront);
-       Base::Vector3d rotFront(1.0,0.0,0.0);
-       App::Property* prop = getPropertyByName("RotationVector");
-       if (prop) {
-          Base::Console().Log("INFO - DPG::onRestore - DPG has RotationVector property\n");
-          rotFront = getProjItem("Front")->RotationVector.getValue();
-       } else {
-          Base::Console().Log("INFO - DPG::onRestore - DPG has NO RotationVector property\n");
-       }
-       std::string viewRot = Cube::dirToView(rotFront);
-       std::string config = viewDir + viewRot;
-       //find(config) or try/catch
-       try {
-           config = m_dirRotToConfig.at(config);
-           setConfig(config);
-       }
-       catch (...) {
-           Base::Console().Message("PROBLEM: DPG cannot set configuration: %s using default instead\n",config.c_str());
-           setConfig("AD");
-       }
-    } else {
-       Base::Console().Message("PROBLEM: DPG cannot find Front view on restore. Using default instead.\n");
-       setConfig("AD"); 
     }
 }
 
