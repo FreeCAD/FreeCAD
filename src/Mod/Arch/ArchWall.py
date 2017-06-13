@@ -544,7 +544,7 @@ class _Wall(ArchComponent.Component):
                                 elif Draft.getType(obj.Base) == "Sketch":
                                     obj.Base.movePoint(0,2,p2,0)
                                 else:
-                                    FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base obect of this wall")+"\n")
+                                    FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
         
