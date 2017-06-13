@@ -176,24 +176,31 @@ void TaskProjGroup::rotateButtonClicked(void)
 
 void TaskProjGroup::on3DClicked(void)
 {
-    std::pair<Base::Vector3d,Base::Vector3d> dir3D = get3DViewDir();
-    Base::Vector3d dir = dir3D.first;
-    dir = DrawUtil::closestBasis(dir);
-    Base::Vector3d up = dir3D.second;
-    up = DrawUtil::closestBasis(up);
-    TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
-    if (front) {                              //why "if front"???
-        multiView->setTable(dir,up);
-        setUiPrimary();
-        Gui::Command::updateActive();
-    }
+    Base::Console().Warning("TaskProjGroup - this function is temporarily unavailable\n");
+//TODO: how to set the DPG.Cube (or a brand new replacement Cube) to a specific orientation 
+//      {10x(viewDirection + RotationVector)}  given only the 
+//      viewDirection + upDirection(!= RotationVector) of the front view?
+//      need to find the sequence of rotations Left/Right, Up/Down, CW/CCW
+//      from current orientation to desired orientation. 
+    
+//    std::pair<Base::Vector3d,Base::Vector3d> dir3D = get3DViewDir();
+//    Base::Vector3d dir = dir3D.first;
+//    dir = DrawUtil::closestBasis(dir);
+//    Base::Vector3d up = dir3D.second;
+//    up = DrawUtil::closestBasis(up);
+//    TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
+//    if (front) {                              //why "if front"???
+//        multiView->setTable(dir,up);
+//        setUiPrimary();
+//        Gui::Command::updateActive();
+//    }
 }
 
 void TaskProjGroup::onResetClicked(void)
 {
     TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
     if (front) {
-        multiView->resetTable();
+        multiView->resetCube();
         setUiPrimary();
         Gui::Command::updateActive();
     }
