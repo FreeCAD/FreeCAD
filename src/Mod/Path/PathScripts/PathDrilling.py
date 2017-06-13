@@ -239,7 +239,8 @@ class ObjectDrilling:
         import DraftGeomUtils as dgu
         PathLog.track('obj: {} shape: {}'.format(obj, shape))
         holelist = []
-        tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
+        # tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
+        tooldiameter = None
         PathLog.debug('search for holes larger than tooldiameter: {}: '.format(tooldiameter))
         if dgu.isPlanar(shape):
             PathLog.debug("shape is planar")
@@ -459,7 +460,7 @@ class TaskPanel:
                 self.form.uiToolController.blockSignals(False)
 
     def open(self):
-        """ """
+        pass
         # self.s = SelObserver()
         # FreeCADGui.Selection.addObserver(self.s)
 
