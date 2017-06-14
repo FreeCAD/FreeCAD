@@ -38,8 +38,9 @@ from PySide import QtGui
 
 LOG_MODULE = 'PathUtils'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-#PathLog.trackModule('PathUtils')
+# PathLog.trackModule('PathUtils')
 FreeCAD.setLogLevel('Path.Area', 0)
+
 
 def waiting_effects(function):
     def new_function(*args, **kwargs):
@@ -147,6 +148,11 @@ def isDrillable(obj, candidate, tooldiameter=None):
                     PathLog.debug("Has Radius, Circle")
                     if tooldiameter is not None:
                         drillable = edge.Curve.Radius >= tooldiameter/2
+                        if not drillable:
+                            FreeCAD.Console.PrintMessage(
+                                    "Found a drillable hole with diameter: {}: "
+                                    "too small for the current tool with "
+                                    "diameter: {}".format(edge.Curve.Radius*2, tooldiameter))
                     else:
                         drillable = True
     PathLog.debug("candidate is drillable: {}".format(drillable))
@@ -277,9 +283,10 @@ def getEnvelope(partshape, subshape=None, stockheight=None):
     else:
         envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, partshape.BoundBox.ZLength))
     if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
-        removalshape=FreeCAD.ActiveDocument.addObject("Part::Feature","Envelope")
+        removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "Envelope")
         removalshape.Shape = envelopeshape
     return envelopeshape
+
 
 def reverseEdge(e):
     if geomType(e) == "Circle":
@@ -610,6 +617,7 @@ def rampPlunge(edge, rampangle, destZ, startZ):
 
     return rampCmds
 
+
 def sort_jobs(locations, keys, attractors=[]):
     """ sort holes by the nearest neighbor method
         keys: two-element list of keys for X and Y coordinates. for example ['x','y']
@@ -624,7 +632,7 @@ def sort_jobs(locations, keys, attractors=[]):
         """ square Euclidean distance """
         d = 0
         for k in keys:
-            d += (a[k] - b[k]) ** 2 
+            d += (a[k] - b[k]) ** 2
 
         return d
 
@@ -645,7 +653,6 @@ def sort_jobs(locations, keys, attractors=[]):
         prio, result = q.get()
 
         return result
-
 
     out = []
     zero = defaultdict(lambda: 0)
@@ -744,15 +751,16 @@ class depth_params:
         else:
             return [stop] + depths.tolist()
 
+
 class CollisionTester:
 
     def compareBBSpace(self, bb1, bb2):
-        if ( bb1.XMin == bb2.XMin  and
-            bb1.XMax == bb2.XMax  and
-            bb1.YMin == bb2.YMin  and
-            bb1.YMax == bb2.YMax  and 
-            bb1.ZMin == bb2.ZMin  and
-            bb1.ZMax == bb2.ZMax ) :
+        if (bb1.XMin == bb2.XMin and
+                bb1.XMax == bb2.XMax and
+                bb1.YMin == bb2.YMin and
+                bb1.YMax == bb2.YMax and
+                bb1.ZMin == bb2.ZMin and
+                bb1.ZMax == bb2.ZMax):
             return True
         return False
 
@@ -774,13 +782,13 @@ class CollisionTester:
                     if self.compareBBSpace(i.BoundBox, j.BoundBox):
                         match = True
                 if match is True:
-                    #print ("Need to highlight Face{}".format(idx+1))
+                    # print ("Need to highlight Face{}".format(idx+1))
                     colorassignment.append(intersecColor)
                 else:
                     colorassignment.append(baseColor)
-            collisionSim = FreeCAD.ActiveDocument.addObject("Part::Feature","Collision")
+            collisionSim = FreeCAD.ActiveDocument.addObject("Part::Feature", "Collision")
             collisionSim.Shape = gougedShape
-            collisionSim.ViewObject.DiffuseColor=colorassignment
+            collisionSim.ViewObject.DiffuseColor = colorassignment
             return collisionSim
         else:
             return None
