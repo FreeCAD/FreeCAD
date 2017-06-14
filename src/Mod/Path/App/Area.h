@@ -376,6 +376,8 @@ public:
 
     static void setDefaultParams(const AreaStaticParams &params);
     static const AreaStaticParams &getDefaultParams();
+
+    static void showShape(const TopoDS_Shape &shape, const char *name, const char *fmt=0, ...);
 };
 
 } //namespace Path
