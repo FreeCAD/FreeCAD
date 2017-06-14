@@ -919,21 +919,45 @@ void Area::explode(const TopoDS_Shape &shape) {
     }
 }
 
-// enable this to show intermediate shapes during projection in FC, for
-// debugging.
-#if 1
-static inline void showShape(const TopoDS_Shape &shape, const char *name) {
+void Area::showShape(const TopoDS_Shape &shape, const char *name, const char *fmt, ...) {
     if(FC_LOG_INSTANCE.level()>FC_LOGLEVEL_TRACE) {
         App::Document *pcDoc = App::GetApplication().getActiveDocument(); 	 
         if (!pcDoc)
             pcDoc = App::GetApplication().newDocument();
+        char buf[256];
+        if(!name && fmt) {
+            va_list args;
+            va_start(args, fmt);
+            vsnprintf(buf,sizeof(buf), fmt, args);
+            va_end (args);
+            name = buf;
+        }
         Part::Feature *pcFeature = (Part::Feature *)pcDoc->addObject("Part::Feature", name);
         pcFeature->Shape.setValue(shape);
     }
 }
-#else
-#define showShape(s,name) do{(void)s;}while(0)
-#endif
+
+template<class T>
+static void showShapes(const T &shapes, const char *name, const char *fmt=0, ...) {
+    if(FC_LOG_INSTANCE.level()>FC_LOGLEVEL_TRACE) {
+        BRep_Builder builder;
+        TopoDS_Compound comp;
+        builder.MakeCompound(comp);
+        for(auto &s : shapes) {
+            if(s.IsNull()) continue;
+            builder.Add(comp,s);
+        }
+        char buf[256];
+        if(!name && fmt) {
+            va_list args;
+            va_start(args, fmt);
+            vsnprintf(buf,sizeof(buf), fmt, args);
+            va_end (args);
+            name = buf;
+        }
+        Area::showShape(comp,name);
+    }
+}
 
 template<class Func>
 static int foreachSubshape(const TopoDS_Shape &shape, Func func, int type=TopAbs_FACE) {
@@ -1255,7 +1279,8 @@ std::vector<shared_ptr<Area> > Area::makeSections(
     bool can_retry = fabs(tolerance)>Precision::Confusion();
     TopLoc_Location locInverse(loc.Inverted());
 
-    for(double z : heights) {
+    for(size_t i=0;i<heights.size();++i) {
+        double z = heights[i];
         bool retried = !can_retry;
         while(true) {
             gp_Pln pln(gp_Pnt(0,0,z),gp_Dir(0,0,1));
@@ -1286,9 +1311,11 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                 builder.MakeCompound(comp);
 
                 for(TopExp_Explorer xp(s.shape.Moved(loc), TopAbs_SOLID); xp.More(); xp.Next()) {
+                    showShape(xp.Current(),0,"section_%u_shape",i);
                     std::list<TopoDS_Wire> wires;
                     Part::CrossSection section(a,b,c,xp.Current());
                     wires = section.slice(-d);
+                    showShapes(wires,0,"section_%u_wire",i);
                     if(wires.empty()) {
                         AREA_LOG("Section returns no wires");
                         continue;
@@ -1307,6 +1334,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                         if (shape.IsNull())
                             AREA_WARN("FaceMakerBullseye return null shape on section");
                         else {
+                            showShape(shape,0,"section_%u_face",i);
                             for(auto it=wires.begin(),itNext=it;it!=wires.end();it=itNext) {
                                 ++itNext;
                                 if(BRep_Tool::IsClosed(*it)) 
@@ -1326,9 +1354,11 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                 }
 
                 // Make sure the compound has at least one edge
-                if(TopExp_Explorer(comp,TopAbs_EDGE).More())
-                    area->add(comp.Moved(locInverse),s.op);
-                else if(area->myShapes.empty()){
+                if(TopExp_Explorer(comp,TopAbs_EDGE).More()) {
+                    const TopoDS_Shape &shape = comp.Moved(locInverse);
+                    showShape(shape,0,"section_%u_result",i);
+                    area->add(shape,s.op);
+                }else if(area->myShapes.empty()){
                     auto itNext = it;
                     if(++itNext != myShapes.end() &&
                         (itNext->op==OperationIntersection ||
@@ -1341,6 +1371,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
             if(area->myShapes.size()){
                 sections.push_back(area);
                 FC_TIME_LOG(t1,"makeSection " << z);
+                showShape(area->getShape(),0,"section_%u_final",i);
                 break;
             }
             if(retried) {
