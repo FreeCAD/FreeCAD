@@ -178,7 +178,7 @@ class ObjectFace:
                         'Angle': obj.ZigZagAngle,
                         'FromCenter': (obj.StartAt == "Center"),
                         'PocketStepover': stepover,
-                        'PocketExtraOffset': obj.PassExtension.Value}
+                        'PocketExtraOffset': 0 - obj.PassExtension.Value}
 
         Pattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
         pocketparams['PocketMode'] = Pattern.index(obj.OffsetPattern) + 1

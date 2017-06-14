@@ -47,7 +47,7 @@ class TestPathCore(PathTestBase):
         self.assertEqual(c.Parameters, {'Y': 0.5, 'X': 1})
 
         #output gcode
-        self.assertEqual(c.toGCode(), 'G1 X1.00000 Y0.50000')
+        self.assertEqual(c.toGCode(), 'G1 X1.000000 Y0.500000')
 
         #create and assign name in one
         c2=Path.Command("G2")
@@ -61,7 +61,7 @@ class TestPathCore(PathTestBase):
 
         #use placement
         self.assertEqual( str(c3.Placement), 'Placement [Pos=(34,1.2,0), Yaw-Pitch-Roll=(0,0,0)]')
-        self.assertEqual( c3.toGCode(), 'G1 X34.00000 Y1.20000')
+        self.assertEqual( c3.toGCode(), 'G1 X34.000000 Y1.200000')
         p1 = FreeCAD.Placement()
         p1.Base = FreeCAD.Vector(3,2,1)
         self.assertEqual(str(p1), 'Placement [Pos=(3,2,1), Yaw-Pitch-Roll=(0,0,0)]')
@@ -96,7 +96,7 @@ class TestPathCore(PathTestBase):
         self.assertEqual(str(p.Commands), '[Command G1 [ X:1 Y:0 ], Command G1 [ X:0 Y:2 ]]')
         self.assertAlmostEqual( p.Length, 3.2361, places=4)
         p.addCommands(c1)
-        self.assertEqual(p.toGCode(), 'G1 X1.00000 Y0.00000\nG1 X0.00000 Y2.00000\nG1 X1.00000 Y0.00000\n')
+        self.assertEqual(p.toGCode(), 'G1 X1.000000 Y0.000000\nG1 X0.000000 Y2.000000\nG1 X1.000000 Y0.000000\n')
 
         lines = '''
 G0X-0.5905Y-0.3937S3000M03
@@ -109,20 +109,15 @@ G1X-0.5905Y-0.3937
 G0Z0.5
 '''
 
-
-<<<<<<< d3838802b1665892c464bce8a340531cafcb66f2
         output = '''G0 S3000.000000 X-0.590500 Y-0.393700
-=======
-        output = '''G0 S3000.00000 X0.-59050 Y0.-39370
->>>>>>> Path: add output precision option to linuxcnc post.
 M03
-G0 Z0.12500
-G1 F3.00000 Z0.0-400
-G1 F14.17000 X0.98420 Y0.-39370
-G1 X0.98420 Y0.43300
-G1 X0.-59050 Y0.43300
-G1 X0.-59050 Y0.-39370
-G0 Z0.50000
+G0 Z0.125000
+G1 F3.000000 Z-0.004000
+G1 F14.170000 X0.984200 Y-0.393700
+G1 X0.984200 Y0.433000
+G1 X-0.590500 Y0.433000
+G1 X-0.590500 Y-0.393700
+G0 Z0.500000
 '''
 
 

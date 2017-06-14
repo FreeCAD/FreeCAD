@@ -34,13 +34,14 @@ from PathScripts.PathUtils import waiting_effects
 from PathScripts.PathUtils import makeWorkplane
 
 LOG_MODULE = 'PathContour'
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 PathLog.trackModule('PathContour')
 FreeCAD.setLogLevel('Path.Area', 0)
 
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui
+
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -77,9 +78,6 @@ class ObjectContour:
         obj.addProperty("App::PropertyEnumeration", "Direction", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.Direction = ['CW', 'CCW']  # this is the direction that the Contour runs
         obj.addProperty("App::PropertyBool", "UseComp", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
-        # obj.addProperty("App::PropertyEnumeration", "Side", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
-        # obj.Side = ['Left', 'Right']  # side of profile that cutter is on in relation to direction of profile
-        # obj.setEditorMode('Side', 2)  # hide
 
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final Contour- good for roughing toolpath"))
 
@@ -98,11 +96,6 @@ class ObjectContour:
 
     def onChanged(self, obj, prop):
         pass
-        # if prop == "UseComp":
-        #     if not obj.UseComp:
-        #         obj.setEditorMode('Side', 2)
-        #     else:
-        #         obj.setEditorMode('Side', 0)
 
     def setDepths(proxy, obj):
         PathLog.track()
@@ -133,7 +126,7 @@ class ObjectContour:
         profile.add(baseobject)
 
         profileparams = {'Fill': 0,
-                         'Coplanar': 0}
+                         'Coplanar': 2}
 
         if obj.UseComp is False:
             profileparams['Offset'] = 0.0
@@ -244,8 +237,10 @@ class ObjectContour:
         # Let's always start by rapid to clearance...just for safety
         commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
+        isPanel = False
         if hasattr(baseobject, "Proxy"):
             if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+                isPanel = True
                 baseobject.Proxy.execute(baseobject)
                 shapes = baseobject.Proxy.getOutlines(baseobject, transform=True)
                 for shape in shapes:
@@ -255,15 +250,16 @@ class ObjectContour:
                     try:
                         commandlist.extend(self._buildPathArea(obj, contourshape, start=obj.StartPoint).Commands)
                     except Exception as e:
-                        print(e)
+                        FreeCAD.Console.PrintError(e)
                         FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
-        else:
+
+        if hasattr(baseobject, "Shape") and not isPanel:
             bb = baseobject.Shape.BoundBox
             env = PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, stockheight=bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
             try:
                 commandlist.extend(self._buildPathArea(obj, env, start=obj.StartPoint).Commands)
             except Exception as e:
-                print(e)
+                FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
         path = Path.Path(commandlist)
