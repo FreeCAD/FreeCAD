@@ -1000,19 +1000,35 @@ struct FindPlane {
     FindPlane(TopoDS_Shape &s, gp_Trsf &t, double &z)
         :myPlaneShape(s),myTrsf(t),myZ(z)
     {}
-    void operator()(const TopoDS_Shape &shape, int) {
+    void operator()(const TopoDS_Shape &shape, int type) {
         gp_Trsf trsf;
 
-        BRepLib_FindSurface finder(shape.Located(TopLoc_Location()),-1,Standard_True);
-        if (!finder.Found()) 
-            return;
+        gp_Pln pln;
+        if(type == TopAbs_FACE) {
+            BRepAdaptor_Surface adapt(TopoDS::Face(shape));
+            if(adapt.GetType() != GeomAbs_Plane)
+                return;
+            pln = adapt.Plane();
+        }else{
+            BRepLib_FindSurface finder(shape.Located(TopLoc_Location()),-1,Standard_True);
+            if (!finder.Found()) 
+                return;
 
-        // TODO: It seemed that FindSurface disregard shape's
-        // transformation SOMETIME, so we have to transformed the found
-        // plane manually. Need to figure out WHY!
-        gp_Pln pln = GeomAdaptor_Surface(finder.Surface()).Plane();
-        pln.Transform(shape.Location().Transformation());
+            // TODO: It seemed that FindSurface disregard shape's
+            // transformation SOMETIME, so we have to transformed the found
+            // plane manually. Need to figure out WHY!
+            //
+            // ADD NOTE: Okay, one thing I find out that for face shape, this
+            // FindSurface may produce plane at the wrong position, so use
+            // adaptor to get the underlaying surface plane directly (see
+            // above).  It remains to be seen that if FindSurface has the same
+            // problem on wires
+            gp_Pln pln = GeomAdaptor_Surface(finder.Surface()).Plane();
+            pln.Transform(shape.Location().Transformation());
+        }
+
         gp_Ax3 pos = pln.Position();
+        AREA_TRACE("plane pos " << AREA_XYZ(pos.Location()) << ", " << AREA_XYZ(pos.Direction()));
 
         // We only use right hand coordinate, hence gp_Ax2 instead of gp_Ax3
         if(!pos.Direct()) {
