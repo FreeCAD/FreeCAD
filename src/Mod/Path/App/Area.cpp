@@ -173,6 +173,7 @@ Area::Area(const Area &other, bool deep_copy)
 ,myHaveFace(other.myHaveFace)
 ,myHaveSolid(other.myHaveSolid)
 ,myShapeDone(false)
+,myProjecting(false)
 {
     if(!deep_copy || !other.isBuilt())
         return;
