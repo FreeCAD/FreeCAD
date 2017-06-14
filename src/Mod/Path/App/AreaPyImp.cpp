@@ -365,7 +365,7 @@ PyObject* AreaPy::makeSections(PyObject *args, PyObject *keywds)
 
     Py::List ret;
     for(auto &area : sections) 
-        ret.append(Py::asObject(new AreaPy(new Area(*area,false))));
+        ret.append(Py::asObject(new AreaPy(new Area(*area,true))));
     return Py::new_reference_to(ret);
 }
 
