@@ -36,16 +36,14 @@ import PathScripts.PathLog as PathLog
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-def isSolid(obj):
+NotValidBaseTypeIds = ['Sketcher::SketchObject']
+def isValidBaseObject(obj):
     '''isSolid(obj) ... returns true if an object represents a solid.'''
 
-    if hasattr(obj, 'Tip'):
-        return isSolid(obj.Tip)
-    if hasattr(obj, 'Shape'):
-        if obj.Shape.ShapeType == 'Solid' and obj.Shape.isClosed():
-            return True
-        if obj.Shape.ShapeType == 'Compound':
-            if hasattr(obj, 'Base') and hasattr(obj, 'Tool'):
-                return isSolid(obj.Base) and isSolid(obj.Tool)
-    return False
-
+    if not hasattr(obj, 'Shape'):
+        return False
+    if obj.TypeId in NotValidBaseTypeIds:
+        return False
+    if hasattr(obj, 'Sheets') or hasattr(obj, 'TagText'): # Arch.Panels and Arch.PanelCut
+        return False
+    return True

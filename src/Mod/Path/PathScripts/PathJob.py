@@ -169,7 +169,7 @@ class ObjectPathJob:
     @classmethod
     def isBaseCandidate(cls, obj):
         '''Answer true if the given object can be used as a Base for a job.'''
-        return PathUtil.isSolid(obj) or (hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet))
+        return PathUtil.isValidBaseObject(obj) or (hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet))
 
 
 class ViewProviderJob:
