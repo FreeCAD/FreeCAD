@@ -2901,6 +2901,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     threshold = fabs(threshold);
     if(threshold < Precision::Confusion())
         threshold = Precision::Confusion();
+    threshold *= threshold;
     resume_height = fabs(resume_height);
 
     AxisGetter getter = &gp_Pnt::Z;
