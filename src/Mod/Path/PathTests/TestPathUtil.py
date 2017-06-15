@@ -40,23 +40,23 @@ class TestPathUtil(PathTestBase):
         FreeCAD.closeDocument("TestPathUtils")
 
     def test00(self):
-        '''Check that isSolid detects solids.'''
+        '''Check that isValidBaseObject detects solids.'''
         box = self.doc.addObject('Part::Box', 'Box')
         cylinder = self.doc.addObject('Part::Cylinder', 'Cylinder')
         self.doc.recompute()
-        self.assertTrue(PathUtil.isSolid(box))
-        self.assertTrue(PathUtil.isSolid(cylinder))
+        self.assertTrue(PathUtil.isValidBaseObject(box))
+        self.assertTrue(PathUtil.isValidBaseObject(cylinder))
 
     def test01(self):
-        '''Check that isSolid detects PDs.'''
+        '''Check that isValidBaseObject detects PDs.'''
         body = self.doc.addObject('PartDesign::Body', 'Body')
         box  = self.doc.addObject('PartDesign::AdditiveBox', 'Box')
         body.addObject(box)
         self.doc.recompute()
-        self.assertTrue(PathUtil.isSolid(body))
+        self.assertTrue(PathUtil.isValidBaseObject(body))
 
     def test02(self):
-        '''Check that isSolid detects compounds.'''
+        '''Check that isValidBaseObject detects compounds.'''
         box = self.doc.addObject('Part::Box', 'Box')
         box.Length = 10
         box.Width = 10
@@ -70,11 +70,11 @@ class TestPathUtil(PathTestBase):
         cut.Base = box
         cut.Tool = cyl
         self.doc.recompute()
-        self.assertTrue(PathUtil.isSolid(cut))
+        self.assertTrue(PathUtil.isValidBaseObject(cut))
 
 
     def test03(self):
-        '''Check that isSolid ignores sketches.'''
+        '''Check that isValidBaseObject ignores sketches.'''
         body = self.doc.addObject('PartDesign::Body', 'Body')
         sketch = self.doc.addObject('Sketcher::SketchObject', 'Sketch')
         body.addObject(sketch)
@@ -85,8 +85,8 @@ class TestPathUtil(PathTestBase):
         pad.Profile = sketch
         self.doc.recompute()
         # the body and the pad are solids
-        self.assertTrue(PathUtil.isSolid(pad))
-        self.assertTrue(PathUtil.isSolid(body))
+        self.assertTrue(PathUtil.isValidBaseObject(pad))
+        self.assertTrue(PathUtil.isValidBaseObject(body))
         # however, the sketch is no
-        self.assertFalse(PathUtil.isSolid(sketch))
+        self.assertFalse(PathUtil.isValidBaseObject(sketch))
 
