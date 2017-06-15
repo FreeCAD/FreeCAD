@@ -760,15 +760,22 @@ PyObject*  TopoShapePy::check(PyObject *args)
     Py_Return; 
 }
 
-PyObject*  TopoShapePy::fuse(PyObject *args)
+PyObject*  TopoShapePy::fuse(PyObject *args, PyObject *keywds)
 {
+    static char *kwlist[] = {"tools", "tolerance", "withHistory", NULL};
     PyObject *pcObj;
-    if (PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj)) {
-        TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+    double tolerance = 0.0;
+    PyObject *withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O!|dO!", kwlist,
+                                    &(TopoShapePy::Type), &pcObj,
+                                    &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
+        TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         try {
             // Let's call algorithm computing a fuse operation:
-            TopoDS_Shape fusShape = this->getTopoShapePtr()->fuse(shape);
-            return new TopoShapePy(new TopoShape(fusShape));
+            TopoShape fusShape = this->getTopoShapePtr()
+                    ->fuse(*shape, PyObject_IsTrue(withHistory)?true:false);
+            return fusShape.getPyObject();//new TopoShapePy(new TopoShape(fusShape));
         }
         catch (Standard_Failure) {
             Handle(Standard_Failure) e = Standard_Failure::Caught();
@@ -782,8 +789,11 @@ PyObject*  TopoShapePy::fuse(PyObject *args)
     }
 
     PyErr_Clear();
-    double tolerance = 0.0;
-    if (PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance)) {
+    tolerance = 0.0;
+    withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O|dO!", kwlist,
+                                    &pcObj, &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
         std::vector<TopoDS_Shape> shapeVec;
         Py::Sequence shapeSeq(pcObj);
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
@@ -794,7 +804,7 @@ PyObject*  TopoShapePy::fuse(PyObject *args)
             else {
                 PyErr_SetString(PyExc_TypeError, "non-shape object in sequence");
                 return 0;
-           }
+            }
         }
         try {
             TopoDS_Shape multiFusedShape = this->getTopoShapePtr()->fuse(shapeVec,tolerance);
@@ -871,15 +881,22 @@ PyObject*  TopoShapePy::oldFuse(PyObject *args)
     }
 }
 
-PyObject*  TopoShapePy::common(PyObject *args)
+PyObject*  TopoShapePy::common(PyObject *args, PyObject *keywds)
 {
+    static char *kwlist[] = {"tools", "tolerance", "withHistory", NULL};
     PyObject *pcObj;
-    if (PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj)) {
-        TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+    double tolerance = 0.0;
+    PyObject *withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O!|dO!", kwlist,
+                                    &(TopoShapePy::Type), &pcObj,
+                                    &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
+        TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         try {
             // Let's call algorithm computing a common operation:
-            TopoDS_Shape comShape = this->getTopoShapePtr()->common(shape);
-            return new TopoShapePy(new TopoShape(comShape));
+            TopoShape comShape = this->getTopoShapePtr()
+                    ->common(*shape, PyObject_IsTrue(withHistory)?true:false);
+            return comShape.getPyObject();
         }
         catch (Standard_Failure) {
             Handle(Standard_Failure) e = Standard_Failure::Caught();
@@ -893,8 +910,11 @@ PyObject*  TopoShapePy::common(PyObject *args)
     }
 
     PyErr_Clear();
-    double tolerance = 0.0;
-    if (PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance)) {
+    tolerance = 0.0;
+    withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O|dO!", kwlist,
+                                    &pcObj, &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
         std::vector<TopoDS_Shape> shapeVec;
         Py::Sequence shapeSeq(pcObj);
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
@@ -926,15 +946,22 @@ PyObject*  TopoShapePy::common(PyObject *args)
     return 0;
 }
 
-PyObject*  TopoShapePy::section(PyObject *args)
+PyObject*  TopoShapePy::section(PyObject *args, PyObject *keywds)
 {
+    static char *kwlist[] = {"tools", "tolerance", "withHistory", NULL};
     PyObject *pcObj;
-    if (PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj)) {
-        TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+    double tolerance = 0.0;
+    PyObject *withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O!|dO!", kwlist,
+                                    &(TopoShapePy::Type), &pcObj,
+                                    &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
+        TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         try {
             // Let's call algorithm computing a section operation:
-            TopoDS_Shape secShape = this->getTopoShapePtr()->section(shape);
-            return new TopoShapePy(new TopoShape(secShape));
+            TopoShape secShape = this->getTopoShapePtr()
+                    ->section(*shape, PyObject_IsTrue(withHistory)?true:false);
+            return secShape.getPyObject();
         }
         catch (Standard_Failure) {
             Handle(Standard_Failure) e = Standard_Failure::Caught();
@@ -948,8 +975,11 @@ PyObject*  TopoShapePy::section(PyObject *args)
     }
 
     PyErr_Clear();
-    double tolerance = 0.0;
-    if (PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance)) {
+    tolerance = 0.0;
+    withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O|dO!", kwlist,
+                                    &pcObj, &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
         std::vector<TopoDS_Shape> shapeVec;
         Py::Sequence shapeSeq(pcObj);
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
@@ -1036,15 +1066,22 @@ PyObject*  TopoShapePy::slices(PyObject *args)
     }
 }
 
-PyObject*  TopoShapePy::cut(PyObject *args)
+PyObject*  TopoShapePy::cut(PyObject *args, PyObject *keywds)
 {
+    static char *kwlist[] = {"tools", "tolerance", "withHistory", NULL};
     PyObject *pcObj;
-    if (PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj)) {
-        TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+    double tolerance = 0.0;
+    PyObject *withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O!|dO!", kwlist,
+                                    &(TopoShapePy::Type), &pcObj,
+                                    &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
+        TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         try {
             // Let's call algorithm computing a cut operation:
-            TopoDS_Shape cutShape = this->getTopoShapePtr()->cut(shape);
-            return new TopoShapePy(new TopoShape(cutShape));
+            TopoShape cutShape = this->getTopoShapePtr()
+                    ->cut(*shape, PyObject_IsTrue(withHistory)?true:false);
+            return cutShape.getPyObject();
         }
         catch (Standard_Failure) {
             Handle(Standard_Failure) e = Standard_Failure::Caught();
@@ -1058,8 +1095,11 @@ PyObject*  TopoShapePy::cut(PyObject *args)
     }
 
     PyErr_Clear();
-    double tolerance = 0.0;
-    if (PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance)) {
+    tolerance = 0.0;
+    withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O|dO!", kwlist,
+                                    &pcObj, &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
         std::vector<TopoDS_Shape> shapeVec;
         Py::Sequence shapeSeq(pcObj);
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {

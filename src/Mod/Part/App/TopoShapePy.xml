@@ -138,7 +138,7 @@ Part.show(r)
 This is a more detailed check as done in isValid().</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="fuse" Const="true">
+    <Methode Name="fuse" Const="true" Keyword="true">
       <Documentation>
         <UserDocu>Union of this and a given (list of) topo shape.
 fuse(tool) -> Shape
@@ -175,7 +175,7 @@ Deprecated: use fuse() instead.</UserDocu>
         <UserDocu>Union of this and a given topo shape (old algorithm).</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="common" Const="true">
+    <Methode Name="common" Const="true" Keyword="true">
       <Documentation>
         <UserDocu>Intersection of this and a given (list of) topo shape.
 common(tool) -> Shape
@@ -192,7 +192,7 @@ Supports:
 OCC 6.9.0 or later is required.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="section" Const="true">
+    <Methode Name="section" Const="true" Keyword="true">
       <Documentation>
         <UserDocu>Section of this with a given (list of) topo shape.
 section(tool) -> Shape
@@ -219,7 +219,7 @@ OCC 6.9.0 or later is required.</UserDocu>
         <UserDocu>Make single slice of this shape.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="cut" Const="true">
+    <Methode Name="cut" Const="true" Keyword="true">
       <Documentation>
         <UserDocu>Difference of this and a given (list of) topo shape
 cut(tool) -> Shape

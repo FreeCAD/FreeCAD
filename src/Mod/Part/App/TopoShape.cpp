@@ -398,7 +398,6 @@ PyObject * TopoShape::getPySubShape(const char* Type) const
         return new TopoShapeVertexPy(new TopoShape(Shape));
     else 
         return 0;
-
 }
 
 void TopoShape::operator = (const TopoShape& sh)
@@ -1457,6 +1456,20 @@ TopoDS_Shape TopoShape::cut(TopoDS_Shape shape) const
     return mkCut.Shape();
 }
 
+TopoShape TopoShape::cut(const TopoShape &shape, bool withHistory) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (shape.getShape().IsNull())
+        Standard_Failure::Raise("Tool shape is null");
+    std::shared_ptr<BRepAlgoAPI_Cut> mkCut(new BRepAlgoAPI_Cut(this->_Shape, shape.getShape()));
+    TopoShape resShape(mkCut->Shape());
+    if (withHistory) {
+        resShape.history.modShapeMaker = mkCut;
+    }
+    return resShape;
+}
+
 TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
 {
     if (this->_Shape.IsNull())
@@ -1503,6 +1516,20 @@ TopoDS_Shape TopoShape::common(TopoDS_Shape shape) const
     return mkCommon.Shape();
 }
 
+TopoShape TopoShape::common(const TopoShape &shape, bool withHistory) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (shape.getShape().IsNull())
+        Standard_Failure::Raise("Tool shape is null");
+    std::shared_ptr<BRepAlgoAPI_Common> mkCommon(new BRepAlgoAPI_Common(this->_Shape, shape.getShape()));
+    TopoShape resShape(mkCommon->Shape());
+    if (withHistory) {
+        resShape.history.modShapeMaker = mkCommon;
+    }
+    return resShape;
+}
+
 TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
 {
     if (this->_Shape.IsNull())
@@ -1547,6 +1574,20 @@ TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
         Standard_Failure::Raise("Tool shape is null");
     BRepAlgoAPI_Fuse mkFuse(this->_Shape, shape);
     return mkFuse.Shape();
+}
+
+TopoShape TopoShape::fuse(const TopoShape &shape, bool withHistory) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (shape.getShape().IsNull())
+        Standard_Failure::Raise("Tool shape is null");
+    std::shared_ptr<BRepAlgoAPI_Fuse> mkFuse(new BRepAlgoAPI_Fuse(this->_Shape, shape.getShape()));
+    TopoShape resShape(mkFuse->Shape());
+    if (withHistory) {
+        resShape.history.modShapeMaker = mkFuse;
+    }
+    return resShape;
 }
 
 TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
@@ -1616,6 +1657,20 @@ TopoDS_Shape TopoShape::section(TopoDS_Shape shape) const
         Standard_Failure::Raise("Tool shape is null");
     BRepAlgoAPI_Section mkSection(this->_Shape, shape);
     return mkSection.Shape();
+}
+
+TopoShape TopoShape::section(const TopoShape &shape, bool withHistory) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (shape.getShape().IsNull())
+        Standard_Failure::Raise("Tool shape is null");
+    std::shared_ptr<BRepAlgoAPI_Section> mkSection(new BRepAlgoAPI_Section(this->_Shape, shape.getShape()));
+    TopoShape resShape(mkSection->Shape());
+    if (withHistory) {
+        resShape.history.modShapeMaker = mkSection;
+    }
+    return resShape;
 }
 
 TopoDS_Shape TopoShape::section(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const

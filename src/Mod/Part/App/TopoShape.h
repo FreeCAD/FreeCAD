@@ -167,6 +167,10 @@ public:
     TopoDS_Shape oldFuse(TopoDS_Shape) const;
     TopoDS_Shape section(TopoDS_Shape) const;
     TopoDS_Shape section(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = 0.0) const;
+    TopoShape cut(const TopoShape&, bool withHistory = true) const;
+    TopoShape common(const TopoShape&, bool withHistory = true) const;
+    TopoShape fuse(const TopoShape&, bool withHistory = true) const;
+    TopoShape section(const TopoShape&, bool withHistory = true) const;
     std::list<TopoDS_Wire> slice(const Base::Vector3d&, double) const;
     TopoDS_Compound slices(const Base::Vector3d&, const std::vector<double>&) const;
     /**
@@ -252,6 +256,7 @@ public:
     //@}
 
     TopoHistory history;
+
 private:
     TopoDS_Shape _Shape;
 };
