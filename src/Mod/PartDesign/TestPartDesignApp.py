@@ -145,7 +145,7 @@ class PartDesignMirroredTestCases(unittest.TestCase):
         self.Mirrored.MirrorPlane = (self.Rect, ["V_Axis"])
         self.Body.addObject(self.Mirrored)
         self.Doc.recompute()
-        self.failUnless(self.Mirrored.Shape.Volume == 1.9999999999999993)
+        self.assertAlmostEqual(self.Mirrored.Shape.Volume, 2.0)
 
     def testMirroredPrimitiveCase(self):
         """
@@ -167,7 +167,7 @@ class PartDesignMirroredTestCases(unittest.TestCase):
         self.Mirrored.MirrorPlane = (self.Doc.XY_Plane, [""])
         self.Body.addObject(self.Mirrored)
         self.Doc.recompute()
-        self.failUnless(self.Mirrored.Shape.Volume == 1.9999999999999993)
+        self.assertAlmostEqual(self.Mirrored.Shape.Volume, 2.0)
 
     def testMirroredOffsetFailureCase(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
