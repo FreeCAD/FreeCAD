@@ -50,16 +50,16 @@ def create_nodes_spine(femmesh):
 
 def create_elements_spine(femmesh):
     # elements
-    femmesh.addVolume([6L, 5L, 12L, 11L, 26L, 33L, 43L, 37L, 20L, 34L], 1)
-    femmesh.addVolume([12L, 9L, 11L, 2L, 44L, 39L, 34L, 45L, 15L, 38L], 2)
-    femmesh.addVolume([4L, 3L, 1L, 12L, 27L, 22L, 36L, 41L, 24L, 35L], 3)
-    femmesh.addVolume([12L, 2L, 11L, 1L, 45L, 38L, 34L, 35L, 25L, 21L], 4)
-    femmesh.addVolume([12L, 2L, 1L, 4L, 45L, 25L, 35L, 41L, 16L, 36L], 5)
-    femmesh.addVolume([12L, 9L, 2L, 10L, 44L, 15L, 45L, 42L, 31L, 32L], 6)
-    femmesh.addVolume([12L, 2L, 4L, 10L, 45L, 16L, 41L, 42L, 32L, 18L], 7)
-    femmesh.addVolume([12L, 9L, 10L, 6L, 44L, 31L, 42L, 43L, 14L, 30L], 8)
-    femmesh.addVolume([12L, 9L, 6L, 11L, 44L, 14L, 43L, 34L, 39L, 37L], 9)
-    femmesh.addVolume([7L, 6L, 5L, 12L, 29L, 26L, 19L, 23L, 43L, 33L], 10)
-    femmesh.addVolume([7L, 8L, 6L, 12L, 28L, 13L, 29L, 23L, 40L, 43L], 11)
-    femmesh.addVolume([10L, 12L, 6L, 8L, 42L, 43L, 30L, 17L, 40L, 13L], 12)
+    femmesh.addVolume([6, 5, 12, 11, 26, 33, 43, 37, 20, 34], 1)
+    femmesh.addVolume([12, 9, 11, 2, 44, 39, 34, 45, 15, 38], 2)
+    femmesh.addVolume([4, 3, 1, 12, 27, 22, 36, 41, 24, 35], 3)
+    femmesh.addVolume([12, 2, 11, 1, 45, 38, 34, 35, 25, 21], 4)
+    femmesh.addVolume([12, 2, 1, 4, 45, 25, 35, 41, 16, 36], 5)
+    femmesh.addVolume([12, 9, 2, 10, 44, 15, 45, 42, 31, 32], 6)
+    femmesh.addVolume([12, 2, 4, 10, 45, 16, 41, 42, 32, 18], 7)
+    femmesh.addVolume([12, 9, 10, 6, 44, 31, 42, 43, 14, 30], 8)
+    femmesh.addVolume([12, 9, 6, 11, 44, 14, 43, 34, 39, 37], 9)
+    femmesh.addVolume([7, 6, 5, 12, 29, 26, 19, 23, 43, 33], 10)
+    femmesh.addVolume([7, 8, 6, 12, 28, 13, 29, 23, 40, 43], 11)
+    femmesh.addVolume([10, 12, 6, 8, 42, 43, 30, 17, 40, 13], 12)
     return True
