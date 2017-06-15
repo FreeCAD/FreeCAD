@@ -121,6 +121,8 @@ class PathWorkbench (Workbench):
         #     "Path", "Remote Operations")], remotecmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
 
+        self.dressupcmds = dressupcmdlist
+
         Log('Loading Path workbench... done\n')
 
     def GetClassName(self):
@@ -143,8 +145,10 @@ class PathWorkbench (Workbench):
                     self.appendContextMenu("", ["Path_ExportTemplate"])
                 if "Profile" in selectedName or "Contour" in selectedName:
                     #self.appendContextMenu("", ["Add_Tag"])
-                    self.appendContextMenu("", ["Set_StartPoint"])
+                    #self.appendContextMenu("", ["Set_StartPoint"])
                     #self.appendContextMenu("", ["Set_EndPoint"])
+                    for cmd in self.dressupcmds:
+                        self.appendContextMenu("", [cmd])
                 if "Remote" in selectedName:
                     self.appendContextMenu("", ["Refresh_Path"])
 
