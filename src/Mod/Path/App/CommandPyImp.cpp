@@ -74,19 +74,20 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
         PyObject *key, *value;
         Py_ssize_t pos = 0;
         while (parameters && PyDict_Next(parameters, &pos, &key, &value)) {
+            std::string ckey;
 #if PY_MAJOR_VERSION >= 3
-            if ( !PyObject_TypeCheck(key,&(PyBytes_Type)) || (!PyObject_TypeCheck(value,&(PyFloat_Type)) && !PyObject_TypeCheck(value,&(PyLong_Type))) ) {
+            if (PyUnicode_Check(key)) {
+                ckey = PyUnicode_AsUTF8(key);
 #else
-            if ( !PyObject_TypeCheck(key,&(PyString_Type)) || (!PyObject_TypeCheck(value,&(PyFloat_Type)) && !PyObject_TypeCheck(value,&(PyInt_Type))) ) {
+            if (PyString_Check(key)) {
+                ckey = PyString_AsString(key);
 #endif
-                PyErr_SetString(PyExc_TypeError, "The dictionary can only contain string:number pairs");
+            }
+            else {
+                PyErr_SetString(PyExc_TypeError, "The dictionary can only contain string keys");
                 return -1;
             }
-#if PY_MAJOR_VERSION >= 3
-            std::string ckey = PyBytes_AsString(key);
-#else
-            std::string ckey = PyString_AsString(key);
-#endif
+
             boost::to_upper(ckey);
             double cvalue;
 #if PY_MAJOR_VERSION >= 3
@@ -96,8 +97,13 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
             if (PyObject_TypeCheck(value,&(PyInt_Type))) {
                 cvalue = (double)PyInt_AsLong(value);
 #endif
-            } else {
+            }
+            else if (PyObject_TypeCheck(value, &(PyFloat_Type))) {
                 cvalue = PyFloat_AsDouble(value);
+            }
+            else {
+                PyErr_SetString(PyExc_TypeError, "The dictionary can only contain number values");
+                return -1;
             }
             getCommandPtr()->Parameters[ckey]=cvalue;
         }
@@ -138,7 +144,7 @@ Py::Dict CommandPy::getParameters(void) const
     PyObject *dict = PyDict_New();
     for(std::map<std::string,double>::iterator i = getCommandPtr()->Parameters.begin(); i != getCommandPtr()->Parameters.end(); ++i) {
 #if PY_MAJOR_VERSION >= 3
-        PyDict_SetItem(dict,PyBytes_FromString(i->first.c_str()),PyFloat_FromDouble(i->second));
+        PyDict_SetItem(dict,PyUnicode_FromString(i->first.c_str()),PyFloat_FromDouble(i->second));
 #else
         PyDict_SetItem(dict,PyString_FromString(i->first.c_str()),PyFloat_FromDouble(i->second));
 #endif
@@ -152,29 +158,36 @@ void CommandPy::setParameters(Py::Dict arg)
     PyObject *key, *value;
     Py_ssize_t pos = 0;
     while (PyDict_Next(dict_copy, &pos, &key, &value)) {
+        std::string ckey;
 #if PY_MAJOR_VERSION >= 3
-        if ( PyObject_TypeCheck(key,&(PyBytes_Type)) && (PyObject_TypeCheck(value,&(PyFloat_Type)) || PyObject_TypeCheck(value,&(PyLong_Type)) ) ) {
-            std::string ckey = PyBytes_AsString(key);
+        if (PyUnicode_Check(key)) {
+            ckey = PyUnicode_AsUTF8(key);
 #else
-        if ( PyObject_TypeCheck(key,&(PyString_Type)) && (PyObject_TypeCheck(value,&(PyFloat_Type)) || PyObject_TypeCheck(value,&(PyInt_Type)) ) ) {
-            std::string ckey = PyString_AsString(key);
+        if (PyString_Check(key)) {
+            ckey = PyString_AsString(key);
 #endif
-            boost::to_upper(ckey);
-            double cvalue;
-#if PY_MAJOR_VERSION >= 3
-            if (PyObject_TypeCheck(value,&(PyLong_Type))) {
-                cvalue = (double)PyLong_AsLong(value);
-#else
-            if (PyObject_TypeCheck(value,&(PyInt_Type))) {
-                cvalue = (double)PyInt_AsLong(value);
-#endif
-            } else {
-                cvalue = PyFloat_AsDouble(value);
-            }
-            getCommandPtr()->Parameters[ckey]=cvalue;
-        } else {
-            throw Py::Exception("The dictionary can only contain string:number pairs");
         }
+        else {
+            throw Py::Exception("The dictionary can only contain string keys");
+        }
+
+        boost::to_upper(ckey);
+        double cvalue;
+#if PY_MAJOR_VERSION >= 3
+        if (PyObject_TypeCheck(value,&(PyLong_Type))) {
+            cvalue = (double)PyLong_AsLong(value);
+#else
+        if (PyObject_TypeCheck(value,&(PyInt_Type))) {
+            cvalue = (double)PyInt_AsLong(value);
+#endif
+        }
+        else if (PyObject_TypeCheck(value, &(PyFloat_Type))) {
+            cvalue = PyFloat_AsDouble(value);
+        }
+        else {
+            throw Py::Exception("The dictionary can only contain number values");
+        }
+        getCommandPtr()->Parameters[ckey]=cvalue;
     }
 }
 
@@ -184,7 +197,7 @@ PyObject* CommandPy::toGCode(PyObject *args)
 {
     if (PyArg_ParseTuple(args, "")) {
 #if PY_MAJOR_VERSION >= 3
-        return PyBytes_FromString(getCommandPtr()->toGCode().c_str());
+        return PyUnicode_FromString(getCommandPtr()->toGCode().c_str());
 #else
         return PyString_FromString(getCommandPtr()->toGCode().c_str());
 #endif

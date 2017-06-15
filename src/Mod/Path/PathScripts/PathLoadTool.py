@@ -26,12 +26,12 @@
 import FreeCAD
 from FreeCAD import Units
 import FreeCADGui
-import PathUtils
 import Path
 import Part
 import PathScripts
 from PySide import QtCore, QtGui
 import PathScripts.PathLog as PathLog
+import PathScripts.PathUtils as PathUtils
 
 LOG_MODULE = 'PathLoadTool'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
@@ -194,7 +194,7 @@ class CommandPathLoadTool:
         PathLog.track("tool: {} with toolNumber: {}".format(tool, toolNumber))
 
         import PathScripts
-        import PathUtils
+        from PathScripts import PathUtils
 
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Default Tool")
         PathScripts.PathLoadTool.LoadTool(obj)

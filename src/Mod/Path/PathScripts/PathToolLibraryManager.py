@@ -30,7 +30,7 @@ import Path
 import os
 from PySide import QtCore, QtGui
 import PathScripts
-import PathUtils
+from PathScripts import PathUtils
 
 import PathScripts.PathLog as PathLog
 
