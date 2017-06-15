@@ -34,13 +34,23 @@ class PostProcessor:
     @classmethod
     def load(cls, processor):
         postname = processor + "_post"
-
-        exec("import %s as current_post" % postname)
+        namespace = {}
+        
+        #can't modify function local scope with exec in python3
+        exec("from PathScripts import %s as current_post" % postname, namespace)
+        current_post = namespace['current_post']
+        
         # make sure the script is reloaded if it was previously loaded
         # should the script have been imported for the first time above
         # then the initialization code of the script gets executed twice
         # resulting in 2 load messages if the script outputs one of those.
-        exec("reload(%s)" % 'current_post')
+        try:
+            # Python 2.7
+            exec("reload(%s)" % 'current_post')
+        except NameError:
+            # Python 3.4+
+            from importlib import reload
+            exec("reload(%s)" % 'current_post')
 
         instance = PostProcessor(current_post)
         instance.units = None

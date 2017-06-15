@@ -30,7 +30,7 @@ from DraftGeomUtils import geomType
 import PathScripts
 from PathScripts import PathJob
 import numpy
-import PathLog
+from PathScripts import PathLog
 from FreeCAD import Vector
 import Path
 from PySide import QtCore
