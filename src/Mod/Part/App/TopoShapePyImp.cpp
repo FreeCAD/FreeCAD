@@ -2361,6 +2361,50 @@ PyObject* TopoShapePy::proximity(PyObject *args)
         proximity.SetTolerance (tol);
     proximity.Perform();
     if (!proximity.IsDone()) {
+        // the proximity failed, maybe it's because the shapes are not yet mesh
+        TopLoc_Location aLoc;
+        TopExp_Explorer xp(s1, TopAbs_FACE);
+        while (xp.More()) {
+            const Handle(Poly_Triangulation)& aTriangulation =
+              BRep_Tool::Triangulation(TopoDS::Face(xp.Current()), aLoc);
+            if (aTriangulation.IsNull()) {
+                PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
+                return 0;
+            }
+        }
+
+        xp.Init(s2, TopAbs_FACE);
+        while (xp.More()) {
+            const Handle(Poly_Triangulation)& aTriangulation =
+              BRep_Tool::Triangulation(TopoDS::Face(xp.Current()), aLoc);
+            if (aTriangulation.IsNull()) {
+                PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
+                return 0;
+            }
+        }
+
+        // check also for free edges
+        xp.Init(s1, TopAbs_EDGE, TopAbs_FACE);
+        while (xp.More()) {
+            const Handle(Poly_Polygon3D)& aPoly3D =
+              BRep_Tool::Polygon3D(TopoDS::Edge(xp.Current()), aLoc);
+            if (aPoly3D.IsNull()) {
+                PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
+                return 0;
+            }
+        }
+
+        xp.Init(s2, TopAbs_EDGE, TopAbs_FACE);
+        while (xp.More()) {
+            const Handle(Poly_Polygon3D)& aPoly3D =
+              BRep_Tool::Polygon3D(TopoDS::Edge(xp.Current()), aLoc);
+            if (aPoly3D.IsNull()) {
+                PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
+                return 0;
+            }
+        }
+
+        // another problem must have occurred
         PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done");
         return 0;
     }
