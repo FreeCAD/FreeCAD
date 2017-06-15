@@ -101,7 +101,7 @@ def get_MaxDimElementFromList(elem_list):
     """
         Gets element with the maximal dimension in the mesh to determine cells.
     """
-    elem_list.sort(key=lambda (num, s, d): d)
+    elem_list.sort(key=lambda t: t[2])
     return elem_list[-1]
 
 
@@ -217,7 +217,7 @@ def fill_femresult_mechanical(results, result_set, span):
             scale = 1.0
 
         results.DisplacementVectors = list(map((lambda x: x * scale), disp.values()))
-        results.NodeNumbers = disp.keys()
+        results.NodeNumbers = list(disp.keys())
         results.DisplacementLengths = calculate_disp_abs(displacement)
 
         if 'stressv' in result_set:
@@ -256,10 +256,11 @@ def fill_femresult_mechanical(results, result_set, span):
                     results.PrincipalMed = prinstress2
                     results.PrincipalMin = prinstress3
                     results.MaxShear = shearstress
-            if (results.NodeNumbers != 0 and results.NodeNumbers != stress.keys()):
+            stress_keys = list(stress.keys())
+            if (results.NodeNumbers != 0 and results.NodeNumbers != stress_keys):
                 print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
                       .format(results.NodeNumbers, len(results.StressValues)))
-            results.NodeNumbers = stress.keys()
+            results.NodeNumbers = stress_keys
 
         # Read Equivalent Plastic strain if they exist
         if 'peeq' in result_set:
