@@ -45,7 +45,7 @@ class PartDesignPadTestCases(unittest.TestCase):
         self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
         self.Pad.Profile = self.PadSketch
         self.Doc.recompute()
-        self.failUnless(len(self.Pad.Shape.Faces) == 6)
+        self.assertEqual(len(self.Pad.Shape.Faces), 6)
 
     def testPadToFirstCase(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -73,7 +73,7 @@ class PartDesignPadTestCases(unittest.TestCase):
         self.Pad1.Type = 2
         self.Pad1.Reversed = 1
         self.Doc.recompute()
-        self.failUnless(self.Pad1.Shape.Volume == 1.9999999999999996)
+        self.assertAlmostEqual(self.Pad1.Shape.Volume, 2.0)
 
     def testPadtoLastCase(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -101,7 +101,7 @@ class PartDesignPadTestCases(unittest.TestCase):
         self.Pad1.Type = 1
         self.Pad1.Reversed = 1
         self.Doc.recompute()
-        self.failUnless(self.Pad1.Shape.Volume == 2.999999999999999)
+        self.assertAlmostEqual(self.Pad1.Shape.Volume, 3.0)
 
     def testPadToFaceCase(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -130,7 +130,7 @@ class PartDesignPadTestCases(unittest.TestCase):
         self.Pad1.UpToFace = (self.Pad, ["Face3"])
         self.Pad1.Reversed = 1
         self.Doc.recompute()
-        self.failUnless(self.Pad1.Shape.Volume == 1.9999999999999996)
+        self.assertAlmostEqual(self.Pad1.Shape.Volume, 2.0)
 
     def testPadTwoDimensionsCase(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -160,7 +160,7 @@ class PartDesignPadTestCases(unittest.TestCase):
         self.Pad1.Length2 = 1.0
         self.Pad1.Reversed = 1
         self.Doc.recompute()
-        self.failUnless(self.Pad1.Shape.Volume == 3.9999999999999996)
+        self.assertAlmostEqual(self.Pad1.Shape.Volume, 4.0)
 
     def tearDown(self):
         #closing doc
@@ -204,7 +204,7 @@ class PartDesignRevolveTestCases(unittest.TestCase):
         self.Groove.Reversed = 1
         self.Body.addObject(self.Groove)
         self.Doc.recompute()
-        self.failUnless(len(self.Groove.Shape.Faces) == 5)
+        self.assertEqual(len(self.Groove.Shape.Faces), 5)
 
     def tearDown(self):
         #closing doc
@@ -219,12 +219,6 @@ class PartDesignMirroredTestCases(unittest.TestCase):
         """
         Creates a unit cube cornered at the origin and mirrors it about the Y axis.
         This operation should create a rectangular prism with volume 2.0.
-
-        The precision is currently broken and the volume created
-        is 1.9999999999999993. so this test will fail if code is
-        introduced to change it. If you've submitted code which fixes
-        the precision and causes this bug to fail, please remove this
-        message and update this test as well as testMirroredPrimitiveCase.
         """
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.Rect = self.Doc.addObject('Sketcher::SketchObject','Rect')
@@ -326,7 +320,7 @@ class PartDesignMirroredTestCases(unittest.TestCase):
         self.Mirrored.MirrorPlane = (self.Rect, ["H_Axis"])
         self.Body.addObject(self.Mirrored)
         self.Doc.recompute()
-        self.failUnless(self.Mirrored.State == ["Invalid"])
+        self.assertEqual(self.Mirrored.State, ["Invalid"])
 
     def tearDown(self):
         #closing doc
