@@ -23,6 +23,40 @@
 import FreeCAD, os, sys, unittest, Part, Sketcher
 App = FreeCAD
 
+def CreateRectangleSketch(SketchFeature, corner, lengths, square=False):
+    hmin, hmax = corner[0], corner[0] + lengths[0]
+    vmin, vmax = corner[1], corner[1] + lengths[1]
+
+    # add the geometry and grab the count offset
+    i = int(SketchFeature.GeometryCount)
+    SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(hmin,vmax),FreeCAD.Vector(hmax,vmax,0)))
+    SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(hmax,vmax,0),FreeCAD.Vector(hmax,vmin,0)))
+    SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(hmax,vmin,0),FreeCAD.Vector(hmin,vmin,0)))
+    SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(hmin,vmin,0),FreeCAD.Vector(hmin,vmax,0)))
+
+    # add the rectangular constraints
+    SketchFeature.addConstraint(Sketcher.Constraint('Coincident',i+0,2,i+1,1)) 
+    SketchFeature.addConstraint(Sketcher.Constraint('Coincident',i+1,2,i+2,1)) 
+    SketchFeature.addConstraint(Sketcher.Constraint('Coincident',i+2,2,i+3,1)) 
+    SketchFeature.addConstraint(Sketcher.Constraint('Coincident',i+3,2,i+0,1)) 
+    SketchFeature.addConstraint(Sketcher.Constraint('Horizontal',i+0)) 
+    SketchFeature.addConstraint(Sketcher.Constraint('Horizontal',i+2)) 
+    SketchFeature.addConstraint(Sketcher.Constraint('Vertical',i+1)) 
+    SketchFeature.addConstraint(Sketcher.Constraint('Vertical',i+3)) 
+
+    # Fix the bottom left corner of the rectangle
+    App.ActiveDocument.Sketch.addConstraint(Sketcher.Constraint('DistanceX',i+2,2,corner[0])) 
+    App.ActiveDocument.Sketch.addConstraint(Sketcher.Constraint('DistanceY',i+2,2,corner[1])) 
+
+    # add dimensions
+    if square:
+        # Make sure it's square
+        SketchFeature.addConstraint(Sketcher.Constraint('Equal',i+2,i+3)) 
+        SketchFeature.addConstraint(Sketcher.Constraint('Distance',i+0,hmax-hmin)) 
+    else:
+        SketchFeature.addConstraint(Sketcher.Constraint('Distance',i+1,vmax-vmin)) 
+        SketchFeature.addConstraint(Sketcher.Constraint('Distance',i+0,hmax-hmin)) 
+    
 def CreateBoxSketchSet(SketchFeature):
 	SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(-99.230339,36.960674,0),FreeCAD.Vector(69.432587,36.960674,0)))
 	SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(69.432587,36.960674,0),FreeCAD.Vector(69.432587,-53.196629,0)))
