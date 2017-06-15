@@ -552,21 +552,23 @@ class PathData:
         self.wire, rapid = PathGeom.wireForPath(obj.Base.Path)
         self.rapid = _RapidEdges(rapid)
         self.edges = self.wire.Edges
-        self.base = self.findBottomWire(self.edges)
-        # determine overall length
-        self.length = self.base.Length
+        self.baseWire = self.findBottomWire(self.edges)
 
     def findBottomWire(self, edges):
         (minZ, maxZ) = self.findZLimits(edges)
         self.minZ = minZ
         self.maxZ = maxZ
         bottom = [e for e in edges if PathGeom.isRoughly(e.Vertexes[0].Point.z, minZ) and PathGeom.isRoughly(e.Vertexes[1].Point.z, minZ)]
-        wire = Part.Wire(bottom)
-        if wire.isClosed():
-            return wire
-        # if we get here there are already holding tags, or we're not looking at a profile
-        # let's try and insert the missing pieces - another day
-        raise ValueError("Selected path doesn't seem to be a Profile operation.")
+        self.bottomEdges = bottom
+        try:
+            wire = Part.Wire(bottom)
+            if wire.isClosed():
+                return wire
+        except:
+            return None
+
+    def supportsTagGeneration(self):
+        return self.baseWire is not None
 
     def findZLimits(self, edges):
         # not considering arcs and spheres in Z direction, find the highes and lowest Z values
@@ -583,18 +585,18 @@ class PathData:
         return (minZ, maxZ)
 
     def shortestAndLongestPathEdge(self):
-        edges = sorted(self.base.Edges, key=lambda e: e.Length)
+        edges = sorted(self.bottomEdges, key=lambda e: e.Length)
         return (edges[0], edges[-1])
 
     def generateTags(self, obj, count, width=None, height=None, angle=None, radius=None, spacing=None):
         PathLog.track(count, width, height, angle, spacing)
-        #for e in self.base.Edges:
+        #for e in self.baseWire.Edges:
         #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
 
         if spacing:
             tagDistance = spacing
         else:
-            tagDistance = self.base.Length / (count if count else 4)
+            tagDistance = self.baseWire.Length / (count if count else 4)
 
         W = width if width else self.defaultTagWidth()
         H = height if height else self.defaultTagHeight()
@@ -605,14 +607,14 @@ class PathData:
         # start assigning tags on the longest segment
         (shortestEdge, longestEdge) = self.shortestAndLongestPathEdge()
         startIndex = 0
-        for i in range(0, len(self.base.Edges)):
-            edge = self.base.Edges[i]
+        for i in range(0, len(self.baseWire.Edges)):
+            edge = self.baseWire.Edges[i]
             PathLog.debug('  %d: %.2f' % (i, edge.Length))
             if edge.Length == longestEdge.Length:
                 startIndex = i
                 break
 
-        startEdge = self.base.Edges[startIndex]
+        startEdge = self.baseWire.Edges[startIndex]
         startCount = int(startEdge.Length / tagDistance)
         if (longestEdge.Length - shortestEdge.Length) > shortestEdge.Length:
             startCount = int(startEdge.Length / tagDistance) + 1
@@ -622,24 +624,24 @@ class PathData:
 
         minLength = min(2. * W, longestEdge.Length)
 
-        PathLog.debug("length=%.2f shortestEdge=%.2f(%.2f) longestEdge=%.2f(%.2f) minLength=%.2f" % (self.base.Length, shortestEdge.Length, shortestEdge.Length/self.base.Length, longestEdge.Length, longestEdge.Length / self.base.Length, minLength))
+        PathLog.debug("length=%.2f shortestEdge=%.2f(%.2f) longestEdge=%.2f(%.2f) minLength=%.2f" % (self.baseWire.Length, shortestEdge.Length, shortestEdge.Length/self.baseWire.Length, longestEdge.Length, longestEdge.Length / self.baseWire.Length, minLength))
         PathLog.debug("   start: index=%-2d count=%d (length=%.2f, distance=%.2f)" % (startIndex, startCount, startEdge.Length, tagDistance))
         PathLog.debug("               -> lastTagLength=%.2f)" % lastTagLength)
         PathLog.debug("               -> currentLength=%.2f)" % currentLength)
 
         edgeDict = { startIndex: startCount }
 
-        for i in range(startIndex + 1, len(self.base.Edges)):
-            edge = self.base.Edges[i]
+        for i in range(startIndex + 1, len(self.baseWire.Edges)):
+            edge = self.baseWire.Edges[i]
             (currentLength, lastTagLength) = self.processEdge(i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict)
         for i in range(0, startIndex):
-            edge = self.base.Edges[i]
+            edge = self.baseWire.Edges[i]
             (currentLength, lastTagLength) = self.processEdge(i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict)
 
         tags = []
 
         for (i, count) in edgeDict.iteritems():
-            edge = self.base.Edges[i]
+            edge = self.baseWire.Edges[i]
             PathLog.debug(" %d: %d" % (i, count))
             #debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
             #debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
@@ -688,7 +690,7 @@ class PathData:
 
     def sortedTags(self, tags):
         ordered = []
-        for edge in self.base.Edges:
+        for edge in self.bottomEdges:
             ts = [t for t in tags if DraftGeomUtils.isPtOnEdge(t.originAt(self.minZ), edge)]
             for t in sorted(ts, key=lambda t: (t.originAt(self.minZ) - edge.valueAt(edge.FirstParameter)).Length):
                 tags.remove(t)
@@ -711,7 +713,6 @@ class ObjectDressup:
 
     def __init__(self, obj):
         self.obj = obj
-        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
         obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "The base path to modify"))
         obj.addProperty("App::PropertyLength", "Width", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Width of tags."))
         obj.addProperty("App::PropertyLength", "Height", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Height of tags."))
@@ -728,16 +729,27 @@ class ObjectDressup:
     def __setstate__(self, state):
         return None
 
+    def supportsTagGeneration(self, obj):
+        if not hasattr(self, 'pathData'):
+            self.setup(obj)
+        return self.pathData.supportsTagGeneration()
+
     def generateTags(self, obj, count):
-        if hasattr(self, "pathData"):
-            self.tags = self.pathData.generateTags(obj, count, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius.Value, None)
-            obj.Positions = [tag.originAt(self.pathData.minZ) for tag in self.tags]
-            obj.Disabled  = []
-            return False
+        if self.supportsTagGeneration(obj):
+            if hasattr(self, "pathData"):
+                self.tags = self.pathData.generateTags(obj, count, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius.Value, None)
+                obj.Positions = [tag.originAt(self.pathData.minZ) for tag in self.tags]
+                obj.Disabled  = []
+                return False
+            else:
+                self.setup(obj, count)
+                self.execute(obj)
+                return True
         else:
-            self.setup(obj, count)
-            self.execute(obj)
-            return True
+            self.tags = []
+            obj.Positions = []
+            obj.Disabled = []
+            return False
 
     def isValidTagStartIntersection(self, edge, i):
         if PathGeom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
@@ -812,10 +824,10 @@ class ObjectDressup:
         lastCmd = Path.Command('G0', {'X': 0.0, 'Y': 0.0, 'Z': 0.0});
         outCommands = []
 
-        horizFeed = obj.ToolController.HorizFeed.Value
-        vertFeed = obj.ToolController.VertFeed.Value
-        horizRapid = obj.ToolController.HorizRapid.Value
-        vertRapid = obj.ToolController.VertRapid.Value
+        horizFeed = obj.Base.ToolController.HorizFeed.Value
+        vertFeed = obj.Base.ToolController.VertFeed.Value
+        horizRapid = obj.Base.ToolController.HorizRapid.Value
+        vertRapid = obj.Base.ToolController.VertRapid.Value
 
         for cmd in commands:
             params = cmd.Parameters
@@ -942,32 +954,7 @@ class ObjectDressup:
             PathLog.error(translate("PathDressup_HoldingTags", "Cannot insert holding tags for this path - please select a Profile path\n"))
             return None
 
-        self.toolRadius = 5
-        # toolLoad = PathUtils.getLastToolLoad(obj)
-        # if toolLoad is None or toolLoad.ToolNumber == 0:
-        #     self.toolRadius = 5
-        # else:
-        #     tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-        #     if not tool or tool.Diameter == 0:
-        #         self.toolRadius = 5
-        #     else:
-        #         self.toolRadius = tool.Diameter / 2
-        toolLoad = obj.ToolController
-        if toolLoad is None or toolLoad.ToolNumber == 0:
-            PathLog.error(translate("PathDressup_HoldingTags", "No Tool Controller is selected. We need a tool to build a Path\n"))
-            #return
-        else:
-            # self.vertFeed = toolLoad.VertFeed.Value
-            # self.horizFeed = toolLoad.HorizFeed.Value
-            # self.vertRapid = toolLoad.VertRapid.Value
-            # self.horizRapid = toolLoad.HorizRapid.Value
-            tool = toolLoad.Proxy.getTool(toolLoad)
-            if not tool or tool.Diameter == 0:
-                PathLog.error(translate("PathDressup_HoldingTags", "No Tool found or diameter is zero. We need a tool to build a Path.\n"))
-                return
-            else:
-                self.toolRadius = tool.Diameter/2
-
+        self.toolRadius = obj.Base.ToolController.Tool.Diameter / 2
         self.pathData = pathData
         if generate:
             obj.Height = self.pathData.defaultTagHeight()
@@ -1245,8 +1232,11 @@ class TaskPanel:
         self.setFields()
         self.whenCountChanged()
 
-        self.formTags.sbCount.valueChanged.connect(self.whenCountChanged)
-        self.formTags.pbGenerate.clicked.connect(self.generateNewTags)
+        if self.obj.Proxy.supportsTagGeneration(self.obj):
+            self.formTags.sbCount.valueChanged.connect(self.whenCountChanged)
+            self.formTags.pbGenerate.clicked.connect(self.generateNewTags)
+        else:
+            self.formTags.cbTagGeneration.setEnabled(False)
 
         self.formTags.ifHeight.editingFinished.connect(self.updateModel)
         self.formTags.ifWidth.editingFinished.connect(self.updateModel)
@@ -1345,6 +1335,7 @@ class ViewProviderDressup:
 
 
     def claimChildren(self):
+        PathLog.notice(self.obj)
         for i in self.obj.Base.InList:
             if hasattr(i, "Group"):
                 group = i.Group
@@ -1353,7 +1344,7 @@ class ViewProviderDressup:
                         group.remove(g)
                 i.Group = group
                 #print i.Group
-        #FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
+        FreeCADGui.ActiveDocument.getObject(self.obj.Base.Name).Visibility = False
         return [self.obj.Base]
 
     def setEdit(self, vobj, mode=0):
@@ -1462,7 +1453,6 @@ class CommandPathDressupHoldingTags:
         FreeCADGui.doCommand('PathScripts.PathDressupHoldingTags.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
-        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
         FreeCADGui.doCommand('dbo.setup(obj, True)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
