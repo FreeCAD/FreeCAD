@@ -45,8 +45,8 @@ def CreateRectangleSketch(SketchFeature, corner, lengths, square=False):
     SketchFeature.addConstraint(Sketcher.Constraint('Vertical',i+3)) 
 
     # Fix the bottom left corner of the rectangle
-    App.ActiveDocument.Sketch.addConstraint(Sketcher.Constraint('DistanceX',i+2,2,corner[0])) 
-    App.ActiveDocument.Sketch.addConstraint(Sketcher.Constraint('DistanceY',i+2,2,corner[1])) 
+    SketchFeature.addConstraint(Sketcher.Constraint('DistanceX',i+2,2,corner[0])) 
+    SketchFeature.addConstraint(Sketcher.Constraint('DistanceY',i+2,2,corner[1])) 
 
     # add dimensions
     if square:

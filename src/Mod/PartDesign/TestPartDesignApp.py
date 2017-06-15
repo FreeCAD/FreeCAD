@@ -47,10 +47,125 @@ class PartDesignPadTestCases(unittest.TestCase):
         self.Doc.recompute()
         self.failUnless(len(self.Pad.Shape.Faces) == 6)
 
+    def testPadToFirstCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        # Make first offset cube Pad
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Doc.recompute()
+        # Make second pad on different plane and pad to first
+        self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
+        self.Body.addObject(self.PadSketch1)
+        self.PadSketch1.MapMode = 'FlatFace'
+        self.PadSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
+        self.Body.addObject(self.Pad1)
+        self.Pad1.Profile = self.PadSketch1
+        self.Pad1.Type = 2
+        self.Pad1.Reversed = 1
+        self.Doc.recompute()
+        self.failUnless(self.Pad1.Shape.Volume == 1.9999999999999996)
+
+    def testPadtoLastCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        # Make first offset cube Pad
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0.5, 1), (0.5, 2))
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Doc.recompute()
+        # Make second pad on different plane and pad to first
+        self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
+        self.Body.addObject(self.PadSketch1)
+        self.PadSketch1.MapMode = 'FlatFace'
+        self.PadSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
+        self.Body.addObject(self.Pad1)
+        self.Pad1.Profile = self.PadSketch1
+        self.Pad1.Type = 1
+        self.Pad1.Reversed = 1
+        self.Doc.recompute()
+        self.failUnless(self.Pad1.Shape.Volume == 2.999999999999999)
+
+    def testPadToFaceCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        # Make first offset cube Pad
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Doc.recompute()
+        # Make second pad on different plane and pad to face on first
+        self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
+        self.Body.addObject(self.PadSketch1)
+        self.PadSketch1.MapMode = 'FlatFace'
+        self.PadSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
+        self.Body.addObject(self.Pad1)
+        self.Pad1.Profile = self.PadSketch1
+        self.Pad1.Type = 3
+        self.Pad1.UpToFace = (self.Pad, ["Face3"])
+        self.Pad1.Reversed = 1
+        self.Doc.recompute()
+        self.failUnless(self.Pad1.Shape.Volume == 1.9999999999999996)
+
+    def testPadTwoDimensionsCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        # Make first offset cube Pad
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Doc.recompute()
+        # Make second pad on different plane and pad to face on first
+        self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
+        self.Body.addObject(self.PadSketch1)
+        self.PadSketch1.MapMode = 'FlatFace'
+        self.PadSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
+        self.Body.addObject(self.Pad1)
+        self.Pad1.Profile = self.PadSketch1
+        self.Pad1.Type = 4
+        self.Pad1.Length = 2.0
+        self.Pad1.Length2 = 1.0
+        self.Pad1.Reversed = 1
+        self.Doc.recompute()
+        self.failUnless(self.Pad1.Shape.Volume == 3.9999999999999996)
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartDesignTestPad")
-        # print ("omit closing document for debugging")
+        #print ("omit closing document for debugging")
 
 class PartDesignRevolveTestCases(unittest.TestCase):
     def setUp(self):
