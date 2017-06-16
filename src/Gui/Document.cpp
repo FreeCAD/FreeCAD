@@ -423,7 +423,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
     ViewProviderDocumentObject* pcProvider = static_cast<ViewProviderDocumentObject*>(getViewProvider(&Obj));
     if (!pcProvider) {
         //Base::Console().Log("Document::slotNewObject() called\n");
-        std::string cName = Obj.getViewProviderName();
+        std::string cName = Obj.getViewProviderNameStored();
         if (cName.empty()) {
             // handle document object with no view provider specified
             Base::Console().Log("%s has no view provider specified\n", Obj.getTypeId().getName());

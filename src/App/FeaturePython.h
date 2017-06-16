@@ -49,6 +49,7 @@ public:
     void onBeforeChange(const Property* prop);
     void onChanged(const Property* prop);
     void onDocumentRestored();
+    std::string getViewProviderName();
     PyObject *getPyObject(void);
 
     bool getSubObject(DocumentObject *&ret, const char *subname, PyObject **pyObj, 
@@ -112,6 +113,12 @@ public:
             return new App::DocumentObjectExecReturn(e.what());
         }
         return DocumentObject::StdReturn;
+    }
+    virtual const char* getViewProviderNameOverride(void) const override{
+        viewProviderName = imp->getViewProviderName();
+        if(viewProviderName.size())
+            return viewProviderName.c_str();
+        return FeatureT::getViewProviderNameOverride();
     }
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
@@ -276,6 +283,7 @@ private:
     FeaturePythonImp* imp;
     DynamicProperty* props;
     PropertyPythonObject Proxy;
+    mutable std::string viewProviderName;
 };
 
 // Special Feature-Python classes

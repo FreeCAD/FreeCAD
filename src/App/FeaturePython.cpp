@@ -472,6 +472,37 @@ int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
     return -2;
 }
 
+std::string FeaturePythonImp::getViewProviderName()
+{
+    // Run the execute method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
+            if (feature.hasAttr(std::string("getViewProviderName"))) {
+                if (feature.hasAttr("__object__")) {
+                    Py::Callable method(feature.getAttr(std::string("getViewProviderName")));
+                    Py::Tuple args;
+                    Py::String ret(method.apply(args));
+                    return ret.as_string();
+                } else {
+                    Py::Callable method(feature.getAttr(std::string("getViewProviderName")));
+                    Py::TupleN args(Py::Object(object->getPyObject(), true));
+                    Py::String ret(method.apply(args));
+                    return ret.as_string();
+                }
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return std::string();
+}
+
 // ---------------------------------------------------------
 
 namespace App {

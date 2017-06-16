@@ -219,17 +219,33 @@ PyObject*  DocumentPy::exportGraphviz(PyObject * args)
     }
 }
 
-PyObject*  DocumentPy::addObject(PyObject *args)
+PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
 {
-    char *sType,*sName=0;
+    char *sType,*sName=0,*sViewType=0;
     PyObject* obj=0;
     PyObject* view=0;
-    if (!PyArg_ParseTuple(args, "s|sOO", &sType,&sName,&obj,&view))     // convert args: Python->C
-        return NULL;                                         // NULL triggers exception 
+    PyObject *attach=Py_False;
+    static char *kwlist[] = {"type","name","objProxy","viewProxy","attach","viewType",NULL};
+    if (!PyArg_ParseTupleAndKeywords(args,kwd,"s|sOOOs", 
+                kwlist, &sType,&sName,&obj,&view,&attach,&sViewType))
+        return NULL; 
 
-    DocumentObject *pcFtr;
+    DocumentObject *pcFtr = 0;
 
-    pcFtr = getDocumentPtr()->addObject(sType,sName);
+    if(!obj || !PyObject_IsTrue(attach)) {
+        pcFtr = getDocumentPtr()->addObject(sType,sName,true,sViewType);
+    }else{
+        Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
+        if(base) {
+            if (!base->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+                delete base;
+                std::stringstream str;
+                str << "'" << sType << "' is not a document object type";
+                throw Base::TypeError(str.str());
+            }
+            pcFtr = static_cast<DocumentObject*>(base);
+        }
+    }
     if (pcFtr) {
         // Allows to hide the handling with Proxy in client python code
         if (obj) {
@@ -242,6 +258,21 @@ PyObject*  DocumentPy::addObject(PyObject *args)
                     pyobj.setAttr("__object__", pyftr);
                 }
                 pyftr.setAttr("Proxy", pyobj);
+
+                if(PyObject_IsTrue(attach)) {
+                    getDocumentPtr()->addObject(pcFtr,sName);
+
+                    try {
+                        Py::Callable method(pyobj.getAttr("attach"));
+                        if(!method.isNone()) {
+                            Py::TupleN arg(pyftr);
+                            method.apply(arg);
+                        }
+                    }catch (Py::Exception&) {
+                        Base::PyException e;
+                        e.ReportException();
+                    }
+                }
 
                 // if a document class is set we also need a view provider defined which must be
                 // something different to None

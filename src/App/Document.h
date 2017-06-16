@@ -206,8 +206,9 @@ public:
      * @param sType       the type of created object
      * @param pObjectName if nonNULL use that name otherwise generate a new uniq name based on the \a sType
      * @param isNew       if false don't call the \c DocumentObject::setupObject() callback (default is true)
+     * @param viewType    override object's view provider name
      */
-    DocumentObject *addObject(const char* sType, const char* pObjectName=0, bool isNew=true);
+    DocumentObject *addObject(const char* sType, const char* pObjectName=0, bool isNew=true, const char *viewType=0);
     /** Add an array of features of the given types and names.
      * Unicode names are set through the Label propery.
      * @param sType       The type of created object

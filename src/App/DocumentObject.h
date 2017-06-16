@@ -91,6 +91,10 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "";
     }
+    /// This function is introduced to allow Python feature override its view provider
+    virtual const char *getViewProviderNameOverride() const {
+        return getViewProviderName();
+    }
     /// Constructor
     DocumentObject(void);
     virtual ~DocumentObject();
@@ -315,6 +319,10 @@ public:
 
     const std::string & getOldLabel() const { return oldLabel; }
 
+    const char *getViewProviderNameStored() const {
+        return _pcViewProviderName.c_str();
+    }
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute(void);
@@ -378,6 +386,10 @@ protected: // attributes
 
     // pointer to the document name string (for performance)
     const std::string *pcNameInDocument;
+
+private:
+    // accessed by App::Document to record and restore the correct view provider type
+    std::string _pcViewProviderName;
     
 private:
     // Back pointer to all the fathers in a DAG of the document
