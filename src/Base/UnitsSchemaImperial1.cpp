@@ -127,6 +127,10 @@ QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &fac
             factor = 0.145038;
         }
     }
+    else if (unit == Unit::Velocity) {
+        unitString = QString::fromLatin1("in/min");
+        factor = 25.4/60;
+    }
     else{
         // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
@@ -187,6 +191,10 @@ QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant,
             unitString = QString::fromLatin1("psi");
             factor = 0.145038;
         }
+    }
+    else if (unit == Unit::Velocity) {
+        unitString = QString::fromLatin1("in/min");
+        factor = 25.4/60;
     }
     else {
         // default action for all cases without special treatment:
@@ -265,6 +273,10 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
     else if (unit == Unit::Volume) {
         unitString = QString::fromLatin1("cuft");
         factor = 28316846.592;
+    }
+    else if (unit == Unit::Velocity) {
+        unitString = QString::fromLatin1("in/min");
+        factor = 25.4/60;
     }
     else {
         unitString = quant.getUnit().getString();
