@@ -56,6 +56,7 @@ INSTALL(
         PyObjects/_FemElementGeometry1D.py
         PyObjects/_FemElementGeometry2D.py
         PyObjects/_FemMaterialMechanicalNonlinear.py
+        PyObjects/_FemMeshBoundaryLayer.py
         PyObjects/_FemMeshGmsh.py
         PyObjects/_FemMeshGroup.py
         PyObjects/_FemMeshRegion.py
@@ -80,6 +81,7 @@ INSTALL(
         PyGui/_CommandFemMaterialSolid.py
         PyGui/_CommandFemMaterialFluid.py
         PyGui/_CommandFemMesh2Mesh.py
+        PyGui/_CommandFemMeshBoundaryLayer.py
         PyGui/_CommandFemMeshClear.py
         PyGui/_CommandFemMeshGmshFromShape.py
         PyGui/_CommandFemMeshGroup.py
@@ -96,6 +98,7 @@ INSTALL(
         PyGui/_TaskPanelFemElementGeometry1D.py
         PyGui/_TaskPanelFemElementGeometry2D.py
         PyGui/_TaskPanelFemMaterial.py
+        PyGui/_TaskPanelFemMeshBoundaryLayer.py
         PyGui/_TaskPanelFemMeshGmsh.py
         PyGui/_TaskPanelFemMeshGroup.py
         PyGui/_TaskPanelFemMeshRegion.py
@@ -107,6 +110,7 @@ INSTALL(
         PyGui/_ViewProviderFemElementGeometry2D.py
         PyGui/_ViewProviderFemMaterial.py
         PyGui/_ViewProviderFemMaterialMechanicalNonlinear.py
+        PyGui/_ViewProviderFemMeshBoundaryLayer.py
         PyGui/_ViewProviderFemMeshGmsh.py
         PyGui/_ViewProviderFemMeshGroup.py
         PyGui/_ViewProviderFemMeshRegion.py
@@ -117,6 +121,7 @@ INSTALL(
         PyGui/TaskPanelFemElementGeometry1D.ui
         PyGui/TaskPanelFemElementGeometry2D.ui
         PyGui/TaskPanelFemMaterial.ui
+        PyGui/TaskPanelFemMeshBoundaryLayer.ui
         PyGui/TaskPanelFemMeshGmsh.ui
         PyGui/TaskPanelFemMeshGroup.ui
         PyGui/TaskPanelFemMeshRegion.ui
