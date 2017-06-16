@@ -209,20 +209,25 @@ private:
 };
 
 /// Property define 
-#define ADD_PROPERTY(_prop_, _defaultval_) \
+#define _ADD_PROPERTY(_name,_prop_, _defaultval_) \
   do { \
     this->_prop_.setValue _defaultval_;\
     this->_prop_.setContainer(this); \
-    propertyData.addProperty(static_cast<App::PropertyContainer*>(this), #_prop_, &this->_prop_); \
+    propertyData.addProperty(static_cast<App::PropertyContainer*>(this), _name, &this->_prop_); \
+  } while (0)
+
+#define ADD_PROPERTY(_prop_, _defaultval_) \
+    _ADD_PROPERTY(#_prop_, _prop_, _defaultval_)
+
+#define _ADD_PROPERTY_TYPE(_name,_prop_, _defaultval_, _group_,_type_,_Docu_) \
+  do { \
+    this->_prop_.setValue _defaultval_;\
+    this->_prop_.setContainer(this); \
+    propertyData.addProperty(static_cast<App::PropertyContainer*>(this), _name, &this->_prop_, (_group_),(_type_),(_Docu_)); \
   } while (0)
 
 #define ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
-  do { \
-    this->_prop_.setValue _defaultval_;\
-    this->_prop_.setContainer(this); \
-    propertyData.addProperty(static_cast<App::PropertyContainer*>(this), #_prop_, &this->_prop_, (_group_),(_type_),(_Docu_)); \
-  } while (0)
-
+    _ADD_PROPERTY_TYPE(#_prop_,_prop_,_defaultval_,_group_,_type_,_Docu_)
 
 
 #define PROPERTY_HEADER(_class_) \
