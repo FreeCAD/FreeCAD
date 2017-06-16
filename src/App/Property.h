@@ -63,6 +63,8 @@ public:
         ReadOnly = 2, // for property editor
         Hidden = 3, // for property editor
         Transient = 4, // for property container save
+        MaterialEdit = 5, // to turn ON PropertyMaterial edit
+        NoMaterialListEdit = 6, // to turn OFF PropertyMaterialList edit
         User1 = 28, // user-defined status
         User2 = 29, // user-defined status
         User3 = 30, // user-defined status
