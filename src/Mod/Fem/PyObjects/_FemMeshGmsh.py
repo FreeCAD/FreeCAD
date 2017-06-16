@@ -43,6 +43,9 @@ class _FemMeshGmsh():
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to  this object
 
+        obj.addProperty("App::PropertyLinkList", "MeshBoundaryLayerList", "Base", "Mesh boundaries need inflatoin layers")
+        obj.MeshBoundaryLayerList = []
+
         obj.addProperty("App::PropertyLinkList", "MeshRegionList", "Base", "Mesh regions of the mesh")
         obj.MeshRegionList = []
 
