@@ -1283,10 +1283,13 @@ class HoldingTagMarker:
         self.pos = coin.SoTranslation()
         self.pos.translation = (point.x, point.y, point.z)
         self.sphere = coin.SoSphere()
+        self.scale = coin.SoType.fromName('SoShapeScale').createInstance()
+        self.scale.setPart('shape', self.sphere)
+        self.scale.scaleFactor.setValue(10)
         self.material = coin.SoMaterial()
         self.sep.addChild(self.pos)
         self.sep.addChild(self.material)
-        self.sep.addChild(self.sphere)
+        self.sep.addChild(self.scale)
         self.enabled = True
         self.selected = False
 
