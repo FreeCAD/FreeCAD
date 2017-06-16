@@ -125,6 +125,8 @@ class FemGmshTools():
         self.get_tmp_file_paths()
         self.get_gmsh_command()
         self.get_group_data()
+        self.get_region_data()
+        self.get_boundary_layer_data()
         self.write_part_file()
         self.write_geo()
         error = self.run_gmsh_with_geo()
@@ -249,6 +251,7 @@ class FemGmshTools():
             print('  No anlysis members for group meshing.')
         print('  {}'.format(self.group_elements))
 
+    def get_region_data(self):
         # mesh regions
         self.ele_length_map = {}  # { 'ElementString' : element length }
         self.ele_node_map = {}  # { 'ElementString' : [element nodes] }
@@ -306,6 +309,103 @@ class FemGmshTools():
         print('  {}'.format(self.ele_length_map))
         print('  {}'.format(self.ele_node_map))
 
+    def get_boundary_layer_data(self):
+        # mesh boundary layer, 
+        # currently only one boundary layer setting object is allowed, but multiple boundary can be selected
+        # Mesh.CharacteristicLengthMin, must be zero, or a value less than first inflation layer height
+        self.bl_setting_list = []  # list of dict, each item map to MeshBoundaryLayer object
+        self.bl_boundary_list = [] # to remove duplicated boundary edge or faces
+
+        if not self.mesh_obj.MeshBoundaryLayerList:
+            print ('  No mesh boundary layer setting document object.')
+        else:
+            print ('  Mesh boundary layers, we need to get the elements.')
+            if self.part_obj.Shape.ShapeType == 'Compound':
+                # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+                err = "GMSH could return unexpected meshes for a boolean split tools Compound. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
+                FreeCAD.Console.PrintError(err + "\n")
+            for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
+                if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value >0:
+                    if mr_obj.References:
+                        belem_list = []
+                        for sub in mr_obj.References:
+                            # print(sub[0])  # Part the elements belongs to
+                            # check if the shape of the mesh boundary_layer is an element of the Part to mesh, if not try to find the element in the shape to mesh
+                            search_ele_in_shape_to_mesh = False
+                            if not self.part_obj.Shape.isSame(sub[0].Shape):
+                                # print("  One element of the mesh boundary layer " + mr_obj.Name + " is not an element of the Part to mesh.")
+                                # print("  But we going to find it in the Shape to mesh :-)")
+                                search_ele_in_shape_to_mesh = True
+                            for elems in sub[1]:
+                                # print(elems)  # elems --> element
+                                if search_ele_in_shape_to_mesh:
+                                    # we try to find the element it in the Shape to mesh and use the found element as elems
+                                    ele_shape = FemMeshTools.get_element(sub[0], elems)  # the method getElement(element) does not return Solid elements
+                                    found_element = FemMeshTools.find_element_in_shape(self.part_obj.Shape, ele_shape)
+                                    if found_element:  # also 
+                                        elems = found_element
+                                    else:
+                                        FreeCAD.Console.PrintError("One element of the mesh boudary layer " + mr_obj.Name + " could not be found in the Part to mesh. It will be ignored.\n")
+                                # print(elems)  # element
+                                if elems not in self.bl_boundary_list:
+                                    # fetch settings in DocumentObject, fan setting is not implemented
+                                    belem_list.append(elems)
+                                    self.bl_boundary_list.append(elems)
+                                else:
+                                    FreeCAD.Console.PrintError("The element " + elems + " of the mesh boundary layer " + mr_obj.Name + " has been added to another mesh  boudary layer.\n")
+                        setting = {}
+                        setting['hwall_n'] = Units.Quantity(mr_obj.MinimumThickness).Value
+                        setting['hwall_t'] = setting['hwall_n'] * 5 # tangetial cell dimension
+                        setting['ratio'] = mr_obj.GrowthRate
+                        setting['thickness'] = sum([setting['hwall_n'] **i for i in range(mr_obj.NumberOfLayers)])
+                        # hfar: cell dimension outside boundary should be set later if some character length is set
+                        setting['hfar'] = setting['thickness'] * 2 # set a value for safety, it may works as background mesh cell size
+                        # from face name -> face id is done in geo file write up
+                        #fan angle setup is not implemented yet
+                        if self.dimension == '2':
+                            setting['EdgesList'] = belem_list
+                        elif self.dimension == '3':
+                            setting['FacesList'] = belem_list
+                        else:
+                            FreeCAD.Console.PrintError("boundary layer is only  supported for 2D and 3D mesh")
+                        self.bl_setting_list.append(setting)
+                    else:
+                        FreeCAD.Console.PrintError("The mesh boundary layer: " + mr_obj.Name + " is not used to create the mesh because the reference list is empty.\n")
+                else:
+                    FreeCAD.Console.PrintError("The mesh boundary layer: " + mr_obj.Name + " is not used to create the mesh because the min thickness is 0.0 mm.\n")
+        print('  {}'.format(self.bl_setting_list))
+
+    def write_boundary_layer(self, geo):
+        # currently single body is supported
+        if len(self.bl_setting_list):
+            geo.write("// boundary layer setting\n")
+            print('Start to write boundary layer setup')
+            field_number = 1
+            for item in self.bl_setting_list:
+                prefix = "Field[" + str(field_number) + "]"
+                geo.write(prefix + " = BoundaryLayer;\n")
+                for k in item:
+                    v = item[k]
+                    if k in set(['EdgesList', 'FacesList']):
+                        # the element name of FreeCAD which starts with 1 (example: 'Face1'), same as GMSH
+                        #el_id = int(el[4:])  # FIXME:  strip `face` or `edge` prefix
+                        ele_nodes = (''.join((str(el[4:]) + ', ') for el in v)).rstrip(', ')
+                        line = prefix + '.' + str(k) + ' = {' + ele_nodes +' };\n'
+                        geo.write(line)
+                    else:
+                        line = prefix + '.' + str(k) + ' = ' + str(v) + ';\n'
+                        geo.write(line)
+                    print(line)
+                geo.write("BoundaryLayer Field = " + str(field_number) + ";\n")
+                geo.write("// end of this boundary layer setup \n")
+                field_number += 1
+            geo.write("\n")
+            geo.flush()
+            print('finished in boundary layer setup')
+        else:
+            print('no boundary layer setup is found for this mesh')
+            geo.write("// no boundary layer settings for this mesh\n")
+
     def write_part_file(self):
         self.part_obj.Shape.exportBrep(self.temp_file_geometry)
 
@@ -350,6 +450,8 @@ class FemGmshTools():
                 geo.write("// " + e + "\n")
                 geo.write("Characteristic Length { " + ele_nodes + " } = " + str(self.ele_length_map[e]) + ";\n")
             geo.write("\n")
+        self.write_boundary_layer(geo)
+
         geo.write("// min, max Characteristic Length\n")
         geo.write("Mesh.CharacteristicLengthMax = " + str(self.clmax) + ";\n")
         geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")
