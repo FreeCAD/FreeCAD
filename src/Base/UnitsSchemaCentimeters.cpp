@@ -62,6 +62,10 @@ QString UnitsSchemaCentimeters::schemaTranslate(const Base::Quantity& quant, dou
         unitString = QString::fromLatin1("W/m^2");
         factor = 1.0;
     }
+    else if (unit == Unit::Velocity) {
+        unitString = QString::fromLatin1("mm/min");
+        factor = 1.0/60;
+    }
     else {
         // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
