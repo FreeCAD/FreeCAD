@@ -181,7 +181,14 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QDoubleSpinBox" name="spindleSpeed"/>
+       <widget class="QDoubleSpinBox" name="spindleSpeed">
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100000.000000000000000</double>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
