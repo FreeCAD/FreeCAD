@@ -169,7 +169,7 @@ class ObjectProfile:
 
         profile.setParams(**profileparams)
         obj.AreaParams = str(profile.getParams())
-        
+
         # PathLog.debug("About to profile with params: {}".format(profileparams))
         PathLog.debug("About to profile with params: {}".format(profile.getParams()))
 
@@ -315,6 +315,9 @@ class ObjectProfile:
                                 except Exception as e:
                                     FreeCAD.Console.PrintError(e)
                                     FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+
+        # Let's finish by rapid to clearance...just for safety
+        commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
         path = Path.Path(commandlist)
         obj.Path = path

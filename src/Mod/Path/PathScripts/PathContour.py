@@ -262,6 +262,9 @@ class ObjectContour:
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
+        # Let's finish by rapid to clearance...just for safety
+        commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+
         path = Path.Path(commandlist)
         obj.Path = path
         obj.ViewObject.Visibility = True
