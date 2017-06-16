@@ -330,9 +330,22 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
 
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
-        vobj.addProperty("App::PropertyString","RebarShape","Arch",QT_TRANSLATE_NOOP("App::Property","Shape of rebar")).RebarShape
         vobj.ShapeColor = ArchCommands.getDefaultColor("Rebar")
+
+    def setpropertyRebarShape(self, vobj, rebarshape):
+        """ setpropertyRebarShape(self, vobj, rebarshape): This function add a properties
+        to the _ViewProviderRebar object as per according to a rebar shape."""
+        vobj.addProperty("App::PropertyString","RebarShape","RebarDialog",QT_TRANSLATE_NOOP("App::Property","Shape of rebar")).RebarShape = rebarshape
         vobj.setEditorMode("RebarShape",2)
+        if rebarshape == "StraightRebar":
+            vobj.addProperty("App::PropertyLength","FrontCover","RebarDialog",QT_TRANSLATE_NOOP("App::Property","Front cover of rebar")).FrontCover
+            vobj.setEditorMode("FrontCover",2)
+            vobj.addProperty("App::PropertyLength","SideCover","RebarDialog",QT_TRANSLATE_NOOP("App::Property","Side cover of rebar")).SideCover
+            vobj.setEditorMode("SideCover",2)
+            vobj.addProperty("App::PropertyLength","BottomCover","RebarDialog",QT_TRANSLATE_NOOP("App::Property","Bottom cover of rebar")).BottomCover
+            vobj.setEditorMode("BottomCover",2)
+            vobj.addProperty("App::PropertyBool","AmountCheck","RebarDialog",QT_TRANSLATE_NOOP("App::Property","Amount radio button is checked")).AmountCheck
+            vobj.setEditorMode("AmountCheck",2)
 
     def getIcon(self):
         import Arch_rc
