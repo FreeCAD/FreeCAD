@@ -119,7 +119,7 @@ class ObjectContour:
             obj.SafeHeight = 8.0
 
     @waiting_effects
-    def _buildPathArea(self, obj, baseobject, start=None):
+    def _buildPathArea(self, obj, baseobject, start=None, getsim=False):
         PathLog.track()
         profile = Path.Area()
         profile.setPlane(makeWorkplane(baseobject))
@@ -173,26 +173,27 @@ class ObjectContour:
         PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
         self.endVector = end_vector
 
-#         if True:
-#             from PathScripts.PathUtils import CollisionTester
-#             parentJob = PathUtils.findParentJob(obj)
-#             if parentJob is None:
-#                 pass
-#             base = parentJob.Base
-#             if base is None:
-#                 pass
+        simobj = None
+        if getsim:
+            #from PathScripts.PathUtils import CollisionTester
+            parentJob = PathUtils.findParentJob(obj)
+            if parentJob is None:
+                pass
+            base = parentJob.Base
+            if base is None:
+                pass
 
-#             profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
-#             profileparams['ToolRadius']= self.radius - self.radius *.005
-#             profile.setParams(**profileparams)
-#             sec = profile.makeSections(heights=[0.0])[0].getShape()
-#             cutPath = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
-#             c = CollisionTester()
-#             c.getCollisionSim(base.Shape, cutPath)
+            profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
+            profileparams['ToolRadius']= self.radius - self.radius *.005
+            profile.setParams(**profileparams)
+            sec = profile.makeSections(heights=[0.0])[0].getShape()
+            simobj = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
+            #c = CollisionTester()
+            #simobj = c.getCollisionSim(base.Shape, cutPath)
 
-        return pp
+        return pp, simobj
 
-    def execute(self, obj):
+    def execute(self, obj, getsim=False):
         PathLog.track()
         self.endVector = None
 
@@ -249,7 +250,8 @@ class ObjectContour:
                     thickness = baseobject.Group[0].Source.Thickness
                     contourshape = f.extrude(FreeCAD.Vector(0, 0, thickness))
                     try:
-                        commandlist.extend(self._buildPathArea(obj, contourshape, start=obj.StartPoint).Commands)
+                        (pp, sim) = self._buildPathArea(obj, contourshape, start=obj.StartPoint, getsim=getsim)
+                        commandlist.extend(pp.Commands)
                     except Exception as e:
                         FreeCAD.Console.PrintError(e)
                         FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
@@ -258,7 +260,8 @@ class ObjectContour:
             bb = baseobject.Shape.BoundBox
             env = PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, stockheight=bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
             try:
-                commandlist.extend(self._buildPathArea(obj, env, start=obj.StartPoint).Commands)
+                (pp, sim) = self._buildPathArea(obj, env, start=obj.StartPoint,getsim=getsim)
+                commandlist.extend(pp.Commands)
             except Exception as e:
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
@@ -268,8 +271,9 @@ class ObjectContour:
 
         path = Path.Path(commandlist)
         obj.Path = path
-        if obj.ViewObject:
+        if  obj.ViewObject:
             obj.ViewObject.Visibility = True
+	return sim
 
 
 class _ViewProviderContour:

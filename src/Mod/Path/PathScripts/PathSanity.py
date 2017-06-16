@@ -29,40 +29,16 @@ from __future__ import print_function
 from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
-
+import PathScripts.PathUtils as PU
+import PathScripts
+import PathScripts.PathCollision as PC
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-def review(obj):
-    "checks the selected job for common errors"
-    toolcontrolcount = 0
-
-    for item in obj.Group:
-        print("Checking: " + item.Label)
-        if hasattr(item, 'Tool') and hasattr(item, 'SpindleDir'):
-            toolcontrolcount += 1
-            if item.ToolNumber == 0:
-                FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " is using ID 0 which the undefined default. Please set a real tool.\n"))
-            else:
-                tool = item.Tool
-                if tool is None:
-                    FreeCAD.Console.PrintError(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " is using tool: " + str(item.ToolNumber) + " which is invalid\n"))
-                elif tool.Diameter == 0:
-                    FreeCAD.Console.PrintError(translate("Path_Sanity", "Tool Controller: " +  str(item.Label) + " is using tool: " + str(item.ToolNumber) + " which has a zero diameter\n"))
-            if item.HorizFeed == 0:
-                FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " has a 0 value for the Horizontal feed rate\n"))
-            if item.VertFeed == 0:
-                FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " has a 0 value for the Vertical feed rate\n"))
-            if item.SpindleSpeed == 0:
-               FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " has a 0 value for the spindle speed\n"))
-
-    if toolcontrolcount == 0:
-        FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.\n"))
-
-
 class CommandPathSanity:
+    baseobj=None
 
     def GetResources(self):
         return {'Pixmap'  : 'Path-Sanity',
@@ -70,26 +46,96 @@ class CommandPathSanity:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Sanity","Check the Path Project for common errors")}
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                        return True
+        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+        if (obj.TypeId == "Path::FeatureCompoundPython"):
+            return True
         return False
 
+    def __review(self, obj):
+        "checks the selected job for common errors"
+        toolcontrolcount = 0
+        operationcount = 0
+        #global baseobj
+
+        # if obj.X_Max == obj.X_Min or obj.Y_Max == obj.Y_Min:
+        #     FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
+
+        if obj.PostProcessor == '':
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Postprocessor has not been selected.\n"))
+
+        if obj.PostProcessorOutputFile == '':
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "No output file is named. You'll be prompted during postprocessing.\n"))
+
+        for item in obj.Group:
+            print("Checking: " + item.Label)
+            if isinstance(item.Proxy, PathScripts.PathLoadTool.LoadTool):
+                toolcontrolcount += 1
+                self.__checkTC(item)
+
+            if isinstance(item.Proxy, PathScripts.PathContour.ObjectContour):
+                if item.Active:
+                    operationcount +=1
+                    simobj = item.Proxy.execute(item, getsim=True)
+                    if simobj is not None:
+                        print ('collision detected')
+                        PC.getCollisionObject(self.baseobj, simobj)
+                        #r.original = self.baseobj
+
+
+            if isinstance(item.Proxy, PathScripts.PathProfile.ObjectProfile):
+                if item.Active:
+                    operationcount +=1
+
+            if isinstance(item.Proxy, PathScripts.PathProfileEdges.ObjectProfile):
+                if item.Active:
+                    operationcount +=1
+
+            if isinstance(item.Proxy, PathScripts.PathPocket.ObjectPocket):
+                if item.Active:
+                    operationcount +=1
+
+            if isinstance(item.Proxy, PathScripts.PathDrilling.ObjectDrilling):
+                if item.Active:
+                    operationcount +=1
+
+            if isinstance(item.Proxy, PathScripts.PathMillFace.ObjectFace):
+                if item.Active:
+                    operationcount +=1
+
+            if isinstance(item.Proxy, PathScripts.PathHelix.ObjectPathHelix):
+                if item.Active:
+                    operationcount +=1
+
+            if isinstance(item.Proxy, PathScripts.PathSurface.ObjectSurface):
+                if item.Active:
+                    operationcount +=1
+
+        if operationcount == 0: #no active operations
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.\n"))
+
+        if toolcontrolcount == 0: #need at least one active TC
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.\n"))
+
+    def __checkTC(self, item):
+        if item.ToolNumber == 0:
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " is using ID 0 which the undefined default. Please set a real tool.\n"))
+        if item.HorizFeed == 0:
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " has a 0 value for the Horizontal feed rate\n"))
+        if item.VertFeed == 0:
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " has a 0 value for the Vertical feed rate\n"))
+        if item.SpindleSpeed == 0:
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " has a 0 value for the spindle speed\n"))
+
+
     def Activated(self):
-        # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("Path_Sanity", "Please select a path Project to check\n"))
-            return
-        if not(selection[0].TypeId == "Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("Path_Sanity", "Please select a path project to check\n"))
-            return
-
+        #global baseobj 
         # if everything is ok, execute
-        FreeCADGui.addModule("PathScripts.PathSanity")
-        FreeCADGui.doCommand('PathScripts.PathSanity.review(FreeCAD.ActiveDocument.' + selection[0].Name + ')')
-
+        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+        self.baseobj = obj.Base
+        if self.baseobj is None:
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "The Job has no selected Base object.\n"))
+            return
+        self.__review(obj)
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
