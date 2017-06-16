@@ -130,7 +130,7 @@ class _ViewProviderFemMeshGmsh:
         return None
 
     def claimChildren(self):
-        return (self.Object.MeshRegionList + self.Object.MeshGroupList)
+        return (self.Object.MeshRegionList + self.Object.MeshGroupList + self.Object.MeshBoundaryLayerList)
 
     def onDelete(self, feature, subelements):
         try:
