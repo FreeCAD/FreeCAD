@@ -59,6 +59,8 @@ public:
     virtual void onExtendedSetupObject();
     /// get called when object is going to be removed from the document
     virtual void onExtendedUnsetupObject();
+
+    virtual void extensionOnDocumentRestored() {}
   
     virtual PyObject* getExtensionPyObject(void);
     
