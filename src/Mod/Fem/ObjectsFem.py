@@ -247,7 +247,24 @@ def makeMeshGroup(base_mesh, use_label=False, name="FEMMeshGroup"):
     return obj
 
 
-def makeMeshShapeNetgenObject(name="FEMMeshNetgen"):
+def makeMeshBoundaryLayer(base_mesh, name="MeshBoundaryLayer"):
+    '''makeMeshBoundaryLayer([length], [name]): creates a  FEM mesh BoundaryLayer object to define boundary layer properties'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    import PyObjects._FemMeshBoundaryLayer
+    PyObjects._FemMeshBoundaryLayer._FemMeshBoundaryLayer(obj)
+
+    # obj.BaseMesh = base_mesh
+    # App::PropertyLinkList does not support append, we will use a temporary list to append the mesh BoundaryLayer obj. to the list
+    tmplist = base_mesh.MeshBoundaryLayerList
+    tmplist.append(obj)
+    base_mesh.MeshBoundaryLayerList = tmplist
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemMeshBoundaryLayer
+        PyGui._ViewProviderFemMeshBoundaryLayer._ViewProviderFemMeshBoundaryLayer(obj.ViewObject)
+    return obj
+
+
+def makeMeshShapeNetgenObject(name="MeshShapeNetgenObject"):
     '''makeMeshShapeNetgenObject(name): makes a Fem MeshShapeNetgenObject object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshShapeNetgenObject", name)
     return obj
@@ -302,7 +319,7 @@ def makeSolverZ88(name="Z88"):
     if FreeCAD.GuiUp:
         import PyGui._ViewProviderFemSolverZ88
         PyGui._ViewProviderFemSolverZ88._ViewProviderFemSolverZ88(obj.ViewObject)
-    return obj
+     return obj
 
 
 '''
