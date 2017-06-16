@@ -44,6 +44,22 @@ Placement(Base, Axis, Angle) -- define position and rotation
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="translate">
+			<Documentation>
+				<UserDocu>
+					translate(Vector) 
+					alias to move(), to be compatible with TopoShape.translate()
+				</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="rotate">
+        <Documentation>
+            <UserDocu>
+                rotate(center,axis,degree) - rotate the current placement around center and axis with degree
+                This method is compatible with TopoShape.rotate()
+            </UserDocu>
+        </Documentation>
+        </Methode>
                 <Methode Name="multiply" Const="true">
 			<Documentation>
 				<UserDocu>
