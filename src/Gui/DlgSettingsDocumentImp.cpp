@@ -69,6 +69,7 @@ void DlgSettingsDocumentImp::saveSettings()
     prefSaveTransaction->onSave();
     prefDiscardTransaction->onSave();
     prefSaveThumbnail->onSave();
+    prefAddLogo->onSave();
     prefSaveBackupFiles->onSave();
     prefCountBackupFiles->onSave();
     prefDuplicateLabel->onSave();
@@ -97,6 +98,7 @@ void DlgSettingsDocumentImp::loadSettings()
     prefSaveTransaction->onRestore();
     prefDiscardTransaction->onRestore();
     prefSaveThumbnail->onRestore();
+    prefAddLogo->onRestore();
     prefSaveBackupFiles->onRestore();
     prefCountBackupFiles->onRestore();
     prefDuplicateLabel->onRestore();

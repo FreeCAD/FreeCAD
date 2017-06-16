@@ -106,8 +106,13 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     }
 
     QPixmap px = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
-    if (!img.isNull())
-        px = BitmapFactory().merge(QPixmap::fromImage(img),px,BitmapFactoryInst::BottomRight);
+    if (!img.isNull()) {
+        if (App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Document")->GetBool("AddThumbnailLogo",true))
+            px = BitmapFactory().merge(QPixmap::fromImage(img),px,BitmapFactoryInst::BottomRight);
+        else
+            px = QPixmap::fromImage(img);
+    }
 
     if (!px.isNull()) {
         // according to specification add some meta-information to the image
