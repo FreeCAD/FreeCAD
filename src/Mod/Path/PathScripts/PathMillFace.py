@@ -287,6 +287,9 @@ class ObjectFace:
             planeshape = baseobject.Shape
             PathLog.info("Working on a shape {}".format(baseobject.Name))
 
+        # Let's start by rapid to clearance...just for safety
+        commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+
         # if user wants the boundbox, calculate that
         PathLog.info("Boundary Shape: {}".format(obj.BoundaryShape))
         bb = planeshape.BoundBox
@@ -301,6 +304,9 @@ class ObjectFace:
         except Exception as e:
             FreeCAD.Console.PrintError(e)
             FreeCAD.Console.PrintError(translate("Path_MillFace", "The selected settings did not produce a valid path.\n"))
+
+        # Let's finish by rapid to clearance...just for safety
+        commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
         path = Path.Path(commandlist)
         obj.Path = path
