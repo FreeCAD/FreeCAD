@@ -19,6 +19,11 @@
         <UserDocu>Return the value of a named property.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getPropertyTouchList">
+      <Documentation>
+        <UserDocu>Return a list of index of touched values for list type properties.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getTypeOfProperty">
 		  <Documentation>
 			  <UserDocu>Return the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination. </UserDocu>

@@ -59,6 +59,27 @@ PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)
     }
 }
 
+PyObject*  PropertyContainerPy::getPropertyTouchList(PyObject *args)
+{
+    char *pstr;
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+    App::Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
+    if (prop && prop->isDerivedFrom(PropertyLists::getClassTypeId())) {
+        const auto &touched = static_cast<PropertyLists*>(prop)->getTouchList();
+        Py::Tuple ret(touched.size());
+        int i=0;
+        for(int idx : touched)
+            ret.setItem(i++,Py::Long(idx));
+        return Py::new_reference_to(ret);
+    }
+    else if(!prop)
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+    else
+        PyErr_Format(PyExc_AttributeError, "Property '%s' is not of list type", pstr);
+    return NULL;
+}
+
 PyObject*  PropertyContainerPy::getTypeOfProperty(PyObject *args)
 {
     Py::List ret;

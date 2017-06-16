@@ -100,9 +100,10 @@ protected:
     App::DocumentObject *_pcLink;
 };
 
-class AppExport PropertyLinkList : public PropertyLists
+class AppExport PropertyLinkList : public PropertyListsT<DocumentObject*>
 {
     TYPESYSTEM_HEADER();
+    typedef PropertyListsT<DocumentObject*> inherited;
 
 public:
     /**
@@ -118,26 +119,15 @@ public:
     virtual ~PropertyLinkList();
 
     virtual void setSize(int newSize);
-    virtual int getSize(void) const;
+    virtual void setSize(int newSize, const_reference def);
 
     /** Sets the property
     */
-    void setValue(DocumentObject*);
-    void setValues(const std::vector<DocumentObject*>&);
+    void setValues(const std::vector<DocumentObject*>&) override;
 
-    /// index operator
-    DocumentObject* operator[] (const int idx) const {
-        return _lValueList.operator[] (idx);
-    }
-
-    void  set1Value(const int idx, DocumentObject* value);
-
-    const std::vector<DocumentObject*> &getValues(void) const {
-        return _lValueList;
-    }
+    void set1Value(int idx, DocumentObject * const &value, bool touch=false) override;
 
     virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
 
     virtual void Save(Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
@@ -148,8 +138,10 @@ public:
     virtual unsigned int getMemSize(void) const;
 
     DocumentObject *find(const char *, int *pindex=0) const;
-private:
-    std::vector<DocumentObject*> _lValueList;
+
+protected:
+    DocumentObject *getPyValue(PyObject *item) const override;
+
 protected:
     mutable std::map<std::string, int> _nameMap;
 };

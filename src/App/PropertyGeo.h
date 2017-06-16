@@ -175,9 +175,11 @@ public:
     }
 };
 
-class AppExport PropertyVectorList: public PropertyLists
+class AppExport PropertyVectorList: public PropertyListsT<Base::Vector3d>
 {
     TYPESYSTEM_HEADER();
+
+    typedef PropertyListsT<Base::Vector3d> inherited;
 
 public:
     /**
@@ -192,33 +194,14 @@ public:
      */
     virtual ~PropertyVectorList();
 
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
-
-    /** Sets the property
-     */
-    void setValue(const Base::Vector3d&);
     void setValue(double x, double y, double z);
+    using inherited::setValue;
 
-    /// index operator
-    const Base::Vector3d& operator[] (const int idx) const {
-        return _lValueList.operator[] (idx);
-    }
-
-    void set1Value (const int idx, const Base::Vector3d& value) {
-        _lValueList.operator[] (idx) = value;
-    }
-
-    void setValues (const std::vector<Base::Vector3d>& values);
-
-    void setValue (void){}
-
-    const std::vector<Base::Vector3d> &getValues(void) const {
-        return _lValueList;
+    void set1Value (int idx, const Base::Vector3d& value, bool touch=false) override {
+        _set1Value(idx,value,touch);
     }
 
     virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
 
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
@@ -231,8 +214,8 @@ public:
 
     virtual unsigned int getMemSize (void) const;
 
-private:
-    std::vector<Base::Vector3d> _lValueList;
+protected:
+    Base::Vector3d getPyValue(PyObject *) const override;
 };
 
 /// Property representing a 4x4 matrix
@@ -371,7 +354,7 @@ public:
 };
 
 
-class AppExport PropertyPlacementList: public PropertyLists
+class AppExport PropertyPlacementList: public PropertyListsT<Base::Placement>
 {
     TYPESYSTEM_HEADER();
 
@@ -383,32 +366,11 @@ public:
 
     virtual ~PropertyPlacementList();
 
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
-
-    /** Sets the property
-     */
-    void setValue(const Base::Placement&);
-
-    /// index operator
-    const Base::Placement& operator[] (const int idx) const {
-        return _lValueList.operator[] (idx);
-    }
-
-    void set1Value (const int idx, const Base::Placement& value) {
-        _lValueList.operator[] (idx) = value;
-    }
-
-    void setValues (const std::vector<Base::Placement>& values);
-
-    void setValue (void){}
-
-    const std::vector<Base::Placement> &getValues(void) const {
-        return _lValueList;
+    void set1Value (int idx, const Base::Placement& value, bool touch=false) override {
+        _set1Value(idx,value,touch);
     }
 
     virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
 
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
@@ -421,8 +383,8 @@ public:
 
     virtual unsigned int getMemSize (void) const;
 
-private:
-    std::vector<Base::Placement> _lValueList;
+protected:
+    Base::Placement getPyValue(PyObject *) const override;
 };
 
 

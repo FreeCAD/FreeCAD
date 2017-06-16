@@ -186,3 +186,38 @@ std::string Property::encodeAttribute(const std::string& str)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLists , App::Property);
+
+void PropertyLists::setPyObject(PyObject *value) {
+    std::vector<PyObject *> vals;
+    std::vector<int> indices;
+    if (PyDict_Check(value)) {
+        PyObject* keyList = PyDict_Keys(value);
+        PyObject* itemList = PyDict_Values(value);
+        Py_ssize_t nSize = PyList_Size(keyList);
+        vals.reserve(nSize);
+        indices.reserve(nSize);
+        int listSize = getSize();
+        for (Py_ssize_t i=0; i<nSize;++i) {
+            std::string keyStr;
+            PyObject* key = PyList_GetItem(keyList, i);
+            if(!PyInt_Check(key)) 
+                throw Base::TypeError("expect key type to be interger");
+            auto idx = PyLong_AsLong(key);
+            if(idx<-1 || idx>listSize) 
+                throw Base::RuntimeError("index out of bound");
+            if(idx==-1 || idx==listSize) {
+                idx = listSize;
+                ++listSize;
+            }
+            indices.push_back(idx);
+            vals.push_back(PyList_GetItem(itemList,i));
+        }
+    }else if (PySequence_Check(value)) {
+        Py_ssize_t nSize = PySequence_Size(value);
+        vals.reserve(nSize);
+        for (Py_ssize_t i=0; i<nSize;++i)
+            vals.push_back(PySequence_GetItem(value, i));
+    }else
+        vals.push_back(value);
+    setPyValues(vals,indices);
+}
