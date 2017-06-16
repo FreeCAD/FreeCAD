@@ -192,19 +192,8 @@ class ToolLibraryManager():
         model.setHorizontalHeaderLabels(headers)
 
         def unitconv(ivalue):
-            parms = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
-            digits = parms.GetContents()[1][2] #get user's number of digits of precision
-            if parms.GetContents()[0][2]==0:
-                suffix = 'mm'
-                conversion = 1.0
-            elif parms.GetContents()[0][2]==3:
-                suffix = 'in'
-                conversion = 25.4
-            else:
-                suffix = ''
-            val = FreeCAD.Units.parseQuantity(str(round(ivalue/conversion,digits))+suffix)
-            displayed_val = val.UserString #just the displayed value-not the internal one
-
+            val = FreeCAD.Units.Quantity(ivalue, FreeCAD.Units.Length)
+            displayed_val = val.UserString      #just the displayed value-not the internal one
             return displayed_val
 
         if tt:
