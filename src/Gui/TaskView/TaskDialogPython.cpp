@@ -428,8 +428,24 @@ QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons(void) con
     return TaskDialog::getStandardButtons();
 }
 
-void TaskDialogPython::modifyStandardButtons(QDialogButtonBox*)
+void TaskDialogPython::modifyStandardButtons(QDialogButtonBox *buttonBox)
 {
+    Base::PyGILStateLocker lock;
+    try {
+        if (dlg.hasAttr(std::string("modifyStandardButtons"))) {
+            Gui::PythonWrapper wrap;
+            wrap.loadGuiModule();
+            wrap.loadWidgetsModule();
+            Py::Callable method(dlg.getAttr(std::string("modifyStandardButtons")));
+            Py::Tuple args(1);
+            args.setItem(0, wrap.fromQWidget(buttonBox, "QDialogButtonBox"));
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
 }
 
 bool TaskDialogPython::isAllowedAlterDocument(void) const
