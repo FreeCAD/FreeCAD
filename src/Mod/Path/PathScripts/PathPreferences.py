@@ -53,12 +53,10 @@ class PathPreferences:
 
     @classmethod
     def allAvailablePostProcessors(cls):
-        posts = glob.glob(cls.pathScriptsSourcePath() + '/*_post.py')
-        allposts = [ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts]
-
-        posts = glob.glob(cls.macroFilePath() + '/*_post.py')
-
-        allposts.extend([ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts])
+        allposts = []
+        for path in cls.searchPaths():
+            posts = [ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in glob.glob(path + '/*_post.py')]
+            allposts.extend(posts)
         allposts.sort()
         return allposts
 
