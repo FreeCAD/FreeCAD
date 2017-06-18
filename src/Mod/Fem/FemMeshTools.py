@@ -362,29 +362,29 @@ def get_femnode_set_from_group_data(femmesh, fem_object):
     # we assume the mesh group data fits with the reference shapes, no check is done in this regard !!!
     # what happens if a reference shape was changed, but the mesh and the mesh groups were not created new !?!
     obj = fem_object['Object']
-    group_nodes = None
+    group_nodes = ()  # empty tuple
     if femmesh.GroupCount:
         for g in femmesh.Groups:
             grp_name = femmesh.getGroupName(g)
             if grp_name.startswith(obj.Name + "_"):
                 if femmesh.getGroupElementType(g) == "Node":
-                    print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
+                    print("Constraint: " + obj.Name + " --> " + "nodes are in mesh group: " + grp_name)
                     group_nodes = femmesh.getGroupElements(g)  # == ref_shape_femelements
-    return group_nodes
+    return group_nodes  # an empty tuple is returned if no femelements where found
 
 
 def get_femelementface_sets_from_group_data(femmesh, fem_object):
     # get femfaceelements from femmesh face groupdata for reference shapes of obj.References
     obj = fem_object['Object']
-    group_faces = None
+    group_faces = ()  # empty tuple
     if femmesh.GroupCount:
         for g in femmesh.Groups:
             grp_name = femmesh.getGroupName(g)
             if grp_name.startswith(obj.Name + "_"):
                 if femmesh.getGroupElementType(g) == "Face":
-                    print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
+                    print("Constraint: " + obj.Name + " --> " + "faces are in mesh group: " + grp_name)
                     group_faces = femmesh.getGroupElements(g)  # == ref_shape_femelements
-    return group_faces
+    return group_faces  # an empty tuple is returned if no femelements where found
 
 
 def get_femelement_sets_from_group_data(femmesh, fem_objects):
@@ -401,7 +401,7 @@ def get_femelement_sets_from_group_data(femmesh, fem_objects):
                 grp_name = femmesh.getGroupName(g)
                 if grp_name.startswith(obj.Name + "_"):
                     if femmesh.getGroupElementType(g) == "Volume":
-                        print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
+                        print("Constraint: " + obj.Name + " --> " + "volumes are in mesh group: " + grp_name)
                         group_elements = femmesh.getGroupElements(g)  # == ref_shape_femelements
                         sum_group_elements += group_elements
                         count_femelements += len(group_elements)
@@ -564,14 +564,17 @@ def get_pressure_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj
         if femmesh.GroupCount:
             meshfaces = get_femelementface_sets_from_group_data(femmesh, femobj)
             # print(meshfaces)
-            for mf in meshfaces:
-                # pressure_faces.append([mf, 0])
-                pressure_faces.append([mf, -1])
-                # 0 if femmeshface normal == reference face normal direction
-                # -1 if femmeshface normal opposite reference face normal direction
-                # easy on plane faces, but on a half sphere ... ?!?
+            if not meshfaces:
+                FreeCAD.Console.PrintError("Error: Something went wrong in getting the group element faces.\n")
+            else:
+                for mf in meshfaces:
+                    # pressure_faces.append([mf, 0])
+                    pressure_faces.append([mf, -1])
+                    # 0 if femmeshface normal == reference face normal direction
+                    # -1 if femmeshface normal opposite reference face normal direction
+                    # easy on plane faces, but on a half sphere ... ?!?
         else:
-            print("Pressure on shell mesh at the moment only supported for meshes with appropriate group data.")
+            FreeCAD.Console.PrintError("Pressure on shell mesh at the moment only supported for meshes with appropriate group data.\n")
     return pressure_faces
 
 
