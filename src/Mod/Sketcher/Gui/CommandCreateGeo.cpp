@@ -156,6 +156,70 @@ SketcherGui::ViewProviderSketch* getSketchViewprovider(Gui::Document *doc)
     return 0;
 }
 
+void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch, std::vector<AutoConstraint> &sug1, std::vector<AutoConstraint> &sug2) {
+    
+    if(sug1.size()>0 && sug2.size()>0) {
+        
+        bool rmvhorvert = false;
+        
+        // we look for:
+        // 1. Coincident to external on both endpoints
+        // 2. Coincident in one endpoint to origin and pointonobject/tangent to an axis on the other
+        auto detectredundant = [psketch](std::vector<AutoConstraint> &sug, bool &ext, bool &orig, bool &axis) {
+            
+            ext = false;
+            orig = false;
+            axis = false;
+            
+            for(std::vector<AutoConstraint>::const_iterator it = sug.begin(); it!=sug.end(); ++it) {
+                if( (*it).Type == Sketcher::Coincident && ext == false) {
+                    const std::map<int, Sketcher::PointPos> coincidents = psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
+
+                    if(!coincidents.empty()) {
+                        ext = coincidents.begin()->first < 0; // the keys are ordered, so if the first is negative, it is coincident with external
+                        
+                        std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
+                        
+                        geoId1iterator = coincidents.find(-1);
+                        
+                        if( geoId1iterator != coincidents.end()) {
+                            if( (*geoId1iterator).second == Sketcher::start )
+                                orig = true;
+                        }
+                    }
+                    else { // it may be that there is no constraint at all, but there is external geometry
+                        ext = (*it).GeoId < 0;
+                        orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::start);
+                    }
+                }
+                else if( (*it).Type == Sketcher::PointOnObject && axis == false) {
+                    axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::none) || ((*it).GeoId == -2 && (*it).PosId == Sketcher::none));
+                }
+                
+            }
+        };
+        
+        bool firstext = false, secondext = false, firstorig = false, secondorig = false, firstaxis = false, secondaxis = false;
+        
+        detectredundant(sug1, firstext, firstorig, firstaxis);
+        detectredundant(sug2, secondext, secondorig, secondaxis);
+        
+        
+        rmvhorvert = (   (firstext && secondext)     ||  // coincident with external on both endpoints
+        (firstorig && secondaxis)   ||  // coincident origin and point on object on other
+        (secondorig && firstaxis) );
+        
+        if(rmvhorvert) {
+            for(std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin(); it!=sug2.rend(); ++it) {
+                if( (*it).Type == Sketcher::Horizontal || (*it).Type == Sketcher::Vertical) {
+                    sug2.erase(std::next(it).base());
+                }
+            }
+        }
+        
+    }
+}
+
 
 /* Sketch commands =======================================================*/
 
@@ -276,6 +340,12 @@ public:
                 Gui::Command::abortCommand();
             }
 
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool avoidredundant = hGrp->GetBool("AvoidRedundantAutoconstraints",true);
+            
+            if(avoidredundant) 
+                removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
+
             // add auto constraints for the line segment start
             if (sugConstr1.size() > 0) {
                 createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::start);
@@ -288,7 +358,6 @@ public:
                 sugConstr2.clear();
             }
 
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
 
             if(autoRecompute)
@@ -895,6 +964,8 @@ public:
 
             EditCurve[0] = onSketchPos; // this may be overwritten if previousCurve is found
 
+            virtualsugConstr1 = sugConstr1; // store original autoconstraints.
+            
             // here we check if there is a preselected point and
             // we set up a transition from the neighbouring segment.
             // (peviousCurve, previousPosId, dirVec, TransitionMode)
@@ -1064,8 +1135,21 @@ public:
                 else
                     static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();                
             }
+            
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool avoidredundant = hGrp->GetBool("AvoidRedundantAutoconstraints",true);
 
             if (Mode == STATUS_Close) {
+
+                if(avoidredundant) {
+                    if (SegmentMode == SEGMENT_MODE_Line) { // avoid redundant constraints.
+                        if (sugConstr1.size() > 0)
+                            removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
+                        else
+                            removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),virtualsugConstr1,sugConstr2);
+                    }
+                }
+
                 if (sugConstr2.size() > 0) {
                     // exclude any coincidence constraints
                     std::vector<AutoConstraint> sugConstr;
@@ -1111,12 +1195,24 @@ public:
             }
             else {
                 Gui::Command::commitCommand();
-                            
+
                 // Add auto constraints
                 if (sugConstr1.size() > 0) { // this is relevant only to the very first point
                     createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::start);
                     sugConstr1.clear();
                 }
+                
+
+                if(avoidredundant) {
+                    if (SegmentMode == SEGMENT_MODE_Line) { // avoid redundant constraints.
+                        if (sugConstr1.size() > 0)
+                            removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
+                        else
+                            removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),virtualsugConstr1,sugConstr2);
+                    }
+                }
+
+                virtualsugConstr1 = sugConstr2; // these are the initial constraints for the next iteration.
 
                 if (sugConstr2.size() > 0) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::end);
@@ -1125,7 +1221,7 @@ public:
 
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                 bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                
+
                 if(autoRecompute)
                     Gui::Command::updateActive();
                 else
@@ -1206,7 +1302,8 @@ protected:
     int previousCurve;
     Sketcher::PointPos firstPosId;
     Sketcher::PointPos previousPosId;
-    std::vector<AutoConstraint> sugConstr1, sugConstr2;
+    // the latter stores those constraints that a first point would have been given in abscence of the transition mechanism
+    std::vector<AutoConstraint> sugConstr1, sugConstr2, virtualsugConstr1; 
 
     Base::Vector2d CenterPoint;
     Base::Vector3d dirVec;
