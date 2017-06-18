@@ -370,6 +370,8 @@ void TopoShape::convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf)
 void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
 {
 #if OCC_VERSION_HEX >= 0x070000
+    // https://www.opencascade.com/doc/occt-7.0.0/refman/html/classgp___trsf.html
+    // VectorialPart() already includes the scale factor
     gp_Mat m = trsf.VectorialPart();
     gp_XYZ p = trsf.TranslationPart();
 
