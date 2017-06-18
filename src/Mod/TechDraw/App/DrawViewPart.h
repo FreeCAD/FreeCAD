@@ -110,7 +110,9 @@ public:
     const std::vector<TechDrawGeometry::BaseGeom  *> & getEdgeGeometry() const;
     const std::vector<TechDrawGeometry::BaseGeom  *> getVisibleFaceEdges() const;
     const std::vector<TechDrawGeometry::Face *> & getFaceGeometry() const;
+
     bool hasGeometry(void) const;
+    TechDrawGeometry::GeometryObject* getGeometryObject(void) const { return geometryObject; }
 
     TechDrawGeometry::BaseGeom* getProjEdgeByIndex(int idx) const;               //get existing geom for edge idx in projection
     TechDrawGeometry::Vertex* getProjVertexByIndex(int idx) const;               //get existing geom for vertex idx in projection
