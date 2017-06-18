@@ -713,9 +713,11 @@ void ConsoleObserverFile::Log    (const char *sLog)
 
 ConsoleObserverStd::ConsoleObserverStd() :
 #   if defined(FC_OS_WIN32)
-    useColorStderr( true )
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+    useColorStderr(true)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     useColorStderr( isatty(STDERR_FILENO) )
+#   else
+    useColorStderr(false)
 #   endif
 {
     bLog = false;
@@ -735,7 +737,7 @@ void ConsoleObserverStd::Warning(const char *sWarn)
     if (useColorStderr) {
 #   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_GREEN| FOREGROUND_BLUE);
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[1;33m");
 #   endif
     }
@@ -745,7 +747,7 @@ void ConsoleObserverStd::Warning(const char *sWarn)
     if (useColorStderr) {
 #   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
 #   endif
     }
@@ -756,7 +758,7 @@ void ConsoleObserverStd::Error  (const char *sErr)
     if (useColorStderr) {
 #   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_RED|FOREGROUND_INTENSITY );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[1;31m");
 #   endif
     }
@@ -766,7 +768,7 @@ void ConsoleObserverStd::Error  (const char *sErr)
     if (useColorStderr) {
 #   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
 #   endif
     }
@@ -777,7 +779,7 @@ void ConsoleObserverStd::Log    (const char *sErr)
     if (useColorStderr) {
 #   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_RED |FOREGROUND_GREEN);
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[1;36m");
 #   endif
     }
@@ -787,7 +789,7 @@ void ConsoleObserverStd::Log    (const char *sErr)
     if (useColorStderr) {
 #   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
 #   endif
     }
@@ -859,7 +861,9 @@ int RedirectStdError::sync()
 }
 
 //---------------------------------------------------------
-std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int line) {
+
+std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int line)
+{
     static FC_TIME_POINT s_tstart;
     static bool s_timing = false;
     if(print_time) {
