@@ -60,7 +60,7 @@
    <item alignment="Qt::AlignHCenter">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
-      <set>QDialogButtonBox::Save</set>
+      <set>QDialogButtonBox::Close|QDialogButtonBox::Save</set>
      </property>
     </widget>
    </item>

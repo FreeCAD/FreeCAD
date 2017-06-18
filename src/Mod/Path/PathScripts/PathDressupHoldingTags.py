@@ -343,6 +343,8 @@ class MapWireToTag:
         # want to remove all edges from the wire itself, and all internal struts
         PathLog.track("+cleanupEdges")
         PathLog.debug(" edges:")
+        if not edges:
+            return edges
         for e in edges:
             debugEdge(e, '   ')
         PathLog.debug(":")
@@ -1022,17 +1024,40 @@ class TaskPanel:
             self.jvoVisible = jvoVisibility
         self.pt = FreeCAD.Vector(0, 0, 0)
 
+        closeButton = self.formPoint.buttonBox.button(QtGui.QDialogButtonBox.StandardButton.Close)
+        closeButton.setText(translate("PathDressup_HoldingTags", "Done"))
+
+    def addEscapeShortcut(self):
+        # The only way I could get to intercept the escape key, or really any key was
+        # by creating an action with a shortcut .....
+        self.escape = QtGui.QAction(self.formPoint)
+        self.escape.setText('Done')
+        self.escape.setShortcut(QtGui.QKeySequence.fromString('Esc'))
+        QtCore.QObject.connect(self.escape, QtCore.SIGNAL('triggered()'), self.pointDone)
+        self.formPoint.addAction(self.escape)
+
+    def removeEscapeShortcut(self):
+        if self.escape:
+            self.formPoint.removeAction(self.escape)
+            self.escape = None
+
+    def modifyStandardButtons(self, buttonBox):
+        self.buttonBox = buttonBox
+
     def reject(self):
+        PathLog.info("reject")
         FreeCAD.ActiveDocument.abortTransaction()
         self.cleanup()
 
     def accept(self):
+        PathLog.info("accept")
         self.getFields()
         FreeCAD.ActiveDocument.commitTransaction()
         self.cleanup()
         FreeCAD.ActiveDocument.recompute()
 
     def cleanup(self):
+        PathLog.info("cleanup")
         self.removeGlobalCallbacks()
         self.viewProvider.clearTaskPanel()
         FreeCADGui.ActiveDocument.resetEdit()
@@ -1123,7 +1148,7 @@ class TaskPanel:
         self.updateTagsView()
 
     def addNewTagAt(self, point, obj):
-        if self.obj.Proxy.pointIsOnPath(self.obj, point):
+        if point and obj and self.obj.Proxy.pointIsOnPath(self.obj, point):
             #print("addNewTagAt(%s)" % (point))
             tags = self.tags
             tags.append((point.x, point.y, True))
@@ -1131,15 +1156,13 @@ class TaskPanel:
             self.updateTagsView()
         else:
             print("ignore new tag at %s" % (point))
-        self.formPoint.hide()
-        self.formTags.show()
 
     def addNewTag(self):
         self.tags = self.getTags(True)
         self.getPoint(self.addNewTagAt)
 
     def editTagAt(self, point, obj):
-        if (obj or point != FreeCAD.Vector()) and self.obj.Proxy.pointIsOnPath(self.obj, point):
+        if point and obj and (obj or point != FreeCAD.Vector()) and self.obj.Proxy.pointIsOnPath(self.obj, point):
             tags = []
             for i, (x, y, enabled) in enumerate(self.tags):
                 if i == self.editItem:
@@ -1148,8 +1171,6 @@ class TaskPanel:
                     tags.append((x, y, enabled))
             self.obj.Proxy.setXyEnabled(tags)
             self.updateTagsView()
-        self.formPoint.hide()
-        self.formTags.show()
 
     def editTag(self, item):
         if item:
@@ -1198,7 +1219,10 @@ class TaskPanel:
                 accept()
 
         def accept():
-            self.pointAccept()
+            if start:
+                self.pointAccept()
+            else:
+                self.pointAcceptAndContinue()
 
         def cancel():
             self.pointCancel()
@@ -1206,6 +1230,7 @@ class TaskPanel:
         self.pointWhenDone = whenDone
         self.formTags.hide()
         self.formPoint.show()
+        self.addEscapeShortcut()
         if start:
             displayPoint(start)
         else:
@@ -1214,6 +1239,8 @@ class TaskPanel:
         self.view = Draft.get3DView()
         self.pointCbClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), click)
         self.pointCbMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), mouseMove)
+
+        self.buttonBox.setEnabled(False)
 
     def setupSpinBox(self, widget, val, decimals = 2):
         if decimals:
@@ -1251,23 +1278,42 @@ class TaskPanel:
         self.formTags.pbAdd.clicked.connect(self.addNewTag)
 
         self.formPoint.buttonBox.accepted.connect(self.pointAccept)
+        self.formPoint.buttonBox.rejected.connect(self.pointReject)
+
         self.formPoint.ifValueX.editingFinished.connect(self.updatePoint)
         self.formPoint.ifValueY.editingFinished.connect(self.updatePoint)
         self.formPoint.ifValueZ.editingFinished.connect(self.updatePoint)
 
         self.viewProvider.turnMarkerDisplayOn(True)
 
-    def pointFinish(self, ok):
-        self.removeGlobalCallbacks();
+    def pointFinish(self, ok, cleanup = True):
         obj = FreeCADGui.Snapper.lastSnappedObject
-        FreeCADGui.Snapper.off()
-        self.pointWhenDone(self.pt if ok else None, obj if ok else None)
+
+        if cleanup:
+            self.removeGlobalCallbacks();
+            FreeCADGui.Snapper.off()
+            self.buttonBox.setEnabled(True)
+            self.removeEscapeShortcut()
+            self.formPoint.hide()
+            self.formTags.show()
+            self.formTags.setFocus()
+
+        if ok:
+            self.pointWhenDone(self.pt, obj)
+        else:
+            self.pointWhenDone(None, None)
+
+    def pointDone(self):
+        self.pointFinish(False)
 
     def pointReject(self):
         self.pointFinish(False)
 
     def pointAccept(self):
         self.pointFinish(True)
+
+    def pointAcceptAndContinue(self):
+        self.pointFinish(True, False)
 
     def updatePoint(self):
         x = FreeCAD.Units.Quantity(self.formPoint.ifValueX.text()).Value
@@ -1285,7 +1331,7 @@ class HoldingTagMarker:
         self.sphere = coin.SoSphere()
         self.scale = coin.SoType.fromName('SoShapeScale').createInstance()
         self.scale.setPart('shape', self.sphere)
-        self.scale.scaleFactor.setValue(10)
+        self.scale.scaleFactor.setValue(7)
         self.material = coin.SoMaterial()
         self.sep.addChild(self.pos)
         self.sep.addChild(self.material)
@@ -1356,6 +1402,7 @@ class ViewProviderDressup:
         return True
 
     def setupTaskPanel(self, panel):
+        PathLog.info("setupTaskPanel")
         self.panel = panel
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(panel)
@@ -1364,9 +1411,10 @@ class ViewProviderDressup:
         FreeCADGui.Selection.addObserver(self)
 
     def clearTaskPanel(self):
+        PathLog.info("clearTaskPanel")
         self.panel = None
-        FreeCADGui.Selection.removeObserver(self)
         FreeCADGui.Selection.removeSelectionGate()
+        FreeCADGui.Selection.removeObserver(self)
         self.turnMarkerDisplayOn(False)
 
     def __getstate__(self):
