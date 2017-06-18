@@ -156,9 +156,11 @@ SketcherGui::ViewProviderSketch* getSketchViewprovider(Gui::Document *doc)
     return 0;
 }
 
-void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch, std::vector<AutoConstraint> &sug1, std::vector<AutoConstraint> &sug2) {
-    
-    if(sug1.size()>0 && sug2.size()>0) {
+void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
+                                       std::vector<AutoConstraint> &sug1,
+                                       std::vector<AutoConstraint> &sug2)
+{
+    if(!sug1.empty() && !sug2.empty()) {
         
         bool rmvhorvert = false;
         
@@ -205,9 +207,9 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch, std::vec
         detectredundant(sug2, secondext, secondorig, secondaxis);
         
         
-        rmvhorvert = (   (firstext && secondext)     ||  // coincident with external on both endpoints
-        (firstorig && secondaxis)   ||  // coincident origin and point on object on other
-        (secondorig && firstaxis) );
+        rmvhorvert = ((firstext && secondext)   ||  // coincident with external on both endpoints
+                      (firstorig && secondaxis) ||  // coincident origin and point on object on other
+                      (secondorig && firstaxis));
         
         if(rmvhorvert) {
             for(std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin(); it!=sug2.rend(); ++it) {
@@ -216,7 +218,6 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch, std::vec
                 }
             }
         }
-        
     }
 }
 
