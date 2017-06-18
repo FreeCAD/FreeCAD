@@ -207,7 +207,7 @@ class FemInputWriter():
                     self.femnodes_mesh = self.femmesh.Nodes
                 if not self.femnodes_ele_table:
                     self.femnodes_ele_table = FemMeshTools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
-            FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects, self.femnodes_ele_table)
+                FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects, self.femnodes_ele_table)
         if self.shellthickness_objects:
             if not self.femelement_table:
                 self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
