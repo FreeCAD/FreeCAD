@@ -215,6 +215,7 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
             for(std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin(); it!=sug2.rend(); ++it) {
                 if( (*it).Type == Sketcher::Horizontal || (*it).Type == Sketcher::Vertical) {
                     sug2.erase(std::next(it).base());
+                    it = sug2.rbegin(); // erase invalidates the iterator
                 }
             }
         }
@@ -348,13 +349,13 @@ public:
                 removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
 
             // add auto constraints for the line segment start
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::start);
                 sugConstr1.clear();
             }
 
             // add auto constraints for the line segment end
-            if (sugConstr2.size() > 0) {
+            if (!sugConstr2.empty()) {
                 createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::end);
                 sugConstr2.clear();
             }
