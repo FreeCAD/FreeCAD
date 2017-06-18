@@ -326,18 +326,21 @@ PyObject*  DocumentPy::moveObject(PyObject *args)
 
 PyObject*  DocumentPy::openTransaction(PyObject *args)
 {
-    PyObject *value;
+    PyObject *value = 0;
     if (!PyArg_ParseTuple(args, "|O",&value))
         return NULL;    // NULL triggers exception
     std::string cmd;
 
 
+    if (!value) {
+        cmd = "<empty>";
+    }
 #if PY_MAJOR_VERSION >= 3
-    if (PyUnicode_Check(value)) {
+    else if (PyUnicode_Check(value)) {
         cmd = PyUnicode_AsUTF8(value);
     }
 #else
-    if (PyUnicode_Check(value)) {
+    else if (PyUnicode_Check(value)) {
         PyObject* unicode = PyUnicode_AsLatin1String(value);
         cmd = PyString_AsString(unicode);
         Py_DECREF(unicode);
