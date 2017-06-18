@@ -41,14 +41,21 @@
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 
+#include <App/DocumentObject.h>
+#include <App/DocumentObjectPy.h>
+
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
-
 #include <Mod/Part/App/OCCError.h>
 
+#include <Mod/Drawing/App/DrawingExport.h>
+
 #include "DrawProjectSplit.h"
+#include "DrawViewPart.h"
+#include "DrawViewPartPy.h"
+#include "GeometryObject.h"
 #include "EdgeWalker.h"
 
 
@@ -60,6 +67,8 @@ using Part::TopoShape;
 using Part::TopoShapePy;
 using Part::TopoShapeEdgePy;
 using Part::TopoShapeWirePy;
+
+using Drawing::DXFOutput;
 
 namespace TechDraw {
 
@@ -76,6 +85,9 @@ public:
         );
         add_varargs_method("findShapeOutline",&Module::findShapeOutline,
             "wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result."
+        );
+        add_varargs_method("viewPartAsDxf",&Module::viewPartAsDxf,
+            "string = viewPartAsDxf(DrawViewPart) -- Return the edges of a DrawViewPart in Dxf format."
         );
         initialize("This is a module for making drawings"); // register with Python
     }
@@ -289,6 +301,62 @@ private:
         }
         return Py::asObject(outerWire);
     }
+
+    Py::Object viewPartAsDxf(const Py::Tuple& args)
+    {
+        PyObject *viewObj;
+        if (!PyArg_ParseTuple(args.ptr(), "O", &viewObj)) {
+            throw Py::Exception("expected (DrawViewPart)");
+        } 
+        Py::String dxfReturn;
+
+        try {
+            App::DocumentObject* obj = 0;
+            TechDraw::DrawViewPart* dvp = 0;
+            Drawing::DXFOutput dxfOut;
+            std::string dxfText; 
+            std::stringstream ss;
+            if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
+                obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
+                dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+                TechDrawGeometry::GeometryObject* go = dvp->getGeometryObject();
+                TopoDS_Shape s = TechDrawGeometry::mirrorShape(go->getVisHard());
+                ss << dxfOut.exportEdges(s);
+                s = TechDrawGeometry::mirrorShape(go->getVisOutline());
+                ss << dxfOut.exportEdges(s);
+                if (dvp->SmoothVisible.getValue()) {
+                    s = TechDrawGeometry::mirrorShape(go->getVisSmooth());
+                    ss << dxfOut.exportEdges(s);
+                }
+                if (dvp->SeamVisible.getValue()) {
+                    s = TechDrawGeometry::mirrorShape(go->getVisSeam());
+                    ss << dxfOut.exportEdges(s);
+                }
+                if (dvp->HardHidden.getValue()) {
+                    s = TechDrawGeometry::mirrorShape(go->getHidHard());
+                    ss << dxfOut.exportEdges(s);
+                    s = TechDrawGeometry::mirrorShape(go->getHidOutline());
+                    ss << dxfOut.exportEdges(s);
+                }
+                if (dvp->SmoothHidden.getValue()) {
+                    s = TechDrawGeometry::mirrorShape(go->getHidSmooth());
+                    ss << dxfOut.exportEdges(s);
+                }
+                if (dvp->SeamHidden.getValue()) {
+                    s = TechDrawGeometry::mirrorShape(go->getHidSeam());
+                    ss << dxfOut.exportEdges(s);
+                }
+                // ss now contains all edges as Dxf
+                dxfReturn = Py::String(ss.str() + "\n0");
+           }
+        }
+        catch (Base::Exception &e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+        }
+
+        return dxfReturn;
+    }
+
  };
 
 PyObject* initModule()
