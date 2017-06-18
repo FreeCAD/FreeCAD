@@ -341,7 +341,7 @@
       <item row="6" column="0">
        <widget class="Gui::PrefCheckBox" name="prefAddLogo">
         <property name="text">
-         <string>Add the FreeCAD logo to the generated thumbnail</string>
+         <string>Add the program logo to the generated thumbnail</string>
         </property>
         <property name="checked">
          <bool>true</bool>
