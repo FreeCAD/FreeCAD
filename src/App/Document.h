@@ -35,8 +35,37 @@
 #include <map>
 #include <vector>
 #include <stack>
+#include <list>
 
 #include <boost/signals.hpp>
+#include <boost/graph/adjacency_list.hpp>
+
+// typedef boost::property<boost::vertex_root_t, DocumentObject* > VertexProperty;
+typedef boost::adjacency_list <
+boost::vecS,           // class OutEdgeListS  : a Sequence or an AssociativeContainer
+boost::vecS,           // class VertexListS   : a Sequence or a RandomAccessContainer
+boost::directedS,      // class DirectedS     : This is a directed graph
+boost::no_property,    // class VertexProperty:
+boost::no_property,    // class EdgeProperty:
+boost::no_property,    // class GraphProperty:
+boost::listS           // class EdgeListS:
+> DependencyList;
+typedef boost::graph_traits<DependencyList> Traits;
+typedef Traits::vertex_descriptor Vertex;
+typedef Traits::edge_descriptor Edge;
+
+typedef boost::adjacency_list <
+boost::listS,           // class OutEdgeListS  : a Sequence or an AssociativeContainer
+boost::listS,           // class VertexListS   : a Sequence or a RandomAccessContainer
+boost::bidirectionalS,      // class DirectedS     : This is a directed graph
+boost::no_property,    // class VertexProperty:
+boost::no_property,    // class EdgeProperty:
+boost::no_property,    // class GraphProperty:
+boost::listS           // class EdgeListS:
+> ListBasedDependencyList;
+typedef boost::graph_traits<ListBasedDependencyList> ListBasedTraits;
+typedef ListBasedTraits::vertex_descriptor ListBasedVertex;
+//typedef ListBasedTraits::edge_descriptor ListBasedEdge;
 
 namespace Base {
     class Writer;
@@ -368,7 +397,23 @@ protected:
     /// refresh the internal dependency graph
     void _rebuildDependencyList(void);
     std::string getTransientDirectoryName(const std::string& uuid, const std::string& filename) const;
-
+    
+    
+    #ifdef USE_OLD_DAG
+    /// splits a DependencyList into a cyclic and acyclic part
+    /// @nondag the non-dag dependency list to split
+    /// @vertexmap the vertex map mapping @nondag vertex descriptors to DocumentObjects
+    /// @acyclic output parameter containing a list with the cyclic portion
+    /// @acyclicVertexmap output parameter containing the mapping between @acyclic vertex descriptors and documentobject    
+    /// @cyclic output parameter containing a list with the cyclic portion
+    /// @cyclicVertexmap output parameter containing the mapping between @cyclic vertex descriptors and documentobject
+    void splitGraphIntoCyclicACyclic(DependencyList &nondag, std::map<Vertex,DocumentObject *> &vertexmap,  
+                                     ListBasedDependencyList &acyclic, std::map<ListBasedVertex,DocumentObject *> &acyclicvertexmap,
+                                     ListBasedDependencyList &cyclic, std::map<ListBasedVertex,DocumentObject *> &cyclicvertexmap);
+    
+    template<typename T1,typename T2>
+    int _recomputeOrderedDependencyList(T1 &dependencylist, std::map<T2,DocumentObject *> &vertexmap, std::list<T2> &make_order);
+    #endif
 
 private:
     // # Data Member of the document +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
