@@ -182,6 +182,7 @@ class ViewProviderJob:
         vobj.setEditorMode('Selectable', mode)
         vobj.setEditorMode('ShapeColor', mode)
         vobj.setEditorMode('Transparency', mode)
+        self.taskPanel = None
 
     def __getstate__(self):  # mandatory
         return None
@@ -194,11 +195,18 @@ class ViewProviderJob:
 
     def setEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject())
-        FreeCADGui.Control.showDialog(taskd)
-        taskd.setupUi()
+        self.taskPanel = TaskPanel(vobj, self.deleteObjectsOnReject())
+        FreeCADGui.Control.showDialog(self.taskPanel)
+        self.taskPanel.setupUi()
         self.deleteOnReject = False
         return True
+
+    def unsetEdit(self, vobj, mode):
+        if self.taskPanel:
+            self.taskPanel.reject()
+
+    def resetTaskPanel(self):
+        self.taskPanel = None
 
     def getIcon(self):
         return ":/icons/Path-Job.svg"
@@ -213,14 +221,15 @@ class ViewProviderJob:
 
 
 class TaskPanel:
-    def __init__(self, obj, deleteOnReject):
+    def __init__(self, vobj, deleteOnReject):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Edit Job"))
-        self.obj = obj
+        self.vobj = vobj
+        self.obj = vobj.Object
         self.deleteOnReject = deleteOnReject
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/JobEdit.ui")
         #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/JobEdit.ui")
 
-        currentPostProcessor = obj.PostProcessor
+        currentPostProcessor = self.obj.PostProcessor
         postProcessors = PathPreferences.allEnabledPostProcessors(['', currentPostProcessor])
         for post in postProcessors:
             self.form.cboPostProcessor.addItem(post)
@@ -236,13 +245,16 @@ class TaskPanel:
         self.postProcessorArgsDefaultTooltip = self.form.cboPostProcessorArgs.toolTip()
 
     def accept(self):
+        PathLog.error('accept')
         self.getFields()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        self.vobj.Proxy.resetTaskPanel()
 
     def reject(self):
+        PathLog.error('reject')
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
@@ -253,6 +265,8 @@ class TaskPanel:
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        self.vobj.Proxy.resetTaskPanel()
+        return True
 
     def updateTooltips(self):
         if hasattr(self.obj, "Proxy") and hasattr(self.obj.Proxy, "tooltip") and self.obj.Proxy.tooltip:

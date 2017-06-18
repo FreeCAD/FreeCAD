@@ -1044,27 +1044,29 @@ class TaskPanel:
     def modifyStandardButtons(self, buttonBox):
         self.buttonBox = buttonBox
 
-    def reject(self):
-        PathLog.info("reject")
+    def abort(self):
         FreeCAD.ActiveDocument.abortTransaction()
-        self.cleanup()
+        self.cleanup(False)
+
+    def reject(self):
+        FreeCAD.ActiveDocument.abortTransaction()
+        self.cleanup(True)
 
     def accept(self):
-        PathLog.info("accept")
         self.getFields()
         FreeCAD.ActiveDocument.commitTransaction()
-        self.cleanup()
+        self.cleanup(True)
         FreeCAD.ActiveDocument.recompute()
 
-    def cleanup(self):
-        PathLog.info("cleanup")
+    def cleanup(self, gui):
         self.removeGlobalCallbacks()
         self.viewProvider.clearTaskPanel()
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-        if self.jvoVisible:
-            self.jvo.show()
+        if gui:
+            FreeCADGui.ActiveDocument.resetEdit()
+            FreeCADGui.Control.closeDialog()
+            FreeCAD.ActiveDocument.recompute()
+            if self.jvoVisible:
+                self.jvo.show()
 
     def getTags(self, includeCurrent):
         tags = []
@@ -1357,6 +1359,7 @@ class ViewProviderDressup:
 
     def __init__(self, vobj):
         vobj.Proxy = self
+        self.panel = None
 
     def setupColors(self):
         def colorForColorValue(val):
@@ -1401,8 +1404,11 @@ class ViewProviderDressup:
         self.setupTaskPanel(panel)
         return True
 
+    def unsetEdit(self, vobj, mode):
+        if hasattr(self, 'panel') and self.panel:
+            self.panel.abort()
+
     def setupTaskPanel(self, panel):
-        PathLog.info("setupTaskPanel")
         self.panel = panel
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(panel)
@@ -1411,7 +1417,6 @@ class ViewProviderDressup:
         FreeCADGui.Selection.addObserver(self)
 
     def clearTaskPanel(self):
-        PathLog.info("clearTaskPanel")
         self.panel = None
         FreeCADGui.Selection.removeSelectionGate()
         FreeCADGui.Selection.removeObserver(self)
