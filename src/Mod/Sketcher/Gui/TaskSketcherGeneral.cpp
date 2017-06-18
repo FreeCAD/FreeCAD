@@ -56,8 +56,6 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
             this, SIGNAL(emitToggleAutoconstraints(int)));
     connect(ui->renderingOrder->model(), SIGNAL(layoutChanged()),
             this, SLOT(renderOrderChanged()));
-    connect(ui->checkBoxRedundantAutoconstraints, SIGNAL(stateChanged(int)),
-            this, SLOT(on_checkBoxRedundantAutoconstraints_stateChanged(int)));
 }
 
 SketcherGeneralWidget::~SketcherGeneralWidget()
@@ -159,7 +157,7 @@ void SketcherGeneralWidget::renderOrderChanged()
     emitRenderOrderChanged();
 }
 
-void SketcherGeneralWidget::on_checkBoxRedundantAutoconstraints_stateChanged(int state)
+void SketcherGeneralWidget::on_checkBoxRedundantAutoconstraints_stateChanged(int /*state*/)
 {
     ui->checkBoxRedundantAutoconstraints->onSave();
 }
