@@ -51,6 +51,7 @@
 
 #include "ViewProviderSketch.h"
 #include "SketchRectangularArrayDialog.h"
+#include "CommandConstraints.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -182,11 +183,7 @@ void CmdSketcherCloseShape::activated(int iMsg)
     // finish the transaction and update
     commitCommand();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-    
-    if(autoRecompute)
-        Gui::Command::updateActive();
+    tryAutoRecompute();
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -269,12 +266,8 @@ void CmdSketcherConnect::activated(int iMsg)
 
     // finish the transaction and update
     commitCommand();
-    
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-    
-    if(autoRecompute)
-        Gui::Command::updateActive();
+
+    tryAutoRecompute();
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -790,26 +783,16 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                     Base::Console().Error("%s\n", e.what());
                     Gui::Command::abortCommand();
 
-                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-
-                    if(autoRecompute)
-                        Gui::Command::updateActive();
-                    else
-                        static_cast<Sketcher::SketchObject *>(Obj)->solve();
+                    static_cast<Sketcher::SketchObject *>(Obj)->solve();
+                    tryAutoRecompute();
 
                     return;
                 }
 
                 Gui::Command::commitCommand();
 
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-
-                if (autoRecompute)
-                    Gui::Command::updateActive();
-                else
-                    static_cast<Sketcher::SketchObject *>(Obj)->solve();
+                static_cast<Sketcher::SketchObject *>(Obj)->solve();
+                tryAutoRecompute();
             }
         }
     }
@@ -986,9 +969,6 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
     Gui::Command::openCommand("Create Symmetric geometry");
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-
     try{
         Gui::Command::doCommand(
             Gui::Command::Doc, "App.ActiveDocument.%s.addSymmetric(%s,%d,%d)",
@@ -1002,10 +982,8 @@ void CmdSketcherSymmetry::activated(int iMsg)
         Gui::Command::abortCommand();
     }
 
-    if(autoRecompute)
-        Gui::Command::updateActive();
-    else
-        Obj->solve();
+    Obj->solve();
+    tryAutoRecompute();
 }
 
 bool CmdSketcherSymmetry::isActive(void)
@@ -1124,10 +1102,7 @@ static const char *cursor_createcopy[]={
                 int currentgeoid = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getHighestCurveIndex();
                 
                 Gui::Command::openCommand("Create copy of geometry");
-                
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                
+
                 try{
                     Gui::Command::doCommand(
                         Gui::Command::Doc, "App.ActiveDocument.%s.addCopy(%s,App.Vector(%f,%f,0),%s)",
@@ -1148,10 +1123,8 @@ static const char *cursor_createcopy[]={
                     sugConstr1.clear();
                 }
                 
-                if(autoRecompute)
-                    Gui::Command::updateActive();
-                else
-                    static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+                tryAutoRecompute();
                 
                 EditCurve.clear();
                 sketchgui->drawEdit(EditCurve);
@@ -1569,11 +1542,8 @@ static const char *cursor_createrectangulararray[]={
                 resetPositionText();
                 
                 Gui::Command::openCommand("Create copy of geometry");
-                
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                
-                try{
+
+                try {
                     Gui::Command::doCommand(
                         Gui::Command::Doc, "App.ActiveDocument.%s.addRectangularArray(%s, App.Vector(%f,%f,0),%s,%d,%d,%s,%f)",
                                             sketchgui->getObject()->getNameInDocument(), 
@@ -1595,12 +1565,10 @@ static const char *cursor_createrectangulararray[]={
                     createAutoConstraints(sugConstr1, OriginGeoId+nElements, OriginPos);
                     sugConstr1.clear();
                 }
-                
-                if(autoRecompute)
-                    Gui::Command::updateActive();
-                else
-                    static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-                
+
+                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+                tryAutoRecompute();
+
                 EditCurve.clear();
                 sketchgui->drawEdit(EditCurve);
                 
