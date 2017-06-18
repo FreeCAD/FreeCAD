@@ -164,8 +164,8 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         factor = 1.0;
     }
     else if (unit == Unit::Velocity) {
-        unitString = QString::fromLatin1("mm/min");
-        factor = 1.0/60;
+        unitString = QString::fromLatin1("mm/s");
+        factor = 1.0;
     }
     else {
         // default action for all cases without special treatment:
