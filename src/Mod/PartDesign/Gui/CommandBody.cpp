@@ -614,7 +614,7 @@ CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
 }
 
 void CmdPartDesignMoveFeature::activated(int iMsg)
-{    
+{
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     if (features.empty()) return;

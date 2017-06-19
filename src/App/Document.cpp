@@ -325,8 +325,8 @@ void Document::exportGraphviz(std::ostream& out) const
         }
 
         /**
-         * @brief addExpressionSubgraphIfNeeded Add a subgraph to the main graph if it is needed, i.e there are defined at least one expression in hte
-         *                            document object, or other objects are referencing properties in it.
+         * @brief addExpressionSubgraphIfNeeded Add a subgraph to the main graph if it is needed, i.e. there are defined at least one
+         * expression in the document object, or other objects are referencing properties in it.
          * @param obj DocumentObject to assess.
          * @param CSSubgraphs Boolean if the GeoFeatureGroups are created as subgraphs
          */
@@ -370,8 +370,9 @@ void Document::exportGraphviz(std::ostream& out) const
                                 auto graph2 = group ? GraphList[group] : &DepList;
                                 GraphList[o] = &graph2->create_subgraph();
                             }
-                            else
+                            else {
                                 GraphList[o] = &graph->create_subgraph();
+                            }
 
                             setGraphAttributes(o);
                         }
@@ -394,7 +395,7 @@ void Document::exportGraphviz(std::ostream& out) const
             if(std::find(objects.begin(), objects.end(), docObj) != objects.end())
                 return;
                        
-            //find the correct graph to add the vertex too. Check first expressions graphs, afterwards 
+            //find the correct graph to add the vertex to. Check first expression graphs, afterwards
             //the parent CS and origin graphs
             Graph * sgraph = GraphList[docObj];
             if(CSSubgraphs) {
@@ -868,11 +869,10 @@ bool Document::redo(void)
     return false;
 }
 
-bool Document::performsTransactionOperation() {
-    
+bool Document::isPerformingTransaction() const
+{
     return d->undoing || d->rollback;
 }
-
 
 std::vector<std::string> Document::getAvailableUndoNames() const
 {

@@ -96,7 +96,7 @@ public:
     /** Returns the object group of the document which the given object \a obj is part of.
      * In case this object is not part of a group 0 is returned. 
      * @note This only returns objects that are normal groups, not any special derived type 
-     * like geofeaturegroups or origingroups. To retrieve those please youse their appropriate functions
+     * like GeoFeatureGroups or OriginGroups. To retrieve those please use their appropriate functions
      */
     static DocumentObject* getGroupOfObject(const DocumentObject* obj);
     //@}

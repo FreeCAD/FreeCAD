@@ -56,7 +56,7 @@ void GeoFeature::transformPlacement(const Base::Placement &transform)
     this->Placement.setValue(plm);
 }
 
-Base::Placement GeoFeature::globalPlacement()
+Base::Placement GeoFeature::globalPlacement() const
 {
     auto* group = GeoFeatureGroupExtension::getGroupOfObject(this);
     if(group) {

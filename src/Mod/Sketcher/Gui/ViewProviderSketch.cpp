@@ -5823,5 +5823,4 @@ void ViewProviderSketch::showRestoreInformationLayer() {
 
     visibleInformationChanged = true ;
     draw(false,false);
-    
 }

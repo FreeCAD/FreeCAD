@@ -88,7 +88,7 @@ std::vector< DocumentObject* > GroupExtension::addObjects(std::vector< DocumentO
         auto geogrp = GeoFeatureGroupExtension::getGroupOfObject(getExtendedObject());
         auto objgrp = GeoFeatureGroupExtension::getGroupOfObject(obj);
         if( geogrp != objgrp ) {
-            //what to doo depends on if we are in  geofeature group or not
+            //what to do depends on if we are in  geofeature group or not
             if(geogrp)
                 geogrp->getExtensionByType<GeoFeatureGroupExtension>()->addObject(obj);
             else 
@@ -132,7 +132,6 @@ std::vector< DocumentObject* > GroupExtension::removeObjects(std::vector< Docume
     
     return removed;
 }
-
 
 void GroupExtension::removeObjectsFromDocument()
 {
@@ -233,7 +232,7 @@ int GroupExtension::countObjectsOfType(const Base::Type& typeId) const
 DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
 {
     //note that we return here only Groups, but nothing derived from it, e.g. no GeoFeatureGroups. 
-    //That is important as there are clear differences between groups/geofeature groups (e.g. a object 
+    //That is important as there are clear differences between groups/geofeature groups (e.g. an object
     //can be in only one group, and only one geofeaturegroup, however, it can be in both at the same time)
     auto list = obj->getInList();
     for (auto obj : list) {
