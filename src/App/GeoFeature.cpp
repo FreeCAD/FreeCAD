@@ -27,6 +27,7 @@
 #endif
 
 #include "GeoFeature.h"
+#include "GeoFeatureGroupExtension.h"
 #include <App/GeoFeaturePy.h>
 
 using namespace App;
@@ -53,6 +54,16 @@ void GeoFeature::transformPlacement(const Base::Placement &transform)
     Base::Placement plm = this->Placement.getValue();
     plm = transform * plm;
     this->Placement.setValue(plm);
+}
+
+Base::Placement GeoFeature::globalPlacement()
+{
+    auto* group = GeoFeatureGroupExtension::getGroupOfObject(this);
+    if(group) {
+        auto ext = group->getExtensionByType<GeoFeatureGroupExtension>();
+        return ext->globalGroupPlacement() * Placement.getValue();
+    }
+    return Placement.getValue();    
 }
 
 const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const

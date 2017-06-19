@@ -52,10 +52,8 @@ public:
      * Returns the origin group which contains this object.
      * In case this object is not part of any geoFeatureGroup 0 is returned.
      * @param obj       the object to search for
-     * @param indirect  if true return if the group that so-called geoHas the object, @see geoHasObject()
-     *                  default is true
      */
-    static DocumentObject* getGroupOfObject (const DocumentObject* obj, bool indirect=true);
+    static DocumentObject* getGroupOfObject (const DocumentObject* obj);
 
     /// Returns true on changing OriginFeature set
     virtual short extensionMustExecute () override;
@@ -66,7 +64,7 @@ public:
     //changes all links of obj to a origin to point to this groupes origin
     void relinkToOrigin(App::DocumentObject* obj);
     
-    virtual void addObject(DocumentObject* obj) override;
+    virtual std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj) override;
 
 protected:
     /// Checks integrity of the Origin
