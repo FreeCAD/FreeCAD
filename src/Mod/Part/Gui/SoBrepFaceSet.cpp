@@ -90,8 +90,8 @@ class SoBrepFaceSet::VBO {
 public:
     struct Buffer {
         uint32_t myvbo[2];
-        long vertex_array_size;
-        long index_array_size;
+        std::size_t vertex_array_size;
+        std::size_t index_array_size;
     };
 
     static SbBool vboAvailable;
