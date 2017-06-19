@@ -82,6 +82,9 @@ class ObjectDrilling:
         # Tool Properties
         obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
+        if FreeCAD.GuiUp:
+            _ViewProviderDrill(obj.ViewObject)
+
         obj.Proxy = self
         self.vertFeed = 0.0
         self.horizFeed = 0.0
@@ -290,12 +293,16 @@ class _ViewProviderDrill:
         # this is executed when a property of the APP OBJECT changes
         pass
 
+    def deleteObjectsOnReject(self):
+        return hasattr(self, 'deleteOnReject') and self.deleteOnReject
+
     def setEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        taskd = TaskPanel()
+        taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject())
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         taskd.setupUi()
+        self.deleteOnReject = False
         return True
 
     def unsetEdit(self, vobj, mode):
@@ -326,7 +333,8 @@ class CommandPathDrilling:
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Drilling")')
         FreeCADGui.doCommand('PathScripts.PathDrilling.ObjectDrilling(obj)')
         FreeCADGui.doCommand('obj.Active = True')
-        FreeCADGui.doCommand('PathScripts.PathDrilling._ViewProviderDrill(obj.ViewObject)')
+        #FreeCADGui.doCommand('PathScripts.PathDrilling._ViewProviderDrill(obj.ViewObject)')
+        FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
 
         ztop = 10.0
         zbottom = 0.0
@@ -335,26 +343,34 @@ class CommandPathDrilling:
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
+        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
 
 class TaskPanel:
-    def __init__(self):
+    def __init__(self, obj, deleteOnReject):
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Drilling", "Drilling Operation"))
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DrillingEdit.ui")
+        self.deleteOnReject = deleteOnReject
+        self.obj = obj
 
     def accept(self):
-        FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        # FreeCADGui.Selection.removeObserver(self.s)
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.abortTransaction()
+        if self.deleteOnReject:
+            FreeCAD.ActiveDocument.openTransaction(translate("Path_Drilling", "Uncreate Drilling Operation"))
+            FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        # FreeCADGui.Selection.removeObserver(self.s)
 
     def getFields(self):
         PathLog.track()
@@ -570,9 +586,6 @@ class TaskPanel:
             self.updateFeatureList()
 
             FreeCAD.ActiveDocument.recompute()
-
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
 
     def setupUi(self):
         PathLog.track()

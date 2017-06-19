@@ -40,7 +40,7 @@ FreeCAD.setLogLevel('Path.Area', 0)
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtGui
+   # from PySide import QtGui
 
 
 # Qt tanslation handling
@@ -84,6 +84,9 @@ class ObjectContour:
         # Debug Parameters
         obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
         obj.setEditorMode('AreaParams', 2)  # hide
+
+        if FreeCAD.GuiUp:
+            _ViewProviderContour(obj.ViewObject)
 
         obj.Proxy = self
         self.endVector = None
@@ -285,12 +288,17 @@ class _ViewProviderContour:
         self.Object = vobj.Object
         return
 
+    def deleteObjectsOnReject(self):
+        return hasattr(self, 'deleteOnReject') and self.deleteOnReject
+
     def setEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        taskd = TaskPanel()
+        taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject())
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         taskd.setupUi()
+        self.deleteOnReject = False
+
         return True
 
     def getIcon(self):
@@ -344,7 +352,7 @@ class CommandPathContour:
         FreeCADGui.addModule("PathScripts.PathContour")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Contour")')
         FreeCADGui.doCommand('PathScripts.PathContour.ObjectContour(obj)')
-        FreeCADGui.doCommand('PathScripts.PathContour._ViewProviderContour(obj.ViewObject)')
+        #FreeCADGui.doCommand('PathScripts.PathContour._ViewProviderContour(obj.ViewObject)')
 
         FreeCADGui.doCommand('obj.Active = True')
 
@@ -357,8 +365,9 @@ class CommandPathContour:
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
         FreeCADGui.doCommand('obj.Direction = "CW"')
         FreeCADGui.doCommand('obj.UseComp = True')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
+        FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
 
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('PathScripts.PathContour.ObjectContour.setDepths(obj.Proxy, obj)')
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
@@ -368,22 +377,31 @@ class CommandPathContour:
 
 
 class TaskPanel:
-    def __init__(self):
+    def __init__(self, obj, deleteOnReject):
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Contour", "Contour Operation"))
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ContourEdit.ui")
         # self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ContourEdit.ui")
+        self.deleteOnReject = deleteOnReject
         self.updating = False
 
     def accept(self):
         self.getFields()
 
-        FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
         FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.abortTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
+        if self.deleteOnReject:
+            FreeCAD.ActiveDocument.openTransaction(translate("Path_Contour", "Uncreate Contour Operation"))
+            FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
     def getFields(self):
@@ -454,8 +472,8 @@ class TaskPanel:
         # install the function mode resident
         FreeCADGui.Selection.addObserver(self.s)
 
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
+    # def getStandardButtons(self):
+    #     return int(QtGui.QDialogButtonBox.Ok)
 
     def setupUi(self):
         PathLog.track()

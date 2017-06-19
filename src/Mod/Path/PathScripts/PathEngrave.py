@@ -30,7 +30,7 @@ import Part
 import ArchPanel
 
 import PathScripts.PathLog as PathLog
-from PySide import QtCore, QtGui
+from PySide import QtCore
 from PathScripts import PathUtils
 
 """Path Engrave object and FreeCAD command"""
@@ -50,9 +50,6 @@ class ObjectPathEngrave:
         obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this profile"))
         obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
-
-        obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", QtCore.QT_TRANSLATE_NOOP("App::Property", "The library or Algorithm used to generate the path"))
-        obj.Algorithm = ['OCC Native']
 
         # Tool Properties
         obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
@@ -121,8 +118,7 @@ class ObjectPathEngrave:
                     tempedges = PathUtils.cleanedges(w.Edges, 0.5)
                     wires.append(Part.Wire(tempedges))
 
-                if obj.Algorithm == "OCC Native":
-                    output += self.buildpathocc(obj, wires)
+                output += self.buildpathocc(obj, wires)
 
             elif isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
 
@@ -132,8 +128,7 @@ class ObjectPathEngrave:
                     for w in shape.Wires:
                         tempedges = PathUtils.cleanedges(w.Edges, 0.5)
                         wires.append(Part.Wire(tempedges))
-                    if obj.Algorithm == "OCC Native":
-                        output += self.buildpathocc(obj, wires)
+                    output += self.buildpathocc(obj, wires)
             else:
                 raise ValueError('Unknown baseobject type for engraving')
 
@@ -216,12 +211,17 @@ class _ViewProviderEngrave:
         self.Object = vobj.Object
         return
 
+    def deleteObjectsOnReject(self):
+        return hasattr(self, 'deleteOnReject') and self.deleteOnReject
+
     def setEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        taskd = TaskPanel()
+        taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject())
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         taskd.setupUi()
+        self.deleteOnReject = False
+
         return True
 
     def getIcon(self):
@@ -264,18 +264,22 @@ class CommandPathEngrave:
         FreeCADGui.doCommand('obj.FinalDepth= -0.1')
         FreeCADGui.doCommand('obj.SafeHeight= 5.0')
         FreeCADGui.doCommand('obj.Active = True')
+        FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
 
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
+        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
 
 class TaskPanel:
-    def __init__(self):
+    def __init__(self, obj, deleteOnReject):
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Engrave", "Engraving Operation"))
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/EngraveEdit.ui")
+        self.deleteOnReject = deleteOnReject
+        self.obj = obj
 
     def __del__(self):
         FreeCADGui.Selection.removeObserver(self.s)
@@ -283,15 +287,23 @@ class TaskPanel:
     def accept(self):
         self.getFields()
 
-        FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
+        FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.abortTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
+        if self.deleteOnReject:
+            FreeCAD.ActiveDocument.openTransaction(translate("Path_Engrave", "Uncreate Engrave Operation"))
+            FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+
 
     def getFields(self):
         if self.obj:
@@ -336,8 +348,8 @@ class TaskPanel:
         # install the function mode resident
         FreeCADGui.Selection.addObserver(self.s)
 
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
+    # def getStandardButtons(self):
+    #     return int(QtGui.QDialogButtonBox.Ok)
 
     def setupUi(self):
 
