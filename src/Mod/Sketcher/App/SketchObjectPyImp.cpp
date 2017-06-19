@@ -827,7 +827,6 @@ PyObject* SketchObjectPy::extend(PyObject *args)
 {
     double increment;
     int endPoint;
-
     int GeoId;
 
     if (PyArg_ParseTuple(args, "idi", &GeoId, &increment, &endPoint)) {
@@ -837,10 +836,12 @@ PyObject* SketchObjectPy::extend(PyObject *args)
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
             return 0;
         }
+        Py_Return;
     }
-    Py_Return;
+
     PyErr_SetString(PyExc_TypeError, "extend() method accepts:\n"
-    "-- int,float,int\n");
+        "-- int,float,int\n");
+    return 0;
 }
 
 PyObject* SketchObjectPy::addSymmetric(PyObject *args)
