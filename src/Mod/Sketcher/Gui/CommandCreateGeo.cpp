@@ -6090,8 +6090,8 @@ namespace SketcherGui {
     public:
         ExtendSelection(App::DocumentObject* obj)
             : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
-			, object(obj)
-			, disabled(false)
+            , object(obj)
+            , disabled(false)
         {}
 
         bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
@@ -6100,28 +6100,27 @@ namespace SketcherGui {
                 return false;
             if (!sSubName || sSubName[0] == '\0')
                 return false;
-			if (disabled)
-				return true;
+            if (disabled)
+                return true;
             std::string element(sSubName);
             if (element.substr(0, 4) == "Edge") {
                 int GeoId = std::atoi(element.substr(4, 4000).c_str()) - 1;
                 Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
                 const Part::Geometry *geom = Sketch->getGeometry(GeoId);
                 if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-                    geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
-                )
+                    geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
                     return true;
             }
             return false; 
         }
 
         void setDisabled(bool isDisabled) {
-			disabled = isDisabled;
+            disabled = isDisabled;
         }
     protected:
         bool disabled;
     };
-};
+}
 
 /* XPM */
 static const char *cursor_extension[]={
@@ -6186,7 +6185,7 @@ public:
         Q_UNUSED(sketchgui)
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
-		filterGate = new ExtendSelection(sketchgui->getObject());
+        filterGate = new ExtendSelection(sketchgui->getObject());
         Gui::Selection().addSelectionGate(filterGate);
         setCursor(QPixmap(cursor_extension),7,7);
     }
@@ -6339,7 +6338,7 @@ public:
                     EditCurve.resize(31);
                     Mode = STATUS_SEEK_Second;
                 }
-				filterGate->setDisabled(true);
+                filterGate->setDisabled(true);
             }
         } else if (Mode == STATUS_SEEK_Second) {
             try {
@@ -6365,7 +6364,7 @@ public:
                 if(continuousMode){
                     // This code enables the continuous creation mode.
                     Mode=STATUS_SEEK_First;
-					filterGate->setDisabled(false);
+                    filterGate->setDisabled(false);
                     EditCurve.clear();
                     sketchgui->drawEdit(EditCurve);
                     EditCurve.resize(2);
@@ -6394,7 +6393,7 @@ protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
     int BaseGeoId;
-	ExtendSelection* filterGate = nullptr;
+    ExtendSelection* filterGate = nullptr;
     bool ExtendFromStart; // if true, extend from start, else extend from end (circle only)
     bool SavedExtendFromStart;
     double Increment;
@@ -6494,7 +6493,7 @@ namespace SketcherGui {
             return  false;
         }
     };
-};
+}
 
 
 /* XPM */
