@@ -25,7 +25,7 @@
 from __future__ import print_function
 import FreeCAD
 import Path
-from PySide import QtCore, QtGui
+from PySide import QtCore
 from PathScripts import PathUtils
 import Part
 from FreeCAD import Vector
@@ -92,6 +92,9 @@ class ObjectFace:
         # Debug Parameters
         obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
         obj.setEditorMode('AreaParams', 2)  # hide
+
+        if FreeCAD.GuiUp:
+            ViewProviderFace(obj.ViewObject)
 
         obj.Proxy = self
 
@@ -340,12 +343,16 @@ class ViewProviderFace:
         self.Object = vobj.Object
         return
 
+    def deleteObjectsOnReject(self):
+        return hasattr(self, 'deleteOnReject') and self.deleteOnReject
+
     def setEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        taskd = TaskPanel()
+        taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject())
         taskd.obj = vobj.Object
         taskd.setupUi()
         FreeCADGui.Control.showDialog(taskd)
+        self.deleteOnReject = False
         return True
 
     def getIcon(self):
@@ -383,7 +390,7 @@ class CommandPathMillFace:
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Face")')
         FreeCADGui.doCommand('PathScripts.PathMillFace.ObjectFace(obj)')
         FreeCADGui.doCommand('obj.Active = True')
-        FreeCADGui.doCommand('PathScripts.PathMillFace.ViewProviderFace(obj.ViewObject)')
+        #FreeCADGui.doCommand('PathScripts.PathMillFace.ViewProviderFace(obj.ViewObject)')
         FreeCADGui.doCommand('from PathScripts import PathUtils')
         FreeCADGui.doCommand('obj.StepOver = 50')
         FreeCADGui.doCommand('obj.ClearanceHeight = 10')  # + str(bb.ZMax + 2.0))
@@ -391,6 +398,8 @@ class CommandPathMillFace:
         FreeCADGui.doCommand('obj.StartDepth = ' + str(ztop + 1))
         FreeCADGui.doCommand('obj.FinalDepth =' + str(ztop))
         FreeCADGui.doCommand('obj.ZigZagAngle = 45.0')
+        FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
+
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
         snippet = '''
@@ -406,31 +415,40 @@ else:
         obj.FinalDepth = str(baseobject.Shape.BoundBox.ZMax)
 '''
         FreeCADGui.doCommand(snippet)
+        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
         FreeCAD.ActiveDocument.commitTransaction()
-
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
 
 class TaskPanel:
-    def __init__(self):
+    def __init__(self, obj, deleteOnReject):
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_MillFace", "Mill Facing Operation"))
         # self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/MillFaceEdit.ui")
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/MillFaceEdit.ui")
+        self.deleteOnReject = deleteOnReject
+        self.obj = obj
         self.updating = False
 
     def accept(self):
         self.getFields()
 
-        FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
+        FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.abortTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
+        if self.deleteOnReject:
+            FreeCAD.ActiveDocument.openTransaction(translate("Path_MillFace", "Uncreate Mill Face Operation"))
+            FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
     def getFields(self):
         if self.obj:
@@ -597,8 +615,8 @@ class TaskPanel:
 
         FreeCAD.ActiveDocument.recompute()
 
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
+    # def getStandardButtons(self):
+    #     return int(QtGui.QDialogButtonBox.Ok)
 
     def edit(self, item, column):
         if not self.updating:

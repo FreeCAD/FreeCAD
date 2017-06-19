@@ -31,7 +31,7 @@
         <x>0</x>
         <y>0</y>
         <width>303</width>
-        <height>82</height>
+        <height>85</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -78,7 +78,7 @@
         <x>0</x>
         <y>0</y>
         <width>303</width>
-        <height>82</height>
+        <height>85</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -169,40 +169,6 @@
           </item>
           <item>
            <widget class="QComboBox" name="uiToolController"/>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="frame">
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>Algorithm</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="algorithmSelect">
-            <item>
-             <property name="text">
-              <string>OCC Native Outline</string>
-             </property>
-            </item>
-           </widget>
           </item>
          </layout>
         </widget>
