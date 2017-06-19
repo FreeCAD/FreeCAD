@@ -47,3 +47,10 @@ def isValidBaseObject(obj):
     if hasattr(obj, 'Sheets') or hasattr(obj, 'TagText'): # Arch.Panels and Arch.PanelCut
         return False
     return True
+
+def toolControllerForOp(op):
+    if hasattr(op, 'ToolController'):
+        return op.ToolController
+    if hasattr(op, 'Base'):
+        return toolControllerForOp(op.Base)
+    return None
