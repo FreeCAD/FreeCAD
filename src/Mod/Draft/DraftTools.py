@@ -76,19 +76,47 @@ MODALT = MODS[Draft.getParam("modalt",2)]
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text):
-        "convenience function for Qt translator"
-        if sys.version_info.major >= 3:
+    def translate(context, text, utf8_decode=False):
+        """convenience function for Qt translator
+            context: str
+                context is typically a class name (e.g., "MyDialog")
+            text: str
+                text which gets translated
+            utf8_decode: bool [False]
+                if set to true utf8 encoded unicode will be returned. This option does not have influence
+                on python3 as for python3 we are returning utf-8 encoded unicode by default!
+        """
+        if sys.version_info.major >= 3 or utf8_decode:
             return QtGui.QApplication.translate(context, text, None, _encoding)
         else:
             return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
+
 except AttributeError:
-    def translate(context, text):
-        "convenience function for Qt translator"
-        if sys.version >= 3:
+    def translate(context, text, utf8_decode=False):
+        """convenience function for Qt translator
+            context: str
+                context is typically a class name (e.g., "MyDialog")
+            text: str
+                text which gets translated
+            utf8_decode: bool [False]
+                if set to true utf8 encoded unicode will be returned. This option does not have influence
+                on python3 as for python3 we are returning utf-8 encoded unicode by default!
+        """
+        if sys.version >= 3 or utf8_decode:
             return QtGui.QApplication.translate(context, text, None)
         else:
             return QtGui.QApplication.translate(context, text, None).encode("utf8")
+
+def utf8_decode(text):
+    """py2: str     -> unicode
+            unicode -> unicode
+       py3: str     -> str
+            bytes   -> str
+    """
+    try:
+        return text.decode("utf-8")
+    except AttributeError:
+        return text
 
 def msg(text=None,mode=None):
     "prints the given message on the FreeCAD status bar"
@@ -2253,7 +2281,7 @@ class Move(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Move", "Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy")}
 
     def Activated(self):
-        self.name = translate("draft","Move").decode("utf8")
+        self.name = translate("draft","Move", utf8_decode=True)
         Modifier.Activated(self,self.name)
         self.ghost = None
         if self.ui:
@@ -3536,7 +3564,7 @@ class Scale(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Scale", "Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy")}
 
     def Activated(self):
-        self.name = translate("draft","Scale").decode("utf8")
+        self.name = translate("draft","Scale", utf8_decode=True)
         Modifier.Activated(self,self.name)
         self.ghost = None
         if self.ui:
@@ -4970,7 +4998,7 @@ class Mirror(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Mirror", "Mirrors the selected objects along a line defined by two points")}
 
     def Activated(self):
-        self.name = translate("draft","Mirror").decode("utf8")
+        self.name = translate("draft","Mirror", utf8_decode=True)
         Modifier.Activated(self,self.name)
         self.ghost = None
         if self.ui:
@@ -5215,7 +5243,7 @@ class Draft_Label(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Label", "Creates a label, optionally attached to a selected object or element")}
 
     def Activated(self):
-        self.name = translate("draft","Label").decode("utf8")
+        self.name = translate("draft","Label", utf8_decode=True)
         Creator.Activated(self,self.name,noplanesetup=True)
         self.ghost = None
         self.labeltype = Draft.getParam("labeltype","Custom")

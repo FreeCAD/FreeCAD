@@ -40,6 +40,7 @@ Report to Draft.py for info
 '''
 
 import FreeCAD, FreeCADGui, os, Draft, sys, DraftVecUtils, math
+from DraftTools import utf8_decode
 
 try:
     from PySide import QtCore,QtGui,QtSvg
@@ -883,7 +884,7 @@ class DraftToolBar:
         
     def labelUi(self,title=translate("draft","Label"),callback=None):
         w = QtGui.QWidget()
-        w.setWindowTitle(translate("draft","Label type").decode("utf8"))
+        w.setWindowTitle(translate("draft","Label type", utf8_decode=True))
         l = QtGui.QVBoxLayout(w)
         combo = QtGui.QComboBox()
         for s in ["Custom","Name","Label","Position","Length","Area","Volume","Tag","Material"]:
@@ -1373,7 +1374,7 @@ class DraftToolBar:
                                                               dialogFilter)
                     # print(fname)
                     #fname = str(fname.toUtf8())                                 # QString to PyString
-                    fname = fname[0].decode("utf8")
+                    fname = utf8_decode(fname[0])
 #                    print("debug: D_G DraftToolBar.pickFile type(fname): "  str(type(fname)))
                                                               
                 except Exception as e:
@@ -1392,7 +1393,7 @@ class DraftToolBar:
         if self.sourceCmd: 
             if (self.labelFFile.isVisible()):
                 if self.FFileValue.text():
-                    self.sourceCmd.validFFile(self.FFileValue.text().decode("utf8"))       #QString to PyString
+                    self.sourceCmd.validFFile(utf8_decode(self.FFileValue.text()))       #QString to PyString
                 else:
                     FreeCAD.Console.PrintMessage(translate("draft", "Please enter a font file."))                    
 
