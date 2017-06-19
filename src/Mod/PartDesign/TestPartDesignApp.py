@@ -71,7 +71,8 @@ class PartDesignRevolveTestCases(unittest.TestCase):
         self.Revolution.Reversed = 1
         self.Body.addObject(self.Revolution)
         self.Doc.recompute()
-        self.failUnless(len(self.Revolution.Shape.Faces) == 10)
+        # depending on if refinement is done we expect 8 or 10 faces
+        self.assertIn(len(self.Revolution.Shape.Faces), (8, 10))
 
     def testGrooveFace(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
