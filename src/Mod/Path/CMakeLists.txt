@@ -67,19 +67,19 @@ SET(PathScripts_SRCS
     PathScripts/PathUtils.py
     PathScripts/PostUtils.py
     PathScripts/__init__.py
-    PathScripts/centroid_post.py
-    PathScripts/comparams_post.py
-    PathScripts/dumper_post.py
-    PathScripts/dynapath_post.py
-    PathScripts/example_post.py
-    PathScripts/example_pre.py
-    PathScripts/linuxcnc_post.py
-    PathScripts/opensbp_post.py
-    PathScripts/opensbp_pre.py
-    PathScripts/phillips_post.py
-    PathScripts/rml_post.py
-    PathScripts/slic3r_pre.py
-    PathScripts/smoothie_post.py
+    PathScripts/post/centroid_post.py
+    PathScripts/post/comparams_post.py
+    PathScripts/post/dumper_post.py
+    PathScripts/post/dynapath_post.py
+    PathScripts/post/example_post.py
+    PathScripts/post/example_pre.py
+    PathScripts/post/linuxcnc_post.py
+    PathScripts/post/opensbp_post.py
+    PathScripts/post/opensbp_pre.py
+    PathScripts/post/phillips_post.py
+    PathScripts/post/rml_post.py
+    PathScripts/post/slic3r_pre.py
+    PathScripts/post/smoothie_post.py
 )
 
 

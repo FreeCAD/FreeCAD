@@ -52,6 +52,10 @@ class PathPreferences:
         return FreeCAD.getHomePath() + ("Mod/Path/PathScripts/")
 
     @classmethod
+    def pathScriptsPostSourcePath(cls):
+        return cls.pathScriptsSourcePath() + ("/post/")
+
+    @classmethod
     def allAvailablePostProcessors(cls):
         allposts = []
         for path in cls.searchPaths():
@@ -108,6 +112,7 @@ class PathPreferences:
         if p:
             paths.append(p)
         paths.append(cls.macroFilePath())
+        paths.append(cls.pathScriptsPostSourcePath())
         paths.append(cls.pathScriptsSourcePath())
         return paths
 

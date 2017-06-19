@@ -27,8 +27,9 @@ from __future__ import print_function
 
 import FreeCAD
 import FreeCADGui
-import os
 import PathScripts.PathLog as PathLog
+import PathScripts.PathUtil as PathUtil
+import os
 
 from PathScripts import PathJob
 from PathScripts import PathToolController
@@ -248,8 +249,9 @@ class CommandPathPost:
         for obj in job.Group:
             PathLog.debug("obj: {}".format(obj.Name))
             if not isinstance(obj.Proxy, PathToolController.ToolController):
-                if obj.ToolController.ToolNumber != currTool:
-                    postlist.append(obj.ToolController)
+                tc = PathUtil.toolControllerForOp(obj)
+                if tc.ToolNumber != currTool:
+                    postlist.append(tc)
                 postlist.append(obj)
 
         fail = True
