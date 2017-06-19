@@ -40,7 +40,7 @@ PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
+    from PySide import QtCore
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -87,6 +87,9 @@ class ObjectProfile:
         # Debug Parameters
         obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
         obj.setEditorMode('AreaParams', 2)  # hide
+
+        if FreeCAD.GuiUp:
+            _ViewProviderProfile(obj.ViewObject)
 
         obj.Proxy = self
 
@@ -200,23 +203,23 @@ class ObjectProfile:
         PathLog.debug("Generating Path with params: {}".format(params))
         PathLog.debug(pp)
 
-        if True:
-            from PathScripts.PathUtils import CollisionTester
-            parentJob = PathUtils.findParentJob(obj)
-            if parentJob is None:
-                pass
-            base = parentJob.Base
-            if base is None:
-                pass
+        # if True:
+        #     from PathScripts.PathUtils import CollisionTester
+        #     parentJob = PathUtils.findParentJob(obj)
+        #     if parentJob is None:
+        #         pass
+        #     base = parentJob.Base
+        #     if base is None:
+        #         pass
 
-            profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
-            profileparams['ToolRadius']= self.radius - self.radius *.005
-            profile.setParams(**profileparams)
-            sec = profile.makeSections(heights=[0.0])[0].getShape()
-            cutPath = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
-            c = CollisionTester()
-            c.getCollisionSim(base.Shape, cutPath)
-        return pp
+        #     profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
+        #     profileparams['ToolRadius']= self.radius - self.radius *.005
+        #     profile.setParams(**profileparams)
+        #     sec = profile.makeSections(heights=[0.0])[0].getShape()
+        #     cutPath = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
+        #     c = CollisionTester()
+        #     c.getCollisionSim(base.Shape, cutPath)
+        # return pp
 
 
     def execute(self, obj):
@@ -302,12 +305,16 @@ class _ViewProviderProfile:
         self.Object = vobj.Object
         return
 
+    def deleteObjectsOnReject(self):
+        return hasattr(self, 'deleteOnReject') and self.deleteOnReject
+
     def setEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        taskd = TaskPanel()
+        taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject())
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         taskd.setupUi()
+        self.deleteOnReject = False
         return True
 
     def getIcon(self):
@@ -380,7 +387,8 @@ class CommandPathProfileEdges:
         FreeCADGui.addModule("PathScripts.PathProfile")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Edge Profile")')
         FreeCADGui.doCommand('PathScripts.PathProfileEdges.ObjectProfile(obj)')
-        FreeCADGui.doCommand('PathScripts.PathProfileEdges._ViewProviderProfile(obj.ViewObject)')
+        #FreeCADGui.doCommand('PathScripts.PathProfileEdges._ViewProviderProfile(obj.ViewObject)')
+        FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
 
         FreeCADGui.doCommand('obj.Active = True')
 
@@ -404,24 +412,33 @@ class CommandPathProfileEdges:
 
 
 class TaskPanel:
-    def __init__(self):
+    def __init__(self, obj, deleteOnReject):
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_ProfileEdges", "ProfileEdges Operation"))
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ProfileEdgesEdit.ui")
         # self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ProfileEdgesEdit.ui")
-
+        self.deleteOnReject = deleteOnReject
+        self.obj = obj
         self.updating = False
 
     def accept(self):
         self.getFields()
 
-        FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
+        FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.abortTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
+        if self.deleteOnReject:
+            FreeCAD.ActiveDocument.openTransaction(translate("Path_ProfileEdges", "Uncreate ProfileEdges Operation"))
+            FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
     def getFields(self):
         if self.obj:
@@ -569,9 +586,6 @@ class TaskPanel:
 
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
-
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
 
     def setupUi(self):
 

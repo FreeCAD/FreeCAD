@@ -36,11 +36,11 @@ if sys.version_info.major >= 3:
 
 LOG_MODULE = 'PathSurface'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-#PathLog.trackModule('PathSurface')
+# PathLog.trackModule('PathSurface')
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
+    from PySide import QtCore
 
 __title__ = "Path Surface Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -48,9 +48,11 @@ __url__ = "http://www.freecadweb.org"
 
 """Path surface object and FreeCAD command"""
 
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class ObjectSurface:
 
@@ -84,6 +86,9 @@ class ObjectSurface:
         self.vertRapid = 0.0
         self.horizRapid = 0.0
         self.radius = 0.0
+
+        if FreeCAD.GuiUp:
+            ViewProviderSurface(obj.ViewObject)
 
         obj.Proxy = self
 
@@ -311,7 +316,7 @@ class ObjectSurface:
                 from PathScripts.PathPreferences import PathPreferences
                 deflection = PathPreferences.defaultGeometryTolerance()
 
-            mesh = MeshPart.meshFromShape(mesh.Shape, Deflection = deflection)
+            mesh = MeshPart.meshFromShape(mesh.Shape, Deflection=deflection)
 
         bb = mesh.BoundBox
 
@@ -352,6 +357,9 @@ class ViewProviderSurface:
     def __setstate__(self, state):  # mandatory
         return None
 
+    def deleteObjectsOnReject(self):
+        return hasattr(self, 'deleteOnReject') and self.deleteOnReject
+
     def getIcon(self):  # optional
         return ":/icons/Path-Surfacing.svg"
 
@@ -365,10 +373,12 @@ class ViewProviderSurface:
 
     def setEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        taskd = TaskPanel()
+        taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject())
+
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         taskd.setupUi()
+        self.deleteOnReject = False
         return True
 
     def unsetEdit(self, vobj, mode):  # optional
@@ -403,42 +413,53 @@ class CommandPathSurfacing:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Surface")')
         FreeCADGui.doCommand('PathScripts.PathSurface.ObjectSurface(obj)')
         FreeCADGui.doCommand('obj.Active = True')
-        FreeCADGui.doCommand(
-            'PathScripts.PathSurface.ViewProviderSurface(obj.ViewObject)')
+        # FreeCADGui.doCommand(
+        #     'PathScripts.PathSurface.ViewProviderSurface(obj.ViewObject)')
         FreeCADGui.doCommand('from PathScripts import PathUtils')
         FreeCADGui.doCommand('obj.ClearanceHeight = ' + str(ztop + 2))
         FreeCADGui.doCommand('obj.StartDepth = ' + str(ztop))
         FreeCADGui.doCommand('obj.SafeHeight = ' + str(ztop + 2))
         FreeCADGui.doCommand('obj.StepDown = ' + str((ztop - zbottom) / 8))
         FreeCADGui.doCommand('obj.SampleInterval = 0.4')
+        FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
 
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
+        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
 
 class TaskPanel:
 
-    def __init__(self):
+    def __init__(self, obj, deleteOnReject):
         # self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/SurfaceEdit.ui")
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Surface", "Surfacing Operation"))
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/SurfaceEdit.ui")
         FreeCAD.Console.PrintWarning("Surface calculations can be slow.  Don't Panic.\n")
+        self.deleteOnReject = deleteOnReject
+        self.obj = obj
 
     def accept(self):
         self.getFields()
 
-        FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
+        FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.abortTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
+        if self.deleteOnReject:
+            FreeCAD.ActiveDocument.openTransaction(translate("Path_Surface", "Uncreate Surface"))
+            FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
     def getFields(self):
         if self.obj:
@@ -571,8 +592,8 @@ class TaskPanel:
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
+    # def getStandardButtons(self):
+    #     return int(QtGui.QDialogButtonBox.Ok)
 
     def setupUi(self):
         # Base Geometry
