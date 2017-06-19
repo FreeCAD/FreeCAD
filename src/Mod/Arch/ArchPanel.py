@@ -197,11 +197,11 @@ class CommandPanel:
         "sets up a taskbox widget"
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Panel options").decode("utf8"))
+        w.setWindowTitle(translate("Arch","Panel options", utf8_decode=True))
         grid = QtGui.QGridLayout(w)
 
         # presets box
-        labelp = QtGui.QLabel(translate("Arch","Preset").decode("utf8"))
+        labelp = QtGui.QLabel(translate("Arch","Preset", utf8_decode=True))
         valuep = QtGui.QComboBox()
         fpresets = [" "]
         for p in Presets[1:]:
@@ -211,32 +211,32 @@ class CommandPanel:
         grid.addWidget(valuep,0,1,1,1)
 
         # length
-        label1 = QtGui.QLabel(translate("Arch","Length").decode("utf8"))
+        label1 = QtGui.QLabel(translate("Arch","Length", utf8_decode=True))
         self.vLength = ui.createWidget("Gui::InputField")
         self.vLength.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
         grid.addWidget(label1,1,0,1,1)
         grid.addWidget(self.vLength,1,1,1,1)
 
         # width
-        label2 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
+        label2 = QtGui.QLabel(translate("Arch","Width", utf8_decode=True))
         self.vWidth = ui.createWidget("Gui::InputField")
         self.vWidth.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
         grid.addWidget(label2,2,0,1,1)
         grid.addWidget(self.vWidth,2,1,1,1)
 
         # height
-        label3 = QtGui.QLabel(translate("Arch","Thickness").decode("utf8"))
+        label3 = QtGui.QLabel(translate("Arch","Thickness", utf8_decode=True))
         self.vHeight = ui.createWidget("Gui::InputField")
         self.vHeight.setText(FreeCAD.Units.Quantity(self.Thickness,FreeCAD.Units.Length).UserString)
         grid.addWidget(label3,3,0,1,1)
         grid.addWidget(self.vHeight,3,1,1,1)
 
         # horizontal button
-        value5 = QtGui.QPushButton(translate("Arch","Rotate").decode("utf8"))
+        value5 = QtGui.QPushButton(translate("Arch","Rotate", utf8_decode=True))
         grid.addWidget(value5,4,0,1,2)
 
         # continue button
-        label4 = QtGui.QLabel(translate("Arch","Con&tinue").decode("utf8"))
+        label4 = QtGui.QLabel(translate("Arch","Con&tinue", utf8_decode=True))
         value4 = QtGui.QCheckBox()
         value4.setObjectName("ContinueCmd")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)

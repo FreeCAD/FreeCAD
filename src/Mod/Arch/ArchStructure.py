@@ -247,18 +247,18 @@ class _CommandStructure:
         "sets up a taskbox widget"
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Structure options").decode("utf8"))
+        w.setWindowTitle(translate("Arch","Structure options", utf8_decode=True))
         grid = QtGui.QGridLayout(w)
 
         # categories box
-        labelc = QtGui.QLabel(translate("Arch","Category").decode("utf8"))
+        labelc = QtGui.QLabel(translate("Arch","Category", utf8_decode=True))
         valuec = QtGui.QComboBox()
         valuec.addItems([" ","Precast concrete"]+Categories)
         grid.addWidget(labelc,0,0,1,1)
         grid.addWidget(valuec,0,1,1,1)
 
         # presets box
-        labelp = QtGui.QLabel(translate("Arch","Preset").decode("utf8"))
+        labelp = QtGui.QLabel(translate("Arch","Preset", utf8_decode=True))
         self.vPresets = QtGui.QComboBox()
         self.pSelect = [None]
         fpresets = [" "]
@@ -267,34 +267,34 @@ class _CommandStructure:
         grid.addWidget(self.vPresets,1,1,1,1)
 
         # length
-        label1 = QtGui.QLabel(translate("Arch","Length").decode("utf8"))
+        label1 = QtGui.QLabel(translate("Arch","Length", utf8_decode=True))
         self.vLength = ui.createWidget("Gui::InputField")
         self.vLength.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
         grid.addWidget(label1,2,0,1,1)
         grid.addWidget(self.vLength,2,1,1,1)
 
         # width
-        label2 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
+        label2 = QtGui.QLabel(translate("Arch","Width", utf8_decode=True))
         self.vWidth = ui.createWidget("Gui::InputField")
         self.vWidth.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
         grid.addWidget(label2,3,0,1,1)
         grid.addWidget(self.vWidth,3,1,1,1)
 
         # height
-        label3 = QtGui.QLabel(translate("Arch","Height").decode("utf8"))
+        label3 = QtGui.QLabel(translate("Arch","Height", utf8_decode=True))
         self.vHeight = ui.createWidget("Gui::InputField")
         self.vHeight.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
         grid.addWidget(label3,4,0,1,1)
         grid.addWidget(self.vHeight,4,1,1,1)
 
         # horizontal button
-        value5 = QtGui.QPushButton(translate("Arch","Switch L/H").decode("utf8"))
+        value5 = QtGui.QPushButton(translate("Arch","Switch L/H", utf8_decode=True))
         grid.addWidget(value5,5,0,1,1)
-        value6 = QtGui.QPushButton(translate("Arch","Switch L/W").decode("utf8"))
+        value6 = QtGui.QPushButton(translate("Arch","Switch L/W", utf8_decode=True))
         grid.addWidget(value6,5,1,1,1)
 
         # continue button
-        label4 = QtGui.QLabel(translate("Arch","Con&tinue").decode("utf8"))
+        label4 = QtGui.QLabel(translate("Arch","Con&tinue", utf8_decode=True))
         value4 = QtGui.QCheckBox()
         value4.setObjectName("ContinueCmd")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)
