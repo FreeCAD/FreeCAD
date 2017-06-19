@@ -303,7 +303,7 @@ class _CommandWall:
         "sets up a taskbox widget"
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Wall options").decode("utf8"))
+        w.setWindowTitle(translate("Arch","Wall options", utf8_decode=True))
         grid = QtGui.QGridLayout(w)
 
         matCombo = QtGui.QComboBox()
@@ -321,25 +321,25 @@ class _CommandWall:
                     self.MultiMat = o
         grid.addWidget(matCombo,0,0,1,2)
 
-        label5 = QtGui.QLabel(translate("Arch","Length").decode("utf8"))
+        label5 = QtGui.QLabel(translate("Arch","Length", utf8_decode=True))
         self.Length = ui.createWidget("Gui::InputField")
         self.Length.setText("0.00 mm")
         grid.addWidget(label5,1,0,1,1)
         grid.addWidget(self.Length,1,1,1,1)
 
-        label1 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
+        label1 = QtGui.QLabel(translate("Arch","Width", utf8_decode=True))
         value1 = ui.createWidget("Gui::InputField")
         value1.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
         grid.addWidget(label1,2,0,1,1)
         grid.addWidget(value1,2,1,1,1)
 
-        label2 = QtGui.QLabel(translate("Arch","Height").decode("utf8"))
+        label2 = QtGui.QLabel(translate("Arch","Height", utf8_decode=True))
         value2 = ui.createWidget("Gui::InputField")
         value2.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
         grid.addWidget(label2,3,0,1,1)
         grid.addWidget(value2,3,1,1,1)
 
-        label3 = QtGui.QLabel(translate("Arch","Alignment").decode("utf8"))
+        label3 = QtGui.QLabel(translate("Arch","Alignment", utf8_decode=True))
         value3 = QtGui.QComboBox()
         items = ["Center","Left","Right"]
         value3.addItems(items)
@@ -347,7 +347,7 @@ class _CommandWall:
         grid.addWidget(label3,4,0,1,1)
         grid.addWidget(value3,4,1,1,1)
 
-        label4 = QtGui.QLabel(translate("Arch","Con&tinue").decode("utf8"))
+        label4 = QtGui.QLabel(translate("Arch","Con&tinue", utf8_decode=True))
         value4 = QtGui.QCheckBox()
         value4.setObjectName("ContinueCmd")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)

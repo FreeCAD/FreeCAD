@@ -538,24 +538,24 @@ class _CommandWindow:
         "sets up a taskbox widget"
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Window options").decode("utf8"))
+        w.setWindowTitle(translate("Arch","Window options", utf8_decode=True))
         grid = QtGui.QGridLayout(w)
         
         # include box
-        include = QtGui.QCheckBox(translate("Arch","Auto include in host object").decode("utf8"))
+        include = QtGui.QCheckBox(translate("Arch","Auto include in host object", utf8_decode=True))
         include.setChecked(True)
         grid.addWidget(include,0,0,1,2)
         QtCore.QObject.connect(include,QtCore.SIGNAL("stateChanged(int)"),self.setInclude)
 
         # sill height
-        labels = QtGui.QLabel(translate("Arch","Sill height").decode("utf8"))
+        labels = QtGui.QLabel(translate("Arch","Sill height", utf8_decode=True))
         values = ui.createWidget("Gui::InputField")
         grid.addWidget(labels,1,0,1,1)
         grid.addWidget(values,1,1,1,1)
         QtCore.QObject.connect(values,QtCore.SIGNAL("valueChanged(double)"),self.setSill)
 
         # presets box
-        labelp = QtGui.QLabel(translate("Arch","Preset").decode("utf8"))
+        labelp = QtGui.QLabel(translate("Arch","Preset", utf8_decode=True))
         valuep = QtGui.QComboBox()
         valuep.addItems(WindowPresets)
         valuep.setCurrentIndex(self.Preset)
@@ -573,7 +573,7 @@ class _CommandWindow:
         # parameters
         i = 4
         for param in self.wparams:
-            lab = QtGui.QLabel(translate("Arch",param).decode("utf8"))
+            lab = QtGui.QLabel(translate("Arch",param, utf8_decode=True))
             setattr(self,"val"+param,ui.createWidget("Gui::InputField"))
             wid = getattr(self,"val"+param)
             if param == "Width":
