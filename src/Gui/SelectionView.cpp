@@ -169,6 +169,7 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
             str << ")";
             
             new QListWidgetItem(selObject, selectionView);
+            selObject.clear();
         }
     }
     countLabel->setText(QString::number(selectionView->count()));
