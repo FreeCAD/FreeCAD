@@ -422,9 +422,9 @@ void DocumentObject::onChanged(const Property* prop)
     if (prop == &Label && _pDoc && oldLabel != Label.getStrValue())
         _pDoc->signalRelabelObject(*this);
 
-    // set object touched if it is a input ptoperty
+    // set object touched if it is an input property
     if (!(prop->getType() & Prop_Output))
-        StatusBits.set(0);
+        StatusBits.set(ObjectStatus::Touch);
     
     //call the parent for appropriate handling
     TransactionalObject::onChanged(prop);

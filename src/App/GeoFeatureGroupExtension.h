@@ -38,7 +38,7 @@ namespace App
  * 
  * This class is the FreeCAD way of representing local coordinate systems. It groups its childs beneath 
  * it and transforms them all with the GeoFeatureGroup placement. A few important properties:
- * - Every child that belongs to the CS must be in the Group proeprty. Even if a sketch is part of a pad,
+ * - Every child that belongs to the CS must be in the Group property. Even if a sketch is part of a pad,
  *   it must be in the Group property of the same GeoFeatureGroup as pad. This also holds for normal 
  *   GroupExtensions. They can be added to a GeoFeatureGroup, but all objects that the group holds must 
  *   also be added to the GeoFeatureGroup
@@ -97,13 +97,13 @@ public:
     virtual std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
     virtual std::vector< DocumentObject* > removeObjects(std::vector< DocumentObject* > obj) override;
     
-    /// Collects GeoFeatureGroup relevant objects that are linked from the given one. That meas all linked objects
-    /// including their linkes (recursively) except GeoFeatureGroups, where the recursion stops. Expressions 
-    /// links are ignored. A exception is thrown when there are dependency loops.
+    /// Collects GeoFeatureGroup relevant objects that are linked from the given one. That means all linked objects
+    /// including their links (recursively) except GeoFeatureGroups, where the recursion stops. Expressions
+    /// links are ignored. An exception is thrown when there are dependency loops.
     static void getCSOutList(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
-    /// Collects GeoFeatureGroup relevant objects that link to the given one. That meas all objects 
+    /// Collects GeoFeatureGroup relevant objects that link to the given one. That means all objects
     /// including their parents (recursively) except GeoFeatureGroups, where the recursion stops. Expression 
-    /// links are ignored. A exception is thrown when there are dependency loops.
+    /// links are ignored. An exception is thrown when there are dependency loops.
     static void getCSInList(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
     /// Collects all links that are relevant for the coordinate system, meaning all recursive links to 
     /// obj and from obj excluding expressions and stopping the recursion at other geofeaturegroups. 

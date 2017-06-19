@@ -72,7 +72,7 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
     //like pad/sketch
     auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
     if(ext) {   
-        //filter out all objects with more than one inlink, as they are most likely hold by annother 
+        //filter out all objects with more than one inlink, as they are most likely hold by another
         //object in the tree
         std::vector<App::DocumentObject*> claim;
         auto objs = ext->Group.getValues();

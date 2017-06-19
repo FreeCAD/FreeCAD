@@ -96,7 +96,6 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
 
     App::DocumentObject* grp = static_cast<App::DocumentObject*>(getExtendedViewProvider()->getObject());
     App::Document* doc = grp->getDocument();
-    Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
 
     // build Python command for execution
     QString cmd;

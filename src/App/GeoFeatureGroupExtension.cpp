@@ -89,9 +89,9 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
     if(obj->isDerivedFrom(App::OriginFeature::getClassTypeId())) 
         return OriginGroupExtension::getGroupOfObject(obj);
     
-    //compared to GroupExtension we do return here all geofeaturegroups including all extensions erived from it
-    //like origingroup. That is needed as we use this function to get all local coordinate systems. Also there 
-    //is no reason to distuinguish between geofeatuergroups, there is only between group/geofeaturegroup
+    //compared to GroupExtension we do return here all GeoFeatureGroups including all extensions derived from it
+    //like OriginGroup. That is needed as we use this function to get all local coordinate systems. Also there
+    //is no reason to distinguish between GeoFeatuerGroups, there is only between group/geofeaturegroup
     auto list = obj->getInList();
     for (auto obj : list) {
         if(obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
@@ -213,7 +213,7 @@ void GeoFeatureGroupExtension::getCSOutList(App::DocumentObject* obj, std::vecto
     if(!obj)
         return;
 
-    //if the object is a geofeaturegroup than all dependencies belong to that CS,  we don't want them
+    //if the object is a GeoFeatureGroup then all dependencies belong to that CS,  we don't want them
     if(obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
         return;
     
