@@ -190,6 +190,7 @@ inline void SketcherAddWorkbenchGeometries(T& geom){
             << "Separator"
             << "Sketcher_CreateFillet"
             << "Sketcher_Trimming"
+            << "Sketcher_Extend"
             << "Sketcher_External"
             << "Sketcher_CarbonCopy"
             << "Sketcher_ToggleConstruction"
