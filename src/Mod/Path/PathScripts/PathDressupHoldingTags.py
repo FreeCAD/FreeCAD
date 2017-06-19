@@ -35,6 +35,7 @@ import math
 from PathScripts import PathUtils
 from PathScripts.PathGeom import PathGeom
 from PathScripts.PathPreferences import PathPreferences
+from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 
 """Holding Tags Dressup object and FreeCAD command"""
@@ -932,6 +933,7 @@ class ObjectDressup:
 
         self.processTags(obj)
 
+    @waiting_effects
     def processTags(self, obj):
         tagID = 0
         if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
