@@ -25,7 +25,6 @@
 import FreeCAD
 import FreeCADGui
 import Path
-#import Draft
 import Part
 import ArchPanel
 
@@ -39,9 +38,11 @@ LOG_MODULE = 'PathEngrave'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 # PathLog.trackModule('PathEngrave')
 
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class ObjectPathEngrave:
 
@@ -76,6 +77,12 @@ class ObjectPathEngrave:
 
     def execute(self, obj):
         PathLog.track()
+
+        if not obj.Active:
+            path = Path.Path("(inactive operation)")
+            obj.Path = path
+            obj.ViewObject.Visibility = False
+            return
 
         output = ""
         if obj.Comment != "":
@@ -141,15 +148,9 @@ class ObjectPathEngrave:
         if output == "":
             output += "(No commands processed)"
 
-        if obj.Active:
-            path = Path.Path(output)
-            obj.Path = path
-            obj.ViewObject.Visibility = True
-
-        else:
-            path = Path.Path("(inactive operation)")
-            obj.Path = path
-            obj.ViewObject.Visibility = False
+        path = Path.Path(output)
+        obj.Path = path
+        obj.ViewObject.Visibility = True
 
     def buildpathocc(self, obj, wires):
         PathLog.track()
@@ -206,23 +207,37 @@ class _ViewProviderEngrave:
 
     def __init__(self, vobj):
         vobj.Proxy = self
+        self.taskPanel = None
 
     def attach(self, vobj):
         self.Object = vobj.Object
-        return
 
     def deleteObjectsOnReject(self):
         return hasattr(self, 'deleteOnReject') and self.deleteOnReject
 
     def setEdit(self, vobj, mode=0):
+        PathLog.track()
         FreeCADGui.Control.closeDialog()
-        taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject())
-        taskd.obj = vobj.Object
-        FreeCADGui.Control.showDialog(taskd)
-        taskd.setupUi()
-        self.deleteOnReject = False
 
+        self.taskPanel = TaskPanel(vobj, self.deleteObjectsOnReject())
+        FreeCADGui.Control.showDialog(self.taskPanel)
+        self.taskPanel.setupUi()
+        self.deleteOnReject = False
         return True
+
+    def unsetEdit(self, vobj, mode):
+        PathLog.track()
+        if hasattr(self, 'taskPanel') and self.taskPanel:
+            self.taskPanel.abort()
+
+    def clearTaskPanel(self):
+        self.taskpanel = None
+        FreeCADGui.Selection.removeSelectionGate()
+        FreeCADGui.Selection.removeObserver(self)
+
+    def resetTaskPanel(self):
+        PathLog.track()
+        self.taskPanel = None
 
     def getIcon(self):
         return ":/icons/Path-Engrave.svg"
@@ -232,9 +247,6 @@ class _ViewProviderEngrave:
 
     def __setstate__(self, state):
         return None
-
-    # def onDelete(self):
-    #     return None
 
 
 class CommandPathEngrave:
@@ -257,17 +269,18 @@ class CommandPathEngrave:
         FreeCAD.ActiveDocument.openTransaction("Create Engrave Path")
         FreeCADGui.addModule("PathScripts.PathFaceProfile")
         FreeCADGui.addModule("PathScripts.PathUtils")
+
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "PathEngrave")')
         FreeCADGui.doCommand('PathScripts.PathEngrave.ObjectPathEngrave(obj)')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
 
         FreeCADGui.doCommand('obj.ClearanceHeight = 10')
         FreeCADGui.doCommand('obj.FinalDepth= -0.1')
         FreeCADGui.doCommand('obj.SafeHeight= 5.0')
         FreeCADGui.doCommand('obj.Active = True')
         FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
-
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
+
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
         FreeCAD.ActiveDocument.commitTransaction()
@@ -275,35 +288,44 @@ class CommandPathEngrave:
 
 
 class TaskPanel:
-    def __init__(self, obj, deleteOnReject):
+    def __init__(self, vobj, deleteOnReject):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Engrave", "Engraving Operation"))
-        self.form = FreeCADGui.PySideUic.loadUi(":/panels/EngraveEdit.ui")
+        self.vobj = vobj
+        self.obj = vobj.Object
         self.deleteOnReject = deleteOnReject
-        self.obj = obj
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/EngraveEdit.ui")
 
-    def __del__(self):
-        FreeCADGui.Selection.removeObserver(self.s)
+    def abort(self):
+        FreeCAD.ActiveDocument.abortTransaction()
+        self.cleanup(False)
 
     def accept(self):
+        PathLog.track()
         self.getFields()
 
-        FreeCADGui.Control.closeDialog()
-        FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCADGui.Selection.removeObserver(self.s)
+        self.cleanup(True)
         FreeCAD.ActiveDocument.recompute()
+        return True
 
     def reject(self):
-        FreeCADGui.Control.closeDialog()
-        FreeCADGui.ActiveDocument.resetEdit()
+        PathLog.track()
         FreeCAD.ActiveDocument.abortTransaction()
-        FreeCADGui.Selection.removeObserver(self.s)
         if self.deleteOnReject:
             FreeCAD.ActiveDocument.openTransaction(translate("Path_Engrave", "Uncreate Engrave Operation"))
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        self.cleanup(True)
+        return True
 
+    def cleanup(self, gui):
+        FreeCADGui.Selection.removeObserver(self.s)
+
+        self.vobj.Proxy.clearTaskPanel()
+        if gui:
+            FreeCADGui.ActiveDocument.resetEdit()
+            FreeCADGui.Control.closeDialog()
+            FreeCAD.ActiveDocument.recompute()
 
     def getFields(self):
         if self.obj:
@@ -348,16 +370,12 @@ class TaskPanel:
         # install the function mode resident
         FreeCADGui.Selection.addObserver(self.s)
 
-    # def getStandardButtons(self):
-    #     return int(QtGui.QDialogButtonBox.Ok)
-
     def setupUi(self):
 
         # Connect Signals and Slots
         self.form.finalDepth.editingFinished.connect(self.getFields)
         self.form.safeHeight.editingFinished.connect(self.getFields)
         self.form.clearanceHeight.editingFinished.connect(self.getFields)
-
         self.form.uiToolController.currentIndexChanged.connect(self.getFields)
 
         self.setFields()
