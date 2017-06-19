@@ -416,9 +416,12 @@ Driver_Mesh::Status DriverUNV_R_SMDS_Mesh::Perform()
           if (aNodesNb > 0) {
             SMDS_MeshGroup* aNodesGroup = (SMDS_MeshGroup*) myGroup->AddSubGroup(SMDSAbs_Node);
             std::string aGrName = (useSuffix) ? aRec.GroupName + "_Nodes" : aRec.GroupName;
-            int i = aGrName.find( "\r" );
+            int i = aGrName.find( "\r\n" );
             if (i > 0)
               aGrName.erase (i, 2);
+            i = aGrName.find( "\r" );
+            if (i > 0)
+              aGrName.erase (i, 1);
             myGroupNames.insert(TGroupNamesMap::value_type(aNodesGroup, aGrName));
             myGroupId.insert(TGroupIdMap::value_type(aNodesGroup, aLabel));
 
@@ -443,9 +446,12 @@ Driver_Mesh::Status DriverUNV_R_SMDS_Mesh::Perform()
                     aEdgesGroup = (SMDS_MeshGroup*) myGroup->AddSubGroup(SMDSAbs_Edge);
                     if (!useSuffix && createdGroup) useSuffix = true;
                     std::string aEdgesGrName = (useSuffix) ? aRec.GroupName + "_Edges" : aRec.GroupName;
-                    int i = aEdgesGrName.find( "\r" );
+                    int i = aEdgesGrName.find( "\r\n" );
                     if (i > 0)
                       aEdgesGrName.erase (i, 2);
+                    i = aEdgesGrName.find( "\r" );
+                    if (i > 0)
+                      aEdgesGrName.erase (i, 1);
                     myGroupNames.insert(TGroupNamesMap::value_type(aEdgesGroup, aEdgesGrName));
                     myGroupId.insert(TGroupIdMap::value_type(aEdgesGroup, aLabel));
                     createdGroup = true;
@@ -457,9 +463,12 @@ Driver_Mesh::Status DriverUNV_R_SMDS_Mesh::Perform()
                     aFacesGroup = (SMDS_MeshGroup*) myGroup->AddSubGroup(SMDSAbs_Face);
                     if (!useSuffix && createdGroup) useSuffix = true;
                     std::string aFacesGrName = (useSuffix) ? aRec.GroupName + "_Faces" : aRec.GroupName;
-                    int i = aFacesGrName.find( "\r" );
+                    int i = aFacesGrName.find( "\r\n" );
                     if (i > 0)
                       aFacesGrName.erase (i, 2);
+                    i = aFacesGrName.find( "\r" );
+                    if (i > 0)
+                      aFacesGrName.erase (i, 1);
                     myGroupNames.insert(TGroupNamesMap::value_type(aFacesGroup, aFacesGrName));
                     myGroupId.insert(TGroupIdMap::value_type(aFacesGroup, aLabel));
                     createdGroup = true;
@@ -471,9 +480,12 @@ Driver_Mesh::Status DriverUNV_R_SMDS_Mesh::Perform()
                     aVolumeGroup = (SMDS_MeshGroup*) myGroup->AddSubGroup(SMDSAbs_Volume);
                     if (!useSuffix && createdGroup) useSuffix = true;
                     std::string aVolumeGrName = (useSuffix) ? aRec.GroupName + "_Volumes" : aRec.GroupName;
-                    int i = aVolumeGrName.find( "\r" );
+                    int i = aVolumeGrName.find( "\r\n" );
                     if (i > 0)
                       aVolumeGrName.erase (i, 2);
+                    i = aVolumeGrName.find( "\r" );
+                    if (i > 0)
+                      aVolumeGrName.erase (i, 1);
                     myGroupNames.insert(TGroupNamesMap::value_type(aVolumeGroup, aVolumeGrName));
                     myGroupId.insert(TGroupIdMap::value_type(aVolumeGroup, aLabel));
                     createdGroup = true;
