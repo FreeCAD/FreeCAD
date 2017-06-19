@@ -83,9 +83,11 @@ UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WindowFlags f)
   : QDialog(parent, f)
 {
     this->setupUi(this);
+#if QT_VERSION < 0x050000
     // As it doesn't seem to be able to change the "Highlight" color for the active colorgroup
     // we force e.g. the "Motif" style only for the progressbar to change the color to green or red.
     this->progressBar->setStyle(QStyleFactory::create(QString::fromLatin1("Motif")));
+#endif
     setProgressColor(QColor(40,210,43)); // a darker green
     this->progressBar->setAlignment(Qt::AlignCenter);
 
@@ -107,10 +109,24 @@ UnitTestDialog::~UnitTestDialog()
  */
 void UnitTestDialog::setProgressColor(const QColor& col)
 {
+#if QT_VERSION >= 0x050000
+    QString qss = QString::fromLatin1(
+        "QProgressBar {\n"
+        "    border: 2px solid grey;\n"
+        "    border-radius: 5px;\n"
+        "}\n"
+        "\n"
+        "QProgressBar::chunk {\n"
+        "    background-color: %1;\n"
+        "}"
+    ).arg(col.name());
+    this->progressBar->setStyleSheet(qss);
+#else
     QPalette pl = this->progressBar->palette();
     pl.setColor(QPalette::Active, QPalette::Highlight, col);
     pl.setColor(QPalette::Inactive, QPalette::Highlight, col);
     this->progressBar->setPalette(pl);
+#endif
 }
 
 /**
