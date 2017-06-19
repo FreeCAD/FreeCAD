@@ -296,10 +296,10 @@ class _Rebar(ArchComponent.Component):
         shapes = []
         placementlist = []
         if obj.Amount == 1:
-	    barplacement = CalculatePlacement(obj.Amount, 1, size, axis, father.Placement.Rotation, obj.OffsetStart.Value, obj.OffsetEnd.Value)
-	    placementlist.append(barplacement)
-	    if hasattr(obj,"Spacing"):
-	        obj.Spacing = 0
+            barplacement = CalculatePlacement(obj.Amount, 1, size, axis, father.Placement.Rotation, obj.OffsetStart.Value, obj.OffsetEnd.Value)
+            placementlist.append(barplacement)
+            if hasattr(obj,"Spacing"):
+                obj.Spacing = 0
         else:
             if obj.OffsetStart.Value:
                 baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
@@ -333,6 +333,25 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
         vobj.addProperty("App::PropertyString","RebarShape","Arch",QT_TRANSLATE_NOOP("App::Property","Shape of rebar")).RebarShape
         vobj.ShapeColor = ArchCommands.getDefaultColor("Rebar")
         vobj.setEditorMode("RebarShape",2)
+
+    def setpropertyRebarShape(self, vobj, rebarshape):
+        """ setpropertyRebarShape(self, vobj, rebarshape): This function add a properties
+        to the _ViewProviderRebar object as per according to a rebar shape."""
+        # Common properties in all rebar shapes
+        vobj.addProperty("App::PropertyString","RebarShape","RebarDialog",QT_TRANSLATE_NOOP("App::Property","Shape of rebar")).RebarShape = rebarshape
+        vobj.setEditorMode("RebarShape",2)
+        vobj.addProperty("App::PropertyLength","FrontCover","RebarDialog",QT_TRANSLATE_NOOP("App::Property","Front cover of rebar")).FrontCover
+        vobj.setEditorMode("FrontCover",2)
+        vobj.addProperty("App::PropertyLength","SideCover","RebarDialog",QT_TRANSLATE_NOOP("App::Property","Side cover of rebar")).SideCover
+        vobj.setEditorMode("SideCover",2)
+        vobj.addProperty("App::PropertyLength","BottomCover","RebarDialog",QT_TRANSLATE_NOOP("App::Property","Bottom cover of rebar")).BottomCover
+        vobj.setEditorMode("BottomCover",2)
+        vobj.addProperty("App::PropertyBool","AmountCheck","RebarDialog",QT_TRANSLATE_NOOP("App::Property","Amount radio button is checked")).AmountCheck
+        vobj.setEditorMode("AmountCheck",2)
+        # Set specific property according to rebar shape
+        if rebarshape == "UShapeRebar":
+            vobj.addProperty("App::PropertyLength","BentLength","RebarDialog",QT_TRANSLATE_NOOP("App::Property","Bent length of U-Shape rebar")).BentLength
+            vobj.setEditorMode("BentLength", 2)
 
     def getIcon(self):
         import Arch_rc
