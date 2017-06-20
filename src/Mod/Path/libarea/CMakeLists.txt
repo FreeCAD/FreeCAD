@@ -12,7 +12,13 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
-    find_package( Boost COMPONENTS python REQUIRED)  # find BOOST and boost-python
+    set(Boost_FOUND False)
+    if (PYTHON_MAJOR_VERSION GREATER 2) # python3
+        find_package( Boost COMPONENTS python3)
+    endif()
+    if (NOT Boost_FOUND)
+        find_package( Boost COMPONENTS python REQUIRED)  # find BOOST and boost-python
+    endif()
     if(Boost_FOUND)
         include_directories(${Boost_INCLUDE_DIRS})
         MESSAGE(STATUS "found Boost: " ${Boost_LIB_VERSION})
