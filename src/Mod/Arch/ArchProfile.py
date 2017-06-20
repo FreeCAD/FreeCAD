@@ -59,7 +59,7 @@ def readPresets():
     for profilefile in profilefiles:
         if os.path.exists(profilefile):
             try:
-                with open(profilefile, "rb") as csvfile:
+                with open(profilefile, "r") as csvfile:
                     beamreader = csv.reader(csvfile)
                     bid=1 #Unique index
                     for row in beamreader:
