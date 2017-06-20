@@ -159,8 +159,9 @@ class HoldingTagsPreferences:
         return HoldingTagsPreferences()
 
 class Tag:
-    def __init__(self, x, y, width, height, angle, radius, enabled=True):
+    def __init__(self, id, x, y, width, height, angle, radius, enabled=True):
         PathLog.track("%.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %d" % (x, y, width, height, angle, radius, enabled))
+        self.id = id
         self.x = x
         self.y = y
         self.width = math.fabs(width)
@@ -487,24 +488,32 @@ class MapWireToTag:
 
     def commandsForEdges(self):
         if self.edges:
-            shape = self.shell().common(self.tag.solid)
-            commands = []
-            rapid = None
-            for e,flip in self.orderAndFlipEdges(self.cleanupEdges(shape.Edges)):
-                debugEdge(e, '++++++++ %s' % ('<' if flip else '>'), False)
-                p1 = e.valueAt(e.FirstParameter)
-                p2 = e.valueAt(e.LastParameter)
-                if self.tag.isSquare and (PathGeom.isRoughly(p1.z, self.maxZ) or p1.z > self.maxZ) and (PathGeom.isRoughly(p2.z, self.maxZ) or p2.z > self.maxZ):
-                    rapid = p1 if flip else p2
-                else:
-                    if rapid:
-                        commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
-                        rapid = None
-                    commands.extend(PathGeom.cmdsForEdge(e, flip, False, self.segm))
-            if rapid:
-                commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
+            try:
+                shape = self.shell().common(self.tag.solid)
+                commands = []
                 rapid = None
-            return commands
+                for e,flip in self.orderAndFlipEdges(self.cleanupEdges(shape.Edges)):
+                    debugEdge(e, '++++++++ %s' % ('<' if flip else '>'), False)
+                    p1 = e.valueAt(e.FirstParameter)
+                    p2 = e.valueAt(e.LastParameter)
+                    if self.tag.isSquare and (PathGeom.isRoughly(p1.z, self.maxZ) or p1.z > self.maxZ) and (PathGeom.isRoughly(p2.z, self.maxZ) or p2.z > self.maxZ):
+                        rapid = p1 if flip else p2
+                    else:
+                        if rapid:
+                            commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
+                            rapid = None
+                        commands.extend(PathGeom.cmdsForEdge(e, flip, False, self.segm))
+                if rapid:
+                    commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
+                    rapid = None
+                return commands
+            except Exception as e:
+                PathLog.error("Exception during processing tag @(%.2f, %.2f) (%s) - disabling the tag" % (self.tag.x, self.tag.y, e.args[0]))
+                self.tag.enabled = False
+                commands = []
+                for e in self.edges:
+                    commands.extend(PathGeom.cmdsForEdge(e))
+                return commands
         return []
 
     def add(self, edge):
@@ -652,7 +661,7 @@ class PathData:
                 distance = (edge.LastParameter - edge.FirstParameter) / count
                 for j in range(0, count):
                     tag = edge.Curve.value((j+0.5) * distance)
-                    tags.append(Tag(tag.x, tag.y, W, H, A, R, True))
+                    tags.append(Tag(j, tag.x, tag.y, W, H, A, R, True))
 
         return tags
 
@@ -864,7 +873,7 @@ class ObjectDressup:
     def createTagsPositionDisabled(self, obj, positionsIn, disabledIn):
         rawTags = []
         for i, pos in enumerate(positionsIn):
-            tag = Tag(pos.x, pos.y, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius, not i in disabledIn)
+            tag = Tag(i, pos.x, pos.y, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius, not i in disabledIn)
             tag.createSolidsAt(self.pathData.minZ, self.toolRadius)
             rawTags.append(tag)
         # disable all tags that intersect with their previous tag
@@ -886,11 +895,13 @@ class ObjectDressup:
                     if tag.solid.isInside(p0, PathGeom.Tolerance, True) or tag.solid.isInside(p1, PathGeom.Tolerance, True):
                         PathLog.notice("Tag #%d intersects with starting point - disabling\n" % i)
                         tag.enabled = False
+
             if tag.enabled:
                 prev = tag
                 PathLog.debug("previousTag = %d [%s]" % (i, prev))
             else:
                 disabled.append(i)
+            tag.id = i # assigne final id
             tags.append(tag)
             positions.append(tag.originAt(self.pathData.minZ))
         return (tags, positions, disabled)
@@ -931,7 +942,19 @@ class ObjectDressup:
             obj.Path = obj.Base.Path
             return
 
-        self.processTags(obj)
+        try:
+            self.processTags(obj)
+        except Exception as e:
+            PathLog.error("processing tags failed clearing all tags ... '%s'" % (e.args[0]))
+            obj.Path = obj.Base.Path
+
+        # update disabled in case there are some additional ones
+        disabled = copy.copy(self.obj.Disabled)
+        for tag in self.tags:
+            if not tag.enabled and tag.id not in disabled:
+                disabled.append(tag.id)
+        if obj.Disabled != disabled:
+            obj.Disabled = disabled
 
     @waiting_effects
     def processTags(self, obj):
@@ -1390,16 +1413,18 @@ class ViewProviderDressup:
 
     def claimChildren(self):
         PathLog.notice(self.obj)
-        for i in self.obj.Base.InList:
-            if hasattr(i, "Group"):
-                group = i.Group
-                for g in group:
-                    if g.Name == self.obj.Base.Name:
-                        group.remove(g)
-                i.Group = group
-                #print i.Group
-        FreeCADGui.ActiveDocument.getObject(self.obj.Base.Name).Visibility = False
-        return [self.obj.Base]
+        if self.obj and self.obj.Base:
+            for i in self.obj.Base.InList:
+                if hasattr(i, "Group"):
+                    group = i.Group
+                    for g in group:
+                        if g.Name == self.obj.Base.Name:
+                            group.remove(g)
+                    i.Group = group
+                    #print i.Group
+            FreeCADGui.ActiveDocument.getObject(self.obj.Base.Name).Visibility = False
+            return [self.obj.Base]
+        return []
 
     def setEdit(self, vobj, mode=0):
         panel = TaskPanel(vobj.Object, self)
