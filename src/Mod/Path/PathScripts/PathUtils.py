@@ -50,9 +50,10 @@ def waiting_effects(function):
         res = None
         try:
             res = function(*args, **kwargs)
-        except Exception as e:
-            raise e
-            print("Error {}".format(e.args[0]))
+        # don't catch exceptions - want to know where they are coming from ....
+        #except Exception as e:
+        #    raise e
+        #    print("Error {}".format(e.args[0]))
         finally:
             QtGui.QApplication.restoreOverrideCursor()
         return res
