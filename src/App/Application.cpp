@@ -71,6 +71,7 @@
 #include <Base/MatrixPy.h>
 #include <Base/VectorPy.h>
 #include <Base/AxisPy.h>
+#include <Base/CoordinateSystemPy.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/PlacementPy.h>
 #include <Base/RotationPy.h>
@@ -277,12 +278,13 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     PyModule_AddObject(pBaseModule, "FreeCADError", Base::BaseExceptionFreeCADError);
 
     // Python types
-    Base::Interpreter().addType(&Base::VectorPy     ::Type,pBaseModule,"Vector");
-    Base::Interpreter().addType(&Base::MatrixPy     ::Type,pBaseModule,"Matrix");
-    Base::Interpreter().addType(&Base::BoundBoxPy   ::Type,pBaseModule,"BoundBox");
-    Base::Interpreter().addType(&Base::PlacementPy  ::Type,pBaseModule,"Placement");
-    Base::Interpreter().addType(&Base::RotationPy   ::Type,pBaseModule,"Rotation");
-    Base::Interpreter().addType(&Base::AxisPy       ::Type,pBaseModule,"Axis");
+    Base::Interpreter().addType(&Base::VectorPy          ::Type,pBaseModule,"Vector");
+    Base::Interpreter().addType(&Base::MatrixPy          ::Type,pBaseModule,"Matrix");
+    Base::Interpreter().addType(&Base::BoundBoxPy        ::Type,pBaseModule,"BoundBox");
+    Base::Interpreter().addType(&Base::PlacementPy       ::Type,pBaseModule,"Placement");
+    Base::Interpreter().addType(&Base::RotationPy        ::Type,pBaseModule,"Rotation");
+    Base::Interpreter().addType(&Base::AxisPy            ::Type,pBaseModule,"Axis");
+    Base::Interpreter().addType(&Base::CoordinateSystemPy::Type,pBaseModule,"CoordinateSystem");
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
 

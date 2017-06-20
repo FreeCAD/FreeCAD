@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="PyObjectBase" 
+      Name="CoordinateSystemPy" 
+      Twin="CoordinateSystem" 
+      TwinPointer="CoordinateSystem" 
+      Include="Base/CoordinateSystem.h" 
+      FatherInclude="Base/PyObjectBase.h" 
+      Namespace="Base" 
+      Constructor="true"
+      Delete="true" 
+      FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <DeveloperDocu>This is the CoordinateSystem export class</DeveloperDocu>
+      <UserDocu></UserDocu>
+    </Documentation>
+    <Methode Name="setAxes">
+      <Documentation>
+        <UserDocu>setAxes(Axis or Vector z, Vector x)
+Set axis or z direction and x direction</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="displacement" Const="true">
+      <Documentation>
+        <UserDocu>displacement(CoordinateSystem)
+Computes the placement from this to the passed coordinate system</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="transformTo">
+      <Documentation>
+        <UserDocu>transformTo(Vector)
+Computes the coordinates of the point in coordinates of this system
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="transform">
+      <Documentation>
+        <UserDocu>transform(Rotation or Placement)
+Applies the rotation or placement on this coordinate system
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setPlacement">
+      <Documentation>
+        <UserDocu>setPlacment(Placement)
+Set placement to the coordinate system.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="Axis" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Set or get axis</UserDocu>
+      </Documentation>
+      <Parameter Name="Axis" Type="Object" />
+    </Attribute>
+    <Attribute Name="XDirection" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Set or get x direction</UserDocu>
+      </Documentation>
+      <Parameter Name="XDirection" Type="Object" />
+    </Attribute>
+    <Attribute Name="YDirection" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Set or get y direction</UserDocu>
+      </Documentation>
+      <Parameter Name="YDirection" Type="Object" />
+    </Attribute>
+    <Attribute Name="ZDirection" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Set or get z direction</UserDocu>
+        </Documentation>
+        <Parameter Name="ZDirection" Type="Object" />
+    </Attribute>
+    <Attribute Name="Position" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Set or get position</UserDocu>
+      </Documentation>
+      <Parameter Name="Position" Type="Object" />
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

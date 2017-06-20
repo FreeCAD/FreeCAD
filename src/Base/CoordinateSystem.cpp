@@ -48,8 +48,13 @@ void CoordinateSystem::setAxes(const Axis& v, const Vector3d& xd)
     if (yd.Sqr() < Base::Vector3d::epsilon())
         throw Base::ValueError("Direction is parallel to Z direction");
     ydir = yd;
+    ydir.Normalize();
     xdir = ydir % v.getDirection();
-    axis = v;
+    xdir.Normalize();
+    axis.setBase(v.getBase());
+    Base::Vector3d zdir = v.getDirection();
+    zdir.Normalize();
+    axis.setDirection(zdir);
 }
 
 void CoordinateSystem::setAxes(const Vector3d& n, const Vector3d& xd)
@@ -60,8 +65,12 @@ void CoordinateSystem::setAxes(const Vector3d& n, const Vector3d& xd)
     if (yd.Sqr() < Base::Vector3d::epsilon())
         throw Base::ValueError("Direction is parallel to Z direction");
     ydir = yd;
+    ydir.Normalize();
     xdir = ydir % n;
-    axis.setDirection(n);
+    xdir.Normalize();
+    Base::Vector3d zdir = n;
+    zdir.Normalize();
+    axis.setDirection(zdir);
 }
 
 void CoordinateSystem::setAxis(const Axis& v)
@@ -75,7 +84,9 @@ void CoordinateSystem::setXDirection(const Vector3d& dir)
     if (yd.Sqr() < Base::Vector3d::epsilon())
         throw Base::ValueError("Direction is parallel to Z direction");
     ydir = yd;
+    ydir.Normalize();
     xdir = ydir % axis.getDirection();
+    xdir.Normalize();
 }
 
 void CoordinateSystem::setYDirection(const Vector3d& dir)
@@ -84,7 +95,9 @@ void CoordinateSystem::setYDirection(const Vector3d& dir)
     if (xd.Sqr() < Base::Vector3d::epsilon())
         throw Base::ValueError("Direction is parallel to Z direction");
     xdir = xd;
+    xdir.Normalize();
     ydir = axis.getDirection() % xdir;
+    ydir.Normalize();
 }
 
 void CoordinateSystem::setZDirection(const Vector3d& dir)
@@ -94,6 +107,7 @@ void CoordinateSystem::setZDirection(const Vector3d& dir)
 
 Placement CoordinateSystem::displacement(const CoordinateSystem& cs) const
 {
+#if 0
     // align the Z axes
     Base::Rotation rotZ(getZDirection(), cs.getZDirection());
 
@@ -112,6 +126,32 @@ Placement CoordinateSystem::displacement(const CoordinateSystem& cs) const
     rot = rotX * rotZ;
 
     return Placement(mov, rot);
+#else
+    const Base::Vector3d& a = axis.getBase();
+    const Base::Vector3d& zdir = axis.getDirection();
+    Base::Matrix4D At;
+    At[0][0] = xdir.x; At[1][0] = ydir.x; At[2][0] = zdir.x;
+    At[0][1] = xdir.y; At[1][1] = ydir.y; At[2][1] = zdir.y;
+    At[0][2] = xdir.z; At[1][2] = ydir.z; At[2][2] = zdir.z;
+    Base::Vector3d at = At * a;
+    At[0][3] = -at.x;  At[1][3] = -at.y;  At[2][3] = -at.z;
+
+    const Base::Vector3d& b = cs.axis.getBase();
+    const Base::Vector3d& cszdir = cs.axis.getDirection();
+    Base::Matrix4D B;
+    B[0][0] = cs.xdir.x; B[0][1] = cs.ydir.x; B[0][2] = cszdir.x; B[0][3] = b.x;
+    B[1][0] = cs.xdir.y; B[1][1] = cs.ydir.y; B[1][2] = cszdir.y; B[1][3] = b.y;
+    B[2][0] = cs.xdir.z; B[2][1] = cs.ydir.z; B[2][2] = cszdir.z; B[2][3] = b.z;
+
+    //Base::Matrix4D C;
+    //C = B * At;
+    //Placement p(C);
+    //return p;
+    Placement PAt(At);
+    Placement PB(B);
+    Placement C = PB * PAt;
+    return C;
+#endif
 }
 
 void CoordinateSystem::transformTo(Vector3d& p)
