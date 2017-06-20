@@ -199,7 +199,8 @@ class ObjectContour:
         if not obj.Active:
             path = Path.Path("(inactive operation)")
             obj.Path = path
-            obj.ViewObject.Visibility = False
+            if obj.ViewObject:
+                obj.ViewObject.Visibility = False
             return
 
         commandlist = []
@@ -267,7 +268,7 @@ class ObjectContour:
 
         path = Path.Path(commandlist)
         obj.Path = path
-        if  obj.ViewObject:
+        if obj.ViewObject:
             obj.ViewObject.Visibility = True
 
 
