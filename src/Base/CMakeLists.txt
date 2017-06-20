@@ -76,6 +76,7 @@ endif()
 
 generate_from_xml(BaseClassPy)
 generate_from_xml(BoundBoxPy)
+generate_from_xml(CoordinateSystemPy)
 generate_from_xml(PersistencePy)
 generate_from_xml(VectorPy)
 generate_from_xml(MatrixPy)
@@ -152,6 +153,7 @@ SET(FreeCADBase_XML_SRCS
     AxisPy.xml
     BaseClassPy.xml
     BoundBoxPy.xml
+    CoordinateSystemPy.xml
     MatrixPy.xml
     PersistencePy.xml
     PlacementPy.xml
@@ -220,6 +222,7 @@ SET(FreeCADBase_CPP_SRCS
     Builder3D.cpp
     Console.cpp
     CoordinateSystem.cpp
+    CoordinateSystemPyImp.cpp
     Debugger.cpp
     Exception.cpp
     ExceptionFactory.cpp
