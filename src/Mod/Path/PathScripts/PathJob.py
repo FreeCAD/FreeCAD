@@ -30,7 +30,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
 import glob
-import lxml.etree as xml
+import xml.etree.ElementTree as xml
 import os
 import sys
 
@@ -132,6 +132,7 @@ class ObjectPathJob:
         attrs[JobTemplate.GeometryTolerance]           = str(obj.GeometryTolerance.Value)
         if obj.Description:
             attrs[JobTemplate.Description]             = obj.Description
+        return attrs
 
     def __getstate__(self):
         return None
@@ -487,7 +488,7 @@ class CommandJobExportTemplate:
             if hasattr(obj, 'Tool') and hasattr(obj, 'SpindleDir'):
                 tc = xml.SubElement(root, JobTemplate.ToolController, obj.Proxy.templateAttrs(obj))
                 tc.append(xml.fromstring(obj.Tool.Content))
-        xml.ElementTree(root).write(path, pretty_print=True)
+        xml.ElementTree(root).write(path)
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
