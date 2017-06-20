@@ -36,6 +36,7 @@ __url__ = ["http://www.freecadweb.org"]
 ## \addtogroup DRAFTVECUTILS
 #  @{
 
+import sys
 import math,FreeCAD
 from FreeCAD import Vector, Matrix
 
@@ -84,12 +85,18 @@ def equals(u,v):
 
 def scale(u,scalar):
     "scale(Vector,Float) - scales (multiplies) a vector by a factor"
-    typecheck ([(u,Vector), (scalar,(long,int,float))], "scale")
+    if sys.version_info.major < 3:
+        typecheck ([(u,Vector), (scalar,(long,int,float))], "scale")
+    else:
+        typecheck ([(u,Vector), (scalar,(int,int,float))], "scale")
     return Vector(u.x*scalar, u.y*scalar, u.z*scalar)
 
 def scaleTo(u,l):
     "scaleTo(Vector,length) - scales a vector to a given length"
-    typecheck ([(u,Vector),(l,(long,int,float))], "scaleTo")
+    if sys.version_info.major < 3:
+        typecheck ([(u,Vector),(l,(long,int,float))], "scaleTo")
+    else:
+        typecheck ([(u,Vector),(l,(int,int,float))], "scaleTo")
     if u.Length == 0:
         return Vector(u)
     else:
