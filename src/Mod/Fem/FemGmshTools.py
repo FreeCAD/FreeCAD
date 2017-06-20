@@ -364,11 +364,11 @@ class FemGmshTools():
             geo.write("Mesh.OptimizeNetgen = 1;\n")
         else:
             geo.write("Mesh.OptimizeNetgen = 0;\n")
-        # hight order mesh optimizing
-        if hasattr(self.mesh_obj, 'OptimizeNetgen') and self.mesh_obj.OptimizeNetgen is True:
-            geo.write("Mesh.HighOrderOptimize = 1;  //probably needs more lines off adjustment in geo file\n")
+        # higher order mesh optimizing
+        if hasattr(self.mesh_obj, 'HighOrderOptimize') and self.mesh_obj.HighOrderOptimize is True:
+            geo.write("Mesh.HighOrderOptimize = 1;  // for more HighOrderOptimize parameter check http://gmsh.info/doc/texinfo/gmsh.html\n")
         else:
-            geo.write("Mesh.HighOrderOptimize = 0;  //probably needs more lines off adjustment in geo file\n")
+            geo.write("Mesh.HighOrderOptimize = 0;  // for more HighOrderOptimize parameter check http://gmsh.info/doc/texinfo/gmsh.html\n")
         geo.write("\n")
         geo.write("// mesh order\n")
         geo.write("Mesh.ElementOrder = " + self.order + ";\n")
