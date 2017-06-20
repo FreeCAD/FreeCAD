@@ -30,7 +30,7 @@ import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
 import PathUtils
-import lxml.etree as xml
+import xml.etree.ElementTree as xml
 
 from FreeCAD import Units
 from PySide import QtCore, QtGui

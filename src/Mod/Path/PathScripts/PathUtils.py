@@ -438,9 +438,10 @@ def addToJob(obj, jobname=None):
                 print(form.cboProject.currentText())
                 job = [i for i in jobs if i.Name == form.cboProject.currentText()][0]
 
-    g = job.Group
-    g.append(obj)
-    job.Group = g
+    if obj:
+        g = job.Group
+        g.append(obj)
+        job.Group = g
     return job
 
 
