@@ -68,8 +68,6 @@ using Part::TopoShapePy;
 using Part::TopoShapeEdgePy;
 using Part::TopoShapeWirePy;
 
-using Drawing::DXFOutput;
-
 namespace TechDraw {
 
 class Module : public Py::ExtensionModule<Module>
@@ -88,6 +86,9 @@ public:
         );
         add_varargs_method("viewPartAsDxf",&Module::viewPartAsDxf,
             "string = viewPartAsDxf(DrawViewPart) -- Return the edges of a DrawViewPart in Dxf format."
+        );
+        add_varargs_method("viewPartAsSvg",&Module::viewPartAsSvg,
+            "string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."
         );
         initialize("This is a module for making drawings"); // register with Python
     }
@@ -347,7 +348,7 @@ private:
                     ss << dxfOut.exportEdges(s);
                 }
                 // ss now contains all edges as Dxf
-                dxfReturn = Py::String(ss.str() + "\n0");
+                dxfReturn = Py::String(ss.str());
            }
         }
         catch (Base::Exception &e) {
@@ -355,6 +356,82 @@ private:
         }
 
         return dxfReturn;
+    }
+
+    Py::Object viewPartAsSvg(const Py::Tuple& args)
+    {
+        PyObject *viewObj;
+        if (!PyArg_ParseTuple(args.ptr(), "O", &viewObj)) {
+            throw Py::Exception("expected (DrawViewPart)");
+        } 
+        Py::String svgReturn;
+        std::string grpHead1 = "<g fill=\"none\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-width=\"";
+        std::string grpHead2 = "\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"4\">\n";
+        std::string grpTail  = "</g>\n";
+        try {
+            App::DocumentObject* obj = 0;
+            TechDraw::DrawViewPart* dvp = 0;
+            Drawing::SVGOutput svgOut;
+            std::string svgText; 
+            std::stringstream ss;
+            if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
+                obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
+                dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+                TechDrawGeometry::GeometryObject* go = dvp->getGeometryObject();
+                //visibile group begin "<g ... >"
+                ss << grpHead1;
+                double thick = dvp->LineWidth.getValue();
+                ss << thick;
+                ss << grpHead2;
+                TopoDS_Shape s = go->getVisHard();
+                ss << svgOut.exportEdges(s);
+                s = (go->getVisOutline());
+                ss << svgOut.exportEdges(s);
+                if (dvp->SmoothVisible.getValue()) {
+                    s = go->getVisSmooth();
+                    ss << svgOut.exportEdges(s);
+                }
+                if (dvp->SeamVisible.getValue()) {
+                    s = go->getVisSeam();
+                    ss << svgOut.exportEdges(s);
+                }
+                //visible group end "</g>"
+                ss << grpTail;
+
+                if ( dvp->HardHidden.getValue()  ||
+                     dvp->SmoothHidden.getValue() ||
+                     dvp->SeamHidden.getValue() ) {
+                    //hidden group begin
+                    ss << grpHead1;
+                    thick = dvp->HiddenWidth.getValue();
+                    ss << thick;
+                    ss << grpHead2;
+                    if (dvp->HardHidden.getValue()) {
+                        s = go->getHidHard();
+                        ss << svgOut.exportEdges(s);
+                        s = go->getHidOutline();
+                        ss << svgOut.exportEdges(s);
+                    }
+                    if (dvp->SmoothHidden.getValue()) {
+                        s = go->getHidSmooth();
+                        ss << svgOut.exportEdges(s);
+                    }
+                    if (dvp->SeamHidden.getValue()) {
+                        s = go->getHidSeam();
+                        ss << svgOut.exportEdges(s);
+                    }
+                    ss << grpTail;
+                    //hidden group end
+                }
+                // ss now contains all edges as Svg
+                svgReturn = Py::String(ss.str());
+           }
+        }
+        catch (Base::Exception &e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+        }
+
+        return svgReturn;
     }
 
  };
