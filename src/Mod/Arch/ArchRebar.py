@@ -296,10 +296,10 @@ class _Rebar(ArchComponent.Component):
         shapes = []
         placementlist = []
         if obj.Amount == 1:
-	    barplacement = CalculatePlacement(obj.Amount, 1, size, axis, father.Placement.Rotation, obj.OffsetStart.Value, obj.OffsetEnd.Value)
-	    placementlist.append(barplacement)
-	    if hasattr(obj,"Spacing"):
-	        obj.Spacing = 0
+            barplacement = CalculatePlacement(obj.Amount, 1, size, axis, father.Placement.Rotation, obj.OffsetStart.Value, obj.OffsetEnd.Value)
+            placementlist.append(barplacement)
+            if hasattr(obj,"Spacing"):
+                obj.Spacing = 0
         else:
             if obj.OffsetStart.Value:
                 baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
