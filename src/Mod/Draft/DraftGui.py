@@ -40,12 +40,56 @@ Report to Draft.py for info
 '''
 
 import FreeCAD, FreeCADGui, os, Draft, sys, DraftVecUtils, math
-from DraftTools import utf8_decode
 
 try:
-    from PySide import QtCore,QtGui,QtSvg
+    from PySide import QtCore, QtGui, QtSvg
 except ImportError:
     FreeCAD.Console.PrintMessage("Error: Python-pyside package must be installed on your system to use the Draft module.")
+    
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def translate(context, text, utf8_decode=False):
+        """convenience function for Qt translator
+            context: str
+                context is typically a class name (e.g., "MyDialog")
+            text: str
+                text which gets translated
+            utf8_decode: bool [False]
+                if set to true utf8 encoded unicode will be returned. This option does not have influence
+                on python3 as for python3 we are returning utf-8 encoded unicode by default!
+        """
+        if sys.version_info.major >= 3 or utf8_decode:
+            return QtGui.QApplication.translate(context, text, None, _encoding)
+        else:
+            return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
+
+except AttributeError:
+    def translate(context, text, utf8_decode=False):
+        """convenience function for Qt translator
+            context: str
+                context is typically a class name (e.g., "MyDialog")
+            text: str
+                text which gets translated
+            utf8_decode: bool [False]
+                if set to true utf8 encoded unicode will be returned. This option does not have influence
+                on python3 as for python3 we are returning utf-8 encoded unicode by default!
+        """
+        if sys.version >= 3 or utf8_decode:
+            return QtGui.QApplication.translate(context, text, None)
+        else:
+            return QtGui.QApplication.translate(context, text, None).encode("utf8")
+
+def utf8_decode(text):
+    """py2: str     -> unicode
+            unicode -> unicode
+       py3: str     -> str
+            bytes   -> str
+    """
+    try:
+        return text.decode("utf-8")
+    except AttributeError:
+        return text
 
 class todo:
     ''' static todo class, delays execution of functions.  Use todo.delay
@@ -103,17 +147,6 @@ class todo:
         # print("debug: delaying commit",cl)
         QtCore.QTimer.singleShot(0, todo.doTasks)
         todo.commitlist = cl
-
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text):
-        "convenience function for Qt translator"
-        return QtGui.QApplication.translate(context, text, None, _encoding)
-except AttributeError:
-    def translate(context, text):
-        "convenience function for Qt translator"
-        return QtGui.QApplication.translate(context, text, None)
-
 
 #---------------------------------------------------------------------------
 # UNITS handling
