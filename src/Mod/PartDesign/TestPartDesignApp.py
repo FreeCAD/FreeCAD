@@ -377,6 +377,42 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.Pocket001.Shape.Volume, 62.5)
 
+    def testPocketToFaceCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'PadSketch')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (10, 10), True)
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Pad.Reversed = 1
+        self.Doc.recompute()
+        self.PocketSketch = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
+        self.Body.addObject(self.PocketSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (2.5, 2.5), (5, 5), True)
+        self.Doc.recompute()
+        self.Pocket = self.Doc.addObject("PartDesign::Pocket", "Pocket")
+        self.Body.addObject(self.Pocket)
+        self.Pocket.Profile = self.PocketSketch
+        self.Pocket.Length = 1
+        self.Doc.recompute()
+        self.PocketSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
+        self.Body.addObject(self.PocketSketch1)
+        self.PocketSketch1.MapMode = 'FlatFace'
+        self.PocketSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch1, (0, -1), (10, 1))
+        self.Doc.recompute()
+        self.Pocket001 = self.Doc.addObject("PartDesign::Pocket", "Pocket001")
+        self.Body.addObject(self.Pocket001)
+        self.Pocket001.Profile = self.PocketSketch1
+        self.Pocket001.Type = 3
+        self.Pocket001.UpToFace = (self.Pocket, ["Face10"])
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pocket001.Shape.Volume, 50.0)
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartDesignTestPocket")
