@@ -34,24 +34,24 @@ import unittest
 def tryLoadingTest(testName):
     "Loads and returns testName, or a failing TestCase if unsuccessful."
 
-    try:
-        return unittest.defaultTestLoader.loadTestsFromName(testName)
+    #try:
+    return unittest.defaultTestLoader.loadTestsFromName(testName)
 
-    except ImportError:
-        class LoadFailed(unittest.TestCase):
-            def __init__(self, testName):
-                # setattr() first, because TestCase ctor checks for methodName.
-                setattr(self, "failed_to_load_" + testName, self._runTest)
-                super(LoadFailed, self).__init__("failed_to_load_" + testName)
-                self.testName = testName
+    #except ImportError as err:
+    #    class LoadFailed(unittest.TestCase):
+    #        def __init__(self, testName):
+    #            # setattr() first, because TestCase ctor checks for methodName.
+    #            setattr(self, "failed_to_load_" + testName, self._runTest)
+    #            super(LoadFailed, self).__init__("failed_to_load_" + testName)
+    #            self.testName = testName
 
-            def __name__(self):
-                return "Loading " + self.testName
+    #        def __name__(self):
+    #            return "Loading " + self.testName
 
-            def _runTest(self):
-                self.fail("Couldn't load " + self.testName)
+    #        def _runTest(self):
+    #            self.fail("Couldn't load " + self.testName)
 
-        return LoadFailed(testName)
+    #    return LoadFailed(testName)
 
 def All():
     # Base system tests
