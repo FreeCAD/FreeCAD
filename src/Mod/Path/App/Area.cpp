@@ -1613,8 +1613,8 @@ TopoDS_Shape Area::getShape(int index) {
 
     CAreaConfig conf(myParams);
 
-    // if no offset or thicken, try pocket
-    if(fabs(myParams.Offset) < Precision::Confusion() && !myParams.Thicken) {
+    // if no offset, try pocket
+    if(fabs(myParams.Offset) < Precision::Confusion()) {
         if(myParams.PocketMode == PocketModeNone) {
             myShape = toShape(*myArea,myParams.Fill);
             myShapeDone = true;
