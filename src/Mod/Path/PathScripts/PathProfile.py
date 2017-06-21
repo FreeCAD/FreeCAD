@@ -146,7 +146,7 @@ class ObjectProfile:
         obj.Base = baselist
         self.execute(obj)
 
-    def _buildPathArea(self, obj, baseobject, isHole=False, start=None):
+    def _buildPathArea(self, obj, baseobject, isHole=False, start=None, getsim=False):
         PathLog.track()
         profile = Path.Area()
         profile.setPlane(Part.makeCircle(10))
@@ -213,9 +213,17 @@ class ObjectProfile:
         PathLog.debug("Generating Path with params: {}".format(params))
         PathLog.debug(pp)
 
-        return pp
+        simobj = None
+        if getsim:
+            profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
+            profileparams['ToolRadius']= self.radius - self.radius *.005
+            profile.setParams(**profileparams)
+            sec = profile.makeSections(mode=0, project=False, heights=depthparams.get_depths())[-1].getShape()
+            simobj = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
 
-    def execute(self, obj):
+        return pp, simobj
+
+    def execute(self, obj, getsim=False):
         import Part
 
         if not obj.Active:
@@ -275,7 +283,8 @@ class ObjectProfile:
                 if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
                     env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
                     try:
-                        commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=True, start=None).Commands)
+                        (pp, sim) = self._buildPathArea(obj, baseobject=env, isHole=True, start=None, getsim=getsim)
+                        commandlist.extend(pp.Commands)
                     except Exception as e:
                         FreeCAD.Console.PrintError(e)
                         FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
@@ -286,7 +295,8 @@ class ObjectProfile:
             if obj.processPerimeter:
                 env = PathUtils.getEnvelope(baseobject.Shape, subshape=profileshape, stockheight=obj.StartDepth)
                 try:
-                    commandlist.extend(self._buildPathArea(obj, baseobject=env, start=None).Commands)
+                    (pp, sim) = self._buildPathArea(obj, baseobject=env, start=None, getsim=getsim)
+                    commandlist.extend(pp.commands)
                 except Exception as e:
                     FreeCAD.Console.PrintError(e)
                     FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
@@ -301,7 +311,8 @@ class ObjectProfile:
                                 f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                                 env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
                                 try:
-                                    commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=False, start=None).Commands)
+                                    (pp, sim) = self._buildPathArea(obj, baseobject=env, isHole=False, start=None, getsim=getsim)
+                                    commandlist.extend(pp.commands)
                                 except Exception as e:
                                     FreeCAD.Console.PrintError(e)
                                     FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
@@ -314,7 +325,8 @@ class ObjectProfile:
                                 f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                                 env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
                                 try:
-                                    commandlist.extend(self._buildPathArea(obj, baseobject=env, isHole=True, start=None).Commands)
+                                    (pp, sim) = self._buildPathArea(obj, baseobject=env, isHole=True, start=None, getsim=getsim)
+                                    commandlist.extend(pp.commands)
                                 except Exception as e:
                                     FreeCAD.Console.PrintError(e)
                                     FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
