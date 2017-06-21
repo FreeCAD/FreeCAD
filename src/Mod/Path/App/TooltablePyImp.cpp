@@ -330,19 +330,18 @@ PyObject* ToolPy::copy(PyObject * args)
 
 PyObject* ToolPy::fromTemplate(PyObject * args)
 {
-    PyObject *pcObj;
-    if (PyArg_ParseTuple(args, "S", &pcObj)) {
-        if (PyString_Check(pcObj)) {
-            // embed actual string in dummy tag so XMLReader can consume that on construction
-            std::ostringstream os;
-            os << "<snippet>" << PyString_AsString(pcObj) << "</snippet>";
-            std::istringstream is(os.str());
-            Base::XMLReader reader("", is);
-            getToolPtr()->Restore(reader);
-            Py_Return ;
-        }
+    char *pstr = 0;
+    if (PyArg_ParseTuple(args, "s", &pstr)) {
+        // embed actual string in dummy tag so XMLReader can consume that on construction
+        std::ostringstream os;
+        os << "<snippet>" << pstr <<  "</snippet>";
+        std::istringstream is(os.str());
+        Base::XMLReader reader("", is);
+        getToolPtr()->Restore(reader);
+        Py_Return ;
     }
-    throw Py::Exception("only string argument accepted.");
+    PyErr_SetString(PyExc_TypeError, "argument must be a string");
+    return 0;
 }
 
 
