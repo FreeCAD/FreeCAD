@@ -685,44 +685,87 @@ class depth_params:
         user_depths:        List of specified depths
     '''
 
-    def __init__(self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths=None):
+    def __init__(self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths=None, equalstep=False):
         '''self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None]'''
         if z_finish_step > step_down:
             raise ValueError('z_finish_step must be less than step_down')
 
-        self.clearance_height = clearance_height
-        self.rapid_safety_space = math.fabs(rapid_safety_space)
-        self.start_depth = start_depth
-        self.step_down = math.fabs(step_down)
-        self.z_finish_step = math.fabs(z_finish_step)
-        self.final_depth = final_depth
-        self.user_depths = user_depths
+        self.__clearance_height = clearance_height
+        self.__rapid_safety_space = math.fabs(rapid_safety_space)
+        self.__start_depth = start_depth
+        self.__step_down = math.fabs(step_down)
+        self.__z_finish_step = math.fabs(z_finish_step)
+        self.__final_depth = final_depth
+        self.__user_depths = user_depths
+        self.data = self.__get_depths(equalstep=equalstep)
+        self.index = 0
 
-    def get_depths(self, equalstep=False):
+    def __iter__(self):
+        return self
+
+    def next(self):
+        if self.index == len(self.data):
+            raise StopIteration
+        self.index = self.index + 1
+        return self.data[self.index - 1]
+
+    @property
+    def clearance_height(self):
+        """
+        Height of all vises, clamps, and other obstructions.  Rapid moves at clearance height 
+        are always assumed to be safe from collision.
+        """
+        return self.__clearance_height
+
+    @property
+    def rapid_safety_space(self):
+        return self.__rapid_safety_space
+
+    @property
+    def start_depth(self):
+        return self.__start_depth
+
+    @property
+    def step_down(self):
+        return self.__step_down
+
+    @property
+    def z_finish_depth(self):
+        return self.__z_finish_depth
+
+    @property
+    def final_depth(self):
+        return self.__final_depth
+
+    @property
+    def user_depths(self):
+        return self.__user_depths
+
+    def __get_depths(self, equalstep=False):
         '''returns a list of depths to be used in order from first to last.
         equalstep=True: all steps down before the finish pass will be equalized.'''
 
         if self.user_depths is not None:
-            return self.user_depths
+            return self.__user_depths
 
-        total_depth = self.start_depth - self.final_depth
+        total_depth = self.__start_depth - self.__final_depth
 
         if total_depth < 0:
             return []
 
-        depths = [self.final_depth]
+        depths = [self.__final_depth]
 
         # apply finish step if necessary
-        if self.z_finish_step > 0:
-            if self.z_finish_step < total_depth:
-                depths.append(self.z_finish_step + self.final_depth)
+        if self.__z_finish_step > 0:
+            if self.__z_finish_step < total_depth:
+                depths.append(self.__z_finish_step + self.__final_depth)
             else:
                 return depths
 
         if equalstep:
-            depths += self.__equal_steps(self.start_depth, depths[-1], self.step_down)[1:]
+            depths += self.__equal_steps(self.__start_depth, depths[-1], self.__step_down)[1:]
         else:
-            depths += self.__fixed_steps(self.start_depth, depths[-1], self.step_down)[1:]
+            depths += self.__fixed_steps(self.__start_depth, depths[-1], self.__step_down)[1:]
 
         depths.reverse()
         return depths
