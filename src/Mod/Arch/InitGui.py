@@ -45,6 +45,24 @@ class ArchWorkbench(Workbench):
                      "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
                      "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag","Arch_3Views",
                      "Arch_IfcSpreadsheet","Arch_ToggleSubs"]
+                     
+        # try to locate the Reber addon
+        try:
+            import RebarTools
+        except:
+            pass
+        else:
+            class RebarGroupCommand:
+                def GetCommands(self):
+                    return tuple(["Arch_Rebar"]+RebarTools.RebarCommands)
+                def GetResources(self):
+                    return { 'MenuText': 'Rebar tools',
+                             'ToolTip': 'Rebar tools'
+                           }
+                def IsActive(self):
+                    return not FreeCAD.ActiveDocument is None
+            FreeCADGui.addCommand('Arch_RebarTools', RebarGroupCommand())
+            self.archtools[2] = "Arch_RebarTools"
 
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
