@@ -46,7 +46,7 @@ class ArchWorkbench(Workbench):
                      "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag","Arch_3Views",
                      "Arch_IfcSpreadsheet","Arch_ToggleSubs"]
                      
-        # try to locate the Reber addon
+        # try to locate the Rebar addon
         try:
             import RebarTools
         except:
