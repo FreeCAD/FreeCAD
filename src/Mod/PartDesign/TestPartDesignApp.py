@@ -409,11 +409,13 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.Body.addObject(self.Pocket001)
         self.Pocket001.Profile = self.PocketSketch1
         self.Pocket001.Type = 3
-        self.Pocket001.UpToFace = (self.Pocket, ["Face10"])
-        self.Doc.recompute()
         # Handle face-naming inconsistency in OCC < 7
-        if 'Invalid' in self.Pocket001.State:
-            self.Pocket001.UpToFace = (self.Pocket, ["Face7"])
+        self.FaceNumber = 7
+        self.Pocket001.UpToFace = (self.Pocket, ["Face"+str(self.FaceNumber)])
+        self.Doc.recompute()
+        while (('Invalid' in self.Pocket001.State or round(self.Pocket001.Shape.Volume, 7) != 50.0) and self.FaceNumber < 11):
+            self.FaceNumber += 1
+            self.Pocket001.UpToFace = (self.Pocket, ["Face"+str(self.FaceNumber)])
             self.Doc.recompute()
         self.assertAlmostEqual(self.Pocket001.Shape.Volume, 50.0)
 
