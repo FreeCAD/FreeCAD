@@ -88,7 +88,7 @@ HighCarbonToolSteel CastAlloy, Ceramics, Diamond, Sialon or Undefined</UserDocu>
         </Methode>
         <Methode Name="fromTemplate">
             <Documentation>
-                <UserDocu>fills receiver with values from the template string</UserDocu>
+                <UserDocu>fromTemplate(xmlString) ... fills receiver with values from the template string</UserDocu>
             </Documentation>
         </Methode>
         <!--<ClassDeclarations>
