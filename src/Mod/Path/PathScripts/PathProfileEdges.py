@@ -35,7 +35,7 @@ from PathScripts.PathUtils import waiting_effects
 """Path Profile from Edges Object and Command"""
 
 LOG_MODULE = 'PathProfileEdges'
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 # PathLog.trackModule('PathProfileEdges')
 
 if FreeCAD.GuiUp:
@@ -142,7 +142,7 @@ class ObjectProfile:
 
 
     @waiting_effects
-    def _buildPathArea(self, obj, baseobject, start=None):
+    def _buildPathArea(self, obj, baseobject, start=None, getsim=False):
         PathLog.track()
         profile = Path.Area()
         profile.setPlane(Part.makeCircle(10))
@@ -185,12 +185,6 @@ class ObjectProfile:
                   'resume_height': obj.StepDown.Value,
                   'retraction': obj.ClearanceHeight.Value}
 
-        # Reverse the direction for holes
-        # if isHole:
-        #     direction = "CW" if obj.Direction == "CCW" else "CCW"
-        # else:
-        #     direction = obj.Direction
-
         if obj.Direction == 'CCW':
             params['orientation'] = 0
         else:
@@ -203,26 +197,18 @@ class ObjectProfile:
         PathLog.debug("Generating Path with params: {}".format(params))
         PathLog.debug(pp)
 
-        # if True:
-        #     from PathScripts.PathUtils import CollisionTester
-        #     parentJob = PathUtils.findParentJob(obj)
-        #     if parentJob is None:
-        #         pass
-        #     base = parentJob.Base
-        #     if base is None:
-        #         pass
+        simobj = None
+        if getsim:
+            profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
+            profileparams['ToolRadius']= self.radius - self.radius *.005
+            profile.setParams(**profileparams)
+            sec = profile.makeSections(mode=0, project=False, heights=depthparams.get_depths())[-1].getShape()
+            simobj = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
 
-        #     profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
-        #     profileparams['ToolRadius']= self.radius - self.radius *.005
-        #     profile.setParams(**profileparams)
-        #     sec = profile.makeSections(heights=[0.0])[0].getShape()
-        #     cutPath = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
-        #     c = CollisionTester()
-        #     c.getCollisionSim(base.Shape, cutPath)
-        # return pp
+        return pp, simobj
 
 
-    def execute(self, obj):
+    def execute(self, obj, getsim=False):
        # import Part  # math #DraftGeomUtils
         commandlist = []
 
@@ -281,8 +267,8 @@ class ObjectProfile:
                 env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
 
                 try:
-                 #   commandlist.extend(self._buildPathArea(obj, wire).Commands)
-                    commandlist.extend(self._buildPathArea(obj, baseobject=env, start=None).Commands)
+                    (pp, sim) = self._buildPathArea(obj, baseobject=env, start=obj.StartPoint, getsim=getsim)
+                    commandlist.extend(pp.Commands)
 
                 except Exception as e:
                     FreeCAD.Console.PrintError(e)
@@ -294,6 +280,7 @@ class ObjectProfile:
         path = Path.Path(commandlist)
         obj.Path = path
         obj.ViewObject.Visibility = True
+        return sim
 
 
 class _ViewProviderProfile:

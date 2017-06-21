@@ -26,10 +26,10 @@ Path projects.  Ideally, the user could execute these utilities from an icon
 to make sure tools are selected and configured and defaults have been revised'''
 
 from __future__ import print_function
-from PySide import QtCore, QtGui
+from PySide import QtCore
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathUtils as PU
+#import PathScripts.PathUtils as PU
 import PathScripts
 import PathScripts.PathCollision as PC
 # Qt tanslation handling
@@ -81,18 +81,32 @@ class CommandPathSanity:
                         PC.getCollisionObject(self.baseobj, simobj)
                         #r.original = self.baseobj
 
-
             if isinstance(item.Proxy, PathScripts.PathProfile.ObjectProfile):
                 if item.Active:
                     operationcount +=1
+                    simobj = item.Proxy.execute(item, getsim=True)
+                    if simobj is not None:
+                        print ('collision detected')
+                        PC.getCollisionObject(self.baseobj, simobj)
+                        #r.original = self.baseobj
 
             if isinstance(item.Proxy, PathScripts.PathProfileEdges.ObjectProfile):
                 if item.Active:
                     operationcount +=1
+                    simobj = item.Proxy.execute(item, getsim=True)
+                    if simobj is not None:
+                        print ('collision detected')
+                        PC.getCollisionObject(self.baseobj, simobj)
+                        #r.original = self.baseobj
 
             if isinstance(item.Proxy, PathScripts.PathPocket.ObjectPocket):
                 if item.Active:
                     operationcount +=1
+                    simobj = item.Proxy.execute(item, getsim=True)
+                    if simobj is not None:
+                        print ('collision detected')
+                        PC.getCollisionObject(self.baseobj, simobj)
+                        #r.original = self.baseobj
 
             if isinstance(item.Proxy, PathScripts.PathDrilling.ObjectDrilling):
                 if item.Active:

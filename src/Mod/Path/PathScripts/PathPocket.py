@@ -168,15 +168,18 @@ class ObjectPocket:
         return None
 
     @waiting_effects
-    def _buildPathArea(self, obj, envelopeshape):
+    def _buildPathArea(self, obj, envelopeshape, getsim=False):
         PathLog.track()
         pocket = Path.Area()
         pocket.setPlane(Part.makeCircle(10))
         pocket.add(envelopeshape)
 
+        removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "Envelope")
+        removalshape.Shape = envelopeshape
+
         stepover = (self.radius * 2) * (float(obj.StepOver)/100)
 
-        pocketparams = {'Fill': 2,
+        pocketparams = {'Fill': 0,
                         'Coplanar': 0,
                         'PocketMode': 1,
                         'SectionCount': -1,
@@ -214,11 +217,23 @@ class ObjectPocket:
         pp = Path.fromShapes(**params)
         PathLog.debug("Generating Path with params: {}".format(params))
         PathLog.debug(pp)
-        return pp
 
-    def execute(self, obj):
+        simobj = None
+        if getsim:
+            pocketparams['Thicken'] = True
+            pocketparams['ToolRadius']= self.radius - self.radius *.005
+            pocket.setParams(**pocketparams)
+            #pocket.makeSections(mode=0, project=False, heights=depthparams.get_depths())
+            simobj = pocket.getShape().extrude(FreeCAD.Vector(0,0,obj.StepDown.Value))
+            removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "simshape")
+            removalshape.Shape = simobj
+
+        return pp, simobj
+
+    def execute(self, obj, getsim=False):
         PathLog.track()
         commandlist = []
+        simlist = []
         commandlist.append(Path.Command("(" + obj.Label + ")"))
         if not obj.Active:
             path = Path.Path("(inactive operation)")
@@ -266,7 +281,10 @@ class ObjectPocket:
                         removalshape.Shape = env.cut(baseobject.Shape)
 
                     try:
-                        commandlist.extend(self._buildPathArea(obj, env.cut(baseobject.Shape)).Commands)
+                        (pp, sim) = self._buildPathArea(obj, env.cut(baseobject.Shape), getsim=getsim)
+                        if sim is not None:
+                            simlist.append(sim)
+                        commandlist.extend(pp.Commands)
                     except Exception as e:
                         FreeCAD.Console.PrintError(e)
                         FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a pocket path. Check project and tool config.")
@@ -275,7 +293,12 @@ class ObjectPocket:
 
             env = PathUtils.getEnvelope(baseobject.Shape, subshape=None, stockheight=obj.StartDepth)
             try:
-                commandlist.extend(self._buildPathArea(obj, env.cut(baseobject.Shape)).Commands)
+                (pp, sim) = self._buildPathArea(obj, env.cut(baseobject.Shape), getsim=getsim)
+                commandlist.extend(pp.Commands)
+                if sim is not None:
+                    simlist.append(sim)
+
+                #commandlist.extend(self._buildPathArea(obj, env.cut(baseobject.Shape)).Commands)
             except Exception as e:
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a pocket path. Check project and tool config.")
@@ -286,6 +309,12 @@ class ObjectPocket:
         path = Path.Path(commandlist)
         obj.Path = path
         obj.ViewObject.Visibility = True
+        if len(simlist) == 0:
+            return None
+        if len(simlist) > 1:
+            return simlist[0].fuse(simlist[1:])
+        else:
+            return simlist[0]
 
 
 class _CommandSetPocketStartPoint:
