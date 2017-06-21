@@ -156,7 +156,7 @@ class _CompoundFilter:
                 scale = obj.Base.Shape.BoundBox.DiagonalLength / math.sqrt(3) / math.sqrt(len(shps))
             if scale < DistConfusion * 100:
                 scale = 1.0
-            print scale
+            print(scale)
             obj.Shape = getNullShapeShape(scale)
             raise ValueError('Nothing passes through the filter')  # Feeding empty compounds to FreeCAD seems to cause rendering issues, otherwise it would have been a good idea to output nothing.
 

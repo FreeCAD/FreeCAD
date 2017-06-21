@@ -1156,7 +1156,7 @@ def p_polyhedron_action(p) :
         pp =[v2(v[k]) for k in i]
         # Add first point to end of list to close polygon
         pp.append(pp[0])
-        print pp
+        print(pp)
         w = Part.makePolygon(pp)
         f = Part.Face(w)
         #f = make_face(v[int(i[0])],v[int(i[1])],v[int(i[2])])

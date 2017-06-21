@@ -146,7 +146,7 @@ def profile(curve, side_of_line, radius=1.0, vertfeed=0.0, horizfeed=0.0, offset
     print("in profile: 151")
     offset_curve = area.Curve(curve)
     if offset_curve.getNumVertices() <= 1:
-        raise Exception, "Sketch has no elements!"
+        raise Exception("Sketch has no elements!")
     if side_of_line == "On":
         use_CRC = False
 

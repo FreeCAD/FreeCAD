@@ -324,7 +324,7 @@ def export(selection, filename, argstring):
 
     gobjects = []
     for g in selection[0].Group:
-        if g.Name <> 'Machine':  # filtering out gcode home position from Machine object
+        if g.Name != 'Machine':  # filtering out gcode home position from Machine object
             gobjects.append(g)
 
     for obj in gobjects:
