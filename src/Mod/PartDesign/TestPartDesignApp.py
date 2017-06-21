@@ -411,6 +411,10 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.Pocket001.Type = 3
         self.Pocket001.UpToFace = (self.Pocket, ["Face10"])
         self.Doc.recompute()
+        # Handle face-naming inconsistency in OCC < 7
+        if 'Invalid' in self.Pocket001.State:
+            self.Pocket001.UpToFace = (self.Pocket, ["Face7"])
+            self.Doc.recompute()
         self.assertAlmostEqual(self.Pocket001.Shape.Volume, 50.0)
 
     def tearDown(self):
