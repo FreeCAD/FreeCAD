@@ -38,7 +38,7 @@ from PySide import QtGui
 
 LOG_MODULE = 'PathUtils'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-# PathLog.trackModule('PathUtils')
+#PathLog.trackModule('PathUtils')
 FreeCAD.setLogLevel('Path.Area', 0)
 
 
@@ -243,7 +243,7 @@ def makeWorkplane(shape):
     return c
 
 
-def getEnvelope(partshape, subshape=None, stockheight=None):
+def getEnvelope(partshape, subshape=None, depthparams=None):
     '''
     getEnvelope(partshape, stockheight=None)
     returns a shape corresponding to the partshape silhouette extruded to height.
@@ -252,11 +252,13 @@ def getEnvelope(partshape, subshape=None, stockheight=None):
     partshape = solid object
     stockheight = float - Absolute Z height of the top of material before cutting.
     '''
-    PathLog.track(partshape, subshape, stockheight)
+    PathLog.track(partshape, subshape, depthparams)
 
     # if partshape.Volume == 0.0:  #Not a 3D object
     #     return None
 
+
+    zShift = 0
     if subshape is not None:
         if isinstance(subshape, Part.Face):
             PathLog.debug('processing a face')
@@ -267,22 +269,31 @@ def getEnvelope(partshape, subshape=None, stockheight=None):
             PathLog.debug("About to section with params: {}".format(area.getParams()))
             sec = area.makeSections(heights=[0.0], project=True)[0].getShape()
 
-        zShift = partshape.BoundBox.ZMin - subshape.BoundBox.ZMin
+       # zShift = partshape.BoundBox.ZMin - subshape.BoundBox.ZMin
         PathLog.debug('partshapeZmin: {}, subshapeZMin: {}, zShift: {}'.format(partshape.BoundBox.ZMin, subshape.BoundBox.ZMin, zShift))
-        newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), sec.Placement.Rotation)
-        sec.Placement = newPlace
 
     else:
         area = Path.Area(Fill=2, Coplanar=0).add(partshape)
         area.setPlane(makeWorkplane(partshape))
         sec = area.makeSections(heights=[0.0], project=True)[0].getShape()
 
-    if stockheight is not None:
-        eLength = float(stockheight)-partshape.BoundBox.ZMin
-        PathLog.debug('boundbox zMIN: {} elength: {}'.format(partshape.BoundBox.ZMin, eLength))
-        envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, eLength))
+    # If depthparams are passed, use it to calculate bottom and height of
+    # envelope
+    if depthparams is not None:
+#        eLength = float(stockheight)-partshape.BoundBox.ZMin
+        eLength = depthparams.safe_height - depthparams.final_depth
+        #envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, eLength))
+        zShift = depthparams.final_depth - sec.BoundBox.ZMin
+        PathLog.debug('boundbox zMIN: {} elength: {} zShift {}'.format(partshape.BoundBox.ZMin, eLength, zShift))
     else:
-        envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, partshape.BoundBox.ZLength))
+        eLength = partshape.BoundBox.ZLength - sec.BoundBox.ZMin
+
+    # Shift the section based on selection and depthparams.
+    newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), sec.Placement.Rotation)
+    sec.Placement = newPlace
+
+    # Extrude the section to top of Boundbox or desired height
+    envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, eLength))
     if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
         removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "Envelope")
         removalshape.Shape = envelopeshape
@@ -672,26 +683,27 @@ def sort_jobs(locations, keys, attractors=[]):
 
 class depth_params:
     '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters
-    (self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None])
+    (self, clearance_height, safe_height, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None], equalstep=False)
 
         Note: if user_depths are supplied, only user_depths will be used.
 
         clearance_height:   Height to clear all obstacles
-        rapid_safety_space: Height to rapid between locations
-        start_depth:        Top of Stock
+        safe_height:        Height to clear raw stock material
+        start_depth:        Top of Model
         step_down:          Distance to step down between passes (always positive)
         z_finish_step:      Maximum amount of material to remove on the final pass
         final_depth:        Lowest point of the cutting operation
         user_depths:        List of specified depths
+        equalstep:          Boolean.  If True, steps down except Z_finish_depth will be balanced.
     '''
 
-    def __init__(self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths=None, equalstep=False):
-        '''self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None]'''
+    def __init__(self, clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths=None, equalstep=False):
+        '''self, clearance_height, safe_height, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None], equalstep=False'''
         if z_finish_step > step_down:
             raise ValueError('z_finish_step must be less than step_down')
 
         self.__clearance_height = clearance_height
-        self.__rapid_safety_space = math.fabs(rapid_safety_space)
+        self.__safe_height = math.fabs(safe_height)
         self.__start_depth = start_depth
         self.__step_down = math.fabs(step_down)
         self.__z_finish_step = math.fabs(z_finish_step)
@@ -712,33 +724,59 @@ class depth_params:
     @property
     def clearance_height(self):
         """
-        Height of all vises, clamps, and other obstructions.  Rapid moves at clearance height 
+        Height of all vises, clamps, and other obstructions.  Rapid moves at clearance height
         are always assumed to be safe from collision.
         """
         return self.__clearance_height
 
     @property
-    def rapid_safety_space(self):
-        return self.__rapid_safety_space
+    def safe_height(self):
+        """
+        Height of top of raw stock material.  Rapid moves above safe height are 
+        assumed to be safe within an operation.  May not be safe between
+        operations or tool changes.
+        All moves below safe height except retraction should be at feed rate.
+        """
+        return self.__safe_height
 
     @property
     def start_depth(self):
+        """
+        Start Depth is the top of the model.
+        """
         return self.__start_depth
 
     @property
     def step_down(self):
+        """
+        Maximum step down value between passes.  Step-Down may be less than
+        this value, especially if equalstep is True.
+        """
         return self.__step_down
 
     @property
     def z_finish_depth(self):
+        """
+        The amount of material to remove on the finish pass.  If given, the
+        final pass will remove exactly this amount.
+        """
         return self.__z_finish_depth
 
     @property
     def final_depth(self):
+        """
+        The height of the cutter during the last pass or finish pass if
+        z_finish_pass is given.
+        """
         return self.__final_depth
 
     @property
     def user_depths(self):
+        """
+        Returns a list of the user_specified depths.  If user_depths were given
+        in __init__, these depths override all calculation and only these are
+        used.
+        """
         return self.__user_depths
 
     def __get_depths(self, equalstep=False):

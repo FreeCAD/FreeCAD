@@ -18,7 +18,6 @@ INSTALL(
 
 SET(PathScripts_SRCS
     PathCommands.py
-    PathScripts/PathAreaUtils.py
     PathScripts/PathArray.py
     PathScripts/PathComment.py
     PathScripts/PathCompoundExtended.py
@@ -40,7 +39,6 @@ SET(PathScripts_SRCS
     PathScripts/PathHop.py
     PathScripts/PathInspect.py
     PathScripts/PathJob.py
-    PathScripts/PathKurveUtils.py
     PathScripts/PathLog.py
     PathScripts/PathMillFace.py
     PathScripts/PathPlane.py

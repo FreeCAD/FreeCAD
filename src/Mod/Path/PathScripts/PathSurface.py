@@ -169,7 +169,8 @@ class ObjectSurface:
         surface = s
 
         t_before = time.time()
-        zheights = depthparams.get_depths()
+        zheights = [i for i in depthparams]
+
         wl = ocl.Waterline()
         # wl = ocl.AdaptiveWaterline() # this is slower, ca 60 seconds on i7
         # CPU
