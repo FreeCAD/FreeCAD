@@ -29,12 +29,16 @@ from __future__ import print_function
 from PySide import QtCore
 import FreeCAD
 import FreeCADGui
-#import PathScripts.PathUtils as PU
 import PathScripts
-import PathScripts.PathCollision as PC
+import PathScripts.PathLog as PathLog
+# import PathScripts.PathCollision as PC
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
+LOG_MODULE = 'PathSanity'
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+#PathLog.trackModule('PathSanity')
 
 
 class CommandPathSanity:
@@ -68,45 +72,41 @@ class CommandPathSanity:
 
         for item in obj.Group:
             print("Checking: " + item.Label)
-            if isinstance(item.Proxy, PathScripts.PathLoadTool.LoadTool):
+            if isinstance(item.Proxy, PathScripts.PathToolController.ToolController):
                 toolcontrolcount += 1
                 self.__checkTC(item)
 
             if isinstance(item.Proxy, PathScripts.PathContour.ObjectContour):
                 if item.Active:
                     operationcount +=1
-                    simobj = item.Proxy.execute(item, getsim=True)
-                    if simobj is not None:
-                        print ('collision detected')
-                        PC.getCollisionObject(self.baseobj, simobj)
-                        #r.original = self.baseobj
+                    # simobj = item.Proxy.execute(item, getsim=True)
+                    # if simobj is not None:
+                    #     print ('collision detected')
+                    #     PC.getCollisionObject(self.baseobj, simobj)
 
             if isinstance(item.Proxy, PathScripts.PathProfile.ObjectProfile):
                 if item.Active:
                     operationcount +=1
-                    simobj = item.Proxy.execute(item, getsim=True)
-                    if simobj is not None:
-                        print ('collision detected')
-                        PC.getCollisionObject(self.baseobj, simobj)
-                        #r.original = self.baseobj
+                    # simobj = item.Proxy.execute(item, getsim=True)
+                    # if simobj is not None:
+                    #     print ('collision detected')
+                    #     PC.getCollisionObject(self.baseobj, simobj)
 
             if isinstance(item.Proxy, PathScripts.PathProfileEdges.ObjectProfile):
                 if item.Active:
                     operationcount +=1
-                    simobj = item.Proxy.execute(item, getsim=True)
-                    if simobj is not None:
-                        print ('collision detected')
-                        PC.getCollisionObject(self.baseobj, simobj)
-                        #r.original = self.baseobj
+                    # simobj = item.Proxy.execute(item, getsim=True)
+                    # if simobj is not None:
+                    #     print ('collision detected')
+                    #     PC.getCollisionObject(self.baseobj, simobj)
 
             if isinstance(item.Proxy, PathScripts.PathPocket.ObjectPocket):
                 if item.Active:
                     operationcount +=1
-                    simobj = item.Proxy.execute(item, getsim=True)
-                    if simobj is not None:
-                        print ('collision detected')
-                        PC.getCollisionObject(self.baseobj, simobj)
-                        #r.original = self.baseobj
+                    # simobj = item.Proxy.execute(item, getsim=True)
+                    # if simobj is not None:
+                    #     print ('collision detected')
+                    #     PC.getCollisionObject(self.baseobj, simobj)
 
             if isinstance(item.Proxy, PathScripts.PathDrilling.ObjectDrilling):
                 if item.Active:

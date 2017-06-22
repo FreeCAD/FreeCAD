@@ -30,7 +30,7 @@ class depthTestCases(unittest.TestCase):
     def test00(self):
         '''Stepping down to zero '''
         clearance_height= 15
-        rapid_safety_space = 12
+        safe_height = 12
 
         start_depth = 10
         step_down = 2
@@ -40,7 +40,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[8,6,4,2,1,0]
 
-        d = PU.depth_params(clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
@@ -48,7 +48,7 @@ class depthTestCases(unittest.TestCase):
         '''Stepping from zero to a negative depth '''
 
         clearance_height= 10
-        rapid_safety_space = 5
+        safe_height = 5
 
         start_depth = 0
         step_down = 2
@@ -58,14 +58,14 @@ class depthTestCases(unittest.TestCase):
 
         expected =[-2, -4, -6, -8, -10]
 
-        d = PU.depth_params(clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
     def test20(self):
         '''Start and end are equal or start lower than finish '''
         clearance_height= 15
-        rapid_safety_space = 12
+        safe_height = 12
 
         start_depth = 10
         step_down = 2
@@ -75,7 +75,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[10]
 
-        d = PU.depth_params(clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
@@ -84,14 +84,14 @@ class depthTestCases(unittest.TestCase):
 
         expected =[]
 
-        d = PU.depth_params(clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
     def test30(self):
         '''User Parameters passed in'''
         clearance_height= 10
-        rapid_safety_space = 5
+        safe_height = 5
 
         start_depth = 0
         step_down = 2
@@ -101,14 +101,14 @@ class depthTestCases(unittest.TestCase):
 
         expected =[2, 4, 8, 10, 11, 12]
 
-        d = PU.depth_params(clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
     def test40(self):
         '''z_finish_step passed in.'''
         clearance_height= 10
-        rapid_safety_space = 5
+        safe_height = 5
 
         start_depth = 0
         step_down = 2
@@ -118,7 +118,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[-2, -4, -6, -8, -9, -10]
 
-        d = PU.depth_params(clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
@@ -126,7 +126,7 @@ class depthTestCases(unittest.TestCase):
     def test50(self):
         '''stepping down with equalstep=True'''
         clearance_height= 10
-        rapid_safety_space = 5
+        safe_height = 5
 
         start_depth = 10
         step_down = 3
@@ -136,7 +136,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[7.5, 5.0, 2.5, 0]
 
-        d = PU.depth_params(clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths, equalstep=True)
+        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths, equalstep=True)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
@@ -144,7 +144,7 @@ class depthTestCases(unittest.TestCase):
     def test60(self):
         '''stepping down with equalstep=True and a finish depth'''
         clearance_height= 10
-        rapid_safety_space = 5
+        safe_height = 5
 
         start_depth = 10
         step_down = 3
@@ -154,14 +154,14 @@ class depthTestCases(unittest.TestCase):
 
         expected =[7.0, 4.0, 1.0, 0]
 
-        d = PU.depth_params(clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths, equalstep=True)
+        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths, equalstep=True)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
     def test70(self):
         '''stepping down with stepdown greater than total depth'''
         clearance_height= 10
-        rapid_safety_space = 5
+        safe_height = 5
 
         start_depth = 10
         step_down = 20
@@ -171,7 +171,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[1.0, 0]
 
-        d = PU.depth_params(clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 

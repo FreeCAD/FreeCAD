@@ -136,21 +136,22 @@ class ObjectContour:
         else:
             profileparams['Offset'] = self.radius+obj.OffsetExtra.Value
 
-        depthparams = depth_params(
-                clearance_height=obj.ClearanceHeight.Value,
-                rapid_safety_space=obj.SafeHeight.Value,
-                start_depth=obj.StartDepth.Value,
-                step_down=obj.StepDown.Value,
-                z_finish_step=0.0,
-                final_depth=obj.FinalDepth.Value,
-                user_depths=None)
+        # depthparams = depth_params(
+        #         clearance_height=obj.ClearanceHeight.Value,
+        #         safe_height=obj.SafeHeight.Value,
+        #         start_depth=obj.StartDepth.Value,
+        #         step_down=obj.StepDown.Value,
+        #         z_finish_step=0.0,
+        #         final_depth=obj.FinalDepth.Value,
+        #         user_depths=None)
 
-        PathLog.debug('depths: {}'.format(depthparams.get_depths()))
+        heights = [i for i in self.depthparams]
+        PathLog.debug('depths: {}'.format(heights))
         profile.setParams(**profileparams)
         obj.AreaParams = str(profile.getParams())
 
         PathLog.debug("Contour with params: {}".format(profile.getParams()))
-        sections = profile.makeSections(mode=0, project=True, heights=depthparams.get_depths())
+        sections = profile.makeSections(mode=0, project=True, heights=heights)
         shapelist = [sec.getShape() for sec in sections]
 
         params = {'shapes': shapelist,
@@ -181,7 +182,7 @@ class ObjectContour:
             profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
             profileparams['ToolRadius']= self.radius - self.radius *.005
             profile.setParams(**profileparams)
-            sec = profile.makeSections(mode=0, project=False, heights=depthparams.get_depths())[-1].getShape()
+            sec = profile.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
             simobj = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
 
         return pp, simobj
@@ -193,8 +194,7 @@ class ObjectContour:
         if not obj.Active:
             path = Path.Path("(inactive operation)")
             obj.Path = path
-            if obj.ViewObject:
-                obj.ViewObject.Visibility = False
+            obj.ViewObject.Visibility = False
             return
 
         commandlist = []
@@ -214,6 +214,15 @@ class ObjectContour:
                 return
             else:
                 self.radius = tool.Diameter/2
+
+        self.depthparams = depth_params(
+                clearance_height=obj.ClearanceHeight.Value,
+                safe_height=obj.SafeHeight.Value,
+                start_depth=obj.StartDepth.Value,
+                step_down=obj.StepDown.Value,
+                z_finish_step=0.0,
+                final_depth=obj.FinalDepth.Value,
+                user_depths=None)
 
         commandlist.append(Path.Command("(" + obj.Label + ")"))
 
@@ -250,8 +259,8 @@ class ObjectContour:
                         FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
         if hasattr(baseobject, "Shape") and not isPanel:
-            bb = baseobject.Shape.BoundBox
-            env = PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, stockheight=bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
+            #bb = baseobject.Shape.BoundBox
+            env = PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, depthparams=self.depthparams)
             try:
                 (pp, sim) = self._buildPathArea(obj, env, start=obj.StartPoint,getsim=getsim)
                 commandlist.extend(pp.Commands)
@@ -264,9 +273,8 @@ class ObjectContour:
 
         path = Path.Path(commandlist)
         obj.Path = path
-        if  obj.ViewObject:
-            obj.ViewObject.Visibility = True
-	return sim
+        obj.ViewObject.Visibility = True
+        return sim
 
 
 class _ViewProviderContour:
