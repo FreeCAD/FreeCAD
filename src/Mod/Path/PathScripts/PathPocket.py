@@ -24,7 +24,7 @@
 
 import FreeCAD
 import Path
-from PySide import QtCore, QtGui
+from PySide import QtCore
 from PathScripts import PathUtils
 import PathScripts.PathLog as PathLog
 from PathScripts.PathUtils import waiting_effects, depth_params
@@ -37,7 +37,7 @@ if FreeCAD.GuiUp:
 """Path Pocket object and FreeCAD command"""
 
 LOG_MODULE = 'PathPocket'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 #PathLog.trackModule('PathPocket')
 FreeCAD.setLogLevel('Path.Area', 0)
 
@@ -84,6 +84,8 @@ class ObjectPocket:
         # Debug Parameters
         obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
         obj.setEditorMode('AreaParams', 2)  # hide
+        if FreeCAD.GuiUp:
+            ViewProviderPocket(obj.ViewObject)
 
         obj.Proxy = self
 
@@ -276,12 +278,14 @@ class ObjectPocket:
                         shape = Part.makeFace(edges, 'Part::FaceMakerSimple')
 
                     env = PathUtils.getEnvelope(baseobject.Shape, subshape=shape, depthparams=self.depthparams)
+                    removal = env.cut(baseobject.Shape)
+
                     if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
                         removalshape=FreeCAD.ActiveDocument.addObject("Part::Feature","removalshape")
-                        removalshape.Shape = env
+                        removalshape.Shape = removal
 
                     try:
-                        (pp, sim) = self._buildPathArea(obj, env, getsim=getsim)
+                        (pp, sim) = self._buildPathArea(obj, removal, getsim=getsim)
                         if sim is not None:
                             simlist.append(sim)
                         commandlist.extend(pp.Commands)
@@ -292,8 +296,12 @@ class ObjectPocket:
             PathLog.debug("processing the whole job base object")
 
             env = PathUtils.getEnvelope(baseobject.Shape, subshape=None, depthparams=self.depthparams)
+            removal = env.cut(baseobject.Shape)
+            if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
+                removalshape=FreeCAD.ActiveDocument.addObject("Part::Feature","removalshape")
+                removalshape.Shape = removal
             try:
-                (pp, sim) = self._buildPathArea(obj, env, getsim=getsim)
+                (pp, sim) = self._buildPathArea(obj, removal, getsim=getsim)
                 commandlist.extend(pp.Commands)
                 if sim is not None:
                     simlist.append(sim)
@@ -349,13 +357,18 @@ class ViewProviderPocket:
         self.Object = vobj.Object
         return
 
+    def deleteObjectsOnReject(self):
+        return hasattr(self, 'deleteOnReject') and self.deleteOnReject
+
     def setEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        taskd = TaskPanel()
+        taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject())
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         taskd.setupUi()
+        self.deleteOnReject = False
         return True
+
 
     def getIcon(self):
         return ":/icons/Path-Pocket.svg"
@@ -394,7 +407,8 @@ class CommandPathPocket:
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Pocket")')
         FreeCADGui.doCommand('PathScripts.PathPocket.ObjectPocket(obj)')
         FreeCADGui.doCommand('obj.Active = True')
-        FreeCADGui.doCommand('PathScripts.PathPocket.ViewProviderPocket(obj.ViewObject)')
+        #FreeCADGui.doCommand('PathScripts.PathPocket.ViewProviderPocket(obj.ViewObject)')
+        FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
         FreeCADGui.doCommand('from PathScripts import PathUtils')
         FreeCADGui.doCommand('obj.StepOver = 100')
         FreeCADGui.doCommand('obj.ClearanceHeight = 10')  # + str(bb.ZMax + 2.0))
@@ -412,23 +426,32 @@ class CommandPathPocket:
 
 
 class TaskPanel:
-    def __init__(self):
+    def __init__(self, obj, deleteOnReject):
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Pocket", "Pocket Operation"))
         # self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/PocketEdit.ui")
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/PocketEdit.ui")
+        self.deleteOnReject = deleteOnReject
         self.updating = False
 
     def accept(self):
         self.getFields()
 
-        FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
+        FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.abortTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
+        if self.deleteOnReject:
+            FreeCAD.ActiveDocument.openTransaction(translate("Path_Pocket", "Uncreate Pocket Operation"))
+            FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
     def getFields(self):
         if self.obj:
@@ -576,8 +599,8 @@ class TaskPanel:
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
+    # def getStandardButtons(self):
+    #     return int(QtGui.QDialogButtonBox.Ok)
 
     def edit(self, item, column):
         if not self.updating:
