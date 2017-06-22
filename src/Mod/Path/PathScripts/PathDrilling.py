@@ -37,9 +37,11 @@ import ArchPanel
 if sys.version_info.major >= 3:
     xrange = range
 
-LOG_MODULE = 'PathDrilling'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-#PathLog.trackModule('PathDrilling')
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -326,6 +328,8 @@ class CommandPathDrilling:
         return False
 
     def Activated(self):
+        ztop = 10.0
+        zbottom = 0.0
 
         # if everything is ok, execute and register the transaction in the undo/redo stack
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Drilling", "Create Drilling"))
@@ -333,20 +337,16 @@ class CommandPathDrilling:
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Drilling")')
         FreeCADGui.doCommand('PathScripts.PathDrilling.ObjectDrilling(obj)')
         FreeCADGui.doCommand('obj.Active = True')
-        #FreeCADGui.doCommand('PathScripts.PathDrilling._ViewProviderDrill(obj.ViewObject)')
         FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
 
-        ztop = 10.0
-        zbottom = 0.0
         FreeCADGui.doCommand('obj.ClearanceHeight = ' + str(ztop))
         FreeCADGui.doCommand('obj.RetractHeight= ' + str(ztop))
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
-        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
 
 class TaskPanel:
@@ -355,12 +355,14 @@ class TaskPanel:
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DrillingEdit.ui")
         self.deleteOnReject = deleteOnReject
         self.obj = obj
+        self.isDirty = True
 
     def accept(self):
         FreeCADGui.Control.closeDialog()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        if self.isDirty:
+            FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
@@ -371,6 +373,12 @@ class TaskPanel:
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+
+    def clicked(self,button):
+        if button == QtGui.QDialogButtonBox.Apply:
+            self.getFields()
+            FreeCAD.ActiveDocument.recompute()
+            self.isDirty = False
 
     def getFields(self):
         PathLog.track()
@@ -396,22 +404,19 @@ class TaskPanel:
                         self.obj.DwellTime = FreeCAD.Units.Quantity(self.form.dwellTime.text()).Value
                     else:
                         self.form.dwellTime.setText("0.00")
-
                 if hasattr(self.obj, "DwellEnabled"):
                     self.obj.DwellEnabled = self.form.dwellEnabled.isChecked()
                 if hasattr(self.obj, "PeckEnabled"):
                     self.obj.PeckEnabled = self.form.peckEnabled.isChecked()
-
                 if hasattr(self.obj, "ToolController"):
                     PathLog.debug("name: {}".format(self.form.uiToolController.currentText()))
                     tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
                     self.obj.ToolController = tc
             except ValueError:
                 self.setFields()
-        self.obj.Proxy.execute(self.obj)
+        self.isDirty = True
 
     def updateFeatureList(self):
-
         self.form.baseList.itemChanged.disconnect(self.checkedChanged)  # disconnect this slot while creating objects
         self.form.baseList.clear()
         self.form.baseList.setColumnCount(2)
@@ -586,6 +591,9 @@ class TaskPanel:
             self.updateFeatureList()
 
             FreeCAD.ActiveDocument.recompute()
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
 
     def setupUi(self):
         PathLog.track()

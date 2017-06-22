@@ -39,7 +39,7 @@ FreeCAD.setLogLevel('Path.Area', 0)
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore
+    from PySide import QtCore, QtGui
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -442,18 +442,17 @@ class TaskPanel:
     def __init__(self, obj, deleteOnReject):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Profile", "Profile Operation"))
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ProfileEdit.ui")
-        self.updating = False
+        self.isDirty = True
         self.deleteOnReject = deleteOnReject
         self.obj = obj
 
     def accept(self):
-        self.getFields()
-
         FreeCADGui.Control.closeDialog()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
-        FreeCAD.ActiveDocument.recompute()
+        if self.isDirty:
+            FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
@@ -466,6 +465,12 @@ class TaskPanel:
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
+    def clicked(self,button):
+        if button == QtGui.QDialogButtonBox.Apply:
+            self.getFields()
+            self.obj.Proxy.execute(self.obj)
+            self.isDirty = False
+
     def getFields(self):
         if self.obj:
 
@@ -473,12 +478,12 @@ class TaskPanel:
                 self.obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
             if hasattr(self.obj, "FinalDepth"):
                 self.obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
+            if hasattr(self.obj, "StepDown"):
+                self.obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
             if hasattr(self.obj, "SafeHeight"):
                 self.obj.SafeHeight = FreeCAD.Units.Quantity(self.form.safeHeight.text()).Value
             if hasattr(self.obj, "ClearanceHeight"):
                 self.obj.ClearanceHeight = FreeCAD.Units.Quantity(self.form.clearanceHeight.text()).Value
-            if hasattr(self.obj, "StepDown"):
-                self.obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
             if hasattr(self.obj, "OffsetExtra"):
                 self.obj.OffsetExtra = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
             if hasattr(self.obj, "UseComp"):
@@ -500,14 +505,14 @@ class TaskPanel:
                 tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
                 self.obj.ToolController = tc
 
-        self.obj.Proxy.execute(self.obj)
+        self.isDirty = True
 
     def setFields(self):
         self.form.startDepth.setText(FreeCAD.Units.Quantity(self.obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.finalDepth.setText(FreeCAD.Units.Quantity(self.obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.stepDown.setText(FreeCAD.Units.Quantity(self.obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         self.form.safeHeight.setText(FreeCAD.Units.Quantity(self.obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
         self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(self.obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
-        self.form.stepDown.setText(FreeCAD.Units.Quantity(self.obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
         self.form.useCompensation.setChecked(self.obj.UseComp)
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
@@ -623,6 +628,9 @@ class TaskPanel:
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
+
     def setupUi(self):
 
         # Connect Signals and Slots
@@ -644,6 +652,7 @@ class TaskPanel:
 
         # operation
         self.form.cutSide.currentIndexChanged.connect(self.getFields)
+        self.form.uiToolController.currentIndexChanged.connect(self.getFields)
         self.form.direction.currentIndexChanged.connect(self.getFields)
         self.form.useCompensation.clicked.connect(self.getFields)
         self.form.useStartPoint.clicked.connect(self.getFields)

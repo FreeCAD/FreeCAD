@@ -36,9 +36,11 @@ import Path
 from PySide import QtCore
 from PySide import QtGui
 
-LOG_MODULE = 'PathUtils'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-#PathLog.trackModule('PathUtils')
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 FreeCAD.setLogLevel('Path.Area', 0)
 
 
@@ -112,6 +114,15 @@ def curvetowire(obj, steps):
 
 
 def isDrillable(obj, candidate, tooldiameter=None):
+    """
+    Checks candidates to see if they can be drilled.
+    Candidates can be either faces - circular or cylindrical or circular edges.
+    The tooldiameter can be optionally passed.  if passed, the check will return
+    False for any holes smaller than the tooldiameter.
+    obj=Shape
+    candidate = Face or Edge
+    tooldiameter=float
+    """
     PathLog.track('obj: {} candidate: {} tooldiameter {}'.format(obj, candidate, tooldiameter))
     drillable = False
     if candidate.ShapeType == 'Face':
@@ -123,15 +134,23 @@ def isDrillable(obj, candidate, tooldiameter=None):
                     PathLog.debug("candidate is a circle")
                     v0 = edge.Vertexes[0].Point
                     v1 = edge.Vertexes[1].Point
-                    if (v1.sub(v0).x == 0) and (v1.sub(v0).y == 0):
+                    #check if the cylinder seam is vertically aligned.  Eliminate tilted holes
+                    if (numpy.isclose(v1.sub(v0).x, 0, rtol=1e-05, atol=1e-06)) and \
+                            (numpy.isclose(v1.sub(v0).y, 0, rtol=1e-05, atol=1e-06)):
+                        drillable = True
                         # vector of top center
                         lsp = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMax)
                         # vector of bottom center
                         lep = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMin)
-                        if obj.isInside(lsp, 0, False) or obj.isInside(lep, 0, False):
+                        # check if the cylindrical 'lids' are inside the base
+                        # object.  This eliminates extruded circles but allows
+                        # actual holes.
+                        if obj.isInside(lsp, 1e-6, False) or obj.isInside(lep, 1e-6, False):
+                            PathLog.track("inside check failed. lsp: {}  lep: {}".format(lsp,lep))
                             drillable = False
                         # eliminate elliptical holes
                         elif not hasattr(face.Surface, "Radius"):
+                            PathLog.debug("candidate face has no radius attribute")
                             drillable = False
                         else:
                             if tooldiameter is not None:
