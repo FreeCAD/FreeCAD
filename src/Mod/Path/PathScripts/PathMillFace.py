@@ -32,6 +32,7 @@ from FreeCAD import Vector
 import PathScripts.PathLog as PathLog
 from PathScripts.PathUtils import waiting_effects
 from PathScripts.PathUtils import makeWorkplane
+from PathScripts.PathUtils import depth_params
 
 LOG_MODULE = 'PathMillFace'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
@@ -165,7 +166,6 @@ class ObjectFace:
     @waiting_effects
     def _buildPathArea(self, obj, baseobject):
         """build the face path using PathArea"""
-        from PathScripts.PathUtils import depth_params
 
         PathLog.track()
         boundary = Path.Area()
@@ -186,18 +186,11 @@ class ObjectFace:
         Pattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
         pocketparams['PocketMode'] = Pattern.index(obj.OffsetPattern) + 1
 
-        depthparams = depth_params(
-                clearance_height=obj.ClearanceHeight.Value,
-                rapid_safety_space=obj.SafeHeight.Value,
-                start_depth=obj.StartDepth.Value,
-                step_down=obj.StepDown,
-                z_finish_step=obj.FinishDepth.Value,
-                final_depth=obj.FinalDepth.Value,
-                user_depths=None)
 
+        heights = [i for i in self.depthparams]
         boundary.setParams(**pocketparams)
         obj.AreaParams = str(boundary.getParams())
-        sections = boundary.makeSections(mode=0, project=False, heights=depthparams.get_depths())
+        sections = boundary.makeSections(mode=0, project=False, heights=heights)
         shapelist = [sec.getShape() for sec in sections]
 
         params = {'shapes': shapelist,
@@ -214,22 +207,7 @@ class ObjectFace:
 
         PathLog.debug("Generating Path with params: {}".format(params))
         pp = Path.fromShapes(**params)
-        # if True:
-        #     from PathScripts.PathUtils import CollisionTester
-        #     parentJob = PathUtils.findParentJob(obj)
-        #     if parentJob is None:
-        #         pass
-        #     base = parentJob.Base
-        #     if base is None:
-        #         pass
 
-        #     pocketparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
-        #     pocketparams['ToolRadius']= self.radius - self.radius *.005
-        #     boundary.setParams(**pocketparams)
-        #     sec = boundary.makeSections(heights=[0.0])[0].getShape()
-        #     cutPath = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
-        #     c = CollisionTester()
-        #     c.getCollisionSim(base.Shape, cutPath)
         return pp
 
     def execute(self, obj):
@@ -243,6 +221,15 @@ class ObjectFace:
         commandlist = []
 
         toolLoad = obj.ToolController
+
+        self.depthparams = depth_params(
+                clearance_height=obj.ClearanceHeight.Value,
+                safe_height=obj.SafeHeight.Value,
+                start_depth=obj.StartDepth.Value,
+                step_down=obj.StepDown,
+                z_finish_step=obj.FinishDepth.Value,
+                final_depth=obj.FinalDepth.Value,
+                user_depths=None)
 
         if toolLoad is None or toolLoad.ToolNumber == 0:
             FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
@@ -298,9 +285,9 @@ class ObjectFace:
         bb = planeshape.BoundBox
         if obj.BoundaryShape == 'Boundbox':
             bbperim = Part.makeBox(bb.XLength, bb.YLength, 1, Vector(bb.XMin, bb.YMin, bb.ZMin), Vector(0, 0, 1))
-            env = PathUtils.getEnvelope(partshape=bbperim, stockheight=bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
+            env = PathUtils.getEnvelope(partshape=bbperim, depthparams=self.depthparams)
         else:
-            env = PathUtils.getEnvelope(partshape=planeshape, stockheight=bb.ZLength + (obj.StartDepth.Value-bb.ZMax))
+            env = PathUtils.getEnvelope(partshape=planeshape, depthparams=self.depthparams)
 
         try:
             commandlist.extend(self._buildPathArea(obj, env).Commands)

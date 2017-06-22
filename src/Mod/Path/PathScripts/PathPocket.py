@@ -38,7 +38,7 @@ if FreeCAD.GuiUp:
 
 LOG_MODULE = 'PathPocket'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-PathLog.trackModule('PathPocket')
+#PathLog.trackModule('PathPocket')
 FreeCAD.setLogLevel('Path.Area', 0)
 
 
@@ -174,9 +174,6 @@ class ObjectPocket:
         pocket.setPlane(Part.makeCircle(10))
         pocket.add(envelopeshape)
 
-        removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "Envelope")
-        removalshape.Shape = envelopeshape
-
         stepover = (self.radius * 2) * (float(obj.StepOver)/100)
 
         pocketparams = {'Fill': 0,
@@ -195,16 +192,10 @@ class ObjectPocket:
         obj.AreaParams = str(pocket.getParams())
         PathLog.debug("Pocketing with params: {}".format(pocket.getParams()))
 
-        depthparams = depth_params(
-                clearance_height=obj.ClearanceHeight.Value,
-                rapid_safety_space=obj.SafeHeight.Value,
-                start_depth=obj.StartDepth.Value,
-                step_down=obj.StepDown.Value,
-                z_finish_step=0.0,
-                final_depth=obj.FinalDepth.Value,
-                user_depths=None)
+        heights = [i for i in self.depthparams]
+        PathLog.debug('pocket section heights: {}'.format(heights))
+        sections = pocket.makeSections(mode=0, project=False, heights=heights)
 
-        sections = pocket.makeSections(mode=0, project=False, heights=depthparams.get_depths())
         shapelist = [sec.getShape() for sec in sections]
 
         params = {'shapes': shapelist,
@@ -222,11 +213,11 @@ class ObjectPocket:
         if getsim:
             pocketparams['Thicken'] = True
             pocketparams['ToolRadius']= self.radius - self.radius *.005
+            pocketparams['Stepdown'] = -1
             pocket.setParams(**pocketparams)
-            #pocket.makeSections(mode=0, project=False, heights=depthparams.get_depths())
+            #pocket.makeSections(mode=0, project=False, heights=heights)
             simobj = pocket.getShape().extrude(FreeCAD.Vector(0,0,obj.StepDown.Value))
-            removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "simshape")
-            removalshape.Shape = simobj
+            #removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "simshape")
 
         return pp, simobj
 
@@ -247,6 +238,15 @@ class ObjectPocket:
         baseobject = parentJob.Base
         if baseobject is None:
             return
+
+        self.depthparams = depth_params(
+                clearance_height=obj.ClearanceHeight.Value,
+                safe_height=obj.SafeHeight.Value,
+                start_depth=obj.StartDepth.Value,
+                step_down=obj.StepDown.Value,
+                z_finish_step=0.0,
+                final_depth=obj.FinalDepth.Value,
+                user_depths=None)
 
         toolLoad = obj.ToolController
         if toolLoad is None or toolLoad.ToolNumber == 0:
@@ -275,13 +275,13 @@ class ObjectPocket:
                         edges = [getattr(b[0].Shape, sub) for sub in b[1]]
                         shape = Part.makeFace(edges, 'Part::FaceMakerSimple')
 
-                    env = PathUtils.getEnvelope(baseobject.Shape, subshape=shape, stockheight=obj.StartDepth)
+                    env = PathUtils.getEnvelope(baseobject.Shape, subshape=shape, depthparams=self.depthparams)
                     if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
                         removalshape=FreeCAD.ActiveDocument.addObject("Part::Feature","removalshape")
-                        removalshape.Shape = env.cut(baseobject.Shape)
+                        removalshape.Shape = env
 
                     try:
-                        (pp, sim) = self._buildPathArea(obj, env.cut(baseobject.Shape), getsim=getsim)
+                        (pp, sim) = self._buildPathArea(obj, env, getsim=getsim)
                         if sim is not None:
                             simlist.append(sim)
                         commandlist.extend(pp.Commands)
@@ -291,9 +291,9 @@ class ObjectPocket:
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
 
-            env = PathUtils.getEnvelope(baseobject.Shape, subshape=None, stockheight=obj.StartDepth)
+            env = PathUtils.getEnvelope(baseobject.Shape, subshape=None, depthparams=self.depthparams)
             try:
-                (pp, sim) = self._buildPathArea(obj, env.cut(baseobject.Shape), getsim=getsim)
+                (pp, sim) = self._buildPathArea(obj, env, getsim=getsim)
                 commandlist.extend(pp.Commands)
                 if sim is not None:
                     simlist.append(sim)
@@ -309,13 +309,18 @@ class ObjectPocket:
         path = Path.Path(commandlist)
         obj.Path = path
         obj.ViewObject.Visibility = True
-        if len(simlist) == 0:
-            return None
-        if len(simlist) > 1:
-            return simlist[0].fuse(simlist[1:])
-        else:
-            return simlist[0]
 
+        PathLog.debug(simlist)
+        simshape = None
+        if len(simlist) > 1:
+            simshape=simlist[0].fuse(simlist[1:])
+        elif len(simlist) == 1:
+            simshape = simlist[0]
+
+        if simshape is not None and PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
+            sim=FreeCAD.ActiveDocument.addObject("Part::Feature","simshape")
+            sim.Shape = simshape
+        return simshape
 
 class _CommandSetPocketStartPoint:
     def GetResources(self):

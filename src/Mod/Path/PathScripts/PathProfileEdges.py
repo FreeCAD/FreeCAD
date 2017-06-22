@@ -166,16 +166,8 @@ class ObjectProfile:
 
         PathLog.debug("About to profile with params: {}".format(profile.getParams()))
 
-        depthparams = depth_params(
-                clearance_height=obj.ClearanceHeight.Value,
-                rapid_safety_space=obj.SafeHeight.Value,
-                start_depth=obj.StartDepth.Value,
-                step_down=obj.StepDown.Value,
-                z_finish_step=0.0,
-                final_depth=obj.FinalDepth.Value,
-                user_depths=None)
-
-        sections = profile.makeSections(mode=0, project=True, heights=depthparams.get_depths())
+        heights = [i for i in self.depthparams]
+        sections = profile.makeSections(mode=0, project=True, heights=heights)
         shapelist = [sec.getShape() for sec in sections]
 
         params = {'shapes': shapelist,
@@ -202,7 +194,7 @@ class ObjectProfile:
             profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
             profileparams['ToolRadius']= self.radius - self.radius *.005
             profile.setParams(**profileparams)
-            sec = profile.makeSections(mode=0, project=False, heights=depthparams.get_depths())[-1].getShape()
+            sec = profile.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
             simobj = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
 
         return pp, simobj
@@ -211,6 +203,7 @@ class ObjectProfile:
     def execute(self, obj, getsim=False):
        # import Part  # math #DraftGeomUtils
         commandlist = []
+        sim = None
 
         if not obj.Active:
             path = Path.Path("(inactive operation)")
@@ -224,6 +217,15 @@ class ObjectProfile:
         baseobject = parentJob.Base
         if baseobject is None:
             return
+
+        self.depthparams = depth_params(
+                clearance_height=obj.ClearanceHeight.Value,
+                safe_height=obj.SafeHeight.Value,
+                start_depth=obj.StartDepth.Value,
+                step_down=obj.StepDown.Value,
+                z_finish_step=0.0,
+                final_depth=obj.FinalDepth.Value,
+                user_depths=None)
 
         toolLoad = obj.ToolController
         if toolLoad is None or toolLoad.ToolNumber == 0:
@@ -264,7 +266,7 @@ class ObjectProfile:
                 zShift = b[0].Shape.BoundBox.ZMin - f.BoundBox.ZMin
                 newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), f.Placement.Rotation)
                 f.Placement = newPlace
-                env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
+                env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, depthparams=self.depthparams)
 
                 try:
                     (pp, sim) = self._buildPathArea(obj, baseobject=env, start=obj.StartPoint, getsim=getsim)

@@ -176,16 +176,9 @@ class ObjectProfile:
         # PathLog.debug("About to profile with params: {}".format(profileparams))
         PathLog.debug("About to profile with params: {}".format(profile.getParams()))
 
-        depthparams = depth_params(
-                clearance_height=obj.ClearanceHeight.Value,
-                rapid_safety_space=obj.SafeHeight.Value,
-                start_depth=obj.StartDepth.Value,
-                step_down=obj.StepDown.Value,
-                z_finish_step=0.0,
-                final_depth=obj.FinalDepth.Value,
-                user_depths=None)
+        heights = [i for i in self.depthparams]
 
-        sections = profile.makeSections(mode=0, project=True, heights=depthparams.get_depths())
+        sections = profile.makeSections(mode=0, project=True, heights=heights)
         shapelist = [sec.getShape() for sec in sections]
 
         params = {'shapes': shapelist,
@@ -218,7 +211,7 @@ class ObjectProfile:
             profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
             profileparams['ToolRadius']= self.radius - self.radius *.005
             profile.setParams(**profileparams)
-            sec = profile.makeSections(mode=0, project=False, heights=depthparams.get_depths())[-1].getShape()
+            sec = profile.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
             simobj = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
 
         return pp, simobj
@@ -231,6 +224,15 @@ class ObjectProfile:
             obj.Path = path
             obj.ViewObject.Visibility = False
             return
+
+        self.depthparams = depth_params(
+                clearance_height=obj.ClearanceHeight.Value,
+                safe_height=obj.SafeHeight.Value,
+                start_depth=obj.StartDepth.Value,
+                step_down=obj.StepDown.Value,
+                z_finish_step=0.0,
+                final_depth=obj.FinalDepth.Value,
+                user_depths=None)
 
         commandlist = []
         toolLoad = obj.ToolController
@@ -281,7 +283,7 @@ class ObjectProfile:
                 f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                 drillable = PathUtils.isDrillable(baseobject.Shape, wire)
                 if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
-                    env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
+                    env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, depthparams=self.depthparams)
                     try:
                         (pp, sim) = self._buildPathArea(obj, baseobject=env, isHole=True, start=None, getsim=getsim)
                         commandlist.extend(pp.Commands)
@@ -293,7 +295,7 @@ class ObjectProfile:
                 profileshape = Part.makeCompound(faces)
 
             if obj.processPerimeter:
-                env = PathUtils.getEnvelope(baseobject.Shape, subshape=profileshape, stockheight=obj.StartDepth)
+                env = PathUtils.getEnvelope(baseobject.Shape, subshape=profileshape, depthparams=self.depthparams)
                 try:
                     (pp, sim) = self._buildPathArea(obj, baseobject=env, start=None, getsim=getsim)
                     commandlist.extend(pp.commands)
@@ -309,7 +311,7 @@ class ObjectProfile:
                         for shape in shapes:
                             for wire in shape.Wires:
                                 f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                                env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
+                                env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, depthparams=self.depthparams)
                                 try:
                                     (pp, sim) = self._buildPathArea(obj, baseobject=env, isHole=False, start=None, getsim=getsim)
                                     commandlist.extend(pp.commands)
@@ -323,7 +325,7 @@ class ObjectProfile:
                             drillable = PathUtils.isDrillable(baseobject.Proxy, wire)
                             if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
                                 f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                                env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, stockheight=obj.StartDepth)
+                                env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, depthparams=self.depthparams)
                                 try:
                                     (pp, sim) = self._buildPathArea(obj, baseobject=env, isHole=True, start=None, getsim=getsim)
                                     commandlist.extend(pp.commands)
