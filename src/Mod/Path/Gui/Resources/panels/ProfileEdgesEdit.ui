@@ -33,8 +33,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>285</width>
-        <height>277</height>
+        <width>334</width>
+        <height>348</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -111,8 +111,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>120</width>
-        <height>96</height>
+        <width>334</width>
+        <height>348</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -181,8 +181,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>154</width>
-        <height>68</height>
+        <width>334</width>
+        <height>348</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -351,13 +351,6 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="useEndPoint">
-            <property name="text">
-             <string>Use End Point</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </widget>
        </item>
@@ -370,23 +363,6 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item row="1" column="2">
-           <widget class="Gui::InputField" name="rollRadius">
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string>Roll Radius</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="2">
            <widget class="Gui::InputField" name="extraOffset">
             <property name="minimum">

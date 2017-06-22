@@ -22,26 +22,28 @@
 # *                                                                         *
 # ***************************************************************************
 
+from __future__ import print_function
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
+from PySide import QtCore, QtGui
 from PathScripts import PathUtils
-from PathScripts.PathUtils import depth_params
-from PySide import QtCore
 import ArchPanel
 import Part
 from PathScripts.PathUtils import waiting_effects
 from PathScripts.PathUtils import makeWorkplane
+from PathScripts.PathUtils import depth_params
 
-LOG_MODULE = 'PathContour'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-PathLog.trackModule('PathContour')
 FreeCAD.setLogLevel('Path.Area', 0)
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-   # from PySide import QtGui
-
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -57,9 +59,10 @@ __url__ = "http://www.freecadweb.org"
 class ObjectContour:
 
     def __init__(self, obj):
+        PathLog.track()
         obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Contour"))
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
+        #obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
 
         # Tool Properties
         obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
@@ -82,8 +85,8 @@ class ObjectContour:
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final Contour- good for roughing toolpath"))
 
         # Debug Parameters
-        obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
-        obj.setEditorMode('AreaParams', 2)  # hide
+        # obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        # obj.setEditorMode('AreaParams', 2)  # hide
 
         if FreeCAD.GuiUp:
             _ViewProviderContour(obj.ViewObject)
@@ -91,16 +94,19 @@ class ObjectContour:
         obj.Proxy = self
         self.endVector = None
 
+    def onChanged(self, obj, prop):
+        PathLog.track('prop: {}  state: {}'.format(prop, obj.State))
+        #pass
+
     def __getstate__(self):
+        PathLog.track()
         return None
 
     def __setstate__(self, state):
+        PathLog.track(state)
         return None
 
-    def onChanged(self, obj, prop):
-        pass
-
-    def setDepths(proxy, obj):
+    def setDepths(self, obj):
         PathLog.track()
         parentJob = PathUtils.findParentJob(obj)
         if parentJob is None:
@@ -139,7 +145,7 @@ class ObjectContour:
         heights = [i for i in self.depthparams]
         PathLog.debug('depths: {}'.format(heights))
         profile.setParams(**profileparams)
-        obj.AreaParams = str(profile.getParams())
+        #obj.AreaParams = str(profile.getParams())
 
         PathLog.debug("Contour with params: {}".format(profile.getParams()))
         sections = profile.makeSections(mode=0, project=True, heights=heights)
@@ -191,6 +197,15 @@ class ObjectContour:
         commandlist = []
         toolLoad = obj.ToolController
 
+        self.depthparams = depth_params(
+                clearance_height=obj.ClearanceHeight.Value,
+                safe_height=obj.SafeHeight.Value,
+                start_depth=obj.StartDepth.Value,
+                step_down=obj.StepDown.Value,
+                z_finish_step=0.0,
+                final_depth=obj.FinalDepth.Value,
+                user_depths=None)
+
         if toolLoad is None or toolLoad.ToolNumber == 0:
             FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
             return
@@ -205,15 +220,6 @@ class ObjectContour:
                 return
             else:
                 self.radius = tool.Diameter/2
-
-        self.depthparams = depth_params(
-                clearance_height=obj.ClearanceHeight.Value,
-                safe_height=obj.SafeHeight.Value,
-                start_depth=obj.StartDepth.Value,
-                step_down=obj.StepDown.Value,
-                z_finish_step=0.0,
-                final_depth=obj.FinalDepth.Value,
-                user_depths=None)
 
         commandlist.append(Path.Command("(" + obj.Label + ")"))
 
@@ -264,23 +270,27 @@ class ObjectContour:
 
         path = Path.Path(commandlist)
         obj.Path = path
-        obj.ViewObject.Visibility = True
+        #obj.ViewObject.Visibility = True
         return sim
 
 
 class _ViewProviderContour:
 
     def __init__(self, vobj):
+        PathLog.track()
         vobj.Proxy = self
 
     def attach(self, vobj):
+        PathLog.track()
         self.Object = vobj.Object
         return
 
     def deleteObjectsOnReject(self):
+        PathLog.track()
         return hasattr(self, 'deleteOnReject') and self.deleteOnReject
 
     def setEdit(self, vobj, mode=0):
+        PathLog.track()
         FreeCADGui.Control.closeDialog()
         taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject())
         taskd.obj = vobj.Object
@@ -293,9 +303,11 @@ class _ViewProviderContour:
         return ":/icons/Path-Contour.svg"
 
     def __getstate__(self):
+        PathLog.track()
         return None
 
     def __setstate__(self, state):
+        PathLog.track()
         return None
 
 
@@ -340,7 +352,6 @@ class CommandPathContour:
         FreeCADGui.addModule("PathScripts.PathContour")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Contour")')
         FreeCADGui.doCommand('PathScripts.PathContour.ObjectContour(obj)')
-        #FreeCADGui.doCommand('PathScripts.PathContour._ViewProviderContour(obj.ViewObject)')
         FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
 
         FreeCADGui.doCommand('obj.Active = True')
@@ -360,7 +371,7 @@ class CommandPathContour:
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        #FreeCAD.ActiveDocument.recompute()
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
 
@@ -370,16 +381,15 @@ class TaskPanel:
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ContourEdit.ui")
         # self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ContourEdit.ui")
         self.deleteOnReject = deleteOnReject
-        self.updating = False
+        self.isDirty = True
 
     def accept(self):
-        self.getFields()
-
         FreeCADGui.Control.closeDialog()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
-        FreeCAD.ActiveDocument.recompute()
+        if self.isDirty:
+            FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
@@ -391,6 +401,12 @@ class TaskPanel:
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+
+    def clicked(self,button):
+        if button == QtGui.QDialogButtonBox.Apply:
+            self.getFields()
+            FreeCAD.ActiveDocument.recompute()
+            self.isDirty = False
 
     def getFields(self):
         PathLog.track()
@@ -416,15 +432,15 @@ class TaskPanel:
             if hasattr(self.obj, "ToolController"):
                 tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
                 self.obj.ToolController = tc
-        self.obj.Proxy.execute(self.obj)
+        self.isDirty = True
 
     def setFields(self):
         PathLog.track()
         self.form.startDepth.setText(FreeCAD.Units.Quantity(self.obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.finalDepth.setText(FreeCAD.Units.Quantity(self.obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.stepDown.setText(FreeCAD.Units.Quantity(self.obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         self.form.safeHeight.setText(FreeCAD.Units.Quantity(self.obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
         self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(self.obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
-        self.form.stepDown.setText(FreeCAD.Units.Quantity(self.obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
         self.form.useCompensation.setChecked(self.obj.UseComp)
         # self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
@@ -460,8 +476,8 @@ class TaskPanel:
         # install the function mode resident
         FreeCADGui.Selection.addObserver(self.s)
 
-    # def getStandardButtons(self):
-    #     return int(QtGui.QDialogButtonBox.Ok)
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
 
     def setupUi(self):
         PathLog.track()
