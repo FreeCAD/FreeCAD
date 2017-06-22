@@ -136,15 +136,6 @@ class ObjectContour:
         else:
             profileparams['Offset'] = self.radius+obj.OffsetExtra.Value
 
-        # depthparams = depth_params(
-        #         clearance_height=obj.ClearanceHeight.Value,
-        #         safe_height=obj.SafeHeight.Value,
-        #         start_depth=obj.StartDepth.Value,
-        #         step_down=obj.StepDown.Value,
-        #         z_finish_step=0.0,
-        #         final_depth=obj.FinalDepth.Value,
-        #         user_depths=None)
-
         heights = [i for i in self.depthparams]
         PathLog.debug('depths: {}'.format(heights))
         profile.setParams(**profileparams)
@@ -296,7 +287,6 @@ class _ViewProviderContour:
         FreeCADGui.Control.showDialog(taskd)
         taskd.setupUi()
         self.deleteOnReject = False
-
         return True
 
     def getIcon(self):
@@ -351,6 +341,7 @@ class CommandPathContour:
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Contour")')
         FreeCADGui.doCommand('PathScripts.PathContour.ObjectContour(obj)')
         #FreeCADGui.doCommand('PathScripts.PathContour._ViewProviderContour(obj.ViewObject)')
+        FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
 
         FreeCADGui.doCommand('obj.Active = True')
 
@@ -363,7 +354,6 @@ class CommandPathContour:
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
         FreeCADGui.doCommand('obj.Direction = "CW"')
         FreeCADGui.doCommand('obj.UseComp = True')
-        FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
 
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('PathScripts.PathContour.ObjectContour.setDepths(obj.Proxy, obj)')
