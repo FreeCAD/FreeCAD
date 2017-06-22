@@ -289,14 +289,21 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
         else :
             return [] # Lines aren't on same plane
 
+    # First, check bound boxes
+    if isinstance(edge1,Part.Edge) and isinstance(edge2,Part.Edge) \
+        and (not infinite1) and (not infinite2):
+        if not edge1.BoundBox.intersect(edge2.BoundBox):
+            return [] # bound boxes don't intersect
+
     # First, try to use distToShape if possible
     if dts and isinstance(edge1,Part.Edge) and isinstance(edge2,Part.Edge) \
-            and (not infinite1) and (not infinite2) and \
-            edge1.BoundBox.intersect(edge2.BoundBox):
+            and (not infinite1) and (not infinite2):
         dist, pts, geom = edge1.distToShape(edge2)
         sol = []
-        for p in pts:
-            sol.append(p[0])
+        if round(dist,precision()) == 0:
+            for p in pts:
+                if not p in sol:
+                    sol.append(p[0])
         return sol
 
     pt1 = None
