@@ -34,13 +34,15 @@ from PathScripts.PathUtils import waiting_effects
 
 """Path Profile from Edges Object and Command"""
 
-LOG_MODULE = 'PathProfileEdges'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-# PathLog.trackModule('PathProfileEdges')
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore
+    from PySide import QtCore, QtGui
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -65,11 +67,13 @@ class ObjectProfile:
         obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
         # Depth Properties
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
-        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid Safety Height between locations"))
-        obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"))
         obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
         obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
+        obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"))
+
+        # Heights
+        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid Safety Height between locations"))
+        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
 
         # Start Point Properties
         obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
@@ -407,16 +411,17 @@ class TaskPanel:
         # self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ProfileEdgesEdit.ui")
         self.deleteOnReject = deleteOnReject
         self.obj = obj
-        self.updating = False
+        self.isDirty = True
 
     def accept(self):
-        self.getFields()
+        #self.getFields()
 
         FreeCADGui.Control.closeDialog()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
-        FreeCAD.ActiveDocument.recompute()
+        if self.isDirty:
+            FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
@@ -429,6 +434,12 @@ class TaskPanel:
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
+    def clicked(self,button):
+        if button == QtGui.QDialogButtonBox.Apply:
+            self.getFields()
+            self.obj.Proxy.execute(self.obj)
+            self.isDirty = False
+
     def getFields(self):
         if self.obj:
 
@@ -436,12 +447,12 @@ class TaskPanel:
                 self.obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
             if hasattr(self.obj, "FinalDepth"):
                 self.obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
+            if hasattr(self.obj, "StepDown"):
+                self.obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
             if hasattr(self.obj, "SafeHeight"):
                 self.obj.SafeHeight = FreeCAD.Units.Quantity(self.form.safeHeight.text()).Value
             if hasattr(self.obj, "ClearanceHeight"):
                 self.obj.ClearanceHeight = FreeCAD.Units.Quantity(self.form.clearanceHeight.text()).Value
-            if hasattr(self.obj, "StepDown"):
-                self.obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
             if hasattr(self.obj, "OffsetExtra"):
                 self.obj.OffsetExtra = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
             if hasattr(self.obj, "UseComp"):
@@ -450,21 +461,25 @@ class TaskPanel:
                 self.obj.Side = str(self.form.cutSide.currentText())
             if hasattr(self.obj, "Direction"):
                 self.obj.Direction = str(self.form.direction.currentText())
+            if hasattr(self.obj, "UseStartPoint"):
+                self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
+
             if hasattr(self.obj, "ToolController"):
                 PathLog.debug("name: {}".format(self.form.uiToolController.currentText()))
                 tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
                 self.obj.ToolController = tc
 
-        self.obj.Proxy.execute(self.obj)
+        self.isDirty = True
 
     def setFields(self):
         self.form.startDepth.setText(FreeCAD.Units.Quantity(self.obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.finalDepth.setText(FreeCAD.Units.Quantity(self.obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.stepDown.setText(FreeCAD.Units.Quantity(self.obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         self.form.safeHeight.setText(FreeCAD.Units.Quantity(self.obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
         self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(self.obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
-        self.form.stepDown.setText(FreeCAD.Units.Quantity(self.obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
         self.form.useCompensation.setChecked(self.obj.UseComp)
+        self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
 
         controllers = PathUtils.getToolControllers(self.obj)
         labels = [c.Label for c in controllers]
@@ -576,6 +591,9 @@ class TaskPanel:
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
+
     def setupUi(self):
 
         # Connect Signals and Slots
@@ -600,6 +618,8 @@ class TaskPanel:
         self.form.direction.currentIndexChanged.connect(self.getFields)
         self.form.useCompensation.clicked.connect(self.getFields)
         self.form.extraOffset.editingFinished.connect(self.getFields)
+        self.form.useStartPoint.clicked.connect(self.getFields)
+
         self.setFields()
 
         sel = FreeCADGui.Selection.getSelectionEx()

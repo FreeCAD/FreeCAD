@@ -34,7 +34,7 @@
         <x>0</x>
         <y>0</y>
         <width>361</width>
-        <height>277</height>
+        <height>279</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -243,7 +243,7 @@
         <x>0</x>
         <y>0</y>
         <width>361</width>
-        <height>329</height>
+        <height>289</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -367,6 +367,13 @@
             </item>
            </widget>
           </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_14">
+            <property name="text">
+             <string>Pattern</string>
+            </property>
+           </widget>
+          </item>
           <item row="2" column="1">
            <widget class="QComboBox" name="offsetpattern">
             <item>
@@ -406,24 +413,17 @@
             </item>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_14">
-            <property name="text">
-             <string>Pattern</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="Gui::QuantitySpinBox" name="zigZagAngle">
-            <property name="unit" stdset="0">
-             <string notr="true"/>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
+          <item row="3" column="0">
            <widget class="QLabel" name="label_10">
             <property name="text">
              <string>ZigZag Angle</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="Gui::InputField" name="zigZagAngle">
+            <property name="unit" stdset="0">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -454,11 +454,6 @@
    <class>Gui::InputField</class>
    <extends>QLineEdit</extends>
    <header>Gui/InputField.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
-   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -34,13 +34,15 @@ import sys
 if sys.version_info.major >= 3:
     xrange = range
 
-LOG_MODULE = 'PathSurface'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-# PathLog.trackModule('PathSurface')
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore
+    from PySide import QtCore, QtGui
 
 __title__ = "Path Surface Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -414,8 +416,6 @@ class CommandPathSurfacing:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Surface")')
         FreeCADGui.doCommand('PathScripts.PathSurface.ObjectSurface(obj)')
         FreeCADGui.doCommand('obj.Active = True')
-        # FreeCADGui.doCommand(
-        #     'PathScripts.PathSurface.ViewProviderSurface(obj.ViewObject)')
         FreeCADGui.doCommand('from PathScripts import PathUtils')
         FreeCADGui.doCommand('obj.ClearanceHeight = ' + str(ztop + 2))
         FreeCADGui.doCommand('obj.StartDepth = ' + str(ztop))
@@ -429,7 +429,6 @@ class CommandPathSurfacing:
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
 
 
 class TaskPanel:
@@ -441,15 +440,15 @@ class TaskPanel:
         FreeCAD.Console.PrintWarning("Surface calculations can be slow.  Don't Panic.\n")
         self.deleteOnReject = deleteOnReject
         self.obj = obj
+        self.isDirty = True
 
     def accept(self):
-        self.getFields()
-
         FreeCADGui.Control.closeDialog()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
-        FreeCAD.ActiveDocument.recompute()
+        if self.isDirty:
+            FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
@@ -462,9 +461,14 @@ class TaskPanel:
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
+    def clicked(self,button):
+        if button == QtGui.QDialogButtonBox.Apply:
+            self.getFields()
+            FreeCAD.ActiveDocument.recompute()
+            self.isDirty = False
+
     def getFields(self):
         if self.obj:
-
             if hasattr(self.obj, "StartDepth"):
                 self.obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
             if hasattr(self.obj, "FinalDepth"):
@@ -485,7 +489,7 @@ class TaskPanel:
                 tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
                 self.obj.ToolController = tc
 
-        self.obj.Proxy.execute(self.obj)
+        self.isDirty = True
 
     def setFields(self):
         self.form.startDepth.setText(FreeCAD.Units.Quantity(self.obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
@@ -593,8 +597,8 @@ class TaskPanel:
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
-    # def getStandardButtons(self):
-    #     return int(QtGui.QDialogButtonBox.Ok)
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
 
     def setupUi(self):
         # Base Geometry
@@ -602,7 +606,6 @@ class TaskPanel:
         self.form.deleteBase.clicked.connect(self.deleteBase)
         self.form.reorderBase.clicked.connect(self.reorderBase)
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
-        self.form.uiToolController.currentIndexChanged.connect(self.getFields)
 
         # Depths
         self.form.startDepth.editingFinished.connect(self.getFields)
@@ -616,6 +619,7 @@ class TaskPanel:
 
         # Operation
         self.form.algorithmSelect.currentIndexChanged.connect(self.getFields)
+        self.form.uiToolController.currentIndexChanged.connect(self.getFields)
 
         sel = FreeCADGui.Selection.getSelectionEx()
         self.setFields()

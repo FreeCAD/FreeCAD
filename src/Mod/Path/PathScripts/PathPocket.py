@@ -24,7 +24,7 @@
 
 import FreeCAD
 import Path
-from PySide import QtCore
+from PySide import QtCore, QtGui
 from PathScripts import PathUtils
 import PathScripts.PathLog as PathLog
 from PathScripts.PathUtils import waiting_effects, depth_params
@@ -36,10 +36,11 @@ if FreeCAD.GuiUp:
 
 """Path Pocket object and FreeCAD command"""
 
-LOG_MODULE = 'PathPocket'
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-#PathLog.trackModule('PathPocket')
-FreeCAD.setLogLevel('Path.Area', 0)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 # Qt tanslation handling
@@ -186,6 +187,9 @@ class ObjectPocket:
                         'FromCenter': (obj.StartAt == "Center"),
                         'PocketStepover': stepover,
                         'PocketExtraOffset': obj.MaterialAllowance.Value}
+
+        offsetval = self.radius
+        pocketparams['ToolRadius'] = offsetval
 
         Pattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
         pocketparams['PocketMode'] = Pattern.index(obj.OffsetPattern) + 1
@@ -431,16 +435,15 @@ class TaskPanel:
         # self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/PocketEdit.ui")
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/PocketEdit.ui")
         self.deleteOnReject = deleteOnReject
-        self.updating = False
+        self.isDirty = True
 
     def accept(self):
-        self.getFields()
-
         FreeCADGui.Control.closeDialog()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
-        FreeCAD.ActiveDocument.recompute()
+        if self.isDirty:
+            FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
@@ -453,18 +456,26 @@ class TaskPanel:
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
+    def clicked(self,button):
+        if button == QtGui.QDialogButtonBox.Apply:
+            self.getFields()
+            self.obj.Proxy.execute(self.obj)
+            self.isDirty = False
+
     def getFields(self):
         if self.obj:
             if hasattr(self.obj, "StartDepth"):
                 self.obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
             if hasattr(self.obj, "FinalDepth"):
                 self.obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
+            if hasattr(self.obj, "FinishDepth"):
+                self.obj.FinishDepth = FreeCAD.Units.Quantity(self.form.finishDepth.text()).Value
+            if hasattr(self.obj, "StepDown"):
+                self.obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
             if hasattr(self.obj, "SafeHeight"):
                 self.obj.SafeHeight = FreeCAD.Units.Quantity(self.form.safeHeight.text()).Value
             if hasattr(self.obj, "ClearanceHeight"):
                 self.obj.ClearanceHeight = FreeCAD.Units.Quantity(self.form.clearanceHeight.text()).Value
-            if hasattr(self.obj, "StepDown"):
-                self.obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
             if hasattr(self.obj, "MaterialAllowance"):
                 self.obj.MaterialAllowance = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
             if hasattr(self.obj, "UseStartPoint"):
@@ -481,16 +492,16 @@ class TaskPanel:
                 PathLog.debug("name: {}".format(self.form.uiToolController.currentText()))
                 tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
                 self.obj.ToolController = tc
-
-        self.obj.Proxy.execute(self.obj)
+        self.isDirty = True
 
     def setFields(self):
         self.form.startDepth.setText(FreeCAD.Units.Quantity(self.obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.finalDepth.setText(FreeCAD.Units.Quantity(self.obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.finishDepth.setText(FreeCAD.Units.Quantity(self.obj.FinishDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.stepDown.setText(FreeCAD.Units.Quantity(self.obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         self.form.safeHeight.setText(FreeCAD.Units.Quantity(self.obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
         self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(self.obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
-        self.form.stepDown.setText(FreeCAD.Units.Quantity(self.obj.StepDown.Value, FreeCAD.Units.Length).UserString)
-        self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.MaterialAllowance, FreeCAD.Units.Length).UserString)
+        self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.MaterialAllowance.Value, FreeCAD.Units.Length).UserString)
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
         self.form.zigZagAngle.setText(FreeCAD.Units.Quantity(self.obj.ZigZagAngle, FreeCAD.Units.Angle).UserString)
         self.form.stepOverPercent.setValue(self.obj.StepOver)
@@ -599,12 +610,8 @@ class TaskPanel:
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
-    # def getStandardButtons(self):
-    #     return int(QtGui.QDialogButtonBox.Ok)
-
-    def edit(self, item, column):
-        if not self.updating:
-            self.resetObject()
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
 
     def setupUi(self):
 
@@ -619,6 +626,7 @@ class TaskPanel:
         # Depths
         self.form.startDepth.editingFinished.connect(self.getFields)
         self.form.finalDepth.editingFinished.connect(self.getFields)
+        self.form.finishDepth.editingFinished.connect(self.getFields)
         self.form.stepDown.editingFinished.connect(self.getFields)
 
         # Heights
@@ -628,11 +636,13 @@ class TaskPanel:
         # operation
         self.form.cutMode.currentIndexChanged.connect(self.getFields)
         self.form.useStartPoint.clicked.connect(self.getFields)
-        self.form.extraOffset.editingFinished.connect(self.getFields)
 
         # Pattern
+        self.form.offsetpattern.currentIndexChanged.connect(self.getFields)
         self.form.stepOverPercent.editingFinished.connect(self.getFields)
         self.form.zigZagAngle.editingFinished.connect(self.getFields)
+        self.form.extraOffset.editingFinished.connect(self.getFields)
+        self.form.uiToolController.currentIndexChanged.connect(self.getFields)
 
         self.setFields()
 

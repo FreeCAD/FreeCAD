@@ -23,21 +23,24 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
 import Path
 import Part
 import ArchPanel
 
 import PathScripts.PathLog as PathLog
-from PySide import QtCore
 from PathScripts import PathUtils
 
 """Path Engrave object and FreeCAD command"""
 
-LOG_MODULE = 'PathEngrave'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-# PathLog.trackModule('PathEngrave')
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -56,9 +59,13 @@ class ObjectPathEngrave:
         obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
         # Depth Properties
+        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Start Depth of Tool"))
+        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
+
+        # Heights
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
         obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid Safety Height between locations."))
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
+
         obj.addProperty("App::PropertyInteger", "StartVertex", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The vertex index to start the path from"))
 
         if FreeCAD.GuiUp:
@@ -225,10 +232,10 @@ class _ViewProviderEngrave:
         self.deleteOnReject = False
         return True
 
-    def unsetEdit(self, vobj, mode):
-        PathLog.track()
-        if hasattr(self, 'taskPanel') and self.taskPanel:
-            self.taskPanel.abort()
+#     def unsetEdit(self, vobj, mode):
+#         PathLog.track()
+#         if hasattr(self, 'taskPanel') and self.taskPanel:
+#             self.taskPanel.abort()
 
     def clearTaskPanel(self):
         self.taskpanel = None
@@ -284,51 +291,47 @@ class CommandPathEngrave:
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
 
 
 class TaskPanel:
     def __init__(self, vobj, deleteOnReject):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Engrave", "Engraving Operation"))
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/EngraveEdit.ui")
         self.vobj = vobj
         self.obj = vobj.Object
         self.deleteOnReject = deleteOnReject
-        self.form = FreeCADGui.PySideUic.loadUi(":/panels/EngraveEdit.ui")
-
-    def abort(self):
-        FreeCAD.ActiveDocument.abortTransaction()
-        self.cleanup(False)
+        self.isDirty = True
 
     def accept(self):
-        PathLog.track()
-        self.getFields()
-
+        FreeCADGui.Control.closeDialog()
+        FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.commitTransaction()
-        self.cleanup(True)
-        FreeCAD.ActiveDocument.recompute()
-        return True
+        FreeCADGui.Selection.removeObserver(self.s)
+        if self.isDirty:
+            FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
-        PathLog.track()
+        FreeCADGui.Control.closeDialog()
+        FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.abortTransaction()
+        FreeCADGui.Selection.removeObserver(self.s)
         if self.deleteOnReject:
             FreeCAD.ActiveDocument.openTransaction(translate("Path_Engrave", "Uncreate Engrave Operation"))
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
-        self.cleanup(True)
-        return True
+        FreeCAD.ActiveDocument.recompute()
 
-    def cleanup(self, gui):
-        FreeCADGui.Selection.removeObserver(self.s)
-
-        self.vobj.Proxy.clearTaskPanel()
-        if gui:
-            FreeCADGui.ActiveDocument.resetEdit()
-            FreeCADGui.Control.closeDialog()
+    def clicked(self,button):
+        if button == QtGui.QDialogButtonBox.Apply:
+            self.getFields()
             FreeCAD.ActiveDocument.recompute()
+            self.isDirty = False
+
 
     def getFields(self):
         if self.obj:
+            if hasattr(self.obj, "StartDepth"):
+                self.obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
             if hasattr(self.obj, "FinalDepth"):
                 self.obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
             if hasattr(self.obj, "SafeHeight"):
@@ -338,11 +341,12 @@ class TaskPanel:
             if hasattr(self.obj, "ToolController"):
                 tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
                 self.obj.ToolController = tc
-
-        self.obj.Proxy.execute(self.obj)
+        self.isDirty = True
+        # self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
         self.form.finalDepth.setText(FreeCAD.Units.Quantity(self.obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.startDepth.setText(FreeCAD.Units.Quantity(self.obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.safeHeight.setText(FreeCAD.Units.Quantity(self.obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
         self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(self.obj.ClearanceHeight.Value, FreeCAD.Units.Length).UserString)
 
@@ -370,9 +374,12 @@ class TaskPanel:
         # install the function mode resident
         FreeCADGui.Selection.addObserver(self.s)
 
-    def setupUi(self):
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
 
+    def setupUi(self):
         # Connect Signals and Slots
+        self.form.startDepth.editingFinished.connect(self.getFields)
         self.form.finalDepth.editingFinished.connect(self.getFields)
         self.form.safeHeight.editingFinished.connect(self.getFields)
         self.form.clearanceHeight.editingFinished.connect(self.getFields)
