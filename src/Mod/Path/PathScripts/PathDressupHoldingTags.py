@@ -27,13 +27,13 @@ import Draft
 import DraftGeomUtils
 import Path
 import PathScripts.PathLog as PathLog
-import PathScripts.PathPreferencesPathDressup as PathPreferencesPathDressup
 import Part
 import copy
 import math
 
 from PathScripts import PathUtils
 from PathScripts.PathGeom import PathGeom
+from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
 from PathScripts.PathPreferences import PathPreferences
 from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
@@ -94,69 +94,6 @@ def debugCone(vector, r1, r2, height, label, color = None):
         if color:
             obj.ViewObject.ShapeColor = color
 
-
-class HoldingTagsPreferences:
-    DefaultHoldingTagWidth   = 'DefaultHoldingTagWidth'
-    DefaultHoldingTagHeight  = 'DefaultHoldingTagHeight'
-    DefaultHoldingTagAngle   = 'DefaultHoldingTagAngle'
-    DefaultHoldingTagRadius  = 'DefaultHoldingTagRadius'
-    DefaultHoldingTagCount   = 'DefaultHoldingTagCount'
-
-    @classmethod
-    def defaultWidth(cls, ifNotSet):
-        value = PathPreferences.preferences().GetFloat(cls.DefaultHoldingTagWidth, ifNotSet)
-        if value == 0.0:
-            return ifNotSet
-        return value
-
-    @classmethod
-    def defaultHeight(cls, ifNotSet):
-        value = PathPreferences.preferences().GetFloat(cls.DefaultHoldingTagHeight, ifNotSet)
-        if value == 0.0:
-            return ifNotSet
-        return value
-
-    @classmethod
-    def defaultAngle(cls, ifNotSet = 45.0):
-        value = PathPreferences.preferences().GetFloat(cls.DefaultHoldingTagAngle, ifNotSet)
-        if value < 10.0:
-            return ifNotSet
-        return value
-
-    @classmethod
-    def defaultCount(cls, ifNotSet = 4):
-        value = PathPreferences.preferences().GetUnsigned(cls.DefaultHoldingTagCount, ifNotSet)
-        if value < 2:
-            return float(ifNotSet)
-        return float(value)
-
-    @classmethod
-    def defaultRadius(cls, ifNotSet = 0.0):
-        return PathPreferences.preferences().GetFloat(cls.DefaultHoldingTagRadius, ifNotSet)
-
-
-    def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(":/preferences/PathDressupHoldingTags.ui")
-        self.label = translate("PathDressup_HoldingTags", 'Holding Tags')
-
-    def loadSettings(self):
-        self.form.ifWidth.setText(FreeCAD.Units.Quantity(self.defaultWidth(0), FreeCAD.Units.Length).UserString)
-        self.form.ifHeight.setText(FreeCAD.Units.Quantity(self.defaultHeight(0), FreeCAD.Units.Length).UserString)
-        self.form.dsbAngle.setValue(self.defaultAngle())
-        self.form.ifRadius.setText(FreeCAD.Units.Quantity(self.defaultRadius(), FreeCAD.Units.Length).UserString)
-        self.form.sbCount.setValue(self.defaultCount())
-
-    def saveSettings(self):
-        pref = PathPreferences.preferences()
-        pref.SetFloat(self.DefaultHoldingTagWidth, FreeCAD.Units.Quantity(self.form.ifWidth.text()).Value)
-        pref.SetFloat(self.DefaultHoldingTagHeight, FreeCAD.Units.Quantity(self.form.ifHeight.text()).Value)
-        pref.SetFloat(self.DefaultHoldingTagAngle, self.form.dsbAngle.value())
-        pref.SetFloat(self.DefaultHoldingTagRadius, FreeCAD.Units.Quantity(self.form.ifRadius.text()))
-        pref.SetUnsigned(self.DefaultHoldingTagCount, self.form.sbCount.value())
-
-    @classmethod
-    def preferencesPage(cls):
-        return HoldingTagsPreferences()
 
 class Tag:
     def __init__(self, id, x, y, width, height, angle, radius, enabled=True):
@@ -685,20 +622,20 @@ class PathData:
             pathHeight = (self.obj.Base.StartDepth - self.obj.Base.FinalDepth).Value
         else:
             pathHeight = self.maxZ - self.minZ
-        height = HoldingTagsPreferences.defaultHeight(pathHeight / 2)
+        height = HoldingTagPreferences.defaultHeight(pathHeight / 2)
         if height > pathHeight:
             return pathHeight
         return height
 
     def defaultTagWidth(self):
         width = self.shortestAndLongestPathEdge()[1].Length / 10
-        return HoldingTagsPreferences.defaultWidth(width)
+        return HoldingTagPreferences.defaultWidth(width)
 
     def defaultTagAngle(self):
-        return HoldingTagsPreferences.defaultAngle()
+        return HoldingTagPreferences.defaultAngle()
 
     def defaultTagRadius(self):
-        return HoldingTagsPreferences.defaultRadius()
+        return HoldingTagPreferences.defaultRadius()
 
     def sortedTags(self, tags):
         ordered = []
@@ -988,7 +925,7 @@ class ObjectDressup:
             obj.Width  = self.pathData.defaultTagWidth()
             obj.Angle  = self.pathData.defaultTagAngle()
             obj.Radius = self.pathData.defaultTagRadius()
-            count = HoldingTagsPreferences.defaultCount()
+            count = HoldingTagPreferences.defaultCount()
             self.generateTags(obj, count)
         return self.pathData
 
@@ -1010,12 +947,6 @@ class ObjectDressup:
         if not hasattr(self, 'pathData'):
             self.setup(obj)
         return self.pathData.pointIsOnPath(point)
-
-    @classmethod
-    def preferencesPage(cls):
-        return HoldingTagsPreferences()
-
-PathPreferencesPathDressup.RegisterDressup(ObjectDressup)
 
 class TaskPanel:
     DataX = QtCore.Qt.ItemDataRole.UserRole
