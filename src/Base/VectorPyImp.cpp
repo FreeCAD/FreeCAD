@@ -88,6 +88,26 @@ int VectorPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
+PyObject*  VectorPy::__reduce__(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    Py::Tuple tuple(2);
+
+    union PyType_Object pyType = {&VectorPy::Type};
+    Py::Object type(pyType.o);
+    tuple.setItem(0, type);
+
+    Base::Vector3d v = this->value();
+    Py::Tuple xyz(3);
+    xyz.setItem(0, Py::Float(v.x));
+    xyz.setItem(1, Py::Float(v.y));
+    xyz.setItem(2, Py::Float(v.z));
+    tuple.setItem(1, xyz);
+    return Py::new_reference_to(tuple);
+}
+
 PyObject* VectorPy::number_add_handler(PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(VectorPy::Type))) {
