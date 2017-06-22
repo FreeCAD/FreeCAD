@@ -104,6 +104,7 @@ before_install:
                                python-matplotlib                \
                                qt4-dev-tools                    \
                                qt4-qmake                        \
+                               libqt4-opengl-dev                \
                                shiboken                         \
                                swig                             \
                                libvtk6-dev                      \
