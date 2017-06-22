@@ -92,7 +92,7 @@
        </property>
        <property name="icon">
         <iconset resource="../Path.qrc">
-         <normaloff>:/icons/Path-LoadTool.svg</normaloff>:/icons/Path-LoadTool.svg</iconset>
+         <normaloff>:/icons/Path-ToolController.svg</normaloff>:/icons/Path-ToolController.svg</iconset>
        </property>
       </widget>
      </item>

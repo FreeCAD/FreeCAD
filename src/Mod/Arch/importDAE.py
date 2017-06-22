@@ -183,7 +183,7 @@ def export(exportList,filename,tessellation=1):
     ver = FreeCAD.Version()
     appli = "FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + "\n"
     cont.authoring_tool = appli
-    print author,appli
+    print(author, appli)
     colmesh.assetInfo.contributors.append(cont)
     colmesh.assetInfo.unitname = "meter"
     colmesh.assetInfo.unitmeter = 1.0

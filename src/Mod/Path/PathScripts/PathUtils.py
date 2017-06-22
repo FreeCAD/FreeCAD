@@ -50,9 +50,10 @@ def waiting_effects(function):
         res = None
         try:
             res = function(*args, **kwargs)
-        except Exception as e:
-            raise e
-            print("Error {}".format(e.args[0]))
+        # don't catch exceptions - want to know where they are coming from ....
+        #except Exception as e:
+        #    raise e
+        #    print("Error {}".format(e.args[0]))
         finally:
             QtGui.QApplication.restoreOverrideCursor()
         return res
@@ -307,13 +308,13 @@ def changeTool(obj, job):
     tlnum = 0
     for p in job.Group:
         if not hasattr(p, "Group"):
-            if isinstance(p.Proxy, PathScripts.PathLoadTool.LoadTool) and p.ToolNumber > 0:
+            if isinstance(p.Proxy, PathScripts.PathToolController.ToolController) and p.ToolNumber > 0:
                 tlnum = p.ToolNumber
             if p == obj:
                 return tlnum
         elif hasattr(p, "Group"):
             for g in p.Group:
-                if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
+                if isinstance(g.Proxy, PathScripts.PathToolController.ToolController):
                     tlnum = g.ToolNumber
                 if g == obj:
                     return tlnum
@@ -330,7 +331,7 @@ def getToolControllers(obj):
     if parent is not None and hasattr(parent, 'Group'):
         sibs = parent.Group
         for g in sibs:
-            if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
+            if isinstance(g.Proxy, PathScripts.PathToolController.ToolController):
                 controllers.append(g)
     return controllers
 
@@ -345,7 +346,7 @@ def findToolController(obj, name=None):
     # First check if a user has selected a tool controller in the tree. Return the first one and remove all from selection
     for sel in FreeCADGui.Selection.getSelectionEx():
         if hasattr(sel.Object, 'Proxy'):
-            if isinstance(sel.Object.Proxy, PathScripts.PathLoadTool.LoadTool):
+            if isinstance(sel.Object.Proxy, PathScripts.PathToolController.ToolController):
                 if c is None:
                     c = sel.Object
                 FreeCADGui.Selection.removeSelection(sel.Object)
@@ -437,9 +438,10 @@ def addToJob(obj, jobname=None):
                 print(form.cboProject.currentText())
                 job = [i for i in jobs if i.Name == form.cboProject.currentText()][0]
 
-    g = job.Group
-    g.append(obj)
-    job.Group = g
+    if obj:
+        g = job.Group
+        g.append(obj)
+        job.Group = g
     return job
 
 

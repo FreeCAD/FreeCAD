@@ -27,11 +27,12 @@ from __future__ import print_function
 
 import FreeCAD
 import FreeCADGui
-import os
 import PathScripts.PathLog as PathLog
+import PathScripts.PathUtil as PathUtil
+import os
 
 from PathScripts import PathJob
-from PathScripts import PathLoadTool
+from PathScripts import PathToolController
 from PathScripts import PathUtils
 from PathScripts.PathPostProcessor import PostProcessor
 from PathScripts.PathPreferences import PathPreferences
@@ -41,7 +42,7 @@ from PySide import QtCore, QtGui
 LOG_MODULE = PathLog.thisModule()
 
 PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-PathLog.trackModule(LOG_MODULE)
+#PathLog.trackModule(LOG_MODULE)
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -247,9 +248,10 @@ class CommandPathPost:
         currTool = None
         for obj in job.Group:
             PathLog.debug("obj: {}".format(obj.Name))
-            if not isinstance(obj.Proxy, PathLoadTool.LoadTool):
-                if obj.ToolController.ToolNumber != currTool:
-                    postlist.append(obj.ToolController)
+            if not isinstance(obj.Proxy, PathToolController.ToolController):
+                tc = PathUtil.toolControllerForOp(obj)
+                if tc.ToolNumber != currTool:
+                    postlist.append(tc)
                 postlist.append(obj)
 
         fail = True

@@ -35,6 +35,7 @@ import math
 from PathScripts import PathUtils
 from PathScripts.PathGeom import PathGeom
 from PathScripts.PathPreferences import PathPreferences
+from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 
 """Holding Tags Dressup object and FreeCAD command"""
@@ -158,8 +159,9 @@ class HoldingTagsPreferences:
         return HoldingTagsPreferences()
 
 class Tag:
-    def __init__(self, x, y, width, height, angle, radius, enabled=True):
+    def __init__(self, id, x, y, width, height, angle, radius, enabled=True):
         PathLog.track("%.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %d" % (x, y, width, height, angle, radius, enabled))
+        self.id = id
         self.x = x
         self.y = y
         self.width = math.fabs(width)
@@ -343,6 +345,8 @@ class MapWireToTag:
         # want to remove all edges from the wire itself, and all internal struts
         PathLog.track("+cleanupEdges")
         PathLog.debug(" edges:")
+        if not edges:
+            return edges
         for e in edges:
             debugEdge(e, '   ')
         PathLog.debug(":")
@@ -484,24 +488,32 @@ class MapWireToTag:
 
     def commandsForEdges(self):
         if self.edges:
-            shape = self.shell().common(self.tag.solid)
-            commands = []
-            rapid = None
-            for e,flip in self.orderAndFlipEdges(self.cleanupEdges(shape.Edges)):
-                debugEdge(e, '++++++++ %s' % ('<' if flip else '>'), False)
-                p1 = e.valueAt(e.FirstParameter)
-                p2 = e.valueAt(e.LastParameter)
-                if self.tag.isSquare and (PathGeom.isRoughly(p1.z, self.maxZ) or p1.z > self.maxZ) and (PathGeom.isRoughly(p2.z, self.maxZ) or p2.z > self.maxZ):
-                    rapid = p1 if flip else p2
-                else:
-                    if rapid:
-                        commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
-                        rapid = None
-                    commands.extend(PathGeom.cmdsForEdge(e, flip, False, self.segm))
-            if rapid:
-                commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
+            try:
+                shape = self.shell().common(self.tag.solid)
+                commands = []
                 rapid = None
-            return commands
+                for e,flip in self.orderAndFlipEdges(self.cleanupEdges(shape.Edges)):
+                    debugEdge(e, '++++++++ %s' % ('<' if flip else '>'), False)
+                    p1 = e.valueAt(e.FirstParameter)
+                    p2 = e.valueAt(e.LastParameter)
+                    if self.tag.isSquare and (PathGeom.isRoughly(p1.z, self.maxZ) or p1.z > self.maxZ) and (PathGeom.isRoughly(p2.z, self.maxZ) or p2.z > self.maxZ):
+                        rapid = p1 if flip else p2
+                    else:
+                        if rapid:
+                            commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
+                            rapid = None
+                        commands.extend(PathGeom.cmdsForEdge(e, flip, False, self.segm))
+                if rapid:
+                    commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
+                    rapid = None
+                return commands
+            except Exception as e:
+                PathLog.error("Exception during processing tag @(%.2f, %.2f) (%s) - disabling the tag" % (self.tag.x, self.tag.y, e.args[0]))
+                self.tag.enabled = False
+                commands = []
+                for e in self.edges:
+                    commands.extend(PathGeom.cmdsForEdge(e))
+                return commands
         return []
 
     def add(self, edge):
@@ -552,21 +564,23 @@ class PathData:
         self.wire, rapid = PathGeom.wireForPath(obj.Base.Path)
         self.rapid = _RapidEdges(rapid)
         self.edges = self.wire.Edges
-        self.base = self.findBottomWire(self.edges)
-        # determine overall length
-        self.length = self.base.Length
+        self.baseWire = self.findBottomWire(self.edges)
 
     def findBottomWire(self, edges):
         (minZ, maxZ) = self.findZLimits(edges)
         self.minZ = minZ
         self.maxZ = maxZ
         bottom = [e for e in edges if PathGeom.isRoughly(e.Vertexes[0].Point.z, minZ) and PathGeom.isRoughly(e.Vertexes[1].Point.z, minZ)]
-        wire = Part.Wire(bottom)
-        if wire.isClosed():
-            return wire
-        # if we get here there are already holding tags, or we're not looking at a profile
-        # let's try and insert the missing pieces - another day
-        raise ValueError("Selected path doesn't seem to be a Profile operation.")
+        self.bottomEdges = bottom
+        try:
+            wire = Part.Wire(bottom)
+            if wire.isClosed():
+                return wire
+        except:
+            return None
+
+    def supportsTagGeneration(self):
+        return self.baseWire is not None
 
     def findZLimits(self, edges):
         # not considering arcs and spheres in Z direction, find the highes and lowest Z values
@@ -583,18 +597,18 @@ class PathData:
         return (minZ, maxZ)
 
     def shortestAndLongestPathEdge(self):
-        edges = sorted(self.base.Edges, key=lambda e: e.Length)
+        edges = sorted(self.bottomEdges, key=lambda e: e.Length)
         return (edges[0], edges[-1])
 
     def generateTags(self, obj, count, width=None, height=None, angle=None, radius=None, spacing=None):
         PathLog.track(count, width, height, angle, spacing)
-        #for e in self.base.Edges:
+        #for e in self.baseWire.Edges:
         #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
 
         if spacing:
             tagDistance = spacing
         else:
-            tagDistance = self.base.Length / (count if count else 4)
+            tagDistance = self.baseWire.Length / (count if count else 4)
 
         W = width if width else self.defaultTagWidth()
         H = height if height else self.defaultTagHeight()
@@ -605,14 +619,14 @@ class PathData:
         # start assigning tags on the longest segment
         (shortestEdge, longestEdge) = self.shortestAndLongestPathEdge()
         startIndex = 0
-        for i in range(0, len(self.base.Edges)):
-            edge = self.base.Edges[i]
+        for i in range(0, len(self.baseWire.Edges)):
+            edge = self.baseWire.Edges[i]
             PathLog.debug('  %d: %.2f' % (i, edge.Length))
             if edge.Length == longestEdge.Length:
                 startIndex = i
                 break
 
-        startEdge = self.base.Edges[startIndex]
+        startEdge = self.baseWire.Edges[startIndex]
         startCount = int(startEdge.Length / tagDistance)
         if (longestEdge.Length - shortestEdge.Length) > shortestEdge.Length:
             startCount = int(startEdge.Length / tagDistance) + 1
@@ -622,24 +636,24 @@ class PathData:
 
         minLength = min(2. * W, longestEdge.Length)
 
-        PathLog.debug("length=%.2f shortestEdge=%.2f(%.2f) longestEdge=%.2f(%.2f) minLength=%.2f" % (self.base.Length, shortestEdge.Length, shortestEdge.Length/self.base.Length, longestEdge.Length, longestEdge.Length / self.base.Length, minLength))
+        PathLog.debug("length=%.2f shortestEdge=%.2f(%.2f) longestEdge=%.2f(%.2f) minLength=%.2f" % (self.baseWire.Length, shortestEdge.Length, shortestEdge.Length/self.baseWire.Length, longestEdge.Length, longestEdge.Length / self.baseWire.Length, minLength))
         PathLog.debug("   start: index=%-2d count=%d (length=%.2f, distance=%.2f)" % (startIndex, startCount, startEdge.Length, tagDistance))
         PathLog.debug("               -> lastTagLength=%.2f)" % lastTagLength)
         PathLog.debug("               -> currentLength=%.2f)" % currentLength)
 
         edgeDict = { startIndex: startCount }
 
-        for i in range(startIndex + 1, len(self.base.Edges)):
-            edge = self.base.Edges[i]
+        for i in range(startIndex + 1, len(self.baseWire.Edges)):
+            edge = self.baseWire.Edges[i]
             (currentLength, lastTagLength) = self.processEdge(i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict)
         for i in range(0, startIndex):
-            edge = self.base.Edges[i]
+            edge = self.baseWire.Edges[i]
             (currentLength, lastTagLength) = self.processEdge(i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict)
 
         tags = []
 
         for (i, count) in edgeDict.iteritems():
-            edge = self.base.Edges[i]
+            edge = self.baseWire.Edges[i]
             PathLog.debug(" %d: %d" % (i, count))
             #debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
             #debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
@@ -647,7 +661,7 @@ class PathData:
                 distance = (edge.LastParameter - edge.FirstParameter) / count
                 for j in range(0, count):
                     tag = edge.Curve.value((j+0.5) * distance)
-                    tags.append(Tag(tag.x, tag.y, W, H, A, R, True))
+                    tags.append(Tag(j, tag.x, tag.y, W, H, A, R, True))
 
         return tags
 
@@ -688,7 +702,7 @@ class PathData:
 
     def sortedTags(self, tags):
         ordered = []
-        for edge in self.base.Edges:
+        for edge in self.bottomEdges:
             ts = [t for t in tags if DraftGeomUtils.isPtOnEdge(t.originAt(self.minZ), edge)]
             for t in sorted(ts, key=lambda t: (t.originAt(self.minZ) - edge.valueAt(edge.FirstParameter)).Length):
                 tags.remove(t)
@@ -711,7 +725,6 @@ class ObjectDressup:
 
     def __init__(self, obj):
         self.obj = obj
-        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
         obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "The base path to modify"))
         obj.addProperty("App::PropertyLength", "Width", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Width of tags."))
         obj.addProperty("App::PropertyLength", "Height", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Height of tags."))
@@ -728,16 +741,27 @@ class ObjectDressup:
     def __setstate__(self, state):
         return None
 
+    def supportsTagGeneration(self, obj):
+        if not hasattr(self, 'pathData'):
+            self.setup(obj)
+        return self.pathData.supportsTagGeneration()
+
     def generateTags(self, obj, count):
-        if hasattr(self, "pathData"):
-            self.tags = self.pathData.generateTags(obj, count, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius.Value, None)
-            obj.Positions = [tag.originAt(self.pathData.minZ) for tag in self.tags]
-            obj.Disabled  = []
-            return False
+        if self.supportsTagGeneration(obj):
+            if hasattr(self, "pathData"):
+                self.tags = self.pathData.generateTags(obj, count, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius.Value, None)
+                obj.Positions = [tag.originAt(self.pathData.minZ) for tag in self.tags]
+                obj.Disabled  = []
+                return False
+            else:
+                self.setup(obj, count)
+                self.execute(obj)
+                return True
         else:
-            self.setup(obj, count)
-            self.execute(obj)
-            return True
+            self.tags = []
+            obj.Positions = []
+            obj.Disabled = []
+            return False
 
     def isValidTagStartIntersection(self, edge, i):
         if PathGeom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
@@ -812,10 +836,10 @@ class ObjectDressup:
         lastCmd = Path.Command('G0', {'X': 0.0, 'Y': 0.0, 'Z': 0.0});
         outCommands = []
 
-        horizFeed = obj.ToolController.HorizFeed.Value
-        vertFeed = obj.ToolController.VertFeed.Value
-        horizRapid = obj.ToolController.HorizRapid.Value
-        vertRapid = obj.ToolController.VertRapid.Value
+        horizFeed = obj.Base.ToolController.HorizFeed.Value
+        vertFeed = obj.Base.ToolController.VertFeed.Value
+        horizRapid = obj.Base.ToolController.HorizRapid.Value
+        vertRapid = obj.Base.ToolController.VertRapid.Value
 
         for cmd in commands:
             params = cmd.Parameters
@@ -849,7 +873,7 @@ class ObjectDressup:
     def createTagsPositionDisabled(self, obj, positionsIn, disabledIn):
         rawTags = []
         for i, pos in enumerate(positionsIn):
-            tag = Tag(pos.x, pos.y, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius, not i in disabledIn)
+            tag = Tag(i, pos.x, pos.y, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius, not i in disabledIn)
             tag.createSolidsAt(self.pathData.minZ, self.toolRadius)
             rawTags.append(tag)
         # disable all tags that intersect with their previous tag
@@ -871,11 +895,13 @@ class ObjectDressup:
                     if tag.solid.isInside(p0, PathGeom.Tolerance, True) or tag.solid.isInside(p1, PathGeom.Tolerance, True):
                         PathLog.notice("Tag #%d intersects with starting point - disabling\n" % i)
                         tag.enabled = False
+
             if tag.enabled:
                 prev = tag
                 PathLog.debug("previousTag = %d [%s]" % (i, prev))
             else:
                 disabled.append(i)
+            tag.id = i # assigne final id
             tags.append(tag)
             positions.append(tag.originAt(self.pathData.minZ))
         return (tags, positions, disabled)
@@ -916,8 +942,21 @@ class ObjectDressup:
             obj.Path = obj.Base.Path
             return
 
-        self.processTags(obj)
+        try:
+            self.processTags(obj)
+        except Exception as e:
+            PathLog.error("processing tags failed clearing all tags ... '%s'" % (e.args[0]))
+            obj.Path = obj.Base.Path
 
+        # update disabled in case there are some additional ones
+        disabled = copy.copy(self.obj.Disabled)
+        for tag in self.tags:
+            if not tag.enabled and tag.id not in disabled:
+                disabled.append(tag.id)
+        if obj.Disabled != disabled:
+            obj.Disabled = disabled
+
+    @waiting_effects
     def processTags(self, obj):
         tagID = 0
         if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
@@ -942,32 +981,7 @@ class ObjectDressup:
             PathLog.error(translate("PathDressup_HoldingTags", "Cannot insert holding tags for this path - please select a Profile path\n"))
             return None
 
-        self.toolRadius = 5
-        # toolLoad = PathUtils.getLastToolLoad(obj)
-        # if toolLoad is None or toolLoad.ToolNumber == 0:
-        #     self.toolRadius = 5
-        # else:
-        #     tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-        #     if not tool or tool.Diameter == 0:
-        #         self.toolRadius = 5
-        #     else:
-        #         self.toolRadius = tool.Diameter / 2
-        toolLoad = obj.ToolController
-        if toolLoad is None or toolLoad.ToolNumber == 0:
-            PathLog.error(translate("PathDressup_HoldingTags", "No Tool Controller is selected. We need a tool to build a Path\n"))
-            #return
-        else:
-            # self.vertFeed = toolLoad.VertFeed.Value
-            # self.horizFeed = toolLoad.HorizFeed.Value
-            # self.vertRapid = toolLoad.VertRapid.Value
-            # self.horizRapid = toolLoad.HorizRapid.Value
-            tool = toolLoad.Proxy.getTool(toolLoad)
-            if not tool or tool.Diameter == 0:
-                PathLog.error(translate("PathDressup_HoldingTags", "No Tool found or diameter is zero. We need a tool to build a Path.\n"))
-                return
-            else:
-                self.toolRadius = tool.Diameter/2
-
+        self.toolRadius = obj.Base.ToolController.Tool.Diameter / 2
         self.pathData = pathData
         if generate:
             obj.Height = self.pathData.defaultTagHeight()
@@ -1035,24 +1049,49 @@ class TaskPanel:
             self.jvoVisible = jvoVisibility
         self.pt = FreeCAD.Vector(0, 0, 0)
 
+        closeButton = self.formPoint.buttonBox.button(QtGui.QDialogButtonBox.StandardButton.Close)
+        closeButton.setText(translate("PathDressup_HoldingTags", "Done"))
+
+    def addEscapeShortcut(self):
+        # The only way I could get to intercept the escape key, or really any key was
+        # by creating an action with a shortcut .....
+        self.escape = QtGui.QAction(self.formPoint)
+        self.escape.setText('Done')
+        self.escape.setShortcut(QtGui.QKeySequence.fromString('Esc'))
+        QtCore.QObject.connect(self.escape, QtCore.SIGNAL('triggered()'), self.pointDone)
+        self.formPoint.addAction(self.escape)
+
+    def removeEscapeShortcut(self):
+        if self.escape:
+            self.formPoint.removeAction(self.escape)
+            self.escape = None
+
+    def modifyStandardButtons(self, buttonBox):
+        self.buttonBox = buttonBox
+
+    def abort(self):
+        FreeCAD.ActiveDocument.abortTransaction()
+        self.cleanup(False)
+
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
-        self.cleanup()
+        self.cleanup(True)
 
     def accept(self):
         self.getFields()
         FreeCAD.ActiveDocument.commitTransaction()
-        self.cleanup()
+        self.cleanup(True)
         FreeCAD.ActiveDocument.recompute()
 
-    def cleanup(self):
+    def cleanup(self, gui):
         self.removeGlobalCallbacks()
         self.viewProvider.clearTaskPanel()
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-        if self.jvoVisible:
-            self.jvo.show()
+        if gui:
+            FreeCADGui.ActiveDocument.resetEdit()
+            FreeCADGui.Control.closeDialog()
+            FreeCAD.ActiveDocument.recompute()
+            if self.jvoVisible:
+                self.jvo.show()
 
     def getTags(self, includeCurrent):
         tags = []
@@ -1136,7 +1175,7 @@ class TaskPanel:
         self.updateTagsView()
 
     def addNewTagAt(self, point, obj):
-        if self.obj.Proxy.pointIsOnPath(self.obj, point):
+        if point and obj and self.obj.Proxy.pointIsOnPath(self.obj, point):
             #print("addNewTagAt(%s)" % (point))
             tags = self.tags
             tags.append((point.x, point.y, True))
@@ -1144,15 +1183,13 @@ class TaskPanel:
             self.updateTagsView()
         else:
             print("ignore new tag at %s" % (point))
-        self.formPoint.hide()
-        self.formTags.show()
 
     def addNewTag(self):
         self.tags = self.getTags(True)
         self.getPoint(self.addNewTagAt)
 
     def editTagAt(self, point, obj):
-        if (obj or point != FreeCAD.Vector()) and self.obj.Proxy.pointIsOnPath(self.obj, point):
+        if point and obj and (obj or point != FreeCAD.Vector()) and self.obj.Proxy.pointIsOnPath(self.obj, point):
             tags = []
             for i, (x, y, enabled) in enumerate(self.tags):
                 if i == self.editItem:
@@ -1161,8 +1198,6 @@ class TaskPanel:
                     tags.append((x, y, enabled))
             self.obj.Proxy.setXyEnabled(tags)
             self.updateTagsView()
-        self.formPoint.hide()
-        self.formTags.show()
 
     def editTag(self, item):
         if item:
@@ -1211,7 +1246,10 @@ class TaskPanel:
                 accept()
 
         def accept():
-            self.pointAccept()
+            if start:
+                self.pointAccept()
+            else:
+                self.pointAcceptAndContinue()
 
         def cancel():
             self.pointCancel()
@@ -1219,6 +1257,7 @@ class TaskPanel:
         self.pointWhenDone = whenDone
         self.formTags.hide()
         self.formPoint.show()
+        self.addEscapeShortcut()
         if start:
             displayPoint(start)
         else:
@@ -1227,6 +1266,8 @@ class TaskPanel:
         self.view = Draft.get3DView()
         self.pointCbClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), click)
         self.pointCbMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), mouseMove)
+
+        self.buttonBox.setEnabled(False)
 
     def setupSpinBox(self, widget, val, decimals = 2):
         if decimals:
@@ -1245,8 +1286,11 @@ class TaskPanel:
         self.setFields()
         self.whenCountChanged()
 
-        self.formTags.sbCount.valueChanged.connect(self.whenCountChanged)
-        self.formTags.pbGenerate.clicked.connect(self.generateNewTags)
+        if self.obj.Proxy.supportsTagGeneration(self.obj):
+            self.formTags.sbCount.valueChanged.connect(self.whenCountChanged)
+            self.formTags.pbGenerate.clicked.connect(self.generateNewTags)
+        else:
+            self.formTags.cbTagGeneration.setEnabled(False)
 
         self.formTags.ifHeight.editingFinished.connect(self.updateModel)
         self.formTags.ifWidth.editingFinished.connect(self.updateModel)
@@ -1261,23 +1305,42 @@ class TaskPanel:
         self.formTags.pbAdd.clicked.connect(self.addNewTag)
 
         self.formPoint.buttonBox.accepted.connect(self.pointAccept)
+        self.formPoint.buttonBox.rejected.connect(self.pointReject)
+
         self.formPoint.ifValueX.editingFinished.connect(self.updatePoint)
         self.formPoint.ifValueY.editingFinished.connect(self.updatePoint)
         self.formPoint.ifValueZ.editingFinished.connect(self.updatePoint)
 
         self.viewProvider.turnMarkerDisplayOn(True)
 
-    def pointFinish(self, ok):
-        self.removeGlobalCallbacks();
+    def pointFinish(self, ok, cleanup = True):
         obj = FreeCADGui.Snapper.lastSnappedObject
-        FreeCADGui.Snapper.off()
-        self.pointWhenDone(self.pt if ok else None, obj if ok else None)
+
+        if cleanup:
+            self.removeGlobalCallbacks();
+            FreeCADGui.Snapper.off()
+            self.buttonBox.setEnabled(True)
+            self.removeEscapeShortcut()
+            self.formPoint.hide()
+            self.formTags.show()
+            self.formTags.setFocus()
+
+        if ok:
+            self.pointWhenDone(self.pt, obj)
+        else:
+            self.pointWhenDone(None, None)
+
+    def pointDone(self):
+        self.pointFinish(False)
 
     def pointReject(self):
         self.pointFinish(False)
 
     def pointAccept(self):
         self.pointFinish(True)
+
+    def pointAcceptAndContinue(self):
+        self.pointFinish(True, False)
 
     def updatePoint(self):
         x = FreeCAD.Units.Quantity(self.formPoint.ifValueX.text()).Value
@@ -1293,10 +1356,13 @@ class HoldingTagMarker:
         self.pos = coin.SoTranslation()
         self.pos.translation = (point.x, point.y, point.z)
         self.sphere = coin.SoSphere()
+        self.scale = coin.SoType.fromName('SoShapeScale').createInstance()
+        self.scale.setPart('shape', self.sphere)
+        self.scale.scaleFactor.setValue(7)
         self.material = coin.SoMaterial()
         self.sep.addChild(self.pos)
         self.sep.addChild(self.material)
-        self.sep.addChild(self.sphere)
+        self.sep.addChild(self.scale)
         self.enabled = True
         self.selected = False
 
@@ -1318,6 +1384,7 @@ class ViewProviderDressup:
 
     def __init__(self, vobj):
         vobj.Proxy = self
+        self.panel = None
 
     def setupColors(self):
         def colorForColorValue(val):
@@ -1345,21 +1412,31 @@ class ViewProviderDressup:
 
 
     def claimChildren(self):
-        for i in self.obj.Base.InList:
-            if hasattr(i, "Group"):
-                group = i.Group
-                for g in group:
-                    if g.Name == self.obj.Base.Name:
-                        group.remove(g)
-                i.Group = group
-                #print i.Group
-        #FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
-        return [self.obj.Base]
+        PathLog.notice(self.obj)
+        if self.obj and self.obj.Base:
+            for i in self.obj.Base.InList:
+                if hasattr(i, "Group"):
+                    group = i.Group
+                    for g in group:
+                        if g.Name == self.obj.Base.Name:
+                            group.remove(g)
+                    i.Group = group
+                    #print i.Group
+            if self.obj.Base:
+                obj = FreeCADGui.ActiveDocument.getObject(self.obj.Base.Name)
+                if obj:
+                    obj.Visibility = False
+            return [self.obj.Base]
+        return []
 
     def setEdit(self, vobj, mode=0):
         panel = TaskPanel(vobj.Object, self)
         self.setupTaskPanel(panel)
         return True
+
+    def unsetEdit(self, vobj, mode):
+        if hasattr(self, 'panel') and self.panel:
+            self.panel.abort()
 
     def setupTaskPanel(self, panel):
         self.panel = panel
@@ -1371,8 +1448,8 @@ class ViewProviderDressup:
 
     def clearTaskPanel(self):
         self.panel = None
-        FreeCADGui.Selection.removeObserver(self)
         FreeCADGui.Selection.removeSelectionGate()
+        FreeCADGui.Selection.removeObserver(self)
         self.turnMarkerDisplayOn(False)
 
     def __getstate__(self):
@@ -1383,7 +1460,10 @@ class ViewProviderDressup:
 
     def onDelete(self, arg1=None, arg2=None):
         '''this makes sure that the base operation is added back to the project and visible'''
-        FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
+        if arg1.Object.Base:
+            obj = FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name)
+            if obj:
+                obj.Visibility = True
         PathUtils.addToJob(arg1.Object.Base)
         return True
 
@@ -1462,7 +1542,6 @@ class CommandPathDressupHoldingTags:
         FreeCADGui.doCommand('PathScripts.PathDressupHoldingTags.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
-        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
         FreeCADGui.doCommand('dbo.setup(obj, True)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

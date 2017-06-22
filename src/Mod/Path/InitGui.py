@@ -63,7 +63,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathHop
         from PathScripts import PathInspect
         from PathScripts import PathJob
-        from PathScripts import PathLoadTool
         from PathScripts import PathMillFace
         from PathScripts import PathPlane
         from PathScripts import PathPocket
@@ -75,6 +74,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathStock
         from PathScripts import PathStop
         from PathScripts import PathSurface
+        from PathScripts import PathToolController
         from PathScripts import PathToolLenOffset
         from PathScripts import PathToolLibraryManager
         import PathCommands
@@ -121,6 +121,8 @@ class PathWorkbench (Workbench):
         #     "Path", "Remote Operations")], remotecmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
 
+        self.dressupcmds = dressupcmdlist
+
         Log('Loading Path workbench... done\n')
 
     def GetClassName(self):
@@ -138,11 +140,16 @@ class PathWorkbench (Workbench):
         if len(FreeCADGui.Selection.getSelection()) == 1:
             if FreeCADGui.Selection.getSelection()[0].isDerivedFrom("Path::Feature"):
                 self.appendContextMenu("", ["Path_Inspect"])
-                if "Profile" or "Contour" in FreeCADGui.Selection.getSelection()[0].Name:
+                selectedName = FreeCADGui.Selection.getSelection()[0].Name
+                if "Job" in selectedName:
+                    self.appendContextMenu("", ["Path_ExportTemplate"])
+                if "Profile" in selectedName or "Contour" in selectedName:
                     #self.appendContextMenu("", ["Add_Tag"])
-                    self.appendContextMenu("", ["Set_StartPoint"])
+                    #self.appendContextMenu("", ["Set_StartPoint"])
                     #self.appendContextMenu("", ["Set_EndPoint"])
-                if "Remote" in FreeCADGui.Selection.getSelection()[0].Name:
+                    for cmd in self.dressupcmds:
+                        self.appendContextMenu("", [cmd])
+                if "Remote" in selectedName:
                     self.appendContextMenu("", ["Refresh_Path"])
 
 Gui.addWorkbench(PathWorkbench())

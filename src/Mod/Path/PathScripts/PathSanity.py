@@ -29,7 +29,6 @@ from __future__ import print_function
 from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathUtils as PU
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -40,19 +39,14 @@ def review(obj):
     "checks the selected job for common errors"
     toolcontrolcount = 0
 
-    if len(obj.Tooltable.Tools) == 0:
-        FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Machine: " + str(obj.Label) + " has no tools defined in the tool table\n"))
-    if obj.X_Max == obj.X_Min or obj.Y_Max == obj.Y_Min:
-        FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
-
     for item in obj.Group:
         print("Checking: " + item.Label)
-        if item.Name[:2] == "TC":
+        if hasattr(item, 'Tool') and hasattr(item, 'SpindleDir'):
             toolcontrolcount += 1
             if item.ToolNumber == 0:
                 FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " is using ID 0 which the undefined default. Please set a real tool.\n"))
             else:
-                tool = PU.getTool(item, item.ToolNumber)
+                tool = item.Tool
                 if tool is None:
                     FreeCAD.Console.PrintError(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " is using tool: " + str(item.ToolNumber) + " which is invalid\n"))
                 elif tool.Diameter == 0:

@@ -27,8 +27,8 @@ import Path
 import PathScripts
 import PathScripts.PathContour
 import PathScripts.PathJob
-import PathScripts.PathLoadTool
 import PathScripts.PathPost
+import PathScripts.PathToolController
 import PathScripts.PathUtils
 import difflib
 import unittest
@@ -46,9 +46,8 @@ class PathPostTestCases(unittest.TestCase):
 
         # Create job and setup tool library + default tool
         job = self.doc.addObject("Path::FeatureCompoundPython", "Job")
-        PathScripts.PathJob.ObjectPathJob(job)
-        job.Base = self.doc.Box
-        PathScripts.PathLoadTool.CommandPathLoadTool.Create(job.Name, False)
+        PathScripts.PathJob.ObjectPathJob(job, box, None)
+        PathScripts.PathToolController.CommandPathToolController.Create(job.Name, False)
         tool1 = Path.Tool()
         tool1.Diameter = 5.0
         tool1.Name = "Default Tool"
@@ -57,9 +56,9 @@ class PathPostTestCases(unittest.TestCase):
         tool1.Material = "HighSpeedSteel"
 
         tc = FreeCAD.ActiveDocument.addObject("Path::FeaturePython",'TC')
-        PathScripts.PathLoadTool.LoadTool(tc)
+        PathScripts.PathToolController.ToolController(tc)
         PathScripts.PathUtils.addToJob(tc, "Job")
-        tc.Tooltable.setTool(2, tool1)
+        tc.Tool = tool1
         tc.ToolNumber = 2
 
         self.failUnless(True)

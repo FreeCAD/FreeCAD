@@ -45,12 +45,127 @@ class PartDesignPadTestCases(unittest.TestCase):
         self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
         self.Pad.Profile = self.PadSketch
         self.Doc.recompute()
-        self.failUnless(len(self.Pad.Shape.Faces) == 6)
+        self.assertEqual(len(self.Pad.Shape.Faces), 6)
+
+    def testPadToFirstCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        # Make first offset cube Pad
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Doc.recompute()
+        # Make second pad on different plane and pad to first
+        self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
+        self.Body.addObject(self.PadSketch1)
+        self.PadSketch1.MapMode = 'FlatFace'
+        self.PadSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
+        self.Body.addObject(self.Pad1)
+        self.Pad1.Profile = self.PadSketch1
+        self.Pad1.Type = 2
+        self.Pad1.Reversed = 1
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pad1.Shape.Volume, 2.0)
+
+    def testPadtoLastCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        # Make first offset cube Pad
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0.5, 1), (0.5, 2))
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Doc.recompute()
+        # Make second pad on different plane and pad to first
+        self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
+        self.Body.addObject(self.PadSketch1)
+        self.PadSketch1.MapMode = 'FlatFace'
+        self.PadSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
+        self.Body.addObject(self.Pad1)
+        self.Pad1.Profile = self.PadSketch1
+        self.Pad1.Type = 1
+        self.Pad1.Reversed = 1
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pad1.Shape.Volume, 3.0)
+
+    def testPadToFaceCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        # Make first offset cube Pad
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Doc.recompute()
+        # Make second pad on different plane and pad to face on first
+        self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
+        self.Body.addObject(self.PadSketch1)
+        self.PadSketch1.MapMode = 'FlatFace'
+        self.PadSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
+        self.Body.addObject(self.Pad1)
+        self.Pad1.Profile = self.PadSketch1
+        self.Pad1.Type = 3
+        self.Pad1.UpToFace = (self.Pad, ["Face3"])
+        self.Pad1.Reversed = 1
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pad1.Shape.Volume, 2.0)
+
+    def testPadTwoDimensionsCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        # Make first offset cube Pad
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Doc.recompute()
+        # Make second pad on different plane and pad to face on first
+        self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
+        self.Body.addObject(self.PadSketch1)
+        self.PadSketch1.MapMode = 'FlatFace'
+        self.PadSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1), True)
+        self.Doc.recompute()
+        self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
+        self.Body.addObject(self.Pad1)
+        self.Pad1.Profile = self.PadSketch1
+        self.Pad1.Type = 4
+        self.Pad1.Length = 2.0
+        self.Pad1.Length2 = 1.0
+        self.Pad1.Reversed = 1
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pad1.Shape.Volume, 4.0)
 
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartDesignTestPad")
-        # print ("omit closing document for debugging")
+        #print ("omit closing document for debugging")
 
 class PartDesignRevolveTestCases(unittest.TestCase):
     def setUp(self):
@@ -89,7 +204,7 @@ class PartDesignRevolveTestCases(unittest.TestCase):
         self.Groove.Reversed = 1
         self.Body.addObject(self.Groove)
         self.Doc.recompute()
-        self.failUnless(len(self.Groove.Shape.Faces) == 5)
+        self.assertEqual(len(self.Groove.Shape.Faces), 5)
 
     def tearDown(self):
         #closing doc
@@ -104,37 +219,11 @@ class PartDesignMirroredTestCases(unittest.TestCase):
         """
         Creates a unit cube cornered at the origin and mirrors it about the Y axis.
         This operation should create a rectangular prism with volume 2.0.
-
-        The precision is currently broken and the volume created
-        is 1.9999999999999993. so this test will fail if code is
-        introduced to change it. If you've submitted code which fixes
-        the precision and causes this bug to fail, please remove this
-        message and update this test as well as testMirroredPrimitiveCase.
         """
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.Rect = self.Doc.addObject('Sketcher::SketchObject','Rect')
         self.Body.addObject(self.Rect)
-        geoList = []
-        geoList.append(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(1, 0, 0)))
-        geoList.append(Part.LineSegment(App.Vector(1, 0, 0), App.Vector(1, 1, 0)))
-        geoList.append(Part.LineSegment(App.Vector(1, 1, 0), App.Vector(0, 1, 0)))
-        geoList.append(Part.LineSegment(App.Vector(0, 1, 0), App.Vector(0, 0, 0)))
-        self.Rect.addGeometry(geoList,False)
-        conList = []
-        conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
-        conList.append(Sketcher.Constraint('Coincident',1,2,2,1))
-        conList.append(Sketcher.Constraint('Coincident',2,2,3,1))
-        conList.append(Sketcher.Constraint('Coincident',3,2,0,1))
-        conList.append(Sketcher.Constraint('Horizontal',0))
-        conList.append(Sketcher.Constraint('Horizontal',2))
-        conList.append(Sketcher.Constraint('Vertical',1))
-        conList.append(Sketcher.Constraint('Vertical',3))
-        self.Rect.addConstraint(conList)
-        self.Rect.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1))
-        self.Rect.addConstraint(Sketcher.Constraint('DistanceX',0,1,0,2,1))
-        self.Rect.setDatum(9,App.Units.Quantity('1.0 mm'))
-        self.Rect.addConstraint(Sketcher.Constraint('DistanceY',3,2,3,1,1))
-        self.Rect.setDatum(10,App.Units.Quantity('1.0 mm'))
+        TestSketcherApp.CreateRectangleSketch(self.Rect, (0, 0), (1, 1), True)
         self.Doc.recompute()
         self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
         self.Pad.Profile = self.Rect
@@ -155,14 +244,12 @@ class PartDesignMirroredTestCases(unittest.TestCase):
         a different base object.
         """
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
-
         self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
         self.Box.Length=1
         self.Box.Width=1
         self.Box.Height=1
         self.Body.addObject(self.Box)
         self.Doc.recompute()
-
         self.Mirrored = self.Doc.addObject("PartDesign::Mirrored", "Mirrored")
         self.Mirrored.Originals = [self.Box]
         self.Mirrored.MirrorPlane = (self.Doc.XY_Plane, [""])
@@ -174,46 +261,165 @@ class PartDesignMirroredTestCases(unittest.TestCase):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.Rect = self.Doc.addObject('Sketcher::SketchObject','Rect')
         self.Body.addObject(self.Rect)
-        geoList = []
-        geoList.append(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(1, 0, 0)))
-        geoList.append(Part.LineSegment(App.Vector(1, 0, 0), App.Vector(1, 1, 0)))
-        geoList.append(Part.LineSegment(App.Vector(1, 1, 0), App.Vector(0, 1, 0)))
-        geoList.append(Part.LineSegment(App.Vector(0, 1, 0), App.Vector(0, 0, 0)))
-        self.Rect.addGeometry(geoList,False)
-        conList = []
-
-        conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
-        conList.append(Sketcher.Constraint('Coincident',1,2,2,1))
-        conList.append(Sketcher.Constraint('Coincident',2,2,3,1))
-        conList.append(Sketcher.Constraint('Coincident',3,2,0,1))
-        conList.append(Sketcher.Constraint('Horizontal',0))
-        conList.append(Sketcher.Constraint('Horizontal',2))
-        conList.append(Sketcher.Constraint('Vertical',1))
-        conList.append(Sketcher.Constraint('Vertical',3))
-        self.Rect.addConstraint(conList)
-
-        self.Rect.addConstraint(Sketcher.Constraint('PointOnObject',0,1,-2)) 
-        self.Rect.addConstraint(Sketcher.Constraint('Equal',3,0)) 
-        self.Rect.addConstraint(Sketcher.Constraint('DistanceX',0,1,0,2,1))
-        self.Rect.setDatum(10,App.Units.Quantity('1.0 mm'))
-        self.Rect.addConstraint(Sketcher.Constraint('DistanceY',-1,1,0,1,1)) 
-        self.Rect.setDatum(11,App.Units.Quantity('1.0 mm'))
+        TestSketcherApp.CreateRectangleSketch(self.Rect, (0, 1), (1, 1), True)
         self.Doc.recompute()
-
         self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
         self.Pad.Profile = self.Rect
         self.Pad.Length = 1
         self.Body.addObject(self.Pad)
         self.Doc.recompute()
-
         self.Mirrored = self.Doc.addObject("PartDesign::Mirrored","Mirrored")
         self.Mirrored.Originals = [self.Pad]
         self.Mirrored.MirrorPlane = (self.Rect, ["H_Axis"])
         self.Body.addObject(self.Mirrored)
         self.Doc.recompute()
-        self.failUnless(self.Mirrored.State == ["Invalid"])
+        self.assertEqual(self.Mirrored.State, ["Invalid"])
 
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartDesignTestMirrored")
+        #print ("omit closing document for debugging")
+
+class PartDesignPocketTestCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestPocket")
+
+    def testPocketDimensionCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'PadSketch')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (10, 10), True)
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Pad.Reversed = 1
+        self.Doc.recompute()
+        self.PocketSketch = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
+        self.Body.addObject(self.PocketSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (2.5, 2.5), (5, 5), True)
+        self.Doc.recompute()
+        self.Pocket = self.Doc.addObject("PartDesign::Pocket", "Pocket")
+        self.Body.addObject(self.Pocket)
+        self.Pocket.Profile = self.PocketSketch
+        self.Pocket.Length = 1
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pocket.Shape.Volume, 75.0)
+
+    def testPocketThroughAllCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'PadSketch')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (10, 10), True)
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Pad.Reversed = 1
+        self.Doc.recompute()
+        self.PocketSketch = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
+        self.Body.addObject(self.PocketSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (2.5, 2.5), (5, 5), True)
+        self.Doc.recompute()
+        self.Pocket = self.Doc.addObject("PartDesign::Pocket", "Pocket")
+        self.Body.addObject(self.Pocket)
+        self.Pocket.Profile = self.PocketSketch
+        self.Pocket.Length = 1
+        self.Doc.recompute()
+        self.PocketSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
+        self.Body.addObject(self.PocketSketch1)
+        self.PocketSketch1.MapMode = 'FlatFace'
+        self.PocketSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch1, (2.5, -1), (5, 1))
+        self.Doc.recompute()
+        self.Pocket001 = self.Doc.addObject("PartDesign::Pocket", "Pocket001")
+        self.Body.addObject(self.Pocket001)
+        self.Pocket001.Profile = self.PocketSketch1
+        self.Pocket001.Type = 1
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pocket001.Shape.Volume, 25.0)
+
+    def testPocketToFirstCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'PadSketch')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (10, 10), True)
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Pad.Reversed = 1
+        self.Doc.recompute()
+        self.PocketSketch = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
+        self.Body.addObject(self.PocketSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (2.5, 2.5), (5, 5), True)
+        self.Doc.recompute()
+        self.Pocket = self.Doc.addObject("PartDesign::Pocket", "Pocket")
+        self.Body.addObject(self.Pocket)
+        self.Pocket.Profile = self.PocketSketch
+        self.Pocket.Length = 1
+        self.Doc.recompute()
+        self.PocketSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
+        self.Body.addObject(self.PocketSketch1)
+        self.PocketSketch1.MapMode = 'FlatFace'
+        self.PocketSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch1, (2.5, -1), (5, 1))
+        self.Doc.recompute()
+        self.Pocket001 = self.Doc.addObject("PartDesign::Pocket", "Pocket001")
+        self.Body.addObject(self.Pocket001)
+        self.Pocket001.Profile = self.PocketSketch1
+        self.Pocket001.Type = 2
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pocket001.Shape.Volume, 62.5)
+
+    def testPocketToFaceCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'PadSketch')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (10, 10), True)
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Pad.Reversed = 1
+        self.Doc.recompute()
+        self.PocketSketch = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
+        self.Body.addObject(self.PocketSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (2.5, 2.5), (5, 5), True)
+        self.Doc.recompute()
+        self.Pocket = self.Doc.addObject("PartDesign::Pocket", "Pocket")
+        self.Body.addObject(self.Pocket)
+        self.Pocket.Profile = self.PocketSketch
+        self.Pocket.Length = 1
+        self.Doc.recompute()
+        self.PocketSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
+        self.Body.addObject(self.PocketSketch1)
+        self.PocketSketch1.MapMode = 'FlatFace'
+        self.PocketSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch1, (0, -1), (10, 1))
+        self.Doc.recompute()
+        self.Pocket001 = self.Doc.addObject("PartDesign::Pocket", "Pocket001")
+        self.Body.addObject(self.Pocket001)
+        self.Pocket001.Profile = self.PocketSketch1
+        self.Pocket001.Type = 3
+        # Handle face-naming inconsistency in OCC < 7
+        self.FaceNumber = 7
+        self.Pocket001.UpToFace = (self.Pocket, ["Face"+str(self.FaceNumber)])
+        self.Doc.recompute()
+        while (('Invalid' in self.Pocket001.State or round(self.Pocket001.Shape.Volume, 7) != 50.0) and self.FaceNumber < 11):
+            self.FaceNumber += 1
+            self.Pocket001.UpToFace = (self.Pocket, ["Face"+str(self.FaceNumber)])
+            self.Doc.recompute()
+        self.assertAlmostEqual(self.Pocket001.Shape.Volume, 50.0)
+
+    def tearDown(self):
+        #closing doc
+        FreeCAD.closeDocument("PartDesignTestPocket")
         #print ("omit closing document for debugging")
