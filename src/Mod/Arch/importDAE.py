@@ -183,7 +183,7 @@ def export(exportList,filename,tessellation=1):
     ver = FreeCAD.Version()
     appli = "FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + "\n"
     cont.authoring_tool = appli
-    print author,appli
+    print(author, appli)
     colmesh.assetInfo.contributors.append(cont)
     colmesh.assetInfo.unitname = "meter"
     colmesh.assetInfo.unitmeter = 1.0
@@ -212,7 +212,7 @@ def export(exportList,filename,tessellation=1):
                 n = f.Normal
                 nindex.extend([n.x,n.y,n.z])
             # face indices
-            for i in range(len(m.Topology[1])):
+            for i in xrange(len(m.Topology[1])):
                 f = m.Topology[1][i]
                 findex.extend([f[0],i,f[1],i,f[2],i])
         print(len(vindex), " vert indices, ", len(nindex), " norm indices, ", len(findex), " face indices.")

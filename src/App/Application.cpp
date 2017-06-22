@@ -62,6 +62,7 @@
 #include <Base/Parameter.h>
 #include <Base/Console.h>
 #include <Base/Factory.h>
+#include <Base/ExceptionFactory.h>
 #include <Base/FileInfo.h>
 #include <Base/Type.h>
 #include <Base/BaseClass.h>
@@ -70,6 +71,7 @@
 #include <Base/MatrixPy.h>
 #include <Base/VectorPy.h>
 #include <Base/AxisPy.h>
+#include <Base/CoordinateSystemPy.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/PlacementPy.h>
 #include <Base/RotationPy.h>
@@ -220,7 +222,12 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // setting up Python binding
     Base::PyGILStateLocker lock;
 #if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef FreeCADModuleDef = {PyModuleDef_HEAD_INIT,"FreeCAD", FreeCAD_doc, -1, Application::Methods};
+    static struct PyModuleDef FreeCADModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "FreeCAD", FreeCAD_doc, -1,
+        Application::Methods,
+        NULL, NULL, NULL, NULL
+    };
     PyObject* pAppModule = PyModule_Create(&FreeCADModuleDef);
     _PyImport_FixupBuiltin(pAppModule, "FreeCAD");
 #else
@@ -229,7 +236,12 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Py::Module(pAppModule).setAttr(std::string("ActiveDocument"),Py::None());
 
 #if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef ConsoleModuleDef = {PyModuleDef_HEAD_INIT, "__FreeCADConsole__", Console_doc, -1, ConsoleSingleton::Methods};
+    static struct PyModuleDef ConsoleModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "__FreeCADConsole__", Console_doc, -1,
+        ConsoleSingleton::Methods,
+        NULL, NULL, NULL, NULL
+    };
     PyObject* pConsoleModule = PyModule_Create(&ConsoleModuleDef);
 #else
     PyObject* pConsoleModule = Py_InitModule3("__FreeCADConsole__", ConsoleSingleton::Methods, Console_doc);
@@ -252,7 +264,11 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // remove these types from the FreeCAD module.
 
 #if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef BaseModuleDef = {PyModuleDef_HEAD_INIT, "__FreeCADBase__", Base_doc, -1, NULL};
+    static struct PyModuleDef BaseModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "__FreeCADBase__", Base_doc, -1,
+        NULL, NULL, NULL, NULL, NULL
+    };
     PyObject* pBaseModule = PyModule_Create(&BaseModuleDef);
 #else
     PyObject* pBaseModule = Py_InitModule3("__FreeCADBase__", NULL, Base_doc);
@@ -262,12 +278,13 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     PyModule_AddObject(pBaseModule, "FreeCADError", Base::BaseExceptionFreeCADError);
 
     // Python types
-    Base::Interpreter().addType(&Base::VectorPy     ::Type,pBaseModule,"Vector");
-    Base::Interpreter().addType(&Base::MatrixPy     ::Type,pBaseModule,"Matrix");
-    Base::Interpreter().addType(&Base::BoundBoxPy   ::Type,pBaseModule,"BoundBox");
-    Base::Interpreter().addType(&Base::PlacementPy  ::Type,pBaseModule,"Placement");
-    Base::Interpreter().addType(&Base::RotationPy   ::Type,pBaseModule,"Rotation");
-    Base::Interpreter().addType(&Base::AxisPy       ::Type,pBaseModule,"Axis");
+    Base::Interpreter().addType(&Base::VectorPy          ::Type,pBaseModule,"Vector");
+    Base::Interpreter().addType(&Base::MatrixPy          ::Type,pBaseModule,"Matrix");
+    Base::Interpreter().addType(&Base::BoundBoxPy        ::Type,pBaseModule,"BoundBox");
+    Base::Interpreter().addType(&Base::PlacementPy       ::Type,pBaseModule,"Placement");
+    Base::Interpreter().addType(&Base::RotationPy        ::Type,pBaseModule,"Rotation");
+    Base::Interpreter().addType(&Base::AxisPy            ::Type,pBaseModule,"Axis");
+    Base::Interpreter().addType(&Base::CoordinateSystemPy::Type,pBaseModule,"CoordinateSystem");
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
 
@@ -279,7 +296,12 @@ Application::Application(std::map<std::string,std::string> &mConfig)
 
     //insert Units module
 #if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef UnitsModuleDef = {PyModuleDef_HEAD_INIT, "Units", "The Unit API", -1, Base::UnitsApi::Methods};
+    static struct PyModuleDef UnitsModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "Units", "The Unit API", -1,
+        Base::UnitsApi::Methods,
+        NULL, NULL, NULL, NULL
+    };
     PyObject* pUnitsModule = PyModule_Create(&UnitsModuleDef);
 #else
     PyObject* pUnitsModule = Py_InitModule3("Units", Base::UnitsApi::Methods,"The Unit API");
@@ -389,6 +411,8 @@ bool Application::closeDocument(const char* name)
     map<string,Document*>::iterator pos = DocMap.find( name );
     if (pos == DocMap.end()) // no such document
         return false;
+
+    Base::ConsoleRefreshDisabler disabler;
 
     // Trigger observers before removing the document from the internal map.
     // Some observers might rely on this document still being there.
@@ -1300,6 +1324,35 @@ void Application::initTypes(void)
     // register transaction type
     new App::TransactionProducer<TransactionDocumentObject>
             (DocumentObject::getClassTypeId());
+
+    // register exception producer types
+    new ExceptionProducer<Base::AbortException>;
+    new ExceptionProducer<Base::XMLBaseException>;
+    new ExceptionProducer<Base::XMLParseException>;
+    new ExceptionProducer<Base::FileException>;
+    new ExceptionProducer<Base::FileSystemError>;
+    new ExceptionProducer<Base::BadFormatError>;
+    new ExceptionProducer<Base::MemoryException>;
+    new ExceptionProducer<Base::MemoryException>;
+    new ExceptionProducer<Base::AccessViolation>;
+    new ExceptionProducer<Base::AbnormalProgramTermination>;
+    new ExceptionProducer<Base::UnknownProgramOption>;
+    new ExceptionProducer<Base::ProgramInformation>;
+    new ExceptionProducer<Base::TypeError>;
+    new ExceptionProducer<Base::ValueError>;
+    new ExceptionProducer<Base::IndexError>;
+    new ExceptionProducer<Base::AttributeError>;
+    new ExceptionProducer<Base::RuntimeError>;
+    new ExceptionProducer<Base::NotImplementedError>;
+    new ExceptionProducer<Base::DivisionByZeroError>;
+    new ExceptionProducer<Base::ReferencesError>;
+    new ExceptionProducer<Base::ExpressionError>;
+    new ExceptionProducer<Base::ParserError>;
+    new ExceptionProducer<Base::UnicodeError>;
+    new ExceptionProducer<Base::OverflowError>;
+    new ExceptionProducer<Base::UnderflowError>;
+    new ExceptionProducer<Base::UnitsMismatchError>;
+    new ExceptionProducer<Base::CADKernelError>;
 }
 
 void Application::initConfig(int argc, char ** argv)
@@ -1386,6 +1439,35 @@ void Application::initConfig(int argc, char ** argv)
                           mConfig["BuildRevision"].c_str());
 
     LoadParameters();
+
+    auto loglevelParam = _pcUserParamMngr->GetGroup("BaseApp/LogLevels");
+    const auto &loglevels = loglevelParam->GetIntMap();
+    bool hasDefault = false;
+    for(const auto &v : loglevels) {
+        if(v.first == "Default") {
+#ifndef FC_DEBUG
+            if(v.second>=0) {
+                hasDefault = true;
+                Base::Console().SetDefaultLogLevel(v.second);
+            }
+#endif
+        }else if(v.first == "DebugDefault") {
+#ifdef FC_DEBUG
+            if(v.second>=0) {
+                hasDefault = true;
+                Base::Console().SetDefaultLogLevel(v.second);
+            }
+#endif
+        }else
+            *Base::Console().GetLogLevel(v.first.c_str()) = v.second;
+    }
+    if(!hasDefault) {
+#ifdef FC_DEBUG
+        loglevelParam->SetInt("DebugDefault",Base::Console().LogLevel(-1));
+#else
+        loglevelParam->SetInt("Default",Base::Console().LogLevel(-1));
+#endif
+    }
 
     // Set application tmp. directory
     mConfig["AppTempPath"] = Base::FileInfo::getTempPath();

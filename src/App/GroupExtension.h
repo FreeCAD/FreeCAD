@@ -50,19 +50,22 @@ public:
      * append it to this group as well.
      */
     virtual DocumentObject *addObject(const char* sType, const char* pObjectName);
-    /* Adds the object \a obj to this group.
+    /* Adds the object \a obj to this group. Returns all objects that have been added.
      */
-    virtual void addObject(DocumentObject* obj);
-    /* Adds an array of object \a objs to this group.
+    virtual std::vector<DocumentObject*> addObject(DocumentObject* obj);
+    /* Adds the objects \a objs to this group. Returns all objects that have been added.
      */
-    virtual void addObjects(const std::vector<App::DocumentObject*>& objs);
+    virtual std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj);
     /*override this function if you want only special objects
      */
     virtual bool allowObject(DocumentObject* ) {return true;}
     
-    /** Removes an object from this group.
+    /** Removes an object from this group. Returns all objects that have been removed.
      */
-    virtual void removeObject(DocumentObject* obj);
+    virtual std::vector<DocumentObject*> removeObject(DocumentObject* obj);
+    /** Removes objects from this group. Returns all objects that have been removed.
+     */
+    virtual std::vector<DocumentObject*> removeObjects(std::vector<DocumentObject*> obj);
     /** Removes all children objects from this group and the document.
      */
     virtual void removeObjectsFromDocument();
@@ -91,13 +94,17 @@ public:
      */
     int countObjectsOfType(const Base::Type& typeId) const;
     /** Returns the object group of the document which the given object \a obj is part of.
-     * In case this object is not part of a group 0 is returned.
+     * In case this object is not part of a group 0 is returned. 
+     * @note This only returns objects that are normal groups, not any special derived type 
+     * like GeoFeatureGroups or OriginGroups. To retrieve those please use their appropriate functions
      */
     static DocumentObject* getGroupOfObject(const DocumentObject* obj);
     //@}
     
     virtual PyObject* getExtensionPyObject(void);
 
+    virtual void extensionOnChanged(const Property* p) override;
+    
     /// Properties
     PropertyLinkList Group;
 

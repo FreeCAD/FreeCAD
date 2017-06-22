@@ -68,30 +68,30 @@
     </message>
     <message>
         <source>&lt;empty&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;empty&gt;</translation>
     </message>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">Vinkel</translation>
+        <translation>Vinkel</translation>
     </message>
     <message>
         <source>Axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Akse</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Posisjon</translation>
+        <translation>Posisjon</translation>
     </message>
     <message>
         <source>Base</source>
-        <translation type="unfinished"></translation>
+        <translation>Base</translation>
     </message>
 </context>
 <context>
     <name>CmdTestConsoleOutput</name>
     <message>
         <source>Standard-Test</source>
-        <translation type="unfinished">Standard-Test</translation>
+        <translation>Standard-Test</translation>
     </message>
     <message>
         <source>Test console output</source>
@@ -102,7 +102,7 @@
     <name>CmdViewMeasureClearAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Measure</translation>
+        <translation>Mål</translation>
     </message>
     <message>
         <source>Clear measurement</source>
@@ -113,7 +113,7 @@
     <name>CmdViewMeasureToggleAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Measure</translation>
+        <translation>Mål</translation>
     </message>
     <message>
         <source>Toggle measurement</source>
@@ -171,7 +171,7 @@
     </message>
     <message>
         <source>Result:</source>
-        <translation type="unfinished">Result:</translation>
+        <translation>Resultat:</translation>
     </message>
     <message>
         <source>&amp;Discard</source>
@@ -194,7 +194,7 @@
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Filename</translation>
+        <translation>Filnavn</translation>
     </message>
 </context>
 <context>
@@ -295,7 +295,7 @@
     </message>
     <message>
         <source>Press middle and left or right mouse button</source>
-        <translation type="unfinished">Press middle and left or right mouse button</translation>
+        <translation>Trykk midterste og venstre eller høyre museknapp</translation>
     </message>
     <message>
         <source>Scroll middle mouse button or keep middle button pressed
@@ -388,15 +388,15 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Credits</source>
-        <translation type="unfinished">Credits</translation>
+        <translation>Bidragsytere</translation>
     </message>
     <message>
         <source>FreeCAD would be nowhere without their efforts:</source>
-        <translation type="unfinished">FreeCAD would be nowhere without their efforts:</translation>
+        <translation>FreeCAD ville være ingenting uten deres innsats:</translation>
     </message>
     <message>
         <source>License</source>
-        <translation type="unfinished">License</translation>
+        <translation>Lisens</translation>
     </message>
 </context>
 <context>
@@ -553,7 +553,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished">Username:</translation>
+        <translation>Brukernavn:</translation>
     </message>
     <message>
         <source>Site:</source>
@@ -576,7 +576,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>CheckBox</source>
-        <translation type="unfinished">CheckBox</translation>
+        <translation>Avkryssingsboks</translation>
     </message>
 </context>
 <context>
@@ -587,7 +587,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Icon folders...</source>
-        <translation type="unfinished">Icon folders...</translation>
+        <translation>Ikon mapper...</translation>
     </message>
 </context>
 <context>
@@ -1044,31 +1044,31 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished">Brass</translation>
+        <translation>Messing</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished">Bronze</translation>
+        <translation>Bronse</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished">Copper</translation>
+        <translation>Kopper</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished">Chrome</translation>
+        <translation>Krom</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished">Emerald</translation>
+        <translation>Smaragd</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished">Gold</translation>
+        <translation>Gull</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished">Jade</translation>
+        <translation>Jade</translation>
     </message>
     <message>
         <source>Metalized</source>
@@ -1076,31 +1076,31 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished">Neon GNC</translation>
+        <translation>Neon GNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished">Neon PHC</translation>
+        <translation>Neon PHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished">Obsidian</translation>
+        <translation>Obsidian</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished">Pewter</translation>
+        <translation>Tinn</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished">Plaster</translation>
+        <translation>Gips</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished">Plastic</translation>
+        <translation>Plast</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished">Ruby</translation>
+        <translation>Rubin</translation>
     </message>
     <message>
         <source>Satin</source>
@@ -1108,19 +1108,19 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished">Shiny plastic</translation>
+        <translation>Skinnende plast</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished">Silver</translation>
+        <translation>Sølv</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished">Steel</translation>
+        <translation>Stål</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished">Stone</translation>
+        <translation>Stein</translation>
     </message>
 </context>
 <context>
@@ -1230,62 +1230,46 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Enable tiled background</source>
-        <translation type="unfinished">Enable tiled background</translation>
+        <translation>Aktiver fliselagt bakgrunn</translation>
     </message>
     <message>
         <source>Style sheet:</source>
-        <translation type="unfinished">Style sheet:</translation>
+        <translation>Stilark:</translation>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Pythonkonsoll</translation>
+        <translation>Pythonkonsoll</translation>
     </message>
     <message>
         <source>Enable word wrap</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktivere tekstbryting</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
-        <source>Default (%1 x %1)</source>
-        <translation type="obsolete">Standard (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Small (%1 x %1)</source>
-        <translation type="obsolete">Liten (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Large (%1 x %1)</source>
-        <translation type="obsolete">Stor (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Extra large (%1 x %1)</source>
-        <translation type="obsolete">Ekstra stor (%1 x %1)</translation>
-    </message>
-    <message>
         <source>No style sheet</source>
-        <translation type="unfinished">No style sheet</translation>
+        <translation>Ingen stilark</translation>
     </message>
     <message>
         <source>Small (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Liten (%1px)</translation>
     </message>
     <message>
         <source>Medium (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Middels (%1px)</translation>
     </message>
     <message>
         <source>Large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Stor (%1px)</translation>
     </message>
     <message>
         <source>Extra large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekstra stor (%1px)</translation>
     </message>
     <message>
         <source>Custom (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Egendefinert (%1px)</translation>
     </message>
 </context>
 <context>
@@ -1338,15 +1322,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished">User macros</translation>
+        <translation>Bruker makroer</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished">System macros</translation>
+        <translation>System makroer</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished">User macros location:</translation>
+        <translation>Plassering for makroer:</translation>
     </message>
 </context>
 <context>
@@ -1391,7 +1375,7 @@ Denne filen finnes allerede.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished">Read-only</translation>
+        <translation>Skrivebeskyttet</translation>
     </message>
 </context>
 <context>
@@ -1453,7 +1437,7 @@ Denne filen finnes allerede.</translation>
     </message>
     <message>
         <source>You have no write permission for the directory. Please, choose another one.</source>
-        <translation type="unfinished">You have no write permission for the directory. Please, choose another one.</translation>
+        <translation>Du har ikke skrive tilgang til katalogen. Velg en annen.</translation>
     </message>
 </context>
 <context>
@@ -1525,7 +1509,7 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
         <source>HTML files</source>
-        <translation type="unfinished">HTML files</translation>
+        <translation>HTML-filer</translation>
     </message>
 </context>
 <context>
@@ -1601,15 +1585,15 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
         <source>Clear user settings</source>
-        <translation type="unfinished">Clear user settings</translation>
+        <translation>Fjern bruker innstillingene</translation>
     </message>
     <message>
         <source>Do you want to clear all your user settings?</source>
-        <translation type="unfinished">Do you want to clear all your user settings?</translation>
+        <translation>Vil du fjerne alle bruker innstillingene?</translation>
     </message>
     <message>
         <source>If you agree all your settings will be cleared.</source>
-        <translation type="unfinished">If you agree all your settings will be cleared.</translation>
+        <translation>Hvis du godtar fjernes alle innstillingene.</translation>
     </message>
 </context>
 <context>
@@ -1660,19 +1644,19 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
         <source>UUID:</source>
-        <translation type="unfinished">UUID:</translation>
+        <translation>UUID:</translation>
     </message>
     <message>
         <source>License information:</source>
-        <translation type="unfinished">License information:</translation>
+        <translation>Lisens informasjon:</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation>Lisens URL</translation>
     </message>
     <message>
         <source>Open in browser</source>
-        <translation type="unfinished">Open in browser</translation>
+        <translation>Åpne i nettleser</translation>
     </message>
 </context>
 <context>
@@ -1727,18 +1711,18 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
         <source>Project file</source>
-        <translation type="unfinished">Project file</translation>
+        <translation>Prosjekt fil</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
         <source>Link</source>
-        <translation type="unfinished">Link</translation>
+        <translation>Lenke</translation>
     </message>
     <message>
         <source>Show all object types</source>
-        <translation type="unfinished">Show all object types</translation>
+        <translation>Vis alle objekt typer</translation>
     </message>
     <message>
         <source>No selection</source>
@@ -1746,14 +1730,18 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished">Please select an object from the list</translation>
+        <translation>Velg et objekt fra listen</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Search</translation>
+        <translation>Søk</translation>
     </message>
     <message>
         <source>A search pattern to filter the results above</source>
+        <translation type="unfinished">A search pattern to filter the results above</translation>
+    </message>
+    <message>
+        <source>None (Remove link)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1931,7 +1919,7 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
         <source>Anti-Aliasing</source>
-        <translation type="unfinished">Anti-Aliasing</translation>
+        <translation>Utjevning</translation>
     </message>
     <message>
         <source>None</source>
@@ -1939,19 +1927,19 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
         <source>Line Smoothing</source>
-        <translation type="unfinished">Line Smoothing</translation>
+        <translation>Linje utjevning</translation>
     </message>
     <message>
         <source>MSAA 2x</source>
-        <translation type="unfinished">MSAA 2x</translation>
+        <translation>MSAA 2x</translation>
     </message>
     <message>
         <source>MSAA 4x</source>
-        <translation type="unfinished">MSAA 4x</translation>
+        <translation>MSAA 4x</translation>
     </message>
     <message>
         <source>MSAA 8x</source>
-        <translation type="unfinished">MSAA 8x</translation>
+        <translation>MSAA 8x</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
@@ -1963,14 +1951,14 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
         <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Use OpenGL Vertex Buffer Object (experimental)</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>Anti-aliasing</source>
-        <translation type="unfinished">Anti-aliasing</translation>
+        <translation>Utjevning</translation>
     </message>
     <message>
         <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
@@ -2165,11 +2153,11 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished">Default license</translation>
+        <translation>Standard lisens</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished">The default license for new documents</translation>
+        <translation>Standard lisens for nye dokumenter</translation>
     </message>
     <message>
         <source>All rights reserved</source>
@@ -2213,7 +2201,7 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation>Lisens URL</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
@@ -2487,11 +2475,11 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Transparent</translation>
     </message>
     <message>
         <source>Add watermark</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Add watermark</translation>
     </message>
 </context>
 <context>
@@ -2638,14 +2626,6 @@ Vennligst angi en annen mappe.</translation>
         <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
         <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
-    <message>
-        <source>PickRadius</source>
-        <translation type="obsolete">PickRadius</translation>
-    </message>
-    <message>
-        <source>View</source>
-        <translation type="obsolete">Vis</translation>
-    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
@@ -2776,7 +2756,7 @@ Vennligst angi en annen mappe.</translation>
         <source>Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
 
 The &apos;Status&apos; column shows whether the document could be recovered.</source>
-        <translation type="unfinished">Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
+        <translation type="obsolete">Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
 
 The &apos;Status&apos; column shows whether the document could be recovered.</translation>
     </message>
@@ -2851,6 +2831,12 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <message>
         <source>Transient directories deleted.</source>
         <translation type="unfinished">Transient directories deleted.</translation>
+    </message>
+    <message>
+        <source>Press &apos;Start Recovery&apos; to start the recovery process of the document listed below.
+
+The &apos;Status&apos; column shows whether the document could be recovered.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3217,7 +3203,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
     <message>
         <source>Use center of mass</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Use center of mass</translation>
     </message>
 </context>
 <context>
@@ -3414,11 +3400,11 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <name>Gui::DockWnd::SelectionView</name>
     <message>
         <source>Property View</source>
-        <translation>Egenskapsvisning</translation>
+        <translation type="obsolete">Egenskapsvisning</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Search</translation>
+        <translation>Søk</translation>
     </message>
     <message>
         <source>Searches object labels</source>
@@ -3475,6 +3461,22 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <message>
         <source>Mark this object to be recomputed</source>
         <translation type="unfinished">Mark this object to be recomputed</translation>
+    </message>
+    <message>
+        <source>Selection View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The number of selected items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate subshape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creates a standalone copy of this subshape in the document</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3782,19 +3784,15 @@ Do you want to copy them, too?</translation>
     </message>
     <message>
         <source>There is a rendering issue on MacOS.</source>
-        <translation type="unfinished">There is a rendering issue on MacOS.</translation>
-    </message>
-    <message>
-        <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="obsolete">See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</translation>
+        <translation type="obsolete">There is a rendering issue on MacOS.</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
-        <translation type="unfinished">Don&apos;t show again</translation>
+        <translation type="obsolete">Don&apos;t show again</translation>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</translation>
     </message>
 </context>
 <context>
@@ -3981,7 +3979,11 @@ How do you want to proceed?</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation type="unfinished">Edit...</translation>
+        <translation type="obsolete">Edit...</translation>
+    </message>
+    <message>
+        <source>Change the linked object</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4380,7 +4382,7 @@ Vil du angi en annen mappe?</translation>
     </message>
     <message>
         <source>%1, Internal name: %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1, Internal name: %2</translation>
     </message>
 </context>
 <context>
@@ -4951,12 +4953,8 @@ Vær oppmerksom på at punktet hvor du klikker betyr noe.</translation>
         <translation type="unfinished">Delete group content?</translation>
     </message>
     <message>
-        <source>The %1 is not empty, delete it&apos;s content as well?</source>
-        <translation type="obsolete">The %1 is not empty, delete it&apos;s content as well?</translation>
-    </message>
-    <message>
         <source>The %1 is not empty, delete its content as well?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
     </message>
 </context>
 <context>
@@ -6920,19 +6918,19 @@ Are you sure you want to continue?
     </message>
     <message>
         <source>Hidden line</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hidden line</translation>
     </message>
     <message>
         <source>Hidden line mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hidden line mode</translation>
     </message>
     <message>
         <source>No shading</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No shading</translation>
     </message>
     <message>
         <source>No shading mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No shading mode</translation>
     </message>
 </context>
 <context>

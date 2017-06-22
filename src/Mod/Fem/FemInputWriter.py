@@ -70,7 +70,11 @@ class FemInputWriter():
         if not os.path.isdir(self.dir_name):
             os.mkdir(self.dir_name)
         self.fc_ver = FreeCAD.Version()
+        self.ccx_nall = 'Nall'
         self.ccx_eall = 'Eall'
+        self.ccx_evolumes = 'Evolumes'
+        self.ccx_efaces = 'Efaces'
+        self.ccx_eedges = 'Eedges'
         self.ccx_elsets = []
         self.femmesh = self.mesh_object.FemMesh
         self.femnodes_mesh = {}
@@ -118,16 +122,6 @@ class FemInputWriter():
         # check shape type of reference shape
         for femobj in self.force_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             frc_obj = femobj['Object']
-            # in GUI defined frc_obj all ref_shape have the same shape type
-            # TODO in FemTools: check if all RefShapes really have the same type an write type to dictionary
-            femobj['RefShapeType'] = ''
-            if frc_obj.References:
-                first_ref_obj = frc_obj.References[0]
-                first_ref_shape = first_ref_obj[0].Shape.getElement(first_ref_obj[1][0])
-                femobj['RefShapeType'] = first_ref_shape.ShapeType
-            else:
-                # frc_obj.References could be empty ! # TODO in FemTools: check
-                FreeCAD.Console.PrintError('At least one Force Object has empty References!\n')
             if femobj['RefShapeType'] == 'Vertex':
                 # print("load on vertices --> we do not need the femelement_table and femnodes_mesh for node load calculation")
                 pass
@@ -175,6 +169,52 @@ class FemInputWriter():
             pressure_faces = FemMeshTools.get_pressure_obj_faces(self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj)
             # print(len(pressure_faces))
             femobj['PressureFaces'] = [(femobj['Object'].Name + ': face load', pressure_faces)]
-            # print(femobj['PressureFaces'])
+            print(femobj['PressureFaces'])
+
+    def get_element_geometry2D_elements(self):
+        # get element ids and write them into the objects
+        if not self.femelement_table:
+            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.shellthickness_objects)
+
+    def get_element_geometry1D_elements(self):
+        # get element ids and write them into the objects
+        if not self.femelement_table:
+            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.beamsection_objects)
+
+    def get_element_fluid1D_elements(self):
+        # get element ids and write them into the objects
+        if not self.femelement_table:
+            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.fluidsection_objects)
+
+    def get_material_elements(self):
+        # it only works if either Volumes or Shellthicknesses or Beamsections are in the material objects
+        # it means it does not work for mixed meshes and multiple materials, this is checked in check_prerequisites
+        if self.femmesh.Volumes:
+            # we only could do this for volumes, if a mseh contains volumes we gone use them in the analysis
+            # but a mesh could contain the element faces of the volumes as faces and the edges of the faces as edges, there we have to check of some gemetric objects
+            all_found = False
+            if self.femmesh.GroupCount:
+                all_found = FemMeshTools.get_femelement_sets_from_group_data(self.femmesh, self.material_objects)
+                print(all_found)
+            if all_found is False:
+                if not self.femelement_table:
+                    self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+                # we gone use the binary search for get_femelements_by_femnodes(), thus we need the parameter values self.femnodes_ele_table
+                if not self.femnodes_mesh:
+                    self.femnodes_mesh = self.femmesh.Nodes
+                if not self.femnodes_ele_table:
+                    self.femnodes_ele_table = FemMeshTools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
+                FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects, self.femnodes_ele_table)
+        if self.shellthickness_objects:
+            if not self.femelement_table:
+                self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+            FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
+        if self.beamsection_objects or self.fluidsection_objects:
+            if not self.femelement_table:
+                self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+            FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
 
 ##  @}

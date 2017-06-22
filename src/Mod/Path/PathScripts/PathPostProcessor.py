@@ -23,7 +23,12 @@
 # ***************************************************************************
 
 import FreeCAD
+import PathScripts.PathLog as PathLog
+import sys
+
 from PathScripts.PathPreferences import PathPreferences
+
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class PostProcessor:
 
@@ -33,14 +38,32 @@ class PostProcessor:
 
     @classmethod
     def load(cls, processor):
-        postname = processor + "_post"
+        PathLog.track(processor)
+        syspath = sys.path
+        paths = PathPreferences.searchPaths()
+        paths.extend(sys.path)
+        sys.path = paths
 
-        exec("import %s as current_post" % postname)
+        postname = processor + "_post"
+        namespace = {}
+        
+        #can't modify function local scope with exec in python3
+        exec("import %s as current_post" % postname, namespace)
+        current_post = namespace['current_post']
+        
         # make sure the script is reloaded if it was previously loaded
         # should the script have been imported for the first time above
         # then the initialization code of the script gets executed twice
         # resulting in 2 load messages if the script outputs one of those.
-        exec("reload(%s)" % 'current_post')
+        try:
+            # Python 2.7
+            exec("reload(%s)" % 'current_post')
+        except NameError:
+            # Python 3.4+
+            from importlib import reload
+            exec("reload(%s)" % 'current_post')
+
+        sys.path = syspath
 
         instance = PostProcessor(current_post)
         instance.units = None

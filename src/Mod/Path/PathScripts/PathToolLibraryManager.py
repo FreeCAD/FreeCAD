@@ -30,7 +30,7 @@ import Path
 import os
 from PySide import QtCore, QtGui
 import PathScripts
-import PathUtils
+from PathScripts import PathUtils
 
 import PathScripts.PathLog as PathLog
 
@@ -38,15 +38,8 @@ LOG_MODULE = 'PathToolLibraryManager'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 #PathLog.trackModule('PathToolLibraryManager')
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
-
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 # Tooltable XML readers
 class FreeCADTooltableHandler(xml.sax.ContentHandler):
@@ -199,19 +192,8 @@ class ToolLibraryManager():
         model.setHorizontalHeaderLabels(headers)
 
         def unitconv(ivalue):
-            parms = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
-            digits = parms.GetContents()[1][2] #get user's number of digits of precision
-            if parms.GetContents()[0][2]==0:
-                suffix = 'mm'
-                conversion = 1.0
-            elif parms.GetContents()[0][2]==3:
-                suffix = 'in'
-                conversion = 25.4
-            else:
-                suffix = ''
-            val = FreeCAD.Units.parseQuantity(str(round(ivalue/conversion,digits))+suffix)
-            displayed_val = val.UserString #just the displayed value-not the internal one
-
+            val = FreeCAD.Units.Quantity(ivalue, FreeCAD.Units.Length)
+            displayed_val = val.UserString      #just the displayed value-not the internal one
             return displayed_val
 
         if tt:
@@ -501,7 +483,7 @@ class EditorPanel():
 
     def importFile(self):
         "imports a tooltable from a file"
-        filename = QtGui.QFileDialog.getOpenFileName(self.form, _translate( "TooltableEditor", "Open tooltable", None), None, _translate("TooltableEditor", "Tooltable XML (*.xml);;HeeksCAD tooltable (*.tooltable)", None))
+        filename = QtGui.QFileDialog.getOpenFileName(self.form, translate( "TooltableEditor", "Open tooltable", None), None, translate("TooltableEditor", "Tooltable XML (*.xml);;HeeksCAD tooltable (*.tooltable)", None))
         if filename[0]:
             listname = self.form.listView.selectedIndexes()[0].data()
             if self.TLM.read(filename, listname):
@@ -510,7 +492,7 @@ class EditorPanel():
 
     def exportFile(self):
         "imports a tooltable from a file"
-        filename = QtGui.QFileDialog.getSaveFileName(self.form, _translate("TooltableEditor", "Save tooltable", None), None, _translate("TooltableEditor", "Tooltable XML (*.xml);;LinuxCNC tooltable (*.tbl)", None))
+        filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("TooltableEditor", "Save tooltable", None), None, translate("TooltableEditor", "Tooltable XML (*.xml);;LinuxCNC tooltable (*.tbl)", None))
 
         if filename[0]:
             #listname = self.form.listView.selectedIndexes()[0].data()
@@ -568,12 +550,11 @@ class EditorPanel():
 
                     label = "T{}: {}".format(toolnum, tool.Name)
                     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython",label)
-                    PathScripts.PathLoadTool.LoadTool(obj)
-                    PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
+                    PathScripts.PathToolController.ToolController(obj)
+                    PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
                     PathUtils.addToJob(obj, targetlist)
                     FreeCAD.activeDocument().recompute()
-                    newtool = tool.copy()
-                    obj.Tooltable.setTool(int(toolnum), newtool)
+                    obj.Tool = tool.copy()
                     obj.ToolNumber = int(toolnum)
                     #obj.recompute()
         FreeCAD.ActiveDocument.recompute()

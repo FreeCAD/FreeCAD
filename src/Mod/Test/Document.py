@@ -328,10 +328,6 @@ class DocumentBasicCases(unittest.TestCase):
     L1.touch()
     self.failUnless(self.Doc.recompute()==1)
     self.failUnless((7, 5, 4, 1, 2, 1)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    L6.Link = L1 # create a circular dependency
-    self.failUnless(self.Doc.recompute()==-1)
-    L6.Link = None  # resolve the circular dependency
-    self.failUnless(self.Doc.recompute()==3)
      
     self.Doc.removeObject(L1.Name)
     self.Doc.removeObject(L2.Name)
@@ -427,6 +423,7 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     self.Doc = FreeCAD.newDocument("SaveRestoreTests")
     L1 = self.Doc.addObject("App::FeatureTest","Label_1")
     L2 = self.Doc.addObject("App::FeatureTest","Label_2")
+    L3 = self.Doc.addObject("App::FeatureTest","Label_3")
     self.TempPath = tempfile.gettempdir()
     FreeCAD.Console.PrintLog( '  Using temp path: ' + self.TempPath + '\n')
 
@@ -437,9 +434,9 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     self.Doc.Label_1.TypeTransient = 4712
     # setup Linking
     self.Doc.Label_1.Link = self.Doc.Label_2
-    self.Doc.Label_2.Link = self.Doc.Label_1
+    self.Doc.Label_2.Link = self.Doc.Label_3
     self.Doc.Label_1.LinkSub = (self.Doc.Label_2,["Sub1","Sub2"])
-    self.Doc.Label_2.LinkSub = (self.Doc.Label_1,["Sub3","Sub4"])
+    self.Doc.Label_2.LinkSub = (self.Doc.Label_3,["Sub3","Sub4"])
     # save the document
     self.Doc.saveAs(SaveName)
     FreeCAD.closeDocument("SaveRestoreTests")
@@ -448,9 +445,9 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     self.failUnless(self.Doc.Label_2.Integer == 4711)
     # test Linkage
     self.failUnless(self.Doc.Label_1.Link == self.Doc.Label_2)
-    self.failUnless(self.Doc.Label_2.Link == self.Doc.Label_1)
+    self.failUnless(self.Doc.Label_2.Link == self.Doc.Label_3)
     self.failUnless(self.Doc.Label_1.LinkSub == (self.Doc.Label_2,["Sub1","Sub2"]))
-    self.failUnless(self.Doc.Label_2.LinkSub == (self.Doc.Label_1,["Sub3","Sub4"]))
+    self.failUnless(self.Doc.Label_2.LinkSub == (self.Doc.Label_3,["Sub3","Sub4"]))
     # do  NOT save transient properties
     self.failUnless(self.Doc.Label_1.TypeTransient == 4711)
     self.failUnless(self.Doc == FreeCAD.getDocument(self.Doc.Name))
@@ -836,7 +833,63 @@ class UndoRedoCases(unittest.TestCase):
     self.Doc.removeObject("Group")
     self.Doc.removeObject("Label_2")
     self.Doc.removeObject("Label_3")
-
+    
+  def testGroupAndGeoFeatureGroup(self):
+    
+    # an object can only be in one group at once, that must be enforced
+    obj1 = self.Doc.addObject("App::FeatureTest","obj1")
+    grp1 = self.Doc.addObject("App::DocumentObjectGroup","Group1")
+    grp2 = self.Doc.addObject("App::DocumentObjectGroup","Group2")
+    grp1.addObject(obj1)
+    self.failUnless(obj1.getParentGroup()==grp1)
+    self.failUnless(obj1.getParentGeoFeatureGroup()==None)
+    self.failUnless(grp1.hasObject(obj1))
+    grp2.addObject(obj1)
+    self.failUnless(grp1.hasObject(obj1)==False)
+    self.failUnless(grp2.hasObject(obj1))
+    
+    # an object is allowed to be in a group and a geofeaturegroup
+    prt1 = self.Doc.addObject("App::Part","Part1")
+    prt2 = self.Doc.addObject("App::Part","Part2")
+    
+    prt1.addObject(grp2)
+    self.failUnless(grp2.getParentGeoFeatureGroup()==prt1)
+    self.failUnless(grp2.getParentGroup()==None)
+    self.failUnless(grp2.hasObject(obj1))
+    self.failUnless(prt1.hasObject(grp2))
+    self.failUnless(prt1.hasObject(obj1))
+    
+    #it is not allowed to be in 2 geofeaturegroups 
+    prt2.addObject(grp2)
+    self.failUnless(grp2.hasObject(obj1))
+    self.failUnless(prt1.hasObject(grp2)==False)
+    self.failUnless(prt1.hasObject(obj1)==False)
+    self.failUnless(prt2.hasObject(grp2))
+    self.failUnless(prt2.hasObject(obj1))
+       
+    #to test: try add obj to second group by .Group = []
+    grp = prt1.Group
+    grp.append(grp2)
+    
+    #to test: check if cross CS link works
+    #try:
+    #    prt1.Group=grp
+    #except:
+    #    pass
+    #else:
+    #    self.fail("No exception at cross geofeaturegroup links")
+    
+    prt2.addObject(grp1)
+    grp = grp1.Group
+    grp.append(obj1)
+    try:
+        grp1.Group = grp
+    except:
+        pass
+    else:
+        self.fail("No exception thrown when object is in multiple Groups")
+   
+        
 
   def tearDown(self):
     # closing doc

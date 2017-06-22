@@ -65,27 +65,25 @@ App::Origin *OriginGroupExtension::getOrigin () const {
     }
 }
 
-App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObject* obj, bool indirect) {
-    const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsWithExtension ( OriginGroupExtension::getExtensionClassTypeId() );
-    for (auto grpObj: grps) {
-        OriginGroupExtension* grp = dynamic_cast <OriginGroupExtension* >(grpObj->getExtension(
-                                                    OriginGroupExtension::getExtensionClassTypeId()));
-        
-        if(!grp) throw Base::TypeError("Wrong type in origin group extenion");
-            
-        if ( indirect ) {
-            if ( grp->geoHasObject (obj) ) {
-                return grp->getExtendedObject();
-            }
-        } else {
-            if ( grp->hasObject (obj) ) {
-                return grp->getExtendedObject();
-            }
+App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObject* obj) {
+    
+    if(!obj)
+        return nullptr;
+    
+    bool isOriginFeature = obj->isDerivedFrom(App::OriginFeature::getClassTypeId());
+    
+    auto list = obj->getInList();
+    for (auto o : list) {
+        if(o->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId()))
+            return o;
+        else if (isOriginFeature && o->isDerivedFrom(App::Origin::getClassTypeId())) {
+            auto result = getGroupOfObject(o);
+            if(result)
+                return result;
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 short OriginGroupExtension::extensionMustExecute() {
@@ -110,9 +108,7 @@ App::DocumentObjectExecReturn *OriginGroupExtension::extensionExecute() {
 void OriginGroupExtension::onExtendedSetupObject () {
     App::Document *doc = getExtendedObject()->getDocument ();
 
-    std::string objName = std::string ( getExtendedObject()->getNameInDocument()).append ( "Origin" );
-
-    App::DocumentObject *originObj = doc->addObject ( "App::Origin", objName.c_str () );
+    App::DocumentObject *originObj = doc->addObject ( "App::Origin", "Origin" );
 
     assert ( originObj && originObj->isDerivedFrom ( App::Origin::getClassTypeId () ) );
     Origin.setValue (originObj);
@@ -188,9 +184,12 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
     }
 }
 
-void OriginGroupExtension::addObject(DocumentObject* obj) {
-    relinkToOrigin(obj);
-    App::GeoFeatureGroupExtension::addObject(obj);
+std::vector< DocumentObject* > OriginGroupExtension::addObjects(std::vector<DocumentObject*> objs) {
+    
+    for(auto obj : objs)
+        relinkToOrigin(obj);
+    
+    return App::GeoFeatureGroupExtension::addObjects(objs);
 }
 
 

@@ -34,22 +34,8 @@ if FreeCAD.GuiUp:
 
 """Helix Drill object and FreeCAD command"""
 
-if FreeCAD.GuiUp:
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
-
-        def translate(context, text, disambig=None):
-            return QtGui.QApplication.translate(context, text, disambig,
-                                                _encoding)
-
-    except AttributeError:
-
-        def translate(context, text, disambig=None):
-            return QtGui.QApplication.translate(context, text, disambig)
-else:
-    def translate(context, text, disambig=None):
-        return text
-
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 def z_cylinder(cyl):
     """ Test if cylinder is aligned to z-Axis"""
@@ -409,8 +395,9 @@ class ObjectPathHelix(object):
                             jobs[-1]["zmin"] -= obj.ThroughDepth.Value
 
                     drill_jobs.extend(jobs)
+
             if len(drill_jobs) > 0:
-                drill_jobs = PathUtils.sort_jobs(drill_jobs, ['xc', 'yc'])
+                drill_jobs = PathUtils.sort_jobs(drill_jobs, ['xc', 'yc'], ['xc', 'zmax'])
 
             for job in drill_jobs:
                 output += helix_cut((job["xc"], job["yc"]), job["r_out"], job["r_in"], obj.DeltaR.Value,

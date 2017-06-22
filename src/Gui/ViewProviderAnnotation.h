@@ -53,7 +53,7 @@ public:
     App::PropertyColor          TextColor;
     App::PropertyEnumeration    Justification;
     App::PropertyFloat          FontSize;
-    App::PropertyString         FontName;
+    App::PropertyFont           FontName;
     App::PropertyFloat          LineSpacing;
     App::PropertyAngle          Rotation;
     App::PropertyEnumeration    RotationAxis;

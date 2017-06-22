@@ -370,22 +370,23 @@ void TopoShape::convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf)
 void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
 {
 #if OCC_VERSION_HEX >= 0x070000
+    // https://www.opencascade.com/doc/occt-7.0.0/refman/html/classgp___trsf.html
+    // VectorialPart() already includes the scale factor
     gp_Mat m = trsf.VectorialPart();
     gp_XYZ p = trsf.TranslationPart();
-    Standard_Real scale = trsf.ScaleFactor();
 
     // set Rotation matrix
-    mtrx[0][0] = scale * m(1,1);
-    mtrx[0][1] = scale * m(1,2);
-    mtrx[0][2] = scale * m(1,3);
+    mtrx[0][0] = m(1,1);
+    mtrx[0][1] = m(1,2);
+    mtrx[0][2] = m(1,3);
 
-    mtrx[1][0] = scale * m(2,1);
-    mtrx[1][1] = scale * m(2,2);
-    mtrx[1][2] = scale * m(2,3);
+    mtrx[1][0] = m(2,1);
+    mtrx[1][1] = m(2,2);
+    mtrx[1][2] = m(2,3);
 
-    mtrx[2][0] = scale * m(3,1);
-    mtrx[2][1] = scale * m(3,2);
-    mtrx[2][2] = scale * m(3,3);
+    mtrx[2][0] = m(3,1);
+    mtrx[2][1] = m(3,2);
+    mtrx[2][2] = m(3,3);
 
     // set pos vector
     mtrx[0][3] = p.X();

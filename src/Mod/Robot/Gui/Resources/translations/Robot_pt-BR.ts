@@ -381,7 +381,7 @@
     <message>
         <location line="-177"/>
         <source>Select one Robot to set home position</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecione um robô para definir a posição de origem</translation>
     </message>
     <message>
         <location line="+149"/>
@@ -659,7 +659,7 @@
     <message>
         <location filename="../../TaskTrajectory.ui" line="+20"/>
         <source>Form</source>
-        <translation>Forma</translation>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -770,7 +770,7 @@
     <message>
         <location filename="../../TaskEdge2TracParameter.ui" line="+14"/>
         <source>Form</source>
-        <translation>Forma</translation>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -814,7 +814,7 @@
     <message>
         <location filename="../../TaskRobotControl.ui" line="+14"/>
         <source>Form</source>
-        <translation>Forma</translation>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -936,7 +936,7 @@
     <message>
         <location filename="../../TaskRobotMessages.ui" line="+14"/>
         <source>Form</source>
-        <translation>Forma</translation>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -960,7 +960,7 @@
     <message>
         <location filename="../../TaskTrajectoryDressUpParameter.ui" line="+14"/>
         <source>Form</source>
-        <translation>Forma</translation>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location line="+6"/>

@@ -133,14 +133,15 @@ void Tool::Restore(XMLReader &reader)
 {
     reader.readElement("Tool");
     Name = reader.getAttribute("name");
-    Diameter = (double) reader.getAttributeAsFloat("diameter");
-    LengthOffset = (double) reader.getAttributeAsFloat("length");
-    FlatRadius = (double) reader.getAttributeAsFloat("flat");
-    CornerRadius = (double) reader.getAttributeAsFloat("corner");
-    CuttingEdgeAngle = (double) reader.getAttributeAsFloat("angle");
-    CuttingEdgeHeight = (double) reader.getAttributeAsFloat("height");
-    
-    std::string type = reader.getAttribute("type");
+    Diameter          = reader.hasAttribute("diameter") ? (double) reader.getAttributeAsFloat("diameter") : 0.0;
+    LengthOffset      = reader.hasAttribute("length")   ? (double) reader.getAttributeAsFloat("length")   : 0.0;
+    FlatRadius        = reader.hasAttribute("flat")     ? (double) reader.getAttributeAsFloat("flat")     : 0.0;
+    CornerRadius      = reader.hasAttribute("corner")   ? (double) reader.getAttributeAsFloat("corner")   : 0.0;
+    CuttingEdgeAngle  = reader.hasAttribute("angle")    ? (double) reader.getAttributeAsFloat("angle")    : 0.0;
+    CuttingEdgeHeight = reader.hasAttribute("height")   ? (double) reader.getAttributeAsFloat("height")   : 0.0;
+    std::string type  = reader.hasAttribute("type")     ? reader.getAttribute("type") : "";
+    std::string mat   = reader.hasAttribute("mat")      ? reader.getAttribute("mat")  : "";
+
     if(type=="EndMill")
         Type = Tool::ENDMILL;
     else if(type=="Drill")
@@ -168,7 +169,6 @@ void Tool::Restore(XMLReader &reader)
     else 
         Type = Tool::UNDEFINED;
         
-    std::string mat = reader.getAttribute("mat");
     if(mat=="Carbide")
         Material = Tool::CARBIDE;
     else if(mat=="HighSpeedSteel")

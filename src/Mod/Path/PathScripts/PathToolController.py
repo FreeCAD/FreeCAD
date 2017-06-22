@@ -1,0 +1,439 @@
+# -*- coding: utf-8 -*-
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+''' Tool Controller defines tool, spindle speed and feed rates for Path Operations '''
+
+import FreeCAD
+import FreeCADGui
+import Part
+import Path
+import PathScripts
+import PathScripts.PathLog as PathLog
+import PathUtils
+import xml.etree.ElementTree as xml
+
+from FreeCAD import Units
+from PySide import QtCore, QtGui
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+# Qt tanslation handling
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
+
+class ToolControllerTemplate:
+    '''Attribute and sub element strings for template export/import.'''
+    Label        = 'label'
+    ToolNumber   = 'nr'
+    VertFeed     = 'vfeed'
+    HorizFeed    = 'hfeed'
+    VertRapid    = 'vrapid'
+    HorizRapid   = 'hrapid'
+    SpindleSpeed = 'speed'
+    SpindleDir   = 'dir'
+    Tool         = 'Tool'
+
+class ToolController:
+    def __init__(self, obj, tool=1):
+        PathLog.track('tool: {}'.format(tool))
+
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The active tool"))
+        obj.ToolNumber = (0, 0, 10000, 1)
+        obj.addProperty("Path::PropertyTool", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool used by this controller"))
+
+        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The speed of the cutting spindle in RPM"))
+        obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"))
+        obj.SpindleDir = ['Forward', 'Reverse']
+        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("App::Property", "Feed rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("App::Property", "Feed rate for horizontal moves"))
+        obj.addProperty("App::PropertySpeed", "VertRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid rate for horizontal moves"))
+        obj.Proxy = self
+        mode = 2
+        obj.setEditorMode('Placement', mode)
+
+    def assignTemplate(self, obj, template):
+        '''assignTemplate(obj, xmlItem) ... extract properties from xmlItem and assign to receiver.'''
+        if template.get(ToolControllerTemplate.VertFeed):
+            obj.VertFeed = template.get(ToolControllerTemplate.VertFeed)
+        if template.get(ToolControllerTemplate.HorizFeed):
+            obj.HorizFeed = template.get(ToolControllerTemplate.HorizFeed)
+        if template.get(ToolControllerTemplate.VertRapid):
+            obj.VertRapid = template.get(ToolControllerTemplate.VertRapid)
+        if template.get(ToolControllerTemplate.HorizRapid):
+            obj.HorizRapid = template.get(ToolControllerTemplate.HorizRapid)
+        if template.get(ToolControllerTemplate.SpindleSpeed):
+            obj.SpindleSpeed = float(template.get(ToolControllerTemplate.SpindleSpeed))
+        if template.get(ToolControllerTemplate.SpindleDir):
+            obj.SpindleDir = template.get(ToolControllerTemplate.SpindleDir)
+        if template.get(ToolControllerTemplate.ToolNumber):
+            obj.ToolNumber = int(template.get(ToolControllerTemplate.ToolNumber))
+
+        for t in template.iter(ToolControllerTemplate.Tool):
+            tool = Path.Tool()
+            tool.fromTemplate(xml.tostring(t))
+            obj.Tool = tool
+
+    def templateAttrs(self, obj):
+        '''templateAttrs(obj) ... answer a dictionary with all properties that should be stored for a template.'''
+        attrs = {}
+        attrs[ToolControllerTemplate.Label]        = ("%s" % (obj.Label))
+        attrs[ToolControllerTemplate.ToolNumber]   = ("%d" % (obj.ToolNumber))
+        attrs[ToolControllerTemplate.VertFeed]     = ("%s" % (obj.VertFeed))
+        attrs[ToolControllerTemplate.HorizFeed]    = ("%s" % (obj.HorizFeed))
+        attrs[ToolControllerTemplate.VertRapid]    = ("%s" % (obj.VertRapid))
+        attrs[ToolControllerTemplate.HorizRapid]   = ("%s" % (obj.HorizRapid))
+        attrs[ToolControllerTemplate.SpindleSpeed] = ("%f" % (obj.SpindleSpeed))
+        attrs[ToolControllerTemplate.SpindleDir]   = ("%s" % (obj.SpindleDir))
+        return attrs
+
+    def execute(self, obj):
+        PathLog.track()
+
+        commands = ""
+        commands += "(" + obj.Label + ")"+'\n'
+        commands += 'M6 T'+str(obj.ToolNumber)+'\n'
+
+        if obj.SpindleDir == 'Forward':
+            commands += 'M3 S' + str(obj.SpindleSpeed) + '\n'
+        else:
+            commands += 'M4 S' + str(obj.SpindleSpeed) + '\n'
+
+        if commands == "":
+            commands += "(No commands processed)"
+
+        path = Path.Path(commands)
+        obj.Path = path
+        if obj.ViewObject:
+            obj.ViewObject.Visibility = True
+
+    def onChanged(self, obj, prop):
+        PathLog.track('prop: {}  state: {}'.format(prop, obj.State))
+
+
+        if 'Restore' not in obj.State:
+            job = PathUtils.findParentJob(obj)
+            if job is not None:
+                for g in job.Group:
+                    if not(isinstance(g.Proxy, PathScripts.PathToolController.ToolController)):
+                        g.touch()
+
+    def getTool(self, obj):
+        '''returns the tool associated with this tool controller'''
+        PathLog.track()
+        return obj.Tool
+
+
+class _ViewProviderToolController:
+
+    def __init__(self, vobj):
+        vobj.Proxy = self
+        mode = 2
+        vobj.setEditorMode('LineWidth', mode)
+        vobj.setEditorMode('MarkerColor', mode)
+        vobj.setEditorMode('NormalColor', mode)
+        vobj.setEditorMode('DisplayMode', mode)
+        vobj.setEditorMode('BoundingBox', mode)
+        vobj.setEditorMode('Selectable', mode)
+        vobj.setEditorMode('ShapeColor', mode)
+        vobj.setEditorMode('Transparency', mode)
+        vobj.setEditorMode('Visibility', mode)
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None
+
+    def getIcon(self):
+        return ":/icons/Path-LengthOffset.svg"
+
+    def onChanged(self, vobj, prop):
+        mode = 2
+        vobj.setEditorMode('LineWidth', mode)
+        vobj.setEditorMode('MarkerColor', mode)
+        vobj.setEditorMode('NormalColor', mode)
+        vobj.setEditorMode('DisplayMode', mode)
+        vobj.setEditorMode('BoundingBox', mode)
+        vobj.setEditorMode('Selectable', mode)
+
+    def updateData(self, vobj, prop):
+        # this is executed when a property of the APP OBJECT changes
+        pass
+
+    def setEdit(self, vobj, mode):
+        # this is executed when the object is double-clicked in the tree
+        FreeCADGui.Control.closeDialog()
+        taskd = TaskPanel()
+        taskd.obj = vobj.Object
+        FreeCADGui.Control.showDialog(taskd)
+        taskd.setupUi()
+
+        FreeCAD.ActiveDocument.recompute()
+
+        return True
+
+    def unsetEdit(self, vobj, mode):
+        # this is executed when the user cancels or terminates edit mode
+        return False
+
+
+class CommandPathToolController:
+    def GetResources(self):
+        return {'Pixmap': 'Path-LengthOffset',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller to the Job"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller")}
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
+
+    def Activated(self):
+        PathLog.track()
+        self.Create()
+
+#         FreeCAD.ActiveDocument.openTransaction(translate("Path_ToolController", "Create Tool Controller Object"))
+
+#         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "TC")
+#         PathScripts.PathToolController.ToolController(obj)
+#         PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
+
+#         PathUtils.addToJob(obj)
+
+#         FreeCAD.ActiveDocument.commitTransaction()
+#         FreeCAD.ActiveDocument.recompute()
+
+    @staticmethod
+    def Create(jobname=None, assignViewProvider=True, tool=None, toolNumber=1):
+        PathLog.track("tool: {} with toolNumber: {}".format(tool, toolNumber))
+
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Default Tool")
+        PathScripts.PathToolController.ToolController(obj)
+        if assignViewProvider:
+            PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
+
+        if tool is None:
+            tool = Path.Tool()
+            tool.Diameter = 5.0
+            tool.Name = "Default Tool"
+            tool.CuttingEdgeHeight = 15.0
+            tool.ToolType = "EndMill"
+            tool.Material = "HighSpeedSteel"
+	obj.Tool = tool
+        obj.ToolNumber = toolNumber
+        PathUtils.addToJob(obj, jobname)
+
+    @staticmethod
+    def FromTemplate(job, template, assignViewProvider=True):
+        PathLog.track()
+
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", template.get(ToolControllerTemplate.Label))
+        tc  = PathScripts.PathToolController.ToolController(obj)
+        if assignViewProvider:
+            PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
+
+        tc.assignTemplate(obj, template)
+
+        PathUtils.addToJob(obj, job.Name)
+
+
+class TaskPanel:
+    def __init__(self):
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolControl.ui")
+        #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ToolControl.ui")
+        self.editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
+
+        self.updating = False
+        self.toolrep = None
+
+    def accept(self):
+        self.getFields()
+
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Control.closeDialog()
+        if self.toolrep is not None:
+            FreeCAD.ActiveDocument.removeObject(self.toolrep.Name)
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.Selection.removeObserver(self.s)
+
+    def reject(self):
+        FreeCADGui.Control.closeDialog()
+        if self.toolrep is not None:
+            FreeCAD.ActiveDocument.removeObject(self.toolrep.Name)
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.Selection.removeObserver(self.s)
+
+    def getFields(self):
+        if self.obj:
+            if hasattr(self.obj, "Label"):
+                self.obj.Label = self.form.tcoName.text()
+            if hasattr(self.obj, "VertFeed"):
+                self.obj.VertFeed = self.form.vertFeed.text()
+            if hasattr(self.obj, "HorizFeed"):
+                self.obj.HorizFeed = self.form.horizFeed.text()
+            if hasattr(self.obj, "VertRapid"):
+                self.obj.VertRapid = self.form.vertRapid.text()
+            if hasattr(self.obj, "HorizRapid"):
+                self.obj.HorizRapid = self.form.horizRapid.text()
+            if hasattr(self.obj, "ToolNumber"):
+                self.obj.ToolNumber = self.form.uiToolNum.value()
+            if hasattr(self.obj, "SpindleSpeed"):
+                self.obj.SpindleSpeed = self.form.spindleSpeed.value()
+            if hasattr(self.obj, "SpindleDir"):
+                self.obj.SpindleDir = str(self.form.cboSpindleDirection.currentText())
+
+        self.obj.Proxy.execute(self.obj)
+
+    def setFields(self):
+        self.form.tcoName.setText(self.obj.Label)
+        self.form.uiToolNum.setValue(self.obj.ToolNumber)
+        self.form.vertFeed.setText(str(self.obj.VertFeed.Value))
+        self.form.horizFeed.setText(str(self.obj.HorizFeed.Value))
+        self.form.vertRapid.setText(str(self.obj.VertRapid.Value))
+        self.form.horizRapid.setText(str(self.obj.HorizRapid.Value))
+
+        self.form.spindleSpeed.setValue(self.obj.SpindleSpeed)
+
+        index = self.form.cboSpindleDirection.findText(self.obj.SpindleDir, QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            self.form.cboSpindleDirection.setCurrentIndex(index)
+
+        try:
+            tool = self.obj.Tool
+            self.form.txtToolType.setText(tool.ToolType)
+            self.form.txtToolMaterial.setText(tool.Material)
+            diam = Units.Quantity(tool.Diameter, FreeCAD.Units.Length)
+            self.form.txtToolDiameter.setText(diam.getUserPreferred()[0])
+            self.form.txtToolName.setText(tool.Name)
+        except:
+            self.form.txtToolType.setText("UNDEFINED")
+            self.form.txtToolMaterial.setText("UNDEFINED")
+            self.form.txtToolDiameter.setText("UNDEFINED")
+
+        radius = tool.Diameter / 2
+        length = tool.CuttingEdgeHeight
+        t = Part.makeCylinder(radius, length)
+        self.toolrep.Shape = t
+
+    def open(self):
+        self.s = SelObserver()
+        # install the function mode resident
+        FreeCADGui.Selection.addObserver(self.s)
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok)
+
+    def edit(self, item, column):
+        if not self.updating:
+            self.resetObject()
+
+    def resetObject(self, remove=None):
+        "transfers the values from the widget to the object"
+        FreeCAD.ActiveDocument.recompute()
+
+    def setupUi(self):
+        self.form.tcoName.editingFinished.connect(self.getFields)
+        self.form.cmdEditLocal.clicked.connect(self.editTool)
+
+        t = Part.makeCylinder(1, 1)
+        self.toolrep = FreeCAD.ActiveDocument.addObject("Part::Feature", "tool")
+        self.toolrep.Shape = t
+
+        self.setFields()
+
+    def getType(self, tooltype):
+        "gets a combobox index number for a given type or viceversa"
+        toolslist = ["Drill", "CenterDrill", "CounterSink", "CounterBore",
+                     "Reamer", "Tap", "EndMill", "SlotCutter", "BallEndMill",
+                     "ChamferMill", "CornerRound", "Engraver"]
+        if isinstance(tooltype, str):
+            if tooltype in toolslist:
+                return toolslist.index(tooltype)
+            else:
+                return 0
+        else:
+            return toolslist[tooltype]
+
+    def getMaterial(self, material):
+        "gets a combobox index number for a given material or viceversa"
+        matslist = ["HighSpeedSteel", "HighCarbonToolSteel", "CastAlloy",
+                    "Carbide", "Ceramics", "Diamond", "Sialon"]
+        if isinstance(material, str):
+            if material in matslist:
+                return matslist.index(material)
+            else:
+                return 0
+        else:
+            return matslist[material]
+
+    def editTool(self):
+        toolnum = self.obj.ToolNumber
+        tool = self.obj.Tool
+        editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
+
+        editform.NameField.setText(tool.Name)
+        editform.TypeField.setCurrentIndex(self.getType(tool.ToolType))
+        editform.MaterialField.setCurrentIndex(self.getMaterial(tool.Material))
+        editform.DiameterField.setText(FreeCAD.Units.Quantity(tool.Diameter, FreeCAD.Units.Length).UserString)
+        editform.LengthOffsetField.setText(FreeCAD.Units.Quantity(tool.LengthOffset, FreeCAD.Units.Length).UserString)
+        editform.FlatRadiusField.setText(FreeCAD.Units.Quantity(tool.FlatRadius, FreeCAD.Units.Length).UserString)
+        editform.CornerRadiusField.setText(FreeCAD.Units.Quantity(tool.CornerRadius, FreeCAD.Units.Length).UserString)
+        editform.CuttingEdgeAngleField.setText(FreeCAD.Units.Quantity(tool.CuttingEdgeAngle, FreeCAD.Units.Angle).UserString)
+        editform.CuttingEdgeHeightField.setText(FreeCAD.Units.Quantity(tool.CuttingEdgeHeight, FreeCAD.Units.Length).UserString)
+
+        r = editform.exec_()
+        if r:
+            if editform.NameField.text():
+                tool.Name = str(editform.NameField.text()) #FIXME: not unicode safe!
+            tool.ToolType = self.getType(editform.TypeField.currentIndex())
+            tool.Material = self.getMaterial(editform.MaterialField.currentIndex())
+            tool.Diameter = FreeCAD.Units.parseQuantity(editform.DiameterField.text())
+            tool.LengthOffset = FreeCAD.Units.parseQuantity(editform.LengthOffsetField.text())
+            tool.FlatRadius = FreeCAD.Units.parseQuantity(editform.FlatRadiusField.text())
+            tool.CornerRadius = FreeCAD.Units.parseQuantity(editform.CornerRadiusField.text())
+            tool.CuttingEdgeAngle = FreeCAD.Units.Quantity(editform.CuttingEdgeAngleField.text())
+            tool.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(editform.CuttingEdgeHeightField.text())
+            self.obj.Tool = tool
+            self.setFields()
+
+
+
+class SelObserver:
+    def __init__(self):
+        pass
+
+    def __del__(self):
+        pass
+
+if FreeCAD.GuiUp:
+    # register the FreeCAD command
+    FreeCADGui.addCommand('Path_ToolController', CommandPathToolController())
+
+FreeCAD.Console.PrintLog("Loading PathToolController... done\n")

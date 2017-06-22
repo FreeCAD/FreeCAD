@@ -11,7 +11,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Annotation</source>
-        <translation>&amp;Szövegmagyarázat</translation>
+        <translation>M&amp;Agyarázó jegyzet</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -138,7 +138,7 @@
     <message>
         <location line="+1"/>
         <source>Open a scalable vector graphic</source>
-        <translation>Skálázható vektorgrafika megnyitása</translation>
+        <translation>Egy skálázható vektor grafikát nyit meg</translation>
     </message>
 </context>
 <context>
@@ -270,7 +270,7 @@
     <message>
         <location line="+33"/>
         <source>Open SVG File</source>
-        <translation>SVG-fájl megnyitása</translation>
+        <translation>SVG fájl megnyitása</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -280,7 +280,7 @@
     <message>
         <location line="+87"/>
         <source>&amp;Renderer</source>
-        <translation>&amp;Megjelenítő</translation>
+        <translation>&amp;Renderelő</translation>
     </message>
     <message>
         <location line="+105"/>
@@ -334,7 +334,7 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation>Eltérő tájolás</translation>
+        <translation>Eltérő tájolású</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -346,15 +346,14 @@ Do you want to continue?</source>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation>Eltérő papírméret</translation>
+        <translation>Eltérő méretű papír</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation>A nyomtató eltérő papírméretet használ mint a rajz.
-Szeretné folytatni?</translation>
+        <translation>A nyomtató a rajztól eltérő méretű papír méretet használ. Szeretné fojtatni?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -372,7 +371,7 @@ Szeretné folytatni?</translation>
     <message>
         <location filename="../../TaskOrthoViews.ui" line="+26"/>
         <source>Orthographic Projection</source>
-        <translation>Ortografikus vetítés</translation>
+        <translation>Merőleges vetítés</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -774,7 +773,7 @@ Szeretné folytatni?</translation>
         <location line="-169"/>
         <location line="+517"/>
         <source>Choose an SVG file to open</source>
-        <translation>SVG-fájl kiválasztása megnyitáshoz</translation>
+        <translation>SVG fájl kiválasztása megnyitáshoz</translation>
     </message>
     <message>
         <source>Drawing viewer</source>

@@ -22,30 +22,31 @@
 # *                                                                         *
 # ***************************************************************************
 ''' Post Process command that will make use of the Output File and Post Processor entries in PathJob '''
+
 from __future__ import print_function
+
 import FreeCAD
 import FreeCADGui
-from PySide import QtCore, QtGui
-from PathScripts import PathUtils
-from PathScripts import PathJob
-from PathScripts import PathLoadTool
-from PathScripts.PathPreferences import PathPreferences
-from PathScripts.PathPostProcessor import PostProcessor
-import os
 import PathScripts.PathLog as PathLog
-LOG_MODULE = 'PathPost'
+import PathScripts.PathUtil as PathUtil
+import os
+
+from PathScripts import PathJob
+from PathScripts import PathToolController
+from PathScripts import PathUtils
+from PathScripts.PathPostProcessor import PostProcessor
+from PathScripts.PathPreferences import PathPreferences
+from PySide import QtCore, QtGui
+
+
+LOG_MODULE = PathLog.thisModule()
+
 PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-PathLog.trackModule('PathPost')
+#PathLog.trackModule(LOG_MODULE)
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class DlgSelectPostProcessor:
 
@@ -86,13 +87,16 @@ class CommandPathPost:
 
     def resolveFileName(self, job):
         path = PathPreferences.defaultOutputFile()
-        if job.OutputFile:
-            path = job.OutputFile
+        if job.PostProcessorOutputFile:
+            path = job.PostProcessorOutputFile
         filename = path
         if '%D' in filename:
             D = FreeCAD.ActiveDocument.FileName
             if D:
                 D = os.path.dirname(D)
+                # in case the document is in the current working directory
+                if not D:
+                    D = '.'
             else:
                 FreeCAD.Console.PrintError("Please save document in order to resolve output path!\n")
                 return None
@@ -244,9 +248,10 @@ class CommandPathPost:
         currTool = None
         for obj in job.Group:
             PathLog.debug("obj: {}".format(obj.Name))
-            if not isinstance(obj.Proxy, PathLoadTool.LoadTool):
-                if obj.ToolController.ToolNumber != currTool:
-                    postlist.append(obj.ToolController)
+            if not isinstance(obj.Proxy, PathToolController.ToolController):
+                tc = PathUtil.toolControllerForOp(obj)
+                if tc.ToolNumber != currTool:
+                    postlist.append(tc)
                 postlist.append(obj)
 
         fail = True

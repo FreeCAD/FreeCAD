@@ -401,15 +401,15 @@
     <name>CmdMeshSectionByPlane</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">网格</translation>
+        <translation>网格</translation>
     </message>
     <message>
         <source>Create section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create section from mesh and plane</translation>
     </message>
     <message>
         <source>Section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Section from mesh and plane</translation>
     </message>
 </context>
 <context>
@@ -905,7 +905,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Export AMF files using compression</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Export AMF files using compression</translation>
     </message>
 </context>
 <context>
@@ -1217,7 +1217,7 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
     </message>
     <message>
         <source>Unknown error occurred while running OpenSCAD.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unknown error occurred while running OpenSCAD.</translation>
     </message>
 </context>
 <context>

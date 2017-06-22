@@ -1,4 +1,4 @@
-# Complete gui init module  
+# Complete gui init module
 # (c) 2003 Juergen Riegel
 #
 # Gathering all the information to start FreeCAD
@@ -30,8 +30,7 @@
 #***************************************************************************/
 
 
-
-class CompleteWorkbench ( Workbench ):
+class CompleteWorkbench(Workbench):
     "Complete workbench object"
     def __init__(self):
         self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Complete/Resources/icons/CompleteWorkbench.svg"
@@ -39,10 +38,9 @@ class CompleteWorkbench ( Workbench ):
         self.__class__.ToolTip = "Complete workbench"
 
     def Initialize(self):
-        # load the module
-        import CompleteGui
-        import Complete
+        pass
+
     def GetClassName(self):
-        return "CompleteGui::Workbench"
+        return "Gui::PythonWorkbench"
 
 Gui.addWorkbench(CompleteWorkbench())

@@ -381,7 +381,7 @@
     <message>
         <location line="-177"/>
         <source>Select one Robot to set home position</source>
-        <translation type="unfinished"></translation>
+        <translation>Escolme un Robot para estabelecer a posición de principio</translation>
     </message>
     <message>
         <location line="+149"/>

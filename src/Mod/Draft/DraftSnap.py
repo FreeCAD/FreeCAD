@@ -33,7 +33,7 @@ __url__ = "http://www.freecadweb.org"
 #  everything that goes with it (toolbar buttons, cursor icons, etc)
 
 
-import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers, DraftVecUtils
+import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers, DraftVecUtils, itertools
 from collections import OrderedDict
 from FreeCAD import Vector
 from pivy import coin
@@ -719,7 +719,14 @@ class Snapper:
             u = FreeCAD.Vector(1,0,0)
             v = FreeCAD.Vector(0,1,0)
         if len(self.holdPoints) > 1:
-            # first try int points
+            # first try mid points
+            if self.isEnabled("midpoint"):
+                l = list(self.holdPoints)
+                for p1,p2 in itertools.combinations(l,2):
+                    p3 = p1.add((p2.sub(p1)).multiply(0.5))
+                    if (p3.sub(point)).Length < self.radius:
+                        return [p1,'midpoint',p3]
+            # then try int points
             ipoints = []
             l = list(self.holdPoints)
             while len(l) > 1:

@@ -405,11 +405,11 @@
     </message>
     <message>
         <source>Create section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Facer sección a partir de malla e plano</translation>
     </message>
     <message>
         <source>Section from mesh and plane</source>
-        <translation type="unfinished"></translation>
+        <translation>Sección a partir de malla e plano</translation>
     </message>
 </context>
 <context>
@@ -904,7 +904,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Export AMF files using compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar ficheiros AMF usando compresión</translation>
     </message>
 </context>
 <context>
@@ -1216,7 +1216,7 @@ Por favor visite http://www.openscad.org/index.html para instalalo.</translation
     </message>
     <message>
         <source>Unknown error occurred while running OpenSCAD.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocorreu un erro descoñecido namentres corría OpenSCAD.</translation>
     </message>
 </context>
 <context>

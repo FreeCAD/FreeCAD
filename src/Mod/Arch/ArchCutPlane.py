@@ -74,6 +74,13 @@ class _CommandCutPlane:
         return len(FreeCADGui.Selection.getSelection()) > 1
 
     def Activated(self):
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if len(sel) != 2:
+            FreeCAD.Console.PrintError("You must select exactly two objects, the shape to be cut and the cut plane\n")
+            return
+        if not sel[1].SubObjects:
+            FreeCAD.Console.PrintError("You must select a face from the second object (cut plane), not the whole object\n")
+            return
         panel=_CutPlaneTaskPanel()
         FreeCADGui.Control.showDialog(panel)
 

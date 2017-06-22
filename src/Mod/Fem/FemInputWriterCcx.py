@@ -34,6 +34,7 @@ import sys
 import time
 import FemMeshTools
 import FemInputWriter
+import six
 
 
 class FemInputWriterCcx(FemInputWriter.FemInputWriter):
@@ -105,18 +106,9 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         if self.analysis_type == "thermomech" and self.initialtemperature_objects:
             self.write_constraints_initialtemperature(inpfile)
         self.write_femelementsets(inpfile)
-
         # Fluid section: Inlet and Outlet requires special element definition
         if self.fluidsection_objects:
-            InOuttest = False
-            for ccx_elset in self.ccx_elsets:
-                if ccx_elset['ccx_elset']:
-                    if 'fluidsection_obj'in ccx_elset:  # fluid mesh
-                        fluidsec_obj = ccx_elset['fluidsection_obj']
-                        if fluidsec_obj.SectionType == "Liquid":
-                            if (fluidsec_obj.LiquidSectionType == "PIPE INLET") or (fluidsec_obj.LiquidSectionType == "PIPE OUTLET"):
-                                InOuttest = True
-            if InOuttest is True:
+            if is_fluid_section_inlet_outlet(self.ccx_elsets) is True:
                 inpfile.close()
                 FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, self.file_name)
                 inpfile = open(self.file_name, 'a')
@@ -266,18 +258,9 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         if self.analysis_type == "thermomech" and self.initialtemperature_objects:
             self.write_constraints_initialtemperature(inpfileMain)
         self.write_femelementsets(inpfileMain)
-
         # Fluid section: Inlet and Outlet requires special element definition
         if self.fluidsection_objects:
-            InOuttest = False
-            for ccx_elset in self.ccx_elsets:
-                if ccx_elset['ccx_elset']:
-                    if 'fluidsection_obj'in ccx_elset:  # fluid mesh
-                        fluidsec_obj = ccx_elset['fluidsection_obj']
-                        if fluidsec_obj.SectionType == "Liquid":
-                            if (fluidsec_obj.LiquidSectionType == "PIPE INLET") or (fluidsec_obj.LiquidSectionType == "PIPE OUTLET"):
-                                InOuttest = True
-            if InOuttest is True:
+            if is_fluid_section_inlet_outlet(self.ccx_elsets) is True:
                 FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, name + "_Node_Elem_sets.inp")
 
         # constraints independent from steps
@@ -354,59 +337,83 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('\n***********************************************************\n')
         f.write('** Element sets for materials and FEM element type (solid, shell, beam, fluid)\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+
+        # get the element ids for face and edge elements and write them into the objects
+        if len(self.shellthickness_objects) > 1:
+            self.get_element_geometry2D_elements()
+        elif len(self.beamsection_objects) > 1:
+            self.get_element_geometry1D_elements()
+            # we will need to split the beams even for one beamobj because no beam in z-direction can be used in ccx without a special adjustment
+            # thus they need an own ccx_elset --> but this is ccx specific and thus should not be in input writer!
+        elif len(self.fluidsection_objects) > 1:
+            self.get_element_fluid1D_elements()
+
+        # get the element ids for material objects and write them into the material object
+        if len(self.material_objects) > 1:
+            self.get_material_elements()
+
+        # create the ccx_elsets
         if len(self.material_objects) == 1:
-            if self.beamsection_objects and len(self.beamsection_objects) == 1:          # single mat, single beam
-                self.get_ccx_elsets_single_mat_single_beam()
-            elif self.beamsection_objects and len(self.beamsection_objects) > 1:         # single mat, multiple beams
-                self.get_ccx_elsets_single_mat_multiple_beam()
-            elif self.fluidsection_objects and len(self.fluidsection_objects) == 1:          # single mat, single fluid
-                self.get_ccx_elsets_single_mat_single_fluid()
-            elif self.fluidsection_objects and len(self.fluidsection_objects) > 1:         # single mat, multiple fluids
-                self.get_ccx_elsets_single_mat_multiple_fluid()
-            elif self.shellthickness_objects and len(self.shellthickness_objects) == 1:  # single mat, single shell
-                self.get_ccx_elsets_single_mat_single_shell()
-            elif self.shellthickness_objects and len(self.shellthickness_objects) > 1:   # single mat, multiple shells
-                self.get_ccx_elsets_single_mat_multiple_shell()
-            else:                                                                        # single mat, solid
+            if self.femmesh.Volumes:
+                # we only could do this for volumes, if a mseh contains volumes we gone use them in the analysis
+                # but a mesh could contain the element faces of the volumes as faces and the edges of the faces as edges, there we have to check of some gemetric objects
                 self.get_ccx_elsets_single_mat_solid()
-        else:
-            if self.beamsection_objects and len(self.beamsection_objects) == 1:         # multiple mats, single beam
-                self.get_ccx_elsets_multiple_mat_single_beam()
-            elif self.beamsection_objects and len(self.beamsection_objects) > 1:        # multiple mats, multiple beams
-                self.get_ccx_elsets_multiple_mat_multiple_beam()
-            if self.fluidsection_objects and len(self.fluidsection_objects) == 1:         # multiple mats, single fluid
-                self.get_ccx_elsets_multiple_mat_single_fluid()
-            elif self.fluidsection_objects and len(self.fluidsection_objects) > 1:        # multiple mats, multiple fluids
-                self.get_ccx_elsets_multiple_mat_multiple_fluid()
-            elif self.shellthickness_objects and len(self.shellthickness_objects) == 1:   # multiple mats, single shell
+            elif len(self.shellthickness_objects) == 1:
+                self.get_ccx_elsets_single_mat_single_shell()
+            elif len(self.shellthickness_objects) > 1:
+                self.get_ccx_elsets_single_mat_multiple_shell()
+            elif len(self.beamsection_objects) == 1:
+                self.get_ccx_elsets_single_mat_single_beam()
+            elif len(self.beamsection_objects) > 1:
+                self.get_ccx_elsets_single_mat_multiple_beam()
+            elif len(self.fluidsection_objects) == 1:
+                self.get_ccx_elsets_single_mat_single_fluid()
+            elif len(self.fluidsection_objects) > 1:
+                self.get_ccx_elsets_single_mat_multiple_fluid()
+        elif len(self.material_objects) > 1:
+            if self.femmesh.Volumes:
+                # we only could do this for volumes, if a mseh contains volumes we gone use them in the analysis
+                # but a mesh could contain the element faces of the volumes as faces and the edges of the faces as edges, there we have to check of some gemetric objects
+                self.get_ccx_elsets_multiple_mat_solid()  # volume is a bit special, because retriving ids from group mesh data is implemented
+            elif len(self.shellthickness_objects) == 1:
                 self.get_ccx_elsets_multiple_mat_single_shell()
-            elif self.shellthickness_objects and len(self.shellthickness_objects) > 1:  # multiple mats, multiple shells
+            elif len(self.shellthickness_objects) > 1:
                 self.get_ccx_elsets_multiple_mat_multiple_shell()
-            else:                                                                       # multiple mats, solid
-                self.get_ccx_elsets_multiple_mat_solid()
+            elif len(self.beamsection_objects) == 1:
+                self.get_ccx_elsets_multiple_mat_single_beam()
+            elif len(self.beamsection_objects) > 1:
+                self.get_ccx_elsets_multiple_mat_multiple_beam()
+            elif len(self.fluidsection_objects) == 1:
+                self.get_ccx_elsets_multiple_mat_single_fluid()
+            elif len(self.fluidsection_objects) > 1:
+                self.get_ccx_elsets_multiple_mat_multiple_fluid()
+
+        # TODO: some elemetIDs are collected for 1D-Flow calculation, this should be a def somewhere else, preferable inside the get_ccx_elsets_... methods
         for ccx_elset in self.ccx_elsets:
-            f.write('*ELSET,ELSET=' + ccx_elset['ccx_elset_name'] + '\n')
-            collect_ele = False
-            if ccx_elset['ccx_elset']:
+            if ccx_elset['ccx_elset'] and not isinstance(ccx_elset['ccx_elset'], six.string_types):  # use six to be sure to be Python 2.7 and 3.x compatible
                 if 'fluidsection_obj'in ccx_elset:
                     fluidsec_obj = ccx_elset['fluidsection_obj']
                     if fluidsec_obj.SectionType == 'Liquid':
                         if (fluidsec_obj.LiquidSectionType == "PIPE INLET") or (fluidsec_obj.LiquidSectionType == "PIPE OUTLET"):
-                            collect_ele = True
+                            elsetchanged = False
+                            counter = 0
+                            for elid in ccx_elset['ccx_elset']:
+                                counter = counter + 1
+                                if (elsetchanged is False) and (fluidsec_obj.LiquidSectionType == "PIPE INLET"):
+                                    self.FluidInletoutlet_ele.append([str(elid), fluidsec_obj.LiquidSectionType, 0])  # 3rd index is to track which line number the element is defined
+                                    elsetchanged = True
+                                elif (fluidsec_obj.LiquidSectionType == "PIPE OUTLET") and (counter == len(ccx_elset['ccx_elset'])):
+                                    self.FluidInletoutlet_ele.append([str(elid), fluidsec_obj.LiquidSectionType, 0])  # 3rd index is to track which line number the element is defined
+
+        # write ccx_elsets to file
+        for ccx_elset in self.ccx_elsets:
+            f.write('*ELSET,ELSET=' + ccx_elset['ccx_elset_name'] + '\n')
             if ccx_elset['ccx_elset']:
-                if ccx_elset['ccx_elset'] == self.ccx_eall:
-                    f.write(self.ccx_eall + '\n')
+                if isinstance(ccx_elset['ccx_elset'], six.string_types):  # use six to be sure to be Python 2.7 and 3.x compatible
+                    f.write(ccx_elset['ccx_elset'] + '\n')
                 else:
-                    elsetchanged = 0
-                    counter = 0
                     for elid in ccx_elset['ccx_elset']:
                         f.write(str(elid) + ',\n')
-                        counter = counter + 1
-                        if collect_ele is True and elsetchanged == 0 and fluidsec_obj.LiquidSectionType == "PIPE INLET":
-                            self.FluidInletoutlet_ele.append([str(elid), fluidsec_obj.LiquidSectionType, 0])  # 3rd index is to track which line number the element is defined
-                            elsetchanged = 1
-                        elif collect_ele is True and fluidsec_obj.LiquidSectionType == "PIPE OUTLET" and counter == len(ccx_elset['ccx_elset']):
-                            self.FluidInletoutlet_ele.append([str(elid), fluidsec_obj.LiquidSectionType, 0])  # 3rd index is to track which line number the element is defined
             else:
                 f.write('**No elements found for these objects\n')
 
@@ -607,7 +614,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('*INITIAL CONDITIONS,TYPE=TEMPERATURE\n')
         for itobj in self.initialtemperature_objects:  # Should only be one
             inittemp_obj = itobj['Object']
-            f.write('Nall,{}\n'.format(inittemp_obj.initialTemperature))  # OvG: Initial temperature
+            f.write('{0},{1}\n'.format(self.ccx_nall, inittemp_obj.initialTemperature))  # OvG: Initial temperature
 
     def write_femelementsets(self, f):
         f.write('\n***********************************************************\n')
@@ -731,7 +738,10 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             if self.solver_obj.IterationsUserDefinedIncrementations:
                 analysis_parameter = self.solver_obj.IterationsUserDefinedTimeStepLength
         elif self.analysis_type == 'frequency':
-            analysis_parameter = '{},{},{}\n'.format(self.solver_obj.EigenmodesCount, self.solver_obj.EigenmodeLowLimit, self.solver_obj.EigenmodeHighLimit)
+            if self.solver_obj.EigenmodeLowLimit == -1.0 and self.solver_obj.EigenmodeHighLimit == -1.0:
+                analysis_parameter = '{}\n'.format(self.solver_obj.EigenmodesCount)
+            else:
+                analysis_parameter = '{},{},{}\n'.format(self.solver_obj.EigenmodesCount, self.solver_obj.EigenmodeLowLimit, self.solver_obj.EigenmodeHighLimit)
         elif self.analysis_type == 'thermomech':
             analysis_parameter = '{},{}'.format(self.solver_obj.TimeInitialStep, self.solver_obj.TimeEnd)  # OvG: 1.0 increment, total time 1 for steady state will cut back automatically
         # write analysis type line, analysis parameter line
@@ -849,7 +859,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             selwei_obj = femobj['Object']
             f.write('** ' + selwei_obj.Label + '\n')
             f.write('*DLOAD\n')
-            f.write('Eall,GRAV,9810,' + str(selwei_obj.Gravity_x) + ',' + str(selwei_obj.Gravity_y) + ',' + str(selwei_obj.Gravity_z) + '\n')
+            f.write(self.ccx_eall + ',GRAV,9810,' + str(selwei_obj.Gravity_x) + ',' + str(selwei_obj.Gravity_y) + ',' + str(selwei_obj.Gravity_z) + '\n')
             f.write('\n')
         # grav (erdbeschleunigung) is equal for all elements
         # should be only one constraint
@@ -897,7 +907,12 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             for ref_shape in femobj['PressureFaces']:
                 f.write('** ' + ref_shape[0] + '\n')
                 for face, fno in ref_shape[1]:
-                    f.write("{},P{},{}\n".format(face, fno, rev * prs_obj.Pressure))
+                    if fno > 0:  # solid mesh face
+                        f.write("{},P{},{}\n".format(face, fno, rev * prs_obj.Pressure))
+                    elif fno == 0:  # on shell mesh face: fno == 0 --> normal of element face == face normal
+                        f.write("{},P,{}\n".format(face, rev * prs_obj.Pressure))
+                    elif fno == -1:  # on shell mesh face: fno == -1 --> normal of element face oposite direction face normal
+                        f.write("{},P,{}\n".format(face, -1 * rev * prs_obj.Pressure))
 
     def write_constraints_temperature(self, f):
         f.write('\n***********************************************************\n')
@@ -1013,9 +1028,9 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             else:
                 f.write('S, E\n')
             f.write('** outputs --> dat file\n')
-            f.write('*NODE PRINT , NSET=Nall \n')
+            f.write('*NODE PRINT , NSET=' + self.ccx_nall + '\n')
             f.write('U \n')
-            f.write('*EL PRINT , ELSET=Eall \n')
+            f.write('*EL PRINT , ELSET=' + self.ccx_eall + '\n')
             f.write('S \n')
 
     def write_step_end(self, f):
@@ -1044,7 +1059,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     # self.ccx_elsets = [ {
     #                        'beamsection_obj' : 'beamsection_obj'       if exists
     #                        'shellthickness_obj' : shellthickness_obj'  if exists
-    #                        'ccx_elset' : [e1, e2, e3, ... , en] or string self.ccx_eall
+    #                        'ccx_elset' : [e1, e2, e3, ... , en] or elements set name strings
     #                        'ccx_elset_name' : 'ccx_identifier_elset'
     #                        'mat_obj_name' : 'mat_obj.Name'
     #                        'ccx_mat_name' : 'mat_obj.Material['Name']'   !!! not unique !!!
@@ -1055,7 +1070,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         beamsec_obj = self.beamsection_objects[0]['Object']
         ccx_elset = {}
         ccx_elset['beamsection_obj'] = beamsec_obj
-        ccx_elset['ccx_elset'] = self.ccx_eall
+        ccx_elset['ccx_elset'] = self.ccx_eedges
         ccx_elset['ccx_elset_name'] = get_ccx_elset_beam_name(mat_obj.Name, beamsec_obj.Name)
         ccx_elset['mat_obj_name'] = mat_obj.Name
         ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
@@ -1066,7 +1081,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         fluidsec_obj = self.fluidsection_objects[0]['Object']
         ccx_elset = {}
         ccx_elset['fluidsection_obj'] = fluidsec_obj
-        ccx_elset['ccx_elset'] = self.ccx_eall
+        ccx_elset['ccx_elset'] = self.ccx_eedges
         ccx_elset['ccx_elset_name'] = get_ccx_elset_fluid_name(mat_obj.Name, fluidsec_obj.Name)
         ccx_elset['mat_obj_name'] = mat_obj.Name
         ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
@@ -1077,7 +1092,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         shellth_obj = self.shellthickness_objects[0]['Object']
         ccx_elset = {}
         ccx_elset['shellthickness_obj'] = shellth_obj
-        ccx_elset['ccx_elset'] = self.ccx_eall
+        ccx_elset['ccx_elset'] = self.ccx_efaces
         ccx_elset['ccx_elset_name'] = get_ccx_elset_shell_name(mat_obj.Name, shellth_obj.Name)
         ccx_elset['mat_obj_name'] = mat_obj.Name
         ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
@@ -1086,17 +1101,14 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     def get_ccx_elsets_single_mat_solid(self):
         mat_obj = self.material_objects[0]['Object']
         ccx_elset = {}
-        ccx_elset['ccx_elset'] = self.ccx_eall
+        ccx_elset['ccx_elset'] = self.ccx_evolumes
         ccx_elset['ccx_elset_name'] = get_ccx_elset_solid_name(mat_obj.Name)
         ccx_elset['mat_obj_name'] = mat_obj.Name
         ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
         self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_single_mat_multiple_beam(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         mat_obj = self.material_objects[0]['Object']
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.beamsection_objects)
         for beamsec_data in self.beamsection_objects:
             beamsec_obj = beamsec_data['Object']
             ccx_elset = {}
@@ -1108,10 +1120,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_single_mat_multiple_fluid(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         mat_obj = self.material_objects[0]['Object']
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.fluidsection_objects)
         for fluidsec_data in self.fluidsection_objects:
             fluidsec_obj = fluidsec_data['Object']
             ccx_elset = {}
@@ -1123,10 +1132,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_single_mat_multiple_shell(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         mat_obj = self.material_objects[0]['Object']
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.shellthickness_objects)
         for shellth_data in self.shellthickness_objects:
             shellth_obj = shellth_data['Object']
             ccx_elset = {}
@@ -1138,10 +1144,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_single_beam(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         beamsec_obj = self.beamsection_objects[0]['Object']
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}
@@ -1153,10 +1156,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_single_fluid(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         fluidsec_obj = self.fluidsection_objects[0]['Object']
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}
@@ -1168,10 +1168,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_single_shell(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         shellth_obj = self.shellthickness_objects[0]['Object']
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}
@@ -1183,19 +1180,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_solid(self):
-        all_found = False
-        if self.femmesh.GroupCount:
-            all_found = FemMeshTools.get_femelement_sets_from_group_data(self.femmesh, self.material_objects)
-            print(all_found)
-        if all_found is False:
-            if not self.femelement_table:
-                self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-            # we gone use the binary search for get_femelements_by_femnodes(), thus we need the parameter values self.femnodes_ele_table
-            if not self.femnodes_mesh:
-                self.femnodes_mesh = self.femmesh.Nodes
-            if not self.femnodes_ele_table:
-                self.femnodes_ele_table = FemMeshTools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
-            FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects, self.femnodes_ele_table)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}
@@ -1206,10 +1190,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_multiple_beam(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.beamsection_objects)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
         for beamsec_data in self.beamsection_objects:
             beamsec_obj = beamsec_data['Object']
             for mat_data in self.material_objects:
@@ -1227,10 +1207,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_multiple_fluid(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.fluidsection_objects)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
         for fluidsec_data in self.fluidsection_objects:
             fluidsec_obj = fluidsec_data['Object']
             for mat_data in self.material_objects:
@@ -1248,10 +1224,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_multiple_shell(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.shellthickness_objects)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
         for shellth_data in self.shellthickness_objects:
             shellth_obj = shellth_data['Object']
             for mat_data in self.material_objects:
@@ -1312,6 +1284,19 @@ def get_ccx_elset_solid_name(mat_name, solid_name=None, mat_short_name=None):
         return mat_short_name + solid_name
     else:
         return mat_name + solid_name
+
+
+def is_fluid_section_inlet_outlet(ccx_elsets):
+    ''' Fluid section: Inlet and Outlet requires special element definition
+    '''
+    for ccx_elset in ccx_elsets:
+        if ccx_elset['ccx_elset']:
+            if 'fluidsection_obj'in ccx_elset:  # fluid mesh
+                fluidsec_obj = ccx_elset['fluidsection_obj']
+                if fluidsec_obj.SectionType == "Liquid":
+                    if (fluidsec_obj.LiquidSectionType == "PIPE INLET") or (fluidsec_obj.LiquidSectionType == "PIPE OUTLET"):
+                        return True
+    return False
 
 
 def liquid_section_def(obj, section_type):

@@ -109,18 +109,21 @@ public:
     /// test if this feature is touched
     bool isTouched(void) const;
     /// reset this feature touched
-    void purgeTouched(void){StatusBits.reset(0);setPropertyStatus(0,false);}
+    void purgeTouched(void) {
+        StatusBits.reset(ObjectStatus::Touch);
+        setPropertyStatus(0,false);
+    }
     /// set this feature to error
-    bool isError(void) const {return  StatusBits.test(1);}
-    bool isValid(void) const {return !StatusBits.test(1);}
+    bool isError(void) const {return  StatusBits.test(ObjectStatus::Error);}
+    bool isValid(void) const {return !StatusBits.test(ObjectStatus::Error);}
     /// remove the error from the object
-    void purgeError(void){StatusBits.reset(1);}
+    void purgeError(void){StatusBits.reset(ObjectStatus::Error);}
     /// returns true if this objects is currently recomputing
-    bool isRecomputing() const {return StatusBits.test(3);}
+    bool isRecomputing() const {return StatusBits.test(ObjectStatus::Recompute);}
     /// returns true if this objects is currently restoring from file
-    bool isRestoring() const {return StatusBits.test(4);}
+    bool isRestoring() const {return StatusBits.test(ObjectStatus::Restore);}
     /// returns true if this objects is currently restoring from file
-    bool isDeleting() const {return StatusBits.test(5);}
+    bool isDeleting() const {return StatusBits.test(ObjectStatus::Delete);}
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
     bool testStatus(ObjectStatus pos) const {return StatusBits.test((size_t)pos);}
@@ -248,8 +251,8 @@ protected:
      */
     std::bitset<32> StatusBits;
 
-    void setError(void){StatusBits.set(1);}
-    void resetError(void){StatusBits.reset(1);}
+    void setError(void){StatusBits.set(ObjectStatus::Error);}
+    void resetError(void){StatusBits.reset(ObjectStatus::Error);}
     void setDocument(App::Document* doc);
 
     /// get called before the value is changed

@@ -41,6 +41,7 @@ if(BUILD_FEM_NETGEN)
 endif(BUILD_FEM_NETGEN)
 
 generate_from_xml(FemMeshPy)
+generate_from_xml(FemPostPipelinePy)
 
 SET(Python_SRCS
     FemMeshPy.xml
@@ -48,6 +49,13 @@ SET(Python_SRCS
     HypothesisPy.cpp
     HypothesisPy.h
 )
+if(BUILD_FEM_VTK)
+SET(Python_SRCS
+    ${Python_SRCS}
+    FemPostPipelinePy.xml
+    FemPostPipelinePyImp.cpp
+)
+endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 SET(Mod_SRCS
@@ -64,6 +72,10 @@ SET(FemScripts_SRCS
     convert2TetGen.py
     importCcxDatResults.py
     importCcxFrdResults.py
+    readFenicsXML.py
+    writeFenicsXML.py
+    readFenicsXDMF.py
+    writeFenicsXDMF.py
     importFenicsMesh.py
     importInpMesh.py
     importToolsFem.py
@@ -160,8 +172,9 @@ SET(FemGuiScripts_SRCS
 )
 
 SET(FemTests_SRCS
-    test_files/ccx/mesh_points.csv
-    test_files/ccx/mesh_volumes.csv
+    test_files/__init__.py
+    test_files/ccx/__init__.py
+    test_files/ccx/cube_mesh.py
     test_files/ccx/cube_frequency.inp
     test_files/ccx/cube_frequency.dat
     test_files/ccx/cube_frequency.frd
@@ -171,8 +184,7 @@ SET(FemTests_SRCS
     test_files/ccx/cube_static.frd
     test_files/ccx/cube_static_expected_values
     test_files/ccx/cube.fcstd
-    test_files/ccx/spine_points.csv
-    test_files/ccx/spine_volumes.csv
+    test_files/ccx/spine_mesh.py
     test_files/ccx/spine_thermomech.inp
     test_files/ccx/spine_thermomech.dat
     test_files/ccx/spine_thermomech.frd

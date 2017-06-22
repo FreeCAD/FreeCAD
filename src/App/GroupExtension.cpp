@@ -31,6 +31,8 @@
 #include "GroupExtensionPy.h"
 #include "Document.h"
 #include "FeaturePythonPyImp.h"
+#include "GeoFeatureGroupExtension.h"
+#include <Base/Console.h>
 
 using namespace App;
 
@@ -58,55 +60,77 @@ DocumentObject* GroupExtension::addObject(const char* sType, const char* pObject
     return obj;
 }
 
-void GroupExtension::addObject(DocumentObject* obj)
+std::vector<DocumentObject*> GroupExtension::addObject(DocumentObject* obj)
 {
-    if(!allowObject(obj))
-        return;
-    
-    //only one group per object
-    auto *group = App::GroupExtension::getGroupOfObject(obj);
-    if(group && group != getExtendedObject())
-        group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
-    
-    if (!hasObject(obj)) {
-        std::vector<DocumentObject*> grp = Group.getValues();
-        grp.push_back(obj);
-        Group.setValues(grp);
-    }
+    std::vector<DocumentObject*> vec = {obj};
+    return addObjects(vec);
 }
 
-void GroupExtension::addObjects(const std::vector<App::DocumentObject*>& objs)
-{
-    bool objectAdded = false;
+std::vector< DocumentObject* > GroupExtension::addObjects(std::vector< DocumentObject* > objs) {
+    
+    std::vector<DocumentObject*> added;
     std::vector<DocumentObject*> grp = Group.getValues();
-    for (auto obj : objs) {
-        if (allowObject(obj)) {
-
-            //only one group per object
-            auto *group = App::GroupExtension::getGroupOfObject(obj);
-            if (group && group != getExtendedObject())
-                group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
-
-            if (std::find(grp.begin(), grp.end(), obj) == grp.end()) {
-                grp.push_back(obj);
-                objectAdded = true;
-            }
+    for(auto obj : objs) {
+            
+        if(!allowObject(obj))
+            continue;
+        
+        if (hasObject(obj))
+            continue;
+            
+        //only one group per object. Note that it is allowed to be in a group and geofeaturegroup. However,
+        //getGroupOfObject() returns only normal groups, no GeoFeatureGroups. Hence this works.
+        auto *group = App::GroupExtension::getGroupOfObject(obj);
+        if(group && group != getExtendedObject())
+            group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
+        
+        //if we are in a geofeaturegroup we need to ensure the object is too
+        auto geogrp = GeoFeatureGroupExtension::getGroupOfObject(getExtendedObject());
+        auto objgrp = GeoFeatureGroupExtension::getGroupOfObject(obj);
+        if( geogrp != objgrp ) {
+            //what to do depends on if we are in  geofeature group or not
+            if(geogrp)
+                geogrp->getExtensionByType<GeoFeatureGroupExtension>()->addObject(obj);
+            else 
+                objgrp->getExtensionByType<GeoFeatureGroupExtension>()->removeObject(obj);
         }
+        
+        grp.push_back(obj);
+        added.push_back(obj);
     }
-
-    if (objectAdded)
-        Group.setValues(grp);
+    
+    Group.setValues(grp);
+    
+    return added;
 }
 
-void GroupExtension::removeObject(DocumentObject* obj)
+std::vector<DocumentObject*> GroupExtension::removeObject(DocumentObject* obj)
 {
-    const std::vector<DocumentObject*> & grp = Group.getValues();
-    std::vector<DocumentObject*> newGrp;
+    std::vector<DocumentObject*> vec = {obj};
+    return removeObjects(vec);
+}
 
-    std::remove_copy (grp.begin(), grp.end(), std::back_inserter (newGrp), obj);
+std::vector< DocumentObject* > GroupExtension::removeObjects(std::vector< DocumentObject* > objs) {
+
+    const std::vector<DocumentObject*> & grp = Group.getValues();
+    std::vector<DocumentObject*> newGrp = grp;
+    std::vector<DocumentObject*> removed;
+
+    std::vector<DocumentObject*>::iterator end = newGrp.end();
+    for(auto obj : objs) {       
+       auto res = std::remove(newGrp.begin(), end, obj);
+       if(res != end) {
+           end = res;
+           removed.push_back(obj);
+       }
+    }
+    
+    newGrp.erase(end, newGrp.end());
     if (grp.size() != newGrp.size()) {
         Group.setValues (newGrp);
     }
+    
+    return removed;
 }
 
 void GroupExtension::removeObjectsFromDocument()
@@ -207,15 +231,16 @@ int GroupExtension::countObjectsOfType(const Base::Type& typeId) const
 
 DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
 {
-    const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsWithExtension(GroupExtension::getExtensionClassTypeId());
-    for (std::vector<DocumentObject*>::const_iterator it = grps.begin(); it != grps.end(); ++it) {
-        GroupExtension* grp = (*it)->getExtensionByType<GroupExtension>();
-        if (grp->hasObject(obj))
-            return *it;
+    //note that we return here only Groups, but nothing derived from it, e.g. no GeoFeatureGroups. 
+    //That is important as there are clear differences between groups/geofeature groups (e.g. an object
+    //can be in only one group, and only one geofeaturegroup, however, it can be in both at the same time)
+    auto list = obj->getInList();
+    for (auto obj : list) {
+        if(obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false))
+            return obj;
     }
 
-    return 0;
+    return nullptr;
 }
 
 PyObject* GroupExtension::getExtensionPyObject(void) {
@@ -226,6 +251,40 @@ PyObject* GroupExtension::getExtensionPyObject(void) {
         ExtensionPythonObject = Py::Object(grp,true);
     }
     return Py::new_reference_to(ExtensionPythonObject);
+}
+
+void GroupExtension::extensionOnChanged(const Property* p) {
+    
+    //objects are only allowed in a single group. Note that this check must only be done for normal
+    //groups, not any derived classes
+    if((this->getExtensionTypeId() == GroupExtension::getExtensionClassTypeId()) &&
+       (strcmp(p->getName(), "Group")==0)) {
+     
+        bool error = false;
+        auto corrected = Group.getValues();
+        for(auto obj : Group.getValues()) {
+            
+            //we have already set the obj into the group, so in a case of multiple groups getGroupOfObject
+            //would return anyone of it and hence it is possible that we miss an error. We need a custom check
+            auto list = obj->getInList();
+            for (auto in : list) {
+                if(in->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false) &&
+                    in != getExtendedObject()) {
+                    error = true;
+                    corrected.erase(std::remove(corrected.begin(), corrected.end(), obj), corrected.end());
+                    break;
+                }
+            }
+        }
+        
+        //if an error was found we need to correct the values and inform the user
+        if(error) {
+            Group.setValues(corrected);
+            throw Base::Exception("Object can only be in a single Group");
+        }
+    }
+    
+    App::Extension::extensionOnChanged(p);
 }
 
 

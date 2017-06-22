@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
  *                                                                         *
@@ -244,7 +245,11 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         PyObject *dict = PyDict_New();
         if (dict) {
             for ( std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it )
+#if PY_MAJOR_VERSION >= 3
+                PyDict_SetItem(dict, PyUnicode_FromString(it->first.c_str()), PyUnicode_FromString(""));
+#else
                 PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
+#endif
             if (PyErr_Occurred()) {
                 Py_DECREF(dict);
                 dict = NULL;

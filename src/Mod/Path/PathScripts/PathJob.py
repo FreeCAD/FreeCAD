@@ -22,13 +22,28 @@
 # *                                                                         *
 # ***************************************************************************
 
+import ArchPanel
+import Draft
 import FreeCAD
 import Path
+import PathScripts.PathLog as PathLog
+import PathScripts.PathToolController as PathToolController
+import PathScripts.PathUtil as PathUtil
+import glob
+import xml.etree.ElementTree as xml
+import os
+import sys
+
 from PySide import QtCore, QtGui
 from PathScripts.PathPostProcessor import PostProcessor
 from PathScripts.PathPreferences import PathPreferences
-import Draft
 
+# xrange is not available in python3
+if sys.version_info.major >= 3:
+    xrange = range
+
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule()
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -37,24 +52,27 @@ if FreeCAD.GuiUp:
 """Path Job object and FreeCAD command"""
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+class JobTemplate:
+    '''Attribute and sub element strings for template export/import.'''
+    Job = 'Job'
+    PostProcessor = 'post'
+    PostProcessorArgs = 'post_args'
+    PostProcessorOutputFile = 'output'
+    GeometryTolerance = 'tol'
+    Description = 'desc'
+    ToolController = 'ToolController'
 
 class ObjectPathJob:
 
-    def __init__(self, obj):
-        #        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", "Select the Post Processor file for this project")
-        obj.addProperty("App::PropertyFile", "OutputFile", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
-        obj.OutputFile = PathPreferences.defaultOutputFile()
-        obj.setEditorMode("OutputFile", 0)  # set to default mode
+    def __init__(self, obj, base, template = None):
+        self.obj = obj
+        obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
+        obj.PostProcessorOutputFile = PathPreferences.defaultOutputFile()
+        obj.setEditorMode("PostProcessorOutputFile", 0)  # set to default mode
 
-        obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this job"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor"))
         obj.PostProcessor = postProcessors = PathPreferences.allEnabledPostProcessors()
         defaultPostProcessor = PathPreferences.defaultPostProcessor()
@@ -65,32 +83,56 @@ class ObjectPathJob:
             obj.PostProcessor = postProcessors[0]
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property", "Arguments for the Post Processor (specific to the script)"))
         obj.PostProcessorArgs = PathPreferences.defaultPostProcessorArgs()
-        obj.addProperty("App::PropertyString",    "MachineName", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Name of the Machine that will use the CNC program"))
 
-        #obj.addProperty("Path::PropertyTooltable", "Tooltable", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property","The tooltable used for this CNC program"))
-
-        obj.addProperty("App::PropertyEnumeration", "MachineUnits", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Units that the machine works in, ie Metric or Inch"))
-        obj.MachineUnits = ['Metric', 'Inch']
-
+        obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this job"))
         obj.addProperty("App::PropertyDistance", "GeometryTolerance", "Geometry",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "For computing Paths; smaller increases accuracy, but slows down computation"))
         obj.GeometryTolerance = PathPreferences.defaultGeometryTolerance()
 
-        obj.addProperty("App::PropertyDistance", "X_Max", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Maximum distance in X the machine can travel"))
-        obj.addProperty("App::PropertyDistance", "Y_Max", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Maximum distance in X the machine can travel"))
-        obj.addProperty("App::PropertyDistance", "Z_Max", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Maximum distance in X the machine can travel"))
-
-        obj.addProperty("App::PropertyDistance", "X_Min", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Minimum distance in X the machine can travel"))
-        obj.addProperty("App::PropertyDistance", "Y_Min", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Minimum distance in X the machine can travel"))
-        obj.addProperty("App::PropertyDistance", "Z_Min", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Minimum distance in X the machine can travel"))
-
         obj.addProperty("App::PropertyLink", "Base", "Base", "The base object for all operations")
+        obj.Base = base
 
         obj.Proxy = self
 
         if FreeCAD.GuiUp:
             ViewProviderJob(obj.ViewObject)
+        self.assignTemplate(obj, template)
 
+    def assignTemplate(self, obj, template):
+        '''assignTemplate(obj, template) ... extract the properties from the given template file and assign to receiver.
+        This will also create any TCs stored in the template.'''
+        if template:
+            tree = xml.parse(template)
+            for job in tree.getroot().iter(JobTemplate.Job):
+                if job.get(JobTemplate.GeometryTolerance):
+                    obj.GeometryTolerance = float(job.get(JobTemplate.GeometryTolerance))
+                if job.get(JobTemplate.PostProcessor):
+                    obj.PostProcessor = job.get(JobTemplate.PostProcessor)
+                    if job.get(JobTemplate.PostProcessorArgs):
+                        obj.PostProcessorArgs = job.get(JobTemplate.PostProcessorArgs)
+                    else:
+                        obj.PostProcessorArgs = ''
+                if job.get(JobTemplate.PostProcessorOutputFile):
+                    obj.PostProcessorOutputFile = job.get(JobTemplate.PostProcessorOutputFile)
+                if job.get(JobTemplate.Description):
+                    obj.Description = job.get(JobTemplate.Description)
+            for tc in tree.getroot().iter(JobTemplate.ToolController):
+                PathToolController.CommandPathToolController.FromTemplate(obj, tc)
+        elif template is not None:
+            PathToolController.CommandPathToolController.Create(obj.Name)
+
+    def templateAttrs(self, obj):
+        '''templateAttrs(obj) ... answer a dictionary with all properties of the receiver that should be stored in a template file.'''
+        attrs = {}
+        if obj.PostProcessor:
+            attrs[JobTemplate.PostProcessor]           = obj.PostProcessor
+            attrs[JobTemplate.PostProcessorArgs]       = obj.PostProcessorArgs
+        if obj.PostProcessorOutputFile:
+            attrs[JobTemplate.PostProcessorOutputFile] = obj.PostProcessorOutputFile
+        attrs[JobTemplate.GeometryTolerance]           = str(obj.GeometryTolerance.Value)
+        if obj.Description:
+            attrs[JobTemplate.Description]             = obj.Description
+        return attrs
 
     def __getstate__(self):
         return None
@@ -104,32 +146,8 @@ class ObjectPathJob:
 
         if prop == "PostProcessor" and obj.PostProcessor:
             processor = PostProcessor.load(obj.PostProcessor)
-            if processor.units:
-                obj.MachineUnits = processor.units
-            if processor.machineName:
-                obj.MachineName = processor.machineName
-            if processor.cornerMax:
-                obj.X_Max = processor.cornerMax['x']
-                obj.Y_Max = processor.cornerMax['y']
-                obj.Z_Max = processor.cornerMax['z']
-            if processor.cornerMin:
-                obj.X_Min = processor.cornerMin['x']
-                obj.Y_Min = processor.cornerMin['y']
-                obj.Z_Min = processor.cornerMin['z']
             self.tooltip = processor.tooltip
             self.tooltipArgs = processor.tooltipArgs
-
-            self.PostProcessorArgs = ''
-
-    # def getToolControllers(self, obj):
-    #     '''returns a list of ToolControllers for the current job'''
-    #     controllers = []
-    #     for o in obj.Group:
-    #         if "Proxy" in o.PropertiesList:
-    #             if isinstance(o.Proxy, PathLoadTool.LoadTool):
-    #                 controllers.append (o.Name)
-    #     return controllers
-
 
     def execute(self, obj):
         cmds = []
@@ -144,6 +162,16 @@ class ObjectPathJob:
             path = Path.Path(cmds)
             obj.Path = path
 
+    @classmethod
+    def baseCandidates(cls):
+        '''Answer all objects in the current document which could serve as a Base for a job.'''
+        return sorted(filter(lambda obj: cls.isBaseCandidate(obj) , FreeCAD.ActiveDocument.Objects), key=lambda o: o.Label)
+
+    @classmethod
+    def isBaseCandidate(cls, obj):
+        '''Answer true if the given object can be used as a Base for a job.'''
+        return PathUtil.isValidBaseObject(obj) or (hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet))
+
 
 class ViewProviderJob:
 
@@ -155,6 +183,7 @@ class ViewProviderJob:
         vobj.setEditorMode('Selectable', mode)
         vobj.setEditorMode('ShapeColor', mode)
         vobj.setEditorMode('Transparency', mode)
+        self.taskPanel = None
 
     def __getstate__(self):  # mandatory
         return None
@@ -167,11 +196,18 @@ class ViewProviderJob:
 
     def setEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject())
-        FreeCADGui.Control.showDialog(taskd)
-        taskd.setupUi()
+        self.taskPanel = TaskPanel(vobj, self.deleteObjectsOnReject())
+        FreeCADGui.Control.showDialog(self.taskPanel)
+        self.taskPanel.setupUi()
         self.deleteOnReject = False
         return True
+
+    def unsetEdit(self, vobj, mode):
+        if self.taskPanel:
+            self.taskPanel.reject()
+
+    def resetTaskPanel(self):
+        self.taskPanel = None
 
     def getIcon(self):
         return ":/icons/Path-Job.svg"
@@ -185,47 +221,16 @@ class ViewProviderJob:
         vobj.setEditorMode('Transparency', mode)
 
 
-class CommandJob:
-
-    def GetResources(self):
-        return {'Pixmap': 'Path-Job',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Job"),
-                'Accel': "P, J",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Creates a Path Job object")}
-
-    def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
-
-    def Activated(self):
-        CommandJob.Create()
-        FreeCAD.ActiveDocument.recompute()
-
-    @staticmethod
-    def Create():
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
-        FreeCADGui.addModule('PathScripts.PathUtils')
-        FreeCADGui.addModule('PathScripts.PathLoadTool')
-        snippet = '''
-import PathScripts.PathLoadTool as PathLoadTool
-obj = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")
-PathScripts.PathJob.ObjectPathJob(obj)
-PathLoadTool.CommandPathLoadTool.Create(obj.Name)
-obj.ViewObject.Proxy.deleteOnReject = True
-obj.ViewObject.startEditing()
-'''
-        FreeCADGui.doCommand(snippet)
-        FreeCAD.ActiveDocument.commitTransaction()
-
-
 class TaskPanel:
-    def __init__(self, obj, deleteOnReject):
+    def __init__(self, vobj, deleteOnReject):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Edit Job"))
-        self.obj = obj
+        self.vobj = vobj
+        self.obj = vobj.Object
         self.deleteOnReject = deleteOnReject
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/JobEdit.ui")
         #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/JobEdit.ui")
 
-        currentPostProcessor = obj.PostProcessor
+        currentPostProcessor = self.obj.PostProcessor
         postProcessors = PathPreferences.allEnabledPostProcessors(['', currentPostProcessor])
         for post in postProcessors:
             self.form.cboPostProcessor.addItem(post)
@@ -233,46 +238,47 @@ class TaskPanel:
         self.obj.PostProcessor = postProcessors
         self.obj.PostProcessor = currentPostProcessor
 
-        self.form.cboBaseObject.addItem("")
-        for o in FreeCAD.ActiveDocument.Objects:
-            if hasattr(o, "Shape"):
-                self.form.cboBaseObject.addItem(o.Name)
+        for o in ObjectPathJob.baseCandidates():
+            self.form.cboBaseObject.addItem(o.Label)
 
 
         self.postProcessorDefaultTooltip = self.form.cboPostProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.cboPostProcessorArgs.toolTip()
 
     def accept(self):
+        PathLog.error('accept')
         self.getFields()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        self.vobj.Proxy.resetTaskPanel()
 
     def reject(self):
+        PathLog.error('reject')
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
+            PathLog.error("Uncreate Job")
             FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Uncreate Job"))
             for child in self.obj.Group:
                 FreeCAD.ActiveDocument.removeObject(child.Name)
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        self.vobj.Proxy.resetTaskPanel()
+        return True
 
     def updateTooltips(self):
         if hasattr(self.obj, "Proxy") and hasattr(self.obj.Proxy, "tooltip") and self.obj.Proxy.tooltip:
             self.form.cboPostProcessor.setToolTip(self.obj.Proxy.tooltip)
             if hasattr(self.obj.Proxy, "tooltipArgs") and self.obj.Proxy.tooltipArgs:
                 self.form.cboPostProcessorArgs.setToolTip(self.obj.Proxy.tooltipArgs)
-                self.form.cboPostProcessorArgs.setText(self.obj.PostProcessorArgs)
             else:
                 self.form.cboPostProcessorArgs.setToolTip(self.postProcessorArgsDefaultTooltip)
-                self.form.cboPostProcessorArgs.setText('')
         else:
             self.form.cboPostProcessor.setToolTip(self.postProcessorDefaultTooltip)
             self.form.cboPostProcessorArgs.setToolTip(self.postProcessorArgsDefaultTooltip)
-            self.form.cboPostProcessorArgs.setText('')
 
     def getFields(self):
         '''sets properties in the object to match the form'''
@@ -280,7 +286,7 @@ class TaskPanel:
             self.obj.PostProcessor = str(self.form.cboPostProcessor.currentText())
             self.obj.PostProcessorArgs = str(self.form.cboPostProcessorArgs.displayText())
             self.obj.Label = str(self.form.leLabel.text())
-            self.obj.OutputFile = str(self.form.leOutputFile.text())
+            self.obj.PostProcessorOutputFile = str(self.form.leOutputFile.text())
 
             oldlist = self.obj.Group
             newlist = []
@@ -288,7 +294,7 @@ class TaskPanel:
             for index in xrange(self.form.PathsList.count()):
                 item = self.form.PathsList.item(index)
                 for olditem in oldlist:
-                    if olditem.Name == item.text():
+                    if olditem.Label == item.text():
                         newlist.append(olditem)
             self.obj.Group = newlist
 
@@ -313,22 +319,23 @@ class TaskPanel:
         '''sets fields in the form to match the object'''
 
         self.form.leLabel.setText(self.obj.Label)
-        self.form.leOutputFile.setText(self.obj.OutputFile)
+        self.form.leOutputFile.setText(self.obj.PostProcessorOutputFile)
 
         self.selectComboBoxText(self.form.cboPostProcessor, self.obj.PostProcessor)
+        self.form.cboPostProcessorArgs.setText(self.obj.PostProcessorArgs)
         self.obj.Proxy.onChanged(self.obj, "PostProcessor")
         self.updateTooltips()
 
         self.form.PathsList.clear()
         for child in self.obj.Group:
-            self.form.PathsList.addItem(child.Name)
+            self.form.PathsList.addItem(child.Label)
 
         baseindex = -1
         if self.obj.Base:
-            baseindex = self.form.cboBaseObject.findText(self.obj.Base.Name, QtCore.Qt.MatchFixedString)
+            baseindex = self.form.cboBaseObject.findText(self.obj.Base.Label, QtCore.Qt.MatchFixedString)
         else:
             for o in FreeCADGui.Selection.getCompleteSelection():
-                baseindex = self.form.cboBaseObject.findText(o.Name, QtCore.Qt.MatchFixedString)
+                baseindex = self.form.cboBaseObject.findText(o.Label, QtCore.Qt.MatchFixedString)
         if baseindex >= 0:
             self.form.cboBaseObject.setCurrentIndex(baseindex)
 
@@ -337,14 +344,15 @@ class TaskPanel:
         pass
 
     def setFile(self):
-        filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("PathJob", "Select Output File", None), None, translate("Path Job", "All Files (*.*)", None))
+        filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Path_Job", "Select Output File"), None, translate("Path_Job", "All Files (*.*)"))
         if filename and filename[0]:
-            self.obj.OutputFile = str(filename[0])
+            self.obj.PostProcessorOutputFile = str(filename[0])
             self.setFields()
 
     def setupUi(self):
         # Connect Signals and Slots
         self.form.cboPostProcessor.currentIndexChanged.connect(self.getFields)
+        self.form.cboPostProcessorArgs.editingFinished.connect(self.getFields)
         self.form.leOutputFile.editingFinished.connect(self.getFields)
         self.form.leLabel.editingFinished.connect(self.getFields)
         self.form.btnSelectFile.clicked.connect(self.setFile)
@@ -353,9 +361,138 @@ class TaskPanel:
 
         self.setFields()
 
+class DlgJobCreate:
+
+    def __init__(self, parent=None):
+        self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
+        sel = FreeCADGui.Selection.getSelection()
+        if sel:
+            selected = sel[0].Label
+        else:
+            selected = None
+        index = 0
+        for base in ObjectPathJob.baseCandidates():
+            if base.Label == selected:
+                index = self.dialog.cbModel.count()
+            self.dialog.cbModel.addItem(base.Label)
+        self.dialog.cbModel.setCurrentIndex(index)
+
+        templateFiles = []
+        for path in PathPreferences.searchPaths():
+            templateFiles.extend(self.templateFilesIn(path))
+
+        template = {}
+        for tFile in templateFiles:
+            name = os.path.split(os.path.splitext(tFile)[0])[1][4:]
+            if name in template:
+                basename = name
+                i = 0
+                while name in template:
+                    i = i + 1
+                    name = basename + " (%s)" % i
+            PathLog.track(name, tFile)
+            template[name] = tFile
+        selectTemplate = PathPreferences.defaultJobTemplate()
+        index = 0
+        self.dialog.cbTemplate.addItem('<none>', '')
+        for name in sorted(template.keys()):
+            if template[name] == selectTemplate:
+                index = self.dialog.cbTemplate.count()
+            self.dialog.cbTemplate.addItem(name, template[name])
+        self.dialog.cbTemplate.setCurrentIndex(index)
+
+    def templateFilesIn(self, path):
+        '''templateFilesIn(path) ... answer all file in the given directory which fit the job template naming convention.
+        PathJob template files are name job_*.xml'''
+        PathLog.track(path)
+        return glob.glob(path + '/job_*.xml')
+
+    def getModel(self):
+        '''answer the base model selected for the job'''
+        label = self.dialog.cbModel.currentText()
+        return filter(lambda obj: obj.Label == label, FreeCAD.ActiveDocument.Objects)[0]
+
+    def getTemplate(self):
+        '''answer the file name of the template to be assigned'''
+        return self.dialog.cbTemplate.itemData(self.dialog.cbTemplate.currentIndex())
+
+    def exec_(self):
+        return self.dialog.exec_()
+
+class CommandJobCreate:
+    '''
+    Command used to creat a command.
+    When activated the command opens a dialog allowing the user to select a base object (has to be a solid)
+    and a template to be used for the initial creation.
+    '''
+
+    def GetResources(self):
+        return {'Pixmap': 'Path-Job',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Job"),
+                #'Accel': "P, J",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Creates a Path Job object")}
+
+    def IsActive(self):
+        return FreeCAD.ActiveDocument is not None
+
+    def Activated(self):
+        dialog = DlgJobCreate()
+        if dialog.exec_() == 1:
+            self.Execute(dialog.getModel(), dialog.getTemplate())
+            FreeCAD.ActiveDocument.recompute()
+
+    @classmethod
+    def Execute(cls, base, template):
+        FreeCADGui.addModule('PathScripts.PathJob')
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
+        snippet = '''App.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")
+PathScripts.PathJob.ObjectPathJob(App.ActiveDocument.ActiveObject, App.ActiveDocument.%s, "%s")''' % (base.Name, template)
+        try:
+            FreeCADGui.doCommand(snippet)
+            FreeCAD.ActiveDocument.commitTransaction()
+        except:
+            PathLog.error(sys.exc_info())
+            FreeCAD.ActiveDocument.abortTransaction()
+
+class CommandJobExportTemplate:
+    '''
+    Command to export a template of a given job.
+    Opens a dialog to select the file to store the template in. If the template is stored in Path's
+    file path (see preferences) and named in accordance with job_*.xml it will automatically be found
+    on Job creation and be available for selection.
+    '''
+
+    def GetResources(self):
+        return {'Pixmap': 'Path-Job',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Export Template"),
+                #'Accel': "P, T",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Exports Path Job as a template to be used for other jobs")}
+
+    def IsActive(self):
+        return FreeCAD.ActiveDocument is not None
+
+    def Activated(self):
+        job = FreeCADGui.Selection.getSelection()[0]
+        foo = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(),
+                "Path - Job Template",
+                PathPreferences.filePath(),
+                "job_*.xml")[0]
+        if foo: 
+            self.Execute(job, foo)
+
+    @classmethod
+    def Execute(cls, job, path):
+        root = xml.Element('PathJobTemplate')
+        xml.SubElement(root, JobTemplate.Job, job.Proxy.templateAttrs(job))
+        for obj in job.Group:
+            if hasattr(obj, 'Tool') and hasattr(obj, 'SpindleDir'):
+                tc = xml.SubElement(root, JobTemplate.ToolController, obj.Proxy.templateAttrs(obj))
+                tc.append(xml.fromstring(obj.Tool.Content))
+        xml.ElementTree(root).write(path)
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_Job', CommandJob())
+    FreeCADGui.addCommand('Path_Job', CommandJobCreate())
+    FreeCADGui.addCommand('Path_ExportTemplate', CommandJobExportTemplate())
 
 FreeCAD.Console.PrintLog("Loading PathJob... done\n")

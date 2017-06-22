@@ -16,17 +16,102 @@
     </Documentation>
 		<Methode Name="getParameterByLength" Const="true">
 			<Documentation>
-				<UserDocu>float = getParameterByLength(float) - Return parameter [First,Last]. Input value must be of [0|Length]</UserDocu>
+				<UserDocu>paramval = getParameterByLength(pos)
+Get the value of the primary parameter at the given distance along the cartesian
+length of the curve.
+
+Args:
+    pos (float or int): The distance along the length of the curve at which to 
+        determine the primary parameter value. See help for the FirstParameter or 
+        LastParameter properties for more information on the primary parameter.
+
+Returns:
+
+    paramval (float): the value of the primary parameter defining the curve at the 
+        given position along its cartesian length.
+</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="tangentAt" Const="true">
 		  <Documentation>
-			  <UserDocu>Vector = tangentAt(pos) - Get the tangent at the given parameter [First|Last] if defined</UserDocu>
+			  <UserDocu>Vector = tangentAt(paramval)
+Get the tangent direction at the given primary parameter value along the Edge 
+if it is defined
+
+Args:
+    paramval (float or int): The parameter value along the Edge at which to 
+        determine the tangent direction e.g:
+        
+        x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
+        y = x.tangentAt(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
+
+        y is the Vector (-0.7071067811865475, 0.7071067811865476, 0.0)
+
+        Values with magnitude greater than the Edge length return 
+        values of the tangent on the curve extrapolated beyond its 
+        length. This may not be valid for all Edges. Negative values 
+        similarly return a tangent on the curve extrapolated backwards 
+        (before the start point of the Edge). For example, using the 
+        same shape as above:
+
+        >>> x.tangentAt(x.FirstParameter + 3.5*(x.LastParameter - x.FirstParameter))
+        Vector (0.7071067811865477, 0.7071067811865474, 0.0)
+
+        Which gives the same result as 
+
+        >>> x.tangentAt(x.FirstParameter -0.5*(x.LastParameter - x.FirstParameter))
+        Vector (0.7071067811865475, 0.7071067811865476, 0.0)
+
+        Since it is a circle
+
+Returns:
+
+    Vector: representing the tangent to the Edge at the given 
+       location along its length (or extrapolated length)
+</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="valueAt" Const="true">
 		  <Documentation>
-			  <UserDocu>Vector = valueAt(pos) - Get the point at the given parameter [First|Last] if defined</UserDocu>
+			  <UserDocu>Vector = valueAt(paramval)
+Get the value of the cartesian parameter value at the given parameter value along 
+the Edge
+
+Args:
+    paramval (float or int): The parameter value along the Edge at which to 
+        determine the value in terms of the main parameter defining 
+        the edge, what the parameter value is depends on the type of
+        edge. See  e.g:
+        
+        For a circle value
+
+        x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
+        y = x.valueAt(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
+
+        y is theVector (0.7071067811865476, 0.7071067811865475, 0.0)
+
+        Values with magnitude greater than the Edge length return 
+        values on the curve extrapolated beyond its length. This may 
+        not be valid for all Edges. Negative values similarly return 
+        a parameter value on the curve extrapolated backwards (before the 
+        start point of the Edge). For example, using the same shape 
+        as above:
+
+        >>> x.valueAt(x.FirstParameter + 3.5*(x.LastParameter - x.FirstParameter))
+        Vector (0.7071067811865474, -0.7071067811865477, 0.0)
+
+        Which gives the same result as 
+
+        >>> x.valueAt(x.FirstParameter -0.5*(x.LastParameter - x.FirstParameter))
+        Vector (0.7071067811865476, -0.7071067811865475, 0.0)
+
+        Since it is a circle
+
+Returns:
+
+    Vector: representing the cartesian location on the Edge at the given 
+       distance along its length (or extrapolated length)
+</UserDocu>
 		  </Documentation>
 	  </Methode>
 		<Methode Name="parameterAt" Const="true">
@@ -36,27 +121,163 @@
 		</Methode>
 		<Methode Name="normalAt" Const="true">
 		  <Documentation>
-			  <UserDocu>Vector = normalAt(pos) - Get the normal vector at the given parameter [First|Last] if defined</UserDocu>
+			  <UserDocu>Vector = normalAt(paramval)
+Get the normal direction at the given parameter value along the Edge if it 
+is defined
+
+Args:
+    paramval (float or int): The parameter value along the Edge at which to 
+        determine the normal direction e.g:
+        
+        x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
+        y = x.normalAt(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
+
+        y is the Vector (-0.7071067811865476, -0.7071067811865475, 0.0)
+
+        Values with magnitude greater than the Edge length return 
+        values of the normal on the curve extrapolated beyond its 
+        length. This may not be valid for all Edges. Negative values 
+        similarly return a normal on the curve extrapolated backwards 
+        (before the start point of the Edge). For example, using the 
+        same shape as above:
+
+        >>> x.normalAt(x.FirstParameter + 3.5*(x.LastParameter - x.FirstParameter))
+        Vector (-0.7071067811865474, 0.7071067811865477, 0.0)
+
+        Which gives the same result as 
+
+        >>> x.normalAt(x.FirstParameter -0.5*(x.LastParameter - x.FirstParameter))
+        Vector (-0.7071067811865476, 0.7071067811865475, 0.0)
+
+        Since it is a circle
+
+Returns:
+
+    Vector: representing the normal to the Edge at the given 
+       location along its length (or extrapolated length)
+</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="derivative1At" Const="true">
 		  <Documentation>
-			  <UserDocu>Vector = d1At(pos) - Get the first derivative at the given parameter [First|Last] if defined</UserDocu>
+			  <UserDocu>Vector = derivative1At(paramval)
+Get the first derivative at the given parameter value along the Edge if it 
+is defined
+
+Args:
+    paramval (float or int): The parameter value along the Edge at which to 
+        determine the first derivative e.g:
+        
+        x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
+        y = x.derivative1At(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
+
+        y is the Vector (-0.7071067811865475, 0.7071067811865476, 0.0)
+
+        Values with magnitude greater than the Edge length return 
+        values of the first derivative on the curve extrapolated 
+        beyond its length. This may not be valid for all Edges. 
+        Negative values similarly return a first derivative on the 
+        curve extrapolated backwards (before the start point of the 
+        Edge). For example, using the same shape as above:
+
+        >>> x.derivative1At(x.FirstParameter + 3.5*(x.LastParameter - x.FirstParameter))
+        Vector (0.7071067811865477, 0.7071067811865474, 0.0)
+
+        Which gives the same result as 
+
+        >>> x.derivative1At(x.FirstParameter -0.5*(x.LastParameter - x.FirstParameter))
+        Vector (0.7071067811865475, 0.7071067811865476, 0.0)
+
+        Since it is a circle
+
+Returns:
+
+    Vector: representing the first derivative to the Edge at the 
+       given location along its length (or extrapolated length)
+</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="derivative2At" Const="true">
 		  <Documentation>
-			  <UserDocu>Vector = d2At(pos) - Get the second derivative at the given parameter [First|Last] if defined</UserDocu>
+			  <UserDocu>Vector = derivative2At(paramval)
+Get the second derivative at the given parameter value along the Edge if it 
+is defined
+
+Args:
+    paramval (float or int): The parameter value along the Edge at which to 
+        determine the second derivative e.g:
+        
+        x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
+        y = x.derivative2At(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
+
+        y is the Vector (-0.7071067811865476, -0.7071067811865475, 0.0)
+
+        Values with magnitude greater than the Edge length return 
+        values of the second derivative on the curve extrapolated 
+        beyond its length. This may not be valid for all Edges. 
+        Negative values similarly return a second derivative on the 
+        curve extrapolated backwards (before the start point of the 
+        Edge). For example, using the same shape as above:
+
+        >>> x.derivative2At(x.FirstParameter + 3.5*(x.LastParameter - x.FirstParameter))
+        Vector (-0.7071067811865474, 0.7071067811865477, 0.0)
+
+        Which gives the same result as 
+
+        >>> x.derivative2At(x.FirstParameter -0.5*(x.LastParameter - x.FirstParameter))
+        Vector (-0.7071067811865476, 0.7071067811865475, 0.0)
+
+        Since it is a circle
+
+Returns:
+
+    Vector: representing the second derivative to the Edge at the 
+       given location along its length (or extrapolated length)
+</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="derivative3At" Const="true">
 		  <Documentation>
-			  <UserDocu>Vector = d3At(pos) - Get the third derivative at the given parameter [First|Last] if defined</UserDocu>
+			  <UserDocu>Vector = derivative3At(paramval)
+Get the third derivative at the given parameter value along the Edge if it 
+is defined
+
+Args:
+    paramval (float or int): The parameter value along the Edge at which to 
+        determine the third derivative e.g:
+        
+        x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
+        y = x.derivative3At(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
+
+        y is the Vector (0.7071067811865475, -0.7071067811865476, -0.0)
+
+        Values with magnitude greater than the Edge length return 
+        values of the third derivative on the curve extrapolated 
+        beyond its length. This may not be valid for all Edges. 
+        Negative values similarly return a third derivative on the 
+        curve extrapolated backwards (before the start point of the 
+        Edge). For example, using the same shape as above:
+
+        >>> x.derivative3At(x.FirstParameter + 3.5*(x.LastParameter - x.FirstParameter))
+        Vector (-0.7071067811865477, -0.7071067811865474, 0.0)
+
+        Which gives the same result as 
+
+        >>> x.derivative3At(x.FirstParameter -0.5*(x.LastParameter - x.FirstParameter))
+        Vector (-0.7071067811865475, -0.7071067811865476, 0.0)
+
+        Since it is a circle
+
+Returns:
+
+    Vector: representing the third derivative to the Edge at the 
+       given location along its length (or extrapolated length)
+</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="curvatureAt" Const="true">
 		  <Documentation>
-			  <UserDocu>Float = curvatureAt(pos) - Get the curvature at the given parameter [First|Last] if defined</UserDocu>
+			  <UserDocu>Float = curvatureAt(paramval) - Get the curvature at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="centerOfCurvatureAt" Const="true">
@@ -124,7 +345,20 @@ Part.show(s)
 		</Methode>
 		<Methode Name="split">
 			<Documentation>
-				<UserDocu>Splits the edge at the given parameter values and builds a wire out of it</UserDocu>
+				<UserDocu>Wire = split(paramval) 
+Splits the edge at the given parameter values and builds a wire out of it
+
+Args:
+    paramval (float or int): The parameter value along the Edge at which to 
+        split it e.g:
+        
+        x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)    
+        y = x.derivative3At(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
+
+Returns:
+
+    Wire: wire made up of two Edges
+</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="isSeam">
@@ -140,25 +374,67 @@ Part.show(s)
 		</Attribute>
 		<Attribute Name="Length" ReadOnly="true">
 		  <Documentation>
-			  <UserDocu>Returns the length of the edge</UserDocu>
+			  <UserDocu>Returns the cartesian length of the curve</UserDocu>
 		  </Documentation>
 		  <Parameter Name="Length" Type="Float"/>
 	  </Attribute>
 	  <Attribute Name="ParameterRange" ReadOnly="true">
 		  <Documentation>
-			  <UserDocu>Returns a 2 tuple with the parameter range</UserDocu>
+			  <UserDocu>
+Returns a 2 tuple with the range of the primary parameter 
+defining the curve. This is the same as would be returned by 
+the FirstParameter and LastParameter properties, i.e.
+
+(LastParameter,FirstParameter)
+
+What the parameter is depends on what type of edge it is. For a 
+Line the parameter is simply its cartesian length. Some other 
+examples are shown below:
+
+Type                 Parameter
+---------------------------------------------------------------
+Circle               Angle swept by circle (or arc) in radians
+BezierCurve          Unitless number in the range 0.0 to 1.0
+Helix                Angle swept by helical turns in radians
+</UserDocu>
 		  </Documentation>
 		  <Parameter Name="ParameterRange" Type="Tuple"/>
 	  </Attribute>
 		<Attribute Name="FirstParameter" ReadOnly="true">
 			<Documentation>
-				<UserDocu>Returns the start value of the parameter range</UserDocu>
+				<UserDocu>
+Returns the start value of the range of the primary parameter 
+defining the curve.
+
+What the parameter is depends on what type of edge it is. For a 
+Line the parameter is simply its cartesian length. Some other 
+examples are shown below:
+
+Type                 Parameter
+-----------------------------------------------------------
+Circle               Angle swept by circle (or arc) in radians
+BezierCurve          Unitless number in the range 0.0 to 1.0
+Helix                Angle swept by helical turns in radians
+</UserDocu>
 			</Documentation>
 			<Parameter Name="FirstParameter" Type="Float"/>
 		</Attribute>
 		<Attribute Name="LastParameter" ReadOnly="true">
 			<Documentation>
-				<UserDocu>Returns the end value of the parameter range</UserDocu>
+				<UserDocu>
+Returns the end value of the range of the primary parameter 
+defining the curve.
+
+What the parameter is depends on what type of edge it is. For a 
+Line the parameter is simply its cartesian length. Some other 
+examples are shown below:
+
+Type                 Parameter
+-----------------------------------------------------------
+Circle               Angle swept by circle (or arc) in radians
+BezierCurve          Unitless number in the range 0.0 to 1.0
+Helix                Angle swept by helical turns in radians
+</UserDocu>
 			</Documentation>
 			<Parameter Name="LastParameter" Type="Float"/>
 		</Attribute>
@@ -170,13 +446,13 @@ Part.show(s)
 	  </Attribute>
 	<Attribute Name="Closed" ReadOnly="true">
 		<Documentation>
-			<UserDocu>Returns true of the edge is closed</UserDocu>
+			<UserDocu>Returns true if the edge is closed</UserDocu>
 		</Documentation>
 		<Parameter Name="Closed" Type="Boolean"/>
 	</Attribute>
 	  <Attribute Name="Degenerated" ReadOnly="true">
 		  <Documentation>
-			  <UserDocu>Returns true of the edge is degenerated</UserDocu>
+			  <UserDocu>Returns true if the edge is degenerated</UserDocu>
 		  </Documentation>
 		  <Parameter Name="Degenerated" Type="Boolean"/>
 	  </Attribute>

@@ -29,6 +29,7 @@ SET(PathScripts_SRCS
     PathScripts/PathDressupDogbone.py
     PathScripts/PathDressupDragknife.py
     PathScripts/PathDressupHoldingTags.py
+    PathScripts/PathDressupRampEntry.py
     PathScripts/PathDrilling.py
     PathScripts/PathEngrave.py
     PathScripts/PathFacePocket.py
@@ -40,7 +41,6 @@ SET(PathScripts_SRCS
     PathScripts/PathInspect.py
     PathScripts/PathJob.py
     PathScripts/PathKurveUtils.py
-    PathScripts/PathLoadTool.py
     PathScripts/PathLog.py
     PathScripts/PathMillFace.py
     PathScripts/PathPlane.py
@@ -60,45 +60,40 @@ SET(PathScripts_SRCS
     PathScripts/PathHelix.py
     PathScripts/kdtree.py
     PathScripts/PathSurface.py
+    PathScripts/PathToolController.py
     PathScripts/PathToolLenOffset.py
     PathScripts/PathToolLibraryManager.py
+    PathScripts/PathUtil.py
     PathScripts/PathUtils.py
     PathScripts/PostUtils.py
-    PathScripts/TooltableEditor.py
     PathScripts/__init__.py
-    PathScripts/centroid_post.py
-    PathScripts/comparams_post.py
-    PathScripts/dumper_post.py
-    PathScripts/dynapath_post.py
-    PathScripts/example_post.py
-    PathScripts/example_pre.py
-    PathScripts/linuxcnc_post.py
-    PathScripts/opensbp_post.py
-    PathScripts/opensbp_pre.py
-    PathScripts/phillips_post.py
-    PathScripts/rml_post.py
-    PathScripts/slic3r_pre.py
-    PathScripts/smoothie_post.py
+    PathScripts/post/centroid_post.py
+    PathScripts/post/comparams_post.py
+    PathScripts/post/dumper_post.py
+    PathScripts/post/dynapath_post.py
+    PathScripts/post/example_post.py
+    PathScripts/post/example_pre.py
+    PathScripts/post/linuxcnc_post.py
+    PathScripts/post/opensbp_post.py
+    PathScripts/post/opensbp_pre.py
+    PathScripts/post/phillips_post.py
+    PathScripts/post/rml_post.py
+    PathScripts/post/slic3r_pre.py
+    PathScripts/post/smoothie_post.py
 )
 
-SET(PathScripts_NC_SRCS
-    PathScripts/nc/nc.py
-    PathScripts/nc/iso.py
-    PathScripts/nc/__init__.py
-    PathScripts/nc/format.py
-    PathScripts/nc/iso_codes.py
-)
 
 SET(PathTests_SRCS
+    PathTests/__init__.py
     PathTests/PathTestUtils.py
+    PathTests/test_linuxcnc_00.ngc
     PathTests/TestPathCore.py
     PathTests/TestPathDepthParams.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathGeom.py
     PathTests/TestPathLog.py
     PathTests/TestPathPost.py
-    PathTests/__init__.py
-    PathTests/test_linuxcnc_00.ngc
+    PathTests/TestPathUtil.py
 )
 
 SET(all_files
@@ -131,15 +126,7 @@ INSTALL(
 
 INSTALL(
     FILES
-        ${PathScripts_NC_SRCS}
-    DESTINATION
-        Mod/Path/PathScripts/nc
-)
-
-INSTALL(
-    FILES
         ${PathTests_SRCS}
     DESTINATION
         Mod/Path/PathTests
 )
-

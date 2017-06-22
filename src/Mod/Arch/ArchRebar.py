@@ -169,6 +169,7 @@ class _Rebar(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","Spacing","Arch",QT_TRANSLATE_NOOP("App::Property","The spacing between the bars"))
         obj.addProperty("App::PropertyVector","Direction","Arch",QT_TRANSLATE_NOOP("App::Property","The direction to use to spread the bars. Keep (0,0,0) for automatic direction."))
         obj.addProperty("App::PropertyFloat","Rounding","Arch",QT_TRANSLATE_NOOP("App::Property","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter."))
+        obj.addProperty("App::PropertyPlacementList","PlacementList","Arch",QT_TRANSLATE_NOOP("App::Property","List of placement of all the bars"))
         self.Type = "Rebar"
         obj.setEditorMode("Spacing",1)
 
@@ -293,10 +294,10 @@ class _Rebar(ArchComponent.Component):
             return
         # building final shape
         shapes = []
+        placementlist = []
         if obj.Amount == 1:
-            offset = DraftVecUtils.scaleTo(axis,size/2)
-            bar.translate(offset)
-            shapes.append(bar)
+            barplacement = CalculatePlacement(obj.Amount, 1, size, axis, father.Placement.Rotation, obj.OffsetStart.Value, obj.OffsetEnd.Value)
+            placementlist.append(barplacement)
             if hasattr(obj,"Spacing"):
                 obj.Spacing = 0
         else:
@@ -306,33 +307,60 @@ class _Rebar(ArchComponent.Component):
                 baseoffset = None
             interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
             interval = interval / (obj.Amount - 1)
-            vinterval = DraftVecUtils.scaleTo(axis,interval)
             for i in range(obj.Amount):
-                if i == 0:
-                    if baseoffset:
-                        bar.translate(baseoffset)
-                    shapes.append(bar)
-                else:
-                    bar = bar.copy()
-                    bar.translate(vinterval)
-                    shapes.append(bar)
+                barplacement = CalculatePlacement(obj.Amount, i+1, size, axis, father.Placement.Rotation, obj.OffsetStart.Value, obj.OffsetEnd.Value)
+                placementlist.append(barplacement)
             if hasattr(obj,"Spacing"):
                 obj.Spacing = interval
+        obj.PlacementList = placementlist
+        for i in range(len(obj.PlacementList)):
+            if i == 0:
+                bar.Placement = obj.PlacementList[i]
+                shapes.append(bar)
+            else:
+                bar = bar.copy()
+                bar.Placement = obj.PlacementList[i]
+                shapes.append(bar)
         if shapes:
             obj.Shape = Part.makeCompound(shapes)
             obj.Placement = pl
-
 
 class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
     "A View Provider for the Rebar object"
 
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
+        vobj.addProperty("App::PropertyString","RebarShape","Arch",QT_TRANSLATE_NOOP("App::Property","Shape of rebar")).RebarShape
         vobj.ShapeColor = ArchCommands.getDefaultColor("Rebar")
+        vobj.setEditorMode("RebarShape",2)
 
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Rebar_Tree.svg"
+
+    def setEdit(self, vobj, mode):
+        if mode == 0:
+            if vobj.RebarShape:
+                try:
+                    # Import module of RebarShape
+                    module = __import__(vobj.RebarShape)
+                except ImportError:
+                    FreeCAD.Console.PrintError("Unable to import RebarShape module\n")
+                    return
+                module.editDialog(vobj)
+
+def CalculatePlacement(baramount, barnumber, size, axis, rotation, offsetstart, offsetend):
+    """ CalculatePlacement([baramount, barnumber, size, axis, rotation, offsetstart, offsetend]):
+    Calculate the placement of the bar from given values."""
+    if baramount == 1:
+        interval = offsetstart
+    else:
+        interval = size - (offsetstart + offsetend)
+        interval = interval / (baramount - 1)
+    bardistance = (interval * (barnumber - 1)) + offsetstart
+    barplacement = DraftVecUtils.scaleTo(axis, bardistance)
+    placement = FreeCAD.Placement(barplacement, rotation)
+    return placement
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Rebar',_CommandRebar())

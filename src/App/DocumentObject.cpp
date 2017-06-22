@@ -422,10 +422,12 @@ void DocumentObject::onChanged(const Property* prop)
     if (prop == &Label && _pDoc && oldLabel != Label.getStrValue())
         _pDoc->signalRelabelObject(*this);
 
-    if (prop->getType() & Prop_Output)
-        return;
-    // set object touched
-    StatusBits.set(0);
+    // set object touched if it is an input property
+    if (!(prop->getType() & Prop_Output))
+        StatusBits.set(ObjectStatus::Touch);
+    
+    //call the parent for appropriate handling
+    TransactionalObject::onChanged(prop);
 }
 
 PyObject *DocumentObject::getPyObject(void)
@@ -445,7 +447,7 @@ std::vector<PyObject *> DocumentObject::getPySubObjects(const std::vector<std::s
 
 void DocumentObject::touch(void)
 {
-    StatusBits.set(0);
+    StatusBits.set(ObjectStatus::Touch);
 }
 
 /**
@@ -455,7 +457,7 @@ void DocumentObject::touch(void)
 
 bool DocumentObject::isTouched() const
 {
-    return ExpressionEngine.isTouched() || StatusBits.test(0);
+    return ExpressionEngine.isTouched() || StatusBits.test(ObjectStatus::Touch);
 }
 
 void DocumentObject::Save (Base::Writer &writer) const

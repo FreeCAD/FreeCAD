@@ -68,15 +68,15 @@
     </message>
     <message>
         <source>&lt;empty&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;empty&gt;</translation>
     </message>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">Kot</translation>
+        <translation>Kot</translation>
     </message>
     <message>
         <source>Axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Os</translation>
     </message>
     <message>
         <source>Position</source>
@@ -84,7 +84,7 @@
     </message>
     <message>
         <source>Base</source>
-        <translation type="unfinished"></translation>
+        <translation>Osnova</translation>
     </message>
 </context>
 <context>
@@ -388,7 +388,7 @@ kliknete na levi ali desni gumb in premikate miško gor in dol</translation>
     </message>
     <message>
         <source>Credits</source>
-        <translation type="unfinished">Credits</translation>
+        <translation>Zahvale</translation>
     </message>
     <message>
         <source>FreeCAD would be nowhere without their efforts:</source>
@@ -396,7 +396,7 @@ kliknete na levi ali desni gumb in premikate miško gor in dol</translation>
     </message>
     <message>
         <source>License</source>
-        <translation type="unfinished">License</translation>
+        <translation>Licenca</translation>
     </message>
 </context>
 <context>
@@ -1240,54 +1240,38 @@ Prosim določite drugačno bližnjico.</translation>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Konzola Python</translation>
+        <translation>Konzola Python</translation>
     </message>
     <message>
         <source>Enable word wrap</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enable word wrap</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
-    <message>
-        <source>Default (%1 x %1)</source>
-        <translation type="obsolete">Privzeto (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Small (%1 x %1)</source>
-        <translation type="obsolete">Majhne (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Large (%1 x %1)</source>
-        <translation type="obsolete">Velike (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Extra large (%1 x %1)</source>
-        <translation type="obsolete">Zelo velike (%1 x %1)</translation>
-    </message>
     <message>
         <source>No style sheet</source>
         <translation>Brez slogovne predloge</translation>
     </message>
     <message>
         <source>Small (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Small (%1px)</translation>
     </message>
     <message>
         <source>Medium (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Medium (%1px)</translation>
     </message>
     <message>
         <source>Large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Large (%1px)</translation>
     </message>
     <message>
         <source>Extra large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Extra large (%1px)</translation>
     </message>
     <message>
         <source>Custom (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Custom (%1px)</translation>
     </message>
 </context>
 <context>
@@ -1752,10 +1736,14 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Poišči</translation>
+        <translation>Poišči</translation>
     </message>
     <message>
         <source>A search pattern to filter the results above</source>
+        <translation type="unfinished">A search pattern to filter the results above</translation>
+    </message>
+    <message>
+        <source>None (Remove link)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1965,7 +1953,7 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
         <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Use OpenGL Vertex Buffer Object (experimental)</translation>
     </message>
 </context>
 <context>
@@ -2489,11 +2477,11 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Transparent</translation>
     </message>
     <message>
         <source>Add watermark</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Add watermark</translation>
     </message>
 </context>
 <context>
@@ -2640,14 +2628,6 @@ Navedite drugo mapo.</translation>
         <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
         <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
-    <message>
-        <source>PickRadius</source>
-        <translation type="obsolete">PickRadius</translation>
-    </message>
-    <message>
-        <source>View</source>
-        <translation type="obsolete">Pogled</translation>
-    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
@@ -2672,11 +2652,11 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
         <source>Quantity:</source>
-        <translation type="unfinished">Quantity:</translation>
+        <translation>Količina:</translation>
     </message>
     <message>
         <source>Units:</source>
-        <translation type="unfinished">Units:</translation>
+        <translation>Merske enote:</translation>
     </message>
     <message>
         <source>Help</source>
@@ -2778,7 +2758,7 @@ Navedite drugo mapo.</translation>
         <source>Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
 
 The &apos;Status&apos; column shows whether the document could be recovered.</source>
-        <translation>Pritisnite &apos;Zaženi obnovitev&apos;, da začnete postopek obnovitve dokumenta s spodnjega seznama.
+        <translation type="obsolete">Pritisnite &apos;Zaženi obnovitev&apos;, da začnete postopek obnovitve dokumenta s spodnjega seznama.
 
 Stolpec &apos;Stanje&apos; prikazuje, ali je dokument mogoče obnoviti.</translation>
     </message>
@@ -2848,11 +2828,17 @@ Stolpec &apos;Stanje&apos; prikazuje, ali je dokument mogoče obnoviti.</transla
     </message>
     <message>
         <source>Finished</source>
-        <translation type="unfinished">Finished</translation>
+        <translation>Končano</translation>
     </message>
     <message>
         <source>Transient directories deleted.</source>
         <translation type="unfinished">Transient directories deleted.</translation>
+    </message>
+    <message>
+        <source>Press &apos;Start Recovery&apos; to start the recovery process of the document listed below.
+
+The &apos;Status&apos; column shows whether the document could be recovered.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3219,7 +3205,7 @@ Stolpec &apos;Stanje&apos; prikazuje, ali je dokument mogoče obnoviti.</transla
     </message>
     <message>
         <source>Use center of mass</source>
-        <translation type="unfinished"></translation>
+        <translation>Uporabi težišče</translation>
     </message>
 </context>
 <context>
@@ -3416,7 +3402,7 @@ Stolpec &apos;Stanje&apos; prikazuje, ali je dokument mogoče obnoviti.</transla
     <name>Gui::DockWnd::SelectionView</name>
     <message>
         <source>Property View</source>
-        <translation>Pogled lastnosti</translation>
+        <translation type="obsolete">Pogled lastnosti</translation>
     </message>
     <message>
         <source>Search</source>
@@ -3477,6 +3463,22 @@ Stolpec &apos;Stanje&apos; prikazuje, ali je dokument mogoče obnoviti.</transla
     <message>
         <source>Mark this object to be recomputed</source>
         <translation type="unfinished">Mark this object to be recomputed</translation>
+    </message>
+    <message>
+        <source>Selection View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The number of selected items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate subshape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creates a standalone copy of this subshape in the document</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3785,19 +3787,15 @@ Ali želite kopirati tudi te?</translation>
     </message>
     <message>
         <source>There is a rendering issue on MacOS.</source>
-        <translation>Na OS-u Mac obstaja težava z izrisovanjem.</translation>
-    </message>
-    <message>
-        <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="obsolete">Za več podatkov glejte &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt;wiki&lt;/a&gt;</translation>
+        <translation type="obsolete">Na OS-u Mac obstaja težava z izrisovanjem.</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
-        <translation>Ne prikazuj več</translation>
+        <translation type="obsolete">Ne prikazuj več</translation>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</translation>
     </message>
 </context>
 <context>
@@ -3984,7 +3982,11 @@ Kako želite nadaljevati?</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation>Uredi …</translation>
+        <translation type="obsolete">Uredi …</translation>
+    </message>
+    <message>
+        <source>Change the linked object</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4383,7 +4385,7 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
         <source>%1, Internal name: %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1, Internal name: %2</translation>
     </message>
 </context>
 <context>
@@ -4428,7 +4430,7 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
         <source>Show All</source>
-        <translation type="unfinished">Show All</translation>
+        <translation>Prikaži vse</translation>
     </message>
     <message>
         <source>Preferences...</source>
@@ -4958,12 +4960,8 @@ Upoštevajte, da je mesto klika pomembno.</translation>
         <translation type="unfinished">Delete group content?</translation>
     </message>
     <message>
-        <source>The %1 is not empty, delete it&apos;s content as well?</source>
-        <translation type="obsolete">The %1 is not empty, delete it&apos;s content as well?</translation>
-    </message>
-    <message>
         <source>The %1 is not empty, delete its content as well?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
     </message>
 </context>
 <context>
@@ -6927,19 +6925,19 @@ Are you sure you want to continue?
     </message>
     <message>
         <source>Hidden line</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hidden line</translation>
     </message>
     <message>
         <source>Hidden line mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hidden line mode</translation>
     </message>
     <message>
         <source>No shading</source>
-        <translation type="unfinished"></translation>
+        <translation>Brez senčenja</translation>
     </message>
     <message>
         <source>No shading mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No shading mode</translation>
     </message>
 </context>
 <context>

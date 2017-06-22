@@ -44,6 +44,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/GeoFeatureGroupExtension.h>
 
 #include "Tree.h"
 #include "Command.h"
@@ -643,11 +644,26 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 vpp->dragObject(obj);
             }
 
-            std::list<MDIView*> baseViews = gui->getMDIViews();
-            for (MDIView* view : baseViews) {
-                View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
-                if (activeView && !activeView->getViewer()->hasViewProvider(vpc)) {
-                    activeView->getViewer()->addViewProvider(vpc);
+            //make sure it is not part of a geofeaturegroup anymore. When this has happen we need to handle 
+            //all removed objects
+            std::vector<Gui::ViewProvider*> vps = {vpc};
+            auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+            if(grp) {
+                auto removed = grp->getExtensionByType<App::GeoFeatureGroupExtension>()->removeObject(obj);
+                for(auto o : removed) {
+                    auto remvp = gui->getViewProvider(o);
+                    if(remvp)
+                        vps.push_back(remvp);
+                }
+            }
+            
+            for(auto vp : vps) {
+                std::list<MDIView*> baseViews = gui->getMDIViews();
+                for (MDIView* view : baseViews) {
+                    View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
+                    if (activeView && !activeView->getViewer()->hasViewProvider(vp)) {
+                        activeView->getViewer()->addViewProvider(vp);
+                    }
                 }
             }
         }
@@ -1238,7 +1254,8 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
 void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,const Gui::TreeItemMode& mode)
 {
     FOREACH_ITEM(item,obj)
-        if(!item->parent()->isExpanded()) continue;
+        if (!item->parent() || // has no parent (see #0003025)
+            !item->parent()->isExpanded()) continue;
         switch (mode) {
         case Gui::Expand:
             item->setExpanded(true);
@@ -1521,7 +1538,9 @@ void DocumentObjectItem::testStatus()
     }
     else { // invisible
         QStyleOptionViewItem opt;
-        opt.initFrom(this->treeWidget());
+        // it can happen that a tree item is not attached to the tree widget (#0003025)
+        if (this->treeWidget())
+            opt.initFrom(this->treeWidget());
 #if QT_VERSION >= 0x040200
         this->setForeground(0, opt.palette.color(QPalette::Disabled,QPalette::Text));
 #else

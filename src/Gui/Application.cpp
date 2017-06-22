@@ -219,6 +219,53 @@ FreeCADGui_getSoDBVersion(PyObject * /*self*/, PyObject *args)
 #endif
 }
 
+// Copied from https://github.com/python/cpython/blob/master/Objects/moduleobject.c
+#if PY_MAJOR_VERSION >= 3
+#if PY_MINOR_VERSION <= 4
+static int
+_add_methods_to_object(PyObject *module, PyObject *name, PyMethodDef *functions)
+{
+    PyObject *func;
+    PyMethodDef *fdef;
+
+    for (fdef = functions; fdef->ml_name != NULL; fdef++) {
+        if ((fdef->ml_flags & METH_CLASS) ||
+            (fdef->ml_flags & METH_STATIC)) {
+            PyErr_SetString(PyExc_ValueError,
+                            "module functions cannot set"
+                            " METH_CLASS or METH_STATIC");
+            return -1;
+        }
+        func = PyCFunction_NewEx(fdef, (PyObject*)module, name);
+        if (func == NULL) {
+            return -1;
+        }
+        if (PyObject_SetAttrString(module, fdef->ml_name, func) != 0) {
+            Py_DECREF(func);
+            return -1;
+        }
+        Py_DECREF(func);
+    }
+
+    return 0;
+}
+
+int
+PyModule_AddFunctions(PyObject *m, PyMethodDef *functions)
+{
+    int res;
+    PyObject *name = PyModule_GetNameObject(m);
+    if (name == NULL) {
+        return -1;
+    }
+
+    res = _add_methods_to_object(m, name, functions);
+    Py_DECREF(name);
+    return res;
+}
+#endif
+#endif
+
 struct PyMethodDef FreeCADGui_methods[] = {
     {"subgraphFromObject",FreeCADGui_subgraphFromObject,METH_VARARGS,
      "subgraphFromObject(object) -> Node\n\n"
@@ -302,7 +349,12 @@ Application::Application(bool GUIenabled)
         // otherwise the executable was launched
         PyObject *module = PyImport_AddModule("FreeCADGui");
         if (!module) {
-            static struct PyModuleDef FreeCADGuiModuleDef = {PyModuleDef_HEAD_INIT,"FreeCADGui", FreeCADGui_doc, -1, Application::Methods};
+            static struct PyModuleDef FreeCADGuiModuleDef = {
+                PyModuleDef_HEAD_INIT,
+                "FreeCADGui", FreeCADGui_doc, -1,
+                Application::Methods,
+                NULL, NULL, NULL, NULL
+            };
             module = PyModule_Create(&FreeCADGuiModuleDef);
             _PyImport_FixupBuiltin(module, "FreeCADGui");
         }
@@ -327,7 +379,12 @@ Application::Application(bool GUIenabled)
 
         //insert Selection module
 #if PY_MAJOR_VERSION >= 3
-        static struct PyModuleDef SelectionModuleDef = {PyModuleDef_HEAD_INIT,"Selection", "Selection module", -1, SelectionSingleton::Methods};
+        static struct PyModuleDef SelectionModuleDef = {
+            PyModuleDef_HEAD_INIT,
+            "Selection", "Selection module", -1,
+            SelectionSingleton::Methods,
+            NULL, NULL, NULL, NULL
+        };
         PyObject* pSelectionModule = PyModule_Create(&SelectionModuleDef);
 #else
         PyObject* pSelectionModule = Py_InitModule3("Selection", SelectionSingleton::Methods,"Selection module");
@@ -1780,6 +1837,23 @@ void Application::runApplication(void)
             qApp->sendEvent(&mw, &e);
         }
     }
+#if QT_VERSION == 0x050600 && defined(Q_OS_WIN32)
+    else {
+        // Under Windows the tree indicator branch gets corrupted after a while.
+        // For more details see also https://bugreports.qt.io/browse/QTBUG-52230
+        // and https://codereview.qt-project.org/#/c/154357/2//ALL,unified
+        // A workaround for Qt 5.6.0 is to set a minimal style sheet.
+        QString qss = QString::fromLatin1(
+               "QTreeView::branch:closed:has-children  {\n"
+               "    image: url(:/icons/style/windows_branch_closed.png);\n"
+               "}\n"
+               "\n"
+               "QTreeView::branch:open:has-children  {\n"
+               "    image: url(:/icons/style/windows_branch_open.png);\n"
+               "}\n");
+        qApp->setStyleSheet(qss);
+    }
+#endif
 
     //initialize spaceball.
     mainApp.initSpaceball(&mw);

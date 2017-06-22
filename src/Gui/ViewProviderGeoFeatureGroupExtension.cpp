@@ -33,6 +33,7 @@
 #include "Application.h"
 #include "Document.h"
 #include <App/GeoFeatureGroupExtension.h>
+#include <Base/Console.h>
 #include <Inventor/nodes/SoGroup.h>
 
 using namespace Gui;
@@ -55,8 +56,33 @@ ViewProviderGeoFeatureGroupExtension::~ViewProviderGeoFeatureGroupExtension()
 
 
 std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D(void) const {
+    
+    //all object in the group must be claimed in 3D, as we are a coordinate system for all of them
     auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    return ext ? ext->getGeoSubObjects() : std::vector<App::DocumentObject*>();
+    if(ext) {        
+        auto objs = ext->Group.getValues();
+        return objs;
+    }
+    return std::vector<App::DocumentObject*>();
+}
+
+std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren(void) const {
+ 
+    //we must be carefull which objects to claim, as there might be stacked relations inside the coordinate system,
+    //like pad/sketch
+    auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    if(ext) {   
+        //filter out all objects with more than one inlink, as they are most likely hold by another
+        //object in the tree
+        std::vector<App::DocumentObject*> claim;
+        auto objs = ext->Group.getValues();
+        for(auto obj : objs) {            
+            if(obj->getInList().size()<=1)
+                claim.push_back(obj);
+        }
+        return claim;
+    }
+    return std::vector<App::DocumentObject*>();
 }
 
 void ViewProviderGeoFeatureGroupExtension::extensionAttach(App::DocumentObject* pcObject)
@@ -93,97 +119,6 @@ void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Proper
         ViewProviderGroupExtension::extensionUpdateData ( prop );
     }
 }
-
-std::vector< App::DocumentObject* > ViewProviderGeoFeatureGroupExtension::getLinkedObjects(App::DocumentObject* obj) {
-
-    if(!obj)
-        return std::vector< App::DocumentObject* >();
-
-    //we get all linked objects, and that recursively
-    std::vector< App::DocumentObject* > result;
-    std::vector<App::Property*> list;
-    obj->getPropertyList(list);
-    for(App::Property* prop : list) {
-        if(prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()))
-            result.push_back(static_cast<App::PropertyLink*>(prop)->getValue());
-        else if(prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
-            auto vec = static_cast<App::PropertyLinkList*>(prop)->getValues();
-            result.insert(result.end(), vec.begin(), vec.end());
-        }
-        else if(prop->getTypeId().isDerivedFrom(App::PropertyLinkSub::getClassTypeId()))
-            result.push_back(static_cast<App::PropertyLinkSub*>(prop)->getValue());
-        else if(prop->getTypeId().isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())) {
-            auto vec = static_cast<App::PropertyLinkList*>(prop)->getValues();
-            result.insert(result.end(), vec.begin(), vec.end());
-        }
-    }
-
-    //clear all null objects
-    result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
-
-    //collect all dependencies of those objects
-    std::vector< App::DocumentObject* > links;
-    for(App::DocumentObject *obj : result) {
-        auto vec = getLinkedObjects(obj);
-        links.insert(links.end(), vec.begin(), vec.end());
-    }
-
-    if (!links.empty()) {
-        result.insert(result.end(), links.begin(), links.end());
-        std::sort(result.begin(), result.end());
-        result.erase(std::unique(result.begin(), result.end()), result.end());
-    }
-
-    return result;
-}
-
-void ViewProviderGeoFeatureGroupExtension::extensionDropObject(App::DocumentObject* obj) {
-    
-    // Open command
-    App::DocumentObject* grp = static_cast<App::DocumentObject*>(getExtendedViewProvider()->getObject());
-    App::Document* doc = grp->getDocument();
-    Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
-    gui->openCommand("Move object");
-    
-    //links between different CS are not allowed, hence we need to ensure if all dependencies are in 
-    //the same geofeaturegroup
-    auto vec = getLinkedObjects(obj);
-    
-    //remove all objects already in the correct group
-    vec.erase(std::remove_if(vec.begin(), vec.end(), [this](App::DocumentObject* o){    
-        return App::GroupExtension::getGroupOfObject(o) == this->getExtendedViewProvider()->getObject();
-    }), vec.end());
-
-    vec.push_back(obj);
-    
-    for(App::DocumentObject* o : vec) {       
-        // build Python command for execution
-        QString cmd;
-        cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
-                            "App.getDocument(\"%1\").getObject(\"%3\"))")
-                            .arg(QString::fromLatin1(doc->getName()))
-                            .arg(QString::fromLatin1(grp->getNameInDocument()))
-                            .arg(QString::fromLatin1(o->getNameInDocument()));
-
-        Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
-    }
-    gui->commitCommand();
-}
-
-
-void ViewProviderGeoFeatureGroupExtension::extensionDragObject(App::DocumentObject* obj) {
-    //links between different coordinate systems are not allowed, hence draging one object also needs
-    //to drag out all dependend objects
-    auto vec = getLinkedObjects(obj);
-       
-    //add this object
-    vec.push_back(obj);
-    
-    for(App::DocumentObject* obj : vec)
-        ViewProviderGroupExtension::extensionDragObject(obj);
-}
-
-
 
 namespace Gui {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderGeoFeatureGroupExtensionPython, Gui::ViewProviderGeoFeatureGroupExtension)

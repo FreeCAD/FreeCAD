@@ -180,6 +180,9 @@ public:
 
     /// trim a curve
     int trim(int geoId, const Base::Vector3d& point);
+    /// extend a curve
+    int extend(int geoId, double increment, int endPoint);
+
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
     int addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId=Sketcher::none);
     /// with default parameters adds a copy of the geometric elements displaced by the displacement vector.

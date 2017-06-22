@@ -256,6 +256,12 @@ class plane:
         else:
             return False
 
+    def alignTo3Points(self,p1,p2,p3,offset=0):
+        import Part
+        w = Part.makePolygon([p1,p2,p3,p1])
+        f = Part.Face(w)
+        return self.alignToFace(f,offset)
+
     def alignToSelection(self, offset):
         '''If selection uniquely defines a plane, align working plane to it.  Return success (bool)'''
         import FreeCADGui

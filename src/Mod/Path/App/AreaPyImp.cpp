@@ -149,10 +149,9 @@ static const PyMethodDef areaOverrides[] = {
     },
     {
         "setDefaultParams",(PyCFunction)areaSetParams, METH_VARARGS|METH_KEYWORDS|METH_STATIC,
-        "setDefaultParams(" PARAM_PY_ARGS_DOC(NAME,AREA_PARAMS_EXTRA_CONF) ", key=value...):\n"
+        "setDefaultParams(key=value...):\n"
         "Static method to set the default parameters of all following Path.Area, plus the following\n"
         "additional parameters.\n"
-        PARAM_PY_DOC(NAME,AREA_PARAMS_EXTRA_CONF)
     },
     {
         "getDefaultParams",(PyCFunction)areaGetParams, METH_VARARGS|METH_STATIC,
@@ -366,7 +365,7 @@ PyObject* AreaPy::makeSections(PyObject *args, PyObject *keywds)
 
     Py::List ret;
     for(auto &area : sections) 
-        ret.append(Py::asObject(new AreaPy(new Area(*area,false))));
+        ret.append(Py::asObject(new AreaPy(new Area(*area,true))));
     return Py::new_reference_to(ret);
 }
 

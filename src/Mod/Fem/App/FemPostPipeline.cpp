@@ -35,6 +35,7 @@
 #include <App/Document.h>
 #include <SMESH_Mesh.hxx>
 #include <App/DocumentObjectPy.h>
+#include <Mod/Fem/App/FemPostPipelinePy.h>
 
 #include <vtkDataSetReader.h>
 #include <vtkGeometryFilter.h>
@@ -266,4 +267,13 @@ void FemPostPipeline::load(FemResultObject* res) {
     }
 
     Data.setValue(grid);
+}
+
+PyObject* FemPostPipeline::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FemPostPipelinePy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }

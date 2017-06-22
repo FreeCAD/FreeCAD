@@ -77,6 +77,8 @@ PyCommands = [["src/Mod/Draft",
                'lconvert -i Gui/Resources/translations/Fempy.ts Gui/Resources/translations/Fem.ts -o Gui/Resources/translations/Fem.ts'],
               ["src/Mod/Fem",
                'rm Gui/Resources/translations/Fempy.ts'],
+              ["src/Mod/Tux",
+               'pylupdate `find ./ -name "*.py"` -ts resources/translations/Tux.ts'],
                ]
 
 # add python folders to exclude list

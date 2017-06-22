@@ -324,6 +324,7 @@ class Component:
         obj.addProperty("App::PropertyArea","HorizontalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
         obj.addProperty("App::PropertyLength","PerimeterLength","Arch",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"))
         obj.addProperty("App::PropertyLink","HiRes","Arch",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
+        obj.addProperty("App::PropertyLink","Axis","Arch",QT_TRANSLATE_NOOP("App::Property","An optional axis or axis system on which this object should be duplicated"))
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
@@ -590,6 +591,27 @@ class Component:
                                         print("Arch: unable to cut object ",o.Name, " from ", obj.Name)
         return base
 
+    def spread(self,obj,shape,placement):
+        "spreads this shape along axis positions"
+        points = None
+        if hasattr(obj,"Axis"):
+            if obj.Axis:
+                if hasattr(obj.Axis,"Proxy"):
+                    if hasattr(obj.Axis.Proxy,"getPoints"):
+                        points = obj.Axis.Proxy.getPoints(obj.Axis)
+                if not points:
+                    if obj.Axis.isDerivedFrom("Part.Feature"):
+                        points = [v.Point for v in obj.Axis.Shape.Vertexes]
+        if points:
+            shps = []
+            for p in points:
+                sh = shape.copy()
+                sh.translate(p)
+                shps.append(sh)
+            import Part
+            shape = Part.makeCompound(shps)
+        return shape
+
     def applyShape(self,obj,shape,placement,allowinvalid=False,allownosolid=False):
         "checks and cleans the given shape, and apply it to the object"
         if shape:
@@ -602,19 +624,19 @@ class Component:
                             FreeCAD.Console.PrintError(translate("Arch","Error computing the shape of this object")+"\n")
                             return
                         shape = shape.removeSplitter()
-                        obj.Shape = shape
+                        obj.Shape = self.spread(obj,shape,placement)
                         if not placement.isNull():
                             obj.Placement = placement
                     else:
                         if allownosolid:
-                            obj.Shape = shape
+                            obj.Shape = self.spread(obj,shape,placement)
                             if not placement.isNull():
                                 obj.Placement = placement
                         else:
                             FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has no solid")+"\n")
                 else:
                     if allowinvalid:
-                        obj.Shape = shape
+                        obj.Shape = self.spread(obj,shape,placement)
                         if not placement.isNull():
                             obj.Placement = placement
                     else:

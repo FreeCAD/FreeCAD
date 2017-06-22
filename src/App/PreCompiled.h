@@ -68,6 +68,7 @@
 #include <queue>
 #include <bitset>
 #include <exception>
+#include <random>
 
 // Boost
 #include <boost/signals.hpp>

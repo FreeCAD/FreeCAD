@@ -30,17 +30,40 @@ from DraftGeomUtils import geomType
 import PathScripts
 from PathScripts import PathJob
 import numpy
-import PathLog
-#from math import pi
+from PathScripts import PathLog
 from FreeCAD import Vector
+import Path
+from PySide import QtCore
+from PySide import QtGui
 
 LOG_MODULE = 'PathUtils'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-#PathLog.trackModule('PathUtils')
+# PathLog.trackModule('PathUtils')
+FreeCAD.setLogLevel('Path.Area', 0)
+
+
+def waiting_effects(function):
+    def new_function(*args, **kwargs):
+        if not FreeCAD.GuiUp:
+            return function(*args, **kwargs)
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+        res = None
+        try:
+            res = function(*args, **kwargs)
+        # don't catch exceptions - want to know where they are coming from ....
+        #except Exception as e:
+        #    raise e
+        #    print("Error {}".format(e.args[0]))
+        finally:
+            QtGui.QApplication.restoreOverrideCursor()
+        return res
+    return new_function
+
 
 def cleanedges(splines, precision):
     '''cleanedges([splines],precision). Convert BSpline curves, Beziers, to arcs that can be used for cnc paths.
     Returns Lines as is. Filters Circle and Arcs for over 180 degrees. Discretizes Ellipses. Ignores other geometry. '''
+    PathLog.track()
     edges = []
     for spline in splines:
         if geomType(spline) == "BSplineCurve":
@@ -73,8 +96,11 @@ def cleanedges(splines, precision):
 
     return edges
 
+
 def curvetowire(obj, steps):
     '''adapted from DraftGeomUtils, because the discretize function changed a bit '''
+
+    PathLog.track()
     points = obj.copy().discretize(Distance=eval('steps'))
     p0 = points[0]
     edgelist = []
@@ -83,6 +109,7 @@ def curvetowire(obj, steps):
         edgelist.append(edge)
         p0 = p
     return edgelist
+
 
 def isDrillable(obj, candidate, tooldiameter=None):
     PathLog.track('obj: {} candidate: {} tooldiameter {}'.format(obj, candidate, tooldiameter))
@@ -98,13 +125,13 @@ def isDrillable(obj, candidate, tooldiameter=None):
                     v1 = edge.Vertexes[1].Point
                     if (v1.sub(v0).x == 0) and (v1.sub(v0).y == 0):
                         # vector of top center
-                        lsp = Vector(face.BoundBox.Center.x,face.BoundBox.Center.y, face.BoundBox.ZMax)
+                        lsp = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMax)
                         # vector of bottom center
-                        lep = Vector(face.BoundBox.Center.x,face.BoundBox.Center.y, face.BoundBox.ZMin)
+                        lep = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMin)
                         if obj.isInside(lsp, 0, False) or obj.isInside(lep, 0, False):
                             drillable = False
                         # eliminate elliptical holes
-                        elif not hasattr(face.Surface, "Radius"): #abs(face.BoundBox.XLength - face.BoundBox.YLength) > 0.05:
+                        elif not hasattr(face.Surface, "Radius"):
                             drillable = False
                         else:
                             if tooldiameter is not None:
@@ -115,24 +142,32 @@ def isDrillable(obj, candidate, tooldiameter=None):
         for edge in candidate.Edges:
             if isinstance(edge.Curve, Part.Circle) and edge.isClosed():
                 PathLog.debug("candidate is a circle or ellipse")
-                if not hasattr(edge.Curve, "Radius"): #bbdiff > 0.05:
+                if not hasattr(edge.Curve, "Radius"):
                     PathLog.debug("No radius.  Ellipse.")
                     drillable = False
                 else:
                     PathLog.debug("Has Radius, Circle")
                     if tooldiameter is not None:
                         drillable = edge.Curve.Radius >= tooldiameter/2
+                        if not drillable:
+                            FreeCAD.Console.PrintMessage(
+                                    "Found a drillable hole with diameter: {}: "
+                                    "too small for the current tool with "
+                                    "diameter: {}".format(edge.Curve.Radius*2, tooldiameter))
                     else:
                         drillable = True
     PathLog.debug("candidate is drillable: {}".format(drillable))
     return drillable
 
+
 # fixme set at 4 decimal places for testing
 def fmt(val): return format(val, '.4f')
+
 
 def segments(poly):
     ''' A sequence of (x,y) numeric coordinates pairs '''
     return zip(poly, poly[1:] + [poly[0]])
+
 
 def loopdetect(obj, edge1, edge2):
     '''
@@ -148,17 +183,19 @@ def loopdetect(obj, edge1, edge2):
     for wire in obj.Shape.Wires:
         for e in wire.Edges:
             if e.hashCode() == edge1.hashCode():
-                candidates.append((wire.hashCode(),wire))
+                candidates.append((wire.hashCode(), wire))
             if e.hashCode() == edge2.hashCode():
-                candidates.append((wire.hashCode(),wire))
-    loop = set([x for x in candidates if candidates.count(x) > 1]) #return the duplicate item
+                candidates.append((wire.hashCode(), wire))
+    loop = set([x for x in candidates if candidates.count(x) > 1])  # return the duplicate item
     if len(loop) != 1:
         return None
     loopwire = next(x for x in loop)[1]
     return loopwire
 
+
 def filterArcs(arcEdge):
     '''filterArcs(Edge) -used to split arcs that over 180 degrees. Returns list '''
+    PathLog.track()
     s = arcEdge
     if isinstance(s.Curve, Part.Circle):
         splitlist = []
@@ -174,10 +211,10 @@ def filterArcs(arcEdge):
             arcstpt = s.valueAt(s.FirstParameter)
             arcmid = s.valueAt(
                 (s.LastParameter - s.FirstParameter) * 0.5 + s.FirstParameter)
-            arcquad1 = s.valueAt((s.LastParameter - s.FirstParameter)
-                                 * 0.25 + s.FirstParameter)  # future midpt for arc1
-            arcquad2 = s.valueAt((s.LastParameter - s.FirstParameter)
-                                 * 0.75 + s.FirstParameter)  # future midpt for arc2
+            arcquad1 = s.valueAt((s.LastParameter - s.FirstParameter) *
+                                 0.25 + s.FirstParameter)  # future midpt for arc1
+            arcquad2 = s.valueAt((s.LastParameter - s.FirstParameter) *
+                                 0.75 + s.FirstParameter)  # future midpt for arc2
             arcendpt = s.valueAt(s.LastParameter)
             # reconstruct with 2 arcs
             arcseg1 = Part.ArcOfCircle(arcstpt, arcquad1, arcmid)
@@ -194,6 +231,64 @@ def filterArcs(arcEdge):
     return splitlist
 
 
+def makeWorkplane(shape):
+    """
+    Creates a workplane circle at the ZMin level.
+    """
+    PathLog.track()
+    loc = FreeCAD.Vector(shape.BoundBox.Center.x,
+                         shape.BoundBox.Center.y,
+                         shape.BoundBox.ZMin)
+    c = Part.makeCircle(10, loc)
+    return c
+
+
+def getEnvelope(partshape, subshape=None, stockheight=None):
+    '''
+    getEnvelope(partshape, stockheight=None)
+    returns a shape corresponding to the partshape silhouette extruded to height.
+    if stockheight is given, the returned shape is extruded to that height otherwise the returned shape
+    is the height of the original shape boundbox
+    partshape = solid object
+    stockheight = float - Absolute Z height of the top of material before cutting.
+    '''
+    PathLog.track(partshape, subshape, stockheight)
+
+    # if partshape.Volume == 0.0:  #Not a 3D object
+    #     return None
+
+    if subshape is not None:
+        if isinstance(subshape, Part.Face):
+            PathLog.debug('processing a face')
+            sec = Part.makeCompound([subshape])
+        else:
+            area = Path.Area(Fill=2, Coplanar=0).add(subshape)
+            area.setPlane(makeWorkplane(partshape))
+            PathLog.debug("About to section with params: {}".format(area.getParams()))
+            sec = area.makeSections(heights=[0.0], project=True)[0].getShape()
+
+        zShift = partshape.BoundBox.ZMin - subshape.BoundBox.ZMin
+        PathLog.debug('partshapeZmin: {}, subshapeZMin: {}, zShift: {}'.format(partshape.BoundBox.ZMin, subshape.BoundBox.ZMin, zShift))
+        newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), sec.Placement.Rotation)
+        sec.Placement = newPlace
+
+    else:
+        area = Path.Area(Fill=2, Coplanar=0).add(partshape)
+        area.setPlane(makeWorkplane(partshape))
+        sec = area.makeSections(heights=[0.0], project=True)[0].getShape()
+
+    if stockheight is not None:
+        eLength = float(stockheight)-partshape.BoundBox.ZMin
+        PathLog.debug('boundbox zMIN: {} elength: {}'.format(partshape.BoundBox.ZMin, eLength))
+        envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, eLength))
+    else:
+        envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, partshape.BoundBox.ZLength))
+    if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
+        removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "Envelope")
+        removalshape.Shape = envelopeshape
+    return envelopeshape
+
+
 def reverseEdge(e):
     if geomType(e) == "Circle":
         arcstpt = e.valueAt(e.FirstParameter)
@@ -208,20 +303,22 @@ def reverseEdge(e):
 
     return newedge
 
+
 def changeTool(obj, job):
     tlnum = 0
     for p in job.Group:
         if not hasattr(p, "Group"):
-            if isinstance(p.Proxy, PathScripts.PathLoadTool.LoadTool) and p.ToolNumber > 0:
+            if isinstance(p.Proxy, PathScripts.PathToolController.ToolController) and p.ToolNumber > 0:
                 tlnum = p.ToolNumber
             if p == obj:
                 return tlnum
         elif hasattr(p, "Group"):
             for g in p.Group:
-                if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
+                if isinstance(g.Proxy, PathScripts.PathToolController.ToolController):
                     tlnum = g.ToolNumber
                 if g == obj:
                     return tlnum
+
 
 def getToolControllers(obj):
     '''returns all the tool controllers'''
@@ -234,9 +331,10 @@ def getToolControllers(obj):
     if parent is not None and hasattr(parent, 'Group'):
         sibs = parent.Group
         for g in sibs:
-            if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
+            if isinstance(g.Proxy, PathScripts.PathToolController.ToolController):
                 controllers.append(g)
     return controllers
+
 
 def findToolController(obj, name=None):
     '''returns a tool controller with a given name.
@@ -245,10 +343,10 @@ def findToolController(obj, name=None):
 
     PathLog.track('name: {}'.format(name))
     c = None
-    #First check if a user has selected a tool controller in the tree. Return the first one and remove all from selection
+    # First check if a user has selected a tool controller in the tree. Return the first one and remove all from selection
     for sel in FreeCADGui.Selection.getSelectionEx():
         if hasattr(sel.Object, 'Proxy'):
-            if isinstance(sel.Object.Proxy, PathScripts.PathLoadTool.LoadTool):
+            if isinstance(sel.Object.Proxy, PathScripts.PathToolController.ToolController):
                 if c is None:
                     c = sel.Object
                 FreeCADGui.Selection.removeSelection(sel.Object)
@@ -260,16 +358,16 @@ def findToolController(obj, name=None):
     if len(controllers) == 0:
         return None
 
-    #If there's only one in the job, use it.
+    # If there's only one in the job, use it.
     if len(controllers) == 1:
         if name is None or name == controllers[0].Label:
             tc = controllers[0]
         else:
             tc = None
-    elif name is not None:  #More than one, make the user choose.
+    elif name is not None:  # More than one, make the user choose.
         tc = [i for i in controllers if i.Label == name][0]
     else:
-        #form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgTCChooser.ui")
+        # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgTCChooser.ui")
         form = FreeCADGui.PySideUic.loadUi(":/panels/DlgTCChooser.ui")
         mylist = [i.Label for i in controllers]
         form.uiToolController.addItems(mylist)
@@ -279,6 +377,7 @@ def findToolController(obj, name=None):
         else:
             tc = [i for i in controllers if i.Label == form.uiToolController.currentText()][0]
     return tc
+
 
 def findParentJob(obj):
     '''retrieves a parent job object for an operation or other Path object'''
@@ -292,7 +391,8 @@ def findParentJob(obj):
                 return grandParent
     return None
 
-def GetJobs(jobname = None):
+
+def GetJobs(jobname=None):
     '''returns all jobs in the current document.  If name is given, returns that job'''
     PathLog.track()
     jobs = []
@@ -306,7 +406,8 @@ def GetJobs(jobname = None):
                     jobs.append(o)
     return jobs
 
-def addToJob(obj, jobname = None):
+
+def addToJob(obj, jobname=None):
     '''adds a path object to a job
     obj = obj
     jobname = None'''
@@ -326,7 +427,7 @@ def addToJob(obj, jobname = None):
         elif len(jobs) == 1:
             job = jobs[0]
         else:
-            #form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
+            # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
             form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
             mylist = [i.Name for i in jobs]
             form.cboProject.addItems(mylist)
@@ -337,10 +438,12 @@ def addToJob(obj, jobname = None):
                 print(form.cboProject.currentText())
                 job = [i for i in jobs if i.Name == form.cboProject.currentText()][0]
 
-    g = job.Group
-    g.append(obj)
-    job.Group = g
+    if obj:
+        g = job.Group
+        g.append(obj)
+        job.Group = g
     return job
+
 
 def rapid(x=None, y=None, z=None):
     """ Returns gcode string to perform a rapid move."""
@@ -355,6 +458,7 @@ def rapid(x=None, y=None, z=None):
     else:
         return ""
     return retstr + "\n"
+
 
 def feed(x=None, y=None, z=None, horizFeed=0, vertFeed=0):
     """ Return gcode string to perform a linear feed."""
@@ -375,6 +479,7 @@ def feed(x=None, y=None, z=None, horizFeed=0, vertFeed=0):
     else:
         return ""
     return retstr + "\n"
+
 
 def arc(cx, cy, sx, sy, ex, ey, horizFeed=0, ez=None, ccw=False):
     """
@@ -411,6 +516,7 @@ def arc(cx, cy, sx, sy, ex, ey, horizFeed=0, ez=None, ccw=False):
     retstr += " I" + str("%.4f" % (cx - sx)) + " J" + str("%.4f" % (cy - sy))
 
     return retstr + "\n"
+
 
 def helicalPlunge(plungePos, rampangle, destZ, startZ, toold, plungeR, horizFeed):
     """
@@ -457,6 +563,7 @@ def helicalPlunge(plungePos, rampangle, destZ, startZ, toold, plungeR, horizFeed
         curZ = max(curZ - dzPerRev, destZ)
 
     return helixCmds
+
 
 def rampPlunge(edge, rampangle, destZ, startZ):
     """
@@ -512,30 +619,48 @@ def rampPlunge(edge, rampangle, destZ, startZ):
 
     return rampCmds
 
-def sort_jobs(locations, keys):
+
+def sort_jobs(locations, keys, attractors=[]):
     """ sort holes by the nearest neighbor method
         keys: two-element list of keys for X and Y coordinates. for example ['x','y']
         originally written by m0n5t3r for PathHelix
     """
     from Queue import PriorityQueue
+    from collections import defaultdict
+
+    attractors = attractors or [keys[0]]
 
     def sqdist(a, b):
         """ square Euclidean distance """
-        return (a[keys[0]] - b[keys[0]] ) ** 2 + (a[keys[1]] - b[keys[1]]) ** 2
+        d = 0
+        for k in keys:
+            d += (a[k] - b[k]) ** 2
+
+        return d
+
+    def weight(location):
+        w = 0
+
+        for k in attractors:
+            w += abs(location[k])
+
+        return w
 
     def find_closest(location_list, location, dist):
         q = PriorityQueue()
 
         for j in location_list:
-            q.put((dist(j, location) + location[keys[0]], j))
+            q.put((dist(j, location) + weight(j), j))
 
         prio, result = q.get()
+
         return result
 
     out = []
-    zero = {keys[0]: 0,keys[1]: 0}
+    zero = defaultdict(lambda: 0)
 
     out.append(find_closest(locations, zero, sqdist))
+    locations.remove(out[-1])
 
     while locations:
         closest = find_closest(locations, out[-1], sqdist)
@@ -543,6 +668,7 @@ def sort_jobs(locations, keys):
         locations.remove(closest)
 
     return out
+
 
 class depth_params:
     '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters
@@ -626,3 +752,45 @@ class depth_params:
             return depths.tolist()
         else:
             return [stop] + depths.tolist()
+
+
+class CollisionTester:
+
+    def compareBBSpace(self, bb1, bb2):
+        if (bb1.XMin == bb2.XMin and
+                bb1.XMax == bb2.XMax and
+                bb1.YMin == bb2.YMin and
+                bb1.YMax == bb2.YMax and
+                bb1.ZMin == bb2.ZMin and
+                bb1.ZMax == bb2.ZMax):
+            return True
+        return False
+
+    def getCollisionSim(self, baseobject, cutterPath):
+
+        baseColor = (0.800000011920929, 0.800000011920929, 0.800000011920929, 00.0)
+        intersecColor = (1.0, 0.0, 0.0, 0.0)
+        cVol = baseobject.common(cutterPath)
+
+        if cVol.Volume > 1e-12:
+            colorassignment = []
+            gougedShape = baseobject.cut(cutterPath)
+            # gougeSim = FreeCAD.ActiveDocument.addObject("Part::Feature","Gouge")
+            # gougeSim.Shape = gougedShape
+
+            for idx, i in enumerate(gougedShape.Faces):
+                match = False
+                for jdx, j in enumerate(cVol.Faces):
+                    if self.compareBBSpace(i.BoundBox, j.BoundBox):
+                        match = True
+                if match is True:
+                    # print ("Need to highlight Face{}".format(idx+1))
+                    colorassignment.append(intersecColor)
+                else:
+                    colorassignment.append(baseColor)
+            collisionSim = FreeCAD.ActiveDocument.addObject("Part::Feature", "Collision")
+            collisionSim.Shape = gougedShape
+            collisionSim.ViewObject.DiffuseColor = colorassignment
+            return collisionSim
+        else:
+            return None

@@ -119,6 +119,8 @@ G1 X-0.590500 Y0.433000
 G1 X-0.590500 Y-0.393700
 G0 Z0.500000
 '''
+
+
         #create a path directly form a piece of gcode.
         p = Path.Path()
         p.setFromGCode(lines)

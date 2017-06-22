@@ -39,6 +39,7 @@
 #include "TooltablePy.h"
 #include "PropertyPath.h"
 #include "FeaturePath.h"
+#include "PropertyTool.h"
 #include "PropertyTooltable.h"
 #include "FeaturePathCompound.h"
 #include "FeaturePathShape.h"
@@ -81,6 +82,7 @@ PyMOD_INIT_FUNC(Path)
     Path::PropertyPath           ::init();
     Path::Feature                ::init();
     Path::FeaturePython          ::init();
+    Path::PropertyTool           ::init();
     Path::PropertyTooltable      ::init();
     Path::FeatureCompound        ::init();
     Path::FeatureCompoundPython  ::init();

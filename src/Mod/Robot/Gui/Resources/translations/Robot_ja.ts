@@ -381,7 +381,7 @@
     <message>
         <location line="-177"/>
         <source>Select one Robot to set home position</source>
-        <translation type="unfinished"></translation>
+        <translation>ホーム位置を設定するロボットを1つ選択</translation>
     </message>
     <message>
         <location line="+149"/>

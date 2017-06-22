@@ -222,7 +222,9 @@ extern "C"
     // All the following functions redirect the call from Python
     // onto the matching virtual function in PythonExtensionBase
     //
+#ifdef PYCXX_PYTHON_2TO3
     static int print_handler( PyObject *, FILE *, int );
+#endif
     static PyObject *getattr_handler( PyObject *, char * );
     static int setattr_handler( PyObject *, char *, PyObject * );
     static PyObject *getattro_handler( PyObject *, PyObject * );
@@ -1221,7 +1223,7 @@ Py::Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
     return self().callMemberFunction( fn_name, args );
 }
 
-void PythonExtensionBase::reinit( Tuple &args, Dict &kwds )
+void PythonExtensionBase::reinit( Tuple & /* args */, Dict & /* kwds */)
 {
     throw RuntimeError( "Must not call __init__ twice on this class" );
 }
@@ -1479,13 +1481,13 @@ Py::Object PythonExtensionBase::number_power( const Py::Object &, const Py::Obje
 
 
 // Buffer
-int PythonExtensionBase::buffer_get( Py_buffer *buf, int flags )
+int PythonExtensionBase::buffer_get( Py_buffer * /* buf */, int /* flags */ )
 {
     missing_method( buffer_get );
     return -1;
 }
 
-int PythonExtensionBase::buffer_release( Py_buffer *buf )
+int PythonExtensionBase::buffer_release( Py_buffer * /*buf*/ )
 {
     /* This method is optional and only required if the buffer's
        memory is dynamic. */

@@ -25,7 +25,7 @@
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation>&amp;Laguntza</translation>
+        <translation>L&amp;aguntza</translation>
     </message>
     <message>
         <source>F1</source>

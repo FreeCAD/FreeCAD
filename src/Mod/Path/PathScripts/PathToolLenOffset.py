@@ -29,14 +29,8 @@ from PathScripts import PathUtils
 from PySide import QtCore, QtGui
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class ToolLenOffset:
@@ -62,7 +56,7 @@ class ToolLenOffset:
             obj.Path = Path.Path("(inactive operation)")
             obj.ViewObject.Visibility = False
 
-        # tie the HeightNumber to the PathLoadTool object ToolNumber
+        # tie the HeightNumber to the PathToolController object ToolNumber
         if len(obj.InList) > 0:  # check to see if obj is in the Project group yet
             project = obj.InList[0]
             tl = int(PathUtils.changeTool(obj, project))

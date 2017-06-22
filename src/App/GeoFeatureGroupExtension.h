@@ -34,7 +34,19 @@ namespace App
 {
 
 /**
- * The base class for placeable group of DocumentObjects
+ * @brief The base class for placeable group of DocumentObjects. It represents a local coordnate system
+ * 
+ * This class is the FreeCAD way of representing local coordinate systems. It groups its childs beneath 
+ * it and transforms them all with the GeoFeatureGroup placement. A few important properties:
+ * - Every child that belongs to the CS must be in the Group property. Even if a sketch is part of a pad,
+ *   it must be in the Group property of the same GeoFeatureGroup as pad. This also holds for normal 
+ *   GroupExtensions. They can be added to a GeoFeatureGroup, but all objects that the group holds must 
+ *   also be added to the GeoFeatureGroup
+ * - Objects can be only in a single GeoFeatureGroup. It is not allowed to have a document object in 
+ *   multiple GeoFeatureGroups
+ * - PropertyLinks between different GeoFeatureGroups are forbidden. There are special link proeprties 
+ *   that allow such cross-CS links.
+ * - Expressions can cross GeoFeatureGroup borders
  */
 class AppExport GeoFeatureGroupExtension : public App::GroupExtension
 {
@@ -52,30 +64,55 @@ public:
      * @param transform (input).
      */
     virtual void transformPlacement(const Base::Placement &transform);
+    
     /// Constructor
     GeoFeatureGroupExtension(void);
     virtual ~GeoFeatureGroupExtension();
-
-    /// Returns all geometrically controlled objects: all objects of this group and it's non-geo subgroups
-    std::vector<App::DocumentObject*> getGeoSubObjects () const;
-
-    /// Returns true if either the group or one of it's non-geo subgroups has the object
-    bool geoHasObject (const DocumentObject* obj) const;
 
     /** Returns the geo feature group which contains this object.
      * In case this object is not part of any geoFeatureGroup 0 is returned.
      * Unlike DocumentObjectGroup::getGroupOfObject serches only for GeoFeatureGroups
      * @param obj       the object to search for
-     * @param indirect  if true return if the group that so-called geoHas the object, @see geoHasObject()
-     *                  default is true
      */
-    static DocumentObject* getGroupOfObject(const DocumentObject* obj, bool indirect=true);
+    static DocumentObject* getGroupOfObject(const DocumentObject* obj);
+    
+    /**
+     * @brief Calculates the global placement of this group
+     * 
+     * The returned placement describes the transformation from the global reference coordinate 
+     * system to the local coordinate system of this geo feature group. If this group has a no parent
+     * GeoFeatureGroup the returned placement is the one of this group. For multiple stacked 
+     * GeoFeatureGroups the returned Placement is the combination of all parent placements including 
+     * ths one of this group.
+     * @return Base::Placement The transformation from global reference system to the groups local system
+     */
+    Base::Placement globalGroupPlacement();
 
     /// Returns true if the given DocumentObject is DocumentObjectGroup but not GeoFeatureGroup
     static bool isNonGeoGroup(const DocumentObject* obj) {
-        return obj->hasExtension(GroupExtension::getExtensionClassTypeId()) & 
+        return obj->hasExtension(GroupExtension::getExtensionClassTypeId()) && 
                !obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
     }
+    
+    virtual std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
+    virtual std::vector< DocumentObject* > removeObjects(std::vector< DocumentObject* > obj) override;
+    
+    /// Collects GeoFeatureGroup relevant objects that are linked from the given one. That means all linked objects
+    /// including their links (recursively) except GeoFeatureGroups, where the recursion stops. Expressions
+    /// links are ignored. An exception is thrown when there are dependency loops.
+    static void getCSOutList(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    /// Collects GeoFeatureGroup relevant objects that link to the given one. That means all objects
+    /// including their parents (recursively) except GeoFeatureGroups, where the recursion stops. Expression 
+    /// links are ignored. An exception is thrown when there are dependency loops.
+    static void getCSInList(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    /// Collects all links that are relevant for the coordinate system, meaning all recursive links to 
+    /// obj and from obj excluding expressions and stopping the recursion at other geofeaturegroups. 
+    /// The result is the combination of CSOutList and CSInList.
+    static void getCSRelevantLinks(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    
+private:
+    Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group);
+    static std::vector<App::DocumentObject*> getObjectsFromLinks(App::DocumentObject*);
 };
 
 typedef ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>> GeoFeatureGroupExtensionPython;

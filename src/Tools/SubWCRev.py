@@ -12,7 +12,10 @@ import os,sys,string,re,time,getopt
 import xml.sax
 import xml.sax.handler
 import xml.sax.xmlreader
-import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 # SAX handler to parse the subversion output
 class SvnHandler(xml.sax.handler.ContentHandler):
@@ -56,14 +59,14 @@ class VersionControl:
         return False
 
     def printInfo(self):
-        print ""
+        print("")
 
     def writeVersion(self, lines):
         content=[]
         for line in lines:
-            line = string.replace(line,'$WCREV$',self.rev)
-            line = string.replace(line,'$WCDATE$',self.date)
-            line = string.replace(line,'$WCURL$',self.url)
+            line = line.replace('$WCREV$',self.rev)
+            line = line.replace('$WCDATE$',self.date)
+            line = line.replace('$WCURL$',self.url)
             content.append(line)
         return content
 
@@ -78,7 +81,7 @@ class UnknownControl(VersionControl):
         return True
 
     def printInfo(self):
-        print "Unknown version control"
+        print("Unknown version control")
 
 class DebianChangelog(VersionControl):
     def extractInfo(self, srcdir):
@@ -101,7 +104,7 @@ class DebianChangelog(VersionControl):
         return True
 
     def printInfo(self):
-        print "debian/changelog"
+        print("debian/changelog")
 
 class BazaarControl(VersionControl):
     def extractInfo(self, srcdir):
@@ -121,7 +124,7 @@ class BazaarControl(VersionControl):
         return True
 
     def printInfo(self):
-        print "bazaar"
+        print("bazaar")
 
 class GitControl(VersionControl):
     #http://www.hermanradtke.com/blog/canonical-version-numbers-with-git/
@@ -253,7 +256,7 @@ class GitControl(VersionControl):
         origin = None #remote for the blessed master
         for fetchurl in ("git@github.com:FreeCAD/FreeCAD.git",\
             "https://github.com/FreeCAD/FreeCAD.git"):
-            for key,url in self.remotes.iteritems():
+            for key,url in self.remotes.items():
                 if fetchurl in url:
                     origin = key
                     break
@@ -283,7 +286,7 @@ class GitControl(VersionControl):
         return True
 
     def printInfo(self):
-        print "git"
+        print("git")
 
     def writeVersion(self, lines):
         content = VersionControl.writeVersion(self, lines)
@@ -297,7 +300,7 @@ class MercurialControl(VersionControl):
         return False
 
     def printInfo(self):
-        print "mercurial"
+        print("mercurial")
 
 class Subversion(VersionControl):
     def extractInfo(self, srcdir):
@@ -322,8 +325,8 @@ class Subversion(VersionControl):
         self.date = handler.mapping["Date"]
         self.date = self.date[:19]
         #Same format as SubWCRev does
-        self.date = string.replace(self.date,'T',' ')
-        self.date = string.replace(self.date,'-','/')
+        self.date = self.date.replace('T',' ')
+        self.date = self.date.replace('-','/')
 
         #Date is given as GMT. Now we must convert to local date.
         m=time.strptime(self.date,"%Y/%m/%d %H:%M:%S")
@@ -353,7 +356,7 @@ class Subversion(VersionControl):
         return True
 
     def printInfo(self):
-        print "subversion"
+        print("subversion")
 
 
 def main():

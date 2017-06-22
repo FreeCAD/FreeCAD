@@ -30,12 +30,12 @@
   <context>
     <name>Plot_Grid</name>
     <message>
-      <location filename="PlotGui.py" line="110"/>
+      <location filename="PlotGui.py" line="109"/>
       <source>Show/Hide grid</source>
       <translation>显示/隐藏网格</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="113"/>
+      <location filename="PlotGui.py" line="112"/>
       <source>Show/Hide grid on selected plot</source>
       <translation>在选定绘图上显示/隐藏网格</translation>
     </message>
@@ -43,12 +43,12 @@
   <context>
     <name>Plot_Labels</name>
     <message>
-      <location filename="PlotGui.py" line="154"/>
+      <location filename="PlotGui.py" line="152"/>
       <source>Set labels</source>
       <translation>设置标签</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="157"/>
+      <location filename="PlotGui.py" line="155"/>
       <source>Set title and axes labels</source>
       <translation>设置标题和坐标轴标签</translation>
     </message>
@@ -56,12 +56,12 @@
   <context>
     <name>Plot_Legend</name>
     <message>
-      <location filename="PlotGui.py" line="137"/>
+      <location filename="PlotGui.py" line="135"/>
       <source>Show/Hide legend</source>
       <translation>显示/隐藏图例</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="140"/>
+      <location filename="PlotGui.py" line="138"/>
       <source>Show/Hide legend on selected plot</source>
       <translation>在选定绘图上显示/隐藏图例</translation>
     </message>
@@ -69,12 +69,12 @@
   <context>
     <name>Plot_Positions</name>
     <message>
-      <location filename="PlotGui.py" line="171"/>
+      <location filename="PlotGui.py" line="169"/>
       <source>Set positions and sizes</source>
       <translation>设置位置和大小</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="174"/>
+      <location filename="PlotGui.py" line="172"/>
       <source>Set labels and legend positions and sizes</source>
       <translation>设置标签和图例位置及大小</translation>
     </message>
@@ -113,102 +113,102 @@
       <translation>配置坐标轴</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="180"/>
+      <location filename="TaskPanel.py" line="179"/>
       <source>Active axes</source>
       <translation>活动坐标轴</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="220"/>
+      <location filename="TaskPanel.py" line="211"/>
       <source>Apply to all axes</source>
       <translation>应用于所有坐标轴</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="225"/>
+      <location filename="TaskPanel.py" line="215"/>
       <source>Dimensions</source>
       <translation>尺寸</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="230"/>
+      <location filename="TaskPanel.py" line="219"/>
       <source>X axis position</source>
       <translation>X轴位置</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="235"/>
+      <location filename="TaskPanel.py" line="223"/>
       <source>Y axis position</source>
       <translation>Y轴位置</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="205"/>
+      <location filename="TaskPanel.py" line="199"/>
       <source>Scales</source>
       <translation>比例</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="210"/>
+      <location filename="TaskPanel.py" line="203"/>
       <source>X auto</source>
       <translation>X轴自动</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="215"/>
+      <location filename="TaskPanel.py" line="207"/>
       <source>Y auto</source>
       <translation>Y轴自动</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="240"/>
+      <location filename="TaskPanel.py" line="227"/>
       <source>Index of the active axes</source>
       <translation>活动坐标轴索引</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="245"/>
+      <location filename="TaskPanel.py" line="231"/>
       <source>Add new axes to the plot</source>
       <translation>向绘图添加新轴</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="251"/>
+      <location filename="TaskPanel.py" line="236"/>
       <source>Remove selected axes</source>
       <translation>删除所选坐标轴</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="257"/>
+      <location filename="TaskPanel.py" line="241"/>
       <source>Check it to apply transformations to all axes</source>
       <translation>选中以对所有坐标轴应用转换</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="263"/>
+      <location filename="TaskPanel.py" line="246"/>
       <source>Left bound of axes</source>
       <translation>坐标轴左边界</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="269"/>
+      <location filename="TaskPanel.py" line="251"/>
       <source>Right bound of axes</source>
       <translation>坐标轴右边界</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="275"/>
+      <location filename="TaskPanel.py" line="256"/>
       <source>Bottom bound of axes</source>
       <translation>坐标轴下边界</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="281"/>
+      <location filename="TaskPanel.py" line="261"/>
       <source>Top bound of axes</source>
       <translation>坐标轴上边界</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="287"/>
+      <location filename="TaskPanel.py" line="266"/>
       <source>Outward offset of X axis</source>
       <translation>X轴外部偏移量</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="293"/>
+      <location filename="TaskPanel.py" line="271"/>
       <source>Outward offset of Y axis</source>
       <translation>Y轴外部偏移量</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="299"/>
+      <location filename="TaskPanel.py" line="276"/>
       <source>X axis scale autoselection</source>
       <translation>自动选择X轴比例</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="305"/>
+      <location filename="TaskPanel.py" line="281"/>
       <source>Y axis scale autoselection</source>
       <translation>自动选择Y轴比例</translation>
     </message>
@@ -231,7 +231,7 @@
       <translation>必须选中绘图文档以保存</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="365"/>
+      <location filename="TaskPanel.py" line="340"/>
       <source>Axes 0 can not be deleted</source>
       <translation>无法删除坐标轴0</translation>
     </message>
@@ -241,7 +241,7 @@
       <translation>网格必须于绘图文档顶层激活</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="126"/>
+      <location filename="PlotGui.py" line="125"/>
       <source>The legend must be activated on top of a plot document</source>
       <translation>图例必须于绘图文档顶层激活</translation>
     </message>
@@ -254,57 +254,57 @@
       <translation>设置标签</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="138"/>
+      <location filename="TaskPanel.py" line="137"/>
       <source>Active axes</source>
       <translation>活动坐标轴</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="143"/>
+      <location filename="TaskPanel.py" line="141"/>
       <source>Title</source>
       <translation>标题</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="148"/>
+      <location filename="TaskPanel.py" line="145"/>
       <source>X label</source>
       <translation>X标签</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="153"/>
+      <location filename="TaskPanel.py" line="149"/>
       <source>Y label</source>
       <translation>Y标签</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="158"/>
+      <location filename="TaskPanel.py" line="153"/>
       <source>Index of the active axes</source>
       <translation>活动坐标轴索引</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="163"/>
+      <location filename="TaskPanel.py" line="157"/>
       <source>Title (associated to active axes)</source>
       <translation>标题(与活动轴关联)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="169"/>
+      <location filename="TaskPanel.py" line="162"/>
       <source>Title font size</source>
       <translation>标题字体大小</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="175"/>
+      <location filename="TaskPanel.py" line="167"/>
       <source>X axis title</source>
       <translation>X轴标题</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="181"/>
+      <location filename="TaskPanel.py" line="172"/>
       <source>X axis title font size</source>
       <translation>X轴标题字体大小</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="187"/>
+      <location filename="TaskPanel.py" line="177"/>
       <source>Y axis title</source>
       <translation>Y轴标题</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="193"/>
+      <location filename="TaskPanel.py" line="182"/>
       <source>Y axis title font size</source>
       <translation>Y轴标题字体大小</translation>
     </message>
@@ -317,32 +317,32 @@
       <translation>设置位置和大小</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="126"/>
+      <location filename="TaskPanel.py" line="125"/>
       <source>Position</source>
       <translation>位置</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="132"/>
+      <location filename="TaskPanel.py" line="130"/>
       <source>Size</source>
       <translation>大小</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="138"/>
+      <location filename="TaskPanel.py" line="135"/>
       <source>List of modificable items</source>
       <translation>可改项目列表</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="144"/>
+      <location filename="TaskPanel.py" line="140"/>
       <source>X item position</source>
       <translation>X轴项目位置</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="150"/>
+      <location filename="TaskPanel.py" line="145"/>
       <source>Y item position</source>
       <translation>Y轴项目位置</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="156"/>
+      <location filename="TaskPanel.py" line="150"/>
       <source>Item size</source>
       <translation>项目大小</translation>
     </message>
@@ -350,42 +350,42 @@
   <context>
     <name>plot_save</name>
     <message>
-      <location filename="TaskPanel.py" line="128"/>
+      <location filename="TaskPanel.py" line="127"/>
       <source>Save figure</source>
       <translation>保存图表</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="133"/>
+      <location filename="TaskPanel.py" line="131"/>
       <source>Inches</source>
       <translation>英寸</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="139"/>
+      <location filename="TaskPanel.py" line="136"/>
       <source>Dots per Inch</source>
       <translation>每英寸点数</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="145"/>
+      <location filename="TaskPanel.py" line="141"/>
       <source>Output image file path</source>
       <translation>输出图像文件路径</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="151"/>
+      <location filename="TaskPanel.py" line="146"/>
       <source>Show a file selection dialog</source>
       <translation>显示选择文件对话框</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="157"/>
+      <location filename="TaskPanel.py" line="151"/>
       <source>X image size</source>
       <translation>X向图像大小</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="163"/>
+      <location filename="TaskPanel.py" line="156"/>
       <source>Y image size</source>
       <translation>Y向图像大小</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="169"/>
+      <location filename="TaskPanel.py" line="161"/>
       <source>Dots per point, with size will define output image resolution</source>
       <translation type="unfinished">Dots per point, with size will define output image resolution</translation>
     </message>
@@ -393,22 +393,22 @@
   <context>
     <name>plot_series</name>
     <message>
-      <location filename="TaskPanel.py" line="154"/>
+      <location filename="TaskPanel.py" line="153"/>
       <source>No label</source>
       <translation>无标签</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="160"/>
+      <location filename="TaskPanel.py" line="158"/>
       <source>Remove serie</source>
       <translation>删除系列</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="196"/>
+      <location filename="TaskPanel.py" line="188"/>
       <source>Line style</source>
       <translation>线条样式</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="172"/>
+      <location filename="TaskPanel.py" line="168"/>
       <source>Marker</source>
       <translation>标记</translation>
     </message>
@@ -418,42 +418,42 @@
       <translation>配置系列</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="178"/>
+      <location filename="TaskPanel.py" line="173"/>
       <source>List of available series</source>
       <translation>可用系列列表</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="184"/>
+      <location filename="TaskPanel.py" line="178"/>
       <source>Line title</source>
       <translation>直线标题</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="202"/>
+      <location filename="TaskPanel.py" line="193"/>
       <source>Marker style</source>
       <translation>标记样式</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="208"/>
+      <location filename="TaskPanel.py" line="198"/>
       <source>Line width</source>
       <translation>线宽</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="214"/>
+      <location filename="TaskPanel.py" line="203"/>
       <source>Marker size</source>
       <translation>标记大小</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="220"/>
+      <location filename="TaskPanel.py" line="208"/>
       <source>Line and marker color</source>
       <translation>直线和标记颜色</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="226"/>
+      <location filename="TaskPanel.py" line="213"/>
       <source>Removes this serie</source>
       <translation>删除此系列</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="190"/>
+      <location filename="TaskPanel.py" line="183"/>
       <source>If checked serie will not be considered for legend</source>
       <translation>选中则系列不作为图例</translation>
     </message>

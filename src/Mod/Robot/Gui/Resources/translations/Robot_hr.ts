@@ -381,7 +381,7 @@
     <message>
         <location line="-177"/>
         <source>Select one Robot to set home position</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one Robot to set home position</translation>
     </message>
     <message>
         <location line="+149"/>
@@ -729,7 +729,7 @@
     <message>
         <location line="+26"/>
         <source>Type</source>
-        <translation>Vrsta</translation>
+        <translation>Tip</translation>
     </message>
     <message>
         <location line="+5"/>

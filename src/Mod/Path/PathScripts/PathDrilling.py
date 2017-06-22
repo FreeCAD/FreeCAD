@@ -23,21 +23,23 @@
 # ***************************************************************************
 
 from __future__ import print_function
+import sys
 import FreeCAD
-# from FreeCAD import Vector
 import Path
 import PathScripts.PathLog as PathLog
-# import Part
 from PySide import QtCore, QtGui
 from PathScripts import PathUtils
-from PathScripts.PathUtils import fmt
-# from math import pi
+from PathScripts.PathUtils import fmt, waiting_effects
 import ArchPanel
 
 
+# xrange is not available in python3
+if sys.version_info.major >= 3:
+    xrange = range
+
 LOG_MODULE = 'PathDrilling'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-PathLog.trackModule('PathDrilling')
+#PathLog.trackModule('PathDrilling')
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -46,14 +48,8 @@ if FreeCAD.GuiUp:
 """Path Drilling object and FreeCAD command"""
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class ObjectDrilling:
@@ -100,9 +96,8 @@ class ObjectDrilling:
 
     def onChanged(self, obj, prop):
         pass
-        # if prop == "UserLabel":
-        #     obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
+    @waiting_effects
     def execute(self, obj):
         PathLog.track()
         output = ""
@@ -244,7 +239,8 @@ class ObjectDrilling:
         import DraftGeomUtils as dgu
         PathLog.track('obj: {} shape: {}'.format(obj, shape))
         holelist = []
-        tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
+        # tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
+        tooldiameter = None
         PathLog.debug('search for holes larger than tooldiameter: {}: '.format(tooldiameter))
         if dgu.isPlanar(shape):
             PathLog.debug("shape is planar")
@@ -464,7 +460,7 @@ class TaskPanel:
                 self.form.uiToolController.blockSignals(False)
 
     def open(self):
-        """ """
+        pass
         # self.s = SelObserver()
         # FreeCADGui.Selection.addObserver(self.s)
 

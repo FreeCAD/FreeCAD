@@ -157,14 +157,14 @@ def p_block_list_(p):
                | statementwithmod
                | block_list statementwithmod
     '''
-    if printverbose: print("Block List")
-    if printverbose: print(p[1])
+    #if printverbose: print("Block List")
+    #if printverbose: print(p[1])
     if(len(p) > 2) :
         if printverbose: print(p[2])
         p[0] = p[1] + p[2]
     else :
         p[0] = p[1]
-    if printverbose: print("End Block List")
+    #if printverbose: print("End Block List")
 
 def p_render_action(p):
     'render_action : render LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
@@ -259,9 +259,9 @@ def p_points_list_2d(p):
                    | points_list_2d 2d_point
                    '''
     if p[2] == ',' :
-        if printverbose:
-            print("Start List")
-            print(p[1])
+        #if printverbose:
+        #    print("Start List")
+        #    print(p[1])
         p[0] = [p[1]]
     else :
         if printverbose:
@@ -269,7 +269,7 @@ def p_points_list_2d(p):
             print(p[2])
         p[1].append(p[2])
         p[0] = p[1]
-    if printverbose: print(p[0])
+    #if printverbose: print(p[0])
 
 def p_3d_point(p):
     '3d_point : OSQUARE NUMBER COMMA NUMBER COMMA NUMBER ESQUARE'
@@ -300,24 +300,24 @@ def p_path_points(p):
                 | path_points NUMBER COMMA
                 | path_points NUMBER
                 '''
-    if printverbose: print("Path point")
+    #if printverbose: print("Path point")
     if p[2] == ',' :
-        if printverbose: print('Start list')
-        if printverbose: print(p[1])
+        #if printverbose: print('Start list')
+        #if printverbose: print(p[1])
         p[0] = [int(p[1])]
     else :
-        if printverbose: print(p[1])
-        if printverbose: print(len(p[1]))
-        if printverbose: print(p[2])
+        #if printverbose: print(p[1])
+        #if printverbose: print(len(p[1]))
+        #if printverbose: print(p[2])
         p[1].append(int(p[2]))
         p[0] = p[1]
-    if printverbose: print(p[0])
+    #if printverbose: print(p[0])
 
 
 def p_path_list(p):
     'path_list : OSQUARE path_points ESQUARE'
-    if printverbose: print('Path List ')
-    if printverbose: print(p[2])
+    #if printverbose: print('Path List ')
+    #if printverbose: print(p[2])
     p[0] = p[2]
 
 def p_path_set(p) :
@@ -325,14 +325,14 @@ def p_path_set(p) :
     path_set : path_list
              | path_set COMMA path_list
              '''
-    if printverbose: print('Path Set')
-    if printverbose: print(len(p))
+    #if printverbose: print('Path Set')
+    #if printverbose: print(len(p))
     if len(p) == 2 :
         p[0] = [p[1]]
     else :
         p[1].append(p[3])
         p[0] = p[1]
-    if printverbose: print(p[0])
+    #if printverbose: print(p[0])
 
 def p_operation(p):
     '''
@@ -653,6 +653,10 @@ def p_linear_extrude_with_twist(p):
         t = float(p[3]['twist'])
     else:
         t = 0
+    # Test if null object like from null text
+    if (len(p[6]) == 0) :
+        p[0] = []
+        return
     if (len(p[6]) > 1) :
         obj = fuse(p[6],"Linear Extrude Union")
     else :
@@ -900,7 +904,8 @@ def p_cylinder_action(p):
     h = float(p[3]['h'])
     r1 = float(p[3]['r1'])
     r2 = float(p[3]['r2'])
-    n = int(p[3]['$fn'])
+    #n = int(p[3]['$fn'])
+    n = int(round(float(p[3]['$fn'])))
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
         GetInt('useMaxFN')
@@ -1007,6 +1012,8 @@ def p_circle_action(p) :
     'circle_action : circle LPAREN keywordargument_list RPAREN SEMICOL'
     if printverbose: print("Circle : "+str(p[3]))
     r = float(p[3]['r'])
+    # Avoid zero radius
+    if r == 0 : r = 0.00001
     n = int(p[3]['$fn'])
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
@@ -1130,7 +1137,7 @@ def make_face(v1,v2,v3):
     return face
 
 def p_polyhedron_action(p) :
-    '''polyhedron_action : polyhedron LPAREN points EQ OSQUARE points_list_3d ESQUARE COMMA faces EQ OSQUARE points_list_3d ESQUARE COMMA keywordargument_list RPAREN SEMICOL
+    '''polyhedron_action : polyhedron LPAREN points EQ OSQUARE points_list_3d ESQUARE COMMA faces EQ OSQUARE path_set ESQUARE COMMA keywordargument_list RPAREN SEMICOL
                       | polyhedron LPAREN points EQ OSQUARE points_list_3d ESQUARE COMMA triangles EQ OSQUARE points_list_3d ESQUARE COMMA keywordargument_list RPAREN SEMICOL'''
     if printverbose: print("Polyhedron Points")
     v = []
@@ -1139,13 +1146,20 @@ def p_polyhedron_action(p) :
         v.append(FreeCAD.Vector(float(i[0]),float(i[1]),float(i[2])))
     if printverbose:
         print(v)
-        print("Polyhedron triangles")
-        print(p[12])
+        print ("Polyhedron "+p[9])
+        print (p[12])
     faces_list = []    
     mypolyhed = doc.addObject('Part::Feature',p[1])
     for i in p[12] :
         if printverbose: print(i)
-        f = make_face(v[int(i[0])],v[int(i[1])],v[int(i[2])])
+        v2 = FreeCAD.Vector
+        pp =[v2(v[k]) for k in i]
+        # Add first point to end of list to close polygon
+        pp.append(pp[0])
+        print(pp)
+        w = Part.makePolygon(pp)
+        f = Part.Face(w)
+        #f = make_face(v[int(i[0])],v[int(i[1])],v[int(i[2])])
         faces_list.append(f)
     shell=Part.makeShell(faces_list)
     solid=Part.Solid(shell).removeSplitter()

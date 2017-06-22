@@ -314,6 +314,8 @@ class _Space(ArchComponent.Component):
         import Part
         shape = None
         faces = []
+        
+        pl = obj.Placement
 
         #print("starting compute")
         # 1: if we have a base shape, we use it
@@ -372,6 +374,8 @@ class _Space(ArchComponent.Component):
                 #print("setting objects shape")
                 shape = shape.Solids[0]
                 obj.Shape = shape
+                pl = pl.multiply(obj.Placement)
+                obj.Placement = pl
                 return
 
         print("Arch: error computing space boundary")
@@ -416,7 +420,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.LineColor = (1.0,0.0,0.0,1.0)
         vobj.DrawStyle = "Dotted"
         vobj.addProperty("App::PropertyStringList",    "Text",        "Arch",QT_TRANSLATE_NOOP("App::Property","The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data"))
-        vobj.addProperty("App::PropertyString",        "FontName",    "Arch",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
+        vobj.addProperty("App::PropertyFont",          "FontName",    "Arch",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
         vobj.addProperty("App::PropertyColor",         "TextColor",   "Arch",QT_TRANSLATE_NOOP("App::Property","The color of the area text"))
         vobj.addProperty("App::PropertyLength",        "FontSize",    "Arch",QT_TRANSLATE_NOOP("App::Property","The size of the text font"))
         vobj.addProperty("App::PropertyLength",        "FirstLine",   "Arch",QT_TRANSLATE_NOOP("App::Property","The size of the first line of text"))
@@ -504,8 +508,8 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                     if t:
                         if hasattr(vobj.Object,"Area"):
                             from FreeCAD import Units
-                            q = Units.Quantity(vobj.Object.Area,Units.Area).getUserPreferred()
-                            qt = vobj.Object.Area/q[1]
+                            q = Units.Quantity(vobj.Object.Area.Value,Units.Area).getUserPreferred()
+                            qt = vobj.Object.Area.Value/q[1]
                             if hasattr(vobj,"Decimals"):
                                 if vobj.Decimals == 0:
                                     qt = str(int(qt))

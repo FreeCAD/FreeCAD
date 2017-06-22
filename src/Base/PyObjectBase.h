@@ -227,8 +227,8 @@ public:
      *  methods of the object will disappear!
      */
     virtual PyObject *_getattr(char *attr);
-    /// static wrapper for pythons _getattr()
-    static  PyObject *__getattr(PyObject * PyObj, char *attr);
+    /// static wrapper for pythons _getattro()
+    static  PyObject *__getattro(PyObject * PyObj, PyObject *attro);
 
     /** SetAttribute implementation
      *  This method implements the setting of object attributes.
@@ -236,9 +236,9 @@ public:
      *  this method.
      *  You have to call the method of the base class.
      */
-    virtual int _setattr(char *attr, PyObject *value);    // _setattr method
-    /// static wrapper for pythons _setattr(). // This should be the entry in Type. 
-    static  int __setattr(PyObject *PyObj, char *attr, PyObject *value);
+    virtual int _setattr(char *attro, PyObject *value);    // _setattr method
+    /// static wrapper for pythons _setattro(). // This should be the entry in Type. 
+    static  int __setattro(PyObject *PyObj, PyObject *attro, PyObject *value);
 
     /** _repr method
     * Override this method to return a string object with some

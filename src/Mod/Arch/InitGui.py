@@ -35,7 +35,7 @@ class ArchWorkbench(Workbench):
         # arch tools
         self.archtools = ["Arch_Wall","Arch_Structure","Arch_Rebar",
                      "Arch_Floor","Arch_Building","Arch_Site",
-                     "Arch_Window","Arch_Roof","Arch_Axis",
+                     "Arch_Window","Arch_Roof","Arch_AxisTools",
                      "Arch_SectionPlane","Arch_Space","Arch_Stairs",
                      "Arch_PanelTools","Arch_Equipment",
                      "Arch_Frame","Arch_MaterialTools","Arch_Schedule","Arch_PipeTools",
@@ -45,12 +45,30 @@ class ArchWorkbench(Workbench):
                      "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
                      "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag","Arch_3Views",
                      "Arch_IfcSpreadsheet","Arch_ToggleSubs"]
+                     
+        # try to locate the Rebar addon
+        try:
+            import RebarTools
+        except:
+            pass
+        else:
+            class RebarGroupCommand:
+                def GetCommands(self):
+                    return tuple(["Arch_Rebar"]+RebarTools.RebarCommands)
+                def GetResources(self):
+                    return { 'MenuText': 'Rebar tools',
+                             'ToolTip': 'Rebar tools'
+                           }
+                def IsActive(self):
+                    return not FreeCAD.ActiveDocument is None
+            FreeCADGui.addCommand('Arch_RebarTools', RebarGroupCommand())
+            self.archtools[2] = "Arch_RebarTools"
 
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
                         "Draft_Polygon","Draft_Rectangle", "Draft_Text",
                         "Draft_Dimension", "Draft_BSpline","Draft_Point",
-                        "Draft_Facebinder","Draft_BezCurve"]
+                        "Draft_Facebinder","Draft_BezCurve","Draft_Label"]
         self.draftmodtools = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",

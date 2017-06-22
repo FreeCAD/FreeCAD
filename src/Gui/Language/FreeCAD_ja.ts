@@ -68,15 +68,15 @@
     </message>
     <message>
         <source>&lt;empty&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;空&gt;</translation>
     </message>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">角度</translation>
+        <translation>角度</translation>
     </message>
     <message>
         <source>Axis</source>
-        <translation type="unfinished"></translation>
+        <translation>軸</translation>
     </message>
     <message>
         <source>Position</source>
@@ -84,7 +84,7 @@
     </message>
     <message>
         <source>Base</source>
-        <translation type="unfinished"></translation>
+        <translation>Base</translation>
     </message>
 </context>
 <context>
@@ -144,7 +144,7 @@
     </message>
     <message>
         <source>Enable Rotations</source>
-        <translation>回転を有効にする</translation>
+        <translation>回転を有効</translation>
     </message>
     <message>
         <source>Calibrate</source>
@@ -1232,7 +1232,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Enable tiled background</source>
-        <translation>画像を並べた背景を有効化</translation>
+        <translation>画像を並べた背景を有効</translation>
     </message>
     <message>
         <source>Style sheet:</source>
@@ -1240,54 +1240,38 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Python コンソール</translation>
+        <translation>Python コンソール</translation>
     </message>
     <message>
         <source>Enable word wrap</source>
-        <translation type="unfinished"></translation>
+        <translation>行の折り返しを有効</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
-    <message>
-        <source>Default (%1 x %1)</source>
-        <translation type="obsolete">デフォルト (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Small (%1 x %1)</source>
-        <translation type="obsolete">小さめ (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Large (%1 x %1)</source>
-        <translation type="obsolete">大きめ (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Extra large (%1 x %1)</source>
-        <translation type="obsolete">特大 (%1 x %1)</translation>
-    </message>
     <message>
         <source>No style sheet</source>
         <translation>スタイル シートなし</translation>
     </message>
     <message>
         <source>Small (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>小（%1px）</translation>
     </message>
     <message>
         <source>Medium (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>中（%1px）</translation>
     </message>
     <message>
         <source>Large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>大（%1px）</translation>
     </message>
     <message>
         <source>Extra large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>特大（%1px）</translation>
     </message>
     <message>
         <source>Custom (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタム（%1px）</translation>
     </message>
 </context>
 <context>
@@ -1751,10 +1735,14 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">検索　</translation>
+        <translation>検索　</translation>
     </message>
     <message>
         <source>A search pattern to filter the results above</source>
+        <translation>上記結果をフィルター処理するための検索パターン</translation>
+    </message>
+    <message>
+        <source>None (Remove link)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1964,7 +1952,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenGL 頂点バッファー オブジェクトを使用 (実験的実装)</translation>
     </message>
 </context>
 <context>
@@ -2487,11 +2475,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"></translation>
+        <translation>透明度</translation>
     </message>
     <message>
         <source>Add watermark</source>
-        <translation type="unfinished"></translation>
+        <translation>ウォーターマークを追加</translation>
     </message>
 </context>
 <context>
@@ -2608,11 +2596,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Enable selection highlighting</source>
-        <translation>選択範囲の強調表示を有効にします。</translation>
+        <translation>選択範囲の強調表示を有効</translation>
     </message>
     <message>
         <source>Enable preselection highlighting</source>
-        <translation>事前選択の強調表示を有効にします。</translation>
+        <translation>事前選択の強調表示を有効</translation>
     </message>
     <message>
         <source>Background color</source>
@@ -2637,14 +2625,6 @@ Specify another directory, please.</source>
     <message>
         <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
         <translation>3Dビューでの要素ピックの判定領域を設定します。大きな値を設定するとピックしやすくなりますが、小さなフィーチャーの一部は選択できなくなる可能性があります。</translation>
-    </message>
-    <message>
-        <source>PickRadius</source>
-        <translation type="obsolete">ピック半径</translation>
-    </message>
-    <message>
-        <source>View</source>
-        <translation type="obsolete">ビュー</translation>
     </message>
 </context>
 <context>
@@ -2776,7 +2756,7 @@ Specify another directory, please.</source>
         <source>Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
 
 The &apos;Status&apos; column shows whether the document could be recovered.</source>
-        <translation>「復旧を開始」を押すと下記のドキュメントの復旧処理が開始されます。
+        <translation type="obsolete">「復旧を開始」を押すと下記のドキュメントの復旧処理が開始されます。
 
 「状態」カラムにドキュメントが復旧できたかどうかが表示されます。</translation>
     </message>
@@ -2851,6 +2831,12 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Transient directories deleted.</source>
         <translation>一時ディレクトリが削除されました。</translation>
+    </message>
+    <message>
+        <source>Press &apos;Start Recovery&apos; to start the recovery process of the document listed below.
+
+The &apos;Status&apos; column shows whether the document could be recovered.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3217,7 +3203,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Use center of mass</source>
-        <translation type="unfinished"></translation>
+        <translation>重心を使用</translation>
     </message>
 </context>
 <context>
@@ -3414,7 +3400,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <name>Gui::DockWnd::SelectionView</name>
     <message>
         <source>Property View</source>
-        <translation>プロパティ表示</translation>
+        <translation type="obsolete">プロパティ表示</translation>
     </message>
     <message>
         <source>Search</source>
@@ -3475,6 +3461,22 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Mark this object to be recomputed</source>
         <translation>このオブジェクトを再計算のためにマーク</translation>
+    </message>
+    <message>
+        <source>Selection View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The number of selected items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate subshape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creates a standalone copy of this subshape in the document</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3781,19 +3783,15 @@ Do you want to copy them, too?</source>
     </message>
     <message>
         <source>There is a rendering issue on MacOS.</source>
-        <translation>MacOS にレンダリング上の問題があります。</translation>
-    </message>
-    <message>
-        <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="obsolete">より多くの情報について &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; 参照してください。</translation>
+        <translation type="obsolete">MacOS にレンダリング上の問題があります。</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
-        <translation>次回から非表示</translation>
+        <translation type="obsolete">次回から非表示</translation>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">詳細については &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt;ウィキ&lt;/a&gt; を参照</translation>
     </message>
 </context>
 <context>
@@ -3978,7 +3976,11 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation>編集...</translation>
+        <translation type="obsolete">編集...</translation>
+    </message>
+    <message>
+        <source>Change the linked object</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3996,7 +3998,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyView</name>
     <message>
         <source>View</source>
-        <translation>ビュー</translation>
+        <translation>表示</translation>
     </message>
     <message>
         <source>Data</source>
@@ -4376,7 +4378,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>%1, Internal name: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1、内部名: %2</translation>
     </message>
 </context>
 <context>
@@ -4948,12 +4950,8 @@ Be aware the point where you click matters.</source>
         <translation>グループコンテンツを削除しますか?</translation>
     </message>
     <message>
-        <source>The %1 is not empty, delete it&apos;s content as well?</source>
-        <translation type="obsolete">%1 は空ではありません。コンテンツごと削除しますか？</translation>
-    </message>
-    <message>
         <source>The %1 is not empty, delete its content as well?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1は空ではありません。コンテンツごと削除しますか？</translation>
     </message>
 </context>
 <context>
@@ -5293,7 +5291,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdDockViewMenu</name>
     <message>
         <source>View</source>
-        <translation>ビュー</translation>
+        <translation>表示</translation>
     </message>
     <message>
         <source>Panels</source>
@@ -5628,7 +5626,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdMeasureDistance</name>
     <message>
         <source>View</source>
-        <translation>ビュー</translation>
+        <translation>表示</translation>
     </message>
     <message>
         <source>Measure distance</source>
@@ -6098,7 +6096,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdStatusBar</name>
     <message>
         <source>View</source>
-        <translation>ビュー</translation>
+        <translation>表示</translation>
     </message>
     <message>
         <source>Status bar</source>
@@ -6229,7 +6227,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdToolBarMenu</name>
     <message>
         <source>View</source>
-        <translation>ビュー</translation>
+        <translation>表示</translation>
     </message>
     <message>
         <source>Tool&amp;bars</source>
@@ -6274,7 +6272,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdTreeSelection</name>
     <message>
         <source>View</source>
-        <translation>ビュー</translation>
+        <translation>表示</translation>
     </message>
     <message>
         <source>Go to selection</source>
@@ -6319,7 +6317,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdUserInterface</name>
     <message>
         <source>View</source>
-        <translation>ビュー</translation>
+        <translation>表示</translation>
     </message>
     <message>
         <source>Dock views</source>
@@ -6705,7 +6703,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdWorkbench</name>
     <message>
         <source>View</source>
-        <translation>ビュー</translation>
+        <translation>表示</translation>
     </message>
     <message>
         <source>Workbench</source>
@@ -6917,19 +6915,19 @@ Are you sure you want to continue?
     </message>
     <message>
         <source>Hidden line</source>
-        <translation type="unfinished"></translation>
+        <translation>ラインを非表示</translation>
     </message>
     <message>
         <source>Hidden line mode</source>
-        <translation type="unfinished"></translation>
+        <translation>ライン非表示モード</translation>
     </message>
     <message>
         <source>No shading</source>
-        <translation type="unfinished"></translation>
+        <translation>シェーディング無し</translation>
     </message>
     <message>
         <source>No shading mode</source>
-        <translation type="unfinished"></translation>
+        <translation>非シェーディング・モード</translation>
     </message>
 </context>
 <context>
@@ -7047,7 +7045,7 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>View</source>
-        <translation>ビュー</translation>
+        <translation>表示</translation>
     </message>
     <message>
         <source>Special Ops</source>

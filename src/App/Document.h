@@ -66,6 +66,7 @@ public:
         SkipRecompute = 0,
         KeepTrailingDigits = 1,
         Closable = 2,
+        Restoring = 3
     };
 
     /** @name Properties */
@@ -229,7 +230,8 @@ public:
     /// Returns a list of all Objects
     std::vector<DocumentObject*> getObjects() const;
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
-    std::vector<DocumentObject*> getObjectsWithExtension(const Base::Type& typeId) const;
+    /// Returns all object with given extensions. If derived=true also all objects with extenions derived from the given one
+    std::vector<DocumentObject*> getObjectsWithExtension(const Base::Type& typeId, bool derived = true) const;
     std::vector<DocumentObject*> findObjects(const Base::Type& typeId, const char* objname) const;
     /// Returns an array with the correct types already.
     template<typename T> inline std::vector<T*> getObjectsOfType() const;
@@ -304,6 +306,8 @@ public:
     std::vector<std::string> getAvailableRedoNames() const;
     /// Will REDO  one step, returns  False if no redo was done (Redos == 0).
     bool redo() ;
+    /// returns true if the document is in an Transaction phase, e.g. currently performing a redo/undo or rollback
+    bool isPerformingTransaction() const;
     //@}
 
     /** @name dependency stuff */
@@ -360,6 +364,7 @@ protected:
     /// callback from the Document objects after property was changed
     void onChangedProperty(const DocumentObject *Who, const Property *What);
     /// helper which Recompute only this feature
+    /// @return True if the recompute process of the Document shall be stopped, False if it shall be continued.
     bool _recomputeFeature(DocumentObject* Feat);
     void _clearRedos();
 

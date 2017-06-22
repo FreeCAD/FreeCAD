@@ -86,9 +86,50 @@ PyObject*  GroupExtensionPy::addObject(PyObject *args)
 
     GroupExtension* grp = getGroupExtensionPtr();
 
-    grp->addObject(docObj->getDocumentObjectPtr());
-    Py_Return;
+    auto vec = grp->addObject(docObj->getDocumentObjectPtr()); 
+    Py::List list;
+    for (App::DocumentObject* obj : vec)
+        list.append(Py::asObject(obj->getPyObject()));
+
+    return Py::new_reference_to(list);
 }
+
+PyObject* GroupExtensionPy::addObjects(PyObject *args) {
+    
+    PyObject *object;
+    if (!PyArg_ParseTuple(args, "O", &object))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+        
+    if (PyTuple_Check(object) || PyList_Check(object)) {
+        Py::Sequence list(object);
+        Py::Sequence::size_type size = list.size();
+        std::vector<DocumentObject*> values;
+        values.resize(size);
+
+        for (Py::Sequence::size_type i = 0; i < size; i++) {
+            Py::Object item = list[i];
+            if (!PyObject_TypeCheck(*item, &(DocumentObjectPy::Type))) {
+                std::string error = std::string("type in list must be 'DocumentObject', not ");
+                error += (*item)->ob_type->tp_name;
+                throw Base::TypeError(error);
+            }
+
+            values[i] = static_cast<DocumentObjectPy*>(*item)->getDocumentObjectPtr();
+        }
+
+        GroupExtension* grp = getGroupExtensionPtr();
+        auto vec = grp->addObjects(values); 
+        Py::List result;
+        for (App::DocumentObject* obj : vec)
+            result.append(Py::asObject(obj->getPyObject()));
+
+        return Py::new_reference_to(result);
+    }
+    
+    std::string error = std::string("type must be list of 'DocumentObject', not ");
+    error += object->ob_type->tp_name;
+    throw Base::TypeError(error);
+};
 
 PyObject*  GroupExtensionPy::removeObject(PyObject *args)
 {
@@ -108,9 +149,50 @@ PyObject*  GroupExtensionPy::removeObject(PyObject *args)
 
     GroupExtension* grp = getGroupExtensionPtr();
 
-    grp->removeObject(docObj->getDocumentObjectPtr());
-    Py_Return;
+    auto vec = grp->removeObject(docObj->getDocumentObjectPtr());
+    Py::List list;
+    for (App::DocumentObject* obj : vec)
+        list.append(Py::asObject(obj->getPyObject()));
+
+    return Py::new_reference_to(list);
 }
+
+PyObject* GroupExtensionPy::removeObjects(PyObject *args) {
+    
+    PyObject *object;
+    if (!PyArg_ParseTuple(args, "O", &object))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+        
+    if (PyTuple_Check(object) || PyList_Check(object)) {
+        Py::Sequence list(object);
+        Py::Sequence::size_type size = list.size();
+        std::vector<DocumentObject*> values;
+        values.resize(size);
+
+        for (Py::Sequence::size_type i = 0; i < size; i++) {
+            Py::Object item = list[i];
+            if (!PyObject_TypeCheck(*item, &(DocumentObjectPy::Type))) {
+                std::string error = std::string("type in list must be 'DocumentObject', not ");
+                error += (*item)->ob_type->tp_name;
+                throw Base::TypeError(error);
+            }
+
+            values[i] = static_cast<DocumentObjectPy*>(*item)->getDocumentObjectPtr();
+        }
+
+        GroupExtension* grp = getGroupExtensionPtr();
+        auto vec = grp->removeObjects(values); 
+        Py::List result;
+        for (App::DocumentObject* obj : vec)
+            result.append(Py::asObject(obj->getPyObject()));
+
+        return Py::new_reference_to(result);
+    }
+    
+    std::string error = std::string("type must be list of 'DocumentObject', not ");
+    error += object->ob_type->tp_name;
+    throw Base::TypeError(error);
+};
 
 PyObject*  GroupExtensionPy::removeObjectsFromDocument(PyObject *args)
 {

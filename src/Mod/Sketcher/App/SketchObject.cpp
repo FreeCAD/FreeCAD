@@ -960,7 +960,8 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
     std::vector<Constraint *> changed;
     for (int i=0; i < int(newVals.size()); i++) {
         if (vals[i]->First == fromGeoId && vals[i]->FirstPos == fromPosId &&
-            !(vals[i]->Second == toGeoId && vals[i]->SecondPos == toPosId)) {
+            !(vals[i]->Second == toGeoId && vals[i]->SecondPos == toPosId) &&
+            !(toGeoId < 0 && vals[i]->Second <0) ) {
             Constraint *constNew = newVals[i]->clone();
             constNew->First = toGeoId;
             constNew->FirstPos = toPosId;
@@ -968,7 +969,8 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             changed.push_back(constNew);
         }
         else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId &&
-                 !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId)) {
+                 !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId) &&
+                 !(toGeoId < 0 && vals[i]->First< 0)) {
             Constraint *constNew = newVals[i]->clone();
             constNew->Second = toGeoId;
             constNew->SecondPos = toPosId;
@@ -1105,6 +1107,50 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         return 0;
     }
     return -1;
+}
+
+int SketchObject::extend(int GeoId, double increment, int endpoint) {
+    if (GeoId < 0 || GeoId > getHighestCurveIndex())
+        return -1;
+
+    const std::vector<Part::Geometry *> &geomList = getInternalGeometry();
+    Part::Geometry *geom = geomList[GeoId];
+    int retcode = -1;
+    if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        Part::GeomLineSegment *seg = static_cast<Part::GeomLineSegment *>(geom);
+        Base::Vector3d startVec = seg->getStartPoint();
+        Base::Vector3d endVec = seg->getEndPoint();
+        if (endpoint == start) {
+            Base::Vector3d newPoint = startVec - endVec;
+            double scaleFactor = newPoint.Length() + increment;
+            newPoint.Normalize();
+            newPoint.Scale(scaleFactor, scaleFactor, scaleFactor);
+            newPoint = newPoint + endVec;
+            retcode = movePoint(GeoId, Sketcher::start, newPoint, false, true);
+        } else if (endpoint == end) {
+            Base::Vector3d newPoint = endVec - startVec;
+            double scaleFactor = newPoint.Length() + increment;
+            newPoint.Normalize();
+            newPoint.Scale(scaleFactor, scaleFactor, scaleFactor);
+            newPoint = newPoint + startVec;
+            retcode = movePoint(GeoId, Sketcher::end, newPoint, false, true);
+        }
+    } else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        Part::GeomArcOfCircle *arc = static_cast<Part::GeomArcOfCircle *>(geom);
+        double startArc, endArc;
+        arc->getRange(startArc, endArc, true);
+        if (endpoint == start) {
+            arc->setRange(startArc - increment, endArc, true);
+            retcode = 0;
+        } else if (endpoint == end) {
+            arc->setRange(startArc, endArc + increment, true);
+            retcode = 0;
+        }
+    }
+    if (retcode == 0 && noRecomputes) {
+        solve();
+    }
+    return retcode;
 }
 
 int SketchObject::trim(int GeoId, const Base::Vector3d& point)
@@ -1988,8 +2034,8 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
     //App::DocumentObject *support = this->Support.getValue();
     Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
     Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
-    App::Part* part_this = App::Part::getPartOfObject(this, true);
-    App::Part* part_obj = App::Part::getPartOfObject(pObj, true);
+    App::Part* part_this = App::Part::getPartOfObject(this);
+    App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj){ //either in the same part, or in the root of document
         if (body_this == NULL) {
             return true;
@@ -2051,8 +2097,8 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
     //App::DocumentObject *support = this->Support.getValue();
     Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
     Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
-    App::Part* part_this = App::Part::getPartOfObject(this, true);
-    App::Part* part_obj = App::Part::getPartOfObject(pObj, true);
+    App::Part* part_this = App::Part::getPartOfObject(this);
+    App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj){ //either in the same part, or in the root of document
         if (body_this != NULL) {
             if ((body_this != body_obj) && !this->allowOtherBody) {
@@ -4099,32 +4145,32 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     #endif
     
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
-        throw Base::ValueError("BSpline GeoId is out of bounds.");
+        THROWM(Base::ValueError,"BSpline GeoId is out of bounds.")
     
     if (multiplicityincr == 0) // no change in multiplicity
-        throw Base::ValueError("You are requesting no change in knot multiplicity.");
+        THROWM(Base::ValueError,"You are requesting no change in knot multiplicity.")
     
     const Part::Geometry *geo = getGeometry(GeoId);
     
     if(geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
-        throw Base::TypeError("The GeoId provided is not a B-spline curve");
+        THROWM(Base::TypeError,"The GeoId provided is not a B-spline curve.");
     
     const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
     
     int degree = bsp->getDegree();
     
     if( knotIndex > bsp->countKnots() || knotIndex < 1 ) // knotindex in OCC 1 -> countKnots
-        throw Base::ValueError("The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.");
+        THROWM(Base::ValueError,"The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.");
 
     Part::GeomBSplineCurve *bspline;
 
     int curmult = bsp->getMultiplicity(knotIndex);
     
     if ( (curmult + multiplicityincr) > degree ) // zero is removing the knot, degree is just positional continuity
-        throw Base::ValueError("The multiplicity cannot be increased beyond the degree of the b-spline.");
+        THROWM(Base::ValueError,"The multiplicity cannot be increased beyond the degree of the b-spline.");
     
     if ( (curmult + multiplicityincr) < 0) // zero is removing the knot, degree is just positional continuity
-        throw Base::ValueError("The multiplicity cannot be decreased beyond zero.");
+        THROWM(Base::ValueError,"The multiplicity cannot be decreased beyond zero.");
     
     try {
 
@@ -4137,7 +4183,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
             bool result = bspline->removeKnot(knotIndex, curmult + multiplicityincr,1E6);
 
             if(!result)
-                throw Base::RuntimeError("OCC is unable to decrease the multiplicity within the maximum tolerance.");
+                THROWM(Base::CADKernelError, "OCC is unable to decrease the multiplicity within the maximum tolerance.");
         }
     }
     catch (const Base::Exception& e) {

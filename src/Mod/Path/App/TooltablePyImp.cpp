@@ -22,7 +22,7 @@
 
 
 #include "PreCompiled.h"
-
+#include "Base/Reader.h"
 #include "Mod/Path/App/Tooltable.h"
 
 // inclusion of the generated files (generated out of ToolPy.xml and TooltablePy.xml)
@@ -328,6 +328,21 @@ PyObject* ToolPy::copy(PyObject * args)
 }
 
 
+PyObject* ToolPy::fromTemplate(PyObject * args)
+{
+    char *pstr = 0;
+    if (PyArg_ParseTuple(args, "s", &pstr)) {
+        // embed actual string in dummy tag so XMLReader can consume that on construction
+        std::ostringstream os;
+        os << "<snippet>" << pstr <<  "</snippet>";
+        std::istringstream is(os.str());
+        Base::XMLReader reader("", is);
+        getToolPtr()->Restore(reader);
+        Py_Return ;
+    }
+    PyErr_SetString(PyExc_TypeError, "argument must be a string");
+    return 0;
+}
 
 
 // TooltablePy

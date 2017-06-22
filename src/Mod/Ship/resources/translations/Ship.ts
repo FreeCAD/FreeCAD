@@ -681,11 +681,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="162"/>
-        <source>Unknow object shapes selected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="TaskPanel.py" line="179"/>
         <source>There are not ship objects to create weights into them</source>
         <translation type="unfinished"></translation>
@@ -723,6 +718,11 @@
     <message>
         <location filename="WeightInstance.py" line="73"/>
         <source>Area density [kg / m^2]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="162"/>
+        <source>Unknown object shapes selected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

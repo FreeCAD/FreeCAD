@@ -1,3 +1,6 @@
+** written by FreeCAD inp file writer for CalculiX,Abaqus meshes
+
+** Nodes
 *Node, NSET=Nall
 1, 203.2, 25.4, 0
 2, 203.2, 25.4, 25.4
@@ -44,7 +47,10 @@
 43, 51.308, 12.7, 12.7
 44, 100.482, 12.7, 12.7
 45, 152.908, 12.7, 12.7
-*Element, TYPE=C3D10, ELSET=Eall
+
+
+** Volume elements
+*Element, TYPE=C3D10, ELSET=Evolumes
 1, 5, 6, 12, 11, 26, 43, 33, 20, 37, 34
 2, 9, 12, 11, 2, 44, 34, 39, 15, 45, 38
 3, 3, 4, 1, 12, 27, 36, 22, 24, 41, 35
@@ -58,13 +64,17 @@
 11, 8, 7, 6, 12, 28, 29, 13, 40, 23, 43
 12, 12, 10, 6, 8, 42, 30, 43, 40, 17, 13
 
+** Define element set Eall
+*ELSET, ELSET=Eall
+Evolumes
+
 
 
 ***********************************************************
 ** Element sets for materials and FEM element type (solid, shell, beam, fluid)
 ** written by write_element_sets_material_and_femelement_type function
 *ELSET,ELSET=MechanicalMaterialSolid
-Eall
+Evolumes
 
 ***********************************************************
 ** Node sets for fixed constraint
@@ -187,9 +197,9 @@ U, NT
 *EL FILE
 S, E
 ** outputs --> dat file
-*NODE PRINT , NSET=Nall 
+*NODE PRINT , NSET=Nall
 U 
-*EL PRINT , ELSET=Eall 
+*EL PRINT , ELSET=Eall
 S 
 
 ***********************************************************

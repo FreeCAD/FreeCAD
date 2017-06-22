@@ -45,11 +45,13 @@
     <name>ImageGui::GLImageBox</name>
     <message>
         <location filename="../../GLImageBox.cpp" line="+331"/>
+        <location filename="../../OpenGLImageBox.cpp" line="+385"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>表示中の画像の色空間は未定義です</translation>
     </message>
     <message>
         <location line="-1"/>
+        <location filename="../../OpenGLImageBox.cpp" line="-1"/>
         <source>Image pixel format</source>
         <translation>画像のピクセルフォーマット</translation>
     </message>
@@ -95,7 +97,7 @@
 <context>
     <name>ImageGui::ImageView</name>
     <message>
-        <location filename="../../ImageView.cpp" line="+104"/>
+        <location filename="../../ImageView.cpp" line="+107"/>
         <source>&amp;Fit image</source>
         <translation>フィット(&amp;F)</translation>
     </message>
@@ -200,12 +202,12 @@
     <message>
         <location line="+8"/>
         <source>Error opening image</source>
-        <translation type="unfinished"></translation>
+        <translation>画像を開く際にエラーが発生しました</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Could not load the chosen image</source>
-        <translation type="unfinished"></translation>
+        <translation>選択された画像を読み込めません</translation>
     </message>
     <message>
         <source>Error open image</source>

@@ -39,6 +39,7 @@
 #include "Console.h"
 #include "Exception.h"
 #include "PyObjectBase.h"
+#include <QCoreApplication> 
 
 using namespace Base;
 
@@ -50,7 +51,12 @@ using namespace Base;
 
 
 ConsoleSingleton::ConsoleSingleton(void)
-  :_bVerbose(false)
+  :_bVerbose(false),_bCanRefresh(true)
+#ifdef FC_DEBUG
+  ,_defaultLogLevel(FC_LOGLEVEL_LOG)
+#else
+  ,_defaultLogLevel(FC_LOGLEVEL_MSG)
+#endif
 {
 
 }
@@ -354,6 +360,24 @@ ConsoleObserver *ConsoleSingleton::Get(const char *Name) const
     return 0;
 }
 
+int *ConsoleSingleton::GetLogLevel(const char *tag, bool create) {
+    if(!tag) tag = "";
+    if(_logLevels.find(tag) != _logLevels.end())
+        return &_logLevels[tag];
+    if(!create) return 0;
+    int &ret = _logLevels[tag];
+    ret = -1;
+    return &ret;
+}
+
+void ConsoleSingleton::Refresh() {
+    if(_bCanRefresh)
+        QCoreApplication::sendPostedEvents();
+}
+
+void ConsoleSingleton::EnableRefresh(bool enable) {
+    _bCanRefresh = enable;
+}
 
 //**************************************************************************
 // Singleton stuff
@@ -405,6 +429,18 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args, PyOb
     if (!PyArg_ParseTuple(args, "O", &output))
         return NULL;
 
+#if PY_MAJOR_VERSION >= 3
+    const char* string=0;
+    PyObject* unicode=0;
+    if (PyUnicode_Check(output)) {
+        string = PyUnicode_AsUTF8(output);
+    }
+    else {
+        unicode = PyObject_Str(output);
+        if (unicode)
+            string = PyUnicode_AsUTF8(unicode);
+    }
+#else
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
@@ -420,6 +456,7 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args, PyOb
         if (unicode)
             string = PyString_AsString(unicode);
     }
+#endif
 
     PY_TRY {
         if (string)
@@ -438,6 +475,18 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args, PyOb
     if (!PyArg_ParseTuple(args, "O", &output))
         return NULL;
 
+#if PY_MAJOR_VERSION >= 3
+    const char* string=0;
+    PyObject* unicode=0;
+    if (PyUnicode_Check(output)) {
+        string = PyUnicode_AsUTF8(output);
+    }
+    else {
+        unicode = PyObject_Str(output);
+        if (unicode)
+            string = PyUnicode_AsUTF8(unicode);
+    }
+#else
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
@@ -453,6 +502,7 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args, PyOb
         if (unicode)
             string = PyString_AsString(unicode);
     }
+#endif
 
     PY_TRY {
         if (string)
@@ -471,6 +521,18 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args, PyObje
     if (!PyArg_ParseTuple(args, "O", &output))
         return NULL;
 
+#if PY_MAJOR_VERSION >= 3
+    const char* string=0;
+    PyObject* unicode=0;
+    if (PyUnicode_Check(output)) {
+        string = PyUnicode_AsUTF8(output);
+    }
+    else {
+        unicode = PyObject_Str(output);
+        if (unicode)
+            string = PyUnicode_AsUTF8(unicode);
+    }
+#else
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
@@ -486,6 +548,7 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args, PyObje
         if (unicode)
             string = PyString_AsString(unicode);
     }
+#endif
 
     PY_TRY {
         if (string)
@@ -504,6 +567,18 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args, PyObject
     if (!PyArg_ParseTuple(args, "O", &output))
         return NULL;
 
+#if PY_MAJOR_VERSION >= 3
+    const char* string=0;
+    PyObject* unicode=0;
+    if (PyUnicode_Check(output)) {
+        string = PyUnicode_AsUTF8(output);
+    }
+    else {
+        unicode = PyObject_Str(output);
+        if (unicode)
+            string = PyUnicode_AsUTF8(unicode);
+    }
+#else
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
@@ -519,6 +594,7 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args, PyObject
         if (unicode)
             string = PyString_AsString(unicode);
     }
+#endif
 
     PY_TRY {
         if (string)
@@ -637,9 +713,11 @@ void ConsoleObserverFile::Log    (const char *sLog)
 
 ConsoleObserverStd::ConsoleObserverStd() :
 #   if defined(FC_OS_WIN32)
-    useColorStderr( true )
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+    useColorStderr(true)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     useColorStderr( isatty(STDERR_FILENO) )
+#   else
+    useColorStderr(false)
 #   endif
 {
     bLog = false;
@@ -659,7 +737,7 @@ void ConsoleObserverStd::Warning(const char *sWarn)
     if (useColorStderr) {
 #   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_GREEN| FOREGROUND_BLUE);
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[1;33m");
 #   endif
     }
@@ -669,7 +747,7 @@ void ConsoleObserverStd::Warning(const char *sWarn)
     if (useColorStderr) {
 #   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
 #   endif
     }
@@ -680,7 +758,7 @@ void ConsoleObserverStd::Error  (const char *sErr)
     if (useColorStderr) {
 #   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_RED|FOREGROUND_INTENSITY );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[1;31m");
 #   endif
     }
@@ -690,7 +768,7 @@ void ConsoleObserverStd::Error  (const char *sErr)
     if (useColorStderr) {
 #   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
 #   endif
     }
@@ -701,7 +779,7 @@ void ConsoleObserverStd::Log    (const char *sErr)
     if (useColorStderr) {
 #   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_RED |FOREGROUND_GREEN);
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[1;36m");
 #   endif
     }
@@ -711,7 +789,7 @@ void ConsoleObserverStd::Log    (const char *sErr)
     if (useColorStderr) {
 #   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
 #   endif
     }
@@ -780,4 +858,27 @@ int RedirectStdError::sync()
         buffer.clear();
     }
     return 0;
+}
+
+//---------------------------------------------------------
+
+std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int line)
+{
+    static FC_TIME_POINT s_tstart;
+    static bool s_timing = false;
+    if(print_time) {
+        if(!s_timing) {
+            s_timing = true;
+            _FC_TIME_INIT(s_tstart);
+        }
+        auto tnow = std::chrono::FC_TIME_CLOCK::now();
+        auto d = std::chrono::duration_cast<FC_DURATION>(tnow-s_tstart);
+        str << d.count() << ' ';
+    }
+    if(print_tag) str << '<' << tag << "> ";
+    if(print_src) {
+        const char *_f = std::strrchr(src, '/');
+        str << (_f?_f+1:src)<<"("<<line<<"): ";
+    }
+    return str;
 }

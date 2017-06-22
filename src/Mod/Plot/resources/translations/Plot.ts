@@ -326,11 +326,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="135"/>
-        <source>List of modificable items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="TaskPanel.py" line="140"/>
         <source>X item position</source>
         <translation type="unfinished"></translation>
@@ -343,6 +338,11 @@
     <message>
         <location filename="TaskPanel.py" line="150"/>
         <source>Item size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="135"/>
+        <source>List of modifiable items</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -397,11 +397,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="158"/>
-        <source>Remove serie</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="TaskPanel.py" line="188"/>
         <source>Line style</source>
         <translation type="unfinished"></translation>
@@ -447,13 +442,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="213"/>
-        <source>Removes this serie</source>
+        <location filename="TaskPanel.py" line="158"/>
+        <source>Remove series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="TaskPanel.py" line="183"/>
-        <source>If checked serie will not be considered for legend</source>
+        <source>If checked, series will not be considered for legend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="213"/>
+        <source>Removes this series</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

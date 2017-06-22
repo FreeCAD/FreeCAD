@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>399</width>
-    <height>564</height>
+    <height>582</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@
         <x>0</x>
         <y>0</y>
         <width>381</width>
-        <height>510</height>
+        <height>528</height>
        </rect>
       </property>
       <attribute name="label">
@@ -159,7 +159,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="cbTagGeneration">
          <property name="title">
           <string>Auto Generate</string>
          </property>

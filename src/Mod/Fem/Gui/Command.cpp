@@ -1534,21 +1534,14 @@ void CmdFemPostPipelineFromResult::activated(int)
         Base::Console().Message("Debug: FemResultObject pointer = %p", result );
 
     */
-    App::Document* pcDoc = App::GetApplication().getActiveDocument();
-    if(!pcDoc)
-    {
-        Base::Console().Message("No active document is found thus do nothing and return\n");
-        return;
-    }
-    Fem::FemResultObject* result= static_cast<Fem::FemResultObject*>(pcDoc->getActiveObject());
-    if(result)
-    {
+    std::vector<Fem::FemResultObject*> results = getSelection().getObjectsOfType<Fem::FemResultObject>();
+    if (results.size() == 1) {
         std::string FeatName = getUniqueObjectName("Pipeline");
         openCommand("Create pipeline from result");
         doCommand(Doc,"App.activeDocument().addObject('Fem::FemPostPipeline','%s')",FeatName.c_str());
-
-        //TODO: use python function call for this
-        static_cast<Fem::FemPostPipeline*>(getDocument()->getObject(FeatName.c_str()))->load(result);
+        doCommand(Doc,"App.activeDocument().ActiveObject.load("
+                      "App.activeDocument().getObject(\"%s\"))", results[0]->getNameInDocument());
+        commitCommand();
 
         this->updateActive();
 

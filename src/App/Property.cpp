@@ -108,7 +108,7 @@ void Property::touch()
 {
     if (father)
         father->onChanged(this);
-    StatusBits.set(0);
+    StatusBits.set(Touched);
 }
 
 void Property::setReadOnly(bool readOnly)
@@ -123,7 +123,7 @@ void Property::hasSetValue(void)
 {
     if (father)
         father->onChanged(this);
-    StatusBits.set(0);
+    StatusBits.set(Touched);
 }
 
 void Property::aboutToSetValue(void)

@@ -531,7 +531,7 @@ void ViewProviderSketch::getCoordsOnSketchPlane(double &u, double &v,const SbVec
     Base::Vector3d R0(0,0,0),RN(0,0,1),RX(1,0,0),RY(0,1,0);
 
     // move to position of Sketch
-    Base::Placement Plz = getPlacement();
+    Base::Placement Plz = getSketchObject()->globalPlacement();
     R0 = Plz.getPosition() ;
     Base::Rotation tmp(Plz.getRotation());
     tmp.multVec(RN,RN);
@@ -894,6 +894,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                   << "Sketcher_CreateHexagon"
                                   << "Sketcher_CreateFillet"
                                   << "Sketcher_Trimming"
+                                  << "Sketcher_Extend"
                                   << "Sketcher_External"
                                   << "Sketcher_ToggleConstruction"
                                 /*<< "Sketcher_CreateText"*/
@@ -1930,7 +1931,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
     Sketcher::SketchObject *sketchObject = getSketchObject();
     App::Document *doc = sketchObject->getDocument();
 
-    Base::Placement Plm = getPlacement();
+    Base::Placement Plm = getSketchObject()->globalPlacement();
 
     int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
     int extGeoCount = sketchObject->getExternalGeometryCount();
@@ -3922,14 +3923,21 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     edit->RootCrossSet->numVertices.set1Value(0,2);
     edit->RootCrossSet->numVertices.set1Value(1,2);
 
-    float MiX = -exp(ceil(log(std::abs(MinX))));
-    MiX = std::min(MiX,(float)-exp(ceil(log(std::abs(0.1f*MaxX)))));
-    float MaX = exp(ceil(log(std::abs(MaxX))));
-    MaX = std::max(MaX,(float)exp(ceil(log(std::abs(0.1f*MinX)))));
-    float MiY = -exp(ceil(log(std::abs(MinY))));
-    MiY = std::min(MiY,(float)-exp(ceil(log(std::abs(0.1f*MaxY)))));
-    float MaY = exp(ceil(log(std::abs(MaxY))));
-    MaY = std::max(MaY,(float)exp(ceil(log(std::abs(0.1f*MinY)))));
+    // make sure that nine of the numbers are exactly zero because log(0)
+    // is not defined
+    float xMin = std::abs(MinX) < FLT_EPSILON ? 0.01f : MinX;
+    float xMax = std::abs(MaxX) < FLT_EPSILON ? 0.01f : MaxX;
+    float yMin = std::abs(MinY) < FLT_EPSILON ? 0.01f : MinY;
+    float yMax = std::abs(MaxY) < FLT_EPSILON ? 0.01f : MaxY;
+
+    float MiX = -exp(ceil(log(std::abs(xMin))));
+    MiX = std::min(MiX,(float)-exp(ceil(log(std::abs(0.1f*xMax)))));
+    float MaX = exp(ceil(log(std::abs(xMax))));
+    MaX = std::max(MaX,(float)exp(ceil(log(std::abs(0.1f*xMin)))));
+    float MiY = -exp(ceil(log(std::abs(yMin))));
+    MiY = std::min(MiY,(float)-exp(ceil(log(std::abs(0.1f*yMax)))));
+    float MaY = exp(ceil(log(std::abs(yMax))));
+    MaY = std::max(MaY,(float)exp(ceil(log(std::abs(0.1f*yMin)))));
 
     edit->RootCrossCoordinate->point.set1Value(0,SbVec3f(MiX, 0.0f, zCross));
     edit->RootCrossCoordinate->point.set1Value(1,SbVec3f(MaX, 0.0f, zCross));
@@ -4796,7 +4804,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         Base::Vector3d RN(0,0,1);
 
         // move to position of Sketch
-        Base::Placement Plz = getPlacement();
+        Base::Placement Plz = getSketchObject()->globalPlacement();
         Base::Rotation tmp(Plz.getRotation());
         tmp.multVec(RN,RN);
         Plz.setRotation(tmp);
@@ -5009,13 +5017,6 @@ void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const 
 bool ViewProviderSketch::setEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
-    //find the Part and body object the feature belongs to for placement calculations
-    //TODO: this needs to be replaced with GRAPH methods to get the real stacked placement
-    parentBody = Part::BodyBase::findBodyOf(getSketchObject());
-    if(parentBody) 
-        parentPart = App::Part::getPartOfObject(parentBody);
-    else 
-        parentPart = App::Part::getPartOfObject(getSketchObject());
     
     // always change to sketcher WB, remember where we come from 
     oldWb = Gui::Command::assureWorkbench("SketcherWorkbench");
@@ -5532,7 +5533,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
         }
     }
 
-    Base::Placement plm = getPlacement();
+    Base::Placement plm = getSketchObject()->globalPlacement();
     Base::Rotation tmp(plm.getRotation());
 
     SbRotation rot((float)tmp[0],(float)tmp[1],(float)tmp[2],(float)tmp[3]);
@@ -5818,21 +5819,8 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
     return PartGui::ViewProviderPart::onDelete(subList);
 }
 
-Base::Placement ViewProviderSketch::getPlacement() {
-    //TODO: use GRAPH placement handling, as this function right now only works with one parent 
-    //part object
-    Base::Placement Plz = getSketchObject()->Placement.getValue();
-    if(parentBody)
-        Plz = parentBody->Placement.getValue()*Plz;
-    if(parentPart)
-        Plz = parentPart->Placement.getValue()*Plz;
-    
-    return Plz;
-}
-
 void ViewProviderSketch::showRestoreInformationLayer() {
 
     visibleInformationChanged = true ;
     draw(false,false);
 }
-

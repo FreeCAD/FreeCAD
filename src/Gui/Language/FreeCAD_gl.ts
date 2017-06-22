@@ -68,15 +68,15 @@
     </message>
     <message>
         <source>&lt;empty&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;baleiro&gt;</translation>
     </message>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">Ángulo</translation>
+        <translation>Ángulo</translation>
     </message>
     <message>
         <source>Axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Eixe</translation>
     </message>
     <message>
         <source>Position</source>
@@ -84,7 +84,7 @@
     </message>
     <message>
         <source>Base</source>
-        <translation type="unfinished"></translation>
+        <translation>Base</translation>
     </message>
 </context>
 <context>
@@ -1237,54 +1237,38 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Consola Python</translation>
+        <translation>Consola Python</translation>
     </message>
     <message>
         <source>Enable word wrap</source>
-        <translation type="unfinished"></translation>
+        <translation>Habilitar guionización</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
-    <message>
-        <source>Default (%1 x %1)</source>
-        <translation type="obsolete">Por defecto (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Small (%1 x %1)</source>
-        <translation type="obsolete">Pequeno (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Large (%1 x %1)</source>
-        <translation type="obsolete">Grande (%1 x %1)</translation>
-    </message>
-    <message>
-        <source>Extra large (%1 x %1)</source>
-        <translation type="obsolete">Moi Grande (%1 x %1)</translation>
-    </message>
     <message>
         <source>No style sheet</source>
         <translation>Ningún estilo</translation>
     </message>
     <message>
         <source>Small (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pequeno (%1px)</translation>
     </message>
     <message>
         <source>Medium (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Medio (%1px)</translation>
     </message>
     <message>
         <source>Large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Grande (%1px)</translation>
     </message>
     <message>
         <source>Extra large (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Moi grande (%1px)</translation>
     </message>
     <message>
         <source>Custom (%1px)</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalizado (%1px)</translation>
     </message>
 </context>
 <context>
@@ -1750,10 +1734,14 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Busca</translation>
+        <translation>Busca</translation>
     </message>
     <message>
         <source>A search pattern to filter the results above</source>
+        <translation>Un patrón de busca para filtrar os resultados por riba</translation>
+    </message>
+    <message>
+        <source>None (Remove link)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1963,7 +1951,7 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
         <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar OpenGL Vertex Buffer Object (experimental)</translation>
     </message>
 </context>
 <context>
@@ -2487,11 +2475,11 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"></translation>
+        <translation>Transparente</translation>
     </message>
     <message>
         <source>Add watermark</source>
-        <translation type="unfinished"></translation>
+        <translation>Engadir marca de auga</translation>
     </message>
 </context>
 <context>
@@ -2638,14 +2626,6 @@ Por favor, especifique outro directorio.</translation>
         <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
         <translation>Impón a distancia de confusión para a escolma de elementos na vista 3D. Un valor longo fai máis sinxela a tarefa de escolmar, mais pode facer imposible a escolma de entidades pequenas.</translation>
     </message>
-    <message>
-        <source>PickRadius</source>
-        <translation type="obsolete">Raio de escolma</translation>
-    </message>
-    <message>
-        <source>View</source>
-        <translation type="obsolete">Vista</translation>
-    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
@@ -2776,7 +2756,7 @@ Por favor, especifique outro directorio.</translation>
         <source>Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
 
 The &apos;Status&apos; column shows whether the document could be recovered.</source>
-        <translation>Prema &apos;Principiar recuperación&apos; para comezar o proceso de recuperación do documento nomeado a continuación. A columna &apos;Estado&apos; amosa se o documento se pode recuperar.</translation>
+        <translation type="obsolete">Prema &apos;Principiar recuperación&apos; para comezar o proceso de recuperación do documento nomeado a continuación. A columna &apos;Estado&apos; amosa se o documento se pode recuperar.</translation>
     </message>
     <message>
         <source>Status of recovered documents:</source>
@@ -2849,6 +2829,12 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Transient directories deleted.</source>
         <translation>Cartafoles temporais eliminados.</translation>
+    </message>
+    <message>
+        <source>Press &apos;Start Recovery&apos; to start the recovery process of the document listed below.
+
+The &apos;Status&apos; column shows whether the document could be recovered.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3215,7 +3201,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Use center of mass</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar centro de masas</translation>
     </message>
 </context>
 <context>
@@ -3412,7 +3398,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <name>Gui::DockWnd::SelectionView</name>
     <message>
         <source>Property View</source>
-        <translation>Vista de propiedades</translation>
+        <translation type="obsolete">Vista de propiedades</translation>
     </message>
     <message>
         <source>Search</source>
@@ -3473,6 +3459,22 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Mark this object to be recomputed</source>
         <translation>Marca este obxecto para ser recalculado</translation>
+    </message>
+    <message>
+        <source>Selection View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The number of selected items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate subshape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creates a standalone copy of this subshape in the document</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3781,19 +3783,15 @@ Quere copialos tamén?</translation>
     </message>
     <message>
         <source>There is a rendering issue on MacOS.</source>
-        <translation>Hai un problema de renderización en MacOS.</translation>
-    </message>
-    <message>
-        <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="obsolete">Vexa &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; a wiki&lt;/a&gt; para máis información</translation>
+        <translation type="obsolete">Hai un problema de renderización en MacOS.</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
-        <translation>Non volver a amosar</translation>
+        <translation type="obsolete">Non volver a amosar</translation>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Mirar &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; a wiki&lt;/a&gt; para máis información</translation>
     </message>
 </context>
 <context>
@@ -3983,7 +3981,11 @@ No lado dereito escolléronse %2.</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation>Editar...</translation>
+        <translation type="obsolete">Editar...</translation>
+    </message>
+    <message>
+        <source>Change the linked object</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4382,7 +4384,7 @@ Quere especificar outro directorio?</translation>
     </message>
     <message>
         <source>%1, Internal name: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1, nome interno: %2</translation>
     </message>
 </context>
 <context>
@@ -4954,12 +4956,8 @@ Be aware the point where you click matters.</source>
         <translation>Desbotar o contido do grupo?</translation>
     </message>
     <message>
-        <source>The %1 is not empty, delete it&apos;s content as well?</source>
-        <translation type="obsolete">O %1 non está baleiro, baleirar o seu contido tamén?</translation>
-    </message>
-    <message>
         <source>The %1 is not empty, delete its content as well?</source>
-        <translation type="unfinished"></translation>
+        <translation>A %1 non está baleira, eliminar o seu contido, así a todo?</translation>
     </message>
 </context>
 <context>
@@ -6922,19 +6920,19 @@ Quere seguir de verdade?
     </message>
     <message>
         <source>Hidden line</source>
-        <translation type="unfinished"></translation>
+        <translation>Liña oculta</translation>
     </message>
     <message>
         <source>Hidden line mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modo de liña oculta</translation>
     </message>
     <message>
         <source>No shading</source>
-        <translation type="unfinished"></translation>
+        <translation>Sen raiado</translation>
     </message>
     <message>
         <source>No shading mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modo sen raiado</translation>
     </message>
 </context>
 <context>
