@@ -23,7 +23,7 @@
 import FreeCAD, os, sys, unittest, Part, Sketcher
 App = FreeCAD
 
-def CreateRectangleSketch(SketchFeature, corner, lengths, square=False):
+def CreateRectangleSketch(SketchFeature, corner, lengths):
     hmin, hmax = corner[0], corner[0] + lengths[0]
     vmin, vmax = corner[1], corner[1] + lengths[1]
 
@@ -49,14 +49,20 @@ def CreateRectangleSketch(SketchFeature, corner, lengths, square=False):
     SketchFeature.addConstraint(Sketcher.Constraint('DistanceY',i+2,2,corner[1])) 
 
     # add dimensions
-    if square:
-        # Make sure it's square
+    if lengths[0] == lengths[1]:
         SketchFeature.addConstraint(Sketcher.Constraint('Equal',i+2,i+3)) 
         SketchFeature.addConstraint(Sketcher.Constraint('Distance',i+0,hmax-hmin)) 
     else:
         SketchFeature.addConstraint(Sketcher.Constraint('Distance',i+1,vmax-vmin)) 
         SketchFeature.addConstraint(Sketcher.Constraint('Distance',i+0,hmax-hmin)) 
-    
+
+def CreateCircleSketch(SketchFeature, center, radius):
+    i = int(SketchFeature.GeometryCount)
+    SketchFeature.addGeometry(Part.Circle(App.Vector(*center), App.Vector(0,0,1), radius),False)
+    SketchFeature.addConstraint(Sketcher.Constraint('Radius',i,radius)) 
+    SketchFeature.addConstraint(Sketcher.Constraint('DistanceX',i,3,center[0])) 
+    SketchFeature.addConstraint(Sketcher.Constraint('DistanceY',i,3,center[1])) 
+
 def CreateBoxSketchSet(SketchFeature):
 	SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(-99.230339,36.960674,0),FreeCAD.Vector(69.432587,36.960674,0)))
 	SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(69.432587,36.960674,0),FreeCAD.Vector(69.432587,-53.196629,0)))
