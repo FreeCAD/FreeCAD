@@ -45,6 +45,7 @@ INSTALL(
         FemToolsElmer.py
         FemToolsZ88.py
         ObjectsFem.py
+	sifio.py
         TestFem.py
     DESTINATION
         Mod/Fem
