@@ -68,7 +68,7 @@ class _CommandFemSolverRun(FemCommands):
             analysis = FemGui.getActiveAnalysis()
             FreeCADGui.addModule("FemToolsElmer")
             FreeCADGui.doCommand(
-                    "FemToolsElmer.runSolver("
+                    "FemToolsElmer.runSimulation("
                     "App.ActiveDocument.{}, App.ActiveDocument.{})"
                     .format(analysis.Name, self.solver.Name))
         elif self.solver.SolverType == "FemSolverZ88":

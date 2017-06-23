@@ -27,209 +27,211 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+from PySide import QtCore
+import subprocess
+import io
 import os
 import os.path
-import subprocess
 import shutil
 import tempfile
-from PySide import QtCore
+import distutils.spawn
 
 import FreeCAD as App
 from FreeCAD import Console
-import FemTools
 import FemInputWriterElmer
+import FemDefsElmer
+import Report
 
 
-err_lookup = {
-    "cd_non_existent": "Case directory {} doesn't exist.",
-    "cd_not_dir": "Case directory {} is not a directory.",
-    "create_inp_failed": "Failed to create input files: {}",
-    "exec_solver_failed": "Solver execution failed with exit code: {}",
-    "mesh_missing": "Mesh object missing.",
-    "no_freetext": "Analysis without FreeText not jet supported!",
-    "freetext_empty": "FreeText must not be empty.",
-}
+_ELMER_SUBDIR = "elmer"
+_ELMERSOLVER_BIN = "ElmerSolver"
+_ELMERGRID_BIN = "ElmerGrid"
+
+_OUTPUT_OBJ_NAME = "ElmerSolverOutput"
+
+_ERROR_TITLE = "Missing Prerequisites"
+_ERROR_TEXT = (
+        "Could not start ElmerSolver because of missing prerequisites."
+        " Please try again after the following errors have been resolved:")
+_INFO_TITLE = "Info"
+_INFO_TEXT = None
+
+_SOLVER_ERROR_TITLE = "ElmerSolver Failed"
+_SOLVER_ERROR_TEXT = "Execution of ElmerSolver failed."
+_SOLVER_INFO_TITLE = "Info to ElmerSolver"
+_SOLVER_INFO_TEXT = None
 
 
-def runSolver(analysis, solver, caseDir=None):
-    isTemp = False
-    if not caseDir:
-        isTemp, caseDir = _getCaseDir(analysis)
-    Console.PrintMessage("Case directory path: {}\n".format(caseDir))
-    fea = FemToolsElmer(analysis, solver, caseDir)
-    fea.finished.connect(_solverFinished)
-    QtCore.QThreadPool.globalInstance().start(fea)
-    if isTemp:
+def runSimulation(analysis, solver, caseDir=None):
+    report = Report.Data()
+    if caseDir is None:
+        if _useTempDir():
+            caseDir = tempfile.mkdtemp()
+        else:
+            caseDir = dirFromSettings(report)
+    elmerBin, gridBin = getBinaries(report)
+    checkAnalysis(analysis, solver, report)
+    if report.isValid():
+        _wipeDir(caseDir)
+        writer = FemInputWriterElmer.Writer(
+                analysis, solver, caseDir, gridBin)
+        writer.writeInputFiles(report)
+        runner = SolverRunner(elmerBin, caseDir, analysis)
+        runner.finished.connect(_finished)
+        QtCore.QThreadPool.globalInstance().start(runner)
+    else:
+        title = _INFO_TITLE if report.isValid() else _ERROR_TITLE
+        text = _INFO_TEXT if report.isValid() else _ERROR_TEXT
+        Report.display(report, title, text)
+    if _useTempDir():
         shutil.rmtree(caseDir)
 
 
-def _getCaseDir(analysis):
-    case_dir = _createCaseDirFromSettings(analysis.Label)
-    if case_dir:
-        Console.PrintMessage("Use working directory from settings.\n")
-        return False, case_dir
-    Console.PrintMessage("Use temporary case directory.\n")
-    return True, tempfile.mkdtemp()
-
-
-def _createCaseDirFromSettings(name):
+def dirFromSettings(report):
+    caseDir = None
     workingDir = (App.ParamGet(
         "User parameter:BaseApp/Preferences/Mod/Fem/General")
         .GetString("WorkingDir"))
     if not os.path.exists(workingDir):
-        Console.PrintWarning(
-                "Working directory {} doesn't exist.\n"
-                .format(workingDir))
-        return ""
-    if not os.path.isdir(workingDir):
-        Console.PrintWarning(
-                "Working directory {} not a directory.\n"
-                .format(workingDir))
-        return ""
-    caseDir = os.path.join(workingDir, name)
-    if os.path.exists(caseDir) and not os.path.isdir(caseDir):
-        Console.PrintWarning(
-                "Can't use {}. Not a directory.\n"
-                .format(caseDir))
-        return ""
-    if not os.path.exists(caseDir):
-        try:
-            os.mkdir(caseDir)
-        except OSError as e:
-            Console.PrintWarning(
-                    "Couldn't create directory {}: {}\n"
-                    .format(caseDir, e.strerror))
-            return ""
+        report.appendError("wd_not_existent", workingDir)
+    elif not os.path.isdir(workingDir):
+        report.appendError("wd_not_directory", workingDir)
+    else:
+        caseDir = os.path.join(workingDir, _ELMER_SUBDIR)
+        if os.path.exists(caseDir) and not os.path.isdir(caseDir):
+            report.appendError("cd_not_directory", caseDir)
+        elif not os.path.exists(caseDir):
+            try:
+                os.mkdir(caseDir)
+            except OSError as e:
+                report.appendError(
+                        "cd_not_created", caseDir, e.strerror)
     return caseDir
 
 
-def _solverFinished(status):
-    if status.meshOut is not None:
-        Console.PrintLog("=== STDOUT of ElmerGrid ==========\n")
-        Console.PrintLog(str(status.meshOut))
-    if status.meshErr is not None:
-        Console.PrintLog("=== STDERR of ElmerGrid ==========\n")
-        Console.PrintLog(str(status.meshErr))
-    if status.solverOut is not None:
-        Console.PrintLog("=== STDOUT of ElmerSolver ==========\n")
-        Console.PrintLog(str(status.solverOut))
-    if status.solverErr is not None:
-        Console.PrintLog("=== STDERR of ElmerSolver ==========\n")
-        Console.PrintLog(str(status.solverErr))
-    if not status.success:
-        Console.PrintMessage("Solver execution failed.\n")
-        status.printErrorList(err_lookup)
+def getBinaries(report):
+    if not _checkExecutable(_ELMERSOLVER_BIN):
+        report.appendError("elmersolver_not_found")
+    if not _checkExecutable(_ELMERGRID_BIN):
+        report.appendError("elmergrid_not_found")
+    return _ELMERSOLVER_BIN, _ELMERGRID_BIN
 
 
-class _Status(object):
-
-    def __init__(self):
-        self._success = True
-        self.meshOut = None
-        self.meshErr = None
-        self.solverOut = None
-        self.solverErr = None
-        self.errorList = []
-
-    @property
-    def success(self):
-        return self._success
-
-    def error(self, err, *args):
-        self._success = False
-        self.errorList.append((err, args))
-
-    def printErrorList(self, lookup):
-        for err_id, args in self.errorList:
-            Console.PrintError(lookup[err_id].format(*args) + "\n")
+def checkAnalysis(analysis, solver, report):
+    _checkAnalysisCommon(analysis, solver, report)
+    if solver.AnalysisType == FemDefsElmer.STATIC:
+        pass
+    elif solver.AnalysisType == FemDefsElmer.FREQUENCY:
+        pass
+    elif solver.AnalysisType == FemDefsElmer.THERMOMECH:
+        pass
 
 
-class FemToolsElmer(FemTools.FemTools):
+def _checkAnalysisCommon(analysis, solver, report):
+    meshes = _getOfType(analysis, "Fem::FemMeshObject")
+    if len(meshes) == 0:
+        report.appendError("mesh_missing")
+    elif len(meshes) > 1:
+        report.appendError("too_many_meshes")
+    elif not (hasattr(meshes[0], "Proxy")
+            and meshes[0].Proxy.Type == "FemMeshGmsh"):
+        report.appendError("unsupported_mesh")
+    
+    
+def _getOfType(analysis, baseType, pyType=None):
+    matching = []
+    for m in analysis.Member:
+        if m.isDerivedFrom(baseType):
+            if pyType is None:
+                matching.append(m)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == pyType:
+                matching.append(m)
+    return matching
+
+
+def _getFirstOfType(analysis, baseType, pyType=None):
+    objs = _getOfType(analysis, baseType, pyType)
+    return objs[0] if objs else None
+
+
+def _checkExecutable(path):
+    return distutils.spawn.find_executable(path) is not None
+
+
+def _useTempDir():
+    workingDir = (App.ParamGet(
+        "User parameter:BaseApp/Preferences/Mod/Fem/General")
+        .GetString("WorkingDir"))
+    return workingDir == ""
+
+
+def _wipeDir(directory):
+    for node in os.listdir(directory):
+        path = os.path.join(directory, node)
+        if os.path.isfile(path):
+            os.unlink(path)
+        elif os.path.isdir(path):
+            shutil.rmtree(path)
+
+
+def _finished(report):
+    _updateLog(report.analysis, report.output)
+    title = _SOLVER_INFO_TITLE if report.isValid() else _SOLVER_ERROR_TITLE
+    text = _SOLVER_INFO_TEXT if report.isValid() else _SOLVER_ERROR_TEXT
+    Report.display(report, title, text)
+
+
+def _updateLog(analysis, log):
+    outputObj = _getOutputObj(analysis)
+    outputObj.Text = log
+
+
+def _getOutputObj(analysis):
+    objs = _getOfType(analysis, "App::TextDocument")
+    outputObj = None
+    for o in objs:
+        if o.Name.startswith(_OUTPUT_OBJ_NAME):
+            outputObj = o
+            break
+    if outputObj is None:
+        outputObj = App.ActiveDocument.addObject(
+                "App::TextDocument", _OUTPUT_OBJ_NAME)
+        analysis.Member += [outputObj]
+    outputObj.ReadOnly = True
+    return outputObj
+
+
+class SolverRunner(QtCore.QObject, QtCore.QRunnable):
 
     finished = QtCore.Signal(object)
-    SIF_NAME = "case.sif"
 
-    def __init__(self, analysis, solver, case_dir):
-        if analysis is None:
-            raise Exception("Analysis must not be None.")
-        if solver is None:
-            raise Exception("Solver must not be None.")
+    def __init__(self, elmerBin, directory, analysis):
         QtCore.QRunnable.__init__(self)
         QtCore.QObject.__init__(self)
-        self.analysis = analysis
-        self.solver = solver
-        self.case_dir = case_dir
-        self.update_objects()
-
-    def start_elmer(self, binary, working_dir):
-        p = subprocess.Popen(
-                [binary], cwd=working_dir, stdout=subprocess.PIPE,
-                stdin=subprocess.PIPE)
-        out, err = p.communicate()
-        return (p.returncode, out, err)
+        self._elmerBin = elmerBin
+        self._directory = directory
+        self._analysis = analysis
 
     def run(self):
-        status = _Status()
-        binary = self._check_elmer_binary(status)
-        self._check_case_dir(status)
-        self._check_analysis(status)
+        report = SolverReport(self._analysis)
+        progressBar = App.Base.ProgressIndicator()
+        progressBar.start("Running ElmerSolver...", 0)
+        try:
+            p = subprocess.Popen(
+                    [self._elmerBin], cwd=self._directory,
+                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            report.output = p.communicate()[0]
+            retcode = p.wait()
+            if retcode != 0:
+                report.appendError("elmer_failed", retcode)
+        finally:
+            progressBar.stop()
+            self.finished.emit(report)
 
-        progress_bar = App.Base.ProgressIndicator()
-        if status.success:
-            progress_bar.start("Executing Simulation...", 0)
-            try:
-                grid_ret = self.write_input_files(self.case_dir)
-                status.meshOut = grid_ret[0]
-                status.meshErr = grid_ret[1]
-            except OSError as e:
-                status.error("create_inp_failed", e.strerror)
-            ret_code, status.solverOut, status.solverErr = self.start_elmer(
-                    binary, self.case_dir)
-            if ret_code != 0:
-                status.error("exec_solver_failed", ret_code)
 
-        progress_bar.stop()
-        self.finished.emit(status)
+class SolverReport(Report.Data):
 
-    def find_elmer_binary(self):
-        return "ElmerSolver"
-
-    def write_input_files(self, working_dir):
-        writer = FemInputWriterElmer.Writer(
-                self.analysis, self.solver, self.mesh, self.materials_linear,
-                self.materials_nonlinear, self.fixed_constraints,
-                self.displacement_constraints, self.contact_constraints,
-                self.planerotation_constraints, self.transform_constraints,
-                self.selfweight_constraints, self.force_constraints,
-                self.pressure_constraints, self.temperature_constraints,
-                self.heatflux_constraints, self.initialtemperature_constraints,
-                self.beam_sections, self.shell_thicknesses,
-                self.fluid_sections, self.elmer_free_text)
-        return writer.write_all(self.SIF_NAME, working_dir)
-
-    def _check_analysis(self, status):
-        if self.mesh is None:
-            status.error("mesh_missing")
-        if self.elmer_free_text is None:
-            status.error("no_freetext")
-        elif self.elmer_free_text.Text == "":
-            status.error("freetext_empty")
-
-    def _check_elmer_binary(self, status):
-        binary = self.find_elmer_binary()
-        if binary is None:
-            status.failed("Couldn't find elmer binary.")
-            return None
-        return binary
-
-    def _check_case_dir(self, status):
-        if not os.path.exists(self.case_dir):
-            status.error("cd_non_existent", self.case_dir)
-            return None
-        if not os.path.isdir(self.case_dir):
-            status.error("cd_not_dir", self.case_dir)
-            return None
-
-    def load_results(self):
-        self.results_present = False
-        print('Result loading for Elmer not implemented yet!')
+    def __init__(self, analysis):
+        super(SolverReport, self).__init__()
+        self.output = ""
+        self.analysis = analysis
