@@ -48,6 +48,7 @@ class _TaskPanelFemMeshRegion:
         QtCore.QObject.connect(self.form.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard)
         QtCore.QObject.connect(self.form.rb_solid, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_solid)
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
+        self.form.list_References.itemSelectionChanged.connect(self.select_clicked_reference_shape)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
 
@@ -186,3 +187,18 @@ class _TaskPanelFemMeshRegion:
             items.append(item_name)
         for listItemName in sorted(items):
             self.form.list_References.addItem(listItemName)
+
+    def select_clicked_reference_shape(self):
+        if self.sel_server:
+            FreeCADGui.Selection.removeObserver(self.sel_server)
+            self.sel_server = None
+        if not self.sel_server:
+            if not self.references:
+                return
+            currentItemName = str(self.form.list_References.currentItem().text())
+            for ref in self.references:
+                refname_to_compare_listentry = ref[0].Name + ':' + ref[1]
+                if refname_to_compare_listentry == currentItemName:
+                    # print( 'found: shape: ' + ref[0].Name + ' element: ' + ref[1])
+                    FreeCADGui.Selection.clearSelection()
+                    FreeCADGui.Selection.addSelection(ref[0], ref[1])
