@@ -132,8 +132,11 @@ class _TaskPanelFemMeshRegion:
             print_message = self.selection_mode_solid_print_message
         else:
             print_message = self.selection_mode_std_print_message
-        import FemSelectionObserver
-        self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
+        if not self.sel_server:
+            # if we do not check, we would start a new SelectionObserver on every click on addReference button
+            # but close only one SelectionObserver on leaving the task panel
+            import FemSelectionObserver
+            self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
         print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
