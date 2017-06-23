@@ -91,6 +91,33 @@ int BSplineCurvePy::PyInit(PyObject* args, PyObject* kwd)
     return -1;
 }
 
+PyObject*  BSplineCurvePy::__reduce__(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    Py::Tuple tuple(2);
+
+    // type object to create an instance
+    union PyType_Object pyType = {&BSplineCurvePy::Type};
+    Py::Object type(pyType.o);
+    tuple.setItem(0, type);
+
+    // create an argument tuple to create a copy
+    Py::Object self(this);
+    Py::Tuple data(7);
+    data.setItem(0, Py::Callable(self.getAttr("getPoles")).apply());
+    data.setItem(1, Py::Callable(self.getAttr("getMultiplicities")).apply());
+    data.setItem(2, Py::Callable(self.getAttr("getKnots")).apply());
+    data.setItem(3, Py::Callable(self.getAttr("isPeriodic")).apply());
+    data.setItem(4, self.getAttr("Degree"));
+    data.setItem(5, Py::Callable(self.getAttr("getWeights")).apply());
+    data.setItem(6, Py::Callable(self.getAttr("isRational")).apply());
+    tuple.setItem(1, data);
+
+    return Py::new_reference_to(tuple);
+}
+
 PyObject* BSplineCurvePy::isRational(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

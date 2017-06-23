@@ -15,7 +15,14 @@
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
 			<UserDocu>Describes a B-Spline curve in 3D space</UserDocu>
 		</Documentation>
-		<Attribute Name="Degree" ReadOnly="true">
+        <Methode Name="__reduce__" Const="true">
+            <Documentation>
+                <UserDocu>__reduce__()
+Serialization of Part.BSplineCurve objects
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Attribute Name="Degree" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Returns the polynomial degree of this B-Spline curve.</UserDocu>
 			</Documentation>

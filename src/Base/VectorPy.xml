@@ -18,7 +18,14 @@
 		<DeveloperDocu>This is the Vector export class</DeveloperDocu>
 		<UserDocu>This class represents a 3D float vector</UserDocu>
 	</Documentation>
-		<Methode Name="add" Const="true">
+    <Methode Name="__reduce__" Const="true">
+        <Documentation>
+            <UserDocu>__reduce__()
+                      Serialization of Vector objects
+            </UserDocu>
+        </Documentation>
+    </Methode>
+        <Methode Name="add" Const="true">
 			<Documentation>
 				<UserDocu>add(Vector)
 					      returns the sum of this and another vector
@@ -32,7 +39,7 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="negative" Const="true">
+        <Methode Name="negative" Const="true">
 			<Documentation>
 				<UserDocu>negative()
 					      returns the negative (opposite) of this vector
