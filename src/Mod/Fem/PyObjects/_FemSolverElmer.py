@@ -26,6 +26,9 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
+import FemDefsElmer
+
+
 class _FemSolverElmer(object):
     """Proxy for FemSolverElmers Document Object."""
 
@@ -46,14 +49,41 @@ class _FemSolverElmer(object):
                 "App::PropertyString", "SolverType",
                 "Base", "Type of the solver.", attr)
         obj.addProperty(
-                "App::PropertyPath", "WorkingDir",
-                "Fem", "Working directory for calculations.")
-        obj.addProperty(
                 "App::PropertyEnumeration", "AnalysisType",
                 "Fem", "Type of the analysis.")
+        obj.addProperty(
+                "App::PropertyInteger", "EigenmodesCount",
+                "Fem", "Number of modes for frequency calculations")
+        obj.addProperty(
+                "App::PropertyInteger", "LinMaxIterations",
+                "Fem", "Maximum iterations for iterative methods")
+        obj.addProperty(
+                "App::PropertyFloatConstraint", "LinConvergenceTolerance",
+                "Fem", "Stopping criterion for iterative methods")
+        obj.addProperty(
+                "App::PropertyInteger", "TermoNLinMaxIterations",
+                "Fem", "Maximum iterations for heat equations (non linear)")
+        obj.addProperty(
+                "App::PropertyFloatConstraint", "TermoNLinConvergenceTolerance",
+                "Fem", "Stopping criterion for heat equations (linear)")
+        obj.addProperty(
+                "App::PropertyInteger", "TermoLinMaxIterations",
+                "Fem", "Maximum iterations for heat equations (non linear)")
+        obj.addProperty(
+                "App::PropertyFloatConstraint", "TermoLinConvergenceTolerance",
+                "Fem", "Stopping criterion for heat equations (linear)")
+        obj.AnalysisType = FemDefsElmer.SUPPORTED
 
         # Set default values for properties.
         obj.SolverType = self.solverType
+        obj.AnalysisType = FemDefsElmer.STATIC
+        obj.EigenmodesCount = 10
+        obj.LinMaxIterations = 500
+        obj.LinConvergenceTolerance = 1e-10
+        obj.TermoLinMaxIterations = 500
+        obj.TermoLinConvergenceTolerance = 1e-10
+        obj.TermoNLinMaxIterations = 20
+        obj.TermoNLinConvergenceTolerance = 1e-7
 
     def execute(self, obj):
         return True
