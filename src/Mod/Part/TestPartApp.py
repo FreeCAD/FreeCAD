@@ -20,7 +20,6 @@
 #**************************************************************************
 
 import FreeCAD, os, sys, unittest, Part
-import copy 
 App = FreeCAD
 
 #---------------------------------------------------------------------------
@@ -82,7 +81,13 @@ class PartTestBSplineCurve(unittest.TestCase):
         self.spline.getWeights()
 
     def testSetters(self):
-        spline = copy.copy(self.spline)
+        # TODO: copy.copy does not work with freecad objects and py3.6
+        # so simple recreate the spline:
+        poles = [[0, 0, 0], [1, 1, 0], [2, 0, 0]]
+        spline = Part.BSplineCurve()
+        spline.buildFromPoles(poles)
+        # import copy 
+        # spline = copy.copy(self.spline)
         spline.setKnot(1, 0.1)
         spline.setPeriodic()
         spline.setNotPeriodic()
