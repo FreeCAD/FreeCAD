@@ -246,20 +246,20 @@ class TaskPanel:
         self.postProcessorArgsDefaultTooltip = self.form.cboPostProcessorArgs.toolTip()
 
     def accept(self):
-        PathLog.error('accept')
+        PathLog.debug('accept')
         self.getFields()
+        FreeCAD.ActiveDocument.commitTransaction()
+        self.vobj.Proxy.resetTaskPanel()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        self.vobj.Proxy.resetTaskPanel()
 
     def reject(self):
-        PathLog.error('reject')
+        PathLog.debug('reject')
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
-            PathLog.error("Uncreate Job")
+            PathLog.info("Uncreate Job")
             FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Uncreate Job"))
             for child in self.obj.Group:
                 FreeCAD.ActiveDocument.removeObject(child.Name)
