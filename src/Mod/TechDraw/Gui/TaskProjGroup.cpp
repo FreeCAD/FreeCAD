@@ -279,7 +279,7 @@ void TaskProjGroup::nearestFraction(double val, int &n, int &d) const
 
     n = 1;  // numerator
     d = 1;  // denominator
-    double fraction = n / d;
+    double fraction = 1.0;                                                      //coverity 152005
     //double m = fabs(fraction - val);
 
     while (fabs(fraction - val) > 0.001) {
