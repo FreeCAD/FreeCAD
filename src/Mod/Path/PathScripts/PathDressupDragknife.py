@@ -30,7 +30,7 @@ import Path
 from PySide import QtCore, QtGui
 import math
 import DraftVecUtils as D
-import PathScripts.PathUtils as P
+import PathScripts.PathUtils as PathUtils
 
 """Dragknife Dressup object and FreeCAD command"""
 
@@ -458,7 +458,8 @@ class ViewProviderDressup:
 
     def onDelete(self, arg1=None, arg2=None):
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
-        P.addToProject(arg1.Object.Base)
+        PathUtils.addToProject(arg1.Object.Base)
+        arg1.Object.Base = None
         return True
 
 
