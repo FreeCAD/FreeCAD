@@ -1465,6 +1465,7 @@ class ViewProviderDressup:
             if obj:
                 obj.Visibility = True
         PathUtils.addToJob(arg1.Object.Base)
+        arg1.Object.Base = None
         return True
 
     def updateData(self, obj, propName):
