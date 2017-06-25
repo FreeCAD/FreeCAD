@@ -32,7 +32,7 @@
     <message>
         <location line="+1"/>
         <source>Add a existing Component into the active Assembly, STEP, IGES or BREP</source>
-        <translation>Ajouter un composant existant dans l’assemblage actif, STEP, IGES ou BREP</translation>
+        <translation>Ajouter un composant existant dans l&apos;assemblage actif, STEP, IGES ou BREP</translation>
     </message>
 </context>
 <context>
@@ -334,7 +334,7 @@
     <message>
         <location line="+38"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Special constraint which is in general used to let the geometries be on each other. Therefore it&apos;s often the same as align, with the difference that it is also defined for points, as a point can lie on a plane. Note that this constraint has a special behaviour for cylinders. For example, a cylindrical surface can&apos;t be on a plane, only touch it. Therefore this is not valid. Furthermore point and line coincident with cylinders don&apos;t  work on the cylinder surface, but on its center line. The reason for that it is, that this centerline would not be accessible with other constraints, but the surface coincident can be also achieved with the align constraint and value 0.  At last specialty the cylinder cylinder constraint shall be mentioned: It works also on the cylinder centerlines and therefore makes them concentric. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;Contrainte spéciale est généralement utilisée pour positionner des géométries les unes par rapport aux autres. Par conséquent, c’est souvent des éléments identiques à aligner, avec la différence qu’elles sont également définies pour des points, comme un point peut se trouver sur un plan. Notez que cette contrainte a un comportement particulier pour les cylindres. Par exemple, une surface cylindrique ne peut pas être sur un plan, seulement le toucher. Ce n&apos;est donc pas valable. De plus, le point et la ligne qui coïncident avec les cylindres ne concernent pas sur la surface du cylindre, mais son axe. La raison est que cet axe ne serait pas accessible par d&apos;autres contraintes, mais la surface coïncidente peut également être obtenue avec la contrainte d&apos;alignement et la valeur 0. Enfin, il faut mentionner la contrainte cylindre cylindre, qui concerne aussi les axes et donc les rend concentriques. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;Contrainte spéciale est généralement utilisée pour positionner des géométries les unes par rapport aux autres. Par conséquent, c&apos;est souvent des éléments identiques à aligner, avec la différence qu&apos;elles sont également définies pour des points, comme un point peut se trouver sur un plan. Notez que cette contrainte a un comportement particulier pour les cylindres. Par exemple, une surface cylindrique ne peut pas être sur un plan, seulement le toucher. Ce n&apos;est donc pas valable. De plus, le point et la ligne qui coïncident avec les cylindres ne concernent pas sur la surface du cylindre, mais son axe. La raison est que cet axe ne serait pas accessible par d&apos;autres contraintes, mais la surface coïncidente peut également être obtenue avec la contrainte d&apos;alignement et la valeur 0. Enfin, il faut mentionner la contrainte cylindre cylindre, qui concerne aussi les axes et donc les rend concentriques. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location line="+3"/>
