@@ -41,6 +41,7 @@ class _TaskPanelFemElementFluid1D:
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
         self.obj = obj
+        self.obj_notvisible = []
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemElementFluid1D.ui")
         QtCore.QObject.connect(self.form.btn_add, QtCore.SIGNAL("clicked()"), self.add_references)
@@ -77,6 +78,7 @@ class _TaskPanelFemElementFluid1D:
         QtCore.QObject.connect(self.form.if_colebrooke_grain_diameter, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.colebrooke_grain_diameter_changed)
         QtCore.QObject.connect(self.form.sb_colebrooke_form_factor, QtCore.SIGNAL("valueChanged(double)"), self.colebrooke_form_factor_changed)
         QtCore.QObject.connect(self.form.tw_pump_characteristics, QtCore.SIGNAL("cellChanged(int, int)"), self.pump_characteristics_changed)
+        self.form.list_References.itemSelectionChanged.connect(self.select_clicked_reference_shape)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
         self.form.cb_section_type.addItems(PyObjects._FemElementFluid1D._FemElementFluid1D.known_fluid_types)
@@ -88,6 +90,7 @@ class _TaskPanelFemElementFluid1D:
         self.update()
 
     def accept(self):
+        self.setback_listobj_visibility()
         self.set_fluidsection_props()
         if self.sel_server:
             FreeCADGui.Selection.removeObserver(self.sel_server)
@@ -96,6 +99,7 @@ class _TaskPanelFemElementFluid1D:
         return True
 
     def reject(self):
+        self.setback_listobj_visibility()
         if self.sel_server:
             FreeCADGui.Selection.removeObserver(self.sel_server)
         FreeCADGui.ActiveDocument.resetEdit()
@@ -354,6 +358,7 @@ class _TaskPanelFemElementFluid1D:
         '''Called if Button add_reference is triggered'''
         # in constraints EditTaskPanel the selection is active as soon as the taskpanel is open
         # here the addReference button EditTaskPanel has to be triggered to start selection mode
+        self.setback_listobj_visibility()
         FreeCADGui.Selection.clearSelection()
         # start SelectionObserver and parse the function to add the References to the widget
         print_message = "Select Edges by single click on them to add them to the list"
@@ -383,3 +388,29 @@ class _TaskPanelFemElementFluid1D:
             items.append(item_name)
         for listItemName in sorted(items):
             self.form.list_References.addItem(listItemName)
+
+    def select_clicked_reference_shape(self):
+        self.setback_listobj_visibility()
+        if self.sel_server:
+            FreeCADGui.Selection.removeObserver(self.sel_server)
+            self.sel_server = None
+        if not self.sel_server:
+            if not self.references:
+                return
+            currentItemName = str(self.form.list_References.currentItem().text())
+            for ref in self.references:
+                refname_to_compare_listentry = ref[0].Name + ':' + ref[1]
+                if refname_to_compare_listentry == currentItemName:
+                    # print( 'found: shape: ' + ref[0].Name + ' element: ' + ref[1])
+                    if not ref[0].ViewObject.Visibility:
+                        self.obj_notvisible.append(ref[0])
+                        ref[0].ViewObject.Visibility = True
+                    FreeCADGui.Selection.clearSelection()
+                    FreeCADGui.Selection.addSelection(ref[0], ref[1])
+
+    def setback_listobj_visibility(self):
+        '''set back Visibility of the list objects
+        '''
+        for obj in self.obj_notvisible:
+            obj.ViewObject.Visibility = False
+        self.obj_notvisible = []
