@@ -690,7 +690,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             if self.analysis_type == 'thermomech':
                 step += ', INC=' + str(self.solver_obj.IterationsThermoMechMaximum)
             elif self.analysis_type == 'static' or self.analysis_type == 'frequency':
-                pass  # not supported for stati and frequency,  ... really ?
+                pass  # parameter is for thermomechanical analysis only, see ccx manual *STEP
         # write step line
         f.write(step + '\n')
         # CONTROLS line
