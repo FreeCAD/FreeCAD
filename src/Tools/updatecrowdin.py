@@ -162,7 +162,7 @@ if __name__ == "__main__":
         
     elif arg == "download":
         print "Downloading all.zip in current directory..."
-        cmd = "wget "+url+"download/all.zip"+key
+        cmd = "wget -O freecad.zip "+url+"download/all.zip"+key
         os.system(cmd)
         
     elif arg == "update":
