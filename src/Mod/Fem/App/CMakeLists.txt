@@ -190,6 +190,12 @@ SET(FemTests_SRCS
     test_files/ccx/spine_thermomech.frd
     test_files/ccx/spine_thermomech_expected_values
     test_files/ccx/spine_thermomech.fcstd
+    test_files/ccx/Flow1D_mesh.py
+    test_files/ccx/Flow1D_thermomech.inp
+    test_files/ccx/Flow1D_thermomech.dat
+    test_files/ccx/Flow1D_thermomech.frd
+    test_files/ccx/Flow1D_thermomech_expected_values
+    test_files/ccx/Flow1D_thermomech.fcstd
 )
 
 SET(FemBase_SRCS
