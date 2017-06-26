@@ -193,8 +193,11 @@ class PartExport GeomBezierCurve : public GeomBoundedCurve
 public:
     GeomBezierCurve();
     GeomBezierCurve(const Handle(Geom_BezierCurve)&);
+    GeomBezierCurve(const std::vector<Base::Vector3d>&, const std::vector<double>&);
     virtual ~GeomBezierCurve();
     virtual Geometry *copy(void) const;
+    std::vector<Base::Vector3d> getPoles() const;
+    std::vector<double> getWeights() const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize (void) const;
