@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>536</width>
-    <height>752</height>
+    <height>672</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -272,6 +272,69 @@
        <layout class="QHBoxLayout" name="horizontalLayout_1">
         <item>
          <layout class="QGridLayout" name="gl_solver">
+          <item row="4" column="0">
+           <widget class="QLabel" name="l_use_iterations_param">
+            <property name="text">
+             <string>Time incrementation control parameter</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="Gui::PrefCheckBox" name="cb_use_iterations_param">
+            <property name="text">
+             <string>Use non ccx defaults</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>UseNonCcxIterationParam</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/Ccx</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="Gui::PrefCheckBox" name="cb_ccx_non_lin_geom">
+            <property name="text">
+             <string>Use non-linear geometry</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>NonlinearGeometry</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/Ccx</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="l_solver">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="text">
+             <string>Matrix solver</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="l_ccx_numcpu">
+            <property name="text">
+             <string>Number of CPU's to use (Spooles only)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="l_non_lin_geom">
+            <property name="text">
+             <string>Non-linear geometry</string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="1">
            <widget class="Gui::PrefComboBox" name="cmb_solver">
             <property name="enabled">
@@ -330,83 +393,46 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="l_use_iterations_param">
+          <item row="5" column="0">
+           <widget class="QLabel" name="l_ccx_initial_time_step">
             <property name="text">
-             <string>Time incrementation control parameter</string>
+             <string>Time Initial Step</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="Gui::PrefCheckBox" name="cb_ccx_non_lin_geom">
+          <item row="6" column="0">
+           <widget class="QLabel" name="l_ccx_analysis_time">
             <property name="text">
-             <string>Use non-linear geometry</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>NonlinearGeometry</cstring>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Ccx</cstring>
+             <string>Time End</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="l_solver">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="text">
-             <string>Matrix solver</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="l_ccx_numcpu">
-            <property name="text">
-             <string>Number of CPU's to use (Spooles only)</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="l_non_lin_geom">
-            <property name="text">
-             <string>Non-linear geometry</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="Gui::PrefCheckBox" name="cb_use_iterations_param">
-            <property name="text">
-             <string>Use non ccx defaults</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>UseNonCcxIterationParam</cstring>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Ccx</cstring>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="gb_04_thermomech_params">
-       <property name="title">
-        <string>Thermo mechanical defaults</string>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <layout class="QGridLayout" name="gl_thremomech">
           <item row="5" column="1">
+           <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_initial_time_step">
+            <property name="decimals">
+             <number>3</number>
+            </property>
+            <property name="minimum">
+             <double>0.010000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>99999999.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.010000000000000</double>
+            </property>
+            <property name="value">
+             <double>0.010000000000000</double>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>AnalysisTimeInitialStep</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/Ccx</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
            <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_analysis_time">
             <property name="decimals">
              <number>3</number>
@@ -431,6 +457,19 @@
             </property>
            </widget>
           </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="gb_04_thermomech_params">
+       <property name="title">
+        <string>Thermo mechanical defaults</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <layout class="QGridLayout" name="gl_thremomech">
           <item row="3" column="0">
            <widget class="QLabel" name="l_ccx_max_iterations">
             <property name="text">
@@ -457,45 +496,6 @@
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Fem/Ccx</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_initial_time_step">
-            <property name="decimals">
-             <number>3</number>
-            </property>
-            <property name="minimum">
-             <double>0.010000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>99999999.000000000000000</double>
-            </property>
-            <property name="singleStep">
-             <double>0.010000000000000</double>
-            </property>
-            <property name="value">
-             <double>0.010000000000000</double>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>AnalysisTimeInitialStep</cstring>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Ccx</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="l_ccx_initial_time_step">
-            <property name="text">
-             <string>Initial time step</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="l_ccx_analysis_time">
-            <property name="text">
-             <string>End time</string>
             </property>
            </widget>
           </item>
