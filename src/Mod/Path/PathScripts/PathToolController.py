@@ -29,7 +29,7 @@ import Part
 import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
-import PathUtils
+from . import PathUtils
 import xml.etree.ElementTree as xml
 
 from FreeCAD import Units
@@ -246,7 +246,7 @@ class CommandPathToolController:
             tool.CuttingEdgeHeight = 15.0
             tool.ToolType = "EndMill"
             tool.Material = "HighSpeedSteel"
-	obj.Tool = tool
+        obj.Tool = tool
         obj.ToolNumber = toolNumber
         PathUtils.addToJob(obj, jobname)
 
