@@ -167,6 +167,7 @@ class _Rebar(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","OffsetEnd","Arch",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the last bar (concrete cover)."))
         obj.addProperty("App::PropertyInteger","Amount","Arch",QT_TRANSLATE_NOOP("App::Property","The amount of bars"))
         obj.addProperty("App::PropertyLength","Spacing","Arch",QT_TRANSLATE_NOOP("App::Property","The spacing between the bars"))
+        obj.addProperty("App::PropertyLength","Distance","Arch",QT_TRANSLATE_NOOP("App::Property","The total distance to span the rebars over. Keep 0 to automatically use the host shape size."))
         obj.addProperty("App::PropertyVector","Direction","Arch",QT_TRANSLATE_NOOP("App::Property","The direction to use to spread the bars. Keep (0,0,0) for automatic direction."))
         obj.addProperty("App::PropertyFloat","Rounding","Arch",QT_TRANSLATE_NOOP("App::Property","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter."))
         obj.addProperty("App::PropertyPlacementList","PlacementList","Arch",QT_TRANSLATE_NOOP("App::Property","List of placement of all the bars"))
@@ -209,6 +210,13 @@ class _Rebar(ArchComponent.Component):
         wire = obj.Base.Shape.Wires[0]
         axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
         size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
+        if hasattr(obj,"Direction"):
+            if not DraftVecUtils.isNull(obj.Direction):
+                axis = FreeCAD.Vector(obj.Direction)
+                axis.normalize()
+        if hasattr(obj,"Distance"):
+            if obj.Distance.Value:
+                size = obj.Distance.Value
         if hasattr(obj,"Rounding"):
             if obj.Rounding:
                 radius = obj.Rounding * obj.Diameter.Value
@@ -274,9 +282,11 @@ class _Rebar(ArchComponent.Component):
         size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
         if hasattr(obj,"Direction"):
             if not DraftVecUtils.isNull(obj.Direction):
-                axis = FreeCAD.Vector(obj.Direction) #.normalize()
-                # don't normalize so the vector can also be used to determine the distance
-                size = axis.Length
+                axis = FreeCAD.Vector(obj.Direction)
+                axis.normalize()
+        if hasattr(obj,"Distance"):
+            if obj.Distance.Value:
+                size = obj.Distance.Value
         #print(axis)
         #print(size)
         if (obj.OffsetStart.Value + obj.OffsetEnd.Value) > size:
