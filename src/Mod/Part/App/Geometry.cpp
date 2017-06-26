@@ -607,6 +607,20 @@ GeomBezierCurve::GeomBezierCurve(const Handle(Geom_BezierCurve)& b)
     setHandle(b);
 }
 
+GeomBezierCurve::GeomBezierCurve( const std::vector<Base::Vector3d>& poles, const std::vector<double>& weights)
+{
+    if (poles.size() != weights.size())
+        throw Base::ValueError("poles and weights mismatch");
+
+    TColgp_Array1OfPnt p(1,poles.size());
+    TColStd_Array1OfReal w(1,poles.size());
+    for (std::size_t i = 1; i <= poles.size(); i++) {
+        p.SetValue(i, gp_Pnt(poles[i-1].x,poles[i-1].y,poles[i-1].z));
+        w.SetValue(i, weights[i-1]);
+    }
+    this->myCurve = new Geom_BezierCurve (p, w);
+}
+
 GeomBezierCurve::~GeomBezierCurve()
 {
 }
@@ -628,10 +642,111 @@ Geometry *GeomBezierCurve::copy(void) const
     return newCurve;
 }
 
+std::vector<Base::Vector3d> GeomBezierCurve::getPoles() const
+{
+    std::vector<Base::Vector3d> poles;
+    poles.reserve(myCurve->NbPoles());
+    TColgp_Array1OfPnt p(1,myCurve->NbPoles());
+    myCurve->Poles(p);
+
+    for (Standard_Integer i=p.Lower(); i<=p.Upper(); i++) {
+        const gp_Pnt& pnt = p(i);
+        poles.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+    }
+    return poles;
+}
+
+std::vector<double> GeomBezierCurve::getWeights() const
+{
+    std::vector<double> weights;
+    weights.reserve(myCurve->NbPoles());
+    TColStd_Array1OfReal w(1,myCurve->NbPoles());
+    myCurve->Weights(w);
+
+    for (Standard_Integer i=w.Lower(); i<=w.Upper(); i++) {
+        const Standard_Real& real = w(i);
+        weights.push_back(real);
+    }
+    return weights;
+}
+
 // Persistence implementer
-unsigned int GeomBezierCurve::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
-void         GeomBezierCurve::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
-void         GeomBezierCurve::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
+unsigned int GeomBezierCurve::getMemSize (void) const
+{
+    return sizeof(Geom_BezierCurve);
+}
+
+void GeomBezierCurve::Save(Base::Writer& writer) const
+{
+    // save the attributes of the father class
+    GeomCurve::Save(writer);
+
+    std::vector<Base::Vector3d> poles   = this->getPoles();
+    std::vector<double> weights         = this->getWeights();
+
+    writer.Stream()
+         << writer.ind()
+             << "<BezierCurve "
+                << "PolesCount=\"" <<  poles.size() <<
+             "\">" << endl;
+
+    writer.incInd();
+
+    std::vector<Base::Vector3d>::const_iterator itp;
+    std::vector<double>::const_iterator itw;
+
+    for (itp = poles.begin(), itw = weights.begin(); itp != poles.end() && itw != weights.end(); ++itp, ++itw) {
+        writer.Stream()
+            << writer.ind()
+            << "<Pole "
+            << "X=\"" << (*itp).x <<
+            "\" Y=\"" << (*itp).y <<
+            "\" Z=\"" << (*itp).z <<
+            "\" Weight=\"" << (*itw) <<
+        "\"/>" << endl;
+    }
+
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</BezierCurve>" << endl ;
+}
+
+void GeomBezierCurve::Restore(Base::XMLReader& reader)
+{
+    // read the attributes of the father class
+    GeomCurve::Restore(reader);
+
+    reader.readElement("BezierCurve");
+    // get the value of my attribute
+    int polescount = reader.getAttributeAsInteger("PolesCount");
+
+    TColgp_Array1OfPnt p(1,polescount);
+    TColStd_Array1OfReal w(1,polescount);
+
+    for (int i = 1; i <= polescount; i++) {
+        reader.readElement("Pole");
+        double X = reader.getAttributeAsFloat("X");
+        double Y = reader.getAttributeAsFloat("Y");
+        double Z = reader.getAttributeAsFloat("Z");
+        double W = reader.getAttributeAsFloat("Weight");
+        p.SetValue(i, gp_Pnt(X,Y,Z));
+        w.SetValue(i, W);
+    }
+
+    reader.readEndElement("BezierCurve");
+
+    try {
+        Handle(Geom_BezierCurve) bezier = new Geom_BezierCurve(p, w);
+
+        if (!bezier.IsNull())
+            this->myCurve = bezier;
+        else
+            throw Base::RuntimeError("BezierCurve restore failed");
+    }
+    catch (Standard_Failure) {
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
+        throw Base::RuntimeError(e->GetMessageString());
+    }
+}
 
 PyObject *GeomBezierCurve::getPyObject(void)
 {
