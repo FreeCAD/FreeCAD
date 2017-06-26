@@ -479,7 +479,7 @@ def readResult(frd_input):
             if mode_networkpressure_found:
                 mode_networkpressure_found = False
 
-            if mode_disp and mode_stress and mode_temp:
+            if mode_disp and mode_stress and mode_strain and mode_temp:
                 mode_results = {}
                 mode_results['number'] = eigenmode
                 mode_results['disp'] = mode_disp
@@ -498,7 +498,7 @@ def readResult(frd_input):
                 mode_temp = {}
                 eigenmode = 0
 
-            if mode_disp and mode_stress:
+            if mode_disp and mode_stress and mode_strain:
                 mode_results = {}
                 mode_results['number'] = eigenmode
                 mode_results['disp'] = mode_disp
