@@ -48,11 +48,11 @@ MSG_LOOKUP = {
     "elmer_failed": "ElmerSolver failed with error code: ",
     "mesh_missing": "Mesh object missing.",
     "too_many_meshes": "Analysis contains more than one mesh (unsupported).",
+    "material_missing": "Material object missing.",
+    "too_many_materials": "Analysis contains more than one material (unsupported).",
     "unsupported_mesh": ("Unsupported type of mesh. Currently only Gmsh meshes"
         " are supported for ElmerSolver."),
-
-    "create_inp_failed": "Failed to create input files: {}",
-    "exec_solver_failed": "Solver execution failed with exit code: {}",
+    "unsupported_constraint": "Unsupported constraint {} of type {}.",
 }
 
 

@@ -61,6 +61,27 @@ _SOLVER_ERROR_TEXT = "Execution of ElmerSolver failed."
 _SOLVER_INFO_TITLE = "Info to ElmerSolver"
 _SOLVER_INFO_TEXT = None
 
+_SUPPORTED_CONSTRAINTS = [
+        ("Fem::ConstraintFixed",),
+        ("Fem::ConstraintForce",),
+        ("Fem::ConstraintDisplacement",),
+        ("Fem::ConstraintTemperature",),
+        ("Fem::ConstraintSelfWeight",),
+        ("Fem::ConstraintInitialTemperature",),
+        ("Fem::FeaturePython", "FemConstraintSelfWeight",),
+]
+
+_SPECIAL_MEMBERS = [
+        ("App::MaterialObjectPython",),
+        ("Fem::FemMeshObject",),
+        ("Fem::FemSolverObjectPython",),
+        ("Fem::FemMeshObjectPython",),
+        ("App::TextDocument",),
+        ("Fem::FemResultObjectPython",),
+        ("Fem::FemResultObject",),
+        ("Fem::FemMeshShapeNetgenObject",),
+]
+
 
 def runSimulation(analysis, solver, caseDir=None):
     report = Report.Data()
@@ -71,6 +92,10 @@ def runSimulation(analysis, solver, caseDir=None):
             caseDir = dirFromSettings(report)
     elmerBin, gridBin = getBinaries(report)
     checkAnalysis(analysis, solver, report)
+    if not report.isEmpty():
+        title = _INFO_TITLE if report.isValid() else _ERROR_TITLE
+        text = _INFO_TEXT if report.isValid() else _ERROR_TEXT
+        Report.display(report, title, text)
     if report.isValid():
         _wipeDir(caseDir)
         writer = FemInputWriterElmer.Writer(
@@ -79,10 +104,6 @@ def runSimulation(analysis, solver, caseDir=None):
         runner = SolverRunner(elmerBin, caseDir, analysis)
         runner.finished.connect(_finished)
         QtCore.QThreadPool.globalInstance().start(runner)
-    else:
-        title = _INFO_TITLE if report.isValid() else _ERROR_TITLE
-        text = _INFO_TEXT if report.isValid() else _ERROR_TEXT
-        Report.display(report, title, text)
     if _useTempDir():
         shutil.rmtree(caseDir)
 
@@ -128,6 +149,12 @@ def checkAnalysis(analysis, solver, report):
 
 
 def _checkAnalysisCommon(analysis, solver, report):
+    _checkMesh(analysis, solver, report)
+    _checkMaterial(analysis, solver, report)
+    _checkUnsupported(analysis, solver, report)
+
+
+def _checkMesh(analysis, solver, report):
     meshes = _getOfType(analysis, "Fem::FemMeshObject")
     if len(meshes) == 0:
         report.appendError("mesh_missing")
@@ -136,6 +163,36 @@ def _checkAnalysisCommon(analysis, solver, report):
     elif not (hasattr(meshes[0], "Proxy")
             and meshes[0].Proxy.Type == "FemMeshGmsh"):
         report.appendError("unsupported_mesh")
+
+
+def _checkMaterial(analysis, solver, report):
+    matObjs = _getOfType(analysis, "App::MaterialObjectPython")
+    if len(matObjs) == 0:
+        report.appendError("material_missing")
+    elif len(matObjs) > 1:
+        report.appendError("too_many_materials")
+
+
+def _checkUnsupported(analysis, solver, report):
+    for m in analysis.Member:
+        supported = False
+        for sm in _SPECIAL_MEMBERS:
+            if _isOfType(m, *sm):
+                supported = True
+        for sc in _SUPPORTED_CONSTRAINTS:
+            if _isOfType(m, *sc):
+                supported = True
+        if not supported:
+            report.appendInfo("unsupported_constraint", m.Label, m.TypeId)
+
+
+def _isOfType(obj, baseType, pyType=None):
+    if obj.TypeId == baseType:
+        if pyType is None:
+            return True
+        if hasattr(obj, "Proxy") and obj.Proxy.Type == pyType:
+            return True
+    return False
     
     
 def _getOfType(analysis, baseType, pyType=None):
