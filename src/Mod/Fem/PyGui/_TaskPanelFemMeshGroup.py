@@ -42,6 +42,7 @@ class _TaskPanelFemMeshGroup:
         self.selection_mode_solid = False
         self.selection_mode_std_print_message = "Select Faces, Edges and Vertices by single click on them to add them to the list."
         self.selection_mode_solid_print_message = "Select Solids by single click on a Face or Edge which belongs to the Solid, to add the Solid to the list."
+        self.obj_notvisible = []
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemMeshGroup.ui")
         QtCore.QObject.connect(self.form.rb_name, QtCore.SIGNAL("toggled(bool)"), self.choose_exportidentifier_name)
@@ -49,6 +50,7 @@ class _TaskPanelFemMeshGroup:
         QtCore.QObject.connect(self.form.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard)
         QtCore.QObject.connect(self.form.rb_solid, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_solid)
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
+        self.form.list_References.itemSelectionChanged.connect(self.select_clicked_reference_shape)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
 
@@ -56,6 +58,7 @@ class _TaskPanelFemMeshGroup:
         self.update()
 
     def accept(self):
+        self.setback_listobj_visibility()
         self.set_meshgroup_props()
         if self.sel_server:
             FreeCADGui.Selection.removeObserver(self.sel_server)
@@ -64,6 +67,7 @@ class _TaskPanelFemMeshGroup:
         return True
 
     def reject(self):
+        self.setback_listobj_visibility()
         if self.sel_server:
             FreeCADGui.Selection.removeObserver(self.sel_server)
         FreeCADGui.ActiveDocument.resetEdit()
@@ -131,6 +135,7 @@ class _TaskPanelFemMeshGroup:
         '''Called if Button add_reference is triggered'''
         # in constraints EditTaskPanel the selection is active as soon as the taskpanel is open
         # here the addReference button EditTaskPanel has to be triggered to start selection mode
+        self.setback_listobj_visibility()
         FreeCADGui.Selection.clearSelection()
         # start SelectionObserver and parse the function to add the References to the widget
         if self.selection_mode_solid:  # print message on button click
@@ -191,3 +196,29 @@ class _TaskPanelFemMeshGroup:
             items.append(item_name)
         for listItemName in sorted(items):
             self.form.list_References.addItem(listItemName)
+
+    def select_clicked_reference_shape(self):
+        self.setback_listobj_visibility()
+        if self.sel_server:
+            FreeCADGui.Selection.removeObserver(self.sel_server)
+            self.sel_server = None
+        if not self.sel_server:
+            if not self.references:
+                return
+            currentItemName = str(self.form.list_References.currentItem().text())
+            for ref in self.references:
+                refname_to_compare_listentry = ref[0].Name + ':' + ref[1]
+                if refname_to_compare_listentry == currentItemName:
+                    # print( 'found: shape: ' + ref[0].Name + ' element: ' + ref[1])
+                    if not ref[0].ViewObject.Visibility:
+                        self.obj_notvisible.append(ref[0])
+                        ref[0].ViewObject.Visibility = True
+                    FreeCADGui.Selection.clearSelection()
+                    FreeCADGui.Selection.addSelection(ref[0], ref[1])
+
+    def setback_listobj_visibility(self):
+        '''set back Visibility of the list objects
+        '''
+        for obj in self.obj_notvisible:
+            obj.ViewObject.Visibility = False
+        self.obj_notvisible = []
