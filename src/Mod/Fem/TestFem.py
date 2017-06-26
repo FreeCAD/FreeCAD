@@ -64,6 +64,7 @@ Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + '/' + Flow1D_t
 Flow1D_thermomech_analysis_inp_file = test_file_dir + '/' + Flow1D_thermomech_base_name + '.inp'
 Flow1D_thermomech_expected_values = test_file_dir + "/Flow1D_thermomech_expected_values"
 
+
 class FemTest(unittest.TestCase):
     def setUp(self):
         try:
@@ -441,7 +442,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         p26 = FreeCAD.Vector(15046.97, -2.4753465943661e-12, -11147.97)
         p27 = FreeCAD.Vector(15046.97, -1.75370162835975e-12, -7897.97)
         points = [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24, p25, p26, p27]
-        line = Draft.makeWire(points,closed=False,face=False,support=None)
+        line = Draft.makeWire(points, closed=False, face=False, support=None)
         fcc_print('Checking FEM new analysis...')
         analysis = ObjectsFem.makeAnalysis('Analysis')
         self.assertTrue(analysis, "FemTest of new analysis failed")
@@ -576,7 +577,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         PyObjects._FemElementFluid1D._FemElementFluid1D(Flow1d_gate_valve)
         Flow1d_gate_valve.SectionType = 'Liquid'
         Flow1d_gate_valve.LiquidSectionType = 'PIPE GATE VALVE'
-        Flow1d_gate_valve.GateValvePipeArea  = 17671
+        Flow1d_gate_valve.GateValvePipeArea = 17671
         Flow1d_gate_valve.GateValveClosingCoeff = 0.5
         Flow1d_gate_valve.References = [(line, "Edge10")]
         self.assertTrue(Flow1d_gate_valve, "FemTest of new Flow1D gate valve constraint failed")
