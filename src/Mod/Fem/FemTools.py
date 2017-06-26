@@ -389,7 +389,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                         message += "Value of ThermalConductivity is set to 0.0.\n"
                 else:
                     message += "Thermomechanical analysis: No ThermalConductivity defined for at least one material.\n"
-                if 'ThermalExpansionCoefficient' not in mat_map:
+                if 'ThermalExpansionCoefficient' not in mat_map and mat_obj.Category == 'Solid':
                     message += "Thermomechanical analysis: No ThermalExpansionCoefficient defined for at least one material.\n"  # allowed to be 0.0 (in ccx)
                 if 'SpecificHeat' not in mat_map:
                     message += "Thermomechanical analysis: No SpecificHeat defined for at least one material.\n"  # allowed to be 0.0 (in ccx)
