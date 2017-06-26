@@ -57,6 +57,11 @@ class FemGmshTools():
         # clmin, CharacteristicLengthMin: float
         self.clmin = Units.Quantity(self.mesh_obj.CharacteristicLengthMin).Value
 
+        # geotol, GeometryTolerance: float, 0.0 = 1e-08
+        self.geotol = Units.Quantity(self.mesh_obj.GeometryTolerance).Value
+        if self.geotol == 0.0:
+            self.geotol = 1e-08
+
         # order
         # known_element_orders = ['1st', '2nd']
         self.order = self.mesh_obj.ElementOrder
@@ -380,7 +385,13 @@ class FemGmshTools():
         geo.write("Mesh.Algorithm3D = " + self.algorithm3D + ";\n")
         geo.write("\n")
         geo.write("// meshing\n")
-        geo.write("Mesh  " + self.dimension + ";\n")
+        # remove duplicate vertices, see https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=20#p179443
+        if hasattr(self.mesh_obj, 'CoherenceMesh') and self.mesh_obj.CoherenceMesh is True:
+            geo.write("Geometry.Tolerance = " + str(self.geotol) + "; // set gemetrical tolerance (also used for merging nodes)\n")
+            geo.write("Mesh  " + self.dimension + ";\n")
+            geo.write("Coherence Mesh; // Remove duplicate vertices\n")
+        else:
+            geo.write("Mesh  " + self.dimension + ";\n")
         geo.write("\n")
         geo.write("// save\n")
         geo.write("Mesh.Format = 2;\n")  # unv
