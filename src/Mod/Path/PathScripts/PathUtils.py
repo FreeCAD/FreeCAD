@@ -24,15 +24,16 @@
 '''PathUtils -common functions used in PathScripts for filterig, sorting, and generating gcode toolpath data '''
 import FreeCAD
 import FreeCADGui
-import Part
 import math
-from DraftGeomUtils import geomType
-import PathScripts
-from PathScripts import PathJob
 import numpy
-from PathScripts import PathLog
-from FreeCAD import Vector
+import Part
 import Path
+import PathScripts
+
+from DraftGeomUtils import geomType
+from FreeCAD import Vector
+from PathScripts import PathJob
+from PathScripts import PathLog
 from PySide import QtCore
 from PySide import QtGui
 
@@ -455,13 +456,12 @@ def addToJob(obj, jobname=None):
         if len(jobs) == 1:
             job = jobs[0]
         else:
-            FreeCAD.Console.PrintError("Didn't find the job")
+            PathLog.error("Job %s does not exist" % jobname)
             return None
     else:
         jobs = GetJobs()
         if len(jobs) == 0:
             job = PathJob.CommandJob.Create()
-
         elif len(jobs) == 1:
             job = jobs[0]
         else:
@@ -735,15 +735,6 @@ def guessDepths(objshape, subs=None):
             final = fbb.ZMin
 
     return depth_params(clearance, safe, start, 1.0, 0.0, final, user_depths=None, equalstep=False)
-
-def drillTipLength(tool):
-    """returns the length of the drillbit tip.
-"""
-    if tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
-        return 0.0
-    else:
-        theta = math.radians(tool.CuttingEdgeAngle)
-        return (tool.Diameter/2) / math.tan(theta)
 
 
 class depth_params:
