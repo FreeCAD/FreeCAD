@@ -716,17 +716,17 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             analysis_type += ', SOLVER=ITERATIVE SCALING'
         elif self.solver_obj.MatrixSolverType == "iterativecholesky":
             analysis_type += ', SOLVER=ITERATIVE CHOLESKY'
-        # analysis line --> user defined incrementations --> parameter DIRECT
+        # analysis line --> user defined incrementations --> parameter DIRECT --> completely switch off ccx automatic incrementation
         if self.solver_obj.IterationsUserDefinedIncrementations:
-            if self.analysis_type == 'static':  # it would be possible in thermomech too IMHO (bernd)
+            if self.analysis_type == 'static':
                 analysis_type += ', DIRECT'
             elif self.analysis_type == 'thermomech':
-                print('IterationsUserDefinedIncrementations not implemented for thermomech at the moment')
+                analysis_type += ', DIRECT'
             elif self.analysis_type == 'frequency':
                 print('Analysis type frequency and IterationsUserDefinedIncrementations are not allowed together, it is ignored')
         # analysis line --> steadystate --> thermomech only
         if self.solver_obj.ThermoMechSteadyState:
-            if self.analysis_type == 'thermomech':
+            if self.analysis_type == 'thermomech':  # bernd: I do not know if STEADY STATE is allowed with DIRECT but since time steps are 1.0 it makes no sense IMHO
                 analysis_type += ', STEADY STATE'
                 self.solver_obj.TimeInitialStep = 1.0  # Set time to 1 and ignore user inputs for steady state
                 self.solver_obj.TimeEnd = 1.0
@@ -735,8 +735,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # ANALYSIS parameter line
         analysis_parameter = ''
         if self.analysis_type == 'static':
-            if self.solver_obj.IterationsUserDefinedIncrementations:
-                analysis_parameter = self.solver_obj.IterationsUserDefinedTimeStepLength
+            if self.solver_obj.IterationsUserDefinedIncrementations is True or self.solver_obj.IterationsUserDefinedTimeStepLength is True:
+                analysis_parameter = '{},{}'.format(self.solver_obj.TimeInitialStep, self.solver_obj.TimeEnd)
         elif self.analysis_type == 'frequency':
             if self.solver_obj.EigenmodeLowLimit == -1.0 and self.solver_obj.EigenmodeHighLimit == -1.0:
                 analysis_parameter = '{}\n'.format(self.solver_obj.EigenmodesCount)
