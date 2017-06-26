@@ -738,7 +738,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             if self.solver_obj.IterationsUserDefinedIncrementations is True or self.solver_obj.IterationsUserDefinedTimeStepLength is True:
                 analysis_parameter = '{},{}'.format(self.solver_obj.TimeInitialStep, self.solver_obj.TimeEnd)
         elif self.analysis_type == 'frequency':
-            if self.solver_obj.EigenmodeLowLimit == -1.0 and self.solver_obj.EigenmodeHighLimit == -1.0:
+            if self.solver_obj.EigenmodeLowLimit == 0.0 and self.solver_obj.EigenmodeHighLimit == 0.0:
                 analysis_parameter = '{}\n'.format(self.solver_obj.EigenmodesCount)
             else:
                 analysis_parameter = '{},{},{}\n'.format(self.solver_obj.EigenmodesCount, self.solver_obj.EigenmodeLowLimit, self.solver_obj.EigenmodeHighLimit)
