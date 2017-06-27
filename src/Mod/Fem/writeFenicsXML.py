@@ -31,7 +31,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 from importToolsFem import get_FemMeshObjectDimension, get_FemMeshObjectElementTypes, get_MaxDimElementFromList
-from lxml import etree  # parsing xml files and exporting
+from xml.etree import ElementTree as ET  # parsing xml files and exporting
 
 
 def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
@@ -64,17 +64,17 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
     cellname_fenics = FreeCAD_to_Fenics_dict[cellname_fc]
     print("Celltype in mesh -> %s and its Fenics name: %s" % (str(celltype_in_mesh), cellname_fenics))
 
-    root = etree.Element("dolfin", dolfin="http://fenicsproject.org")
-    meshchild = etree.SubElement(root, "mesh", celltype=cellname_fenics, dim=str(dim_cell))
-    vertices = etree.SubElement(meshchild, "vertices", size=str(fem_mesh_obj.FemMesh.NodeCount))
+    root = ET.Element("dolfin", dolfin="http://fenicsproject.org")
+    meshchild = ET.SubElement(root, "mesh", celltype=cellname_fenics, dim=str(dim_cell))
+    vertices = ET.SubElement(meshchild, "vertices", size=str(fem_mesh_obj.FemMesh.NodeCount))
 
     for (nodeind, fc_vec) in fem_mesh_obj.FemMesh.Nodes.iteritems():  # python2
-        etree.SubElement(
+        ET.SubElement(
             vertices, "vertex", index=str(nodeind - 1),
             # FC starts from 1, fenics starts from 0 to size-1
             x=str(fc_vec[0]), y=str(fc_vec[1]), z=str(fc_vec[2]))
 
-    cells = etree.SubElement(meshchild, "cells", size=str(num_cells))
+    cells = ET.SubElement(meshchild, "cells", size=str(num_cells))
     if dim_cell == 3:
         fc_cells = fem_mesh_obj.FemMesh.Volumes
     elif dim_cell == 2:
@@ -93,10 +93,12 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
             cell_args["v" + str(vi)] = str(ni - 1)
         # generate as many v entries in dict as nodes are listed in cell (works only for first order elements)
 
-        etree.SubElement(cells, cellname_fenics, index=str(fen_ind), **cell_args)
+        ET.SubElement(cells, cellname_fenics, index=str(fen_ind), **cell_args)
 
-    etree.SubElement(meshchild, "data")
+    ET.SubElement(meshchild, "data")
 
-    fp = open(outputfile, "w")  # TODO: what about pyopen?
-    fp.write(etree.tostring(root, pretty_print=True))
+    fp = open(outputfile, "w")  
+    fp.write(ET.tostring(root))
+    # xml core functionality does not support pretty printing
+    # so the output file looks quite ugly
     fp.close()
