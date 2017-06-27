@@ -41,7 +41,7 @@ class _CommandFemSolverElmer(FemCommands):
     def __init__(self):
         super(_CommandFemSolverElmer, self).__init__()
         self.resources = {
-                'Pixmap': 'fem-solver',
+                'Pixmap': 'fem-elmer',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP(
                     "Fem_SolverElmer", "Solver Elmer"),
                 'Accel': "S, E",

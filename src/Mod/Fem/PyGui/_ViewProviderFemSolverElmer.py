@@ -33,7 +33,7 @@ class _ViewProviderFemSolverElmer(object):
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/fem-solver.svg"
+        return ":/icons/fem-elmer.png"
 
     def attach(self, vobj):
         pass
