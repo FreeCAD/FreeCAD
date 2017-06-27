@@ -30,7 +30,7 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD Fenics Mesh XDMF writer for FEM workbench
 
 from importToolsFem import get_FemMeshObjectDimension, get_FemMeshObjectElementTypes, get_MaxDimElementFromList, get_FemMeshObjectOrder
-from lxml import etree  # parsing xml files and exporting
+from xml.etree import ElementTree as ET  # parsing xml files and exporting
 import numpy as np
 
 ENCODING_ASCII = 'ASCII'
@@ -83,7 +83,7 @@ def write_fenics_mesh_points_xdmf(fem_mesh_obj, geometrynode, encoding=ENCODING_
     recalc_nodes_ind_dict = {}
 
     if encoding == ENCODING_ASCII:
-        dataitem = etree.SubElement(geometrynode, "DataItem", Dimensions="%d %d" % (numnodes, 3), Format="XML")
+        dataitem = ET.SubElement(geometrynode, "DataItem", Dimensions="%d %d" % (numnodes, 3), Format="XML")
         nodes = []
         for (ind, (key, node)) in enumerate(fem_mesh_obj.FemMesh.Nodes.iteritems()):
             nodes.append(node)
@@ -133,7 +133,7 @@ def write_fenics_mesh_volumes_xdmf(fem_mesh_obj, topologynode, rd, encoding=ENCO
     # write nodeindices into dict to access them later
 
     if encoding == ENCODING_ASCII:
-        dataitem = etree.SubElement(topologynode, "DataItem", NumberType="UInt", Dimensions="%d %d" % (num_cells, nodes_per_element), Format="XML")
+        dataitem = ET.SubElement(topologynode, "DataItem", NumberType="UInt", Dimensions="%d %d" % (num_cells, nodes_per_element), Format="XML")
         dataitem.text = numpy_array_to_str(tuples_to_numpy(nodeindices))
     elif encoding == ENCODING_HDF5:
         pass
@@ -147,7 +147,7 @@ def write_fenics_mesh_cellfunctions(fem_mesh_obj, mycellvalues, attributenode, e
     (num_cells, name_cell, dim_cell) = get_MaxDimElementFromList(get_FemMeshObjectElementTypes(fem_mesh_obj))
 
     if encoding == ENCODING_ASCII:
-        dataitem = etree.SubElement(attributenode, "DataItem", Dimensions="%d %d" % (num_cells, 1), Format="XML")
+        dataitem = ET.SubElement(attributenode, "DataItem", Dimensions="%d %d" % (num_cells, 1), Format="XML")
         dataitem.text = numpy_array_to_str(np.random.random((num_cells, 1)))
     elif encoding == ENCODING_HDF5:
         pass
@@ -180,11 +180,11 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, encoding=ENCODING_ASCII):
     cellname_fenics = FreeCAD_to_Fenics_dict[cellname_fc]
     print("Celltype in mesh -> %s and its Fenics dolfin name: %s" % (str(celltype_in_mesh), cellname_fenics))
 
-    root = etree.Element("Xdmf", version="3.0")
-    domain = etree.SubElement(root, "Domain")
-    grid = etree.SubElement(domain, "Grid", Name="mesh", GridType="Uniform")
-    topology = etree.SubElement(grid, "Topology")
-    geometry = etree.SubElement(grid, "Geometry")
+    root = ET.Element("Xdmf", version="3.0")
+    domain = ET.SubElement(root, "Domain")
+    grid = ET.SubElement(domain, "Grid", Name="mesh", GridType="Uniform")
+    topology = ET.SubElement(grid, "Topology")
+    geometry = ET.SubElement(grid, "Geometry")
 
     # attribute = etree.SubElement(grid, "Attribute") #  for cell functions
 
@@ -196,5 +196,7 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, encoding=ENCODING_ASCII):
 
     fp = open(outputfile, "w")
     fp.write('''<?xml version="1.0"?>\n<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>\n''')
-    fp.write(etree.tostring(root, pretty_print=True))
+    fp.write(ET.tostring(root))
+    # xml core functionality does not support pretty printing
+    # so the output file looks quite ugly
     fp.close()
