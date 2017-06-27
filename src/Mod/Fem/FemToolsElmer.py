@@ -85,11 +85,12 @@ _SPECIAL_MEMBERS = [
 
 def runSimulation(analysis, solver, caseDir=None):
     report = Report.Data()
-    if caseDir is None:
-        if _useTempDir():
-            caseDir = tempfile.mkdtemp()
-        else:
-            caseDir = dirFromSettings(report)
+#    if caseDir is None:
+#        if _useTempDir():
+#            caseDir = tempfile.mkdtemp()
+#        else:
+#            caseDir = dirFromSettings(report)
+    caseDir = _getCaseDir(analysis, report)
     elmerBin, gridBin = getBinaries(report)
     checkAnalysis(analysis, solver, report)
     if not report.isEmpty():
@@ -104,8 +105,39 @@ def runSimulation(analysis, solver, caseDir=None):
         runner = SolverRunner(elmerBin, caseDir, analysis)
         runner.finished.connect(_finished)
         QtCore.QThreadPool.globalInstance().start(runner)
-    if _useTempDir():
-        shutil.rmtree(caseDir)
+#    if _useTempDir():
+#        shutil.rmtree(caseDir)
+
+def _getCaseDir(analysis, report):
+    fcstdPath = analysis.Document.FileName
+    if fcstdPath == "":
+        report.appendError("must_save")
+        return None
+    baseDir = os.path.splitext(fcstdPath)[0]
+    if not _tryCreate(baseDir, report):
+        return None
+    caseDir = os.path.join(baseDir, analysis.Label)
+    if not _tryCreate(caseDir, report):
+        return None
+    return caseDir
+
+
+def findCaseDir(analysis):
+    fcstdPath = analysis.Document.FileName
+    if fcstdPath == "":
+        return ""
+    baseDir = os.path.splitext(fcstdPath)[0]
+    return os.path.join(baseDir, analysis.Label)
+
+
+def _tryCreate(path, report):
+    if not os.path.exists(path):
+        try:
+            os.mkdir(path)
+        except OSError as e:
+            report.appendError("dir_not_created", path, e.strerror)
+            return False
+    return True
 
 
 def dirFromSettings(report):
