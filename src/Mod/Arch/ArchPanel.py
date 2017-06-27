@@ -35,7 +35,7 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-    
+
 ## @package ArchPanel
 #  \ingroup ARCH
 #  \brief The Panel object and tools
@@ -370,7 +370,7 @@ class _Panel(ArchComponent.Component):
 
     def execute(self,obj):
         "creates the panel shape"
-        
+
         if self.clone(obj):
             return
 
@@ -520,11 +520,11 @@ class _Panel(ArchComponent.Component):
                 base = Part.makePolygon([v1,v2,v3,v4,v1])
                 baseprofile = Part.Face(base)
                 base = baseprofile.extrude(normal)
-            
+
         if hasattr(obj,"Area"):
             if baseprofile:
                 obj.Area = baseprofile.Area
-            
+
         if hasattr(obj,"WaveLength"):
             if baseprofile and obj.WaveLength.Value and obj.WaveHeight.Value:
                 # corrugated element
@@ -734,9 +734,11 @@ class PanelCut(Draft._DraftObject):
         obj.addProperty("App::PropertyVector","TagPosition","Arch",QT_TRANSLATE_NOOP("App::Property","The position of the tag text. Keep (0,0,0) for automatic center position"))
         obj.addProperty("App::PropertyAngle","TagRotation","Arch",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
         obj.addProperty("App::PropertyFile","FontFile","Arch",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
+        obj.addProperty("App::PropertyBool","MakeFace","Arch",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
         obj.Proxy = self
         self.Type = "PanelCut"
         obj.TagText = "%tag%"
+        obj.MakeFace = False
         obj.TagSize = 10
         obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile","")
 
@@ -770,9 +772,9 @@ class PanelCut(Draft._DraftObject):
                                 s = sol.section(plane)
                                 wires.extend(DraftGeomUtils.findWires(s.Edges))
                             if wires:
-                                base = Part.makeCompound(wires)
+                                base = self.buildCut(obj,wires)
                         else:
-                            base = Part.makeCompound(baseobj.Shape.Wires)
+                            base = self.buildCut(obj,baseobj.Shape.Wires)
                             for w in base.Wires:
                                 n = DraftGeomUtils.getNormal(w)
                                 if n:
@@ -820,6 +822,32 @@ class PanelCut(Draft._DraftObject):
                         base = Part.Compound([base])
                     obj.Shape = base
                     obj.Placement = pl
+
+    def buildCut(self,obj,wires):
+
+        """buildCut(obj,wires): builds the object shape"""
+        import Part
+        if hasattr(obj,"MakeFace"):
+            if obj.MakeFace:
+                face = None
+                if len(wires) > 1:
+                    d = 0
+                    ow = None
+                    for w in wires:
+                        if w.BoundBox.DiagonalLength > d:
+                            d = w.BoundBox.DiagonalLength
+                            ow = w
+                    if ow:
+                        face = Part.Face(ow)
+                        for w in wires:
+                            if w.hashCode() != ow.hashCode():
+                                wface = Part.Face(w)
+                                face = face.cut(wface)
+                else:
+                    face = Part.Face(wires[0])
+                if face:
+                    return face
+        return Part.makeCompound(wires)
 
     def getWires(self, obj):
 
@@ -938,11 +966,13 @@ class PanelSheet(Draft._DraftObject):
         obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of the sheet"))
         obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of the sheet"))
         obj.addProperty("App::PropertyPercent","FillRatio","Arch",QT_TRANSLATE_NOOP("App::Property","The fill ratio of this sheet"))
+        obj.addProperty("App::PropertyBool","MakeFace","Arch",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
         obj.Proxy = self
         self.Type = "PanelSheet"
         obj.TagSize = 10
         obj.Width = 1000
         obj.Height = 1000
+        obj.MakeFace = False
         obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile","")
         obj.setEditorMode("FillRatio",2)
 
@@ -959,6 +989,9 @@ class PanelSheet(Draft._DraftObject):
             v3 = Vector(l2,w2,0)
             v4 = Vector(-l2,w2,0)
             base = Part.makePolygon([v1,v2,v3,v4,v1])
+            if hasattr(obj,"MakeFace"):
+                if obj.MakeFace:
+                    base = Part.Face(base)
             self.sheetborder = base
             wires = []
             area = obj.Width.Value * obj.Height.Value
