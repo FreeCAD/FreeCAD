@@ -23,13 +23,19 @@
 # ***************************************************************************
 ''' Tool Controller defines tool, spindle speed and feed rates for Path Operations '''
 
+import sys
 import FreeCAD
 import FreeCADGui
 import Part
 import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
-from . import PathUtils
+if sys.version_info < (3, 0):
+    import PathUtils  # This doesn't work in python3, but as this import introduce a circular import
+                      # there is no alternitive.
+else:
+    from . import PathUtils
+
 import xml.etree.ElementTree as xml
 
 from FreeCAD import Units
