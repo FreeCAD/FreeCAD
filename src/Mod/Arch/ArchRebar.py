@@ -284,6 +284,7 @@ class _Rebar(ArchComponent.Component):
             if not DraftVecUtils.isNull(obj.Direction):
                 axis = FreeCAD.Vector(obj.Direction)
                 axis.normalize()
+                size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
         if hasattr(obj,"Distance"):
             if obj.Distance.Value:
                 size = obj.Distance.Value
