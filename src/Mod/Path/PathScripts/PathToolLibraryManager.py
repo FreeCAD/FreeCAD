@@ -485,9 +485,9 @@ class EditorPanel():
         "imports a tooltable from a file"
         filename = QtGui.QFileDialog.getOpenFileName(self.form, translate( "TooltableEditor", "Open tooltable", None), None, translate("TooltableEditor", "Tooltable XML (*.xml);;HeeksCAD tooltable (*.tooltable)", None))
         if filename[0]:
-            listname = self.form.listView.selectedIndexes()[0].data()
+            listname = '<Main>'
             if self.TLM.read(filename, listname):
-                self.loadTable(self.form.listView.selectedIndexes()[0])
+                self.loadTable()
 
 
     def exportFile(self):
