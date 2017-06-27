@@ -251,12 +251,17 @@ class Writer(object):
                 m["ThermalConductivity"], "W/m/K")
         s["Heat expansion Coefficient"] = self._getInUnit(
                 m["ThermalExpansionCoefficient"], "m/m/K")
+        if self.solver.AnalysisType == FemDefsElmer.THERMOMECH:
+            tempObj = self._getFirstOfType("Fem::ConstraintInitialTemperature")
+            if tempObj is not None:
+                s["Reference Temperature"] = tempObj.initialTemperature
         return s
 
     def _getSolvers(self):
-        sections = [self._getElasticitySolver()]
+        sections = []
         if self.solver.AnalysisType == FemDefsElmer.THERMOMECH:
             sections.append(self._getTermoSolver())
+        sections.append(self._getElasticitySolver())
         return sections
 
     def _getElasticitySolver(self):
