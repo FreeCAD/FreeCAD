@@ -3730,8 +3730,12 @@ class _ViewProviderDraft:
                     s = 1
                     if vobj.PatternSize:
                         s = vobj.PatternSize
-                    self.texcoords.directionS.setValue(s,0,0)
-                    self.texcoords.directionT.setValue(0,s,0)
+                    vS = FreeCAD.Vector(self.texcoords.directionS.getValue().getValue())
+                    vT = FreeCAD.Vector(self.texcoords.directionT.getValue().getValue())
+                    vS.Length = s
+                    vT.Length = s
+                    self.texcoords.directionS.setValue(vS.x,vS.y,vS.z)
+                    self.texcoords.directionT.setValue(vT.x,vT.y,vT.z)
         return
 
     def execute(self,vobj):

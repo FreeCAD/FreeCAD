@@ -967,11 +967,13 @@ class PanelSheet(Draft._DraftObject):
         obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of the sheet"))
         obj.addProperty("App::PropertyPercent","FillRatio","Arch",QT_TRANSLATE_NOOP("App::Property","The fill ratio of this sheet"))
         obj.addProperty("App::PropertyBool","MakeFace","Arch",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
+        obj.addProperty("App::PropertyAngle","GrainDirection","Arch",QT_TRANSLATE_NOOP("App::Property","Specifies an angle for the wood grain (Clockwise, 0 is North)"))
         obj.Proxy = self
         self.Type = "PanelSheet"
         obj.TagSize = 10
-        obj.Width = 1000
-        obj.Height = 1000
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        obj.Width = p.GetFloat("PanelLength",1000)
+        obj.Height = p.GetFloat("PanelWidth",1000)
         obj.MakeFace = False
         obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile","")
         obj.setEditorMode("FillRatio",2)
@@ -1097,7 +1099,8 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
         Draft._ViewProviderDraft.__init__(self,vobj)
         vobj.addProperty("App::PropertyLength","Margin","Arch",QT_TRANSLATE_NOOP("App::Property","A margin inside the boundary"))
         vobj.addProperty("App::PropertyBool","ShowMargin","Arch",QT_TRANSLATE_NOOP("App::Property","Turns the display of the margin on/off"))
-
+        vobj.addProperty("App::PropertyBool","ShowGrain","Arch",QT_TRANSLATE_NOOP("App::Property","Turns the display of the wood grain texture on/off"))
+        vobj.PatternSize = 0.0035
 
     def getIcon(self):
         return ":/icons/Draft_Drawing.svg"
@@ -1156,11 +1159,26 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
             if hasattr(vobj,"LineColor"):
                 c = vobj.LineColor
                 self.color.rgb.setValue(c[0],c[1],c[2])
+        elif prop == "ShowGrain":
+            if hasattr(vobj,"ShowGrain"):
+                if vobj.ShowGrain:
+                    vobj.Pattern = "woodgrain"
+                else:
+                    vobj.Pattern = "None"
         Draft._ViewProviderDraft.onChanged(self,vobj,prop)
+    
 
     def updateData(self,obj,prop):
         if prop in ["Width","Height"]:
             self.onChanged(obj.ViewObject,"Margin")
+        elif prop == "GrainDirection":
+            if hasattr(self,"texcoords"):
+                if self.texcoords:
+                    s = FreeCAD.Vector(self.texcoords.directionS.getValue().getValue()).Length
+                    vS  = DraftVecUtils.rotate(FreeCAD.Vector(s,0,0),-math.radians(obj.GrainDirection.Value))
+                    vT  = DraftVecUtils.rotate(FreeCAD.Vector(0,s,0),-math.radians(obj.GrainDirection.Value))
+                    self.texcoords.directionS.setValue(vS.x,vS.y,vS.z)
+                    self.texcoords.directionT.setValue(vT.x,vT.y,vT.z)
         Draft._ViewProviderDraft.updateData(self,obj,prop)
 
 
