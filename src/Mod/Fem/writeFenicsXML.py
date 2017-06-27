@@ -97,7 +97,7 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
 
     ET.SubElement(meshchild, "data")
 
-    fp = open(outputfile, "w")  
+    fp = open(outputfile, "w")
     fp.write(ET.tostring(root))
     # xml core functionality does not support pretty printing
     # so the output file looks quite ugly
