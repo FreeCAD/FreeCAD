@@ -250,8 +250,9 @@ class CommandPathPost:
             PathLog.debug("obj: {}".format(obj.Name))
             if not isinstance(obj.Proxy, PathToolController.ToolController):
                 tc = PathUtil.toolControllerForOp(obj)
-                if tc.ToolNumber != currTool:
-                    postlist.append(tc)
+                if tc is not None:
+                    if tc.ToolNumber != currTool:
+                        postlist.append(tc)
                 postlist.append(obj)
 
         fail = True
