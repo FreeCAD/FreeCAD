@@ -647,7 +647,7 @@ class DraftToolBar:
         self.autoGroupButton = self._pushbutton("autoGroup",self.bottomtray,icon="Draft_AutoGroup_off",hide=False,width=120)
         self.autoGroupButton.setText("None")
         
-        self.wplabel.setToolTip(translate("draft", "Current working plane:")+self.wplabel.text())
+        self.wplabel.setToolTip(translate("draft", "Current working plane:",utf8_decode=True)+self.wplabel.text())
         self.constrButton.setToolTip(translate("draft", "Toggle construction mode"))
         self.colorButton.setToolTip(translate("draft", "Curreont line color"))
         self.facecolorButton.setToolTip(translate("draft", "Current face color"))
