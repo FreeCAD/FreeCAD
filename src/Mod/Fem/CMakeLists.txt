@@ -101,6 +101,7 @@ INSTALL(
         PyGui/_CommandFemSolverCalculix.py
         PyGui/_CommandFemSolverControl.py
         PyGui/_CommandFemSolverElmer.py
+	PyGui/_CommandFemOpenParaview.py
         PyGui/_CommandFemSolverRun.py
         PyGui/_CommandFemSolverZ88.py
         PyGui/_TaskPanelFemElementFluid1D.py

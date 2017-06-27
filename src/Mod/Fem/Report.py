@@ -55,6 +55,8 @@ MSG_LOOKUP = {
     "unsupported_mesh": ("Unsupported type of mesh. Currently only Gmsh meshes"
         " are supported for ElmerSolver."),
     "unsupported_constraint": "Unsupported constraint {} of type {}.",
+    "solve_first": ("Couldn't locate result file. "
+        "Either the label of the analysis changed or it wasn't solved jet.")
 }
 
 

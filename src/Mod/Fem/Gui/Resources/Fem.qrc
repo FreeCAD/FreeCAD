@@ -3,6 +3,7 @@
         <file>icons/FemWorkbench.svg</file>
         <file>icons/preferences-fem.svg</file>
 
+        <file>icons/fem-paraview.png</file>
         <file>icons/fem-add-fem-mesh.svg</file>
         <file>icons/fem-add-material.svg</file>
         <file>icons/fem-add-part.svg</file>
