@@ -29,7 +29,7 @@ import Part
 import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
-import PathUtils
+#from . import PathUtils
 import xml.etree.ElementTree as xml
 
 from FreeCAD import Units
@@ -136,7 +136,7 @@ class ToolController:
 
 
         if 'Restore' not in obj.State:
-            job = PathUtils.findParentJob(obj)
+            job = PathScripts.PathUtils.findParentJob(obj)
             if job is not None:
                 for g in job.Group:
                     if not(isinstance(g.Proxy, PathScripts.PathToolController.ToolController)):
@@ -248,7 +248,7 @@ class CommandPathToolController:
             tool.Material = "HighSpeedSteel"
         obj.Tool = tool
         obj.ToolNumber = toolNumber
-        PathUtils.addToJob(obj, jobname)
+        PathScripts.PathUtils.addToJob(obj, jobname)
 
     @staticmethod
     def FromTemplate(job, template, assignViewProvider=True):
@@ -261,7 +261,7 @@ class CommandPathToolController:
 
         tc.assignTemplate(obj, template)
 
-        PathUtils.addToJob(obj, job.Name)
+        PathScripts.PathUtils.addToJob(obj, job.Name)
 
 
 class TaskPanel:
