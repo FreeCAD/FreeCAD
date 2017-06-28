@@ -29,7 +29,7 @@ import Part
 import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
-from . import PathUtils
+import PathUtils
 import xml.etree.ElementTree as xml
 
 from FreeCAD import Units
