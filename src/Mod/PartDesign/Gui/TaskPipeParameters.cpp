@@ -727,7 +727,8 @@ bool TaskDlgPipeParameters::accept()
     bool ext = false;
     if(!pcActiveBody->hasObject(pcPipe->Spine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->Spine.getValue()))
         ext = true;
-    else if(!pcActiveBody->hasObject(pcPipe->AuxillerySpine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->AuxillerySpine.getValue()))
+    else if(pcPipe->AuxillerySpine.getValue() && !pcActiveBody->hasObject(pcPipe->AuxillerySpine.getValue()) && 
+            !pcActiveBody->getOrigin()->hasObject(pcPipe->AuxillerySpine.getValue()))
             ext = true;
     else {
         for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
