@@ -1266,7 +1266,7 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Additive loft");
-    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles");
+    sToolTipText  = QT_TR_NOOP("Loft a selected sketch through other profile sections");
     sWhatsThis    = "PartDesign_Additive_Loft";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Additive_Loft";
@@ -1316,7 +1316,7 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Subtractive loft");
-    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles and remove it from the body");
+    sToolTipText  = QT_TR_NOOP("Loft a selected sketch through other profile sections and remove it from the body");
     sWhatsThis    = "PartDesign_Subtractive_Loft";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Subtractive_Loft";
