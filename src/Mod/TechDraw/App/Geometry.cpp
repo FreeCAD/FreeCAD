@@ -42,12 +42,15 @@
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
+#include <GeomAPI_PointsToBSpline.hxx>
 #include <Poly_Polygon3D.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
+#include <TColgp_Array1OfPnt.hxx>
+
 #include <cmath>
 #endif  // #ifndef _PreComp_
 
@@ -429,64 +432,52 @@ BSpline::BSpline(const TopoDS_Edge &e)
     geomType = BSPLINE;
     BRepAdaptor_Curve c(e);
     occEdge = e;
-    Handle(Geom_BSplineCurve) spline = c.BSpline();
-    bool fail = false;
+    Handle(Geom_BSplineCurve) spline;
     double f,l;
-    gp_Pnt s,m,ePt;
+    gp_Pnt s,ePt;
 
-    if (spline->Degree() > 3 || spline->IsRational()) {                //if spline is too complex, approximate it
-        Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen can't resolve this
-        Standard_Integer maxDegree = 3, maxSegment = 100;
-        Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
-        // approximate the curve using a tolerance
-        //Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C2, maxSegment, maxDegree);   //gives degree == 5  ==> too many poles ==> buffer overrun
-        Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
-        if (approx.IsDone() && approx.HasResult()) {
+    Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen can't resolve this
+    Standard_Integer maxDegree = 3, maxSegment = 100;
+    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
+    // approximate the curve using a tolerance
+    //Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C2, maxSegment, maxDegree);   //gives degree == 5  ==> too many poles ==> buffer overrun
+    Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
+    if (approx.IsDone() && approx.HasResult()) {
+        spline = approx.Curve();
+    } else {
+        if (approx.HasResult()) {                   //result, but not within tolerance
             spline = approx.Curve();
+            Base::Console().Log("Geometry::BSpline - result not within tolerance\n");
         } else {
-            if (approx.HasResult()) {                   //result, but not within tolerance
-                spline = approx.Curve();
-                Base::Console().Log("Geometry::BSpline - result not within tolerance\n");
-            } else {
-                fail = true;
-                f = c.FirstParameter();
-                l = c.LastParameter();
-                s = c.Value(f);
-                m = c.Value((l+f)/2.0);
-                ePt = c.Value(l);
-                Base::Console().Log("Error - Geometry::BSpline - no result- from:(%.3f,%.3f) to:(%.3f,%.3f) poles: %d\n",
-                                     s.X(),s.Y(),ePt.X(),ePt.Y(),spline->NbPoles());
-                throw Base::Exception("Geometry::BSpline - could not approximate curve");
-            }
+            f = c.FirstParameter();
+            l = c.LastParameter();
+            s = c.Value(f);
+            ePt = c.Value(l);
+            Base::Console().Log("Error - Geometry::BSpline - no result- from:(%.3f,%.3f) to:(%.3f,%.3f) poles: %d\n",
+                                 s.X(),s.Y(),ePt.X(),ePt.Y(),spline->NbPoles());
+            TColgp_Array1OfPnt controlPoints(0,1);
+            controlPoints.SetValue(0,s);
+            controlPoints.SetValue(1,ePt);
+            spline = GeomAPI_PointsToBSpline(controlPoints,1).Curve();
         }
     }
 
     GeomConvert_BSplineCurveToBezierCurve crt(spline);
 
     gp_Pnt controlPoint;
-    if (fail) {
+    for (Standard_Integer i = 1; i <= crt.NbArcs(); ++i) {
         BezierSegment tempSegment;
-        tempSegment.poles = 3;
-        tempSegment.degree = 2;
-        tempSegment.pnts.push_back(Base::Vector2d(s.X(),s.Y()));
-        tempSegment.pnts.push_back(Base::Vector2d(m.X(),m.Y()));
-        tempSegment.pnts.push_back(Base::Vector2d(ePt.X(),ePt.Y()));
-        segments.push_back(tempSegment);
-    } else {
-        for (Standard_Integer i = 1; i <= crt.NbArcs(); ++i) {
-            BezierSegment tempSegment;
-            Handle(Geom_BezierCurve) bezier = crt.Arc(i);
-            if (bezier->Degree() > 3) {
-                Base::Console().Log("Geometry::BSpline - converted curve degree > 3\n");
-            }
-            tempSegment.poles = bezier->NbPoles();
-            tempSegment.degree = bezier->Degree();
-            for (int pole = 1; pole <= tempSegment.poles; ++pole) {
-                controlPoint = bezier->Pole(pole);
-                tempSegment.pnts.push_back(Base::Vector2d(controlPoint.X(), controlPoint.Y()));
-            }
-            segments.push_back(tempSegment);
+        Handle(Geom_BezierCurve) bezier = crt.Arc(i);
+        if (bezier->Degree() > 3) {
+            Base::Console().Log("Geometry::BSpline - converted curve degree > 3\n");
         }
+        tempSegment.poles = bezier->NbPoles();
+        tempSegment.degree = bezier->Degree();
+        for (int pole = 1; pole <= tempSegment.poles; ++pole) {
+            controlPoint = bezier->Pole(pole);
+            tempSegment.pnts.push_back(Base::Vector2d(controlPoint.X(), controlPoint.Y()));
+        }
+        segments.push_back(tempSegment);
     }
 }
 
