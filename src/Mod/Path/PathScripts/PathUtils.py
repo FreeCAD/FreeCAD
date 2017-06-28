@@ -699,6 +699,37 @@ def sort_jobs(locations, keys, attractors=[]):
 
     return out
 
+def guessDepths(objshape, subs=None):
+    """
+    takes an object shape and optional list of subobjects and returns a depth_params
+    object with suggested height/depth values.
+
+    objshape = Part::Shape.
+    subs = list of subobjects from objshape
+    """
+
+    bb = objshape.BoundBox  # parent boundbox
+    clearance = bb.ZMax + 5.0
+    safe = bb.ZMax
+    start = bb.ZMax
+    final = bb.ZMin
+
+    if subs is not None:
+        subobj = Part.makeCompound(subs)
+        fbb = subobj.BoundBox  # feature boundbox
+        start = fbb.ZMax
+
+        if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
+            final = fbb.ZMin
+        elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
+            final = fbb.ZMin
+        elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
+            final = fbb.ZMin
+        elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
+            final = fbb.ZMin
+
+    return depth_params(clearance, safe, start, 1.0, 0.0, final, user_depths=None, equalstep=False)
+
 
 class depth_params:
     '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters

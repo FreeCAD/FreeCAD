@@ -95,8 +95,8 @@ class ObjectFace:
         obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
 
         # Debug Parameters
-        obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
-        obj.setEditorMode('AreaParams', 2)  # hide
+        # obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        # obj.setEditorMode('AreaParams', 2)  # hide
 
         if FreeCAD.GuiUp:
             _ViewProviderFace(obj.ViewObject)
@@ -126,10 +126,11 @@ class ObjectFace:
             return
 
         d = PathUtils.guessDepths(baseobject.Shape, None)
-        obj.StartDepth = d.start_depth
         obj.ClearanceHeight = d.clearance_height
-        obj.FinalDepth = d.start_depth - 1.0
-        obj.SafeHeight = d.safe_height
+        obj.SafeHeight = d.safe_height + 1
+        obj.StartDepth = d.safe_height
+        obj.FinalDepth = d.start_depth
+        obj.StepDown = obj.StartDepth.Value-obj.FinalDepth.Value
 
     def addFacebase(self, obj, ss, sub=""):
         baselist = obj.Base
@@ -138,15 +139,17 @@ class ObjectFace:
         if len(baselist) == 0:  # When adding the first base object, guess at heights
             subshape = [ss.Shape.getElement(sub)]
             d = PathUtils.guessDepths(ss.Shape, subshape)
-            obj.StartDepth = d.start_depth
             obj.ClearanceHeight =d.clearance_height
+            obj.SafeHeight = d.safe_height +1
+            obj.StartDepth = d.safe_height
             obj.FinalDepth = d.final_depth
-            obj.SafeHeight = d.safe_height
+            obj.StepDown = obj.StartDepth.Value-obj.FinalDepth.Value
 
         item = (ss, sub)
         if item in baselist:
             FreeCAD.Console.PrintWarning(translate("Path", "this object already in the list" + "\n"))
         elif PathUtils.findParentJob(obj).Base.Name != ss.Name:
+            PathLog.debug("parentbase: {}, selectionobj: {}".format(PathUtils.findParentJob(obj).Base.Name, ss.Name))
             FreeCAD.Console.PrintWarning(translate("Path", "Please select features from the Job model object" + "\n"))
         else:
             baselist.append(item)
@@ -194,8 +197,8 @@ class ObjectFace:
 
         heights = [i for i in self.depthparams]
         boundary.setParams(**pocketparams)
-        obj.AreaParams = str(boundary.getParams())
-        PathLog.track('areaparams: {}'.format(obj.AreaParams))
+        #obj.AreaParams = str(boundary.getParams())
+        #PathLog.track('areaparams: {}'.format(obj.AreaParams))
         PathLog.track('height: {}'.format(heights))
         sections = boundary.makeSections(mode=0, project=False, heights=heights)
         shapelist = [sec.getShape() for sec in sections]
@@ -365,7 +368,7 @@ class CommandPathMillFace:
 
         FreeCADGui.doCommand('obj.Active = True')
         FreeCADGui.doCommand('obj.StepOver = 50')
-        FreeCADGui.doCommand('obj.StepDown = 1.0')
+        #FreeCADGui.doCommand('obj.StepDown = 1.0')
         FreeCADGui.doCommand('obj.ZigZagAngle = 45.0')
         FreeCAD.ActiveDocument.commitTransaction()
 
