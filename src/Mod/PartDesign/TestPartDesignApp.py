@@ -503,14 +503,14 @@ class PartDesignLoftTestCases(unittest.TestCase):
         self.LoftSketch.MapMode = 'FlatFace'
         self.LoftSketch.Support = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
-        TestSketcherApp.CreateRectangleSketch(self.LoftSketch, (0, 0), (1, 1))
+        TestSketcherApp.CreateRectangleSketch(self.LoftSketch, (0, 1), (1, 1))
         self.Doc.recompute()
         self.AdditiveLoft = self.Doc.addObject("PartDesign::AdditiveLoft","AdditiveLoft")
         self.Body.addObject(self.AdditiveLoft)
         self.AdditiveLoft.Profile = self.ProfileSketch
         self.AdditiveLoft.Sections = [self.LoftSketch]
         self.Doc.recompute()
-        self.assertAlmostEqual(self.AdditiveLoft.Shape.Volume, 0.5)
+        self.assertAlmostEqual(self.AdditiveLoft.Shape.Volume, 1)
 
     def testSimpleSubtractiveLoftCase(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -521,7 +521,7 @@ class PartDesignLoftTestCases(unittest.TestCase):
         self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
         self.Body.addObject(self.Pad)
         self.Pad.Profile = self.PadSketch
-        self.Pad.Length = 1
+        self.Pad.Length = 2
         self.Doc.recompute()
         self.ProfileSketch = self.Doc.addObject('Sketcher::SketchObject', 'ProfileSketch')
         self.Body.addObject(self.ProfileSketch)
@@ -532,18 +532,18 @@ class PartDesignLoftTestCases(unittest.TestCase):
         self.LoftSketch.MapMode = 'FlatFace'
         self.LoftSketch.Support = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
-        TestSketcherApp.CreateRectangleSketch(self.LoftSketch, (0, 0), (1, 1))
+        TestSketcherApp.CreateRectangleSketch(self.LoftSketch, (0, 1), (1, 1))
         self.Doc.recompute()
         self.SubtractiveLoft = self.Doc.addObject("PartDesign::SubtractiveLoft","SubtractiveLoft")
         self.Body.addObject(self.SubtractiveLoft)
         self.SubtractiveLoft.Profile = self.ProfileSketch
         self.SubtractiveLoft.Sections = [self.LoftSketch]
         self.Doc.recompute()
-        self.assertAlmostEqual(self.SubtractiveLoft.Shape.Volume, 0.5)
+        self.assertAlmostEqual(self.SubtractiveLoft.Shape.Volume, 1)
 
 
     def tearDown(self):
         #closing doc
-        #FreeCAD.closeDocument("PartDesignTestLoft")
-        print ("omit closing document for debugging")
+        FreeCAD.closeDocument("PartDesignTestLoft")
+        #print ("omit closing document for debugging")
 
