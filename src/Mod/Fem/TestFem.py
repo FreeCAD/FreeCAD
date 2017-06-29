@@ -590,7 +590,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         Flow1d_enlargement1.SectionType = 'Liquid'
         Flow1d_enlargement1.LiquidSectionType = 'PIPE ENLARGEMENT'
         Flow1d_enlargement1.EnlargeArea1 = 17671
-        Flow1d_enlargement1.EnlargeArea2 = 1000000000000
+        Flow1d_enlargement1.EnlargeArea2 = 1e12
         Flow1d_enlargement1.References = [(line, "Edge12")]
         self.assertTrue(Flow1d_enlargement1, "FemTest of new Flow1D enlargement constraint failed")
         analysis.Member = analysis.Member + [Flow1d_enlargement1]
