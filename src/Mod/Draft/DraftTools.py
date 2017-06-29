@@ -262,7 +262,11 @@ class DraftTool:
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.off()
         if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
+            try:
+                self.view.removeEventCallback("SoEvent",self.call)
+            except RuntimeError:
+                # the view has been deleted already
+                pass
             self.call = None
         if self.commitList:
             todo.delayCommit(self.commitList)
@@ -492,8 +496,13 @@ class Line(Creator):
         "terminates the operation and closes the poly if asked"
         if self.obj:
             # remove temporary object, if any
-            old = self.obj.Name
-            todo.delay(self.doc.removeObject,old)
+            try:
+                old = self.obj.Name
+            except ReferenceError:
+                # object already deleted, for some reason
+                pass
+            else:
+                todo.delay(self.doc.removeObject,old)
         self.obj = None
         if self.oldWP:
             FreeCAD.DraftWorkingPlane = self.oldWP

@@ -251,13 +251,17 @@ class DraftTaskPanel:
         if hasattr(FreeCADGui,"draftToolBar"):
             return FreeCADGui.draftToolBar.validatePoint()
         else:
-            FreeCADGui.ActiveDocument.resetEdit()
+            if FreeCADGui.ActiveDocument:
+                FreeCADGui.ActiveDocument.resetEdit()
             return True
     def reject(self):
         FreeCADGui.draftToolBar.isTaskOn = False
         FreeCADGui.draftToolBar.escape()
-        FreeCADGui.ActiveDocument.resetEdit()
+        if FreeCADGui.ActiveDocument:
+            FreeCADGui.ActiveDocument.resetEdit()
         return True
+    def isAllowedAlterDocument(self):
+        return False
 
 class DraftToolBar:
     "main draft Toolbar"
@@ -806,6 +810,8 @@ class DraftToolBar:
                     FreeCADGui.draftToolBar.escape()
                     FreeCADGui.ActiveDocument.resetEdit()
                     return True
+                def isAllowedAlterDocument(self):
+                    return False
             if FreeCADGui.Control.activeDialog():
                 FreeCADGui.Control.closeDialog()
             todo.delay(FreeCADGui.Control.showDialog,dummy(extra))
@@ -1438,7 +1444,8 @@ class DraftToolBar:
         if self.cancel:
             self.cancel()
             self.cancel = None
-        FreeCADGui.ActiveDocument.resetEdit()
+        if FreeCADGui.ActiveDocument:
+            FreeCADGui.ActiveDocument.resetEdit()
 
     def escape(self):
         "escapes the current command"
