@@ -97,6 +97,34 @@ class FemTest(unittest.TestCase):
         expected = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
         self.assertEqual(newmesh.getElementNodes(1), expected, "Nodes order of quadratic volume element is unexpected")
 
+    def test_writeAbaqus_precision(self):
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=22759#p176669
+        # ccx reads only F20.0 (i. e. Fortran floating point field 20 chars wide)
+        # thus precision is set to 13 in writeAbaqus
+        seg2 = Fem.FemMesh()
+        seg2.addNode(0, 0, 0, 1)
+        #            1234567890123456789012  1234567890123456789012  123456789012345678901234567
+        seg2.addNode(-5000000000000000000.1, -1.123456789123456e-14, -0.1234567890123456789e-101, 2)
+        seg2.addEdge([1, 2])
+
+        inp_file = temp_dir + '/seg2_mesh.inp'
+        seg2.writeABAQUS(inp_file)
+
+        read_file = open(inp_file, 'r')
+        read_node_line = 'line was not found'
+        for l in read_file:
+            l = l.strip()
+            if l.startswith('2, -5'):
+                read_node_line = l
+        read_file.close()
+
+        #                  1234567  12345678901234567890  12345678901234567890
+        expected_win = '2, -5e+018, -1.123456789123e-014, -1.234567890123e-102'
+        expected_lin = '2, -5e+18, -1.123456789123e-14, -1.234567890123e-102'
+        expected = [expected_lin, expected_win]
+        self.assertTrue(True if read_node_line in expected else False,
+                        "Problem in test_writeAbaqus_precision, \n{0}\n{1}".format(read_node_line, expected))
+
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
         pass
