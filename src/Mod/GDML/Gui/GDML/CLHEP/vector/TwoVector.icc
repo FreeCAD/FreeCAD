@@ -1,0 +1,171 @@
+// -*- C++ -*-
+// ---------------------------------------------------------------------------
+//
+// This file is a part of the CLHEP - a Class Library for High Energy Physics.
+// 
+// This is the definitions of the inline member functions of the
+// Hep2Vector class.
+//
+
+#include <cmath>
+
+namespace CLHEP {
+
+inline double Hep2Vector::x() const {
+  return dx;
+}
+
+inline double Hep2Vector::y() const {
+  return dy;
+}
+
+inline Hep2Vector::Hep2Vector(double x, double y)
+: dx(x), dy(y) {}
+
+inline Hep2Vector::Hep2Vector( const Hep3Vector & s)
+: dx(s.x()), dy(s.y()) {}
+
+inline void Hep2Vector::setX(double x) {
+  dx = x;
+}
+
+inline void Hep2Vector::setY(double y) {
+  dy = y;
+}
+
+inline void Hep2Vector::set(double x, double y) {
+  dx = x;
+  dy = y;
+}
+
+double & Hep2Vector::operator[] (int i)       { return operator()(i); }
+double   Hep2Vector::operator[] (int i) const { return operator()(i); }
+
+inline Hep2Vector::Hep2Vector(const Hep2Vector & p)
+: dx(p.x()), dy(p.y()) {}
+
+inline Hep2Vector::~Hep2Vector() {}
+
+inline Hep2Vector & Hep2Vector::operator = (const Hep2Vector & p) {
+  dx = p.x();
+  dy = p.y();
+  return *this;
+}
+
+inline bool Hep2Vector::operator == (const Hep2Vector& v) const {
+  return (v.x()==x() && v.y()==y()) ? true : false;
+}
+
+inline bool Hep2Vector::operator != (const Hep2Vector& v) const {
+  return (v.x()!=x() || v.y()!=y()) ? true : false;
+}
+
+inline Hep2Vector& Hep2Vector::operator += (const Hep2Vector & p) {
+  dx += p.x();
+  dy += p.y();
+  return *this;
+}
+
+inline Hep2Vector& Hep2Vector::operator -= (const Hep2Vector & p) {
+  dx -= p.x();
+  dy -= p.y();
+  return *this;
+}
+
+inline Hep2Vector Hep2Vector::operator - () const {
+  return Hep2Vector(-dx, -dy);
+}
+
+inline Hep2Vector& Hep2Vector::operator *= (double a) {
+  dx *= a;
+  dy *= a;
+  return *this;
+}
+
+inline double Hep2Vector::dot(const Hep2Vector & p) const {
+  return dx*p.x() + dy*p.y();
+}
+
+inline double Hep2Vector::mag2() const {
+  return dx*dx + dy*dy;
+}
+
+inline double Hep2Vector::mag() const {
+  return std::sqrt(mag2());
+}
+
+inline double Hep2Vector::r() const {
+  return std::sqrt(mag2());
+}
+
+inline Hep2Vector Hep2Vector::unit() const {
+  double tot = mag2();
+  Hep2Vector p(*this);
+  return tot > 0.0 ? p *= (1.0/std::sqrt(tot)) : Hep2Vector(1,0);
+}
+
+inline Hep2Vector Hep2Vector::orthogonal() const {
+  double x = std::fabs(dx), y = std::fabs(dy);
+  if (x < y) {
+    return Hep2Vector(dy,-dx);
+  }else{
+    return Hep2Vector(-dy,dx);
+  }
+}
+
+inline double Hep2Vector::phi() const {
+  return dx == 0.0 && dy == 0.0 ? 0.0 : std::atan2(dy,dx);
+}
+
+inline double Hep2Vector::angle(const Hep2Vector & q) const {
+  double ptot2 = mag2()*q.mag2();
+  return ptot2 <= 0.0 ? 0.0 : std::acos(dot(q)/std::sqrt(ptot2));
+}
+
+inline void Hep2Vector::setMag(double r){
+  double ph = phi();
+  setX( r * std::cos(ph) );
+  setY( r * std::sin(ph) );
+}
+
+inline void Hep2Vector::setR(double r){
+  setMag(r);
+}
+
+inline void Hep2Vector::setPhi(double phi){
+  double ma = mag();
+  setX( ma * std::cos(phi) );
+  setY( ma * std::sin(phi) );
+}
+
+inline void Hep2Vector::setPolar(double r, double phi){
+  setX( r * std::cos(phi) );
+  setY( r * std::sin(phi) );
+}
+
+inline Hep2Vector operator + (const Hep2Vector & a, const Hep2Vector & b) {
+  return Hep2Vector(a.x() + b.x(), a.y() + b.y());
+}
+
+inline Hep2Vector operator - (const Hep2Vector & a, const Hep2Vector & b) {
+  return Hep2Vector(a.x() - b.x(), a.y() - b.y());
+}
+
+inline Hep2Vector operator * (const Hep2Vector & p, double a) {
+  return Hep2Vector(a*p.x(), a*p.y());
+}
+
+inline Hep2Vector operator * (double a, const Hep2Vector & p) {
+  return Hep2Vector(a*p.x(), a*p.y());
+}
+
+inline double operator * (const Hep2Vector & a, const Hep2Vector & b) {
+  return a.dot(b);
+}
+
+inline double Hep2Vector::getTolerance () {
+  return tolerance;
+}
+
+}  // namespace CLHEP
+

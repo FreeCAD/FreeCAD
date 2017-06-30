@@ -1,0 +1,3019 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/GDML_3_0_0/schema/gdml.xsd" >
+ <define>
+  <position name="VeloStationslvPuStationdetPu0inVeloStationslvPuStationp" unit="mm" x="0" y="0" z="-1.51" />
+  <rotation name="VeloStationslvPuStationdetPu0inVeloStationslvPuStationr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloStationslvVeloUStationHybrid01StDninVeloStationslvVeloUStationp" unit="mm" x="0" y="0" z="0" />
+  <rotation name="VeloStationslvVeloUStationHybrid01StDninVeloStationslvVeloUStationr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloStationslvVeloUStationdetUPhiL1inVeloStationslvVeloUStationp" unit="mm" x="0" y="0" z="1.51" />
+  <rotation name="VeloStationslvVeloUStationdetUPhiL1inVeloStationslvVeloUStationr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloStationslvVeloUStationdetURL0inVeloStationslvVeloUStationp" unit="mm" x="0" y="0" z="-1.51" />
+  <rotation name="VeloStationslvVeloUStationdetURL0inVeloStationslvVeloUStationr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloSupportslvVeloSupportbase01llinVeloSupportslvVeloSupportp" unit="mm" x="72" y="0" z="0" />
+  <rotation name="VeloSupportslvVeloSupportbase01llinVeloSupportslvVeloSupportr" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VeloSupportslvVeloSupportPaddle00lsVMSILO2BinVeloSupportslvVeloSupportp" unit="mm" x="-1.125" y="-80" z="-2.7755" />
+  <rotation name="VeloSupportslvVeloSupportPaddle00lsVMSILO2BinVeloSupportslvVeloSupportr" unit="degree" x="-90" y="-0" z="-90" />
+  <position name="VeloSupportslvVeloSupportPaddle00lsVMSILO1BinVeloSupportslvVeloSupportp" unit="mm" x="-8.625" y="-80" z="3.98522" />
+  <rotation name="VeloSupportslvVeloSupportPaddle00lsVMSILO1BinVeloSupportslvVeloSupportr" unit="degree" x="-90" y="-0" z="-90" />
+  <position name="VeloSupportslvVeloSupportPaddle00lsVMSILO2AinVeloSupportslvVeloSupportp" unit="mm" x="-1.125" y="80" z="-2.7755" />
+  <rotation name="VeloSupportslvVeloSupportPaddle00lsVMSILO2AinVeloSupportslvVeloSupportr" unit="degree" x="-90" y="-0" z="-90" />
+  <position name="VeloSupportslvVeloSupportPaddle00lsVMSILO1AinVeloSupportslvVeloSupportp" unit="mm" x="-8.625" y="80" z="3.98522" />
+  <rotation name="VeloSupportslvVeloSupportPaddle00lsVMSILO1AinVeloSupportslvVeloSupportr" unit="degree" x="-90" y="-0" z="-90" />
+  <position name="VeloSupportslvVeloSupportPaddle00lsVMBLOinVeloSupportslvVeloSupportp" unit="mm" x="-1.125" y="0" z="-5.55" />
+  <rotation name="VeloSupportslvVeloSupportPaddle00lsVMBLOinVeloSupportslvVeloSupportr" unit="degree" x="0" y="-5.4777" z="0" />
+  <position name="VeloSupportslvVeloSupportPaddle00lsVMFLOinVeloSupportslvVeloSupportp" unit="mm" x="-8.625" y="-0" z="7.97045" />
+  <rotation name="VeloSupportslvVeloSupportPaddle00lsVMFLOinVeloSupportslvVeloSupportr" unit="degree" x="0" y="2.7047" z="0" />
+  <position name="VeloSupportslvVeloSupportCLA201llinVeloSupportslvVeloSupportp" unit="mm" x="-66.5" y="0" z="-1.95" />
+  <rotation name="VeloSupportslvVeloSupportCLA201llinVeloSupportslvVeloSupportr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloSupportslvVeloSupportCLA101llinVeloSupportslvVeloSupportp" unit="mm" x="-59.5" y="0" z="-8.222" />
+  <rotation name="VeloSupportslvVeloSupportCLA101llinVeloSupportslvVeloSupportr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloSupportslvVeloSupportHybrid01HybridFanoutinVeloSupportslvVeloSupportp" unit="mm" x="-180" y="0" z="0.32" />
+  <rotation name="VeloSupportslvVeloSupportHybrid01HybridFanoutinVeloSupportslvVeloSupportr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloSupportslvVeloSupportHybrid01HybridChipsinVeloSupportslvVeloSupportp" unit="mm" x="-180" y="0" z="0.43" />
+  <rotation name="VeloSupportslvVeloSupportHybrid01HybridChipsinVeloSupportslvVeloSupportr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloSupportslvVeloSupportHybrid01HybridCu1inVeloSupportslvVeloSupportp" unit="mm" x="-129.5" y="0" z="0.19" />
+  <rotation name="VeloSupportslvVeloSupportHybrid01HybridCu1inVeloSupportslvVeloSupportr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloSupportslvVeloSupportHybrid01HybridKaptoninVeloSupportslvVeloSupportp" unit="mm" x="-129.5" y="0" z="-0.24" />
+  <rotation name="VeloSupportslvVeloSupportHybrid01HybridKaptoninVeloSupportslvVeloSupportr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloSupportslvVeloSupportHybrid01HybridCFSubstrateinVeloSupportslvVeloSupportp" unit="mm" x="-119.5" y="0" z="-0.94" />
+  <rotation name="VeloSupportslvVeloSupportHybrid01HybridCFSubstrateinVeloSupportslvVeloSupportr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloStationslvVeloDStationHybrid01StUpinVeloStationslvVeloDStationp" unit="mm" x="0" y="0" z="0" />
+  <rotation name="VeloStationslvVeloDStationHybrid01StUpinVeloStationslvVeloDStationr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloStationslvVeloDStationdetDRL1inVeloStationslvVeloDStationp" unit="mm" x="0" y="0" z="1.51" />
+  <rotation name="VeloStationslvVeloDStationdetDRL1inVeloStationslvVeloDStationr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloStationslvVeloDStationdetDPhiL0inVeloStationslvVeloDStationp" unit="mm" x="0" y="6.80094e-33" z="-1.51" />
+  <rotation name="VeloStationslvVeloDStationdetDPhiL0inVeloStationslvVeloDStationr" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlope2LTrinVeloRFFoillvRFPUSect1p" unit="mm" x="-8" y="1.56137e-16" z="33.125" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlope2LTrinVeloRFFoillvRFPUSect1r" unit="degree" x="-180" y="46.6983" z="-3.1676e-32" />
+  <position name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF2M2inVeloRFFoillvRFPUSect1p" unit="mm" x="-5.79921" y="8.10653" z="32.05" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF2M2inVeloRFFoillvRFPUSect1r" unit="degree" x="52.0745" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF2M1inVeloRFFoillvRFPUSect1p" unit="mm" x="-5.79921" y="-8.10653" z="32.05" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF2M1inVeloRFFoillvRFPUSect1r" unit="degree" x="127.925" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF1AB2inVeloRFFoillvRFPUSect1p" unit="mm" x="-9.25" y="-5.37936" z="36.625" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF1AB2inVeloRFFoillvRFPUSect1r" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF1AB1inVeloRFFoillvRFPUSect1p" unit="mm" x="-9.25" y="5.37936" z="36.625" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF1AB1inVeloRFFoillvRFPUSect1r" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF1CBinVeloRFFoillvRFPUSect1p" unit="mm" x="-8.5" y="5.8475e-16" z="36.625" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF1CBinVeloRFFoillvRFPUSect1r" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF2CinVeloRFFoillvRFPUSect1p" unit="mm" x="-8.5" y="-2.9929e-31" z="31.85" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF2CinVeloRFFoillvRFPUSect1r" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF3UpPV1inVeloRFFoillvRFPUSect1p" unit="mm" x="-3.5" y="0" z="0" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF3UpPV1inVeloRFFoillvRFPUSect1r" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF3CPV1inVeloRFFoillvRFPUSect1p" unit="mm" x="-8.5" y="0" z="0" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF3CPV1inVeloRFFoillvRFPUSect1r" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlope2LTrinVeloRFFoillvRFPUSect1p" unit="mm" x="-8" y="0" z="-33.125" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlope2LTrinVeloRFFoillvRFPUSect1r" unit="degree" x="0" y="46.6983" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF2M2inVeloRFFoillvRFPUSect1p" unit="mm" x="-5.79921" y="-8.10653" z="-32.05" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF2M2inVeloRFFoillvRFPUSect1r" unit="degree" x="-127.925" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF2M1inVeloRFFoillvRFPUSect1p" unit="mm" x="-5.79921" y="8.10653" z="-32.05" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF2M1inVeloRFFoillvRFPUSect1r" unit="degree" x="-52.0745" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF1AB2inVeloRFFoillvRFPUSect1p" unit="mm" x="-9.25" y="5.37936" z="-36.625" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF1AB2inVeloRFFoillvRFPUSect1r" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF1AB1inVeloRFFoillvRFPUSect1p" unit="mm" x="-9.25" y="-5.37936" z="-36.625" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF1AB1inVeloRFFoillvRFPUSect1r" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF1CBinVeloRFFoillvRFPUSect1p" unit="mm" x="-8.5" y="0" z="-36.625" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF1CBinVeloRFFoillvRFPUSect1r" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF2CinVeloRFFoillvRFPUSect1p" unit="mm" x="-8.5" y="0" z="-31.85" />
+  <rotation name="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF2CinVeloRFFoillvRFPUSect1r" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlope2LTrinVeloRFFoillvRFPUSect2p" unit="mm" x="-8" y="1.56137e-16" z="23.125" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlope2LTrinVeloRFFoillvRFPUSect2r" unit="degree" x="-180" y="46.6983" z="-3.1676e-32" />
+  <position name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF2M2inVeloRFFoillvRFPUSect2p" unit="mm" x="-5.79921" y="8.10653" z="22.05" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF2M2inVeloRFFoillvRFPUSect2r" unit="degree" x="52.0745" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF2M1inVeloRFFoillvRFPUSect2p" unit="mm" x="-5.79921" y="-8.10653" z="22.05" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF2M1inVeloRFFoillvRFPUSect2r" unit="degree" x="127.925" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF1AB2inVeloRFFoillvRFPUSect2p" unit="mm" x="-9.25" y="-5.37936" z="26.625" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF1AB2inVeloRFFoillvRFPUSect2r" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF1AB1inVeloRFFoillvRFPUSect2p" unit="mm" x="-9.25" y="5.37936" z="26.625" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF1AB1inVeloRFFoillvRFPUSect2r" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF1CBinVeloRFFoillvRFPUSect2p" unit="mm" x="-8.5" y="5.8475e-16" z="26.625" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF1CBinVeloRFFoillvRFPUSect2r" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF2CinVeloRFFoillvRFPUSect2p" unit="mm" x="-8.5" y="9.51409e-32" z="21.85" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF2CinVeloRFFoillvRFPUSect2r" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF3UpPV2inVeloRFFoillvRFPUSect2p" unit="mm" x="-3.5" y="0" z="0" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF3UpPV2inVeloRFFoillvRFPUSect2r" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF3CPV2inVeloRFFoillvRFPUSect2p" unit="mm" x="-8.5" y="0" z="0" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF3CPV2inVeloRFFoillvRFPUSect2r" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlope2LTrinVeloRFFoillvRFPUSect2p" unit="mm" x="-8" y="0" z="-23.125" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlope2LTrinVeloRFFoillvRFPUSect2r" unit="degree" x="0" y="46.6983" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF2M2inVeloRFFoillvRFPUSect2p" unit="mm" x="-5.79921" y="-8.10653" z="-22.05" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF2M2inVeloRFFoillvRFPUSect2r" unit="degree" x="-127.925" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF2M1inVeloRFFoillvRFPUSect2p" unit="mm" x="-5.79921" y="8.10653" z="-22.05" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF2M1inVeloRFFoillvRFPUSect2r" unit="degree" x="-52.0745" y="-0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF1AB2inVeloRFFoillvRFPUSect2p" unit="mm" x="-9.25" y="5.37936" z="-26.625" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF1AB2inVeloRFFoillvRFPUSect2r" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF1AB1inVeloRFFoillvRFPUSect2p" unit="mm" x="-9.25" y="-5.37936" z="-26.625" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF1AB1inVeloRFFoillvRFPUSect2r" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF1CBinVeloRFFoillvRFPUSect2p" unit="mm" x="-8.5" y="0" z="-26.625" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF1CBinVeloRFFoillvRFPUSect2r" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF2CinVeloRFFoillvRFPUSect2p" unit="mm" x="-8.5" y="0" z="-21.85" />
+  <rotation name="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF2CinVeloRFFoillvRFPUSect2r" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlope2LTrinVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-8" y="1.56137e-16" z="8.125" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlope2LTrinVeloRFFoillvRFUpStreamSectionr" unit="degree" x="-180" y="46.6983" z="-3.1676e-32" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF2M2inVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-5.79921" y="8.10653" z="7.05" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF2M2inVeloRFFoillvRFUpStreamSectionr" unit="degree" x="52.0745" y="-0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF2M1inVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-5.79921" y="-8.10653" z="7.05" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF2M1inVeloRFFoillvRFUpStreamSectionr" unit="degree" x="127.925" y="-0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF1AB2inVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-9.25" y="-5.37936" z="11.625" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF1AB2inVeloRFFoillvRFUpStreamSectionr" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF1AB1inVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-9.25" y="5.37936" z="11.625" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF1AB1inVeloRFFoillvRFUpStreamSectionr" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF1CBinVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-8.5" y="5.8475e-16" z="11.625" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF1CBinVeloRFFoillvRFUpStreamSectionr" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF2CinVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-8.5" y="-2.37852e-32" z="6.85" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF2CinVeloRFFoillvRFUpStreamSectionr" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF3LDowninVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-3.5" y="-50.4494" z="0" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF3LDowninVeloRFFoillvRFUpStreamSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF3LUpinVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-3.5" y="50.4494" z="-0" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF3LUpinVeloRFFoillvRFUpStreamSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF3CinVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-8.5" y="0" z="0" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF3CinVeloRFFoillvRFUpStreamSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlope2LTrinVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-8" y="-0" z="-8.125" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlope2LTrinVeloRFFoillvRFUpStreamSectionr" unit="degree" x="0" y="46.6983" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF2M2inVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-5.79921" y="-8.10653" z="-7.05" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF2M2inVeloRFFoillvRFUpStreamSectionr" unit="degree" x="-127.925" y="-0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF2M1inVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-5.79921" y="8.10653" z="-7.05" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF2M1inVeloRFFoillvRFUpStreamSectionr" unit="degree" x="-52.0745" y="-0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF1AB2inVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-9.25" y="5.37936" z="-11.625" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF1AB2inVeloRFFoillvRFUpStreamSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF1AB1inVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-9.25" y="-5.37936" z="-11.625" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF1AB1inVeloRFFoillvRFUpStreamSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF1CBinVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-8.5" y="0" z="-11.625" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF1CBinVeloRFFoillvRFUpStreamSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF2CinVeloRFFoillvRFUpStreamSectionp" unit="mm" x="-8.5" y="0" z="-6.85" />
+  <rotation name="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF2CinVeloRFFoillvRFUpStreamSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlope2LTrinVeloRFFoillvRFMidSectionp" unit="mm" x="-8" y="1.56137e-16" z="43.125" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlope2LTrinVeloRFFoillvRFMidSectionr" unit="degree" x="-180" y="46.6983" z="-3.1676e-32" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF2M2inVeloRFFoillvRFMidSectionp" unit="mm" x="-5.79921" y="8.10653" z="42.05" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF2M2inVeloRFFoillvRFMidSectionr" unit="degree" x="52.0745" y="-0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF2M1inVeloRFFoillvRFMidSectionp" unit="mm" x="-5.79921" y="-8.10653" z="42.05" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF2M1inVeloRFFoillvRFMidSectionr" unit="degree" x="127.925" y="-0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF1AB2inVeloRFFoillvRFMidSectionp" unit="mm" x="-9.25" y="-5.37936" z="46.625" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF1AB2inVeloRFFoillvRFMidSectionr" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF1AB1inVeloRFFoillvRFMidSectionp" unit="mm" x="-9.25" y="5.37936" z="46.625" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF1AB1inVeloRFFoillvRFMidSectionr" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF1CBinVeloRFFoillvRFMidSectionp" unit="mm" x="-8.5" y="5.8475e-16" z="46.625" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF1CBinVeloRFFoillvRFMidSectionr" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF2CinVeloRFFoillvRFMidSectionp" unit="mm" x="-8.5" y="-2.9929e-31" z="41.85" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF2CinVeloRFFoillvRFMidSectionr" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF3OCMidinVeloRFFoillvRFMidSectionp" unit="mm" x="-3.5" y="0" z="0" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF3OCMidinVeloRFFoillvRFMidSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF3CMidinVeloRFFoillvRFMidSectionp" unit="mm" x="-8.5" y="0" z="0" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF3CMidinVeloRFFoillvRFMidSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlope2LTrinVeloRFFoillvRFMidSectionp" unit="mm" x="-8" y="0" z="-43.125" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlope2LTrinVeloRFFoillvRFMidSectionr" unit="degree" x="0" y="46.6983" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF2M2inVeloRFFoillvRFMidSectionp" unit="mm" x="-5.79921" y="-8.10653" z="-42.05" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF2M2inVeloRFFoillvRFMidSectionr" unit="degree" x="-127.925" y="-0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF2M1inVeloRFFoillvRFMidSectionp" unit="mm" x="-5.79921" y="8.10653" z="-42.05" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF2M1inVeloRFFoillvRFMidSectionr" unit="degree" x="-52.0745" y="-0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF1AB2inVeloRFFoillvRFMidSectionp" unit="mm" x="-9.25" y="5.37936" z="-46.625" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF1AB2inVeloRFFoillvRFMidSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF1AB1inVeloRFFoillvRFMidSectionp" unit="mm" x="-9.25" y="-5.37936" z="-46.625" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF1AB1inVeloRFFoillvRFMidSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF1CBinVeloRFFoillvRFMidSectionp" unit="mm" x="-8.5" y="0" z="-46.625" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF1CBinVeloRFFoillvRFMidSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF2CinVeloRFFoillvRFMidSectionp" unit="mm" x="-8.5" y="0" z="-41.85" />
+  <rotation name="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF2CinVeloRFFoillvRFMidSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFF1A22XXinVeloRFFoillvRFDownStreamSectionp" unit="mm" x="-6.25" y="-5.37936" z="21.1799" />
+  <rotation name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFF1A22XXinVeloRFFoillvRFDownStreamSectionr" unit="degree" x="90" y="-0" z="-90" />
+  <position name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFF1A21XXinVeloRFFoillvRFDownStreamSectionp" unit="mm" x="-6.25" y="5.37936" z="21.1799" />
+  <rotation name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFF1A21XXinVeloRFFoillvRFDownStreamSectionr" unit="degree" x="90" y="-0" z="-90" />
+  <position name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFBPSectTestXXinVeloRFFoillvRFDownStreamSectionp" unit="mm" x="-5.5" y="0" z="18.125" />
+  <rotation name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFBPSectTestXXinVeloRFFoillvRFDownStreamSectionr" unit="degree" x="-180" y="-0" z="0" />
+  <position name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFTest2LBPCorrXXinVeloRFFoillvRFDownStreamSectionp" unit="mm" x="-5" y="4.71371e-32" z="18.125" />
+  <rotation name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFTest2LBPCorrXXinVeloRFFoillvRFDownStreamSectionr" unit="degree" x="-180" y="46.6983" z="-3.1676e-32" />
+  <position name="VeloRFFoillvRFDownStreamSectionRFTestF3CLonginVeloRFFoillvRFDownStreamSectionp" unit="mm" x="-5.5" y="0" z="0" />
+  <rotation name="VeloRFFoillvRFDownStreamSectionRFTestF3CLonginVeloRFFoillvRFDownStreamSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFDownStreamSectionRFTestF3LUpxxinVeloRFFoillvRFDownStreamSectionp" unit="mm" x="-0.5" y="0" z="0" />
+  <rotation name="VeloRFFoillvRFDownStreamSectionRFTestF3LUpxxinVeloRFFoillvRFDownStreamSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFF1A22XXinVeloRFFoillvRFDownStreamSectionp" unit="mm" x="-6.25" y="5.37936" z="-21.1799" />
+  <rotation name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFF1A22XXinVeloRFFoillvRFDownStreamSectionr" unit="degree" x="-90" y="-0" z="-90" />
+  <position name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFF1A21XXinVeloRFFoillvRFDownStreamSectionp" unit="mm" x="-6.25" y="-5.37936" z="-21.1799" />
+  <rotation name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFF1A21XXinVeloRFFoillvRFDownStreamSectionr" unit="degree" x="-90" y="-0" z="-90" />
+  <position name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFBPSectTestXXinVeloRFFoillvRFDownStreamSectionp" unit="mm" x="-5.5" y="0" z="-18.125" />
+  <rotation name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFBPSectTestXXinVeloRFFoillvRFDownStreamSectionr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFTest2LBPCorrXXinVeloRFFoillvRFDownStreamSectionp" unit="mm" x="-5" y="0" z="-18.125" />
+  <rotation name="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFTest2LBPCorrXXinVeloRFFoillvRFDownStreamSectionr" unit="degree" x="0" y="46.6983" z="0" />
+  <position name="VeloVacTanklvVTankUpStreamVTa4AinVeloVacTanklvVTankUpStreamp" unit="mm" x="0" y="0" z="660" />
+  <rotation name="VeloVacTanklvVTankUpStreamVTa4AinVeloVacTanklvVTankUpStreamr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloVacTanklvVTankDownStreamVTa5VTa5Bx6inVeloVacTanklvVTankDownStreamp" unit="mm" x="-297.5" y="-210" z="-167.5" />
+  <rotation name="VeloVacTanklvVTankDownStreamVTa5VTa5Bx6inVeloVacTanklvVTankDownStreamr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloVacTanklvVTankDownStreamVTa5VTa5Bx5inVeloVacTanklvVTankDownStreamp" unit="mm" x="-297.5" y="210" z="-167.5" />
+  <rotation name="VeloVacTanklvVTankDownStreamVTa5VTa5Bx5inVeloVacTanklvVTankDownStreamr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloVacTanklvVTankDownStreamVTa5VTa5Bx4inVeloVacTanklvVTankDownStreamp" unit="mm" x="297.5" y="-210" z="-167.5" />
+  <rotation name="VeloVacTanklvVTankDownStreamVTa5VTa5Bx4inVeloVacTanklvVTankDownStreamr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloVacTanklvVTankDownStreamVTa5VTa5Bx3inVeloVacTanklvVTankDownStreamp" unit="mm" x="297.5" y="210" z="-167.5" />
+  <rotation name="VeloVacTanklvVTankDownStreamVTa5VTa5Bx3inVeloVacTanklvVTankDownStreamr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloVacTanklvVTankDownStreamVTa5VTa5Bx2inVeloVacTanklvVTankDownStreamp" unit="mm" x="-495" y="0" z="0" />
+  <rotation name="VeloVacTanklvVTankDownStreamVTa5VTa5Bx2inVeloVacTanklvVTankDownStreamr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloVacTanklvVTankDownStreamVTa5VTa5Bx1inVeloVacTanklvVTankDownStreamp" unit="mm" x="495" y="0" z="0" />
+  <rotation name="VeloVacTanklvVTankDownStreamVTa5VTa5Bx1inVeloVacTanklvVTankDownStreamr" unit="degree" x="0" y="0" z="0" />
+  <position name="VeloVacTanklvVTankDownStreamVTa4BinVeloVacTanklvVTankDownStreamp" unit="mm" x="0" y="0" z="-172.5" />
+  <rotation name="VeloVacTanklvVTankDownStreamVTa4BinVeloVacTanklvVTankDownStreamr" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvVTa2inVelolvVelop" unit="mm" x="0" y="0" z="172.5" />
+  <rotation name="VelolvVelopvVTa2inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvVTa1inVelolvVelop" unit="mm" x="0" y="0" z="-660" />
+  <rotation name="VelolvVelopvVTa1inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVeloRightRFBoxRFTpFrinVelolvVelop" unit="mm" x="-168.625" y="-0" z="226.24" />
+  <rotation name="VelolvVeloRightRFBoxRFTpFrinVelolvVelor" unit="degree" x="0" y="9" z="0" />
+  <position name="VelolvVeloRightRFBoxRFFBx2binVelolvVelop" unit="mm" x="-23" y="0" z="772.38" />
+  <rotation name="VelolvVeloRightRFBoxRFFBx2binVelolvVelor" unit="degree" x="-0" y="90" z="0" />
+  <position name="VelolvVeloRightRFBoxRFFBx2ainVelolvVelop" unit="mm" x="-23" y="-0" z="-319.9" />
+  <rotation name="VelolvVeloRightRFBoxRFFBx2ainVelolvVelor" unit="degree" x="-0" y="90" z="0" />
+  <position name="VelolvVeloRightRFBoxRFSBx2binVelolvVelop" unit="mm" x="-22.0094" y="-100.43" z="226.24" />
+  <rotation name="VelolvVeloRightRFBoxRFSBx2binVelolvVelor" unit="degree" x="0" y="-0" z="-23.5" />
+  <position name="VelolvVeloRightRFBoxRFSBx2ainVelolvVelop" unit="mm" x="-22.0094" y="100.43" z="226.24" />
+  <rotation name="VelolvVeloRightRFBoxRFSBx2ainVelolvVelor" unit="degree" x="0" y="-0" z="23.5" />
+  <position name="VelolvVeloRightRFBoxRFFBx1inVelolvVelop" unit="mm" x="-145.5" y="0" z="772.38" />
+  <rotation name="VelolvVeloRightRFBoxRFFBx1inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVeloRightRFBoxRFBBx1inVelolvVelop" unit="mm" x="-59" y="0" z="-319.9" />
+  <rotation name="VelolvVeloRightRFBoxRFBBx1inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVeloRightRFBoxRFSBx1binVelolvVelop" unit="mm" x="-102.25" y="-110" z="226.24" />
+  <rotation name="VelolvVeloRightRFBoxRFSBx1binVelolvVelor" unit="degree" x="90" y="-0" z="0" />
+  <position name="VelolvVeloRightRFBoxRFSBx1ainVelolvVelop" unit="mm" x="-102.25" y="110" z="226.24" />
+  <rotation name="VelolvVeloRightRFBoxRFSBx1ainVelolvVelor" unit="degree" x="90" y="-0" z="0" />
+  <position name="VelolvVeloLeftRFBoxRFTpFrinVelolvVelop" unit="mm" x="168.625" y="-2.06499e-14" z="226.24" />
+  <rotation name="VelolvVeloLeftRFBoxRFTpFrinVelolvVelor" unit="degree" x="-1.1113e-15" y="-9" z="-180" />
+  <position name="VelolvVeloLeftRFBoxRFFBx2binVelolvVelop" unit="mm" x="23" y="-2.81659e-15" z="772.38" />
+  <rotation name="VelolvVeloLeftRFBoxRFFBx2binVelolvVelor" unit="degree" x="-180" y="-90" z="0" />
+  <position name="VelolvVeloLeftRFBoxRFFBx2ainVelolvVelop" unit="mm" x="23" y="-2.81659e-15" z="-319.9" />
+  <rotation name="VelolvVeloLeftRFBoxRFFBx2ainVelolvVelor" unit="degree" x="-180" y="-90" z="0" />
+  <position name="VelolvVeloLeftRFBoxRFSBx2binVelolvVelop" unit="mm" x="22.0094" y="100.43" z="226.24" />
+  <rotation name="VelolvVeloLeftRFBoxRFSBx2binVelolvVelor" unit="degree" x="0" y="-0" z="156.5" />
+  <position name="VelolvVeloLeftRFBoxRFSBx2ainVelolvVelop" unit="mm" x="22.0094" y="-100.43" z="226.24" />
+  <rotation name="VelolvVeloLeftRFBoxRFSBx2ainVelolvVelor" unit="degree" x="0" y="-0" z="-156.5" />
+  <position name="VelolvVeloLeftRFBoxRFFBx1inVelolvVelop" unit="mm" x="145.5" y="-1.7818e-14" z="772.38" />
+  <rotation name="VelolvVeloLeftRFBoxRFFBx1inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVeloLeftRFBoxRFBBx1inVelolvVelop" unit="mm" x="59" y="-7.22518e-15" z="-319.9" />
+  <rotation name="VelolvVeloLeftRFBoxRFBBx1inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVeloLeftRFBoxRFSBx1binVelolvVelop" unit="mm" x="102.25" y="110" z="226.24" />
+  <rotation name="VelolvVeloLeftRFBoxRFSBx1binVelolvVelor" unit="degree" x="-90" y="7.01648e-15" z="-180" />
+  <position name="VelolvVeloLeftRFBoxRFSBx1ainVelolvVelop" unit="mm" x="102.25" y="-110" z="226.24" />
+  <rotation name="VelolvVeloLeftRFBoxRFSBx1ainVelolvVelor" unit="degree" x="-90" y="7.01648e-15" z="-180" />
+  <position name="VelolvVeloWakeFieldConeWakeCone2inVelolvVelop" unit="mm" x="0" y="0" z="760" />
+  <rotation name="VelolvVeloWakeFieldConeWakeCone2inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVeloWakeFieldConeWakeCone1inVelolvVelop" unit="mm" x="0" y="0" z="760" />
+  <rotation name="VelolvVeloWakeFieldConeWakeCone1inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvRightRFFoilSt19RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="685" />
+  <rotation name="VelolvVelopvRightRFFoilSt19RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation19inVelolvVelop" unit="mm" x="-5.5" y="6.73533e-16" z="710" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation19inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt18RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="635" />
+  <rotation name="VelolvVelopvRightRFFoilSt18RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation18inVelolvVelop" unit="mm" x="-5.5" y="6.73533e-16" z="660" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation18inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt17RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="585" />
+  <rotation name="VelolvVelopvRightRFFoilSt17RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation17inVelolvVelop" unit="mm" x="-5.5" y="6.73533e-16" z="610" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation17inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt16cRFShieldinVelolvVelop" unit="mm" x="0" y="0" z="535" />
+  <rotation name="VelolvVelopvRightRFFoilSt16cRFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation16cinVelolvVelop" unit="mm" x="-5.5" y="6.73533e-16" z="560" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation16cinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt16bRFShieldinVelolvVelop" unit="mm" x="0" y="0" z="485" />
+  <rotation name="VelolvVelopvRightRFFoilSt16bRFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation16binVelolvVelop" unit="mm" x="-5.5" y="6.73533e-16" z="510" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation16binVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt16RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="435" />
+  <rotation name="VelolvVelopvRightRFFoilSt16RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation16inVelolvVelop" unit="mm" x="-5.5" y="6.73533e-16" z="460" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation16inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt15cRFShieldinVelolvVelop" unit="mm" x="0" y="0" z="305" />
+  <rotation name="VelolvVelopvRightRFFoilSt15cRFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation15cinVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="385" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation15cinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt15bRFShieldinVelolvVelop" unit="mm" x="0" y="0" z="305" />
+  <rotation name="VelolvVelopvRightRFFoilSt15bRFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation15binVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="320" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation15binVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt15RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="275" />
+  <rotation name="VelolvVelopvRightRFFoilSt15RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation15inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="290" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation15inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt14RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="245" />
+  <rotation name="VelolvVelopvRightRFFoilSt14RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation14inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="260" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation14inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt13RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="215" />
+  <rotation name="VelolvVelopvRightRFFoilSt13RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation13inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="230" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation13inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt12RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="185" />
+  <rotation name="VelolvVelopvRightRFFoilSt12RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation12inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="200" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation12inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt11RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="155" />
+  <rotation name="VelolvVelopvRightRFFoilSt11RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation11inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="170" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation11inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt10RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="125" />
+  <rotation name="VelolvVelopvRightRFFoilSt10RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation10inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="140" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation10inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt09RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="95" />
+  <rotation name="VelolvVelopvRightRFFoilSt09RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation09inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="110" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation09inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt08RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="65" />
+  <rotation name="VelolvVelopvRightRFFoilSt08RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation08inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="80" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation08inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt07RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="35" />
+  <rotation name="VelolvVelopvRightRFFoilSt07RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation07inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="50" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation07inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt06RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="5" />
+  <rotation name="VelolvVelopvRightRFFoilSt06RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation06inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="20" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation06inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt05RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-25" />
+  <rotation name="VelolvVelopvRightRFFoilSt05RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation05inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="-10" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation05inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt04RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-55" />
+  <rotation name="VelolvVelopvRightRFFoilSt04RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation04inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="-40" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation04inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt03RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-85" />
+  <rotation name="VelolvVelopvRightRFFoilSt03RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation03inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="-70" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation03inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt02RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-115" />
+  <rotation name="VelolvVelopvRightRFFoilSt02RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation02inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="-100" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation02inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt01RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-145" />
+  <rotation name="VelolvVelopvRightRFFoilSt01RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation01inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="-130" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation01inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilSt00RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-175" />
+  <rotation name="VelolvVelopvRightRFFoilSt00RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFStation00inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="-160" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFStation00inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilPu2RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-235" />
+  <rotation name="VelolvVelopvRightRFFoilPu2RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFPileUpSection2inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="-205" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFPileUpSection2inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilPu1RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-315" />
+  <rotation name="VelolvVelopvRightRFFoilPu1RFShieldinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvRightRFFoilpvRFPileUpSection1inVelolvVelop" unit="mm" x="-8.5" y="1.04092e-15" z="-275" />
+  <rotation name="VelolvVelopvRightRFFoilpvRFPileUpSection1inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelopvLeftRFFoilSt19RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="700" />
+  <rotation name="VelolvVelopvLeftRFFoilSt19RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation19inVelolvVelop" unit="mm" x="5.5" y="-0" z="725" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation19inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt18RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="650" />
+  <rotation name="VelolvVelopvLeftRFFoilSt18RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation18inVelolvVelop" unit="mm" x="5.5" y="-0" z="675" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation18inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt17RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="600" />
+  <rotation name="VelolvVelopvLeftRFFoilSt17RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation17inVelolvVelop" unit="mm" x="5.5" y="-0" z="625" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation17inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt16cRFShieldinVelolvVelop" unit="mm" x="0" y="0" z="550" />
+  <rotation name="VelolvVelopvLeftRFFoilSt16cRFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation16cinVelolvVelop" unit="mm" x="5.5" y="-0" z="575" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation16cinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt16bRFShieldinVelolvVelop" unit="mm" x="0" y="0" z="500" />
+  <rotation name="VelolvVelopvLeftRFFoilSt16bRFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation16binVelolvVelop" unit="mm" x="5.5" y="-0" z="525" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation16binVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt16RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="450" />
+  <rotation name="VelolvVelopvLeftRFFoilSt16RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation16inVelolvVelop" unit="mm" x="5.5" y="-0" z="475" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation16inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt15cRFShieldinVelolvVelop" unit="mm" x="0" y="0" z="320" />
+  <rotation name="VelolvVelopvLeftRFFoilSt15cRFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation15cinVelolvVelop" unit="mm" x="8.5" y="-0" z="400" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation15cinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt15bRFShieldinVelolvVelop" unit="mm" x="0" y="0" z="320" />
+  <rotation name="VelolvVelopvLeftRFFoilSt15bRFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation15binVelolvVelop" unit="mm" x="8.5" y="-0" z="335" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation15binVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt15RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="290" />
+  <rotation name="VelolvVelopvLeftRFFoilSt15RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation15inVelolvVelop" unit="mm" x="8.5" y="-0" z="305" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation15inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt14RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="260" />
+  <rotation name="VelolvVelopvLeftRFFoilSt14RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation14inVelolvVelop" unit="mm" x="8.5" y="-0" z="275" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation14inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt13RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="230" />
+  <rotation name="VelolvVelopvLeftRFFoilSt13RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation13inVelolvVelop" unit="mm" x="8.5" y="-0" z="245" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation13inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt12RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="200" />
+  <rotation name="VelolvVelopvLeftRFFoilSt12RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation12inVelolvVelop" unit="mm" x="8.5" y="-0" z="215" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation12inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt11RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="170" />
+  <rotation name="VelolvVelopvLeftRFFoilSt11RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation11inVelolvVelop" unit="mm" x="8.5" y="-0" z="185" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation11inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt10RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="140" />
+  <rotation name="VelolvVelopvLeftRFFoilSt10RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation10inVelolvVelop" unit="mm" x="8.5" y="-0" z="155" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation10inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt09RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="110" />
+  <rotation name="VelolvVelopvLeftRFFoilSt09RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation09inVelolvVelop" unit="mm" x="8.5" y="-0" z="125" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation09inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt08RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="80" />
+  <rotation name="VelolvVelopvLeftRFFoilSt08RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation08inVelolvVelop" unit="mm" x="8.5" y="-0" z="95" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation08inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt07RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="50" />
+  <rotation name="VelolvVelopvLeftRFFoilSt07RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation07inVelolvVelop" unit="mm" x="8.5" y="-0" z="65" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation07inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt06RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="20" />
+  <rotation name="VelolvVelopvLeftRFFoilSt06RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation06inVelolvVelop" unit="mm" x="8.5" y="-0" z="35" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation06inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt05RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-10" />
+  <rotation name="VelolvVelopvLeftRFFoilSt05RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation05inVelolvVelop" unit="mm" x="8.5" y="-0" z="5" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation05inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt04RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-40" />
+  <rotation name="VelolvVelopvLeftRFFoilSt04RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation04inVelolvVelop" unit="mm" x="8.5" y="0" z="-25" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation04inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt03RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-70" />
+  <rotation name="VelolvVelopvLeftRFFoilSt03RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation03inVelolvVelop" unit="mm" x="8.5" y="0" z="-55" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation03inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt02RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-100" />
+  <rotation name="VelolvVelopvLeftRFFoilSt02RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation02inVelolvVelop" unit="mm" x="8.5" y="0" z="-85" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation02inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt01RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-130" />
+  <rotation name="VelolvVelopvLeftRFFoilSt01RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation01inVelolvVelop" unit="mm" x="8.5" y="0" z="-115" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation01inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilSt00RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-160" />
+  <rotation name="VelolvVelopvLeftRFFoilSt00RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFStation00inVelolvVelop" unit="mm" x="8.5" y="0" z="-145" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFStation00inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilPu2RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-220" />
+  <rotation name="VelolvVelopvLeftRFFoilPu2RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFPileUpSection2inVelolvVelop" unit="mm" x="8.5" y="0" z="-190" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFPileUpSection2inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilPu1RFShieldinVelolvVelop" unit="mm" x="0" y="0" z="-300" />
+  <rotation name="VelolvVelopvLeftRFFoilPu1RFShieldinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelopvLeftRFFoilpvRFPileUpSection1inVelolvVelop" unit="mm" x="8.5" y="0" z="-260" />
+  <rotation name="VelolvVelopvLeftRFFoilpvRFPileUpSection1inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport20vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="735.65" />
+  <rotation name="VelolvVelovSupport20vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport20vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="750.65" />
+  <rotation name="VelolvVelovSupport20vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation20R80inVelolvVelop" unit="mm" x="0" y="0" z="735" />
+  <rotation name="VelolvVelovStation20R80inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation20L82inVelolvVelop" unit="mm" x="0" y="0" z="750" />
+  <rotation name="VelolvVelovStation20L82inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport19vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="685.65" />
+  <rotation name="VelolvVelovSupport19vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport19vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="700.65" />
+  <rotation name="VelolvVelovSupport19vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation19R76inVelolvVelop" unit="mm" x="0" y="0" z="685" />
+  <rotation name="VelolvVelovStation19R76inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation19L78inVelolvVelop" unit="mm" x="0" y="0" z="700" />
+  <rotation name="VelolvVelovStation19L78inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport18vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="635.65" />
+  <rotation name="VelolvVelovSupport18vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport18vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="650.65" />
+  <rotation name="VelolvVelovSupport18vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation18R72inVelolvVelop" unit="mm" x="0" y="0" z="635" />
+  <rotation name="VelolvVelovStation18R72inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation18L74inVelolvVelop" unit="mm" x="0" y="0" z="650" />
+  <rotation name="VelolvVelovStation18L74inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport17vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="585.65" />
+  <rotation name="VelolvVelovSupport17vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport17vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="600.65" />
+  <rotation name="VelolvVelovSupport17vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation17R68inVelolvVelop" unit="mm" x="0" y="0" z="585" />
+  <rotation name="VelolvVelovStation17R68inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation17L70inVelolvVelop" unit="mm" x="0" y="0" z="600" />
+  <rotation name="VelolvVelovStation17L70inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport16vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="435.65" />
+  <rotation name="VelolvVelovSupport16vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport16vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="450.65" />
+  <rotation name="VelolvVelovSupport16vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation16R64inVelolvVelop" unit="mm" x="0" y="0" z="435" />
+  <rotation name="VelolvVelovStation16R64inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation16L66inVelolvVelop" unit="mm" x="0" y="0" z="450" />
+  <rotation name="VelolvVelovStation16L66inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport15vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="275.65" />
+  <rotation name="VelolvVelovSupport15vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport15vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="290.65" />
+  <rotation name="VelolvVelovSupport15vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation15R60inVelolvVelop" unit="mm" x="0" y="0" z="275" />
+  <rotation name="VelolvVelovStation15R60inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation15L62inVelolvVelop" unit="mm" x="0" y="0" z="290" />
+  <rotation name="VelolvVelovStation15L62inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport14vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="245.65" />
+  <rotation name="VelolvVelovSupport14vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport14vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="260.65" />
+  <rotation name="VelolvVelovSupport14vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation14R56inVelolvVelop" unit="mm" x="0" y="0" z="245" />
+  <rotation name="VelolvVelovStation14R56inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation14L58inVelolvVelop" unit="mm" x="0" y="0" z="260" />
+  <rotation name="VelolvVelovStation14L58inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport13vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="215.65" />
+  <rotation name="VelolvVelovSupport13vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport13vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="230.65" />
+  <rotation name="VelolvVelovSupport13vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation13R52inVelolvVelop" unit="mm" x="0" y="0" z="215" />
+  <rotation name="VelolvVelovStation13R52inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation13L54inVelolvVelop" unit="mm" x="0" y="0" z="230" />
+  <rotation name="VelolvVelovStation13L54inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport12vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="185.65" />
+  <rotation name="VelolvVelovSupport12vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport12vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="200.65" />
+  <rotation name="VelolvVelovSupport12vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation12R48inVelolvVelop" unit="mm" x="0" y="0" z="185" />
+  <rotation name="VelolvVelovStation12R48inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation12L50inVelolvVelop" unit="mm" x="0" y="0" z="200" />
+  <rotation name="VelolvVelovStation12L50inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport11vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="155.65" />
+  <rotation name="VelolvVelovSupport11vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport11vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="170.65" />
+  <rotation name="VelolvVelovSupport11vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation11R44inVelolvVelop" unit="mm" x="0" y="0" z="155" />
+  <rotation name="VelolvVelovStation11R44inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation11L46inVelolvVelop" unit="mm" x="0" y="0" z="170" />
+  <rotation name="VelolvVelovStation11L46inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport10vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="125.65" />
+  <rotation name="VelolvVelovSupport10vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport10vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="140.65" />
+  <rotation name="VelolvVelovSupport10vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation10R40inVelolvVelop" unit="mm" x="0" y="0" z="125" />
+  <rotation name="VelolvVelovStation10R40inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation10L42inVelolvVelop" unit="mm" x="0" y="0" z="140" />
+  <rotation name="VelolvVelovStation10L42inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport09vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="95.65" />
+  <rotation name="VelolvVelovSupport09vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport09vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="110.65" />
+  <rotation name="VelolvVelovSupport09vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation09R36inVelolvVelop" unit="mm" x="0" y="0" z="95" />
+  <rotation name="VelolvVelovStation09R36inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation09L38inVelolvVelop" unit="mm" x="0" y="0" z="110" />
+  <rotation name="VelolvVelovStation09L38inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport08vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="65.65" />
+  <rotation name="VelolvVelovSupport08vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport08vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="80.65" />
+  <rotation name="VelolvVelovSupport08vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation08R32inVelolvVelop" unit="mm" x="0" y="0" z="65" />
+  <rotation name="VelolvVelovStation08R32inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation08L34inVelolvVelop" unit="mm" x="0" y="0" z="80" />
+  <rotation name="VelolvVelovStation08L34inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport07vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="35.65" />
+  <rotation name="VelolvVelovSupport07vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport07vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="50.65" />
+  <rotation name="VelolvVelovSupport07vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation07R28inVelolvVelop" unit="mm" x="0" y="0" z="35" />
+  <rotation name="VelolvVelovStation07R28inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation07L30inVelolvVelop" unit="mm" x="0" y="0" z="50" />
+  <rotation name="VelolvVelovStation07L30inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport06vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="5.65" />
+  <rotation name="VelolvVelovSupport06vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport06vSupportULinVelolvVelop" unit="mm" x="180" y="-0" z="20.65" />
+  <rotation name="VelolvVelovSupport06vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation06R24inVelolvVelop" unit="mm" x="0" y="0" z="5" />
+  <rotation name="VelolvVelovStation06R24inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation06L26inVelolvVelop" unit="mm" x="0" y="0" z="20" />
+  <rotation name="VelolvVelovStation06L26inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport05vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="-24.35" />
+  <rotation name="VelolvVelovSupport05vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport05vSupportULinVelolvVelop" unit="mm" x="180" y="0" z="-9.35" />
+  <rotation name="VelolvVelovSupport05vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation05R20inVelolvVelop" unit="mm" x="0" y="0" z="-25" />
+  <rotation name="VelolvVelovStation05R20inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation05L22inVelolvVelop" unit="mm" x="0" y="0" z="-10" />
+  <rotation name="VelolvVelovStation05L22inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport04vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="-54.35" />
+  <rotation name="VelolvVelovSupport04vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport04vSupportULinVelolvVelop" unit="mm" x="180" y="0" z="-39.35" />
+  <rotation name="VelolvVelovSupport04vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation04R16inVelolvVelop" unit="mm" x="0" y="0" z="-55" />
+  <rotation name="VelolvVelovStation04R16inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation04L18inVelolvVelop" unit="mm" x="0" y="0" z="-40" />
+  <rotation name="VelolvVelovStation04L18inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport03vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="-84.35" />
+  <rotation name="VelolvVelovSupport03vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport03vSupportULinVelolvVelop" unit="mm" x="180" y="0" z="-69.35" />
+  <rotation name="VelolvVelovSupport03vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation03R12inVelolvVelop" unit="mm" x="0" y="0" z="-85" />
+  <rotation name="VelolvVelovStation03R12inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation03L14inVelolvVelop" unit="mm" x="0" y="0" z="-70" />
+  <rotation name="VelolvVelovStation03L14inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport02vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="-114.35" />
+  <rotation name="VelolvVelovSupport02vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport02vSupportULinVelolvVelop" unit="mm" x="180" y="0" z="-99.35" />
+  <rotation name="VelolvVelovSupport02vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation02R8inVelolvVelop" unit="mm" x="0" y="0" z="-115" />
+  <rotation name="VelolvVelovStation02R8inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation02L10inVelolvVelop" unit="mm" x="0" y="0" z="-100" />
+  <rotation name="VelolvVelovStation02L10inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport01vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="-144.35" />
+  <rotation name="VelolvVelovSupport01vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport01vSupportULinVelolvVelop" unit="mm" x="180" y="0" z="-129.35" />
+  <rotation name="VelolvVelovSupport01vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation01R4inVelolvVelop" unit="mm" x="0" y="0" z="-145" />
+  <rotation name="VelolvVelovStation01R4inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation01L6inVelolvVelop" unit="mm" x="0" y="0" z="-130" />
+  <rotation name="VelolvVelovStation01L6inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovSupport00vSupportURinVelolvVelop" unit="mm" x="-180" y="0" z="-174.35" />
+  <rotation name="VelolvVelovSupport00vSupportURinVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovSupport00vSupportULinVelolvVelop" unit="mm" x="180" y="0" z="-159.35" />
+  <rotation name="VelolvVelovSupport00vSupportULinVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVelovStation00R0inVelolvVelop" unit="mm" x="0" y="0" z="-175" />
+  <rotation name="VelolvVelovStation00R0inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVelovStation00L2inVelolvVelop" unit="mm" x="0" y="0" z="-160" />
+  <rotation name="VelolvVelovStation00L2inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVeloPuStation2L103inVelolvVelop" unit="mm" x="0" y="0" z="-220" />
+  <rotation name="VelolvVeloPuStation2L103inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVeloPuStation2R102inVelolvVelop" unit="mm" x="0" y="0" z="-235" />
+  <rotation name="VelolvVeloPuStation2R102inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="VelolvVeloPuStation1L101inVelolvVelop" unit="mm" x="0" y="0" z="-300" />
+  <rotation name="VelolvVeloPuStation1L101inVelolvVelor" unit="degree" x="0" y="0" z="0" />
+  <position name="VelolvVeloPuStation1R100inVelolvVelop" unit="mm" x="0" y="0" z="-315" />
+  <rotation name="VelolvVeloPuStation1R100inVelolvVelor" unit="degree" x="0" y="-0" z="-180" />
+  <position name="eLHCbVeloinWorldp" unit="mm" x="0" y="0" z="0" />
+  <rotation name="eLHCbVeloinWorldr" unit="degree" x="0" y="0" z="0" />
+ </define>
+ <materials>
+  <material Z="29" formula=" " name="sCopper" >
+   <D value="8.96" />
+   <atom value="63.546" />
+  </material>
+  <material Z="1" formula=" " name="sHydrogen" >
+   <D value="0.0708" />
+   <atom value="1.00794" />
+  </material>
+  <material Z="1" formula=" " name="sVacuum" >
+   <D value="1e-25" />
+   <atom value="1.00794" />
+  </material>
+  <material Z="26" formula=" " name="sIron" >
+   <D value="7.87" />
+   <atom value="55.85" />
+  </material>
+  <material Z="6" formula=" " name="sCarbon" >
+   <D value="2.265" />
+   <atom value="12.011" />
+  </material>
+  <material Z="7" formula=" " name="sNitrogen" >
+   <D value="0.00125" />
+   <atom value="14.01" />
+  </material>
+  <material Z="8" formula=" " name="sOxygen" >
+   <D value="0.00143" />
+   <atom value="15.999" />
+  </material>
+  <material formula=" " name="sAir" >
+   <D value="0.001205" />
+   <fraction n="0.7" ref="sNitrogen" />
+   <fraction n="0.3" ref="sOxygen" />
+  </material>
+  <material Z="14" formula=" " name="sSilicon" >
+   <D value="2.33" />
+   <atom value="28.09" />
+  </material>
+  <material formula=" " name="sVeloVeloCarbonFibre" >
+   <D value="1.72" />
+   <fraction n="0.844913" ref="sCarbon" />
+   <fraction n="0.0425421" ref="sHydrogen" />
+   <fraction n="0.112545" ref="sOxygen" />
+  </material>
+  <material formula=" " name="sVeloVeloKapton" >
+   <D value="1.39" />
+   <fraction n="0.0805414" ref="sHydrogen" />
+   <fraction n="0.599851" ref="sCarbon" />
+   <fraction n="0.319608" ref="sOxygen" />
+  </material>
+  <material Z="13" formula=" " name="sAluminium" >
+   <D value="2.7" />
+   <atom value="26.98" />
+  </material>
+  <material Z="25" formula=" " name="sManganese" >
+   <D value="7.43" />
+   <atom value="54.938" />
+  </material>
+  <material Z="15" formula=" " name="sPhosphor" >
+   <D value="1.82" />
+   <atom value="30.974" />
+  </material>
+  <material Z="16" formula=" " name="sSulfur" >
+   <D value="2.07" />
+   <atom value="32.066" />
+  </material>
+ </materials>
+ <solids>
+  <box aunit="radian" lunit="mm" name="WorldBox" x="100000" y="100000" z="100000" />
+  <tube aunit="degree" deltaphi="360" lunit="mm" name="VeloTubs1" rmax="590" rmin="0" startphi="0" z="1670" />
+  <tube aunit="degree" deltaphi="180.5" lunit="mm" name="PuStationTubs" rmax="44.01" rmin="6.99" startphi="-90.25" z="3.25" />
+  <box aunit="radian" lunit="mm" name="PuStationBox1" x="3.5" y="37.02" z="3.25" />
+  <union name="PuStationTubsChildForPuStationUnion" >
+   <first ref="PuStationTubs" />
+   <second ref="PuStationBox1" />
+   <position name="PuStationTubsChildForPuStationUnionpos137" unit="mm" x="-1.5" y="25.5" z="-0" />
+  </union>
+  <box aunit="radian" lunit="mm" name="PuStationBox2" x="3.5" y="37.02" z="3.25" />
+  <union name="PuStationUnion" >
+   <first ref="PuStationTubsChildForPuStationUnion" />
+   <second ref="PuStationBox2" />
+   <position name="PuStationUnionpos140" unit="mm" x="-1.5" y="-25.5" z="0" />
+  </union>
+  <tube aunit="degree" deltaphi="182.5" lunit="mm" name="PUdetectorRTubs" rmax="44" rmin="7" startphi="-91.25" z="0.22" />
+  <box aunit="radian" lunit="mm" name="PUrDetGuardRing1" x="1" y="37" z="0.22" />
+  <union name="PUdetectorRTubsChildForPUdetectorRUnion" >
+   <first ref="PUdetectorRTubs" />
+   <second ref="PUrDetGuardRing1" />
+   <position name="PUdetectorRTubsChildForPUdetectorRUnionpos144" unit="mm" x="-0.945113" y="25.5" z="0" />
+   <rotation name="PUdetectorRTubsChildForPUdetectorRUnionrot145" unit="degree" x="0" y="-0" z="1" />
+  </union>
+  <box aunit="radian" lunit="mm" name="PUrDetGuardRing2" x="1" y="37" z="0.22" />
+  <union name="PUdetectorRUnion" >
+   <first ref="PUdetectorRTubsChildForPUdetectorRUnion" />
+   <second ref="PUrDetGuardRing2" />
+   <position name="PUdetectorRUnionpos148" unit="mm" x="-0.945113" y="-25.5" z="0" />
+   <rotation name="PUdetectorRUnionrot149" unit="degree" x="0" y="-0" z="-1" />
+  </union>
+  <tube aunit="degree" deltaphi="180.5" lunit="mm" name="UStationTubs" rmax="44.01" rmin="6.99" startphi="-90.25" z="3.25" />
+  <box aunit="radian" lunit="mm" name="UStationBox1" x="3.5" y="37.02" z="3.25" />
+  <union name="UStationTubsChildForUStationUnion" >
+   <first ref="UStationTubs" />
+   <second ref="UStationBox1" />
+   <position name="UStationTubsChildForUStationUnionpos153" unit="mm" x="-1.5" y="25.5" z="-0" />
+  </union>
+  <box aunit="radian" lunit="mm" name="UStationBox2" x="3.5" y="37.02" z="3.25" />
+  <union name="UStationUnion" >
+   <first ref="UStationTubsChildForUStationUnion" />
+   <second ref="UStationBox2" />
+   <position name="UStationUnionpos156" unit="mm" x="-1.5" y="-25.5" z="0" />
+  </union>
+  <tube aunit="degree" deltaphi="182.5" lunit="mm" name="detectorRTubs" rmax="44" rmin="7" startphi="-91.25" z="0.22" />
+  <box aunit="radian" lunit="mm" name="rDetGuardRing1" x="1" y="37" z="0.22" />
+  <union name="detectorRTubsChildFordetectorRUnion" >
+   <first ref="detectorRTubs" />
+   <second ref="rDetGuardRing1" />
+   <position name="detectorRTubsChildFordetectorRUnionpos160" unit="mm" x="-0.945113" y="25.5" z="0" />
+   <rotation name="detectorRTubsChildFordetectorRUnionrot161" unit="degree" x="0" y="-0" z="1" />
+  </union>
+  <box aunit="radian" lunit="mm" name="rDetGuardRing2" x="1" y="37" z="0.22" />
+  <union name="detectorRUnion" >
+   <first ref="detectorRTubsChildFordetectorRUnion" />
+   <second ref="rDetGuardRing2" />
+   <position name="detectorRUnionpos164" unit="mm" x="-0.945113" y="-25.5" z="0" />
+   <rotation name="detectorRUnionrot165" unit="degree" x="0" y="-0" z="-1" />
+  </union>
+  <tube aunit="degree" deltaphi="180" lunit="mm" name="detectorPhiTubs" rmax="44" rmin="7" startphi="-90" z="0.22" />
+  <trap alpha1="-1.89448" alpha2="-1.89448" aunit="degree" lunit="mm" name="detectorPhiTrap1" phi="0" theta="0" x1="1" x2="2.72" x3="1" x4="2.72" y1="26" y2="26" z="0.22" />
+  <union name="detectorPhiTubsChildFordetectorPhiUnion" >
+   <first ref="detectorPhiTubs" />
+   <second ref="detectorPhiTrap1" />
+   <position name="detectorPhiTubsChildFordetectorPhiUnionpos169" unit="mm" x="-0.93" y="-31" z="0" />
+  </union>
+  <trap alpha1="6.53449" alpha2="6.53449" aunit="degree" lunit="mm" name="detectorPhiTrap2" phi="0" theta="0" x1="2.72" x2="0.2" x3="2.72" x4="0.2" y1="11" y2="11" z="0.22" />
+  <union name="detectorPhiTubsChildFordetectorPhiUnion1" >
+   <first ref="detectorPhiTubsChildFordetectorPhiUnion" />
+   <second ref="detectorPhiTrap2" />
+   <position name="detectorPhiTubsChildFordetectorPhiUnion1pos172" unit="mm" x="-0.73" y="-12.5" z="0" />
+  </union>
+  <trap alpha1="-0.503261" alpha2="-0.503261" aunit="degree" lunit="mm" name="detectorPhiTrap3" phi="0" theta="0" x1="2.1" x2="2.75" x3="2.1" x4="2.75" y1="37" y2="37" z="0.22" />
+  <union name="detectorPhiUnion" >
+   <first ref="detectorPhiTubsChildFordetectorPhiUnion1" />
+   <second ref="detectorPhiTrap3" />
+   <position name="detectorPhiUnionpos175" unit="mm" x="-1.2125" y="25.5" z="-0" />
+  </union>
+  <tube aunit="degree" deltaphi="180" lunit="mm" name="CFibreTubs1X" rmax="44.01" rmin="40" startphi="-90" z="0.6" />
+  <box aunit="radian" lunit="mm" name="SupportMotherBox1" x="160.01" y="201" z="29.99" />
+  <box aunit="radian" lunit="mm" name="SupportMotherBox2" x="100" y="175" z="2.82" />
+  <union name="SupportMother" >
+   <first ref="SupportMotherBox1" />
+   <second ref="SupportMotherBox2" />
+   <position name="SupportMotherpos180" unit="mm" x="-130" y="0" z="-0.65" />
+  </union>
+  <tube aunit="degree" deltaphi="360" lunit="mm" name="SupportMotherTubs" rmax="44.02" rmin="0" startphi="0" z="9.66667" />
+  <subtraction name="SupportMotherSub" >
+   <first ref="SupportMother" />
+   <second ref="SupportMotherTubs" />
+   <position name="SupportMotherSubpos183" unit="mm" x="-180" y="0" z="0" />
+  </subtraction>
+  <box aunit="radian" lunit="mm" name="CFibreBox" x="121" y="175" z="0.6" />
+  <tube aunit="degree" deltaphi="360" lunit="mm" name="CFibreTubs1" rmax="44.02" rmin="0" startphi="0" z="0.66" />
+  <subtraction name="CarbonFibreSub" >
+   <first ref="CFibreBox" />
+   <second ref="CFibreTubs1" />
+   <position name="CarbonFibreSubpos187" unit="mm" x="-60.5" y="0" z="0" />
+  </subtraction>
+  <box aunit="radian" lunit="mm" name="KaptonBox" x="101" y="175" z="0.8" />
+  <tube aunit="degree" deltaphi="360" lunit="mm" name="KaptonTubs" rmax="44.02" rmin="0" startphi="0" z="0.88" />
+  <subtraction name="KaptonSub" >
+   <first ref="KaptonBox" />
+   <second ref="KaptonTubs" />
+   <position name="KaptonSubpos191" unit="mm" x="-50.5" y="0" z="0" />
+  </subtraction>
+  <box aunit="radian" lunit="mm" name="CuLayerBox" x="101" y="175" z="0.06" />
+  <tube aunit="degree" deltaphi="360" lunit="mm" name="CuLayerTubs" rmax="44.02" rmin="0" startphi="0" z="0.606" />
+  <subtraction name="CuLayer1Sub" >
+   <first ref="CuLayerBox" />
+   <second ref="CuLayerTubs" />
+   <position name="CuLayer1Subpos195" unit="mm" x="-50.5" y="0" z="0" />
+  </subtraction>
+  <tube aunit="degree" deltaphi="176" lunit="mm" name="SiChipTubs" rmax="74" rmin="65.01" startphi="-88" z="0.42" />
+  <tube aunit="degree" deltaphi="180" lunit="mm" name="FanoutTubs" rmax="65" rmin="44.02" startphi="-90" z="0.2" />
+  <box aunit="radian" lunit="mm" name="CLA1" x="1" y="160" z="13.544" />
+  <box aunit="radian" lunit="mm" name="CLA2" x="13" y="160" z="1" />
+  <box aunit="radian" lunit="mm" name="MFLO" x="129.591" y="159.5" z="0.5" />
+  <box aunit="radian" lunit="mm" name="MBLO" x="115.119" y="159.5" z="0.5" />
+  <trap alpha1="-1.37113" alpha2="-1.37113" aunit="degree" lunit="mm" name="MSILO1" phi="0" theta="0" x1="11.1" x2="4.8409" x3="11.1" x4="4.8409" y1="130.75" y2="130.75" z="0.5" />
+  <trap alpha1="2.74508" alpha2="2.74508" aunit="degree" lunit="mm" name="MSILO2" phi="0" theta="0" x1="11.1" x2="0.0001" x3="11.1" x4="0.0002" y1="115.75" y2="115.75" z="0.5" />
+  <box aunit="radian" lunit="mm" name="MODB" x="10" y="200" z="29" />
+  <box aunit="radian" lunit="mm" name="SPRI" x="4.2925" y="150" z="19" />
+  <union name="MODBChildForSpBaseUnion" >
+   <first ref="MODB" />
+   <second ref="SPRI" />
+   <position name="MODBChildForSpBaseUnionpos207" unit="mm" x="7.125" y="0" z="0" />
+  </union>
+  <box aunit="radian" lunit="mm" name="MPBA" x="6" y="188" z="29" />
+  <union name="SpBaseUnion" >
+   <first ref="MODBChildForSpBaseUnion" />
+   <second ref="MPBA" />
+   <position name="SpBaseUnionpos210" unit="mm" x="12.249" y="0" z="0" />
+  </union>
+  <tube aunit="degree" deltaphi="180.5" lunit="mm" name="DStationTubs" rmax="44.01" rmin="6.99" startphi="-90.25" z="3.25" />
+  <box aunit="radian" lunit="mm" name="DStationBox1" x="3.5" y="37.02" z="3.25" />
+  <union name="DStationTubsChildForDStationUnion" >
+   <first ref="DStationTubs" />
+   <second ref="DStationBox1" />
+   <position name="DStationTubsChildForDStationUnionpos214" unit="mm" x="-1.5" y="25.5" z="-0" />
+  </union>
+  <box aunit="radian" lunit="mm" name="DStationBox2" x="3.5" y="37.02" z="3.25" />
+  <union name="DStationUnion" >
+   <first ref="DStationTubsChildForDStationUnion" />
+   <second ref="DStationBox2" />
+   <position name="DStationUnionpos217" unit="mm" x="-1.5" y="-25.5" z="0" />
+  </union>
+  <box aunit="radian" lunit="mm" name="UpStSect1Box1" x="7.25" y="179.98" z="56.7" />
+  <trap alpha1="-38.144" alpha2="-38.144" aunit="degree" lunit="mm" name="PUSect1SlopeTrap1" phi="0" theta="0" x1="7.43125" x2="10.5062" x3="7.43125" x4="10.5062" y1="9.78875" y2="9.78875" z="179.98" />
+  <union name="UpStSect1Box1ChildForPUSect1Union" >
+   <first ref="UpStSect1Box1" />
+   <second ref="PUSect1SlopeTrap1" />
+   <position name="UpStSect1Box1ChildForPUSect1Unionpos221" unit="mm" x="-3.75" y="0" z="33.125" />
+   <rotation name="UpStSect1Box1ChildForPUSect1Unionrot222" unit="degree" x="90" y="-0" z="0" />
+  </union>
+  <trap alpha1="38.144" alpha2="38.144" aunit="degree" lunit="mm" name="PUSect1SlopeTrap2" phi="0" theta="0" x1="10.5062" x2="7.43125" x3="10.5062" x4="7.43125" y1="9.78875" y2="9.78875" z="179.98" />
+  <union name="PUSect1Union" >
+   <first ref="UpStSect1Box1ChildForPUSect1Union" />
+   <second ref="PUSect1SlopeTrap2" />
+   <position name="PUSect1Unionpos225" unit="mm" x="-3.75" y="0" z="-33.125" />
+   <rotation name="PUSect1Unionrot226" unit="degree" x="90" y="-0" z="0" />
+  </union>
+  <cone aunit="degree" deltaphi="130.751" lunit="mm" name="RFFCons1" rmax1="6" rmax2="12" rmin1="5.85" rmin2="11.85" startphi="-65.3757" z="7" />
+  <tube aunit="degree" deltaphi="130.751" lunit="mm" name="RFInnerTubsB" rmax="6" rmin="5.85" startphi="-65.3757" z="2.54" />
+  <box aunit="radian" lunit="mm" name="RFInWallSubBox1B" x="6.435" y="0.15" z="2.54" />
+  <box aunit="radian" lunit="mm" name="RFInWallSubBox2B" x="20" y="0.5" z="9.3" />
+  <subtraction name="RFInnerWallB" >
+   <first ref="RFInWallSubBox1B" />
+   <second ref="RFInWallSubBox2B" />
+   <position name="RFInnerWallBpos232" unit="mm" x="9.97466e-18" y="-0" z="8.95362" />
+   <rotation name="RFInnerWallBrot233" unit="degree" x="0" y="-46.6983" z="0" />
+  </subtraction>
+  <trap alpha1="27.1374" alpha2="27.1374" aunit="degree" lunit="mm" name="RFAnnoyingTrapXX" phi="0" theta="0" x1="3.68717" x2="0.0001" x3="3.68717" x4="0.0001" y1="7.98671" y2="7.98671" z="0.15" />
+  <box aunit="radian" lunit="mm" name="RFBPOCSubBox1xx" x="12.8601" y="179.98" z="0.25" />
+  <box aunit="radian" lunit="mm" name="RFBPOCSubBox2xx" x="20" y="10.9087" z="37.2" />
+  <subtraction name="RFBPOCSubBox1xxChildForRFBPOCSubxx" >
+   <first ref="RFBPOCSubBox1xx" />
+   <second ref="RFBPOCSubBox2xx" />
+  </subtraction>
+  <trd aunit="radian" lunit="mm" name="RFOCSubTRD" x1="20" x2="20" y1="10.9087" y2="21.8174" z="7" />
+  <subtraction name="RFBPOCSubxx" >
+   <first ref="RFBPOCSubBox1xxChildForRFBPOCSubxx" />
+   <second ref="RFOCSubTRD" />
+   <position name="RFBPOCSubxxpos240" unit="mm" x="6.863e-17" y="0" z="1.99546" />
+   <rotation name="RFBPOCSubxxrot241" unit="degree" x="0" y="46.6983" z="0" />
+  </subtraction>
+  <tube aunit="degree" deltaphi="130.751" lunit="mm" name="RFOutsPV1" rmax="12" rmin="11.85" startphi="-65.3757" z="56.7" />
+  <box aunit="radian" lunit="mm" name="RFBPOCVeto1SubBox1" x="0.25" y="179.98" z="56.7" />
+  <tube aunit="degree" deltaphi="130.751" lunit="mm" name="RFBPOCVeto1SubTubs1" rmax="12" rmin="0" startphi="-65.3757" z="56.7567" />
+  <subtraction name="RFBPOCVeto1Sub" >
+   <first ref="RFBPOCVeto1SubBox1" />
+   <second ref="RFBPOCVeto1SubTubs1" />
+   <position name="RFBPOCVeto1Subpos246" unit="mm" x="-5" y="0" z="0" />
+  </subtraction>
+  <tube aunit="degree" deltaphi="130.751" lunit="mm" name="UnionRFInnerTubsA" rmax="6" rmin="5.85" startphi="-65.3757" z="3.7225" />
+  <box aunit="radian" lunit="mm" name="UnionRFOuterLow1" x="0.25" y="84.5356" z="3.7225" />
+  <union name="UnionRFInnerTubsAChildForRFSensorSectUnion" >
+   <first ref="UnionRFInnerTubsA" />
+   <second ref="UnionRFOuterLow1" />
+   <position name="UnionRFInnerTubsAChildForRFSensorSectUnionpos250" unit="mm" x="-4" y="47.7222" z="-0" />
+  </union>
+  <box aunit="radian" lunit="mm" name="UnionRFOuterLow2" x="0.25" y="84.5356" z="3.7225" />
+  <union name="UnionRFInnerTubsAChildForRFSensorSectUnion1" >
+   <first ref="UnionRFInnerTubsAChildForRFSensorSectUnion" />
+   <second ref="UnionRFOuterLow2" />
+   <position name="UnionRFInnerTubsAChildForRFSensorSectUnion1pos253" unit="mm" x="-4" y="-47.7222" z="0" />
+  </union>
+  <box aunit="radian" lunit="mm" name="UnionRFInWallSub1A1" x="6.5" y="0.15" z="3.7225" />
+  <union name="UnionRFInnerTubsAChildForRFSensorSectUnion2" >
+   <first ref="UnionRFInnerTubsAChildForRFSensorSectUnion1" />
+   <second ref="UnionRFInWallSub1A1" />
+   <position name="UnionRFInnerTubsAChildForRFSensorSectUnion2pos256" unit="mm" x="-0.75" y="-5.37936" z="0" />
+  </union>
+  <box aunit="radian" lunit="mm" name="UnionRFInWallSub1A2" x="6.5" y="0.15" z="3.7225" />
+  <union name="RFSensorSectUnion" >
+   <first ref="UnionRFInnerTubsAChildForRFSensorSectUnion2" />
+   <second ref="UnionRFInWallSub1A2" />
+   <position name="RFSensorSectUnionpos259" unit="mm" x="-0.75" y="5.37936" z="-0" />
+  </union>
+  <box aunit="radian" lunit="mm" name="UpStSect2Box1" x="7.25" y="179.98" z="36.7" />
+  <trap alpha1="-38.144" alpha2="-38.144" aunit="degree" lunit="mm" name="PUSect2SlopeTrap1" phi="0" theta="0" x1="7.43125" x2="10.5062" x3="7.43125" x4="10.5062" y1="9.78875" y2="9.78875" z="179.98" />
+  <union name="UpStSect2Box1ChildForPUSect2Union" >
+   <first ref="UpStSect2Box1" />
+   <second ref="PUSect2SlopeTrap1" />
+   <position name="UpStSect2Box1ChildForPUSect2Unionpos263" unit="mm" x="-3.75" y="0" z="23.125" />
+   <rotation name="UpStSect2Box1ChildForPUSect2Unionrot264" unit="degree" x="90" y="-0" z="0" />
+  </union>
+  <trap alpha1="38.144" alpha2="38.144" aunit="degree" lunit="mm" name="PUSect2SlopeTrap2" phi="0" theta="0" x1="10.5062" x2="7.43125" x3="10.5062" x4="7.43125" y1="9.78875" y2="9.78875" z="179.98" />
+  <union name="PUSect2Union" >
+   <first ref="UpStSect2Box1ChildForPUSect2Union" />
+   <second ref="PUSect2SlopeTrap2" />
+   <position name="PUSect2Unionpos267" unit="mm" x="-3.75" y="0" z="-23.125" />
+   <rotation name="PUSect2Unionrot268" unit="degree" x="90" y="-0" z="0" />
+  </union>
+  <tube aunit="degree" deltaphi="130.751" lunit="mm" name="RFOutsPV2" rmax="12" rmin="11.85" startphi="-65.3757" z="36.7" />
+  <box aunit="radian" lunit="mm" name="RFBPOCVeto2SubBox1" x="0.25" y="179.98" z="36.7" />
+  <tube aunit="degree" deltaphi="130.751" lunit="mm" name="RFBPOCVeto2SubTubs1" rmax="12" rmin="0" startphi="-65.3757" z="36.7367" />
+  <subtraction name="RFBPOCVeto2Sub" >
+   <first ref="RFBPOCVeto2SubBox1" />
+   <second ref="RFBPOCVeto2SubTubs1" />
+   <position name="RFBPOCVeto2Subpos273" unit="mm" x="-5" y="0" z="0" />
+  </subtraction>
+  <box aunit="radian" lunit="mm" name="UpStSectBox1" x="7.25" y="179.98" z="6.71" />
+  <trap alpha1="-38.144" alpha2="-38.144" aunit="degree" lunit="mm" name="UpStSectSlopeTrap1" phi="0" theta="0" x1="7.43125" x2="10.5062" x3="7.43125" x4="10.5062" y1="9.78875" y2="9.78875" z="179.98" />
+  <union name="UpStSectBox1ChildForUpStSectUnion" >
+   <first ref="UpStSectBox1" />
+   <second ref="UpStSectSlopeTrap1" />
+   <position name="UpStSectBox1ChildForUpStSectUnionpos277" unit="mm" x="-3.75" y="0" z="8.125" />
+   <rotation name="UpStSectBox1ChildForUpStSectUnionrot278" unit="degree" x="90" y="-0" z="0" />
+  </union>
+  <trap alpha1="38.144" alpha2="38.144" aunit="degree" lunit="mm" name="UpStSectSlopeTrap2" phi="0" theta="0" x1="10.5062" x2="7.43125" x3="10.5062" x4="7.43125" y1="9.78875" y2="9.78875" z="179.98" />
+  <union name="UpStSectUnion" >
+   <first ref="UpStSectBox1ChildForUpStSectUnion" />
+   <second ref="UpStSectSlopeTrap2" />
+   <position name="UpStSectUnionpos281" unit="mm" x="-3.75" y="0" z="-8.125" />
+   <rotation name="UpStSectUnionrot282" unit="degree" x="90" y="-0" z="0" />
+  </union>
+  <tube aunit="degree" deltaphi="130.751" lunit="mm" name="RFOutsShort" rmax="12" rmin="11.85" startphi="-65.3757" z="6.7" />
+  <box aunit="radian" lunit="mm" name="RFOuterHighDS" x="0.25" y="79.0813" z="6.7" />
+  <box aunit="radian" lunit="mm" name="MidSectBox1" x="7.25" y="179.98" z="76.7" />
+  <trap alpha1="-38.144" alpha2="-38.144" aunit="degree" lunit="mm" name="SlopeTrapTest3" phi="0" theta="0" x1="7.43125" x2="10.5062" x3="7.43125" x4="10.5062" y1="9.78875" y2="9.78875" z="179.98" />
+  <union name="MidSectBox1ChildForMidSectUnion" >
+   <first ref="MidSectBox1" />
+   <second ref="SlopeTrapTest3" />
+   <position name="MidSectBox1ChildForMidSectUnionpos288" unit="mm" x="-3.75" y="0" z="43.125" />
+   <rotation name="MidSectBox1ChildForMidSectUnionrot289" unit="degree" x="90" y="-0" z="0" />
+  </union>
+  <trap alpha1="38.144" alpha2="38.144" aunit="degree" lunit="mm" name="SlopeTrapTest4" phi="0" theta="0" x1="10.5062" x2="7.43125" x3="10.5062" x4="7.43125" y1="9.78875" y2="9.78875" z="179.98" />
+  <union name="MidSectUnion" >
+   <first ref="MidSectBox1ChildForMidSectUnion" />
+   <second ref="SlopeTrapTest4" />
+   <position name="MidSectUnionpos292" unit="mm" x="-3.75" y="0" z="-43.125" />
+   <rotation name="MidSectUnionrot293" unit="degree" x="90" y="-0" z="0" />
+  </union>
+  <tube aunit="degree" deltaphi="130.751" lunit="mm" name="RFOutsMid" rmax="12" rmin="11.85" startphi="-65.3757" z="76.7" />
+  <box aunit="radian" lunit="mm" name="RFBPOCMidSubBox1" x="0.25" y="179.98" z="76.7" />
+  <tube aunit="degree" deltaphi="130.751" lunit="mm" name="RFBPOCMidSubTubs1" rmax="12" rmin="0" startphi="-65.3757" z="76.7767" />
+  <subtraction name="RFBPOCMidSub" >
+   <first ref="RFBPOCMidSubBox1" />
+   <second ref="RFBPOCMidSubTubs1" />
+   <position name="RFBPOCMidSubpos298" unit="mm" x="-5" y="0" z="0" />
+  </subtraction>
+  <box aunit="radian" lunit="mm" name="DnStSectBox1" x="1.25" y="179.98" z="26.71" />
+  <trap alpha1="-25.23" alpha2="-25.23" aunit="degree" lunit="mm" name="SlopeTrapTest5" phi="0" theta="0" x1="1.28125" x2="10.5062" x3="1.28125" x4="10.5062" y1="9.78875" y2="9.78875" z="179.98" />
+  <union name="DnStSectBox1ChildForDnStSectUnion" >
+   <first ref="DnStSectBox1" />
+   <second ref="SlopeTrapTest5" />
+   <position name="DnStSectBox1ChildForDnStSectUnionpos302" unit="mm" x="-2.25" y="0" z="18.125" />
+   <rotation name="DnStSectBox1ChildForDnStSectUnionrot303" unit="degree" x="90" y="-0" z="0" />
+  </union>
+  <trap alpha1="25.23" alpha2="25.23" aunit="degree" lunit="mm" name="SlopeTrapTest6" phi="0" theta="0" x1="10.5062" x2="1.28125" x3="10.5062" x4="1.28125" y1="9.78875" y2="9.78875" z="179.98" />
+  <union name="DnStSectUnion" >
+   <first ref="DnStSectBox1ChildForDnStSectUnion" />
+   <second ref="SlopeTrapTest6" />
+   <position name="DnStSectUnionpos306" unit="mm" x="-2.25" y="0" z="-18.125" />
+   <rotation name="DnStSectUnionrot307" unit="degree" x="90" y="-0" z="0" />
+  </union>
+  <box aunit="radian" lunit="mm" name="RFBPOCSubBox1" x="13.057" y="179.98" z="0.25" />
+  <tube aunit="degree" deltaphi="130.751" lunit="mm" name="RFBPOCSubTubs1" rmax="6" rmin="0" startphi="-65.3757" z="37.2" />
+  <subtraction name="RFBPOCSubBox1ChildForRFBPOCSub" >
+   <first ref="RFBPOCSubBox1" />
+   <second ref="RFBPOCSubTubs1" />
+   <position name="RFBPOCSubBox1ChildForRFBPOCSubpos311" unit="mm" x="-0.5" y="0" z="2.33103e-18" />
+   <rotation name="RFBPOCSubBox1ChildForRFBPOCSubrot312" unit="degree" x="0" y="46.6983" z="0" />
+  </subtraction>
+  <box aunit="radian" lunit="mm" name="RFBPOCSubBox2" x="6.7925" y="10.9087" z="37.2" />
+  <subtraction name="RFBPOCSub" >
+   <first ref="RFBPOCSubBox1ChildForRFBPOCSub" />
+   <second ref="RFBPOCSubBox2" />
+   <position name="RFBPOCSubpos315" unit="mm" x="-1.82258" y="0" z="-8.51099e-18" />
+   <rotation name="RFBPOCSubrot316" unit="degree" x="0" y="46.6983" z="0" />
+  </subtraction>
+  <tube aunit="degree" deltaphi="130.751" lunit="mm" name="RFBPSlopeSubTubs" rmax="6" rmin="5.85" startphi="-65.3757" z="9.55" />
+  <box aunit="radian" lunit="mm" name="RFBPSlopeSubBox1" x="100" y="12" z="4" />
+  <subtraction name="RFBPSubSLope" >
+   <first ref="RFBPSlopeSubTubs" />
+   <second ref="RFBPSlopeSubBox1" />
+   <position name="RFBPSubSLopepos320" unit="mm" x="-1.10589e-17" y="-0" z="2.38558" />
+   <rotation name="RFBPSubSLoperot321" unit="degree" x="0" y="-46.6983" z="0" />
+  </subtraction>
+  <trap alpha1="-27.8907" alpha2="-27.8907" aunit="degree" lunit="mm" name="RFInnerTrap2XX" phi="0" theta="0" x1="6.88043" x2="0.001" x3="6.88043" x4="0.001" y1="6.5" y2="6.5" z="0.15" />
+  <box aunit="radian" lunit="mm" name="RFBPOC2SubBox1" x="0.25" y="179.98" z="26.7" />
+  <tube aunit="degree" deltaphi="130.751" lunit="mm" name="RFBPOC2SubTubs1" rmax="6" rmin="0" startphi="-65.3757" z="26.7267" />
+  <subtraction name="RFBPOC2Sub" >
+   <first ref="RFBPOC2SubBox1" />
+   <second ref="RFBPOC2SubTubs1" />
+   <position name="RFBPOC2Subpos326" unit="mm" x="-5" y="0" z="0" />
+  </subtraction>
+  <tube aunit="degree" deltaphi="67.1146" lunit="mm" name="RFOutsLong" rmax="6" rmin="5.85" startphi="-33.5573" z="26.7" />
+  <polycone aunit="degree" deltaphi="170" lunit="mm" name="WakeFieldPolyCone1" startphi="95" >
+   <zplane rmax="5.5" rmin="5.424" z="0" />
+   <zplane rmax="5.5" rmin="5.424" z="5" />
+   <zplane rmax="7.07123" rmin="6.99523" z="17.5" />
+   <zplane rmax="10.3226" rmin="10.2466" z="19.5" />
+   <zplane rmax="4.82542" rmin="4.74942" z="23.5" />
+   <zplane rmax="11.3282" rmin="11.2522" z="27.5" />
+   <zplane rmax="5.83101" rmin="5.75501" z="31.5" />
+   <zplane rmax="12.3338" rmin="12.2578" z="35.5" />
+   <zplane rmax="6.83659" rmin="6.76059" z="39.5" />
+   <zplane rmax="13.3394" rmin="13.2634" z="43.5" />
+   <zplane rmax="7.84218" rmin="7.76618" z="47.5" />
+   <zplane rmax="14.345" rmin="14.269" z="51.5" />
+   <zplane rmax="8.84777" rmin="8.77177" z="55.5" />
+   <zplane rmax="15.3506" rmin="15.2746" z="59.5" />
+   <zplane rmax="9.85335" rmin="9.77735" z="63.5" />
+   <zplane rmax="16.3561" rmin="16.2801" z="67.5" />
+   <zplane rmax="10.8589" rmin="10.7829" z="71.5" />
+   <zplane rmax="16.5489" rmin="16.4729" z="75" />
+  </polycone>
+  <trap alpha1="4.52793" alpha2="4.52793" aunit="degree" lunit="mm" name="RFSdTrap1" phi="0" theta="0" x1="197.01" x2="25.74" x3="197.01" x4="25.74" y1="1092.28" y2="1092.28" z="0.5" />
+  <box aunit="radian" lunit="mm" name="RFBkBox1" x="26" y="217.8" z="0.5" />
+  <box aunit="radian" lunit="mm" name="RFFrBox1" x="199" y="217.8" z="0.5" />
+  <box aunit="radian" lunit="mm" name="RFSdBox2" x="48" y="0.5" z="1092.28" />
+  <trd aunit="radian" lunit="mm" name="RFFrBox2" x1="0.5" x2="0.5" y1="180" y2="220" z="46" />
+  <tube aunit="degree" deltaphi="360" lunit="mm" name="RFFB2TUBSub" rmax="7" rmin="0" startphi="0" z="46" />
+  <subtraction name="RFFB2Sub" >
+   <first ref="RFFrBox2" />
+   <second ref="RFFB2TUBSub" />
+   <position name="RFFB2Subpos336" unit="mm" x="0" y="0" z="-23" />
+   <rotation name="RFFB2Subrot337" unit="degree" x="-0" y="90" z="0" />
+  </subtraction>
+  <box aunit="radian" lunit="mm" name="RFFrSb1" x="20" y="260" z="1164.4" />
+  <box aunit="radian" lunit="mm" name="RFFrSb2" x="22" y="220" z="1102.6" />
+  <subtraction name="RFFrameSub" >
+   <first ref="RFFrSb1" />
+   <second ref="RFFrSb2" />
+   <position name="RFFrameSubpos341" unit="mm" x="-0" y="0.1" z="-0" />
+  </subtraction>
+  <tube aunit="degree" deltaphi="360" lunit="mm" name="VTankSecUpTubs" rmax="335" rmin="0" startphi="0" z="340" />
+  <polycone aunit="degree" deltaphi="360" lunit="mm" name="VTankSec4APCone" startphi="0" >
+   <zplane rmax="330" rmin="250" z="-830" />
+   <zplane rmax="330" rmin="250" z="-795" />
+   <zplane rmax="260" rmin="250" z="-794.999" />
+   <zplane rmax="260" rmin="250" z="-490" />
+  </polycone>
+  <tube aunit="degree" deltaphi="360" lunit="mm" name="VTankSecDownTubs" rmax="590" rmin="0" startphi="0" z="1325" />
+  <box aunit="radian" lunit="mm" name="VTankMidSecSubtrBox" x="700" y="300" z="1400" />
+  <subtraction name="VTankDownStreamSubtr" >
+   <first ref="VTankSecDownTubs" />
+   <second ref="VTankMidSecSubtrBox" />
+  </subtraction>
+  <polycone aunit="degree" deltaphi="360" lunit="mm" name="VTankSec4BPCone" startphi="0" >
+   <zplane rmax="260" rmin="250" z="-489.999" />
+   <zplane rmax="260" rmin="250" z="450" />
+   <zplane rmax="354.3" rmin="344.3" z="835" />
+  </polycone>
+  <box aunit="radian" lunit="mm" name="VTankSec4SubtrBox" x="750" y="426" z="1325.1" />
+  <subtraction name="VTank4Subtraction" >
+   <first ref="VTankSec4BPCone" />
+   <second ref="VTankSec4SubtrBox" />
+   <position name="VTank4Subtractionpos350" unit="mm" x="0" y="0" z="172.5" />
+  </subtraction>
+  <box aunit="radian" lunit="mm" name="VTBox1" x="95" y="420" z="1325" />
+  <box aunit="radian" lunit="mm" name="VTBox2" x="300" y="6" z="990" />
+  <tube aunit="degree" deltaphi="360" lunit="mm" name="V2R1Tubs" rmax="590" rmin="0" startphi="0" z="135" />
+  <polycone aunit="degree" deltaphi="360" lunit="mm" name="VTankSec1PCone" startphi="0" >
+   <zplane rmax="588" rmin="379.3" z="895" />
+   <zplane rmax="588" rmin="379.3" z="940" />
+   <zplane rmax="427" rmin="400" z="940.001" />
+   <zplane rmax="427" rmin="400" z="960" />
+   <zplane rmax="427" rmin="379.3" z="960.001" />
+   <zplane rmax="427" rmin="379.3" z="970" />
+  </polycone>
+  <polycone aunit="degree" deltaphi="360" lunit="mm" name="VTankSec2PCone" startphi="0" >
+   <zplane rmax="400" rmin="379.3" z="940" />
+   <zplane rmax="400" rmin="379.3" z="960" />
+  </polycone>
+  <polycone aunit="degree" deltaphi="360" lunit="mm" name="VTankSec3PCone" startphi="0" >
+   <zplane rmax="49.201" rmin="49.2" z="858.5" />
+   <zplane rmax="72.2" rmin="49.2" z="860.5" />
+   <zplane rmax="148" rmin="129" z="870" />
+   <zplane rmax="148" rmin="129" z="870.001" />
+   <zplane rmax="204" rmin="193" z="885" />
+   <zplane rmax="199.5" rmin="193.5" z="885.001" />
+   <zplane rmax="262" rmin="255.5" z="904.5" />
+   <zplane rmax="260.5" rmin="255.5" z="904.501" />
+   <zplane rmax="320.5" rmin="315" z="929" />
+   <zplane rmax="318.5" rmin="315" z="929.001" />
+   <zplane rmax="375.3" rmin="371.8" z="955.3" />
+   <zplane rmax="379.3" rmin="371.8" z="955.301" />
+   <zplane rmax="379.3" rmin="377.3" z="960" />
+  </polycone>
+  <polycone aunit="degree" deltaphi="360" lunit="mm" name="VTankSec4CPCone" startphi="0" >
+   <zplane rmax="354.3" rmin="344.3" z="835.001" />
+   <zplane rmax="369" rmin="359" z="894.999" />
+  </polycone>
+  <polycone aunit="degree" deltaphi="360" lunit="mm" name="VacuumConnectCone" startphi="0" >
+   <zplane rmax="49.199" rmin="49.198" z="858.6" />
+   <zplane rmax="49.199" rmin="47.2" z="860.16" />
+   <zplane rmax="49.199" rmin="41.9" z="864.3" />
+   <zplane rmax="35.5" rmin="33.5" z="911.5" />
+   <zplane rmax="35.5" rmin="33.5" z="913.85" />
+   <zplane rmax="45.5" rmin="33.5" z="913.851" />
+   <zplane rmax="45.5" rmin="33.5" z="915.45" />
+   <zplane rmax="45.5" rmin="45.1" z="915.451" />
+   <zplane rmax="45.5" rmin="45.1" z="940.25" />
+   <zplane rmax="45.5" rmin="33.5" z="940.251" />
+   <zplane rmax="45.5" rmin="33.5" z="941.85" />
+   <zplane rmax="36.8" rmin="33.5" z="941.851" />
+   <zplane rmax="36.8" rmin="33.5" z="950" />
+   <zplane rmax="36.8" rmin="28.5" z="950.001" />
+   <zplane rmax="36.8" rmin="28.5" z="952.5" />
+   <zplane rmax="30.5" rmin="28.5" z="952.501" />
+   <zplane rmax="30.5" rmin="28.5" z="964" />
+   <zplane rmax="30.5" rmin="27" z="964.001" />
+   <zplane rmax="30.5" rmin="27" z="966.4" />
+  </polycone>
+  <polycone aunit="degree" deltaphi="360" lunit="mm" name="BeTubeTubs" startphi="0" >
+   <zplane rmax="28" rmin="27" z="966.401" />
+   <zplane rmax="28" rmin="27" z="970" />
+  </polycone>
+  <polycone aunit="degree" deltaphi="170" lunit="mm" name="WakeFieldPolyCone2" startphi="95" >
+   <zplane rmax="16.5489" rmin="16.4729" z="75.001" />
+   <zplane rmax="17.3617" rmin="17.2857" z="75.5" />
+   <zplane rmax="11.8645" rmin="11.7885" z="79.5" />
+   <zplane rmax="18.3673" rmin="18.2913" z="83.5" />
+   <zplane rmax="12.8701" rmin="12.7941" z="87.5" />
+   <zplane rmax="19.3729" rmin="19.2969" z="91.5" />
+   <zplane rmax="13.8757" rmin="13.7997" z="95.5" />
+   <zplane rmax="20.3785" rmin="20.3025" z="99.5" />
+   <zplane rmax="14.8813" rmin="14.8053" z="103.5" />
+   <zplane rmax="21.3841" rmin="21.3081" z="107.5" />
+   <zplane rmax="15.8869" rmin="15.8109" z="111.5" />
+   <zplane rmax="22.3897" rmin="22.3137" z="115.5" />
+   <zplane rmax="16.8925" rmin="16.8165" z="119.5" />
+   <zplane rmax="23.3953" rmin="23.3193" z="123.5" />
+   <zplane rmax="17.898" rmin="17.822" z="127.5" />
+   <zplane rmax="24.4008" rmin="24.3248" z="131.5" />
+   <zplane rmax="21.6522" rmin="21.5762" z="133.5" />
+   <zplane rmax="28" rmin="27.924" z="184" />
+   <zplane rmax="28" rmin="27.924" z="194" />
+  </polycone>
+ </solids>
+ <structure>
+  <volume name="VeloSensorslvVeloPuRDetector" >
+   <materialref ref="sSilicon" />
+   <solidref ref="PUdetectorRUnion" />
+  </volume>
+  <volume name="VeloStationslvPuStation" >
+   <materialref ref="sVacuum" />
+   <solidref ref="PuStationUnion" />
+   <physvol>
+    <volumeref ref="VeloSensorslvVeloPuRDetector" />
+    <positionref ref="VeloStationslvPuStationdetPu0inVeloStationslvPuStationp" />
+    <rotationref ref="VeloStationslvPuStationdetPu0inVeloStationslvPuStationr" />
+   </physvol>
+  </volume>
+  <volume name="VeloSensorslvVeloRDetector" >
+   <materialref ref="sSilicon" />
+   <solidref ref="detectorRUnion" />
+  </volume>
+  <volume name="VeloSensorslvVeloPhiDetector" >
+   <materialref ref="sSilicon" />
+   <solidref ref="detectorPhiUnion" />
+  </volume>
+  <volume name="VeloSupportslvCFSubstrateX" >
+   <materialref ref="sVeloVeloCarbonFibre" />
+   <solidref ref="CFibreTubs1X" />
+  </volume>
+  <volume name="VeloStationslvVeloUStation" >
+   <materialref ref="sVacuum" />
+   <solidref ref="UStationUnion" />
+   <physvol>
+    <volumeref ref="VeloSupportslvCFSubstrateX" />
+    <positionref ref="VeloStationslvVeloUStationHybrid01StDninVeloStationslvVeloUStationp" />
+    <rotationref ref="VeloStationslvVeloUStationHybrid01StDninVeloStationslvVeloUStationr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSensorslvVeloPhiDetector" />
+    <positionref ref="VeloStationslvVeloUStationdetUPhiL1inVeloStationslvVeloUStationp" />
+    <rotationref ref="VeloStationslvVeloUStationdetUPhiL1inVeloStationslvVeloUStationr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSensorslvVeloRDetector" />
+    <positionref ref="VeloStationslvVeloUStationdetURL0inVeloStationslvVeloUStationp" />
+    <rotationref ref="VeloStationslvVeloUStationdetURL0inVeloStationslvVeloUStationr" />
+   </physvol>
+  </volume>
+  <volume name="VeloSupportslvCFSubstrate" >
+   <materialref ref="sVeloVeloCarbonFibre" />
+   <solidref ref="CarbonFibreSub" />
+  </volume>
+  <volume name="VeloSupportslvKapton" >
+   <materialref ref="sVeloVeloKapton" />
+   <solidref ref="KaptonSub" />
+  </volume>
+  <volume name="VeloSupportslvCuLayer1" >
+   <materialref ref="sCopper" />
+   <solidref ref="CuLayer1Sub" />
+  </volume>
+  <volume name="VeloSupportslvSiChips" >
+   <materialref ref="sSilicon" />
+   <solidref ref="SiChipTubs" />
+  </volume>
+  <volume name="VeloSupportslvFanout" >
+   <materialref ref="sVeloVeloKapton" />
+   <solidref ref="FanoutTubs" />
+  </volume>
+  <volume name="VeloSupportslvCLA1" >
+   <materialref ref="sAluminium" />
+   <solidref ref="CLA1" />
+  </volume>
+  <volume name="VeloSupportslvCLA2" >
+   <materialref ref="sAluminium" />
+   <solidref ref="CLA2" />
+  </volume>
+  <volume name="VeloSupportslvMFLO" >
+   <materialref ref="sVeloVeloCarbonFibre" />
+   <solidref ref="MFLO" />
+  </volume>
+  <volume name="VeloSupportslvMBLO" >
+   <materialref ref="sVeloVeloCarbonFibre" />
+   <solidref ref="MBLO" />
+  </volume>
+  <volume name="VeloSupportslvMSILO1" >
+   <materialref ref="sVeloVeloCarbonFibre" />
+   <solidref ref="MSILO1" />
+  </volume>
+  <volume name="VeloSupportslvMSILO2" >
+   <materialref ref="sVeloVeloCarbonFibre" />
+   <solidref ref="MSILO2" />
+  </volume>
+  <volume name="VeloSupportslvSpBase" >
+   <materialref ref="sAluminium" />
+   <solidref ref="SpBaseUnion" />
+  </volume>
+  <volume name="VeloSupportslvVeloSupport" >
+   <materialref ref="sVacuum" />
+   <solidref ref="SupportMotherSub" />
+   <physvol>
+    <volumeref ref="VeloSupportslvSpBase" />
+    <positionref ref="VeloSupportslvVeloSupportbase01llinVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportbase01llinVeloSupportslvVeloSupportr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvMSILO2" />
+    <positionref ref="VeloSupportslvVeloSupportPaddle00lsVMSILO2BinVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportPaddle00lsVMSILO2BinVeloSupportslvVeloSupportr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvMSILO1" />
+    <positionref ref="VeloSupportslvVeloSupportPaddle00lsVMSILO1BinVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportPaddle00lsVMSILO1BinVeloSupportslvVeloSupportr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvMSILO2" />
+    <positionref ref="VeloSupportslvVeloSupportPaddle00lsVMSILO2AinVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportPaddle00lsVMSILO2AinVeloSupportslvVeloSupportr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvMSILO1" />
+    <positionref ref="VeloSupportslvVeloSupportPaddle00lsVMSILO1AinVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportPaddle00lsVMSILO1AinVeloSupportslvVeloSupportr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvMBLO" />
+    <positionref ref="VeloSupportslvVeloSupportPaddle00lsVMBLOinVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportPaddle00lsVMBLOinVeloSupportslvVeloSupportr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvMFLO" />
+    <positionref ref="VeloSupportslvVeloSupportPaddle00lsVMFLOinVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportPaddle00lsVMFLOinVeloSupportslvVeloSupportr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvCLA2" />
+    <positionref ref="VeloSupportslvVeloSupportCLA201llinVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportCLA201llinVeloSupportslvVeloSupportr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvCLA1" />
+    <positionref ref="VeloSupportslvVeloSupportCLA101llinVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportCLA101llinVeloSupportslvVeloSupportr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvFanout" />
+    <positionref ref="VeloSupportslvVeloSupportHybrid01HybridFanoutinVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportHybrid01HybridFanoutinVeloSupportslvVeloSupportr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvSiChips" />
+    <positionref ref="VeloSupportslvVeloSupportHybrid01HybridChipsinVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportHybrid01HybridChipsinVeloSupportslvVeloSupportr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvCuLayer1" />
+    <positionref ref="VeloSupportslvVeloSupportHybrid01HybridCu1inVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportHybrid01HybridCu1inVeloSupportslvVeloSupportr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvKapton" />
+    <positionref ref="VeloSupportslvVeloSupportHybrid01HybridKaptoninVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportHybrid01HybridKaptoninVeloSupportslvVeloSupportr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvCFSubstrate" />
+    <positionref ref="VeloSupportslvVeloSupportHybrid01HybridCFSubstrateinVeloSupportslvVeloSupportp" />
+    <rotationref ref="VeloSupportslvVeloSupportHybrid01HybridCFSubstrateinVeloSupportslvVeloSupportr" />
+   </physvol>
+  </volume>
+  <volume name="VeloStationslvVeloDStation" >
+   <materialref ref="sVacuum" />
+   <solidref ref="DStationUnion" />
+   <physvol>
+    <volumeref ref="VeloSupportslvCFSubstrateX" />
+    <positionref ref="VeloStationslvVeloDStationHybrid01StUpinVeloStationslvVeloDStationp" />
+    <rotationref ref="VeloStationslvVeloDStationHybrid01StUpinVeloStationslvVeloDStationr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSensorslvVeloRDetector" />
+    <positionref ref="VeloStationslvVeloDStationdetDRL1inVeloStationslvVeloDStationp" />
+    <rotationref ref="VeloStationslvVeloDStationdetDRL1inVeloStationslvVeloDStationr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSensorslvVeloPhiDetector" />
+    <positionref ref="VeloStationslvVeloDStationdetDPhiL0inVeloStationslvVeloDStationp" />
+    <rotationref ref="VeloStationslvVeloDStationdetDPhiL0inVeloStationslvVeloDStationr" />
+   </physvol>
+  </volume>
+  <volume name="VeloRFFoillvF2C" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFFCons1" />
+  </volume>
+  <volume name="VeloRFFoillvF1CB" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFInnerTubsB" />
+  </volume>
+  <volume name="VeloRFFoillvF1AB" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFInnerWallB" />
+  </volume>
+  <volume name="VeloRFFoillvF2M" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFAnnoyingTrapXX" />
+  </volume>
+  <volume name="VeloRFFoillvRFBeamPipeOutCorrUP" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFBPOCSubxx" />
+  </volume>
+  <volume name="VeloRFFoillvF3CPV1" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFOutsPV1" />
+  </volume>
+  <volume name="VeloRFFoillvRF3OutCorrVeto1" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFBPOCVeto1Sub" />
+  </volume>
+  <volume name="VeloRFFoillvRFPUSect1" >
+   <materialref ref="sVacuum" />
+   <solidref ref="PUSect1Union" />
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFBeamPipeOutCorrUP" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlope2LTrinVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlope2LTrinVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF2M2inVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF2M2inVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF2M1inVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF2M1inVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF1AB2inVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF1AB2inVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF1AB1inVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF1AB1inVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1CB" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF1CBinVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF1CBinVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2C" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF2CinVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF4CPV1RFSlopeF2CinVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRF3OutCorrVeto1" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF3UpPV1inVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF3UpPV1inVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF3CPV1" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF3CPV1inVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF3CPV1inVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFBeamPipeOutCorrUP" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlope2LTrinVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlope2LTrinVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF2M2inVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF2M2inVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF2M1inVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF2M1inVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF1AB2inVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF1AB2inVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF1AB1inVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF1AB1inVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1CB" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF1CBinVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF1CBinVeloRFFoillvRFPUSect1r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2C" />
+    <positionref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF2CinVeloRFFoillvRFPUSect1p" />
+    <rotationref ref="VeloRFFoillvRFPUSect1RFF2CPV1RFSlopeF2CinVeloRFFoillvRFPUSect1r" />
+   </physvol>
+  </volume>
+  <volume name="VeloRFFoillvRFSensorSection" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFSensorSectUnion" />
+  </volume>
+  <volume name="VeloRFFoillvF3CPV2" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFOutsPV2" />
+  </volume>
+  <volume name="VeloRFFoillvRF3OutCorrVeto2" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFBPOCVeto2Sub" />
+  </volume>
+  <volume name="VeloRFFoillvRFPUSect2" >
+   <materialref ref="sVacuum" />
+   <solidref ref="PUSect2Union" />
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFBeamPipeOutCorrUP" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlope2LTrinVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlope2LTrinVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF2M2inVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF2M2inVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF2M1inVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF2M1inVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF1AB2inVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF1AB2inVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF1AB1inVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF1AB1inVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1CB" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF1CBinVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF1CBinVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2C" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF2CinVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF4CPV2RFSlopeF2CinVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRF3OutCorrVeto2" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF3UpPV2inVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF3UpPV2inVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF3CPV2" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF3CPV2inVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF3CPV2inVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFBeamPipeOutCorrUP" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlope2LTrinVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlope2LTrinVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF2M2inVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF2M2inVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF2M1inVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF2M1inVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF1AB2inVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF1AB2inVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF1AB1inVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF1AB1inVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1CB" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF1CBinVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF1CBinVeloRFFoillvRFPUSect2r" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2C" />
+    <positionref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF2CinVeloRFFoillvRFPUSect2p" />
+    <rotationref ref="VeloRFFoillvRFPUSect2RFF2CPV2RFSlopeF2CinVeloRFFoillvRFPUSect2r" />
+   </physvol>
+  </volume>
+  <volume name="VeloRFFoillvF3CShort" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFOutsShort" />
+  </volume>
+  <volume name="VeloRFFoillvF3LUpStream" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFOuterHighDS" />
+  </volume>
+  <volume name="VeloRFFoillvRFUpStreamSection" >
+   <materialref ref="sVacuum" />
+   <solidref ref="UpStSectUnion" />
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFBeamPipeOutCorrUP" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlope2LTrinVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlope2LTrinVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF2M2inVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF2M2inVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF2M1inVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF2M1inVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF1AB2inVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF1AB2inVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF1AB1inVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF1AB1inVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1CB" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF1CBinVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF1CBinVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2C" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF2CinVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF4CRFSlopeF2CinVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF3LUpStream" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF3LDowninVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF3LDowninVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF3LUpStream" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF3LUpinVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF3LUpinVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF3CShort" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF3CinVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF3CinVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFBeamPipeOutCorrUP" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlope2LTrinVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlope2LTrinVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF2M2inVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF2M2inVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF2M1inVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF2M1inVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF1AB2inVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF1AB2inVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF1AB1inVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF1AB1inVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1CB" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF1CBinVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF1CBinVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2C" />
+    <positionref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF2CinVeloRFFoillvRFUpStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFUpStreamSectionRFTestF2CRFSlopeF2CinVeloRFFoillvRFUpStreamSectionr" />
+   </physvol>
+  </volume>
+  <volume name="VeloRFFoillvF3CMid" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFOutsMid" />
+  </volume>
+  <volume name="VeloRFFoillvRF3OutCorrMid" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFBPOCMidSub" />
+  </volume>
+  <volume name="VeloRFFoillvRFMidSection" >
+   <materialref ref="sVacuum" />
+   <solidref ref="MidSectUnion" />
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFBeamPipeOutCorrUP" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlope2LTrinVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlope2LTrinVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF2M2inVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF2M2inVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF2M1inVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF2M1inVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF1AB2inVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF1AB2inVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF1AB1inVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF1AB1inVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1CB" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF1CBinVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF1CBinVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2C" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF2CinVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF4CMidRFSlopeF2CinVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRF3OutCorrMid" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF3OCMidinVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF3OCMidinVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF3CMid" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF3CMidinVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF3CMidinVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFBeamPipeOutCorrUP" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlope2LTrinVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlope2LTrinVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF2M2inVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF2M2inVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2M" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF2M1inVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF2M1inVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF1AB2inVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF1AB2inVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1AB" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF1AB1inVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF1AB1inVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1CB" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF1CBinVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF1CBinVeloRFFoillvRFMidSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF2C" />
+    <positionref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF2CinVeloRFFoillvRFMidSectionp" />
+    <rotationref ref="VeloRFFoillvRFMidSectionRFTestF2CMidRFSlopeF2CinVeloRFFoillvRFMidSectionr" />
+   </physvol>
+  </volume>
+  <volume name="VeloRFFoillvRFBeamPipeOutCorr" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFBPOCSub" />
+  </volume>
+  <volume name="VeloRFFoillvRFBPSlopeSect" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFBPSubSLope" />
+  </volume>
+  <volume name="VeloRFFoillvF1A2" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFInnerTrap2XX" />
+  </volume>
+  <volume name="VeloRFFoillvRFBeamPipeOutCorr2" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFBPOC2Sub" />
+  </volume>
+  <volume name="VeloRFFoillvF3CLong" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFOutsLong" />
+  </volume>
+  <volume name="VeloRFFoillvRFDownStreamSection" >
+   <materialref ref="sVacuum" />
+   <solidref ref="DnStSectUnion" />
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1A2" />
+    <positionref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFF1A22XXinVeloRFFoillvRFDownStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFF1A22XXinVeloRFFoillvRFDownStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1A2" />
+    <positionref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFF1A21XXinVeloRFFoillvRFDownStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFF1A21XXinVeloRFFoillvRFDownStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFBPSlopeSect" />
+    <positionref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFBPSectTestXXinVeloRFFoillvRFDownStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFBPSectTestXXinVeloRFFoillvRFDownStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFBeamPipeOutCorr" />
+    <positionref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFTest2LBPCorrXXinVeloRFFoillvRFDownStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect2RFTest2LBPCorrXXinVeloRFFoillvRFDownStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF3CLong" />
+    <positionref ref="VeloRFFoillvRFDownStreamSectionRFTestF3CLonginVeloRFFoillvRFDownStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFDownStreamSectionRFTestF3CLonginVeloRFFoillvRFDownStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFBeamPipeOutCorr2" />
+    <positionref ref="VeloRFFoillvRFDownStreamSectionRFTestF3LUpxxinVeloRFFoillvRFDownStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFDownStreamSectionRFTestF3LUpxxinVeloRFFoillvRFDownStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1A2" />
+    <positionref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFF1A22XXinVeloRFFoillvRFDownStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFF1A22XXinVeloRFFoillvRFDownStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvF1A2" />
+    <positionref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFF1A21XXinVeloRFFoillvRFDownStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFF1A21XXinVeloRFFoillvRFDownStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFBPSlopeSect" />
+    <positionref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFBPSectTestXXinVeloRFFoillvRFDownStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFBPSectTestXXinVeloRFFoillvRFDownStreamSectionr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFBeamPipeOutCorr" />
+    <positionref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFTest2LBPCorrXXinVeloRFFoillvRFDownStreamSectionp" />
+    <rotationref ref="VeloRFFoillvRFDownStreamSectionRFDSSlopeSect1RFTest2LBPCorrXXinVeloRFFoillvRFDownStreamSectionr" />
+   </physvol>
+  </volume>
+  <volume name="VeloWFConelvCone1" >
+   <materialref ref="sCopper" />
+   <solidref ref="WakeFieldPolyCone1" />
+  </volume>
+  <volume name="VeloRFBoxlvRFSdTrd1" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFSdTrap1" />
+  </volume>
+  <volume name="VeloRFBoxlvRFBkBx1" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFBkBox1" />
+  </volume>
+  <volume name="VeloRFBoxlvRFFrBx1" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFFrBox1" />
+  </volume>
+  <volume name="VeloRFBoxlvRFSdBx" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFSdBox2" />
+  </volume>
+  <volume name="VeloRFBoxlvRFFrBx2" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFFB2Sub" />
+  </volume>
+  <volume name="VeloRFBoxlvRFTopFrame" >
+   <materialref ref="sAluminium" />
+   <solidref ref="RFFrameSub" />
+  </volume>
+  <volume name="VeloVacTanklvVTank4A" >
+   <materialref ref="sAluminium" />
+   <solidref ref="VTankSec4APCone" />
+  </volume>
+  <volume name="VeloVacTanklvVTankUpStream" >
+   <materialref ref="sVacuum" />
+   <solidref ref="VTankSecUpTubs" />
+   <physvol>
+    <volumeref ref="VeloVacTanklvVTank4A" />
+    <positionref ref="VeloVacTanklvVTankUpStreamVTa4AinVeloVacTanklvVTankUpStreamp" />
+    <rotationref ref="VeloVacTanklvVTankUpStreamVTa4AinVeloVacTanklvVTankUpStreamr" />
+   </physvol>
+  </volume>
+  <volume name="VeloVacTanklvVTank4B" >
+   <materialref ref="sAluminium" />
+   <solidref ref="VTank4Subtraction" />
+  </volume>
+  <volume name="VeloVacTanklvV5Bx1" >
+   <materialref ref="sAluminium" />
+   <solidref ref="VTBox1" />
+  </volume>
+  <volume name="VeloVacTanklvV5Bx2" >
+   <materialref ref="sAluminium" />
+   <solidref ref="VTBox2" />
+  </volume>
+  <volume name="VeloVacTanklvVTankDownStream" >
+   <materialref ref="sVacuum" />
+   <solidref ref="VTankDownStreamSubtr" />
+   <physvol>
+    <volumeref ref="VeloVacTanklvV5Bx2" />
+    <positionref ref="VeloVacTanklvVTankDownStreamVTa5VTa5Bx6inVeloVacTanklvVTankDownStreamp" />
+    <rotationref ref="VeloVacTanklvVTankDownStreamVTa5VTa5Bx6inVeloVacTanklvVTankDownStreamr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloVacTanklvV5Bx2" />
+    <positionref ref="VeloVacTanklvVTankDownStreamVTa5VTa5Bx5inVeloVacTanklvVTankDownStreamp" />
+    <rotationref ref="VeloVacTanklvVTankDownStreamVTa5VTa5Bx5inVeloVacTanklvVTankDownStreamr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloVacTanklvV5Bx2" />
+    <positionref ref="VeloVacTanklvVTankDownStreamVTa5VTa5Bx4inVeloVacTanklvVTankDownStreamp" />
+    <rotationref ref="VeloVacTanklvVTankDownStreamVTa5VTa5Bx4inVeloVacTanklvVTankDownStreamr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloVacTanklvV5Bx2" />
+    <positionref ref="VeloVacTanklvVTankDownStreamVTa5VTa5Bx3inVeloVacTanklvVTankDownStreamp" />
+    <rotationref ref="VeloVacTanklvVTankDownStreamVTa5VTa5Bx3inVeloVacTanklvVTankDownStreamr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloVacTanklvV5Bx1" />
+    <positionref ref="VeloVacTanklvVTankDownStreamVTa5VTa5Bx2inVeloVacTanklvVTankDownStreamp" />
+    <rotationref ref="VeloVacTanklvVTankDownStreamVTa5VTa5Bx2inVeloVacTanklvVTankDownStreamr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloVacTanklvV5Bx1" />
+    <positionref ref="VeloVacTanklvVTankDownStreamVTa5VTa5Bx1inVeloVacTanklvVTankDownStreamp" />
+    <rotationref ref="VeloVacTanklvVTankDownStreamVTa5VTa5Bx1inVeloVacTanklvVTankDownStreamr" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloVacTanklvVTank4B" />
+    <positionref ref="VeloVacTanklvVTankDownStreamVTa4BinVeloVacTanklvVTankDownStreamp" />
+    <rotationref ref="VeloVacTanklvVTankDownStreamVTa4BinVeloVacTanklvVTankDownStreamr" />
+   </physvol>
+  </volume>
+  <volume name="VelolvVelo" >
+   <materialref ref="sVacuum" />
+   <solidref ref="VeloTubs1" />
+   <physvol>
+    <volumeref ref="VeloVacTanklvVTankDownStream" />
+    <positionref ref="VelolvVelopvVTa2inVelolvVelop" />
+    <rotationref ref="VelolvVelopvVTa2inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloVacTanklvVTankUpStream" />
+    <positionref ref="VelolvVelopvVTa1inVelolvVelop" />
+    <rotationref ref="VelolvVelopvVTa1inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFTopFrame" />
+    <positionref ref="VelolvVeloRightRFBoxRFTpFrinVelolvVelop" />
+    <rotationref ref="VelolvVeloRightRFBoxRFTpFrinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFFrBx2" />
+    <positionref ref="VelolvVeloRightRFBoxRFFBx2binVelolvVelop" />
+    <rotationref ref="VelolvVeloRightRFBoxRFFBx2binVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFFrBx2" />
+    <positionref ref="VelolvVeloRightRFBoxRFFBx2ainVelolvVelop" />
+    <rotationref ref="VelolvVeloRightRFBoxRFFBx2ainVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFSdBx" />
+    <positionref ref="VelolvVeloRightRFBoxRFSBx2binVelolvVelop" />
+    <rotationref ref="VelolvVeloRightRFBoxRFSBx2binVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFSdBx" />
+    <positionref ref="VelolvVeloRightRFBoxRFSBx2ainVelolvVelop" />
+    <rotationref ref="VelolvVeloRightRFBoxRFSBx2ainVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFFrBx1" />
+    <positionref ref="VelolvVeloRightRFBoxRFFBx1inVelolvVelop" />
+    <rotationref ref="VelolvVeloRightRFBoxRFFBx1inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFBkBx1" />
+    <positionref ref="VelolvVeloRightRFBoxRFBBx1inVelolvVelop" />
+    <rotationref ref="VelolvVeloRightRFBoxRFBBx1inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFSdTrd1" />
+    <positionref ref="VelolvVeloRightRFBoxRFSBx1binVelolvVelop" />
+    <rotationref ref="VelolvVeloRightRFBoxRFSBx1binVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFSdTrd1" />
+    <positionref ref="VelolvVeloRightRFBoxRFSBx1ainVelolvVelop" />
+    <rotationref ref="VelolvVeloRightRFBoxRFSBx1ainVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFTopFrame" />
+    <positionref ref="VelolvVeloLeftRFBoxRFTpFrinVelolvVelop" />
+    <rotationref ref="VelolvVeloLeftRFBoxRFTpFrinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFFrBx2" />
+    <positionref ref="VelolvVeloLeftRFBoxRFFBx2binVelolvVelop" />
+    <rotationref ref="VelolvVeloLeftRFBoxRFFBx2binVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFFrBx2" />
+    <positionref ref="VelolvVeloLeftRFBoxRFFBx2ainVelolvVelop" />
+    <rotationref ref="VelolvVeloLeftRFBoxRFFBx2ainVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFSdBx" />
+    <positionref ref="VelolvVeloLeftRFBoxRFSBx2binVelolvVelop" />
+    <rotationref ref="VelolvVeloLeftRFBoxRFSBx2binVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFSdBx" />
+    <positionref ref="VelolvVeloLeftRFBoxRFSBx2ainVelolvVelop" />
+    <rotationref ref="VelolvVeloLeftRFBoxRFSBx2ainVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFFrBx1" />
+    <positionref ref="VelolvVeloLeftRFBoxRFFBx1inVelolvVelop" />
+    <rotationref ref="VelolvVeloLeftRFBoxRFFBx1inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFBkBx1" />
+    <positionref ref="VelolvVeloLeftRFBoxRFBBx1inVelolvVelop" />
+    <rotationref ref="VelolvVeloLeftRFBoxRFBBx1inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFSdTrd1" />
+    <positionref ref="VelolvVeloLeftRFBoxRFSBx1binVelolvVelop" />
+    <rotationref ref="VelolvVeloLeftRFBoxRFSBx1binVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFBoxlvRFSdTrd1" />
+    <positionref ref="VelolvVeloLeftRFBoxRFSBx1ainVelolvVelop" />
+    <rotationref ref="VelolvVeloLeftRFBoxRFSBx1ainVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloWFConelvCone1" />
+    <positionref ref="VelolvVeloWakeFieldConeWakeCone2inVelolvVelop" />
+    <rotationref ref="VelolvVeloWakeFieldConeWakeCone2inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloWFConelvCone1" />
+    <positionref ref="VelolvVeloWakeFieldConeWakeCone1inVelolvVelop" />
+    <rotationref ref="VelolvVeloWakeFieldConeWakeCone1inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt19RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt19RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFDownStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation19inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation19inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt18RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt18RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFDownStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation18inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation18inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt17RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt17RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFDownStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation17inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation17inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt16cRFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt16cRFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFDownStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation16cinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation16cinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt16bRFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt16bRFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFDownStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation16binVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation16binVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt16RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt16RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFDownStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation16inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation16inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt15cRFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt15cRFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFMidSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation15cinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation15cinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt15bRFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt15bRFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation15binVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation15binVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt15RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt15RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation15inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation15inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt14RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt14RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation14inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation14inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt13RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt13RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation13inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation13inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt12RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt12RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation12inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation12inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt11RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt11RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation11inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation11inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt10RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt10RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation10inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation10inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt09RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt09RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation09inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation09inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt08RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt08RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation08inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation08inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt07RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt07RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation07inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation07inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt06RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt06RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation06inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation06inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt05RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt05RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation05inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation05inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt04RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt04RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation04inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation04inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt03RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt03RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation03inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation03inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt02RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt02RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation02inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation02inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt01RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt01RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation01inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation01inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilSt00RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilSt00RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFStation00inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFStation00inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilPu2RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilPu2RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFPUSect2" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFPileUpSection2inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFPileUpSection2inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvRightRFFoilPu1RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilPu1RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFPUSect1" />
+    <positionref ref="VelolvVelopvRightRFFoilpvRFPileUpSection1inVelolvVelop" />
+    <rotationref ref="VelolvVelopvRightRFFoilpvRFPileUpSection1inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt19RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt19RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFDownStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation19inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation19inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt18RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt18RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFDownStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation18inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation18inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt17RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt17RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFDownStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation17inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation17inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt16cRFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt16cRFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFDownStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation16cinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation16cinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt16bRFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt16bRFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFDownStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation16binVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation16binVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt16RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt16RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFDownStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation16inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation16inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt15cRFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt15cRFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFMidSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation15cinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation15cinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt15bRFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt15bRFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation15binVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation15binVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt15RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt15RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation15inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation15inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt14RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt14RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation14inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation14inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt13RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt13RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation13inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation13inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt12RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt12RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation12inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation12inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt11RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt11RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation11inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation11inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt10RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt10RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation10inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation10inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt09RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt09RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation09inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation09inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt08RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt08RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation08inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation08inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt07RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt07RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation07inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation07inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt06RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt06RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation06inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation06inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt05RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt05RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation05inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation05inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt04RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt04RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation04inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation04inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt03RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt03RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation03inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation03inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt02RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt02RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation02inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation02inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt01RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt01RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation01inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation01inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilSt00RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilSt00RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFUpStreamSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFStation00inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFStation00inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilPu2RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilPu2RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFPUSect2" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFPileUpSection2inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFPileUpSection2inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFSensorSection" />
+    <positionref ref="VelolvVelopvLeftRFFoilPu1RFShieldinVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilPu1RFShieldinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloRFFoillvRFPUSect1" />
+    <positionref ref="VelolvVelopvLeftRFFoilpvRFPileUpSection1inVelolvVelop" />
+    <rotationref ref="VelolvVelopvLeftRFFoilpvRFPileUpSection1inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport20vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport20vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport20vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport20vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation20R80inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation20R80inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation20L82inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation20L82inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport19vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport19vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport19vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport19vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation19R76inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation19R76inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation19L78inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation19L78inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport18vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport18vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport18vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport18vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation18R72inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation18R72inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation18L74inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation18L74inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport17vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport17vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport17vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport17vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation17R68inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation17R68inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation17L70inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation17L70inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport16vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport16vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport16vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport16vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation16R64inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation16R64inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation16L66inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation16L66inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport15vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport15vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport15vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport15vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation15R60inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation15R60inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation15L62inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation15L62inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport14vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport14vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport14vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport14vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation14R56inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation14R56inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation14L58inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation14L58inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport13vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport13vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport13vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport13vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation13R52inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation13R52inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation13L54inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation13L54inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport12vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport12vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport12vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport12vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation12R48inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation12R48inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation12L50inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation12L50inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport11vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport11vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport11vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport11vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation11R44inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation11R44inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation11L46inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation11L46inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport10vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport10vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport10vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport10vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation10R40inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation10R40inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation10L42inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation10L42inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport09vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport09vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport09vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport09vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation09R36inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation09R36inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation09L38inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation09L38inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport08vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport08vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport08vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport08vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation08R32inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation08R32inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation08L34inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation08L34inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport07vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport07vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport07vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport07vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation07R28inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation07R28inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation07L30inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation07L30inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport06vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport06vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport06vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport06vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation06R24inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation06R24inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation06L26inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation06L26inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport05vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport05vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport05vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport05vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation05R20inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation05R20inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation05L22inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation05L22inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport04vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport04vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport04vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport04vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation04R16inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation04R16inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation04L18inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation04L18inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport03vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport03vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport03vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport03vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation03R12inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation03R12inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation03L14inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation03L14inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport02vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport02vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport02vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport02vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation02R8inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation02R8inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation02L10inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation02L10inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport01vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport01vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport01vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport01vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation01R4inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation01R4inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloDStation" />
+    <positionref ref="VelolvVelovStation01L6inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation01L6inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport00vSupportURinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport00vSupportURinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloSupportslvVeloSupport" />
+    <positionref ref="VelolvVelovSupport00vSupportULinVelolvVelop" />
+    <rotationref ref="VelolvVelovSupport00vSupportULinVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation00R0inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation00R0inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvVeloUStation" />
+    <positionref ref="VelolvVelovStation00L2inVelolvVelop" />
+    <rotationref ref="VelolvVelovStation00L2inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvPuStation" />
+    <positionref ref="VelolvVeloPuStation2L103inVelolvVelop" />
+    <rotationref ref="VelolvVeloPuStation2L103inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvPuStation" />
+    <positionref ref="VelolvVeloPuStation2R102inVelolvVelop" />
+    <rotationref ref="VelolvVeloPuStation2R102inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvPuStation" />
+    <positionref ref="VelolvVeloPuStation1L101inVelolvVelop" />
+    <rotationref ref="VelolvVeloPuStation1L101inVelolvVelor" />
+   </physvol>
+   <physvol>
+    <volumeref ref="VeloStationslvPuStation" />
+    <positionref ref="VelolvVeloPuStation1R100inVelolvVelop" />
+    <rotationref ref="VelolvVeloPuStation1R100inVelolvVelor" />
+   </physvol>
+  </volume>
+  <volume name="World" >
+   <materialref ref="sAir" />
+   <solidref ref="WorldBox" />
+   <physvol>
+    <volumeref ref="VelolvVelo" />
+    <positionref ref="eLHCbVeloinWorldp" />
+    <rotationref ref="eLHCbVeloinWorldr" />
+   </physvol>
+  </volume>
+ </structure>
+ <setup name="Default" version="1.0" >
+  <world ref="World" />
+ </setup>
+</gdml>

@@ -1,0 +1,203 @@
+// -*- C++ -*-
+// $Id: hash_map.src,v 1.1.1.1 2003/07/15 20:15:05 garren Exp $
+// ---------------------------------------------------------------------------
+
+#ifdef DEBUG_MODE
+#include <iostream>
+#endif
+
+#ifndef HEP_HASH_MAP_SRC
+#define HEP_HASH_MAP_SRC
+
+#include <string.h>
+#include <utility>
+#include "string.src"
+
+/*
+ * Simplified hash_map class.
+ * It provides only basic functions of the standard <hash_map> and
+ * is intended to be used as a replacement of the standard class where
+ * full functionality of <hash_map> is not required, but it is essential
+ * to have highly portable and effective code.
+ *
+ * This file should be used exclusively inside *.cc files.
+ * Usage inside header files can result to a clash with standard <hash_map>.
+ *
+ * @author Evgeni Chernyaev  <Evgueni.Tcherniaev@cern.ch>
+ */
+template<class K, class T>
+class hash_map {
+public:
+  struct Entry {            // Hash_map entry   
+    std::pair<const K,T> data;
+    Entry* next;
+    Entry(K k, T v, Entry* n) : data(k,v), next(n) {}
+  };
+
+  class hash_map_iterator { // Hash_map iterator
+    Entry* entry;
+  public: 
+    hash_map_iterator() : entry(0) {}
+    hash_map_iterator(Entry & e) : entry(&e) {} 
+    std::pair<const K,T> & operator * () const { return entry->data; }
+    std::pair<const K,T> * operator ->() const { return &(operator*()); }
+    bool operator==(hash_map_iterator i) const {
+      return (entry == i.entry);
+    }
+    bool operator!=(hash_map_iterator i) const {
+      return (entry != i.entry);
+    }
+  };
+
+public:
+  typedef unsigned int            size_type;
+  typedef std::pair<const K,T> value_type;
+  typedef hash_map_iterator       iterator;
+  typedef hash_map_iterator       const_iterator;
+
+private:
+  Entry**   table;          // Hash table: pointers to entries
+  size_type cur_size;       // Number of entries
+  size_type max_size;       // Bucket_count - current size of the table
+  float     max_load;       // Keep (n) <= (max_size * max_load)
+  float     grow;           // When necessary, resize(max_size * grow)
+  const T   default_value;  // Default value used by []
+
+  size_type hash(const char * key) const {
+    size_type res = 0;
+    while(*key) { res = res*31 + *key++; }
+    return res;
+  }
+
+  size_type hash(const string & key) const {
+    return hash(key.c_str());
+  }
+
+  bool eq(const char * a, const char * b) const {
+    return (strcmp(a, b) == 0);
+  }
+
+  bool eq(const string & a, const string & b) const {
+    return (a == b);
+  }
+
+public:
+
+  // Constructor.
+  hash_map(const T & dv = T(), size_type n = 107)
+    : table(0), cur_size(0), max_size(0), default_value(dv)
+  {
+    set_load();
+    resize(n);
+  }
+
+  // Destructor.
+  ~hash_map() {
+    for(size_type i=0; i<max_size; i++) {
+      Entry* n = table[i];
+      while(n) { Entry* p = n; n = p->next; delete p; }
+    }
+    delete [] table;
+  }    
+
+  // Sets load and grow parameters.
+  void set_load(float m = 0.7, float g = 1.7) { max_load = m; grow = g; } 
+
+  // Returns number of elements.
+  size_type size() const { return cur_size; }
+
+  // Returns size of the hash table.
+  size_type bucket_count() const { return max_size; }
+
+  // Resizes the hash table.
+  void resize(size_type s) {
+    if (s <= max_size) return;
+    Entry** tmp = table;
+    table = new Entry* [s];
+    for (size_type k=0; k<s; k++) table[k] = 0;
+    for (size_type i=0; i<max_size; i++) {
+      Entry* n = tmp[i];
+      while(n) {
+	Entry* p = n;
+	n = p->next;
+	size_type ii = hash(p->data.first) % s;
+	p->next = table[ii];
+	table[ii] = p;
+      }
+    }
+    max_size = s;
+    delete [] tmp;
+  }
+
+  // Subscripting.
+  T & operator[](const K & key) {
+    size_type i = hash(key) % max_size;
+    for (Entry* p=table[hash(key) % max_size]; p; p=p->next) {
+      if (eq(key,p->data.first)) return p->data.second;
+    }
+    if (cur_size++ >= max_size*max_load) {
+      resize(size_type(max_size*grow));
+      i = hash(key) % max_size;
+    }
+    table[i] = new Entry(key, default_value, table[i]);
+    return table[i]->data.second;
+  }
+
+  // Finds element with given key.  
+  iterator find(const K & key) const {
+    size_type i = hash(key) % max_size;
+    for (Entry* p=table[i]; p; p=p->next) {
+      if (eq(key,p->data.first)) return iterator(*p);
+    }
+    return end();
+  }
+
+  // Erases element with given key.
+  size_type erase(const K & key) {
+    size_type i = hash(key) % max_size;
+    Entry* p = table[i];
+    if (p == 0) return 0;
+    if (eq(key,p->data.first)) {
+      table[i] = p->next; delete p; cur_size--; return 1;
+    }
+    Entry** pp = &table[i];
+    for (p=p->next; p; p=p->next) {
+      if (eq(key,p->data.first)) {
+	*pp = p->next; delete p; cur_size--; return 1;
+      }else{
+	pp = &(p->next);
+      }
+    }
+    return 0;
+  }
+
+  // Clears the hash table.
+  void clear() {
+    for(size_type i=0; i<max_size; i++) {
+      for (Entry* p=table[i]; p;) {
+	Entry* pp = p; p = p->next; delete pp;
+      }
+    table[i] = 0;
+    }
+    cur_size = 0;
+  }
+
+  // Returns end iterator.
+  iterator end() const { return iterator(); }
+
+#ifdef DEBUG_MODE
+  // Prints content of the hash table.
+  void print() {
+    std::cout << endl;
+    for(size_type i=0; i<max_size; i++) {
+      for (Entry* p=table[i]; p; p=p->next) {
+	std::cout
+	  << '"' << p->data.first << '"' << " " << p->data.second
+	  << std::endl;
+      }
+    }
+  }
+#endif
+};
+
+#endif /* HEP_HASH_MAP_SRC */

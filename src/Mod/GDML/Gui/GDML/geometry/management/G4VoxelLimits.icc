@@ -1,0 +1,158 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+// $Id: G4VoxelLimits.icc,v 1.4 2006/06/29 18:33:15 gunter Exp $
+// GEANT4 tag $Name: geant4-09-03-patch-01 $
+//
+// 
+// G4VoxelLimits Inline implementation
+//
+// --------------------------------------------------------------------
+
+inline
+G4double G4VoxelLimits::GetMaxXExtent() const
+{
+  return fxAxisMax;
+}
+
+inline
+G4double G4VoxelLimits::GetMaxYExtent() const
+{
+  return fyAxisMax;
+}
+
+inline
+G4double G4VoxelLimits::GetMaxZExtent() const
+{
+  return fzAxisMax;
+}
+
+inline
+G4double G4VoxelLimits::GetMinXExtent() const
+{
+  return fxAxisMin;
+}
+
+inline
+G4double G4VoxelLimits::GetMinYExtent() const
+{
+  return fyAxisMin;
+}
+
+inline
+G4double G4VoxelLimits::GetMinZExtent() const
+{
+  return fzAxisMin;
+}
+
+inline
+G4double G4VoxelLimits::GetMaxExtent(const EAxis pAxis) const
+{
+  if (pAxis==kXAxis)
+  {
+    return GetMaxXExtent();
+  }
+  else if (pAxis==kYAxis)
+  {
+    return GetMaxYExtent();
+  }
+  else 
+  {
+    assert(pAxis==kZAxis);
+    return GetMaxZExtent();
+  }
+}
+
+inline
+G4double G4VoxelLimits::GetMinExtent(const EAxis pAxis) const
+{
+  if (pAxis==kXAxis)
+  {
+    return GetMinXExtent();
+  }
+  else if (pAxis==kYAxis)
+  {
+    return GetMinYExtent();
+  }
+  else 
+  {
+    assert(pAxis==kZAxis);
+    return GetMinZExtent();
+  }
+}
+
+inline
+G4bool G4VoxelLimits::IsXLimited() const
+{
+  return (fxAxisMin==-kInfinity&&fxAxisMax==kInfinity) ? false : true;
+}
+
+inline
+G4bool G4VoxelLimits::IsYLimited() const
+{
+  return (fyAxisMin==-kInfinity&&fyAxisMax==kInfinity) ? false : true;
+}
+
+inline
+G4bool G4VoxelLimits::IsZLimited() const
+{
+  return (fzAxisMin==-kInfinity&&fzAxisMax==kInfinity) ? false : true;
+}
+
+inline
+G4bool G4VoxelLimits::IsLimited() const
+{
+  return (IsXLimited()||IsYLimited()||IsZLimited());
+}
+
+inline
+G4bool G4VoxelLimits::IsLimited(const EAxis pAxis) const
+{
+  if (pAxis==kXAxis)
+  {
+    return IsXLimited();
+  }
+  else if (pAxis==kYAxis)
+  {
+    return IsYLimited();
+  }
+  else 
+  {
+    assert(pAxis==kZAxis);
+    return IsZLimited();
+  }
+}
+
+inline
+G4bool G4VoxelLimits::Inside(const G4ThreeVector& pVec) const
+{
+  return ((GetMinXExtent()<=pVec.x()) &&
+	  (GetMaxXExtent()>=pVec.x()) &&
+	  (GetMinYExtent()<=pVec.y()) &&
+	  (GetMaxYExtent()>=pVec.y()) &&
+	  (GetMinZExtent()<=pVec.z()) &&
+	  (GetMaxZExtent()>=pVec.z()) ) ? true : false;
+}

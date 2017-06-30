@@ -1,0 +1,63 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+// $Id: G4VSolid.icc,v 1.9 2007/05/11 13:30:12 gcosmo Exp $
+// GEANT4 tag $Name: geant4-09-03-patch-01 $
+//
+// 
+// G4VSolid Inline implementation
+//
+// --------------------------------------------------------------------
+
+inline
+G4bool G4VSolid::operator==( const G4VSolid& s) const
+{
+  return (this==&s) ? true : false;
+}
+/*
+inline
+void G4VSolid::DumpInfo () const
+{
+  StreamInfo(G4cout);
+}
+*/
+inline
+G4String G4VSolid::GetName() const
+{
+    return fshapeName;
+}	
+
+inline
+void G4VSolid::SetName(const G4String& name)
+{
+    fshapeName=name;
+}	
+
+inline
+G4double G4VSolid::GetTolerance() const
+{
+    return kCarTolerance;
+}

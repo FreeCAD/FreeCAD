@@ -1,0 +1,119 @@
+#ifndef AXISANGLE_ICC
+#error "AxisAngle.icc included without AxisAngle.h"
+#endif
+
+
+// ----------------------------------------------------------------------
+//
+// AxisAngle.icc
+//
+// History:
+//   23-Jan-1998  WEB  Initial draft
+//   12-Mar-1998  WEB  Gave default constructor proper default values
+//   13-Mar-1998  WEB  Corrected setDelta; simplified compare()
+//   17-Jun-1998  WEB  Added namespace support
+//   26-Jul-2000  MF   CLHEP version
+//
+// ----------------------------------------------------------------------
+
+namespace CLHEP {
+
+inline HepAxisAngle::HepAxisAngle() :
+  axis_( Hep3Vector(0,0,1) ), delta_( 0.0 )
+{}  // HepAxisAngle::HepAxisAngle()
+
+inline HepAxisAngle::HepAxisAngle( const Hep3Vector axis, Scalar delta ) :
+  axis_( axis.unit() ), delta_( delta )
+{}  // HepAxisAngle::HepAxisAngle()
+
+
+inline Hep3Vector HepAxisAngle::getAxis() const {
+  return  axis_;
+}  // HepAxisAngle::getAxis()
+
+inline Hep3Vector HepAxisAngle::axis() const {
+  return  axis_;
+}  // HepAxisAngle::axis()
+
+
+inline HepAxisAngle & HepAxisAngle::setAxis( const Hep3Vector axis ) {
+  axis_ = axis.unit();
+  return  *this;
+}  // HepAxisAngle::setAxis()
+
+
+inline double HepAxisAngle::getDelta() const {
+  return  delta_;
+}  // HepAxisAngle::getDelta()
+
+inline double HepAxisAngle::delta() const {
+  return  delta_;
+}  // HepAxisAngle::delta()
+
+
+inline HepAxisAngle & HepAxisAngle::setDelta( Scalar delta ) {
+  delta_ = delta;
+  return  *this;
+}  // HepAxisAngle::setDelta()
+
+
+inline HepAxisAngle & HepAxisAngle::set( const Hep3Vector axis, Scalar delta ) {
+  axis_ = axis.unit();
+  delta_ = delta;
+  return  *this;
+}  // HepAxisAngle::set()
+
+
+inline int HepAxisAngle::compare( const AA & aa ) const {
+
+  return  delta_ < aa.delta_  ?  -1
+       :  delta_ > aa.delta_  ?  +1
+       :  axis_  < aa.axis_   ?  -1
+       :  axis_  > aa.axis_   ?  +1
+       :                          0;
+
+}  // HepAxisAngle::compare()
+
+
+inline bool HepAxisAngle::operator==( const AA & aa ) const {
+  return  ( compare( aa ) == 0 );
+}  // HepAxisAngle::operator==()
+
+
+inline bool HepAxisAngle::operator!=( const AA & aa ) const {
+  return  ( compare( aa ) != 0 );
+}  // HepAxisAngle::operator!=()
+
+
+inline bool HepAxisAngle::operator<( const AA & aa ) const {
+  return  ( compare( aa ) < 0 );
+}  // HepAxisAngle::operator<()
+
+
+inline bool HepAxisAngle::operator<=( const AA & aa ) const {
+  return  ( compare( aa ) <= 0 );
+}  // HepAxisAngle::operator<=()
+
+
+inline bool HepAxisAngle::operator>( const AA & aa ) const {
+  return  ( compare( aa ) > 0 );
+}  // HepAxisAngle::operator>()
+
+
+inline bool HepAxisAngle::operator>=( const AA & aa ) const {
+  return  ( compare( aa ) >= 0 );
+}  // HepAxisAngle::operator>=()
+
+
+inline double HepAxisAngle::getTolerance() {
+  return tolerance;
+}  // HepAxisAngle::getTolerance()
+
+
+inline double HepAxisAngle::setTolerance( Scalar tol ) {
+  Scalar oldTolerance( tolerance );
+  tolerance = tol;
+  return oldTolerance;
+}  // HepAxisAngle::setTolerance()
+
+}  // namespace CLHEP

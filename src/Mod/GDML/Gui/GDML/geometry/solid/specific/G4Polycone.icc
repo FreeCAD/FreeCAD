@@ -1,0 +1,113 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+// $Id: G4Polycone.icc,v 1.10 2006/06/29 18:47:14 gunter Exp $
+// GEANT4 tag $Name: geant4-09-03-patch-01 $
+//
+// --------------------------------------------------------------------
+// GEANT 4 inline definitions file
+//
+// G4Polycone.icc
+//
+// Implementation of inline methods of G4Polycone
+// --------------------------------------------------------------------
+
+inline
+G4double G4Polycone::GetStartPhi() const
+{
+  return startPhi;
+}
+
+inline
+G4double G4Polycone::GetEndPhi() const
+{
+  return endPhi;
+}
+
+inline
+G4bool G4Polycone::IsOpen() const
+{
+  return phiIsOpen;
+}
+
+inline
+G4bool G4Polycone::IsGeneric() const
+{
+  return genericPcon;
+}
+
+inline
+G4int G4Polycone::GetNumRZCorner() const
+{
+  return numCorner;
+}
+
+inline
+G4PolyconeSideRZ G4Polycone::GetCorner(G4int index) const
+{
+  return corners[index];
+}
+
+inline
+G4PolyconeHistorical* G4Polycone::GetOriginalParameters() const
+{
+  return original_parameters;
+}
+
+inline
+void G4Polycone::SetOriginalParameters(G4PolyconeHistorical* pars)
+{
+  if (!pars)
+/*    G4Exception("G4Polycone::SetOriginalParameters()", "InvalidSetup",
+                FatalException, "NULL pointer to parameters!");*/
+  *original_parameters = *pars;
+  fCubicVolume = 0.;
+  fpPolyhedron = 0;
+}
+
+inline
+void G4Polycone::SetOriginalParameters()
+{
+  G4int numPlanes = (G4int)numCorner/2; 
+
+  original_parameters = new G4PolyconeHistorical;
+
+  original_parameters->Z_values = new G4double[numPlanes];
+  original_parameters->Rmin = new G4double[numPlanes];
+  original_parameters->Rmax = new G4double[numPlanes];
+  
+  for(G4int j=0; j < numPlanes; j++)
+  {
+    original_parameters->Z_values[j] = corners[numPlanes+j].z;
+    original_parameters->Rmax[j] = corners[numPlanes+j].r;
+    original_parameters->Rmin[j] = corners[numPlanes-1-j].r;
+  }
+
+  original_parameters->Start_angle = startPhi;
+  original_parameters->Opening_angle = endPhi-startPhi;
+  original_parameters->Num_z_planes = numPlanes;
+}
+

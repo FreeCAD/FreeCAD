@@ -1,0 +1,92 @@
+// -*- C++ -*-
+// $Id: Transform3D.icc,v 1.1 2003/07/17 09:05:28 garren Exp $
+// ---------------------------------------------------------------------------
+
+///#include "CLHEP/Vector/ThreeVector.h"
+///#include "CLHEP/Vector/Rotation.h"
+///#include "CLHEP/Geometry/Point3D.h"
+///#include "CLHEP/Geometry/Vector3D.h"
+///#include "CLHEP/Geometry/Normal3D.h"
+#include "../vector/ThreeVector.h"
+#include "../vector/Rotation.h"
+#include "./Point3D.h"
+#include "./Vector3D.h"
+#include "./Normal3D.h"
+
+namespace HepGeom {
+
+//   I N L I N E S   F O R   T R A N S F O R M A T I O N
+
+inline
+Transform3D::Transform3D_row::Transform3D_row
+(const Transform3D & r, int i) : rr(r), ii(i) {}
+
+inline
+double Transform3D::Transform3D_row::operator[](int jj) const {
+  return rr(ii,jj);
+}
+
+inline
+const Transform3D::Transform3D_row Transform3D::operator[](int i) const {
+  return Transform3D_row(*this, i);
+}
+
+inline
+Transform3D::Transform3D(const CLHEP::HepRotation & m, const CLHEP::Hep3Vector & v) {
+  xx_= m.xx(); xy_= m.xy(); xz_= m.xz();
+  yx_= m.yx(); yy_= m.yy(); yz_= m.yz();
+  zx_= m.zx(); zy_= m.zy(); zz_= m.zz();
+  dx_= v.x();  dy_= v.y();  dz_= v.z();
+}
+
+inline
+CLHEP::HepRotation
+Transform3D::getRotation() const {
+  CLHEP::HepRotation m;
+  return m.rotateAxes(CLHEP::Hep3Vector(xx_,yx_,zx_),
+		      CLHEP::Hep3Vector(xy_,yy_,zy_),
+                      CLHEP::Hep3Vector(xz_,yz_,zz_));
+}
+
+inline
+CLHEP::Hep3Vector
+Transform3D::getTranslation() const {
+  return CLHEP::Hep3Vector(dx_,dy_,dz_); 
+}
+
+//   I N L I N E S   F O R   R O T A T I O N
+
+inline
+Rotate3D::Rotate3D(const CLHEP::HepRotation & m) {
+  xx_= m.xx(); xy_= m.xy(); xz_= m.xz();
+  yx_= m.yx(); yy_= m.yy(); yz_= m.yz();
+  zx_= m.zx(); zy_= m.zy(); zz_= m.zz();
+  dx_= 0;      dy_= 0;      dz_= 0;
+}
+
+inline
+Rotate3D::Rotate3D(double a, const Vector3D<double> & v) {
+  *this =
+    Rotate3D(a, Point3D<double>(0,0,0), Point3D<double>(v.x(),v.y(),v.z()));
+}
+
+inline
+Rotate3D::Rotate3D(const Point3D<double> & fr1, const Point3D<double> & fr2,
+		   const Point3D<double> & to1, const Point3D<double> & to2)
+  : Transform3D(Point3D<double>(0,0,0),fr1,fr2,
+		Point3D<double>(0,0,0),to1,to2) {}
+
+//   I N L I N E S   F O R   T R A N S L A T I O N
+
+inline
+Translate3D::Translate3D(const CLHEP::Hep3Vector & v)
+  : Transform3D(1,0,0,v.x(), 0,1,0,v.y(), 0,0,1,v.z()) {}
+
+//   I N L I N E S   F O R   R E F L E C T I O N
+
+inline
+Reflect3D::Reflect3D(const Normal3D<double> & n, const Point3D<double> & p) {
+  *this = Reflect3D(n.x(), n.y(), n.z(), -n*p);
+}
+
+} /* namespace HepGeom */

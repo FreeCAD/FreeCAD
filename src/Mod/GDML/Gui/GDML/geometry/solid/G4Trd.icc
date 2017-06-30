@@ -1,0 +1,136 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+// $Id: G4Trd.icc,v 1.7 2006/10/19 15:33:37 gcosmo Exp $
+// GEANT4 tag $Name: geant4-09-03-patch-01 $
+//
+// --------------------------------------------------------------------
+// GEANT 4 inline definitions file
+//
+// G4Trd.icc
+//
+// Implementation of inline methods of G4Trd
+// --------------------------------------------------------------------
+
+inline
+G4double G4Trd::GetXHalfLength1() const
+{
+  return fDx1;
+}
+
+inline
+G4double G4Trd::GetXHalfLength2() const
+{
+  return fDx2;
+}
+
+inline
+G4double G4Trd::GetYHalfLength1() const
+{
+  return fDy1;
+}
+
+inline
+G4double G4Trd::GetYHalfLength2() const
+{
+  return fDy2;
+}
+
+inline
+G4double G4Trd::GetZHalfLength() const
+{
+  return fDz;
+}
+
+inline
+void G4Trd::SetXHalfLength1(G4double val)
+{
+  fDx1= val;
+  fCubicVolume= 0.;
+  fSurfaceArea=0;
+  fpPolyhedron = 0;
+}
+
+inline
+void G4Trd::SetXHalfLength2(G4double val)
+{
+  fDx2= val;
+  fCubicVolume= 0.;
+  fSurfaceArea=0;
+  fpPolyhedron = 0;
+}
+
+inline
+void G4Trd::SetYHalfLength1(G4double val)
+{
+  fDy1= val;
+  fCubicVolume= 0.;
+  fSurfaceArea=0;
+  fpPolyhedron = 0;
+}
+
+inline
+void G4Trd::SetYHalfLength2(G4double val)
+{
+  fDy2= val;
+  fCubicVolume= 0.;
+  fSurfaceArea=0;
+  fpPolyhedron = 0;
+}
+
+inline
+void G4Trd::SetZHalfLength(G4double val)
+{
+  fDz= val;
+  fCubicVolume= 0.;
+  fSurfaceArea=0;
+  fpPolyhedron = 0;
+}
+
+inline
+G4double G4Trd::GetCubicVolume()
+{
+  if(fCubicVolume != 0.) {;}
+  else
+  {
+    fCubicVolume = 2*fDz*( (fDx1+fDx2)*(fDy1+fDy2)
+                         + (fDx2-fDx1)*(fDy2-fDy1)/3 );
+  }
+  return fCubicVolume;
+}
+
+inline
+G4double G4Trd::GetSurfaceArea()
+{
+  if(fSurfaceArea != 0.) {;}
+  else
+  { 
+    fSurfaceArea = 4*(fDx1*fDy1+fDx2*fDy2)
+                 + 2*((fDy1+fDy2)*std::sqrt(4*fDz*fDz+(fDx2-fDx1)*(fDx2-fDx1))
+                 + (fDx1+fDx2) *std::sqrt(4*fDz*fDz+(fDy2-fDy1)*(fDy2-fDy1)) );
+  }
+  return fSurfaceArea;
+}

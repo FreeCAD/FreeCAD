@@ -1,0 +1,164 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+// $Id: G4Trap.icc,v 1.8 2006/10/19 15:33:37 gcosmo Exp $
+// GEANT4 tag $Name: geant4-09-03-patch-01 $
+//
+// --------------------------------------------------------------------
+// GEANT 4 inline definitions file
+//
+// G4Trap.icc
+//
+// Implementation of inline methods of G4Trap
+// --------------------------------------------------------------------
+
+inline
+G4double G4Trap::GetZHalfLength() const
+{
+  return fDz ;
+}
+
+inline
+G4ThreeVector G4Trap::GetSymAxis() const
+{
+  G4double cosTheta = 1.0/std::sqrt(1+fTthetaCphi*fTthetaCphi +
+                               fTthetaSphi*fTthetaSphi) ;
+
+  return G4ThreeVector(fTthetaCphi*cosTheta,
+                       fTthetaSphi*cosTheta,
+                       cosTheta) ;
+}
+
+inline
+G4double G4Trap::GetYHalfLength1() const
+{
+  return fDy1 ;
+}
+
+inline
+G4double G4Trap::GetXHalfLength1() const
+{
+  return fDx1 ;
+}
+
+inline
+G4double G4Trap::GetXHalfLength2() const
+{
+  return fDx2 ;
+}
+
+inline
+G4double G4Trap::GetTanAlpha1() const
+{
+  return fTalpha1 ;
+}
+
+inline
+G4double G4Trap::GetYHalfLength2() const
+{
+  return fDy2 ;
+}
+
+inline
+G4double G4Trap::GetXHalfLength3() const
+{
+  return fDx3 ;
+}
+
+inline
+G4double G4Trap::GetXHalfLength4() const
+{
+  return fDx4 ;
+}
+
+inline
+G4double G4Trap::GetTanAlpha2() const
+{
+  return fTalpha2 ;
+}
+
+inline
+TrapSidePlane G4Trap::GetSidePlane( G4int n ) const
+{
+  return fPlanes[n] ;
+}
+
+inline
+G4double G4Trap::GetFaceArea(const G4ThreeVector& p0, const G4ThreeVector& p1,
+                             const G4ThreeVector& p2, const G4ThreeVector& p3)
+{
+   G4double area = 0.5*((p1-p0).cross(p2-p1).mag()+(p3-p2).cross(p0-p3).mag());
+   return area;
+}
+
+inline
+G4double G4Trap::GetCubicVolume()
+{
+  if(fCubicVolume != 0.) {;}
+  else  { fCubicVolume = fDz*( (fDx1+fDx2+fDx3+fDx4)*(fDy1+fDy2)
+                             + (fDx4+fDx3-fDx2-fDx1)*(fDy2-fDy1)/3 ); }
+  return fCubicVolume;
+}
+
+inline
+G4double G4Trap::GetSurfaceArea()
+{
+  if(fSurfaceArea != 0.) {;}
+  else
+  { 
+    G4ThreeVector ba(fDx1-fDx2+fTalpha1*2*fDy1,2*fDy1,0);
+    G4ThreeVector bc(2*fDz*fTthetaCphi-(fDx4-fDx2)+fTalpha2*fDy2-fTalpha1*fDy1,
+                     2*fDz*fTthetaSphi+fDy2-fDy1, 2*fDz);
+    G4ThreeVector dc(-fDx4+fDx3+2*fTalpha2*fDy2, 2*fDy2,0);
+    G4ThreeVector da(-2*fDz*fTthetaCphi-(fDx1-fDx3)-fTalpha1*fDy1+fTalpha2*fDy2,
+                     -2*fDz*fTthetaSphi-fDy1+fDy2,-2*fDz);
+
+    G4ThreeVector ef(fDx2-fDx1+2*fTalpha1*fDy1, 2*fDy1,0);
+    G4ThreeVector eh(2*fDz*fTthetaCphi+fDx3-fDx1+fTalpha1*fDy1-fTalpha2*fDy2,
+                     2*fDz*fTthetaSphi-fDy2+fDy1,2*fDz);
+    G4ThreeVector gh(fDx3-fDx4-2*fTalpha2*fDy2, -2*fDy2,0);
+    G4ThreeVector gf(-2*fDz*fTthetaCphi+fDx2-fDx4+fTalpha1*fDy1-fTalpha2*fDy2,
+                     -2*fDz*fTthetaSphi+fDy1-fDy2,-2*fDz);
+
+    G4ThreeVector cr;
+    cr = ba.cross(bc);
+    G4double babc=cr.mag();
+    cr = dc.cross(da);
+    G4double dcda=cr.mag();
+    cr = ef.cross(eh);
+    G4double efeh=cr.mag();
+    cr = gh.cross(gf);
+    G4double ghgf=cr.mag();
+
+    fSurfaceArea = 2*fDy1*(fDx1+fDx2)+2*fDy2*(fDx3+fDx4)
+                 + (fDx1+fDx3)
+                 * std::sqrt(4*fDz*fDz+std::pow(fDy2-fDy1-2*fDz*fTthetaSphi,2))
+                 + (fDx2+fDx4)
+                 * std::sqrt(4*fDz*fDz+std::pow(fDy2-fDy1+2*fDz*fTthetaSphi,2))
+                 + 0.5*(babc+dcda+efeh+ghgf);
+  }
+  return fSurfaceArea;
+}

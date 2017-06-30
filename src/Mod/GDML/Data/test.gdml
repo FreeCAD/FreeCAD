@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/GDML_3_0_0/schema/gdml.xsd">
+
+ <define>
+ <constant name="HALFPI" value="pi/2."/>
+ <constant name="PI" value="1.*pi"/>
+ <constant name="TWOPI" value="2.*pi"/>
+  <position name="left" x="0" y="0" z="500/2-50/2"/>
+  <position name="center" x="0" y="0" z="0"/>
+  <position name="right" x="0" y="0" z="-500/2+50/2"/>
+  <position name="left1" x="0" y="-150+500/2-50/2" z="500/2-50/2"/>
+  <position name="center1" x="0" y="500/2-50/2" z="500/2-50/2"/>
+  <position name="right1" x="0" y="150+500/2-50/2" z="0+500/2-50/2"/>
+  <position name="addx" x="50+20/2" y="0" z="0"/>
+  <position name="addx1" x="50" y="25-5" z="25-5"/>
+  <position name="down" x="-3" y="00" z="0"/>
+  <position name="middle2" x="50/2" y="0" z="0"/>
+  <position name="middle1" x="0" y="0" z="0"/>
+  <position name="up" x="500" y="00" z="0"/>
+  <rotation name="identity" x="0" y="0" z="0" />
+  <rotation name="rotate180" y="180" unit="deg" />
+  <rotation name="rotateX" y="90" unit="deg" />
+ </define>
+ 
+ <materials>
+  <element name="Hydrogen" formula="H"  Z="1.">  <atom value="1.01"/>   </element>
+  <element name="Oxygen"   formula="O"  Z="8.">  <atom value="16.0"/>   </element>
+  <element name="Nitrogen" formula="N"  Z="7.">  <atom value="14.01"/>  </element>
+  <element name="Lead"     formula="Pb" Z="82."> <atom value="207.20"/> </element>
+  <material name="Al" Z="13.0"> <D value="2.70"/> <atom value="26.98"/> </material>
+  <material name="Water" formula="H20">
+   <D value="1.0"/>
+   <composite n="2" ref="Hydrogen"/>
+   <composite n="1" ref="Oxygen"/>
+  </material>
+  <material name="Air">
+   <D value="1.290" unit="mg/cm3"/>
+   <fraction n="0.7" ref="Nitrogen"/>
+   <fraction n="0.3" ref="Oxygen"/>
+  </material>
+ </materials>
+
+ <solids>
+  <box name="WorldBox" x="10000.0" y="10000.0" z="10000.0"/>
+  <box name="b100" x="10.0" y="10.0" z="10.0"/>
+  <box name="b500" x="50.0" y="50.0" z="50.0"/>
+  <box name="b123" x="3.0" y="500.0" z="500.0"/>
+  <tube name="t100" z="20.0" rmax="25.0" deltaphi="6.28318531" aunit="rad"/>
+  <tube name="t101" z="20.0" rmax="25.0" deltaphi="TWOPI" aunit="rad"/>
+  </solids>
+
+ <structure>  
+  <volume name="vol0">
+   <materialref ref="Water"/>
+   <solidref ref="t100"/>
+  </volume>
+
+  <volume name="vol1">
+   <materialref ref="Al"/>
+   <solidref ref="b500"/>
+  </volume>
+
+  <volume name="sousensemble02">
+   <materialref ref="Al"/>
+   <solidref ref="b123"/>
+  </volume>
+
+  <volume name="sousensemble01">
+   <materialref ref="Air"/>
+   <solidref ref="WorldBox"/>
+    <physvol>
+     <volumeref ref="vol0"/>
+     <positionref ref="addx"/>
+     <rotationref ref="rotateX"/>
+   </physvol> 
+   <physvol>
+     <volumeref ref="vol1"/>
+     <positionref ref="middle2"/>
+     <rotationref ref="identity"/>
+   </physvol> 
+  </volume>
+  
+  <volume name="ensemble01">
+   <materialref ref="Air"/>
+   <solidref ref="WorldBox"/>
+   <physvol>
+     <volumeref ref="sousensemble01"/>
+     <positionref ref="left"/>
+     <rotationref ref="identity"/>
+   </physvol> 
+   <physvol>
+     <volumeref ref="sousensemble01"/>
+     <positionref ref="center"/>
+     <rotationref ref="identity"/>
+   </physvol> 
+   <physvol>
+     <volumeref ref="sousensemble01"/>
+     <positionref ref="right"/>
+     <rotationref ref="identity"/>
+   </physvol> 
+   <physvol>
+     <volumeref ref="sousensemble02"/>
+     <positionref ref="middle1"/>
+     <rotationref ref="identity"/>
+   </physvol> 
+  </volume>
+
+  <volume name="World">
+   <materialref ref="Air"/>
+   <solidref ref="WorldBox"/>
+   <physvol>
+     <volumeref ref="ensemble01"/>
+     <positionref ref="up"/>
+     <rotationref ref="rotate180"/>
+   </physvol> 
+   <physvol>
+     <volumeref ref="ensemble01"/>
+     <positionref ref="middle1"/>
+     <rotationref ref="identity"/>
+   </physvol> 
+   <physvol>
+     <volumeref ref="vol1"/>
+     <positionref ref="middle1"/>
+     <rotationref ref="identity"/>
+   </physvol> 
+  </volume>
+
+ </structure>
+ <setup name="Default" version="1.0">
+  <world ref="World"/>
+ </setup>
+</gdml> 
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+

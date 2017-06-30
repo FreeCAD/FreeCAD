@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+
+  <define/>
+
+  <materials>
+    <element Z="7" name="Nitrogen0513CA68">
+      <atom unit="g/mole" value="14.01"/>
+    </element>
+    <element Z="8" name="Oxygen0513C8D8">
+      <atom unit="g/mole" value="16"/>
+    </element>
+    <material name="Air124D44C8" state="gas">
+      <T unit="K" value="0"/>
+      <P unit="pascal" value="0"/>
+      <D unit="g/cm3" value="0.00129"/>
+      <fraction n="0.7" ref="Nitrogen0513CA68"/>
+      <fraction n="0.3" ref="Oxygen0513C8D8"/>
+    </material>
+  </materials>
+
+  <solids>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="t1001242E410" rmax="25" rmin="0" startphi="0" z="20"/>
+    <box lunit="mm" name="b50012F1C800" x="50" y="50" z="50"/>
+    <box lunit="mm" name="b12312F1C890" x="3" y="500" z="100"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="t1000011242E508" rmax="25" rmin="0" startphi="0" z="20"/>
+    <box lunit="mm" name="b50000112F1C920" x="50" y="50" z="50"/>
+    <box lunit="mm" name="b12300112F1C9B0" x="3" y="200" z="500"/>
+    <box lunit="mm" name="world12F1C770" x="2000" y="2000" z="2000"/>
+  </solids>
+
+  <structure>
+    <volume name="t10012DB6DD8">
+      <materialref ref="Air124D44C8"/>
+      <solidref ref="t1001242E410"/>
+    </volume>
+    <volume name="b50012DB6D38">
+      <materialref ref="Air124D44C8"/>
+      <solidref ref="b50012F1C800"/>
+    </volume>
+    <volume name="b12312DB6C98">
+      <materialref ref="Air124D44C8"/>
+      <solidref ref="b12312F1C890"/>
+    </volume>
+    <volume name="t10000112DB6BF8">
+      <materialref ref="Air124D44C8"/>
+      <solidref ref="t1000011242E508"/>
+    </volume>
+    <volume name="b50000112DB7238">
+      <materialref ref="Air124D44C8"/>
+      <solidref ref="b50000112F1C920"/>
+    </volume>
+    <volume name="b12300112DB8138">
+      <materialref ref="Air124D44C8"/>
+      <solidref ref="b12300112F1C9B0"/>
+    </volume>
+    <volume name="World12DB7C38">
+      <materialref ref="Air124D44C8"/>
+      <solidref ref="world12F1C770"/>
+      <physvol name="b5001242DA18">
+        <volumeref ref="b50012DB6D38"/>
+        <position name="b5001242DA18_pos" unit="mm" x="-30" y="0" z="50"/>
+        <rotation name="b5001242DA18_rot" unit="deg" x="0" y="0" z="0"/>
+      </physvol>
+      <physvol name="b1231242D880">
+        <volumeref ref="b12312DB6C98"/>
+        <position name="b1231242D880_pos" unit="mm" x="60" y="180" z="0"/>
+        <rotation name="b1231242D880_rot" unit="deg" x="0" y="0" z="10"/>
+      </physvol>
+      <physvol name="b5000011242CAB0">
+        <volumeref ref="b50000112DB7238"/>
+        <position name="b5000011242CAB0_pos" unit="mm" x="20" y="0" z="100"/>
+      </physvol>
+      <physvol name="b1230011242CC48">
+        <volumeref ref="b12300112DB8138"/>
+        <position name="b1230011242CC48_pos" unit="mm" x="45" y="0" z="0"/>
+      </physvol>
+    </volume>
+  </structure>
+
+  <setup name="Default" version="1.0">
+    <world ref="World12DB7C38"/>
+  </setup>
+
+</gdml>

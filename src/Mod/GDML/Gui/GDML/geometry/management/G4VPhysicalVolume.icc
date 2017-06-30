@@ -1,0 +1,136 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+// $Id: G4VPhysicalVolume.icc,v 1.10 2006/06/29 18:32:37 gunter Exp $
+// GEANT4 tag $Name: geant4-09-03-patch-01 $
+//
+//
+// class G4VPhysicalVolume Inline Implementation
+//
+// --------------------------------------------------------------------
+
+inline
+G4bool G4VPhysicalVolume::operator == (const G4VPhysicalVolume& p) const
+{
+  return (this==&p) ? true : false;
+}
+
+inline
+const G4ThreeVector& G4VPhysicalVolume::GetTranslation() const
+{
+  return ftrans;
+}
+
+inline
+void G4VPhysicalVolume::SetTranslation(const G4ThreeVector &v)
+{
+  ftrans=v;
+}
+
+inline
+const G4RotationMatrix* G4VPhysicalVolume::GetRotation() const
+{
+  return frot;
+}
+
+inline
+G4RotationMatrix* G4VPhysicalVolume::GetRotation()
+{
+  return frot;
+}
+
+inline
+void G4VPhysicalVolume::SetRotation(G4RotationMatrix *pRot)
+{
+  frot=pRot;
+}
+
+inline
+G4LogicalVolume* G4VPhysicalVolume::GetLogicalVolume() const
+{
+  return flogical;
+}
+
+inline
+void G4VPhysicalVolume::SetLogicalVolume(G4LogicalVolume *pLogical)
+{
+  flogical=pLogical;
+}
+
+inline
+G4LogicalVolume* G4VPhysicalVolume::GetMotherLogical() const
+{
+  return flmother;
+}
+
+inline
+void G4VPhysicalVolume::SetMotherLogical(G4LogicalVolume *pMother)
+{
+  flmother=pMother;
+}
+
+inline
+const G4String& G4VPhysicalVolume::GetName() const
+{
+  return fname;
+}
+
+inline
+void G4VPhysicalVolume::SetName(const G4String& pName)
+{
+  fname=pName;
+}
+
+inline
+G4RotationMatrix G4VPhysicalVolume::GetObjectRotationValue() const
+{
+  G4RotationMatrix  aRotM;   // Initialised to identity
+
+  // Insure against frot being a null pointer
+  if(frot)
+  {
+     aRotM= frot->inverse();
+  }
+  return aRotM;
+}
+
+inline
+G4ThreeVector  G4VPhysicalVolume::GetObjectTranslation() const
+{
+  return  ftrans;
+}
+
+inline
+const G4RotationMatrix* G4VPhysicalVolume::GetFrameRotation() const
+{
+  return frot;
+}
+
+inline
+G4ThreeVector  G4VPhysicalVolume::GetFrameTranslation() const
+{
+  return -ftrans;
+}

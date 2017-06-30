@@ -1,0 +1,125 @@
+// -*- C++ -*-
+// $Id: string.src,v 1.1.1.1 2003/07/15 20:15:05 garren Exp $
+// ---------------------------------------------------------------------------
+
+#ifndef HEP_STRING_SRC
+#define HEP_STRING_SRC
+
+#include <iostream>
+#include <string.h>
+
+/*
+ * Simplified string class.
+ * It provides only few basic functions of the standard <string> and
+ * is intended to be used as a replacement of the standard class where
+ * full functionality of <string> is not required, but it is essential
+ * to have highly portable and effective code.
+ *
+ * This file should be used exclusively inside *.cc files.
+ * Usage inside header files can result to a clash with standard <string>.
+ */
+struct string {
+  struct srep {
+    char* s;            // pointer to data
+    int   n;            // reference count
+    srep() : n(1) {}
+  } *p;
+  
+  // Default constructor.
+  string() { p = new srep; p->s = 0; } 
+
+  // Constructor from character string.
+  string(const char* s) {
+    p = new srep; p->s = new char[strlen(s)+1]; strcpy(p->s, s);
+  }
+
+  // Constructor from character substring.
+  string(const char* s, unsigned int n) {
+    p = new srep; p->s = new char[n+1]; strncpy(p->s, s, n); *(p->s+n) = '\0';
+  }
+
+  // Copy constructor from string.
+  string(const string& x) { x.p->n++; p = x.p; }
+
+  // Destructor.
+  ~string() { if (--p->n == 0) { delete [] p->s; delete p; } }
+    
+  // Assignment from character string.
+  string& operator=(const char* s) {
+    if (p->n > 1) {     // disconnect self
+      p->n--;
+      p = new srep;
+    }else{
+      delete [] p->s;   // free old string
+    } 
+    p->s = new char[strlen(s)+1];
+    strcpy(p->s, s);
+    return *this;
+  } 
+
+  // Assignment from string.
+  string& operator=(const string & x) {
+    x.p->n++;           // protect against "st = st"
+    if (--p->n == 0) { delete [] p->s; delete p; }
+    p = x.p;
+    return *this;
+  }
+
+  // Returns C-style character string.
+  const char* c_str() const { return p->s; }
+};
+
+//
+// Concatinations.
+//
+inline string operator+(char a, const string & b) {
+  string s; s.p->s = new char[strlen(b.c_str())+2];
+  s.p->s[0] = a; strcpy(s.p->s+1, b.c_str());
+  return s;
+}
+
+inline string operator+(const char * a, const string & b) {
+  int lena = strlen(a);
+  string s; s.p->s = new char[lena+strlen(b.c_str())+1];
+  strcpy(s.p->s, a); strcpy(s.p->s+lena, b.c_str());
+  return s;
+}
+
+inline string operator+(const string & a, const char * b) {
+  int lena = strlen(a.c_str());
+  string s; s.p->s = new char[lena+strlen(b)+1];
+  strcpy(s.p->s, a.c_str()); strcpy(s.p->s+lena, b);
+  return s;
+}
+
+inline string operator+(const string & a, const string & b) {
+  int lena = strlen(a.c_str());
+  string s; s.p->s = new char[lena+strlen(b.c_str())+1];
+  strcpy(s.p->s, a.c_str()); strcpy(s.p->s+lena, b.c_str());
+  return s;
+}
+  
+//
+// Comparisons.
+//
+inline bool operator==(const string & x, const char* s) {
+  return strcmp(x.p->s, s) == 0;
+}
+inline bool operator==(const string & x, const string & y) {
+  return strcmp(x.p->s, y.p->s) == 0;
+}
+inline bool operator!=(const string & x, const char* s) {
+  return strcmp(x.p->s, s) != 0;
+}
+inline bool operator!=(const string & x, const string & y) {
+  return strcmp(x.p->s, y.p->s) != 0;
+}
+
+//
+// Output to a stream.
+//
+std::ostream & operator<<(std::ostream & s, const string & x) {
+  return s << x.p->s;
+} 
+
+#endif /* HEP_STRING_SRC */

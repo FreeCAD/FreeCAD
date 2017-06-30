@@ -1,0 +1,45 @@
+// -*- C++ -*-
+// $Id: stack.src,v 1.1.1.1 2003/07/15 20:15:05 garren Exp $
+// ---------------------------------------------------------------------------
+
+#ifndef HEP_STACK_SRC
+#define HEP_STACK_SRC
+
+/*
+ * Simplified stack class.
+ * It is intended to be used as a replacement of the standard class where
+ * full functionality of <stack> is not required, but it is essential
+ * to have highly portable and effective code.
+ *
+ * This file should be used exclusively inside *.cc files.
+ * Usage inside header files can result to a clash with standard <stack>.
+ *
+ * @author Evgeni Chernyaev  <Evgueni.Tcherniaev@cern.ch>
+ */
+template<class T>
+class stack {
+ private:
+  int k, max_size;
+  T * v;
+
+ public:
+  stack() :  k(0), max_size(20), v(new T[20]) {}
+  ~stack() { delete [] v; }  
+
+  int    size()    const { return k; }
+  T      top ()    const { return v[k-1]; }
+  T &    top ()          { return v[k-1]; }
+  void   pop ()          { k--; }
+  void   push(T a) {
+    if (k == max_size) {
+      T * w     = v;
+      max_size *= 2;
+      v         = new T[max_size];
+      for (int i=0; i<k; i++) v[i] = w[i];
+      delete [] w;
+    }
+    v[k++] = a;
+  }
+};
+
+#endif /* HEP_STACK_SRC */

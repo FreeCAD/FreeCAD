@@ -1,0 +1,174 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+// $Id: G4MaterialPropertiesTable.icc,v 1.1 2009/04/21 15:35:45 gcosmo Exp $
+// GEANT4 tag $Name: geant4-09-03-patch-01 $
+//
+////////////////////////////////////////////////////////////////////////
+//
+// G4MaterialPropertiesTable inline definitions
+//
+// File:        G4MaterialPropertiesTable.icc
+// Version:     1.0
+// Created:     1996-02-08
+// Author:      Juliet Armstrong
+// Updated:     moved to inline
+// mail:        gum@triumf.ca
+//
+////////////////////////////////////////////////////////////////////////
+
+inline
+void G4MaterialPropertiesTable::AddConstProperty(const char *key,
+                                                 G4double PropertyValue)
+{
+  // Provides a way of adding a constant property to the Material Properties
+  // Table given a key
+
+  MPTC [G4String(key)] = PropertyValue;
+}
+
+inline
+void G4MaterialPropertiesTable::AddProperty(const char *key,
+                                            G4double   *PhotonEnergies,
+                                            G4double   *PropertyValues,
+                                            G4int      NumEntries)
+{
+  // Provides a way of adding a property to the Material Properties
+  // Table given a pair of numbers and a key
+
+  G4MaterialPropertyVector *mpv = new G4MaterialPropertyVector(PhotonEnergies, 
+                                                   PropertyValues, NumEntries);
+  MPT [G4String(key)] = mpv;
+}
+
+inline
+void G4MaterialPropertiesTable::
+AddProperty(const char *key, G4MaterialPropertyVector *mpv)
+{
+  //  Provides a way of adding a property to the Material Properties
+  //  Table given an G4MaterialPropertyVector Reference and a key
+
+  MPT [G4String(key)] = mpv;
+} 
+
+inline
+void G4MaterialPropertiesTable::RemoveConstProperty(const char *key)
+{
+  MPTC.erase(G4String(key));
+}
+
+inline
+void G4MaterialPropertiesTable::RemoveProperty(const char *key)
+{
+  MPT.erase(G4String(key));
+}
+
+inline
+G4double G4MaterialPropertiesTable::GetConstProperty(const char *key)
+{
+  // Returns the constant material property corresponding to a key
+
+  MPTCiterator j;
+  j = MPTC.find(G4String(key));
+  G4double val = 0.0;
+  if ( j != MPTC.end() )
+  {
+    val = j->second;
+  } 
+  else
+  {
+ ///   G4Exception("G4MaterialPropertiesTable::GetConstProperty()", "NotFound",
+ ///               FatalException, "Constant Material Property not found.");
+  }
+  return val;
+}
+
+inline
+G4bool G4MaterialPropertiesTable::ConstPropertyExists(const char *key)
+{
+  // Returns true if a const property 'key' exists
+
+  MPTCiterator j;
+  j = MPTC.find(G4String(key));
+  G4bool exists = false;
+  if ( j != MPTC.end() )
+  {
+    exists = true;
+  } 
+  return exists;
+}
+
+inline G4MaterialPropertyVector*
+G4MaterialPropertiesTable::GetProperty(const char *key)
+{
+  // Returns a Material Property Vector corresponding to a key
+
+  G4MaterialPropertyVector* pvec = MPT[G4String(key)];
+  if ((!pvec) && (G4String(key) == "GROUPVEL"))
+  {
+    pvec = SetGROUPVEL();
+  }
+  return pvec;
+}
+
+inline
+void G4MaterialPropertiesTable::AddEntry(const char *key,
+                                         G4double    aPhotonEnergy,
+                                         G4double    aPropertyValue)
+{
+  // Allows to add an entry pair directly to the Material Property Vector
+  // given a key
+
+  G4MaterialPropertyVector *targetVector=MPT [G4String(key)];
+  if (targetVector != 0)
+  {
+    targetVector->AddElement(aPhotonEnergy, aPropertyValue);
+  }
+  else
+  {
+///    G4Exception("G4MaterialPropertiesTable::AddEntry()", "NotFound",
+///                FatalException, "Material Property Vector not found.");
+  }
+}
+
+inline
+void G4MaterialPropertiesTable::RemoveEntry(const char *key,  
+                                            G4double    aPhotonEnergy)
+{
+  // Allows to remove an entry pair directly from the Material Property Vector
+  // given a key
+
+  G4MaterialPropertyVector* targetVector = MPT [G4String(key)];
+  if (targetVector)
+  {
+    targetVector->RemoveElement(aPhotonEnergy);
+  }
+  else
+  {
+///    G4Exception("G4MaterialPropertiesTable::RemoveEntry()", "NotFound",
+///                FatalException, "Material Property Vector not found.");
+  }
+}

@@ -1,0 +1,295 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+// $Id: G4Cons.icc,v 1.11 2009/06/09 16:08:23 gcosmo Exp $
+// GEANT4 tag $Name: geant4-09-03-patch-01 $
+//
+// --------------------------------------------------------------------
+// GEANT 4 inline definitions file
+//
+// G4Cons.icc
+//
+// Implementation of inline methods of G4Cons
+// --------------------------------------------------------------------
+
+inline
+G4double G4Cons::GetInnerRadiusMinusZ() const
+{
+  return fRmin1 ;
+}
+
+inline
+G4double G4Cons::GetOuterRadiusMinusZ() const
+{
+  return fRmax1 ;
+}
+
+inline
+G4double G4Cons::GetInnerRadiusPlusZ() const
+{
+  return fRmin2 ;
+}
+
+inline
+G4double G4Cons::GetOuterRadiusPlusZ() const
+{
+  return fRmax2 ;
+}
+
+inline
+G4double G4Cons::GetZHalfLength() const
+{
+  return fDz ;
+}
+
+inline  
+G4double G4Cons::GetStartPhiAngle() const
+{
+  return fSPhi ;
+}
+
+inline
+G4double G4Cons::GetDeltaPhiAngle() const
+{
+  return fDPhi;
+}
+
+inline
+void G4Cons::Initialize()
+{
+  fCubicVolume = 0.;
+  fSurfaceArea = 0.;
+  fpPolyhedron = 0;
+}
+
+inline 
+void G4Cons::InitializeTrigonometry()
+{
+  G4double hDPhi = 0.5*fDPhi;                       // half delta phi
+  G4double cPhi  = fSPhi + hDPhi; 
+  G4double ePhi  = fSPhi + fDPhi;
+
+  sinCPhi    = std::sin(cPhi);
+  cosCPhi    = std::cos(cPhi);
+  cosHDPhiIT = std::cos(hDPhi - 0.5*kAngTolerance); // inner/outer tol half dphi
+  cosHDPhiOT = std::cos(hDPhi + 0.5*kAngTolerance);
+  sinSPhi = std::sin(fSPhi);
+  cosSPhi = std::cos(fSPhi);
+  sinEPhi = std::sin(ePhi);
+  cosEPhi = std::cos(ePhi);
+}
+
+inline void G4Cons::CheckSPhiAngle(G4double sPhi)
+{
+  // Ensure fSphi in 0-2PI or -2PI-0 range if shape crosses 0
+
+  if ( sPhi < 0 )
+  {
+    fSPhi = twopi - std::fmod(std::fabs(sPhi),twopi);
+  }
+  else
+  {
+    fSPhi = std::fmod(sPhi,twopi) ;
+  }
+  if ( fSPhi+fDPhi > twopi )
+  {
+    fSPhi -= twopi ;
+  }
+}
+
+inline void G4Cons::CheckDPhiAngle(G4double dPhi)
+{
+  fPhiFullCone = true;
+  if ( dPhi >= twopi-kAngTolerance*0.5 )
+  {
+    fDPhi=twopi;
+    fSPhi=0;
+  }
+  else
+  {
+    fPhiFullCone = false;
+    if ( dPhi > 0 )
+    {
+      fDPhi = dPhi;
+    }
+    else
+    {
+/*      G4cerr << "ERROR - G4Cons()::CheckDPhiAngle()" << G4endl
+             << "        Negative or zero delta-Phi (" << dPhi << ") in solid: "
+             << GetName() << G4endl;
+      G4Exception("G4Cons::CheckDPhiAngle()", "InvalidSetup",
+                  FatalException, "Invalid dphi.");
+ */   }
+  }
+}
+
+inline void G4Cons::CheckPhiAngles(G4double sPhi, G4double dPhi)
+{
+  CheckDPhiAngle(dPhi);
+  if ( (fDPhi<twopi) && (sPhi) ) { CheckSPhiAngle(sPhi); }
+  InitializeTrigonometry();
+}
+
+inline
+void G4Cons::SetInnerRadiusMinusZ( G4double Rmin1 )
+{
+  fRmin1= Rmin1 ;
+  Initialize();
+}
+
+inline
+void G4Cons::SetOuterRadiusMinusZ( G4double Rmax1 )
+{
+  fRmax1= Rmax1 ;
+  Initialize();
+}
+
+inline
+void G4Cons::SetInnerRadiusPlusZ ( G4double Rmin2 )
+{
+  fRmin2= Rmin2 ;
+  Initialize();
+}
+
+inline
+void G4Cons::SetOuterRadiusPlusZ ( G4double Rmax2 )
+{
+  fRmax2= Rmax2 ;
+  Initialize();
+}
+
+inline
+void G4Cons::SetZHalfLength ( G4double newDz )
+{
+  fDz= newDz ;
+  Initialize();
+}
+
+inline
+void G4Cons::SetStartPhiAngle ( G4double newSPhi, G4bool compute )
+{
+  // Flag 'compute' can be used to explicitely avoid recomputation of
+  // trigonometry in case SetDeltaPhiAngle() is invoked afterwards
+
+  CheckSPhiAngle(newSPhi);
+  fPhiFullCone = false;
+  if (compute)  { InitializeTrigonometry(); }
+  Initialize();
+}
+
+void G4Cons::SetDeltaPhiAngle ( G4double newDPhi )
+{
+  CheckPhiAngles(fSPhi, newDPhi);
+  Initialize();
+}
+
+// Old access methods ...
+
+inline
+G4double G4Cons::GetRmin1() const
+{
+  return GetInnerRadiusMinusZ();
+}
+
+inline
+G4double G4Cons::GetRmax1() const
+{
+  return GetOuterRadiusMinusZ();
+}
+
+inline
+G4double G4Cons::GetRmin2() const
+{
+  return GetInnerRadiusPlusZ();
+}
+
+inline
+G4double G4Cons::GetRmax2() const
+{
+  return GetOuterRadiusPlusZ();
+}
+
+inline  
+G4double G4Cons::GetDz() const
+{
+  return GetZHalfLength();
+}
+
+inline
+G4double G4Cons::GetSPhi() const
+{
+  return GetStartPhiAngle();
+}
+
+inline
+G4double G4Cons::GetDPhi() const
+{
+  return GetDeltaPhiAngle();
+}
+
+inline
+G4double G4Cons::GetCubicVolume()
+{
+  if(fCubicVolume != 0.) {;}
+  else   
+  {
+    G4double Rmean, rMean, deltaR, deltar;
+
+    Rmean  = 0.5*(fRmax1+fRmax2);
+    deltaR = fRmax1-fRmax2;
+
+    rMean  = 0.5*(fRmin1+fRmin2);
+    deltar = fRmin1-fRmin2;
+    fCubicVolume = fDPhi*fDz*(Rmean*Rmean-rMean*rMean
+                            +(deltaR*deltaR-deltar*deltar)/12); 
+  }
+  return fCubicVolume;
+}
+
+inline
+G4double G4Cons::GetSurfaceArea()
+{
+  if(fSurfaceArea != 0.) {;}
+  else   
+  {
+    G4double mmin, mmax, dmin, dmax;
+
+    mmin= (fRmin1+fRmin2)*0.5;
+    mmax= (fRmax1+fRmax2)*0.5;
+    dmin= (fRmin2-fRmin1);
+    dmax= (fRmax2-fRmax1);
+    
+    fSurfaceArea = fDPhi*( mmin * std::sqrt(dmin*dmin+4*fDz*fDz)
+                         + mmax * std::sqrt(dmax*dmax+4*fDz*fDz)
+                         + 0.5*(fRmax1*fRmax1-fRmin1*fRmin1
+                               +fRmax2*fRmax2-fRmin2*fRmin2 ));
+    if(!fPhiFullCone)
+    {
+      fSurfaceArea = fSurfaceArea+4*fDz*(mmax-mmin);
+    }
+  }
+  return fSurfaceArea;
+}

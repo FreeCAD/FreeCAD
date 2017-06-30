@@ -1,0 +1,237 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+// $Id: G4Tubs.icc,v 1.14 2009/06/09 16:08:23 gcosmo Exp $
+// GEANT4 tag $Name: geant4-09-03-patch-01 $
+//
+// --------------------------------------------------------------------
+// GEANT 4 inline definitions file
+//
+// G4Tubs.icc
+//
+// Implementation of inline methods of G4Tubs
+// --------------------------------------------------------------------
+
+inline
+G4double G4Tubs::GetInnerRadius () const
+{
+  return fRMin;
+}
+
+inline
+G4double G4Tubs::GetOuterRadius () const
+{
+  return fRMax;
+}
+
+inline
+G4double G4Tubs::GetZHalfLength () const
+{
+  return fDz;
+}
+
+inline
+G4double G4Tubs::GetStartPhiAngle () const
+{
+  return fSPhi;
+}
+
+inline
+G4double G4Tubs::GetDeltaPhiAngle () const
+{
+  return fDPhi;
+}
+
+inline 
+void G4Tubs::Initialize()
+{
+  fCubicVolume = 0.;
+  fSurfaceArea = 0.;
+  fpPolyhedron = 0;
+}
+
+inline 
+void G4Tubs::InitializeTrigonometry()
+{
+  G4double hDPhi = 0.5*fDPhi;                       // half delta phi
+  G4double cPhi  = fSPhi + hDPhi; 
+  G4double ePhi  = fSPhi + fDPhi;
+
+  sinCPhi    = std::sin(cPhi);
+  cosCPhi    = std::cos(cPhi);
+  cosHDPhiIT = std::cos(hDPhi - 0.5*kAngTolerance); // inner/outer tol half dphi
+  cosHDPhiOT = std::cos(hDPhi + 0.5*kAngTolerance);
+  sinSPhi = std::sin(fSPhi);
+  cosSPhi = std::cos(fSPhi);
+  sinEPhi = std::sin(ePhi);
+  cosEPhi = std::cos(ePhi);
+}
+
+inline void G4Tubs::CheckSPhiAngle(G4double sPhi)
+{
+  // Ensure fSphi in 0-2PI or -2PI-0 range if shape crosses 0
+
+  if ( sPhi < 0 )
+  {
+    fSPhi = twopi - std::fmod(std::fabs(sPhi),twopi);
+  }
+  else
+  {
+    fSPhi = std::fmod(sPhi,twopi) ;
+  }
+  if ( fSPhi+fDPhi > twopi )
+  {
+    fSPhi -= twopi ;
+  }
+}
+
+inline void G4Tubs::CheckDPhiAngle(G4double dPhi)
+{
+  fPhiFullTube = true;
+  if ( dPhi >= twopi-kAngTolerance*0.5 )
+  {
+    fDPhi=twopi;
+    fSPhi=0;
+  }
+  else
+  {
+    fPhiFullTube = false;
+    if ( dPhi > 0 )
+    {
+      fDPhi = dPhi;
+    }
+    else
+    {
+///      G4cerr << "ERROR - G4Tubs()::CheckDPhiAngle()" << G4endl
+///             << "        Negative or zero delta-Phi (" << dPhi << ") in solid: "
+///             << GetName() << G4endl;
+///      G4Exception("G4Tubs::CheckDPhiAngle()", "InvalidSetup",
+///                  FatalException, "Invalid dphi.");
+    }
+  }
+}
+
+inline void G4Tubs::CheckPhiAngles(G4double sPhi, G4double dPhi)
+{
+  CheckDPhiAngle(dPhi);
+  if ( (fDPhi<twopi) && (sPhi) ) { CheckSPhiAngle(sPhi); }
+  InitializeTrigonometry();
+}
+
+inline
+void G4Tubs::SetInnerRadius (G4double newRMin)
+{
+  fRMin= newRMin;
+  Initialize();
+}
+
+inline
+void G4Tubs::SetOuterRadius (G4double newRMax)
+{
+  fRMax= newRMax;
+  Initialize();
+}
+
+inline
+void G4Tubs::SetZHalfLength (G4double newDz)
+{
+  fDz= newDz;
+  Initialize();
+}
+
+inline
+void G4Tubs::SetStartPhiAngle (G4double newSPhi, G4bool compute)
+{
+  // Flag 'compute' can be used to explicitely avoid recomputation of
+  // trigonometry in case SetDeltaPhiAngle() is invoked afterwards
+
+  CheckSPhiAngle(newSPhi);
+  fPhiFullTube = false;
+  if (compute)  { InitializeTrigonometry(); }
+  Initialize();
+}
+
+inline
+void G4Tubs::SetDeltaPhiAngle (G4double newDPhi)
+{
+  CheckPhiAngles(fSPhi, newDPhi);
+  Initialize();
+}
+
+//  Older names for access functions
+
+inline
+G4double G4Tubs::GetRMin () const
+{
+  return GetInnerRadius();
+}
+
+inline
+G4double G4Tubs::GetRMax () const
+{
+  return GetOuterRadius();
+}
+
+inline
+G4double G4Tubs::GetDz () const
+{
+  return GetZHalfLength()  ;
+}
+
+inline
+G4double G4Tubs::GetSPhi () const
+{
+  return GetStartPhiAngle();
+}
+
+inline
+G4double G4Tubs::GetDPhi () const
+{
+  return GetDeltaPhiAngle();
+}
+
+inline
+G4double G4Tubs::GetCubicVolume()
+{
+  if(fCubicVolume != 0.) {;}
+  else   { fCubicVolume = fDPhi*fDz*(fRMax*fRMax-fRMin*fRMin); }
+  return fCubicVolume;
+}
+
+inline
+G4double G4Tubs::GetSurfaceArea()
+{
+  if(fSurfaceArea != 0.) {;}
+  else
+  {
+    fSurfaceArea = fDPhi*(fRMin+fRMax)*(2*fDz+fRMax-fRMin);
+    if (!fPhiFullTube)
+    {
+      fSurfaceArea = fSurfaceArea + 4*fDz*(fRMax-fRMin);
+    }
+  }
+  return fSurfaceArea;
+}

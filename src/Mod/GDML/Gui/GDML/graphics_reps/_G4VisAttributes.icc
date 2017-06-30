@@ -1,0 +1,151 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+// $Id: G4VisAttributes.icc,v 1.14 2007/01/05 14:12:13 allison Exp $
+// GEANT4 tag $Name: geant4-09-03-patch-01 $
+//
+// 
+// John Allison  18th November 1996
+
+inline const G4VisAttributes& G4VisAttributes::GetInvisible() {
+  return Invisible;
+}
+
+inline void G4VisAttributes::SetVisibility (G4bool v) {fVisible = v;}
+
+inline void G4VisAttributes::SetDaughtersInvisible (G4bool v) {
+  fDaughtersInvisible = v;
+}
+
+inline void G4VisAttributes::SetColour (const G4Colour& colour) {
+  fColour = colour;
+}
+
+inline void G4VisAttributes::SetColor (const G4Color& color) {
+  fColour = color;
+}
+
+inline void G4VisAttributes::SetColour
+(G4double red, G4double green, G4double blue, G4double alpha) {
+  fColour = G4Colour (red, green, blue, alpha);
+}
+
+inline void G4VisAttributes::SetColor
+(G4double red, G4double green, G4double blue, G4double alpha) {
+  fColour = G4Color (red, green, blue, alpha);
+}
+
+inline void G4VisAttributes::SetLineStyle (G4VisAttributes::LineStyle style) {
+  fLineStyle = style;
+}
+
+inline void G4VisAttributes::SetLineWidth (G4double w) {
+  fLineWidth = w;
+}
+
+inline void G4VisAttributes::SetForceWireframe (G4bool force) {
+  fForceDrawingStyle = force;
+  fForcedStyle = G4VisAttributes::wireframe;
+}
+
+inline void G4VisAttributes::SetForceSolid (G4bool force) {
+  fForceDrawingStyle = force;
+  fForcedStyle = G4VisAttributes::solid;
+}
+
+inline void G4VisAttributes::SetForceAuxEdgeVisible (G4bool force) {
+  fForceAuxEdgeVisible = force;
+}
+
+inline void G4VisAttributes::SetStartTime(G4double time) {
+  fStartTime = time;
+}
+
+inline void G4VisAttributes::SetEndTime(G4double time) {
+  fEndTime = time;
+}
+
+inline void G4VisAttributes::SetAttValues
+ (const std::vector<G4AttValue>* attValues){
+  fAttValues = attValues;
+}
+
+inline void G4VisAttributes::SetAttDefs
+ (const std::map<G4String,G4AttDef>* attDefs) {
+  fAttDefs = attDefs;
+}
+
+inline G4bool G4VisAttributes::IsVisible () const {return fVisible;}
+
+inline G4bool G4VisAttributes::IsDaughtersInvisible () const {
+  return fDaughtersInvisible;
+}
+
+inline const G4Colour& G4VisAttributes::GetColour () const {return fColour;}
+
+inline const G4Color&  G4VisAttributes::GetColor  () const {return fColour;}
+
+inline G4VisAttributes::LineStyle G4VisAttributes::GetLineStyle () const {
+  return fLineStyle;
+}
+
+inline G4double G4VisAttributes::GetLineWidth () const {
+  return fLineWidth;
+}
+
+inline G4bool G4VisAttributes::IsForceDrawingStyle () const {
+  return fForceDrawingStyle;
+}
+
+inline G4VisAttributes::ForcedDrawingStyle
+G4VisAttributes::GetForcedDrawingStyle () const {
+  return fForcedStyle;
+}
+
+inline G4bool G4VisAttributes::IsForceAuxEdgeVisible () const {
+  return fForceAuxEdgeVisible;
+}
+
+inline G4bool G4VisAttributes::IsForceLineSegmentsPerCircle () const {
+  return fForcedLineSegmentsPerCircle > 0;
+}
+
+inline G4int G4VisAttributes::GetForcedLineSegmentsPerCircle () const {
+  return fForcedLineSegmentsPerCircle;
+}
+
+inline G4double G4VisAttributes::GetStartTime() const {
+  return fStartTime;
+}
+
+inline G4double G4VisAttributes::GetEndTime() const {
+  return fEndTime;
+}
+
+inline
+const std::map<G4String,G4AttDef>* G4VisAttributes::GetAttDefs () const {
+  return fAttDefs;
+}

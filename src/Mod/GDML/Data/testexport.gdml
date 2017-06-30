@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+
+  <define/>
+
+  <materials>
+    <element Z="7" name="Nitrogen0000000016FCD090">
+      <atom unit="g/mole" value="14.01"/>
+    </element>
+    <element Z="8" name="Oxygen0000000016640F50">
+      <atom unit="g/mole" value="16"/>
+    </element>
+    <material name="Air0000000016641090" state="gas">
+      <T unit="K" value="0"/>
+      <P unit="pascal" value="0"/>
+      <D unit="g/cm3" value="0.00129"/>
+      <fraction n="0.7" ref="Nitrogen0000000016FCD090"/>
+      <fraction n="0.3" ref="Oxygen0000000016640F50"/>
+    </material>
+  </materials>
+
+  <solids>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="t100000000001719F3E0" rmax="25" rmin="0" startphi="0" z="20"/>
+    <box lunit="mm" name="b500000000001646B510" x="50" y="50" z="50"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="t100001000000000EB11F80" rmax="25" rmin="0" startphi="0" z="20"/>
+    <box lunit="mm" name="b50000100000000159B20B0" x="50" y="50" z="50"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="t100002000000001719EC60" rmax="25" rmin="0" startphi="0" z="20"/>
+    <box lunit="mm" name="b500002000000001719EFD0" x="50" y="50" z="50"/>
+    <box lunit="mm" name="b12300000000169FE860" x="3" y="500" z="500"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="t1000030000000011084860" rmax="25" rmin="0" startphi="0" z="20"/>
+    <box lunit="mm" name="b50000300000000168776A0" x="50" y="50" z="50"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="t1000040000000015C52A70" rmax="25" rmin="0" startphi="0" z="20"/>
+    <box lunit="mm" name="b500004000000001620C740" x="50" y="50" z="50"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="t100005000000001620CAD0" rmax="25" rmin="0" startphi="0" z="20"/>
+    <box lunit="mm" name="b50000500000000172FA2D0" x="50" y="50" z="50"/>
+    <box lunit="mm" name="b123001000000001597C7C0" x="3" y="500" z="500"/>
+    <box lunit="mm" name="b50000600000000178D6450" x="50" y="50" z="50"/>
+    <box lunit="mm" name="world0000000016296B30" x="2000" y="2000" z="2000"/>
+  </solids>
+
+  <structure>
+    <volume name="t100000000001719F520">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="t100000000001719F3E0"/>
+    </volume>
+    <volume name="b500000000001646B5F0">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="b500000000001646B510"/>
+    </volume>
+    <volume name="t100001000000000EB120C0">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="t100001000000000EB11F80"/>
+    </volume>
+    <volume name="b50000100000000159B2190">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="b50000100000000159B20B0"/>
+    </volume>
+    <volume name="t10000200000000159B2440">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="t100002000000001719EC60"/>
+    </volume>
+    <volume name="b50000200000000169FE5B0">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="b500002000000001719EFD0"/>
+    </volume>
+    <volume name="b12300000000169FE940">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="b12300000000169FE860"/>
+    </volume>
+    <volume name="t10000300000000110849A0">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="t1000030000000011084860"/>
+    </volume>
+    <volume name="b5000030000000016877780">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="b50000300000000168776A0"/>
+    </volume>
+    <volume name="t1000040000000015C52BB0">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="t1000040000000015C52A70"/>
+    </volume>
+    <volume name="b500004000000001620C820">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="b500004000000001620C740"/>
+    </volume>
+    <volume name="t10000500000000172FA020">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="t100005000000001620CAD0"/>
+    </volume>
+    <volume name="b50000500000000172FA3B0">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="b50000500000000172FA2D0"/>
+    </volume>
+    <volume name="b123001000000001597C8A0">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="b123001000000001597C7C0"/>
+    </volume>
+    <volume name="b50000600000000178D6530">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="b50000600000000178D6450"/>
+    </volume>
+    <volume name="World0000000016296C10">
+      <materialref ref="Air0000000016641090"/>
+      <solidref ref="world0000000016296B30"/>
+      <physvol name="t100000000001719F640">
+        <volumeref ref="t100000000001719F520"/>
+        <position name="t100000000001719F640_pos" unit="mm" x="430" y="0" z="-215"/>
+        <rotation name="t100000000001719F640_rot" unit="deg" x="-7.0961312197385e-007" y="-90" z="0"/>
+      </physvol>
+      <physvol name="b500000000001646B710">
+        <volumeref ref="b500000000001646B5F0"/>
+        <position name="b500000000001646B710_pos" unit="mm" x="525" y="0" z="-175"/>
+        <rotation name="b500000000001646B710_rot" unit="deg" x="180" y="1.84277281531733e-014" z="180"/>
+      </physvol>
+      <physvol name="t100001000000000EB121E0">
+        <volumeref ref="t100001000000000EB120C0"/>
+        <position name="t100001000000000EB121E0_pos" unit="mm" x="430" y="0" z="10"/>
+        <rotation name="t100001000000000EB121E0_rot" unit="deg" x="-7.0961312197385e-007" y="-90" z="0"/>
+      </physvol>
+      <physvol name="b50000100000000159B22B0">
+        <volumeref ref="b50000100000000159B2190"/>
+        <position name="b50000100000000159B22B0_pos" unit="mm" x="525" y="0" z="50"/>
+        <rotation name="b50000100000000159B22B0_rot" unit="deg" x="180" y="1.84277281531733e-014" z="180"/>
+      </physvol>
+      <physvol name="t100002000000001719EDA0">
+        <volumeref ref="t10000200000000159B2440"/>
+        <position name="t100002000000001719EDA0_pos" unit="mm" x="430" y="0" z="235"/>
+        <rotation name="t100002000000001719EDA0_rot" unit="deg" x="-7.0961312197385e-007" y="-90" z="0"/>
+      </physvol>
+      <physvol name="b50000200000000169FE6D0">
+        <volumeref ref="b50000200000000169FE5B0"/>
+        <position name="b50000200000000169FE6D0_pos" unit="mm" x="525" y="0" z="275"/>
+        <rotation name="b50000200000000169FE6D0_rot" unit="deg" x="180" y="1.84277281531733e-014" z="180"/>
+      </physvol>
+      <physvol name="b1230000000011084620">
+        <volumeref ref="b12300000000169FE940"/>
+        <position name="b1230000000011084620_pos" unit="mm" x="503" y="0" z="500"/>
+        <rotation name="b1230000000011084620_rot" unit="deg" x="180" y="1.84277281531733e-014" z="180"/>
+      </physvol>
+      <physvol name="t1000030000000016877510">
+        <volumeref ref="t10000300000000110849A0"/>
+        <position name="t1000030000000016877510_pos" unit="mm" x="70" y="1.56502191623463e-007" z="235"/>
+        <rotation name="t1000030000000016877510_rot" unit="deg" x="-89.9999995516543" y="89.9999991033085" z="-89.9999995516543"/>
+      </physvol>
+      <physvol name="b50000300000000168778A0">
+        <volumeref ref="b5000030000000016877780"/>
+        <position name="b50000300000000168778A0_pos" unit="mm" x="25" y="0" z="225"/>
+      </physvol>
+      <physvol name="t1000040000000015C52CD0">
+        <volumeref ref="t1000040000000015C52BB0"/>
+        <position name="t1000040000000015C52CD0_pos" unit="mm" x="70" y="1.56502191623463e-007" z="10"/>
+        <rotation name="t1000040000000015C52CD0_rot" unit="deg" x="-89.9999995516543" y="89.9999991033085" z="-89.9999995516543"/>
+      </physvol>
+      <physvol name="b500004000000001620C940">
+        <volumeref ref="b500004000000001620C820"/>
+        <position name="b500004000000001620C940_pos" unit="mm" x="25" y="0" z="0"/>
+      </physvol>
+      <physvol name="t10000500000000172FA140">
+        <volumeref ref="t10000500000000172FA020"/>
+        <position name="t10000500000000172FA140_pos" unit="mm" x="70" y="1.56502191623463e-007" z="-215"/>
+        <rotation name="t10000500000000172FA140_rot" unit="deg" x="-89.9999995516543" y="89.9999991033085" z="-89.9999995516543"/>
+      </physvol>
+      <physvol name="b500005000000001597C630">
+        <volumeref ref="b50000500000000172FA3B0"/>
+        <position name="b500005000000001597C630_pos" unit="mm" x="25" y="0" z="-225"/>
+      </physvol>
+      <physvol name="b123001000000001597C9C0">
+        <volumeref ref="b123001000000001597C8A0"/>
+      </physvol>
+      <physvol name="b50000600000000178D6650">
+        <volumeref ref="b50000600000000178D6530"/>
+      </physvol>
+    </volume>
+  </structure>
+
+  <setup name="Default" version="1.0">
+    <world ref="World0000000016296C10"/>
+  </setup>
+
+</gdml>

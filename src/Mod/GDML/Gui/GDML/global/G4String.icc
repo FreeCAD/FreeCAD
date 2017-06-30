@@ -1,0 +1,456 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+// $Id: G4String.icc,v 1.19 2009/08/10 10:30:03 gcosmo Exp $
+// GEANT4 tag $Name: geant4-09-03-patch-01 $
+//
+// 
+//---------------------------------------------------------------
+//  GEANT 4 class implementation file
+//
+//  G4String
+//---------------------------------------------------------------
+
+// **************************************************************
+// G4SubString
+// **************************************************************
+
+G4SubString::G4SubString(const G4SubString&s)
+  : mystring(s.mystring), mystart(s.mystart), extent(s.extent)
+{
+}
+
+G4SubString::G4SubString(G4String& str, str_size s, str_size e)
+  : mystring(&str),mystart(s),extent(e)
+{
+} 
+
+G4SubString& G4SubString::operator=(const G4String&s)
+{
+  G4String str(s);
+  return operator=(str);
+}
+
+G4SubString& G4SubString::operator=(const G4SubString&s)
+{
+  mystring->replace(mystart,extent,s.mystring->data(),s.length());
+  extent=s.length();
+  return *this;
+}
+
+G4SubString& G4SubString::operator=(const char*s)         
+{
+  mystring->replace(mystart,extent,s,strlen(s));
+  extent=strlen(s);
+  return *this;
+}
+
+char& G4SubString::operator()(str_size i)
+{
+  return mystring->operator[](mystart+i);
+}
+
+char  G4SubString::operator()(str_size i) const
+{
+  return mystring->operator[](mystart+i);
+}
+
+char&  G4SubString::operator[](str_size i)
+{
+  return mystring->operator[](mystart+i);
+}
+
+char  G4SubString::operator[](str_size i) const
+{
+  return mystring->operator[](mystart+i);
+}
+
+G4int G4SubString::operator!() const
+{
+  return (extent==0) ? 1 : 0;
+}
+
+G4bool G4SubString::operator==(const G4String& s) const
+{
+  return (mystring->find(s,mystart,extent) != std::string::npos);
+}
+
+G4bool G4SubString::operator==(const char* s) const
+{
+  return (mystring->find(s,mystart,extent) != std::string::npos);
+}
+
+G4bool G4SubString::operator!=(const G4String& s) const
+{
+  return (mystring->find(s,mystart,extent) == std::string::npos);
+}
+
+G4bool G4SubString::operator!=(const char* s) const
+{
+  return (mystring->find(s,mystart,extent) == std::string::npos);
+}
+
+str_size G4SubString::length() const
+{
+  return extent;
+}
+
+str_size G4SubString::start() const
+{
+  return mystart;
+}
+
+G4bool G4SubString::isNull() const
+{
+  return (extent==0);
+}
+
+// **************************************************************
+// G4String
+// **************************************************************
+
+G4String::G4String () {}
+
+G4String::G4String ( const char * astring )
+ : std_string ( astring ) {}
+
+G4String::G4String ( const char * astring, str_size len )
+ : std_string ( astring, len ) {} 
+
+G4String::G4String ( char c )
+{
+  char str[2];
+  str[0]=c;
+  str[1]='\0';
+  std_string::operator=(str);
+}
+
+G4String::G4String ( const G4String& s )
+ : std_string(s) {}
+
+G4String::G4String ( const G4SubString& s )
+ : std_string(*(s.mystring),s.mystart,s.extent) {}
+
+G4String::G4String ( const std::string &s )
+ : std_string(s) {}
+
+G4String& G4String::operator=(const G4String& s)
+{
+  if (&s == this) { return *this; }
+  std_string::operator=(s);
+  return *this;
+}
+
+G4String& G4String::operator=(const std::string &s)
+{
+  std_string::operator=(s);
+  return *this;
+}
+
+G4String& G4String::operator=(const char* s)
+{
+  std_string::operator=(s);
+  return *this;
+}
+
+// "cmp" optional parameter is NOT implemented ! 
+// N.B.: The hash value returned is generally DIFFERENT from the
+//       one returned by the original RW function.
+//       Users should not rely on the specific return value.
+//
+char G4String::operator () (str_size i) const
+{
+  return operator[](i);
+}
+
+char& G4String::operator () (str_size i)
+{
+  return std_string::operator[](i);
+}
+
+G4String& G4String::operator+=(const G4SubString&s)
+{
+  G4String tmp(s);
+  std_string::operator+=(tmp);
+  return *this;
+}
+
+G4String& G4String::operator+=(const char*s)
+{
+  std_string::operator+=(s);
+  return *this;
+}
+
+G4String& G4String::operator+=(const std::string &s)
+{
+  std_string::operator+=(s);
+  return *this;
+}
+
+G4String& G4String::operator+=(const char &c)
+{
+  std_string::operator+=(c);
+  return *this;
+}
+
+G4bool G4String::operator==(const G4String &s) const
+{
+  return (std_string::compare(s) == 0);
+}
+
+G4bool G4String::operator==(const char* s) const
+{
+  return (std_string::compare(s) == 0);
+}
+
+G4bool G4String::operator!=(const G4String &s) const
+{
+  return !(*this == s);
+}
+
+G4bool G4String::operator!=(const char* s) const
+{
+  return !(*this == s);
+}
+
+G4String::operator const char*() const
+{
+  return c_str();
+}
+
+G4int G4String::strcasecompare(const char* s1, const char* s2) const
+{
+  char* buf1 = new char[strlen(s1)+1];
+  char* buf2 = new char[strlen(s2)+1];
+
+  for (str_size i=0; i<=strlen(s1); i++)
+    { buf1[i] = tolower(char(s1[i])); }
+  for (str_size j=0; j<=strlen(s2); j++)
+    { buf2[j] = tolower(char(s2[j])); }
+
+  G4int res = strcmp(buf1, buf2);
+  delete [] buf1;
+  delete [] buf2;
+  return res;
+}
+
+G4int G4String::compareTo(const char* s, caseCompare mode)
+{
+  return (mode==exact) ? strcmp(c_str(),s)
+                       : strcasecompare(c_str(),s);
+}
+
+G4int G4String::compareTo(const G4String& s, caseCompare mode)
+{
+  return (mode==exact) ? strcmp(c_str(),s.c_str())
+                       : strcasecompare(c_str(),s.c_str());
+}
+
+G4String& G4String::prepend (const char* str)
+{
+  insert(0,str);
+  return *this;
+}
+
+G4String& G4String::append(const G4String& s)
+{
+  std_string::operator+=(s);
+  return *this;
+}
+
+std::istream&
+G4String::readLine (std::istream& s, G4bool skipWhite)
+{
+  char tmp[1024];
+  if ( skipWhite )
+  {
+    s >> std::ws;
+    s.getline(tmp,1024);
+    *this=tmp;
+  }
+  else
+  {
+    s.getline(tmp,1024);    
+    *this=tmp;
+  } 
+  return s;
+}
+
+G4String& G4String::replace (unsigned int start, unsigned int nbytes, 
+                             const char* buff, unsigned int n2 )
+{
+  std_string::replace ( start, nbytes, buff, n2 ); 
+  return *this;                                                              
+}                                                                          
+
+G4String& G4String::replace(str_size pos, str_size n, const char* s)
+{
+  std_string::replace(pos,n,s);
+  return *this;
+}
+
+G4String& G4String::remove(str_size n)
+{
+  if(n<size()) { erase(n,size()-n); }
+  return *this;
+}
+
+G4String& G4String::remove(str_size pos, str_size N)
+{
+  erase(pos,N+pos);
+  return *this;
+}
+
+G4int G4String::first(char c) const
+{
+  return find(c);
+}
+
+G4int G4String::last(char c) const
+{
+  return rfind(c);
+}
+
+G4bool G4String::contains(const std::string& s) const
+{
+  return (std_string::find(s) != std_string::npos);
+}
+
+G4bool G4String::contains(char c) const
+{
+  return (std_string::find(c) != std_string::npos);
+}
+
+G4String G4String::strip (G4int strip_Type, char c)
+{
+  G4String retVal = *this;
+  if(length()==0) { return retVal; }
+  str_size i=0;
+  switch ( strip_Type ) {
+  case leading: 
+    {
+      for(i=0;i<length();i++)
+	{ if (std_string::operator[](i) != c) { break; } }
+      retVal = substr(i,length()-i);
+    }
+    break;
+  case trailing:
+    {
+      G4int j=0;
+      for(j=length()-1;j>=0;j--)
+	{ if (std_string::operator[](j) != c) { break; } }
+      retVal = substr(0,j+1);
+    }
+    break;
+  case both:
+    { 
+      for(i=0;i<length();i++)
+	{ if (std_string::operator[](i) != c) { break; } }
+      G4String tmp(substr(i,length()-i));
+      G4int k=0;
+      for(k=tmp.length()-1;k>=0;k--)
+	{ if (tmp.std_string::operator[](k) != c) { break; } }
+      retVal = tmp.substr(0,k+1);
+    }
+    break;
+  default:
+    break;
+  }
+  return retVal;
+}
+
+void G4String::toLower ()
+{
+  for (str_size i=0; i<size();i++)
+  {
+    //GB:HP-UX-aCC,Linux-KCC 
+    std_string::operator[](i) = tolower(char(std_string::operator[](i)));
+    //at(i) = tolower(at(i)); 
+  } 
+}
+
+void G4String::toUpper ()
+{
+  for (str_size i=0; i<size();i++)
+  {
+    //GB:HP-UX-aCC,Linux-KCC 
+    std_string::operator[](i) = toupper(char(std_string::operator[](i)));
+    //at(i) = toupper(at(i)); 
+  }
+}
+
+G4bool G4String::isNull() const
+{
+  return empty ();
+}
+
+// "caseCompare" optional parameter is NOT implemented !
+//
+str_size G4String::index( const G4String& s, str_size ln, 
+                          str_size st, G4String::caseCompare ) const
+{
+  return std_string::find( s.c_str(), st, ln );
+}
+
+str_size G4String::index (const char* str, G4int pos) const
+{
+  return std_string::find(str,pos);
+}
+
+str_size G4String::index (char c, G4int pos) const
+{
+  return std_string::find(c,pos);
+}
+
+G4SubString G4String::operator()(str_size start, str_size extent)
+{
+  return G4SubString(*this,start,extent);
+}
+
+const char* G4String::data() const
+{
+  return c_str();
+}
+
+unsigned int G4String::hash( caseCompare ) const
+{
+  const char*s=c_str();
+  unsigned long h = 0;
+  for ( ; *s; ++s)
+    { h = 5*h + *s; }
+
+  return str_size(h);
+}
+
+unsigned int G4String::stlhash() const
+{
+  const char*s=c_str();
+  unsigned long h = 0;
+  for ( ; *s; ++s)
+    { h = 5*h + *s; }
+
+  return str_size(h);
+}

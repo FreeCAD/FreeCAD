@@ -1,0 +1,184 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+// $Id: G4GDMLParser.icc,v 1.8.2.1 2010/03/18 11:08:21 gcosmo Exp $
+// GEANT4 tag $Name: geant4-09-03-patch-01 $
+//
+//
+// class G4GDMLParser inline methods
+//
+// -------------------------------------------------------------------------
+
+inline 
+void G4GDMLParser::Read(const G4String& filename, G4bool validate)
+{   
+  reader->Read(filename,validate,false);
+}
+/*
+inline 
+void G4GDMLParser::ReadModule(const G4String& filename, G4bool validate)
+{   
+  reader->Read(filename,validate,true);
+}
+*/
+inline
+void G4GDMLParser::Write(const G4String& filename,
+                         const G4VPhysicalVolume* const pvol,
+                               G4bool refs,
+                         const G4String& schemaLocation)
+{ 
+  const G4int depth = 0;
+  G4LogicalVolume* lvol = 0;
+
+  if (!pvol)
+  {/*
+    G4VPhysicalVolume* worldPV = GetWorldVolume();
+    if (!worldPV)
+    {
+//      G4Exception("G4DMLParser::Write()", "InvalidSetup", FatalException,
+//                  "Detector-Construction needs to be registered first!");
+    }
+    lvol = worldPV->GetLogicalVolume();*/
+  }
+  else
+  {
+    lvol = pvol->GetLogicalVolume();
+  }
+  writer->Write(filename,lvol,schemaLocation,depth,refs);
+}
+/*
+inline 
+G4LogicalVolume* G4GDMLParser::ParseST(const G4String& filename,
+                                             G4Material* medium,
+                                             G4Material* solid)
+{   
+  G4STRead reader;
+  return reader.Read(filename, medium, solid);
+}
+
+//
+// Methods for Reader
+//
+
+inline G4bool G4GDMLParser::IsValid(const G4String& name) const
+{
+  return reader->IsValidID(name);
+}
+
+inline 
+G4double G4GDMLParser::GetConstant(const G4String& name) const
+{
+  return reader->GetConstant(name);
+}
+
+inline 
+G4double G4GDMLParser::GetVariable(const G4String& name) const
+{
+  return reader->GetVariable(name);
+}
+
+inline 
+G4double G4GDMLParser::GetQuantity(const G4String& name) const
+{
+  return reader->GetQuantity(name);
+}
+
+inline 
+G4ThreeVector G4GDMLParser::GetPosition(const G4String& name) const
+{
+  return reader->GetPosition(name);
+}
+
+inline 
+G4ThreeVector G4GDMLParser::GetRotation(const G4String& name) const
+{
+  return reader->GetRotation(name);
+}
+
+inline 
+G4ThreeVector G4GDMLParser::GetScale(const G4String& name) const
+{
+  return reader->GetScale(name);
+}
+
+inline 
+G4GDMLMatrix G4GDMLParser::GetMatrix(const G4String& name) const
+{
+  return reader->GetMatrix(name);
+}
+*/
+inline 
+G4LogicalVolume* G4GDMLParser::GetVolume(const G4String& name) const
+{
+  return reader->GetVolume(name);
+}
+
+inline G4VPhysicalVolume*
+G4GDMLParser::GetWorldVolume(const G4String& setupName) const
+{
+  return reader->GetWorldVolume(setupName);
+}
+/*
+inline 
+G4GDMLAuxListType
+G4GDMLParser::GetVolumeAuxiliaryInformation(const G4LogicalVolume* const logvol)
+{
+  return reader->GetVolumeAuxiliaryInformation(logvol);
+}
+
+inline
+void G4GDMLParser::StripNamePointers() const
+{
+  reader->StripNames();
+}
+
+inline void G4GDMLParser::SetOverlapCheck(G4bool flag)
+{
+  reader->OverlapCheck(flag);
+}
+
+//
+// Methods for Writer
+//
+
+inline 
+void G4GDMLParser::AddModule(const G4VPhysicalVolume* const physvol)
+{
+  writer->AddModule(physvol);
+}
+
+inline 
+void G4GDMLParser::AddModule(const G4int depth)
+{
+  writer->AddModule(depth);
+}
+
+inline 
+void G4GDMLParser::SetAddPointerToName(G4bool set)
+{
+  writer->SetAddPointerToName(set);
+}
+*/

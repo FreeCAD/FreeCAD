@@ -1,0 +1,145 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+// $Id: G4MaterialPropertyVector.icc,v 1.2 2009/04/21 15:41:20 gcosmo Exp $
+// GEANT4 tag $Name: geant4-09-03-patch-01 $
+//
+// 
+////////////////////////////////////////////////////////////////////////
+// G4MaterialPropertyVector inline definitions
+////////////////////////////////////////////////////////////////////////
+//
+// File:        G4MaterialPropertyVector.icc
+//
+// Version:     1.0
+// Created:     1996-02-08
+// Author:      Juliet Armstrong
+// Updated:     1999-10-29 add method and class descriptors
+//              1997-03-25 by Peter Gumplinger
+//              > value.h -> templates.hh
+// mail:        gum@triumf.ca
+//
+////////////////////////////////////////////////////////////////////////
+
+inline
+G4bool G4MaterialPropertyVector::operator ++()
+{
+  CurrentEntry++;
+  G4bool last = false;
+  if (CurrentEntry < NumEntries) { last = true; }
+  return last;
+}
+
+inline
+void G4MaterialPropertyVector::ResetIterator()
+{
+  CurrentEntry = -1;
+}
+
+inline
+G4int G4MaterialPropertyVector::Entries() const
+{
+  return NumEntries;
+}
+
+inline 
+G4double G4MaterialPropertyVector::GetMaxProperty() const
+{
+  return MPV.back()->GetProperty();
+}
+
+inline
+G4double G4MaterialPropertyVector::GetMinProperty() const
+{
+  return MPV.front()->GetProperty();
+}
+
+inline
+G4double G4MaterialPropertyVector::GetMaxPhotonEnergy() const
+{
+  return MPV.back()->GetPhotonEnergy();
+}
+
+inline 
+G4double G4MaterialPropertyVector::GetMinPhotonEnergy() const
+{
+  return MPV.front()->GetPhotonEnergy();
+}
+
+inline
+G4MPVEntry G4MaterialPropertyVector::GetEntry(G4int i) const
+{
+  return *MPV[i];
+}
+
+inline
+void G4MaterialPropertyVector::AddElement(G4double aPhotonEnergy,
+                                          G4double aPropertyValue) 
+{
+  G4MPVEntry *newElement;
+  newElement = new G4MPVEntry(aPhotonEnergy, aPropertyValue);
+  MPV.push_back(newElement);
+  std::sort(MPV.begin(), MPV.end(), MPVEntry_less());
+  NumEntries++; 
+}
+
+inline
+G4double G4MaterialPropertyVector::GetProperty() const
+{
+  //   For use with G4MaterialPropertyVector iterator
+
+  G4double prop = DBL_MAX;
+  if ((CurrentEntry == -1) || (CurrentEntry >= NumEntries))
+  {
+///    G4Exception("G4MaterialPropertyVector::GetProperty()",
+///                "OutOfRange", FatalException,
+///                "Iterator attempted to retrieve property out of range");
+  }
+  else
+  { 
+    prop = MPV[CurrentEntry]->GetProperty();
+  }
+  return prop;
+}
+
+inline
+G4double G4MaterialPropertyVector::GetPhotonEnergy() const
+{
+  //   For use with G4MaterialPropertyVector iterator
+
+  G4double energy = DBL_MAX;
+  if ((CurrentEntry == -1) || (CurrentEntry >= NumEntries))
+  {
+///    G4Exception("G4MaterialPropertyVector::GetPhotonEnergy()",
+///                "OutOfRange", FatalException,
+///                "Iterator attempted to retrieve photon energy out of range");
+  }
+  else
+  { 
+    energy = MPV[CurrentEntry]->GetPhotonEnergy();
+  }
+  return energy;
+}
