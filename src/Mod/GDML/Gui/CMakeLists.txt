@@ -23,7 +23,11 @@ set(GDMLGui_LIBS
     FreeCADGui
 )
 
-qt4_add_resources(GDML_QRC_SRCS Resources/GDML.qrc)
+if (BUILD_QT5)
+   qt5_add_resources(GDML_QRC_SRCS Resources/GDML.qrc)
+else()
+   qt4_add_resources(GDML_QRC_SRCS Resources/GDML.qrc)
+endif()
 
 ######################
 #BEGIN for G4GDML
@@ -343,20 +347,7 @@ fc_target_copy_resource(GDMLGui
     ${CMAKE_BINARY_DIR}/Mod/GDML
     InitGui.py)
 
-if(MSVC)
-    set_target_properties(GDMLGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(GDMLGui PROPERTIES DEBUG_OUTPUT_NAME "GDMLGui_d")
-    set_target_properties(GDMLGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/GDML)
-    set_target_properties(GDMLGui PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(GDMLGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(GDMLGui PROPERTIES DEBUG_OUTPUT_NAME "GDMLGui_d")
-    set_target_properties(GDMLGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/GDML)
-    set_target_properties(GDMLGui PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(GDMLGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/GDML)
-    set_target_properties(GDMLGui PROPERTIES PREFIX "")
-    set_target_properties(Fem PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+SET_BIN_DIR(GDMLGui GDMLGui /Mod/GDML)
+SET_PYTHON_PREFIX_SUFFIX(GDMLGui)
 
-install(TARGETS GDMLGui DESTINATION lib)
+install(TARGETS GDMLGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
