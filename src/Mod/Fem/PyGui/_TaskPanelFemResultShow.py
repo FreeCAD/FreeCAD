@@ -434,8 +434,3 @@ def hide_parts_constraints():
         for acnstrmesh in FemGui.getActiveAnalysis().Member:
             if "Constraint" in acnstrmesh.TypeId:
                 acnstrmesh.ViewObject.Visibility = False
-            if "Mesh" in acnstrmesh.TypeId:
-                aparttoshow = acnstrmesh.Name.replace("_Mesh", "")
-                for apart in FreeCAD.activeDocument().Objects:
-                    if aparttoshow == apart.Name:
-                        apart.ViewObject.Visibility = False
