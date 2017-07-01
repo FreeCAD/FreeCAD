@@ -66,12 +66,14 @@ class _ViewProviderFemResultMechanical:
         return True
 
     def setEdit(self, vobj, mode=0):
-
         if FemGui.getActiveAnalysis() is not None:
             if hasattr(self.Object, "Mesh") and self.Object.Mesh:
                 mem = FemGui.getActiveAnalysis().Member
                 if self.Object in mem:
                     if self.Object.Mesh in mem:
+                        hide_femmeshes_postpiplines()
+                        # only show the FEM mesh we would like to view results with
+                        self.Object.Mesh.ViewObject.show()
                         import PyGui._TaskPanelFemResultShow
                         taskd = PyGui._TaskPanelFemResultShow._TaskPanelFemResultShow(self.Object)
                         taskd.obj = vobj.Object
@@ -100,6 +102,7 @@ class _ViewProviderFemResultMechanical:
 
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
+        self.Object.Mesh.ViewObject.hide()  # hide the mesh after result viewing is finished, but do not reset the coloring
         return
 
     def __getstate__(self):
@@ -107,3 +110,11 @@ class _ViewProviderFemResultMechanical:
 
     def __setstate__(self, state):
         return None
+
+
+# helper
+def hide_femmeshes_postpiplines():
+    # hide all visible FEM mesh objects and VTK FemPostPipeline objects
+    for o in FreeCAD.ActiveDocument.Objects:
+        if o.isDerivedFrom("Fem::FemMeshObject") or o.isDerivedFrom("Fem::FemPostPipeline"):
+            o.ViewObject.hide()

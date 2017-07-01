@@ -60,6 +60,7 @@ class _ViewProviderFemMeshGmsh:
 
     def unsetEdit(self, vobj, mode):
         FreeCADGui.Control.closeDialog()
+        self.ViewObject.hide()  # hide the mesh after edit is finished
         return
 
     def doubleClicked(self, vobj):
