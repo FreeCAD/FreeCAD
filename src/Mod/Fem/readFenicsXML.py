@@ -31,7 +31,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-from lxml import etree  # parsing xml files and exporting
+from xml.etree import ElementTree as ET
 import itertools
 
 
@@ -208,7 +208,7 @@ def read_fenics_mesh_xml(xmlfilename):
     for val in Fenics_to_FreeCAD_dict.itervalues():
         element_dict[val] = {}
 
-    tree = etree.parse(xmlfilename)
+    tree = ET.parse(xmlfilename)
     root = tree.getroot()
 
     if root.tag.lower() != "dolfin":

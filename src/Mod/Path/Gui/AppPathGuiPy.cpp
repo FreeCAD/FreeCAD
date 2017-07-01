@@ -114,7 +114,7 @@ private:
                     QFileInfo fileInfo = list.at(i);
                     if (fileInfo.baseName().toStdString() == processor) {
                         if (fileInfo.absoluteFilePath().contains(QString::fromLatin1("PathScripts"))) {
-                            pre << "from PathScripts import " << processor;
+                            pre << "from PathScripts.post import " << processor;
                         } else {
                             pre << "import " << processor;
                         }
@@ -190,7 +190,7 @@ private:
                     QFileInfo fileInfo = list.at(i);
                     if (fileInfo.baseName().toStdString() == processor) {
                         if (fileInfo.absoluteFilePath().contains(QString::fromLatin1("PathScripts"))) {
-                            pre << "from PathScripts import " << processor;
+                            pre << "from PathScripts.post import " << processor;
                         } else {
                             pre << "import " << processor;
                         }
@@ -266,7 +266,7 @@ private:
                     QFileInfo fileInfo = list.at(i);
                     if (fileInfo.baseName().toStdString() == processor) {
                         if (fileInfo.absoluteFilePath().contains(QString::fromLatin1("PathScripts"))) {
-                            pre << "from PathScripts import " << processor;
+                            pre << "from PathScripts.post import " << processor;
                         } else {
                             pre << "import " << processor;
                         }
