@@ -247,7 +247,7 @@ def makeMeshGroup(base_mesh, use_label=False, name="FEMMeshGroup"):
     return obj
 
 
-def makeMeshShapeNetgenObject(name="MeshShapeNetgenObject"):
+def makeMeshShapeNetgenObject(name="FEMMeshNetgen"):
     '''makeMeshShapeNetgenObject(name): makes a Fem MeshShapeNetgenObject object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshShapeNetgenObject", name)
     return obj

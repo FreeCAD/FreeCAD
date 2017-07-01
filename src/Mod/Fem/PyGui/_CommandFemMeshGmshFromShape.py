@@ -49,7 +49,8 @@ class _CommandFemMeshGmshFromShape(FemCommands):
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
             if(sel[0].isDerivedFrom("Part::Feature")):
-                mesh_obj_name = sel[0].Name + "_Mesh"
+                mesh_obj_name = 'FEMMeshGMSH'
+                # mesh_obj_name = sel[0].Name + "_Mesh"  # if requested by some people add Preference for this
                 FreeCADGui.addModule("ObjectsFem")
                 FreeCADGui.doCommand("ObjectsFem.makeMeshGmsh('" + mesh_obj_name + "')")
                 FreeCADGui.doCommand("App.ActiveDocument.ActiveObject.Part = App.ActiveDocument." + sel[0].Name)
