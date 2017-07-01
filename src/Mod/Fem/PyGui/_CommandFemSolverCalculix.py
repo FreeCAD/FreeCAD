@@ -53,6 +53,7 @@ class _CommandFemSolverCalculix(FemCommands):
         FreeCADGui.addModule("ObjectsFem")
         if has_nonlinear_material_obj:
             FreeCADGui.doCommand("solver = ObjectsFem.makeSolverCalculix()")
+            FreeCADGui.doCommand("solver.GeometricalNonlinearity = 'nonlinear'")
             FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
             FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [solver]")
         else:

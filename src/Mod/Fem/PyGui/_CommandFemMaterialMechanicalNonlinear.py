@@ -61,17 +61,20 @@ class _CommandFemMaterialMechanicalNonlinear(FemCommands):
                 FreeCAD.ActiveDocument.openTransaction("Create FemMaterialMechanicalNonlinear")
                 FreeCADGui.addModule("ObjectsFem")
                 FreeCADGui.doCommand(command_to_run)
-            # set the material nonlinear property of the solver to nonlinear if only one solver is available and if this solver is a CalculiX solver
+            # set some property of the solver to nonlinear (only if one solver is available and if this solver is a CalculiX solver):
+            # nonlinear material
+            # nonlinear geometry --> its is triggered anyway https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
             solver_object = None
             for m in FemGui.getActiveAnalysis().Member:
                 if m.isDerivedFrom('Fem::FemSolverObjectPython'):
                     if not solver_object:
                         solver_object = m
                     else:
-                        # we do not change the material nonlinear attribut if we have more than one solver
+                        # we do not change attributes if we have more than one solver, since we do not know which one to take
                         solver_object = None
                         break
             if solver_object and solver_object.SolverType == 'FemSolverCalculix':
                 solver_object.MaterialNonlinearity = "nonlinear"
+                solver_object.GeometricalNonlinearity = "nonlinear"
 
 FreeCADGui.addCommand('FEM_MaterialMechanicalNonlinear', _CommandFemMaterialMechanicalNonlinear())
