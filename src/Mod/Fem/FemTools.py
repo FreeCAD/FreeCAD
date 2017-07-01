@@ -340,8 +340,12 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                     message += "Frequency analysis: Solver has no EigenmodeLowLimit.\n"
                 elif not hasattr(self.solver, "EigenmodesCount"):
                     message += "Frequency analysis: Solver has no EigenmodesCount.\n"
-            if hasattr(self.solver, "MaterialNonlinearity") and self.solver.MaterialNonlinearity == "nonlinear" and not self.materials_nonlinear:
-                message += "Solver is set to nonlinear materials, but there is no nonlinear material in the analysis. \n"
+            if hasattr(self.solver, "MaterialNonlinearity") and self.solver.MaterialNonlinearity == "nonlinear":
+                if not self.materials_nonlinear:
+                    message += "Solver is set to nonlinear materials, but there is no nonlinear material in the analysis.\n"
+                if self.solver.SolverType == 'FemSolverCalculix' and self.solver.GeometricalNonlinearity != "nonlinear":
+                    # nonlinear geometry --> should be set https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
+                    message += "Solver CalculiX triggers nonlinear geometry for nonlinear material, thus it should to be set too.\n"
         # mesh
         if not self.mesh:
             message += "No mesh object defined in the analysis\n"
@@ -400,7 +404,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                     if has_nonlinear_material is False:
                         has_nonlinear_material = True
                     else:
-                        message += "At least two nonlinear materials use the same linear base material. Only one nonlinear material for each linear material allowed. \n"
+                        message += "At least two nonlinear materials use the same linear base material. Only one nonlinear material for each linear material allowed.\n"
         # constraints
         if self.analysis_type == "static":
             if not (self.fixed_constraints or self.displacement_constraints):
