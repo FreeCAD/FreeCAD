@@ -356,7 +356,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 message += "FEM mesh has no volume and no shell elements, either define a beam/fluid section or provide a FEM mesh with volume elements.\n"
             if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount == 0:
                 message += "FEM mesh has neither volume nor shell or edge elements. Provide a FEM mesh with elements!\n"
-        # materials linear and nonlinear
+        # material linear and nonlinear
         if not self.materials_linear:
             message += "No material object defined in the analysis\n"
         has_no_references = False
@@ -405,18 +405,64 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                         has_nonlinear_material = True
                     else:
                         message += "At least two nonlinear materials use the same linear base material. Only one nonlinear material for each linear material allowed.\n"
-        # constraints
+        # which analysis needs which constraints
+        # no check in the regard of loads existence (constraint force, pressure, self weight) is done because an analysis without loads at all is an valid analysis too
         if self.analysis_type == "static":
             if not (self.fixed_constraints or self.displacement_constraints):
                 message += "Static analysis: Neither constraint fixed nor constraint displacement defined.\n"
-        # no check in the regard of loads (constraint force, pressure, self weight) is done because an analysis without loads at all is an valid analysis too
         if self.analysis_type == "thermomech":
             if not self.initialtemperature_constraints:
                 if not self.fluid_sections:
                     message += "Thermomechanical analysis: No initial temperature defined.\n"
             if len(self.initialtemperature_constraints) > 1:
                 message += "Thermomechanical analysis: Only one initial temperature is allowed.\n"
-        # beam sections, fluid sections and shell thicknesses
+        # constraints
+        # fixed
+        if self.fixed_constraints:
+            for c in self.fixed_constraints:
+                if len(c['Object'].References) == 0:
+                    message += "At least one constraint fixed has an empty reference.\n"
+        # displacement
+        if self.displacement_constraints:
+            for di in self.displacement_constraints:
+                if len(di['Object'].References) == 0:
+                    message += "At least one constraint displacement has an empty reference.\n"
+        # plane rotation
+        if self.planerotation_constraints:
+            for c in self.planerotation_constraints:
+                if len(c['Object'].References) == 0:
+                    message += "At least one constraint plane rotation has an empty reference.\n"
+        # contact
+        if self.contact_constraints:
+            for c in self.contact_constraints:
+                if len(c['Object'].References) == 0:
+                    message += "At least one constraint contact has an empty reference.\n"
+        # transform
+        if self.transform_constraints:
+            for c in self.transform_constraints:
+                if len(c['Object'].References) == 0:
+                    message += "At least one constraint transform has an empty reference.\n"
+        # pressure
+        if self.pressure_constraints:
+            for c in self.pressure_constraints:
+                if len(c['Object'].References) == 0:
+                    message += "At least one constraint pressure has an empty reference.\n"
+        # force
+        if self.force_constraints:
+            for c in self.force_constraints:
+                if len(c['Object'].References) == 0:
+                    message += "At least one constraint force has an empty reference.\n"
+        # temperature
+        if self.temperature_constraints:
+            for c in self.temperature_constraints:
+                if len(c['Object'].References) == 0:
+                    message += "At least one constraint temperature has an empty reference.\n"
+        # heat flux
+        if self.heatflux_constraints:
+            for c in self.heatflux_constraints:
+                if len(c['Object'].References) == 0:
+                    message += "At least one constraint heat flux has an empty reference.\n"
+        # beam section
         if self.beam_sections:
             if self.shell_thicknesses:
                 # this needs to be checked only once either here or in shell_thicknesses
@@ -435,6 +481,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                     message += "Beam sections defined but FEM mesh has volume or shell elements.\n"
                 if self.mesh.FemMesh.EdgeCount == 0:
                     message += "Beam sections defined but FEM mesh has no edge elements.\n"
+        # shell thickness
         if self.shell_thicknesses:
             has_no_references = False
             for s in self.shell_thicknesses:
@@ -447,6 +494,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                     message += "Shell thicknesses defined but FEM mesh has volume elements.\n"
                 if self.mesh.FemMesh.FaceCount == 0:
                     message += "Shell thicknesses defined but FEM mesh has no shell elements.\n"
+        # fluid section
         if self.fluid_sections:
             if not self.selfweight_constraints:
                 message += "A fluid network analysis requires self weight constraint to be applied"
