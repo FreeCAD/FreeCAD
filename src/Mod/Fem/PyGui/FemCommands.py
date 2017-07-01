@@ -170,10 +170,6 @@ class FemCommands(object):
                     if "Constraint" in acnstrmesh.TypeId:
                         acnstrmesh.ViewObject.Visibility = True
                     if "Mesh" in acnstrmesh.TypeId:
-                        aparttoshow = acnstrmesh.Name.replace("_Mesh", "")
-                        for apart in FreeCAD.activeDocument().Objects:
-                            if aparttoshow == apart.Name:
-                                apart.ViewObject.Visibility = True
                         acnstrmesh.ViewObject.Visibility = False  # OvG: Hide meshes and show constraints and meshed part e.g. on purging results
 
 ##  @}
