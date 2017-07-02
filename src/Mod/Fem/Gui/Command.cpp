@@ -1163,7 +1163,7 @@ CmdFemPostCreateClipFilter::CmdFemPostCreateClipFilter()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Define/create a clip filter which uses functions to define the cliped region");
+    sMenuText       = QT_TR_NOOP("Clip Filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which uses functions to define the cliped region");
     sWhatsThis      = "FEM_PostCreateClipFilter";
     sStatusTip      = sToolTipText;
@@ -1187,7 +1187,7 @@ CmdFemPostCreateDataAlongLineFilter::CmdFemPostCreateDataAlongLineFilter()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
+    sMenuText       = QT_TR_NOOP("Line Clip Filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
     sWhatsThis      = "FEM_PostCreateDataAlongLineFilter";
     sStatusTip      = sToolTipText;
@@ -1211,7 +1211,7 @@ CmdFemPostCreateLinearizedStressesFilter::CmdFemPostCreateLinearizedStressesFilt
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create stress linearization plots");
+    sMenuText       = QT_TR_NOOP("Stress Linearization Plot");
     sToolTipText    = QT_TR_NOOP("Create stress linearization plots");
     sWhatsThis      = "FEM_PostCreateLinearizedStressesFilter";
     sStatusTip      = sToolTipText;
@@ -1256,7 +1256,7 @@ CmdFemPostCreateScalarClipFilter::CmdFemPostCreateScalarClipFilter()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Define/create a clip filter which clips a field with a scalar value");
+    sMenuText       = QT_TR_NOOP("Scalar Clip Filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field with a scalar value");
     sWhatsThis      = "FEM_PostCreateScalarClipFilter";
     sStatusTip      = sToolTipText;
@@ -1282,7 +1282,7 @@ CmdFemPostWarpVectorFilter::CmdFemPostWarpVectorFilter()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Warp the geometry along a vector field by a certain factor");
+    sMenuText       = QT_TR_NOOP("Warp Filter");
     sToolTipText    = QT_TR_NOOP("Warp the geometry along a vector field by a certain factor");
     sWhatsThis      = "FEM_PostCreateWarpVectorFilter";
     sStatusTip      = sToolTipText;
@@ -1306,7 +1306,7 @@ CmdFemPostCutFilter::CmdFemPostCutFilter()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Cut the data along an implicit function");
+    sMenuText       = QT_TR_NOOP("Cut Filter");
     sToolTipText    = QT_TR_NOOP("Cut the data along an implicit function");
     sWhatsThis      = "FEM_PostCreateCutFilter";
     sStatusTip      = sToolTipText;
@@ -1333,7 +1333,7 @@ CmdFemPostFunctions::CmdFemPostFunctions()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Functions for use in postprocessing filter...");
+    sMenuText       = QT_TR_NOOP("Filter Functions");
     sToolTipText    = QT_TR_NOOP("Functions for use in postprocessing filter...");
     sWhatsThis      = "FEM_PostCreateFunctions";
     sStatusTip      = sToolTipText;
@@ -1472,7 +1472,7 @@ CmdFemPostApllyChanges::CmdFemPostApllyChanges()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Apply changes to parameters directly and not on recompute only...");
+    sMenuText       = QT_TR_NOOP("Apply changes to Pipeline");
     sToolTipText    = QT_TR_NOOP("Apply changes to parameters directly and not on recompute only...");
     sWhatsThis      = "FEM_PostApplyChanges";
     sStatusTip      = sToolTipText;
@@ -1516,7 +1516,7 @@ CmdFemPostPipelineFromResult::CmdFemPostPipelineFromResult()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Creates a post processing pipeline from a result object");
+    sMenuText       = QT_TR_NOOP("Post Pipeline from Result");
     sToolTipText    = QT_TR_NOOP("Creates a post processing pipeline from a result object");
     sWhatsThis      = "FEM_PostPipelineFromResult";
     sStatusTip      = sToolTipText;
