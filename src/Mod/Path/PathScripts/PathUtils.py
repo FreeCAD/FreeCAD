@@ -765,11 +765,14 @@ class depth_params:
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         if self.index == len(self.data):
             raise StopIteration
         self.index = self.index + 1
         return self.data[self.index - 1]
+
+    def next(self):
+        return self.__next__()
 
     @property
     def clearance_height(self):
