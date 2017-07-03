@@ -603,8 +603,12 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                     if nl_mat_obj.LinearBaseMaterial == mat_obj:
                         if nl_mat_obj.MaterialModelNonlinearity == "simple hardening":
                             f.write('*PLASTIC\n')
-                            f.write(nl_mat_obj.YieldPoint1 + '\n')
-                            f.write(nl_mat_obj.YieldPoint2 + '\n')
+                            if nl_mat_obj.YieldPoint1:
+                                f.write(nl_mat_obj.YieldPoint1 + '\n')
+                            if nl_mat_obj.YieldPoint2:
+                                f.write(nl_mat_obj.YieldPoint2 + '\n')
+                            if nl_mat_obj.YieldPoint3:
+                                f.write(nl_mat_obj.YieldPoint3 + '\n')
                     f.write('\n')
 
     def write_constraints_initialtemperature(self, f):

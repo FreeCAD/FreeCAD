@@ -49,12 +49,14 @@ class _CommandFemMeshNetgenFromShape(FemCommands):
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
             if(sel[0].isDerivedFrom("Part::Feature")):
-                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
-                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
+                mesh_obj_name = 'FEMMeshNetgen'
+                # mesh_obj_name = sel[0].Name + "_Mesh"  # if requested by some people add Preference for this
+                FreeCADGui.doCommand("App.ActiveDocument.addObject('Fem::FemMeshShapeNetgenObject', '" + mesh_obj_name + "')")
+                FreeCADGui.doCommand("App.ActiveDocument.ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
                 if FemGui.getActiveAnalysis():
                     FreeCADGui.addModule("FemGui")
                     FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.ActiveDocument.ActiveObject]")
-                FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
+                FreeCADGui.doCommand("Gui.ActiveDocument.setEdit(App.ActiveDocument.ActiveObject.Name)")
 
         FreeCADGui.Selection.clearSelection()
 

@@ -401,7 +401,6 @@ class _TaskPanelFemResultShow:
         self.disable_empty_result_buttons()
         if (self.mesh_obj.FemMesh.NodeCount == len(self.result_obj.NodeNumbers)):
             self.suitable_results = True
-            self.mesh_obj.ViewObject.Visibility = True
             hide_parts_constraints()
         else:
             if not self.mesh_obj.FemMesh.VolumeCount:
@@ -434,8 +433,3 @@ def hide_parts_constraints():
         for acnstrmesh in FemGui.getActiveAnalysis().Member:
             if "Constraint" in acnstrmesh.TypeId:
                 acnstrmesh.ViewObject.Visibility = False
-            if "Mesh" in acnstrmesh.TypeId:
-                aparttoshow = acnstrmesh.Name.replace("_Mesh", "")
-                for apart in FreeCAD.activeDocument().Objects:
-                    if aparttoshow == apart.Name:
-                        apart.ViewObject.Visibility = False

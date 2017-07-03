@@ -175,10 +175,6 @@ std::string ViewProviderFemConstraint::gethideMeshShowPartStr(const std::string 
     if \""+showConstr+"\" == amesh.Name:\n\
         amesh.ViewObject.Visibility = True\n\
     elif \"Mesh\" in amesh.TypeId:\n\
-        aparttoshow = amesh.Name.replace(\"_Mesh\",\"\")\n\
-        for apart in App.activeDocument().Objects:\n\
-            if aparttoshow == apart.Name:\n\
-                apart.ViewObject.Visibility = True\n\
         amesh.ViewObject.Visibility = False\n";
 }
 

@@ -52,7 +52,7 @@ class PartDesignPadTestCases(unittest.TestCase):
         # Make first offset cube Pad
         self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
         self.Body.addObject(self.PadSketch)
-        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1), True)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1))
         self.Doc.recompute()
         self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
         self.Body.addObject(self.Pad)
@@ -63,9 +63,9 @@ class PartDesignPadTestCases(unittest.TestCase):
         self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
         self.Body.addObject(self.PadSketch1)
         self.PadSketch1.MapMode = 'FlatFace'
-        self.PadSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.PadSketch1.Support = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
-        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1), True)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1))
         self.Doc.recompute()
         self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
         self.Body.addObject(self.Pad1)
@@ -91,9 +91,9 @@ class PartDesignPadTestCases(unittest.TestCase):
         self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
         self.Body.addObject(self.PadSketch1)
         self.PadSketch1.MapMode = 'FlatFace'
-        self.PadSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.PadSketch1.Support = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
-        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1), True)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1))
         self.Doc.recompute()
         self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
         self.Body.addObject(self.Pad1)
@@ -108,7 +108,7 @@ class PartDesignPadTestCases(unittest.TestCase):
         # Make first offset cube Pad
         self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
         self.Body.addObject(self.PadSketch)
-        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1), True)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1))
         self.Doc.recompute()
         self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
         self.Body.addObject(self.Pad)
@@ -119,9 +119,9 @@ class PartDesignPadTestCases(unittest.TestCase):
         self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
         self.Body.addObject(self.PadSketch1)
         self.PadSketch1.MapMode = 'FlatFace'
-        self.PadSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.PadSketch1.Support = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
-        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1), True)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1))
         self.Doc.recompute()
         self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
         self.Body.addObject(self.Pad1)
@@ -137,7 +137,7 @@ class PartDesignPadTestCases(unittest.TestCase):
         # Make first offset cube Pad
         self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
         self.Body.addObject(self.PadSketch)
-        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1), True)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1))
         self.Doc.recompute()
         self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
         self.Body.addObject(self.Pad)
@@ -148,9 +148,9 @@ class PartDesignPadTestCases(unittest.TestCase):
         self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
         self.Body.addObject(self.PadSketch1)
         self.PadSketch1.MapMode = 'FlatFace'
-        self.PadSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.PadSketch1.Support = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
-        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1), True)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1))
         self.Doc.recompute()
         self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
         self.Body.addObject(self.Pad1)
@@ -223,7 +223,7 @@ class PartDesignMirroredTestCases(unittest.TestCase):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.Rect = self.Doc.addObject('Sketcher::SketchObject','Rect')
         self.Body.addObject(self.Rect)
-        TestSketcherApp.CreateRectangleSketch(self.Rect, (0, 0), (1, 1), True)
+        TestSketcherApp.CreateRectangleSketch(self.Rect, (0, 0), (1, 1))
         self.Doc.recompute()
         self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
         self.Pad.Profile = self.Rect
@@ -261,7 +261,7 @@ class PartDesignMirroredTestCases(unittest.TestCase):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.Rect = self.Doc.addObject('Sketcher::SketchObject','Rect')
         self.Body.addObject(self.Rect)
-        TestSketcherApp.CreateRectangleSketch(self.Rect, (0, 1), (1, 1), True)
+        TestSketcherApp.CreateRectangleSketch(self.Rect, (0, 1), (1, 1))
         self.Doc.recompute()
         self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
         self.Pad.Profile = self.Rect
@@ -288,7 +288,7 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'PadSketch')
         self.Body.addObject(self.PadSketch)
-        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (10, 10), True)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (10, 10))
         self.Doc.recompute()
         self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
         self.Body.addObject(self.Pad)
@@ -298,7 +298,7 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.Doc.recompute()
         self.PocketSketch = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
         self.Body.addObject(self.PocketSketch)
-        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (2.5, 2.5), (5, 5), True)
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (2.5, 2.5), (5, 5))
         self.Doc.recompute()
         self.Pocket = self.Doc.addObject("PartDesign::Pocket", "Pocket")
         self.Body.addObject(self.Pocket)
@@ -311,7 +311,7 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'PadSketch')
         self.Body.addObject(self.PadSketch)
-        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (10, 10), True)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (10, 10))
         self.Doc.recompute()
         self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
         self.Body.addObject(self.Pad)
@@ -321,7 +321,7 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.Doc.recompute()
         self.PocketSketch = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
         self.Body.addObject(self.PocketSketch)
-        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (2.5, 2.5), (5, 5), True)
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (2.5, 2.5), (5, 5))
         self.Doc.recompute()
         self.Pocket = self.Doc.addObject("PartDesign::Pocket", "Pocket")
         self.Body.addObject(self.Pocket)
@@ -331,7 +331,7 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.PocketSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
         self.Body.addObject(self.PocketSketch1)
         self.PocketSketch1.MapMode = 'FlatFace'
-        self.PocketSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.PocketSketch1.Support = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
         TestSketcherApp.CreateRectangleSketch(self.PocketSketch1, (2.5, -1), (5, 1))
         self.Doc.recompute()
@@ -346,7 +346,7 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'PadSketch')
         self.Body.addObject(self.PadSketch)
-        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (10, 10), True)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (10, 10))
         self.Doc.recompute()
         self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
         self.Body.addObject(self.Pad)
@@ -356,7 +356,7 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.Doc.recompute()
         self.PocketSketch = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
         self.Body.addObject(self.PocketSketch)
-        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (2.5, 2.5), (5, 5), True)
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (2.5, 2.5), (5, 5))
         self.Doc.recompute()
         self.Pocket = self.Doc.addObject("PartDesign::Pocket", "Pocket")
         self.Body.addObject(self.Pocket)
@@ -366,7 +366,7 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.PocketSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
         self.Body.addObject(self.PocketSketch1)
         self.PocketSketch1.MapMode = 'FlatFace'
-        self.PocketSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.PocketSketch1.Support = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
         TestSketcherApp.CreateRectangleSketch(self.PocketSketch1, (2.5, -1), (5, 1))
         self.Doc.recompute()
@@ -381,7 +381,7 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'PadSketch')
         self.Body.addObject(self.PadSketch)
-        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (10, 10), True)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (10, 10))
         self.Doc.recompute()
         self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
         self.Body.addObject(self.Pad)
@@ -391,7 +391,7 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.Doc.recompute()
         self.PocketSketch = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
         self.Body.addObject(self.PocketSketch)
-        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (2.5, 2.5), (5, 5), True)
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (2.5, 2.5), (5, 5))
         self.Doc.recompute()
         self.Pocket = self.Doc.addObject("PartDesign::Pocket", "Pocket")
         self.Body.addObject(self.Pocket)
@@ -401,7 +401,7 @@ class PartDesignPocketTestCases(unittest.TestCase):
         self.PocketSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
         self.Body.addObject(self.PocketSketch1)
         self.PocketSketch1.MapMode = 'FlatFace'
-        self.PocketSketch1.Support = (App.ActiveDocument.XZ_Plane, [''])
+        self.PocketSketch1.Support = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
         TestSketcherApp.CreateRectangleSketch(self.PocketSketch1, (0, -1), (10, 1))
         self.Doc.recompute()
@@ -423,3 +423,127 @@ class PartDesignPocketTestCases(unittest.TestCase):
         #closing doc
         FreeCAD.closeDocument("PartDesignTestPocket")
         #print ("omit closing document for debugging")
+
+class PartDesignPipeTestCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestPipe")
+
+    def testSimpleAdditivePipeCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.ProfileSketch = self.Doc.addObject('Sketcher::SketchObject', 'ProfileSketch')
+        self.Body.addObject(self.ProfileSketch)
+        TestSketcherApp.CreateCircleSketch(self.ProfileSketch, (0, 0), 1)
+        self.Doc.recompute()
+        self.SpineSketch = self.Doc.addObject('Sketcher::SketchObject', 'SpineSketch')
+        self.Body.addObject(self.SpineSketch)
+        self.SpineSketch.MapMode = 'FlatFace'
+        self.SpineSketch.Support = (self.Doc.XZ_Plane, [''])
+        self.Doc.recompute()
+        self.SpineSketch.addGeometry(Part.LineSegment(App.Vector(0.0,0.0,0),App.Vector(0,1,0)),False)
+        self.SpineSketch.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1)) 
+        self.SpineSketch.addConstraint(Sketcher.Constraint('PointOnObject',0,2,-2)) 
+        self.SpineSketch.addConstraint(Sketcher.Constraint('DistanceY',0,1,0,2,1)) 
+        self.Doc.recompute()
+        self.AdditivePipe = self.Doc.addObject("PartDesign::AdditivePipe","AdditivePipe")
+        self.Body.addObject(self.AdditivePipe)
+        self.AdditivePipe.Profile = self.ProfileSketch
+        self.AdditivePipe.Spine = self.SpineSketch
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.AdditivePipe.Shape.Volume, 3.14159265)
+
+    def testSimpleSubtractivePipeCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.ProfileSketch = self.Doc.addObject('Sketcher::SketchObject', 'ProfileSketch')
+        self.Body.addObject(self.ProfileSketch)
+        TestSketcherApp.CreateCircleSketch(self.ProfileSketch, (0, 0), 1)
+        self.Doc.recompute()
+        self.SpineSketch = self.Doc.addObject('Sketcher::SketchObject', 'SpineSketch')
+        self.Body.addObject(self.SpineSketch)
+        self.SpineSketch.MapMode = 'FlatFace'
+        self.SpineSketch.Support = (self.Doc.XZ_Plane, [''])
+        self.Doc.recompute()
+        self.SpineSketch.addGeometry(Part.LineSegment(App.Vector(0.0,0.0,0),App.Vector(0,1,0)),False)
+        self.SpineSketch.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1)) 
+        self.SpineSketch.addConstraint(Sketcher.Constraint('PointOnObject',0,2,-2)) 
+        self.SpineSketch.addConstraint(Sketcher.Constraint('DistanceY',0,1,0,2,1)) 
+        self.Doc.recompute()
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'PadSketch')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (-5, -5), (10, 10))
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1.0
+        self.Doc.recompute()
+        self.SubtractivePipe = self.Doc.addObject("PartDesign::SubtractivePipe","SubtractivePipe")
+        self.Body.addObject(self.SubtractivePipe)
+        self.SubtractivePipe.Profile = self.ProfileSketch
+        self.SubtractivePipe.Spine = self.SpineSketch
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.SubtractivePipe.Shape.Volume, 100 - 3.14159265)
+
+    def tearDown(self):
+        #closing doc
+        FreeCAD.closeDocument("PartDesignTestPipe")
+        #print ("omit closing document for debugging")
+
+class PartDesignLoftTestCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestLoft")
+
+    def testSimpleAdditiveLoftCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.ProfileSketch = self.Doc.addObject('Sketcher::SketchObject', 'ProfileSketch')
+        self.Body.addObject(self.ProfileSketch)
+        TestSketcherApp.CreateRectangleSketch(self.ProfileSketch, (0, 0), (1, 1))
+        self.Doc.recompute()
+        self.LoftSketch = self.Doc.addObject('Sketcher::SketchObject', 'LoftSketch')
+        self.Body.addObject(self.LoftSketch)
+        self.LoftSketch.MapMode = 'FlatFace'
+        self.LoftSketch.Support = (self.Doc.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.LoftSketch, (0, 1), (1, 1))
+        self.Doc.recompute()
+        self.AdditiveLoft = self.Doc.addObject("PartDesign::AdditiveLoft","AdditiveLoft")
+        self.Body.addObject(self.AdditiveLoft)
+        self.AdditiveLoft.Profile = self.ProfileSketch
+        self.AdditiveLoft.Sections = [self.LoftSketch]
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.AdditiveLoft.Shape.Volume, 1)
+
+    def testSimpleSubtractiveLoftCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (1, 1))
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 2
+        self.Doc.recompute()
+        self.ProfileSketch = self.Doc.addObject('Sketcher::SketchObject', 'ProfileSketch')
+        self.Body.addObject(self.ProfileSketch)
+        TestSketcherApp.CreateRectangleSketch(self.ProfileSketch, (0, 0), (1, 1))
+        self.Doc.recompute()
+        self.LoftSketch = self.Doc.addObject('Sketcher::SketchObject', 'LoftSketch')
+        self.Body.addObject(self.LoftSketch)
+        self.LoftSketch.MapMode = 'FlatFace'
+        self.LoftSketch.Support = (self.Doc.XZ_Plane, [''])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.LoftSketch, (0, 1), (1, 1))
+        self.Doc.recompute()
+        self.SubtractiveLoft = self.Doc.addObject("PartDesign::SubtractiveLoft","SubtractiveLoft")
+        self.Body.addObject(self.SubtractiveLoft)
+        self.SubtractiveLoft.Profile = self.ProfileSketch
+        self.SubtractiveLoft.Sections = [self.LoftSketch]
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.SubtractiveLoft.Shape.Volume, 1)
+
+
+    def tearDown(self):
+        #closing doc
+        FreeCAD.closeDocument("PartDesignTestLoft")
+        #print ("omit closing document for debugging")
+
