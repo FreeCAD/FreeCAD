@@ -106,6 +106,7 @@
 #include "OriginFeature.h"
 #include "Origin.h"
 #include "MaterialObject.h"
+#include "TextDocument.h"
 #include "Expression.h"
 #include "Transactions.h"
 #include <App/MaterialPy.h>
@@ -1301,6 +1302,7 @@ void Application::initTypes(void)
     App ::MeasureDistance           ::init();
     App ::MaterialObject            ::init();
     App ::MaterialObjectPython      ::init();
+    App ::TextDocument              ::init();
     App ::Placement                 ::init();
     App ::OriginFeature             ::init();
     App ::Plane                     ::init();
