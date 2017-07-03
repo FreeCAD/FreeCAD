@@ -242,6 +242,7 @@ set(Gui_MOC_HDRS
     DockWindowManager.h
     DocumentRecovery.h
     EditorView.h
+    TextDocumentEditorView.h
     ExpressionCompleter.h
     DlgExpressionInput.h
     FileDialog.h
@@ -631,6 +632,7 @@ SOURCE_GROUP("Dock Windows" FILES ${Dock_Windows_SRCS})
 SET(Editor_CPP_SRCS
     CallTips.cpp
     EditorView.cpp
+    TextDocumentEditorView.cpp
     PythonConsole.cpp
     PythonConsolePy.cpp
     PythonDebugger.cpp
@@ -641,6 +643,7 @@ SET(Editor_CPP_SRCS
 SET(Editor_HPP_SRCS
     CallTips.h
     EditorView.h
+    TextDocumentEditorView.h
     PythonConsole.h
     PythonConsolePy.h
     PythonDebugger.h
@@ -896,6 +899,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderPart.cpp
     ViewProviderOrigin.cpp
     ViewProviderMaterialObject.cpp
+    ViewProviderTextDocument.cpp
 )
 SET(Viewprovider_SRCS
     ${Viewprovider_CPP_SRCS}
@@ -924,6 +928,7 @@ SET(Viewprovider_SRCS
     ViewProviderPart.h
     ViewProviderOrigin.h
     ViewProviderMaterialObject.h
+    ViewProviderTextDocument.h
 )
 SOURCE_GROUP("View3D\\Viewprovider" FILES ${Viewprovider_SRCS})
 
