@@ -285,6 +285,11 @@ void Area::addWire(CArea &area, const TopoDS_Wire& wire,
     BRepTools_WireExplorer xp(trsf?TopoDS::Wire(
                 wire.Moved(TopLoc_Location(*trsf))):wire);
 
+    if(!xp.More()) {
+        AREA_TRACE("empty wire");
+        return;
+    }
+
     gp_Pnt p = BRep_Tool::Pnt(xp.CurrentVertex());
     ccurve.append(CVertex(Point(p.X(),p.Y())));
 
