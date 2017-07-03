@@ -150,6 +150,7 @@ SET(Document_CPP_SRCS
     VRMLObject.cpp
     MaterialObject.cpp
     MergeDocuments.cpp
+    TextDocument.cpp
 )
 
 SET(Document_HPP_SRCS
@@ -187,6 +188,7 @@ SET(Document_HPP_SRCS
     VRMLObject.h
     MaterialObject.h
     MergeDocuments.h
+    TextDocument.h
 )
 SET(Document_SRCS
     ${Document_CPP_SRCS}
