@@ -298,7 +298,7 @@ class ObjectProfile:
                 env = PathUtils.getEnvelope(baseobject.Shape, subshape=profileshape, depthparams=self.depthparams)
                 try:
                     (pp, sim) = self._buildPathArea(obj, baseobject=env, start=None, getsim=getsim)
-                    commandlist.extend(pp.commands)
+                    commandlist.extend(pp.Commands)
                 except Exception as e:
                     FreeCAD.Console.PrintError(e)
                     FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
@@ -314,7 +314,7 @@ class ObjectProfile:
                                 env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, depthparams=self.depthparams)
                                 try:
                                     (pp, sim) = self._buildPathArea(obj, baseobject=env, isHole=False, start=None, getsim=getsim)
-                                    commandlist.extend(pp.commands)
+                                    commandlist.extend(pp.Commands)
                                 except Exception as e:
                                     FreeCAD.Console.PrintError(e)
                                     FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
@@ -328,7 +328,7 @@ class ObjectProfile:
                                 env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, depthparams=self.depthparams)
                                 try:
                                     (pp, sim) = self._buildPathArea(obj, baseobject=env, isHole=True, start=None, getsim=getsim)
-                                    commandlist.extend(pp.commands)
+                                    commandlist.extend(pp.Commands)
                                 except Exception as e:
                                     FreeCAD.Console.PrintError(e)
                                     FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
