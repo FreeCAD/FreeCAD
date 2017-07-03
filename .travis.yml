@@ -29,7 +29,9 @@ cache:
     ccache: true
 
 language: cpp
-python: 2.7
+python:
+    - 2.7
+    - 3.4
 
 # Inject osx build into matrix - needed to specify image/dist
 matrix:
@@ -37,19 +39,37 @@ matrix:
       - os: linux
         dist: trusty
         compiler: clang
-        env: CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
+        env: 
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
+          - PYTHON_MAJOR_VERSION=2
+
       - os: linux
         dist: trusty
         compiler: gcc
-        env: CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
+        env:
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
+          - PYTHON_MAJOR_VERSION=2
+
+      - os: linux
+        dist: trusty
+        compiler: gcc
+        env:
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
+          - PYTHON_MAJOR_VERSION=3
+
       - os: osx
         osx_image: xcode6.4
         compiler: clang
-        env: CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt5
+        env:
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt5
+          - PYTHON_MAJOR_VERSION=2
+
       - os: osx
         osx_image: xcode6.4
         compiler: clang
-        env: CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt4
+        env:
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt4
+          - PYTHON_MAJOR_VERSION=2
 
 git:
   depth: 5000
@@ -102,6 +122,9 @@ before_install:
                                python-dev                       \
                                python-pyside                    \
                                python-matplotlib                \
+                               python3-dev                      \
+                               python3-pyside                   \
+                               python3-matplotlib               \
                                qt4-dev-tools                    \
                                qt4-qmake                        \
                                libqt4-opengl-dev                \
@@ -131,7 +154,13 @@ before_install:
        sh -e /etc/init.d/xvfb start
 
        export CCACHE_CPP2=YES
-       export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python"
+       if [[ ${PYTHON_MAJOR_VERSION} == 2 ]]
+       then
+        export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python"
+       else
+        export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python3.4 -DPYTHON_BASENAME=.cpython-34m \
+        -DPYTHON_SUFFIX=.cpython-34m"
+       fi
        export INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
        ;;
 
