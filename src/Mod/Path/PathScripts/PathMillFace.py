@@ -95,8 +95,9 @@ class ObjectFace:
         obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
 
         # Debug Parameters
-        # obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
-        # obj.setEditorMode('AreaParams', 2)  # hide
+        obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.setEditorMode('AreaParams', 2)  # hide
+        obj.addProperty("Part::PropertyPartShape", "removalshape", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "The material to be removed"))
 
         if FreeCAD.GuiUp:
             _ViewProviderFace(obj.ViewObject)
@@ -197,7 +198,7 @@ class ObjectFace:
 
         heights = [i for i in self.depthparams]
         boundary.setParams(**pocketparams)
-        #obj.AreaParams = str(boundary.getParams())
+        obj.AreaParams = str(boundary.getParams())
         #PathLog.track('areaparams: {}'.format(obj.AreaParams))
         PathLog.track('height: {}'.format(heights))
         sections = boundary.makeSections(mode=0, project=False, heights=heights)
@@ -210,10 +211,18 @@ class ObjectFace:
                   'resume_height': obj.StepDown,
                   'retraction': obj.ClearanceHeight.Value}
 
-        PathLog.debug("Generating Path with params: {}".format(params))
-        pp = Path.fromShapes(**params)
+        pp = []
+        if obj.UseStartPoint:
+            params['start'] = obj.StartPoint
+#            pp.append(Path.Command("G0", {"X":obj.StartPoint.x, "Y":obj.StartPoint.y, "Z":obj.StartPoint.z}))
 
-        return pp
+
+        PathLog.debug("Generating Path with params: {}".format(params))
+        respath = Path.fromShapes(**params)
+        pp.extend(respath.Commands)
+        respath.Commands = pp
+
+        return respath
 
     def execute(self, obj):
         PathLog.track()
@@ -229,7 +238,7 @@ class ObjectFace:
         self.depthparams = depth_params(
                 clearance_height=obj.ClearanceHeight.Value,
                 safe_height=obj.SafeHeight.Value,
-                start_depth=obj.StartDepth.Value,
+                start_depth=obj.SafeHeight.Value,
                 step_down=obj.StepDown,
                 z_finish_step=obj.FinishDepth.Value,
                 final_depth=obj.FinalDepth.Value,
@@ -282,7 +291,7 @@ class ObjectFace:
             PathLog.info("Working on a shape {}".format(baseobject.Name))
 
         # Let's start by rapid to clearance...just for safety
-        commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+        #commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
         # if user wants the boundbox, calculate that
         PathLog.info("Boundary Shape: {}".format(obj.BoundaryShape))
@@ -292,6 +301,9 @@ class ObjectFace:
             env = PathUtils.getEnvelope(partshape=bbperim, depthparams=self.depthparams)
         else:
             env = PathUtils.getEnvelope(partshape=planeshape, depthparams=self.depthparams)
+
+        #save the envelope for reference
+        obj.removalshape = env
 
         try:
             commandlist.extend(self._buildPathArea(obj, env).Commands)
