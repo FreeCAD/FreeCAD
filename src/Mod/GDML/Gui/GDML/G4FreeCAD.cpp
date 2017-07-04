@@ -58,6 +58,7 @@
 # include <Handle_Geom2d_TrimmedCurve.hxx>
 # include <Precision.hxx>
 # include <Standard_Real.hxx>*/
+# include <Standard_Version.hxx>
 ///#include <TopoDS_Solid.hxx>
 
 #include <Base/Placement.h>
@@ -98,15 +99,15 @@ void G4FreeCAD::GDML2FreeCAD(G4GDMLParser* parser, std::string fileNameWoExt)
 	App::Document *pcDoc = App::GetApplication().newDocument(fileNameWoExt.c_str());
 	int num=1;
 
-	G4AffineTransform vat_null;
-	//G4RotationMatrix() => initialized to identity?
-	vat_null.SetNetRotation(G4RotationMatrix());//const G4RotationMatrix &rot
-	vat_null.SetNetTranslation(G4ThreeVector(0,0,0));//const G4ThreeVector &tlate
-	num=browsePhysVol(wvolume,&vat_null,pcDoc);//read GDML
+        G4AffineTransform vat_null;
+        //G4RotationMatrix() => initialized to identity?
+        vat_null.SetNetRotation(G4RotationMatrix());//const G4RotationMatrix &rot
+        vat_null.SetNetTranslation(G4ThreeVector(0,0,0));//const G4ThreeVector &tlate
+        num=browsePhysVol(wvolume,&vat_null,pcDoc);//read GDML
 
-	/* //////////////////////////////////////////////////////////////
-	//Tests for writing:
-	G4PVPlacement *pVol=browseDoc(pcDoc);//write GDML
+        /* //////////////////////////////////////////////////////////////^M
+        //Tests for writing
+        G4PVPlacement *pVol=browseDoc(pcDoc);//write GDML
 	Base::Console().Message("pVol=%s\n",pVol->GetName().c_str());
 	Base::Console().Message("lVol=%s\n",pVol->GetLogicalVolume()->GetName().c_str());
 //	Base::Console().Message("filename=%s\n",filename.c_str());
@@ -192,7 +193,28 @@ int G4FreeCAD::browsePhysVol(G4LogicalVolume *lv,const G4AffineTransform *at, Ap
                     // I will put this into utility class
                     //{
                     Base::Matrix4D mtrx;
+#if OCC_VERSION_HEX >= 0x070000
+                    gp_Mat m = trsf.VectorialPart();
+                    gp_XYZ p = trsf.TranslationPart();
 
+                    // set Rotation matrix
+                    mtrx[0][0] = m(1,1);
+                    mtrx[0][1] = m(1,2);
+                    mtrx[0][2] = m(1,3);
+
+                    mtrx[1][0] = m(2,1);
+                    mtrx[1][1] = m(2,2);
+                    mtrx[1][2] = m(2,3);
+
+                    mtrx[2][0] = m(3,1);
+                    mtrx[2][1] = m(3,2);
+                    mtrx[2][2] = m(3,3);
+
+                    // set pos vector
+                    mtrx[0][3] = p.X();
+                    mtrx[1][3] = p.Y();
+                    mtrx[2][3] = p.Z();
+#else
                     gp_Mat m = trsf._CSFDB_Getgp_Trsfmatrix();
                     gp_XYZ p = trsf._CSFDB_Getgp_Trsfloc();
                     Standard_Real scale = trsf._CSFDB_Getgp_Trsfscale();
@@ -214,6 +236,7 @@ int G4FreeCAD::browsePhysVol(G4LogicalVolume *lv,const G4AffineTransform *at, Ap
                     mtrx[0][3] = p._CSFDB_Getgp_XYZx();
                     mtrx[1][3] = p._CSFDB_Getgp_XYZy();
                     mtrx[2][3] = p._CSFDB_Getgp_XYZz();
+#endif
                     //}
 
                     pcFeature->Placement.setValue(Base::Placement(mtrx));
@@ -265,6 +288,28 @@ int G4FreeCAD::browsePhysVol(G4LogicalVolume *lv,const G4AffineTransform *at, Ap
                     //{
                     Base::Matrix4D mtrx;
 
+#if OCC_VERSION_HEX >= 0x070000^M
+                    gp_Mat m = trsf.VectorialPart();
+                    gp_XYZ p = trsf.TranslationPart();
+
+                    // set Rotation matrix
+                    mtrx[0][0] = m(1,1);
+                    mtrx[0][1] = m(1,2);
+                    mtrx[0][2] = m(1,3);
+
+                    mtrx[1][0] = m(2,1);
+                    mtrx[1][1] = m(2,2);
+                    mtrx[1][2] = m(2,3);
+
+                    mtrx[2][0] = m(3,1);
+                    mtrx[2][1] = m(3,2);
+                    mtrx[2][2] = m(3,3);
+
+                    // set pos vector
+                    mtrx[0][3] = p.X();
+                    mtrx[1][3] = p.Y();
+                    mtrx[2][3] = p.Z();
+#else
                     gp_Mat m = trsf._CSFDB_Getgp_Trsfmatrix();
                     gp_XYZ p = trsf._CSFDB_Getgp_Trsfloc();
                     Standard_Real scale = trsf._CSFDB_Getgp_Trsfscale();
@@ -285,7 +330,8 @@ int G4FreeCAD::browsePhysVol(G4LogicalVolume *lv,const G4AffineTransform *at, Ap
                     // set pos vector
                     mtrx[0][3] = p._CSFDB_Getgp_XYZx();
                     mtrx[1][3] = p._CSFDB_Getgp_XYZy();
-                    mtrx[2][3] = p._CSFDB_Getgp_XYZz();
+                    mtrx[2][3] = p._CSFDB_Getgp_XYZz(); 
+#endif
                     //}
 
                     pcFeature->Placement.setValue(Base::Placement(mtrx));
@@ -336,6 +382,29 @@ int G4FreeCAD::browsePhysVol(G4LogicalVolume *lv,const G4AffineTransform *at, Ap
                     // I will put this into utility class
                     //{
                     Base::Matrix4D mtrx;
+#if OCC_VERSION_HEX >= 0x070000^M
+                    gp_Mat m = trsf.VectorialPart();
+                    gp_XYZ p = trsf.TranslationPart();
+
+                    // set Rotation matrix
+                    mtrx[0][0] = m(1,1);
+                    mtrx[0][1] = m(1,2);
+                    mtrx[0][2] = m(1,3);
+
+                    mtrx[1][0] = m(2,1);
+                    mtrx[1][1] = m(2,2);
+                    mtrx[1][2] = m(2,3);
+
+                    mtrx[2][0] = m(3,1);
+                    mtrx[2][1] = m(3,2);
+                    mtrx[2][2] = m(3,3);
+
+                    // set pos vector
+                    mtrx[0][3] = p.X();
+                    mtrx[1][3] = p.Y();
+                    mtrx[2][3] = p.Z();
+#else
+
 
                     gp_Mat m = trsf._CSFDB_Getgp_Trsfmatrix();
                     gp_XYZ p = trsf._CSFDB_Getgp_Trsfloc();
@@ -358,6 +427,7 @@ int G4FreeCAD::browsePhysVol(G4LogicalVolume *lv,const G4AffineTransform *at, Ap
                     mtrx[0][3] = p._CSFDB_Getgp_XYZx();
                     mtrx[1][3] = p._CSFDB_Getgp_XYZy();
                     mtrx[2][3] = p._CSFDB_Getgp_XYZz();
+#endif
                     //}
 
                     pcFeature->Placement.setValue(Base::Placement(mtrx));
@@ -532,4 +602,5 @@ G4PVPlacement * G4FreeCAD::browseDoc( App::Document * pcDoc) const
 			
 	//		return 0;
 return	physiWorld;
+//\ No newline at end of file
 }
