@@ -64,7 +64,8 @@ class _FemSolverElmer(object):
                 "App::PropertyInteger", "TermoNLinMaxIterations",
                 "Fem", "Maximum iterations for heat equations (non linear)")
         obj.addProperty(
-                "App::PropertyFloatConstraint", "TermoNLinConvergenceTolerance",
+                "App::PropertyFloatConstraint",
+                "TermoNLinConvergenceTolerance",
                 "Fem", "Stopping criterion for heat equations (linear)")
         obj.addProperty(
                 "App::PropertyInteger", "TermoLinMaxIterations",

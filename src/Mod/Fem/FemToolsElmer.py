@@ -29,15 +29,12 @@ __url__ = "http://www.freecadweb.org"
 
 from PySide import QtCore
 import subprocess
-import io
 import os
 import os.path
 import shutil
-import tempfile
 import distutils.spawn
 
 import FreeCAD as App
-from FreeCAD import Console
 import FemInputWriterElmer
 import FemDefsElmer
 import Report
@@ -107,6 +104,7 @@ def runSimulation(analysis, solver, caseDir=None):
         QtCore.QThreadPool.globalInstance().start(runner)
 #    if _useTempDir():
 #        shutil.rmtree(caseDir)
+
 
 def _getCaseDir(analysis, report):
     fcstdPath = analysis.Document.FileName
@@ -193,7 +191,7 @@ def _checkMesh(analysis, solver, report):
     elif len(meshes) > 1:
         report.appendError("too_many_meshes")
     elif not (hasattr(meshes[0], "Proxy")
-            and meshes[0].Proxy.Type == "FemMeshGmsh"):
+              and meshes[0].Proxy.Type == "FemMeshGmsh"):
         report.appendError("unsupported_mesh")
 
 
@@ -223,8 +221,8 @@ def _isOfType(obj, baseType, pyType=None):
         if hasattr(obj, "Proxy") and obj.Proxy.Type == pyType:
             return True
     return False
-    
-    
+
+
 def _getOfType(analysis, baseType, pyType=None):
     matching = []
     for m in analysis.Member:

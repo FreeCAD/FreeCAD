@@ -24,16 +24,16 @@
 import collections
 
 
-SIMULATION          = "Simulation"
-CONSTANTS           = "Constants"
-BODY                = "Body"
-MATERIAL            = "Material"
-BODY_FORCE          = "Body Force"
-EQUATION            = "Equation"
-SOLVER              = "Solver"
-BOUNDARY_CONDITION  = "Boundary Condition"
-INITIAL_CONDITION   = "Initial Condition"
-COMPONENT           = "Component"
+SIMULATION = "Simulation"
+CONSTANTS = "Constants"
+BODY = "Body"
+MATERIAL = "Material"
+BODY_FORCE = "Body Force"
+EQUATION = "Equation"
+SOLVER = "Solver"
+BOUNDARY_CONDITION = "Boundary Condition"
+INITIAL_CONDITION = "Initial Condition"
+COMPONENT = "Component"
 
 
 _VALID_SECTIONS = (
@@ -62,17 +62,17 @@ _NUMBERED_SECTIONS = (
 )
 
 
-_SECTION_DELIM  = "End"
-_WHITESPACE     = " "
-_INDENT         = " "*2
-_NEWLINE        = "\n"
+_SECTION_DELIM = "End"
+_WHITESPACE = " "
+_INDENT = " "*2
+_NEWLINE = "\n"
 
 
-_TYPE_REAL      = "Real"
-_TYPE_INTEGER   = "Integer"
-_TYPE_LOGICAL   = "Logical"
-_TYPE_STRING    = "String"
-_TYPE_FILE      = "File"
+_TYPE_REAL = "Real"
+_TYPE_INTEGER = "Integer"
+_TYPE_LOGICAL = "Logical"
+_TYPE_STRING = "String"
+_TYPE_FILE = "File"
 
 
 WARN = "Warn"
@@ -146,7 +146,7 @@ class Sif(object):
         stream.write(name)
         stream.write(_WHITESPACE)
         stream.write('"%s"' % value)
-        
+
 
 class Section(object):
 
