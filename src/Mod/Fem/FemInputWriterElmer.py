@@ -29,10 +29,7 @@ __url__ = "http://www.freecadweb.org"
 
 from FreeCAD import Console
 import os.path
-import io
-import tempfile
 import subprocess
-import sys
 
 import Fem
 from Units import Quantity
@@ -140,7 +137,7 @@ class Writer(object):
                 unvPath,
                 "-autoclean",
                 "-out", self.directory]
-        p = subprocess.call(args)
+        subprocess.call(args)
 
     def _purgeMeshGroups(self):
         mesh = self._getFirstOfType("Fem::FemMeshObject")
@@ -328,18 +325,18 @@ class Writer(object):
         s["Optimize Bandwidth"] = True
         s["Steady State Convergence Tolerance"] = 1.0e-5
         s["Nonlinear System Convergence Tolerance"] = \
-                self.solver.TermoNLinConvergenceTolerance
+            self.solver.TermoNLinConvergenceTolerance
         s["Nonlinear System Max Iterations"] = \
-                self.solver.TermoNLinMaxIterations
+            self.solver.TermoNLinMaxIterations
         s["Nonlinear System Newton After Iterations"] = 3
         s["Nonlinear System Newton After Tolerance"] = 1.0e-3
         s["Nonlinear System Relaxation Factor"] = 1.0
         s["Linear System Solver"] = "Iterative"
         s["Linear System Iterative Method"] = "BiCGStab"
         s["Linear System Max Iterations"] = \
-                self.solver.TermoLinMaxIterations
+            self.solver.TermoLinMaxIterations
         s["Linear System Convergence Tolerance"] = \
-                self.solver.TermoLinConvergenceTolerance
+            self.solver.TermoLinConvergenceTolerance
         s["Linear System Preconditioning"] = "Diagonal"
         s["Linear System Abort Not Converged"] = False
         s["Linear System Residual Output"] = 1
@@ -351,13 +348,13 @@ class Writer(object):
         s["Active Solvers"] = solvers
         return s
 
-    def _getBody(self, name, material, bodyForces, equation, initialConditions):
+    def _getBody(self, name, material, bodyForces, equation, initial):
         s = sifio.createSection(sifio.BODY)
         s["Name"] = self._getGroupName(name)
         s["Material"] = material
         s["Equation"] = equation
         s["Body Force"] = bodyForces
-        s["Initial Condition"] = initialConditions
+        s["Initial Condition"] = initial
         return s
 
     def _getSelfweight(self, obj, density):
