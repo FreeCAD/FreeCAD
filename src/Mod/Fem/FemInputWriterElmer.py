@@ -46,7 +46,7 @@ _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
 _SIF_NAME = "case.sif"
 _ELMERGRID_IFORMAT = "8"
 _ELMERGRID_OFORMAT = "2"
-_SOLID_NAME = "Solid1"
+_SOLID_PREFIX = "Solid"
 
 
 CONSTS_DEF = {
@@ -160,14 +160,18 @@ class Writer(object):
     def _writeSif(self):
         simulation = self._getSimulation()
         constants = self._getConstants()
+        solvers = self._getSolvers()
+        boundaryConditions = self._getBoundaryConditions()
         bodyForces = self._getBodyForces()
         initialConditions = self._getInitialConditions()
-        boundaryConditions = self._getBoundaryConditions()
-        material = self._getMaterial()
-        solvers = self._getSolvers()
         equation = self._getEquation(solvers)
-        body = self._getBody(
-                material, bodyForces, equation, initialConditions)
+
+        bodyMaterial = dict.fromkeys(self._getSolidNames())
+        materials = self._getMaterials(bodyMaterial)
+        bodies = []
+        for name, material in bodyMaterial.iteritems():
+            bodies.append(self._getBody(
+                    name, material, bodyForces, equation, initialConditions))
 
         sections = []
         sections.append(simulation)
@@ -175,10 +179,10 @@ class Writer(object):
         sections.extend(bodyForces)
         sections.extend(initialConditions)
         sections.extend(boundaryConditions)
-        sections.append(material)
+        sections.extend(materials)
         sections.extend(solvers)
         sections.append(equation)
-        sections.append(body)
+        sections.extend(bodies)
 
         sifPath = os.path.join(self.directory, _SIF_NAME)
         with open(sifPath, 'w') as fstream:
@@ -238,8 +242,20 @@ class Writer(object):
                 sections.append(self._getInitialTemp(obj))
         return sections
 
-    def _getMaterial(self):
-        obj = self._getFirstOfType("App::MaterialObjectPython")
+    def _getMaterials(self, bodyMaterials):
+        sections = []
+        for obj in self._getOfType("App::MaterialObjectPython"):
+            s = self._getMaterialSection(obj)
+            self._updateBodyMaterials(bodyMaterials, obj, s)
+            sections.append(s)
+        return sections
+
+    def _getSolidNames(self):
+        shape = self._getFirstOfType("Fem::FemMeshObject").Part.Shape
+        return ["%s%d" % (_SOLID_PREFIX, i+1)
+                for i in range(len(shape.Solids))]
+
+    def _getMaterialSection(self, obj):
         m = obj.Material
         s = sifio.createSection(sifio.MATERIAL)
         s["Density"] = self._getInUnit(
@@ -256,6 +272,14 @@ class Writer(object):
             if tempObj is not None:
                 s["Reference Temperature"] = tempObj.initialTemperature
         return s
+
+    def _updateBodyMaterials(self, bodyMaterials, obj, section):
+        if len(obj.References) == 0:
+            for name, material in dict(bodyMaterials):
+                bodyMaterials[name] = section
+        else:
+            for part, ref in obj.References:
+                bodyMaterials[ref[0]] = section
 
     def _getSolvers(self):
         sections = []
@@ -327,9 +351,9 @@ class Writer(object):
         s["Active Solvers"] = solvers
         return s
 
-    def _getBody(self, material, bodyForces, equation, initialConditions):
+    def _getBody(self, name, material, bodyForces, equation, initialConditions):
         s = sifio.createSection(sifio.BODY)
-        s["Name"] = self._getGroupName(_SOLID_NAME)
+        s["Name"] = self._getGroupName(name)
         s["Material"] = material
         s["Equation"] = equation
         s["Body Force"] = bodyForces

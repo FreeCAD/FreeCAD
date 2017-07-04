@@ -201,8 +201,6 @@ def _checkMaterial(analysis, solver, report):
     matObjs = _getOfType(analysis, "App::MaterialObjectPython")
     if len(matObjs) == 0:
         report.appendError("material_missing")
-    elif len(matObjs) > 1:
-        report.appendError("too_many_materials")
 
 
 def _checkUnsupported(analysis, solver, report):
