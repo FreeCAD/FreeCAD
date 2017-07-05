@@ -450,8 +450,14 @@ class CheckWBWorker(QtCore.QThread):
                     if not os.path.exists(clonedir + os.sep + '.git'):
                         # Repair addon installed with raw download
                         bare_repo = git.Repo.clone_from(repo[1], clonedir + os.sep + '.git', bare=True)
-                        with bare_repo.config_writer() as cw:
+                        try:
+                            with bare_repo.config_writer() as cw:
+                                cw.set('core', 'bare', False)
+                        except AttributeError:
+                            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated gitpython detected, consider upgrading with pip.\n"))
+                            cw = bare_repo.config_writer()
                             cw.set('core', 'bare', False)
+                            del cw
                         repo = git.Repo(clonedir)
                         repo.head.reset('--hard')
                     gitrepo = git.Git(clonedir)
@@ -664,8 +670,14 @@ class InstallWorker(QtCore.QThread):
                 if not os.path.exists(clonedir + os.sep + '.git'):
                     # Repair addon installed with raw download
                     bare_repo = git.Repo.clone_from(self.repos[self.idx][1], clonedir + os.sep + '.git', bare=True)
-                    with bare_repo.config_writer() as cw:
+                    try:
+                        with bare_repo.config_writer() as cw:
+                            cw.set('core', 'bare', False)
+                    except AttributeError:
+                        FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated gitpython detected, consider upgrading with pip.\n"))
+                        cw = bare_repo.config_writer()
                         cw.set('core', 'bare', False)
+                        del cw
                     repo = git.Repo(clonedir)
                     repo.head.reset('--hard')
                 repo = git.Git(clonedir)
