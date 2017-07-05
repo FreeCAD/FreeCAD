@@ -454,7 +454,7 @@ class CheckWBWorker(QtCore.QThread):
                             with bare_repo.config_writer() as cw:
                                 cw.set('core', 'bare', False)
                         except AttributeError:
-                            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated gitpython detected, consider upgrading with pip.\n"))
+                            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
                             cw = bare_repo.config_writer()
                             cw.set('core', 'bare', False)
                             del cw
@@ -674,7 +674,7 @@ class InstallWorker(QtCore.QThread):
                         with bare_repo.config_writer() as cw:
                             cw.set('core', 'bare', False)
                     except AttributeError:
-                        FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated gitpython detected, consider upgrading with pip.\n"))
+                        FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
                         cw = bare_repo.config_writer()
                         cw.set('core', 'bare', False)
                         del cw
