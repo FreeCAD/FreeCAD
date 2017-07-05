@@ -36,6 +36,7 @@ SET(PathScripts_SRCS
     PathScripts/PathFixture.py
     PathScripts/PathFromShape.py
     PathScripts/PathGeom.py
+    PathScripts/PathHelix.py
     PathScripts/PathHop.py
     PathScripts/PathInspect.py
     PathScripts/PathJob.py
@@ -55,8 +56,6 @@ SET(PathScripts_SRCS
     PathScripts/PathSimpleCopy.py
     PathScripts/PathStock.py
     PathScripts/PathStop.py
-    PathScripts/PathHelix.py
-    PathScripts/kdtree.py
     PathScripts/PathSurface.py
     PathScripts/PathToolController.py
     PathScripts/PathToolLenOffset.py
@@ -65,6 +64,8 @@ SET(PathScripts_SRCS
     PathScripts/PathUtils.py
     PathScripts/PostUtils.py
     PathScripts/__init__.py
+    PathScripts/kdtree.py
+    PathScripts/post/__init__.py
     PathScripts/post/centroid_post.py
     PathScripts/post/comparams_post.py
     PathScripts/post/dumper_post.py
