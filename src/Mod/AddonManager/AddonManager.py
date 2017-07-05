@@ -447,6 +447,13 @@ class CheckWBWorker(QtCore.QThread):
                 self.info_label.emit(translate("AddonsInstaller","Checking repo")+" "+repo[0]+"...")
                 clonedir = moddir + os.sep + repo[0]
                 if os.path.exists(clonedir):
+                    if not os.path.exists(clonedir + os.sep + '.git'):
+                        # Repair addon installed with raw download
+                        bare_repo = git.Repo.clone_from(repo[1], clonedir + os.sep + '.git', bare=True)
+                        with bare_repo.config_writer() as cw:
+                            cw.set('core', 'bare', False)
+                        repo = git.Repo(clonedir)
+                        repo.head.reset()
                     gitrepo = git.Git(clonedir)
                     gitrepo.fetch()
                     if "git pull" in gitrepo.status():
@@ -654,6 +661,13 @@ class InstallWorker(QtCore.QThread):
         if os.path.exists(clonedir):
             self.info_label.emit("Updating module...")
             if git:
+                if not os.path.exists(clonedir + os.sep + '.git'):
+                    # Repair addon installed with raw download
+                    bare_repo = git.Repo.clone_from(self.repos[self.idx][1], clonedir + os.sep + '.git', bare=True)
+                    with bare_repo.config_writer() as cw:
+                        cw.set('core', 'bare', False)
+                    repo = git.Repo(clonedir)
+                    repo.head.reset()
                 repo = git.Git(clonedir)
                 answer = repo.pull()
             else:
