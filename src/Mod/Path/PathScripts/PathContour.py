@@ -85,8 +85,12 @@ class ObjectContour:
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final Contour- good for roughing toolpath"))
 
         # Debug Parameters
-        # obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
-        # obj.setEditorMode('AreaParams', 2)  # hide
+        obj.addProperty("App::PropertyString", "AreaParams", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.setEditorMode('AreaParams', 2)  # hide
+        obj.addProperty("App::PropertyString", "PathParams", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.setEditorMode('PathParams', 2)  # hide
+        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "The material to be removed"))
+        obj.setEditorMode('removalshape', 2)  # hide
 
         if FreeCAD.GuiUp:
             _ViewProviderContour(obj.ViewObject)
@@ -96,7 +100,8 @@ class ObjectContour:
 
     def onChanged(self, obj, prop):
         PathLog.track('prop: {}  state: {}'.format(prop, obj.State))
-        #pass
+        if prop in ['AreaParams', 'PathParams', 'removalshape']:
+            obj.setEditorMode(prop, 2)
 
     def __getstate__(self):
         PathLog.track()
@@ -145,7 +150,7 @@ class ObjectContour:
         heights = [i for i in self.depthparams]
         PathLog.debug('depths: {}'.format(heights))
         profile.setParams(**profileparams)
-        #obj.AreaParams = str(profile.getParams())
+        obj.AreaParams = str(profile.getParams())
 
         PathLog.debug("Contour with params: {}".format(profile.getParams()))
         sections = profile.makeSections(mode=0, project=True, heights=heights)
@@ -169,8 +174,9 @@ class ObjectContour:
         elif start is not None:
             params['start'] = start
 
+        obj.PathParams = str(params)
+
         (pp, end_vector) = Path.fromShapes(**params)
-        PathLog.debug("Generating Path with params: {}".format(params))
         PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
         self.endVector = end_vector
 
@@ -207,6 +213,7 @@ class ObjectContour:
                 user_depths=None)
 
         if toolLoad is None or toolLoad.ToolNumber == 0:
+
             FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
             return
         else:
@@ -229,6 +236,7 @@ class ObjectContour:
             commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
         parentJob = PathUtils.findParentJob(obj)
+
         if parentJob is None:
             return
         baseobject = parentJob.Base
@@ -237,6 +245,7 @@ class ObjectContour:
 
         # Let's always start by rapid to clearance...just for safety
         commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+        PathLog.track()
 
         isPanel = False
         if hasattr(baseobject, "Proxy"):
@@ -268,6 +277,7 @@ class ObjectContour:
         # Let's finish by rapid to clearance...just for safety
         commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
+        PathLog.track()
         path = Path.Path(commandlist)
         obj.Path = path
         #obj.ViewObject.Visibility = True

@@ -95,9 +95,12 @@ class ObjectFace:
         obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
 
         # Debug Parameters
-        obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.addProperty("App::PropertyString", "AreaParams", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
         obj.setEditorMode('AreaParams', 2)  # hide
-        obj.addProperty("Part::PropertyPartShape", "removalshape", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "The material to be removed"))
+        obj.addProperty("App::PropertyString", "PathParams", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.setEditorMode('PathParams', 2)  # hide
+        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "The material to be removed"))
+        obj.setEditorMode('removalshape', 2)  # hide
 
         if FreeCAD.GuiUp:
             _ViewProviderFace(obj.ViewObject)
@@ -109,6 +112,8 @@ class ObjectFace:
         if prop == "StepOver":
             if obj.StepOver == 0:
                 obj.StepOver = 1
+        if prop in ['AreaParams', 'PathParams', 'removalshape']:
+            obj.setEditorMode(prop, 2)
 
     def __getstate__(self):
         return None
@@ -199,28 +204,32 @@ class ObjectFace:
         heights = [i for i in self.depthparams]
         boundary.setParams(**pocketparams)
         obj.AreaParams = str(boundary.getParams())
-        #PathLog.track('areaparams: {}'.format(obj.AreaParams))
-        PathLog.track('height: {}'.format(heights))
         sections = boundary.makeSections(mode=0, project=False, heights=heights)
-        shapelist = [sec.getShape() for sec in sections]
 
-        params = {'shapes': shapelist,
-                  'feedrate': self.horizFeed,
+        params = {'feedrate': self.horizFeed,
                   'feedrate_v': self.vertFeed,
                   'verbose': True,
                   'resume_height': obj.StepDown,
                   'retraction': obj.ClearanceHeight.Value}
 
         pp = []
+
         if obj.UseStartPoint:
             params['start'] = obj.StartPoint
 #            pp.append(Path.Command("G0", {"X":obj.StartPoint.x, "Y":obj.StartPoint.y, "Z":obj.StartPoint.z}))
 
-
+        #store the params for debugging. Don't need the shape.
+        obj.PathParams = str(params)
         PathLog.debug("Generating Path with params: {}".format(params))
-        respath = Path.fromShapes(**params)
-        pp.extend(respath.Commands)
-        respath.Commands = pp
+
+        for sec in sections:
+            shape = sec.getShape()
+            respath = Path.fromShapes(shape, **params)
+            #Insert any entry code to the layer
+
+            #append the layer path
+            pp.extend(respath.Commands)
+            respath.Commands = pp
 
         return respath
 
@@ -380,7 +389,7 @@ class CommandPathMillFace:
 
         FreeCADGui.doCommand('obj.Active = True')
         FreeCADGui.doCommand('obj.StepOver = 50')
-        #FreeCADGui.doCommand('obj.StepDown = 1.0')
+        FreeCADGui.doCommand('obj.StepDown = 1.0')
         FreeCADGui.doCommand('obj.ZigZagAngle = 45.0')
         FreeCAD.ActiveDocument.commitTransaction()
 

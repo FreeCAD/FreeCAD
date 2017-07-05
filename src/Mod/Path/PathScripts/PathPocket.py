@@ -77,21 +77,28 @@ class ObjectPocket:
         obj.addProperty("App::PropertyFloat", "ZigZagAngle", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Angle of the zigzag pattern"))
         obj.addProperty("App::PropertyEnumeration", "OffsetPattern", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "clearing pattern to use"))
         obj.OffsetPattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
+        obj.addProperty("App::PropertyBool", "MinTravel", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"))
 
         # Start Point Properties
         obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
         obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
 
         # Debug Parameters
-        obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.addProperty("App::PropertyString", "AreaParams", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
         obj.setEditorMode('AreaParams', 2)  # hide
+        obj.addProperty("App::PropertyString", "PathParams", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.setEditorMode('PathParams', 2)  # hide
+        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "The material to be removed"))
+        obj.setEditorMode('removalshape', 2)  # hide
         if FreeCAD.GuiUp:
             ViewProviderPocket(obj.ViewObject)
 
         obj.Proxy = self
 
     def onChanged(self, obj, prop):
-        pass
+        if prop in ['AreaParams', 'PathParams', 'removalshape']:
+            obj.setEditorMode(prop, 2)
+
 
     def __getstate__(self):
         return None
@@ -211,6 +218,17 @@ class ObjectPocket:
                   'resume_height': obj.StepDown.Value,
                   'retraction': obj.ClearanceHeight.Value}
 
+        if obj.UseStartPoint:
+            params['start'] = obj.StartPoint
+
+            #if MinTravel is turned on, set path sorting to 3DSort
+            # 3DSort shouldn't be used without a valid start point. Can cause
+            # tool crash without it.
+            if obj.MinTravel:
+                params['sort_mode'] = 2
+
+        storeparams = {key: value for key, value in params.items() if key != 'shapes'}
+        obj.PathParams = str(storeparams)
         pp = Path.fromShapes(**params)
         PathLog.debug("Generating Path with params: {}".format(params))
         PathLog.debug(pp)
@@ -282,14 +300,10 @@ class ObjectPocket:
                         shape = Part.makeFace(edges, 'Part::FaceMakerSimple')
 
                     env = PathUtils.getEnvelope(baseobject.Shape, subshape=shape, depthparams=self.depthparams)
-                    removal = env.cut(baseobject.Shape)
-
-                    if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
-                        removalshape=FreeCAD.ActiveDocument.addObject("Part::Feature","removalshape")
-                        removalshape.Shape = removal
+                    obj.removalshape = env.cut(baseobject.Shape)
 
                     try:
-                        (pp, sim) = self._buildPathArea(obj, removal, getsim=getsim)
+                        (pp, sim) = self._buildPathArea(obj, obj.removalshape, getsim=getsim)
                         if sim is not None:
                             simlist.append(sim)
                         commandlist.extend(pp.Commands)
@@ -300,12 +314,9 @@ class ObjectPocket:
             PathLog.debug("processing the whole job base object")
 
             env = PathUtils.getEnvelope(baseobject.Shape, subshape=None, depthparams=self.depthparams)
-            removal = env.cut(baseobject.Shape)
-            if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
-                removalshape=FreeCAD.ActiveDocument.addObject("Part::Feature","removalshape")
-                removalshape.Shape = removal
+            obj.removalshape = env.cut(baseobject.Shape)
             try:
-                (pp, sim) = self._buildPathArea(obj, removal, getsim=getsim)
+                (pp, sim) = self._buildPathArea(obj, obj.removalshape, getsim=getsim)
                 commandlist.extend(pp.Commands)
                 if sim is not None:
                     simlist.append(sim)
