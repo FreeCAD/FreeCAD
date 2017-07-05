@@ -33,7 +33,7 @@ __url__ = "http://www.freecadweb.org"
 FreeCAD Addon Manager Module
 
 It will fetch its contents from https://github.com/FreeCAD/FreeCAD-addons
-You need a working internet connection, and the python-git package
+You need a working internet connection, and the GitPython package
 installed.
 '''
 
@@ -640,8 +640,8 @@ class InstallWorker(QtCore.QThread):
         try:
             import git
         except:
-            self.info_label.emit("python-git not found.")
-            FreeCAD.Console.PrintWarning(translate("AddonsInstaller","python-git not found. Using standard download instead.\n"))
+            self.info_label.emit("GitPython not found.")
+            FreeCAD.Console.PrintWarning(translate("AddonsInstaller","GitPython not found. Using standard download instead.\n"))
             try:
                 import zipfile
             except:
