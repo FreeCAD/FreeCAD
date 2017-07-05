@@ -453,7 +453,7 @@ class CheckWBWorker(QtCore.QThread):
                         with bare_repo.config_writer() as cw:
                             cw.set('core', 'bare', False)
                         repo = git.Repo(clonedir)
-                        repo.head.reset()
+                        repo.head.reset('--hard')
                     gitrepo = git.Git(clonedir)
                     gitrepo.fetch()
                     if "git pull" in gitrepo.status():
@@ -667,7 +667,7 @@ class InstallWorker(QtCore.QThread):
                     with bare_repo.config_writer() as cw:
                         cw.set('core', 'bare', False)
                     repo = git.Repo(clonedir)
-                    repo.head.reset()
+                    repo.head.reset('--hard')
                 repo = git.Git(clonedir)
                 answer = repo.pull()
             else:
