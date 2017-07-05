@@ -2065,13 +2065,14 @@ TopoDS_Shape Area::toShape(const CArea &area, bool fill, const gp_Trsf *trsf, in
 struct WireInfo {
     TopoDS_Wire wire;
     std::deque<gp_Pnt> points;
+    gp_Pnt pt_end;
     bool isClosed;
 
     inline const gp_Pnt &pstart() const{ 
         return points.front(); 
     }
     inline const gp_Pnt &pend() const{ 
-        return isClosed?pstart():points.back(); 
+        return isClosed?pstart():pt_end; 
     }
 };
 
@@ -2161,8 +2162,9 @@ struct GetWires {
             // We don't add in-between vertices of an open wire, because we
             // haven't implemented open wire breaking yet.
             info.points.push_back(p1);
-            if(params.direction!=Area::DirectionNone)
+            if(!info.isClosed && params.direction==Area::DirectionNone)
                 info.points.push_back(p2);
+            info.pt_end = p2;
         } else {
             // For closed wires, we are can easily rebase the wire, so we
             // discretize the wires to spatial index it in order to accelerate
@@ -2193,7 +2195,7 @@ struct GetWires {
         }
         auto it = wires.end();
         --it;
-        for(size_t i=0,count=info.points.size();i<count;++i)
+        for(size_t i=0,count=it->points.size();i<count;++i)
             rtree.insert(RValue(it,i));
         FC_DURATION_PLUS(params.bd,t);
     }
@@ -2272,7 +2274,7 @@ struct ShapeInfo{
             }
             if(!done){
                 double d1 = pt.SquareDistance(it->pstart());
-                if(myParams.direction==Area::DirectionNone) {
+                if(myParams.direction!=Area::DirectionNone) {
                     d = d1;
                     p = it->pstart();
                     is_start = true;
@@ -2437,7 +2439,8 @@ struct ShapeInfo{
 
     std::list<TopoDS_Shape> sortWires(const gp_Pnt &pstart, gp_Pnt &pend,double min_dist, gp_Pnt *pentry) {
 
-        if(pstart.SquareDistance(myStartPt)>Precision::SquareConfusion())
+        if(myWires.empty() ||
+           pstart.SquareDistance(myStartPt)>Precision::SquareConfusion())
             nearest(pstart);
 
         if(pentry) *pentry = myBestPt;
