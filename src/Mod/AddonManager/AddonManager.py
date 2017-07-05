@@ -442,6 +442,7 @@ class CheckWBWorker(QtCore.QThread):
         moddir = basedir + os.sep + "Mod" 
         self.info_label.emit(translate("AddonsInstaller", "Checking for new versions..."))
         upds = 0
+        gitpython_warning = False
         for repo in self.repos:
             if repo[2] == 1: #installed
                 self.info_label.emit(translate("AddonsInstaller","Checking repo")+" "+repo[0]+"...")
@@ -454,7 +455,9 @@ class CheckWBWorker(QtCore.QThread):
                             with bare_repo.config_writer() as cw:
                                 cw.set('core', 'bare', False)
                         except AttributeError:
-                            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
+                            if not gitpython_warning:
+                                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
+                                gitpython_warning = True
                             cw = bare_repo.config_writer()
                             cw.set('core', 'bare', False)
                             del cw
