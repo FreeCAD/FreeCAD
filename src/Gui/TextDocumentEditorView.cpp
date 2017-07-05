@@ -72,7 +72,7 @@ void TextDocumentEditorView::setupEditor()
     connect(getEditor()->document(), SIGNAL(modificationChanged(bool)),
             this, SLOT(setWindowModified(bool)));
     getEditor()->setReadOnly(textDocument->ReadOnly.getValue());
-    setWindowTitle(QString::fromLatin1(textDocument->Label.getValue())
+    setWindowTitle(QString::fromUtf8(textDocument->Label.getValue())
             + QString::fromLatin1("[*]"));
     getEditor()->setPlainText(
             QString::fromUtf8(textDocument->Text.getValue()));
@@ -96,19 +96,18 @@ void TextDocumentEditorView::sourceChanged()
 
 void TextDocumentEditorView::refresh()
 {
-    QString text = QString::fromStdString(
-            textDocument->Text.getStrValue());
+    QString text = QString::fromUtf8(
+            textDocument->Text.getValue());
     if (isEditorModified()) {
         QMessageBox msgBox {this};
-        msgBox.setWindowTitle(QString::fromUtf8("Text updated"));
+        msgBox.setWindowTitle(tr("Text updated"));
         msgBox.setIcon(QMessageBox::Question);
-        msgBox.setText(QString::fromUtf8(
+        msgBox.setText(tr(
                     "The text of the underlying object has changed. "
                     "Discard changes and reload the text from the object?"));
-        QPushButton* yesBtt = msgBox.addButton(
-                QString::fromUtf8("Yes, reload."), QMessageBox::YesRole);
-        QPushButton* noBtt = msgBox.addButton(
-                QString::fromUtf8("No"), QMessageBox::NoRole);
+        msgBox.addButton(
+                tr("Yes, reload."), QMessageBox::YesRole);
+        QPushButton* noBtt = msgBox.addButton(QMessageBox::No);
         msgBox.exec();
         if (msgBox.clickedButton() == noBtt)
             return;
@@ -139,28 +138,59 @@ bool TextDocumentEditorView::onHasMsg(const char* msg) const
 
 bool TextDocumentEditorView::canClose()
 {
-    if (!getEditor()->document()->isModified())
-        return true;
+    if (getEditor()->document()->isModified()) {
+        this->setFocus();
 
-    this->setFocus();
+        QMessageBox box(this);
+        box.setIcon(QMessageBox::Question);
+        box.setWindowTitle(tr("Unsaved document"));
+        box.setText(tr("Do you want to save your changes before closing?"));
+        box.setInformativeText(tr("If you don't save, your changes will be lost."));
+        box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
+        box.setDefaultButton(QMessageBox::Save);
+        box.setEscapeButton(QMessageBox::Cancel);
 
-    QString question {
-        tr("The document has been modified.\n"
-                "Do you want to save your changes?")};
-    auto reply = QMessageBox::question(
-            this, tr("Unsaved document"), question,
-            QMessageBox::Yes|QMessageBox::Default, QMessageBox::No,
-            QMessageBox::Cancel|QMessageBox::Escape);
-    if (reply == QMessageBox::Yes)
-        saveToObject();
-    return reply != QMessageBox::Cancel;
+        // add shortcuts
+        QAbstractButton* saveBtn = box.button(QMessageBox::Save);
+        if (saveBtn->shortcut().isEmpty()) {
+            QString text = saveBtn->text();
+            text.prepend(QLatin1Char('&'));
+            saveBtn->setShortcut(QKeySequence::mnemonic(text));
+        }
+
+        QAbstractButton* discardBtn = box.button(QMessageBox::Discard);
+        if (discardBtn->shortcut().isEmpty()) {
+            QString text = discardBtn->text();
+            text.prepend(QLatin1Char('&'));
+            discardBtn->setShortcut(QKeySequence::mnemonic(text));
+        }
+
+        switch (box.exec())
+        {
+        case QMessageBox::Save:
+            saveToObject();
+            if (getGuiDocument()->isLastView())
+                return getGuiDocument()->save();
+            return true;
+        case QMessageBox::Discard:
+            return true;
+        case QMessageBox::Cancel:
+        default:
+            return false;
+        }
+    }
+    else {
+        // this view belongs to the document so we have to ask the user
+        // how to continue if this is the last view
+        return MDIView::canClose();
+    }
 }
 
 void TextDocumentEditorView::saveToObject()
 {
     boost::signals2::shared_connection_block textBlock {textConnection};
     textDocument->Text.setValue(
-            getEditor()->document()->toPlainText().toStdString());
+            getEditor()->document()->toPlainText().toUtf8());
     getEditor()->document()->setModified(false);
 }
 
