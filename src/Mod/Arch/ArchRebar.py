@@ -69,17 +69,7 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
         obj.Base = sketch
         if FreeCAD.GuiUp:
             sketch.ViewObject.hide()
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        if p.GetBool("archRemoveExternal",False):
-            a = baseobj.Armatures
-            a.append(obj)
-            baseobj.Armatures = a
-        else:
-            import Arch
-            host = getattr(Arch,"make"+Draft.getType(baseobj))(baseobj)
-            a = host.Armatures
-            a.append(obj)
-            host.Armatures = a
+        obj.Host = baseobj
     if diameter:
         obj.Diameter = diameter
     else:
@@ -171,6 +161,7 @@ class _Rebar(ArchComponent.Component):
         obj.addProperty("App::PropertyVector","Direction","Arch",QT_TRANSLATE_NOOP("App::Property","The direction to use to spread the bars. Keep (0,0,0) for automatic direction."))
         obj.addProperty("App::PropertyFloat","Rounding","Arch",QT_TRANSLATE_NOOP("App::Property","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter."))
         obj.addProperty("App::PropertyPlacementList","PlacementList","Arch",QT_TRANSLATE_NOOP("App::Property","List of placement of all the bars"))
+        obj.addProperty("App::PropertyLink","Host","Arch",QT_TRANSLATE_NOOP("App::Property","The structure object that hosts this rebar"))
         self.Type = "Rebar"
         obj.setEditorMode("Spacing",1)
 
@@ -245,17 +236,17 @@ class _Rebar(ArchComponent.Component):
                     wire.translate(vinterval)
                     wires.append(wire)
         return [wires,obj.Diameter.Value/2]
+        
+    def onChanged(self,obj,prop):
+        if prop == "Host":
+            if hasattr(obj,"Host"):
+                if obj.Host:
+                    # mark host to recompute so it can detect this object
+                    obj.Host.touch()
 
     def execute(self,obj):
 
         if self.clone(obj):
-            return
-
-        if len(obj.InList) != 1:
-            return
-        if Draft.getType(obj.InList[0]) != "Structure":
-            return
-        if not obj.InList[0].Shape:
             return
         if not obj.Base:
             return
@@ -267,7 +258,18 @@ class _Rebar(ArchComponent.Component):
             return
         if not obj.Amount:
             return
-        father = obj.InList[0]
+        father = obj.Host
+        fathershape = None
+        if not father:
+            # support for old-style rebars
+            if obj.InList:
+                if hasattr(obj.InList[0],"Armatures"):
+                    if obj in obj.InList[0].Armatures:
+                        father = obj.InList[0]
+        if father:
+            if father.isDerivedFrom("Part::Feature"):
+                fathershape = father.Shape
+
         wire = obj.Base.Shape.Wires[0]
         if hasattr(obj,"Rounding"):
             #print(obj.Rounding)
@@ -279,12 +281,18 @@ class _Rebar(ArchComponent.Component):
         if not bpoint:
             return
         axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
-        size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
+        if fathershape:
+            size = (ArchCommands.projectToVector(fathershape.copy(),axis)).Length
+        else:
+            size = 1
         if hasattr(obj,"Direction"):
             if not DraftVecUtils.isNull(obj.Direction):
                 axis = FreeCAD.Vector(obj.Direction)
                 axis.normalize()
-                size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
+                if fathershape:
+                    size = (ArchCommands.projectToVector(fathershape.copy(),axis)).Length
+                else:
+                    size = 1
         if hasattr(obj,"Distance"):
             if obj.Distance.Value:
                 size = obj.Distance.Value
@@ -306,8 +314,12 @@ class _Rebar(ArchComponent.Component):
         # building final shape
         shapes = []
         placementlist = []
+        if father:
+            rot = father.Placement.Rotation
+        else:
+            rot = FreeCAD.Rotation()
         if obj.Amount == 1:
-            barplacement = CalculatePlacement(obj.Amount, 1, size, axis, father.Placement.Rotation, obj.OffsetStart.Value, obj.OffsetEnd.Value)
+            barplacement = CalculatePlacement(obj.Amount, 1, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
             placementlist.append(barplacement)
             if hasattr(obj,"Spacing"):
                 obj.Spacing = 0
@@ -319,7 +331,7 @@ class _Rebar(ArchComponent.Component):
             interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
             interval = interval / (obj.Amount - 1)
             for i in range(obj.Amount):
-                barplacement = CalculatePlacement(obj.Amount, i+1, size, axis, father.Placement.Rotation, obj.OffsetStart.Value, obj.OffsetEnd.Value)
+                barplacement = CalculatePlacement(obj.Amount, i+1, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
                 placementlist.append(barplacement)
             if hasattr(obj,"Spacing"):
                 obj.Spacing = interval

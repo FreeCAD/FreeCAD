@@ -3614,6 +3614,8 @@ def makeWorkingPlaneProxy(placement):
         WorkingPlaneProxy(obj)
         if FreeCAD.GuiUp:
             ViewProviderWorkingPlaneProxy(obj.ViewObject)
+            obj.ViewObject.Proxy.writeCamera()
+            obj.ViewObject.Proxy.writeState()
         obj.Placement = placement
 
 
@@ -6198,13 +6200,16 @@ class ViewProviderWorkingPlaneProxy:
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
+        vobj.addProperty("App::PropertyFloatList","ViewData","Base","")
+        vobj.addProperty("App::PropertyBool","RestoreView","Base","")
+        vobj.addProperty("App::PropertyMap","VisibilityMap","Base","")
+        vobj.addProperty("App::PropertyBool","RestoreState","Base","")
         vobj.DisplaySize = 100
         vobj.ArrowSize = 5
         vobj.Transparency = 70
         vobj.LineWidth = 1
         vobj.LineColor = (0.0,0.25,0.25,1.0)
         vobj.Proxy = self
-        self.Object = vobj.Object
 
     def getIcon(self):
         import Draft_rc
@@ -6212,6 +6217,45 @@ class ViewProviderWorkingPlaneProxy:
 
     def claimChildren(self):
         return []
+        
+    def doubleClicked(self,vobj):
+        FreeCADGui.runCommand("Draft_SelectPlane")
+        return True
+        
+    def setupContextMenu(self,vobj,menu):
+        from PySide import QtCore,QtGui
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Write camera position",menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.writeCamera)
+        menu.addAction(action1)
+        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Write objects state",menu)
+        QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.writeState)
+        menu.addAction(action2)
+        
+    def writeCamera(self):
+        if hasattr(self,"Object"):
+            n = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+            FreeCAD.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing camera position")+"\n")
+            print FreeCADGui.ActiveDocument.ActiveView.getCamera()
+            cdata = list(n.position.getValue().getValue())
+            cdata.extend(list(n.orientation.getValue().getValue()))
+            cdata.append(n.nearDistance.getValue())
+            cdata.append(n.farDistance.getValue())
+            cdata.append(n.aspectRatio.getValue())
+            cdata.append(n.focalDistance.getValue())
+            cdata.append(n.height.getValue())
+            self.Object.ViewObject.ViewData = cdata
+            print self.Object.ViewObject.ViewData
+            
+    def writeState(self):
+        if hasattr(self,"Object"):
+            FreeCAD.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing objects shown/hidden state")+"\n")
+            vis = {}
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.ViewObject:
+                    vis[o.Name] = str(o.ViewObject.Visibility)
+            self.Object.ViewObject.VisibilityMap = vis
+
+
 
     def attach(self,vobj):
         from pivy import coin
@@ -6242,6 +6286,7 @@ class ViewProviderWorkingPlaneProxy:
         self.onChanged(vobj,"DisplaySize")
         self.onChanged(vobj,"LineColor")
         self.onChanged(vobj,"Transparency")
+        self.Object = vobj.Object
 
     def getDisplayModes(self,vobj):
         return ["Default"]

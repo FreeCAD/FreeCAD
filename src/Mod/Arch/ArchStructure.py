@@ -402,7 +402,6 @@ class _Structure(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","Length","Arch",QT_TRANSLATE_NOOP("App::Property","The length of this element, if not based on a profile"))
         obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of this element, if not based on a profile"))
         obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height or extrusion depth of this element. Keep 0 for automatic"))
-        obj.addProperty("App::PropertyLinkList","Armatures","Arch",QT_TRANSLATE_NOOP("App::Property","Armatures contained in this element"))
         obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
         obj.addProperty("App::PropertyVectorList","Nodes","Arch",QT_TRANSLATE_NOOP("App::Property","The structural nodes of this element"))
         obj.addProperty("App::PropertyString","Profile","Arch",QT_TRANSLATE_NOOP("App::Property","A description of the standard profile this element is based upon"))

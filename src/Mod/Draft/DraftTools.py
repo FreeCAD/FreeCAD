@@ -334,6 +334,28 @@ class SelectPlane(DraftTool):
                     return
                 elif Draft.getType(sel.Object) == "WorkingPlaneProxy":
                     plane.setFromPlacement(sel.Object.Placement,rebase=True)
+                    if hasattr(sel.Object.ViewObject,"RestoreView"):
+                        if sel.Object.ViewObject.RestoreView:
+                            if hasattr(sel.Object.ViewObject,"ViewData"):
+                                if len(sel.Object.ViewObject.ViewData) == 12:
+                                    d = sel.Object.ViewObject.ViewData
+                                    c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+                                    c.position.setValue([d[0],d[1],d[2]])
+                                    c.orientation.setValue([d[3],d[4],d[5],d[6]])
+                                    c.nearDistance.setValue(d[7])
+                                    c.farDistance.setValue(d[8])
+                                    c.aspectRatio.setValue(d[9])
+                                    c.focalDistance.setValue(d[10])
+                                    c.height.setValue(d[11])
+                    if hasattr(sel.Object.ViewObject,"RestoreState"):
+                        if sel.Object.ViewObject.RestoreState:
+                            if hasattr(sel.Object.ViewObject,"VisibilityMap"):
+                                if sel.Object.ViewObject.VisibilityMap:
+                                    for k,v in sel.Object.ViewObject.VisibilityMap.items():
+                                        print k,v
+                                        o = FreeCAD.ActiveDocument.getObject(k)
+                                        if o:
+                                            o.ViewObject.Visibility = bool(v)
                     self.display(plane.axis)
                     self.finish()
                     return
