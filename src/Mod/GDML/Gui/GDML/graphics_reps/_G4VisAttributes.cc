@@ -105,7 +105,8 @@ void G4VisAttributes::SetForceLineSegmentsPerCircle (G4int nSegments) {
   const G4int nSegmentsMin = 12;
   if (nSegments > 0 && nSegments < nSegmentsMin) {
     nSegments = nSegmentsMin;
-    G4cout <<
+    //G4cout <<
+       cout <<
       "G4VisAttributes::SetForcedLineSegmentsPerCircle: attempt to set the"
       "\nnumber of line segements per circle < " << nSegmentsMin
          << "; forced to " << nSegments << G4endl;

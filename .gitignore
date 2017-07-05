@@ -1,5 +1,6 @@
 # file types to ignore
-
+*.html
+*.tex
 *.pyc
 *.obj
 *.lib
