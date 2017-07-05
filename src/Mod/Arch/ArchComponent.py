@@ -158,7 +158,7 @@ class ComponentTaskPanel:
         # the categories are shown only if they are not empty.
 
         self.obj = None
-        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes","Fixtures","Armatures","Group"]
+        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes","Fixtures","Group"]
         self.baseform = QtGui.QWidget()
         self.baseform.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.baseform)
@@ -303,7 +303,6 @@ class ComponentTaskPanel:
         self.treeAxes.setText(0,QtGui.QApplication.translate("Arch", "Axes", None))
         self.treeComponents.setText(0,QtGui.QApplication.translate("Arch", "Components", None))
         self.treeFixtures.setText(0,QtGui.QApplication.translate("Arch", "Fixtures", None))
-        self.treeArmatures.setText(0,QtGui.QApplication.translate("Arch", "Armatures", None))
         self.treeGroup.setText(0,QtGui.QApplication.translate("Arch", "Group", None))
 
 class Component:
@@ -868,6 +867,11 @@ class ViewProviderComponent:
                     objlink = getattr(self.Object,link)
                     if objlink:
                         c.append(objlink)
+            for link in self.Object.InList:
+                if hasattr(link,"Host"):
+                    if link.Host:
+                        if link.Host == self.Object:
+                            c.append(link)
             return c
         return []
 
