@@ -633,14 +633,20 @@ PyObject*  TopoShapePy::exportStl(PyObject *args)
     Py_Return;
 }
 
-PyObject* TopoShapePy::extrude(PyObject *args)
+PyObject* TopoShapePy::extrude(PyObject *args, PyObject *keywds)
 {
+    static char *kwlist[] = {"vec", "withHistory", NULL};
     PyObject *pVec;
-    if (PyArg_ParseTuple(args, "O!", &(Base::VectorPy::Type), &pVec)) {
+    PyObject *withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O!|O!", kwlist,
+                                    &(Base::VectorPy::Type), &pVec,
+                                    &(PyBool_Type), &withHistory)) {
         try {
             Base::Vector3d vec = static_cast<Base::VectorPy*>(pVec)->value();
-            TopoDS_Shape shape = this->getTopoShapePtr()->makePrism(gp_Vec(vec.x,vec.y,vec.z));
-            TopAbs_ShapeEnum type = shape.ShapeType();
+            TopoShape shape = this->getTopoShapePtr()
+                    ->makePrism(gp_Vec(vec.x,vec.y,vec.z),
+                                PyObject_IsTrue(withHistory)?true:false);
+            TopAbs_ShapeEnum type = shape.getShape().ShapeType();
             switch (type)
             {
             case TopAbs_COMPOUND:
@@ -1352,11 +1358,15 @@ PyObject*  TopoShapePy::removeInternalWires(PyObject *args)
     }
 }
 
-PyObject*  TopoShapePy::mirror(PyObject *args)
+PyObject*  TopoShapePy::mirror(PyObject *args, PyObject *keywds)
 {
+    static char *kwlist[] = {"base", "norm", "withHistory", NULL};
     PyObject *v1, *v2;
-    if (!PyArg_ParseTuple(args, "O!O!", &(Base::VectorPy::Type),&v1,
-                                        &(Base::VectorPy::Type),&v2))
+    PyObject *withHistory = Py_False;
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O!O!|O!", kwlist,
+                                     &(Base::VectorPy::Type),&v1,
+                                     &(Base::VectorPy::Type),&v2,
+                                     &(PyBool_Type), &withHistory))
         return NULL;
 
     Base::Vector3d base = Py::Vector(v1,false).toVector();
@@ -1364,8 +1374,9 @@ PyObject*  TopoShapePy::mirror(PyObject *args)
 
     try {
         gp_Ax2 ax2(gp_Pnt(base.x,base.y,base.z), gp_Dir(norm.x,norm.y,norm.z));
-        TopoDS_Shape shape = this->getTopoShapePtr()->mirror(ax2);
-        return new TopoShapePy(new TopoShape(shape));
+        TopoShape outShape = this->getTopoShapePtr()
+                ->mirror(ax2, PyObject_IsTrue(withHistory)?true:false);
+        return outShape.getPyObject();
     }
     catch (Standard_Failure) {
         Handle(Standard_Failure) e = Standard_Failure::Caught();

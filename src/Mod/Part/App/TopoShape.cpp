@@ -2268,11 +2268,16 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
     return aGenerator.Shape();
 }
 
-TopoDS_Shape TopoShape::makePrism(const gp_Vec& vec) const
+TopoShape TopoShape::makePrism(const gp_Vec& vec, bool withHistory) const
 {
     if (this->_Shape.IsNull()) Standard_Failure::Raise("cannot sweep empty shape");
-    BRepPrimAPI_MakePrism mkPrism(this->_Shape, vec);
-    return mkPrism.Shape();
+    std::shared_ptr<BRepPrimAPI_MakePrism>
+            mkPrism(new BRepPrimAPI_MakePrism(this->_Shape, vec));
+    TopoShape resShape(mkPrism->Shape());
+    if (withHistory) {
+        resShape.history.modShapeMaker = mkPrism;
+    }
+    return resShape;
 }
 
 TopoDS_Shape TopoShape::revolve(const gp_Ax1& axis, double d, Standard_Boolean isSolid) const
@@ -2781,12 +2786,17 @@ void TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy)
     this->_Shape = mkTrf.Shape();
 }
 
-TopoDS_Shape TopoShape::mirror(const gp_Ax2& ax2) const
+TopoShape TopoShape::mirror(const gp_Ax2& ax2, bool withHistory) const
 {
     gp_Trsf mat;
     mat.SetMirror(ax2);
-    BRepBuilderAPI_Transform mkTrf(this->_Shape, mat);
-    return mkTrf.Shape();
+    std::shared_ptr<BRepBuilderAPI_Transform>
+            mkTrf(new BRepBuilderAPI_Transform(this->_Shape, mat));
+    TopoShape resShape(mkTrf->Shape());
+    if (withHistory) {
+        resShape.history.modShapeMaker = mkTrf;
+    }
+    return resShape;
 }
 
 TopoDS_Shape TopoShape::toNurbs() const

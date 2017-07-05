@@ -88,7 +88,7 @@ Sub-elements such as vertices, edges or faces are accessible as:
         <UserDocu>Load the shape from a string that keeps the content in BREP format.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="extrude" Const="true">
+    <Methode Name="extrude" Const="true" Keyword="true">
       <Documentation>
         <UserDocu>Extrude the shape along a direction.</UserDocu>
       </Documentation>
@@ -295,7 +295,7 @@ For a sub-shape of this shape get its ancestors of a type.
         <UserDocu>Removes internal wires (also holes) from the shape.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="mirror" Const="true">
+    <Methode Name="mirror" Const="true" Keyword="true">
       <Documentation>
         <UserDocu>Mirror this shape on a given plane.
 The plane is given with its base point and its normal direction.</UserDocu>
