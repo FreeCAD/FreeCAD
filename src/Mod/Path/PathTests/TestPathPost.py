@@ -34,20 +34,15 @@ import difflib
 import unittest
 
 class PathPostTestCases(unittest.TestCase):
+
     def setUp(self):
         self.doc = FreeCAD.newDocument("PathPostTest")
-
-    def tearDown(self):
-        FreeCAD.closeDocument("PathPostTest")
-
-    def testLinuxCNC(self):
-        # first create something to generate a path for
         box = self.doc.addObject("Part::Box", "Box")
 
         # Create job and setup tool library + default tool
-        job = self.doc.addObject("Path::FeatureCompoundPython", "Job")
-        PathScripts.PathJob.ObjectPathJob(job, box, None)
-        PathScripts.PathToolController.CommandPathToolController.Create(job.Name, False)
+        self.job = self.doc.addObject("Path::FeatureCompoundPython", "Job")
+        PathScripts.PathJob.ObjectPathJob(self.job, box, None)
+        PathScripts.PathToolController.CommandPathToolController.Create(self.job.Name, False)
         tool1 = Path.Tool()
         tool1.Diameter = 5.0
         tool1.Name = "Default Tool"
@@ -82,11 +77,17 @@ class PathPostTestCases(unittest.TestCase):
         PathScripts.PathContour.ObjectContour.setDepths(contour.Proxy, contour)
         self.doc.recompute()
 
-        job.PostProcessor = 'linuxcnc'
-        job.PostProcessorArgs = '--no-header --no-line-numbers --no-comments --no-show-editor --output-precision=2'
+    def tearDown(self):
+        FreeCAD.closeDocument("PathPostTest")
+
+    def testLinuxCNC(self):
+        # first create something to generate a path for
+
+        self.job.PostProcessor = 'linuxcnc'
+        self.job.PostProcessorArgs = '--no-header --no-line-numbers --no-comments --no-show-editor --output-precision=2'
 
         post = PathScripts.PathPost.CommandPathPost()
-        (fail, gcode) = post.exportObjectsWith([job], job, False)
+        (fail, gcode) = post.exportObjectsWith([self.job], self.job, False)
         self.assertFalse(fail)
 
         referenceFile = FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_linuxcnc_00.ngc'
