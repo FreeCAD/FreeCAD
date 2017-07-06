@@ -86,8 +86,12 @@ class ObjectProfile:
         obj.addProperty("App::PropertyBool", "processCircles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile round holes"))
 
         # Debug Parameters
-        obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.addProperty("App::PropertyString", "AreaParams", "Path")
         obj.setEditorMode('AreaParams', 2)  # hide
+        obj.addProperty("App::PropertyString", "PathParams", "Path")
+        obj.setEditorMode('PathParams', 2)  # hide
+        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
+        obj.setEditorMode('removalshape', 2)  # hide
 
         if FreeCAD.GuiUp:
             _ViewProviderProfile(obj.ViewObject)
@@ -106,6 +110,8 @@ class ObjectProfile:
                 obj.setEditorMode('Side', 2)
             else:
                 obj.setEditorMode('Side', 0)
+        if prop in ['AreaParams', 'PathParams', 'removalshape']:
+            obj.setEditorMode(prop, 2)
 
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
@@ -188,7 +194,7 @@ class ObjectProfile:
                   'resume_height': obj.StepDown.Value,
                   'retraction': obj.ClearanceHeight.Value}
 
-        #Reverse the direction for holes
+        # Reverse the direction for holes
         if isHole:
             direction = "CW" if obj.Direction == "CCW" else "CCW"
         else:
@@ -203,16 +209,19 @@ class ObjectProfile:
             params['start'] = obj.StartPoint
 
         pp = Path.fromShapes(**params)
+
+        obj.PathParams = str({key: value for key, value in params.items() if key != 'shapes'})
+
         PathLog.debug("Generating Path with params: {}".format(params))
         PathLog.debug(pp)
 
         simobj = None
         if getsim:
-            profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
-            profileparams['ToolRadius']= self.radius - self.radius *.005
+            profileparams['Thicken'] = True
+            profileparams['ToolRadius'] = self.radius - self.radius * .005
             profile.setParams(**profileparams)
             sec = profile.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
-            simobj = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
+            simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
 
         return pp, simobj
 
@@ -265,7 +274,7 @@ class ObjectProfile:
         if baseobject is None:
             return
 
-        if obj.Base: # The user has selected subobjects from the base.  Process each.
+        if obj.Base:  # The user has selected subobjects from the base.  Process each.
             holes = []
             faces = []
             for b in obj.Base:
@@ -276,7 +285,7 @@ class ObjectProfile:
                         if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
                             holes += shape.Wires[1:]
                     else:
-                        FreeCAD.Console.PrintWarning ("found a base object which is not a face.  Can't continue.")
+                        FreeCAD.Console.PrintWarning("found a base object which is not a face.  Can't continue.")
                         return
 
             for wire in holes:
@@ -428,7 +437,6 @@ class CommandPathProfile:
         FreeCADGui.doCommand('obj.UseComp = True')
         FreeCADGui.doCommand('obj.processHoles = False')
         FreeCADGui.doCommand('obj.processPerimeter = True')
-        #FreeCADGui.doCommand('PathScripts.PathProfile._ViewProviderProfile(obj.ViewObject)')
         FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
@@ -465,7 +473,7 @@ class TaskPanel:
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
-    def clicked(self,button):
+    def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
             self.getFields()
             self.obj.Proxy.execute(self.obj)
