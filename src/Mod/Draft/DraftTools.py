@@ -340,22 +340,26 @@ class SelectPlane(DraftTool):
                                 if len(sel.Object.ViewObject.ViewData) == 12:
                                     d = sel.Object.ViewObject.ViewData
                                     c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
-                                    c.position.setValue([d[0],d[1],d[2]])
-                                    c.orientation.setValue([d[3],d[4],d[5],d[6]])
-                                    c.nearDistance.setValue(d[7])
-                                    c.farDistance.setValue(d[8])
-                                    c.aspectRatio.setValue(d[9])
-                                    c.focalDistance.setValue(d[10])
-                                    c.height.setValue(d[11])
+                                    from pivy import coin
+                                    if isinstance(c,coin.SoOrthographicCamera):
+                                        c.position.setValue([d[0],d[1],d[2]])
+                                        c.orientation.setValue([d[3],d[4],d[5],d[6]])
+                                        c.nearDistance.setValue(d[7])
+                                        c.farDistance.setValue(d[8])
+                                        c.aspectRatio.setValue(d[9])
+                                        c.focalDistance.setValue(d[10])
+                                        c.height.setValue(d[11])
+                                    else:
+                                        FreeCAD.Console.PrintWarning(translate("Draft","Only orthographic views are supported")+"\n")
                     if hasattr(sel.Object.ViewObject,"RestoreState"):
                         if sel.Object.ViewObject.RestoreState:
                             if hasattr(sel.Object.ViewObject,"VisibilityMap"):
                                 if sel.Object.ViewObject.VisibilityMap:
                                     for k,v in sel.Object.ViewObject.VisibilityMap.items():
-                                        print k,v
-                                        o = FreeCAD.ActiveDocument.getObject(k)
+                                        o = FreeCADGui.ActiveDocument.getObject(k)
                                         if o:
-                                            o.ViewObject.Visibility = bool(v)
+                                            if o.Visibility != (v == "True"):
+                                                FreeCADGui.doCommand("FreeCADGui.ActiveDocument.getObject(\""+k+"\").Visibility = "+v)
                     self.display(plane.axis)
                     self.finish()
                     return
