@@ -781,6 +781,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
 
     xmlReader.readElement("Document");
     long scheme = xmlReader.getAttributeAsInteger("SchemaVersion");
+    xmlReader.DocumentSchema = scheme;
 
     // At this stage all the document objects and their associated view providers exist.
     // Now we must restore the properties of the view providers only.
