@@ -84,7 +84,9 @@ SET(PathScripts_SRCS
 
 SET(PathTests_SRCS
     PathTests/__init__.py
+    PathTests/boxtest.fcstd
     PathTests/PathTestUtils.py
+    PathTests/test_centroid_00.ngc
     PathTests/test_linuxcnc_00.ngc
     PathTests/TestPathCore.py
     PathTests/TestPathDepthParams.py

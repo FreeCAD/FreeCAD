@@ -23,72 +23,39 @@
 # ***************************************************************************
 
 import FreeCAD
-import Path
 import PathScripts
 import PathScripts.PathContour
 import PathScripts.PathJob
 import PathScripts.PathPost
 import PathScripts.PathToolController
-import PathScripts.PathUtils
+import PathScripts.PathUtil
 import difflib
 import unittest
+
 
 class PathPostTestCases(unittest.TestCase):
 
     def setUp(self):
-        self.doc = FreeCAD.newDocument("PathPostTest")
-        box = self.doc.addObject("Part::Box", "Box")
-
-        # Create job and setup tool library + default tool
-        self.job = self.doc.addObject("Path::FeatureCompoundPython", "Job")
-        PathScripts.PathJob.ObjectPathJob(self.job, box, None)
-        PathScripts.PathToolController.CommandPathToolController.Create(self.job.Name, False)
-        tool1 = Path.Tool()
-        tool1.Diameter = 5.0
-        tool1.Name = "Default Tool"
-        tool1.CuttingEdgeHeight = 15.0
-        tool1.ToolType = "EndMill"
-        tool1.Material = "HighSpeedSteel"
-
-        tc = FreeCAD.ActiveDocument.addObject("Path::FeaturePython",'TC')
-        PathScripts.PathToolController.ToolController(tc)
-        PathScripts.PathUtils.addToJob(tc, "Job")
-        tc.Tool = tool1
-        tc.ToolNumber = 2
-
-        self.failUnless(True)
-
-        self.doc.getObject("TC").ToolNumber = 2
-        self.doc.recompute()
-
-        contour = self.doc.addObject("Path::FeaturePython", "Contour")
-        PathScripts.PathContour.ObjectContour(contour)
-        contour.Active = True
-        contour.ClearanceHeight = 20.0
-        contour.StepDown = 1.0
-        contour.StartDepth= 10.0
-        contour.FinalDepth=0.0
-        contour.SafeHeight = 12.0
-        contour.OffsetExtra = 0.0
-        contour.Direction = 'CW'
-        contour.ToolController = tc
-        contour.UseComp = False
-        PathScripts.PathUtils.addToJob(contour)
-        PathScripts.PathContour.ObjectContour.setDepths(contour.Proxy, contour)
-        self.doc.recompute()
+        testfile = FreeCAD.getHomePath() + 'Mod/Path/PathTests/boxtest.fcstd'
+        self.doc = FreeCAD.open(testfile)
+        self.job = FreeCAD.ActiveDocument.getObject("Job")
+        self.postlist = []
+        currTool = None
+        for obj in self.job.Group:
+            if not isinstance(obj.Proxy, PathScripts.PathToolController.ToolController):
+                tc = PathScripts.PathUtil.toolControllerForOp(obj)
+                if tc is not None:
+                    if tc.ToolNumber != currTool:
+                        self.postlist.append(tc)
+                self.postlist.append(obj)
 
     def tearDown(self):
-        FreeCAD.closeDocument("PathPostTest")
+        FreeCAD.closeDocument("boxtest")
 
     def testLinuxCNC(self):
-        # first create something to generate a path for
-
-        self.job.PostProcessor = 'linuxcnc'
-        self.job.PostProcessorArgs = '--no-header --no-line-numbers --no-comments --no-show-editor --output-precision=2'
-
-        post = PathScripts.PathPost.CommandPathPost()
-        (fail, gcode) = post.exportObjectsWith([self.job], self.job, False)
-        self.assertFalse(fail)
+        from PathScripts.post import linuxcnc_post as postprocessor
+        args = '--no-header --no-line-numbers --no-comments --no-show-editor --output-precision=2'
+        gcode = postprocessor.export(self.postlist, 'gcode.tmp', args)
 
         referenceFile = FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_linuxcnc_00.ngc'
         with open(referenceFile, 'r') as fp:
@@ -99,8 +66,24 @@ class PathPostTestCases(unittest.TestCase):
             with open('tab.tmp', 'w') as fp:
                 fp.write(gcode)
 
-
         if gcode != refGCode:
             msg = ''.join(difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True)))
             self.fail("linuxcnc output doesn't match: " + msg)
 
+    def testCentroid(self):
+        from PathScripts.post import centroid_post as postprocessor
+        args = '--no-header --no-line-numbers --no-comments --no-show-editor --axis-precision=2 --feed-precision=2'
+        gcode = postprocessor.export(self.postlist, 'gcode.tmp', args)
+
+        referenceFile = FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_centroid_00.ngc'
+        with open(referenceFile, 'r') as fp:
+            refGCode = fp.read()
+
+        # Use if this test fails in order to have a real good look at the changes
+        if False:
+            with open('tab.tmp', 'w') as fp:
+                fp.write(gcode)
+
+        if gcode != refGCode:
+            msg = ''.join(difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True)))
+            self.fail("linuxcnc output doesn't match: " + msg)
