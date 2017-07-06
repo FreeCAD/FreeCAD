@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>              *
+ *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -40,8 +40,8 @@ enum UnitSystem {
     ImperialDecimal = 3, /** Imperial with length in inch only */
     Centimeters = 4, /** All lengths in centimeters, areas and volumes in square/cubic meters */
     ImperialBuilding = 5, /** All lengths in feet + inches + fractions */
-    MmMin = 6, /** All lengths in mm, Speed in mm/min. Usefull for small parts & CNN */
-} ;
+    MmMin = 6, /** Lengths in mm, Speed in mm/min. Angle in degrees. Useful for small parts & CNC */
+};
     
 
 /** The UnitSchema class

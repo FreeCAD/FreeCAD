@@ -40,10 +40,13 @@ using namespace Base;
 QString UnitsSchemaMmMin::schemaTranslate(const Quantity &quant, double &factor, QString &unitString)
 {
     Unit unit = quant.getUnit();
-    if (unit == Unit::Angle) {
-        // TODO Cascade for the Areas
-        // default action for all cases without special treatment:
-        unitString = QString::fromUtf8("\xC2\xB0");
+    if (unit == Unit::Length) {
+        unitString = QString::fromLatin1("mm");
+        factor = 1.0;
+    }
+    else if (unit == Unit::Angle) {
+        //unitString = QString::fromUtf8("\xC2\xB0");
+        unitString = QString::fromUtf8(u8"\u00B0");
         factor = 1.0;
     }
     else if (unit == Unit::Velocity) {
