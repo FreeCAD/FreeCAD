@@ -6233,18 +6233,21 @@ class ViewProviderWorkingPlaneProxy:
         
     def writeCamera(self):
         if hasattr(self,"Object"):
+            from pivy import coin
             n = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
-            FreeCAD.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing camera position")+"\n")
-            print FreeCADGui.ActiveDocument.ActiveView.getCamera()
-            cdata = list(n.position.getValue().getValue())
-            cdata.extend(list(n.orientation.getValue().getValue()))
-            cdata.append(n.nearDistance.getValue())
-            cdata.append(n.farDistance.getValue())
-            cdata.append(n.aspectRatio.getValue())
-            cdata.append(n.focalDistance.getValue())
-            cdata.append(n.height.getValue())
-            self.Object.ViewObject.ViewData = cdata
-            print self.Object.ViewObject.ViewData
+            if isinstance(n,coin.SoOrthographicCamera):
+                FreeCAD.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing camera position")+"\n")
+                #print FreeCADGui.ActiveDocument.ActiveView.getCamera()
+                cdata = list(n.position.getValue().getValue())
+                cdata.extend(list(n.orientation.getValue().getValue()))
+                cdata.append(n.nearDistance.getValue())
+                cdata.append(n.farDistance.getValue())
+                cdata.append(n.aspectRatio.getValue())
+                cdata.append(n.focalDistance.getValue())
+                cdata.append(n.height.getValue())
+                self.Object.ViewObject.ViewData = cdata
+            else:
+                FreeCAD.Console.PrintWarning(QT_TRANSLATE_NOOP("Draft","Only orthographic views are supported")+"\n")
             
     def writeState(self):
         if hasattr(self,"Object"):
