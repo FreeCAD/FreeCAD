@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>              *
+ *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,10 +32,10 @@
 namespace Base {
     
 
-/** The standard units schema
- *  Here is defined what internal (base) units FreeCAD uses.
- *  FreeCAD uses a mm/kg/deg scala.
- *  Also it defines how the units get presented.
+/*  Metric units schema intended for design of small parts and for CNC
+ *  Lengths are alwais in mm.
+ *  Angles in degrees (use degree symbol)
+ *  Velocities in mm/min (as used in g-code).
  */
 class UnitsSchemaMmMin: public UnitsSchema
 {
