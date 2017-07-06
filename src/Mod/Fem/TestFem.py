@@ -32,6 +32,7 @@ import tempfile
 import unittest
 
 mesh_name = 'Mesh'
+stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
 
 home_path = FreeCAD.getHomePath()
 temp_dir = tempfile.gettempdir() + '/FEM_unittests'
@@ -697,12 +698,12 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(True if fea.inp_file_name == Flow1D_thermomech_analysis_inp_file else False,
                         "Setting inp file name to {} failed".format(Flow1D_thermomech_analysis_inp_file))
 
-        fcc_print('Checking FEM frd file read from thermomech analysis...')
+        fcc_print('Checking FEM frd file read from Flow1D thermomech analysis...')
         fea.load_results()
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
-        fcc_print('Reading stats from result object for thermomech analysis...')
-        ret = compare_stats(fea, Flow1D_thermomech_expected_values)
+        fcc_print('Reading stats from result object for Flow1D thermomech analysis...')
+        ret = compare_stats(fea, Flow1D_thermomech_expected_values, ["U1", "U2", "U3", "Uabs", "Sabs"])  # TODO use all result stats
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for thermomech analysis to {}...'.format(Flow1D_thermomech_save_fc_file))
@@ -741,15 +742,16 @@ def compare_inp_files(file_name1, file_name2):
     return result
 
 
-def compare_stats(fea, stat_file=None):
+def compare_stats(fea, stat_file=None, loc_stat_types=None):
+    if not loc_stat_types:
+        loc_stat_types = stat_types
     if stat_file:
         sf = open(stat_file, 'r')
         sf_content = sf.readlines()
         sf.close()
         sf_content = force_unix_line_ends(sf_content)
-    stat_types = ["U1", "U2", "U3", "Uabs", "Sabs"]
     stats = []
-    for s in stat_types:
+    for s in loc_stat_types:
         stats.append("{}: {}\n".format(s, fea.get_stats(s)))
     if sf_content != stats:
         fcc_print("Expected stats from {}".format(stat_file))
@@ -800,7 +802,6 @@ def create_test_results():
     fea.run()
 
     fea.load_results()
-    stat_types = ["U1", "U2", "U3", "Uabs", "Sabs"]
     stats_static = []  # we only have one result object so we are fine
     for s in stat_types:
         stats_static.append("{}: {}\n".format(s, fea.get_stats(s)))
@@ -848,7 +849,6 @@ def create_test_results():
     fea.run()
 
     fea.load_results()
-    stat_types = ["U1", "U2", "U3", "Uabs", "Sabs"]
     stats_thermomech = []  # we only have one result object so we are fine
     for s in stat_types:
         stats_thermomech.append("{}: {}\n".format(s, fea.get_stats(s)))
