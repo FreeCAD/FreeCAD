@@ -30,6 +30,20 @@ INSTALL(
     DESTINATION
         Mod/PartDesign/Scripts
        )
+
+INSTALL(
+    FILES
+        PartDesignTests/__init__.py
+        PartDesignTests/TestDatum.py
+        PartDesignTests/TestPad.py
+        PartDesignTests/TestPocket.py
+        PartDesignTests/TestRevolve.py
+        PartDesignTests/TestLoft.py
+        PartDesignTests/TestPipe.py
+        PartDesignTests/TestMirrored.py
+    DESTINATION
+        Mod/PartDesign/PartDesignTests
+       )
         
 INSTALL(
     FILES

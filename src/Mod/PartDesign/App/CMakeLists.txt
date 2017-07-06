@@ -153,6 +153,14 @@ SET(PartDesign_Scripts
     Scripts/RadialCopy.py
     Scripts/Parallelepiped.py
     Scripts/Spring.py
+    PartDesignTests/__init__.py
+    PartDesignTests/TestDatum.py
+    PartDesignTests/TestPad.py
+    PartDesignTests/TestPocket.py
+    PartDesignTests/TestRevolve.py
+    PartDesignTests/TestLoft.py
+    PartDesignTests/TestPipe.py
+    PartDesignTests/TestMirrored.py
     fcgear/__init__.py
     fcgear/fcgear.py
     fcgear/fcgeardialog.py
