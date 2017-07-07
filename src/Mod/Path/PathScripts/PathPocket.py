@@ -84,11 +84,11 @@ class ObjectPocket:
         obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
 
         # Debug Parameters
-        obj.addProperty("App::PropertyString", "AreaParams", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.addProperty("App::PropertyString", "AreaParams", "Path")
         obj.setEditorMode('AreaParams', 2)  # hide
-        obj.addProperty("App::PropertyString", "PathParams", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.addProperty("App::PropertyString", "PathParams", "Path")
         obj.setEditorMode('PathParams', 2)  # hide
-        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "The material to be removed"))
+        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
         obj.setEditorMode('removalshape', 2)  # hide
         if FreeCAD.GuiUp:
             ViewProviderPocket(obj.ViewObject)
@@ -98,7 +98,6 @@ class ObjectPocket:
     def onChanged(self, obj, prop):
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
             obj.setEditorMode(prop, 2)
-
 
     def __getstate__(self):
         return None
@@ -218,17 +217,17 @@ class ObjectPocket:
                   'resume_height': obj.StepDown.Value,
                   'retraction': obj.ClearanceHeight.Value}
 
-        if obj.UseStartPoint:
+        if obj.UseStartPoint and obj.StartPoint is not None:
             params['start'] = obj.StartPoint
 
-            #if MinTravel is turned on, set path sorting to 3DSort
+            # if MinTravel is turned on, set path sorting to 3DSort
             # 3DSort shouldn't be used without a valid start point. Can cause
             # tool crash without it.
             if obj.MinTravel:
                 params['sort_mode'] = 2
 
-        storeparams = {key: value for key, value in params.items() if key != 'shapes'}
-        obj.PathParams = str(storeparams)
+        obj.PathParams = str({key: value for key, value in params.items() if key != 'shapes'})
+
         pp = Path.fromShapes(**params)
         PathLog.debug("Generating Path with params: {}".format(params))
         PathLog.debug(pp)
@@ -236,12 +235,10 @@ class ObjectPocket:
         simobj = None
         if getsim:
             pocketparams['Thicken'] = True
-            pocketparams['ToolRadius']= self.radius - self.radius *.005
+            pocketparams['ToolRadius'] = self.radius - self.radius * .005
             pocketparams['Stepdown'] = -1
             pocket.setParams(**pocketparams)
-            #pocket.makeSections(mode=0, project=False, heights=heights)
-            simobj = pocket.getShape().extrude(FreeCAD.Vector(0,0,obj.StepDown.Value))
-            #removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "simshape")
+            simobj = pocket.getShape().extrude(FreeCAD.Vector(0, 0, obj.StepDown.Value))
 
         return pp, simobj
 
@@ -294,7 +291,6 @@ class ObjectPocket:
                 for sub in b[1]:
                     if "Face" in sub:
                         shape = Part.makeCompound([getattr(b[0].Shape, sub)])
-                        #shape = getattr(b[0].Shape, sub)
                     else:
                         edges = [getattr(b[0].Shape, sub) for sub in b[1]]
                         shape = Part.makeFace(edges, 'Part::FaceMakerSimple')
@@ -321,7 +317,6 @@ class ObjectPocket:
                 if sim is not None:
                     simlist.append(sim)
 
-                #commandlist.extend(self._buildPathArea(obj, env.cut(baseobject.Shape)).Commands)
             except Exception as e:
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a pocket path. Check project and tool config.")
@@ -336,14 +331,15 @@ class ObjectPocket:
         PathLog.debug(simlist)
         simshape = None
         if len(simlist) > 1:
-            simshape=simlist[0].fuse(simlist[1:])
+            simshape = simlist[0].fuse(simlist[1:])
         elif len(simlist) == 1:
             simshape = simlist[0]
 
         if simshape is not None and PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
-            sim=FreeCAD.ActiveDocument.addObject("Part::Feature","simshape")
+            sim = FreeCAD.ActiveDocument.addObject("Part::Feature", "simshape")
             sim.Shape = simshape
         return simshape
+
 
 class _CommandSetPocketStartPoint:
     def GetResources(self):
@@ -384,7 +380,6 @@ class ViewProviderPocket:
         self.deleteOnReject = False
         return True
 
-
     def getIcon(self):
         return ":/icons/Path-Pocket.svg"
 
@@ -422,7 +417,6 @@ class CommandPathPocket:
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Pocket")')
         FreeCADGui.doCommand('PathScripts.PathPocket.ObjectPocket(obj)')
         FreeCADGui.doCommand('obj.Active = True')
-        #FreeCADGui.doCommand('PathScripts.PathPocket.ViewProviderPocket(obj.ViewObject)')
         FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
         FreeCADGui.doCommand('from PathScripts import PathUtils')
         FreeCADGui.doCommand('obj.StepOver = 100')
@@ -467,7 +461,7 @@ class TaskPanel:
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
-    def clicked(self,button):
+    def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
             self.getFields()
             self.obj.Proxy.execute(self.obj)
