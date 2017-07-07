@@ -149,17 +149,22 @@ class _TaskPanelFemResultShow:
     def get_result_stats(self, type_name, analysis=None):
         if "Stats" in self.result_obj.PropertiesList:
                 Stats = self.result_obj.Stats
-                match_table = {"U1": (Stats[0], Stats[1], Stats[2]),
-                               "U2": (Stats[3], Stats[4], Stats[5]),
-                               "U3": (Stats[6], Stats[7], Stats[8]),
-                               "Uabs": (Stats[9], Stats[10], Stats[11]),
-                               "Sabs": (Stats[12], Stats[13], Stats[14]),
-                               "MaxPrin": (Stats[15], Stats[16], Stats[17]),
-                               "MidPrin": (Stats[18], Stats[19], Stats[20]),
-                               "MinPrin": (Stats[21], Stats[22], Stats[23]),
-                               "MaxShear": (Stats[24], Stats[25], Stats[26]),
-                               "Peeq": (Stats[27], Stats[28], Stats[29]),
-                               "None": (0.0, 0.0, 0.0)}
+                match_table = {
+                    "U1": (Stats[0], Stats[1], Stats[2]),
+                    "U2": (Stats[3], Stats[4], Stats[5]),
+                    "U3": (Stats[6], Stats[7], Stats[8]),
+                    "Uabs": (Stats[9], Stats[10], Stats[11]),
+                    "Sabs": (Stats[12], Stats[13], Stats[14]),
+                    "MaxPrin": (Stats[15], Stats[16], Stats[17]),
+                    "MidPrin": (Stats[18], Stats[19], Stats[20]),
+                    "MinPrin": (Stats[21], Stats[22], Stats[23]),
+                    "MaxShear": (Stats[24], Stats[25], Stats[26]),
+                    "Peeq": (Stats[27], Stats[28], Stats[29]),
+                    "Temp": (Stats[30], Stats[31], Stats[32]),
+                    "MFlow": (Stats[33], Stats[34], Stats[35]),
+                    "NPress": (Stats[36], Stats[37], Stats[38]),
+                    "None": (0.0, 0.0, 0.0)
+                }
                 return match_table[type_name]
         return (0.0, 0.0, 0.0)
 
@@ -216,9 +221,7 @@ class _TaskPanelFemResultShow:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.Temperature)
-        minm = min(self.result_obj.Temperature)
-        avg = sum(self.result_obj.Temperature) / len(self.result_obj.Temperature)
-        maxm = max(self.result_obj.Temperature)
+        (minm, avg, maxm) = self.get_result_stats("Temp")
         self.set_result_stats("K", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
 
@@ -227,9 +230,7 @@ class _TaskPanelFemResultShow:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.MassFlowRate)
-        minm = min(self.result_obj.MassFlowRate)
-        avg = sum(self.result_obj.MassFlowRate) / len(self.result_obj.MassFlowRate)
-        maxm = max(self.result_obj.MassFlowRate)
+        (minm, avg, maxm) = self.get_result_stats("MFlow")
         self.set_result_stats("kg/s", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
 
@@ -238,9 +239,7 @@ class _TaskPanelFemResultShow:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.NetworkPressure)
-        minm = min(self.result_obj.NetworkPressure)
-        avg = sum(self.result_obj.NetworkPressure) / len(self.result_obj.NetworkPressure)
-        maxm = max(self.result_obj.NetworkPressure)
+        (minm, avg, maxm) = self.get_result_stats("NPress")
         self.set_result_stats("MPa", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
 
