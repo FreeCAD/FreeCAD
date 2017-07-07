@@ -58,7 +58,7 @@ public:
     TopTools_ListOfShape generated(const TopoShape&);
     bool isDeleted(const TopoShape &);
 
-    std::shared_ptr<BRepBuilderAPI_MakeShape> modShapeMaker;
+    std::shared_ptr<BRepBuilderAPI_MakeShape> shapeMaker;
 
 };
 

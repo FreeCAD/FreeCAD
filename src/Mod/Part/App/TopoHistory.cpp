@@ -36,31 +36,31 @@ TopoHistory::TopoHistory()
 }
 
 TopoHistory::TopoHistory(const TopoHistory &history)
-    : modShapeMaker(history.modShapeMaker)
+    : shapeMaker(history.shapeMaker)
 {
 }
 
 void TopoHistory::operator =(const TopoHistory &history)
 {
     if (this != &history) {
-        this->modShapeMaker = history.modShapeMaker;
+        this->shapeMaker = history.shapeMaker;
     }
 }
 
 TopTools_ListOfShape TopoHistory::modified(const TopoShape &oldShape)
 {
-    if (this->modShapeMaker.get()) {
+    if (this->shapeMaker.get()) {
         TopoDS_Shape _shape = oldShape.getShape();
-        return this->modShapeMaker->Modified(_shape);
+        return this->shapeMaker->Modified(_shape);
     }
     return TopTools_ListOfShape();
 }
 
 TopTools_ListOfShape TopoHistory::generated(const TopoShape &oldShape)
 {
-    if (this->modShapeMaker.get()) {
+    if (this->shapeMaker.get()) {
         TopoDS_Shape _shape = oldShape.getShape();
-        return this->modShapeMaker->Generated(_shape);
+        return this->shapeMaker->Generated(_shape);
     }
     return TopTools_ListOfShape();
 }
@@ -68,9 +68,9 @@ TopTools_ListOfShape TopoHistory::generated(const TopoShape &oldShape)
 
 bool TopoHistory::isDeleted(const TopoShape &oldShape)
 {
-    if (this->modShapeMaker.get()) {
+    if (this->shapeMaker.get()) {
         TopoDS_Shape _shape = oldShape.getShape();
-        return this->modShapeMaker->IsDeleted(_shape);
+        return this->shapeMaker->IsDeleted(_shape);
     }
     return false;
 }

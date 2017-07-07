@@ -1465,7 +1465,7 @@ TopoShape TopoShape::cut(const TopoShape &shape, bool withHistory) const
     std::shared_ptr<BRepAlgoAPI_Cut> mkCut(new BRepAlgoAPI_Cut(this->_Shape, shape.getShape()));
     TopoShape resShape(mkCut->Shape());
     if (withHistory) {
-        resShape.history.modShapeMaker = mkCut;
+        resShape.history.shapeMaker = mkCut;
     }
     return resShape;
 }
@@ -1525,7 +1525,7 @@ TopoShape TopoShape::common(const TopoShape &shape, bool withHistory) const
     std::shared_ptr<BRepAlgoAPI_Common> mkCommon(new BRepAlgoAPI_Common(this->_Shape, shape.getShape()));
     TopoShape resShape(mkCommon->Shape());
     if (withHistory) {
-        resShape.history.modShapeMaker = mkCommon;
+        resShape.history.shapeMaker = mkCommon;
     }
     return resShape;
 }
@@ -1585,7 +1585,7 @@ TopoShape TopoShape::fuse(const TopoShape &shape, bool withHistory) const
     std::shared_ptr<BRepAlgoAPI_Fuse> mkFuse(new BRepAlgoAPI_Fuse(this->_Shape, shape.getShape()));
     TopoShape resShape(mkFuse->Shape());
     if (withHistory) {
-        resShape.history.modShapeMaker = mkFuse;
+        resShape.history.shapeMaker = mkFuse;
     }
     return resShape;
 }
@@ -1668,7 +1668,7 @@ TopoShape TopoShape::section(const TopoShape &shape, bool withHistory) const
     std::shared_ptr<BRepAlgoAPI_Section> mkSection(new BRepAlgoAPI_Section(this->_Shape, shape.getShape()));
     TopoShape resShape(mkSection->Shape());
     if (withHistory) {
-        resShape.history.modShapeMaker = mkSection;
+        resShape.history.shapeMaker = mkSection;
     }
     return resShape;
 }
@@ -2275,7 +2275,7 @@ TopoShape TopoShape::makePrism(const gp_Vec& vec, bool withHistory) const
             mkPrism(new BRepPrimAPI_MakePrism(this->_Shape, vec));
     TopoShape resShape(mkPrism->Shape());
     if (withHistory) {
-        resShape.history.modShapeMaker = mkPrism;
+        resShape.history.shapeMaker = mkPrism;
     }
     return resShape;
 }
@@ -2794,7 +2794,7 @@ TopoShape TopoShape::mirror(const gp_Ax2& ax2, bool withHistory) const
             mkTrf(new BRepBuilderAPI_Transform(this->_Shape, mat));
     TopoShape resShape(mkTrf->Shape());
     if (withHistory) {
-        resShape.history.modShapeMaker = mkTrf;
+        resShape.history.shapeMaker = mkTrf;
     }
     return resShape;
 }
