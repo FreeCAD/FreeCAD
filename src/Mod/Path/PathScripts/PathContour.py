@@ -45,6 +45,7 @@ else:
 if FreeCAD.GuiUp:
     import FreeCADGui
 
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -62,7 +63,6 @@ class ObjectContour:
         PathLog.track()
         obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Contour"))
-        #obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
 
         # Tool Properties
         obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
@@ -76,6 +76,7 @@ class ObjectContour:
 
         # Start Point Properties
         obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
+        obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
 
         # Contour Properties
         obj.addProperty("App::PropertyEnumeration", "Direction", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
@@ -85,8 +86,12 @@ class ObjectContour:
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final Contour- good for roughing toolpath"))
 
         # Debug Parameters
-        # obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
-        # obj.setEditorMode('AreaParams', 2)  # hide
+        obj.addProperty("App::PropertyString", "AreaParams", "Path")
+        obj.setEditorMode('AreaParams', 2)  # hide
+        obj.addProperty("App::PropertyString", "PathParams", "Path")
+        obj.setEditorMode('PathParams', 2)  # hide
+        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
+        obj.setEditorMode('removalshape', 2)  # hide
 
         if FreeCAD.GuiUp:
             _ViewProviderContour(obj.ViewObject)
@@ -96,7 +101,8 @@ class ObjectContour:
 
     def onChanged(self, obj, prop):
         PathLog.track('prop: {}  state: {}'.format(prop, obj.State))
-        #pass
+        if prop in ['AreaParams', 'PathParams', 'removalshape']:
+            obj.setEditorMode(prop, 2)
 
     def __getstate__(self):
         PathLog.track()
@@ -145,7 +151,7 @@ class ObjectContour:
         heights = [i for i in self.depthparams]
         PathLog.debug('depths: {}'.format(heights))
         profile.setParams(**profileparams)
-        #obj.AreaParams = str(profile.getParams())
+        obj.AreaParams = str(profile.getParams())
 
         PathLog.debug("Contour with params: {}".format(profile.getParams()))
         sections = profile.makeSections(mode=0, project=True, heights=heights)
@@ -166,21 +172,22 @@ class ObjectContour:
 
         if self.endVector is not None:
             params['start'] = self.endVector
-        elif start is not None:
-            params['start'] = start
+        elif obj.UseStartPoint:
+            params['start'] = obj.StartPoint
+
+        obj.PathParams = str({key: value for key, value in params.items() if key != 'shapes'})
 
         (pp, end_vector) = Path.fromShapes(**params)
-        PathLog.debug("Generating Path with params: {}".format(params))
         PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
         self.endVector = end_vector
 
         simobj = None
         if getsim:
-            profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
-            profileparams['ToolRadius']= self.radius - self.radius *.005
+            profileparams['Thicken'] = True
+            profileparams['ToolRadius'] = self.radius - self.radius * .005
             profile.setParams(**profileparams)
             sec = profile.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
-            simobj = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
+            simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
 
         return pp, simobj
 
@@ -207,6 +214,7 @@ class ObjectContour:
                 user_depths=None)
 
         if toolLoad is None or toolLoad.ToolNumber == 0:
+
             FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
             return
         else:
@@ -229,14 +237,12 @@ class ObjectContour:
             commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
         parentJob = PathUtils.findParentJob(obj)
+
         if parentJob is None:
             return
         baseobject = parentJob.Base
         if baseobject is None:
             return
-
-        # Let's always start by rapid to clearance...just for safety
-        commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
         isPanel = False
         if hasattr(baseobject, "Proxy"):
@@ -256,10 +262,9 @@ class ObjectContour:
                         FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
 
         if hasattr(baseobject, "Shape") and not isPanel:
-            #bb = baseobject.Shape.BoundBox
             env = PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, depthparams=self.depthparams)
             try:
-                (pp, sim) = self._buildPathArea(obj, env, start=obj.StartPoint,getsim=getsim)
+                (pp, sim) = self._buildPathArea(obj, env, start=obj.StartPoint, getsim=getsim)
                 commandlist.extend(pp.Commands)
             except Exception as e:
                 FreeCAD.Console.PrintError(e)
@@ -268,9 +273,9 @@ class ObjectContour:
         # Let's finish by rapid to clearance...just for safety
         commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
+        PathLog.track()
         path = Path.Path(commandlist)
         obj.Path = path
-        #obj.ViewObject.Visibility = True
         return sim
 
 
@@ -371,7 +376,6 @@ class CommandPathContour:
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
-        #FreeCAD.ActiveDocument.recompute()
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
 
@@ -379,7 +383,6 @@ class TaskPanel:
     def __init__(self, obj, deleteOnReject):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Contour", "Contour Operation"))
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ContourEdit.ui")
-        # self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ContourEdit.ui")
         self.deleteOnReject = deleteOnReject
         self.isDirty = True
 
@@ -402,7 +405,7 @@ class TaskPanel:
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
-    def clicked(self,button):
+    def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
             self.getFields()
             FreeCAD.ActiveDocument.recompute()
