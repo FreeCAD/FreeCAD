@@ -355,9 +355,28 @@ transformShape(Matrix,[boolean copy=False]) -> None</UserDocu>
         <UserDocu>Make fillet.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="makeFillet2" Const="true" Keyword="true">
+      <Documentation>
+        <UserDocu>Make fillet: alternate version with history.
+Parameters:
+radius: single number or a tuple of two numbers.
+edges: sequence of edges to be filleted.
+withHistory: True if history is needed to be stored, false otherwise.
+</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="makeChamfer" Const="true">
       <Documentation>
         <UserDocu>Make chamfer.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeChamfer2" Const="true" Keyword="true">
+      <Documentation>
+        <UserDocu>Make chamfer: alternate version with history.
+Parameters:
+radius: single number or a tuple of two numbers.
+edges: sequence of edges to be filleted.
+withHistory: True if history is needed to be stored, false otherwise.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeThickness" Const="true">

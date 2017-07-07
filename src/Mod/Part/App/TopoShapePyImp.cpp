@@ -1576,6 +1576,91 @@ PyObject* TopoShapePy::makeFillet(PyObject *args)
     return NULL;
 }
 
+PyObject* TopoShapePy::makeFillet2(PyObject *args, PyObject *keywds)
+{
+    static char *kwlist[] = {"edges", "radius", "withHistory", NULL};
+    PyObject* edges;
+    PyObject* withHistory = Py_False;
+    // use one radius for all edges
+    double radius;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "dO|O!", kwlist,
+                                    &radius, &edges,
+                                    &(PyBool_Type), &withHistory)) {
+        try {
+            const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
+            std::shared_ptr<BRepFilletAPI_MakeFillet>
+                    mkFillet(new BRepFilletAPI_MakeFillet(shape));
+            Py::Sequence list(edges);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
+                    const TopoDS_Shape& edge = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
+                    if (edge.ShapeType() == TopAbs_EDGE) {
+                        //Add edge to fillet algorithm
+                        mkFillet->Add(radius, TopoDS::Edge(edge));
+                    }
+                }
+            }
+            TopoShape resShape(mkFillet->Shape());
+            if (PyObject_IsTrue(withHistory)) {
+                resShape.history.shapeMaker = mkFillet;
+            }
+            return resShape.getPyObject();
+        }
+        catch (Standard_Failure) {
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return NULL;
+        }
+    }
+
+    PyErr_Clear();
+    // use two radii for all edges
+    PyObject* _radii;
+    double radius1, radius2;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "OO|O!", kwlist,
+                                    &_radii, &edges,
+                                    &(PyBool_Type), &withHistory)) {
+        try {
+            const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
+            std::shared_ptr<BRepFilletAPI_MakeFillet>
+                    mkFillet(new BRepFilletAPI_MakeFillet(shape));
+            Py::Sequence radii(_radii);
+            if (radii.length() != 2 && radii[0].isNumeric() && radii[1].isNumeric()) {
+                Standard_Failure::Raise("One radius or a tuple of two radii expected as first argument.");
+            }
+            radius1 = PyFloat_AsDouble(radii[0].ptr());
+            radius2 = PyFloat_AsDouble(radii[1].ptr());
+            Py::Sequence list(edges);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
+                    const TopoDS_Shape& edge = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
+                    if (edge.ShapeType() == TopAbs_EDGE) {
+                        //Add edge to fillet algorithm
+                        mkFillet->Add(radius1, radius2, TopoDS::Edge(edge));
+                    }
+                }
+            }
+            TopoShape resShape(mkFillet->Shape());
+            if (PyObject_IsTrue(withHistory)) {
+                resShape.history.shapeMaker = mkFillet;
+            }
+            return resShape.getPyObject();
+        }
+        catch (Standard_Failure) {
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return NULL;
+        }
+    }
+
+    PyErr_SetString(PyExc_TypeError, "This method accepts:\n"
+        "-- one radius, a list of edges and optionally a boolean to store history\n"
+        "-- one tuple of two radii, a list of edges and optionally a boolean to\n"
+        "store history");
+    return NULL;
+}
+
+
 PyObject* TopoShapePy::makeChamfer(PyObject *args)
 {
     // use two radii for all edges
@@ -1632,6 +1717,99 @@ PyObject* TopoShapePy::makeChamfer(PyObject *args)
                 }
             }
             return new TopoShapePy(new TopoShape(mkChamfer.Shape()));
+        }
+        catch (Standard_Failure) {
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return NULL;
+        }
+    }
+
+    PyErr_SetString(PyExc_TypeError, "This method accepts:\n"
+        "-- one radius and a list of edges\n"
+        "-- two radii and a list of edges");
+    return NULL;
+}
+
+PyObject* TopoShapePy::makeChamfer2(PyObject *args, PyObject *keywds)
+{
+    static char *kwlist[] = {"edges", "radius", "withHistory", NULL};
+    PyObject* edges;
+    PyObject* withHistory = Py_False;
+    // use one radius for all edges
+    double radius;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "dO|O!", kwlist,
+                                    &radius, &edges,
+                                    &(PyBool_Type), &withHistory)) {
+        try {
+            const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
+            std::shared_ptr<BRepFilletAPI_MakeChamfer>
+                    mkChamfer(new BRepFilletAPI_MakeChamfer(shape));
+            TopTools_IndexedMapOfShape mapOfEdges;
+            TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
+            TopExp::MapShapesAndAncestors(shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+            TopExp::MapShapes(shape, TopAbs_EDGE, mapOfEdges);
+            Py::Sequence list(edges);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
+                    const TopoDS_Shape& edge = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
+                    if (edge.ShapeType() == TopAbs_EDGE) {
+                        //Add edge to fillet algorithm
+                        const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
+                        mkChamfer->Add(radius, TopoDS::Edge(edge), face);
+                    }
+                }
+            }
+            TopoShape resShape(mkChamfer->Shape());
+            if (PyObject_IsTrue(withHistory)) {
+                resShape.history.shapeMaker = mkChamfer;
+            }
+            return resShape.getPyObject();
+        }
+        catch (Standard_Failure) {
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return NULL;
+        }
+    }
+
+    PyErr_Clear();
+    // use two radii for all edges
+    PyObject* _radii;
+    double radius1, radius2;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "OO|O!", kwlist,
+                                    &_radii, &edges,
+                                    &(PyBool_Type), &withHistory)) {
+        try {
+            const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
+            std::shared_ptr<BRepFilletAPI_MakeChamfer>
+                    mkChamfer(new BRepFilletAPI_MakeChamfer(shape));
+            TopTools_IndexedMapOfShape mapOfEdges;
+            TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
+            TopExp::MapShapesAndAncestors(shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+            TopExp::MapShapes(shape, TopAbs_EDGE, mapOfEdges);
+            Py::Sequence radii(_radii);
+            if (radii.length() != 2 && radii[0].isNumeric() && radii[1].isNumeric()) {
+                Standard_Failure::Raise("One radius or a tuple of two radii expected as first argument.");
+            }
+            radius1 = PyFloat_AsDouble(radii[0].ptr());
+            radius2 = PyFloat_AsDouble(radii[1].ptr());
+            Py::Sequence list(edges);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
+                    const TopoDS_Shape& edge = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
+                    if (edge.ShapeType() == TopAbs_EDGE) {
+                        //Add edge to fillet algorithm
+                        const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
+                        mkChamfer->Add(radius1, radius2, TopoDS::Edge(edge), face);
+                    }
+                }
+            }
+            TopoShape resShape(mkChamfer->Shape());
+            if (PyObject_IsTrue(withHistory)) {
+                resShape.history.shapeMaker = mkChamfer;
+            }
+            return resShape.getPyObject();
         }
         catch (Standard_Failure) {
             Handle(Standard_Failure) e = Standard_Failure::Caught();
