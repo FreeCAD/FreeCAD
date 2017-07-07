@@ -44,6 +44,7 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
 
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -89,8 +90,12 @@ class ObjectProfile:
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final profile- good for roughing toolpath"))
 
         # Debug Parameters
-        obj.addProperty("App::PropertyString", "AreaParams", "Debug", QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.addProperty("App::PropertyString", "AreaParams", "Path")
         obj.setEditorMode('AreaParams', 2)  # hide
+        obj.addProperty("App::PropertyString", "PathParams", "Path")
+        obj.setEditorMode('PathParams', 2)  # hide
+        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
+        obj.setEditorMode('removalshape', 2)  # hide
 
         if FreeCAD.GuiUp:
             _ViewProviderProfile(obj.ViewObject)
@@ -109,6 +114,8 @@ class ObjectProfile:
                 obj.setEditorMode('Side', 2)
             else:
                 obj.setEditorMode('Side', 0)
+        if prop in ['AreaParams', 'PathParams', 'removalshape']:
+            obj.setEditorMode(prop, 2)
 
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
@@ -142,8 +149,6 @@ class ObjectProfile:
         else:
             baselist.append(item)
         obj.Base = baselist
-        #self.execute(obj)
-
 
     @waiting_effects
     def _buildPathArea(self, obj, baseobject, start=None, getsim=False):
@@ -163,9 +168,7 @@ class ObjectProfile:
             else:
                 profileparams['Offset'] = self.radius+obj.OffsetExtra.Value
 
-
         profile.setParams(**profileparams)
-        # PathLog.debug("About to profile with params: {}".format(profileparams))
         obj.AreaParams = str(profile.getParams())
 
         PathLog.debug("About to profile with params: {}".format(profile.getParams()))
@@ -191,21 +194,21 @@ class ObjectProfile:
 
         pp = Path.fromShapes(**params)
         PathLog.debug("Generating Path with params: {}".format(params))
-        PathLog.debug(pp)
+
+        # store the params for debugging. Don't need the shape.
+        obj.PathParams = str({key: value for key, value in params.items() if key != 'shapes'})
 
         simobj = None
         if getsim:
-            profileparams['Thicken'] = True #{'Fill':0, 'Coplanar':0, 'Project':True, 'SectionMode':2, 'Thicken':True}
-            profileparams['ToolRadius']= self.radius - self.radius *.005
+            profileparams['Thicken'] = True
+            profileparams['ToolRadius'] = self.radius - self.radius * .005
             profile.setParams(**profileparams)
             sec = profile.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
-            simobj = sec.extrude(FreeCAD.Vector(0,0,baseobject.BoundBox.ZMax))
+            simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
 
         return pp, simobj
 
-
     def execute(self, obj, getsim=False):
-       # import Part  # math #DraftGeomUtils
         commandlist = []
         sim = None
 
@@ -380,7 +383,6 @@ class CommandPathProfileEdges:
         FreeCADGui.addModule("PathScripts.PathProfile")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Edge Profile")')
         FreeCADGui.doCommand('PathScripts.PathProfileEdges.ObjectProfile(obj)')
-        #FreeCADGui.doCommand('PathScripts.PathProfileEdges._ViewProviderProfile(obj.ViewObject)')
         FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
 
         FreeCADGui.doCommand('obj.Active = True')
@@ -408,14 +410,11 @@ class TaskPanel:
     def __init__(self, obj, deleteOnReject):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_ProfileEdges", "ProfileEdges Operation"))
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ProfileEdgesEdit.ui")
-        # self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ProfileEdgesEdit.ui")
         self.deleteOnReject = deleteOnReject
         self.obj = obj
         self.isDirty = True
 
     def accept(self):
-        #self.getFields()
-
         FreeCADGui.Control.closeDialog()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.commitTransaction()
@@ -434,7 +433,7 @@ class TaskPanel:
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
-    def clicked(self,button):
+    def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
             self.getFields()
             self.obj.Proxy.execute(self.obj)

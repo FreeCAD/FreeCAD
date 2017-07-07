@@ -39,9 +39,9 @@ if True:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-#FreeCADGui = None
 if FreeCAD.GuiUp:
     import FreeCADGui
+
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -95,11 +95,11 @@ class ObjectFace:
         obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
 
         # Debug Parameters
-        obj.addProperty("App::PropertyString", "AreaParams", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.addProperty("App::PropertyString", "AreaParams", "Path")
         obj.setEditorMode('AreaParams', 2)  # hide
-        obj.addProperty("App::PropertyString", "PathParams", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "parameters used by PathArea"))
+        obj.addProperty("App::PropertyString", "PathParams", "Path")
         obj.setEditorMode('PathParams', 2)  # hide
-        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")#, QtCore.QT_TRANSLATE_NOOP("App::Property", "The material to be removed"))
+        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
         obj.setEditorMode('removalshape', 2)  # hide
 
         if FreeCAD.GuiUp:
@@ -120,7 +120,6 @@ class ObjectFace:
 
     def __setstate__(self, state):
         return None
-
 
     def setDepths(self, obj):
         PathLog.track()
@@ -145,8 +144,8 @@ class ObjectFace:
         if len(baselist) == 0:  # When adding the first base object, guess at heights
             subshape = [ss.Shape.getElement(sub)]
             d = PathUtils.guessDepths(ss.Shape, subshape)
-            obj.ClearanceHeight =d.clearance_height
-            obj.SafeHeight = d.safe_height +1
+            obj.ClearanceHeight = d.clearance_height
+            obj.SafeHeight = d.safe_height + 1
             obj.StartDepth = d.safe_height
             obj.FinalDepth = d.final_depth
             obj.StepDown = obj.StartDepth.Value-obj.FinalDepth.Value
@@ -161,7 +160,6 @@ class ObjectFace:
             baselist.append(item)
         PathLog.debug('baselist: {}'.format(baselist))
         obj.Base = baselist
-        #self.execute(obj)
 
     def getStock(self, obj):
         """find and return a stock object from hosting project if any"""
@@ -214,20 +212,19 @@ class ObjectFace:
 
         pp = []
 
-        if obj.UseStartPoint:
+        if obj.UseStartPoint and obj.StartPoint is not None:
             params['start'] = obj.StartPoint
-#            pp.append(Path.Command("G0", {"X":obj.StartPoint.x, "Y":obj.StartPoint.y, "Z":obj.StartPoint.z}))
 
-        #store the params for debugging. Don't need the shape.
+        # store the params for debugging. Don't need the shape.
         obj.PathParams = str(params)
         PathLog.debug("Generating Path with params: {}".format(params))
 
         for sec in sections:
             shape = sec.getShape()
             respath = Path.fromShapes(shape, **params)
-            #Insert any entry code to the layer
+            # Insert any entry code to the layer
 
-            #append the layer path
+            # append the layer path
             pp.extend(respath.Commands)
             respath.Commands = pp
 
@@ -299,9 +296,6 @@ class ObjectFace:
             planeshape = baseobject.Shape
             PathLog.info("Working on a shape {}".format(baseobject.Name))
 
-        # Let's start by rapid to clearance...just for safety
-        #commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-
         # if user wants the boundbox, calculate that
         PathLog.info("Boundary Shape: {}".format(obj.BoundaryShape))
         bb = planeshape.BoundBox
@@ -311,7 +305,7 @@ class ObjectFace:
         else:
             env = PathUtils.getEnvelope(partshape=planeshape, depthparams=self.depthparams)
 
-        #save the envelope for reference
+        # save the envelope for reference
         obj.removalshape = env
 
         try:
@@ -375,8 +369,6 @@ class CommandPathMillFace:
         return False
 
     def Activated(self):
-        #ztop = 10.0
-
         # if everything is ok, execute and register the transaction in the undo/redo stack
         FreeCAD.ActiveDocument.openTransaction(translate("PathFace", "Create Face"))
         FreeCADGui.addModule("PathScripts.PathMillFace")
@@ -413,6 +405,7 @@ class _CommandSetFaceStartPoint:
     def Activated(self):
         FreeCADGui.Snapper.getPoint(callback=self.setpoint)
 
+
 class TaskPanel:
     def __init__(self, obj, deleteOnReject):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_MillFace", "Mill Facing Operation"))
@@ -441,7 +434,7 @@ class TaskPanel:
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
-    def clicked(self,button):
+    def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
             self.getFields()
             FreeCAD.ActiveDocument.recompute()
