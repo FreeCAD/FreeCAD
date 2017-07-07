@@ -1111,10 +1111,17 @@ PyObject* Application::sAddModule(PyObject * /*self*/, PyObject *args,PyObject *
     char *pstr=0;
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
-    Command::addModule(Command::Doc,pstr);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    try {
+        Command::addModule(Command::Doc,pstr);
+
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+        return 0;
+    }
 }
 
 PyObject* Application::sShowDownloads(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
