@@ -55,7 +55,7 @@ PARAM_ENUM_STRING_DECLARE(static const char *Enums,AREA_PARAMS_PATH)
 FeatureShape::FeatureShape()
 {
     ADD_PROPERTY(Sources,(0));
-    ADD_PROPERTY_TYPE(StartPoint,(Base::Vector3d()),"Path",App::Prop_None,"Path start position");
+    ADD_PROPERTY_TYPE(StartPoint,(Base::Vector3d()),"Path",App::Prop_None,"Feed start position");
     PARAM_PROP_ADD("Path",AREA_PARAMS_PATH);
     PARAM_PROP_SET_ENUM(Enums,AREA_PARAMS_PATH);
 }

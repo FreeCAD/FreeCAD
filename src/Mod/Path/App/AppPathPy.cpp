@@ -122,7 +122,7 @@ public:
             "fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")\n"
             "\nReturns a Path object from a list of shapes\n"
             "\n* shapes: input list of shapes.\n"
-            "\n* start (Vector()): optional start position.\n"
+            "\n* start (Vector()): feed start position, and also serves as a hint of path entry.\n"
             "\n* return_end (False): if True, returns tuple (path, endPosition).\n"
             PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)
         );
@@ -415,7 +415,7 @@ private:
         try {
             bool need_arc_plane = arc_plane==Area::ArcPlaneAuto;
             std::list<TopoDS_Shape> wires = Area::sortWires(shapes,&pstart,
-                    &pend, &arc_plane, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
+                    &pend, 0, &arc_plane, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
             PyObject *list = PyList_New(0);
             for(auto &wire : wires)
                 PyList_Append(list,Py::new_reference_to(
