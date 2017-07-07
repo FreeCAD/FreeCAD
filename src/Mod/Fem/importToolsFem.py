@@ -190,6 +190,7 @@ def make_femmesh(mesh_data):
 def fill_femresult_mechanical(results, result_set, span):
     ''' fills  an FreeCAD FEM mechanical result object with result data
     '''
+    no_of_values = None
 
     if 'number' in result_set:
         eigenmode_number = result_set['number']
@@ -295,6 +296,8 @@ def fill_femresult_mechanical(results, result_set, span):
 
     if 'mflow' in result_set:
         MassFlow = result_set['mflow']
+        if not no_of_values:
+            no_of_values = len(MassFlow)
         if len(MassFlow) > 0:
             results.MassFlowRate = list(map((lambda x: x), MassFlow.values()))
             results.Time = step_time
@@ -310,19 +313,20 @@ def fill_femresult_mechanical(results, result_set, span):
     a_max = a_min = a_avg = s_max = s_min = s_avg = 0
     p1_min = p1_avg = p1_max = p2_min = p2_avg = p2_max = p3_min = p3_avg = p3_max = 0
     ms_min = ms_avg = ms_max = peeq_min = peeq_avg = peeq_max = 0
+    temp_min = temp_avg = temp_max = mflow_min = mflow_avg = mflow_max = npress_min = npress_avg = npress_max = 0
 
     if results.DisplacementVectors:
         x_max, y_max, z_max = map(max, zip(*displacement))
         x_min, y_min, z_min = map(min, zip(*displacement))
         sum_list = map(sum, zip(*displacement))
         x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
-        a_max = max(results.DisplacementLengths)
         a_min = min(results.DisplacementLengths)
         a_avg = sum(results.DisplacementLengths) / no_of_values
+        a_max = max(results.DisplacementLengths)
     if results.StressValues:
-        s_max = max(results.StressValues)
         s_min = min(results.StressValues)
         s_avg = sum(results.StressValues) / no_of_values
+        s_max = max(results.StressValues)
     if results.PrincipalMax:
         p1_min = min(results.PrincipalMax)
         p1_avg = sum(results.PrincipalMax) / no_of_values
@@ -340,9 +344,21 @@ def fill_femresult_mechanical(results, result_set, span):
         ms_avg = sum(results.MaxShear) / no_of_values
         ms_max = max(results.MaxShear)
     if results.Peeq:
-        peeq_max = max(results.Peeq)
         peeq_min = min(results.Peeq)
         peeq_avg = sum(results.Peeq) / no_of_values
+        peeq_max = max(results.Peeq)
+    if results.Temperature:
+        temp_min = min(results.Temperature)
+        temp_avg = sum(results.Temperature) / no_of_values
+        temp_max = max(results.Temperature)
+    if results.MassFlowRate:
+        mflow_min = min(results.MassFlowRate)
+        mflow_avg = sum(results.MassFlowRate) / no_of_values
+        mflow_max = max(results.MassFlowRate)
+    if results.NetworkPressure:
+        npress_min = min(results.NetworkPressure)
+        npress_avg = sum(results.NetworkPressure) / no_of_values
+        npress_max = max(results.NetworkPressure)
 
     results.Stats = [x_min, x_avg, x_max,
                      y_min, y_avg, y_max,
@@ -353,7 +369,13 @@ def fill_femresult_mechanical(results, result_set, span):
                      p2_min, p2_avg, p2_max,
                      p3_min, p3_avg, p3_max,
                      ms_min, ms_avg, ms_max,
-                     peeq_min, peeq_avg, peeq_max]
+                     peeq_min, peeq_avg, peeq_max,
+                     temp_min, temp_avg, temp_max,
+                     mflow_min, mflow_avg, mflow_max,
+                     npress_min, npress_avg, npress_max]
+    # do not forget to adapt the def get_stats in FemTools and _TaskPanelFemResultShow module as well as the TestFem module
+    # stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
+    # TODO a dictionary would be far robust than a list, but needs adapten in VTK too because of VTK result import
 
     return results
 

@@ -615,26 +615,36 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     #  - U1, U2, U3 - deformation
     #  - Uabs - absolute deformation
     #  - Sabs - Von Mises stress
-    #    Prin1 Principal stress 1
-    #    Prin2 Principal stress 2
-    #    Prin3 Principal stress 3
-    #    MaxSear maximum shear stress
+    #  - Prin1 - Principal stress 1
+    #  - Prin2 - Principal stress 2
+    #  - Prin3 - Principal stress 3
+    #  - MaxSear - maximum shear stress
+    #  - Peeq - peeq strain
+    #  - Temp - Temperature
+    #  - MFlow - MassFlowRate
+    #  - NPress - NetworkPressure
     #  - None - always return (0.0, 0.0, 0.0)
     def get_stats(self, result_type):
         stats = (0.0, 0.0, 0.0)
         for m in self.analysis.Member:
             if m.isDerivedFrom("Fem::FemResultObject"):
-                match = {"U1": (m.Stats[0], m.Stats[1], m.Stats[2]),
-                         "U2": (m.Stats[3], m.Stats[4], m.Stats[5]),
-                         "U3": (m.Stats[6], m.Stats[7], m.Stats[8]),
-                         "Uabs": (m.Stats[9], m.Stats[10], m.Stats[11]),
-                         "Sabs": (m.Stats[12], m.Stats[13], m.Stats[14]),
-                         "MaxPrin": (m.Stats[15], m.Stats[16], m.Stats[17]),
-                         "MidPrin": (m.Stats[18], m.Stats[19], m.Stats[20]),
-                         "MinPrin": (m.Stats[21], m.Stats[22], m.Stats[23]),
-                         "MaxShear": (m.Stats[24], m.Stats[25], m.Stats[26]),
-                         "None": (0.0, 0.0, 0.0)}
-                stats = match[result_type]
+                match_table = {
+                    "U1": (m.Stats[0], m.Stats[1], m.Stats[2]),
+                    "U2": (m.Stats[3], m.Stats[4], m.Stats[5]),
+                    "U3": (m.Stats[6], m.Stats[7], m.Stats[8]),
+                    "Uabs": (m.Stats[9], m.Stats[10], m.Stats[11]),
+                    "Sabs": (m.Stats[12], m.Stats[13], m.Stats[14]),
+                    "MaxPrin": (m.Stats[15], m.Stats[16], m.Stats[17]),
+                    "MidPrin": (m.Stats[18], m.Stats[19], m.Stats[20]),
+                    "MinPrin": (m.Stats[21], m.Stats[22], m.Stats[23]),
+                    "MaxShear": (m.Stats[24], m.Stats[25], m.Stats[26]),
+                    "Peeq": (m.Stats[27], m.Stats[28], m.Stats[29]),
+                    "Temp": (m.Stats[30], m.Stats[31], m.Stats[32]),
+                    "MFlow": (m.Stats[33], m.Stats[34], m.Stats[35]),
+                    "NPress": (m.Stats[36], m.Stats[37], m.Stats[38]),
+                    "None": (0.0, 0.0, 0.0)
+                }
+                stats = match_table[result_type]
         return stats
 
 
