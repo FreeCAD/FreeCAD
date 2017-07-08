@@ -88,6 +88,10 @@ class ObjectProfile:
         obj.addProperty("App::PropertyBool", "UseComp", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
 
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final profile- good for roughing toolpath"))
+        obj.addProperty("App::PropertyEnumeration", "JoinType", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool moves around corners. Default=Round"))
+        obj.JoinType = ['Round', 'Square', 'Miter']  # this is the direction that the Contour runs
+        obj.addProperty("App::PropertyFloat", "MiterLimit", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum distance before a miter join is truncated"))
+
 
         # Debug Parameters
         obj.addProperty("App::PropertyString", "AreaParams", "Path")
@@ -116,6 +120,11 @@ class ObjectProfile:
                 obj.setEditorMode('Side', 0)
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
             obj.setEditorMode(prop, 2)
+
+        obj.setEditorMode('MiterLimit', 2)
+        if obj.JoinType == 'Miter':
+            obj.setEditorMode('MiterLimit', 0)
+
 
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
@@ -167,6 +176,12 @@ class ObjectProfile:
                 profileparams['Offset'] = 0 - self.radius+obj.OffsetExtra.Value
             else:
                 profileparams['Offset'] = self.radius+obj.OffsetExtra.Value
+
+        jointype = ['Round', 'Square', 'Miter']
+        profileparams['JoinType'] = jointype.index(obj.JoinType)
+
+        if obj.JoinType == 'Miter':
+            profileparams['MiterLimit'] = obj.MiterLimit
 
         profile.setParams(**profileparams)
         obj.AreaParams = str(profile.getParams())
