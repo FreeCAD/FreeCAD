@@ -41,6 +41,7 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
 
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -84,6 +85,9 @@ class ObjectProfile:
         obj.addProperty("App::PropertyBool", "processHoles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile holes as well as the outline"))
         obj.addProperty("App::PropertyBool", "processPerimeter", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the outline"))
         obj.addProperty("App::PropertyBool", "processCircles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile round holes"))
+        obj.addProperty("App::PropertyEnumeration", "JoinType", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool moves around corners. Default=Round"))
+        obj.JoinType = ['Round', 'Square', 'Miter']  # this is the direction that the Contour runs
+        obj.addProperty("App::PropertyFloat", "MiterLimit", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum distance before a miter join is truncated"))
 
         # Debug Parameters
         obj.addProperty("App::PropertyString", "AreaParams", "Path")
@@ -112,6 +116,10 @@ class ObjectProfile:
                 obj.setEditorMode('Side', 0)
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
             obj.setEditorMode(prop, 2)
+
+        obj.setEditorMode('MiterLimit', 2)
+        if obj.JoinType == 'Miter':
+            obj.setEditorMode('MiterLimit', 0)
 
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
@@ -175,6 +183,12 @@ class ObjectProfile:
             offsetval = 0 - offsetval
 
         profileparams['Offset'] = offsetval
+
+        jointype = ['Round', 'Square', 'Miter']
+        profileparams['JoinType'] = jointype.index(obj.JoinType)
+
+        if obj.JoinType == 'Miter':
+            profileparams['MiterLimit'] = obj.MiterLimit
 
         profile.setParams(**profileparams)
         obj.AreaParams = str(profile.getParams())
@@ -437,12 +451,14 @@ class CommandPathProfile:
         FreeCADGui.doCommand('obj.UseComp = True')
         FreeCADGui.doCommand('obj.processHoles = False')
         FreeCADGui.doCommand('obj.processPerimeter = True')
+        FreeCADGui.doCommand('obj.JoinType = "Round"')
+        FreeCADGui.doCommand('obj.MiterLimit =' + str(0.1))
+
         FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
-        #FreeCAD.ActiveDocument.recompute()
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
 
