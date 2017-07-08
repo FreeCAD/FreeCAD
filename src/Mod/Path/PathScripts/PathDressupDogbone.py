@@ -346,7 +346,7 @@ class Bone:
 
 class ObjectDressup:
 
-    def __init__(self, obj):
+    def __init__(self, obj, base):
         # Tool Properties
         obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
         obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The base path to modify"))
@@ -365,6 +365,7 @@ class ObjectDressup:
         obj.addProperty("App::PropertyFloat", "Custom", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "Dressup length if Incision == custom"))
         obj.Custom = 0.0
         obj.Proxy = self
+        obj.Base = base
 
     def __getstate__(self):
         return None
@@ -773,13 +774,19 @@ class ObjectDressup:
             obj.Side = obj.Base.Side
         else:
             # otherwise dogbones are opposite of the base path's side
-            if obj.Base.Side == Side.Left:
-                obj.Side = Side.Right
-            elif obj.Base.Side == Side.Right:
-                obj.Side = Side.Left
+            if hasattr(obj.Base, 'Side'):
+                if obj.Base.Side == Side.Left:
+                    obj.Side = Side.Right
+                elif obj.Base.Side == Side.Right:
+                    obj.Side = Side.Left
+                else:
+                    # This will cause an error, which is fine for now 'cause I don't know what to do here
+                    obj.Side = 'On'
             else:
-                # This will cause an error, which is fine for now 'cause I don't know what to do here
-                obj.Side = 'On'
+                if obj.Base.Direction == 'CW':
+                    obj.Side = Side.Left
+                else:
+                    obj.Side = Side.Right
 
         self.toolRadius = 5
         toolLoad = obj.ToolController
@@ -943,20 +950,20 @@ class ViewProviderDressup:
         vobj.Proxy = self
 
     def attach(self, vobj):
-        self.Object = vobj.Object
+        self.obj = vobj.Object
+        if self.obj and self.obj.Base:
+            for i in self.obj.Base.InList:
+                if hasattr(i, "Group"):
+                    group = i.Group
+                    for g in group:
+                        if g.Name == self.obj.Base.Name:
+                            group.remove(g)
+                    i.Group = group
+            #FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return
 
     def claimChildren(self):
-        for i in self.Object.Base.InList:
-            if hasattr(i, "Group"):
-                group = i.Group
-                for g in group:
-                    if g.Name == self.Object.Base.Name:
-                        group.remove(g)
-                i.Group = group
-                print(i.Group)
-        #FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
-        return [self.Object.Base]
+        return [self.obj.Base]
 
     def setEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
@@ -977,6 +984,23 @@ class ViewProviderDressup:
         PathUtils.addToJob(arg1.Object.Base)
         arg1.Object.Base = None
         return True
+
+def Create(base, name = 'DogboneDressup'):
+    '''
+    Create(obj, name='DogboneDressup') ... dresses the given PathProfile/PathContour object with dogbones.
+    '''
+    obj = FreeCAD.ActiveDocument.addObject('Path::FeaturePython', 'DogboneDressup')
+    dbo = ObjectDressup(obj, base)
+    job = PathUtils.findParentJob(base)
+    PathUtils.addObjectToJob(obj, job)
+
+    if FreeCAD.GuiUp:
+        ViewProviderDressup(obj.ViewObject)
+        obj.Base.ViewObject.Visibility = False
+
+    dbo.setup(obj)
+    obj.ToolController = base.ToolController
+    return obj
 
 class CommandDressupDogbone:
 
@@ -1003,25 +1027,14 @@ class CommandDressupDogbone:
         if not baseObject.isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(translate("PathDressup_Dogbone", "The selected object is not a path\n"))
             return
-        if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("PathDressup_Dogbone", "Please select a Profile or Dogbone Dressup object"))
-            return
-        if not hasattr(baseObject, "Side"):
-            FreeCAD.Console.PrintError(translate("PathDressup_Dogbone", "Please select a Profile or Dogbone Dressup object"))
+        if not hasattr(baseObject, "Side") and not hasattr(baseObject, 'Direction'):
+            FreeCAD.Console.PrintError(translate("PathDressup_Dogbone", "Please select a Profile/Contour or Dogbone Dressup object"))
             return
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_Dogbone", "Create Dogbone Dress-up"))
-        FreeCADGui.addModule("PathScripts.PathDressupDogbone")
-        FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "DogboneDressup")')
-        FreeCADGui.doCommand('dbo = PathScripts.PathDressupDogbone.ObjectDressup(obj)')
-        FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + baseObject.Name)
-        FreeCADGui.doCommand('PathScripts.PathDressupDogbone.ViewProviderDressup(obj.ViewObject)')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
-        FreeCADGui.doCommand('obj.Base.ViewObject.Visibility = False')
-        FreeCADGui.doCommand('dbo.setup(obj)')
-        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
+        FreeCADGui.addModule('PathScripts.PathDressupDogbone')
+        FreeCADGui.doCommand("PathScripts.PathDressupDogbone.Create(FreeCAD.ActiveDocument.%s)" % baseObject.Name)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
