@@ -65,6 +65,9 @@ SET(PathScripts_SRCS
     PathScripts/PostUtils.py
     PathScripts/__init__.py
     PathScripts/kdtree.py
+)
+
+SET(PathScripts_post_SRCS
     PathScripts/post/__init__.py
     PathScripts/post/centroid_post.py
     PathScripts/post/comparams_post.py
@@ -84,7 +87,9 @@ SET(PathScripts_SRCS
 
 SET(PathTests_SRCS
     PathTests/__init__.py
+    PathTests/boxtest.fcstd
     PathTests/PathTestUtils.py
+    PathTests/test_centroid_00.ngc
     PathTests/test_linuxcnc_00.ngc
     PathTests/TestPathCore.py
     PathTests/TestPathDepthParams.py
@@ -97,7 +102,7 @@ SET(PathTests_SRCS
 
 SET(all_files
     ${PathScripts_SRCS}
-    ${PathScripts_NC_SRCS}
+    ${PathScripts_post_SRCS}
 )
 
 ADD_CUSTOM_TARGET(PathScripts ALL
@@ -128,4 +133,11 @@ INSTALL(
         ${PathTests_SRCS}
     DESTINATION
         Mod/Path/PathTests
+)
+
+INSTALL(
+    FILES
+        ${PathScripts_post_SRCS}
+    DESTINATION
+        Mod/Path/PathScripts/post
 )
