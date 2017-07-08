@@ -24,13 +24,13 @@
 
 from . import PathUtils
 from .PathUtils import fmt
-
+import Part
 import FreeCAD
 import Path
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    from DraftTools import translate
+    #from DraftTools import translate
 
 """Helix Drill object and FreeCAD command"""
 
@@ -86,7 +86,7 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
     tool_diameter: float
       Width of tool
     """
-    from numpy import ceil, allclose, linspace
+    from numpy import ceil, linspace
 
     if (zmax <= zmin):
         return
@@ -134,7 +134,7 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
         out += rapid(x=x0+r, y=y0)
         out += rapid(z=zmax + tool_diameter)
         out += feed(z=zmax, f=vfeed)
-        z = zmin
+        # z = zmin
         for i in range(1, nz+1):
             out += arc(x0-r, y0, i=-r, j=0.0, z=zi[2*i-1], f=hfeed)
             out += arc(x0+r, y0, i= r, j=0.0, z=zi[2*i],   f=hfeed)
@@ -286,9 +286,9 @@ class ObjectPathHelix(object):
         return None
 
     def execute(self, obj):
-        from Part import Circle, Cylinder, Plane
-        from PathScripts import PathUtils
-        from math import sqrt
+        # from Part import Circle, Cylinder, Plane
+        # from PathScripts import PathUtils
+        # from math import sqrt
 
         output = '(helix cut operation'
         if obj.Comment:
@@ -332,7 +332,7 @@ class ObjectPathHelix(object):
                         # Find other edge of current cylinder
                         other_edge = None
                         for edge in cylinder.Edges:
-                            if isinstance(edge.Curve, Circle) and edge.Curve.Center.z != cur_z:
+                            if isinstance(edge.Curve, Part.Circle) and edge.Curve.Center.z != cur_z:
                                 other_edge = edge
                                 break
 
@@ -408,8 +408,8 @@ class ObjectPathHelix(object):
                 output += '\n'
 
         obj.Path = Path.Path(output)
-        if obj.ViewObject:
-            obj.ViewObject.Visibility = True
+        # if obj.ViewObject:
+        #     obj.ViewObject.Visibility = True
 
 
 class ViewProviderPathHelix(object):
@@ -451,7 +451,7 @@ class CommandPathHelix(object):
 
     def Activated(self):
         import FreeCADGui
-        import Path
+       # import Path
         from PathScripts import PathUtils
 
         FreeCAD.ActiveDocument.openTransaction(translate("PathHelix", "Create a helix cut"))
@@ -526,7 +526,7 @@ def print_all_exceptions(cls):
 class TaskPanel(object):
 
     def __init__(self, obj):
-        from Units import Quantity
+        #from Units import Quantity
         from PathScripts import PathUtils
 
         self.obj = obj
@@ -867,5 +867,5 @@ class TaskPanel(object):
         FreeCADGui.Control.closeDialog()
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
+  #  import FreeCADGui
     FreeCADGui.addCommand('Path_Helix', CommandPathHelix())

@@ -77,7 +77,7 @@ class ObjectProfile:
 
         # Profile Properties
         obj.addProperty("App::PropertyEnumeration", "Side", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
-        obj.Side = ['Left', 'Right']  # side of profile that cutter is on in relation to direction of profile
+        obj.Side = ['Inside', 'Outside']  # side of profile that cutter is on in relation to direction of profile
         obj.addProperty("App::PropertyEnumeration", "Direction", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.Direction = ['CW', 'CCW']  # this is the direction that the profile runs
         obj.addProperty("App::PropertyBool", "UseComp", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
@@ -148,9 +148,9 @@ class ObjectProfile:
                 obj.SafeHeight = 8.0
 
             if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
-                obj.Side = "Left"
+                obj.Side = "Outside"
             else:
-                obj.Side = "Right"
+                obj.Side = "Inside"
 
         item = (ss, sub)
         if item in baselist:
@@ -176,7 +176,7 @@ class ObjectProfile:
         if obj.UseComp:
             offsetval = self.radius+obj.OffsetExtra.Value
 
-        if obj.Side == 'Right':
+        if obj.Side == 'Inside':
             offsetval = 0 - offsetval
 
         if isHole:
@@ -215,9 +215,9 @@ class ObjectProfile:
             direction = obj.Direction
 
         if direction == 'CCW':
-            params['orientation'] = 1
-        else:
             params['orientation'] = 0
+        else:
+            params['orientation'] = 1
 
         if obj.UseStartPoint is True and obj.StartPoint is not None:
             params['start'] = obj.StartPoint
@@ -444,7 +444,7 @@ class CommandPathProfile:
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
 
         FreeCADGui.doCommand('obj.SafeHeight = ' + str(ztop + 2.0))
-        FreeCADGui.doCommand('obj.Side = "Left"')
+        FreeCADGui.doCommand('obj.Side = "Outside"')
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
         FreeCADGui.doCommand('obj.Direction = "CW"')
         FreeCADGui.doCommand('obj.UseComp = True')

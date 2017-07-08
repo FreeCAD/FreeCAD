@@ -82,7 +82,7 @@ class ObjectProfile:
 
         # Profile Properties
         obj.addProperty("App::PropertyEnumeration", "Side", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
-        obj.Side = ['Left', 'Right']  # side of profile that cutter is on in relation to direction of profile
+        obj.Side = ['Outside', 'Inside']  # side of profile that cutter is on in relation to direction of profile
         obj.addProperty("App::PropertyEnumeration", "Direction", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.Direction = ['CW', 'CCW']  # this is the direction that the profile runs
         obj.addProperty("App::PropertyBool", "UseComp", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
@@ -163,7 +163,7 @@ class ObjectProfile:
                          'SectionCount': -1}
 
         if obj.UseComp:
-            if obj.Side == 'Right':
+            if obj.Side == 'Inside':
                 profileparams['Offset'] = 0 - self.radius+obj.OffsetExtra.Value
             else:
                 profileparams['Offset'] = self.radius+obj.OffsetExtra.Value
@@ -392,7 +392,7 @@ class CommandPathProfileEdges:
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
 
         FreeCADGui.doCommand('obj.SafeHeight = ' + str(ztop + 2.0))
-        FreeCADGui.doCommand('obj.Side = "Right"')
+        FreeCADGui.doCommand('obj.Side = "Inside"')
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
         FreeCADGui.doCommand('obj.Direction = "CW"')
         FreeCADGui.doCommand('obj.UseComp = True')

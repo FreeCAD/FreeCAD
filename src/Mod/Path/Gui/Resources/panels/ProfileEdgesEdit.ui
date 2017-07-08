@@ -294,12 +294,12 @@
             </property>
             <item>
              <property name="text">
-              <string>Left</string>
+              <string>Outside</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Right</string>
+              <string>Inside</string>
              </property>
             </item>
            </widget>
