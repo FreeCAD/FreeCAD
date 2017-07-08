@@ -36,8 +36,8 @@ from PySide import QtCore, QtGui
 
 """Dogbone Dressup object and FreeCAD command"""
 
-LOG_MODULE = 'PathDressupDogbone'
-#PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+LOG_MODULE = PathLog.thisModule()
+PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -264,6 +264,7 @@ class Chord (object):
 
     def foldsBackOrTurns(self, chord, side):
         dir = chord.getDirectionOf(self)
+        PathLog.info("  - direction = %s/%s" % (dir, side))
         return dir == 'Back' or dir == side
 
     def connectsTo(self, chord):
@@ -684,7 +685,7 @@ class ObjectDressup:
         if not obj.Base.Path.Commands:
             return
 
-        self.setup(obj)
+        self.setup(obj, False)
 
         commands = []           # the dressed commands
         lastChord = Chord()     # the last chord
@@ -697,8 +698,14 @@ class ObjectDressup:
         self.locationBlacklist = set()
         boneIserted = False
 
-        for thisCommand in obj.Base.Path.Commands:
-            PathLog.info("Command: %s" % thisCommand)
+        for (i, thisCommand) in enumerate(obj.Base.Path.Commands):
+            #if i > 14:
+            #    if lastCommand:
+            #        commands.append(lastCommand)
+            #        lastCommand = None
+            #    commands.append(thisCommand)
+            #    continue
+            PathLog.info("%3d: %s" % (i, thisCommand))
             if thisCommand.Name in movecommands:
                 thisChord = lastChord.moveToParameters(thisCommand.Parameters)
                 thisIsACandidate = self.canAttachDogbone(thisCommand, thisChord)
@@ -767,26 +774,27 @@ class ObjectDressup:
         path = Path.Path(commands)
         obj.Path = path
 
-    def setup(self, obj):
+    def setup(self, obj, initial = False):
         PathLog.info("Here we go ... ")
-        if hasattr(obj.Base, "BoneBlacklist"):
-            # dressing up a bone dressup
-            obj.Side = obj.Base.Side
-        else:
-            # otherwise dogbones are opposite of the base path's side
-            if hasattr(obj.Base, 'Side'):
-                if obj.Base.Side == Side.Left:
-                    obj.Side = Side.Right
-                elif obj.Base.Side == Side.Right:
-                    obj.Side = Side.Left
-                else:
-                    # This will cause an error, which is fine for now 'cause I don't know what to do here
-                    obj.Side = 'On'
+        if initial:
+            if hasattr(obj.Base, "BoneBlacklist"):
+                # dressing up a bone dressup
+                obj.Side = obj.Base.Side
             else:
-                if obj.Base.Direction == 'CW':
-                    obj.Side = Side.Left
+                # otherwise dogbones are opposite of the base path's side
+                if hasattr(obj.Base, 'Side'):
+                    if obj.Base.Side == Side.Left:
+                        obj.Side = Side.Right
+                    elif obj.Base.Side == Side.Right:
+                        obj.Side = Side.Left
+                    else:
+                        # This will cause an error, which is fine for now 'cause I don't know what to do here
+                        obj.Side = 'On'
                 else:
-                    obj.Side = Side.Right
+                    if obj.Base.Direction == 'CW':
+                        obj.Side = Side.Left
+                    else:
+                        obj.Side = Side.Right
 
         self.toolRadius = 5
         toolLoad = obj.ToolController
@@ -998,7 +1006,7 @@ def Create(base, name = 'DogboneDressup'):
         ViewProviderDressup(obj.ViewObject)
         obj.Base.ViewObject.Visibility = False
 
-    dbo.setup(obj)
+    dbo.setup(obj, True)
     obj.ToolController = base.ToolController
     return obj
 
