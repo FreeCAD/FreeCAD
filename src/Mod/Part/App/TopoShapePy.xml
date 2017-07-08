@@ -495,7 +495,7 @@ Orientation is not taken into account.</UserDocu>
     </Methode>
     <Methode Name="project" Const="true">
       <Documentation>
-        <UserDocu>Project a shape on this shape</UserDocu>
+        <UserDocu>Project a list of shapes on this shape</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeParallelProjection" Const="true">
