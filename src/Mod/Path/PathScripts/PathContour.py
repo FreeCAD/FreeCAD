@@ -181,9 +181,9 @@ class ObjectContour:
                   'return_end': True}
 
         if obj.Direction == 'CCW':
-            params['orientation'] = 1
-        else:
             params['orientation'] = 0
+        else:
+            params['orientation'] = 1
 
         if self.endVector is not None:
             params['start'] = self.endVector
