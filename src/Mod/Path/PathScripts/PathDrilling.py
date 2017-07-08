@@ -105,6 +105,13 @@ class ObjectDrilling:
     @waiting_effects
     def execute(self, obj):
         PathLog.track()
+
+        if not obj.Active:
+            path = Path.Path("(inactive operation)")
+            obj.Path = path
+            obj.ViewObject.Visibility = False
+            return
+
         output = ""
         if obj.Comment != "":
             output += '(' + str(obj.Comment)+')\n'
@@ -210,15 +217,10 @@ class ObjectDrilling:
 
             output += "G80\n"
 
-        if obj.Active:
-            path = Path.Path(output)
-            obj.Path = path
-            obj.ViewObject.Visibility = True
+        path = Path.Path(output)
+        obj.Path = path
+        # obj.ViewObject.Visibility = True
 
-        else:
-            path = Path.Path("(inactive operation)")
-            obj.Path = path
-            obj.ViewObject.Visibility = False
 
     def findHeights(self, obj, bobj, hole):
         try:
