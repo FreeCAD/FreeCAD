@@ -1,10 +1,11 @@
-G17 G90
-G21
-(Default_Tool)
+G90 G80 G40 G49
+G53 G00 G17
+G20
+;Default_Tool
 M6 T2
-M3 S0.00
-(Contour)
-(Uncompensated Tool Path)
+M3 S0
+;Contour
+;Uncompensated Tool Path
 G0 Z15.00
 G90
 G17
@@ -62,7 +63,7 @@ G1 X0.00 Y0.00 Z0.00
 G1 X0.00 Y10.00 Z0.00
 G1 X10.00 Y10.00 Z0.00
 G0 Z15.00
-M05
-G00 X-1.0 Y1.0
-G17 G90
-M2
+M5 M25
+G49 H0
+G90 G80 G40 G49
+M99

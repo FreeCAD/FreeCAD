@@ -285,6 +285,11 @@ void Area::addWire(CArea &area, const TopoDS_Wire& wire,
     BRepTools_WireExplorer xp(trsf?TopoDS::Wire(
                 wire.Moved(TopLoc_Location(*trsf))):wire);
 
+    if(!xp.More()) {
+        AREA_TRACE("empty wire");
+        return;
+    }
+
     gp_Pnt p = BRep_Tool::Pnt(xp.CurrentVertex());
     ccurve.append(CVertex(Point(p.X(),p.Y())));
 
@@ -2060,13 +2065,14 @@ TopoDS_Shape Area::toShape(const CArea &area, bool fill, const gp_Trsf *trsf, in
 struct WireInfo {
     TopoDS_Wire wire;
     std::deque<gp_Pnt> points;
+    gp_Pnt pt_end;
     bool isClosed;
 
     inline const gp_Pnt &pstart() const{ 
         return points.front(); 
     }
     inline const gp_Pnt &pend() const{ 
-        return isClosed?pstart():points.back(); 
+        return isClosed?pstart():pt_end; 
     }
 };
 
@@ -2156,8 +2162,9 @@ struct GetWires {
             // We don't add in-between vertices of an open wire, because we
             // haven't implemented open wire breaking yet.
             info.points.push_back(p1);
-            if(params.direction!=Area::DirectionNone)
+            if(!info.isClosed && params.direction==Area::DirectionNone)
                 info.points.push_back(p2);
+            info.pt_end = p2;
         } else {
             // For closed wires, we are can easily rebase the wire, so we
             // discretize the wires to spatial index it in order to accelerate
@@ -2188,7 +2195,7 @@ struct GetWires {
         }
         auto it = wires.end();
         --it;
-        for(size_t i=0,count=info.points.size();i<count;++i)
+        for(size_t i=0,count=it->points.size();i<count;++i)
             rtree.insert(RValue(it,i));
         FC_DURATION_PLUS(params.bd,t);
     }
@@ -2267,7 +2274,7 @@ struct ShapeInfo{
             }
             if(!done){
                 double d1 = pt.SquareDistance(it->pstart());
-                if(myParams.direction==Area::DirectionNone) {
+                if(myParams.direction!=Area::DirectionNone) {
                     d = d1;
                     p = it->pstart();
                     is_start = true;
@@ -2430,10 +2437,13 @@ struct ShapeInfo{
         return myBestWire->wire;
     }
 
-    std::list<TopoDS_Shape> sortWires(const gp_Pnt &pstart, gp_Pnt &pend,double min_dist) {
+    std::list<TopoDS_Shape> sortWires(const gp_Pnt &pstart, gp_Pnt &pend,double min_dist, gp_Pnt *pentry) {
 
-        if(pstart.SquareDistance(myStartPt)>Precision::SquareConfusion())
+        if(myWires.empty() ||
+           pstart.SquareDistance(myStartPt)>Precision::SquareConfusion())
             nearest(pstart);
+
+        if(pentry) *pentry = myBestPt;
 
         std::list<TopoDS_Shape> wires;
         if(min_dist < 0.01)
@@ -2602,7 +2612,7 @@ struct WireOrienter {
 };
 
 std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes, 
-    const gp_Pnt *_pstart, gp_Pnt *_pend, short *_parc_plane, 
+    gp_Pnt *_pstart, gp_Pnt *_pend, double *stepdown_hint, short *_parc_plane,
     PARAM_ARGS(PARAM_FARG,AREA_PARAMS_SORT))
 {
     std::list<TopoDS_Shape> wires;
@@ -2727,7 +2737,12 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
         AREA_TRACE("bound (" << xMin<<", "<<xMax<<"), ("<<
                 yMin<<", "<<yMax<<"), ("<<zMin<<", "<<zMax<<')');
         pstart.SetCoord(xMax,yMax,zMax);
+        if(_pstart) *_pstart = pstart;
     }
+
+    gp_Pln pln;
+    double hint = 0.0;
+    bool hint_first = true;
     while(shape_list.size()) {
         AREA_TRACE("sorting " << shape_list.size() << ' ' << AREA_XYZ(pstart));
         double best_d;
@@ -2746,10 +2761,42 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
                 best_d = d;
             }
         }
-        wires.splice(wires.end(),best_it->sortWires(pstart,pend,min_dist));
+        gp_Pnt pentry;
+        wires.splice(wires.end(),best_it->sortWires(pstart,pend,min_dist,&pentry));
+        if(use_bound && _pstart) {
+            use_bound = false;
+            *_pstart = pentry;
+        }
+        if(sort_mode==SortMode2D5 && stepdown_hint) {
+            if(!best_it->myPlanar)
+                hint_first = true;
+            else if(hint_first) 
+                hint_first = false;
+            else{
+                // Calculate distance of two gp_pln. 
+                //
+                // Can't use gp_pln.Distance(), because it only calculate
+                // the distance if two plane are parallel. And it checks
+                // parallelity using tolerance gp::Resolution() which is
+                // defined as DBL_MIN (min double) in Standard_Real.hxx.
+                // Really? Is that a bug?
+                const gp_Pnt& P = pln.Position().Location();
+                const gp_Pnt& loc = best_it->myPln.Position().Location ();
+                const gp_Dir& dir = best_it->myPln.Position().Direction();
+                double d = (dir.X() * (P.X() - loc.X()) +
+                        dir.Y() * (P.Y() - loc.Y()) +
+                        dir.Z() * (P.Z() - loc.Z()));
+                if (d < 0) d = -d;
+                if(d>hint)
+                    hint = d;
+            }
+            pln = best_it->myPln;
+        }
         pstart = pend;
         shape_list.erase(best_it);
     }
+    if(stepdown_hint && hint!=0.0)
+        *stepdown_hint = hint;
     if(_pend) *_pend = pend;
     FC_DURATION_LOG(rparams.bd,"rtree build");
     FC_DURATION_LOG(rparams.qd,"rtree query");
@@ -2800,24 +2847,22 @@ static void addG0(bool verbose, Toolpath &path,
         double retraction, double resume_height, 
         double f, double &last_f)
 {
-    if(!getter || retraction-(last.*getter)() < Precision::Confusion()) {
-        addGCode(verbose,path,last,next,"G0");
-        return;
-    }
     gp_Pnt pt(last);
-    (pt.*setter)(retraction);
-    addGCode(verbose,path,last,pt,"G0");
-    last = pt;
-    pt = next;
-    (pt.*setter)(retraction);
-    addGCode(verbose,path,last,pt,"G0");
-    if(resume_height>Precision::Confusion() && 
-       resume_height+(next.*getter)() < retraction)
-    {
+    if(retraction-(last.*getter)() > Precision::Confusion()) {
+        (pt.*setter)(retraction);
+        addGCode(verbose,path,last,pt,"G0");
         last = pt;
         pt = next;
-        (pt.*setter)((next.*getter)()+resume_height);
+        (pt.*setter)(retraction);
         addGCode(verbose,path,last,pt,"G0");
+    }
+    if(resume_height>Precision::Confusion()) {
+        if(resume_height+(next.*getter)() < retraction) {
+            last = pt;
+            pt = next;
+            (pt.*setter)((next.*getter)()+resume_height);
+            addGCode(verbose,path,last,pt,"G0");
+        }
         addG1(verbose,path,pt,next,f,last_f);
     }else
         addGCode(verbose,path,pt,next,"G0");
@@ -2875,11 +2920,15 @@ void Area::setWireOrientation(TopoDS_Wire &wire, const gp_Dir &dir, bool wire_cc
 }
 
 void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
-        const gp_Pnt *pstart, gp_Pnt *pend, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_PATH))
+        const gp_Pnt *_pstart, gp_Pnt *pend, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_PATH))
 {
     std::list<TopoDS_Shape> wires;
 
-    wires = sortWires(shapes,pstart,pend,
+    gp_Pnt pstart;
+    if(_pstart) pstart = *_pstart;
+
+    double stepdown_hint = 1.0;
+    wires = sortWires(shapes,&pstart,pend,&stepdown_hint,
             PARAM_REF(PARAM_FARG,AREA_PARAMS_ARC_PLANE), 
             PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
 
@@ -2898,30 +2947,57 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         addGCode(path,"G17");
     }
     
+    AxisGetter getter;
+    AxisSetter setter;
+    switch(retract_axis) {
+    case RetractAxisX:
+        getter = &gp_Pnt::X;
+        setter = &gp_Pnt::SetX;
+        break;
+    case RetractAxisY:
+        getter = &gp_Pnt::Y;
+        setter = &gp_Pnt::SetY;
+        break;
+    default:
+        getter = &gp_Pnt::Z;
+        setter = &gp_Pnt::SetZ;
+    }
+
     threshold = fabs(threshold);
     if(threshold < Precision::Confusion())
         threshold = Precision::Confusion();
     threshold *= threshold;
-    resume_height = fabs(resume_height);
 
-    AxisGetter getter = &gp_Pnt::Z;
-    AxisSetter setter = &gp_Pnt::SetZ;
+    resume_height = fabs(resume_height);
+    if(resume_height < Precision::Confusion())
+        resume_height = stepdown_hint;
+
     retraction = fabs(retraction);
-    if(retraction>Precision::Confusion()) {
-        switch(retract_axis) {
-        case RetractAxisX:
-            getter = &gp_Pnt::X;
-            setter = &gp_Pnt::SetX;
-            break;
-        case RetractAxisY:
-            getter = &gp_Pnt::Y;
-            setter = &gp_Pnt::SetY;
-            break;
-        }
-    }
+    if(retraction < Precision::Confusion())
+        retraction = (pstart.*getter)()+resume_height;
+
+    // in case the user didn't specify feed start, sortWire() will choose one
+    // based on the bound. We'll further adjust that according to resume height
+    if(!_pstart || pstart.SquareDistance(*_pstart)>Precision::SquareConfusion())
+        (pstart.*setter)((pstart.*getter)()+resume_height);
 
     gp_Pnt plast,p;
-    if(pstart) plast = *pstart;
+    // initial vertial rapid pull up to retraction (or start Z height if higher)
+    (p.*setter)(std::max(retraction,(pstart.*getter)()));
+    addGCode(false,path,plast,p,"G0");
+    plast = p;
+    p = pstart;
+    // rapid horizontal move if start Z is below retraction
+    if(fabs((p.*getter)()-retraction) > Precision::Confusion()) {
+        (p.*setter)(retraction);
+        addGCode(false,path,plast,p,"G0");
+        plast = p;
+        p = pstart;
+    }
+    // vertial rapid down to feed start
+    addGCode(false,path,plast,p,"G0");
+
+    plast = p;
     bool first = true;
     bool arcWarned = false;
     double cur_f = 0.0; // current feed rate
@@ -2942,7 +3018,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         (pTmp.*setter)(0.0);
         (plastTmp.*setter)(0.0);
 
-        if(first||pTmp.SquareDistance(plastTmp)>threshold) 
+        if(!first && pTmp.SquareDistance(plastTmp)>threshold) 
             addG0(verbose,path,plast,p,getter,setter,retraction,resume_height,vf,cur_f);
         else
             addG1(verbose,path,plast,p,vf,cur_f);
