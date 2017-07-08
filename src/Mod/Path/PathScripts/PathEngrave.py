@@ -157,7 +157,7 @@ class ObjectPathEngrave:
 
         path = Path.Path(output)
         obj.Path = path
-        obj.ViewObject.Visibility = True
+        #obj.ViewObject.Visibility = True
 
     def buildpathocc(self, obj, wires):
         PathLog.track()

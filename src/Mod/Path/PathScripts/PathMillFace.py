@@ -319,7 +319,6 @@ class ObjectFace:
 
         path = Path.Path(commandlist)
         obj.Path = path
-        obj.ViewObject.Visibility = True
 
 
 class _ViewProviderFace:

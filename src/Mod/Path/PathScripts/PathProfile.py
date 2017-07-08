@@ -361,7 +361,6 @@ class ObjectProfile:
 
         path = Path.Path(commandlist)
         obj.Path = path
-        obj.ViewObject.Visibility = True
 
 
 class _ViewProviderProfile:
