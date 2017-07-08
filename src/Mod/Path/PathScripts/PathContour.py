@@ -36,7 +36,7 @@ from PathScripts.PathUtils import depth_params
 
 FreeCAD.setLogLevel('Path.Area', 0)
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -85,6 +85,11 @@ class ObjectContour:
 
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final Contour- good for roughing toolpath"))
 
+        obj.addProperty("App::PropertyEnumeration", "JoinType", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool moves around corners. Default=Round"))
+        obj.JoinType = ['Round', 'Square', 'Miter']  # this is the direction that the Contour runs
+        obj.addProperty("App::PropertyFloat", "MiterLimit", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum distance before a miter join is truncated"))
+        obj.setEditorMode('MiterLimit', 2)
+
         # Debug Parameters
         obj.addProperty("App::PropertyString", "AreaParams", "Path")
         obj.setEditorMode('AreaParams', 2)  # hide
@@ -103,6 +108,10 @@ class ObjectContour:
         PathLog.track('prop: {}  state: {}'.format(prop, obj.State))
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
             obj.setEditorMode(prop, 2)
+
+        obj.setEditorMode('MiterLimit', 2)
+        if obj.JoinType == 'Miter':
+            obj.setEditorMode('MiterLimit', 0)
 
     def __getstate__(self):
         PathLog.track()
@@ -147,6 +156,12 @@ class ObjectContour:
             profileparams['Offset'] = 0.0
         else:
             profileparams['Offset'] = self.radius+obj.OffsetExtra.Value
+
+        jointype = ['Round', 'Square', 'Miter']
+        profileparams['JoinType'] = jointype.index(obj.JoinType)
+
+        if obj.JoinType == 'Miter':
+            profileparams['MiterLimit'] = obj.MiterLimit
 
         heights = [i for i in self.depthparams]
         PathLog.debug('depths: {}'.format(heights))
@@ -370,6 +385,8 @@ class CommandPathContour:
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
         FreeCADGui.doCommand('obj.Direction = "CW"')
         FreeCADGui.doCommand('obj.UseComp = True')
+        FreeCADGui.doCommand('obj.JoinType = "Round"')
+        FreeCADGui.doCommand('obj.MiterLimit =' + str(0.1))
 
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('PathScripts.PathContour.ObjectContour.setDepths(obj.Proxy, obj)')
