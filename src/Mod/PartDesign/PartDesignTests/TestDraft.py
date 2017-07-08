@@ -18,33 +18,34 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
 #**************************************************************************
+import unittest
 
-#---------------------------------------------------------------------------
-# define the test cases to test the FreeCAD PartDesign module
-#---------------------------------------------------------------------------
+import FreeCAD
 
-# datum tools
-from PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane
-#from PartDesignTests.TestShapeBinder import TestShapeBinder
+class TestDraft(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestDraft")
 
-# additive/subtractive features & primitives
-from PartDesignTests.TestPad import TestPad
-from PartDesignTests.TestPocket import TestPocket
-from PartDesignTests.TestRevolve import TestRevolve
-from PartDesignTests.TestPipe import TestPipe
-from PartDesignTests.TestLoft import TestLoft
-#from PartDesignTests.TestPrimitive import TestPrimitive
+    def testDraft(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        self.Body.addObject(self.Box)
+        self.Box.Length=10.00
+        self.Box.Width=10.00
+        self.Box.Height=10.00
+        self.Doc.recompute()
+        self.Revolution = self.Doc.addObject("PartDesign::Revolution","Revolution")
+        self.Revolution.Profile = (self.Box, ["Face6"])
+        self.Revolution.ReferenceAxis = (self.Doc.Y_Axis,[""])
+        self.Revolution.Angle = 180.0
+        self.Revolution.Reversed = 1
+        self.Body.addObject(self.Revolution)
+        self.Doc.recompute()
+        # depending on if refinement is done we expect 8 or 10 faces
+        self.assertIn(len(self.Revolution.Shape.Faces), (8, 10))
 
-# transformations and boolean
-from PartDesignTests.TestMirrored import TestMirrored
-#from PartDesignTests.TestLinearPattern import TestLinearPattern
-#from PartDesignTests.TestPolarPattern import TestPolarPattern
-#from PartDesignTests.TestMultiTransform import TestMultiTransform
-#from PartDesignTests.TestBoolean import TestBoolean
-
-# dressup features
-from PartDesignTests.TestFillet import TestFillet
-from PartDesignTests.TestChamfer import TestChamfer
-from PartDesignTests.TestDraft import TestDraft
-from PartDesignTests.TestThickness import TestThickness
+    def tearDown(self):
+        #closing doc
+        FreeCAD.closeDocument("PartDesignTestDraft")
+        # print ("omit closing document for debugging")
 

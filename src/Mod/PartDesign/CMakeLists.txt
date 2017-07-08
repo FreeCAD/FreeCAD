@@ -41,6 +41,10 @@ INSTALL(
         PartDesignTests/TestLoft.py
         PartDesignTests/TestPipe.py
         PartDesignTests/TestMirrored.py
+        PartDesignTests/TestFillet.py
+        PartDesignTests/TestChamfer.py
+        PartDesignTests/TestDraft.py
+        PartDesignTests/TestThickness.py
     DESTINATION
         Mod/PartDesign/PartDesignTests
        )

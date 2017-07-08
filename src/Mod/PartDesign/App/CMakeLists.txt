@@ -161,6 +161,10 @@ SET(PartDesign_Scripts
     PartDesignTests/TestLoft.py
     PartDesignTests/TestPipe.py
     PartDesignTests/TestMirrored.py
+    PartDesignTests/TestFillet.py
+    PartDesignTests/TestChamfer.py
+    PartDesignTests/TestDraft.py
+    PartDesignTests/TestThickness.py
     fcgear/__init__.py
     fcgear/fcgear.py
     fcgear/fcgeardialog.py
