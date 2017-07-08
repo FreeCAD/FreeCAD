@@ -37,7 +37,7 @@ from PySide import QtCore, QtGui
 """Dogbone Dressup object and FreeCAD command"""
 
 LOG_MODULE = PathLog.thisModule()
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+#PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -774,7 +774,7 @@ class ObjectDressup:
         path = Path.Path(commands)
         obj.Path = path
 
-    def setup(self, obj, initial = False):
+    def setup(self, obj, initial):
         PathLog.info("Here we go ... ")
         if initial:
             if hasattr(obj.Base, "BoneBlacklist"):
@@ -782,19 +782,12 @@ class ObjectDressup:
                 obj.Side = obj.Base.Side
             else:
                 # otherwise dogbones are opposite of the base path's side
-                if hasattr(obj.Base, 'Side'):
-                    if obj.Base.Side == Side.Left:
-                        obj.Side = Side.Right
-                    elif obj.Base.Side == Side.Right:
-                        obj.Side = Side.Left
-                    else:
-                        # This will cause an error, which is fine for now 'cause I don't know what to do here
-                        obj.Side = 'On'
-                else:
-                    if obj.Base.Direction == 'CW':
-                        obj.Side = Side.Left
-                    else:
-                        obj.Side = Side.Right
+                side = Side.Right
+                if hasattr(obj.Base, 'Side') and obj.Base.Side == 'Inside':
+                    side = Side.Left
+                if obj.Base.Direction == 'CCW':
+                    side = Side.oppositeOf(side)
+                obj.Side = side
 
         self.toolRadius = 5
         toolLoad = obj.ToolController
