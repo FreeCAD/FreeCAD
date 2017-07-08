@@ -61,65 +61,75 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 Gui::ToolBarItem* Workbench::setupToolBars() const
 {
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
-    Gui::ToolBarItem* fem = new Gui::ToolBarItem(root);
-    fem->setCommand("FEM");
-    *fem << "FEM_FEMMesh2Mesh"
-         << "FEM_Analysis"
-         << "FEM_SolverCalculix"
-         // << "FEM_SolverZ88"
-         << "Separator"
-         << "FEM_MeshNetgenFromShape"
-         << "FEM_MeshGmshFromShape"
-         << "FEM_MeshRegion"
-         << "FEM_MeshGroup"
-         //<< "FEM_CreateNodesSet"
-         << "Separator"
-         << "FEM_MaterialSolid"
-         << "FEM_MaterialFluid"
-         << "FEM_MaterialMechanicalNonlinear"
-         << "FEM_ElementGeometry1D"
-         << "FEM_ElementGeometry2D"
-         << "FEM_ElementFluid1D"
-         << "Separator"
-         << "FEM_ConstraintFixed"
-         << "FEM_ConstraintDisplacement"
-         << "FEM_ConstraintPlaneRotation"
-         << "FEM_ConstraintContact"
-         << "FEM_ConstraintTransform"
-         << "Separator"
-         << "FEM_ConstraintSelfWeight"
-         << "FEM_ConstraintForce"
-         << "FEM_ConstraintPressure"
-         //<< "Separator"
-         //<< "FEM_ConstraintBearing"
-         //<< "FEM_ConstraintGear"
-         //<< "FEM_ConstraintPulley"
-         //<< "FEM_ConstraintFluidBoundary"
-         << "Separator"
-         << "FEM_ConstraintTemperature"
-         << "FEM_ConstraintHeatflux"
-         << "FEM_ConstraintInitialTemperature"
-         << "Separator"
-         << "FEM_SolverControl"
-         << "FEM_SolverRun"
-         << "Separator"
-         << "FEM_ResultsPurge"
-         << "FEM_ResultShow";
+    Gui::ToolBarItem* model = new Gui::ToolBarItem(root);
+    model->setCommand("Model");
+    *model << "FEM_Analysis"
+           << "Separator"
+           << "FEM_MaterialSolid"
+           << "FEM_MaterialFluid"
+           << "FEM_MaterialMechanicalNonlinear"
+           << "FEM_ElementGeometry1D"
+           << "FEM_ElementGeometry2D"
+           << "FEM_ElementFluid1D";
+
+    Gui::ToolBarItem* mech = new Gui::ToolBarItem(root);
+    mech->setCommand("Mechanical Constraints");
+    *mech << "FEM_ConstraintFixed"
+          << "FEM_ConstraintDisplacement"
+          << "FEM_ConstraintPlaneRotation"
+          << "FEM_ConstraintContact"
+          << "FEM_ConstraintTransform"
+          << "Separator"
+          << "FEM_ConstraintForce"
+          << "FEM_ConstraintPressure"
+          << "FEM_ConstraintSelfWeight";
+
+    Gui::ToolBarItem* thermal = new Gui::ToolBarItem(root);
+    thermal->setCommand("Thermal Constraints");
+    *thermal << "FEM_ConstraintInitialTemperature"
+             << "Separator"
+             << "FEM_ConstraintTemperature"
+             << "FEM_ConstraintHeatflux";
+
+     Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
+     mesh->setCommand("Mesh");
+     *mesh << "FEM_MeshNetgenFromShape"
+           << "FEM_MeshGmshFromShape"
+           << "Separator"
+           << "FEM_MeshRegion"
+           << "FEM_MeshGroup"
+           << "Separator"
+           << "FEM_FEMMesh2Mesh";
+
+    Gui::ToolBarItem* fluid = new Gui::ToolBarItem(root);
+    fluid->setCommand("Fluid Constraints");
+    *fluid << "FEM_ConstraintFluidBoundary";
+
+     Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
+     solve->setCommand("Solve");
+     *solve << "FEM_SolverCalculix"
+           << "Separator"
+           << "FEM_SolverControl"
+           << "FEM_SolverRun";
+
+     Gui::ToolBarItem* results = new Gui::ToolBarItem(root);
+     results->setCommand("Results");
+     *results << "FEM_ResultsPurge"
+              << "FEM_ResultShow";
 
 #ifdef FC_USE_VTK
-     Gui::ToolBarItem* post = new Gui::ToolBarItem(root);
-     post->setCommand("Post Processing");
-     *post  << "FEM_PostApplyChanges"
-            << "FEM_PostPipelineFromResult"
-            << "Separator"
-            << "FEM_PostCreateClipFilter"
-            << "FEM_PostCreateScalarClipFilter"
-            << "FEM_PostCreateCutFilter"
-            << "FEM_PostCreateWarpVectorFilter"
-            << "FEM_PostCreateDataAlongLineFilter"
-            << "FEM_PostCreateLinearizedStressesFilter"
-            << "Separator"
-            << "FEM_PostCreateFunctions";
+     *results << "Separator"
+              << "FEM_PostApplyChanges"
+              << "FEM_PostPipelineFromResult"
+              << "Separator"
+              << "FEM_PostCreateClipFilter"
+              << "FEM_PostCreateScalarClipFilter"
+              << "FEM_PostCreateCutFilter"
+              << "FEM_PostCreateWarpVectorFilter"
+              << "FEM_PostCreateDataAlongLineFilter"
+              << "FEM_PostCreateLinearizedStressesFilter"
+              << "Separator"
+              << "FEM_PostCreateFunctions";
 #endif
 
     return root;
