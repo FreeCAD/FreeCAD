@@ -190,7 +190,7 @@ class ObjectProfile:
         params = {'shapes': shapelist,
                   'feedrate': self.horizFeed,
                   'feedrate_v': self.vertFeed,
-                  'verbose': False,
+                  'verbose': True,
                   'resume_height': obj.StepDown.Value,
                   'retraction': obj.ClearanceHeight.Value}
 
@@ -442,7 +442,7 @@ class CommandPathProfile:
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        #FreeCAD.ActiveDocument.recompute()
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
 
