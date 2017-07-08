@@ -436,6 +436,14 @@ def GetJobs(jobname=None):
                     jobs.append(o)
     return jobs
 
+def addObjectToJob(obj, job):
+    '''
+    addObjectToJob(obj, job) ... adds object to given job.
+    '''
+    g = job.Group
+    g.append(obj)
+    job.Group = g
+    return job
 
 def addToJob(obj, jobname=None):
     '''adds a path object to a job
@@ -469,9 +477,7 @@ def addToJob(obj, jobname=None):
                 job = [i for i in jobs if i.Name == form.cboProject.currentText()][0]
 
     if obj:
-        g = job.Group
-        g.append(obj)
-        job.Group = g
+        addObjectToJob(obj, job)
     return job
 
 
