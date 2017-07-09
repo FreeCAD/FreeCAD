@@ -74,6 +74,7 @@ generate_from_xml(PartFeaturePy)
 generate_from_xml(AttachExtensionPy)
 generate_from_xml(Part2DObjectPy)
 generate_from_xml(AttachEnginePy)
+generate_from_xml(TopoHistoryPy)
 generate_from_xml(TopoShapePy)
 generate_from_xml(TopoShapeCompoundPy)
 generate_from_xml(TopoShapeCompSolidPy)
@@ -255,6 +256,8 @@ SET(Python_SRCS
     Part2DObjectPyImp.cpp
     AttachEnginePy.xml
     AttachEnginePyImp.cpp
+    TopoHistoryPy.xml
+    TopoHistoryPyImp.cpp
     TopoShapePy.xml
     TopoShapePyImp.cpp
     TopoShapeCompSolidPy.xml
