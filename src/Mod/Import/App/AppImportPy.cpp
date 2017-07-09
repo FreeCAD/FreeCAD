@@ -221,6 +221,7 @@ private:
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
             bool keepExplicitPlacement = list.size() > 1;
+            
             Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
 
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -230,7 +231,9 @@ private:
                     if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                         Part::Feature* part = static_cast<Part::Feature*>(obj);
                         std::vector<App::Color> colors;
-                        ocaf.saveShape(part, colors);
+			std::vector <TDF_Label> hierarchical_label;
+			std::vector <TopLoc_Location> hierarchical_loc;
+                        ocaf.saveShape(part, colors, hierarchical_label, hierarchical_loc);
                     }
                     else {
                         Base::Console().Message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
@@ -246,7 +249,9 @@ private:
                             Part::Feature* part = static_cast<Part::Feature*>(obj);
                             App::PropertyColorList colors;
                             colors.setPyObject(item1.ptr());
-                            ocaf.saveShape(part, colors.getValues());
+			    std::vector <TDF_Label> hierarchical_label;
+                            std::vector <TopLoc_Location> hierarchical_loc;
+                            ocaf.saveShape(part, colors.getValues(), hierarchical_label, hierarchical_loc);
                         }
                         else {
                             Base::Console().Message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
