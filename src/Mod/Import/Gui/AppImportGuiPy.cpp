@@ -431,6 +431,47 @@ private:
 
         return Py::None();
     }
+    int export_app_object(App::DocumentObject* obj, Import::ExportOCAF ocaf, int root_node,
+                          std::vector <TDF_Label>& hierarchical_label,
+                          std::vector <TopLoc_Location>& hierarchical_loc)
+    {
+        std::vector <int> local_label;
+        int root_id;
+        int return_label;
+
+
+        if (obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
+            App::Part* part = static_cast<App::Part*>(obj);
+            // I shall recusrively select the elements and call back
+            std::vector<App::DocumentObject*> entries = part->Group.getValues();
+            std::vector<App::DocumentObject*>::iterator it;
+
+            for ( it = entries.begin(); it != entries.end(); it++ ) {
+                int new_label;
+                new_label=export_app_object((*it),ocaf,new_label,hierarchical_label,hierarchical_loc);
+                local_label.push_back(new_label);
+            }
+            ocaf.createNode(part,root_id,hierarchical_label,hierarchical_loc);
+            std::vector<int>::iterator label_it;
+            for ( label_it = local_label.begin(); label_it != local_label.end(); label_it++ ) {
+                ocaf.push_node(root_id,(*label_it), hierarchical_label,hierarchical_loc);
+            }
+            return_label=root_id;
+       }
+       if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            Part::Feature* part = static_cast<Part::Feature*>(obj);
+            std::vector<App::Color> colors;
+            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
+            if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
+                   colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
+                   if (colors.empty())
+                         colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
+            }
+            return_label=ocaf.saveShape(part, colors,hierarchical_label,hierarchical_loc);
+       }
+       return(return_label);
+    }
+
     Py::Object exporter(const Py::Tuple& args)
     {
         PyObject* object;
@@ -451,24 +492,17 @@ private:
             bool keepExplicitPlacement = list.size() > 1;
             Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
 
+            // That stuff is exporting a list of selected oject into FreeCAD Tree
+
+            int label=-1;
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 PyObject* item = (*it).ptr();
                 if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                    if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                        Part::Feature* part = static_cast<Part::Feature*>(obj);
-                        std::vector<App::Color> colors;
-                        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-                        if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-                            colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
-                            if (colors.empty())
-                                colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
-                        }
-                        ocaf.saveShape(part, colors);
-                    }
-                    else {
-                        Base::Console().Message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
-                    }
+                    std::vector <TDF_Label> hierarchical_label;
+                    std::vector <TopLoc_Location> hierarchical_loc;
+                    label=export_app_object(obj,ocaf,label, hierarchical_label, hierarchical_loc);
+                    ocaf.ComputeDoc(label);
                 }
             }
 
