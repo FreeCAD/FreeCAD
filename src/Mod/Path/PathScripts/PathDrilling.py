@@ -75,6 +75,8 @@ class ObjectDrilling:
         obj.addProperty("App::PropertyFloat", "DwellTime", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"))
         obj.addProperty("App::PropertyBool", "DwellEnabled", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable dwell"))
         obj.addProperty("App::PropertyBool", "AddTipLength", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate the tip length and subtract from final depth"))
+        obj.addProperty("App::PropertyEnumeration", "ReturnLevel", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G98"))
+        obj.ReturnLevel = ['G98', 'G99']  # this is the direction that the Contour runs
 
         # Heights & Depths
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
@@ -193,7 +195,7 @@ class ObjectDrilling:
                 locations.append({'x': obj.Positions[i].x, 'y': obj.Positions[i].y})
         if len(locations) > 0:
             locations = PathUtils.sort_jobs(locations, ['x', 'y'])
-            output += "G90 G98\n"
+            output += "G90 " + obj.ReturnLevel + "\n"
             # rapid to clearance height
             output += "G0 Z" + str(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
             # rapid to first hole location, with spindle still retracted:
