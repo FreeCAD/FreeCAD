@@ -256,7 +256,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for static analysis...')
-        ret = compare_stats(fea, static_expected_values)
+        ret = compare_stats(fea, static_expected_values, ["U1", "U2", "U3", "Uabs", "Sabs"])
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for static analysis to {}...'.format(static_save_fc_file))
@@ -304,7 +304,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for frequency analysis...')
-        ret = compare_stats(fea, frequency_expected_values)
+        ret = compare_stats(fea, frequency_expected_values, ["U1", "U2", "U3", "Uabs", "Sabs"])
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for frequency analysis to {}...'.format(frequency_save_fc_file))
@@ -432,7 +432,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for thermomech analysis...')
-        ret = compare_stats(fea, thermomech_expected_values)
+        ret = compare_stats(fea, thermomech_expected_values, ["U1", "U2", "U3", "Uabs", "Sabs"])
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for thermomech analysis to {}...'.format(thermomech_save_fc_file))
@@ -747,7 +747,11 @@ def compare_stats(fea, stat_file=None, loc_stat_types=None):
         loc_stat_types = stat_types
     if stat_file:
         sf = open(stat_file, 'r')
-        sf_content = sf.readlines()
+        sf_content = []
+        for l in sf.readlines():
+            for st in loc_stat_types:
+                if l.startswith(st):
+                    sf_content.append(l)
         sf.close()
         sf_content = force_unix_line_ends(sf_content)
     stats = []
