@@ -217,7 +217,10 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
 
             // This is probably an Assembly let's try to create a Compound with the name
             for (TDF_ChildIterator it(label); it.More(); it.Next()) {
-                loadShapes(it.Value(), part_loc, part_name, asm_name, isRef, localValue);
+		if ( isRef)
+                        loadShapes(it.Value(), part_loc, part_name, asm_name, false, localValue);
+                else
+                        loadShapes(it.Value(), part_loc, part_name, asm_name, isRef, localValue);
             }
 
             if (!localValue.empty()) {
@@ -225,6 +228,22 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
                     App::Part *pcPart = NULL;
                     pcPart = static_cast<App::Part*>(doc->addObject("App::Part",asm_name.c_str()));
                     pcPart->addObjects(localValue);
+
+		    // STEP reader is now a hierarchical reader. Node and leaf must have
+		    // there local placement updated and relative to the STEP file content
+		    // standard FreeCAD placement was absolute we are now moving to relative
+
+                    gp_Trsf trf;
+                    Base::Matrix4D mtrx;
+                    if ( part_loc.IsIdentity() )
+                        trf = part_loc.Transformation();
+                    else
+                        trf = TopLoc_Location(part_loc.FirstDatum()).Transformation();
+                    Part::TopoShape::convertToMatrix(trf, mtrx);
+                    Base::Placement pl;
+                    pl.fromMatrix(mtrx);
+                    pcPart->Placement.setValue(pl);
+
                     lValue.push_back(pcPart);
                 }
             }
@@ -271,6 +290,17 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
             // Just need to add it to a Part::Feature and push it to lValue
             if (!comp.IsNull() && (ctSolids||ctShells)) {
                 Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
+		// Let's allocate the relative placement of the Compound from the STEP file
+                gp_Trsf trf;
+                Base::Matrix4D mtrx;
+                if ( loc.IsIdentity() )
+                     trf = loc.Transformation();
+                else
+                     trf = TopLoc_Location(loc.FirstDatum()).Transformation();
+                Part::TopoShape::convertToMatrix(trf, mtrx);
+                Base::Placement pl;
+                pl.fromMatrix(mtrx);
+                part->Placement.setValue(pl);
                 if (!loc.IsIdentity())
                     part->Shape.setValue(comp.Moved(loc));
                 else
@@ -294,6 +324,19 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
             // localValue contain the objects that  must added to the local Part
             // We must add the PartOrigin and the Part itself
             pcPart->addObjects(localValue);
+	    // Let's compute relative placement of the Part
+            gp_Trsf trf;
+            Base::Matrix4D mtrx;
+            // trf = loc.Transformation();
+            // trf = TopLoc_Location(loc.FirstDatum()).Transformation();
+            if ( loc.IsIdentity() )
+                 trf = loc.Transformation();
+            else
+                 trf = TopLoc_Location(loc.FirstDatum()).Transformation();
+            Part::TopoShape::convertToMatrix(trf, mtrx);
+            Base::Placement pl;
+            pl.fromMatrix(mtrx);
+            pcPart->Placement.setValue(pl);
             lValue.push_back(pcPart);
         }
 
@@ -311,7 +354,7 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
     Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
 
     if (!loc.IsIdentity())
-        part->Shape.setValue(aShape.Moved(loc));
+	part->Shape.setValue(aShape.Moved(TopLoc_Location(loc.FirstDatum())));
     else
         part->Shape.setValue(aShape);
 
