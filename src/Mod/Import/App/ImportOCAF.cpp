@@ -26,6 +26,22 @@
 # define WNT // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
+# include <gp_Trsf.hxx>
+# include <gp_Ax1.hxx>
+# include <BRepBuilderAPI_MakeShape.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepAlgoAPI_Common.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <Standard_Failure.hxx>
+# include <TopoDS_Face.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pln.hxx> // for Precision::Confusion()
+# include <Bnd_Box.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
 # include <climits>
 # include <Standard_Version.hxx>
 # include <BRep_Builder.hxx>
@@ -462,16 +478,55 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 
     if (keepExplicitPlacement) {
-        rootLabel = aShapeTool->NewShape();
-        TDataStd_Name::Set(rootLabel, "ASSEMBLY");
-        //Interface_Static::SetIVal("write.step.assembly",1);
+        // rootLabel = aShapeTool->NewShape();
+        // TDataStd_Name::Set(rootLabel, "ASSEMBLY");
+        Interface_Static::SetIVal("write.step.assembly",1);
     }
     else {
         rootLabel = TDF_TagSource::NewChild(pDoc->Main());
     }
 }
 
-void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& colors)
+
+// This function create an Assembly node into an XCAF document with it's relative placement information
+
+void ExportOCAF::createNode(App::Part* part, int& root_id, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc)
+{
+        TDF_Label shapeLabel = aShapeTool->NewShape();
+        TDF_Label return_value;
+        Handle(TDataStd_Name) N;
+        TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), 1));
+        Base::Placement pl = part->Placement.getValue();
+        Base::Rotation rot(pl.getRotation());
+        Base::Vector3d axis;
+        double angle;
+        rot.getValue(axis, angle);
+        gp_Trsf trf;
+        trf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(axis.x, axis.y, axis.z)), angle);
+        trf.SetTranslationPart(gp_Vec(pl.getPosition().x,pl.getPosition().y,pl.getPosition().z));
+        TopLoc_Location MyLoc = TopLoc_Location(trf);
+        XCAFDoc_Location::Set(shapeLabel,TopLoc_Location(trf));
+
+        hierarchical_label.push_back(shapeLabel);
+        hierarchical_loc.push_back(MyLoc);
+        root_id=hierarchical_label.size();
+}
+
+void ExportOCAF::ComputeDoc(int labels)
+{
+        puts("Recomputing the Doc");
+        // XCAFDoc_DocumentTool::ShapeTool(labels)->ComputeShapes(labels);
+        puts(" ========================================================= ");
+        // XCAFDoc_DocumentTool::ShapeTool(labels)->Dump(std::cerr,true);
+        puts(" ========================================================= ");
+        aShapeTool->Dump(std::cerr);
+}
+
+
+
+
+
+int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& colors, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc)
 {
     const TopoDS_Shape& shape = part->Shape.getValue();
     if (shape.IsNull())
@@ -479,6 +534,18 @@ void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& c
 
     TopoDS_Shape baseShape;
     TopLoc_Location aLoc;
+    Handle(TDataStd_Name) N;
+
+    Base::Placement pl = part->Placement.getValue();
+    Base::Rotation rot(pl.getRotation());
+    Base::Vector3d axis;
+    double angle;
+    rot.getValue(axis, angle);
+    gp_Trsf trf;
+    trf.SetRotation(gp_Ax1(gp_Pnt(0.,0.,0.), gp_Dir(axis.x, axis.y, axis.z)), angle);
+    trf.SetTranslationPart(gp_Vec(pl.getPosition().x,pl.getPosition().y,pl.getPosition().z));
+    TopLoc_Location MyLoc = TopLoc_Location(trf);
+
     if (keepExplicitPlacement) {
         // http://www.opencascade.org/org/forum/thread_18813/?forum=3
         aLoc = shape.Location();
@@ -541,6 +608,23 @@ void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& c
         col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
         aColorTool->SetColor(shapeLabel, col, XCAFDoc_ColorGen);
     }
+    hierarchical_label.push_back(shapeLabel);
+    hierarchical_loc.push_back(MyLoc);
+    return(hierarchical_label.size());
+
+}
+
+// This function is moving a "standard" node into an Assembly node within an XCAF doc
+
+void ExportOCAF::push_node(int root_id, int node_id, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc)
+{
+        TDF_Label root;
+        TDF_Label node;
+        root = hierarchical_label.at(root_id-1);
+        node = hierarchical_label.at(node_id-1);
+
+        XCAFDoc_DocumentTool::ShapeTool(root)->AddComponent(root, node, hierarchical_loc.at(node_id-1));
+
 }
 
 // ----------------------------------------------------------------------------
