@@ -530,7 +530,7 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
 {
     const TopoDS_Shape& shape = part->Shape.getValue();
     if (shape.IsNull())
-        return;
+        return -1;
 
     TopoDS_Shape baseShape;
     TopLoc_Location aLoc;
@@ -560,11 +560,11 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
     aShapeTool->SetShape(shapeLabel, baseShape);
 
     TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), 1));
-
+/*
     if (keepExplicitPlacement) {
         aShapeTool->AddComponent(rootLabel, shapeLabel, aLoc);
     }
-
+*/
     // Add color information
     Quantity_Color col;
 
