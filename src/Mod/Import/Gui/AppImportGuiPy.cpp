@@ -431,7 +431,7 @@ private:
 
         return Py::None();
     }
-    int export_app_object(App::DocumentObject* obj, Import::ExportOCAF ocaf, int root_node,
+    int export_app_object(App::DocumentObject* obj, Import::ExportOCAF ocaf, 
                           std::vector <TDF_Label>& hierarchical_label,
                           std::vector <TopLoc_Location>& hierarchical_loc)
     {
@@ -447,8 +447,8 @@ private:
             std::vector<App::DocumentObject*>::iterator it;
 
             for ( it = entries.begin(); it != entries.end(); it++ ) {
-                int new_label;
-                new_label=export_app_object((*it),ocaf,new_label,hierarchical_label,hierarchical_loc);
+                int new_label=0;
+                new_label=export_app_object((*it),ocaf,hierarchical_label,hierarchical_loc);
                 local_label.push_back(new_label);
             }
             ocaf.createNode(part,root_id,hierarchical_label,hierarchical_loc);
@@ -502,7 +502,7 @@ private:
                     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                     std::vector <TDF_Label> hierarchical_label;
                     std::vector <TopLoc_Location> hierarchical_loc;
-                    label=export_app_object(obj,ocaf,label, hierarchical_label, hierarchical_loc);
+                    label=export_app_object(obj,ocaf, hierarchical_label, hierarchical_loc);
                 }
             }
 
