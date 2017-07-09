@@ -50,6 +50,9 @@ class PartExport TopoHistory : public Base::BaseClass
 
 public:
     TopoHistory();
+    TopoHistory(const TopoHistory&);
+
+    void operator = (const TopoHistory&);
 
     TopTools_ListOfShape modified(const TopoShape&);
     TopTools_ListOfShape generated(const TopoShape&);

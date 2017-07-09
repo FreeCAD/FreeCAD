@@ -248,7 +248,7 @@ TopoShape::TopoShape(const TopoDS_Shape& shape)
 }
 
 TopoShape::TopoShape(const TopoShape& shape)
-  : _Shape(shape._Shape)
+  : history(shape.history), _Shape(shape._Shape)
 {
 }
 
@@ -404,6 +404,7 @@ PyObject * TopoShape::getPySubShape(const char* Type) const
 void TopoShape::operator = (const TopoShape& sh)
 {
     if (this != &sh) {
+        this->history = sh.history;
         this->_Shape = sh._Shape;
     }
 }

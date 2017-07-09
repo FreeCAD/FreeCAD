@@ -704,6 +704,12 @@ infos contains additional info on the solutions. It is a list of tuples:
       </Documentation>
       <Parameter Name="ShapeType" Type="String"/>
     </Attribute>
+    <Attribute Name="History" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the history of the shape, if stored.</UserDocu>
+      </Documentation>
+      <Parameter Name="History" Type="Object" />
+    </Attribute>
     <Attribute Name="Orientation" ReadOnly="false">
       <Documentation>
         <UserDocu>Returns the orientation of the shape.</UserDocu>

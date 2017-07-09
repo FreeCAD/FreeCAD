@@ -30,6 +30,8 @@
 #include <TopTools_ListOfShape.hxx>
 #include <App/ComplexGeoData.h>
 
+#include "TopoHistory.h"
+
 class gp_Ax1;
 class gp_Ax2;
 class gp_Vec;
@@ -249,6 +251,7 @@ public:
                   const std::vector<Facet> &faces, float Accuracy=1.0e-06);
     //@}
 
+    TopoHistory history;
 private:
     TopoDS_Shape _Shape;
 };

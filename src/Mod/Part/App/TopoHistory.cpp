@@ -33,7 +33,18 @@ TYPESYSTEM_SOURCE(Part::TopoHistory, Base::BaseClass);
 
 TopoHistory::TopoHistory()
 {
+}
 
+TopoHistory::TopoHistory(const TopoHistory &history)
+    : modShapeMaker(history.modShapeMaker)
+{
+}
+
+void TopoHistory::operator =(const TopoHistory &history)
+{
+    if (this != &history) {
+        this->modShapeMaker = history.modShapeMaker;
+    }
 }
 
 TopTools_ListOfShape TopoHistory::modified(const TopoShape &oldShape)
