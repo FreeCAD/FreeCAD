@@ -262,7 +262,7 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
 
     if (!aShape.IsNull() && aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
-        int ctSolids = 0, ctShells = 0;
+        int ctSolids = 0, ctShells = 0, ctVertices = 0, ctEdges = 0;
         std::vector<App::DocumentObject *> localValue;
         App::Part *pcPart = NULL;
 
@@ -285,10 +285,24 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
                     builder.Add(comp, sh);
                 }
             }
+	
+	    for (xp.Init(aShape, TopAbs_EDGE); xp.More(); xp.Next(), ctEdges++) {
+                const TopoDS_Shape& sh = xp.Current();
+                if (!sh.IsNull()) {
+                    builder.Add(comp, sh);
+                }
+            }
+
+	    for (xp.Init(aShape, TopAbs_VERTEX); xp.More(); xp.Next(), ctVertices++) {
+                const TopoDS_Shape& sh = xp.Current();
+                if (!sh.IsNull()) {
+                    builder.Add(comp, sh);
+                }
+            }
 
             // Ok we got a Compound which is computed
             // Just need to add it to a Part::Feature and push it to lValue
-            if (!comp.IsNull() && (ctSolids||ctShells)) {
+            if (!comp.IsNull() && (ctSolids||ctShells||ctEdges||ctVertices)) {
                 Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
 		// Let's allocate the relative placement of the Compound from the STEP file
                 gp_Trsf trf;
