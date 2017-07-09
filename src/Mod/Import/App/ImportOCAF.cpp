@@ -512,20 +512,6 @@ void ExportOCAF::createNode(App::Part* part, int& root_id, std::vector <TDF_Labe
         root_id=hierarchical_label.size();
 }
 
-void ExportOCAF::ComputeDoc(int labels)
-{
-        puts("Recomputing the Doc");
-        // XCAFDoc_DocumentTool::ShapeTool(labels)->ComputeShapes(labels);
-        puts(" ========================================================= ");
-        // XCAFDoc_DocumentTool::ShapeTool(labels)->Dump(std::cerr,true);
-        puts(" ========================================================= ");
-        aShapeTool->Dump(std::cerr);
-}
-
-
-
-
-
 int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& colors, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc)
 {
     const TopoDS_Shape& shape = part->Shape.getValue();
@@ -584,8 +570,8 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
             if (face_index.find(index) != face_index.end()) {
                 face_index.erase(index);
 
-                //TDF_Label faceLabel = aShapeTool->AddSubShape(shapeLabel, xp.Current());
-                TDF_Label faceLabel= TDF_TagSource::NewChild(shapeLabel);
+                TDF_Label faceLabel = aShapeTool->AddSubShape(shapeLabel, xp.Current());
+                // TDF_Label faceLabel= TDF_TagSource::NewChild(shapeLabel);
                 aShapeTool->SetShape(faceLabel, xp.Current());
 
                 const App::Color& color = colors[index-1];

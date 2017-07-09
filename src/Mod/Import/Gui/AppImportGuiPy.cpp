@@ -490,6 +490,7 @@ private:
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
             bool keepExplicitPlacement = list.size() > 1;
+	    keepExplicitPlacement = Standard_True;
             Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
 
             // That stuff is exporting a list of selected oject into FreeCAD Tree
@@ -502,7 +503,6 @@ private:
                     std::vector <TDF_Label> hierarchical_label;
                     std::vector <TopLoc_Location> hierarchical_loc;
                     label=export_app_object(obj,ocaf,label, hierarchical_label, hierarchical_loc);
-                    ocaf.ComputeDoc(label);
                 }
             }
 
