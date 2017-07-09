@@ -79,7 +79,6 @@ class ImportExport ExportOCAF
 {
 public:
     void createNode(App::Part* part, int& root_it, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc);
-    void ComputeDoc(int labels);
     ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement);
     int saveShape(Part::Feature* part, const std::vector<App::Color>&, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc);
     void push_node(int root, int node, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc);
