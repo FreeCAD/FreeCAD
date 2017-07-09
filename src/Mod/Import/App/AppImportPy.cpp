@@ -221,7 +221,7 @@ private:
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
             bool keepExplicitPlacement = list.size() > 1;
-            
+            keepExplicitPlacement = Standard_True;
             Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
 
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
