@@ -200,10 +200,16 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
         if (aShapeTool->IsSimpleShape(label) && (isRef || aShapeTool->IsFree(label))) {
             if (!asm_name.empty())
                 part_name = asm_name;
+
+	    // TODO; The merge parameter (last one from createShape) should become an Importer/Exporter 
+	    // option within the FreeCAD preference menu
+	    // Currently it is merging STEP Compound Shape into a single Shape Part::Feature which
+	    // is an openCascade computed Compound
+
             if (isRef)
                 createShape(label, loc, part_name, lValue, true);
             else
-                createShape(label, part_loc, part_name, localValue, false);
+                createShape(label, part_loc, part_name, localValue, true);
         }
         else {
             if (aShapeTool->IsSimpleShape(label)) {
@@ -260,6 +266,8 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
     task_group g;
 #endif
 
+    App::Color color(0.8f,0.8f,0.8f);
+    std::vector<App::Color> colors;
     if (!aShape.IsNull() && aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
         int ctSolids = 0, ctShells = 0, ctVertices = 0, ctEdges = 0;
@@ -267,11 +275,36 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
         App::Part *pcPart = NULL;
 
         if (merge) {
-            // We should do that only if there is more than a single shape inside!
+
+            // We should do that only if there is more than a single shape inside
             // Computing Compounds takes time
-            BRep_Builder builder;
+	    // We must keep track of the Color. If there is more than 1 Color into
+	    // a STEP Compound then the Merge can't be done and we cancel the operation
+
+	    BRep_Builder builder;
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
+  	    Quantity_Color aColor;
+            App::Color color(0.8f,0.8f,0.8f);
+            std::vector<App::Color> colors;
+            for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
+	       Quantity_Color aColor;
+	       App::Color color(0.8f,0.8f,0.8f);
+	       if (aColorTool->GetColor(xp.Current(), XCAFDoc_ColorGen, aColor) ||
+	        aColorTool->GetColor(xp.Current(), XCAFDoc_ColorSurf, aColor) ||
+	        aColorTool->GetColor(xp.Current(), XCAFDoc_ColorCurv, aColor)) {
+	        color.r = (float)aColor.Red();
+	        color.g = (float)aColor.Green();
+	        color.b = (float)aColor.Blue();
+	        colors.push_back(color);
+	      }
+	    }
+	    if ( colors.size() > 1 )
+	    {
+		createShape(label, loc, name, lValue, false);
+		return;
+  	    }
+
             for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
                 const TopoDS_Shape& sh = xp.Current();
                 if (!sh.IsNull()) {
@@ -334,15 +367,15 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
 
         if (!localValue.empty() && !merge) {
             pcPart = static_cast<App::Part*>(doc->addObject("App::Part",name.c_str()));
-
+	
             // localValue contain the objects that  must added to the local Part
             // We must add the PartOrigin and the Part itself
             pcPart->addObjects(localValue);
+	   
 	    // Let's compute relative placement of the Part
+/*
             gp_Trsf trf;
             Base::Matrix4D mtrx;
-            // trf = loc.Transformation();
-            // trf = TopLoc_Location(loc.FirstDatum()).Transformation();
             if ( loc.IsIdentity() )
                  trf = loc.Transformation();
             else
@@ -351,6 +384,7 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
             Base::Placement pl;
             pl.fromMatrix(mtrx);
             pcPart->Placement.setValue(pl);
+*/
             lValue.push_back(pcPart);
         }
 
@@ -368,7 +402,8 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
     Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
 
     if (!loc.IsIdentity())
-	part->Shape.setValue(aShape.Moved(TopLoc_Location(loc.FirstDatum())));
+	// part->Shape.setValue(aShape.Moved(TopLoc_Location(loc.FirstDatum())));
+	part->Shape.setValue(aShape.Moved(loc));
     else
         part->Shape.setValue(aShape);
 
