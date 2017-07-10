@@ -378,7 +378,7 @@ private:
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
                 TechDrawGeometry::GeometryObject* go = dvp->getGeometryObject();
-                //visibile group begin "<g ... >"
+                //visible group begin "<g ... >"
                 ss << grpHead1;
                 double thick = dvp->LineWidth.getValue();
                 ss << thick;
