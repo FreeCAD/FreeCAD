@@ -68,7 +68,7 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
 
 std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren(void) const {
  
-    //we must be carefull which objects to claim, as there might be stacked relations inside the coordinate system,
+    //we must be careful which objects to claim, as there might be stacked relations inside the coordinate system,
     //like pad/sketch
     auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
     if(ext) {   
