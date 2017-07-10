@@ -445,7 +445,7 @@ CmdFemConstraintTransform::CmdFemConstraintTransform()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create FEM transform constraint");
+    sMenuText       = QT_TR_NOOP("Constraint transform");
     sToolTipText    = QT_TR_NOOP("Create FEM constraint for transforming a face");
     sWhatsThis      = "FEM_ConstraintTransform";
     sStatusTip      = sToolTipText;
@@ -579,7 +579,7 @@ CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create fluid boundary condition");
+    sMenuText       = QT_TR_NOOP("Fluid boundary condition");
     sToolTipText    = QT_TR_NOOP("Create fluid boundary condition on face entity for Computional Fluid Dynamics");
     sWhatsThis      = "FEM_ConstraintFluidBoundary";
     sStatusTip      = sToolTipText;
