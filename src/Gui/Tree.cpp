@@ -1123,7 +1123,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
 
     int i=-1;
     // iterate through the claimed children, and try to synchronize them with the 
-    // children tree item with the same order of apperance. 
+    // children tree item with the same order of appearance. 
     for(auto child : children) {
         if(!canCreateItem(child,pDocument)) continue;
 
@@ -1179,7 +1179,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
             DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(childItem);
             // Add the child item back to document root if it is the only
             // instance.  Now, because of the lazy loading strategy, this may
-            // not truely be the last instance of the object. It may belong to
+            // not truly be the last instance of the object. It may belong to
             // other parents not expanded yet. We don't want to traverse the
             // whole tree to confirm that. Just let it be. If the other
             // parent(s) later expanded, this child item will be moved from
