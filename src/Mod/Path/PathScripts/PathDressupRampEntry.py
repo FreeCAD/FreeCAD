@@ -343,7 +343,7 @@ class ObjectDressup:
         # now we need to return to original position.
         if goingForward:
             # if the ramp was going forward, the return edges are the edges we already covered in ramping,
-            # exept the last one, which was already covered inside for loop. Direction needs to be reversed also
+            # except the last one, which was already covered inside for loop. Direction needs to be reversed also
             returnedges = self.getreversed(rampedges[:i])
         else:
             # if the ramp was already reversing, the edges needed for return are the ones
