@@ -26,7 +26,7 @@ class TestThickness(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartDesignTestThickness")
 
-    def testThickness(self):
+    def testReversedThickness(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
         self.Body.addObject(self.Box)
@@ -34,15 +34,17 @@ class TestThickness(unittest.TestCase):
         self.Box.Width=10.00
         self.Box.Height=10.00
         self.Doc.recompute()
-        self.Revolution = self.Doc.addObject("PartDesign::Revolution","Revolution")
-        self.Revolution.Profile = (self.Box, ["Face6"])
-        self.Revolution.ReferenceAxis = (self.Doc.Y_Axis,[""])
-        self.Revolution.Angle = 180.0
-        self.Revolution.Reversed = 1
-        self.Body.addObject(self.Revolution)
+        self.Thickness = self.Doc.addObject("PartDesign::Thickness", "Thickness")
+        self.Thickness.Base = (self.Box, ["Face1"])
+        self.Body.addObject(self.Thickness)
         self.Doc.recompute()
-        # depending on if refinement is done we expect 8 or 10 faces
-        self.assertIn(len(self.Revolution.Shape.Faces), (8, 10))
+        self.Thickness.Value = 1.0
+        self.Thickness.Reversed = 1
+        self.Thickness.Mode = 0
+        self.Thickness.Join = 0
+        self.Thickness.Base = (self.Box, ["Face1"])
+        self.Doc.recompute()
+        self.assertEqual(len(self.Thickness.Shape.Faces), 11)
 
     def tearDown(self):
         #closing doc

@@ -18,6 +18,8 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
 #**************************************************************************
+from __future__ import division
+from math import pi
 import unittest
 
 import FreeCAD
@@ -26,7 +28,7 @@ class TestFillet(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartDesignTestFillet")
 
-    def testRevolveFace(self):
+    def testFilletCubeToSphere(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
         self.Body.addObject(self.Box)
@@ -34,15 +36,12 @@ class TestFillet(unittest.TestCase):
         self.Box.Width=10.00
         self.Box.Height=10.00
         self.Doc.recompute()
-        self.Revolution = self.Doc.addObject("PartDesign::Revolution","Revolution")
-        self.Revolution.Profile = (self.Box, ["Face6"])
-        self.Revolution.ReferenceAxis = (self.Doc.Y_Axis,[""])
-        self.Revolution.Angle = 180.0
-        self.Revolution.Reversed = 1
-        self.Body.addObject(self.Revolution)
+        self.Fillet = self.Doc.addObject("PartDesign::Fillet","Fillet")
+        self.Fillet.Base = (self.Box, ['Face'+str(i+1) for i in range(6)])
+        self.Fillet.Radius = 4.999999
+        self.Body.addObject(self.Fillet)
         self.Doc.recompute()
-        # depending on if refinement is done we expect 8 or 10 faces
-        self.assertIn(len(self.Revolution.Shape.Faces), (8, 10))
+        self.assertAlmostEqual(self.Fillet.Shape.Volume, 4/3 * pi * 5**3, places=3)
 
     def tearDown(self):
         #closing doc
