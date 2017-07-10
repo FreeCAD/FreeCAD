@@ -693,7 +693,7 @@ boost::unordered_map<const ObjectIdentifier, const PropertyExpressionEngine::Exp
 
 /**
  * @brief Validate the given path and expression.
- * @param path Object Indentifier for expression.
+ * @param path Object Identifier for expression.
  * @param expr Expression tree.
  * @return Empty string on success, error message on failure.
  */

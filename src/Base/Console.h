@@ -72,7 +72,7 @@
  * \section SampleUsage Sample Usage
  *
  * A set of macros is provided to ease the usage of tag based log. All the
- * macros are defined in <Base/Console.h>. At the begining of your C++ source,
+ * macros are defined in <Base/Console.h>. At the beginning of your C++ source,
  * you need to initialize the log level of your chosen tag using,
  *
  * \code{.c}
@@ -296,7 +296,7 @@
  * Most of the logging facilities are exposed through macros. This section
  * briefs how they are implemented under the hood in case you want
  * customization.  A new function GetLogLevel(tag) is added to Base::Console()
- * to let C++ developer query a log level for an arbitary string tag. The
+ * to let C++ developer query a log level for an arbitrary string tag. The
  * function returns a pointer to an integer representing the log level. Python
  * developer or end-user can set/get the same tag based log level using
  * FreeCAD.setLogLevel/getLogLevel. Any change to the log level is reflected

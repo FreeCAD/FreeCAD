@@ -200,7 +200,7 @@ public:
   virtual void setPyObject( PyObject * pydict);
 protected:
   FileInfo file;
-  // necesary for what() legacy behaviour as it returns a buffer that can not be of a temporary object to be destroyed at end of what()
+  // necessary   for what() legacy behaviour as it returns a buffer that can not be of a temporary object to be destroyed at end of what()
   std::string _sErrMsgAndFileName; 
 };
 
