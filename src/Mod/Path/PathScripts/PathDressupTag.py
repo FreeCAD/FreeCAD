@@ -24,8 +24,10 @@
 import FreeCAD
 import Part
 import Path
+import PathScripts
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferencesPathDressup as PathPreferencesPathDressup
+import PathScripts.PathUtils as PathUtils
 import math
 import sys
 
@@ -107,9 +109,8 @@ class TagSolid:
 
 class ObjectDressup(QtCore.QObject):
     changed = QtCore.Signal()
-    def __init__(self, obj):
-        obj.Proxy = self
-        self.obj = obj
+
+    def __init__(self, obj, base):
         obj.addProperty('App::PropertyLink', 'Base','Base', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'The base path to modify'))
         obj.addProperty('App::PropertyLength', 'Width', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Width of tags.'))
         obj.addProperty('App::PropertyLength', 'Height', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Height of tags.'))
@@ -119,16 +120,21 @@ class ObjectDressup(QtCore.QObject):
         obj.addProperty('App::PropertyIntegerList', 'Disabled', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Ids of disabled holding tags'))
         obj.addProperty('App::PropertyInteger', 'SegmentationFactor', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Factor determining the # segments used to approximate rounded tags.'))
         obj.addProperty('App::PropertyLink', 'Debug', 'Debug', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Some elements for debugging'))
+
+        obj.Proxy = self
+        obj.Base = base
+
         if PathLog.getLevel(PathLog.thisModule()) != PathLog.Level.DEBUG:
             obj.setEditorMode('Debug', 2) # hide
         dbg = obj.Document.addObject('App::DocumentObjectGroup', 'TagDebug')
         obj.Debug = dbg
+
+        self.obj = obj
         self.solids = []
         super(ObjectDressup, self).__init__()
 
     def __getstate__(self):
         return None
-
     def __setstate__(self, state):
         return None
 
@@ -185,6 +191,7 @@ class ObjectDressup(QtCore.QObject):
         self.masterSolid = TagSolid(self, minZ, self.toolRadius())
         self.solids = [self.masterSolid.cloneAt(pos) for pos in self.obj.Positions]
         self.changed.emit()
+        obj.Path = obj.Base.Path
         PathLog.track()
 
     def toolRadius(self):
@@ -195,5 +202,23 @@ class ObjectDressup(QtCore.QObject):
             obj = FreeCAD.ActiveDocument.addObject('Part::Compound', "tag_%02d" % i)
             obj.Shape = solid
 
+def Create(baseObject, name = 'DressupTag'):
+    '''
+    Create(basePath, name = 'DressupTag') ... create tag dressup object for the given base path.
+    '''
+    if not baseObject.isDerivedFrom('Path::Feature'):
+        PathLog.error(translate('PathDressup_Tag', 'The selected object is not a path\n'))
+        return None
+
+    if baseObject.isDerivedFrom('Path::FeatureCompoundPython'):
+        PathLog.error(translate('PathDressup_Tag', 'Please select a Profile object'))
+        return None
+
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "TagDressup")
+    dbo = ObjectDressup(obj, baseObject)
+    job = PathUtils.findParentJob(baseObject)
+    PathUtils.addObjectToJob(obj, job)
+    dbo.assignDefaultValues()
+    return obj
 
 PathLog.notice('Loading PathDressupTag... done\n')
