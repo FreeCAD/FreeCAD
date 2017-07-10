@@ -446,6 +446,15 @@ def addObjectToJob(obj, job):
     job.Group = g
     return job
 
+def addObjectToJob(obj, job):
+    '''
+    addObjectToJob(obj, job) ... adds object to given job.
+    '''
+    g = job.Group
+    g.append(obj)
+    job.Group = g
+    return job
+
 def addToJob(obj, jobname=None):
     '''adds a path object to a job
     obj = obj
@@ -456,12 +465,13 @@ def addToJob(obj, jobname=None):
         if len(jobs) == 1:
             job = jobs[0]
         else:
-            PathLog.error("Job %s does not exist" % jobname)
+            FreeCAD.Console.PrintError("Didn't find the job")
             return None
     else:
         jobs = GetJobs()
         if len(jobs) == 0:
             job = PathJob.CommandJob.Create()
+
         elif len(jobs) == 1:
             job = jobs[0]
         else:
@@ -479,7 +489,6 @@ def addToJob(obj, jobname=None):
     if obj:
         addObjectToJob(obj, job)
     return job
-
 
 def rapid(x=None, y=None, z=None):
     """ Returns gcode string to perform a rapid move."""

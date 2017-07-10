@@ -23,6 +23,9 @@
 # ***************************************************************************
 import FreeCAD
 import FreeCADGui
+import Path
+import PathScripts
+import PathScripts.PathDressupTag as PathDressupTag
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 
@@ -76,6 +79,11 @@ class PathDressupTagViewProvider:
         vobj.Proxy = self
         self.vobj = vobj
         self.panel = None
+
+    def __getstate__(self):
+        return None
+    def __setstate__(self, state):
+        return None
 
     def setupColors(self):
         def colorForColorValue(val):
@@ -180,6 +188,15 @@ class PathDressupTagViewProvider:
             self.panel.selectTagWithId(i)
         FreeCADGui.updateGui()
 
+def Create(baseObject, name='DressupTag'):
+    '''
+    Create(basePath, name = 'DressupTag') ... create tag dressup object for the given base path.
+    Use this command only iff the UI is up - for batch processing see PathDressupTag.Create
+    '''
+    obj = PathDressupTag.Create(baseObject, name)
+    vp = PathDressupTagViewProvider(obj.ViewObject)
+    return obj
+
 class CommandPathDressupTag:
 
     def GetResources(self):
@@ -195,33 +212,17 @@ class CommandPathDressupTag:
         return False
 
     def Activated(self):
-
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             PathLog.error(translate('PathDressup_Tag', 'Please select one path object\n'))
             return
         baseObject = selection[0]
-        if not baseObject.isDerivedFrom('Path::Feature'):
-            PathLog.error(translate('PathDressup_Tag', 'The selected object is not a path\n'))
-            return
-        if baseObject.isDerivedFrom('Path::FeatureCompoundPython'):
-            PathLog.error(translate('PathDressup_Tag', 'Please select a Profile object'))
-            return
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction(translate('PathDressup_Tag', 'Create Tag Dress-up'))
-        FreeCADGui.addModule('PathScripts.PathDressupTag')
         FreeCADGui.addModule('PathScripts.PathDressupTagGui')
-        FreeCADGui.addModule('PathScripts.PathUtils')
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "TagDressup")')
-        FreeCADGui.doCommand('dbo = PathScripts.PathDressupTag.ObjectDressup(obj)')
-        FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
-        FreeCADGui.doCommand('PathScripts.PathDressupTagGui.PathDressupTagViewProvider(obj.ViewObject)')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
-        FreeCADGui.doCommand('dbo.assignDefaultValues()')
-        FreeCADGui.doCommand('obj.Positions = [App.Vector(-10, -10, 0), App.Vector(10, 10, 0)]')
-        FreeCADGui.doCommand('dbo.execute(obj)')
+        FreeCADGui.doCommand("PathScripts.PathDressupTagGui.Create(App.ActiveDocument.%s)" % baseObject.Name)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
