@@ -37,8 +37,8 @@ from PartDesignTests.TestLoft import TestLoft
 
 # transformations and boolean
 from PartDesignTests.TestMirrored import TestMirrored
-#from PartDesignTests.TestLinearPattern import TestLinearPattern
-#from PartDesignTests.TestPolarPattern import TestPolarPattern
+from PartDesignTests.TestLinearPattern import TestLinearPattern
+from PartDesignTests.TestPolarPattern import TestPolarPattern
 #from PartDesignTests.TestMultiTransform import TestMultiTransform
 #from PartDesignTests.TestBoolean import TestBoolean
 
@@ -47,4 +47,3 @@ from PartDesignTests.TestFillet import TestFillet
 from PartDesignTests.TestChamfer import TestChamfer
 from PartDesignTests.TestDraft import TestDraft
 from PartDesignTests.TestThickness import TestThickness
-

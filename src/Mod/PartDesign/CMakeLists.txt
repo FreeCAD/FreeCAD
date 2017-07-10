@@ -41,6 +41,8 @@ INSTALL(
         PartDesignTests/TestLoft.py
         PartDesignTests/TestPipe.py
         PartDesignTests/TestMirrored.py
+        PartDesignTests/TestLinearPattern.py
+        PartDesignTests/TestPolarPattern.py
         PartDesignTests/TestFillet.py
         PartDesignTests/TestChamfer.py
         PartDesignTests/TestDraft.py
