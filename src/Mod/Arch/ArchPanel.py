@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math, Part
+import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math, Part, ArchNesting
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -52,13 +52,14 @@ __url__ = "http://www.freecadweb.org"
 #           Description                 l    w    t
 
 Presets = [None,
-           ["Plywood 12mm, 1220 x 2440",1200,2400,12],
-           ["Plywood 15mm, 1220 x 2440",1200,2400,15],
-           ["Plywood 18mm, 1220 x 2440",1200,2400,18],
-           ["Plywood 25mm, 1220 x 2440",1200,2400,25],
+           ["Plywood 12mm, 1220 x 2440",1220,2440,12],
+           ["Plywood 15mm, 1220 x 2440",1220,2440,15],
+           ["Plywood 18mm, 1220 x 2440",1220,2440,18],
+           ["Plywood 25mm, 1220 x 2440",1220,2440,25],
            ["MDF 3mm, 900 x 600",       900, 600, 3],
            ["MDF 6mm, 900 x 600",       900, 600, 6],
-           ["OSB 18mm, 1200 x 2400",    1200,2400,18]]
+           ["OSB 18mm, 1220 x 2440",    1220,2440,18],
+           ]
 
 def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Panel"):
     '''makePanel([obj],[length],[width],[thickness],[placement]): creates a
@@ -342,7 +343,6 @@ class CommandPanelSheet:
             FreeCADGui.doCommand("Arch.makePanelSheet()")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-
 
 
 class _Panel(ArchComponent.Component):
@@ -735,6 +735,7 @@ class PanelCut(Draft._DraftObject):
         obj.addProperty("App::PropertyAngle","TagRotation","Arch",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
         obj.addProperty("App::PropertyFile","FontFile","Arch",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
         obj.addProperty("App::PropertyBool","MakeFace","Arch",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
+        obj.addProperty("App::PropertyFloatList","AllowedAngles","Arch",QT_TRANSLATE_NOOP("App::Property","The allowed angles this object can be rotated to when placed on sheets"))
         obj.Proxy = self
         self.Type = "PanelCut"
         obj.TagText = "%tag%"
@@ -1210,12 +1211,110 @@ class SheetTaskPanel(ArchComponent.ComponentTaskPanel):
         FreeCADGui.runCommand("Draft_Edit")
 
 
+class CommandNest:
+
+
+    "the Arch Panel command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_Nest',
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Nest","Nest"),
+                'Accel': "N, E",
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Nest","Nests a series of selected shapes in a container")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
+    def Activated(self):
+        FreeCADGui.Control.closeDialog()
+        FreeCADGui.Control.showDialog(NestTaskPanel())
+
+
+class NestTaskPanel:
+
+
+    '''The TaskPanel for Arch Nest command'''
+
+    def __init__(self,obj=None):
+        self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchNest.ui")
+        self.form.progressBar.hide()
+        QtCore.QObject.connect(self.form.ButtonContainer,QtCore.SIGNAL("pressed()"),self.getContainer)
+        QtCore.QObject.connect(self.form.ButtonShapes,QtCore.SIGNAL("pressed()"),self.getShapes)
+        QtCore.QObject.connect(self.form.ButtonRemove,QtCore.SIGNAL("pressed()"),self.removeShapes)
+        QtCore.QObject.connect(self.form.ButtonStart,QtCore.SIGNAL("pressed()"),self.start)
+        QtCore.QObject.connect(self.form.ButtonStop,QtCore.SIGNAL("pressed()"),self.stop)
+        self.shapes = []
+        self.container = None
+        self.nester = None
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Close)
+
+    def reject(self):
+        self.stop()
+        return True
+    
+    def getContainer(self):
+        s = FreeCADGui.Selection.getSelection()
+        if len(s) == 1:
+            if s[0].isDerivedFrom("Part::Feature"):
+                if len(s[0].Shape.Faces) == 1:
+                    if not (s[0] in self.shapes):
+                        self.form.Container.clear()
+                        self.addObject(s[0],self.form.Container)
+                        self.container = s[0]
+
+    def getShapes(self):
+        s = FreeCADGui.Selection.getSelection()
+        for o in s:
+            if o.isDerivedFrom("Part::Feature"):
+                if not o in self.shapes:
+                    if o != self.container:
+                        self.addObject(o,self.form.Shapes)
+                        self.shapes.append(o)
+
+    def addObject(self,obj,form):
+        i = QtGui.QListWidgetItem()
+        i.setText(obj.Label)
+        i.setToolTip(obj.Name)
+        if hasattr(obj.ViewObject,"Proxy"):
+            i.setIcon(QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
+        else:
+            i.setIcon(QtGui.QIcon(":/icons/Tree_Part.svg"))
+        form.addItem(i)
+
+    def removeShapes(self):
+        for i in self.form.Shapes.selectedItems():
+            o = FreeCAD.ActiveDocument.getObject(i.toolTip())
+            if o:
+                if o in self.shapes:
+                    self.shapes.remove(o)
+                    self.form.Shapes.takeItem(self.form.Shapes.row(i))
+
+    def start(self):
+        self.form.progressBar.setValue(1)
+        self.form.progressBar.show()
+        tolerance = self.form.Tolerance.value()
+        discretize = self.form.Subdivisions.value()
+        rotations = [float(x) for x in self.form.Rotations.text().split(",")]
+        import ArchNesting
+        ArchNesting.TOLERANCE = tolerance
+        ArchNesting.DISCRETIZE = discretize
+        ArchNesting.ROTATIONS = rotations
+        n = ArchNesting.Nester(container=self.container.Shape,shapes=[o.Shape for o in self.shapes])
+        result = n.run()
+        if result:
+            n.show()
+    
+    def stop(self):
+        pass
+
+
 if FreeCAD.GuiUp:
 
     class CommandPanelGroup:
 
         def GetCommands(self):
-            return tuple(['Arch_Panel','Arch_Panel_Cut','Arch_Panel_Sheet'])
+            return tuple(['Arch_Panel','Arch_Panel_Cut','Arch_Panel_Sheet','Arch_Nest'])
         def GetResources(self):
             return { 'MenuText': QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools'),
                      'ToolTip': QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools')
@@ -1226,4 +1325,5 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Panel',CommandPanel())
     FreeCADGui.addCommand('Arch_Panel_Cut',CommandPanelCut())
     FreeCADGui.addCommand('Arch_Panel_Sheet',CommandPanelSheet())
+    FreeCADGui.addCommand('Arch_Nest',CommandNest())
     FreeCADGui.addCommand('Arch_PanelTools', CommandPanelGroup())
