@@ -69,9 +69,10 @@ PyObject* TopoHistoryPy::modified(PyObject *args)
         TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         try {
             Py::List resShapesPy;
-            TopTools_ListOfShape newShapes = this->getTopoHistoryPtr()->modified(*shape);
-            for(TopTools_ListIteratorOfListOfShape it(newShapes); it.More(); it.Next()){
-                resShapesPy.append(shape2pyshape(it.Value()));
+            std::vector<TopoShape> newShapes = this->getTopoHistoryPtr()->modified(*shape);
+            for(std::vector<TopoShape>::iterator it = newShapes.begin();
+                it != newShapes.end(); ++it){
+                resShapesPy.append(Py::asObject(it->getPyObject()));
             }
             return Py::new_reference_to(resShapesPy);
         }
@@ -97,9 +98,10 @@ PyObject*  TopoHistoryPy::generated(PyObject *args)
         TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         try {
             Py::List resShapesPy;
-            TopTools_ListOfShape newShapes = this->getTopoHistoryPtr()->generated(*shape);
-            for(TopTools_ListIteratorOfListOfShape it(newShapes); it.More(); it.Next()){
-                resShapesPy.append(shape2pyshape(it.Value()));
+            std::vector<TopoShape> newShapes = this->getTopoHistoryPtr()->generated(*shape);
+            for(std::vector<TopoShape>::iterator it = newShapes.begin();
+                it != newShapes.end(); ++it){
+                resShapesPy.append(Py::asObject(it->getPyObject()));
             }
             return Py::new_reference_to(resShapesPy);
         }

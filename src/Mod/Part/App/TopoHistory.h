@@ -54,12 +54,11 @@ public:
 
     void operator = (const TopoHistory&);
 
-    TopTools_ListOfShape modified(const TopoShape&);
-    TopTools_ListOfShape generated(const TopoShape&);
+    std::vector<TopoShape> modified(const TopoShape&);
+    std::vector<TopoShape> generated(const TopoShape&);
     bool isDeleted(const TopoShape &);
 
     std::shared_ptr<BRepBuilderAPI_MakeShape> shapeMaker;
-
 };
 
 }

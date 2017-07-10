@@ -23,6 +23,8 @@
 #include "PreCompiled.h"
 
 #include <TopTools_ListOfShape.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <Standard_Failure.hxx>
 
 #include "TopoHistory.h"
 #include "TopoShape.h"
@@ -47,22 +49,34 @@ void TopoHistory::operator =(const TopoHistory &history)
     }
 }
 
-TopTools_ListOfShape TopoHistory::modified(const TopoShape &oldShape)
+std::vector<TopoShape> TopoHistory::modified(const TopoShape &oldShape)
 {
+    std::vector<TopoShape> newShapes;
     if (this->shapeMaker.get()) {
         TopoDS_Shape _shape = oldShape.getShape();
-        return this->shapeMaker->Modified(_shape);
+        const TopTools_ListOfShape& _newShapes = this->shapeMaker->Modified(_shape);
+        for(TopTools_ListIteratorOfListOfShape it(_newShapes); it.More(); it.Next()){
+            newShapes.push_back(TopoShape(it.Value()));
+        }
+        return newShapes;
     }
-    return TopTools_ListOfShape();
+    Standard_Failure::Raise("History is empty");
+    return newShapes; // just to silence compiler warning
 }
 
-TopTools_ListOfShape TopoHistory::generated(const TopoShape &oldShape)
+std::vector<TopoShape> TopoHistory::generated(const TopoShape &oldShape)
 {
+    std::vector<TopoShape> newShapes;
     if (this->shapeMaker.get()) {
         TopoDS_Shape _shape = oldShape.getShape();
-        return this->shapeMaker->Generated(_shape);
+        const TopTools_ListOfShape& _newShapes = this->shapeMaker->Modified(_shape);
+        for(TopTools_ListIteratorOfListOfShape it(_newShapes); it.More(); it.Next()){
+            newShapes.push_back(TopoShape(it.Value()));
+        }
+        return newShapes;
     }
-    return TopTools_ListOfShape();
+    Standard_Failure::Raise("History is empty");
+    return newShapes; // just to silence compiler warning
 }
 
 
@@ -72,5 +86,6 @@ bool TopoHistory::isDeleted(const TopoShape &oldShape)
         TopoDS_Shape _shape = oldShape.getShape();
         return this->shapeMaker->IsDeleted(_shape);
     }
-    return false;
+    Standard_Failure::Raise("History is empty");
+    return false; // just to silence compiler warning
 }
