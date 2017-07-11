@@ -35,6 +35,7 @@ class TestDatumPoint(unittest.TestCase):
         self.DatumPoint.MapMode = 'ObjectOrigin'
         self.Body.addObject(self.DatumPoint)
         self.Doc.recompute()
+        self.assertEqual(self.DatumPoint.superPlacement.Base, App.Vector(0))
 
     def tearDown(self):
         #closing doc
@@ -52,6 +53,7 @@ class TestDatumLine(unittest.TestCase):
         self.DatumLine.MapMode = 'ObjectX'
         self.Body.addObject(self.DatumLine)
         self.Doc.recompute()
+        self.assertNotIn('Invalid', self.DatumLine.State)
 
     def tearDown(self):
         #closing doc
@@ -69,6 +71,8 @@ class TestDatumPlane(unittest.TestCase):
         self.DatumPlane.MapMode = 'FlatFace'
         self.Body.addObject(self.DatumPlane)
         self.Doc.recompute()
+        self.DatumPlaneNormal = self.DatumPlane.Shape.Surface.Axis
+        self.assertEqual(abs(self.DatumPlaneNormal.dot(App.Vector(0,0,1))), 1)
 
     def tearDown(self):
         #closing doc
