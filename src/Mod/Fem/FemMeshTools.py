@@ -559,7 +559,7 @@ def get_pressure_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj
         pressure_faces = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
     elif is_face_femmesh(femmesh):
         pressure_faces = []
-        # normaly we should call get_femelements_by_references and the group check should be integrated there
+        # normally we should call get_femelements_by_references and the group check should be integrated there
         if femmesh.GroupCount:
             meshfaces = get_femelementface_sets_from_group_data(femmesh, femobj)
             # print(meshfaces)
@@ -1075,7 +1075,7 @@ def get_analysis_group_elements(aAnalysis, aPart):
 
 def get_reference_group_elements(obj, aPart):
     ''' obj is an FEM object which has reference shapes like the group object, the material, most of the constraints
-    aPart is geometry feature normaly CompSolid, the method searches all reference shapes of obj inside aPart even if
+    aPart is geometry feature normally CompSolid, the method searches all reference shapes of obj inside aPart even if
     the reference shapes are a totally different geometry feature.
     a tuple is returned ('Name or Label of the FEMobject', ['Element1', 'Element2', ...])
     The names in the list are the Elements of the geometry aPart whereas 'Solid1' == aPart.Shape.Solids[0]
