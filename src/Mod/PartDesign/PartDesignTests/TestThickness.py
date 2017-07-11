@@ -18,32 +18,36 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
 #**************************************************************************
+import unittest
 
-#---------------------------------------------------------------------------
-# define the test cases to test the FreeCAD PartDesign module
-#---------------------------------------------------------------------------
+import FreeCAD
 
-# datum tools
-from PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane
-#from PartDesignTests.TestShapeBinder import TestShapeBinder
+class TestThickness(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestThickness")
 
-# additive/subtractive features & primitives
-from PartDesignTests.TestPad import TestPad
-from PartDesignTests.TestPocket import TestPocket
-from PartDesignTests.TestRevolve import TestRevolve
-from PartDesignTests.TestPipe import TestPipe
-from PartDesignTests.TestLoft import TestLoft
-#from PartDesignTests.TestPrimitive import TestPrimitive
+    def testReversedThickness(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        self.Body.addObject(self.Box)
+        self.Box.Length=10.00
+        self.Box.Width=10.00
+        self.Box.Height=10.00
+        self.Doc.recompute()
+        self.Thickness = self.Doc.addObject("PartDesign::Thickness", "Thickness")
+        self.Thickness.Base = (self.Box, ["Face1"])
+        self.Body.addObject(self.Thickness)
+        self.Doc.recompute()
+        self.Thickness.Value = 1.0
+        self.Thickness.Reversed = 1
+        self.Thickness.Mode = 0
+        self.Thickness.Join = 0
+        self.Thickness.Base = (self.Box, ["Face1"])
+        self.Doc.recompute()
+        self.assertEqual(len(self.Thickness.Shape.Faces), 11)
 
-# transformations and boolean
-from PartDesignTests.TestMirrored import TestMirrored
-from PartDesignTests.TestLinearPattern import TestLinearPattern
-from PartDesignTests.TestPolarPattern import TestPolarPattern
-#from PartDesignTests.TestMultiTransform import TestMultiTransform
-#from PartDesignTests.TestBoolean import TestBoolean
+    def tearDown(self):
+        #closing doc
+        FreeCAD.closeDocument("PartDesignTestThickness")
+        # print ("omit closing document for debugging")
 
-# dressup features
-from PartDesignTests.TestFillet import TestFillet
-from PartDesignTests.TestChamfer import TestChamfer
-from PartDesignTests.TestDraft import TestDraft
-from PartDesignTests.TestThickness import TestThickness
