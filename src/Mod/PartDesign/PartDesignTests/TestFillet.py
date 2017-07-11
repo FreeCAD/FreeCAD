@@ -18,32 +18,33 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
 #**************************************************************************
+from __future__ import division
+from math import pi
+import unittest
 
-#---------------------------------------------------------------------------
-# define the test cases to test the FreeCAD PartDesign module
-#---------------------------------------------------------------------------
+import FreeCAD
 
-# datum tools
-from PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane
-#from PartDesignTests.TestShapeBinder import TestShapeBinder
+class TestFillet(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestFillet")
 
-# additive/subtractive features & primitives
-from PartDesignTests.TestPad import TestPad
-from PartDesignTests.TestPocket import TestPocket
-from PartDesignTests.TestRevolve import TestRevolve
-from PartDesignTests.TestPipe import TestPipe
-from PartDesignTests.TestLoft import TestLoft
-#from PartDesignTests.TestPrimitive import TestPrimitive
+    def testFilletCubeToSphere(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        self.Body.addObject(self.Box)
+        self.Box.Length=10.00
+        self.Box.Width=10.00
+        self.Box.Height=10.00
+        self.Doc.recompute()
+        self.Fillet = self.Doc.addObject("PartDesign::Fillet","Fillet")
+        self.Fillet.Base = (self.Box, ['Face'+str(i+1) for i in range(6)])
+        self.Fillet.Radius = 4.999999
+        self.Body.addObject(self.Fillet)
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Fillet.Shape.Volume, 4/3 * pi * 5**3, places=3)
 
-# transformations and boolean
-from PartDesignTests.TestMirrored import TestMirrored
-from PartDesignTests.TestLinearPattern import TestLinearPattern
-from PartDesignTests.TestPolarPattern import TestPolarPattern
-#from PartDesignTests.TestMultiTransform import TestMultiTransform
-#from PartDesignTests.TestBoolean import TestBoolean
+    def tearDown(self):
+        #closing doc
+        FreeCAD.closeDocument("PartDesignTestFillet")
+        # print ("omit closing document for debugging")
 
-# dressup features
-from PartDesignTests.TestFillet import TestFillet
-from PartDesignTests.TestChamfer import TestChamfer
-from PartDesignTests.TestDraft import TestDraft
-from PartDesignTests.TestThickness import TestThickness
