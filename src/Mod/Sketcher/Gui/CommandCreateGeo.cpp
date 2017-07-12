@@ -1304,7 +1304,7 @@ protected:
     int previousCurve;
     Sketcher::PointPos firstPosId;
     Sketcher::PointPos previousPosId;
-    // the latter stores those constraints that a first point would have been given in abscence of the transition mechanism
+    // the latter stores those constraints that a first point would have been given in absence of the transition mechanism
     std::vector<AutoConstraint> sugConstr1, sugConstr2, virtualsugConstr1; 
 
     Base::Vector2d CenterPoint;
