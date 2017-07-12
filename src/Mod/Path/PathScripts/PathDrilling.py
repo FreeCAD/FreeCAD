@@ -74,6 +74,9 @@ class ObjectDrilling:
         obj.addProperty("App::PropertyLength", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
         obj.addProperty("App::PropertyFloat", "DwellTime", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"))
         obj.addProperty("App::PropertyBool", "DwellEnabled", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable dwell"))
+        obj.addProperty("App::PropertyBool", "AddTipLength", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate the tip length and subtract from final depth"))
+        obj.addProperty("App::PropertyEnumeration", "ReturnLevel", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G98"))
+        obj.ReturnLevel = ['G98', 'G99']  # this is the direction that the Contour runs
 
         # Heights & Depths
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
@@ -105,6 +108,13 @@ class ObjectDrilling:
     @waiting_effects
     def execute(self, obj):
         PathLog.track()
+
+        if not obj.Active:
+            path = Path.Path("(inactive operation)")
+            obj.Path = path
+            obj.ViewObject.Visibility = False
+            return
+
         output = ""
         if obj.Comment != "":
             output += '(' + str(obj.Comment)+')\n'
@@ -124,6 +134,10 @@ class ObjectDrilling:
                 return
             else:
                 self.radius = tool.Diameter/2
+
+        tiplength = 0.0
+        if obj.AddTipLength:
+            tiplength = PathUtils.drillTipLength(tool)
 
         if len(obj.Names) == 0:
             parentJob = PathUtils.findParentJob(obj)
@@ -163,7 +177,7 @@ class ObjectDrilling:
             diameters = []
             for h in holes:
                 if len(names) == 0:
-                    self.findHeights(obj, baseobject, h)
+                    self.setDepths(obj, baseobject, h)
                 names.append(h['featureName'])
                 positions.append(FreeCAD.Vector(h['x'], h['y'], 0))
                 enabled.append(1)
@@ -181,7 +195,7 @@ class ObjectDrilling:
                 locations.append({'x': obj.Positions[i].x, 'y': obj.Positions[i].y})
         if len(locations) > 0:
             locations = PathUtils.sort_jobs(locations, ['x', 'y'])
-            output += "G90 G98\n"
+            output += "G90 " + obj.ReturnLevel + "\n"
             # rapid to clearance height
             output += "G0 Z" + str(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
             # rapid to first hole location, with spindle still retracted:
@@ -204,23 +218,16 @@ class ObjectDrilling:
                 output += cmd + \
                     " X" + fmt(p['x']) + \
                     " Y" + fmt(p['y']) + \
-                    " Z" + fmt(obj.FinalDepth.Value) + qword + pword + \
+                    " Z" + fmt(obj.FinalDepth.Value - tiplength) + qword + pword + \
                     " R" + str(obj.RetractHeight.Value) + \
                     " F" + str(self.vertFeed) + "\n" \
 
             output += "G80\n"
 
-        if obj.Active:
-            path = Path.Path(output)
-            obj.Path = path
-            obj.ViewObject.Visibility = True
+        path = Path.Path(output)
+        obj.Path = path
 
-        else:
-            path = Path.Path("(inactive operation)")
-            obj.Path = path
-            obj.ViewObject.Visibility = False
-
-    def findHeights(self, obj, bobj, hole):
+    def setDepths(self, obj, bobj, hole):
         try:
             bb = bobj.Shape.BoundBox
             subobj = hole['feature']
@@ -344,6 +351,7 @@ class CommandPathDrilling:
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
+       # FreeCADGui.doCommand('PathScripts.PathDrilling.ObjectDrilling.setDepths(obj.Proxy, obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
@@ -412,6 +420,8 @@ class TaskPanel:
                     PathLog.debug("name: {}".format(self.form.uiToolController.currentText()))
                     tc = PathUtils.findToolController(self.obj, self.form.uiToolController.currentText())
                     self.obj.ToolController = tc
+                if hasattr(self.obj, "AddTipLength"):
+                    self.obj.AddTipLength = self.form.chkTipDepth.isChecked()
             except ValueError:
                 self.setFields()
         self.isDirty = True
@@ -462,6 +472,11 @@ class TaskPanel:
             self.form.peckEnabled.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.peckEnabled.setCheckState(QtCore.Qt.Unchecked)
+
+        if self.obj.AddTipLength:
+            self.form.chkTipDepth.setCheckState(QtCore.Qt.Checked)
+        else:
+            self.form.chkTipDepth.setCheckState(QtCore.Qt.Unchecked)
 
         self.updateFeatureList()
 
@@ -608,6 +623,7 @@ class TaskPanel:
         self.form.dwellTime.editingFinished.connect(self.getFields)
         self.form.dwellEnabled.stateChanged.connect(self.getFields)
         self.form.peckEnabled.stateChanged.connect(self.getFields)
+        self.form.chkTipDepth.stateChanged.connect(self.getFields)
 
         # buttons
         self.form.uiEnableSelected.clicked.connect(self.enableSelected)

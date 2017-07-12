@@ -436,6 +436,14 @@ def GetJobs(jobname=None):
                     jobs.append(o)
     return jobs
 
+def addObjectToJob(obj, job):
+    '''
+    addObjectToJob(obj, job) ... adds object to given job.
+    '''
+    g = job.Group
+    g.append(obj)
+    job.Group = g
+    return job
 
 def addToJob(obj, jobname=None):
     '''adds a path object to a job
@@ -469,9 +477,7 @@ def addToJob(obj, jobname=None):
                 job = [i for i in jobs if i.Name == form.cboProject.currentText()][0]
 
     if obj:
-        g = job.Group
-        g.append(obj)
-        job.Group = g
+        addObjectToJob(obj, job)
     return job
 
 
@@ -729,6 +735,15 @@ def guessDepths(objshape, subs=None):
             final = fbb.ZMin
 
     return depth_params(clearance, safe, start, 1.0, 0.0, final, user_depths=None, equalstep=False)
+
+def drillTipLength(tool):
+    """returns the length of the drillbit tip.
+"""
+    if tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
+        return 0.0
+    else:
+        theta = math.radians(tool.CuttingEdgeAngle)
+        return (tool.Diameter/2) / math.tan(theta)
 
 
 class depth_params:

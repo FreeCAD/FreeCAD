@@ -41,6 +41,7 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
 
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -76,7 +77,7 @@ class ObjectProfile:
 
         # Profile Properties
         obj.addProperty("App::PropertyEnumeration", "Side", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
-        obj.Side = ['Left', 'Right']  # side of profile that cutter is on in relation to direction of profile
+        obj.Side = ['Inside', 'Outside']  # side of profile that cutter is on in relation to direction of profile
         obj.addProperty("App::PropertyEnumeration", "Direction", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.Direction = ['CW', 'CCW']  # this is the direction that the profile runs
         obj.addProperty("App::PropertyBool", "UseComp", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
@@ -84,6 +85,9 @@ class ObjectProfile:
         obj.addProperty("App::PropertyBool", "processHoles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile holes as well as the outline"))
         obj.addProperty("App::PropertyBool", "processPerimeter", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the outline"))
         obj.addProperty("App::PropertyBool", "processCircles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile round holes"))
+        obj.addProperty("App::PropertyEnumeration", "JoinType", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool moves around corners. Default=Round"))
+        obj.JoinType = ['Round', 'Square', 'Miter']  # this is the direction that the Contour runs
+        obj.addProperty("App::PropertyFloat", "MiterLimit", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum distance before a miter join is truncated"))
 
         # Debug Parameters
         obj.addProperty("App::PropertyString", "AreaParams", "Path")
@@ -113,6 +117,10 @@ class ObjectProfile:
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
             obj.setEditorMode(prop, 2)
 
+        obj.setEditorMode('MiterLimit', 2)
+        if obj.JoinType == 'Miter':
+            obj.setEditorMode('MiterLimit', 0)
+
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
         if len(baselist) == 0:  # When adding the first base object, guess at heights
@@ -140,9 +148,9 @@ class ObjectProfile:
                 obj.SafeHeight = 8.0
 
             if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
-                obj.Side = "Left"
+                obj.Side = "Outside"
             else:
-                obj.Side = "Right"
+                obj.Side = "Inside"
 
         item = (ss, sub)
         if item in baselist:
@@ -168,13 +176,19 @@ class ObjectProfile:
         if obj.UseComp:
             offsetval = self.radius+obj.OffsetExtra.Value
 
-        if obj.Side == 'Right':
+        if obj.Side == 'Inside':
             offsetval = 0 - offsetval
 
         if isHole:
             offsetval = 0 - offsetval
 
         profileparams['Offset'] = offsetval
+
+        jointype = ['Round', 'Square', 'Miter']
+        profileparams['JoinType'] = jointype.index(obj.JoinType)
+
+        if obj.JoinType == 'Miter':
+            profileparams['MiterLimit'] = obj.MiterLimit
 
         profile.setParams(**profileparams)
         obj.AreaParams = str(profile.getParams())
@@ -190,7 +204,7 @@ class ObjectProfile:
         params = {'shapes': shapelist,
                   'feedrate': self.horizFeed,
                   'feedrate_v': self.vertFeed,
-                  'verbose': False,
+                  'verbose': True,
                   'resume_height': obj.StepDown.Value,
                   'retraction': obj.ClearanceHeight.Value}
 
@@ -201,9 +215,9 @@ class ObjectProfile:
             direction = obj.Direction
 
         if direction == 'CCW':
-            params['orientation'] = 1
-        else:
             params['orientation'] = 0
+        else:
+            params['orientation'] = 1
 
         if obj.UseStartPoint is True and obj.StartPoint is not None:
             params['start'] = obj.StartPoint
@@ -347,7 +361,6 @@ class ObjectProfile:
 
         path = Path.Path(commandlist)
         obj.Path = path
-        obj.ViewObject.Visibility = True
 
 
 class _ViewProviderProfile:
@@ -431,18 +444,20 @@ class CommandPathProfile:
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
 
         FreeCADGui.doCommand('obj.SafeHeight = ' + str(ztop + 2.0))
-        FreeCADGui.doCommand('obj.Side = "Left"')
+        FreeCADGui.doCommand('obj.Side = "Outside"')
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
         FreeCADGui.doCommand('obj.Direction = "CW"')
         FreeCADGui.doCommand('obj.UseComp = True')
         FreeCADGui.doCommand('obj.processHoles = False')
         FreeCADGui.doCommand('obj.processPerimeter = True')
+        FreeCADGui.doCommand('obj.JoinType = "Round"')
+        FreeCADGui.doCommand('obj.MiterLimit =' + str(0.1))
+
         FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
 

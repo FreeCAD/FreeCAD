@@ -381,6 +381,21 @@ class SelectPlane(DraftTool):
                             self.display(plane.axis)
                             self.finish()
                             return
+            elif sel:
+                subs = []
+                import Part
+                for s in sel:
+                    for so in s.SubObjects:
+                        if isinstance(so,Part.Vertex):
+                            subs.append(so)
+                if len(subs) == 3:
+                    plane.alignTo3Points(subs[0].Point,
+                                         subs[1].Point,
+                                         subs[2].Point,
+                                         self.offset)
+                    self.display(plane.axis)
+                    self.finish()
+                    return
             self.ui.selectPlaneUi()
             msg(translate("draft", "Pick a face to define the drawing plane\n"))
             if plane.alignToSelection(self.offset):

@@ -82,12 +82,16 @@ class ObjectProfile:
 
         # Profile Properties
         obj.addProperty("App::PropertyEnumeration", "Side", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
-        obj.Side = ['Left', 'Right']  # side of profile that cutter is on in relation to direction of profile
+        obj.Side = ['Outside', 'Inside']  # side of profile that cutter is on in relation to direction of profile
         obj.addProperty("App::PropertyEnumeration", "Direction", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.Direction = ['CW', 'CCW']  # this is the direction that the profile runs
         obj.addProperty("App::PropertyBool", "UseComp", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
 
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final profile- good for roughing toolpath"))
+        obj.addProperty("App::PropertyEnumeration", "JoinType", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool moves around corners. Default=Round"))
+        obj.JoinType = ['Round', 'Square', 'Miter']  # this is the direction that the Contour runs
+        obj.addProperty("App::PropertyFloat", "MiterLimit", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum distance before a miter join is truncated"))
+
 
         # Debug Parameters
         obj.addProperty("App::PropertyString", "AreaParams", "Path")
@@ -116,6 +120,11 @@ class ObjectProfile:
                 obj.setEditorMode('Side', 0)
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
             obj.setEditorMode(prop, 2)
+
+        obj.setEditorMode('MiterLimit', 2)
+        if obj.JoinType == 'Miter':
+            obj.setEditorMode('MiterLimit', 0)
+
 
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
@@ -163,10 +172,16 @@ class ObjectProfile:
                          'SectionCount': -1}
 
         if obj.UseComp:
-            if obj.Side == 'Right':
+            if obj.Side == 'Inside':
                 profileparams['Offset'] = 0 - self.radius+obj.OffsetExtra.Value
             else:
                 profileparams['Offset'] = self.radius+obj.OffsetExtra.Value
+
+        jointype = ['Round', 'Square', 'Miter']
+        profileparams['JoinType'] = jointype.index(obj.JoinType)
+
+        if obj.JoinType == 'Miter':
+            profileparams['MiterLimit'] = obj.MiterLimit
 
         profile.setParams(**profileparams)
         obj.AreaParams = str(profile.getParams())
@@ -288,7 +303,6 @@ class ObjectProfile:
 
         path = Path.Path(commandlist)
         obj.Path = path
-        obj.ViewObject.Visibility = True
         return sim
 
 
@@ -393,7 +407,7 @@ class CommandPathProfileEdges:
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
 
         FreeCADGui.doCommand('obj.SafeHeight = ' + str(ztop + 2.0))
-        FreeCADGui.doCommand('obj.Side = "Right"')
+        FreeCADGui.doCommand('obj.Side = "Inside"')
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
         FreeCADGui.doCommand('obj.Direction = "CW"')
         FreeCADGui.doCommand('obj.UseComp = True')
