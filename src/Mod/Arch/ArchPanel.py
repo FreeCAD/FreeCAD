@@ -968,6 +968,7 @@ class PanelSheet(Draft._DraftObject):
         obj.addProperty("App::PropertyPercent","FillRatio","Arch",QT_TRANSLATE_NOOP("App::Property","The fill ratio of this sheet"))
         obj.addProperty("App::PropertyBool","MakeFace","Arch",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
         obj.addProperty("App::PropertyAngle","GrainDirection","Arch",QT_TRANSLATE_NOOP("App::Property","Specifies an angle for the wood grain (Clockwise, 0 is North)"))
+        obj.addProperty("App::PropertyFloat","Scale","Arch", QT_TRANSLATE_NOOP("App::Property","Specifies the scale applied to each panel view."))
         obj.Proxy = self
         self.Type = "PanelSheet"
         obj.TagSize = 10
@@ -977,6 +978,7 @@ class PanelSheet(Draft._DraftObject):
         obj.MakeFace = False
         obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile","")
         obj.setEditorMode("FillRatio",2)
+        obj.Scale = 1.0
 
     def execute(self, obj):
         import Part
@@ -1020,6 +1022,7 @@ class PanelSheet(Draft._DraftObject):
                 textshape.rotate(textshape.BoundBox.Center,Vector(0,0,1),obj.TagRotation.Value)
                 self.sheettag = textshape
                 base = Part.Compound([base,textshape])
+            base.scale(obj.Scale, FreeCAD.Vector())
             obj.Shape = base
             obj.Placement = pl
             obj.FillRatio = int((subarea/area)*100)
@@ -1040,12 +1043,14 @@ class PanelSheet(Draft._DraftObject):
                         w = w[0]
                         if transform:
                             w.Placement = obj.Placement.multiply(w.Placement)
+                        w.scale(obj.Scale, FreeCAD.Vector())
                         outp.append(w)
             if not ispanel:
                 if p.isDerivedFrom("Part::Feature"):
                     for w in p.Shape.Wires:
                         if transform:
                             w.Placement = obj.Placement.multiply(w.Placement)
+                        w.scale(obj.Scale, FreeCAD.Vector())
                         outp.append(w)
         return outp
 
@@ -1063,6 +1068,7 @@ class PanelSheet(Draft._DraftObject):
                         w = w[1]
                         if transform:
                             w.Placement = obj.Placement.multiply(w.Placement)
+                        w.scale(obj.Scale, FreeCAD.Vector())
                         outp.append(w)
         return outp
 
@@ -1082,11 +1088,13 @@ class PanelSheet(Draft._DraftObject):
                         w = w[2]
                         if transform:
                             w.Placement = obj.Placement.multiply(w.Placement)
+                        w.scale(obj.Scale, FreeCAD.Vector())
                         outp.append(w)
         if self.sheettag is not None:
             w = self.sheettag.copy()
             if transform:
                 w.Placement = obj.Placement.multiply(w.Placement)
+            w.scale(obj.Scale, FreeCAD.Vector())
             outp.append(w)
 
         return outp
