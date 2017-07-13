@@ -678,7 +678,12 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case ATAN2:
     case POW:
         if (args.size() != 2)
-            throw ExpressionError("Invalid number of arguments: eaxctly two required.");
+            throw ExpressionError("Invalid number of arguments: exactly two required.");
+        break;
+    case HYPOT:
+    case CATH:
+        if (args.size() < 2 || args.size() > 3)
+            throw ExpressionError("Invalid number of arguments: exactly two, or three required.");
         break;
     case STDDEV:
     case SUM:
@@ -922,8 +927,10 @@ Expression * FunctionExpression::eval() const
 
     std::unique_ptr<Expression> e1(args[0]->eval());
     std::unique_ptr<Expression> e2(args.size() > 1 ? args[1]->eval() : 0);
+    std::unique_ptr<Expression> e3(args.size() > 2 ? args[2]->eval() : 0);
     NumberExpression * v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
     NumberExpression * v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
+    NumberExpression * v3 = freecad_dynamic_cast<NumberExpression>(e3.get());
     double output;
     Unit unit;
     double scaler = 1;
@@ -1026,6 +1033,16 @@ Expression * FunctionExpression::eval() const
         }
         break;
     }
+    case HYPOT:
+    case CATH:
+        if (v1->getUnit() != v2->getUnit())
+            throw ExpressionError("Units must be equal");
+        if (args.size() > 2) {
+            if (v2->getUnit() != v3->getUnit())
+                throw ExpressionError("Units must be equal");
+        }
+        unit = v1->getUnit();
+        break;
     default:
         assert(0);
     }
@@ -1084,6 +1101,14 @@ Expression * FunctionExpression::eval() const
     }
     case POW: {
         output = pow(value, v2->getValue());
+        break;
+    }
+    case HYPOT: {
+        output = sqrt(pow(v1->getValue(), 2) + pow(v2->getValue(), 2) + (v3 ? pow(v3->getValue(), 2) : 0));
+        break;
+    }
+    case CATH: {
+        output = sqrt(pow(v1->getValue(), 2) - pow(v2->getValue(), 2) - (v3 ? pow(v3->getValue(), 2) : 0));
         break;
     }
     case ROUND:
@@ -1190,6 +1215,10 @@ std::string FunctionExpression::toString() const
         return "atan2(" + ss.str() + ")";
     case POW:
         return "pow(" + ss.str() + ")";
+    case HYPOT:
+        return "hypot(" + ss.str() + ")";
+    case CATH:
+        return "cath(" + ss.str() + ")";
     case ROUND:
         return "round(" + ss.str() + ")";
     case TRUNC:
@@ -1792,6 +1821,8 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["trunc"] = FunctionExpression::TRUNC;
         registered_functions["ceil"] = FunctionExpression::CEIL;
         registered_functions["floor"] = FunctionExpression::FLOOR;
+        registered_functions["hypot"] = FunctionExpression::HYPOT;
+        registered_functions["cath"] = FunctionExpression::CATH;
 
         // Aggregates
         registered_functions["sum"] = FunctionExpression::SUM;
