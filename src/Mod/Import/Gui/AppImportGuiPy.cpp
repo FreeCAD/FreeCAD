@@ -437,7 +437,7 @@ private:
     {
         std::vector <int> local_label;
         int root_id;
-        int return_label;
+        int return_label = -1;
 
 
         if (obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
@@ -451,25 +451,30 @@ private:
                 new_label=export_app_object((*it),ocaf,hierarchical_label,hierarchical_loc);
                 local_label.push_back(new_label);
             }
+
             ocaf.createNode(part,root_id,hierarchical_label,hierarchical_loc);
             std::vector<int>::iterator label_it;
-            for ( label_it = local_label.begin(); label_it != local_label.end(); label_it++ ) {
-                ocaf.push_node(root_id,(*label_it), hierarchical_label,hierarchical_loc);
+            for (label_it = local_label.begin(); label_it != local_label.end(); ++label_it) {
+                ocaf.pushNode(root_id,(*label_it), hierarchical_label,hierarchical_loc);
             }
+
             return_label=root_id;
-       }
-       if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        }
+
+        if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             Part::Feature* part = static_cast<Part::Feature*>(obj);
             std::vector<App::Color> colors;
             Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
             if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-                   colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
-                   if (colors.empty())
-                         colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
+                colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
+                if (colors.empty())
+                    colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
             }
+
             return_label=ocaf.saveShape(part, colors,hierarchical_label,hierarchical_loc);
-       }
-       return(return_label);
+        }
+
+        return(return_label);
     }
 
     Py::Object exporter(const Py::Tuple& args)
@@ -490,19 +495,18 @@ private:
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
             bool keepExplicitPlacement = list.size() > 1;
-	    keepExplicitPlacement = Standard_True;
+            keepExplicitPlacement = Standard_True;
             Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
 
             // That stuff is exporting a list of selected oject into FreeCAD Tree
 
-            int label=-1;
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 PyObject* item = (*it).ptr();
                 if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                     std::vector <TDF_Label> hierarchical_label;
                     std::vector <TopLoc_Location> hierarchical_loc;
-                    label=export_app_object(obj,ocaf, hierarchical_label, hierarchical_loc);
+                    export_app_object(obj,ocaf, hierarchical_label, hierarchical_loc);
                 }
             }
 
