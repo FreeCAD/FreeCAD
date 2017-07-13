@@ -301,8 +301,6 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
 
-            Quantity_Color aColor;
-            App::Color color(0.8f,0.8f,0.8f);
             std::vector<App::Color> colors;
             for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
                 Quantity_Color aColor;
@@ -495,7 +493,6 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
 void ExportOCAF::createNode(App::Part* part, int& root_id, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc)
 {
     TDF_Label shapeLabel = aShapeTool->NewShape();
-    TDF_Label return_value;
     Handle(TDataStd_Name) N;
     TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), 1));
 
