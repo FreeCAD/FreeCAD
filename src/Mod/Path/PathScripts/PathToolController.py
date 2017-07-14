@@ -314,10 +314,10 @@ class TaskPanel:
     def setFields(self):
         self.form.tcoName.setText(self.obj.Label)
         self.form.uiToolNum.setValue(self.obj.ToolNumber)
-        self.form.vertFeed.setText(str(self.obj.VertFeed.Value))
-        self.form.horizFeed.setText(str(self.obj.HorizFeed.Value))
-        self.form.vertRapid.setText(str(self.obj.VertRapid.Value))
-        self.form.horizRapid.setText(str(self.obj.HorizRapid.Value))
+        self.form.vertFeed.setText(self.obj.VertFeed.UserString)
+        self.form.horizFeed.setText(self.obj.HorizFeed.UserString)
+        self.form.vertRapid.setText(self.obj.VertRapid.UserString)
+        self.form.horizRapid.setText(self.obj.HorizRapid.UserString)
 
         self.form.spindleSpeed.setValue(self.obj.SpindleSpeed)
 
