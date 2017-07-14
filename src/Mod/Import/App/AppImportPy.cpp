@@ -231,8 +231,8 @@ private:
                     if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                         Part::Feature* part = static_cast<Part::Feature*>(obj);
                         std::vector<App::Color> colors;
-			std::vector <TDF_Label> hierarchical_label;
-			std::vector <TopLoc_Location> hierarchical_loc;
+                        std::vector <TDF_Label> hierarchical_label;
+                        std::vector <TopLoc_Location> hierarchical_loc;
                         ocaf.saveShape(part, colors, hierarchical_label, hierarchical_loc);
                     }
                     else {
@@ -249,7 +249,7 @@ private:
                             Part::Feature* part = static_cast<Part::Feature*>(obj);
                             App::PropertyColorList colors;
                             colors.setPyObject(item1.ptr());
-			    std::vector <TDF_Label> hierarchical_label;
+                            std::vector <TDF_Label> hierarchical_label;
                             std::vector <TopLoc_Location> hierarchical_loc;
                             ocaf.saveShape(part, colors.getValues(), hierarchical_label, hierarchical_loc);
                         }
