@@ -32,6 +32,7 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoReplacedElement.h>
 #include <vector>
+#include <memory>
 
 class SoCoordinateElement;
 class SoGLCoordinateElement;
@@ -48,9 +49,6 @@ public:
     static void initClass();
     SoBrepPointSet();
 
-    SoSFInt32 highlightIndex;
-    SoMFInt32 selectionIndex;
-
 protected:
     virtual ~SoBrepPointSet() {};
     virtual void GLRender(SoGLRenderAction *action);
@@ -58,17 +56,14 @@ protected:
     virtual void doAction(SoAction* action); 
 
 private:
-    void renderShape(const SoGLCoordinateElement * const vertexlist,
-                     const int32_t *vertexindices,
-                     int num_vertexindices);
-    void renderHighlight(SoGLRenderAction *action);
-    void renderSelection(SoGLRenderAction *action);
-    bool validIndexes(const SoCoordinateElement*, int32_t, const int32_t *, int) const;
+    class SelContext;
+    typedef std::shared_ptr<SelContext> SelContextPtr;
+    void renderHighlight(SoGLRenderAction *action, SelContextPtr);
+    void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
 
 private:
-    SbColor selectionColor;
-    SbColor highlightColor;
-    SoColorPacker colorpacker;
+    SelContextPtr selContext;
+    uint32_t packedColor;
 };
 
 } // namespace PartGui

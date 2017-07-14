@@ -84,8 +84,6 @@ public:
     SoBrepFaceSet();
 
     SoMFInt32 partIndex;
-    SoSFInt32 highlightIndex;
-    SoMFInt32 selectionIndex;
 
 protected:
     virtual ~SoBrepFaceSet();
@@ -129,8 +127,14 @@ private:
                      const int nbind,
                      const int mbind,
                      const int texture);
-    void renderHighlight(SoGLRenderAction *action);
-    void renderSelection(SoGLRenderAction *action);
+
+    class SelContext;
+    typedef std::shared_ptr<SelContext> SelContextPtr;
+
+    void renderHighlight(SoGLRenderAction *action, SelContextPtr);
+    void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
+
+    bool overrideMaterialBinding(SoState *state, SelContextPtr ctx, SelContextPtr ctx2);
 
 #ifdef RENDER_GLARRAYS
     void renderSimpleArray();
@@ -142,9 +146,10 @@ private:
     std::vector<int32_t> index_array;
     std::vector<float> vertex_array;
 #endif
-    SbColor selectionColor;
-    SbColor highlightColor;
-    SoColorPacker colorpacker;
+    SelContextPtr selContext;
+    std::vector<int32_t> matIndex;
+    std::vector<uint32_t> packedColors;
+    uint32_t packedColor;
 
     // Define some VBO pointer for the current mesh
     class VBO;

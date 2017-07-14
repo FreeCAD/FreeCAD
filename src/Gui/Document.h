@@ -181,7 +181,9 @@ public:
     /// Detach a view (get called by the MDIView destructor)
     void detachView(Gui::BaseView* pcView, bool bPassiv=false); 
     /// helper for selection
-    ViewProvider* getViewProviderByPathFromTail(SoPath * path) const;
+    ViewProviderDocumentObject* getViewProviderByPathFromTail(SoPath * path) const;
+    /// Get all view providers along the path and the corresponding node index in the path
+    std::vector<std::pair<ViewProviderDocumentObject*,int> > getViewProvidersByPath(SoPath * path) const;
     /// call update on all attached views
     void onUpdate(void);
     /// call relabel to all attached views

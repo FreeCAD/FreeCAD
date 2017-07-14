@@ -29,11 +29,13 @@
 # include <QLineEdit>
 # include <QTextStream>
 # include <QToolButton>
+ #include <QCheckBox>
 # include <QMenu>
 # include <QLabel>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Base/Console.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include "SelectionView.h"
@@ -43,7 +45,7 @@
 #include "ViewProvider.h"
 #include "BitmapFactory.h"
 
-
+FC_LOG_LEVEL_INIT("Selection",true,true,true)
 
 using namespace Gui;
 using namespace Gui::DockWnd;
@@ -85,12 +87,24 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
     selectionView = new QListWidget(this);
     selectionView->setContextMenuPolicy(Qt::CustomContextMenu);
     vLayout->addWidget( selectionView );
+
+    enablePickList = new QCheckBox(this);
+    enablePickList->setText(tr("Picked object list"));
+    vLayout->addWidget(enablePickList);
+    pickList = new QListWidget(this);
+    pickList->setVisible(false);
+    vLayout->addWidget(pickList);
+
     resize(200, 200);
 
     connect(clearButton, SIGNAL(clicked()), searchBox, SLOT(clear()));
     connect(searchBox, SIGNAL(textChanged(QString)), this, SLOT(search(QString)));
-    connect(selectionView, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(select(QListWidgetItem*)));
+    connect(selectionView, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(toggleSelect(QListWidgetItem*)));
+    connect(selectionView, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(preselect(QListWidgetItem*)));
+    connect(pickList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(toggleSelect(QListWidgetItem*)));
+    connect(pickList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(preselect(QListWidgetItem*)));
     connect(selectionView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(onItemContextMenu(QPoint)));
+    connect(enablePickList, SIGNAL(stateChanged(int)), this, SLOT(onEnablePickList()));
     
     Gui::Selection().Attach(this);
 }
@@ -105,6 +119,7 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                              Gui::SelectionSingleton::MessageType Reason)
 {
     Q_UNUSED(rCaller); 
+
     QString selObject;
     QTextStream str(&selObject);
     if (Reason.Type == SelectionChanges::AddSelection) {
@@ -172,6 +187,40 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
             selObject.clear();
         }
     }
+    else if (Reason.Type == SelectionChanges::PickedListChanged) {
+        bool picking = Selection().needPickedList();
+        enablePickList->setChecked(picking);
+        pickList->setVisible(picking);
+        pickList->clear();
+        if(picking) {
+            const auto &sels = Selection().getPickedList(Reason.pDocName);
+            for(const auto &sel : sels) {
+                App::Document* doc = App::GetApplication().getDocument(sel.DocName);
+                if(!doc) continue;
+                App::DocumentObject* obj = doc->getObject(sel.FeatName);
+                if(!obj) continue;
+
+                QString selObject;
+                QTextStream str(&selObject);
+                str << sel.DocName;
+                str << ".";
+                str << sel.FeatName;
+                if (sel.SubName[0] != 0 ) {
+                    str << ".";
+                    str << sel.SubName;
+                }
+                str << " (";
+                str << QString::fromUtf8(obj->Label.getValue());
+                str << ")";
+
+                this->x = sel.x;
+                this->y = sel.y;
+                this->z = sel.z;
+
+                new QListWidgetItem(selObject, pickList);
+            }
+        }
+    }
     countLabel->setText(QString::number(selectionView->count()));
 }
 
@@ -221,6 +270,60 @@ void SelectionView::deselect(void)
     elements[1] = elements[1].split(QString::fromLatin1(" "))[0];
     //Gui::Selection().rmvSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
     QString cmd = QString::fromLatin1("Gui.Selection.removeSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0]).arg(elements[1]);
+    Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+}
+
+void SelectionView::toggleSelect(QListWidgetItem* item)
+{
+    if (!item) return;
+    std::string name = item->text().toLatin1().constData();
+    char *docname = &name.at(0);
+    char *objname = std::strchr(docname,'.');
+    if(!objname) return;
+    *objname++ = 0;
+    char *subname = std::strchr(objname,'.');
+    if(subname) {
+        *subname++ = 0;
+        char *end = std::strchr(subname,' ');
+        if(end) *end = 0;
+    }
+    QString cmd;
+    if(Gui::Selection().isSelected(docname,objname,subname))
+        cmd = QString::fromLatin1("Gui.Selection.removeSelection("
+            "App.getDocument('%1').getObject('%2'),'%3')")
+            .arg(QString::fromLatin1(docname))
+            .arg(QString::fromLatin1(objname))
+            .arg(QString::fromLatin1(subname));
+    else
+        cmd = QString::fromLatin1("Gui.Selection.addSelection("
+            "App.getDocument('%1').getObject('%2'),'%3',%4,%5,%6)")
+            .arg(QString::fromLatin1(docname))
+            .arg(QString::fromLatin1(objname))
+            .arg(QString::fromLatin1(subname))
+            .arg(x).arg(y).arg(z);
+    Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+}
+
+void SelectionView::preselect(QListWidgetItem* item)
+{
+    if (!item) return;
+    std::string name = item->text().toLatin1().constData();
+    char *docname = &name.at(0);
+    char *objname = std::strchr(docname,'.');
+    if(!objname) return;
+    *objname++ = 0;
+    char *subname = std::strchr(objname,'.');
+    if(subname) {
+        *subname++ = 0;
+        char *end = std::strchr(subname,' ');
+        if(end) *end = 0;
+    }
+    QString cmd = QString::fromLatin1("Gui.Selection.preselect("
+        "App.getDocument('%1').getObject('%2'),'%3',%4,%5,%6)")
+        .arg(QString::fromLatin1(docname))
+        .arg(QString::fromLatin1(objname))
+        .arg(QString::fromLatin1(subname))
+        .arg(x).arg(y).arg(z);
     Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
 }
 
@@ -406,6 +509,26 @@ bool SelectionView::onMsg(const char* /*pMsg*/,const char** /*ppReturn*/)
 {
     return false;
 }
+
+void SelectionView::hideEvent(QHideEvent *ev) {
+    FC_TRACE(this << " detaching selection observer");
+    Gui::Selection().Detach(this);
+    Gui::DockWindow::hideEvent(ev);
+}
+
+void SelectionView::showEvent(QShowEvent *ev) {
+    FC_TRACE(this << " attaching selection observer");
+    Gui::Selection().Attach(this);
+    enablePickList->setChecked(Selection().needPickedList());
+    Gui::DockWindow::showEvent(ev);
+}
+
+void SelectionView::onEnablePickList() {
+    bool enabled = enablePickList->isChecked();
+    Selection().enablePickedList(enabled);
+    pickList->setVisible(enabled);
+}
+
 /// @endcond
 
 #include "moc_SelectionView.cpp"

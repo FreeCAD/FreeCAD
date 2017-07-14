@@ -599,7 +599,8 @@ void View3DInventorViewer::OnChange(Gui::SelectionSingleton::SubjectType& rCalle
     if (Reason.Type == SelectionChanges::AddSelection ||
         Reason.Type == SelectionChanges::RmvSelection ||
         Reason.Type == SelectionChanges::SetSelection ||
-        Reason.Type == SelectionChanges::ClrSelection) {
+        Reason.Type == SelectionChanges::ClrSelection ||
+        Reason.Type == SelectionChanges::SetPreselectSignal) {
         SoFCSelectionAction cAct(Reason);
         cAct.apply(pcViewProviderRoot);
     }
@@ -1980,10 +1981,12 @@ SoPickedPoint* View3DInventorViewer::pickPoint(const SbVec2s& pos) const
 
 const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) const
 {
-    if (selectionRoot)
-        return selectionRoot->getPickedPoint(n->getAction());
-    else
-        return n->getPickedPoint();
+    if (selectionRoot) {
+        auto ret = selectionRoot->getPickedList(n->getAction(), true);
+        if(ret.size()) return ret[0].pp;
+        return nullptr;
+    }
+    return n->getPickedPoint();
 }
 
 SbBool View3DInventorViewer::pubSeekToPoint(const SbVec2s& pos)

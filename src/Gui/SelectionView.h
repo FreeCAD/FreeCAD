@@ -30,6 +30,8 @@
 #include "Selection.h"
 
 class QListWidget;
+class QListWidgetItem;
+class QCheckBox;
 class QLabel;
 
 namespace App {
@@ -74,6 +76,9 @@ public:
     QListWidget* selectionView;
     QLabel*      countLabel;
 
+    QCheckBox *enablePickList;
+    QListWidget *pickList;
+
 public Q_SLOTS:
     /// get called when text is entered in the search box
     void search(const QString& text);
@@ -87,11 +92,21 @@ public Q_SLOTS:
     void toPython(void);
     void touch(void);
     void showPart(void);
+    void onEnablePickList();
+    void toggleSelect(QListWidgetItem* item=0);
+    void preselect(QListWidgetItem* item=0);
+
+protected:
+    void showEvent(QShowEvent *) override;
+    void hideEvent(QHideEvent *) override;
 
 private:
     QString getModule(const char* type) const;
     QString getProperty(App::DocumentObject* obj) const;
     bool supportPart(App::DocumentObject* obj, const QString& part) const;
+
+private:
+    float x,y,z;
 };
 
 } // namespace DockWnd

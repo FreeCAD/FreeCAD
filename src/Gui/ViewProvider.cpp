@@ -29,6 +29,7 @@
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/details/SoDetail.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
@@ -53,8 +54,11 @@
 #include "View3DInventorViewer.h"
 #include "SoFCDB.h"
 #include "ViewProviderExtension.h"
+#include "SoFCUnifiedSelection.h"
 
 #include <boost/bind.hpp>
+
+FC_LOG_LEVEL_INIT("ViewProvider",true,true)
 
 using namespace std;
 using namespace Gui;
@@ -760,3 +764,54 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren3D(void) const {
     }
     return vec;
 }
+bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        if(ext->extensionGetElementPicked(pp,subname))
+            return true;
+    subname = getElement(pp?pp->getDetail():0);
+    return true;
+}
+
+SoDetail *ViewProvider::getDetailPath(const char *subelement, SoFullPath *pPath, bool append) const {
+    if(append) {
+        pPath->append(pcRoot);
+        pPath->append(pcModeSwitch);
+    }
+    SoDetail *det = 0;
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        if(ext->extensionGetDetailPath(subelement,pPath,det))
+            return det;
+    return getDetail(subelement);
+}
+
+int ViewProvider::partialRender(const std::vector<std::string> &elements, bool clear) {
+    int count = 0;
+    SoFullPath *path = static_cast<SoFullPath*>(new SoPath);
+    path->ref();
+    if(elements.empty()) {
+        FC_LOG("partial render clear");
+        SoSelectionElementAction action(SoSelectionElementAction::None,true);
+        action.apply(path);
+    } else {
+        SoSelectionElementAction action(clear?SoSelectionElementAction::Remove:
+            SoSelectionElementAction::Append,true);
+        for(const auto &element : elements) {
+            path->truncate(0);
+            SoDetail *det = getDetailPath(element.c_str(),path,false);
+            if(!det) {
+                FC_LOG("partial render element not found: " << element);
+                continue;
+            }
+            FC_LOG("partial render (" << path->getLength() << "): " << element);
+            action.setElement(det);
+            action.apply(path);
+            delete det;
+            ++count;
+        }
+    }
+    path->unref();
+    return count;
+}
+

@@ -32,6 +32,7 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
 
 #include "ViewProvider.h"
 #include "WidgetFactory.h"
@@ -266,6 +267,88 @@ PyObject* ViewProviderPy::claimChildren(PyObject* args)
     return Py::new_reference_to(ret);
 }
 
+PyObject* ViewProviderPy::partialRender(PyObject* args)
+{
+    PyObject *value = Py_None;
+    PyObject *clear = Py_False;
+    if (!PyArg_ParseTuple(args, "|OO",&value,&clear))
+        return NULL;                     // NULL triggers exception
+
+    std::vector<std::string> values;
+    if(value != Py_None) {
+        PyObject *item;
+        Py_ssize_t nSize;
+        if (PySequence_Check(value))
+            nSize = PySequence_Size(value);
+        else {
+            item = value;
+            value = 0;
+            nSize = 1;
+        }
+        values.resize(nSize);
+        for (Py_ssize_t i = 0; i < nSize; ++i) {
+            if(value) item = PySequence_GetItem(value, i);
+
+            if (PyUnicode_Check(item)) {
+#if PY_MAJOR_VERSION >= 3
+                values[i] = PyUnicode_AsUTF8(item);
+#else
+                PyObject* unicode = PyUnicode_AsUTF8String(item);
+                values[i] = PyString_AsString(unicode);
+                Py_DECREF(unicode);
+#endif
+            }
+#if PY_MAJOR_VERSION < 3
+            else if (PyString_Check(item)) {
+                values[i] = PyString_AsString(item);
+            }
+#endif
+            else {
+                std::string error = std::string("type must be str or unicode, not ");
+                throw Base::TypeError(error + item->ob_type->tp_name);
+            }
+        }
+    }
+
+    Py::Int ret(getViewProviderPtr()->partialRender(values,PyObject_IsTrue(clear)));
+    return Py::new_reference_to(ret);
+}
+
+PyObject* ViewProviderPy::getElementPicked(PyObject* args)
+{
+    PyObject *obj;
+    if (!PyArg_ParseTuple(args, "O",&obj))
+        return NULL;
+    void *ptr = 0;
+    Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPickedPoint *", obj, &ptr, 0);
+    SoPickedPoint *pp = reinterpret_cast<SoPickedPoint*>(ptr);
+    if(!pp) 
+        throw Base::TypeError("type must be of coin.SoPickedPoint");
+    std::string name;
+    if(!getViewProviderPtr()->getElementPicked(pp,name))
+        Py_Return;
+    return Py::new_reference_to(Py::String(name));
+}
+
+PyObject* ViewProviderPy::getDetailPath(PyObject* args)
+{
+    const char *sub;
+    PyObject *path;
+    PyObject *append = Py_True;
+    if (!PyArg_ParseTuple(args, "sO|O",&sub,&path,&append))
+        return NULL;
+    void *ptr = 0;
+    Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPath *", path, &ptr, 0);
+    SoPath *pPath = reinterpret_cast<SoPath*>(ptr);
+    if(!pPath) 
+        throw Base::TypeError("type must be of coin.SoPath");
+    SoDetail *det = getViewProviderPtr()->getDetailPath(
+            sub,static_cast<SoFullPath*>(pPath),PyObject_IsTrue(append));
+    if(!det)
+        Py_Return;
+    return Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", (void*)det, 0);
+}
+
 PyObject *ViewProviderPy::getCustomAttributes(const char* attr) const
 {
     // search for dynamic property
@@ -333,6 +416,24 @@ void  ViewProviderPy::setRootNode(Py::Object)
 
 }
 
+Py::Object ViewProviderPy::getSwitchNode(void) const
+{
+    try {
+        SoNode* node = getViewProviderPtr()->getModeSwitch();
+        PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin","SoSwitch *", node, 1);
+        node->ref();
+        return Py::Object(Ptr, true);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+}
+
+void  ViewProviderPy::setSwitchNode(Py::Object)
+{
+
+}
+
 static char * buffer;
 static size_t buffer_size = 0;
 
@@ -382,3 +483,14 @@ Py::Object ViewProviderPy::getIcon(void) const
     return wrap.fromQIcon(new QIcon(icon));
 #endif
 }
+
+Py::Int ViewProviderPy::getDefaultMode(void) const
+{
+    return Py::Int((long)getViewProviderPtr()->getDefaultMode());
+}
+
+void ViewProviderPy::setDefaultMode(Py::Int arg)
+{
+    return getViewProviderPtr()->setDefaultMode(arg);
+}
+

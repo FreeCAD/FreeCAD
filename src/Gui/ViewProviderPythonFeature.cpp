@@ -375,6 +375,37 @@ std::string ViewProviderPythonFeatureImp::getElement(const SoDetail *det) const
     return "";
 }
 
+ViewProviderPythonFeatureImp::ValueT
+ViewProviderPythonFeatureImp::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("getElementPicked"))) {
+                PyObject* pivy = 0;
+                pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoPickedPoint *", (void*)pp, 0);
+                Py::Callable method(vp.getAttr(std::string("getElementPicked")));
+                Py::Tuple args(1);
+                args.setItem(0, Py::Object(pivy, true));
+                Py::Object ret(method.apply(args));
+                if(!ret.isString()) return Rejected;
+                subname = ret.as_string();
+                return Accepted;
+            }
+        }
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return NotImplemented;
+}
 SoDetail* ViewProviderPythonFeatureImp::getDetail(const char* name) const
 {
     // Run the onChanged method of the proxy object.
@@ -405,6 +436,46 @@ SoDetail* ViewProviderPythonFeatureImp::getDetail(const char* name) const
 
     return 0;
 }
+
+ViewProviderPythonFeatureImp::ValueT ViewProviderPythonFeatureImp::getDetailPath(
+        const char* name, SoFullPath *path, bool append, SoDetail *&det) const
+{
+    Base::PyGILStateLocker lock;
+    auto length = path->getLength();
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("getDetailPath"))) {
+                Py::Callable method(vp.getAttr(std::string("getDetailPath")));
+                PyObject* pivy = 0;
+                pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoFullPath *", (void*)path, 1);
+                path->ref();
+                Py::Tuple args(3);
+                args.setItem(0, Py::String(name));
+                args.setItem(1, Py::Object(pivy, true));
+                args.setItem(2, Py::Boolean(append));
+                Py::Object pyDet(method.apply(args));
+                void* ptr = 0;
+                Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pyDet.ptr(), &ptr, 0);
+                SoDetail* detail = reinterpret_cast<SoDetail*>(ptr);
+                det = detail ? detail->copy() : 0;
+                return Accepted;
+            }
+        }
+        return NotImplemented;
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    path->truncate(length);
+    return Rejected;
+}
+
 
 std::vector<Base::Vector3d> ViewProviderPythonFeatureImp::getSelectionShape(const char* /*Element*/) const
 {

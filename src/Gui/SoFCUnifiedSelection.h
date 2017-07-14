@@ -41,6 +41,7 @@ class SoDetail;
 namespace Gui {
 
 class Document;
+class ViewProviderDocumentObject;
 
 /**  Unified Selection node
  *  This is the new selection node for the 3D Viewer which will 
@@ -83,6 +84,8 @@ public:
 
     bool checkSelectionStyle(int type, ViewProvider *vp);
 
+    static bool hasHighlight();
+
     friend class View3DInventorViewer;
 protected:
     virtual ~SoFCUnifiedSelection();
@@ -95,15 +98,130 @@ private:
     //SbBool isHighlighted(SoAction *action);
     //SbBool preRender(SoGLRenderAction *act, GLint &oldDepthFunc);
     static int getPriority(const SoPickedPoint* p);
-    const SoPickedPoint* getPickedPoint(SoHandleEventAction*) const;
+
+    struct PickedInfo {
+        const SoPickedPoint *pp;
+        ViewProviderDocumentObject *vpd;
+        std::string element;
+        PickedInfo():pp(0),vpd(0)
+        {}
+    };
+
+    bool setHighlight(const PickedInfo &);
+    bool setHighlight(SoFullPath *path, const SoDetail *det, 
+            ViewProviderDocumentObject *vpd, const char *element, float x, float y, float z);
+    bool setSelection(const std::vector<PickedInfo> &, bool ctrlDown=false);
+
+    std::vector<PickedInfo> getPickedList(SoHandleEventAction* action, bool singlePick) const;
+
     Gui::Document       *pcDocument;
 
     static SoFullPath * currenthighlight;
+    SoFullPath * detailPath;
 
-    SbBool highlighted;
     // -1 = not handled, 0 = not selected, 1 = selected
     int32_t preSelection;
     SoColorPacker colorpacker;
+};
+
+
+class SoFCSelectionRoot;
+
+class GuiExport SoFCSelectionRoot : public SoSeparator {
+    typedef SoSeparator inherited;
+
+    SO_NODE_HEADER(Gui::SoFCSelectionRoot);
+  
+public:
+    static void initClass(void);
+    static void finish(void);
+    SoFCSelectionRoot();
+
+    virtual void GLRenderBelowPath(SoGLRenderAction * action);
+    virtual void GLRender(SoGLRenderAction * action);
+    virtual void GLRenderInPath(SoGLRenderAction * action);
+    virtual void GLRenderOffPath(SoGLRenderAction * action);
+
+    virtual void doAction(SoAction *action);
+
+    /** Returns selection context for rendering. 
+     *
+     * @param node: the querying node
+     * @param def: default context if none is found
+     * @param secCtx: optional, for querying secondary context
+     *
+     * @return Returned the primary context for selection, and the context is
+     * always stored in the first encounted SoFCSelectionRoot in the path. It
+     * is keyed using the entires sequence of SoFCSelectionRoot along the path
+     * to \c node, replacing the first SoFCSelectionRoot with the given node. 
+     *
+     * @return Secondary context returned in \c secCtx is for customized
+     * highlighting, and is not affected by mouse event. The highlight is
+     * applied manually using SoSelectionElementAction. It is stored in the
+     * last encountered SoFCSelectionRoot, and is keyed using the querying 
+     * \c node and (if there are more than one SoFCSelectionRoot along the
+     * path) the first SoFCSelectionRoot. The reason is so that any link to a
+     * node (new links means additional SoFCSelectionRoot added in front) with
+     * customized subelement highlight will also show the highlight.
+     *
+     * @note For simplicity reason, currently secondary context is only freed
+     * when the storage SoFCSSelectionRoot node is freed.
+     */
+    template<class T>
+    static std::shared_ptr<T> getRenderContext(SoNode *node,  
+                    std::shared_ptr<T> def, std::shared_ptr<T> *ctx2 = 0) 
+    {
+        ContextPtr _ctx2;
+        auto ctx = std::static_pointer_cast<T>(getContext(node,def,ctx2?&_ctx2:0));
+        if(ctx2) 
+            *ctx2 = std::static_pointer_cast<T>(_ctx2);
+        return ctx;
+    }
+
+    /** Get the selection context for an action. 
+     *
+     * @param action: the action. SoSelectionElementAction has any option to
+     * query for secondary context. \sa getRenderContext for detail about
+     * secondary context
+     * @param node: the querying node
+     * @param def: default context if none is found
+     *
+     * @return If no SoFCSelectionRoot is found in the current path of action,
+     * \c def is returned. Otherwise a selection context returned. A new one
+     * will be created if none is found.
+     */
+    template<class T>
+    static std::shared_ptr<T> getActionContext(
+            SoAction *action, SoNode *node, std::shared_ptr<T> def) 
+    {
+        ContextPtr pdef(def);
+        ContextPtr *pctx = getContext(action,node,&pdef);
+        if(pctx == &pdef)
+            return def;
+        // make a new context if there is none
+        auto &ctx = *pctx;
+        if(!ctx) ctx = std::make_shared<T>();
+        return std::static_pointer_cast<T>(ctx);
+    }
+
+    static SoNode *getCurrentRoot(bool front, SoNode *def);
+
+    void resetContext();
+
+protected:
+    virtual ~SoFCSelectionRoot();
+
+    typedef std::shared_ptr<void> ContextPtr;
+
+    static ContextPtr getContext(SoNode *node, ContextPtr def, ContextPtr *ctx2);
+    static ContextPtr *getContext(SoAction *action, SoNode *node, ContextPtr *pdef);
+
+    typedef std::vector<SoNode*> Stack;
+    static Stack SelStack;
+    typedef std::map<Stack,ContextPtr> ContextMap;
+    ContextMap contextMap;
+    ContextMap contextMap2;
+    bool pushed;
 };
 
 /**
@@ -148,7 +266,7 @@ class GuiExport SoSelectionElementAction : public SoAction
 public:
     enum Type {None, Append, Remove, All};
 
-    SoSelectionElementAction (Type);
+    SoSelectionElementAction (Type, bool secondary = false);
     ~SoSelectionElementAction();
 
     Type getType() const;
@@ -156,6 +274,8 @@ public:
     const SbColor& getColor() const;
     void setElement(const SoDetail*);
     const SoDetail* getElement() const;
+
+    bool isSecondary() const {return _secondary;}
 
     static void initClass();
 
@@ -169,6 +289,7 @@ private:
     Type _type;
     SbColor _color;
     const SoDetail* _det;
+    bool _secondary;
 };
 
 /**

@@ -90,6 +90,34 @@
 				<UserDocu>Returns list of objects that are to be grouped in tree under this object.</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="partialRender">
+			<Documentation>
+                <UserDocu>
+                    partialRender(sub=None,clear=False): render only part of the object
+
+                    sub: string or list of string refer to the subelement. If it is None then
+                         reset the partial rendering.
+                    clear: true to add, or false to remove the subelement(s) for rendering.
+                </UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="getElementPicked" Const="true">
+			<Documentation>
+                <UserDocu>getElementPicked(pickPoint): return the picked subelement</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="getDetailPath" Const="true">
+			<Documentation>
+                <UserDocu>
+                    getDetailPath(subname,path,append=True): return Coin detail and path of an subelement
+
+                    subelement: dot separated string reference to the sub element
+                    pPath: output coin path leading to the returned element detail
+                    append: If true, path will be first appended with the root node and the mode 
+                    switch node of this view provider. 
+                </UserDocu>
+			</Documentation>
+		</Methode>
 		<Attribute Name="Annotation" ReadOnly="false">
 			<Documentation>
 				<UserDocu>A pivy Separator to add a custom scene graph to this ViewProvider</UserDocu>
@@ -107,6 +135,18 @@
         <UserDocu>A pivy Separator with the root of this ViewProvider</UserDocu>
       </Documentation>
       <Parameter Name="RootNode" Type="Object" />
+    </Attribute>
+    <Attribute Name="SwitchNode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>A pivy SoSwitch for the display mode switch of this ViewProvider</UserDocu>
+      </Documentation>
+      <Parameter Name="SwitchNode" Type="Object" />
+    </Attribute>
+    <Attribute Name="DefaultMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Get/Set the default display mode in turns of coin node index</UserDocu>
+      </Documentation>
+      <Parameter Name="DefaultNode" Type="Int" />
     </Attribute>
     <Attribute Name="IV" ReadOnly="true">
       <Documentation>

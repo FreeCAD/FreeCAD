@@ -67,8 +67,10 @@ public:
         RmvSelection,
         SetSelection,
         ClrSelection,
-        SetPreselect,
-        RmvPreselect
+        SetPreselect, // to signal observer the preselect has changed
+        RmvPreselect,
+        SetPreselectSignal, // to request 3D view to change preselect
+        PickedListChanged,
     };
     SelectionChanges()
     : Type(ClrSelection)
@@ -217,12 +219,24 @@ public:
 class GuiExport SelectionSingleton : public Base::Subject<const SelectionChanges&>
 {
 public:
+    struct SelObj {
+        const char* DocName;
+        const char* FeatName;
+        const char* SubName;
+        const char* TypeName;
+        App::Document* pDoc;
+        App::DocumentObject*  pObject;
+        float x,y,z;
+    };
+
     /// Add to selection 
-    bool addSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, float x=0, float y=0, float z=0);
+    bool addSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
+            float x=0, float y=0, float z=0, const std::vector<SelObj> *pickedList = 0);
     /// Add to selection with several sub-elements
     bool addSelection(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames);
     /// Remove from selection (for internal use)
-    void rmvSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0);
+    void rmvSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
+            const std::vector<SelObj> *pickedList = 0);
     /// Set the selection for a document
     void setSelection(const char* pDocName, const std::vector<App::DocumentObject*>&);
     /// Clear the selection of document \a pDocName. If the document name is not given the selection of the active document is cleared.
@@ -234,8 +248,10 @@ public:
     /// Check if selected
     bool isSelected(App::DocumentObject*, const char* pSubName=0) const;
 
+    const char *getSelectedElement(App::DocumentObject*, const char* pSubName) const;
+
     /// set the preselected object (mostly by the 3D view)
-    bool setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName, float x=0, float y=0, float z=0);
+    bool setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName, float x=0, float y=0, float z=0, bool signal=false);
     /// remove the present preselection
     void rmvPreselect();
     /// sets different coords for the preselection 
@@ -279,16 +295,6 @@ public:
      */
     template<typename T> inline std::vector<T*> getObjectsOfType(const char* pDocName=0) const;
 
-    struct SelObj {
-        const char* DocName;
-        const char* FeatName;
-        const char* SubName;
-        const char* TypeName;
-        App::Document* pDoc;
-        App::DocumentObject*  pObject;
-        float x,y,z;
-    };
-
     /// signal on new object
     boost::signal<void (const SelectionChanges& msg)> signalSelectionChanged;
 
@@ -322,6 +328,11 @@ public:
         return static_cast<unsigned int>(_SelList.size());
     }
 
+    bool needPickedList() const;
+    void enablePickedList(bool);
+    bool hasPickedList() const;
+    std::vector<SelectionSingleton::SelObj> getPickedList(const char* pDocName) const;
+    std::vector<Gui::SelectionObject> getPickedListEx(const char* pDocName=0,Base::Type typeId=App::DocumentObject::getClassTypeId()) const;
     static SelectionSingleton& instance(void);
     static void destruct (void);
     friend class SelectionFilter;
@@ -343,6 +354,9 @@ protected:
     static PyObject *sRemSelObserver      (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sAddSelectionGate    (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sRemoveSelectionGate (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sGetPickedList       (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sEnablePickedList    (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sPreselect           (PyObject *self,PyObject *args,PyObject *kwd);
 
 protected:
     /// Construction
@@ -369,6 +383,10 @@ protected:
     };
     std::list<_SelObj> _SelList;
 
+    std::list<_SelObj> _PickedList;
+    bool _needPickedList;
+
+    std::vector<Gui::SelectionObject> getObjectList(const char* pDocName,Base::Type typeId, const std::list<_SelObj> &objs) const;
     static SelectionSingleton* _pcSingleton;
 
     std::string DocName;

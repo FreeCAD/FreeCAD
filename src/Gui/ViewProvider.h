@@ -46,6 +46,7 @@ class SbMatrix;
 class SoEventCallback;
 class SoPickedPoint;
 class SoDetail;
+class SoFullPath;
 class QString;
 class QMenu;
 class QObject;
@@ -97,6 +98,8 @@ public:
 
     // returns the root node of the Provider (3D)
     virtual SoSeparator* getRoot(void){return pcRoot;}
+    // return the mode switch node of the Provider (3D)
+    SoSwitch *getModeSwitch(void){return pcModeSwitch;}
     // returns the root for the Annotations. 
     SoSeparator* getAnnotation(void);
     // returns the root node of the Provider (3D)
@@ -124,9 +127,42 @@ public:
     virtual bool useNewSelectionModel(void) const {return false;}
     /// indicates if the ViewProvider can be selected
     virtual bool isSelectable(void) const {return true;}
+    /// return a hit element given the picked point which contains the full node path
+    virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const;
     /// return a hit element to the selection path or 0
     virtual std::string getElement(const SoDetail *) const { return std::string(); }
-    virtual SoDetail* getDetail(const char*) const { return 0; }
+    /// return the coin node detail of the subelement
+    virtual SoDetail* getDetail(const char *) const { return 0; }
+
+    /** return the coin node detail and path to the node of the subelement
+     *
+     * @param subelement: dot separated string reference to the sub element
+     * @param pPath: output coin path leading to the returned element detail
+     * @param append: If true, pPath will be first appended with the root node and
+     * the mode switch node of this view provider. 
+     *
+     * @return the coint detail of the subelement
+     *
+     * If this view provider links to other view provider, then the
+     * implementation of getDetailPath() shall also append all intermediate
+     * nodes starting just after the mode switch node up till the mode switch of
+     * the linked view provider.
+     */
+    virtual SoDetail* getDetailPath(const char *subelement, SoFullPath *pPath, bool append) const;
+
+    /** partial rendering setup
+     *
+     * @param subelements: a list of dot separated string refer to the sub element
+     * @param clear: if true, remove the the subelement from partial rendering.
+     * If else, add the subelement for rendering.
+     *
+     * @return Return the number of subelement found
+     *
+     * Partial rendering only works if there is at least on SoFCSelectRoot node
+     * in this view provider
+     */
+    int partialRender(const std::vector<std::string> &subelements, bool clear);
+
     virtual std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint *) const;
     /// return the higlight lines for a given element or the whole shape
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const {
@@ -330,6 +366,7 @@ public:
     /// Returns a list of added display mask modes
     std::vector<std::string> getDisplayMaskModes() const;
     void setDefaultMode(int);
+    int getDefaultMode() const { return _iActualMode; }
     //@}
     
 protected:

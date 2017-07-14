@@ -54,6 +54,7 @@
 #include "Selection.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCInteractiveElement.h"
+#include "SoFCUnifiedSelection.h"
 
 // For 64-bit system the method using the front buffer doesn't work at all for lines.
 // Thus, use the method which forces a redraw every time. This is a bit slower but at
@@ -65,6 +66,23 @@
 using namespace Gui;
 
 SoFullPath * Gui::SoFCSelection::currenthighlight = NULL;
+
+
+class SoFCSelection::SelContext {
+public:
+    SoSFColor colorHighlight;
+    SoSFColor colorSelection;
+    SbBool selected;
+    SbBool highlighted;
+    SoColorPacker colorpacker;
+
+    SelContext() {
+        colorHighlight = SbColor(0.8f, 0.1f, 0.1f);
+        colorSelection = SbColor(0.1f, 0.8f, 0.1f);
+        selected = false;
+        highlighted = false;
+    }
+};
 
 
 // *************************************************************************
@@ -111,6 +129,11 @@ SoFCSelection::SoFCSelection()
     bCtrl       = false;
 
     selected = NOTSELECTED;
+
+    ParameterGrp::handle hGrp = 
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    bUseNewSelection = hGrp->GetBool("UseNewSelection",true);
+    selContext = std::make_shared<SelContext>();
 }
 
 /*!
@@ -151,6 +174,38 @@ SoFCSelection::turnOffCurrentHighlight(SoGLRenderAction * action)
 
 void SoFCSelection::doAction(SoAction *action)
 {
+    if(bUseNewSelection) {
+        if (action->getTypeId() == Gui::SoHighlightElementAction::getClassTypeId()) {
+            Gui::SoHighlightElementAction* hlaction = static_cast<Gui::SoHighlightElementAction*>(action);
+            SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this,selContext);
+            ctx->colorHighlight = hlaction->getColor();
+            if(ctx->highlighted != hlaction->isHighlighted()){
+                ctx->highlighted = hlaction->isHighlighted();
+                this->touch();
+            }
+            return;
+        } else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
+            Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
+            SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this,selContext);
+            this->colorSelection = selaction->getColor();
+            if (selaction->getType() == Gui::SoSelectionElementAction::All ||
+                selaction->getType() == Gui::SoSelectionElementAction::Append) {
+                if(!ctx->selected) {
+                    ctx->selected = true;
+                    this->touch();
+                }
+            } else if (selaction->getType() == Gui::SoSelectionElementAction::None ||
+                       selaction->getType() == Gui::SoSelectionElementAction::Remove) {
+                if(ctx->selected) {
+                    ctx->selected = false;
+                    this->touch();
+                }
+            }
+            return;
+        }
+        return inherited::doAction(action);
+    }
+
     if (action->getTypeId() == SoFCDocumentAction::getClassTypeId()) {
         SoFCDocumentAction *docaction = (SoFCDocumentAction*)action;
         this->documentName = docaction->documentName;
@@ -309,6 +364,11 @@ SoFCSelection::getPickedPoint(SoHandleEventAction* action) const
 void
 SoFCSelection::handleEvent(SoHandleEventAction * action)
 {
+    if(bUseNewSelection) {
+       inherited::handleEvent( action );
+       return;
+    }
+
     static char buf[513];
     HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
     const SoEvent * event = action->getEvent();
@@ -337,12 +397,13 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                     }
                 }
                 
-                snprintf(buf,512,"Preselected: %s.%s.%s (%f,%f,%f)",documentName.getValue().getString()
+                const auto &pt = pp->getPoint();
+                snprintf(buf,512,"Preselected: %s.%s.%s (%g, %g, %g)",documentName.getValue().getString()
                                            ,objectName.getValue().getString()
                                            ,subElementName.getValue().getString()
-                                           ,pp->getPoint()[0]
-                                           ,pp->getPoint()[1]
-                                           ,pp->getPoint()[2]);
+                                           ,fabs(pt[0])>1e-7?pt[0]:0.0
+                                           ,fabs(pt[1])>1e-7?pt[1]:0.0
+                                           ,fabs(pt[2])>1e-7?pt[2]:0.0);
 
                 getMainWindow()->showMessage(QString::fromLatin1(buf));
             }
@@ -380,6 +441,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
             //       Otherwise the tree signals that an object is preselected even though it is hidden. (Werner)
             const SoPickedPoint * pp = this->getPickedPoint(action);
             if (pp && pp->getPath()->containsPath(action->getCurPath())) {
+                const auto &pt = pp->getPoint();
                 if (bCtrl) {
                     if (Gui::Selection().isSelected(documentName.getValue().getString()
                                          ,objectName.getValue().getString()
@@ -391,17 +453,15 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                         Gui::Selection().addSelection(documentName.getValue().getString()
                                           ,objectName.getValue().getString()
                                           ,subElementName.getValue().getString()
-                                          ,pp->getPoint()[0]
-                                          ,pp->getPoint()[1]
-                                          ,pp->getPoint()[2]);
+                                          ,pt[0] ,pt[1] ,pt[2]);
 
                         if (mymode == OFF) {
-                            snprintf(buf,512,"Selected: %s.%s.%s (%f,%f,%f)",documentName.getValue().getString()
+                            snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",documentName.getValue().getString()
                                                        ,objectName.getValue().getString()
                                                        ,subElementName.getValue().getString()
-                                                       ,pp->getPoint()[0]
-                                                       ,pp->getPoint()[1]
-                                                       ,pp->getPoint()[2]);
+                                                       ,fabs(pt[0])>1e-7?pt[0]:0.0
+                                                       ,fabs(pt[1])>1e-7?pt[1]:0.0
+                                                       ,fabs(pt[2])>1e-7?pt[2]:0.0);
 
                             getMainWindow()->showMessage(QString::fromLatin1(buf));
                         }
@@ -415,27 +475,22 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                         Gui::Selection().addSelection(documentName.getValue().getString()
                                               ,objectName.getValue().getString()
                                               ,subElementName.getValue().getString()
-                                              ,pp->getPoint()[0]
-                                              ,pp->getPoint()[1]
-                                              ,pp->getPoint()[2]);
+                                              ,pt[0] ,pt[1] ,pt[2]);
                     }
                     else {
                         Gui::Selection().clearSelection(documentName.getValue().getString());
                         Gui::Selection().addSelection(documentName.getValue().getString()
                                               ,objectName.getValue().getString()
-                                              ,0
-                                              ,pp->getPoint()[0]
-                                              ,pp->getPoint()[1]
-                                              ,pp->getPoint()[2]);
+                                              ,0 ,pt[0] ,pt[1] ,pt[2]);
                     }
 
                     if (mymode == OFF) {
-                        snprintf(buf,512,"Selected: %s.%s.%s (%f,%f,%f)",documentName.getValue().getString()
+                        snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",documentName.getValue().getString()
                                                    ,objectName.getValue().getString()
                                                    ,subElementName.getValue().getString()
-                                                   ,pp->getPoint()[0]
-                                                   ,pp->getPoint()[1]
-                                                   ,pp->getPoint()[2]);
+                                                   ,fabs(pt[0])>1e-7?pt[0]:0.0
+                                                   ,fabs(pt[1])>1e-7?pt[1]:0.0
+                                                   ,fabs(pt[2])>1e-7?pt[2]:0.0);
 
                         getMainWindow()->showMessage(QString::fromLatin1(buf));
                     }
@@ -544,6 +599,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
             //       Otherwise the tree signals that an object is preselected even though it is hidden. (Werner)
             const SoPickedPoint * pp = this->getPickedPoint(action);
             if (pp && pp->getPath()->containsPath(action->getCurPath())) {
+                const auto &pt = pp->getPoint();
                 if (bCtrl) {
                     if (Gui::Selection().isSelected(documentName.getValue().getString()
                                          ,objectName.getValue().getString()
@@ -556,17 +612,15 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                         Gui::Selection().addSelection(documentName.getValue().getString()
                                           ,objectName.getValue().getString()
                                           ,subElementName.getValue().getString()
-                                          ,pp->getPoint()[0]
-                                          ,pp->getPoint()[1]
-                                          ,pp->getPoint()[2]);
+                                          ,pt[0] ,pt[1] ,pt[2]);
 
                         if (mymode == OFF) {
-                            snprintf(buf,512,"Selected: %s.%s.%s (%f,%f,%f)",documentName.getValue().getString()
+                            snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",documentName.getValue().getString()
                                                        ,objectName.getValue().getString()
                                                        ,subElementName.getValue().getString()
-                                                       ,pp->getPoint()[0]
-                                                       ,pp->getPoint()[1]
-                                                       ,pp->getPoint()[2]);
+                                                       ,fabs(pt[0])>1e-7?pt[0]:0.0
+                                                       ,fabs(pt[1])>1e-7?pt[1]:0.0
+                                                       ,fabs(pt[2])>1e-7?pt[2]:0.0);
 
                             getMainWindow()->showMessage(QString::fromLatin1(buf));
                         }
@@ -580,27 +634,22 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                         Gui::Selection().addSelection(documentName.getValue().getString()
                                               ,objectName.getValue().getString()
                                               ,subElementName.getValue().getString()
-                                              ,pp->getPoint()[0]
-                                              ,pp->getPoint()[1]
-                                              ,pp->getPoint()[2]);
+                                              ,pt[0] ,pt[1] ,pt[2]);
                     }
                     else {
                         Gui::Selection().clearSelection(documentName.getValue().getString());
                         Gui::Selection().addSelection(documentName.getValue().getString()
                                               ,objectName.getValue().getString()
-                                              ,0
-                                              ,pp->getPoint()[0]
-                                              ,pp->getPoint()[1]
-                                              ,pp->getPoint()[2]);
+                                              ,0 ,pt[0] ,pt[1] ,pt[2]);
                     }
  
                     if (mymode == OFF) {
-                        snprintf(buf,512,"Selected: %s.%s.%s (%f,%f,%f)",documentName.getValue().getString()
+                        snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",documentName.getValue().getString()
                                                    ,objectName.getValue().getString()
                                                    ,subElementName.getValue().getString()
-                                                   ,pp->getPoint()[0]
-                                                   ,pp->getPoint()[1]
-                                                   ,pp->getPoint()[2]);
+                                                   ,fabs(pt[0])>1e-7?pt[0]:0.0
+                                                   ,fabs(pt[1])>1e-7?pt[1]:0.0
+                                                   ,fabs(pt[2])>1e-7?pt[2]:0.0);
 
                         getMainWindow()->showMessage(QString::fromLatin1(buf));
                     }
@@ -621,14 +670,22 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
 void
 SoFCSelection::GLRenderBelowPath(SoGLRenderAction * action)
 {
+    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext);
+    if(!bUseNewSelection && selContext == ctx) {
+        ctx->colorSelection = this->colorSelection;
+        ctx->colorHighlight = this->colorHighlight;
+        ctx->selected = this->selected.getValue()==SELECTED;
+        ctx->highlighted = this->highlighted;
+    }
+
 #ifdef NO_FRONTBUFFER
     // check if preselection is active
     HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
-    bool preselected = highlighted && mymode == AUTO;
+    bool preselected = ctx && ctx->highlighted && (bUseNewSelection||mymode == AUTO);
     SoState * state = action->getState();
     state->push();
-    if (preselected || this->highlightMode.getValue() == ON || this->selected.getValue() == SELECTED) {
-        this->setOverride(action);
+    if (preselected || this->highlightMode.getValue() == ON || (ctx && ctx->selected)) {
+        this->setOverride(action,ctx);
     }
     inherited::GLRenderBelowPath(action);
     state->pop();
@@ -659,14 +716,21 @@ void SoFCSelection::GLRender(SoGLRenderAction * action)
 void
 SoFCSelection::GLRenderInPath(SoGLRenderAction * action)
 {
+    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext);
+    if(!bUseNewSelection && selContext == ctx) {
+        ctx->colorSelection = this->colorSelection;
+        ctx->colorHighlight = this->colorHighlight;
+        ctx->selected = this->selected.getValue()==SELECTED;
+        ctx->highlighted = this->highlighted;
+    }
 #ifdef NO_FRONTBUFFER
     // check if preselection is active
     HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
-    bool preselected = highlighted && mymode == AUTO;
+    bool preselected = ctx && ctx->highlighted && (bUseNewSelection||mymode == AUTO);
     SoState * state = action->getState();
     state->push();
-    if (preselected || this->highlightMode.getValue() == ON || this->selected.getValue() == SELECTED) {
-        this->setOverride(action);
+    if (preselected || this->highlightMode.getValue() == ON || (ctx && ctx->selected)) {
+        this->setOverride(action,ctx);
     }
     inherited::GLRenderInPath(action);
     state->pop();
@@ -848,22 +912,22 @@ SoFCSelection::readInstance  (  SoInput *  in, unsigned short  flags )
 // update override state before rendering
 //
 void
-SoFCSelection::setOverride(SoGLRenderAction * action)
+SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
 {
     //Base::Console().Log("SoFCSelection::setOverride() (%p)\n",this);
     SoState * state = action->getState();
-    if(this->selected.getValue() == SELECTED)
-        SoLazyElement::setEmissive(state, &this->colorSelection.getValue());
+    if(ctx->selected)
+        SoLazyElement::setEmissive(state, &ctx->colorSelection.getValue());
     else
-        SoLazyElement::setEmissive(state, &this->colorHighlight.getValue());
+        SoLazyElement::setEmissive(state, &ctx->colorHighlight.getValue());
     SoOverrideElement::setEmissiveColorOverride(state, this, true);
 
     Styles mystyle = (Styles) this->style.getValue();
     if (mystyle == SoFCSelection::EMISSIVE_DIFFUSE) {
-        if(this->selected.getValue() == SELECTED)
-            SoLazyElement::setDiffuse(state, this,1, &this->colorSelection.getValue(),&colorpacker);
+        if(ctx->selected)
+            SoLazyElement::setDiffuse(state, this,1, &ctx->colorSelection.getValue(),&ctx->colorpacker);
         else
-            SoLazyElement::setDiffuse(state, this,1, &this->colorHighlight.getValue(),&colorpacker);
+            SoLazyElement::setDiffuse(state, this,1, &ctx->colorHighlight.getValue(),&ctx->colorpacker);
         SoOverrideElement::setDiffuseColorOverride(state, this, true);
     }
 }

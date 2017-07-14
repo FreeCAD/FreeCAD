@@ -88,6 +88,7 @@ struct DocumentP
     /// List of all registered views
     std::list<Gui::BaseView*> passiveViews;
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*> _ViewProviderMap;
+    std::map<SoSeparator *,ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
 
     typedef boost::signals::connection Connection;
@@ -425,6 +426,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             assert(base->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId()));
             pcProvider = static_cast<ViewProviderDocumentObject*>(base);
             d->_ViewProviderMap[&Obj] = pcProvider;
+            d->_CoinMap[pcProvider->getRoot()] = pcProvider;
 
             try {
                 // if successfully created set the right name and calculate the view
@@ -548,6 +550,11 @@ void Document::slotTransactionRemove(const App::DocumentObject& obj, App::Transa
     it = d->_ViewProviderMap.find(&obj);
     if (it != d->_ViewProviderMap.end()) {
         ViewProvider* viewProvider = it->second;
+
+        auto itC = d->_CoinMap.find(viewProvider->getRoot());
+        if(itC != d->_CoinMap.end())
+            d->_CoinMap.erase(itC);
+
         d->_ViewProviderMap.erase(&obj);
         // transaction being a nullptr indicates that undo/redo is off and the object
         // can be safely deleted
@@ -610,24 +617,34 @@ bool Document::isModified() const
 }
 
 
-ViewProvider* Document::getViewProviderByPathFromTail(SoPath * path) const
+ViewProviderDocumentObject* Document::getViewProviderByPathFromTail(SoPath * path) const
 {
     // Make sure I'm the lowest LocHL in the pick path!
     for (int i = 0; i < path->getLength(); i++) {
         SoNode *node = path->getNodeFromTail(i);
         if (node->isOfType(SoSeparator::getClassTypeId())) {
-            std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it = d->_ViewProviderMap.begin();
-            for(;it!= d->_ViewProviderMap.end();++it)
-                if (node == it->second->getRoot())
-                    return it->second;
-            
-         }
+            auto it = d->_CoinMap.find(static_cast<SoSeparator*>(node));
+            if(it!=d->_CoinMap.end())
+                return it->second;
+        }
     }
 
     return 0;
 }
 
-
+std::vector<std::pair<ViewProviderDocumentObject*,int> > Document::getViewProvidersByPath(SoPath * path) const
+{
+    std::vector<std::pair<ViewProviderDocumentObject*,int> > ret;
+    for (int i = 0; i < path->getLength(); i++) {
+        SoNode *node = path->getNodeFromTail(i);
+        if (node->isOfType(SoSeparator::getClassTypeId())) {
+            auto it = d->_CoinMap.find(static_cast<SoSeparator*>(node));
+            if(it!=d->_CoinMap.end())
+                ret.push_back(std::make_pair(it->second,i));
+        }
+    }
+    return ret;
+}
 
 App::Document* Document::getDocument(void) const
 {
@@ -1477,6 +1494,13 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
 
         // size not the same -> build up the list new
         if (childGroup->getNumChildren() != static_cast<int>(children.size())) {
+
+            std::set<ViewProviderDocumentObject*> oldChildren;
+            for(int i=0,count=childGroup->getNumChildren();i<count;++i) {
+                auto it = d->_CoinMap.find(static_cast<SoSeparator*>(childGroup->getChild(i)));
+                if(it == d->_CoinMap.end()) continue;
+                oldChildren.insert(it->second);
+            }
 
             childGroup->removeAllChildren();
 

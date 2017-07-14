@@ -78,6 +78,9 @@ public:
 
     //update data of extended opject
     virtual void extensionUpdateData(const App::Property*);
+
+    virtual bool extensionGetElementPicked(const SoPickedPoint *, std::string &) const {return false;}
+    virtual bool extensionGetDetailPath(const char *, SoFullPath *, SoDetail *&) const {return false;}
     
 private:
   //Gui::ViewProviderDocumentObject* m_viewBase = nullptr;

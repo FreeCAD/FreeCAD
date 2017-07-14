@@ -52,8 +52,10 @@ public:
     QIcon getIcon() const;
     std::vector<App::DocumentObject*> claimChildren(const std::vector<App::DocumentObject*>&) const;
     bool useNewSelectionModel() const;
+    ValueT getElementPicked(const SoPickedPoint *pp, std::string &subname) const;
     std::string getElement(const SoDetail *det) const;
     SoDetail* getDetail(const char*) const;
+    ValueT getDetailPath(const char *name, SoFullPath *path, bool append, SoDetail *&det) const;
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
     ValueT setEdit(int ModNum);
     ValueT unsetEdit(int ModNum);
@@ -151,6 +153,14 @@ public:
     virtual bool useNewSelectionModel() const {
         return imp->useNewSelectionModel();
     }
+    virtual bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
+        auto ret = imp->getElementPicked(pp,subname);
+        if(ret == ViewProviderPythonFeatureImp::NotImplemented)
+            return ViewProviderT::getElementPicked(pp,subname);
+        else if(ret == ViewProviderPythonFeatureImp::Accepted)
+            return true;
+        return false;
+    }
     virtual std::string getElement(const SoDetail *det) const {
         std::string name = imp->getElement(det);
         if (!name.empty()) return name;
@@ -160,6 +170,12 @@ public:
         SoDetail* det = imp->getDetail(name);
         if (det) return det;
         return ViewProviderT::getDetail(name);
+    }
+    virtual SoDetail* getDetailPath(const char *name, SoFullPath *path, bool append) const {
+        SoDetail *det = 0;
+        if(imp->getDetailPath(name,path,append,det) != ViewProviderPythonFeatureImp::NotImplemented)
+            return det;
+        return ViewProviderT::getDetailPath(name,path,append);
     }
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const {
         return ViewProviderT::getSelectionShape(Element);
