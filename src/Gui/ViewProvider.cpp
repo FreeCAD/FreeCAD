@@ -815,3 +815,13 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
     return count;
 }
 
+bool ViewProvider::useNewSelectionModel() const {
+    static int useNewModel = -1;
+    if(useNewModel<0) {
+        ParameterGrp::handle hGrp = 
+            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        useNewModel = hGrp->GetBool("UseNewSelection",true)?1:0;
+    }
+    return useNewModel>0;
+}
+
