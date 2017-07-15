@@ -128,10 +128,7 @@ public:
         return _lValueList.operator[] (idx);
     }
 
-
-    void  set1Value(const int idx, DocumentObject* value) {
-        _lValueList.operator[] (idx) = value;
-    }
+    void  set1Value(const int idx, DocumentObject* value);
 
     const std::vector<DocumentObject*> &getValues(void) const {
         return _lValueList;
@@ -148,8 +145,11 @@ public:
 
     virtual unsigned int getMemSize(void) const;
 
+    DocumentObject *find(const char *, int *pindex=0) const;
 private:
     std::vector<DocumentObject*> _lValueList;
+protected:
+    mutable std::map<std::string, int> _nameMap;
 };
 
 /** the Link Poperty with sub elements

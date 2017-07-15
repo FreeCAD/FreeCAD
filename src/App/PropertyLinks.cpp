@@ -204,6 +204,32 @@ int PropertyLinkList::getSize(void) const
     return static_cast<int>(_lValueList.size());
 }
 
+void  PropertyLinkList::set1Value(const int idx, DocumentObject* value) {
+    assert(idx>=0 && idx<static_cast<int>(_lValueList.size()));
+    auto obj = _lValueList[idx];
+    if(obj == value) return;
+
+    if(!value || !value->getNameInDocument())
+        throw Base::ValueError("invalid document object");
+
+    if(_nameMap.size() && obj && obj->getNameInDocument()) {
+        auto it = _nameMap.find(obj->getNameInDocument());
+        if(it!=_nameMap.end())
+            _nameMap.erase(it);
+        _nameMap.insert(std::make_pair(std::string(value->getNameInDocument()),idx));
+    }else 
+        _nameMap.clear();
+
+#ifndef USE_OLD_DAG   
+    if(obj) 
+        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+    if(value)
+        value->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+#endif
+
+    _lValueList.operator[] (idx) = value;
+}
+
 void PropertyLinkList::setValue(DocumentObject* lValue)
 {
 #ifndef USE_OLD_DAG   
@@ -213,6 +239,8 @@ void PropertyLinkList::setValue(DocumentObject* lValue)
     if(lValue)
         lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
 #endif
+
+    _nameMap.clear();
     
     if (lValue){
         aboutToSetValue();
@@ -229,6 +257,8 @@ void PropertyLinkList::setValue(DocumentObject* lValue)
 
 void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue)
 {
+    _nameMap.clear();
+
     aboutToSetValue();
 #ifndef USE_OLD_DAG
     //maintain the back link in the DocumentObject class
@@ -360,6 +390,22 @@ void PropertyLinkList::Paste(const Property &from)
 unsigned int PropertyLinkList::getMemSize(void) const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(App::DocumentObject *));
+}
+
+DocumentObject *PropertyLinkList::find(const char *name, int *pindex) const {
+    if(!name) return 0;
+    if(_nameMap.empty()) {
+        for(int i=0;i<(int)_lValueList.size();++i) {
+            auto obj = _lValueList[i];
+            if(obj && obj->getNameInDocument()) 
+                _nameMap[obj->getNameInDocument()] = i;
+        }
+    }
+    auto it = _nameMap.find(name);
+    if(it == _nameMap.end())
+        return 0;
+    if(pindex) *pindex = it->second;
+    return _lValueList[it->second];
 }
 
 //**************************************************************************
