@@ -329,7 +329,10 @@ transformGeometry(Matrix) -> Shape
       <Documentation>
         <UserDocu>Apply transformation on a shape without changing
 the underlying geometry.
-transformShape(Matrix,[boolean copy=False]) -> None</UserDocu>
+transformShape(Matrix,[boolean copy=False, checkScale=False]) -> None
+
+If checkScale is True, it will use transformGeometry if non-uniform
+scaling is detected.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="translate">
