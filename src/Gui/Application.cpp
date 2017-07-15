@@ -510,7 +510,14 @@ void Application::open(const char* FileName, const char* Module)
         Command::doCommand(Command::App, "import %s", Module);
         try {
             // load the file with the module
-            Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
+            Command::doCommand(Command::App, "__openingDoc=%s.open(u\"%s\")", Module, unicodepath.c_str());
+
+            // TODO: Because the document may contains xlink which opens other
+            // documents, we must make sure the requested document is the active
+            // document. But this is ugly. Any better idea?
+            Command::doCommand(Command::App, "Gui.setActiveDocument(__openingDoc)");
+            Command::doCommand(Command::App, "__openingDoc = None");
+
             // ViewFit
             if (!File.hasExtension("FCStd") && sendHasMsgToActiveView("ViewFit")) {
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath

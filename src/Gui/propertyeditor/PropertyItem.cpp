@@ -3370,7 +3370,7 @@ void LinkSelection::select()
 
 // ---------------------------------------------------------------
 
-LinkLabel::LinkLabel (QWidget * parent) : QWidget(parent)
+LinkLabel::LinkLabel (QWidget * parent, bool xlink) : QWidget(parent), isXLink(xlink)
 {   
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
@@ -3430,7 +3430,7 @@ void LinkLabel::onLinkActivated (const QString& s)
 
 void LinkLabel::onEditClicked ()
 {
-    Gui::Dialog::DlgPropertyLink dlg(link, this);
+    Gui::Dialog::DlgPropertyLink dlg(link, this, 0, isXLink);
     if (dlg.exec() == QDialog::Accepted) {
         setPropertyLink(dlg.propertyLink());
         /*emit*/ linkChanged(link);
@@ -3445,7 +3445,7 @@ void LinkLabel::resizeEvent(QResizeEvent* e)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyLinkItem)
 
-PropertyLinkItem::PropertyLinkItem()
+PropertyLinkItem::PropertyLinkItem():isXLink(false)
 {
 }
 
@@ -3458,6 +3458,8 @@ QVariant PropertyLinkItem::toString(const QVariant& prop) const
 QVariant PropertyLinkItem::value(const App::Property* prop) const
 {
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()));
+
+    isXLink = prop->getTypeId().isDerivedFrom(App::PropertyXLink::getClassTypeId());
 
     const App::PropertyLink* prop_link = static_cast<const App::PropertyLink*>(prop);
     App::PropertyContainer* c = prop_link->getContainer();
@@ -3517,7 +3519,7 @@ void PropertyLinkItem::setValue(const QVariant& value)
 
 QWidget* PropertyLinkItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    LinkLabel *ll = new LinkLabel(parent);
+    LinkLabel *ll = new LinkLabel(parent, isXLink);
     ll->setAutoFillBackground(true);
     ll->setDisabled(isReadOnly());
     QObject::connect(ll, SIGNAL(linkChanged(const QStringList&)), receiver, method);

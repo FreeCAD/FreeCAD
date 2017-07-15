@@ -29,6 +29,8 @@
 
 #include <vector>
 #include <string>
+#include <memory>
+#include <cinttypes>
 #include "Property.h"
 
 namespace Base {
@@ -38,6 +40,7 @@ class Writer;
 namespace App
 {
 class DocumentObject;
+class Document;
 
 
 /** the general Link Poperty
@@ -62,7 +65,7 @@ public:
 
     /** Sets the property
      */
-    void setValue(App::DocumentObject *);
+    virtual void setValue(App::DocumentObject *);
 
     /** This method returns the linked DocumentObject
      */
@@ -290,6 +293,48 @@ private:
     std::vector<DocumentObject*> _lValueList;
     std::vector<std::string>     _lSubList;
 };
+/** Link to an object in the same or different document
+ */
+class AppExport PropertyXLink : public PropertyLink
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyXLink();
+
+    virtual ~PropertyXLink();
+
+    void setValue(App::DocumentObject *) override;
+    void setValue(App::DocumentObject *, bool relative);
+    void setValue(const char *filePath, const char *objectName, int relative);
+
+    App::Document *getDocument() const;
+    const char *getDocumentPath() const;
+    const char *getObjectName() const;
+    bool isRestored() const;
+
+    virtual void Save (Base::Writer &writer) const;
+    virtual void Restore(Base::XMLReader &reader);
+
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
+
+    class DocInfo;
+    friend class DocInfo;
+    typedef std::shared_ptr<DocInfo> DocInfoPtr;
+
+protected:
+    void unlink();
+    void detach();
+
+protected:
+    std::string filePath;
+    std::string objectName;
+    std::string stamp;
+
+    DocInfoPtr docInfo;
+};
+
 
 } // namespace App
 

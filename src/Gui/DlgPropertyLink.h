@@ -34,7 +34,7 @@ class DlgPropertyLink : public QDialog
     Q_OBJECT
 
 public:
-    DlgPropertyLink(const QStringList& list, QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DlgPropertyLink(const QStringList& list, QWidget* parent = 0, Qt::WindowFlags fl = 0, bool xlink=false);
     ~DlgPropertyLink();
 
     void accept();
@@ -43,6 +43,7 @@ public:
 private Q_SLOTS:
     void on_checkObjectType_toggled(bool);
     void on_searchBox_textChanged(const QString&);
+    void on_comboBox_currentIndexChanged(const QString&);
 
 private:
     void findObjects(bool on);

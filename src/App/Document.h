@@ -159,7 +159,8 @@ public:
     bool saveAs(const char* file);
     bool saveCopy(const char* file);
     /// Restore the document from the file in Property Path
-    void restore (void);
+    void restore (bool delaySignal=false);
+    void afterRestore(bool checkXLink=false);
     void exportObjects(const std::vector<App::DocumentObject*>&, std::ostream&);
     void exportGraphviz(std::ostream&) const;
     std::vector<App::DocumentObject*> importObjects(Base::XMLReader& reader);

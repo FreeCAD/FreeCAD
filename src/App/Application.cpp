@@ -213,7 +213,7 @@ PyDoc_STRVAR(Base_doc,
     );
 
 Application::Application(std::map<std::string,std::string> &mConfig)
-  : _mConfig(mConfig), _pActiveDoc(0)
+  : _mConfig(mConfig), _pActiveDoc(0),_allowPending(false)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
@@ -491,7 +491,49 @@ std::string Application::getUniqueDocumentName(const char *Name) const
     }
 }
 
+bool Application::addPendingDocument(const char *FileName) {
+    if(!_allowPending || !FileName) return false;
+    auto ret =  _pendingDocMap.insert(FileName);
+    if(ret.second)
+        _pendingDocs.push_back(ret.first->c_str());
+    return true;
+}
+
 Document* Application::openDocument(const char * FileName)
+{
+    _pendingDocs.clear();
+    _pendingDocMap.clear();
+    _allowPending = true;
+
+    _pendingDocs.push_back(FileName?FileName:"");
+
+    std::deque<Document *> newDocs;
+
+    while(_pendingDocs.size()) {
+        const char *name = _pendingDocs.front();
+        try {
+            newDocs.push_front(openDocumentPrivate(name));
+        }catch(const Base::Exception &e) {
+            if(newDocs.empty()) throw;
+            Console().Error("Exception opening file: %s [%s]\n", name, e.what());
+        }catch(...) {
+            _allowPending = false;
+            _pendingDocs.clear();
+            _pendingDocMap.clear();
+            throw;
+        }
+        _pendingDocs.pop_front();
+    }
+    _allowPending = false;
+    _pendingDocs.clear();
+    _pendingDocMap.clear();
+
+    for(auto doc : newDocs) 
+        doc->afterRestore(true);
+    return newDocs.back();
+}
+
+Document* Application::openDocumentPrivate(const char * FileName)
 {
     FileInfo File(FileName);
 
@@ -522,7 +564,7 @@ Document* Application::openDocument(const char * FileName)
 
     try {
         // read the document
-        newDoc->restore();
+        newDoc->restore(true);
         return newDoc;
     }
     // if the project file itself is corrupt then
@@ -1250,6 +1292,7 @@ void Application::initTypes(void)
     App ::PropertyFont              ::init();
     App ::PropertyStringList        ::init();
     App ::PropertyLink              ::init();
+    App ::PropertyXLink             ::init();
     App ::PropertyLinkSub           ::init();
     App ::PropertyLinkList          ::init();
     App ::PropertyLinkSubList       ::init();

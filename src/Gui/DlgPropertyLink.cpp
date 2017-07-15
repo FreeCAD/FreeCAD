@@ -39,18 +39,28 @@
 #include "ViewProvider.h"
 #include "ui_DlgPropertyLink.h"
 
-
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgPropertyLink */
 
-DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::WindowFlags fl)
+DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::WindowFlags fl, bool xlink)
   : QDialog(parent, fl), link(list), ui(new Ui_DlgPropertyLink)
 {
 #ifdef FC_DEBUG
     assert(list.size() == 4);
 #endif
     ui->setupUi(this);
+    if(!xlink) 
+        ui->comboBox->hide();
+    else {
+        std::string linkDoc = qPrintable(link[0]);
+        for(auto doc : App::GetApplication().getDocuments()) {
+            QString name(QString::fromUtf8(doc->getName()));
+            ui->comboBox->addItem(name);
+            if(linkDoc == doc->getName())
+                ui->comboBox->setCurrentIndex(ui->comboBox->count()-1);
+        }
+    }
     findObjects(ui->checkObjectType->isChecked());
 }
 
@@ -92,6 +102,8 @@ QStringList DlgPropertyLink::propertyLink() const
 
 void DlgPropertyLink::findObjects(bool on)
 {
+    ui->listWidget->clear();
+
     QString docName = link[0];
     QString objName = link[1];
     QString parName = link[3];
@@ -159,15 +171,21 @@ void DlgPropertyLink::findObjects(bool on)
 
 void DlgPropertyLink::on_checkObjectType_toggled(bool on)
 {
-    ui->listWidget->clear();
     findObjects(on);
 }
 
 void DlgPropertyLink::on_searchBox_textChanged(const QString& /*search*/)
 {
-    ui->listWidget->clear();
     bool on = ui->checkObjectType->isChecked();
     findObjects(on);
 }
+
+void DlgPropertyLink::on_comboBox_currentIndexChanged(const QString& text)
+{
+    link[0] = text;
+    bool on = ui->checkObjectType->isChecked();
+    findObjects(on);
+}
+
 
 #include "moc_DlgPropertyLink.cpp"

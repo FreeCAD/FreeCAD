@@ -28,6 +28,7 @@
 #include <boost/signal.hpp>
 
 #include <vector>
+#include <deque>
 
 #include <Base/PyObjectBase.h>
 #include <Base/Parameter.h>
@@ -94,6 +95,8 @@ public:
     void setActiveDocument(const char *Name);
     /// close all documents (without saving)
     void closeAllDocuments(void);
+    /// Add pending document to open together with the current opening document
+    bool addPendingDocument(const char *FileName);
     //@}
 
     /** @name Signals of the Application */
@@ -280,6 +283,9 @@ protected:
     void slotRedoDocument(const App::Document&);
     //@}
 
+    /// open single document only
+    App::Document* openDocumentPrivate(const char * FileName);
+
 private:
     /// Constructor
     Application(std::map<std::string,std::string> &mConfig);
@@ -378,6 +384,10 @@ private:
     std::map<std::string,ParameterManager *> mpcPramManager;
     std::map<std::string,std::string> &_mConfig;
     App::Document* _pActiveDoc;
+
+    std::deque<const char *> _pendingDocs;
+    std::set<std::string> _pendingDocMap;
+    bool _allowPending;
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;
