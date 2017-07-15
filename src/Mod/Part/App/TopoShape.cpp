@@ -332,6 +332,24 @@ unsigned long TopoShape::countSubShapes(const char* Type) const
     return 0;
 }
 
+bool TopoShape::hasSubShape(const char *Type) const
+{
+    std::string shapetype(Type);
+    if (shapetype.size() > 4 && shapetype.substr(0,4) == "Face") {
+        int index=std::atoi(&shapetype[4]);
+        return index>0 && index<=(int)countSubShapes("Face");
+    }
+    else if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") {
+        int index=std::atoi(&shapetype[4]);
+        return index>0 && index<=(int)countSubShapes("Edge");
+    }
+    else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex") {
+        int index=std::atoi(&shapetype[6]);
+        return index>0 && index<=(int)countSubShapes("Vertex");
+    }
+    return false;
+}
+
 PyObject * TopoShape::getPySubShape(const char* Type) const
 {
     // get the shape

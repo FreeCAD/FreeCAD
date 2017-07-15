@@ -111,6 +111,7 @@ public:
     /// get the Topo"sub"Shape with the given name
     TopoDS_Shape getSubShape(const char* Type) const;
     unsigned long countSubShapes(const char* Type) const;
+    bool hasSubShape(const char *Type) const;
     /// get the Topo"sub"Shape with the given name
     PyObject * getPySubShape(const char* Type) const;
 
