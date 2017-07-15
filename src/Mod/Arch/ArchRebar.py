@@ -345,9 +345,11 @@ class _Rebar(ArchComponent.Component):
         if spacinglist:
             placementlist[:] = []
             reqInfluenceArea = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
-            if influenceArea > reqInfluenceArea:
+            # Avoid unnecessary checks to pass like. For eg.: when we have values
+            # like influenceArea is 100.00001 and reqInflueneArea is 100
+            if round(influenceArea) > round(reqInfluenceArea):
                 return FreeCAD.Console.PrintError("Influence area of rebars is greater than "+ str(reqInfluenceArea) + ".\n")
-            elif influenceArea < reqInfluenceArea:
+            elif round(influenceArea) < round(reqInfluenceArea):
                 FreeCAD.Console.PrintWarning("Last span is greater that end offset.\n")
             for i in range(len(spacinglist)):
                 if i == 0:
