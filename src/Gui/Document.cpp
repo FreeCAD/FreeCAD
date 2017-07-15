@@ -91,6 +91,9 @@ struct DocumentP
     std::map<SoSeparator *,ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
 
+    // for mapping nodes from claimChildren3D to the top level parent root node.
+    std::map<ViewProvider *, ViewProvider *> _CliamChildren3DMap;
+
     typedef boost::signals::connection Connection;
     Connection connectNewObject;
     Connection connectDelObject;
@@ -477,6 +480,8 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
   
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
+    handleChildren3D(viewProvider,true);
+
 #if 0 // With this we can show child objects again if this method was called by undo
     viewProvider->onDelete(std::vector<std::string>());
 #endif
@@ -554,6 +559,10 @@ void Document::slotTransactionRemove(const App::DocumentObject& obj, App::Transa
         auto itC = d->_CoinMap.find(viewProvider->getRoot());
         if(itC != d->_CoinMap.end())
             d->_CoinMap.erase(itC);
+
+        auto itP = d->_CliamChildren3DMap.find(viewProvider);
+        if(itP != d->_CliamChildren3DMap.end())
+            d->_CliamChildren3DMap.erase(itP);
 
         d->_ViewProviderMap.erase(&obj);
         // transaction being a nullptr indicates that undo/redo is off and the object
@@ -1485,7 +1494,7 @@ PyObject* Document::getPyObject(void)
     return _pcDocPy;
 }
 
-void Document::handleChildren3D(ViewProvider* viewProvider)
+void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
 {
     // check for children
     if (viewProvider && viewProvider->getChildRoot()) {
@@ -1493,7 +1502,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
         SoGroup* childGroup =  viewProvider->getChildRoot();
 
         // size not the same -> build up the list new
-        if (childGroup->getNumChildren() != static_cast<int>(children.size())) {
+        if (deleting || childGroup->getNumChildren() != static_cast<int>(children.size())) {
 
             std::set<ViewProviderDocumentObject*> oldChildren;
             for(int i=0,count=childGroup->getNumChildren();i<count;++i) {
@@ -1504,29 +1513,56 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
 
             childGroup->removeAllChildren();
 
-            for (std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it) {
-                ViewProvider* ChildViewProvider = getViewProvider(*it);
-                if (ChildViewProvider) {
-                    SoSeparator* childRootNode =  ChildViewProvider->getRoot();
-                    childGroup->addChild(childRootNode);
+            if(!deleting) {
+                for (std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it) {
+                    ViewProvider* ChildViewProvider = getViewProvider(*it);
+                    if (ChildViewProvider) {
+                        auto itOld = oldChildren.find(static_cast<ViewProviderDocumentObject*>(ChildViewProvider));
+                        if(itOld!=oldChildren.end()) oldChildren.erase(itOld);
 
-                    // cycling to all views of the document to remove the viewprovider from the viewer itself
-                    for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
-                        View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
-                        if (activeView && activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
-                            // @Note hasViewProvider()
-                            // remove the viewprovider serves the purpose of detaching the inventor nodes from the
-                            // top level root in the viewer. However, if some of the children were grouped beneath the object
-                            // earlier they are not anymore part of the toplevel inventor node. we need to check for that.
-                            if (d->_editViewProvider == ChildViewProvider)
-                                resetEdit();
-                            activeView->getViewer()->removeViewProvider(ChildViewProvider);
+                        SoSeparator* childRootNode =  ChildViewProvider->getRoot();
+                        d->_CliamChildren3DMap[ChildViewProvider] = viewProvider;
+                        childGroup->addChild(childRootNode);
+
+                        // cycling to all views of the document to remove the viewprovider from the viewer itself
+                        for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
+                            View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
+                            if (activeView && activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
+                                // @Note hasViewProvider()
+                                // remove the viewprovider serves the purpose of detaching the inventor nodes from the
+                                // top level root in the viewer. However, if some of the children were grouped beneath the object
+                                // earlier they are not anymore part of the toplevel inventor node. we need to check for that.
+                                if (d->_editViewProvider == ChildViewProvider)
+                                    resetEdit();
+                                activeView->getViewer()->removeViewProvider(ChildViewProvider);
+                            }
                         }
                     }
                 }
             }
+
+            // add the remaining old children back to toplevel invertor node
+            for(auto vpd : oldChildren) {
+                auto obj = vpd->getObject();
+                if(!obj || !obj->getNameInDocument())
+                    continue;
+
+                auto it = d->_CliamChildren3DMap.find(vpd);
+                if(it!=d->_CliamChildren3DMap.end()) {
+                    if(it->second == viewProvider)
+                        d->_CliamChildren3DMap.erase(it);
+                    else
+                        continue;
+                }
+
+                for (BaseView* view : d->baseViews) {
+                    View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
+                    if (activeView && !activeView->getViewer()->hasViewProvider(vpd))
+                        activeView->getViewer()->addViewProvider(vpd);
+                }
+            }
         }
-    } else if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObjectGroup::getClassTypeId())) {
+    } else if (!deleting && viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObjectGroup::getClassTypeId())) {
 
         if (viewProvider->hasExtension(ViewProviderDocumentObjectGroup::getExtensionClassTypeId())) {
             std::vector<App::DocumentObject*> children = viewProvider->claimChildren();

@@ -254,7 +254,7 @@ protected:
 
 private:
     //handles the scene graph nodes to correctly group child and parents
-    void handleChildren3D(ViewProvider* viewProvider);
+    void handleChildren3D(ViewProvider* viewProvider, bool deleting=false);
 
     struct DocumentP* d;
     static int _iDocCount;
