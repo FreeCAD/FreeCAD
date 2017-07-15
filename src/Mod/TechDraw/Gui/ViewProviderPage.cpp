@@ -117,7 +117,8 @@ void ViewProviderPage::show(void)
 void ViewProviderPage::hide(void)
 {
     if (!m_mdiView.isNull()) {                                //m_mdiView is a QPointer
-        Gui::getMainWindow()->activatePreviousWindow();
+        // https://forum.freecadweb.org/viewtopic.php?f=3&t=22797&p=182614#p182614
+        //Gui::getMainWindow()->activatePreviousWindow();
         Gui::getMainWindow()->removeWindow(m_mdiView);
     }
     ViewProviderDocumentObject::hide();
