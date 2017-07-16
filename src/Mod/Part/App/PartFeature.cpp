@@ -107,13 +107,19 @@ PyObject *Feature::getPyObject(void)
 
 std::vector<PyObject *> Feature::getPySubObjects(const std::vector<std::string>& NameVec) const
 {
-    std::vector<PyObject *> temp;
-    for(std::vector<std::string>::const_iterator it=NameVec.begin();it!=NameVec.end();++it){
-        PyObject *obj = Shape.getShape().getPySubShape((*it).c_str());
-        if(obj)
-            temp.push_back(obj);
+    try {
+        std::vector<PyObject *> temp;
+        for(std::vector<std::string>::const_iterator it=NameVec.begin();it!=NameVec.end();++it){
+            PyObject *obj = Shape.getShape().getPySubShape((*it).c_str());
+            if(obj)
+                temp.push_back(obj);
+        }
+        return temp;
     }
-    return temp;
+    catch (Standard_Failure) {
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
+        throw Py::ValueError(e->GetMessageString());
+    }
 }
 
 void Feature::onChanged(const App::Property* prop)

@@ -87,9 +87,13 @@ class TempoVis(FrozenClass):
         '''hide(doc_obj_or_list): hides objects (sets their Visibility to False). doc_obj_or_list can be a document object, or a list of document objects'''
         self.modifyVPProperty(doc_obj_or_list, "Visibility", False)
 
+    def get_all_dependent(self, doc_obj):
+        '''get_all_dependent(doc_obj): gets all objects that depend on doc_obj. Groups, Parts and Bodies are not hidden by this.'''
+        return [o for o in getAllDependent(doc_obj) if not isContainer(o)]
+
     def hide_all_dependent(self, doc_obj):
         '''hide_all_dependent(doc_obj): hides all objects that depend on doc_obj. Groups, Parts and Bodies are not hidden by this.'''
-        self.hide( [o for o in getAllDependent(doc_obj) if not isContainer(o)])
+        self.hide( self.get_all_dependent(doc_obj) )
 
     def show_all_dependent(self, doc_obj):
         '''show_all_dependent(doc_obj): shows all objects that depend on doc_obj. This method is probably useless.'''
