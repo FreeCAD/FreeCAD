@@ -475,6 +475,36 @@ PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
     return Py::new_reference_to(pyObj);
 }
 
+PyObject*  DocumentObjectPy::isElementVisible(PyObject *args)
+{
+    char *element = 0;
+    if (!PyArg_ParseTuple(args, "s", &element))
+        return NULL;
+    PY_TRY {
+        return Py_BuildValue("h", getDocumentObjectPtr()->isElementVisible(element));
+    } PY_CATCH;
+}
+
+PyObject*  DocumentObjectPy::setElementVisible(PyObject *args)
+{
+    char *element = 0;
+    PyObject *visible = Py_True;
+    if (!PyArg_ParseTuple(args, "s|O", &element,&visible))
+        return NULL;
+    PY_TRY {
+        return Py_BuildValue("h", getDocumentObjectPtr()->setElementVisible(element,PyObject_IsTrue(visible)));
+    } PY_CATCH;
+}
+
+PyObject*  DocumentObjectPy::hasChildElement(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    PY_TRY {
+        return Py_BuildValue("O", getDocumentObjectPtr()->hasChildElement()?Py_True:Py_False);
+    } PY_CATCH;
+}
+
 PyObject*  DocumentObjectPy::getParentGroup(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

@@ -103,6 +103,27 @@ depth: current recursive depth
                 </UserDocu>
             </Documentation>
         </Methode>
+		<Methode Name="setElementVisible">
+			<Documentation>
+                <UserDocu>
+                    setElementVisible(element,visible): Set the visibility of a child element
+                    Return -1 if element visibility is not supported, 0 if element not found, 1 if success
+                </UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isElementVisible">
+			<Documentation>
+                <UserDocu>
+                    isElementVisible(element): Check if a child element is visible
+                    Return -1 if element visibility is not supported or element not found, 0 if invisible, or else 1
+                </UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="hasChildElement">
+			<Documentation>
+                <UserDocu>Return true to indicate the object having child elements</UserDocu>
+			</Documentation>
+		</Methode>
         <Methode Name="getParentGroup">
             <Documentation>
                 <UserDocu>Returns the group the object is in or None if it is not part of a group. 

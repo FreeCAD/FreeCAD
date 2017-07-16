@@ -81,6 +81,10 @@ public:
      */
     virtual bool extensionGetLinkedObject(DocumentObject *&ret, bool recursive,
             Base::Matrix4D *mat, bool transform, int depth) const;
+
+    virtual int extensionSetElementVisible(const char *, bool) {return -1;}
+    virtual int extensionIsElementVisible(const char *) {return -1;}
+    virtual bool extensionHasChildElement() const {return false;}
 };
 
 } //App

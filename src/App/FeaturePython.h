@@ -57,6 +57,13 @@ public:
     bool getLinkedObject(DocumentObject *&ret, bool recurse, 
             Base::Matrix4D *mat, bool transform, int depth) const;
 
+    /// return true to activate tree view group object handling
+    int hasChildElement() const;
+    /// Get sub-element visibility
+    int isElementVisible(const char *) const;
+    /// Set sub-element visibility
+    int setElementVisible(const char *, bool);
+
 private:
     App::DocumentObject* object;
 };
@@ -203,6 +210,28 @@ public:
         props->Restore(reader);
     }
     //@}
+
+    /// return true to activate tree view group object handling
+    virtual bool hasChildElement() const override {
+        int ret = imp->hasChildElement();
+        if(ret<0) 
+            return FeatureT::hasChildElement();
+        return ret?true:false;
+    }
+    /// Get sub-element visibility
+    virtual int isElementVisible(const char *element) const override {
+        int ret = imp->isElementVisible(element);
+        if(ret == -2)
+            return FeatureT::isElementVisible(element);
+        return ret;
+    }
+    /// Set sub-element visibility
+    virtual int setElementVisible(const char *element, bool visible) override {
+        int ret = imp->setElementVisible(element,visible);
+        if(ret == -2)
+            return FeatureT::setElementVisible(element,visible);
+        return ret;
+    }
 
     PyObject *getPyObject(void) {
         if (FeatureT::PythonObject.is(Py::_None())) {

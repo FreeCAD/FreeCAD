@@ -333,6 +333,88 @@ PyObject *FeaturePythonImp::getPyObject(void)
     return new FeaturePythonPyT<DocumentObjectPy>(object);
 }
 
+int FeaturePythonImp::hasChildElement() const {
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (feature.hasAttr(std::string("hasChildElement"))) {
+                Py::Callable method(feature.getAttr(std::string("hasChildElement")));
+                Py::Tuple args;
+                if(!feature.hasAttr("__object__")) {
+                    args = Py::Tuple(1);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
+                }
+                Py::Boolean ok(method.apply(args));
+                return static_cast<bool>(ok) ? 1 : 0;
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return -1;
+}
+
+int FeaturePythonImp::isElementVisible(const char *element) const {
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (feature.hasAttr(std::string("isElementVisible"))) {
+                Py::Callable method(feature.getAttr(std::string("isElementVisible")));
+                int i = 0;
+                Py::Tuple args(1);
+                if(!feature.hasAttr("__object__")) {
+                    args = Py::Tuple(2);
+                    args.setItem(i++, Py::Object(object->getPyObject(), true));
+                }
+                args.setItem(i,Py::String(element?element:""));
+                long ret = Py::Int(method.apply(args));
+                return ret;
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return -2;
+}
+
+int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (feature.hasAttr(std::string("setElementVisible"))) {
+                Py::Callable method(feature.getAttr(std::string("setElementVisible")));
+                int i = 0;
+                Py::Tuple args(2);
+                if(!feature.hasAttr("__object__")) {
+                    args = Py::Tuple(3);
+                    args.setItem(i++, Py::Object(object->getPyObject(), true));
+                }
+                args.setItem(i++,Py::String(element?element:""));
+                args.setItem(i++,Py::Boolean(visible));
+                long ret = Py::Int(method.apply(args));
+                return ret;
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return -2;
+}
+
 // ---------------------------------------------------------
 
 namespace App {

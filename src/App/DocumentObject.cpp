@@ -610,3 +610,29 @@ void App::DocumentObject::_addBackLink(DocumentObject* newObj)
     (void)newObj;
 #endif //USE_OLD_DAG    
 }
+
+int DocumentObject::setElementVisible(const char *element, bool visible) {
+    for(auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
+        int ret = ext->extensionSetElementVisible(element,visible);
+        if(ret>=0) return ret;
+    }
+
+    return -1;
+}
+
+int DocumentObject::isElementVisible(const char *element) const {
+    for(auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
+        int ret = ext->extensionIsElementVisible(element);
+        if(ret>=0) return ret;
+    }
+
+    return -1;
+}
+
+bool DocumentObject::hasChildElement() const {
+    for(auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
+        if(ext->extensionHasChildElement())
+            return true;
+    }
+    return false;
+}
