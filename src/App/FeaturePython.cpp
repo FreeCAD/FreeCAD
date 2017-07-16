@@ -30,7 +30,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Reader.h>
-
+#include <Base/MatrixPy.h>
 #include <App/DocumentObjectPy.h>
 #include "FeaturePython.h"
 #include "FeaturePythonPyImp.h"
@@ -187,6 +187,143 @@ void FeaturePythonImp::onDocumentRestored()
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         e.ReportException();
+    }
+}
+
+bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname, 
+    const char **subelement, PyObject **pyObj, Base::Matrix4D *_mat, bool transform, int depth) const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
+            if (feature.hasAttr(std::string("getSubObject"))) {
+                Py::Callable method(feature.getAttr(std::string("getSubObject")));
+                int numArg = 5;
+                if(!feature.hasAttr("__object__")) 
+                    ++numArg;
+                Py::Tuple args(numArg);
+                int i = 0;
+                if(numArg > 5)
+                    args.setItem(i++, Py::Object(object->getPyObject(), true));
+                if(!subname) subname = "";
+                args.setItem(i++,Py::String(subname));
+                args.setItem(i++,Py::Int(pyObj?2:1));
+                Base::MatrixPy *pyMat = new Base::MatrixPy(new Base::Matrix4D);
+                if(_mat) *pyMat->getMatrixPtr() = *_mat;
+                args.setItem(i++,Py::Object(pyMat));
+                args.setItem(i++,Py::Boolean(transform));
+                args.setItem(i++,Py::Int(depth));
+
+                Py::Object res(method.apply(args));
+                if(!res.isTrue()) {
+                    ret = 0;
+                    return true;
+                }
+                if(!res.isSequence())
+                    throw Base::TypeError("getSubObject expects return type of (obj,sub,matrix,pyobj)");
+                Py::Sequence seq(res);
+                if(seq.length() < 3 ||
+                   (!seq.getItem(0).isNone() && 
+                    !PyObject_TypeCheck(seq.getItem(0).ptr(),&DocumentObjectPy::Type)) ||
+                   (!seq.getItem(1).isNone() && !seq.getItem(1).isString()) ||
+                   !PyObject_TypeCheck(seq.getItem(2).ptr(),&Base::MatrixPy::Type))
+                {
+                    throw Base::TypeError("getSubObject expects return type of (obj,pyobj,sub,matrix)");
+                }
+                if(_mat) 
+                    *_mat = *static_cast<Base::MatrixPy*>(seq.getItem(2).ptr())->getMatrixPtr();
+                if(pyObj) {
+                    if(seq.length()>3)
+                        *pyObj = Py::new_reference_to(seq.getItem(3));
+                    else
+                        *pyObj = Py::new_reference_to(Py::None());
+                }
+                if(subelement) {
+                    if(!seq.getItem(1).isTrue())
+                        *subelement = 0;
+                    else{
+                        std::string sub = Py::String(seq.getItem(1));
+                        auto len = strlen(subname);
+                        if(sub.size()>len || sub!=subname+len-sub.size())
+                            throw Base::RuntimeError(
+                                "invalid sub element name returned, must be part of the input subname");
+                        *subelement = subname+len-sub.size();
+                    }
+                }
+                if(seq.getItem(0).isNone())
+                    ret = 0;
+                else
+                    ret = static_cast<DocumentObjectPy*>(seq.getItem(0).ptr())->getDocumentObjectPtr();
+                return true;
+            }
+        }
+        return false;
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+        ret = 0;
+        return true;
+    }
+}
+
+bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse, 
+        Base::Matrix4D *_mat, bool transform, int depth) const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
+            if (feature.hasAttr(std::string("getLinkedObject"))) {
+                Py::Callable method(feature.getAttr(std::string("getLinkedObject")));
+                int numArg = 4;
+                if(!feature.hasAttr("__object__")) 
+                    ++numArg;
+                Py::Tuple args(numArg);
+                int i = 0;
+                if(numArg > 4)
+                    args.setItem(i++, Py::Object(object->getPyObject(), true));
+                args.setItem(i++,Py::Boolean(recurse));
+                Base::MatrixPy *pyMat = new Base::MatrixPy(new Base::Matrix4D);
+                if(_mat) *pyMat->getMatrixPtr() = *_mat;
+                args.setItem(i++,Py::Object(pyMat));
+                args.setItem(i++,Py::Boolean(transform));
+                args.setItem(i++,Py::Int(depth));
+
+                Py::Object res(method.apply(args));
+                if(!res.isTrue()) {
+                    ret = object;
+                    return true;
+                }
+                if(!res.isSequence())
+                    throw Base::TypeError("getLinkedObject expects return type of (object,matrix)");
+                Py::Sequence seq(res);
+                if(seq.length() != 2 ||
+                   (!seq.getItem(0).isNone() && 
+                    !PyObject_TypeCheck(seq.getItem(0).ptr(),&DocumentObjectPy::Type)) ||
+                   !PyObject_TypeCheck(seq.getItem(1).ptr(),&Base::MatrixPy::Type))
+                {
+                    throw Base::TypeError("getLinkedObject expects return type of (object,matrix)");
+                }
+                if(_mat) 
+                    *_mat = *static_cast<Base::MatrixPy*>(seq.getItem(1).ptr())->getMatrixPtr();
+                if(seq.getItem(0).isNone())
+                    ret = object;
+                else
+                    ret = static_cast<DocumentObjectPy*>(seq.getItem(0).ptr())->getDocumentObjectPtr();
+                return true;
+            }
+        }
+        return false;
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+        ret = 0;
+        return true;
     }
 }
 

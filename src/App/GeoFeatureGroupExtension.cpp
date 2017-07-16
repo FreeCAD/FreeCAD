@@ -305,6 +305,40 @@ void GeoFeatureGroupExtension::getCSRelevantLinks(DocumentObject* obj, std::vect
     vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
 }
 
+
+bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
+        const char **subelement, PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const 
+{
+    if(!subname || *subname==0) return false;
+
+    std::string _name;
+    const char *name = subname;
+    const char *next = 0;
+    next = strchr(subname,'.');
+    if(next) {
+        _name = std::string(subname,next-subname);
+        name = _name.c_str();
+        ++next;
+    }
+    auto child = Group.find(name);
+    if(child) {
+        if(!mat || !transform) {
+            ret = child->getSubObject(next,subelement,pyObj,mat,true,depth);
+            return true;
+        }
+        // DO NOT change matrix if the sub object is not found, because our caller
+        // may try other alternatives.
+        Base::Matrix4D _mat;
+        _mat = (*mat)*const_cast<GeoFeatureGroupExtension*>(this)->placement().getValue().toMatrix();
+        ret = child->getSubObject(next,subelement,pyObj,&_mat,true,depth);
+        if(ret) {
+            *mat = _mat;
+            return true;
+        }
+    }
+    return false;
+}
+
 // Python feature ---------------------------------------------------------
 
 namespace App {

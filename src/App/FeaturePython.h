@@ -50,6 +50,13 @@ public:
     void onDocumentRestored();
     PyObject *getPyObject(void);
 
+    bool getSubObject(DocumentObject *&ret, const char *subname, 
+            const char **subelement, PyObject **pyObj, 
+            Base::Matrix4D *mat, bool transform, int depth) const;
+
+    bool getLinkedObject(DocumentObject *&ret, bool recurse, 
+            Base::Matrix4D *mat, bool transform, int depth) const;
+
 private:
     App::DocumentObject* object;
 };
@@ -99,6 +106,24 @@ public:
     virtual const char* getViewProviderName(void) const {
         return FeatureT::getViewProviderName();
         //return "Gui::ViewProviderPythonFeature";
+    }
+
+    virtual DocumentObject *getSubObject(const char *subname, const char **subelement, 
+            PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const override 
+    {
+        DocumentObject *ret = 0;
+        if(imp->getSubObject(ret,subname,subelement,pyObj,mat,transform,depth))
+            return ret;
+        return FeatureT::getSubObject(subname,subelement,pyObj,mat,transform,depth);
+    }
+
+    virtual DocumentObject *getLinkedObject(bool recurse, 
+            Base::Matrix4D *mat, bool transform, int depth) const override
+    {
+        DocumentObject *ret = 0;
+        if(imp->getLinkedObject(ret,recurse,mat,transform,depth))
+            return ret;
+        return FeatureT::getLinkedObject(recurse,mat,transform,depth);
     }
 
     /** @name Access properties */

@@ -93,6 +93,10 @@ public:
         return obj->hasExtension(GroupExtension::getExtensionClassTypeId()) && 
                !obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
     }
+
+    bool extensionGetSubObject(DocumentObject *& /*ret*/, const char * /*element*/,
+            const char ** /*subname*/, PyObject ** /*pyObj*/,
+            Base::Matrix4D * /*mat*/, bool /*transform*/, int /*depth*/) const override;
     
     virtual std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
     virtual std::vector< DocumentObject* > removeObjects(std::vector< DocumentObject* > obj) override;

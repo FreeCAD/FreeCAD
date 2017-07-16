@@ -87,3 +87,15 @@ DocumentObject* DocumentObjectExtension::getExtendedObject() {
     assert(getExtendedContainer()->isDerivedFrom(DocumentObject::getClassTypeId())); 
     return static_cast<DocumentObject*>(getExtendedContainer());
 }
+
+bool DocumentObjectExtension::extensionGetSubObject(DocumentObject *&, const char *,
+            const char **, PyObject **, Base::Matrix4D *, bool, int) const
+{
+    return false;
+}
+
+bool DocumentObjectExtension::extensionGetLinkedObject(
+        DocumentObject *&, bool, Base::Matrix4D *, bool, int) const
+{
+    return false;
+}

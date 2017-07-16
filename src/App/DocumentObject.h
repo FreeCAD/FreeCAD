@@ -30,6 +30,7 @@
 #include <App/PropertyExpressionEngine.h>
 
 #include <Base/TimeInfo.h>
+#include <Base/Matrix.h>
 #include <CXX/Objects.hxx>
 
 #include <bitset>
@@ -200,8 +201,59 @@ public:
      */
     virtual void onLostLinkToObject(DocumentObject*);
     virtual PyObject *getPyObject(void);
-    /// its used to get the python sub objects by name (e.g. by the selection)
-    virtual std::vector<PyObject *> getPySubObjects(const std::vector<std::string>&) const;
+
+    /** Get the sub element/object by name
+     *
+     * @param subname: a string which is dot separated name to refer to a sub
+     * element or object. An empty string can be used to refer to the object
+     * itself
+     *
+     * @param sublement: if non zero, returns the non document object
+     * sub-element name
+     *
+     * @param pyObj: if non zero, returns the python object corresponding to
+     * this sub object. The actual type of this python object is implementation
+     * dependent. For example, The current implementation of Part::Feature will
+     * return the TopoShapePy, event if there is no sub-element reference, in
+     * which case it returns the whole shape.
+     *
+     * @param mat: If non zero, it is used as the current transformation matrix
+     * on input.  And output as the accumulated transformation up until and
+     * include the transformation applied by the final object reference in \c
+     * subname. For Part::Feature, the transformation is applied to the
+     * TopoShape inside \c pyObj before returning.
+     * 
+     * @param transform: if false, then it will not apply the object's own
+     * transformation to \c mat, which lets you override the object's placement
+     * (and possibly scale). 
+     *
+     * @param depth: depth limitation as hint for cyclic link detection
+     *
+     * @return The last document object refered in subname. If subname is empty,
+     * then it shall return itself. If subname is invalid, then it shall return
+     * zero.
+     */
+    virtual DocumentObject *getSubObject(const char *subname, 
+            const char **subelement=0, PyObject **pyObj=0, 
+            Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
+
+    /** Return the linked object with optional transformation
+     * 
+     * @param recurse: If false, return the immediate linked object, or else
+     * recursively call this function to return the final linked object.
+     *
+     * @param mat: If non zero, it is used as the current transformation matrix
+     * on input.  And output as the accumulated transformation till the final
+     * linked object. 
+     *
+     * @param transform: if false, then it will not accumulate the object's own
+     * placement into \c mat, which lets you override the object's placement.
+     *
+     * @return Return the linked object. This function must return itself if the
+     * it is not a link or the link is invalid.
+     */
+    virtual DocumentObject *getLinkedObject(bool recurse=true, 
+            Base::Matrix4D *mat=0, bool transform=false, int depth=0) const;
 
     friend class Document;
     friend class Transaction;

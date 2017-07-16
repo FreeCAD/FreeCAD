@@ -445,10 +445,32 @@ PyObject *DocumentObject::getPyObject(void)
     return Py::new_reference_to(PythonObject);
 }
 
-std::vector<PyObject *> DocumentObject::getPySubObjects(const std::vector<std::string>&) const
+DocumentObject *DocumentObject::getSubObject(const char *subname, const char **subelement, 
+        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const
 {
-    // default implementation returns nothing
-    return std::vector<PyObject *>();
+    DocumentObject *ret = 0;
+    auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : exts) {
+        if(ext->extensionGetSubObject(ret,subname,subelement,pyObj,mat,transform, depth))
+            return ret;
+    }
+    if(!subname || *subname==0) {
+        if(subelement) *subelement = subname;
+        return const_cast<DocumentObject*>(this);
+    }
+    return 0;
+}
+
+DocumentObject *DocumentObject::getLinkedObject(
+        bool recursive, Base::Matrix4D *mat, bool transform, int depth) const 
+{
+    DocumentObject *ret = 0;
+    auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : exts) {
+        if(ext->extensionGetLinkedObject(ret,recursive,mat,transform,depth))
+            return ret;
+    }
+    return const_cast<DocumentObject*>(this);
 }
 
 void DocumentObject::touch(void)

@@ -105,20 +105,42 @@ PyObject *Feature::getPyObject(void)
     return Py::new_reference_to(PythonObject); 
 }
 
-std::vector<PyObject *> Feature::getPySubObjects(const std::vector<std::string>& NameVec) const
+namespace Part {
+Py::Object shape2pyshape(const TopoDS_Shape &shape);
+}
+
+App::DocumentObject *Feature::getSubObject(const char *subname, const char **subelement, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
-    try {
-        std::vector<PyObject *> temp;
-        for(std::vector<std::string>::const_iterator it=NameVec.begin();it!=NameVec.end();++it){
-            PyObject *obj = Shape.getShape().getPySubShape((*it).c_str());
-            if(obj)
-                temp.push_back(obj);
-        }
-        return temp;
+    auto ret = App::DocumentObject::getSubObject(subname,subelement,pyObj,pmat,transform,depth);
+    if(ret && ret!=this) return ret;
+
+    if(subelement) *subelement = subname;
+
+    if(pmat && transform)
+        *pmat *= Placement.getValue().toMatrix();
+
+    if(!pyObj) {
+        if(subname==0 || *subname==0 || Shape.getShape().hasSubShape(subname))
+            return const_cast<Feature*>(this);
+        return nullptr;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        throw Py::ValueError(e->GetMessageString());
+
+    try {
+        TopoDS_Shape shape = Shape.getValue().Located(TopLoc_Location());
+        TopoShape ts = (subname==0||*subname==0)?shape:TopoShape(shape).getSubShape(subname);
+        if(pmat && ts.isNull()) 
+            ts.transformShape(*pmat,false,true);
+        *pyObj =  Py::new_reference_to(shape2pyshape(ts.getShape()));
+        return const_cast<Feature*>(this);
+    }catch(Standard_Failure &e) {
+        std::string str;
+        Standard_CString msg = e.GetMessageString();
+        str += typeid(e).name();
+        str += " ";
+        if (msg) {str += msg;}
+        else     {str += "No OCCT Exception Message";}
+        throw Base::Exception(str.c_str());
     }
 }
 
