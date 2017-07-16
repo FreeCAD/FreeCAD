@@ -235,6 +235,9 @@ public:
 
     /** Tell the tree view if this object should apear there */
     virtual bool showInTree() const { return true; }
+    /** Tell the tree view to remove children items from the tree root*/
+    virtual bool canRemoveChildrenFromRoot() const {return true;}
+
     /** @name Signals of the view provider */
     //@{
     /// signal on icon change

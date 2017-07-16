@@ -588,3 +588,8 @@ void ViewProviderPy::setDefaultMode(Py::Int arg)
     return getViewProviderPtr()->setDefaultMode(arg);
 }
 
+Py::Boolean ViewProviderPy::getCanRemoveChildrenFromRoot() const 
+{
+    return Py::Boolean(getViewProviderPtr()->canRemoveChildrenFromRoot());
+}
+

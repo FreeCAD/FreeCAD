@@ -1197,6 +1197,29 @@ bool ViewProviderPythonFeatureImp::isShow() const
 }
 
 
+ViewProviderPythonFeatureImp::ValueT 
+ViewProviderPythonFeatureImp::canRemoveChildrenFromRoot() const {
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("canRemoveChildrenFromRoot"))) {
+                Py::Callable method(vp.getAttr(std::string("canRemoveChildrenFromRoot")));
+                Py::Tuple args;
+                Py::Boolean ok(method.apply(args));
+                return static_cast<bool>(ok) ? Accepted : Rejected;
+            }
+        }
+        return NotImplemented;
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return Rejected;
+}
+
 // ---------------------------------------------------------
 
 namespace Gui {

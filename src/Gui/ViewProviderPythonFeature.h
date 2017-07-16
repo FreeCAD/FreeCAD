@@ -84,6 +84,8 @@ public:
     std::string setDisplayMode(const char* ModeName);
     //@}
 
+    ValueT canRemoveChildrenFromRoot() const;
+
     /** @name Drag and drop */
     //@{
     /// Returns true if the view provider generally supports dragging objects
@@ -346,6 +348,17 @@ public:
         ViewProviderT::setDisplayMode(ModeName);
     }
     //@}
+
+    virtual bool canRemoveChildrenFromRoot() const override {
+        switch(imp->canRemoveChildrenFromRoot()) {
+        case ViewProviderPythonFeatureImp::NotImplemented:
+            return ViewProviderT::canRemoveChildrenFromRoot();
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        default:
+            return false;
+        }
+    }
 
     /** @name Access properties */
     //@{

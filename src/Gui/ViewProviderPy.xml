@@ -184,5 +184,11 @@
       </Documentation>
       <Parameter Name="IV" Type="String" />
     </Attribute>
+    <Attribute Name="CanRemoveChildrenFromRoot" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Tells the tree view whether to remvoe the children item from root or not</UserDocu>
+      </Documentation>
+      <Parameter Name="CanRemoveChildrenFromRoot" Type="Boolean" />
+    </Attribute>
   </PythonExport>
 </GenerateModel>
