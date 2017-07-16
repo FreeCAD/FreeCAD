@@ -61,6 +61,16 @@ Py::Object ViewProviderDocumentObjectPy::getObject(void) const
     return Py::Object(obj->getPyObject(), true); // do not inc'ref twice
 }
 
+Py::Boolean ViewProviderDocumentObjectPy::getForceUpdate() const 
+{
+    return Py::Boolean(getViewProviderDocumentObjectPtr()->isUpdateForced());
+}
+
+void ViewProviderDocumentObjectPy::setForceUpdate(Py::Boolean arg)
+{
+    getViewProviderDocumentObjectPtr()->forceUpdate(arg);
+}
+
 PyObject *ViewProviderDocumentObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

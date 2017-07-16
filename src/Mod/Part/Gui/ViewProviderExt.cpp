@@ -228,6 +228,7 @@ const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","D
 ViewProviderPartExt::ViewProviderPartExt() 
 {
     VisualTouched = true;
+    forceUpdateCount = 0;
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     unsigned long lcol = hGrp->GetUnsigned("DefaultShapeLineColor",421075455UL); // dark grey (25,25,25)
@@ -441,7 +442,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     else {
         // if the object was invisible and has been changed, recreate the visual
-        if (prop == &Visibility && Visibility.getValue() && VisualTouched) {
+        if (prop == &Visibility && (isUpdateForced() || Visibility.getValue()) && VisualTouched) {
             updateVisual(feature->Shape.getValue());
             // The material has to be checked again (#0001736)
             onChanged(&DiffuseColor);
@@ -1200,3 +1201,14 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
 #   endif
     VisualTouched = false;
 }
+
+void ViewProviderPartExt::forceUpdate(bool enable) {
+    if(enable) {
+        if(++forceUpdateCount == 1) {
+            if(!isShow())
+                Visibility.touch();
+        }
+    }else if(forceUpdateCount)
+        --forceUpdateCount;
+}
+
