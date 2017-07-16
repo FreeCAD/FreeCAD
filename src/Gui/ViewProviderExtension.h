@@ -62,7 +62,12 @@ public:
     virtual void extensionDragObject(App::DocumentObject*) { }
     virtual bool extensionCanDropObjects() const { return false; }
     virtual bool extensionCanDropObject(App::DocumentObject*) const { return true; }
+    virtual bool extensionCanDragAndDropObject(App::DocumentObject*) const { return true; }
     virtual void extensionDropObject(App::DocumentObject*) { }
+    virtual bool extensionCanDropObjectEx(App::DocumentObject *, App::DocumentObject *, const char *) const
+        { return false; }
+    virtual void extensionDropObjectEx(App::DocumentObject *obj, App::DocumentObject *, const char *) 
+        { extensionDropObject(obj); }
 
     /// Hides the view provider
     virtual void extensionHide(void) { }

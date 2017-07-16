@@ -681,6 +681,17 @@ bool ViewProvider::canDropObjects() const {
     return false;
 }
 
+bool ViewProvider::canDragAndDropObject(App::DocumentObject* obj) const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector){
+        if(!ext->extensionCanDragAndDropObject(obj))
+            return false;
+    }
+
+    return true;
+}
+
 void ViewProvider::dropObject(App::DocumentObject* obj) {
 
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
@@ -692,6 +703,28 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
     }
 
     throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
+}
+
+bool ViewProvider::canDropObjectEx(
+        App::DocumentObject* obj, App::DocumentObject *owner, const char *subname) const
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector){
+        if(ext->extensionCanDropObjectEx(obj,owner,subname))
+            return true;
+    }
+    return canDropObject(obj);
+}
+
+void ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, const char *subname) {
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        if(ext->extensionCanDropObjectEx(obj, owner, subname)) {
+            ext->extensionDropObjectEx(obj, owner, subname);
+            return;
+        }
+    }
+    dropObject(obj);
 }
 
 void ViewProvider::Restore(Base::XMLReader& reader) {

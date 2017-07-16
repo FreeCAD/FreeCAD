@@ -98,6 +98,12 @@ public:
     ValueT canDropObject(App::DocumentObject*) const;
     /// If the dropped object type is accepted the object will be added as child
     ValueT dropObject(App::DocumentObject*);
+    /** Return false to force drop only operation for a give object*/
+    ValueT canDragAndDropObject(App::DocumentObject*) const;
+    /** Query object dropping with full quanlified name */
+    ValueT canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *, const char *) const;
+    /** Add an object with full quanlified name to the view provider by drag and drop */
+    ValueT dropObjectEx(App::DocumentObject *obj, App::DocumentObject *, const char *);
     //@}
 
 private:
@@ -277,6 +283,39 @@ public:
             return;
         default:
             return ViewProviderT::dropObject(obj);
+        }
+    }
+    /** Return false to force drop only operation for a give object*/
+    virtual bool canDragAndDropObject(App::DocumentObject *obj) const override {
+        switch (imp->canDragAndDropObject(obj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDragAndDropObject(obj);
+        }
+    }
+    virtual bool canDropObjectEx(
+            App::DocumentObject *obj, App::DocumentObject *owner, const char *subname) const override
+    {
+        switch (imp->canDropObjectEx(obj,owner,subname)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDropObjectEx(obj,owner,subname);
+        }
+    }
+    /** Add an object with full quanlified name to the view provider by drag and drop */
+    virtual void dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, const char *element) {
+        switch (imp->dropObjectEx(obj,owner,element)) {
+        case ViewProviderPythonFeatureImp::NotImplemented:
+            ViewProviderT::dropObjectEx(obj,owner,element);
+            break;
+        default:
+            break;
         }
     }
     //@}

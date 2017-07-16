@@ -1076,6 +1076,102 @@ ViewProviderPythonFeatureImp::dropObject(App::DocumentObject* obj)
     return Rejected;
 }
 
+ViewProviderPythonFeatureImp::ValueT
+ViewProviderPythonFeatureImp::canDragAndDropObject(App::DocumentObject *obj) const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("canDragAndDropObject"))) {
+                Py::Callable method(vp.getAttr(std::string("canDragAndDropObject")));
+                Py::TupleN args(Py::Object(obj->getPyObject(),true));
+                Py::Boolean ok(method.apply(args));
+                return static_cast<bool>(ok) ? Accepted : Rejected;
+            }
+        }
+        return NotImplemented;
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return Rejected;
+}
+
+ViewProviderPythonFeatureImp::ValueT
+ViewProviderPythonFeatureImp::canDropObjectEx(App::DocumentObject* obj,
+        App::DocumentObject *owner, const char *subname) const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("canDropObjectEx"))) {
+                Py::Callable method(vp.getAttr(std::string("canDropObjectEx")));
+                Py::Tuple args(3);
+                args.setItem(0, Py::Object(obj->getPyObject(), true));
+                args.setItem(1, owner?Py::Object(owner->getPyObject(), true):Py::None());
+                args.setItem(2, Py::String(subname?subname:""));
+                Py::Boolean ok(method.apply(args));
+                return static_cast<bool>(ok) ? Accepted : Rejected;
+            }
+            else {
+                return NotImplemented;
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return Rejected;
+}
+
+ViewProviderPythonFeatureImp::ValueT
+ViewProviderPythonFeatureImp::dropObjectEx(
+        App::DocumentObject* obj, App::DocumentObject *owner, const char *element)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("dropObjectEx"))) {
+                if (vp.hasAttr("__object__")) {
+                    Py::Callable method(vp.getAttr(std::string("dropObjectEx")));
+                    Py::TupleN args(
+                            Py::Object(obj->getPyObject(),true),
+                            owner?Py::Object(owner->getPyObject(),true):Py::Object(),
+                            Py::String(element?element:""));
+                    method.apply(args);
+                    return Accepted;
+                }
+                else {
+                    Py::Callable method(vp.getAttr(std::string("dropObjectEx")));
+                    Py::TupleN args(
+                            Py::Object(object->getPyObject(),true),
+                            Py::Object(obj->getPyObject(),true),
+                            owner?Py::Object(owner->getPyObject(),true):Py::Object(),
+                            Py::String(element?element:""));
+                    method.apply(args);
+                    return Accepted;
+                }
+            }
+        }
+        return NotImplemented;
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return Rejected;
+}
+
 bool ViewProviderPythonFeatureImp::isShow() const
 {
     // Run the onChanged method of the proxy object.

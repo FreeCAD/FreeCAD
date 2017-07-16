@@ -293,3 +293,16 @@ PyObject* ViewProviderDocumentObject::getPyObject()
     pyViewObject->IncRef();
     return pyViewObject;
 }
+
+bool ViewProviderDocumentObject::canDropObjectEx(
+        App::DocumentObject* obj, App::DocumentObject *owner, const char *subname) const
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector){
+        if(ext->extensionCanDropObjectEx(obj,owner,subname))
+            return true;
+    }
+    if(obj && obj->getDocument()!=getObject()->getDocument())
+        return false;
+    return canDropObject(obj);
+}

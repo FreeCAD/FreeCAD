@@ -70,6 +70,8 @@ public:
     /// Show the object in the view
     virtual void show(void);
 
+    virtual bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *, const char *) const override;
+
     /// Get a list of TaskBoxes associated with this object
     virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const;
 

@@ -46,6 +46,7 @@
 #include <Base/Placement.h>
 #include <Base/PlacementPy.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectPy.h>
 
 using namespace Gui;
 
@@ -146,6 +147,100 @@ PyObject*  ViewProviderPy::isVisible(PyObject *args)
         return NULL;                       // NULL triggers exception 
     PY_TRY {
         return Py_BuildValue("O", (getViewProviderPtr()->isShow() ? Py_True : Py_False));
+    } PY_CATCH;
+}
+
+PyObject*  ViewProviderPy::canDragObject(PyObject *args)
+{
+    PyObject *obj = Py_None;
+    if (!PyArg_ParseTuple(args, "|O", &obj))
+        return NULL;
+    PY_TRY {
+        bool ret;
+        if(obj == Py_None)
+            ret = getViewProviderPtr()->canDragObjects();
+        else if(!PyObject_TypeCheck(obj,&App::DocumentObjectPy::Type)) {
+            PyErr_SetString(PyExc_TypeError, "exepcting a type of DocumentObject");
+            return 0;
+        }else
+            ret = getViewProviderPtr()->canDragObject(
+                    static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+        return Py::new_reference_to(Py::Boolean(ret));
+    } PY_CATCH;
+}
+
+PyObject*  ViewProviderPy::canDropObject(PyObject *args)
+{
+    PyObject *obj = Py_None;
+    PyObject *owner = Py_None;
+    const char *subname = 0;
+    if (!PyArg_ParseTuple(args, "|OOs", &obj,&owner,&subname))
+        return NULL;
+    PY_TRY {
+        bool ret;
+        if(obj == Py_None)
+            ret = getViewProviderPtr()->canDropObjects();
+        else if(!PyObject_TypeCheck(obj,&App::DocumentObjectPy::Type)) {
+            PyErr_SetString(PyExc_TypeError, "exepcting 'obj' to be of type DocumentObject");
+            return 0;
+        }
+        auto pcObject = static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr();
+        App::DocumentObject *pcOwner = 0;
+        if(owner!=Py_None) {
+            if(!PyObject_TypeCheck(owner,&App::DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "exepcting 'owner' to be of type DocumentObject");
+                return NULL;
+            }
+            pcOwner = static_cast<App::DocumentObjectPy*>(owner)->getDocumentObjectPtr();
+        }
+        ret = getViewProviderPtr()->canDropObjectEx(pcObject,pcOwner,subname);
+        return Py::new_reference_to(Py::Boolean(ret));
+    } PY_CATCH;
+}
+
+PyObject*  ViewProviderPy::canDragAndDropObject(PyObject *args)
+{
+    PyObject *obj;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type,&obj))
+        return NULL;
+    PY_TRY {
+        bool ret = getViewProviderPtr()->canDragAndDropObject(
+                    static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+        return Py::new_reference_to(Py::Boolean(ret));
+    } PY_CATCH;
+}
+
+PyObject*  ViewProviderPy::dropObject(PyObject *args)
+{
+    PyObject *obj;
+    PyObject *owner = Py_None;
+    const char *subname = 0;
+    if (!PyArg_ParseTuple(args, "O!|Os", &App::DocumentObjectPy::Type,&obj,&owner,&subname))
+        return NULL;
+    PY_TRY {
+        App::DocumentObject *pcOwner = 0;
+        if(owner!=Py_None) {
+            if(!PyObject_TypeCheck(owner,&App::DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "exepcting 'owner' to be of type DocumentObject");
+                return NULL;
+            }
+            pcOwner = static_cast<App::DocumentObjectPy*>(owner)->getDocumentObjectPtr();
+        }
+        getViewProviderPtr()->dropObjectEx(
+            static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr(),pcOwner,subname);
+        Py_Return;
+    } PY_CATCH;
+}
+
+PyObject*  ViewProviderPy::dragObject(PyObject *args)
+{
+    PyObject *obj;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type,&obj))
+        return NULL;
+    PY_TRY {
+        getViewProviderPtr()->dragObject(
+                static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+        Py_Return;
     } PY_CATCH;
 }
 

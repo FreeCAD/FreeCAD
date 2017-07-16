@@ -50,6 +50,36 @@
 				<UserDocu>Check if the object is visible</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="canDragObject">
+			<Documentation>
+                <UserDocu>canDragObject(obj=None): check whether the child object can be removed by dragging</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="dragObject">
+			<Documentation>
+                <UserDocu>dragObject(obj): remove a child object by dropping</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="canDropObject">
+			<Documentation>
+                <UserDocu>
+                    canDropObject(obj=None,owner=None,subname=None) 
+                    check whether the child object can be added by dropping
+                </UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="dropObject">
+			<Documentation>
+                <UserDocu>dropObject(obj,owner=None,subname=None): add a child object by dropping</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="canDragAndDropObject">
+			<Documentation>
+                <UserDocu>
+                    canDragAndDropObject(obj)
+                    Check whether the child object can be removed from other parent and added here by drag and drop</UserDocu>
+			</Documentation>
+		</Methode>
         <Methode Name="addDisplayMode">
             <Documentation>
                 <UserDocu>Add a new display mode to the view provider</UserDocu>

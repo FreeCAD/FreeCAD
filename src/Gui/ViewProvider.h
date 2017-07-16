@@ -217,12 +217,25 @@ public:
     }
     /** Remove a child from the view provider by drag and drop */
     virtual void dragObject(App::DocumentObject*);
-    /** Check whether objects can be added to the view provider by drag and drop */
+    /** Check whether objects can be added to the view provider by drag and drop or drop only */
     virtual bool canDropObjects() const;
-    /** Check whether the object can be dropped to the view provider by drag and drop */
+    /** Check whether the object can be dropped to the view provider by drag and drop or drop only*/
     virtual bool canDropObject(App::DocumentObject*) const;
+    /** Return false to force drop only operation for a given object*/
+    virtual bool canDragAndDropObject(App::DocumentObject*) const;
     /** Add an object to the view provider by drag and drop */
     virtual void dropObject(App::DocumentObject*);
+    /** Query object dropping with full quanlified name 
+     *
+     * Tree view now calls this function instead of canDropObject(), and may
+     * query for objects from other document. The default implementation
+     * (actually in ViewProviderDocumentObject) inhibites cross document
+     * dropping, and calls canDropObject(obj) for the result. Override this
+     * function to enable cross document linking.
+     * */
+    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, const char *subname) const;
+    /** Add an object with full quanlified name to the view provider by drag and drop */
+    virtual void dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, const char *subname);
     //@}
 
     /** @name Signals of the view provider */
