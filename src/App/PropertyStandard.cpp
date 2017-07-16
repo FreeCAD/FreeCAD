@@ -580,7 +580,7 @@ void PropertyEnumeration::setPathValue(const ObjectIdentifier &path, const boost
 // PropertyIntegerConstraint
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyIntegerConstraint, App::PropertyInteger);
+TYPESYSTEM_SOURCE(App::PropertyIntegerConstraint, App::PropertyInteger)
 
 //**************************************************************************
 // Construction/Destruction
@@ -595,11 +595,17 @@ PropertyIntegerConstraint::PropertyIntegerConstraint()
 
 PropertyIntegerConstraint::~PropertyIntegerConstraint()
 {
-
+    if (_ConstStruct && _ConstStruct->isDeletable())
+        delete _ConstStruct;
 }
 
 void PropertyIntegerConstraint::setConstraints(const Constraints* sConstrain)
 {
+    if (_ConstStruct != sConstrain) {
+        if (_ConstStruct && _ConstStruct->isDeletable())
+            delete _ConstStruct;
+    }
+
     _ConstStruct = sConstrain;
 }
 
@@ -644,20 +650,16 @@ void PropertyIntegerConstraint::setPyObject(PyObject *value)
                 throw Base::TypeError("Type in tuple must be int");
         }
 
-        if (!_ConstStruct) {
-            Constraints* c = new Constraints();
-            c->LowerBound = values[1];
-            c->UpperBound = values[2];
-            c->StepSize = std::max<long>(1, values[3]);
-            if (values[0] > c->UpperBound)
-                values[0] = c->UpperBound;
-            else if (values[0] < c->LowerBound)
-                values[0] = c->LowerBound;
-            setConstraints(c);
-        }
-        else {
-            throw Base::RuntimeError("Cannot override limits of constraint");
-        }
+        Constraints* c = new Constraints();
+        c->setDeletable(true);
+        c->LowerBound = values[1];
+        c->UpperBound = values[2];
+        c->StepSize = std::max<long>(1, values[3]);
+        if (values[0] > c->UpperBound)
+            values[0] = c->UpperBound;
+        else if (values[0] < c->LowerBound)
+            values[0] = c->LowerBound;
+        setConstraints(c);
 
         aboutToSetValue();
         _lValue = values[0];
@@ -1108,7 +1110,7 @@ const boost::any PropertyFloat::getPathValue(const ObjectIdentifier &path) const
 // PropertyFloatConstraint
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyFloatConstraint, App::PropertyFloat);
+TYPESYSTEM_SOURCE(App::PropertyFloatConstraint, App::PropertyFloat)
 
 //**************************************************************************
 // Construction/Destruction
@@ -1122,11 +1124,16 @@ PropertyFloatConstraint::PropertyFloatConstraint()
 
 PropertyFloatConstraint::~PropertyFloatConstraint()
 {
-
+    if (_ConstStruct && _ConstStruct->isDeletable())
+        delete _ConstStruct;
 }
 
 void PropertyFloatConstraint::setConstraints(const Constraints* sConstrain)
 {
+    if (_ConstStruct != sConstrain) {
+        if (_ConstStruct && _ConstStruct->isDeletable())
+            delete _ConstStruct;
+    }
     _ConstStruct = sConstrain;
 }
 
@@ -1186,20 +1193,21 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
                 throw Base::TypeError("Type in tuple must be float or int");
         }
 
-        if (!_ConstStruct) {
-            Constraints* c = new Constraints();
-            c->LowerBound = values[1];
-            c->UpperBound = values[2];
-            c->StepSize = std::max<double>(0.1, values[3]);
-            if (values[0] > c->UpperBound)
-                values[0] = c->UpperBound;
-            else if (values[0] < c->LowerBound)
-                values[0] = c->LowerBound;
-            setConstraints(c);
-        }
-        else {
-            throw Base::RuntimeError("Cannot override limits of constraint");
-        }
+        double stepSize = values[3];
+        // need a value > 0
+        if (stepSize < DBL_EPSILON)
+            throw Base::ValueError("Step size must be greater than zero");
+
+        Constraints* c = new Constraints();
+        c->setDeletable(true);
+        c->LowerBound = values[1];
+        c->UpperBound = values[2];
+        c->StepSize = stepSize;
+        if (values[0] > c->UpperBound)
+            values[0] = c->UpperBound;
+        else if (values[0] < c->LowerBound)
+            values[0] = c->LowerBound;
+        setConstraints(c);
 
         aboutToSetValue();
         _dValue = values[0];
