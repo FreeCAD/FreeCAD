@@ -57,6 +57,7 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
 {
     ADD_PROPERTY(DisplayMode,((long)0));
     ADD_PROPERTY(Visibility,(true));
+    ADD_PROPERTY(ShowInTree,(true));
 
     sPixmap = "Feature";
 }
@@ -306,3 +307,8 @@ bool ViewProviderDocumentObject::canDropObjectEx(
         return false;
     return canDropObject(obj);
 }
+
+bool ViewProviderDocumentObject::showInTree() const {
+    return ShowInTree.getValue();
+}
+

@@ -115,6 +115,8 @@ public:
     boost::signal<void (const char*)> signalRemoveWorkbench;
     /// signal on activating view
     boost::signal<void (const Gui::MDIView*)> signalActivateView;
+    /// signal on show hidden items
+    boost::signal<void (const Gui::Document&)> signalShowHidden;
     //@}
 
     /** @name methods for Document handling */
@@ -126,6 +128,7 @@ protected:
     void slotRelabelDocument(const App::Document&);
     void slotRenameDocument(const App::Document&);
     void slotActiveDocument(const App::Document&);
+    void slotShowHidden(const App::Document&);
     void slotNewObject(const ViewProvider&);
     void slotDeletedObject(const ViewProvider&);
     void slotChangedObject(const ViewProvider&, const App::Property& Prop);

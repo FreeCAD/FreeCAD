@@ -1053,8 +1053,9 @@ void Document::onChanged(const Property* prop)
     // the Name property is a label for display purposes
     if (prop == &Label) {
         App::GetApplication().signalRelabelDocument(*this);
-    }
-    else if (prop == &Uid) {
+    } else if(prop == &ShowHidden) {
+        App::GetApplication().signalShowHidden(*this);
+    } else if (prop == &Uid) {
         std::string new_dir = getTransientDirectoryName(this->Uid.getValueStr(),this->FileName.getStrValue());
         std::string old_dir = this->TransientDir.getStrValue();
         Base::FileInfo TransDirNew(new_dir);
@@ -1197,6 +1198,8 @@ Document::Document(void)
 
     ADD_PROPERTY_TYPE(License,(license.c_str()),0,Prop_None,"License string of the Item");
     ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
+    ADD_PROPERTY_TYPE(ShowHidden,(false), 0,PropertyType(Prop_None), 
+                        "Whether to show hidden object items in the tree view");
 
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),

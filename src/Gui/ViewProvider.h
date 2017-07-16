@@ -210,11 +210,6 @@ public:
     virtual bool canDragObjects() const;
     /** Check whether the object can be removed from the view provider by drag and drop */
     virtual bool canDragObject(App::DocumentObject*) const;
-    /** Tell the tree view if this object should apear there */
-    virtual bool showInTree() const
-    {
-      return true;
-    }
     /** Remove a child from the view provider by drag and drop */
     virtual void dragObject(App::DocumentObject*);
     /** Check whether objects can be added to the view provider by drag and drop or drop only */
@@ -238,6 +233,8 @@ public:
     virtual void dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, const char *subname);
     //@}
 
+    /** Tell the tree view if this object should apear there */
+    virtual bool showInTree() const { return true; }
     /** @name Signals of the view provider */
     //@{
     /// signal on icon change

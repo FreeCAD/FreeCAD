@@ -298,6 +298,7 @@ Application::Application(bool GUIenabled)
         App::GetApplication().signalRenameDocument.connect(boost::bind(&Gui::Application::slotRenameDocument, this, _1));
         App::GetApplication().signalActiveDocument.connect(boost::bind(&Gui::Application::slotActiveDocument, this, _1));
         App::GetApplication().signalRelabelDocument.connect(boost::bind(&Gui::Application::slotRelabelDocument, this, _1));
+        App::GetApplication().signalShowHidden.connect(boost::bind(&Gui::Application::slotShowHidden, this, _1));
 
 
         // install the last active language
@@ -716,6 +717,16 @@ void Application::slotRenameDocument(const App::Document& Doc)
 #endif
 
     signalRenameDocument(*doc->second);
+}
+
+void Application::slotShowHidden(const App::Document& Doc)
+{
+    std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
+#ifdef FC_DEBUG
+    assert(doc!=d->documents.end());
+#endif
+
+    signalShowHidden(*doc->second);
 }
 
 void Application::slotActiveDocument(const App::Document& Doc)

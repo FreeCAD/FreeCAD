@@ -84,6 +84,7 @@ protected:
     void slotFinishRestoreDocument(const App::Document&);
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
+    void slotShowHidden(const App::Document&);
     //@}
 
     void addViewProvider(Gui::ViewProviderDocumentObject*);
@@ -114,6 +115,8 @@ public:
     /// signal on changed Object, the 2nd argument is the highlite mode to use
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
                                 const Gui::TreeItemMode&)>               signalExpandObject;
+    /// signal on changed ShowInTree property in view provider
+    mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalShowItem;
     /// signal on undo Document
     mutable boost::signal<void (const Gui::Document& doc)> signalUndoDocument;
     /// signal on redo Document

@@ -107,6 +107,8 @@ public:
     PropertyLink Tip;
     /// Tip object of the document (if any)
     PropertyString TipName;
+    /// Whether to show hidden items in TreeView
+    PropertyBool ShowHidden;
     //@}
 
     /** @name Signals of the document */

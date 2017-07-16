@@ -120,6 +120,8 @@ public:
     boost::signal<void (const Document&)> signalUndoDocument;
     /// signal on redo in document
     boost::signal<void (const Document&)> signalRedoDocument;
+    /// signal on show hidden items
+    boost::signal<void (const Document&)> signalShowHidden;
     //@}
 
 

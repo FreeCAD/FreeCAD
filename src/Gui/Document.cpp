@@ -104,6 +104,7 @@ struct DocumentP
     Connection connectRestDocument;
     Connection connectStartLoadDocument;
     Connection connectFinishLoadDocument;
+    Connection connectShowHidden;
     Connection connectExportObjects;
     Connection connectImportObjects;
     Connection connectUndoDocument;
@@ -151,6 +152,8 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::slotStartRestoreDocument, this, _1));
     d->connectFinishLoadDocument = App::GetApplication().signalFinishRestoreDocument.connect
         (boost::bind(&Gui::Document::slotFinishRestoreDocument, this, _1));
+    d->connectShowHidden = App::GetApplication().signalShowHidden.connect
+        (boost::bind(&Gui::Document::slotShowHidden, this, _1));
 
     d->connectExportObjects = pcDocument->signalExportViewObjects.connect
         (boost::bind(&Gui::Document::exportObjects, this, _1, _2));
@@ -192,6 +195,7 @@ Document::~Document()
     d->connectRestDocument.disconnect();
     d->connectStartLoadDocument.disconnect();
     d->connectFinishLoadDocument.disconnect();
+    d->connectShowHidden.disconnect();
     d->connectExportObjects.disconnect();
     d->connectImportObjects.disconnect();
     d->connectUndoDocument.disconnect();
@@ -897,6 +901,14 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
 
     // reset modified flag
     setModified(false);
+}
+
+void Document::slotShowHidden(const App::Document& doc)
+{
+    if (d->_pcDocument != &doc)
+        return;
+
+    Application::Instance->signalShowHidden(*this);
 }
 
 /**
