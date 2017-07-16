@@ -859,7 +859,10 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
     auto* pcActiveBody = PartDesignGui::getBody(false);
     if (pcActiveBody && !bNoSketchWasSelected && ext) {
 
-        auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
+        auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, true);
+        // getPartFor() already has reported an error
+        if (!pcActivePart)
+            return;
 
         QDialog* dia = new QDialog;
         Ui_Dialog dlg;
