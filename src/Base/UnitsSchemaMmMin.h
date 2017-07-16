@@ -30,7 +30,7 @@
 #include "UnitsSchema.h"
 
 namespace Base {
-    
+
 
 /*  Metric units schema intended for design of small parts and for CNC
  *  Lengths are alwais in mm.
