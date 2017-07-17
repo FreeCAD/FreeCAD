@@ -288,7 +288,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for static analysis...')
-        ret = compare_stats(fea, static_expected_values, ["U1", "U2", "U3", "Uabs", "Sabs"])
+        ret = compare_stats(fea, static_expected_values)
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for static analysis to {}...'.format(static_save_fc_file))
@@ -336,7 +336,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for frequency analysis...')
-        ret = compare_stats(fea, frequency_expected_values, ["U1", "U2", "U3", "Uabs", "Sabs"])
+        ret = compare_stats(fea, frequency_expected_values)
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for frequency analysis to {}...'.format(frequency_save_fc_file))
@@ -464,7 +464,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for thermomech analysis...')
-        ret = compare_stats(fea, thermomech_expected_values, ["U1", "U2", "U3", "Uabs", "Sabs"])
+        ret = compare_stats(fea, thermomech_expected_values)
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for thermomech analysis to {}...'.format(thermomech_save_fc_file))
@@ -791,7 +791,8 @@ def compare_stats(fea, stat_file=None, loc_stat_types=None):
         sf_content = force_unix_line_ends(sf_content)
     stats = []
     for s in loc_stat_types:
-        stats.append("{}: {}\n".format(s, fea.get_stats(s)))
+        statval = fea.get_stats(s)
+        stats.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     if sf_content != stats:
         fcc_print("Expected stats from {}".format(stat_file))
         fcc_print(sf_content)
@@ -843,7 +844,8 @@ def create_test_results():
     fea.load_results()
     stats_static = []  # we only have one result object so we are fine
     for s in stat_types:
-        stats_static.append("{}: {}\n".format(s, fea.get_stats(s)))
+        statval = fea.get_stats(s)
+        stats_static.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     static_expected_values_file = static_analysis_dir + '/cube_static_expected_values'
     f = open(static_expected_values_file, 'w')
     for s in stats_static:
@@ -868,7 +870,8 @@ def create_test_results():
     fea.load_results()
     stats_frequency = []  # since we set eigenmodeno. we only have one result object so we are fine
     for s in stat_types:
-        stats_frequency.append("{}: {}\n".format(s, fea.get_stats(s)))
+        statval = fea.get_stats(s)
+        stats_frequency.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     frequency_expected_values_file = frequency_analysis_dir + '/cube_frequency_expected_values'
     f = open(frequency_expected_values_file, 'w')
     for s in stats_frequency:
@@ -890,7 +893,8 @@ def create_test_results():
     fea.load_results()
     stats_thermomech = []  # we only have one result object so we are fine
     for s in stat_types:
-        stats_thermomech.append("{}: {}\n".format(s, fea.get_stats(s)))
+        statval = fea.get_stats(s)
+        stats_thermomech.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     thermomech_expected_values_file = thermomech_analysis_dir + '/spine_thermomech_expected_values'
     f = open(thermomech_expected_values_file, 'w')
     for s in stats_thermomech:
