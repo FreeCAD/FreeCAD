@@ -122,16 +122,15 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 
 # read a calculix result file and extract the nodes, displacement vectores and stress values.
 def readResult(frd_input):
-    inout_nodes_exist = False
+    print('Read results from: ' + frd_input)
+    inout_nodes = []
     if os.path.exists("inout_nodes.txt"):
-        inout_nodes = []
+        print('We have found a inout_nodes.txt file. We gone read it and delete it afterwards')
         f = pyopen("inout_nodes.txt", "r")
         lines = f.readlines()
         for line in lines:
             a = line.split(',')
             inout_nodes.append(a)
-        if len(inout_nodes) > 0:
-            inout_nodes_exist = True
         f.close()
         os.remove("inout_nodes.txt")
     frd_file = pyopen(frd_input, "r")
@@ -360,7 +359,7 @@ def readResult(frd_input):
                 nd1 = int(line[3:13])
                 nd3 = int(line[13:23])
                 nd2 = int(line[23:33])
-                if inout_nodes_exist:
+                if inout_nodes:
                     for i in range(len(inout_nodes)):
                         if nd1 == int(inout_nodes[i][1]):
                             elements_seg3[elem] = (int(inout_nodes[i][2]), nd3, nd1)  # fluid inlet node numbering
@@ -436,7 +435,7 @@ def readResult(frd_input):
             elem = int(line[4:13])
             massflow = float(line[13:25])
             mode_massflow[elem] = (massflow * 1000)  # convert units to kg/s from t/s
-            if inout_nodes_exist:
+            if inout_nodes:
                 for i in range(len(inout_nodes)):
                     if elem == int(inout_nodes[i][1]):
                         node = int(inout_nodes[i][2])
@@ -448,7 +447,7 @@ def readResult(frd_input):
             elem = int(line[4:13])
             networkpressure = float(line[13:25])
             mode_networkpressure[elem] = (networkpressure)
-            if inout_nodes_exist:
+            if inout_nodes:
                 for i in range(len(inout_nodes)):
                     if elem == int(inout_nodes[i][1]):
                         node = int(inout_nodes[i][2])
@@ -529,6 +528,10 @@ def readResult(frd_input):
             elements_found = False
 
     frd_file.close()
+    if not inout_nodes:
+        if results:
+            if 'mflow' in results[0] or 'npressure' in results[0]:
+                FreeCAD.Console.PrintError('We have mflow or npressure, but no inout_nodes file.\n')
     if not nodes:
         FreeCAD.Console.PrintError('FEM: No nodes found in Frd file.\n')
     return {'Nodes': nodes,
