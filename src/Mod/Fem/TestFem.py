@@ -76,6 +76,38 @@ class FemTest(unittest.TestCase):
             FreeCAD.setActiveDocument("FemTest")
         self.active_doc = FreeCAD.ActiveDocument
 
+    def test_mesh_seg2_python(self):
+        seg2 = Fem.FemMesh()
+        seg2.addNode(0, 0, 0, 1)
+        seg2.addNode(2, 0, 0, 2)
+        seg2.addNode(4, 0, 0, 3)
+        seg2.addEdge([1, 2])
+        seg2.addEdge([2, 3], 2)
+
+        node_data = [seg2.NodeCount, seg2.Nodes]
+        edge_data = [seg2.EdgeCount, seg2.Edges[0], seg2.getElementNodes(seg2.Edges[0]), seg2.Edges[1], seg2.getElementNodes(seg2.Edges[1])]
+        expected_nodes = [3, {1: FreeCAD.Vector(0.0, 0.0, 0.0), 2: FreeCAD.Vector(2.0, 0.0, 0.0), 3: FreeCAD.Vector(4.0, 0.0, 0.0)}]
+        expected_edges = [2, 1, (1, 2), 2, (2, 3)]
+        self.assertEqual(node_data, expected_nodes, "Nodes of Python created seg2 element are unexpected")
+        self.assertEqual(edge_data, expected_edges, "Edges of Python created seg2 element are unexpected")
+
+    def test_mesh_seg3_python(self):
+        seg3 = Fem.FemMesh()
+        seg3.addNode(0, 0, 0, 1)
+        seg3.addNode(1, 0, 0, 2)
+        seg3.addNode(2, 0, 0, 3)
+        seg3.addNode(3, 0, 0, 4)
+        seg3.addNode(4, 0, 0, 5)
+        seg3.addEdge([1, 3, 2])
+        seg3.addEdge([3, 5, 4], 2)
+
+        node_data = [seg3.NodeCount, seg3.Nodes]
+        edge_data = [seg3.EdgeCount, seg3.Edges[0], seg3.getElementNodes(seg3.Edges[0]), seg3.Edges[1], seg3.getElementNodes(seg3.Edges[1])]
+        expected_nodes = [5, {1: FreeCAD.Vector(0.0, 0.0, 0.0), 2: FreeCAD.Vector(1.0, 0.0, 0.0), 3: FreeCAD.Vector(2.0, 0.0, 0.0), 4: FreeCAD.Vector(3.0, 0.0, 0.0), 5: FreeCAD.Vector(4.0, 0.0, 0.0)}]
+        expected_edges = [2, 1, (1, 3, 2), 2, (3, 5, 4)]
+        self.assertEqual(node_data, expected_nodes, "Nodes of Python created seg3 element are unexpected")
+        self.assertEqual(edge_data, expected_edges, "Edges of Python created seg3 element are unexpected")
+
     def test_unv_save_load(self):
         tetra10 = Fem.FemMesh()
         tetra10.addNode(6, 12, 18, 1)
