@@ -309,6 +309,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.B21, 2401)
         self.assertMostlyEqual(sheet.C21, Units.Quantity('2401mm^4'))
         self.assertEqual(sheet.D21, u'ERR: Exponent is not allowed to have a unit.')
+        FreeCAD.closeDocument(doc.Name)
         
     def testRelationalOperators(self):
         """ Test relational operators """
