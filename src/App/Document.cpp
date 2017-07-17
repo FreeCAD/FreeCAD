@@ -144,6 +144,7 @@ struct DocumentP
     bool rollback;
     bool closable;
     bool keepTrailingDigits;
+    bool recomputeNow;
     int iUndoMode;
     unsigned int UndoMemSize;
     unsigned int UndoMaxStackSize;
@@ -159,6 +160,7 @@ struct DocumentP
         rollback = false;
         closable = true;
         keepTrailingDigits = true;
+        recomputeNow = false;
         iUndoMode = 0;
         UndoMemSize = 0;
         UndoMaxStackSize = 20;
@@ -1720,6 +1722,12 @@ void Document::_rebuildDependencyList(void)
 
 void Document::recompute()
 {
+    if (d->recomputeNow) {
+        throw Base::RuntimeError("Nested recomputes of a document are not allowed");
+    }
+
+    d->recomputeNow = true;
+
     // delete recompute log
     for( std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
         delete *it;
@@ -1738,6 +1746,7 @@ void Document::recompute()
     }
     catch (const std::exception& e) {
         std::cerr << "Document::recompute: " << e.what() << std::endl;
+        d->recomputeNow = false;
         return;
     }
 
@@ -1824,6 +1833,7 @@ void Document::recompute()
     d->vertexMap.clear();
 
     signalRecomputed(*this);
+    d->recomputeNow = false;
 }
 
 const char * Document::getErrorDescription(const App::DocumentObject*Obj) const
