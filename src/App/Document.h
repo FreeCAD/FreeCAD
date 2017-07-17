@@ -66,7 +66,8 @@ public:
         SkipRecompute = 0,
         KeepTrailingDigits = 1,
         Closable = 2,
-        Restoring = 3
+        Restoring = 3,
+        Recomputing = 4
     };
 
     /** @name Properties */

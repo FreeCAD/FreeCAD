@@ -2007,6 +2007,11 @@ void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App
 #ifdef USE_OLD_DAG
 int Document::recompute()
 {
+    if (testStatus(Document::Recomputing)) {
+        // this is clearly a bug in the calling instance
+        throw Base::RuntimeError("Nested recomputes of a document are not allowed");
+    }
+
     int objectCount = 0;
     
     // The 'SkipRecompute' flag can be (tmp.) set to avoid to many
@@ -2014,6 +2019,8 @@ int Document::recompute()
     bool skip = testStatus(Document::SkipRecompute);
     if (skip)
         return 0;
+
+    ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
 
     // delete recompute log
     for (std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)

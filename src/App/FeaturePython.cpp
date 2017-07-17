@@ -63,7 +63,7 @@ bool FeaturePythonImp::execute()
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
             if (feature.hasAttr(std::string("execute"))) {
                 if (feature.hasAttr("__object__")) {
-                    ObjectStatusLocker exe(App::PythonCall, object);
+                    ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::PythonCall, object);
                     Py::Callable method(feature.getAttr(std::string("execute")));
                     Py::Tuple args;
                     Py::Object res = method.apply(args);
@@ -72,7 +72,7 @@ bool FeaturePythonImp::execute()
                     return true;
                 }
                 else {
-                    ObjectStatusLocker exe(App::PythonCall, object);
+                    ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::PythonCall, object);
                     Py::Callable method(feature.getAttr(std::string("execute")));
                     Py::Tuple args(1);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
