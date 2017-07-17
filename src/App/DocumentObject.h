@@ -295,16 +295,17 @@ private:
     bool _isInOutListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const;
 };
 
-class AppExport ObjectStatusLocker
+template<typename Status, class Object>
+class ObjectStatusLocker
 {
 public:
-    ObjectStatusLocker(ObjectStatus s, DocumentObject* o) : status(s), obj(o)
+    ObjectStatusLocker(Status s, Object* o) : status(s), obj(o)
     { obj->setStatus(status, true); }
     ~ObjectStatusLocker()
     { obj->setStatus(status, false); }
 private:
-    ObjectStatus status;
-    DocumentObject* obj;
+    Status status;
+    Object* obj;
 };
 
 } //namespace App
