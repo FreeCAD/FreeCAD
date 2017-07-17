@@ -30,6 +30,7 @@ import FreeCAD
 import ObjectsFem
 import tempfile
 import unittest
+import os
 
 mesh_name = 'Mesh'
 stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
@@ -37,7 +38,8 @@ stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin",
 home_path = FreeCAD.getHomePath()
 temp_dir = tempfile.gettempdir() + '/FEM_unittests'
 test_file_dir = home_path + 'Mod/Fem/test_files/ccx'
-
+if not os.path.exists(temp_dir):
+    os.makedirs(temp_dir)
 
 # define some locations fot the analysis tests
 # since they are also used in the helper def which create results they should stay global for the module
@@ -827,10 +829,8 @@ def create_test_results():
     # run FEM unit tests
     runTestFem()
 
-    import os
     import shutil
     import FemGui
-    import FemToolsCcx
 
     # static and frequency cube
     FreeCAD.open(static_save_fc_file)
