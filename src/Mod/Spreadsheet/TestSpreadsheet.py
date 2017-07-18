@@ -300,7 +300,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.A19, 3) # Mod
         self.assertMostlyEqual(sheet.B19, -3)
         self.assertMostlyEqual(sheet.C19, Units.Quantity('3 mm'))
-        self.assertEqual(sheet.D19, u'ERR: Second argument must have empty unit.')
+        self.assertEqual(sheet.D19, 3)
         self.assertMostlyEqual(sheet.A20, Units.Quantity('45 deg'))       # Atan2
         self.assertMostlyEqual(sheet.B20, Units.Quantity('-45 deg'))
         self.assertEqual(sheet.C20, u'ERR: Units must be equal')
@@ -774,6 +774,15 @@ class SpreadsheetCases(unittest.TestCase):
 
         # Close second document
         FreeCAD.closeDocument(doc2.Name)
+
+    def testIssue3128(self):
+        """ Regression test for issue 3128; mod should work with arbitrary units for both arguments """
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A1', '=mod(7mm;3mm)')
+        sheet.set('A2', '=mod(7kg;3mm)')
+        self.doc.recompute()
+        self.assertEqual(sheet.A1, Units.Quantity('1'))
+        self.assertEqual(sheet.A2, Units.Quantity('1 kg/mm'))
 
     def tearDown(self):
         #closing doc

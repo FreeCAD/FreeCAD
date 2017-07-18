@@ -1007,9 +1007,7 @@ Expression * FunctionExpression::eval() const
     case MOD:
         if (v2 == 0)
             throw ExpressionError("Invalid second argument.");
-        if (!v2->getUnit().isEmpty())
-            throw ExpressionError("Second argument must have empty unit.");
-        unit = v1->getUnit();
+        unit = v1->getUnit() / v2->getUnit();
         break;
     case POW: {
         if (v2 == 0)
