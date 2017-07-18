@@ -36,7 +36,6 @@ TOLERANCE = 0.0001 # smaller than this, two points are considered equal
 DISCRETIZE = 4 # the number of segments in which arcs must be subdivided
 ROTATIONS = [0,90,180,270] # the possible rotations to try
 
-
 class Nester:
 
 
@@ -44,12 +43,83 @@ class Nester:
 
         """Nester([container,shapes]): Creates a nester object with a container
            shape and a list of other shapes to nest into it. Container and
-           shapes must be Part.Faces."""
+           shapes must be Part.Faces.
 
+           Typical workflow:
+
+           n = Nester() # creates the nester
+           n.addContainer(object) # adds a doc object as the container
+           n.addObjects(objects) # adds a list of doc objects as shapes
+           n.run() # runs the nesting
+           n.show() # creates a preview (compound) of the results
+           n.apply() # applies transformations to the original objects
+
+           Defaults (can be changed):
+
+           Nester.TOLERANCE = 0.0001
+           Nester.DISCRETIZE = 4
+           Nester.ROTATIONS = [0,90,180,270]
+           """
+
+        self.objects = None
         self.container = container
         self.shapes = shapes
         self.results = [] # storage for the different results
+        self.indexedFaces = None
+        self.running = True
+        self.progress = 0
+        self.setCounter = None # optionally define a setCounter(value) function where value is a %
 
+    def addObjects(self,objects):
+
+        """addObjects(objects): adds FreeCAD DocumentObjects to the nester"""
+
+        if not isinstance(objects,list):
+            objects = [objects]
+        if not self.objects:
+            self.objects = {}
+        if not self.shapes:
+            self.shapes = []
+        for obj in objects:
+            if obj.isDerivedFrom("Part::Feature"):
+                h = obj.Shape.hashCode()
+                if not h in self.objects:
+                    self.objects[h] = obj
+                    self.shapes.append(obj.Shape)
+
+    def addContainer(self,container):
+
+        """addContainer(object): adds a FreeCAD DocumentObject as the container"""
+
+        if container.isDerivedFrom("Part::Feature"):
+            self.container = container.Shape
+
+    def clear(self):
+
+        """clear(): Removes all objects and shape from the nester"""
+
+        self.objects = None
+        self.shapes = None
+
+    def stop(self):
+
+        """stop((): stops the computation"""
+
+        self.running = False
+
+    def update(self):
+
+        """update(): internal function to verify if computation can
+        go on"""
+
+        if self.setCounter:
+            self.setCounter(self.progress)
+        if FreeCAD.GuiUp:
+            from PySide import QtGui
+            QtGui.qApp.processEvents()
+        if not self.running:
+            return False
+        return True
 
     def run(self):
 
@@ -57,6 +127,10 @@ class Nester:
            shapes, each primary list being one filled container, or None
            if the operation failed."""
 
+        # reset abort mechanism and variables
+
+        self.running = True
+        self.progress = 0
         starttime = datetime.now()
 
         # general conformity tests
@@ -73,6 +147,8 @@ class Nester:
             return
         normal = self.container.normalAt(0,0)
         for s in self.shapes:
+            if not self.update():
+                return
             if len(s.Faces) != 1:
                 print("One of the shapes does not contain exactly one face. Aborting")
                 return
@@ -91,6 +167,9 @@ class Nester:
         # LONG-TERM TODO
         # add genetic algo to swap pieces, and check if the result is better
 
+        # track progresses
+        step = 100.0/(len(self.shapes)*len(ROTATIONS))
+
         # store hashCode together with the face so we can change the order
         # and still identify the original face, so we can calculate a transform afterwards
         self.indexedfaces = [[shape.hashCode(),shape] for shape in self.shapes]
@@ -107,6 +186,8 @@ class Nester:
         # discretize non-linear edges and remove holes
         nfaces = []
         for face in faces:
+            if not self.update():
+                return
             nedges = []
             allLines = True
             for edge in face[1].OuterWire.OrderedEdges:
@@ -165,6 +246,11 @@ class Nester:
 
             for rotation in ROTATIONS:
 
+                if not self.update():
+                    return
+
+                self.progress += step
+
                 print(rotation,", ",end="")
                 hashcode = face[0]
                 rotface = face[1].copy()
@@ -195,12 +281,14 @@ class Nester:
                 # check for available space on each existing sheet
 
                 for sheetnumber,sheet in enumerate(sheets):
-
                     # Get the no-fit polygon for each already placed face in
                     # current sheet. That is, a polygon in which basepoint
                     # cannot be, if we want our face to not overlap with the
                     # placed face.
                     # To do this, we "circulate" the face around the placed face
+
+                    if not self.update():
+                        return
 
                     nofitpol = []
                     for placed in sheet:
@@ -209,6 +297,9 @@ class Nester:
                         for placedvert in self.order(placed[1],right=True):
                             fpts = []
                             for i,rotvert in enumerate(rotverts):
+                                if not self.update():
+                                    return
+
                                 facecopy = rotface.copy()
                                 facecopy.translate(placedvert.sub(rotvert))
 
@@ -227,22 +318,35 @@ class Nester:
                                 # if all vertices are outside, the pieces could still
                                 # overlap
 
-                                # TODO this code is slow and could be otimized...
-
                                 if outside:
                                     for e1 in facecopy.OuterWire.Edges:
                                         for e2 in placed[1].OuterWire.Edges:
-                                            p = DraftGeomUtils.findIntersection(e1,e2)
-                                            if p:
-                                                p = p[0]
-                                                p1 = e1.Vertexes[0].Point
-                                                p2 = e1.Vertexes[1].Point
-                                                p3 = e2.Vertexes[0].Point
-                                                p4 = e2.Vertexes[1].Point
-                                                if (p.sub(p1).Length > TOLERANCE) and (p.sub(p2).Length > TOLERANCE) \
-                                                and (p.sub(p3).Length > TOLERANCE) and (p.sub(p4).Length > TOLERANCE):
-                                                    outside = False
-                                                    break
+                                            if not self.update():
+                                                return
+
+                                            if True:
+                                                # Draft code (SLOW)
+                                                p = DraftGeomUtils.findIntersection(e1,e2)
+                                                if p:
+                                                    p = p[0]
+                                                    p1 = e1.Vertexes[0].Point
+                                                    p2 = e1.Vertexes[1].Point
+                                                    p3 = e2.Vertexes[0].Point
+                                                    p4 = e2.Vertexes[1].Point
+                                                    if (p.sub(p1).Length > TOLERANCE) and (p.sub(p2).Length > TOLERANCE) \
+                                                    and (p.sub(p3).Length > TOLERANCE) and (p.sub(p4).Length > TOLERANCE):
+                                                        outside = False
+                                                        break
+                                            else:
+                                                # alt code: using distToShape (EVEN SLOWER!)
+                                                p = e1.distToShape(e2)
+                                                if p:
+                                                    if p[0] < TOLERANCE:
+                                                        # allow vertex-to-vertex intersection
+                                                        if (p[2][0][0] != "Vertex") or (p[2][0][3] != "Vertex"):
+                                                            outside = False
+                                                            break
+
 
                                 if outside:
                                     fpts.append([faceverts[0],i])
@@ -281,6 +385,9 @@ class Nester:
                             while overlap:
                                 overlap = False
                                 for i in range(len(pol.OuterWire.Edges)-1):
+                                    if not self.update():
+                                        return
+
                                     v1 = DraftGeomUtils.vec(pol.OuterWire.OrderedEdges[i])
                                     v2 = DraftGeomUtils.vec(pol.OuterWire.OrderedEdges[i+1])
                                     if abs(v1.getAngle(v2)-math.pi) <= TOLERANCE:
@@ -325,8 +432,10 @@ class Nester:
                             #for i,p in enumerate(faceverts):
                             #    Draft.makeText([str(i)],point=p)
                             return
-                        nofitpol.append(pol)
-                        #Part.show(pol)
+                            
+                        if pol.isValid():
+                            nofitpol.append(pol)
+                            #Part.show(pol)
 
                     # Union all the no-fit pols into one
 
@@ -335,6 +444,8 @@ class Nester:
                     elif len(nofitpol) > 1:
                         b = nofitpol.pop()
                         for n in nofitpol:
+                            if not self.update():
+                                return
                             b = b.fuse(n)
                         nofitpol = b
 
@@ -384,6 +495,9 @@ class Nester:
                         # intersect with already placed pieces
                         fitverts = sorted([v.Point for v in fitpol.Vertexes],key=lambda v: v.x)
                         for p in fitverts:
+                            if not self.update():
+                                return
+
                             trface = rotface.copy()
                             trface.translate(p.sub(basepoint))
                             ok = True
@@ -509,17 +623,77 @@ class Nester:
             if self.results:
                 result = self.results[-1]
         offset = FreeCAD.Vector(0,0,0)
+        feats = []
         for sheet in result:
             shapes = [self.container.OuterWire]
             shapes.extend([face[1] for face in sheet])
             comp = Part.makeCompound(shapes)
             comp.translate(offset)
-            Part.show(comp)
+            o = FreeCAD.ActiveDocument.addObject("Part::Feature","Nest")
+            o.Shape = comp
+            feats.append(o)
             offset = offset.add(FreeCAD.Vector(1.1*self.container.BoundBox.XLength,0,0))
+        FreeCAD.ActiveDocument.recompute()
+        return feats
+
+    def getPlacements(self,result=None):
+
+        """getPlacements([result]): returns a dictionary of hashCode:Placement
+        pairs from the given result or the last computed result if none
+        is given. The Placement contains a translation vector and a rotation
+        to be given to the final object."""
+
+        if not self.indexedfaces:
+            print("error: shapes were not indexed. Please run() first")
+            return
+        if not result:
+            result = []
+            if self.results:
+                result = self.results[-1]
+        d = {}
+        offset = FreeCAD.Vector(0,0,0)
+        for sheet in result:
+            for face in sheet:
+                orig = None
+                for pair in self.indexedfaces:
+                    if pair[0] == face[0]:
+                        orig = pair[1]
+                if not orig:
+                    print("error: hashCode mismatch between original and transformed face")
+                    return
+                shape = face[1]
+                if offset.Length:
+                    shape.translate(offset)
+                deltav = shape.Faces[0].CenterOfMass.sub(orig.Faces[0].CenterOfMass)
+                rot = FreeCAD.Rotation(orig.Vertexes[0].Point.sub(orig.Faces[0].CenterOfMass),shape.Vertexes[0].Point.sub(shape.Faces[0].CenterOfMass))
+                pla = FreeCAD.Placement(deltav,rot)
+                d[face[0]] = pla
+            offset = offset.add(FreeCAD.Vector(1.1*self.container.BoundBox.XLength,0,0))
+        return d
+
+    def apply(self,result=None):
+
+        """apply([result]): Applies the computed placements of the given
+        result, or the last computed result if none is given, to the
+        document objects given to the nester via addObjects() before
+        running."""
+
+        if not self.objects:
+            print("objects list is empty")
+            return
+        p = self.getPlacements(result)
+        if p:
+            for key,pla in p.items():
+                if key in self.objects:
+                    sh = self.objects[key].Shape.copy()
+                    sh.translate(pla.Base)
+                    sh.rotate(sh.Faces[0].CenterOfMass,pla.Rotation.Axis,math.degrees(pla.Rotation.Angle))
+                    self.objects[key].Placement = sh.Placement
+                else:
+                    print("error: hashCode mismatch with original object")
 
 
 def test():
-
 
     "runs a test with selected shapes, container selected last"
 

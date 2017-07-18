@@ -970,6 +970,7 @@ class PanelSheet(Draft._DraftObject):
         obj.addProperty("App::PropertyBool","MakeFace","Arch",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
         obj.addProperty("App::PropertyAngle","GrainDirection","Arch",QT_TRANSLATE_NOOP("App::Property","Specifies an angle for the wood grain (Clockwise, 0 is North)"))
         obj.addProperty("App::PropertyFloat","Scale","Arch", QT_TRANSLATE_NOOP("App::Property","Specifies the scale applied to each panel view."))
+        obj.addProperty("App::PropertyFloatList","Rotations","Arch", QT_TRANSLATE_NOOP("App::Property","A list of possible rotations for the nester"))
         obj.Proxy = self
         self.Type = "PanelSheet"
         obj.TagSize = 10
@@ -1175,7 +1176,7 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
                 else:
                     vobj.Pattern = "None"
         Draft._ViewProviderDraft.onChanged(self,vobj,prop)
-    
+
 
     def updateData(self,obj,prop):
         if prop in ["Width","Height"]:
@@ -1235,24 +1236,42 @@ class NestTaskPanel:
     '''The TaskPanel for Arch Nest command'''
 
     def __init__(self,obj=None):
+        import ArchNesting
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchNest.ui")
         self.form.progressBar.hide()
+        self.form.ButtonPreview.setEnabled(False)
+        self.form.ButtonStop.setEnabled(False)
         QtCore.QObject.connect(self.form.ButtonContainer,QtCore.SIGNAL("pressed()"),self.getContainer)
         QtCore.QObject.connect(self.form.ButtonShapes,QtCore.SIGNAL("pressed()"),self.getShapes)
         QtCore.QObject.connect(self.form.ButtonRemove,QtCore.SIGNAL("pressed()"),self.removeShapes)
         QtCore.QObject.connect(self.form.ButtonStart,QtCore.SIGNAL("pressed()"),self.start)
         QtCore.QObject.connect(self.form.ButtonStop,QtCore.SIGNAL("pressed()"),self.stop)
+        QtCore.QObject.connect(self.form.ButtonPreview,QtCore.SIGNAL("pressed()"),self.preview)
         self.shapes = []
         self.container = None
         self.nester = None
-
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        self.temps = []
 
     def reject(self):
         self.stop()
+        self.clearTemps()
         return True
-    
+
+    def accept(self):
+        self.stop()
+        self.clearTemps()
+        if self.nester:
+            FreeCAD.ActiveDocument.openTransaction("Nesting")
+            self.nester.apply()
+            FreeCAD.ActiveDocument.commitTransaction()
+        return True
+
+    def clearTemps(self):
+        for t in self.temps:
+            if FreeCAD.ActiveDocument.getObject(t.Name):
+                FreeCAD.ActiveDocument.removeObject(t.Name)
+        self.temps = []
+
     def getContainer(self):
         s = FreeCADGui.Selection.getSelection()
         if len(s) == 1:
@@ -1262,6 +1281,12 @@ class NestTaskPanel:
                         self.form.Container.clear()
                         self.addObject(s[0],self.form.Container)
                         self.container = s[0]
+                else:
+                    FreeCAD.Console.PrintError(translate("Arch","This object has no face"))
+                if Draft.getType(s[0]) == "PanelSheet":
+                    if hasattr(s[0],"Rotations"):
+                        if s[0].Rotations:
+                            self.form.Rotations.setText(str(s[0].Rotations))
 
     def getShapes(self):
         s = FreeCADGui.Selection.getSelection()
@@ -1290,8 +1315,13 @@ class NestTaskPanel:
                     self.shapes.remove(o)
                     self.form.Shapes.takeItem(self.form.Shapes.row(i))
 
+    def setCounter(self,value):
+        self.form.progressBar.setValue(value)
+
     def start(self):
-        self.form.progressBar.setValue(1)
+        self.clearTemps()
+        self.form.progressBar.setFormat("pass 1: %p%")
+        self.form.progressBar.setValue(0)
         self.form.progressBar.show()
         tolerance = self.form.Tolerance.value()
         discretize = self.form.Subdivisions.value()
@@ -1300,14 +1330,35 @@ class NestTaskPanel:
         ArchNesting.TOLERANCE = tolerance
         ArchNesting.DISCRETIZE = discretize
         ArchNesting.ROTATIONS = rotations
-        n = ArchNesting.Nester(container=self.container.Shape,shapes=[o.Shape for o in self.shapes])
-        result = n.run()
+        self.nester = ArchNesting.Nester()
+        self.nester.addContainer(self.container)
+        self.nester.addObjects(self.shapes)
+        self.nester.setCounter = self.setCounter
+        self.form.ButtonStop.setEnabled(True)
+        self.form.ButtonStart.setEnabled(False)
+        self.form.ButtonPreview.setEnabled(False)
+        QtGui.qApp.processEvents()
+        result = self.nester.run()
+        self.form.progressBar.hide()
+        self.form.ButtonStart.setEnabled(True)
+        self.form.ButtonStop.setEnabled(False)
         if result:
-            n.show()
-    
-    def stop(self):
-        pass
+            self.form.ButtonPreview.setEnabled(True)
 
+    def stop(self):
+        if self.nester:
+            self.nester.stop()
+        self.form.ButtonStart.setEnabled(True)
+        self.form.ButtonStop.setEnabled(False)
+        self.form.ButtonPreview.setEnabled(False)
+        self.form.progressBar.hide()
+
+    def preview(self):
+        self.clearTemps()
+        if self.nester:
+            t = self.nester.show()
+            if t:
+                self.temps.extend(t)
 
 if FreeCAD.GuiUp:
 
