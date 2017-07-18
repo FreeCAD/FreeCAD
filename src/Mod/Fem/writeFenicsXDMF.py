@@ -139,16 +139,16 @@ def write_fenics_mesh_volumes_xdmf(fem_mesh_obj, topologynode, rd, encoding=ENCO
         pass
 
 
-def write_fenics_mesh_cellfunctions(fem_mesh_obj, mycellvalues, attributenode, encoding=ENCODING_ASCII):
+def write_fenics_mesh_scalar_cellfunctions(name, cell_array, attributenode, encoding=ENCODING_ASCII):
     attributenode.set("AttributeType", "Scalar")
     attributenode.set("Center", "Cell")
-    attributenode.set("Name", "f")
+    attributenode.set("Name", name)
 
-    (num_cells, name_cell, dim_cell) = get_MaxDimElementFromList(get_FemMeshObjectElementTypes(fem_mesh_obj))
+    (num_cells, num_dims) = np.shape(cell_array)
 
     if encoding == ENCODING_ASCII:
-        dataitem = ET.SubElement(attributenode, "DataItem", Dimensions="%d %d" % (num_cells, 1), Format="XML")
-        dataitem.text = numpy_array_to_str(np.random.random((num_cells, 1)))
+        dataitem = ET.SubElement(attributenode, "DataItem", Dimensions="%d %d" % (num_cells, num_dims), Format="XML")
+        dataitem.text = numpy_array_to_str(cell_array)
     elif encoding == ENCODING_HDF5:
         pass
 
@@ -186,10 +186,34 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, encoding=ENCODING_ASCII):
     topology = ET.SubElement(grid, "Topology")
     geometry = ET.SubElement(grid, "Geometry")
 
-    # attribute = etree.SubElement(grid, "Attribute") #  for cell functions
 
     recalc_dict = write_fenics_mesh_points_xdmf(fem_mesh_obj, geometry, encoding=encoding)
     write_fenics_mesh_volumes_xdmf(fem_mesh_obj, topology, recalc_dict, encoding=encoding)
+
+    fem_mesh = fem_mesh_obj.FemMesh
+    try:    
+        gmshgroups = fem_mesh.Groups
+    except:
+        gmshgroups = ()
+
+    elem_dict = {}
+    for g in gmshgroups:
+        print('found mesh groups')
+        mesh_function_type = fem_mesh.getGroupElementType(g)
+        print('group id: %d with element type %s' % (g, mesh_function_type))
+        if mesh_function_type == 'Volume':        
+            
+            for e in fem_mesh.getGroupElements(g):
+                elem_dict[e] = g                
+
+    attribute = ET.SubElement(grid, "Attribute") #  for cell functions
+    name = "cell_function"
+
+
+    val_array = np.array([elem_dict.get(e, 0) for e in fem_mesh.Volumes])
+    cell_array = np.vstack((val_array,)).T
+    write_fenics_mesh_scalar_cellfunctions(name, cell_array, attribute, encoding=ENCODING_ASCII)
+         
 
     # TODO: improve cell functions support
     # write_fenics_mesh_cellfunctions(fem_mesh_obj, {}, attribute, encoding=encoding)
