@@ -304,18 +304,25 @@ public:
     template<typename T> inline std::vector<T*> getObjectsOfType(
             const char* pDocName=0, bool resolve=true) const;
 
-    /** Resolve sub object referenced in the '.' separated 'subname'
+    /** Resolve the last document object referenced in the subname
+     * 
+     * @param pObject: the top parent object
+     * @param subname: dot separated subname
+     * @param parent: return the direct parent of the object
+     * @param subelement: return the non-object-element referred in subname
      *
-     * @param subname, dot separated sub-element name reference
-     * @param psubname, if not zero, return the remaining sub-element name
-     * @param lastElement, if false (default) return the last document object
-     * referenced in the \c subname.  \c psubname will hold non-object sub
-     * element name if there is one. If \c lastElement is true, then \c psubname 
-     * will hold the last element regardless if it is referecing an object, and
-     * the function will return the parent object of that element.
+     * @return Returns the last referenced document object in the subname. If no
+     * such object in subname, return pObject.
+     * @
      */
     static App::DocumentObject *resolveObject(App::DocumentObject *pObject, 
-            const char *subname, const char **psubname=0, bool lastElement=false);
+        const char *subname, App::DocumentObject **parent=0, const char **subelement=0);
+
+    /** Set selection object visibility
+     *
+     * @param visible: 1: make visible, 0: make invisible, -1: toggle visibility
+     */
+    void setVisible(int visible) const;
 
     /// signal on new object
     boost::signal<void (const SelectionChanges& msg)> signalSelectionChanged;
@@ -379,6 +386,8 @@ protected:
     static PyObject *sGetPickedList       (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sEnablePickedList    (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sPreselect           (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sSetVisible          (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sResolveObject       (PyObject *self,PyObject *args,PyObject *kwd);
 
 protected:
     /// Construction
