@@ -689,7 +689,6 @@ class _Window(ArchComponent.Component):
                             # restoring constraints when loading a file fails
                             # because of load order, but it doesn't harm...
                             pass
-                        FreeCAD.ActiveDocument.recompute()
             else:
                 ArchComponent.Component.onChanged(self,obj,prop)
 
