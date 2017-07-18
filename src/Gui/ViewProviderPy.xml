@@ -148,6 +148,11 @@
                 </UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="signalChangeIcon" Const="true">
+			<Documentation>
+                <UserDocu>Trigger icon changed signal</UserDocu>
+			</Documentation>
+		</Methode>
 		<Attribute Name="Annotation" ReadOnly="false">
 			<Documentation>
 				<UserDocu>A pivy Separator to add a custom scene graph to this ViewProvider</UserDocu>

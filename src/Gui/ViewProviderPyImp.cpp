@@ -443,6 +443,14 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args)
     return Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", (void*)det, 0);
 }
 
+PyObject *ViewProviderPy::signalChangeIcon(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    getViewProviderPtr()->signalChangeIcon();
+    Py_Return;
+}
+
 PyObject *ViewProviderPy::getCustomAttributes(const char* attr) const
 {
     // search for dynamic property
