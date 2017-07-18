@@ -381,6 +381,10 @@ public:
     virtual void addDynamicProperties(const App::PropertyContainer* cont) {
         return props->addDynamicProperties(cont);
     }
+    /// get all properties of the class (including properties of the parent)
+    virtual void getPropertyList(std::vector<App::Property*> &List) const {
+        props->getPropertyList(List);
+    }
     /// get all properties of the class (including parent)
     virtual void getPropertyMap(std::map<std::string,App::Property*> &Map) const {
         return props->getPropertyMap(Map);

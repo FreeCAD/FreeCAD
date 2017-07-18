@@ -144,12 +144,6 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     boost::signal<void (const App::DocumentObject&)> signalActivatedObject;
-    /** Signal on changed children
-     * This signal exists in case some object obtains the children without using
-     * a property
-    */
-    boost::signal<void (const App::DocumentObject&)> signalChangedChildren;
-    //@}
 
     /** @name Signals of property changes
      * These signals are emitted on property additions or removal.

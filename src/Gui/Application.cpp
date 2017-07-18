@@ -690,8 +690,10 @@ void Application::slotDeleteDocument(const App::Document& Doc)
         return;
     }
 
-    // We must clear the selection here to notify all observers
-    Gui::Selection().clearSelection(doc->second->getDocument()->getName());
+    // We must clear the selection here to notify all observers.
+    // And because of possible cross document link, better clear all selection
+    // to be safe
+    Gui::Selection().clearCompleteSelection();
     doc->second->signalDeleteDocument(*doc->second);
     signalDeleteDocument(*doc->second);
 

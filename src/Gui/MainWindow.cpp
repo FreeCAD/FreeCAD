@@ -781,6 +781,8 @@ void MainWindow::onSetActiveSubWindow(QWidget *window)
 
 void MainWindow::setActiveWindow(MDIView* view)
 {
+    if(d->activeView == view)
+        return;
     onSetActiveSubWindow(view->parentWidget());
     d->activeView = view;
     Application::Instance->viewActivated(view);

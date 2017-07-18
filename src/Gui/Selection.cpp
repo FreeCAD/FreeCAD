@@ -56,9 +56,10 @@ FC_LOG_LEVEL_INIT("Selection",false,true,true)
 using namespace Gui;
 using namespace std;
 
-SelectionObserver::SelectionObserver()
+SelectionObserver::SelectionObserver(bool attach)
 {
-    attachSelection();
+    if(attach)
+        attachSelection();
 }
 
 SelectionObserver::~SelectionObserver()
@@ -79,6 +80,11 @@ bool SelectionObserver::blockConnection(bool block)
 bool SelectionObserver::isConnectionBlocked() const
 {
     return connectSelection.blocked();
+}
+
+bool SelectionObserver::isConnectionAttached() const
+{
+    return connectSelection.connected();
 }
 
 void SelectionObserver::attachSelection()
