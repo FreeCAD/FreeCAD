@@ -834,7 +834,6 @@ class svgHandler(xml.sax.ContentHandler):
                                 edges.append(Part.LineSegment(p3,p4).toShape())
                                 edges.append(Part.LineSegment(p4,p1).toShape())
                         else: #rounded edges
-                                #ToTo: check for ry>rx !!!!
                                 rx = data.get('rx')
                                 ry = data.get('ry') or rx
                                 rx = rx or ry 
@@ -842,41 +841,32 @@ class svgHandler(xml.sax.ContentHandler):
                                         rx = data['width'] / 2.0
                                 if ry > 2 * data['height']:
                                        ry = data['height'] / 2.0
-                                if rx > ry:
-                                    mj = rx
-                                    mi = ry
-                                else:
-                                    mj = ry
-                                    mi = rx
+
                                 p1=Vector(data['x']+rx,-data['y']-data['height']+ry,0)
-                                e1=Part.Ellipse(p1,mj,mi)
                                 p2=Vector(data['x']+data['width']-rx,-data['y']-data['height']+ry,0)
-                                e2=Part.Ellipse(p2,mj,mi)
                                 p3=Vector(data['x']+data['width']-rx,-data['y']-ry,0)
-                                e3=Part.Ellipse(p3,mj,mi)
                                 p4=Vector(data['x']+rx,-data['y']-ry,0)
-                                e4=Part.Ellipse(p4,mj,mi)
-                                if rx > ry:
-                                        e1a=Part.Arc(e1,math.radians(180),math.radians(270))
-                                        e2a=Part.Arc(e2,math.radians(270),math.radians(360))
-                                        e3a=Part.Arc(e3,math.radians(0),math.radians(90))
-                                        e4a=Part.Arc(e4,math.radians(90),math.radians(180))
-                                        esh=[e1a.toShape(),e2a.toShape(),e3a.toShape(),e4a.toShape()]
+
+                                if rx >= ry:
+                                        e=Part.Ellipse(Vector(),rx,ry)
+                                        e1a=Part.Arc(e,math.radians(180),math.radians(270))
+                                        e2a=Part.Arc(e,math.radians(270),math.radians(360))
+                                        e3a=Part.Arc(e,math.radians(0),math.radians(90))
+                                        e4a=Part.Arc(e,math.radians(90),math.radians(180))
+                                        m=FreeCAD.Matrix()
                                 else:
-                                        e1a=Part.Arc(e1,math.radians(90),math.radians(180))
-                                        e2a=Part.Arc(e2,math.radians(180),math.radians(270))
-                                        e3a=Part.Arc(e3,math.radians(270),math.radians(360))
-                                        e4a=Part.Arc(e4,math.radians(0),math.radians(90))
-                                        rot90=FreeCAD.Matrix(0,-1,0,0,1,0)
-                                        esh=[]
-                                        for arc,point in ((e1a,p1),(e2a,p2),(e3a,p3),(e4a,p4)):
-                                                m1=FreeCAD.Matrix()
-                                                m1.move(point.multiply(1))
-                                                m1=m1.multiply(rot90)
-                                                m1.move(point.multiply(-1))
-                                                #m1.move(point)
-                                                arc.transform(m1)
-                                                esh.append(arc.toShape())
+                                        e=Part.Ellipse(Vector(),ry,rx)
+                                        e1a=Part.Arc(e,math.radians(90),math.radians(180))
+                                        e2a=Part.Arc(e,math.radians(180),math.radians(270))
+                                        e3a=Part.Arc(e,math.radians(270),math.radians(360))
+                                        e4a=Part.Arc(e,math.radians(0),math.radians(90))
+                                        m=FreeCAD.Matrix(0,-1,0,0,1,0) # rotate +90 degree
+                                esh=[]
+                                for arc,point in ((e1a,p1),(e2a,p2),(e3a,p3),(e4a,p4)):
+                                        m1=FreeCAD.Matrix(m)
+                                        m1.move(point)
+                                        arc.transform(m1)
+                                        esh.append(arc.toShape())
                                 for esh1,esh2 in zip(esh[-1:]+esh[:-1],esh):
                                         p1,p2 = esh1.Vertexes[-1].Point,esh2.Vertexes[0].Point
                                         if not DraftVecUtils.equals(p1,p2):
