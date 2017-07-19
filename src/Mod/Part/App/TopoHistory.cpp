@@ -69,7 +69,7 @@ std::vector<TopoShape> TopoHistory::generated(const TopoShape &oldShape)
     std::vector<TopoShape> newShapes;
     if (this->shapeMaker.get()) {
         TopoDS_Shape _shape = oldShape.getShape();
-        const TopTools_ListOfShape& _newShapes = this->shapeMaker->Modified(_shape);
+        const TopTools_ListOfShape& _newShapes = this->shapeMaker->Generated(_shape);
         for(TopTools_ListIteratorOfListOfShape it(_newShapes); it.More(); it.Next()){
             newShapes.push_back(TopoShape(it.Value()));
         }
