@@ -349,7 +349,6 @@ void QGIViewPart::updateView(bool update)
 void QGIViewPart::draw() {
     drawViewPart();
     drawMatting();
-//    drawBorder();
     QGIView::draw();
 }
 

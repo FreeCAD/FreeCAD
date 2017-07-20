@@ -155,6 +155,9 @@ DrawViewPart::~DrawViewPart()
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
     App::DocumentObject *link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("DVP - No Source object linked");
@@ -201,7 +204,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 
 //   Base::Console().Message("TRACE _ DVP::exec - %s/%s u: %s v: %s w: %s\n",getNameInDocument(),Label.getValue(),
 //                           DrawUtil::formatVector(getUDir()).c_str(), DrawUtil::formatVector(getVDir()).c_str(),DrawUtil::formatVector(getWDir()).c_str());
-
+    requestPaint();
     return App::DocumentObject::StdReturn;
 }
 

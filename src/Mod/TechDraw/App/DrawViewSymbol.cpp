@@ -89,6 +89,10 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     std::string svg = Symbol.getValue();
     const std::vector<std::string>& editText = EditableTexts.getValues();
 

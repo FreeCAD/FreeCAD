@@ -92,6 +92,10 @@ void DrawViewArch::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewArch::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     App::DocumentObject* sourceObj = Source.getValue();
     if (sourceObj) {
         std::string svgFrag;

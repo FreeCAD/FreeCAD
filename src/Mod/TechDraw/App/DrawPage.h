@@ -42,6 +42,7 @@ public:
 
     App::PropertyLinkList Views;
     App::PropertyLink Template;
+    App::PropertyBool KeepUpdated;
 
     App::PropertyFloatConstraint Scale;
     App::PropertyEnumeration ProjectionType; // First or Third Angle
