@@ -1250,9 +1250,17 @@ void Application::initTypes(void)
     App ::PropertyFont              ::init();
     App ::PropertyStringList        ::init();
     App ::PropertyLink              ::init();
+    App ::PropertyLinkChild         ::init();
+    App ::PropertyLinkGlobal        ::init();
     App ::PropertyLinkSub           ::init();
+    App ::PropertyLinkSubChild      ::init();
+    App ::PropertyLinkSubGlobal     ::init();
     App ::PropertyLinkList          ::init();
+    App ::PropertyLinkListChild     ::init();
+    App ::PropertyLinkListGlobal    ::init();
     App ::PropertyLinkSubList       ::init();
+    App ::PropertyLinkSubListChild  ::init();
+    App ::PropertyLinkSubListGlobal ::init();
     App ::PropertyMatrix            ::init();
     App ::PropertyVector            ::init();
     App ::PropertyVectorDistance    ::init();
