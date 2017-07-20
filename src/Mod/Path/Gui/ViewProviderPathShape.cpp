@@ -92,7 +92,7 @@ void ViewProviderPathShape::dropObject(App::DocumentObject* obj)
 void ViewProviderPathShape::updateData(const App::Property* prop)
 {
     PathGui::ViewProviderPath::updateData(prop);
-    if (prop->getTypeId() == App::PropertyLinkList::getClassTypeId()) {
+    if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
         std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();
         for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
             if (*it)
