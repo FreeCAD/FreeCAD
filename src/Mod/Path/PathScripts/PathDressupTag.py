@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 import FreeCAD
+import DraftGeomUtils
 import Part
 import Path
 import PathScripts
@@ -190,8 +191,13 @@ class ObjectDressup(QtCore.QObject):
         self.ptMax = FreeCAD.Vector(maxX, maxY, maxZ)
         self.masterSolid = TagSolid(self, minZ, self.toolRadius())
         self.solids = [self.masterSolid.cloneAt(pos) for pos in self.obj.Positions]
-        self.changed.emit()
+
+        self.wire, rapid = PathGeom.wireForPath(obj.Base.Path)
+        self.edges = self.wire.Edges
+
         obj.Path = obj.Base.Path
+        self.changed.emit()
+
         PathLog.track()
 
     def toolRadius(self):
@@ -201,6 +207,15 @@ class ObjectDressup(QtCore.QObject):
         for i, solid in enumerate(self.solids):
             obj = FreeCAD.ActiveDocument.addObject('Part::Compound', "tag_%02d" % i)
             obj.Shape = solid
+
+    def supportsTagGeneration(self, obj):
+        return False
+
+    def pointIsOnPath(self, obj, p):
+        for e in self.edges:
+            if DraftGeomUtils.isPtOnEdge(p, e):
+                return True
+        return False
 
 def Create(baseObject, name = 'DressupTag'):
     '''
