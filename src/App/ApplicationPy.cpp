@@ -35,6 +35,7 @@
 #include "Document.h"
 #include "DocumentPy.h"
 #include "DocumentObserverPython.h"
+#include "DocumentObjectPy.h"
 
 // FreeCAD Base header
 #include <Base/Interpreter.h>
@@ -134,6 +135,10 @@ PyMethodDef Application::Methods[] = {
      "'level' can either be string 'Log', 'Msg', 'Wrn', 'Error', or an integer value"},
     {"getLogLevel",          (PyCFunction) Application::sGetLogLevel, 1,
      "getLogLevel(tag) -- Get the log level of a string tag"},
+    {"checkLinkDepth",       (PyCFunction) Application::sCheckLinkDepth, 1,
+     "checkLinkDepth(depth) -- check link recursion depth"},
+    {"getLinksTo",       (PyCFunction) Application::sGetLinksTo, 1,
+     "getLinksTo(obj,recursive=True,maxCount=0) -- return the objects linked to 'obj'"},
 
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
@@ -700,4 +705,29 @@ PyObject *Application::sGetLogLevel(PyObject * /*self*/, PyObject *args, PyObjec
     } PY_CATCH;
 }
 
+PyObject *Application::sCheckLinkDepth(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    short depth = 0;
+    if (!PyArg_ParseTuple(args, "h", &depth))
+        return NULL;
+
+    return Py::new_reference_to(Py::Int(GetApplication().checkLinkDepth(depth,false)));
+}
+
+PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    PyObject *obj;
+    PyObject *recursive = Py_True;
+    short count = 0;
+    if (!PyArg_ParseTuple(args, "O!|Oh", &DocumentObjectPy::Type,&obj,&recursive, &count))
+        return NULL;
+
+    auto links = GetApplication().getLinksTo(
+        static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr(),PyObject_IsTrue(recursive),count);
+    Py::Tuple ret(links.size());
+    int i=0;
+    for(auto o : links) 
+        ret.setItem(i++,Py::Object(o->getPyObject(),true));
+    return Py::new_reference_to(ret);
+}
 

@@ -1854,6 +1854,32 @@ int Document::countObjects(void) const
    return static_cast<int>(d->objectArray.size());
 }
 
+void Document::getLinksTo(std::set<DocumentObject*> &links, 
+        const DocumentObject *obj, bool recursive, int maxCount) const 
+{
+    std::vector<const DocumentObject*> current;
+    current.push_back(obj);
+    for(int depth=0;current.size();++depth) {
+        if(!GetApplication().checkLinkDepth(depth))
+            break;
+        std::vector<const DocumentObject*> next;
+        for(auto o : current) {
+            for(auto &v : d->objectMap) {
+                if(v.second == o || 
+                   v.second->getLinkedObject(false)!=o ||
+                   !links.insert(v.second).second)
+                    continue;
+                if(maxCount && (int)links.size()>=maxCount)
+                    return;
+                if(recursive)
+                    next.push_back(v.second);
+            }
+        }
+        current.swap(next);
+    }
+    return;
+}
+
 std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) const
 {
     // result list

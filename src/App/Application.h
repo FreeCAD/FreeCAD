@@ -264,6 +264,18 @@ public:
     static std::string getHelpDir();
     //@}
 
+    /** @name Link handling */
+    //@{
+    int checkLinkDepth(int depth, bool no_exception=true);
+
+    std::set<DocumentObject*> getLinksTo(
+            const DocumentObject *, bool recursive, int maxCount=0) const;
+
+    bool hasLinksTo(const DocumentObject *obj) const {
+        return !getLinksTo(obj,false,1).empty();
+    }
+    //@}
+
     friend class App::Document;
 
 protected:
@@ -297,7 +309,6 @@ private:
     static ParameterManager *_pcSysParamMngr;
     static ParameterManager *_pcUserParamMngr;
     //@}
-
 
     //---------------------------------------------------------------------
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
@@ -336,6 +347,9 @@ private:
 
     static PyObject *sSetLogLevel       (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sGetLogLevel       (PyObject *self,PyObject *args,PyObject *kwd);
+
+    static PyObject *sCheckLinkDepth    (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sGetLinksTo        (PyObject *self,PyObject *args,PyObject *kwd);
 
     static PyMethodDef    Methods[]; 
 
@@ -388,6 +402,9 @@ private:
     std::deque<const char *> _pendingDocs;
     std::set<std::string> _pendingDocMap;
     bool _allowPending;
+
+    // for estimate max link depth
+    int _objCount;
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;

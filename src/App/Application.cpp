@@ -213,7 +213,7 @@ PyDoc_STRVAR(Base_doc,
     );
 
 Application::Application(std::map<std::string,std::string> &mConfig)
-  : _mConfig(mConfig), _pActiveDoc(0),_allowPending(false)
+  : _mConfig(mConfig), _pActiveDoc(0),_allowPending(false),_objCount(-1)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
@@ -425,6 +425,8 @@ bool Application::closeDocument(const char* name)
     std::unique_ptr<Document> delDoc (pos->second);
     DocMap.erase( pos );
 
+    _objCount = -1;
+
     // Trigger observers after removing the document from the internal map.
     signalDeletedDocument();
 
@@ -512,7 +514,9 @@ Document* Application::openDocument(const char * FileName)
     while(_pendingDocs.size()) {
         const char *name = _pendingDocs.front();
         try {
+            _objCount = -1;
             newDocs.push_front(openDocumentPrivate(name));
+            _objCount = -1;
         }catch(const Base::Exception &e) {
             if(newDocs.empty()) throw;
             Console().Error("Exception opening file: %s [%s]\n", name, e.what());
@@ -688,6 +692,36 @@ std::string Application::getHelpDir()
 #else
     return mConfig["DocPath"];
 #endif
+}
+
+int Application::checkLinkDepth(int depth, bool no_exception) {
+    if(_objCount<0) {
+        _objCount = 0;
+        for(auto &v : DocMap) 
+            _objCount += v.second->countObjects();
+    }
+    if(depth > _objCount+2) {
+        if(no_exception) {
+            Console().Error("Link recursion limit reached. "
+                "Please check for cyclic reference.\n");
+            return 0;
+        }else
+            throw Base::RuntimeError("Link recursion limit reached. "
+                    "Please check for cyclic reference. ");
+    }
+    return _objCount+2;
+}
+
+std::set<DocumentObject *> Application::getLinksTo(
+        const DocumentObject *obj, bool recursive, int maxCount) const
+{
+    std::set<DocumentObject *> links;
+    for(auto &v : DocMap) {
+        v.second->getLinksTo(links,obj,recursive,maxCount);
+        if(maxCount && (int)links.size()>=maxCount)
+            break;
+    }
+    return links;
 }
 
 ParameterManager & Application::GetSystemParameter(void)
@@ -985,11 +1019,13 @@ std::map<std::string, std::string> Application::getExportFilters(void) const
 void Application::slotNewObject(const App::DocumentObject&O)
 {
     this->signalNewObject(O);
+    _objCount = -1;
 }
 
 void Application::slotDeletedObject(const App::DocumentObject&O)
 {
     this->signalDeletedObject(O);
+    _objCount = -1;
 }
 
 void Application::slotChangedObject(const App::DocumentObject&O, const App::Property& P)

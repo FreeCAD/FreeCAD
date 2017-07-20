@@ -28,6 +28,7 @@
 
 #include <Base/Writer.h>
 
+#include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"
 #include "DocumentObjectGroup.h"
@@ -221,7 +222,8 @@ void _getInListRecursive(std::vector<DocumentObject*>& objSet, const DocumentObj
 std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
 {
     // number of objects in document is a good estimate in result size
-    int maxDepth = getDocument()->countObjects() +2;
+    // int maxDepth = getDocument()->countObjects() +2;
+    int maxDepth = GetApplication().checkLinkDepth(0);
     std::vector<App::DocumentObject*> result;
     result.reserve(maxDepth);
 
@@ -252,7 +254,8 @@ void _getOutListRecursive(std::vector<DocumentObject*>& objSet, const DocumentOb
 std::vector<App::DocumentObject*> DocumentObject::getOutListRecursive(void) const
 {
     // number of objects in document is a good estimate in result size
-    int maxDepth = getDocument()->countObjects() + 2;
+    // int maxDepth = getDocument()->countObjects() + 2;
+    int maxDepth = GetApplication().checkLinkDepth(0);
     std::vector<App::DocumentObject*> result;
     result.reserve(maxDepth);
 

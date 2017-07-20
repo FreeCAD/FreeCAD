@@ -123,6 +123,16 @@ Return a list of objects that match the specified type and name.
 Both parameters are optional.</UserDocu>
 		</Documentation>
 	</Methode>
+    <Methode Name="getLinksTo">
+        <Documentation>
+            <UserDocu>
+                getLinksTo(obj, recursive=True, maxCount=0): return objects linked to 'obj'
+
+                recursive: set to True to also return indirect links.
+                maxCount: to limit the number of links returned
+            </UserDocu>
+        </Documentation>
+    </Methode>
 	  <Methode Name="supportedTypes">
 		  <Documentation>
 			  <UserDocu>A list of supported types of objects</UserDocu>
