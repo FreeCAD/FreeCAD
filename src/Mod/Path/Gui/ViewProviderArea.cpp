@@ -92,7 +92,7 @@ void ViewProviderArea::dropObject(App::DocumentObject* obj)
 void ViewProviderArea::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId() == App::PropertyLinkList::getClassTypeId()) {
+    if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
         std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();
         for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
             if (*it)
@@ -170,7 +170,7 @@ void ViewProviderAreaView::dropObject(App::DocumentObject* obj)
 void ViewProviderAreaView::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPlaneParametric::updateData(prop);
-    if (prop->getTypeId() == App::PropertyLink::getClassTypeId())
+    if (prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()))
         Gui::Application::Instance->hideViewProvider(
                 static_cast<const App::PropertyLink*>(prop)->getValue());
 }

@@ -2801,7 +2801,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     std::map<std::string,App::Property*> props;
     obj->getPropertyMap(props);
     for (std::map<std::string,App::Property*>::iterator it = props.begin(); it != props.end(); ++it) {
-        if (it->second->getTypeId() == PropertyLink::getClassTypeId()) {
+        if (it->second->getTypeId().isDerivedFrom(PropertyLink::getClassTypeId())) {
             DocumentObject* link = static_cast<PropertyLink*>(it->second)->getValue();
             if (recursive) {
                 moveObject(link, recursive);
@@ -2811,7 +2811,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
                 static_cast<PropertyLink*>(it->second)->setValue(0);
             }
         }
-        else if (it->second->getTypeId() == PropertyLinkList::getClassTypeId()) {
+        else if (it->second->getTypeId().isDerivedFrom(PropertyLinkList::getClassTypeId())) {
             std::vector<DocumentObject*> links = static_cast<PropertyLinkList*>(it->second)->getValues();
             if (recursive) {
                 for (std::vector<DocumentObject*>::iterator jt = links.begin(); jt != links.end(); ++jt)
