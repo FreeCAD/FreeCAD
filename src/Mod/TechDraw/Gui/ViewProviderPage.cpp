@@ -126,6 +126,18 @@ void ViewProviderPage::hide(void)
 
 void ViewProviderPage::updateData(const App::Property* prop)
 {
+    if (prop == &(getDrawPage()->KeepUpdated)) {
+       if (getDrawPage()->KeepUpdated.getValue()) {
+           sPixmap = "TechDraw_Tree_Page";
+           if (!m_mdiView.isNull() &&
+               !getDrawPage()->isDeleting()) {
+               m_mdiView->updateDrawing();
+           }
+       } else {
+           sPixmap = "TechDraw_Tree_Page_Unsync";
+       }
+    }
+
     if (prop == &(getDrawPage()->Views)) {
         if(!m_mdiView.isNull() &&
            !getDrawPage()->isDeleting()) {
@@ -310,11 +322,7 @@ void ViewProviderPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void ViewProviderPage::onChanged(const App::Property *prop)
 {
-    if (prop == &(getDrawPage()->Views)) {
-        if(m_mdiView) {
-            m_mdiView->updateDrawing();
-        }
-    } else if (prop == &(getDrawPage()->Template)) {
+    if (prop == &(getDrawPage()->Template)) {
        if(m_mdiView) {
             m_mdiView->updateTemplate();
         }
@@ -336,6 +344,10 @@ void ViewProviderPage::finishRestoring()
     Gui::ViewProviderDocumentObject::finishRestoring();
 }
 
+bool ViewProviderPage::isShow(void) const
+{
+    return Visibility.getValue();
+}
 
 TechDraw::DrawPage* ViewProviderPage::getDrawPage() const
 {

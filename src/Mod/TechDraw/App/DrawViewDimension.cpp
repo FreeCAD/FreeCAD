@@ -177,6 +177,10 @@ short DrawViewDimension::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     if (!has2DReferences()) {                                            //too soon
         return App::DocumentObject::StdReturn;
     }

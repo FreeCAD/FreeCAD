@@ -95,7 +95,8 @@ DrawView::~DrawView()
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
     TechDraw::DrawPage *page = findParentPage();
-    if(page) {
+    if(page &&
+       keepUpdated()) {
         if (ScaleType.isValue("Page")) {
             if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
                 Scale.setValue(page->Scale.getValue());
@@ -116,6 +117,7 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
         } else if (ScaleType.isValue("Custom")) {
             //Base::Console().Message("TRACE - DV::execute - custom %s Scale: %.3f\n",getNameInDocument(),Scale.getValue());
         }
+        requestPaint();
     }
     return App::DocumentObject::StdReturn;                //DO::execute returns 0
 }
@@ -306,6 +308,20 @@ void DrawView::Restore(Base::XMLReader &reader)
     reader.readEndElement("Properties");
 }
 
+bool DrawView::keepUpdated(void)
+{
+    bool result = false;
+    TechDraw::DrawPage *page = findParentPage();
+    if(page) {
+        result = page->KeepUpdated.getValue();
+    }
+    return result;
+}
+
+void DrawView::requestPaint(void)
+{
+    signalGuiPaint(this);
+}
 
 PyObject *DrawView::getPyObject(void)
 {

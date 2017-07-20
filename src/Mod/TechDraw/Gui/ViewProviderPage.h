@@ -62,6 +62,7 @@ public:
     virtual void hide(void);
     /// Shows the view provider
     virtual void show(void);
+    virtual bool isShow(void) const;
 
     void onSelectionChanged(const Gui::SelectionChanges& msg);
 

@@ -118,6 +118,10 @@ void DrawViewMulti::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     const std::vector<App::DocumentObject*>& links = Sources.getValues();
     if (links.empty())  {
         Base::Console().Log("INFO - DVM::execute - No Sources - creation?\n");

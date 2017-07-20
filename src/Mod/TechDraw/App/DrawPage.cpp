@@ -74,15 +74,19 @@ DrawPage::DrawPage(void)
 {
     static const char *group = "Page";
     nowDeleting = false;
+    
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", 1l);
 
+    ADD_PROPERTY_TYPE(KeepUpdated, (autoUpdate), group, (App::PropertyType)(App::Prop_None), "Keep page in sync with model");
     ADD_PROPERTY_TYPE(Template, (0), group, (App::PropertyType)(App::Prop_None), "Attached Template");
     ADD_PROPERTY_TYPE(Views, (0), group, (App::PropertyType)(App::Prop_None), "Attached Views");
 
     // Projection Properties
     ProjectionType.setEnums(ProjectionTypeEnums);
 
-    Base::Reference<ParameterGrp> hGrp =
-                        App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
 
     // In preferences, 0 -> First Angle 1 -> Third Angle
     int projType = hGrp->GetInt("ProjectionAngle", -1);
@@ -108,24 +112,29 @@ void DrawPage::onBeforeChange(const App::Property* prop)
 
 void DrawPage::onChanged(const App::Property* prop)
 {
-    if (prop == &Template) {
+    if ((prop == &KeepUpdated)  &&
+         KeepUpdated.getValue()) {
         if (!isRestoring() &&
             !isDeleting()) {
-        //TODO: reload if Template prop changes (ie different Template)
+            auto views(Views.getValues());
+            for (auto& v: views) {
+                v->touch();                   //get all views up to date
+            }
         }
-    } else if (prop == &Views) {
+    } else if (prop == &Template) {
         if (!isRestoring() &&
-            !isDeleting() ) {
-            //TODO: reload if Views prop changes (ie adds/deletes)
+            !isDeleting()) {
+            Template.getValue()->touch();
         }
     } else if(prop == &Scale) {
         // touch all views in the Page as they may be dependent on this scale
-      const std::vector<App::DocumentObject*> &vals = Views.getValues();
-      for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
-          TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
-          if (view != NULL && view->ScaleType.isValue("Page")) {
-              view->Scale.touch();
-          }
+        // but the views know how to get their own Scale correctly.
+        const std::vector<App::DocumentObject*> &vals = Views.getValues();
+        for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
+            TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
+            if (view != NULL && view->ScaleType.isValue("Page")) {
+                view->Scale.touch();
+            }
       }
     } else if (prop == &ProjectionType) {
       // touch all ortho views in the Page as they may be dependent on Projection Type
@@ -140,37 +149,18 @@ void DrawPage::onChanged(const App::Property* prop)
       // TODO: Also update Template graphic.
 
     }
-    App::DocumentObject::onChanged(prop);  //<<<<
+    App::DocumentObject::onChanged(prop); 
 }
 
+//Page is just a container. It doesn't "do" anything.
 App::DocumentObjectExecReturn *DrawPage::execute(void)
 {
-    //Page is just a property storage area? no real logic involved?
-    //all this does is trigger onChanged in this and ViewProviderPage
-    Template.touch();
-    Views.touch();
     return App::DocumentObject::StdReturn;
 }
 
+// this is now irrelevant, b/c DP::execute doesn't do anything. 
 short DrawPage::mustExecute() const
 {
-    if(Scale.isTouched())
-        return 1;
-
-    // Check the value of template if this has been modified
-    App::DocumentObject* tmpl = Template.getValue();
-    if(tmpl && tmpl->isTouched())
-        return 1;
-
-    // Check if within this Page, any Views have been touched
-    // Why does Page have to execute if a View changes?
-    const std::vector<App::DocumentObject*> &vals = Views.getValues();
-    for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
-       if((*it)->isTouched()) {
-            return 1;
-        }
-    }
-
     return App::DocumentObject::mustExecute();
 }
 
@@ -248,6 +238,8 @@ int DrawPage::addView(App::DocumentObject *docObj)
     if(!docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()))
         return -1;
     DrawView* view = static_cast<DrawView*>(docObj);
+//TODO: replace list of views with PropertyLink to Page in subordinate DrawView
+//    view->Page.setValue(this);
 
     //position all new views in center of Page (exceptDVDimension)
     if (!docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
