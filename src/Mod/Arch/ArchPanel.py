@@ -1302,7 +1302,8 @@ class NestTaskPanel:
         i.setText(obj.Label)
         i.setToolTip(obj.Name)
         if hasattr(obj.ViewObject,"Proxy"):
-            i.setIcon(QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
+            if hasattr(obj.ViewObject.Proxy,"getIcon"):
+                i.setIcon(QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
         else:
             i.setIcon(QtGui.QIcon(":/icons/Tree_Part.svg"))
         form.addItem(i)
