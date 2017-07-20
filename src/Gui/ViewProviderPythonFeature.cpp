@@ -245,8 +245,18 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
             if (vp.hasAttr(std::string("getIcon"))) {
                 Py::Callable method(vp.getAttr(std::string("getIcon")));
                 Py::Tuple args;
-                Py::String str(method.apply(args));
-                std::string content = str.as_std_string("utf-8");
+                Py::Object ret(method.apply(args));
+                if(ret.isNone())
+                    return QIcon();
+
+                PythonWrapper wrap;
+                wrap.loadGuiModule();
+                wrap.loadWidgetsModule();
+                QIcon *picon = wrap.toQIcon(ret.ptr());
+                if(picon) 
+                    return *picon;
+
+                std::string content = Py::String(ret).as_std_string("utf-8");
                 QPixmap icon;
                 // Check if the passed string is a filename, otherwise treat as xpm data
                 QFileInfo fi(QString::fromUtf8(content.c_str()));
