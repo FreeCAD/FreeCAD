@@ -191,6 +191,10 @@ void DrawViewSection::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     App::DocumentObject* link = Source.getValue();
     App::DocumentObject* base = BaseView.getValue();
     if (!link || !base)  {

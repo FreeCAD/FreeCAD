@@ -144,6 +144,10 @@ void DrawProjGroup::setCubeFromProps(void)
 }
 App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     //if group hasn't been added to page yet, can't scale or distribute projItems
     TechDraw::DrawPage *page = getPage();
     if (!page) {

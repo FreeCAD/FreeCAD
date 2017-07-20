@@ -23,6 +23,8 @@
 #ifndef _DrawView_h_
 #define _DrawView_h_
 
+#include <boost/signals.hpp>
+
 #include <QRectF>
 
 #include <App/DocumentObject.h>
@@ -82,12 +84,15 @@ public:
     virtual double autoScale(double w, double h) const;
     virtual bool checkFit(DrawPage*) const;
     virtual void setPosition(double x, double y);
+    bool keepUpdated(void);
+    boost::signal<void (const DrawView*)> signalGuiPaint;
 
 protected:
     void onChanged(const App::Property* prop);
     std::string pageFeatName;
     bool autoPos;
     bool mouseMove;
+    void requestPaint(void);
 
 private:
     static const char* ScaleTypeEnums[];

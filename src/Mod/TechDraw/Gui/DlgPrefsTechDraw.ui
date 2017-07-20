@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>558</width>
-    <height>648</height>
+    <height>709</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -128,6 +128,22 @@
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="Gui::PrefCheckBox" name="cb_PageUpdate">
+          <property name="text">
+           <string>Keep Pages Up to Date</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>KeepPagesUpToDate</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
           </property>
          </widget>
         </item>

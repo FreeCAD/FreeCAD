@@ -190,6 +190,10 @@ void DrawViewCollection::unsetupObject()
 
 App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     if (ScaleType.isValue("Page")) {
         const std::vector<App::DocumentObject *> &views = Views.getValues();
         for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {

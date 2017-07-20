@@ -103,6 +103,10 @@ void DrawViewClip::removeView(DrawView *view)
 
 App::DocumentObjectExecReturn *DrawViewClip::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     touch();
 
     std::vector<App::DocumentObject*> children = Views.getValues();
