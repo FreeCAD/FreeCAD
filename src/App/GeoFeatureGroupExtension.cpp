@@ -360,7 +360,7 @@ bool GeoFeatureGroupExtension::areLinksValid(DocumentObject* obj) {
     
     //for links with scope SubGroup we need to check if all features are part of subgroups
     if(group) {
-        result = getScopedObjectsFromLinks(obj, LinkScope::SubGroup);
+        result = getScopedObjectsFromLinks(obj, LinkScope::Child);
         auto groupExt = group->getExtensionByType<App::GeoFeatureGroupExtension>();
         for(auto link : result) {
             if(!groupExt->hasObject(link, true))

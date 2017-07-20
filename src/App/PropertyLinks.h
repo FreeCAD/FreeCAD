@@ -39,21 +39,63 @@ namespace App
 {
 class DocumentObject;
 
+/**
+ * @brief Defines different scopes for which a link can be valid
+ * The scopes defined in this enum describe the different possibilities of where a link can point to.
+ * Local:    links are valid only within the same GeoFeatureGroup as the linkowner is in or in none. 
+ * Child:    links are valid within the same or any sub GeoFeatureGroup
+ * Global:   all possible links are valid
+ */
 enum class LinkScope {
     Local,
-    SubGroup,
+    Child,
     Global
+};
+
+/**
+ * @brief Enables scope handling for links
+ * This class is a base for all link properties and enables them to handle scopes of the linked objects.
+ * The possible scopes are defined by LinkScope enum class. The default value is Local. 
+ * The scope of a property is not saved in the document. It is a value that needs to be fixed when
+ * the object holding the property is loaded. That is possible with two methods: 
+ * 1. Set the scope value in the constructor of the link property
+ * 2. Use setScope to change the scope in the constructor of the link property
+ * 
+ * The second option is only available in c++, not in python, as setscope is not exposed. It would 
+ * not make sense to expose it there, as restoring python objects does not call the constructor again.
+ * Hence in python the only way to create a LinkProperty with different scope than local is to use a 
+ * specialized property for that. In c++ existing properties can simply be changed via setScope in the 
+ * objects constructor. 
+ */
+class AppExport ScopedLink {
+  
+public:
+    /**
+     * @brief Set the links scope
+     * Allows to define what kind of links are allowed. Only in the Local GeoFeatureGroup, in this and 
+     * all Childs or to all objects within the Glocal scope.
+     */
+    void setScope(LinkScope scope) {_pcScope = scope;};    
+    /**
+     * @brief Get the links scope
+     * Retreive what kind of links are allowed. Only in the Local GeoFeatureGroup, in this and 
+     * all Childs or to all objects within the Glocal scope.
+     */
+    LinkScope getScope() {return _pcScope;};
+    
+protected:
+    LinkScope _pcScope = LinkScope::Local;
 };
 
 /** The general Link Property
  *  Main Purpose of this property is to Link Objects and Feautures in a document. Like all links this 
  *  property is scope aware, meaning it does define which objects are allowed to be linked depending 
- *  of the GeoFeatureGroup where it is in. 
+ *  of the GeoFeatureGroup where it is in. Default is Local.
  * 
- *  @note Links that invalid in respect to the scope this property is set to are not rejected. They 
- *        are only detected to be invalid and prevent the feature from recomputing.
+ *  @note Links that are invalid in respect to the scope of this property is set to are not rejected. 
+ *        They are only detected to be invalid and prevent the feature from recomputing.
  */
-class AppExport PropertyLink : public Property
+class AppExport PropertyLink : public Property, public ScopedLink
 {
     TYPESYSTEM_HEADER();
 
@@ -103,26 +145,30 @@ public:
     }
     virtual const char* getEditorName(void) const
     { return "Gui::PropertyEditor::PropertyLinkItem"; }
-    
-    /**
-     * @brief Set the links scope
-     * Allows to define what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
-     * all SubGroups or to all object within the Glocal scope.
-     */
-    void setScope(LinkScope scope) {_pcScope = scope;};    
-    /**
-     * @brief Get the links scope
-     * Retreive what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
-     * all SubGroups or to all object within the Glocal scope.
-     */
-    LinkScope getScope() {return _pcScope;};
 
 protected:
     App::DocumentObject *_pcLink;
-    LinkScope            _pcScope = LinkScope::Local;
 };
 
-class AppExport PropertyLinkList : public PropertyLists
+/** The general Link Property with Child scope
+ */
+class AppExport PropertyLinkChild : public PropertyLink
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyLinkChild() {_pcScope = LinkScope::Child;};
+};
+
+/** The general Link Property with Global scope
+ */
+class AppExport PropertyLinkGlobal : public PropertyLink
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyLinkGlobal() {_pcScope = LinkScope::Global;};
+};
+
+class AppExport PropertyLinkList : public PropertyLists, public ScopedLink
 {
     TYPESYSTEM_HEADER();
 
@@ -172,22 +218,26 @@ public:
 
     virtual unsigned int getMemSize(void) const;
 
-    /**
-     * @brief Set the links scope
-     * Allows to define what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
-     * all SubGroups or to all object within the Glocal scope.
-     */
-    void setScope(LinkScope scope) {_pcScope = scope;};    
-    /**
-     * @brief Get the links scope
-     * Retreive what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
-     * all SubGroups or to all object within the Glocal scope.
-     */
-    LinkScope getScope() {return _pcScope;};
-    
 private:
     std::vector<DocumentObject*> _lValueList;
-    LinkScope                    _pcScope = LinkScope::Local;
+};
+
+/** The general Link Property with Child scope
+ */
+class AppExport PropertyLinkListChild : public PropertyLinkList
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyLinkListChild() {_pcScope = LinkScope::Child;};
+};
+
+/** The general Link Property with Global scope
+ */
+class AppExport PropertyLinkListGlobal : public PropertyLinkList
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyLinkListGlobal() {_pcScope = LinkScope::Global;};
 };
 
 /** the Link Poperty with sub elements
@@ -196,7 +246,7 @@ private:
  *  are stored as names, which can be resolved by the 
  *  ComplexGeoDataType interface to concrete sub objects.
  */
-class AppExport PropertyLinkSub: public Property
+class AppExport PropertyLinkSub: public Property, public ScopedLink
 {
     TYPESYSTEM_HEADER();
 
@@ -250,27 +300,31 @@ public:
     virtual unsigned int getMemSize (void) const{
         return sizeof(App::DocumentObject *);
     }
-    
-    /**
-     * @brief Set the links scope
-     * Allows to define what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
-     * all SubGroups or to all object within the Glocal scope.
-     */
-    void setScope(LinkScope scope) {_pcScope = scope;};    
-    /**
-     * @brief Get the links scope
-     * Retreive what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
-     * all SubGroups or to all object within the Glocal scope.
-     */
-    LinkScope getScope() {return _pcScope;};
 
 protected:
     App::DocumentObject*     _pcLinkSub;
     std::vector<std::string> _cSubList;
-    LinkScope                _pcScope = LinkScope::Local;
 };
 
-class AppExport PropertyLinkSubList: public PropertyLists
+/** The general Link Property with Child scope
+ */
+class AppExport PropertyLinkSubChild : public PropertyLinkSub
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyLinkSubChild() {_pcScope = LinkScope::Child;};
+};
+
+/** The general Link Property with Global scope
+ */
+class AppExport PropertyLinkSubGlobal : public PropertyLinkSub
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyLinkSubGlobal() {_pcScope = LinkScope::Global;};
+};
+
+class AppExport PropertyLinkSubList: public PropertyLists, public ScopedLink
 {
     TYPESYSTEM_HEADER();
 
@@ -335,25 +389,29 @@ public:
     virtual void Paste(const Property &from);
 
     virtual unsigned int getMemSize (void) const;
-
-    /**
-     * @brief Set the links scope
-     * Allows to define what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
-     * all SubGroups or to all object within the Glocal scope.
-     */
-    void setScope(LinkScope scope) {_pcScope = scope;};    
-    /**
-     * @brief Get the links scope
-     * Retreive what kind of links are allowed. Only in the Local GeoFeatureGroup, in this an 
-     * all SubGroups or to all object within the Glocal scope.
-     */
-    LinkScope getScope() {return _pcScope;};
     
 private:
     //FIXME: Do not make two independent lists because this will lead to some inconsistencies!
     std::vector<DocumentObject*> _lValueList;
     std::vector<std::string>     _lSubList;
-    LinkScope                    _pcScope = LinkScope::Local;
+};
+
+/** The general Link Property with Child scope
+ */
+class AppExport PropertyLinkSubListChild : public PropertyLinkSubList
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyLinkSubListChild() {_pcScope = LinkScope::Child;};
+};
+
+/** The general Link Property with Global scope
+ */
+class AppExport PropertyLinkSubListGlobal : public PropertyLinkSubList
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyLinkSubListGlobal() {_pcScope = LinkScope::Global;};
 };
 
 } // namespace App
