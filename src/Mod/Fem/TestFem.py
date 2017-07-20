@@ -905,8 +905,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for Flow1D thermomech analysis...')
-        # ret = compare_stats(fea, Flow1D_thermomech_expected_values, ["U1", "U2", "U3", "Uabs", "Sabs"])  # leave it as an example how to use not all stats
-        ret = compare_stats(fea, Flow1D_thermomech_expected_values)
+        ret = compare_stats(fea, Flow1D_thermomech_expected_values, stat_types, 'CalculiX_thermomech_time_1_0_results')
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for thermomech analysis to {}...'.format(Flow1D_thermomech_save_fc_file))
@@ -948,7 +947,7 @@ def compare_inp_files(file_name1, file_name2):
     return result
 
 
-def compare_stats(fea, stat_file=None, loc_stat_types=None):
+def compare_stats(fea, stat_file=None, loc_stat_types=None, res_obj_name=None):
     if not loc_stat_types:
         loc_stat_types = stat_types
     if stat_file:
@@ -962,7 +961,10 @@ def compare_stats(fea, stat_file=None, loc_stat_types=None):
         sf_content = force_unix_line_ends(sf_content)
     stats = []
     for s in loc_stat_types:
-        statval = fea.get_stats(s)
+        if res_obj_name:
+            statval = fea.get_stats(s, res_obj_name)
+        else:
+            statval = fea.get_stats(s)
         stats.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     if sf_content != stats:
         fcc_print("Expected stats from {}".format(stat_file))
@@ -1073,22 +1075,29 @@ def create_test_results():
     print('Results copied to the appropriate FEM test dirs in: ' + temp_dir)
 
     # Flow1D
-    # during unit test we have been read unit test frd data into the file, we gone export the stats of this results
-    # they may not fit 100 % with the results we get with this file, TODO use the results we will get by a recalculation
     FreeCAD.open(Flow1D_thermomech_save_fc_file)
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
     fea = FemToolsCcx.FemToolsCcx()
+    fea.reset_all()
+    fea.run()
+    fea.load_results()
     stats_flow1D = []  # be carefule if we have more than one result object !
     for s in stat_types:
-        statval = fea.get_stats(s)
+        statval = fea.get_stats(s, 'CalculiX_thermomech_time_1_0_results')
         stats_flow1D.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     Flow1D_thermomech_expected_values_file = Flow1D_thermomech_analysis_dir + 'Flow1D_thermomech_expected_values'
     f = open(Flow1D_thermomech_expected_values_file, 'w')
     for s in stats_flow1D:
         f.write(s)
     f.close()
-
-    print('Expected stats file copied to the appropriate FEM test dirs in: ' + temp_dir)
+    # could be added in FemToolsCcx to the self object as an Attribut
+    frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
+    dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
+    frd_Flow1D_thermomech_test_result_file = Flow1D_thermomech_analysis_dir + 'Flow1D_thermomech.frd'
+    dat_Flow1D_thermomech_test_result_file = Flow1D_thermomech_analysis_dir + 'Flow1D_thermomech.dat'
+    shutil.copyfile(frd_result_file, frd_Flow1D_thermomech_test_result_file)
+    shutil.copyfile(dat_result_file, dat_Flow1D_thermomech_test_result_file)
+    print('Flow1D thermomech results copied to the appropriate FEM test dirs in: ' + temp_dir)
 
 '''
 update the results of FEM unit tests:
