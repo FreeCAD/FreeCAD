@@ -50,6 +50,8 @@ using namespace std;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE(App::PropertyLink , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyLinkChild , App::PropertyLink)
+TYPESYSTEM_SOURCE(App::PropertyLinkGlobal , App::PropertyLink)
 
 //**************************************************************************
 // Construction/Destruction
@@ -180,6 +182,8 @@ void PropertyLink::Paste(const Property &from)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE(App::PropertyLinkList, App::PropertyLists)
+TYPESYSTEM_SOURCE(App::PropertyLinkListChild , App::PropertyLinkList)
+TYPESYSTEM_SOURCE(App::PropertyLinkListGlobal , App::PropertyLinkList)
 
 //**************************************************************************
 // Construction/Destruction
@@ -364,6 +368,8 @@ unsigned int PropertyLinkList::getMemSize(void) const
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE(App::PropertyLinkSub , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubChild , App::PropertyLinkSub)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubGlobal , App::PropertyLinkSub)
 
 //**************************************************************************
 // Construction/Destruction
@@ -556,6 +562,8 @@ void PropertyLinkSub::Paste(const Property &from)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE(App::PropertyLinkSubList , App::PropertyLists)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubListChild , App::PropertyLinkSubList)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubListGlobal , App::PropertyLinkSubList)
 
 //**************************************************************************
 // Construction/Destruction
