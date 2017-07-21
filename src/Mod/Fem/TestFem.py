@@ -160,6 +160,172 @@ class FemTest(unittest.TestCase):
         self.assertTrue(True if read_node_line in expected else False,
                         "Problem in test_writeAbaqus_precision, \n{0}\n{1}".format(read_node_line, expected))
 
+    def test_read_frd_massflow_networkpressure(self):
+        # read data from frd file
+        frd_file = test_file_dir + 'Flow1D_thermomech.frd'
+        import importCcxFrdResults
+        frd_content = importCcxFrdResults.readResult(frd_file)
+
+        # do something with the read data
+        frd_content_len = []
+        for key in sorted(frd_content.keys()):
+            frd_content_len.append(len(frd_content[key]))
+        print('read data')
+        print(frd_content_len)
+        print(sorted(frd_content.keys()))
+        # print(frd_content)
+        read_mflow = frd_content['Results'][0]['mflow']
+        read_npressure = frd_content['Results'][0]['npressure']
+        res_len = [
+            len(read_mflow),
+            len(read_npressure)
+        ]
+        print(res_len)
+        print(read_mflow)
+        print(read_npressure)
+
+        # create the expected data
+        print('\nexpected data')
+        efc = {}  # expected frd content
+        efc['Nodes'] = {
+            2: FreeCAD.Vector(0.0, -1.11022e-14, -50.0),
+            3: FreeCAD.Vector(0.0, -9.54792e-13, -4300.0),
+            4: FreeCAD.Vector(4950.0, -9.54792e-13, -4300.0),
+            5: FreeCAD.Vector(5000.0, -9.54792e-13, -4300.0),
+            6: FreeCAD.Vector(8535.53, -1.73984e-12, -7835.53),
+            7: FreeCAD.Vector(8569.88, -1.74769e-12, -7870.88),
+            8: FreeCAD.Vector(12105.4, -2.53273e-12, -11406.4),
+            9: FreeCAD.Vector(12140.8, -2.54058e-12, -11441.8),
+            10: FreeCAD.Vector(13908.5, -2.9331e-12, -13209.5),
+            11: FreeCAD.Vector(13943.9, -2.94095e-12, -13244.9),
+            12: FreeCAD.Vector(15047.0, -3.18589e-12, -14348.0),
+            13: FreeCAD.Vector(15047.0, -1.7648e-12, -7947.97),
+            15: FreeCAD.Vector(0.0, 0.0, 0.0),
+            16: FreeCAD.Vector(0.0, -4.82947e-13, -2175.0),
+            17: FreeCAD.Vector(2475.0, -9.54792e-13, -4300.0),
+            18: FreeCAD.Vector(4975.0, -9.54792e-13, -4300.0),
+            19: FreeCAD.Vector(6767.77, -1.34731e-12, -6067.77),
+            20: FreeCAD.Vector(8552.71, -1.74376e-12, -7853.21),
+            21: FreeCAD.Vector(10337.6, -2.14021e-12, -9638.64),
+            22: FreeCAD.Vector(12123.1, -2.53666e-12, -11424.1),
+            23: FreeCAD.Vector(13024.6, -2.73684e-12, -12325.6),
+            24: FreeCAD.Vector(13926.2, -2.93703e-12, -13227.2),
+            25: FreeCAD.Vector(14495.4, -3.06342e-12, -13796.4),
+            26: FreeCAD.Vector(15047.0, -2.47535e-12, -11148.0),
+            27: FreeCAD.Vector(15047.0, -1.7537e-12, -7897.97)
+        }
+        efc['Seg2Elem'] = {
+            1: (15, 2),
+            13: (13, 27)
+        }
+        efc['Seg3Elem'] = {}
+        '''   deleted during reading because of the inout file
+        efc['Seg3Elem'] = {
+            2: (2, 16, 3),
+            3: (3, 17, 4),
+            4: (4, 18, 5),
+            5: (5, 19, 6),
+            6: (6, 20, 7),
+            7: (7, 21, 8),
+            8: (8, 22, 9),
+            9: (9, 23, 10),
+            10: (10, 24, 11),
+            11: (11, 25, 12),
+            12: (12, 26, 13)
+        }
+        '''
+        efc['Tria3Elem'] = efc['Tria6Elem'] = efc['Quad4Elem'] = efc['Quad8Elem'] = {}  # faces
+        efc['Tetra4Elem'] = efc['Tetra10Elem'] = efc['Hexa8Elem'] = efc['Hexa20Elem'] = efc['Penta6Elem'] = efc['Penta15Elem'] = {}  # volumes
+        efc['Results'] = [{
+            'number': 0,
+            'time': 1.0,
+            'mflow': {
+                1: 78.38050000000001,  # added during reading because of the inout file
+                2: 78.38050000000001,
+                3: 78.38050000000001,
+                4: 78.38050000000001,
+                5: 78.38050000000001,
+                6: 78.38050000000001,
+                7: 78.38050000000001,
+                8: 78.38050000000001,
+                9: 78.38050000000001,
+                10: 78.38050000000001,
+                11: 78.38050000000001,
+                12: 78.38050000000001,
+                13: 78.38050000000001,
+                15: 78.38050000000001,
+                16: 78.38050000000001,
+                17: 78.38050000000001,
+                18: 78.38050000000001,
+                19: 78.38050000000001,
+                20: 78.38050000000001,
+                21: 78.38050000000001,
+                22: 78.38050000000001,
+                23: 78.38050000000001,
+                24: 78.38050000000001,
+                25: 78.38050000000001,
+                26: 78.38050000000001,
+                27: 78.38050000000001,
+                28: 78.38050000000001  # added during reading because of the inout file
+            },
+            'npressure': {
+                1: 0.1,  # added during reading because of the inout file
+                2: 0.1,
+                3: 0.134842,
+                4: 0.128265,
+                5: 0.127953,
+                6: 0.155924,
+                7: 0.157802,
+                8: 0.191652,
+                9: 0.178963,
+                10: 0.180863,
+                11: 0.161473,
+                12: 0.162658,
+                13: 0.1,
+                15: 0.1,
+                16: 0.117421,
+                17: 0.131553,
+                18: 0.128109,
+                19: 0.141939,
+                20: 0.156863,
+                21: 0.174727,
+                22: 0.185308,
+                23: 0.179913,
+                24: 0.171168,
+                25: 0.162066,
+                26: 0.131329,
+                27: 0.1,
+                28: 0.1  # added during reading because of the inout file
+            }
+        }]
+        expected_frd_content = efc
+
+        # do something with the expected data
+        expected_frd_content_len = []
+        for key in sorted(expected_frd_content.keys()):
+            expected_frd_content_len.append(len(expected_frd_content[key]))
+        print(expected_frd_content_len)
+        print(sorted(expected_frd_content.keys()))
+        # expected results
+        expected_mflow = expected_frd_content['Results'][0]['mflow']
+        expected_npressure = expected_frd_content['Results'][0]['npressure']
+        expected_res_len = [
+            len(expected_mflow),
+            len(expected_npressure)
+        ]
+        print(expected_res_len)
+        print(expected_mflow)
+        print(expected_npressure)
+
+        # tests
+        self.assertEqual(frd_content_len, expected_frd_content_len, "Length's of read frd data values are unexpected")
+        self.assertEqual(frd_content['Nodes'], expected_frd_content['Nodes'], "Values of read node data are unexpected")
+        self.assertEqual(frd_content['Seg2Elem'], expected_frd_content['Seg2Elem'], "Values of read Seg2 data are unexpected")
+        self.assertEqual(frd_content['Seg3Elem'], expected_frd_content['Seg3Elem'], "Values of read Seg3 data are unexpected")
+        self.assertEqual(res_len, expected_res_len, "Length's of read result data values are unexpected")
+        self.assertEqual(read_mflow, expected_mflow, "Values of read mflow result data are unexpected")
+        self.assertEqual(read_npressure, expected_npressure, "Values of read npressure result data are unexpected")
+
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
         pass
