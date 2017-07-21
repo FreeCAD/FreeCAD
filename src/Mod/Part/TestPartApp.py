@@ -91,6 +91,28 @@ class PartTestBSplineCurve(unittest.TestCase):
         # spline.setOrigin(2)   # not working?
         self.spline.setPole(1, App.Vector([1, 0, 0])) # first parameter 0 gives occ error
 
+    def testIssue2671(self):
+        self.Doc = App.newDocument("Issue2671")
+        Box = self.Doc.addObject("Part::Box","Box")
+        Mirroring = self.Doc.addObject("Part::Mirroring", 'Mirroring')
+        Spreadsheet = self.Doc.addObject('Spreadsheet::Sheet', 'Spreadsheet')
+        Mirroring.Base = (8, 5, 25)
+        Mirroring.Normal = (0.5, 0.2, 0.9)
+        Spreadsheet.set('A1', '=Mirroring.Base.x')
+        Spreadsheet.set('B1', '=Mirroring.Base.y')
+        Spreadsheet.set('C1', '=Mirroring.Base.z')
+        Spreadsheet.set('A2', '=Mirroring.Normal.x')
+        Spreadsheet.set('B2', '=Mirroring.Normal.y')
+        Spreadsheet.set('C2', '=Mirroring.Normal.z')
+        self.Doc.recompute()
+        self.assertEqual(Spreadsheet.A1, Units.Quantity('8 mm'))
+        self.assertEqual(Spreadsheet.B1, Units.Quantity('5 mm'))
+        self.assertEqual(Spreadsheet.C1, Units.Quantity('25 mm'))
+        self.assertEqual(Spreadsheet.A2, Units.Quantity('0.5 mm'))
+        self.assertEqual(Spreadsheet.B2, Units.Quantity('0.2 mm'))
+        self.assertEqual(Spreadsheet.C2, Units.Quantity('0.9 mm'))
+        App.closeDocument("Issue2671")
+
     def testIssue2876(self):
         self.Doc = App.newDocument("Issue2876")
         Cylinder = self.Doc.addObject("Part::Cylinder", "Cylinder")
