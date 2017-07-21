@@ -120,6 +120,8 @@ public:
      */
     virtual ~PropertyVectorDistance();
 
+    const boost::any getPathValue(const ObjectIdentifier &path) const;
+
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyVectorDistanceItem";
     }
