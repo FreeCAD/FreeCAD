@@ -159,6 +159,7 @@ INSTALL(
         test_files/ccx/Flow1D_thermomech.dat
         test_files/ccx/Flow1D_thermomech.frd
         test_files/ccx/Flow1D_thermomech_expected_values
+        test_files/ccx/Flow1D_thermomech_inout_nodes.txt
         test_files/ccx/Flow1D_thermomech.fcstd
     DESTINATION
         Mod/Fem/test_files/ccx
