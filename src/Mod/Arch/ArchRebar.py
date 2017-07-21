@@ -314,12 +314,14 @@ class _Rebar(ArchComponent.Component):
         circle = Part.Wire(circle)
         try:
             bar = wire.makePipeShell([circle],True,False,2)
+            basewire = wire.copy()
         except Part.OCCError:
             print("Arch: error sweeping rebar profile along the base sketch")
             return
         # building final shape
         shapes = []
         placementlist = []
+        self.wires = []
         if father:
             rot = father.Placement.Rotation
         else:
@@ -365,10 +367,15 @@ class _Rebar(ArchComponent.Component):
             if i == 0:
                 bar.Placement = obj.PlacementList[i]
                 shapes.append(bar)
+                basewire.Placement = obj.PlacementList[i]
+                self.wires.append(basewire)
             else:
                 bar = bar.copy()
                 bar.Placement = obj.PlacementList[i]
                 shapes.append(bar)
+                w = basewire.copy()
+                w.Placement = obj.PlacementList[i]
+                self.wires.append(w)
         if shapes:
             obj.Shape = Part.makeCompound(shapes)
             obj.Placement = pl
