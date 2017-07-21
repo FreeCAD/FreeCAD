@@ -233,6 +233,69 @@ PropertyVectorDistance::~PropertyVectorDistance()
 
 }
 
+//**************************************************************************
+// PropertyPosition
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyPosition , App::PropertyVector);
+
+//**************************************************************************
+// Construction/Destruction
+
+
+PropertyPosition::PropertyPosition()
+{
+
+}
+
+PropertyPosition::~PropertyPosition()
+{
+
+}
+
+const boost::any PropertyPosition::getPathValue(const ObjectIdentifier &path) const
+{
+    std::string p = path.getSubPathStr();
+
+    if (p == ".x" || p == ".y" || p == ".z") {
+        // Convert double to quantity
+        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
+    }
+    else
+        return Property::getPathValue(path);
+}
+
+//**************************************************************************
+// PropertyPosition
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyDirection , App::PropertyVector);
+
+//**************************************************************************
+// Construction/Destruction
+
+
+PropertyDirection::PropertyDirection()
+{
+
+}
+
+PropertyDirection::~PropertyDirection()
+{
+
+}
+
+const boost::any PropertyDirection::getPathValue(const ObjectIdentifier &path) const
+{
+    std::string p = path.getSubPathStr();
+
+    if (p == ".x" || p == ".y" || p == ".z") {
+        // Convert double to quantity
+        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
+    }
+    else
+        return Property::getPathValue(path);
+}
 
 //**************************************************************************
 // PropertyVectorList
