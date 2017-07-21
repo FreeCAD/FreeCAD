@@ -103,7 +103,7 @@ class FemToolsCcx(FemTools.FemTools):
             print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
             raise
 
-    ## Sets CalculiX ccx binary path and velidates if the binary can be executed
+    ## Sets CalculiX ccx binary path and validates if the binary can be executed
     #  @param self The python object self
     #  @ccx_binary path to ccx binary, default is guessed: "bin/ccx" windows, "ccx" for other systems
     #  @ccx_binary_sig expected output form ccx when run empty. Default value is "CalculiX.exe -i jobname"
