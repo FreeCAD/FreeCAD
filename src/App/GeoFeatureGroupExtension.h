@@ -102,21 +102,30 @@ public:
     /// Collects GeoFeatureGroup relevant objects that are linked from the given one. That means all linked objects
     /// including their links (recursively) except GeoFeatureGroups, where the recursion stops. Expressions
     /// links are ignored. An exception is thrown when there are dependency loops.
-    static void getCSOutList(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    static void getCSOutList(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
     /// Collects GeoFeatureGroup relevant objects that link to the given one. That means all objects
     /// including their parents (recursively) except GeoFeatureGroups, where the recursion stops. Expression 
     /// links are ignored. An exception is thrown when there are dependency loops.
-    static void getCSInList(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    static void getCSInList(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
     /// Collects all links that are relevant for the coordinate system, meaning all recursive links to 
     /// obj and from obj excluding expressions and stopping the recursion at other geofeaturegroups. 
     /// The result is the combination of CSOutList and CSInList.
-    static void getCSRelevantLinks(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    static void getCSRelevantLinks(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
     /// Checks if the links of the given object comply with all GeoFeatureGroup requrirements, that means
     /// if normal links are only withing the parent GeoFeatureGroup. 
-    static bool areLinksValid(App::DocumentObject* obj);
+    static bool areLinksValid(const App::DocumentObject* obj);
+    /// Checks if the given link complies with all GeoFeatureGroup requrirements, that means
+    /// if normal links are only withing the parent GeoFeatureGroup. 
+    static bool isLinkValid(App::Property* link);
+    //Returns all objects that are wrongly linked from this object, meaning which are out of scope of the 
+    //links of obj
+    static void getInvalidLinkObjects(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    
 private:
     Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group);
-    static std::vector<App::DocumentObject*> getScopedObjectsFromLinks(App::DocumentObject*, LinkScope scope = LinkScope::Local);
+    static std::vector<App::DocumentObject*> getScopedObjectsFromLinks(const App::DocumentObject*, LinkScope scope = LinkScope::Local);
+    static std::vector<App::DocumentObject*> getScopedObjectsFromLink(App::Property*, LinkScope scope = LinkScope::Local);
+
 };
 
 typedef ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>> GeoFeatureGroupExtensionPython;
