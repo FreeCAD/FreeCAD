@@ -216,6 +216,18 @@ PropertyVectorDistance::PropertyVectorDistance()
 
 }
 
+const boost::any PropertyVectorDistance::getPathValue(const ObjectIdentifier &path) const
+{
+    std::string p = path.getSubPathStr();
+
+    if (p == ".x" || p == ".y" || p == ".z") {
+        // Convert double to quantity
+        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
+    }
+    else
+        return Property::getPathValue(path);
+}
+
 PropertyVectorDistance::~PropertyVectorDistance()
 {
 
