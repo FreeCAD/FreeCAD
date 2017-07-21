@@ -75,6 +75,9 @@ public:
     void setValue(const Base::Vector3d &vec);
     void setValue(double x, double y, double z);
 
+    /// Get valid paths for this property; used by auto completer
+    void getPaths(std::vector<ObjectIdentifier> &paths) const;
+
     /** This method returns a string representation of the property
      */
     const Base::Vector3d &getValue(void) const;
