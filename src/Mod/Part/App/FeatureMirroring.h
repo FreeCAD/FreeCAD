@@ -39,8 +39,8 @@ public:
     Mirroring();
 
     App::PropertyLink Source;
-    App::PropertyVector Base;
-    App::PropertyVector Normal;
+    App::PropertyPosition Base;
+    App::PropertyDirection Normal;
 
     /** @name methods override feature */
     //@{
@@ -55,6 +55,9 @@ public:
 
 protected:
     void onChanged (const App::Property* prop);
+
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+
 };
 
 } //namespace Part
