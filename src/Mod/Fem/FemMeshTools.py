@@ -1146,7 +1146,7 @@ def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShap
                     FreeCAD.Console.PrintError('Problem in get_anlysis_empty_references_group_elements, we seams to have two or more materials with empty referneces')
                     return {}
             elif hasattr(m, "References") and m.References:
-                # ShapeType ot the group elements, strip the number of the first group element
+                # ShapeType of the group elements, strip the number of the first group element
                 # http://stackoverflow.com/questions/12851791/removing-numbers-from-string
                 group_shape_type = ''.join(i for i in group_elements[m.Name][0] if not i.isdigit())
                 if not material_shape_type:
