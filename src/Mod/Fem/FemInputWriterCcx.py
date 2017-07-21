@@ -63,6 +63,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.main_file_name = self.mesh_object.Name + '.inp'
         self.file_name = self.dir_name + self.main_file_name
         self.FluidInletoutlet_ele = []
+        self.fluid_inout_nodes_file = self.dir_name + self.mesh_object.Name + '_inout_nodes.txt'
         print('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name)
         print('FemInputWriterCcx --> self.main_file_name  -->  ' + self.main_file_name)
         print('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name)
@@ -111,7 +112,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         if self.fluidsection_objects:
             if is_fluid_section_inlet_outlet(self.ccx_elsets) is True:
                 inpfile.close()
-                FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, self.file_name)
+                FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, self.file_name, self.fluid_inout_nodes_file)
                 inpfile = open(self.file_name, 'a')
 
         # constraints independent from steps
@@ -262,7 +263,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # Fluid section: Inlet and Outlet requires special element definition
         if self.fluidsection_objects:
             if is_fluid_section_inlet_outlet(self.ccx_elsets) is True:
-                FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, name + "_Node_Elem_sets.inp")
+                FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, name + "_Node_Elem_sets.inp", self.fluid_inout_nodes_file)
 
         # constraints independent from steps
         if self.planerotation_objects:
@@ -968,10 +969,12 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('\n***********************************************************\n')
         f.write('** FluidSection constraints\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        if os.path.exists("inout_nodes.txt"):
-            inout_nodes_file = open("inout_nodes.txt", "r")
+        if os.path.exists(self.fluid_inout_nodes_file):
+            inout_nodes_file = open(self.fluid_inout_nodes_file, "r")
             lines = inout_nodes_file.readlines()
             inout_nodes_file.close()
+        else:
+            print("1DFlow inout nodes file not found: " + self.fluid_inout_nodes_file)
         # get nodes
         self.get_constraints_fluidsection_nodes()
         for femobj in self.fluidsection_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
