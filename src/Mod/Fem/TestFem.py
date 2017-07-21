@@ -842,7 +842,6 @@ def create_test_results():
     # static
     fea.reset_all()
     fea.run()
-
     fea.load_results()
     stats_static = []  # we only have one result object so we are fine
     for s in stat_types:
@@ -853,11 +852,9 @@ def create_test_results():
     for s in stats_static:
         f.write(s)
     f.close()
-
     # could be added in FemToolsCcx to the self object as an Attribut
     frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
     dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
-
     frd_static_test_result_file = static_analysis_dir + 'cube_static.frd'
     dat_static_test_result_file = static_analysis_dir + 'cube_static.dat'
     shutil.copyfile(frd_result_file, frd_static_test_result_file)
@@ -868,7 +865,6 @@ def create_test_results():
     fea.set_analysis_type('frequency')
     fea.solver.EigenmodesCount = 1  # we should only have one result object
     fea.run()
-
     fea.load_results()
     stats_frequency = []  # since we set eigenmodeno. we only have one result object so we are fine
     for s in stat_types:
@@ -879,7 +875,6 @@ def create_test_results():
     for s in stats_frequency:
         f.write(s)
     f.close()
-
     frd_frequency_test_result_file = frequency_analysis_dir + 'cube_frequency.frd'
     dat_frequency_test_result_file = frequency_analysis_dir + 'cube_frequency.dat'
     shutil.copyfile(frd_result_file, frd_frequency_test_result_file)
@@ -891,7 +886,6 @@ def create_test_results():
     fea = FemToolsCcx.FemToolsCcx()
     fea.reset_all()
     fea.run()
-
     fea.load_results()
     stats_thermomech = []  # we only have one result object so we are fine
     for s in stat_types:
@@ -902,16 +896,13 @@ def create_test_results():
     for s in stats_thermomech:
         f.write(s)
     f.close()
-
     # could be added in FemToolsCcx to the self object as an Attribut
     frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
     dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
-
     frd_thermomech_test_result_file = thermomech_analysis_dir + 'spine_thermomech.frd'
     dat_thermomech_test_result_file = thermomech_analysis_dir + 'spine_thermomech.dat'
     shutil.copyfile(frd_result_file, frd_thermomech_test_result_file)
     shutil.copyfile(dat_result_file, dat_thermomech_test_result_file)
-
     print('Results copied to the appropriate FEM test dirs in: ' + temp_dir)
 
 
