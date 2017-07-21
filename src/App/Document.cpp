@@ -258,6 +258,7 @@ void Document::exportGraphviz(std::ostream& out) const
             buildAdjacencyList();
             addEdges();
             markCycles();
+            markOutOfScopeLinks();
         }
 
         /**
@@ -663,6 +664,7 @@ void Document::exportGraphviz(std::ostream& out) const
                             edgeAttrMap[edge]["ltail"] = getClusterName(docObj);
                         if (GraphList[*It2])
                             edgeAttrMap[edge]["lhead"] = getClusterName(*It2);
+                        
                     }
                 }
 
@@ -766,6 +768,24 @@ void Document::exportGraphviz(std::ostream& out) const
             const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
             for (auto ei = out_edges.begin(), ei_end = out_edges.end(); ei != ei_end; ++ei)
                 edgeAttrMap[ei->second]["color"] = "red";
+        }
+        
+        void markOutOfScopeLinks() {
+            
+            const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
+
+            for( auto obj : objects) {            
+                       
+                std::vector<App::DocumentObject*> invalids;
+                GeoFeatureGroupExtension::getInvalidLinkObjects(obj, invalids);
+                //isLinkValid returns true for non-link properties
+                for(auto linkedObj : invalids) {
+    
+                    auto res = edge(GlobalVertexList[getId(obj)], GlobalVertexList[getId(linkedObj)], DepList);
+                    if(res.second)
+                        edgeAttrMap[res.first]["color"] = "red";
+                }
+            }                
         }
 
         const struct DocumentP* d;
