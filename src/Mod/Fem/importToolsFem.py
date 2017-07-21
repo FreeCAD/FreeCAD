@@ -301,14 +301,16 @@ def fill_femresult_mechanical(results, result_set, span):
                 results.Temperature = list(map((lambda x: x), Temperature.values()))
             results.Time = step_time
 
+    # read MassFlow, disp does not exist, no_of_values and results.NodeNumbers needs to be set
     if 'mflow' in result_set:
         MassFlow = result_set['mflow']
-        if not no_of_values:
-            no_of_values = len(MassFlow)
         if len(MassFlow) > 0:
             results.MassFlowRate = list(map((lambda x: x), MassFlow.values()))
             results.Time = step_time
+            no_of_values = len(MassFlow)
+            results.NodeNumbers = list(MassFlow.keys())
 
+    # read NetworkPressure, disp does not exist, see MassFlow
     if 'npressure' in result_set:
         NetworkPressure = result_set['npressure']
         if len(NetworkPressure) > 0:
