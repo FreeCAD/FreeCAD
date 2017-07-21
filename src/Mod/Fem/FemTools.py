@@ -72,16 +72,18 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     ## Resets mesh deformation
     #  @param self The python object self
     def reset_mesh_deformation(self):
-        if self.mesh:
-            self.mesh.ViewObject.applyDisplacement(0.0)
+        if FreeCAD.GuiUp:
+            if self.mesh:
+                self.mesh.ViewObject.applyDisplacement(0.0)
 
     ## Resets mesh color
     #  @param self The python object self
     def reset_mesh_color(self):
-        if self.mesh:
-            self.mesh.ViewObject.NodeColor = {}
-            self.mesh.ViewObject.ElementColor = {}
-            self.mesh.ViewObject.setNodeColorByScalars()
+        if FreeCAD.GuiUp:
+            if self.mesh:
+                self.mesh.ViewObject.NodeColor = {}
+                self.mesh.ViewObject.ElementColor = {}
+                self.mesh.ViewObject.setNodeColorByScalars()
 
     ## Resets mesh color, deformation and removes all result objects if preferences to keep them is not set
     #  @param self The python object self
@@ -90,15 +92,17 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         keep_results_on_rerun = self.fem_prefs.GetBool("KeepResultsOnReRun", False)
         if not keep_results_on_rerun:
             self.purge_results()
-        self.reset_mesh_color()
-        self.reset_mesh_deformation()
+        if FreeCAD.GuiUp:
+            self.reset_mesh_color()
+            self.reset_mesh_deformation()
 
     ## Resets mesh color, deformation and removes all result objects
     #  @param self The python object self
     def reset_all(self):
         self.purge_results()
-        self.reset_mesh_color()
-        self.reset_mesh_deformation()
+        if FreeCAD.GuiUp:
+            self.reset_mesh_color()
+            self.reset_mesh_deformation()
 
     ## Sets mesh color using selected type of results (Sabs by default)
     #  @param self The python object self
@@ -143,9 +147,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.mesh.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, filtered_values)
 
     def show_displacement(self, displacement_factor=0.0):
-        self.mesh.ViewObject.setNodeDisplacementByVectors(self.result_object.NodeNumbers,
-                                                          self.result_object.DisplacementVectors)
-        self.mesh.ViewObject.applyDisplacement(displacement_factor)
+        if FreeCAD.GuiUp:
+            self.mesh.ViewObject.setNodeDisplacementByVectors(self.result_object.NodeNumbers,
+                                                              self.result_object.DisplacementVectors)
+            self.mesh.ViewObject.applyDisplacement(displacement_factor)
 
     def update_objects(self):
         # [{'Object':materials_linear}, {}, ...]
