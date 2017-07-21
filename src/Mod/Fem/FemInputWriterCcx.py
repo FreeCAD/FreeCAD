@@ -59,8 +59,9 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             temperature_obj, heatflux_obj, initialtemperature_obj,
             beamsection_obj, shellthickness_obj, fluidsection_obj,
             analysis_type, dir_name)
+        # self.dir_name does have a slash at the end
         self.main_file_name = self.mesh_object.Name + '.inp'
-        self.file_name = self.dir_name + '/' + self.main_file_name
+        self.file_name = self.dir_name + self.main_file_name
         self.FluidInletoutlet_ele = []
         print('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name)
         print('FemInputWriterCcx --> self.main_file_name  -->  ' + self.main_file_name)

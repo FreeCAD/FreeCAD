@@ -36,36 +36,36 @@ mesh_name = 'Mesh'
 stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
 
 home_path = FreeCAD.getHomePath()
-temp_dir = tempfile.gettempdir() + '/FEM_unittests'
-test_file_dir = home_path + 'Mod/Fem/test_files/ccx'
+temp_dir = tempfile.gettempdir() + '/FEM_unittests/'
 if not os.path.exists(temp_dir):
     os.makedirs(temp_dir)
+test_file_dir = home_path + 'Mod/Fem/test_files/ccx/'
 
 # define some locations fot the analysis tests
 # since they are also used in the helper def which create results they should stay global for the module
 static_base_name = 'cube_static'
-static_analysis_dir = temp_dir + '/FEM_static'
-static_save_fc_file = static_analysis_dir + '/' + static_base_name + '.fcstd'
-static_analysis_inp_file = test_file_dir + '/' + static_base_name + '.inp'
-static_expected_values = test_file_dir + "/cube_static_expected_values"
+static_analysis_dir = temp_dir + 'FEM_static/'
+static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'
+static_analysis_inp_file = test_file_dir + static_base_name + '.inp'
+static_expected_values = test_file_dir + "cube_static_expected_values"
 
 frequency_base_name = 'cube_frequency'
-frequency_analysis_dir = temp_dir + '/FEM_frequency'
-frequency_save_fc_file = frequency_analysis_dir + '/' + frequency_base_name + '.fcstd'
-frequency_analysis_inp_file = test_file_dir + '/' + frequency_base_name + '.inp'
-frequency_expected_values = test_file_dir + "/cube_frequency_expected_values"
+frequency_analysis_dir = temp_dir + 'FEM_frequency/'
+frequency_save_fc_file = frequency_analysis_dir + frequency_base_name + '.fcstd'
+frequency_analysis_inp_file = test_file_dir + frequency_base_name + '.inp'
+frequency_expected_values = test_file_dir + "cube_frequency_expected_values"
 
 thermomech_base_name = 'spine_thermomech'
-thermomech_analysis_dir = temp_dir + '/FEM_thermomech'
-thermomech_save_fc_file = thermomech_analysis_dir + '/' + thermomech_base_name + '.fcstd'
-thermomech_analysis_inp_file = test_file_dir + '/' + thermomech_base_name + '.inp'
-thermomech_expected_values = test_file_dir + "/spine_thermomech_expected_values"
+thermomech_analysis_dir = temp_dir + 'FEM_thermomech/'
+thermomech_save_fc_file = thermomech_analysis_dir + thermomech_base_name + '.fcstd'
+thermomech_analysis_inp_file = test_file_dir + thermomech_base_name + '.inp'
+thermomech_expected_values = test_file_dir + "spine_thermomech_expected_values"
 
 Flow1D_thermomech_base_name = 'Flow1D_thermomech'
-Flow1D_thermomech_analysis_dir = temp_dir + '/FEM_Flow1D_thermomech'
-Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + '/' + Flow1D_thermomech_base_name + '.fcstd'
-Flow1D_thermomech_analysis_inp_file = test_file_dir + '/' + Flow1D_thermomech_base_name + '.inp'
-Flow1D_thermomech_expected_values = test_file_dir + "/Flow1D_thermomech_expected_values"
+Flow1D_thermomech_analysis_dir = temp_dir + 'FEM_Flow1D_thermomech/'
+Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + Flow1D_thermomech_base_name + '.fcstd'
+Flow1D_thermomech_analysis_inp_file = test_file_dir + Flow1D_thermomech_base_name + '.inp'
+Flow1D_thermomech_expected_values = test_file_dir + "Flow1D_thermomech_expected_values"
 
 
 class FemTest(unittest.TestCase):
@@ -846,7 +846,7 @@ def create_test_results():
     for s in stat_types:
         statval = fea.get_stats(s)
         stats_static.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
-    static_expected_values_file = static_analysis_dir + '/cube_static_expected_values'
+    static_expected_values_file = static_analysis_dir + 'cube_static_expected_values'
     f = open(static_expected_values_file, 'w')
     for s in stats_static:
         f.write(s)
@@ -856,8 +856,8 @@ def create_test_results():
     frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
     dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
 
-    frd_static_test_result_file = static_analysis_dir + '/cube_static.frd'
-    dat_static_test_result_file = static_analysis_dir + '/cube_static.dat'
+    frd_static_test_result_file = static_analysis_dir + 'cube_static.frd'
+    dat_static_test_result_file = static_analysis_dir + 'cube_static.dat'
     shutil.copyfile(frd_result_file, frd_static_test_result_file)
     shutil.copyfile(dat_result_file, dat_static_test_result_file)
 
@@ -872,14 +872,14 @@ def create_test_results():
     for s in stat_types:
         statval = fea.get_stats(s)
         stats_frequency.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
-    frequency_expected_values_file = frequency_analysis_dir + '/cube_frequency_expected_values'
+    frequency_expected_values_file = frequency_analysis_dir + 'cube_frequency_expected_values'
     f = open(frequency_expected_values_file, 'w')
     for s in stats_frequency:
         f.write(s)
     f.close()
 
-    frd_frequency_test_result_file = frequency_analysis_dir + '/cube_frequency.frd'
-    dat_frequency_test_result_file = frequency_analysis_dir + '/cube_frequency.dat'
+    frd_frequency_test_result_file = frequency_analysis_dir + 'cube_frequency.frd'
+    dat_frequency_test_result_file = frequency_analysis_dir + 'cube_frequency.dat'
     shutil.copyfile(frd_result_file, frd_frequency_test_result_file)
     shutil.copyfile(dat_result_file, dat_frequency_test_result_file)
 
@@ -895,7 +895,7 @@ def create_test_results():
     for s in stat_types:
         statval = fea.get_stats(s)
         stats_thermomech.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
-    thermomech_expected_values_file = thermomech_analysis_dir + '/spine_thermomech_expected_values'
+    thermomech_expected_values_file = thermomech_analysis_dir + 'spine_thermomech_expected_values'
     f = open(thermomech_expected_values_file, 'w')
     for s in stats_thermomech:
         f.write(s)
@@ -905,8 +905,8 @@ def create_test_results():
     frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
     dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
 
-    frd_thermomech_test_result_file = thermomech_analysis_dir + '/spine_thermomech.frd'
-    dat_thermomech_test_result_file = thermomech_analysis_dir + '/spine_thermomech.dat'
+    frd_thermomech_test_result_file = thermomech_analysis_dir + 'spine_thermomech.frd'
+    dat_thermomech_test_result_file = thermomech_analysis_dir + 'spine_thermomech.dat'
     shutil.copyfile(frd_result_file, frd_thermomech_test_result_file)
     shutil.copyfile(dat_result_file, dat_thermomech_test_result_file)
 

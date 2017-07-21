@@ -538,7 +538,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if inp_file_name is not None:
             self.inp_file_name = inp_file_name
         else:
-            self.inp_file_name = self.working_dir + '/' + self.base_name + '.inp'
+            # self.working_dir does have a slash at the end
+            self.inp_file_name = self.working_dir + self.base_name + '.inp'
 
     ## Sets analysis type.
     #  @param self The python object self
@@ -575,6 +576,9 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                         self.working_dir = self.solver.WorkingDir
                     except:
                         print('Could not set working directory to solver working directory.')
+
+        # check working_dir has a slash at the end, if not add one
+        self.working_dir = os.path.join(self.working_dir, '')
 
         if not (os.path.isdir(self.working_dir)):
             try:
