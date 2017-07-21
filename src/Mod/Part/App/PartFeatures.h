@@ -123,7 +123,7 @@ public:
     Thickness();
 
     App::PropertyLinkSub Faces;
-    App::PropertyFloat Value;
+    App::PropertyQuantity Value;
     App::PropertyEnumeration Mode;
     App::PropertyEnumeration Join;
     App::PropertyBool Intersection;
@@ -138,6 +138,9 @@ public:
         return "PartGui::ViewProviderThickness";
     }
     //@}
+
+protected:
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop);
 
 private:
     static const char* ModeEnums[];
