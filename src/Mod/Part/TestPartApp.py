@@ -21,6 +21,7 @@
 
 import FreeCAD, os, sys, unittest, Part
 import copy 
+from FreeCAD import Units
 App = FreeCAD
 
 #---------------------------------------------------------------------------
@@ -89,6 +90,26 @@ class PartTestBSplineCurve(unittest.TestCase):
         # spline.setKnots()
         # spline.setOrigin(2)   # not working?
         self.spline.setPole(1, App.Vector([1, 0, 0])) # first parameter 0 gives occ error
+
+    def testIssue2876(self):
+        self.Doc = App.newDocument("Issue2876")
+        Cylinder = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        Cylinder.Radius = 5
+        Pipe = self.Doc.addObject("Part::Thickness", "Pipe")
+        Pipe.Faces = (Cylinder, ["Face2", "Face3"])
+        Pipe.Mode = 1
+        Pipe.Value = -1 # negative wall thickness
+        Spreadsheet = self.Doc.addObject('Spreadsheet::Sheet', 'Spreadsheet')
+        Spreadsheet.set('A1', 'Pipe OD')
+        Spreadsheet.set('B1', 'Pipe WT')
+        Spreadsheet.set('C1', 'Pipe ID')
+        Spreadsheet.set('A2', '=2*Cylinder.Radius')
+        Spreadsheet.set('B2', '=-Pipe.Value')
+        Spreadsheet.set('C2', '=2*(Cylinder.Radius + Pipe.Value)')
+        self.Doc.recompute()
+        self.assertEqual(Spreadsheet.B2, Units.Quantity('1 mm'))
+        self.assertEqual(Spreadsheet.C2, Units.Quantity('8 mm'))
+        App.closeDocument("Issue2876")
 
     def tearDown(self):
         #closing doc
