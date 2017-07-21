@@ -191,6 +191,15 @@ void PropertyVector::Paste(const Property &from)
     hasSetValue();
 }
 
+void PropertyVector::getPaths(std::vector<ObjectIdentifier> &paths) const
+{
+    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("x")));
+    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("y")));
+    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("z")));
+}
 
 //**************************************************************************
 // PropertyVectorDistance
