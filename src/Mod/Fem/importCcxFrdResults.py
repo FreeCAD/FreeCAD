@@ -124,15 +124,16 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 def readResult(frd_input):
     print('Read results from: ' + frd_input)
     inout_nodes = []
-    if os.path.exists("inout_nodes.txt"):
-        print('We have found a inout_nodes.txt file. We gone read it and delete it afterwards')
-        f = pyopen("inout_nodes.txt", "r")
+    inout_nodes_file = frd_input.rsplit('.', 1)[0] + '_inout_nodes.txt'
+    if os.path.exists(inout_nodes_file):
+        print('Read special 1DFlow nodes data form: ' + inout_nodes_file)
+        f = pyopen(inout_nodes_file, "r")
         lines = f.readlines()
         for line in lines:
             a = line.split(',')
             inout_nodes.append(a)
         f.close()
-        os.remove("inout_nodes.txt")
+        print(inout_nodes)
     frd_file = pyopen(frd_input, "r")
     nodes = {}
     elements_hexa8 = {}

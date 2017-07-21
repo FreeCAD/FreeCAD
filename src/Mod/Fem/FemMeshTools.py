@@ -1494,7 +1494,7 @@ def write_D_network_element_to_inputfile(fileName):
     f.close()
 
 
-def use_correct_fluidinout_ele_def(FluidInletoutlet_ele, fileName):
+def use_correct_fluidinout_ele_def(FluidInletoutlet_ele, fileName, fluid_inout_nodes_file):
     f = open(fileName, 'r')
     cnt = 0
     line = f.readline()
@@ -1523,7 +1523,8 @@ def use_correct_fluidinout_ele_def(FluidInletoutlet_ele, fileName):
     f.seek(0)
     cnt = 0
     elem_counter = 0
-    inout_nodes_file = open("inout_nodes.txt", "w")
+    print('1DFlow inout nodes file: ' + fluid_inout_nodes_file + '\n')
+    inout_nodes_file = open(fluid_inout_nodes_file, "w")
     for line in lines:
         new_line = ''
         for i in range(len(FluidInletoutlet_ele)):
