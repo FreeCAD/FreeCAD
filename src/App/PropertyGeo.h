@@ -127,6 +127,53 @@ public:
     }
 };
 
+class AppExport PropertyPosition: public PropertyVector
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    /**
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
+    PropertyPosition();
+
+    /**
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
+    virtual ~PropertyPosition();
+
+    const boost::any getPathValue(const ObjectIdentifier &path) const;
+
+    const char* getEditorName(void) const {
+        return "Gui::PropertyEditor::PropertyPositionItem";
+    }
+};
+
+class AppExport PropertyDirection: public PropertyVector
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    /**
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
+    PropertyDirection();
+
+    /**
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
+    virtual ~PropertyDirection();
+
+    const boost::any getPathValue(const ObjectIdentifier &path) const;
+
+    const char* getEditorName(void) const {
+        return "Gui::PropertyEditor::PropertyDirectionItem";
+    }
+};
 
 class AppExport PropertyVectorList: public PropertyLists
 {
