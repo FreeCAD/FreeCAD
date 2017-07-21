@@ -136,6 +136,8 @@ void Gui::SoFCDB::init()
     PropertyBoolItem                ::init();
     PropertyVectorItem              ::init();
     PropertyVectorDistanceItem      ::init();
+    PropertyPositionItem            ::init();
+    PropertyDirectionItem           ::init();
     PropertyMatrixItem              ::init();
     PropertyPlacementItem           ::init();
     PropertyEnumItem                ::init();
