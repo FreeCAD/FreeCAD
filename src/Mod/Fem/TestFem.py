@@ -297,6 +297,8 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.active_doc.saveAs(static_save_fc_file)
 
         # frequency
+        fcc_print('Reset Statik analysis')
+        fea.reset_all()
         fcc_print('Setting analysis type to \'frequency\"')
         fea.set_analysis_type("frequency")
         self.assertTrue(True if fea.analysis_type == 'frequency' else False, "Setting anlysis type to \'frequency\' failed")
