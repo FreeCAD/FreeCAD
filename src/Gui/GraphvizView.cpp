@@ -225,6 +225,7 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
             int ret = QMessageBox::warning(Gui::getMainWindow(),
                                            qApp->translate("Std_ExportGraphviz","Graphviz not found"),
                                            qApp->translate("Std_ExportGraphviz","Graphviz couldn't be found on your system.\n"
+                                                           "Read more about this at https://www.freecadweb.org/wiki/Std_DependencyGraph\n"
                                                            "Do you want to specify its installation path if it's already installed?"),
                                            QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::No) {
