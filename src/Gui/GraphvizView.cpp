@@ -144,6 +144,8 @@ private:
 
 }
 
+/* TRANSLATOR Gui::GraphvizView */
+
 GraphvizView::GraphvizView(App::Document & _doc, QWidget* parent)
   : MDIView(0, parent)
   , doc(_doc)
@@ -223,16 +225,20 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
         dotProc->start(dot, args);
         if (!dotProc->waitForStarted()) {
             int ret = QMessageBox::warning(Gui::getMainWindow(),
-                                           qApp->translate("Std_ExportGraphviz","Graphviz not found"),
-                                           qApp->translate("Std_ExportGraphviz","Graphviz couldn't be found on your system.\n"
-                                                           "Do you want to specify its installation path if it's already installed?"),
+                                           tr("Graphviz not found"),
+                                           QString::fromLatin1("<html><head/><body>%1 "
+                                                               "<a href=\"https://www.freecadweb.org/wiki/Std_DependencyGraph\">%2"
+                                                               "</a><p>%3</p></body></html>")
+                                           .arg(tr("Graphviz couldn't be found on your system."))
+                                           .arg(tr("Read more about it here."))
+                                           .arg(tr("Do you want to specify its installation path if it's already installed?")),
                                            QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::No) {
                 disconnectSignals();
                 return;
             }
             path = QFileDialog::getExistingDirectory(Gui::getMainWindow(),
-                                                     qApp->translate("Std_ExportGraphviz","Graphviz installation path"));
+                                                     tr("Graphviz installation path"));
             if (path.isEmpty()) {
                 disconnectSignals();
                 return;
@@ -271,8 +277,8 @@ void GraphvizView::svgFileRead(const QByteArray & data)
         svgItem->setSharedRenderer(renderer);
     else {
         QMessageBox::warning(getMainWindow(),
-                             qApp->translate("Std_ExportGraphviz","Graphviz failed"),
-                             qApp->translate("Std_ExportGraphviz","Graphviz failed to create an image file"));
+                             tr("Graphviz failed"),
+                             tr("Graphviz failed to create an image file"));
         disconnectSignals();
     }
 }
