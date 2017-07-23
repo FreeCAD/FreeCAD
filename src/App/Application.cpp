@@ -1256,6 +1256,8 @@ void Application::initTypes(void)
     App ::PropertyMatrix            ::init();
     App ::PropertyVector            ::init();
     App ::PropertyVectorDistance    ::init();
+    App ::PropertyPosition          ::init();
+    App ::PropertyDirection         ::init();
     App ::PropertyVectorList        ::init();
     App ::PropertyPlacement         ::init();
     App ::PropertyPlacementList     ::init();

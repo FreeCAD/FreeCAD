@@ -1344,6 +1344,9 @@ void PropertyVectorDistanceItem::propertyBound() {
     };
 }
 
+PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyPositionItem)
+
+PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyDirectionItem)
 
 // ---------------------------------------------------------------
 

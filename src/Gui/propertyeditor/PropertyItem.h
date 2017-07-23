@@ -473,6 +473,19 @@ private:
     PropertyUnitItem* m_z;
 };
 
+class GuiExport PropertyPositionItem: public PropertyVectorDistanceItem
+{
+    Q_OBJECT
+    PROPERTYITEM_HEADER
+
+};
+
+class GuiExport PropertyDirectionItem: public PropertyVectorDistanceItem
+{
+    Q_OBJECT
+    PROPERTYITEM_HEADER
+};
+
 class GuiExport PropertyMatrixItem: public PropertyItem
 {
     Q_OBJECT

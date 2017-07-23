@@ -495,7 +495,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.addObject("Part::Thickness", "Pipe")
         sheet.set('B1', '101')
         sheet.set('A53', '=-(-(B1-1)/2)')
-        sheet.set('A54', '=-(Cylinder.Radius + Pipe.Value*1mm - 1"/2)')
+        sheet.set('A54', '=-(Cylinder.Radius + Pipe.Value - 1"/2)')
 
         self.doc.recompute()
         self.assertEqual(sheet.getContents("A1"), "=1 < 2 ? 3 : 4")
