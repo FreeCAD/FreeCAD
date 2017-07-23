@@ -271,6 +271,10 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, encoding=ENCODING_ASCII):
     topology = ET.SubElement(grid, "Topology")
     geometry = ET.SubElement(grid, "Geometry")
 
+    # TODO: for the general mesh: write out topology and geometry in grid node
+    # TOOD: for every marked group write own grid node with topology (ref if cells)
+    #       geometry ref, attribute
+
 
     recalc_dict = write_fenics_mesh_points_xdmf(fem_mesh_obj, geometry, encoding=encoding)
     write_fenics_mesh_volumes_xdmf(fem_mesh_obj, topology, recalc_dict, encoding=encoding)
