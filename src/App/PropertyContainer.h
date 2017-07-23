@@ -196,8 +196,7 @@ protected:
   static const  PropertyData * getPropertyDataPtr(void); 
   virtual const PropertyData& getPropertyData(void) const; 
 
-  virtual void handleMissingProperty(Base::XMLReader &reader, const char *PropName);
-
+  virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
   virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop);
 
 private:
