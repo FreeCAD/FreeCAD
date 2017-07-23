@@ -102,12 +102,17 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, ToolShape));
 
         if (hGrp->GetBool("RefineModel", false)) {
-            TopoDS_Shape oldShape = resShape;
-            BRepBuilderAPI_RefineModel mkRefine(oldShape);
-            resShape = mkRefine.Shape();
-            ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
-            history[0] = joinHistory(history[0], hist);
-            history[1] = joinHistory(history[1], hist);
+            try {
+                TopoDS_Shape oldShape = resShape;
+                BRepBuilderAPI_RefineModel mkRefine(oldShape);
+                resShape = mkRefine.Shape();
+                ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
+                history[0] = joinHistory(history[0], hist);
+                history[1] = joinHistory(history[1], hist);
+            }
+            catch (Standard_Failure) {
+                // do nothing
+            }
         }
 
         this->Shape.setValue(resShape);
