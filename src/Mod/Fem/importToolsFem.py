@@ -56,7 +56,6 @@ def get_FemMeshObjectOrder(fem_mesh_obj):
             presumable_order = [el - 1 for el in edges_length_set]
     else:
         print("Found no edges in mesh: Element order determination does not work without them.")
-    print(presumable_order)
 
     return presumable_order
 
