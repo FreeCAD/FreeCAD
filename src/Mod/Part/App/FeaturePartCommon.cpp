@@ -140,12 +140,17 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
                  }
             }
             if (hGrp->GetBool("RefineModel", false)) {
-                TopoDS_Shape oldShape = resShape;
-                BRepBuilderAPI_RefineModel mkRefine(oldShape);
-                resShape = mkRefine.Shape();
-                ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
-                for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
-                    *jt = joinHistory(*jt, hist);
+                try {
+                    TopoDS_Shape oldShape = resShape;
+                    BRepBuilderAPI_RefineModel mkRefine(oldShape);
+                    resShape = mkRefine.Shape();
+                    ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
+                    for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
+                        *jt = joinHistory(*jt, hist);
+                }
+                catch (Standard_Failure) {
+                    // do nothing
+                }
             }
 
             this->Shape.setValue(resShape);

@@ -75,9 +75,14 @@ TopoDS_Shape FeaturePrimitive::refineShapeIfActive(const TopoDS_Shape& oldShape)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
     if (hGrp->GetBool("RefineModel", false)) {
-        Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
-        TopoDS_Shape resShape = mkRefine.Shape();
-        return resShape;
+        try {
+            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
+            TopoDS_Shape resShape = mkRefine.Shape();
+            return resShape;
+        }
+        catch (Standard_Failure) {
+            return oldShape;
+        }
     }
 
     return oldShape;
