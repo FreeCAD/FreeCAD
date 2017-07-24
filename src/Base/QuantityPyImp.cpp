@@ -624,7 +624,11 @@ void  QuantityPy::setFormat(Py::Tuple arg)
     Py::Char form(arg.getItem(1));
     fmt.precision = static_cast<int>(prec);
 
+#if PY_MAJOR_VERSION >= 3
+    std::string fmtstr = static_cast<std::string>(Py::String(form));
+#else
     std::string fmtstr = static_cast<std::string>(form);
+#endif
     if (fmtstr.size() != 1)
         throw Py::ValueError("Invalid format character");
     switch (fmtstr.front()) {
