@@ -21,6 +21,11 @@
 # ***************************************************************************
 from __future__ import print_function
 
+from importToolsFem import get_FemMeshObjectDimension, get_FemMeshObjectElementTypes, get_MaxDimElementFromList, get_FemMeshObjectOrder
+from xml.etree import ElementTree as ET  # parsing xml files and exporting
+import numpy as np
+
+
 __title__ = "FreeCAD Fenics XDMF mesh writer"
 __author__ = "Johannes Hartung"
 __url__ = "http://www.freecadweb.org"
@@ -29,18 +34,14 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD Fenics Mesh XDMF writer for FEM workbench
 
-from importToolsFem import get_FemMeshObjectDimension, get_FemMeshObjectElementTypes, get_MaxDimElementFromList, get_FemMeshObjectOrder
-from xml.etree import ElementTree as ET  # parsing xml files and exporting
-import numpy as np
-
 ENCODING_ASCII = 'ASCII'
 ENCODING_HDF5 = 'HDF5'
 
 FreeCAD_Group_Dimensions = {
-    "Vertex":0,
-    "Edge":1,
-    "Face":2,
-    "Volume":3
+    "Vertex": 0,
+    "Edge": 1,
+    "Face": 2,
+    "Volume": 3
 }
 
 FreeCAD_to_Fenics_XDMF_dict = {
@@ -145,24 +146,25 @@ def write_fenics_mesh_volumes_xdmf(fem_mesh_obj, topologynode, nodes_dict, encod
     elif encoding == ENCODING_HDF5:
         pass
 
-def write_fenics_mesh_codim_xdmf(fem_mesh_obj, 
-                                 topologynode, 
-                                 nodes_dict, 
+
+def write_fenics_mesh_codim_xdmf(fem_mesh_obj,
+                                 topologynode,
+                                 nodes_dict,
                                  codim=0,
                                  encoding=ENCODING_ASCII):
-    mesh_dimension = get_FemMeshObjectDimension(fem_mesh_obj)    
-    
+    mesh_dimension = get_FemMeshObjectDimension(fem_mesh_obj)
+
     element_types = get_FemMeshObjectElementTypes(fem_mesh_obj, remove_zero_element_entries=True)
     element_order = get_FemMeshObjectOrder(fem_mesh_obj)
     # we get all elements from mesh to decide which one to write by selection of codim
-    #nodeindices = [(nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_volume_ind)) for (fen_ind, fc_volume_ind) in enumerate(fc_cells)]
-    writeout_element_dimension = mesh_dimension - codim    
-    
+    # nodeindices = [(nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_volume_ind)) for (fen_ind, fc_volume_ind) in enumerate(fc_cells)]
+    writeout_element_dimension = mesh_dimension - codim
+
     (num_topo, name_topo, dim_topo) = (0, "", 0)
     for (num, name, dim) in element_types:
         if writeout_element_dimension == dim:
             (num_topo, name_topo, dim_topo) = (num, name, dim)
-    
+
     (topology_type, nodes_per_element) = FreeCAD_to_Fenics_XDMF_dict[(name_topo, element_order)]
 
     topologynode.set("TopologyType", topology_type)
@@ -183,13 +185,12 @@ def write_fenics_mesh_codim_xdmf(fem_mesh_obj,
 
     nodeindices = [(nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_topo_ind)) for (fen_ind, fc_topo_ind) in enumerate(fc_topo)]
 
-
     if encoding == ENCODING_ASCII:
         dataitem = ET.SubElement(topologynode, "DataItem", NumberType="UInt", Dimensions="%d %d" % (num_topo, nodes_per_element), Format="XML")
         dataitem.text = numpy_array_to_str(tuples_to_numpy(nodeindices))
     elif encoding == ENCODING_HDF5:
         pass
-    
+
     return fc_topo
 
 
@@ -287,9 +288,9 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, encoding=ENCODING_ASCII):
     nodes_dict = write_fenics_mesh_points_xdmf(fem_mesh_obj, base_geometry, encoding=encoding)
     write_fenics_mesh_volumes_xdmf(fem_mesh_obj, base_topology, nodes_dict, encoding=encoding)
     #####################################
-    
+
     fem_mesh = fem_mesh_obj.FemMesh
-    try:    
+    try:
         gmshgroups = fem_mesh.Groups
     except:
         gmshgroups = ()
@@ -300,45 +301,41 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, encoding=ENCODING_ASCII):
         mesh_function_type = fem_mesh.getGroupElementType(g)
         mesh_function_codim = dim_cell - FreeCAD_Group_Dimensions[mesh_function_type]
         mesh_function_name = fem_mesh.getGroupName(g)
-        
-        print('group id: %d (label: %s) with element type %s and codim %d' \
-            % (g, mesh_function_name, mesh_function_type, mesh_function_codim))
-        
+
+        print('group id: %d (label: %s) with element type %s and codim %d'
+              % (g, mesh_function_name, mesh_function_type, mesh_function_codim))
+
         mesh_function_grid = ET.SubElement(domain, "Grid", Name=mesh_function_name+"_mesh", GridType="Uniform")
         mesh_function_topology = ET.SubElement(mesh_function_grid, "Topology")
 
-        mesh_function_topology_description = write_fenics_mesh_codim_xdmf(fem_mesh_obj, 
-                                                                          mesh_function_topology, 
-                                                                          nodes_dict, 
+        mesh_function_topology_description = write_fenics_mesh_codim_xdmf(fem_mesh_obj,
+                                                                          mesh_function_topology,
+                                                                          nodes_dict,
                                                                           codim=mesh_function_codim, encoding=encoding)
 
         mesh_function_geometry = ET.SubElement(mesh_function_grid, "Geometry", Reference="XML")
         mesh_function_geometry.text = "/Xdmf/Domain/Grid/Geometry"
-        mesh_function_attribute = ET.SubElement(mesh_function_grid, "Attribute") 
-        
+        mesh_function_attribute = ET.SubElement(mesh_function_grid, "Attribute")
+
         elem_dict = {}
         elem_mark_default = -1
         elem_mark_group = g
         elem_mark_overlap = g/2
-        
+
         # TODO: is it better to save all groups each at once or collect all codim equal
         # groups to put them into one function?
-        # TODO: nevertheless there has to be a dialog which fixes the default value and the mark value        
-        
+        # TODO: nevertheless there has to be a dialog which fixes the default value and the mark value
+
         for e in fem_mesh.getGroupElements(g):
-            elem_dict[e] = elem_mark_group                
-
-
+            elem_dict[e] = elem_mark_group
 
         val_array = np.array([elem_dict.get(e, elem_mark_default) for e in mesh_function_topology_description])
         topo_array = np.vstack((val_array,)).T
-        write_fenics_mesh_scalar_cellfunctions(mesh_function_name, 
-                                               topo_array, 
+        write_fenics_mesh_scalar_cellfunctions(mesh_function_name,
+                                               topo_array,
                                                mesh_function_attribute, encoding=ENCODING_ASCII)
-         
 
     # TODO: improve cell functions support
-    # write_fenics_mesh_cellfunctions(fem_mesh_obj, {}, attribute, encoding=encoding)
 
     fp = open(outputfile, "w")
     fp.write('''<?xml version="1.0"?>\n<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>\n''')
