@@ -1728,7 +1728,7 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Mirrored");
-    sToolTipText  = QT_TR_NOOP("create a mirrored feature");
+    sToolTipText  = QT_TR_NOOP("Create a mirrored feature");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Mirrored";
