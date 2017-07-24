@@ -127,6 +127,11 @@ void ImportOCAF::loadShapes()
     lValue.clear();
 }
 
+void ImportOCAF::setMerge(bool merge)
+{
+	this->merge=merge;
+}
+
 void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
                             const std::string& defaultname, const std::string& assembly, bool isRef,
                             std::vector<App::DocumentObject*>& lValue)
@@ -221,11 +226,10 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
             // option within the FreeCAD preference menu
             // Currently it is merging STEP Compound Shape into a single Shape Part::Feature which
             // is an OpenCascade computed Compound
-
             if (isRef)
-                createShape(label, loc, part_name, lValue, true);
+                createShape(label, loc, part_name, lValue, this->merge);
             else
-                createShape(label, part_loc, part_name, localValue, true);
+                createShape(label, part_loc, part_name, localValue, this->merge);
         }
         else {
             if (aShapeTool->IsSimpleShape(label)) {
@@ -301,6 +305,7 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
 
+/*
             std::vector<App::Color> colors;
             for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
                 Quantity_Color aColor;
@@ -319,7 +324,7 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
                 createShape(label, loc, name, lValue, false);
                 return;
             }
-
+*/
             for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
                 const TopoDS_Shape& sh = xp.Current();
                 if (!sh.IsNull()) {
