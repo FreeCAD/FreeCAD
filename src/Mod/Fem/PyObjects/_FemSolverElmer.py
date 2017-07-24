@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,18 +22,19 @@
 
 
 __title__ = "Elmer Solver Object"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
+__author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
 import FemDefsElmer
+import FemElmerTasks
+import FemSolve
 
 
 class _FemSolverElmer(object):
     """Proxy for FemSolverElmers Document Object."""
 
-    solverType = "FemSolverElmer"
-    Type = ""
+    Type = "FemSolverElmer"
 
     def __init__(self, obj):
         obj.Proxy = self
@@ -43,11 +44,22 @@ class _FemSolverElmer(object):
         # Prop_Transient= 2
         # Prop_Hidden   = 4
         # Prop_Output   = 8
-        attr = 1
+
+        obj.addProperty(
+                "App::PropertyPythonObject", "SupportedTypes",
+                "Base", "", 4)
+        obj.SupportedTypes = FemDefsElmer.SUPPORTED
+
+        obj.addProperty(
+                "App::PropertyLink", "ElmerResult",
+                "Base", "", 4 | 8)
+        obj.addProperty(
+                "App::PropertyLink", "ElmerOutput",
+                "Base", "", 4 | 8)
 
         obj.addProperty(
                 "App::PropertyString", "SolverType",
-                "Base", "Type of the solver.", attr)
+                "Base", "Type of the solver.", 1)
         obj.addProperty(
                 "App::PropertyEnumeration", "AnalysisType",
                 "Fem", "Type of the analysis.")
@@ -76,7 +88,7 @@ class _FemSolverElmer(object):
         obj.AnalysisType = FemDefsElmer.SUPPORTED
 
         # Set default values for properties.
-        obj.SolverType = self.solverType
+        obj.SolverType = self.Type
         obj.AnalysisType = FemDefsElmer.STATIC
         obj.EigenmodesCount = 10
         obj.LinMaxIterations = 500
@@ -85,6 +97,14 @@ class _FemSolverElmer(object):
         obj.TermoLinConvergenceTolerance = 1e-10
         obj.TermoNLinMaxIterations = 20
         obj.TermoNLinConvergenceTolerance = 1e-7
+
+    def buildMachine(self, obj, directory):
+        return FemSolve.Machine(
+            solver=obj, directory=directory,
+            check=FemElmerTasks.Check(),
+            prepare=FemElmerTasks.Prepare(),
+            solve=FemElmerTasks.Solve(),
+            results=FemElmerTasks.Results())
 
     def execute(self, obj):
         return True
