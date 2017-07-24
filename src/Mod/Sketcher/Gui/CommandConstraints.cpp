@@ -6826,7 +6826,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
         // undo command open
         openCommand("Toggle driving from/to non-driving");
 
-        int succesful=SubNames.size();
+        int successful=SubNames.size();
         // go through the selected subelements
         for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
             // only handle constraints
@@ -6837,12 +6837,12 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
                     doCommand(Doc,"App.ActiveDocument.%s.toggleDriving(%d) ",selection[0].getFeatName(),ConstrId);
                 }
                 catch(const Base::Exception&) {
-                    succesful--;
+                    successful--;
                 }
             }
         }
 
-        if (succesful > 0)
+        if (successful > 0)
             commitCommand();
         else
             abortCommand();
