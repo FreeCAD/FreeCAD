@@ -130,7 +130,7 @@ template<> void _class_::init(void){\
  * documentation. Following is a description howto create custom extensions. 
  * 
  * Extensions are like every other FreeCAD object and based on properties. All information storage 
- * and persistance should be achieved by use of those. Additional any number of methods can be 
+ * and persistence should be achieved by use of those. Additional any number of methods can be 
  * added to provide funtionality around the properties. There are 3 samll difference to normal objects:
  * 1. They must be derived from Extension class
  * 2. Properties must be handled with special extension macros
@@ -272,7 +272,7 @@ public:
     virtual const char* extensionGetPropertyDocumentation(const char *name) const;
     //@}
     
-    /** @name Persistance */
+    /** @name Persistence */
     //@{
     virtual void extensionSave(Base::Writer&) const {}
     virtual void extensionRestore(Base::XMLReader&) {}
