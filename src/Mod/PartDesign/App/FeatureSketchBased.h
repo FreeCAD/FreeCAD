@@ -151,8 +151,8 @@ protected:
     void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
                  Base::Vector3d& base, Base::Vector3d& dir);
         
-private:
     void onChanged(const App::Property* prop);
+private:
     bool isParallelPlane(const TopoDS_Shape&, const TopoDS_Shape&) const;
     bool isEqualGeometry(const TopoDS_Shape&, const TopoDS_Shape&) const;
     bool isQuasiEqual(const TopoDS_Shape&, const TopoDS_Shape&) const;
