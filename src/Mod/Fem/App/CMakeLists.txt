@@ -167,6 +167,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_TaskPanelFemMeshRegion.py
     PyGui/_TaskPanelFemResultShow.py
     PyGui/_TaskPanelFemSolverCalculix.py
+    PyGui/_TaskPanelFemSolverControl.py
     PyGui/_ViewProviderFemConstraintSelfWeight.py
     PyGui/_ViewProviderFemElementFluid1D.py
     PyGui/_ViewProviderFemElementGeometry1D.py
