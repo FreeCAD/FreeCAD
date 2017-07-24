@@ -66,5 +66,11 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
       </Documentation>
       <Parameter Name="UserString" Type="String" />
     </Attribute>
+    <Attribute Name="Format" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Format of the Quantity</UserDocu>
+      </Documentation>
+      <Parameter Name="Format" Type="Tuple" />
+    </Attribute>
     </PythonExport>
 </GenerateModel>

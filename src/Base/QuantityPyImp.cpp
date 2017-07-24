@@ -606,6 +606,44 @@ Py::String QuantityPy::getUserString(void) const
     return Py::String(getQuantityPtr()->getUserString().toUtf8(),"utf-8");
 }
 
+Py::Tuple QuantityPy::getFormat(void) const
+{
+    QuantityFormat fmt = getQuantityPtr()->getFormat();
+
+    Py::Tuple tuple(2);
+    tuple.setItem(0, Py::Int (fmt.precision));
+    tuple.setItem(1, Py::Char(fmt.toFormat()));
+    return tuple;
+}
+
+void  QuantityPy::setFormat(Py::Tuple arg)
+{
+    QuantityFormat fmt;
+
+    Py::Int  prec(arg.getItem(0));
+    Py::Char form(arg.getItem(1));
+    fmt.precision = static_cast<int>(prec);
+
+    std::string fmtstr = static_cast<std::string>(form);
+    if (fmtstr.size() != 1)
+        throw Py::ValueError("Invalid format character");
+    switch (fmtstr.front()) {
+    case 'f':
+        fmt.format = QuantityFormat::Fixed;
+        break;
+    case 'e':
+        fmt.format = QuantityFormat::Scientific;
+        break;
+    case 'g':
+        fmt.format = QuantityFormat::Default;
+        break;
+    default:
+        throw Py::ValueError("Invalid format character");
+    }
+
+    getQuantityPtr()->setFormat(fmt);
+}
+
 PyObject *QuantityPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
