@@ -31,7 +31,7 @@ from .FemCommands import FemCommands
 import FreeCAD
 import FreeCADGui
 from PySide import QtCore, QtGui
-import FemGui
+import FemSolve
 
 
 class _CommandFemSolverRun(FemCommands):
@@ -63,12 +63,7 @@ class _CommandFemSolverRun(FemCommands):
             self.fea.finished.connect(load_results)
             QtCore.QThreadPool.globalInstance().start(self.fea)
         elif self.solver.SolverType == "FemSolverElmer":
-            analysis = FemGui.getActiveAnalysis()
-            FreeCADGui.addModule("FemToolsElmer")
-            FreeCADGui.doCommand(
-                    "FemToolsElmer.runSimulation("
-                    "App.ActiveDocument.{}, App.ActiveDocument.{})"
-                    .format(analysis.Name, self.solver.Name))
+            self._newActivated()
         elif self.solver.SolverType == "FemSolverZ88":
             import FemToolsZ88
             self.fea = FemToolsZ88.FemToolsZ88(None, self.solver)
@@ -82,6 +77,20 @@ class _CommandFemSolverRun(FemCommands):
             # QtCore.QThreadPool.globalInstance().start(self.fea)
         else:
             QtGui.QMessageBox.critical(None, "Not known solver type", message)
+
+    def _newActivated(self):
+        solver = self._getSelectedSolver()
+        if solver is not None:
+            machine = FemSolve.getMachine(solver)
+            machine.target = FemSolve.RESULTS
+            if not machine.running:
+                machine.start()
+
+    def _getSelectedSolver(self):
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemSolverObjectPython"):
+            return sel[0]
+        return None
 
 
 FreeCADGui.addCommand('FEM_SolverRun', _CommandFemSolverRun())
