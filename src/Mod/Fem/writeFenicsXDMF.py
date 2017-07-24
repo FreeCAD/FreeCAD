@@ -114,39 +114,6 @@ def write_fenics_mesh_points_xdmf(fem_mesh_obj, geometrynode, encoding=ENCODING_
     return recalc_nodes_ind_dict
 
 
-def write_fenics_mesh_volumes_xdmf(fem_mesh_obj, topologynode, nodes_dict, encoding=ENCODING_ASCII):
-    (num_cells, name_cell, dim_cell) = get_MaxDimElementFromList(get_FemMeshObjectElementTypes(fem_mesh_obj))
-    element_order = get_FemMeshObjectOrder(fem_mesh_obj)
-
-    (topology_type, nodes_per_element) = FreeCAD_to_Fenics_XDMF_dict[(name_cell, element_order)]
-
-    topologynode.set("TopologyType", topology_type)
-    topologynode.set("NumberOfElements", str(num_cells))
-    topologynode.set("NodesPerElement", str(nodes_per_element))
-
-    if dim_cell == 3:
-        fc_cells = fem_mesh_obj.FemMesh.Volumes
-    elif dim_cell == 2:
-        fc_cells = fem_mesh_obj.FemMesh.Faces
-    elif dim_cell == 1:
-        fc_cells = fem_mesh_obj.FemMesh.Edges
-    elif dim_cell == 0:
-        fc_cells = fem_mesh_obj.FemMesh.Nodes
-    else:
-        fc_cells = []
-        print("Dimension of mesh incompatible with export XDMF function: %d" % (dim_cell,))
-
-    nodeindices = [(nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_volume_ind)) for (fen_ind, fc_volume_ind) in enumerate(fc_cells)]
-    # FC starts after all other entities, fenics start from 0 to size-1
-    # write nodeindices into dict to access them later
-
-    if encoding == ENCODING_ASCII:
-        dataitem = ET.SubElement(topologynode, "DataItem", NumberType="UInt", Dimensions="%d %d" % (num_cells, nodes_per_element), Format="XML")
-        dataitem.text = numpy_array_to_str(tuples_to_numpy(nodeindices))
-    elif encoding == ENCODING_HDF5:
-        pass
-
-
 def write_fenics_mesh_codim_xdmf(fem_mesh_obj,
                                  topologynode,
                                  nodes_dict,
@@ -286,7 +253,7 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, encoding=ENCODING_ASCII):
     #####################################
     # write base topo and geometry
     nodes_dict = write_fenics_mesh_points_xdmf(fem_mesh_obj, base_geometry, encoding=encoding)
-    write_fenics_mesh_volumes_xdmf(fem_mesh_obj, base_topology, nodes_dict, encoding=encoding)
+    write_fenics_mesh_codim_xdmf(fem_mesh_obj, base_topology, nodes_dict, codim=0, encoding=encoding)
     #####################################
 
     fem_mesh = fem_mesh_obj.FemMesh
