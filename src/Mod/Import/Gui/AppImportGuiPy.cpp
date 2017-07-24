@@ -342,7 +342,14 @@ private:
 
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
+	    bool optionReadShapeCompoundMode_status;
+            bool optionScheme_214;
+            bool optionScheme_203;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
+	    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
+            optionReadShapeCompoundMode_status = hGrp->GetBool("ReadShapeCompoundMode",false);
+            optionScheme_214 = hGrp->GetBool("Scheme_214",true);
+            optionScheme_203 = hGrp->GetBool("Scheme_203",false);
 
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 try {
@@ -416,6 +423,8 @@ private:
             // purge the document before recomputing it to clear it and settle it in the proper
             // way. This is drastically improving STEP rendering time on complex STEP files.
             pcDoc->recompute();
+	    if (file.hasExtension("stp") || file.hasExtension("step"))
+		    ocaf.setMerge(optionReadShapeCompoundMode_status);
             ocaf.loadShapes();
             pcDoc->purgeTouched();
             pcDoc->recompute();
