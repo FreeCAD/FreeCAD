@@ -102,6 +102,7 @@ SET(FemScripts_SRCS
     Report.py
     FemReport.py
     FemReportDialog.py
+    FemMisc.py
     TestFem.py
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
