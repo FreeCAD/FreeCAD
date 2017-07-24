@@ -50,8 +50,11 @@ INSTALL(
         Report.py
         FemReport.py
         FemReportDialog.py
-	FemMisc.py
+        FemMisc.py
         FemSettings.py
+        FemTask.py
+        FemSolve.py
+        FemSignal.py
         TestFem.py
     DESTINATION
         Mod/Fem
