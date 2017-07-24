@@ -99,7 +99,6 @@ SET(FemScripts_SRCS
     ObjectsFem.py
     FemDefsElmer.py
     sifio.py
-    Report.py
     FemReport.py
     FemReportDialog.py
     FemMisc.py
