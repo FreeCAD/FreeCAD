@@ -27,7 +27,10 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <App/DocumentObserver.h>
+#include <boost/bind.hpp>
 
+#include "TaskSketchBasedParameters.h"
 #include "ViewProviderHole.h"
 
 class Ui_TaskHoleParameters;
@@ -40,35 +43,95 @@ namespace Gui {
 class ViewProvider;
 }
 
+namespace PartDesign {
+class Hole;
+}
+
 namespace PartDesignGui { 
 
 
 
-class TaskHoleParameters : public Gui::TaskView::TaskBox, public Gui::SelectionSingleton::ObserverType
+class TaskHoleParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    TaskHoleParameters(QWidget *parent = 0);
+    TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent = 0);
     ~TaskHoleParameters();
-    /// Observer message from the Selection
-    void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                  Gui::SelectionSingleton::MessageType Reason);
+    
+    void apply() override;
+
+    bool   getThreaded() const;
+    long   getThreadType() const;
+    long   getThreadSize() const;
+    long   getThreadClass() const;
+    long   getThreadFit() const;
+    Base::Quantity getDiameter() const;
+    bool   getThreadDirection() const;
+    long   getHoleCutType() const;
+    Base::Quantity getHoleCutDiameter() const;
+    Base::Quantity getHoleCutDepth() const;
+    Base::Quantity getHoleCutCountersinkAngle() const;
+    long   getDepthType() const;
+    Base::Quantity getDepth() const;
+    long   getDrillPoint() const;
+    Base::Quantity getDrillPointAngle() const;
+    bool   getTapered() const;
+    Base::Quantity getTaperedAngle() const;
 
 private Q_SLOTS:
+    void threadedChanged();
+    void threadTypeChanged(int index);
+    void threadSizeChanged(int index);
+    void threadClassChanged(int index);
+    void threadFitChanged(int index);
+    void modelActualThreadChanged();
+    void threadPitchChanged(double value);
+    void threadCutOffOuterChanged(double value);
+    void threadCutOffInnerChanged(double value);
+    void threadAngleChanged(double value);    
+    void threadDiameterChanged(double value);
+    void threadDirectionChanged();
+    void holeCutChanged(int index);
+    void holeCutDiameterChanged(double value);
+    void holeCutDepthChanged(double value);
+    void holeCutCountersinkAngleChanged(double value);
+    void depthChanged(int index);
+    void depthValueChanged(double value);
+    void drillPointChanged();
+    void drillPointAngledValueChanged(double value);
+    void taperedChanged();
+    void taperedAngleChanged(double value);   
+private:
+    class Observer : public App::DocumentObserver {
+    public:
+        Observer(TaskHoleParameters * _owner, PartDesign::Hole * _hole);
+    private:
+        virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
+        TaskHoleParameters * owner;
+        PartDesign::Hole * hole;
+    };
 
 protected:
     void changeEvent(QEvent *e);
+    void changedObject(const App::Property& Prop);
+
+private:
+    void onSelectionChanged(const Gui::SelectionChanges &msg);
 
 private:
 
-private:
+    typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
+    Connection connectPropChanged;
+
+    std::unique_ptr<Observer> observer;
     QWidget* proxy;
     Ui_TaskHoleParameters* ui;
+    bool isApplying;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgHoleParameters : public Gui::TaskView::TaskDialog
+class TaskDlgHoleParameters : public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
@@ -76,30 +139,9 @@ public:
     TaskDlgHoleParameters(ViewProviderHole *HoleView);
     ~TaskDlgHoleParameters();
 
-    ViewProviderHole* getHoleView() const
-    { return HoleView; }
-
-public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open();
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    /// is called by the framework if the user presses the help button 
-    virtual void helpRequested();
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Close|QDialogButtonBox::Help; }
+    ViewProviderHole* getHoleView() const { return static_cast<ViewProviderHole*>(vp); }
 
 protected:
-    ViewProviderHole   *HoleView;
-
     TaskHoleParameters  *parameter;
 };
 
