@@ -45,6 +45,7 @@ set(FemGui_MOC_HDRS
     DlgSettingsFemGeneralImp.h
     DlgSettingsFemGmshImp.h
     DlgSettingsFemZ88Imp.h
+    DlgSettingsFemElmerImp.h
     PropertyFemMeshItem.h
     TaskObjectName.h
     TaskCreateNodeSet.h
@@ -85,6 +86,7 @@ set(FemGui_UIC_SRCS
     DlgSettingsFemGeneral.ui
     DlgSettingsFemGmsh.ui
     DlgSettingsFemZ88.ui
+    DlgSettingsFemElmer.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
     TaskFemConstraint.ui
@@ -138,6 +140,9 @@ SET(FemGui_DLG_SRCS
     DlgSettingsFemZ88.ui
     DlgSettingsFemZ88Imp.cpp
     DlgSettingsFemZ88Imp.h
+    DlgSettingsFemElmer.ui
+    DlgSettingsFemElmerImp.cpp
+    DlgSettingsFemElmerImp.h
     TaskFemConstraint.ui
     TaskFemConstraint.cpp
     TaskFemConstraint.h
