@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de                *
+# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,20 +20,21 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FemInputWriterElmer"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
+
+__title__ = "FemWriterElmer"
+__author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
-## \addtogroup FEM
-#  @{
 
-from FreeCAD import Console
+import os
 import os.path
 import subprocess
+import tempfile
 
+import Units
 import Fem
-from Units import Quantity
-import ObjectsFem
+import FemMisc
+import FemSettings
 import FemGmshTools
 import FemDefsElmer
 import sifio
@@ -46,13 +47,46 @@ _ELMERGRID_OFORMAT = "2"
 _SOLID_PREFIX = "Solid"
 
 
-CONSTS_DEF = {
-    "Gravity": 9.82,
-    "StefanBoltzmann": 5.67e-8,
-    "PermittivityOfVacuum": 8.8542e-12,
-    "BoltzmannConstant": 1.3807e-23,
-    "UnitCharge": 1.602e-19,
+UNITS = {
+    "L": "mm",
+    "M": "kg",
+    "T": "s",
+    "I": "A",
+    "O": "K",
+    "N": "mol",
+    "J": "cd",
 }
+
+
+CONSTS_DEF = {
+    "Gravity": "9.82 m/s^2",
+    "StefanBoltzmann": "5.67e-8 W/(m^2*K^4)",
+    "PermittivityOfVacuum": "8.8542e-12 s^4*A^2/(m*kg)",
+    "BoltzmannConstant": "1.3807e-23 J/K",
+}
+
+
+SUPPORTED = [
+        ("Fem::ConstraintFixed",),
+        ("Fem::ConstraintForce",),
+        ("Fem::ConstraintDisplacement",),
+        ("Fem::ConstraintTemperature",),
+        ("Fem::ConstraintSelfWeight",),
+        ("Fem::ConstraintInitialTemperature",),
+        ("Fem::FeaturePython", "FemConstraintSelfWeight",),
+]
+
+
+def getFromUi(value, unit, outputDim):
+    quantity = Units.Quantity(str(value) + str(unit))
+    return convert(quantity, outputDim)
+
+
+def convert(quantityStr, unit):
+    quantity = Units.Quantity(quantityStr)
+    for key, setting in UNITS.iteritems():
+        unit = unit.replace(key, setting)
+    return float(quantity.getValueAs(unit))
 
 
 class Writer(object):
@@ -85,53 +119,29 @@ class Writer(object):
     # If the file does not exist, an example with the same name is created.
     # The default output file name is the same with a different suffix.
 
-    def __init__(self, analysis, solver, directory, gridBin):
+    def __init__(self, analysis, solver, directory):
         self.analysis = analysis
         self.solver = solver
         self.directory = directory
-        self.gridBin = gridBin
-        self._groupNames = dict()
+        self._groups = set()
         self._bndSections = dict()
 
     def writeInputFiles(self, report):
-        self._purgeMeshGroups()
         self._writeSif()
         self._writeStartinfo()
-        self._recreateMesh()
         self._writeMesh()
-
-    def _getOfType(self, baseType, pyType=None):
-        matching = []
-        for m in self.analysis.Member:
-            if m.isDerivedFrom(baseType):
-                if pyType is None:
-                    matching.append(m)
-                elif hasattr(m, "Proxy") and m.Proxy.Type == pyType:
-                    matching.append(m)
-        return matching
-
-    def _getFirstOfType(self, baseType, pyType=None):
-        objs = self._getOfType(baseType, pyType)
-        return objs[0] if objs else None
-
-    def _recreateMesh(self):
-        mesh = self._getFirstOfType("Fem::FemMeshObject")
-        FemGmshTools.FemGmshTools(mesh).create_mesh()
 
     def _writeStartinfo(self):
         startinfo_path = os.path.join(
                 self.directory, _STARTINFO_NAME)
-        Console.PrintLog(
-                "Write ELMERFEM_STARTINFO to {}.\n"
-                .format(startinfo_path))
         with open(startinfo_path, 'w') as f:
             f.write(_SIF_NAME)
 
     def _writeMesh(self):
+        mesh = FemMisc.getSingleMember(self.analysis, "Fem::FemMeshObject")
         unvPath = os.path.join(self.directory, "mesh.unv")
-        mesh = self._getFirstOfType("Fem::FemMeshObject")
-        Fem.export([mesh], unvPath)
-        args = [self.gridBin,
+        self._exportToUnv(mesh, unvPath)
+        args = [FemSettings.getBinary("ElmerGrid"),
                 _ELMERGRID_IFORMAT,
                 _ELMERGRID_OFORMAT,
                 unvPath,
@@ -139,25 +149,44 @@ class Writer(object):
                 "-out", self.directory]
         subprocess.call(args)
 
-    def _purgeMeshGroups(self):
-        mesh = self._getFirstOfType("Fem::FemMeshObject")
-        for grp in mesh.MeshGroupList:
-            grp.Document.removeObject(grp.Name)
-        mesh.MeshGroupList = []
+    def _exportToUnv(self, mesh, meshPath):
+        unvGmshFd, unvGmshPath = tempfile.mkstemp(suffix=".unv")
+        brepFd, brepPath = tempfile.mkstemp(suffix=".brep")
+        geoFd, geoPath = tempfile.mkstemp(suffix=".geo")
+        os.close(brepFd)
+        os.close(geoFd)
+        os.close(unvGmshFd)
+
+        tools = FemGmshTools.FemGmshTools(mesh)
+        tools.group_elements = {g: [g] for g in self._groups}
+        tools.ele_length_map = {}
+        tools.temp_file_geometry = brepPath
+        tools.temp_file_geo = geoPath
+        tools.temp_file_mesh = unvGmshPath
+
+        tools.get_dimension()
+        tools.get_gmsh_command()
+        tools.write_part_file()
+        tools.write_geo()
+        tools.run_gmsh_with_geo()
+
+        ioMesh = Fem.FemMesh()
+        ioMesh.read(unvGmshPath)
+        ioMesh.write(meshPath)
+
+        os.remove(brepPath)
+        os.remove(geoPath)
+        os.remove(unvGmshPath)
 
     def _getGroupName(self, subName):
-        if subName in self._groupNames:
-            return self._groupNames[subName]
-        mesh = self._getFirstOfType("Fem::FemMeshObject")
-        obj = ObjectsFem.makeMeshGroup(mesh, name=subName)
-        obj.References += [(mesh.Part, (subName,))]
-        self._groupNames[subName] = obj.Name
-        return obj.Name
+        self._groups.add(subName)
+        return subName
 
     def _writeSif(self):
         simulation = self._getSimulation()
         constants = self._getConstants()
         solvers = self._getSolvers()
+        solvers.append(self._getOutputSolver())
         boundaryConditions = self._getBoundaryConditions()
         bodyForces = self._getBodyForces()
         initialConditions = self._getInitialConditions()
@@ -195,84 +224,97 @@ class Writer(object):
         s["Output Intervals"] = 1
         s["Timestepping Method"] = "BDF"
         s["BDF Order"] = 1
-        s["Post File"] = sifio.FileAttr("case.vtu")
-        s["Coordinate scaling"] = 0.001
         s["Use Mesh Names"] = True
         return s
 
     def _getConstants(self):
         s = sifio.createSection(sifio.CONSTANTS)
-        s["Gravity"] = (0.0, -1.0, 0.0, CONSTS_DEF["Gravity"])
-        s["Stefan Boltzmann"] = CONSTS_DEF["StefanBoltzmann"]
-        s["Permittivity of Vacuum"] = CONSTS_DEF["PermittivityOfVacuum"]
-        s["Boltzmann Constant"] = CONSTS_DEF["BoltzmannConstant"]
-        s["Unit Charge"] = CONSTS_DEF["UnitCharge"]
+        s["Gravity"] = (0.0, -1.0, 0.0, convert(
+            CONSTS_DEF["Gravity"], "L/T^2"))
+        s["Stefan Boltzmann"] = convert(
+            CONSTS_DEF["StefanBoltzmann"], "M/(O^4*T^3)")
+        s["Permittivity of Vacuum"] = convert(
+            CONSTS_DEF["PermittivityOfVacuum"], "T^4*I^2/(L*M)")
+        s["Boltzmann Constant"] = convert(
+            CONSTS_DEF["BoltzmannConstant"], "M*L^2/(T^2*K)")
         return s
 
     def _getBodyForces(self):
         sections = []
-        obj = self._getFirstOfType(
-                "Fem::FeaturePython", "FemConstraintSelfWeight")
-        matObj = self._getFirstOfType("App::MaterialObjectPython")
-        density = self._getInUnit(matObj.Material["Density"], "kg/m^3")
+        obj = FemMisc.getSingleMember(
+                self.analysis, "Fem::FeaturePython", "FemConstraintSelfWeight")
+        matObj = FemMisc.getSingleMember(
+                self.analysis, "App::MaterialObjectPython")
+        density = convert(matObj.Material["Density"], "M/L^3")
         if obj is not None:
             sections.append(self._getSelfweight(obj, density))
+        if self.solver.AnalysisType == FemDefsElmer.THERMOMECH:
+            obj = FemMisc.getSingleMember(
+                    self.analysis, "Fem::FeaturePython",
+                    "FemConstraintBodyHeatFlux")
+            if obj is not None:
+                sections.append(self._getBodyHeatFlux(obj))
         return sections
 
     def _getBoundaryConditions(self):
-        for obj in self._getOfType("Fem::ConstraintFixed"):
+        for obj in FemMisc.getMember(self.analysis, "Fem::ConstraintFixed"):
             self._createFixeds(obj)
-        for obj in self._getOfType("Fem::ConstraintForce"):
+        for obj in FemMisc.getMember(self.analysis, "Fem::ConstraintForce"):
             self._createForces(obj)
-        for obj in self._getOfType("Fem::ConstraintDisplacement"):
+        for obj in FemMisc.getMember(
+                self.analysis, "Fem::ConstraintDisplacement"):
             self._createDisplacements(obj)
         if self.solver.AnalysisType == FemDefsElmer.THERMOMECH:
-            for obj in self._getOfType("Fem::ConstraintTemperature"):
+            for obj in FemMisc.getMember(
+                    self.analysis, "Fem::ConstraintTemperature"):
                 self._createTemps(obj)
         return self._bndSections.values()
 
     def _getInitialConditions(self):
         sections = []
         if self.solver.AnalysisType == FemDefsElmer.THERMOMECH:
-            obj = self._getFirstOfType("Fem::ConstraintInitialTemperature")
+            obj = FemMisc.getSingleMember(
+                    self.analysis, "Fem::ConstraintInitialTemperature")
             if obj is not None:
                 sections.append(self._getInitialTemp(obj))
         return sections
 
     def _getMaterials(self, bodyMaterials):
         sections = []
-        for obj in self._getOfType("App::MaterialObjectPython"):
+        for obj in FemMisc.getMember(
+                self.analysis, "App::MaterialObjectPython"):
             s = self._getMaterialSection(obj)
             self._updateBodyMaterials(bodyMaterials, obj, s)
             sections.append(s)
         return sections
 
     def _getSolidNames(self):
-        shape = self._getFirstOfType("Fem::FemMeshObject").Part.Shape
+        mesh = FemMisc.getSingleMember(
+            self.analysis, "Fem::FemMeshObject")
+        shape = mesh.Part.Shape
         return ["%s%d" % (_SOLID_PREFIX, i+1)
                 for i in range(len(shape.Solids))]
 
     def _getMaterialSection(self, obj):
         m = obj.Material
         s = sifio.createSection(sifio.MATERIAL)
-        s["Density"] = self._getInUnit(
-                m["Density"], "kg/m^3")
-        s["Youngs Modulus"] = self._getInUnit(
-                m["YoungsModulus"], "Pa")
+        s["Density"] = convert(m["Density"], "M/L^3")
+        s["Youngs Modulus"] = convert(m["YoungsModulus"], "M/(L*T^2)")
         s["Poisson ratio"] = float(m["PoissonRatio"])
-        s["Heat Conductivity"] = self._getInUnit(
-                m["ThermalConductivity"], "W/m/K")
-        s["Heat expansion Coefficient"] = self._getInUnit(
-                m["ThermalExpansionCoefficient"], "m/m/K")
+        s["Heat Conductivity"] = convert(
+                m["ThermalConductivity"], "M*L/(T^3*O)")
+        s["Heat expansion Coefficient"] = convert(
+                m["ThermalExpansionCoefficient"], "O^-1")
         if self.solver.AnalysisType == FemDefsElmer.THERMOMECH:
-            tempObj = self._getFirstOfType("Fem::ConstraintInitialTemperature")
+            tempObj = FemMisc.getSingleMember(
+                    self.analysis, "Fem::ConstraintInitialTemperature")
             if tempObj is not None:
                 s["Reference Temperature"] = tempObj.initialTemperature
         return s
 
     def _updateBodyMaterials(self, bodyMaterials, obj, section):
         if len(obj.References) == 0:
-            for name, material in dict(bodyMaterials):
+            for name, material in dict(bodyMaterials).iteritems():
                 bodyMaterials[name] = section
         else:
             for part, ref in obj.References:
@@ -285,10 +327,20 @@ class Writer(object):
         sections.append(self._getElasticitySolver())
         return sections
 
+    def _getOutputSolver(self):
+        s = sifio.createSection(sifio.SOLVER)
+        s["Equation"] = "ResultOutput"
+        s["Exec Solver"] = "After simulation"
+        s["Procedure"] = sifio.FileAttr("ResultOutputSolve/ResultOutputSolver")
+        s["Output File Name"] = sifio.FileAttr("case")
+        s["Vtu Format"] = True
+        return s
+
     def _getElasticitySolver(self):
         s = sifio.createSection(sifio.SOLVER)
         s["Equation"] = "Linear elasticity"
         s["Procedure"] = sifio.FileAttr("StressSolve/StressSolver")
+        s["Displace mesh"] = False
         s["Variable"] = "Displacement"
         s["Variable DOFs"] = 3
         s["Exec Solver"] = "Always"
@@ -365,6 +417,11 @@ class Writer(object):
         s["Stress Bodyforce 3"] = float(gravity * obj.Gravity_z * density)
         return s
 
+    def _getBodyHeatFlux(self, obj):
+        s = sifio.createSection(sifio.BODY_FORCE)
+        s["Heat Source"] = getFromUi(obj.HeatFlux, "W/kg", "L^2*T^-3")
+        return s
+
     def _createFixeds(self, obj):
         names = (self._getGroupName(x) for x in obj.References[0][1])
         for n in names:
@@ -394,9 +451,10 @@ class Writer(object):
         names = [self._getGroupName(x) for x in obj.References[0][1]]
         for n in names:
             s = self._getBndSection(n)
-            s["Force 1"] = float(obj.DirectionVector.x * obj.Force)
-            s["Force 2"] = float(obj.DirectionVector.y * obj.Force)
-            s["Force 3"] = float(obj.DirectionVector.z * obj.Force)
+            force = getFromUi(obj.Force, "N", "M*L*T^-2")
+            s["Force 1"] = float(obj.DirectionVector.x * force)
+            s["Force 2"] = float(obj.DirectionVector.y * force)
+            s["Force 3"] = float(obj.DirectionVector.z * force)
             s["Force 1 Normalize by Area"] = True
             s["Force 2 Normalize by Area"] = True
             s["Force 3 Normalize by Area"] = True
@@ -405,15 +463,12 @@ class Writer(object):
         names = [self._getGroupName(x) for x in obj.References[0][1]]
         for n in names:
             s = self._getBndSection(n)
-            s["Temperature"] = float(obj.Temperature)
+            s["Temperature"] = getFromUi(obj.Temperature, "K", "O")
 
     def _getInitialTemp(self, obj):
         s = sifio.createSection(sifio.INITIAL_CONDITION)
-        s["Temperature"] = obj.initialTemperature
+        s["Temperature"] = getFromUi(obj.initialTemperature, "K", "O")
         return s
-
-    def _getInUnit(self, value, unitStr):
-        return float(Quantity(value).getValueAs(unitStr))
 
     def _getBndSection(self, name):
         if name in self._bndSections:

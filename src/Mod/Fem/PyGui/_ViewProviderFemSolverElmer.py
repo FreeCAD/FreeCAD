@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,8 +22,13 @@
 
 
 __title__ = "_ViewProviderFemSolverElmer"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
+__author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
+
+
+import FreeCADGui as Gui
+import PyGui._TaskPanelFemSolverControl
+import FemSolve
 
 
 class _ViewProviderFemSolverElmer(object):
@@ -34,6 +39,14 @@ class _ViewProviderFemSolverElmer(object):
 
     def getIcon(self):
         return ":/icons/fem-elmer.png"
+
+    def setEdit(self, vobj, mode=0):
+        machine = FemSolve.getMachine(vobj.Object)
+        task = PyGui._TaskPanelFemSolverControl.ControlTaskPanel(machine)
+        Gui.Control.showDialog(task)
+
+    def doubleClicked(self, vobj):
+        Gui.ActiveDocument.setEdit(vobj.Object.Name)
 
     def attach(self, vobj):
         pass
