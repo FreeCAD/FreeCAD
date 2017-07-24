@@ -43,7 +43,7 @@
         <string notr="true">AP 203</string>
        </property>
        <property name="checked" >
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="prefEntry" stdset="0">
         <cstring>Scheme_203</cstring>
@@ -86,7 +86,7 @@
       <string>If this is checked, no Compound merge will be done during file reading (slower but higher details).</string>
      </property>
      <property name="text">
-      <string>Disable STEP Compound merge</string>
+      <string>Enable STEP Compound merge</string>
      </property>
      <property name="checked">
        <bool>false</bool>
