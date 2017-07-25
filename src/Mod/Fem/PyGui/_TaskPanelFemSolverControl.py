@@ -47,6 +47,7 @@ class ControlTaskPanel(QtCore.QObject):
     machineStarted = QtCore.Signal(object)
     machineStoped = QtCore.Signal(object)
     machineStatusChanged = QtCore.Signal(str)
+    machineStatusCleared = QtCore.Signal()
     machineTimeChanged = QtCore.Signal(float)
     machineStateChanged = QtCore.Signal(float)
 
@@ -83,6 +84,7 @@ class ControlTaskPanel(QtCore.QObject):
         self.machineStoped.connect(self._displayReport)
         self.machineStoped.connect(self.form.updateState)
         self.machineStatusChanged.connect(self.form.appendStatus)
+        self.machineStatusCleared.connect(self.form.clearStatus)
         self.machineTimeChanged.connect(self.form.setTime)
         self.machineStateChanged.connect(
                 lambda: self.form.updateState(self.machine))
@@ -163,6 +165,7 @@ class ControlTaskPanel(QtCore.QObject):
     def _connectMachine(self, machine):
         self._disconnectMachine()
         machine.signalStatus.add(self._statusProxy)
+        machine.signalStatusCleared.add(self._statusClearedProxy)
         machine.signalStarted.add(self._startedProxy)
         machine.signalStoped.add(self._stopedProxy)
         machine.signalState.add(self._stateProxy)
@@ -170,6 +173,7 @@ class ControlTaskPanel(QtCore.QObject):
     def _disconnectMachine(self):
         if self.machine is not None:
             self.machine.signalStatus.remove(self._statusProxy)
+            self.machine.signalStatusCleared.add(self._statusClearedProxy)
             self.machine.signalStarted.remove(self._startedProxy)
             self.machine.signalStoped.remove(self._stopedProxy)
             self.machine.signalState.remove(self._stateProxy)
@@ -182,6 +186,9 @@ class ControlTaskPanel(QtCore.QObject):
 
     def _statusProxy(self, line):
         self.machineStatusChanged.emit(line)
+
+    def _statusClearedProxy(self):
+        self.machineStatusCleared.emit()
 
     def _timeProxy(self):
         time = self.machine.time
@@ -281,6 +288,10 @@ class ControlWidget(QtGui.QWidget):
         self._statusEdt.moveCursor(QtGui.QTextCursor.End)
         self._statusEdt.insertPlainText(line)
         self._statusEdt.moveCursor(QtGui.QTextCursor.End)
+
+    @QtCore.Slot(str)
+    def clearStatus(self):
+        self._statusEdt.setPlainText("")
 
     @QtCore.Slot(float)
     def setTime(self, time):
