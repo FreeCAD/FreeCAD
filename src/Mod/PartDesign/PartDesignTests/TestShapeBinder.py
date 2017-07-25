@@ -18,32 +18,32 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
 #**************************************************************************
+import unittest
 
-#---------------------------------------------------------------------------
-# define the test cases to test the FreeCAD PartDesign module
-#---------------------------------------------------------------------------
+import FreeCAD
 
-# datum tools
-from PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane
-from PartDesignTests.TestShapeBinder import TestShapeBinder
+class TestShapeBinder(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestShapeBinder")
 
-# additive/subtractive features & primitives
-from PartDesignTests.TestPad import TestPad
-from PartDesignTests.TestPocket import TestPocket
-from PartDesignTests.TestRevolve import TestRevolve
-from PartDesignTests.TestPipe import TestPipe
-from PartDesignTests.TestLoft import TestLoft
-from PartDesignTests.TestPrimitive import TestPrimitive
+    def testTwoBodyShapeBinderCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        self.Box.Length=1
+        self.Box.Width=1
+        self.Box.Height=1
+        self.Body.addObject(self.Box)
+        self.Doc.recompute()
+        self.Body001 = self.Doc.addObject('PartDesign::Body','Body001')
+        self.ShapeBinder = self.Doc.addObject('PartDesign::ShapeBinder','ShapeBinder')
+        self.ShapeBinder.Support = [(self.Box, 'Face1')]
+        self.Body001.addObject(self.ShapeBinder)
+        self.Doc.recompute()
+        self.assertIn('Box', self.ShapeBinder.OutList[0].Label)
+        self.assertIn('Body001', self.ShapeBinder.InList[0].Label)
 
-# transformations and boolean
-from PartDesignTests.TestMirrored import TestMirrored
-from PartDesignTests.TestLinearPattern import TestLinearPattern
-from PartDesignTests.TestPolarPattern import TestPolarPattern
-from PartDesignTests.TestMultiTransform import TestMultiTransform
-from PartDesignTests.TestBoolean import TestBoolean
+    def tearDown(self):
+        #closing doc
+        FreeCAD.closeDocument("PartDesignTestShapeBinder")
+        #print ("omit closing document for debugging")
 
-# dressup features
-from PartDesignTests.TestFillet import TestFillet
-from PartDesignTests.TestChamfer import TestChamfer
-from PartDesignTests.TestDraft import TestDraft
-from PartDesignTests.TestThickness import TestThickness
