@@ -43,6 +43,7 @@ class Task(object):
         self.signalStoped = set()
         self.signalAbort = set()
         self.signalStatus = set()
+        self.signalStatusCleared = set()
         self.startTime = None
         self.stopTime = None
         self.running = False
@@ -79,7 +80,7 @@ class Task(object):
 
     def start(self):
         self.report = FemReport.Report()
-        self._status = []
+        self.clearStatus()
         self._aborted = False
         self._failed = False
         self.stopTime = None
@@ -104,6 +105,10 @@ class Task(object):
     def pushStatus(self, line):
         self._status.append(line)
         FemSignal.notify(self.signalStatus, line)
+
+    def clearStatus(self):
+        self._status = []
+        FemSignal.notify(self.signalStatusCleared)
 
     def protector(self):
         try:
