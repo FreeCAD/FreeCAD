@@ -35,6 +35,9 @@ class ViewProxy(object):
     def __init__(self, vobj):
         vobj.Proxy = self
 
+    def getIcon(self):
+        return ":/icons/fem-constraint-heatflux.svg"
+
     def attach(self, vobj):
         default = coin.SoGroup()
         vobj.addDisplayMode(default, "Default")
