@@ -160,7 +160,7 @@ static const PyMethodDef areaOverrides[] = {
     {
         "abort",(PyCFunction)areaAbort, METH_VARARGS|METH_KEYWORDS|METH_STATIC,
         "abort(aborting=True): Static method to abort any ongoing operation\n"
-        "\nTo ensure no stray abortion is left in the previous operaion, it is advised to manually clear\n"
+        "\nTo ensure no stray abortion is left in the previous operation, it is advised to manually clear\n"
         "the aborting flag by calling abort(False) before starting a new operation.",
     },
     {
