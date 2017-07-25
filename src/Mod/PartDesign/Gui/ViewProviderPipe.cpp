@@ -56,9 +56,20 @@ ViewProviderPipe::~ViewProviderPipe()
 std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp;
-    App::DocumentObject* sketch = static_cast<PartDesign::Pipe*>(getObject())->getVerifiedSketch(true);
+
+    PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
+
+    App::DocumentObject* sketch = pcPipe->getVerifiedSketch(true);
     if (sketch != NULL)
         temp.push_back(sketch);
+
+    App::DocumentObject* spine = pcPipe->Spine.getValue();
+    if (spine != NULL)
+        temp.push_back(spine);
+
+    App::DocumentObject* auxspine = pcPipe->AuxillerySpine.getValue();
+    if (auxspine != NULL)
+        temp.push_back(auxspine);
 
     return temp;
 }
