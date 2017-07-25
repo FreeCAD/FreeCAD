@@ -143,17 +143,39 @@ class PathDressupTagTaskPanel:
                 tags.append((x, y, enabled))
         return tags
 
-    def getTagParameters(self):
-        self.obj.Width  = FreeCAD.Units.Quantity(self.formTags.ifWidth.text()).Value
-        self.obj.Height = FreeCAD.Units.Quantity(self.formTags.ifHeight.text()).Value
-        self.obj.Angle  = self.formTags.dsbAngle.value()
-        self.obj.Radius = FreeCAD.Units.Quantity(self.formTags.ifRadius.text()).Value
-
     def getFields(self):
-        self.getTagParameters()
+        width  = FreeCAD.Units.Quantity(self.formTags.ifWidth.text()).Value
+        height = FreeCAD.Units.Quantity(self.formTags.ifHeight.text()).Value
+        angle  = self.formTags.dsbAngle.value()
+        radius = FreeCAD.Units.Quantity(self.formTags.ifRadius.text()).Value
+
         tags = self.getTags(True)
-        self.obj.Proxy.setXyEnabled(tags)
-        self.isDirty = True
+        positions = []
+        disabled = []
+        for i, (x, y, enabled) in enumerate(tags):
+            positions.append(FreeCAD.Vector(x, y, 0))
+            if not enabled:
+                disabled.append(i)
+
+        if width != self.obj.Width:
+            self.obj.Width = width
+            self.isDirty = True
+        if height != self.obj.Height:
+            self.obj.Height = height
+            self.isDirty = True
+        if angle != self.obj.Angle:
+            self.obj.Angle = angle
+            self.isDirty = True
+        if radius != self.obj.Radius:
+            self.obj.Radius = radius
+            self.isDirty = True
+        if positions != self.obj.Positions:
+            self.obj.Positions = positions
+            self.isDirty = True
+        if disabled != self.obj.Disabled:
+            self.obj.Disabled = disabled
+            self.isDirty = True
+
 
     def updateTagsView(self):
         PathLog.track()
