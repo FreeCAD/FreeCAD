@@ -432,7 +432,11 @@ def formatObject(target,origin=None):
     or copies the properties of another object if given as origin.
     It also places the object in construction group if needed.
     '''
+    if not target:
+        return
     obrep = target.ViewObject
+    if not obrep:
+        return
     ui = None
     if gui:
         if hasattr(FreeCADGui,"draftToolBar"):
@@ -500,7 +504,8 @@ def select(objs=None):
             if not isinstance(objs,list):
                 objs = [objs]
             for obj in objs:
-                FreeCADGui.Selection.addSelection(obj)
+                if obj:
+                    FreeCADGui.Selection.addSelection(obj)
 
 def loadSvgPatterns():
     "loads the default Draft SVG patterns and custom patters if available"
@@ -1260,6 +1265,7 @@ def move(objectslist,vector,copy=False):
     if not isinstance(objectslist,list): objectslist = [objectslist]
     objectslist.extend(getMovableChildren(objectslist))
     newobjlist = []
+    newgroups = {}
     for obj in objectslist:
         if hasattr(obj,"Placement"):
            if obj.getEditorMode("Placement") == ["ReadOnly"]:
@@ -1305,12 +1311,19 @@ def move(objectslist,vector,copy=False):
             newobj.End = obj.End.add(vector)
             newobj.Dimline = obj.Dimline.add(vector)
         else:
-            if copy: print("Mesh copy not supported at the moment") # TODO
+            if copy and obj.isDerivedFrom("Mesh::Feature"): 
+                print("Mesh copy not supported at the moment") # TODO
             newobj = obj
             if "Placement" in obj.PropertiesList:
                 pla = obj.Placement
                 pla.move(vector)
         newobjlist.append(newobj)
+        if copy:
+            for p in obj.InList:
+                if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
+                    g = newgroups.setdefault(p.Name,FreeCAD.ActiveDocument.addObject(p.TypeId,p.Name))
+                    g.addObject(newobj)
+                    break
     if copy and getParam("selectBaseObjects",False):
         select(objectslist)
     else:
@@ -1367,6 +1380,7 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     if not isinstance(objectslist,list): objectslist = [objectslist]
     objectslist.extend(getMovableChildren(objectslist))
     newobjlist = []
+    newgroups = {}
     for obj in objectslist:
         if hasattr(obj,"Placement"):
            if obj.getEditorMode("Placement") == ["ReadOnly"]:
@@ -1405,6 +1419,12 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
         if copy:
             formatObject(newobj,obj)
         newobjlist.append(newobj)
+        if copy:
+            for p in obj.InList:
+                if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
+                    g = newgroups.setdefault(p.Name,FreeCAD.ActiveDocument.addObject(p.TypeId,p.Name))
+                    g.addObject(newobj)
+                    break
     if copy and getParam("selectBaseObjects",False):
         select(objectslist)
     else:
