@@ -29,6 +29,7 @@ __url__ = "http://www.freecadweb.org"
 from PySide import QtCore
 from PySide import QtGui
 
+import FreeCADGui as Gui
 import FemSolve
 import FemReport
 
@@ -155,6 +156,9 @@ class ControlTaskPanel(QtCore.QObject):
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
+
+    def reject(self):
+        Gui.ActiveDocument.resetEdit()
 
     def _connectMachine(self, machine):
         self._disconnectMachine()

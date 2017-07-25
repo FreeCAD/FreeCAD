@@ -44,9 +44,16 @@ class _ViewProviderFemSolverElmer(object):
         machine = FemSolve.getMachine(vobj.Object)
         task = PyGui._TaskPanelFemSolverControl.ControlTaskPanel(machine)
         Gui.Control.showDialog(task)
+        return True
+
+    def unsetEdit(self, vobj, mode=0):
+        Gui.Control.closeDialog()
 
     def doubleClicked(self, vobj):
+        if Gui.Control.activeDialog():
+            Gui.Control.closeDialog()
         Gui.ActiveDocument.setEdit(vobj.Object.Name)
+        return True
 
     def attach(self, vobj):
         pass
