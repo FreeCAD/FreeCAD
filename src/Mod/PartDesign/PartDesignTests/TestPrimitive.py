@@ -95,11 +95,11 @@ class TestPrimitive(unittest.TestCase):
         self.Body.addObject(self.Ellipsoid)
         self.Doc.recompute()
         self.Ellipsoid001 = self.Doc.addObject('PartDesign::SubtractiveEllipsoid','Ellipsoid001')
-        self.Ellipsoid001.Radius1 = 2
+        self.Ellipsoid001.Radius1 = 1.5
         self.Ellipsoid001.Radius2 = 3
         self.Body.addObject(self.Ellipsoid001)
         self.Doc.recompute()
-        self.assertAlmostEqual(self.Ellipsoid001.Shape.Volume, 4/3.0 * pi * 2 * (4**2 - 3**2), places=1)
+        self.assertAlmostEqual(self.Ellipsoid001.Shape.Volume, 4/3.0 * pi * (2*4**2 - 1.5*3**2), places=1)
 
     def testPrimitiveTorus(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
