@@ -162,7 +162,7 @@ class ObjectDressup(QtCore.QObject):
 
         self.obj = obj;
 
-        minZ =  sys.maxint
+        minZ = +sys.maxint
         minX = minZ
         minY = minZ
 
@@ -191,9 +191,27 @@ class ObjectDressup(QtCore.QObject):
         self.ptMax = FreeCAD.Vector(maxX, maxY, maxZ)
         self.masterSolid = TagSolid(self, minZ, self.toolRadius())
         self.solids = [self.masterSolid.cloneAt(pos) for pos in self.obj.Positions]
+        self.tagSolid = Part.Compound(self.solids)
 
         self.wire, rapid = PathGeom.wireForPath(obj.Base.Path)
         self.edges = self.wire.Edges
+
+        maxTagZ = minZ + obj.Height
+
+        lastX = 0
+        lastY = 0
+        lastZ = 0
+
+        commands = []
+
+        for cmd in obj.Base.Path.Commands:
+            if cmd in PathGeom.CmdMove:
+                if lastZ <= maxTagZ or cmd.Parameters.get('Z', lastZ) <= maxTagZ:
+                    pass
+                else:
+                    commands.append(cmd)
+            else:
+                commands.append(cmd)
 
         obj.Path = obj.Base.Path
         self.changed.emit()
