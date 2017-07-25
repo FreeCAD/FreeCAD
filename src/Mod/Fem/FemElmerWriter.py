@@ -411,7 +411,7 @@ class Writer(object):
 
     def _getSelfweight(self, obj, density):
         s = sifio.createSection(sifio.BODY_FORCE)
-        gravity = CONSTS_DEF["Gravity"]
+        gravity = convert(CONSTS_DEF["Gravity"], "L/T^2")
         s["Stress Bodyforce 1"] = float(gravity * obj.Gravity_x * density)
         s["Stress Bodyforce 2"] = float(gravity * obj.Gravity_y * density)
         s["Stress Bodyforce 3"] = float(gravity * obj.Gravity_z * density)
