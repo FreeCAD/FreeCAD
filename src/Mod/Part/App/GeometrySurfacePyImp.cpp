@@ -78,7 +78,7 @@ const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c)
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
         Handle(Geom_Line) lin = Handle(Geom_Line)::DownCast(c);
-        return Py::asObject(new GeometryCurvePy(new GeomLine(lin)));
+        return Py::asObject(new LinePy(new GeomLine(lin)));
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_OffsetCurve))) {
         Handle(Geom_OffsetCurve) oc = Handle(Geom_OffsetCurve)::DownCast(c);
