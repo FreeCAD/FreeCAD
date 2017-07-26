@@ -108,10 +108,10 @@ class TagSolid:
         return clone
 
 
-class ObjectDressup(QtCore.QObject):
-    changed = QtCore.Signal()
+class ObjectDressup:
 
     def __init__(self, obj, base):
+
         obj.addProperty('App::PropertyLink', 'Base','Base', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'The base path to modify'))
         obj.addProperty('App::PropertyLength', 'Width', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Width of tags.'))
         obj.addProperty('App::PropertyLength', 'Height', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Height of tags.'))
@@ -120,19 +120,12 @@ class ObjectDressup(QtCore.QObject):
         obj.addProperty('App::PropertyVectorList', 'Positions', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Locations of insterted holding tags'))
         obj.addProperty('App::PropertyIntegerList', 'Disabled', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Ids of disabled holding tags'))
         obj.addProperty('App::PropertyInteger', 'SegmentationFactor', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Factor determining the # segments used to approximate rounded tags.'))
-        obj.addProperty('App::PropertyLink', 'Debug', 'Debug', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Some elements for debugging'))
 
         obj.Proxy = self
         obj.Base = base
 
-        if PathLog.getLevel(PathLog.thisModule()) != PathLog.Level.DEBUG:
-            obj.setEditorMode('Debug', 2) # hide
-        dbg = obj.Document.addObject('App::DocumentObjectGroup', 'TagDebug')
-        obj.Debug = dbg
-
         self.obj = obj
         self.solids = []
-        super(ObjectDressup, self).__init__()
 
     def __getstate__(self):
         return None
@@ -196,7 +189,7 @@ class ObjectDressup(QtCore.QObject):
         self.wire, rapid = PathGeom.wireForPath(obj.Base.Path)
         self.edges = self.wire.Edges
 
-        maxTagZ = minZ + obj.Height
+        maxTagZ = minZ + obj.Height.Value
 
         lastX = 0
         lastY = 0
@@ -214,7 +207,6 @@ class ObjectDressup(QtCore.QObject):
                 commands.append(cmd)
 
         obj.Path = obj.Base.Path
-        self.changed.emit()
 
         PathLog.track()
 
