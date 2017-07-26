@@ -334,13 +334,13 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     
     Part::Feature* feature = dynamic_cast<Part::Feature*>(pcObject);
     if (prop == &Deviation) {
-        if(Visibility.getValue() && feature && !feature->Shape.getValue().IsNull()) 
+        if((isUpdateForced()||Visibility.getValue()) && feature && !feature->Shape.getValue().IsNull()) 
             updateVisual(feature->Shape.getValue());
         else
             VisualTouched = true;
     }
     if (prop == &AngularDeflection) {
-        if(Visibility.getValue() && feature && !feature->Shape.getValue().IsNull()) 
+        if((isUpdateForced()||Visibility.getValue()) && feature && !feature->Shape.getValue().IsNull()) 
             updateVisual(feature->Shape.getValue());
         else
             VisualTouched = true;
@@ -820,7 +820,7 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
         const TopoDS_Shape &cShape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
 
         // calculate the visual only if visible
-        if (Visibility.getValue())
+        if (isUpdateForced()||Visibility.getValue())
             updateVisual(cShape);
         else
             VisualTouched = true;

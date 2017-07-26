@@ -241,7 +241,8 @@ void ViewProviderFillet::updateData(const App::Property* prop)
         Part::Fillet* objFill = dynamic_cast<Part::Fillet*>(getObject());
         if (!objFill)
             return;
-        Part::Feature* objBase = dynamic_cast<Part::Feature*>(objFill->Base.getValue());
+        Part::Feature* objBase = dynamic_cast<Part::Feature*>(
+                Part::Feature::getShapeOwner(objFill->Base.getValue()));
         if (objBase) {
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
             const TopoDS_Shape& fillShape = objFill->Shape.getValue();
@@ -344,7 +345,8 @@ void ViewProviderChamfer::updateData(const App::Property* prop)
         Part::Chamfer* objCham = dynamic_cast<Part::Chamfer*>(getObject());
         if (!objCham)
             return;
-        Part::Feature* objBase = dynamic_cast<Part::Feature*>(objCham->Base.getValue());
+        Part::Feature* objBase = dynamic_cast<Part::Feature*>(
+                Part::Feature::getShapeOwner(objCham->Base.getValue()));
         if (objBase) {
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
             const TopoDS_Shape& chamShape = objCham->Shape.getValue();

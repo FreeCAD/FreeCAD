@@ -88,12 +88,7 @@ bool ViewProviderFace::canDragObjects() const
 
 bool ViewProviderFace::canDragObject(App::DocumentObject* obj) const
 {
-    if (!obj)
-        return false;
-    if (obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-        return true;
-    else
-        return false;
+    return Part::Feature::hasShapeOwner(obj);
 }
 
 void ViewProviderFace::dragObject(App::DocumentObject* obj)

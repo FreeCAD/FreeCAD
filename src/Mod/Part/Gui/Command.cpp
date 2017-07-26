@@ -287,16 +287,14 @@ void CmdPartCut::activated(int iMsg)
     bool askUser = false;
     for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         App::DocumentObject* obj = it->getObject();
-        if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
-            if (!PartGui::checkForSolids(shape) && !askUser) {
-                int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
-                    QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
-                                "Do you want to continue?"), QMessageBox::Yes, QMessageBox::No);
-                if (ret == QMessageBox::No)
-                    return;
-                askUser = true;
-            }
+        const TopoDS_Shape& shape = Part::Feature::getShape(obj);
+        if (!PartGui::checkForSolids(shape) && !askUser) {
+            int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
+                QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
+                            "Do you want to continue?"), QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::No)
+                return;
+            askUser = true;
         }
     }
 
@@ -362,14 +360,12 @@ void CmdPartCommon::activated(int iMsg)
     if (Sel.size() == 1){
         numShapes = 1; //to be updated later in code, if
         Gui::SelectionObject selobj = Sel[0];
-        if (selobj.getObject()->isDerivedFrom(Part::Feature::getClassTypeId())){
-            TopoDS_Shape sh = static_cast<Part::Feature*>(selobj.getObject())->Shape.getValue();
-            if (sh.ShapeType() == TopAbs_COMPOUND) {
-                numShapes = 0;
-                TopoDS_Iterator it(sh);
-                for (; it.More(); it.Next()) {
-                    ++numShapes;
-                }
+        TopoDS_Shape sh = Part::Feature::getShape(selobj.getObject());
+        if (sh.ShapeType() == TopAbs_COMPOUND) {
+            numShapes = 0;
+            TopoDS_Iterator it(sh);
+            for (; it.More(); it.Next()) {
+                ++numShapes;
             }
         }
     } else {
@@ -389,19 +385,17 @@ void CmdPartCommon::activated(int iMsg)
     str << "App.activeDocument()." << FeatName << ".Shapes = [";
     for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         App::DocumentObject* obj = it->getObject();
-        if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
-            if (!PartGui::checkForSolids(shape) && !askUser) {
-                int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
-                    QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
-                                "Do you want to continue?"), QMessageBox::Yes, QMessageBox::No);
-                if (ret == QMessageBox::No)
-                    return;
-                askUser = true;
-            }
-            str << "App.activeDocument()." << it->getFeatName() << ",";
-            partObjects.push_back(*it);
+        const TopoDS_Shape& shape = Part::Feature::getShape(obj);
+        if (!PartGui::checkForSolids(shape) && !askUser) {
+            int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
+                QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
+                            "Do you want to continue?"), QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::No)
+                return;
+            askUser = true;
         }
+        str << "App.activeDocument()." << it->getFeatName() << ",";
+        partObjects.push_back(*it);
     }
     str << "]";
 
@@ -464,14 +458,12 @@ void CmdPartFuse::activated(int iMsg)
     if (Sel.size() == 1){
         numShapes = 1; //to be updated later in code
         Gui::SelectionObject selobj = Sel[0];
-        if (selobj.getObject()->isDerivedFrom(Part::Feature::getClassTypeId())){
-            TopoDS_Shape sh = static_cast<Part::Feature*>(selobj.getObject())->Shape.getValue();
-            if (sh.ShapeType() == TopAbs_COMPOUND) {
-                numShapes = 0;
-                TopoDS_Iterator it(sh);
-                for (; it.More(); it.Next()) {
-                    ++numShapes;
-                }
+        TopoDS_Shape sh = Part::Feature::getShape(selobj.getObject());
+        if (sh.ShapeType() == TopAbs_COMPOUND) {
+            numShapes = 0;
+            TopoDS_Iterator it(sh);
+            for (; it.More(); it.Next()) {
+                ++numShapes;
             }
         }
     } else {
@@ -491,19 +483,17 @@ void CmdPartFuse::activated(int iMsg)
     str << "App.activeDocument()." << FeatName << ".Shapes = [";
     for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         App::DocumentObject* obj = it->getObject();
-        if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
-            if (!PartGui::checkForSolids(shape) && !askUser) {
-                int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
-                    QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
-                                "Do you want to continue?"), QMessageBox::Yes, QMessageBox::No);
-                if (ret == QMessageBox::No)
-                    return;
-                askUser = true;
-            }
-            str << "App.activeDocument()." << it->getFeatName() << ",";
-            partObjects.push_back(*it);
+        const TopoDS_Shape& shape = Part::Feature::getShape(obj);
+        if (!PartGui::checkForSolids(shape) && !askUser) {
+            int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
+                QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
+                            "Do you want to continue?"), QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::No)
+                return;
+            askUser = true;
         }
+        str << "App.activeDocument()." << it->getFeatName() << ",";
+        partObjects.push_back(*it);
     }
     str << "]";
 
@@ -1031,7 +1021,7 @@ void CmdPartMakeSolid::activated(int iMsg)
         (Part::Feature::getClassTypeId());
     runCommand(Doc, "import Part");
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
-        const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
+        const TopoDS_Shape& shape = Part::Feature::getShape(*it);
         if (!shape.IsNull()) {
             TopAbs_ShapeEnum type = shape.ShapeType();
             QString str;
@@ -1109,7 +1099,7 @@ void CmdPartReverseShape::activated(int iMsg)
         (Part::Feature::getClassTypeId());
     runCommand(Doc, "import Part");
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
-        const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
+        const TopoDS_Shape& shape = Part::Feature::getShape(*it);
         if (!shape.IsNull()) {
             QString str = QString::fromLatin1(
                 "__s__=App.ActiveDocument.%1.Shape.copy()\n"

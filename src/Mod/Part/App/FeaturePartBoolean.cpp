@@ -66,17 +66,11 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
 #endif
-        Part::Feature *base = dynamic_cast<Part::Feature*>(Base.getValue());
-        Part::Feature *tool = dynamic_cast<Part::Feature*>(Tool.getValue());
-
-        if (!base || !tool)
-            return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-
         // Now, let's get the TopoDS_Shape
-        TopoDS_Shape BaseShape = base->Shape.getValue();
+        TopoDS_Shape BaseShape = Feature::getShape(Base.getValue());
         if (BaseShape.IsNull())
             throw Base::Exception("Base shape is null");
-        TopoDS_Shape ToolShape = tool->Shape.getValue();
+        TopoDS_Shape ToolShape = Feature::getShape(Tool.getValue());
         if (ToolShape.IsNull())
             throw Base::Exception("Tool shape is null");
 

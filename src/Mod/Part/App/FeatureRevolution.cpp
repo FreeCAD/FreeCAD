@@ -90,16 +90,11 @@ bool Revolution::fetchAxisLink(const App::PropertyLinkSub &axisLink,
     if (!axisLink.getValue())
         return false;
 
-    if (!axisLink.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
-        throw Base::TypeError("AxisLink has no OCC shape");
-
-    Part::Feature* linked = static_cast<Part::Feature*>(axisLink.getValue());
-
     TopoDS_Shape axEdge;
     if (axisLink.getSubValues().size() > 0  &&  axisLink.getSubValues()[0].length() > 0){
-        axEdge = linked->Shape.getShape().getSubShape(axisLink.getSubValues()[0].c_str());
+        axEdge = Feature::getShape(axisLink.getValue(),axisLink.getSubValues()[0].c_str(),true);
     } else {
-        axEdge = linked->Shape.getValue();
+        axEdge = Feature::getShape(axisLink.getValue());
     }
 
     if (axEdge.IsNull())
@@ -133,9 +128,6 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     App::DocumentObject* link = Source.getValue();
     if (!link)
         return new App::DocumentObjectExecReturn("No object linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    Part::Feature *base = static_cast<Part::Feature*>(Source.getValue());
 
     try {
         //read out axis link
@@ -158,7 +150,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             angle = angle_edge;
 
         //apply "midplane" symmetry
-        TopoShape sourceShape = base->Shape.getShape();
+        TopoShape sourceShape = Feature::getShape(link);
         if (Symmetric.getValue()) {
             //rotate source shape backwards by half angle, to make resulting revolution symmetric to the profile
             gp_Trsf mov;

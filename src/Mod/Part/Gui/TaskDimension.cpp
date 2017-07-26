@@ -87,12 +87,7 @@ bool PartGui::getShapeFromStrings(TopoDS_Shape &shapeOut, const std::string &doc
   App::DocumentObject *objectPointer = docPointer->getObject(object.c_str());
   if (!objectPointer)
     return false;
-  Part::Feature *feature = dynamic_cast<Part::Feature *>(objectPointer);
-  if (!feature)
-    return false;
-  shapeOut = feature->Shape.getValue();
-  if (sub.size() > 0)
-    shapeOut = feature->Shape.getShape().getSubShape(sub.c_str());
+  shapeOut = Part::Feature::getShape(objectPointer,sub.c_str(),true);
   if (shapeOut.IsNull())
     return false;
   return true;
@@ -100,7 +95,7 @@ bool PartGui::getShapeFromStrings(TopoDS_Shape &shapeOut, const std::string &doc
 
 bool PartGui::evaluateLinearPreSelection(TopoDS_Shape &shape1, TopoDS_Shape &shape2)
 {
-  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection();
+  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(0,false);
   if (selections.size() != 2)
     return false;
   std::vector<Gui::SelectionSingleton::SelObj>::iterator it;
@@ -108,12 +103,7 @@ bool PartGui::evaluateLinearPreSelection(TopoDS_Shape &shape1, TopoDS_Shape &sha
   
   for (it = selections.begin(); it != selections.end(); ++it)
   {
-    Part::Feature *feature = dynamic_cast<Part::Feature *>((*it).pObject);
-    if (!feature)
-      break;
-    TopoDS_Shape shape = feature->Shape.getValue();
-    if (strlen((*it).SubName) > 0)
-      shape = feature->Shape.getShape().getSubShape((*it).SubName);
+    TopoDS_Shape shape = Part::Feature::getShape(it->pObject,it->SubName,true);
     if (shape.IsNull())
       break;
     shapes.push_back(shape);
@@ -752,7 +742,7 @@ void PartGui::goDimensionAngularRoot()
 
 bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapter &vector2Out)
 {
-  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection();
+  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(0,false);
   if (selections.size() > 4 || selections.size() < 2)
     return false;
   std::vector<Gui::SelectionSingleton::SelObj>::iterator it;
@@ -760,12 +750,7 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
   TopoDS_Vertex lastVertex;
   for (it = selections.begin(); it != selections.end(); ++it)
   {
-    Part::Feature *feature = dynamic_cast<Part::Feature *>((*it).pObject);
-    if (!feature)
-      break;
-    TopoDS_Shape shape = feature->Shape.getValue();
-    if (strlen((*it).SubName) > 0)
-      shape = feature->Shape.getShape().getSubShape((*it).SubName);
+    TopoDS_Shape shape = Part::Feature::getShape(it->pObject,it->SubName,true);
     if (shape.IsNull())
       break;
     

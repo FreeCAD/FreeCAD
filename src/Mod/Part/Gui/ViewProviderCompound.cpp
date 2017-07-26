@@ -83,7 +83,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
-            Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            Part::Feature* objBase = dynamic_cast<Part::Feature*>(Part::Feature::getShapeOwner(*it));
             if (!objBase)
                 continue;
 

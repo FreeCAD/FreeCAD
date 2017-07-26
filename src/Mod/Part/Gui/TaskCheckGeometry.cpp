@@ -410,31 +410,19 @@ void TaskCheckGeometryResults::goCheck()
 {
     Gui::WaitCursor wc;
     int selectedCount(0), checkedCount(0), invalidShapes(0);
-    std::vector<Gui::SelectionSingleton::SelObj> selection = Gui::Selection().getSelection();
-    std::vector<Gui::SelectionSingleton::SelObj>::iterator it;
     ResultEntry *theRoot = new ResultEntry();
-    for (it = selection.begin(); it != selection.end(); ++it)
-    {
+    for(const auto &sel :  Gui::Selection().getSelection()) {
         selectedCount++;
-        Part::Feature *feature = dynamic_cast<Part::Feature *>((*it).pObject);
-        if (!feature)
-            continue;
-        currentSeparator = Gui::Application::Instance->activeDocument()->getViewProvider(feature)->getRoot();
-        if (!currentSeparator)
-            continue;
-        TopoDS_Shape shape = feature->Shape.getValue();
-        QString baseName;
-        QTextStream baseStream(&baseName);
-        baseStream << (*it).DocName;
-        baseStream << "." << (*it).FeatName;
-        if (strlen((*it).SubName) > 0)
-        {
-            shape = feature->Shape.getShape().getSubShape((*it).SubName);
-            baseStream << "." << (*it).SubName;
-        }
-
+        TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
         if (shape.IsNull())
             continue;
+        currentSeparator = Gui::Application::Instance->activeDocument()->getViewProvider(sel.pObject)->getRoot();
+        if (!currentSeparator)
+            continue;
+        QString baseName;
+        QTextStream baseStream(&baseName);
+        baseStream << sel.DocName;
+        baseStream << "." << sel.FeatName;
         checkedCount++;
         checkedMap.Clear();
         

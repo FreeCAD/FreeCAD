@@ -125,6 +125,7 @@
 #include "ImportStep.h"
 #include "edgecluster.h"
 #include "FaceMaker.h"
+#include "PartFeature.h"
 
 #ifdef FCUseFreeType
 #  include "FT2FC.h"
@@ -392,6 +393,20 @@ public:
         );
         add_varargs_method("__fromPythonOCC__",&Module::fromPythonOCC,
             "__fromPythonOCC__(occ) -- Helper method to convert a pythonocc shape to an internal shape"
+        );
+        add_keyword_method("getShape",&Module::getShape,
+            "getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):\n"
+            "Obtain the the TopoShape of a given object with SubName reference\n\n"
+            "* obj: the input object\n"
+            "* subname: dot separated sub-object reference\n"
+            "* mat: the current transformation matrix\n"
+            "* needSubElement: if False, ignore the sub-element (e.g. Face1, Edge1) reference in 'subname'\n"
+            "* transform: if False, then skip obj's transformation. Use this if mat already include obj's\n"
+            "             transformation matrix\n"
+            "* retType: 0: return TopoShape,"
+            "           1: return (shape,subObj,mat), where subObj is the object referenced in 'subname',\n"
+            "              and 'mat' is the accumulated transformation matrix of that sub-object\n" 
+            "           2: same as 1, but make sure 'subObj' is resolved if it is a link"
         );
         initialize("This is a module working with shapes."); // register with Python
     }
@@ -1876,6 +1891,35 @@ private:
         catch (const Base::Exception& e) {
             throw Py::Exception(PartExceptionOCCError, e.what());
         }
+    }
+
+    Py::Object getShape(const Py::Tuple& args, const Py::Dict &kwds) {
+        PyObject *pObj;
+        const char *subname = 0;
+        PyObject *pyMat = 0;
+        PyObject *needSubElement = Py_False;
+        PyObject *transform = Py_True;
+        short retType = 0;
+        static char* kwd_list[] = {"obj", "subname", "mat", "needSubElement","transform","retType", 0};
+        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!OOh", kwd_list,
+                &App::DocumentObjectPy::Type, &pObj, &subname, 
+                &Base::MatrixPy::Type, &pyMat, &needSubElement,&transform,&retType))
+            throw Py::Exception();
+
+        App::DocumentObject *obj = 
+            static_cast<App::DocumentObjectPy*>(pObj)->getDocumentObjectPtr();
+        App::DocumentObject *subObj = 0;
+        Base::Matrix4D mat;
+        if(pyMat)
+            mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
+        auto shape = Feature::getShape(obj,subname,PyObject_IsTrue(needSubElement),
+                &mat,&subObj,retType==2,PyObject_IsTrue(transform));
+        Py::Object sret(new TopoShapePy(new TopoShape(shape)));
+        if(retType==0)
+            return sret;
+
+        return Py::TupleN(sret,Py::Object(new Base::MatrixPy(new Base::Matrix4D(mat))),
+                subObj?Py::Object(subObj->getPyObject(),true):Py::Object());
     }
 };
 

@@ -88,8 +88,10 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
         Part::Boolean* objBool = dynamic_cast<Part::Boolean*>(getObject());
         if (!objBool)
             return;
-        Part::Feature* objBase = dynamic_cast<Part::Feature*>(objBool->Base.getValue());
-        Part::Feature* objTool = dynamic_cast<Part::Feature*>(objBool->Tool.getValue());
+        Part::Feature* objBase = dynamic_cast<Part::Feature*>(
+                Part::Feature::getShapeOwner(objBool->Base.getValue()));
+        Part::Feature* objTool = dynamic_cast<Part::Feature*>(
+                Part::Feature::getShapeOwner(objBool->Tool.getValue()));
         if (objBase && objTool) {
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
             const TopoDS_Shape& toolShape = objTool->Shape.getValue();
@@ -192,7 +194,7 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
-            Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            Part::Feature* objBase = dynamic_cast<Part::Feature*>(Part::Feature::getShapeOwner(*it));
             if (!objBase)
                 continue;
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
@@ -245,7 +247,7 @@ bool ViewProviderMultiFuse::canDragObjects() const
 
 bool ViewProviderMultiFuse::canDragObject(App::DocumentObject* obj) const
 {
-    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+    return Part::Feature::hasShapeOwner(obj);
 }
 
 void ViewProviderMultiFuse::dragObject(App::DocumentObject* obj)
@@ -268,7 +270,7 @@ bool ViewProviderMultiFuse::canDropObjects() const
 
 bool ViewProviderMultiFuse::canDropObject(App::DocumentObject* obj) const
 {
-    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+    return Part::Feature::hasShapeOwner(obj);
 }
 
 void ViewProviderMultiFuse::dropObject(App::DocumentObject* obj)
@@ -320,7 +322,7 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
-            Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            Part::Feature* objBase = dynamic_cast<Part::Feature*>(Part::Feature::getShapeOwner(*it));
             if (!objBase)
                 continue;
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
@@ -373,7 +375,7 @@ bool ViewProviderMultiCommon::canDragObjects() const
 
 bool ViewProviderMultiCommon::canDragObject(App::DocumentObject* obj) const
 {
-    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+    return Part::Feature::hasShapeOwner(obj);
 }
 
 void ViewProviderMultiCommon::dragObject(App::DocumentObject* obj)
@@ -396,7 +398,7 @@ bool ViewProviderMultiCommon::canDropObjects() const
 
 bool ViewProviderMultiCommon::canDropObject(App::DocumentObject* obj) const
 {
-    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+    return Part::Feature::hasShapeOwner(obj);
 }
 
 void ViewProviderMultiCommon::dropObject(App::DocumentObject* obj)
