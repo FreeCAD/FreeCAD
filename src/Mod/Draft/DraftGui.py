@@ -100,6 +100,7 @@ class todo:
     QtCore.QTimer.singleShot(0,doTodo).'''
     itinerary = []
     commitlist = []
+    afteritinerary = []
     
     @staticmethod
     def doTasks():
@@ -134,6 +135,17 @@ class todo:
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.restack()
         todo.commitlist = []
+        for f, arg in todo.afteritinerary:
+            try:
+                # print("debug: executing",f)
+                if arg:
+                    f(arg)
+                else:
+                    f()
+            except:
+                wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
+                FreeCAD.Console.PrintWarning (wrn)
+        todo.afteritinerary = []
 
     @staticmethod
     def delay (f, arg):
@@ -147,6 +159,13 @@ class todo:
         # print("debug: delaying commit",cl)
         QtCore.QTimer.singleShot(0, todo.doTasks)
         todo.commitlist = cl
+
+    @staticmethod
+    def delayAfter (f, arg):
+        # print("debug: delaying",f)
+        if todo.afteritinerary == []:
+            QtCore.QTimer.singleShot(0, todo.doTasks)
+        todo.afteritinerary.append((f,arg))
 
 #---------------------------------------------------------------------------
 # UNITS handling

@@ -2319,11 +2319,10 @@ class Move(Modifier):
     def finish(self,closed=False,cont=False):
         if self.ghost:
             self.ghost.finalize()
-        Modifier.finish(self)
         if cont and self.ui:
             if self.ui.continueMode:
-                FreeCADGui.Selection.clearSelection()
-                self.Activated()
+                todo.delayAfter(self.Activated,[])
+        Modifier.finish(self)
 
     def move(self,delta,copy=False):
         "moving the real shapes"
@@ -2467,7 +2466,7 @@ class Rotate(Modifier):
         self.step = 0
         self.center = None
         self.ui.arcUi()
-        self.ui.isCopy.show()
+        self.ui.modUi()
         self.ui.setTitle("Rotate")
         self.arctrack = arcTracker()
         self.ghost = ghostTracker(self.sel)
@@ -2476,17 +2475,16 @@ class Rotate(Modifier):
 
     def finish(self,closed=False,cont=False):
         "finishes the arc"
-        Modifier.finish(self)
         if self.arctrack:
             self.arctrack.finalize()
         if self.ghost:
             self.ghost.finalize()
-        if self.doc:
-            self.doc.recompute()
         if cont and self.ui:
             if self.ui.continueMode:
-                FreeCADGui.Selection.clearSelection()
-                self.Activated()
+                todo.delayAfter(self.Activated,[])
+        Modifier.finish(self)
+        if self.doc:
+            self.doc.recompute()
 
     def rot (self,angle,copy=False):
         "rotating the real shapes"
