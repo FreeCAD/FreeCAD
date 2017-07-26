@@ -175,6 +175,7 @@ private:
     void clearSelection(const SelectionChanges&);
     void setPreselection(const SelectionChanges&);
     void removePreselection(const SelectionChanges&);
+    void pickedListChanged();
 
 private:
     Py::Object inst;

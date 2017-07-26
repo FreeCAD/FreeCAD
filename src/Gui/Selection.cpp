@@ -149,8 +149,27 @@ void SelectionObserverPython::onSelectionChanged(const SelectionChanges& msg)
     case SelectionChanges::RmvPreselect:
         removePreselection(msg);
         break;
+    case SelectionChanges::PickedListChanged:
+        pickedListChanged();
+        break;
     default:
         break;
+    }
+}
+
+void SelectionObserverPython::pickedListChanged()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("pickedListChanged"))) {
+            Py::Callable method(this->inst.getAttr(std::string("pickedListChanged")));
+            Py::Tuple args;
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
     }
 }
 
