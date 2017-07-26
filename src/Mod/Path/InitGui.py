@@ -143,7 +143,7 @@ class PathWorkbench (Workbench):
                 selectedName = FreeCADGui.Selection.getSelection()[0].Name
                 if "Job" in selectedName:
                     self.appendContextMenu("", ["Path_ExportTemplate"])
-                if "Profile" in selectedName or "Contour" in selectedName:
+                if "Profile" in selectedName or "Contour" in selectedName or "Dressup" in selectedName:
                     #self.appendContextMenu("", ["Set_StartPoint"])
                     #self.appendContextMenu("", ["Set_EndPoint"])
                     for cmd in self.dressupcmds:
