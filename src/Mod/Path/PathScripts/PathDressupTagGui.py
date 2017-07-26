@@ -518,10 +518,11 @@ class PathDressupTagViewProvider:
 
     def onDelete(self, arg1=None, arg2=None):
         PathLog.track()
-        '''this makes sure that the base operation is added back to the project and visible'''
+        '''this makes sure that the base operation is added back to the job and visible'''
         if self.obj.Base.ViewObject:
             self.obj.Base.ViewObject.Visibility = True
-        PathUtils.addToJob(arg1.Object.Base)
+        job = PathUtils.findParentJob(self.obj)
+        PathUtils.addObjectToJob(arg1.Object.Base, job)
         #if self.debugDisplay():
         #    self.vobj.Debug.removeObjectsFromDocument()
         #    self.vobj.Debug.Document.removeObject(self.vobj.Debug.Name)
