@@ -1411,6 +1411,14 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
             elif axis.normalize() == Vector(0,0,-1):
                 newobj.ViewObject.RotationAxis = "Z"
                 newobj.ViewObject.Rotation = -angle
+        elif getType(obj) == "Point":
+            v = Vector(obj.X,obj.Y,obj.Z)
+            rv = v.sub(center)
+            rv = DraftVecUtils.rotate(rv,math.radians(angle),axis)
+            v = center.add(rv)
+            newobj.X = v.x
+            newobj.Y = v.y
+            newobj.Z = v.z
         elif hasattr(obj,"Placement"):
             shape = Part.Shape()
             shape.Placement = obj.Placement
