@@ -73,11 +73,11 @@ def numpy_array_to_str(npa):
 
 
 def points_to_numpy(pts, dim=3):
-    return np.array([[p.x, p.y, p.z] for p in pts])[:,:dim]
+    return np.array([[p.x, p.y, p.z] for p in pts])[:, :dim]
 
 
 def tuples_to_numpy(tpls, numbers_per_line):
-    return np.array([list(t) for t in tpls])[:,:numbers_per_line]
+    return np.array([list(t) for t in tpls])[:, :numbers_per_line]
 
 
 def write_fenics_mesh_points_xdmf(fem_mesh_obj, geometrynode, encoding=ENCODING_ASCII):
@@ -90,15 +90,10 @@ def write_fenics_mesh_points_xdmf(fem_mesh_obj, geometrynode, encoding=ENCODING_
     dim = get_MaxDimElementFromList(get_FemMeshObjectElementTypes(fem_mesh_obj))[2]
     effective_dim = dim
     if dim <= 2:
-        effective_dim = 2 # effective dim is 2 for dim==1
+        effective_dim = 2  # effective dim is 2 for dim==1
         geometrynode.set("GeometryType", "XY")
     elif dim == 3:
-       geometrynode.set("GeometryType", "XYZ")
-
-    # geometrynode.set("GeometryType", "XYZ")
-
-    # TODO: investigate: real two dimensional geometry. At the moment it is saved as
-    # flat 3d geometry.
+        geometrynode.set("GeometryType", "XYZ")
 
     recalc_nodes_ind_dict = {}
 
