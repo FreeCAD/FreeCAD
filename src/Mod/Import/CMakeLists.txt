@@ -24,6 +24,7 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
+        ${Import_QRC_SRCS}
     DESTINATION
         Mod/Import
 )   
