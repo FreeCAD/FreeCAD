@@ -51,7 +51,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathDressup
         from PathScripts import PathDressupDogbone
         from PathScripts import PathDressupDragknife
-        from PathScripts import PathDressupHoldingTags
         from PathScripts import PathDressupRampEntry
         from PathScripts import PathDressupTagGui
         from PathScripts import PathDrilling
@@ -87,7 +86,7 @@ class PathWorkbench (Workbench):
         twodopcmdlist = ["Path_Contour", "Path_Profile", "Path_Profile_Edges", "Path_Pocket", "Path_Drilling", "Path_Engrave", "Path_MillFace", "Path_Helix"]
         threedopcmdlist = ["Path_Surfacing"]
         modcmdlist = ["Path_Copy", "Path_CompoundExtended", "Path_Array", "Path_SimpleCopy" ]
-        dressupcmdlist = ["PathDressup_Dogbone", "PathDressup_DragKnife", "PathDressup_HoldingTags", "PathDressup_Tag", "PathDressup_RampEntry"]
+        dressupcmdlist = ["PathDressup_Dogbone", "PathDressup_DragKnife", "PathDressup_Tag", "PathDressup_RampEntry"]
         extracmdlist = ["Path_SelectLoop", "Path_Shape", "Path_Area", "Path_Area_Workplane", "Path_Stock"]
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
@@ -145,7 +144,6 @@ class PathWorkbench (Workbench):
                 if "Job" in selectedName:
                     self.appendContextMenu("", ["Path_ExportTemplate"])
                 if "Profile" in selectedName or "Contour" in selectedName:
-                    #self.appendContextMenu("", ["Add_Tag"])
                     #self.appendContextMenu("", ["Set_StartPoint"])
                     #self.appendContextMenu("", ["Set_EndPoint"])
                     for cmd in self.dressupcmds:
