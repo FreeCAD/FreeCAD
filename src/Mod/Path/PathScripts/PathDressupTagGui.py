@@ -26,7 +26,8 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts
-import PathScripts.PathDressupTag as PathDressupTag
+#import PathScripts.PathDressupTag as PathDressupTag
+import PathScripts.PathDressupHoldingTags as PathDressupTag
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 
@@ -35,12 +36,15 @@ from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore, QtGui
 from pivy import coin
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule()
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule()
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
+def addDebugDisplay():
+    return PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG
 
 class PathDressupTagTaskPanel:
     DataX  = QtCore.Qt.ItemDataRole.UserRole
@@ -455,6 +459,17 @@ class PathDressupTagViewProvider:
         self.vobj = vobj
         self.panel = None
 
+        self.debugDisplay()
+
+    def debugDisplay(self):
+        #if False and addDebugDisplay():
+        #    if not hasattr(self.vobj, 'Debug'):
+        #        self.vobj.addProperty('App::PropertyLink', 'Debug', 'Debug', QtCore.QT_TRANSLATE_NOOP('PathDressup_TagGui', 'Some elements for debugging'))
+        #        dbg = self.vobj.Object.Document.addObject('App::DocumentObjectGroup', 'TagDebug')
+        #        self.vobj.Debug = dbg
+        #    return True
+        return False
+
     def __getstate__(self):
         return None
     def __setstate__(self, state):
@@ -475,6 +490,7 @@ class PathDressupTagViewProvider:
     def attach(self, vobj):
         PathLog.track()
         self.setupColors()
+        self.vobj = vobj
         self.obj = vobj.Object
         self.tags = []
         self.switch = coin.SoSwitch()
@@ -487,10 +503,8 @@ class PathDressupTagViewProvider:
                     i.Group = [o for o in i.Group if o.Name != self.obj.Base.Name]
             if self.obj.Base.ViewObject:
                 self.obj.Base.ViewObject.Visibility = False
-            if PathLog.getLevel(PathLog.thisModule()) != PathLog.Level.DEBUG and self.obj.Debug.ViewObject:
-                self.obj.Debug.ViewObject.Visibility = False
-
-        self.obj.Proxy.changed.connect(self.onModelChanged)
+            #if self.debugDisplay() and self.vobj.Debug.ViewObject:
+            #    self.vobj.Debug.ViewObject.Visibility = False
 
     def turnMarkerDisplayOn(self, display):
         sw = coin.SO_SWITCH_ALL if display else coin.SO_SWITCH_NONE
@@ -498,7 +512,9 @@ class PathDressupTagViewProvider:
 
     def claimChildren(self):
         PathLog.track()
-        return [self.obj.Base, self.obj.Debug]
+        #if self.debugDisplay():
+        #    return [self.obj.Base, self.vobj.Debug]
+        return [self.obj.Base]
 
     def onDelete(self, arg1=None, arg2=None):
         PathLog.track()
@@ -506,9 +522,10 @@ class PathDressupTagViewProvider:
         if self.obj.Base.ViewObject:
             self.obj.Base.ViewObject.Visibility = True
         PathUtils.addToJob(arg1.Object.Base)
-        self.obj.Debug.removeObjectsFromDocument()
-        self.obj.Debug.Document.removeObject(self.obj.Debug.Name)
-        self.obj.Debug = None
+        #if self.debugDisplay():
+        #    self.vobj.Debug.removeObjectsFromDocument()
+        #    self.vobj.Debug.Document.removeObject(self.vobj.Debug.Name)
+        #    self.vobj.Debug = None
         return True
 
     def updatePositions(self, positions, disabled):
@@ -529,15 +546,16 @@ class PathDressupTagViewProvider:
 
     def onModelChanged(self):
         PathLog.track()
-        self.obj.Debug.removeObjectsFromDocument()
-        for solid in self.obj.Proxy.solids:
-            tag = self.obj.Document.addObject('Part::Feature', 'tag')
-            tag.Shape = solid
-            if tag.ViewObject and self.obj.Debug.ViewObject:
-                tag.ViewObject.Visibility = self.obj.Debug.ViewObject.Visibility
-                tag.ViewObject.Transparency = 80
-            self.obj.Debug.addObject(tag)
-            tag.purgeTouched()
+        #if self.debugDisplay():
+        #    self.vobj.Debug.removeObjectsFromDocument()
+        #    for solid in self.obj.Proxy.solids:
+        #        tag = self.obj.Document.addObject('Part::Feature', 'tag')
+        #        tag.Shape = solid
+        #        if tag.ViewObject and self.vobj.Debug.ViewObject:
+        #            tag.ViewObject.Visibility = self.vobj.Debug.ViewObject.Visibility
+        #            tag.ViewObject.Transparency = 80
+        #        self.vobj.Debug.addObject(tag)
+        #    tag.purgeTouched()
 
     def setEdit(self, vobj, mode=0):
         panel = PathDressupTagTaskPanel(vobj.Object, self)
