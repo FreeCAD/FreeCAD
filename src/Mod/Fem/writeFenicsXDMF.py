@@ -72,12 +72,12 @@ def numpy_array_to_str(npa):
     return res
 
 
-def points_to_numpy(pts):
-    return np.array([[p.x, p.y, p.z] for p in pts])
+def points_to_numpy(pts, dim=3):
+    return np.array([[p.x, p.y, p.z] for p in pts])[:,:dim]
 
 
-def tuples_to_numpy(tpls):
-    return np.array([list(t) for t in tpls])
+def tuples_to_numpy(tpls, numbers_per_line):
+    return np.array([list(t) for t in tpls])[:,:numbers_per_line]
 
 
 def write_fenics_mesh_points_xdmf(fem_mesh_obj, geometrynode, encoding=ENCODING_ASCII):
@@ -87,13 +87,15 @@ def write_fenics_mesh_points_xdmf(fem_mesh_obj, geometrynode, encoding=ENCODING_
 
     numnodes = fem_mesh_obj.FemMesh.NodeCount
 
-    # dim = get_MaxDimElementFromList(get_FemMeshObjectElementTypes(fem_mesh_obj))[2]
-    # if dim == 2:
-    #    geometrynode.set("GeometryType", "XY")
-    # elif dim == 3:
-    #    geometrynode.set("GeometryType", "XYZ")
+    dim = get_MaxDimElementFromList(get_FemMeshObjectElementTypes(fem_mesh_obj))[2]
+    effective_dim = dim
+    if dim <= 2:
+        effective_dim = 2 # effective dim is 2 for dim==1
+        geometrynode.set("GeometryType", "XY")
+    elif dim == 3:
+       geometrynode.set("GeometryType", "XYZ")
 
-    geometrynode.set("GeometryType", "XYZ")
+    # geometrynode.set("GeometryType", "XYZ")
 
     # TODO: investigate: real two dimensional geometry. At the moment it is saved as
     # flat 3d geometry.
@@ -101,13 +103,13 @@ def write_fenics_mesh_points_xdmf(fem_mesh_obj, geometrynode, encoding=ENCODING_
     recalc_nodes_ind_dict = {}
 
     if encoding == ENCODING_ASCII:
-        dataitem = ET.SubElement(geometrynode, "DataItem", Dimensions="%d %d" % (numnodes, 3), Format="XML")
+        dataitem = ET.SubElement(geometrynode, "DataItem", Dimensions="%d %d" % (numnodes, effective_dim), Format="XML")
         nodes = []
         for (ind, (key, node)) in enumerate(fem_mesh_obj.FemMesh.Nodes.iteritems()):
             nodes.append(node)
             recalc_nodes_ind_dict[key] = ind
 
-        dataitem.text = numpy_array_to_str(points_to_numpy(nodes))
+        dataitem.text = numpy_array_to_str(points_to_numpy(nodes, dim=effective_dim))
     elif encoding == ENCODING_HDF5:
         pass
 
@@ -154,7 +156,7 @@ def write_fenics_mesh_codim_xdmf(fem_mesh_obj,
 
     if encoding == ENCODING_ASCII:
         dataitem = ET.SubElement(topologynode, "DataItem", NumberType="UInt", Dimensions="%d %d" % (num_topo, nodes_per_element), Format="XML")
-        dataitem.text = numpy_array_to_str(tuples_to_numpy(nodeindices))
+        dataitem.text = numpy_array_to_str(tuples_to_numpy(nodeindices, nodes_per_element))
     elif encoding == ENCODING_HDF5:
         pass
 
