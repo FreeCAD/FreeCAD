@@ -278,7 +278,7 @@ PyObject* ViewProviderPy::partialRender(PyObject* args)
     if(value != Py_None) {
         PyObject *item;
         Py_ssize_t nSize;
-        if (PySequence_Check(value))
+        if (PyList_Check(value) || PyTuple_Check(value))
             nSize = PySequence_Size(value);
         else {
             item = value;
@@ -288,7 +288,6 @@ PyObject* ViewProviderPy::partialRender(PyObject* args)
         values.resize(nSize);
         for (Py_ssize_t i = 0; i < nSize; ++i) {
             if(value) item = PySequence_GetItem(value, i);
-
             if (PyUnicode_Check(item)) {
 #if PY_MAJOR_VERSION >= 3
                 values[i] = PyUnicode_AsUTF8(item);

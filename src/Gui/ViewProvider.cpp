@@ -787,29 +787,31 @@ SoDetail *ViewProvider::getDetailPath(const char *subelement, SoFullPath *pPath,
 }
 
 int ViewProvider::partialRender(const std::vector<std::string> &elements, bool clear) {
+    if(elements.empty()) {
+        auto node = pcModeSwitch->getChild(_iActualMode);
+        if(node) {
+            FC_LOG("partial render clear");
+            SoSelectionElementAction action(SoSelectionElementAction::None,true);
+            action.apply(node);
+        }
+    }
     int count = 0;
     SoFullPath *path = static_cast<SoFullPath*>(new SoPath);
     path->ref();
-    if(elements.empty()) {
-        FC_LOG("partial render clear");
-        SoSelectionElementAction action(SoSelectionElementAction::None,true);
-        action.apply(path);
-    } else {
-        SoSelectionElementAction action(clear?SoSelectionElementAction::Remove:
-            SoSelectionElementAction::Append,true);
-        for(const auto &element : elements) {
-            path->truncate(0);
-            SoDetail *det = getDetailPath(element.c_str(),path,false);
-            if(!det) {
-                FC_LOG("partial render element not found: " << element);
-                continue;
-            }
-            FC_LOG("partial render (" << path->getLength() << "): " << element);
-            action.setElement(det);
-            action.apply(path);
-            delete det;
-            ++count;
+    SoSelectionElementAction action(clear?SoSelectionElementAction::Remove:
+        SoSelectionElementAction::Append,true);
+    for(const auto &element : elements) {
+        path->truncate(0);
+        SoDetail *det = getDetailPath(element.c_str(),path,false);
+        if(!det) {
+            FC_LOG("partial render element not found: " << element);
+            continue;
         }
+        FC_LOG("partial render (" << path->getLength() << "): " << element);
+        action.setElement(det);
+        action.apply(path);
+        delete det;
+        ++count;
     }
     path->unref();
     return count;
