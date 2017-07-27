@@ -745,6 +745,13 @@ def guessDepths(objshape, subs=None):
 
     return depth_params(clearance, safe, start, 1.0, 0.0, final, user_depths=None, equalstep=False)
 
+def drillTipLength(tool):
+    """returns the length of the drillbit tip."""
+    if tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
+        return 0.0
+    else:
+        theta = math.radians(tool.CuttingEdgeAngle)
+        return (tool.Diameter/2) / math.tan(theta) 
 
 class depth_params:
     '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters
