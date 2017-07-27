@@ -24,7 +24,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <gp_Circ.hxx>
 # include <gp_Dir.hxx>
+# include <gp_Elips.hxx>
+# include <gp_Hypr.hxx>
+# include <gp_Parab.hxx>
 # include <gp_Vec.hxx>
 # include <gp_Lin.hxx>
 # include <Geom_Geometry.hxx>
