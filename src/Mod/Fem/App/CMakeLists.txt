@@ -173,6 +173,7 @@ SET(FemGuiScripts_SRCS
     PyGui/TaskPanelFemMeshBoundaryLayer.ui
     PyGui/TaskPanelFemMeshGmsh.ui
     PyGui/TaskPanelFemMeshGroup.ui
+    PyGui/TaskPanelFemMeshGroupXDMFExport.ui
     PyGui/TaskPanelFemMeshRegion.ui
     PyGui/TaskPanelFemResultShow.ui
     PyGui/TaskPanelFemSolverCalculix.ui
