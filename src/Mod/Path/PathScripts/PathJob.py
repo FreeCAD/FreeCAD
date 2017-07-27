@@ -118,7 +118,7 @@ class ObjectPathJob:
                     obj.Description = job.get(JobTemplate.Description)
             for tc in tree.getroot().iter(JobTemplate.ToolController):
                 PathToolController.CommandPathToolController.FromTemplate(obj, tc)
-        elif template is not None:
+        else:
             PathToolController.CommandPathToolController.Create(obj.Name)
 
     def templateAttrs(self, obj):
@@ -445,10 +445,13 @@ class CommandJobCreate:
     def Execute(cls, base, template):
         FreeCADGui.addModule('PathScripts.PathJob')
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
-        snippet = '''App.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")
-PathScripts.PathJob.ObjectPathJob(App.ActiveDocument.ActiveObject, App.ActiveDocument.%s, "%s")''' % (base.Name, template)
         try:
-            FreeCADGui.doCommand(snippet)
+            FreeCADGui.doCommand('App.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")')
+            if template:
+                template = "'%s'" % template
+            else:
+                template = 'None'
+            FreeCADGui.doCommand('PathScripts.PathJob.ObjectPathJob(App.ActiveDocument.ActiveObject, App.ActiveDocument.%s, %s)' % (base.Name, template))
             FreeCAD.ActiveDocument.commitTransaction()
         except:
             PathLog.error(sys.exc_info())
