@@ -21,7 +21,11 @@
 # ***************************************************************************
 from __future__ import print_function
 
-from importToolsFem import get_FemMeshObjectDimension, get_FemMeshObjectElementTypes, get_MaxDimElementFromList, get_FemMeshObjectOrder
+from importToolsFem import get_FemMeshObjectDimension,\
+                            get_FemMeshObjectElementTypes,\
+                            get_MaxDimElementFromList,\
+                            get_FemMeshObjectOrder,\
+                            get_FemMeshObjectMeshGroups
 from xml.etree import ElementTree as ET  # parsing xml files and exporting
 import numpy as np
 
@@ -53,10 +57,6 @@ FreeCAD_to_Fenics_XDMF_dict = {
     ("Tetra", 1): ("tetrahedron", 4),
     ("Tetra", 2): ("tet_10", 10)
 }
-
-
-# TODO: export mesh functions (to be defined, cell functions, vertex functions, facet functions)
-# TODO: integrate cell function
 
 # we need numpy functions to later access and process large data sets in a fast manner
 # also the hd5 support better works together with numpy
@@ -210,7 +210,7 @@ Example: mesh with two topologies and one mesh function for the facet one
 """
 
 
-def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, encoding=ENCODING_ASCII):
+def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, group_values_dict={}, encoding=ENCODING_ASCII):
     """
         For the export of xdmf.
     """
@@ -254,12 +254,10 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, encoding=ENCODING_ASCII):
     #####################################
 
     fem_mesh = fem_mesh_obj.FemMesh
-    try:
-        gmshgroups = fem_mesh.Groups
-    except:
-        gmshgroups = ()
+    gmshgroups = get_FemMeshObjectMeshGroups(fem_mesh_obj)
 
-    print('found mesh groups')
+    if gmshgroups is not ():
+        print('found mesh groups')
 
     for g in gmshgroups:
         mesh_function_type = fem_mesh.getGroupElementType(g)
@@ -282,9 +280,7 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, encoding=ENCODING_ASCII):
         mesh_function_attribute = ET.SubElement(mesh_function_grid, "Attribute")
 
         elem_dict = {}
-        elem_mark_default = -1
-        elem_mark_group = g
-        elem_mark_overlap = g/2
+        (elem_mark_group, elem_mark_default) = group_values_dict.get(g, (g, -1))
 
         # TODO: is it better to save all groups each at once or collect all codim equal
         # groups to put them into one function?
