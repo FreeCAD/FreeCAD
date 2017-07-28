@@ -626,7 +626,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // Structure
     ToolBarItem* structure = new ToolBarItem( root );
     structure->setCommand("Structure");
-    *structure << "Std_Part";
+    *structure << "Std_Part" << "Std_Group";
           
     return root;
 }
