@@ -167,20 +167,17 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
             p->setValue(getOrigin()->getOriginFeature(static_cast<OriginFeature*>(p->getValue())->Role.getValue()), subValues);
         }
         else if(prop->getTypeId().isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())) {
-            auto p = static_cast<App::PropertyLinkList*>(prop);
-            auto vec = p->getValues();
-            std::vector<App::DocumentObject*> result;
+            auto p = static_cast<App::PropertyLinkSubList*>(prop);
+            auto vec = p->getSubListValues();
             bool changed = false;
-            for(App::DocumentObject* o : vec) {
-                if(!o || !o->isDerivedFrom(App::OriginFeature::getClassTypeId()))
-                    result.push_back(o);
-                else {
-                    result.push_back(getOrigin()->getOriginFeature(static_cast<OriginFeature*>(o)->Role.getValue()));
+            for(auto &v : vec) {
+                if(v.first && v.first->isDerivedFrom(App::OriginFeature::getClassTypeId())) {
+                    v.first = getOrigin()->getOriginFeature(static_cast<OriginFeature*>(v.first)->Role.getValue());
                     changed = true;
                 }
             }
             if(changed)
-                static_cast<App::PropertyLinkList*>(prop)->setValues(result);
+                p->setSubListValues(vec);
         }
     }
 }
