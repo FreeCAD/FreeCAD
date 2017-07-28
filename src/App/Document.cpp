@@ -1987,33 +1987,40 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
 void Document::_rebuildDependencyList(void)
 {
 #ifdef USE_OLD_DAG
+
     d->VertexObjectList.clear();
     d->DepList.clear();
-    // Filling up the adjacency List
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        // add the object as Vertex and remember the index
-        d->VertexObjectList[It->second] = add_vertex(d->DepList);
-    }
+    std::map<DocumentObject*, std::vector<DocumentObject*> > outLists;
 
-    // add the edges
+    // add vertex
     for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-            if (*It2) {
-                std::map<DocumentObject*,Vertex>::iterator i = d->VertexObjectList.find(*It2);
+        std::deque<DocumentObject*> objs;
+        objs.push_back(It->second);
+        while(objs.size()) {
+            auto obj = objs.front();
+            objs.pop_front();
+            if(!obj || !obj->getNameInDocument())
+                continue;
 
-                if (i == d->VertexObjectList.end())
-                    d->VertexObjectList[*It2] = add_vertex(d->DepList);
-            }
+            auto it = outLists.find(obj);
+            if(it != outLists.end())
+                continue;
+
+            d->VertexObjectList[obj] = add_vertex(d->DepList);
+
+            auto &outList = outLists[obj];
+            outList = obj->getOutList();
+
+            objs.insert(objs.end(),outList.begin(),outList.end());
         }
     }
 
     // add the edges
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-            if (*It2)
-                add_edge(d->VertexObjectList[It->second],d->VertexObjectList[*It2],d->DepList);
+    for (const auto &v : outLists) {
+        for(auto obj : v.second) {
+            if(!obj || !obj->getNameInDocument())
+                continue;
+            add_edge(d->VertexObjectList[v.first],d->VertexObjectList[obj],d->DepList);
         }
     }
 #endif
@@ -2115,7 +2122,13 @@ int Document::recompute()
 
     for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
         DocumentObject* Cur = d->vertexMap[*i];
-        if (!Cur || !isIn(Cur)) continue;
+        // Because of PropertyXLink, we should account for external objects
+        // TODO: make sure it is safe to rely on getNameInDocument() to check if
+        // object is in the document. If it crashes, then we should fix the code
+        // to properly nullify getNameInDocument(), rather than revert back to
+        // the inefficient isIn()
+        // if (!Cur || !isIn(Cur)) continue;
+        if (!Cur || !Cur->getNameInDocument()) continue;
 #ifdef FC_LOGFEATUREUPDATE
         std::clog << Cur->getNameInDocument() << " dep on:" ;
 #endif
@@ -2182,7 +2195,9 @@ int Document::recompute()
 
     // reset all touched
     for (std::map<Vertex,DocumentObject*>::iterator it = d->vertexMap.begin(); it != d->vertexMap.end(); ++it) {
-        if ((it->second) && isIn(it->second))
+        // TODO: check the TODO comments above for details
+        // if ((it->second) && isIn(it->second))
+        if ((it->second) && it->second->getNameInDocument())
             it->second->purgeTouched();
     }
     d->vertexMap.clear();
