@@ -1473,6 +1473,7 @@ PyObject* Document::getPyObject(void)
 void Document::handleChildren3D(ViewProvider* viewProvider)
 {
     // check for children
+    bool rebuild = false;
     if (viewProvider && viewProvider->getChildRoot()) {
         std::vector<App::DocumentObject*> children = viewProvider->claimChildren3D();
         SoGroup* childGroup =  viewProvider->getChildRoot();
@@ -1480,6 +1481,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
         // size not the same -> build up the list new
         if (childGroup->getNumChildren() != static_cast<int>(children.size())) {
 
+            rebuild = true;
             childGroup->removeAllChildren();
 
             for (std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it) {
@@ -1521,5 +1523,29 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
                 }
             }
         }
+    }
+    
+    //find all unclaimed viewproviders and add them back to the document (this happens if a 
+    //viewprovider has been claimed before, but the object droped it. 
+    if(rebuild) {
+        auto vpmap = d->_ViewProviderMap;
+        for( auto& pair  : d->_ViewProviderMap ) {
+            auto claimed = pair.second->claimChildren3D();
+            for(auto obj : claimed) {
+                auto it = vpmap.find(obj);
+                if(it != vpmap.end())
+                    vpmap.erase(it);
+            }
+        }
+        for(auto& pair : vpmap) {
+            
+            // cycling to all views of the document to add the viewprovider to the viewer itself
+            for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
+                View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
+                if (activeView && !activeView->getViewer()->hasViewProvider(pair.second)) {
+                    activeView->getViewer()->addViewProvider(pair.second);
+                }
+            }   
+        }   
     }
 }
