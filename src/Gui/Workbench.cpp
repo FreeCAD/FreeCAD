@@ -622,6 +622,12 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << "Separator" << "Std_ViewAxo" << "Separator" << "Std_ViewFront"
           << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
           << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance" ;
+    
+    // Structure
+    ToolBarItem* structure = new ToolBarItem( root );
+    structure->setCommand("Structure");
+    *structure << "Std_Part";
+          
     return root;
 }
 

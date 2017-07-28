@@ -75,50 +75,6 @@ App::Part* assertActivePart () {
 
 } /* PartDesignGui */
 
-//===========================================================================
-// PartDesign_Part
-//===========================================================================
-DEF_STD_CMD_A(CmdPartDesignPart);
-
-CmdPartDesignPart::CmdPartDesignPart()
-  : Command("PartDesign_Part")
-{
-    sAppModule    = "PartDesign";
-    sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Create part");
-    sToolTipText  = QT_TR_NOOP("Create a new part and make it active");
-    sWhatsThis    = "PartDesign_Part";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Tree_Annotation";
-}
-
-void CmdPartDesignPart::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    if ( !PartDesignGui::assureModernWorkflow( getDocument() ) )
-        return;
-
-    openCommand("Add a part");
-    std::string FeatName = getUniqueObjectName("Part");
-
-    std::string PartName;
-    PartName = getUniqueObjectName("Part");
-    doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
-    // TODO We really must to set label ourselfs? (2015-08-17, Fat-Zer)
-    doCommand(Doc,"App.activeDocument().%s.Label = '%s'", PartName.c_str(),
-            QObject::tr(PartName.c_str()).toUtf8().data());
-    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
-            PARTKEY, PartName.c_str());
-
-    updateActive();
-}
-
-bool CmdPartDesignPart::isActive(void)
-{
-    return hasActiveDocument() && !PartDesignGui::isLegacyWorkflow ( getDocument () );
-}
-
-//===========================================================================
 // PartDesign_Body
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignBody);
@@ -869,7 +825,6 @@ void CreatePartDesignBodyCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdPartDesignPart());
     rcCmdMgr.addCommand(new CmdPartDesignBody());
     rcCmdMgr.addCommand(new CmdPartDesignMigrate());
     rcCmdMgr.addCommand(new CmdPartDesignMoveTip());

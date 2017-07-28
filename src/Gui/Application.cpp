@@ -649,6 +649,7 @@ void Application::createStandardOperations()
     Gui::CreateMacroCommands();
     Gui::CreateViewStdCommands();
     Gui::CreateWindowStdCommands();
+    Gui::CreateStructureCommands();
     Gui::CreateTestCommands();
 }
 
