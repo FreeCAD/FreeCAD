@@ -393,11 +393,6 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
 class _CommandWindow:
     "the Arch Window command definition"
 
-    def __init__(self):
-        # hack for inputwidgets
-        global setArchWindowParamFunction
-        setArchWindowParamFunction = self.setParams
-
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Window',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Window","Window"),
@@ -586,11 +581,13 @@ class _CommandWindow:
             grid.addWidget(lab,i,0,1,1)
             grid.addWidget(wid,i,1,1,1)
             i += 1
+            valueChanged = self.getValueChanged(param)
             FreeCAD.wid = wid
-            exec("""def valueChanged(d):
-                setArchWindowParamFunction('"""+param+"""',d)""")
-            QtCore.QObject.connect(getattr(self,"val"+param),QtCore.SIGNAL("valueChanged(double)"),valueChanged)
+            QtCore.QObject.connect(getattr(self,"val"+param),QtCore.SIGNAL("valueChanged(double)"), valueChanged)
         return w
+
+    def getValueChanged(self,p):
+      return lambda d : self.setParams(p, d)
 
     def setSill(self,d):
         self.Sill = d
@@ -716,7 +713,7 @@ class _Window(ArchComponent.Component):
                     if obj.WindowParts and (len(obj.WindowParts)%5 == 0):
                         shapes = []
                         rotdata = None
-                        for i in range(len(obj.WindowParts)/5):
+                        for i in range(int(len(obj.WindowParts)/5)):
                             wires = []
                             hinge = None
                             omode = None
