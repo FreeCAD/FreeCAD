@@ -541,6 +541,16 @@ PyObject*  DocumentObjectPy::getParentGeoFeatureGroup(PyObject *args)
     }
 }
 
+Py::Boolean DocumentObjectPy::getMustExecute() const
+{
+    try {
+        return Py::Boolean(getDocumentObjectPtr()->mustExecute()?true:false);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
 PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
 {
     // search for dynamic property

@@ -251,6 +251,8 @@ public:
     void purgeTouched();
     /// check if there is any touched object in this document
     bool isTouched(void) const;
+    /// check if there is any object must execute in this document
+    bool mustExecute(void) const;
     /// returns all touched objects
     std::vector<App::DocumentObject *> getTouched(void) const;
     /// set the document to be closable, this is on by default.

@@ -1828,6 +1828,14 @@ bool Document::isTouched() const
     return false;
 }
 
+bool Document::mustExecute() const
+{
+    for (std::vector<DocumentObject*>::const_iterator It = d->objectArray.begin();It != d->objectArray.end();++It)
+        if ((*It)->isTouched() || (*It)->mustExecute())
+            return true;
+    return false;
+}
+
 vector<DocumentObject*> Document::getTouched(void) const
 {
     vector<DocumentObject*> result;

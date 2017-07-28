@@ -45,6 +45,7 @@ public:
     ~FeaturePythonImp();
 
     bool execute();
+    bool mustExecute() const;
     void onBeforeChange(const Property* prop);
     void onChanged(const Property* prop);
     void onDocumentRestored();
@@ -95,7 +96,9 @@ public:
     short mustExecute() const {
         if (this->isTouched())
             return 1;
-        return FeatureT::mustExecute();
+        auto ret = FeatureT::mustExecute();
+        if(ret) return ret;
+        return imp->mustExecute()?1:0;
     }
     /// recalculate the Feature
     virtual DocumentObjectExecReturn *execute(void) {

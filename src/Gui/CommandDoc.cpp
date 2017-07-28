@@ -1203,7 +1203,7 @@ void StdCmdRefresh::activated(int iMsg)
 
 bool StdCmdRefresh::isActive(void)
 {
-    return this->getDocument() && this->getDocument()->isTouched();
+    return this->getDocument() && this->getDocument()->mustExecute();
 }
 
 //===========================================================================
