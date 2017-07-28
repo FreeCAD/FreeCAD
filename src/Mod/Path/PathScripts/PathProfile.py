@@ -329,6 +329,21 @@ class ObjectProfile:
         else:  # Try to build targets from the job base
             if hasattr(baseobject, "Proxy"):
                 if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+                    if obj.processCircles or obj.processHoles:
+                        shapes = baseobject.Proxy.getHoles(baseobject, transform=True)
+                        for shape in shapes:
+                            for wire in shape.Wires:
+                                drillable = PathUtils.isDrillable(baseobject.Proxy, wire)
+                                if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
+                                    f = Part.makeFace(wire, 'Part::FaceMakerSimple')
+                                    env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, depthparams=self.depthparams)
+                                    try:
+                                        (pp, sim) = self._buildPathArea(obj, baseobject=env, isHole=True, start=None, getsim=getsim)
+                                        commandlist.extend(pp.Commands)
+                                    except Exception as e:
+                                        FreeCAD.Console.PrintError(e)
+                                        FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+
                     if obj.processPerimeter:
                         shapes = baseobject.Proxy.getOutlines(baseobject, transform=True)
                         for shape in shapes:
@@ -337,20 +352,6 @@ class ObjectProfile:
                                 env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, depthparams=self.depthparams)
                                 try:
                                     (pp, sim) = self._buildPathArea(obj, baseobject=env, isHole=False, start=None, getsim=getsim)
-                                    commandlist.extend(pp.Commands)
-                                except Exception as e:
-                                    FreeCAD.Console.PrintError(e)
-                                    FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
-
-                    shapes = baseobject.Proxy.getHoles(baseobject, transform=True)
-                    for shape in shapes:
-                        for wire in shape.Wires:
-                            drillable = PathUtils.isDrillable(baseobject.Proxy, wire)
-                            if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
-                                f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                                env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, depthparams=self.depthparams)
-                                try:
-                                    (pp, sim) = self._buildPathArea(obj, baseobject=env, isHole=True, start=None, getsim=getsim)
                                     commandlist.extend(pp.Commands)
                                 except Exception as e:
                                     FreeCAD.Console.PrintError(e)
