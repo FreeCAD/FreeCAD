@@ -1172,6 +1172,10 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
             item->insertChild(i,childItem);
         }
     }
+    App::GeoFeatureGroupExtension* grp = nullptr;
+    if (item->object()->getObject()->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
+        grp = item->object()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    
     for(++i;item->childCount()>i;) {
         QTreeWidgetItem *childItem = item->child(i);
         item->removeChild(childItem);
@@ -1183,8 +1187,14 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
             // other parents not expanded yet. We don't want to traverse the
             // whole tree to confirm that. Just let it be. If the other
             // parent(s) later expanded, this child item will be moved from
-            // root to its parent.
+            // root to its parent.            
             if(obj->myselves->size()==1) {
+                // We only make a difference for geofeaturegroups, 
+                // as otherwise it comes to confusing behavior to the user when things 
+                // get claimed within the group (e.g. pad/sketch, or group)
+                if(grp && grp->hasObject(obj->object()->getObject(), true))
+                    continue;
+            
                 this->addChild(childItem);
                 continue;
             }
@@ -1198,8 +1208,17 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
     QString displayName = QString::fromUtf8(view.getObject()->Label.getValue());
     FOREACH_ITEM(item,view)
         item->setText(0, displayName);
-        populateItem(item,true);
+        populateItem(item, true);
     END_FOREACH_ITEM
+    
+    //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children 
+    //of the geofeaturegroup depends on what the childs claim
+    auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(view.getObject());
+    if(grp) {
+        FOREACH_ITEM_NAME(item, grp->getNameInDocument())
+            populateItem(item, true);
+        END_FOREACH_ITEM
+    }
 }
 
 void DocumentItem::slotRenameObject(const Gui::ViewProviderDocumentObject& obj)
