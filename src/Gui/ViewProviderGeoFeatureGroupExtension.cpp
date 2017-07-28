@@ -76,9 +76,13 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
         //object in the tree
         std::vector<App::DocumentObject*> claim;
         auto objs = ext->Group.getValues();
+        Base::Console().Message("Claim children GeoFatureGroup:\n");
+        
         for(auto obj : objs) {            
-            if(obj->getInList().size()<=1)
+            if(obj->getInList().size()<=1) {
+                Base::Console().Message("%s\n", obj->getNameInDocument());
                 claim.push_back(obj);
+            }
         }
         return claim;
     }
