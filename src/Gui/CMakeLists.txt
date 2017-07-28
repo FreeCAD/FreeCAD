@@ -397,6 +397,7 @@ SET(Command_CPP_SRCS
     CommandWindow.cpp
     CommandTest.cpp
     CommandView.cpp
+    CommandStructure.cpp
 )
 SET(Command_SRCS
     ${Command_CPP_SRCS}
