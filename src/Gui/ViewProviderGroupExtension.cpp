@@ -110,11 +110,7 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
 
 std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimChildren(void) const {
 
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-    Base::Console().Message("Claim children group:\n");
-    for(auto obj : group->Group.getValues())
-        Base::Console().Message("%s\n", obj->getNameInDocument());
-    
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();    
     return std::vector<App::DocumentObject*>(group->Group.getValues());
 }
 

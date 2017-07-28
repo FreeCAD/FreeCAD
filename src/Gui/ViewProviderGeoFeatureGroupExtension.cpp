@@ -33,7 +33,6 @@
 #include "Application.h"
 #include "Document.h"
 #include <App/GeoFeatureGroupExtension.h>
-#include <Base/Console.h>
 #include <Inventor/nodes/SoGroup.h>
 
 using namespace Gui;
@@ -76,13 +75,10 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
         //object in the tree
         std::vector<App::DocumentObject*> claim;
         auto objs = ext->Group.getValues();
-        Base::Console().Message("Claim children GeoFatureGroup:\n");
         
         for(auto obj : objs) {            
-            if(obj->getInList().size()<=1) {
-                Base::Console().Message("%s\n", obj->getNameInDocument());
+            if(obj->getInList().size()<=1)
                 claim.push_back(obj);
-            }
         }
         return claim;
     }
