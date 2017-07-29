@@ -1161,7 +1161,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
             if(!createNewItem(*childItem->object(),item,i,it->second))
                 --i;
         }else {
-            if(item->isChildOfItem(childItem)) {
+            if(item==childItem || item->isChildOfItem(childItem)) {
                 Base::Console().Error("Gui::DocumentItem::populateItem(): Cyclic dependency in %s and %s\n",
                         item->object()->getObject()->Label.getValue(),
                         childItem->object()->getObject()->Label.getValue());
