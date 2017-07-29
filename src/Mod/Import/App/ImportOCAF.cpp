@@ -129,7 +129,11 @@ void ImportOCAF::loadShapes()
 
 void ImportOCAF::setMerge(bool merge)
 {
+<<<<<<< HEAD
 	this->merge=merge;
+=======
+    this->merge=merge;
+>>>>>>> origin/master
 }
 
 void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,

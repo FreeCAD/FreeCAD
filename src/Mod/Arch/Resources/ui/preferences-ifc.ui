@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>456</width>
-    <height>666</height>
+    <height>699</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -482,6 +482,26 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcExport2D</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_19">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_13">
+          <property name="toolTip">
+           <string>If this is checked, all FreeCAD object properties will be stored inside the exported objects, allowing to recreate a full parametric model on reimport.</string>
+          </property>
+          <property name="text">
+           <string>Export full FreeCAD parametric model</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>IfcExportFreeCADProperties</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>

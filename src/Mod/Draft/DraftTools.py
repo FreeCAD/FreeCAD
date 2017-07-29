@@ -2307,7 +2307,7 @@ class Move(Modifier):
                 onlyarchgroups = False
         if not onlyarchgroups:
             # arch groups can be moved, no need to add their children
-            self.sel = Draft.getGroupContents(self.sel,spaces=True)
+            self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True)
         self.ui.pointUi(self.name)
         self.ui.modUi()
         self.ui.xValue.setFocus()
@@ -2319,11 +2319,10 @@ class Move(Modifier):
     def finish(self,closed=False,cont=False):
         if self.ghost:
             self.ghost.finalize()
-        Modifier.finish(self)
         if cont and self.ui:
             if self.ui.continueMode:
-                FreeCADGui.Selection.clearSelection()
-                self.Activated()
+                todo.delayAfter(self.Activated,[])
+        Modifier.finish(self)
 
     def move(self,delta,copy=False):
         "moving the real shapes"
@@ -2463,11 +2462,11 @@ class Rotate(Modifier):
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = FreeCADGui.Selection.getSelection()
-        self.sel = Draft.getGroupContents(self.sel,spaces=True)
+        self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True)
         self.step = 0
         self.center = None
         self.ui.arcUi()
-        self.ui.isCopy.show()
+        self.ui.modUi()
         self.ui.setTitle("Rotate")
         self.arctrack = arcTracker()
         self.ghost = ghostTracker(self.sel)
@@ -2476,17 +2475,16 @@ class Rotate(Modifier):
 
     def finish(self,closed=False,cont=False):
         "finishes the arc"
-        Modifier.finish(self)
         if self.arctrack:
             self.arctrack.finalize()
         if self.ghost:
             self.ghost.finalize()
-        if self.doc:
-            self.doc.recompute()
         if cont and self.ui:
             if self.ui.continueMode:
-                FreeCADGui.Selection.clearSelection()
-                self.Activated()
+                todo.delayAfter(self.Activated,[])
+        Modifier.finish(self)
+        if self.doc:
+            self.doc.recompute()
 
     def rot (self,angle,copy=False):
         "rotating the real shapes"
