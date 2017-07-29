@@ -47,7 +47,7 @@ class Tank:
         ship -- Ship where the tank is allocated.
         """
         # Add an unique property to identify the Weight instances
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "ship_tank",
             "True if it is a valid tank instance, False otherwise",
             None))
