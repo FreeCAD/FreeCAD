@@ -52,6 +52,8 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderDocument
 ViewProviderPart::ViewProviderPart()
 { 
     initExtension(this);
+    
+    sPixmap = "Geofeaturegroup.svg";
 }
 
 ViewProviderPart::~ViewProviderPart()
@@ -94,20 +96,6 @@ bool ViewProviderPart::doubleClicked(void)
     }
 
     return true;
-}
-
-/**
- * Returns the pixmap for the list item.
- */
-QIcon ViewProviderPart::getIcon() const
-{
-    // TODO Make a nice icon for the part (2015-09-01, Fat-Zer)
-    QIcon groupIcon;
-    groupIcon.addPixmap(QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon),
-                        QIcon::Normal, QIcon::Off);
-    groupIcon.addPixmap(QApplication::style()->standardPixmap(QStyle::SP_DirOpenIcon),
-                        QIcon::Normal, QIcon::On);
-    return groupIcon;
 }
 
 // Python feature -----------------------------------------------------------------------
