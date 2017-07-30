@@ -79,9 +79,10 @@ private:
 class ImportExport ExportOCAF
 {
 public:
-    void createNode(App::Part* part, int& root_it, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc);
+    void createNode(App::Part* part, int& root_it, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc, std::vector <App::DocumentObject*>& hierarchical_part);
     ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement);
-    int saveShape(Part::Feature* part, const std::vector<App::Color>&, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc);
+    int saveShape(Part::Feature* part, const std::vector<App::Color>&, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc,std::vector <App::DocumentObject*>& hierarchical_part);
+    void reallocateFreeShape(std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc, std::vector <App::DocumentObject*>& hierarchical_part);
     void pushNode(int root, int node, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc);
 
 
