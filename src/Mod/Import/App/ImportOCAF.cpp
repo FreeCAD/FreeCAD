@@ -485,7 +485,7 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     if (keepExplicitPlacement) {
         // rootLabel = aShapeTool->NewShape();
         // TDataStd_Name::Set(rootLabel, "ASSEMBLY");
-        Interface_Static::SetIVal("write.step.assembly",1);
+        Interface_Static::SetIVal("write.step.assembly",2);
     }
     else {
         rootLabel = TDF_TagSource::NewChild(pDoc->Main());
@@ -495,7 +495,7 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
 
 // This function create an Assembly node into an XCAF document with it's relative placement information
 
-void ExportOCAF::createNode(App::Part* part, int& root_id, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc)
+void ExportOCAF::createNode(App::Part* part, int& root_id, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc, std::vector <App::DocumentObject*>& hierarchical_part)
 {
     TDF_Label shapeLabel = aShapeTool->NewShape();
     Handle(TDataStd_Name) N;
@@ -516,10 +516,11 @@ void ExportOCAF::createNode(App::Part* part, int& root_id, std::vector <TDF_Labe
 
     hierarchical_label.push_back(shapeLabel);
     hierarchical_loc.push_back(MyLoc);
+    hierarchical_part.push_back(part);
     root_id=hierarchical_label.size();
 }
 
-int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& colors, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc)
+int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& colors, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc, std::vector <App::DocumentObject*>& hierarchical_part)
 {
     const TopoDS_Shape& shape = part->Shape.getValue();
     if (shape.IsNull())
@@ -553,11 +554,15 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
     aShapeTool->SetShape(shapeLabel, baseShape);
 
     TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), 1));
+
+
 /*
     if (keepExplicitPlacement) {
-        aShapeTool->AddComponent(rootLabel, shapeLabel, aLoc);
+        aShapeTool->AddComponent(aShapeTool->BaseLabel(), shapeLabel, aLoc);
+        XCAFDoc_Location::Set(shapeLabel,MyLoc);
     }
 */
+
     // Add color information
     Quantity_Color col;
 
@@ -604,9 +609,37 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
 
     hierarchical_label.push_back(shapeLabel);
     hierarchical_loc.push_back(MyLoc);
+    hierarchical_part.push_back(part);
 
     return(hierarchical_label.size());
 }
+
+// This function is re-allocating Free XCAF document shapes with absolute coordinate
+
+void ExportOCAF::reallocateFreeShape(std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc, std::vector <App::DocumentObject*>& hierarchical_part)
+{
+	TDF_LabelSequence FreeLabels;
+	aShapeTool->GetFreeShapes(FreeLabels);
+	int n = FreeLabels.Length();
+	for (int i = 1; i <= n; i++)
+	{
+	    TDF_Label label = FreeLabels.Value(i);
+	    for ( unsigned long j = 0; j < ( hierarchical_label.size()) ; j++ )
+	    {
+		if ( label == hierarchical_label.at(j) )
+		{
+			// hierarchical part does contain only part currently and not node I should add node
+			if ( hierarchical_part.at(j)->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()) )
+			{
+				Part::Feature * part = static_cast<Part::Feature *>(hierarchical_part.at(j));
+				aShapeTool->SetShape(label, part->Shape.getValue());
+			}
+		}
+	    }
+	}
+
+}
+
 
 // This function is moving a "standard" node into an Assembly node within an XCAF doc
 
