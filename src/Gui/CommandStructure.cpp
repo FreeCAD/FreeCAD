@@ -49,7 +49,7 @@ StdCmdPart::StdCmdPart()
     sToolTipText  = QT_TR_NOOP("Create a new part and make it active");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
-    sPixmap       = "Tree_Annotation";
+    sPixmap       = "Geofeaturegroup.svg";
 }
 
 void StdCmdPart::activated(int iMsg)
@@ -89,7 +89,7 @@ StdCmdGroup::StdCmdGroup()
     sToolTipText  = QT_TR_NOOP("Create a new group for ordering objects");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
-    sPixmap       = "Tree_Annotation";
+    sPixmap       = "Group.svg";
 }
 
 void StdCmdGroup::activated(int iMsg)
