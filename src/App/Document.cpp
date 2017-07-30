@@ -258,6 +258,7 @@ void Document::exportGraphviz(std::ostream& out) const
             buildAdjacencyList();
             addEdges();
             markCycles();
+            markOutOfScopeLinks();
         }
 
         /**
@@ -663,6 +664,7 @@ void Document::exportGraphviz(std::ostream& out) const
                             edgeAttrMap[edge]["ltail"] = getClusterName(docObj);
                         if (GraphList[*It2])
                             edgeAttrMap[edge]["lhead"] = getClusterName(*It2);
+                        
                     }
                 }
 
@@ -766,6 +768,24 @@ void Document::exportGraphviz(std::ostream& out) const
             const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
             for (auto ei = out_edges.begin(), ei_end = out_edges.end(); ei != ei_end; ++ei)
                 edgeAttrMap[ei->second]["color"] = "red";
+        }
+        
+        void markOutOfScopeLinks() {
+            
+            const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
+
+            for( auto obj : objects) {            
+                       
+                std::vector<App::DocumentObject*> invalids;
+                GeoFeatureGroupExtension::getInvalidLinkObjects(obj, invalids);
+                //isLinkValid returns true for non-link properties
+                for(auto linkedObj : invalids) {
+    
+                    auto res = edge(GlobalVertexList[getId(obj)], GlobalVertexList[getId(linkedObj)], DepList);
+                    if(res.second)
+                        edgeAttrMap[res.first]["color"] = "red";
+                }
+            }                
         }
 
         const struct DocumentP* d;
@@ -2165,7 +2185,6 @@ int Document::recompute()
                     inObjIt->touch();
             }
         }
-
     }
 #ifdef FC_DEBUG
     // check if all objects are recalculated which were thouched 
@@ -2188,8 +2207,14 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
     ret.reserve(d->objectArray.size());
     map < App::DocumentObject*,int > countMap;
 
-    for (auto objectIt : d->objectArray)
-        countMap[objectIt] = objectIt->getInList().size();
+    for (auto objectIt : d->objectMap) {
+        //we need inlist with unique entries
+        auto in = objectIt.second->getInList();
+        std::sort(in.begin(), in.end());
+        in.erase(std::unique(in.begin(), in.end()), in.end());
+        
+        countMap[objectIt.second] = in.size();
+    }
 
     auto rootObjeIt = find_if(countMap.begin(), countMap.end(), [](pair < App::DocumentObject*, int > count)->bool {
         return count.second == 0;
@@ -2202,7 +2227,13 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
 
     while (rootObjeIt != countMap.end()){
         rootObjeIt->second = rootObjeIt->second - 1;
-        for (auto outListIt : rootObjeIt->first->getOutList()){
+        
+        //we need outlist with unique entries
+        auto out = rootObjeIt->first->getOutList();
+        std::sort(out.begin(), out.end());
+        out.erase(std::unique(out.begin(), out.end()), out.end());
+        
+        for (auto outListIt : out) {
             auto outListMapIt = countMap.find(outListIt);
             outListMapIt->second = outListMapIt->second - 1;
         }
@@ -2780,7 +2811,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     std::map<std::string,App::Property*> props;
     obj->getPropertyMap(props);
     for (std::map<std::string,App::Property*>::iterator it = props.begin(); it != props.end(); ++it) {
-        if (it->second->getTypeId() == PropertyLink::getClassTypeId()) {
+        if (it->second->getTypeId().isDerivedFrom(PropertyLink::getClassTypeId())) {
             DocumentObject* link = static_cast<PropertyLink*>(it->second)->getValue();
             if (recursive) {
                 moveObject(link, recursive);
@@ -2790,7 +2821,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
                 static_cast<PropertyLink*>(it->second)->setValue(0);
             }
         }
-        else if (it->second->getTypeId() == PropertyLinkList::getClassTypeId()) {
+        else if (it->second->getTypeId().isDerivedFrom(PropertyLinkList::getClassTypeId())) {
             std::vector<DocumentObject*> links = static_cast<PropertyLinkList*>(it->second)->getValues();
             if (recursive) {
                 for (std::vector<DocumentObject*>::iterator jt = links.begin(); jt != links.end(); ++jt)

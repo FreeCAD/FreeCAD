@@ -288,7 +288,7 @@ void ViewProviderMeshCurvature::attach(App::DocumentObject *pcFeat)
 void ViewProviderMeshCurvature::updateData(const App::Property* prop)
 {
     // set to the expected size
-    if (prop->getTypeId() == App::PropertyLink::getClassTypeId()) {
+    if (prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
         Mesh::Feature* object = static_cast<const App::PropertyLink*>(prop)->getValue<Mesh::Feature*>();
         this->pcLinkRoot->removeAllChildren();
         if (object) {
