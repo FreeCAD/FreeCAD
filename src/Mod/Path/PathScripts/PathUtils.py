@@ -24,15 +24,16 @@
 '''PathUtils -common functions used in PathScripts for filterig, sorting, and generating gcode toolpath data '''
 import FreeCAD
 import FreeCADGui
-import Part
 import math
-from DraftGeomUtils import geomType
-import PathScripts
-from PathScripts import PathJob
 import numpy
-from PathScripts import PathLog
-from FreeCAD import Vector
+import Part
 import Path
+import PathScripts
+
+from DraftGeomUtils import geomType
+from FreeCAD import Vector
+from PathScripts import PathJob
+from PathScripts import PathLog
 from PySide import QtCore
 from PySide import QtGui
 
@@ -445,6 +446,15 @@ def addObjectToJob(obj, job):
     job.Group = g
     return job
 
+def addObjectToJob(obj, job):
+    '''
+    addObjectToJob(obj, job) ... adds object to given job.
+    '''
+    g = job.Group
+    g.append(obj)
+    job.Group = g
+    return job
+
 def addToJob(obj, jobname=None):
     '''adds a path object to a job
     obj = obj
@@ -479,7 +489,6 @@ def addToJob(obj, jobname=None):
     if obj:
         addObjectToJob(obj, job)
     return job
-
 
 def rapid(x=None, y=None, z=None):
     """ Returns gcode string to perform a rapid move."""
@@ -737,14 +746,12 @@ def guessDepths(objshape, subs=None):
     return depth_params(clearance, safe, start, 1.0, 0.0, final, user_depths=None, equalstep=False)
 
 def drillTipLength(tool):
-    """returns the length of the drillbit tip.
-"""
+    """returns the length of the drillbit tip."""
     if tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
         return 0.0
     else:
         theta = math.radians(tool.CuttingEdgeAngle)
-        return (tool.Diameter/2) / math.tan(theta)
-
+        return (tool.Diameter/2) / math.tan(theta) 
 
 class depth_params:
     '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters

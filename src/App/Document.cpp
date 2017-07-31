@@ -2107,6 +2107,7 @@ int Document::recompute()
 
     for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
         DocumentObject* Cur = d->vertexMap[*i];
+        if (!Cur || !isIn(Cur)) continue;
 
         if (recomputeList.find(Cur) != recomputeList.end() ||
                 Cur->ExpressionEngine.depsAreTouched()) {
