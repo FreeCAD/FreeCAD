@@ -456,7 +456,7 @@ class _Structure(ArchComponent.Component):
                             FreeCAD.Console.PrintWarning(translate("Arch","This mesh is an invalid solid")+"\n")
                             obj.Base.ViewObject.show()
         if not base:
-            FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
+            #FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
             return
 
         base = self.processSubShapes(obj,base,pl)
