@@ -319,7 +319,7 @@ def makeSolverZ88(name="Z88"):
     if FreeCAD.GuiUp:
         import PyGui._ViewProviderFemSolverZ88
         PyGui._ViewProviderFemSolverZ88._ViewProviderFemSolverZ88(obj.ViewObject)
-     return obj
+    return obj
 
 
 '''

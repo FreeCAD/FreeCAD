@@ -355,11 +355,15 @@ class FemGmshTools():
                                     FreeCAD.Console.PrintError("The element " + elems + " of the mesh boundary layer " + mr_obj.Name + " has been added to another mesh  boudary layer.\n")
                         setting = {}
                         setting['hwall_n'] = Units.Quantity(mr_obj.MinimumThickness).Value
-                        setting['hwall_t'] = setting['hwall_n'] * 5 # tangetial cell dimension
                         setting['ratio'] = mr_obj.GrowthRate
-                        setting['thickness'] = sum([setting['hwall_n'] **i for i in range(mr_obj.NumberOfLayers)])
+                        setting['thickness'] = sum([setting['hwall_n'] * setting['ratio']**i for i in range(mr_obj.NumberOfLayers)])
+                        setting['hwall_t'] = setting['thickness']  #setting['hwall_n'] * 5 # tangetial cell dimension
+
                         # hfar: cell dimension outside boundary should be set later if some character length is set
-                        setting['hfar'] = setting['thickness'] * 2 # set a value for safety, it may works as background mesh cell size
+                        if self.clmax > setting['thickness'] * 0.8 and self.clmax < setting['thickness'] * 1.6:
+                            setting['hfar']  = self.clmax
+                        else:
+                            setting['hfar'] = setting['thickness']  # set a value for safety, it may works as background mesh cell size
                         # from face name -> face id is done in geo file write up
                         #fan angle setup is not implemented yet
                         if self.dimension == '2':
@@ -450,11 +454,17 @@ class FemGmshTools():
                 geo.write("// " + e + "\n")
                 geo.write("Characteristic Length { " + ele_nodes + " } = " + str(self.ele_length_map[e]) + ";\n")
             geo.write("\n")
+
+        # boundary layer generation may need special setup of Gmsh properties, set them in Gmsh TaskPanel
         self.write_boundary_layer(geo)
 
         geo.write("// min, max Characteristic Length\n")
         geo.write("Mesh.CharacteristicLengthMax = " + str(self.clmax) + ";\n")
-        geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")
+        if len(self.bl_setting_list):
+            # if minLength must smaller than first layer of boundary_layer, it is safer to set it as zero (defualt value) to avoid error
+            geo.write("Mesh.CharacteristicLengthMin = " + str(0) + ";\n")
+        else:
+            geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")
         geo.write("\n")
         if hasattr(self.mesh_obj, 'RecombineAll') and self.mesh_obj.RecombineAll is True:
             geo.write("// other mesh options\n")
@@ -480,12 +490,17 @@ class FemGmshTools():
         geo.write("// mesh order\n")
         geo.write("Mesh.ElementOrder = " + self.order + ";\n")
         geo.write("\n")
-        geo.write("// mesh algorithm\n")
+
+        geo.write("// mesh algorithm, only a few algorithms are usable with 3D boundary layer generation\n")
         geo.write("// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)\n")
-        geo.write("Mesh.Algorithm = " + self.algorithm2D + ";\n")
+        if len(self.bl_setting_list) and self.dimension == 3:
+            geo.write("Mesh.Algorithm = " +  'DelQuad' + ";\n")  # Frontal/DelQuad are tested
+        else:
+            geo.write("Mesh.Algorithm = " + self.algorithm2D + ";\n")
         geo.write("// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 5=Frontal Delaunay, 6=Frontal Hex, 7=MMG3D, 9=R-tree)\n")
         geo.write("Mesh.Algorithm3D = " + self.algorithm3D + ";\n")
         geo.write("\n")
+
         geo.write("// meshing\n")
         # remove duplicate vertices, see https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=20#p179443
         if hasattr(self.mesh_obj, 'CoherenceMesh') and self.mesh_obj.CoherenceMesh is True:

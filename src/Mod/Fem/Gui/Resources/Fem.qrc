@@ -28,6 +28,7 @@
         <file>icons/fem-control-solver.svg</file>
         <file>icons/fem-cylinder.svg</file>
         <file>icons/fem-data.svg</file>
+	<file>icons/fem-femmesh-boundary-layer.svg</file>
         <file>icons/fem-femmesh-clear-mesh.svg</file>
         <file>icons/fem-femmesh-create-node-by-poly.svg</file>
         <file>icons/fem-femmesh-from-shape.svg</file>
