@@ -310,14 +310,13 @@ public:
      * @param pObject: the top parent object
      * @param subname: dot separated subname
      * @param parent: return the direct parent of the object
-     * @param subelement: return the non-object-element referred in subname
      *
      * @return Returns the last referenced document object in the subname. If no
      * such object in subname, return pObject.
      * @
      */
     static App::DocumentObject *resolveObject(App::DocumentObject *pObject, 
-        const char *subname, App::DocumentObject **parent=0, const char **subelement=0);
+        const char *subname, App::DocumentObject **parent=0, std::string *elementName=0);
 
     /** Set selection object visibility
      *
@@ -329,17 +328,32 @@ public:
     boost::signal<void (const SelectionChanges& msg)> signalSelectionChanged;
 
     /** Returns a vector of selection objects
-     * If no document name is given the objects of the active are returned.
-     * If nothing for this Document is selected an empty vector is returned.
-     * The vector reflects the sequence of selection.
+     *
+     * @param pDocName: document name. If no document name is given the objects
+     * of the active are returned. If nothing for this Document is selected an
+     * empty vector is returned. If document name is "*", then all document is
+     * considered. 
+     * @param resolve: whether to resolve the subname reference of the selection
+     * @param single: if set to true, then it will return an empty vector if
+     * there is more than one selections.
+     *
+     * @return The returned vector reflects the sequence of selection.
      */
-    std::vector<SelObj> getSelection(const char* pDocName=0, bool resolve=true) const;
+    std::vector<SelObj> getSelection(const char* pDocName=0, bool resolve=true, bool single=false) const;
     /** Returns a vector of selection objects
-     * If no document name is given the objects of the active are returned.
-     * If nothing for this document is selected an empty vector is returned.
-     * The vector reflects the sequence of selection.
+     *
+     * @param pDocName: document name. If no document name is given the objects
+     * of the active are returned. If nothing for this Document is selected an
+     * empty vector is returned. If document name is "*", then all document is
+     * considered. 
+     * @param typeId: specify the type of object to be returned.
+     * @param resolve: whether to resolve the subname reference of the selection
+     * @param single: if set to true, then it will return an empty vector if
+     * there is more than one selections.
+     *
+     * @return The returned vector reflects the sequence of selection.
      */
-    std::vector<Gui::SelectionObject> getSelectionEx(const char* pDocName=0,Base::Type typeId=App::DocumentObject::getClassTypeId(),bool resolve=true) const;
+    std::vector<Gui::SelectionObject> getSelectionEx(const char* pDocName=0,Base::Type typeId=App::DocumentObject::getClassTypeId(),bool resolve=true, bool single=false) const;
 
     /**
      * @brief getAsPropertyLinkSubList fills PropertyLinkSubList with current selection.
@@ -418,7 +432,7 @@ protected:
     std::list<_SelObj> _PickedList;
     bool _needPickedList;
 
-    std::vector<Gui::SelectionObject> getObjectList(const char* pDocName,Base::Type typeId, const std::list<_SelObj> &objs, bool resolve) const;
+    std::vector<Gui::SelectionObject> getObjectList(const char* pDocName,Base::Type typeId, const std::list<_SelObj> &objs, bool resolve, bool single=false) const;
 
     static App::DocumentObject *getObjectOfType(App::DocumentObject *pObject,
             const char *subname, Base::Type type, bool resolve, const char **subelement=0);

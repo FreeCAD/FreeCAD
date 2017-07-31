@@ -63,25 +63,24 @@ getSubObject(subname, retType=0, matrix=None, transform=True, depth=0)
 * subname(string|list|tuple): dot separated string or sequence of strings
 referencing subobject.
 
-retType: return type, 0=PyObject, 1=DocObject, 2=DocAndPyObject
+* retType: return type, 0=PyObject, 1=DocObject, 2=DocAndPyObject
 
     PyObject: return a python binding object for the (sub)object referenced in
     each 'subname' The actual type of 'PyObject' is impelementation dependent.
     For Part::Feature compatible objects, this will be of type TopoShapePy and
     pre-transformed by accumulated transformation matrix along the object path.  
 
-    DocObject:  return a tuple (object, subelement, matrix) for each 'subname',
-    where 'subelement' is the name of the non-object sub-element, and 'matrix'
-    is the accumulated transformation matrix for the sub object.
+    DocObject:  return the document object referenced in subname, if 'matrix' is
+    None. Or, return a tuple (object, matrix) for each 'subname' and 'matrix' is
+    the accumulated transformation matrix for the sub object.
 
-    DocAndPyObject: return a tuple (object, subelement, matrix, pyobj) for each
-    subname
+    DocAndPyObject: return a tuple (object, matrix, pyobj) for each subname
 
-matrix: the initial transformation to be applied to the sub object.
+* matrix: the initial transformation to be applied to the sub object.
 
-transform: whether to transform the sub object using this object's placement
+* transform: whether to transform the sub object using this object's placement
 
-depth: current recursive depth
+* depth: current recursive depth
                 </UserDocu>
             </Documentation>
         </Methode>

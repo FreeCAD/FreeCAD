@@ -89,6 +89,9 @@ protected:
     std::string                 TypeName;
     std::vector<Base::Vector3d> SelPoses;
 
+private:
+    /// to make sure no duplicates of subnames
+    std::set<std::string>       _SubNameSet;
 };
 
 

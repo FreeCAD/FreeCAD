@@ -307,7 +307,7 @@ void GeoFeatureGroupExtension::getCSRelevantLinks(DocumentObject* obj, std::vect
 
 
 bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
-        const char **subelement, PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const 
+        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const 
 {
     if(!subname || *subname==0) return false;
 
@@ -323,14 +323,14 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const
     auto child = Group.find(name);
     if(child) {
         if(!mat || !transform) {
-            ret = child->getSubObject(next,subelement,pyObj,mat,true,depth);
+            ret = child->getSubObject(next,pyObj,mat,true,depth);
             return true;
         }
         // DO NOT change matrix if the sub object is not found, because our caller
         // may try other alternatives.
         Base::Matrix4D _mat;
         _mat = (*mat)*const_cast<GeoFeatureGroupExtension*>(this)->placement().getValue().toMatrix();
-        ret = child->getSubObject(next,subelement,pyObj,&_mat,true,depth);
+        ret = child->getSubObject(next,pyObj,&_mat,true,depth);
         if(ret) {
             *mat = _mat;
             return true;

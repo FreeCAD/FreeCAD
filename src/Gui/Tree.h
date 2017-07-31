@@ -268,13 +268,13 @@ public:
     bool requiredAtRoot(bool excludeSelf=true) const;
     
     // return the owner, and full quanlified subname
-    App::DocumentObject *getFullSubName(std::string &subname) const;
+    App::DocumentObject *getFullSubName(std::ostringstream &str) const;
 
     // return the top most linked group owner's name, and subname.  This method
     // is necssary despite have getFullSubName above is because native geo group
     // cannot handle selection with sub name. So only a linked group can have
     // subname in selection
-    App::DocumentObject *getSubName(std::string &subname) const;
+    App::DocumentObject *getSubName(std::ostringstream &str) const;
 
     const char *getName() const;
 

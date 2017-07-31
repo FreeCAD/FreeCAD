@@ -646,11 +646,11 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 
             auto obj = item->object()->getObject();
 
-            std::string subname;
-            auto owner = item->getFullSubName(subname);
+            std::ostringstream str;
+            auto owner = item->getFullSubName(str);
 
             // let the view provider decide to accept the object or ignore it
-            if (!vp->canDropObjectEx(obj,owner,subname.c_str())) {
+            if (!vp->canDropObjectEx(obj,owner,str.str().c_str())) {
                 event->ignore();
                 return;
             }
@@ -727,8 +727,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
             Gui::ViewProviderDocumentObject* vpc = item->object();
             App::DocumentObject* obj = vpc->getObject();
 
-            std::string subname;
-            auto owner = item->getFullSubName(subname);
+            std::ostringstream str;
+            auto owner = item->getFullSubName(str);
+            std::string subname = str.str();
 
             if(!dropOnly && vp->canDragAndDropObject(obj)) {
                 // does this have a parent object
@@ -1689,15 +1690,15 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
         return;
     item->selected = selected;
 
-    std::string sub;
-    auto obj = item->getSubName(sub);
+    std::ostringstream str;
+    auto obj = item->getSubName(str);
     if(!obj) return;
     const char *objname = obj->getNameInDocument();
     if(!objname) return;
     const char *docname = obj->getDocument()->getName();
-    const char *subname = sub.empty()?0:sub.c_str();
+    const auto &subname = str.str();
 
-    if(subname) {
+    if(subname.size()) {
         auto parentItem = item->getParentItem();
         assert(parentItem);
         if(selected && parentItem->selected) {
@@ -1721,8 +1722,8 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
     }
 
     if(!selected)
-        Gui::Selection().rmvSelection(docname,objname,subname);
-    else if(!Gui::Selection().addSelection(docname,objname,subname)) {
+        Gui::Selection().rmvSelection(docname,objname,subname.c_str());
+    else if(!Gui::Selection().addSelection(docname,objname,subname.c_str())) {
         item->selected = 0;
         item->setSelected(false);
     }else 
@@ -1742,22 +1743,21 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
     FC_TRACE("find next " << subname);
 
     // try to find the next level object name
-    const char *nextsub;
-    const char *dot;
+    const char *nextsub = 0;
+    const char *dot = 0;
     if((dot=strchr(subname,'.'))) 
         nextsub = dot+1;
-    else{
-        //here we are at the last element
-        if(!item->isGroup()) {
-            // If it belongs to a non-group object, then this is a true sub element
-            // with no corresponding document object
-            item->selected=2;
-            return;
-        }
+    else {
+        item->selected=2;
+        return;
+    }
 
-        //If it belongs to a group, then it refers to a child object
-        nextsub = 0;
-        dot = subname+strlen(subname);
+    std::string name(subname,nextsub-subname);
+    auto subObj = item->object()->getObject()->getSubObject(name.c_str());
+    if(!subObj) {
+        FC_WARN("sub object not found " << item->getName() << '.' << name.c_str());
+        item->selected = 2;
+        return;
     }
 
     if(!item->populated && sync) {
@@ -1770,15 +1770,8 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
         auto ti = item->child(i);
         if(!ti || ti->type()!=TreeWidget::ObjectType) continue;
         auto child = static_cast<DocumentObjectItem*>(ti);
-        const char *name = child->getName();
-        if(!name) continue;
 
-        // try to match the item name with the next object name (starting from
-        // subname till dot)
-        const char *s;
-        for(s=subname;*name && s!=dot;++name,++s)
-            if(*s!=*name) break;
-        if(*name==0 && s==dot) {
+        if(child->object()->getObject() == subObj) {
             findSelection(sync,child,nextsub);
             return;
         }
@@ -2273,7 +2266,7 @@ const char *DocumentObjectItem::getName() const {
     return name?name:"";
 }
 
-App::DocumentObject *DocumentObjectItem::getSubName(std::string &subname) const 
+App::DocumentObject *DocumentObjectItem::getSubName(std::ostringstream &str) const 
 {
     const char *name = object()->getObject()->getNameInDocument();
     if(!name) return 0;
@@ -2283,33 +2276,22 @@ App::DocumentObject *DocumentObjectItem::getSubName(std::string &subname) const
     if(!parent || !(group=parent->isGroup())) 
         return object()->getObject();
 
-    auto obj = parent->getSubName(subname);
+    auto obj = parent->getSubName(str);
     if(!obj) return 0;
 
-    if(subname.length()) {
-        subname += '.';
-        subname += name;
-    }else if(group==1)
-        subname += name;
+    if(str.tellp()>0 || group==1)
+        str << name << '.';
     else 
         obj = object()->getObject();
-        
     return obj;
 }
 
-App::DocumentObject *DocumentObjectItem::getFullSubName(std::string &subname) const {
-
+App::DocumentObject *DocumentObjectItem::getFullSubName(std::ostringstream &str) const {
     if(!isParentGroup())
         return object()->getObject();
 
-    auto ret = getParentItem()->getFullSubName(subname);
-
-    if(subname.length()) {
-        subname += '.';
-        subname += getName();
-    }else
-        subname += getName();
-        
+    auto ret = getParentItem()->getFullSubName(str);
+    str << getName() << '.';
     return ret;
 }
 

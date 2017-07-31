@@ -233,9 +233,6 @@ public:
      * element or object. An empty string can be used to refer to the object
      * itself
      *
-     * @param sublement: if non zero, returns the non document object
-     * sub-element name
-     *
      * @param pyObj: if non zero, returns the python object corresponding to
      * this sub object. The actual type of this python object is implementation
      * dependent. For example, The current implementation of Part::Feature will
@@ -258,8 +255,7 @@ public:
      * then it shall return itself. If subname is invalid, then it shall return
      * zero.
      */
-    virtual DocumentObject *getSubObject(const char *subname, 
-            const char **subelement=0, PyObject **pyObj=0, 
+    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
             Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
 
     /** Return the linked object with optional transformation

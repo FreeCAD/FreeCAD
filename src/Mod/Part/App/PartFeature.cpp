@@ -109,13 +109,13 @@ namespace Part {
 Py::Object shape2pyshape(const TopoDS_Shape &shape);
 }
 
-App::DocumentObject *Feature::getSubObject(const char *subname, const char **subelement, 
+App::DocumentObject *Feature::getSubObject(const char *subname, 
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
-    auto ret = App::DocumentObject::getSubObject(subname,subelement,pyObj,pmat,transform,depth);
-    if(ret && ret!=this) return ret;
-
-    if(subelement) *subelement = subname;
+    // having '.' inside subname means it is referencing some children object,
+    // instead of any sub-element from ourself
+    if(subname && strrchr(subname,'.')) 
+        return App::DocumentObject::getSubObject(subname,pyObj,pmat,transform,depth);
 
     if(pmat && transform)
         *pmat *= Placement.getValue().toMatrix();

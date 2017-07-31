@@ -224,7 +224,7 @@ void FeaturePythonImp::onDocumentRestored()
 }
 
 bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname, 
-    const char **subelement, PyObject **pyObj, Base::Matrix4D *_mat, bool transform, int depth) const
+    PyObject **pyObj, Base::Matrix4D *_mat, bool transform, int depth) const
 {
     Base::PyGILStateLocker lock;
     try {
@@ -255,35 +255,22 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
                     return true;
                 }
                 if(!res.isSequence())
-                    throw Base::TypeError("getSubObject expects return type of (obj,sub,matrix,pyobj)");
+                    throw Base::TypeError("getSubObject expects return type of tuple");
                 Py::Sequence seq(res);
-                if(seq.length() < 3 ||
+                if(seq.length() < 2 ||
                    (!seq.getItem(0).isNone() && 
                     !PyObject_TypeCheck(seq.getItem(0).ptr(),&DocumentObjectPy::Type)) ||
-                   (!seq.getItem(1).isNone() && !seq.getItem(1).isString()) ||
-                   !PyObject_TypeCheck(seq.getItem(2).ptr(),&Base::MatrixPy::Type))
+                   !PyObject_TypeCheck(seq.getItem(1).ptr(),&Base::MatrixPy::Type))
                 {
-                    throw Base::TypeError("getSubObject expects return type of (obj,pyobj,sub,matrix)");
+                    throw Base::TypeError("getSubObject expects return type of (obj,matrix,pyobj)");
                 }
                 if(_mat) 
-                    *_mat = *static_cast<Base::MatrixPy*>(seq.getItem(2).ptr())->getMatrixPtr();
+                    *_mat = *static_cast<Base::MatrixPy*>(seq.getItem(1).ptr())->getMatrixPtr();
                 if(pyObj) {
-                    if(seq.length()>3)
-                        *pyObj = Py::new_reference_to(seq.getItem(3));
+                    if(seq.length()>2)
+                        *pyObj = Py::new_reference_to(seq.getItem(2));
                     else
                         *pyObj = Py::new_reference_to(Py::None());
-                }
-                if(subelement) {
-                    if(!seq.getItem(1).isTrue())
-                        *subelement = 0;
-                    else{
-                        std::string sub = Py::String(seq.getItem(1));
-                        auto len = strlen(subname);
-                        if(sub.size()>len || sub!=subname+len-sub.size())
-                            throw Base::RuntimeError(
-                                "invalid sub element name returned, must be part of the input subname");
-                        *subelement = subname+len-sub.size();
-                    }
                 }
                 if(seq.getItem(0).isNone())
                     ret = 0;

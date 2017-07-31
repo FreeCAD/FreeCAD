@@ -69,6 +69,9 @@ SelectionObserver::~SelectionObserver()
 
 bool SelectionObserver::blockConnection(bool block)
 {
+    if(!isConnectionAttached())
+        return false;
+
     bool ok = connectSelection.blocked();
     if (block)
         connectSelection.block();
@@ -304,20 +307,24 @@ bool SelectionSingleton::hasSelection() const
 
 std::vector<SelectionSingleton::SelObj> SelectionSingleton::getCompleteSelection(bool resolve) const
 {
-    return getSelection(0,resolve);
+    return getSelection("*",resolve);
 }
 
-std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const char* pDocName, bool resolve) const
+std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const char* pDocName, 
+        bool resolve, bool single) const
 {
     std::vector<SelObj> temp;
+    if(single) temp.reserve(1);
     SelObj tempSelObj;
 
     App::Document *pcDoc = 0;
-    if(pDocName) {
+    if(!pDocName || strcmp(pDocName,"*")!=0) {
         pcDoc = getDocument(pDocName);
         if (!pcDoc)
             return temp;
     }
+
+    std::map<App::DocumentObject*,std::set<std::string> > objMap;
 
     for(std::list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
         if(!It->pDoc) continue;
@@ -326,6 +333,16 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const c
                 App::DocumentObject::getClassTypeId(),resolve,&subelement);
         if(!obj || (pcDoc && obj->getDocument()!=pcDoc))
             continue;
+
+        // In case we are resolving objects, make sure no duplicates
+        if(resolve && !objMap[obj].insert(std::string(subelement?subelement:"")).second)
+            continue;
+
+        if(single && temp.size()) {
+            temp.clear();
+            break;
+        }
+
         tempSelObj.DocName  = pcDoc->getName();
         tempSelObj.FeatName = obj->getNameInDocument();
         tempSelObj.SubName  = subelement;
@@ -335,6 +352,7 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const c
         tempSelObj.x        = It->x;
         tempSelObj.y        = It->y;
         tempSelObj.z        = It->z;
+
         temp.push_back(tempSelObj);
     }
 
@@ -364,14 +382,15 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getPickedList(const 
     std::vector<SelObj> temp;
     SelObj tempSelObj;
 
-    App::Document *pcDoc;
-    pcDoc = getDocument(pDocName);
-
-    if (!pcDoc)
-        return temp;
+    App::Document *pcDoc = 0;
+    if(!pDocName || strcmp(pDocName,"*")!=0) {
+        pcDoc = getDocument(pDocName);
+        if (!pcDoc)
+            return temp;
+    }
 
     for(std::list<_SelObj>::const_iterator It = _PickedList.begin();It != _PickedList.end();++It) {
-        if (It->pDoc == pcDoc) {
+        if (!pcDoc || It->pDoc == pcDoc) {
             tempSelObj.DocName  = It->DocName.c_str();
             tempSelObj.FeatName = It->FeatName.c_str();
             tempSelObj.SubName  = It->SubName.c_str();
@@ -388,8 +407,9 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getPickedList(const 
     return temp;
 }
 
-std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDocName, Base::Type typeId, bool resolve) const {
-    return getObjectList(pDocName,typeId,_SelList,resolve);
+std::vector<SelectionObject> SelectionSingleton::getSelectionEx(
+        const char* pDocName, Base::Type typeId, bool resolve, bool single) const {
+    return getObjectList(pDocName,typeId,_SelList,resolve,single);
 }
 
 std::vector<SelectionObject> SelectionSingleton::getPickedListEx(const char* pDocName, Base::Type typeId) const {
@@ -397,43 +417,51 @@ std::vector<SelectionObject> SelectionSingleton::getPickedListEx(const char* pDo
 }
 
 std::vector<SelectionObject> SelectionSingleton::getObjectList(const char* pDocName, Base::Type typeId,
-        const std::list<_SelObj> &objList, bool resolve) const
+        const std::list<_SelObj> &objList, bool resolve, bool single) const
 {
     std::vector<SelectionObject> temp;
+    if(single) temp.reserve(1);
     std::map<App::DocumentObject*,size_t> SortMap;
 
     // check the type
     if (typeId == Base::Type::badType()) 
         return temp;
 
-    App::Document *pcDoc;
-    string DocName;
-
-    pcDoc = getDocument(pDocName);
-
-    if (!pcDoc)
-        return temp;
+    App::Document *pcDoc = 0;
+    if(!pDocName || strcmp(pDocName,"*")!=0) {
+        pcDoc = getDocument(pDocName);
+        if (!pcDoc)
+            return temp;
+    }
 
     for (const auto &sel : objList) {
         if(!sel.pDoc) continue;
         const char *subelement = 0;
         auto obj = getObjectOfType(sel.pObject,sel.SubName.c_str(),typeId,resolve,&subelement);
-        if(!obj || obj->getDocument()!=pcDoc) 
+        if(!obj || (pcDoc && obj->getDocument()!=pcDoc))
             continue;
         auto it = SortMap.find(obj);
         if(it!=SortMap.end()) {
             // only add sub-element
             if (subelement && *subelement) {
+                if(resolve && !temp[it->second]._SubNameSet.insert(subelement).second)
+                    continue;
                 temp[it->second].SubNames.push_back(subelement);
                 temp[it->second].SelPoses.push_back(Base::Vector3d(sel.x,sel.y,sel.z));
             }
         }
         else {
+            if(single && temp.size()) {
+                temp.clear();
+                break;
+            }
             // create a new entry
             temp.emplace_back(obj);
             if (subelement && *subelement) {
                 temp.back().SubNames.push_back(subelement);
                 temp.back().SelPoses.push_back(Base::Vector3d(sel.x,sel.y,sel.z));
+                if(resolve)
+                    temp.back()._SubNameSet.insert(subelement);
             }
             SortMap.insert(std::make_pair(obj,temp.size()-1));
         }
@@ -494,9 +522,18 @@ App::DocumentObject *SelectionSingleton::getObjectOfType(App::DocumentObject *pO
         *subelement = subname;
     if(resolve) {
         if(subname && *subname) {
-            ret = ret->getSubObject(subname,subelement);
-            if(!ret || !ret->getNameInDocument()) 
-                return 0;
+            const char *dot = strrchr(subname,'.');
+            if(subelement) {
+                if(!dot)
+                    *subelement = subname;
+                else
+                    *subelement = dot+1;
+            }
+            if(dot) {
+                ret = ret->getSubObject(subname);
+                if(!ret || !ret->getNameInDocument()) 
+                    return 0;
+            }
         }
         auto linked = ret->getLinkedObject(true);
         if(linked && linked->isDerivedFrom(type))
@@ -510,16 +547,17 @@ App::DocumentObject *SelectionSingleton::getObjectOfType(App::DocumentObject *pO
 vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const Base::Type& typeId, const char* pDocName, bool resolve) const
 {
     std::vector<App::DocumentObject*> temp;
-    App::Document *pcDoc;
 
-    pcDoc = getDocument(pDocName);
-
-    if (!pcDoc)
-        return temp;
+    App::Document *pcDoc = 0;
+    if(!pDocName || strcmp(pDocName,"*")!=0) {
+        pcDoc = getDocument(pDocName);
+        if (!pcDoc)
+            return temp;
+    }
 
     std::set<App::DocumentObject*> objs;
     for (std::list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
-        if(!It->pDoc) continue;
+        if(pcDoc && pcDoc!=It->pDoc) continue;
         App::DocumentObject *pObject = getObjectOfType(It->pObject,It->SubName.c_str(),typeId,resolve);
         if (pObject) {
             auto ret = objs.insert(pObject);
@@ -542,15 +580,15 @@ std::vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const cha
 unsigned int SelectionSingleton::countObjectsOfType(const Base::Type& typeId, const char* pDocName, bool resolve) const
 {
     unsigned int iNbr=0;
-    App::Document *pcDoc;
-
-    pcDoc = getDocument(pDocName);
-
-    if (!pcDoc)
-        return 0;
+    App::Document *pcDoc = 0;
+    if(!pDocName || strcmp(pDocName,"*")!=0) {
+        pcDoc = getDocument(pDocName);
+        if (!pcDoc)
+            return 0;
+    }
 
     for (std::list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
-        if(It->pDoc && getObjectOfType(It->pObject,It->SubName.c_str(),typeId,resolve))
+        if((!pcDoc||pcDoc==It->pDoc) && getObjectOfType(It->pObject,It->SubName.c_str(),typeId,resolve))
             iNbr++;
     }
 
@@ -748,7 +786,7 @@ void SelectionSingleton::rmvSelectionGate(void)
 
 App::Document* SelectionSingleton::getDocument(const char* pDocName) const
 {
-    if (pDocName)
+    if (pDocName && pDocName[0])
         return App::GetApplication().getDocument(pDocName);
     else
         return App::GetApplication().getActiveDocument();
@@ -958,10 +996,10 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
         // if no object name is specified, remove all objects
         if(pObjectName && *pObjectName && It->FeatName!=pObjectName) continue;
         // if no subname is specified, remove all subobjects of the matching object
-        if(pSubName && *pSubName) {
+        if(len) {
             // otherwise, match subojects with common prefix, separated by '.'
             if(std::strncmp(It->SubName.c_str(),pSubName,len)!=0 ||
-               (It->SubName.length()!=len && It->SubName[len]!='.'))
+               (It->SubName.length()!=len && It->SubName[len-1]!='.'))
                 continue;
         }
 
@@ -993,42 +1031,47 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
     }
 }
 
-App::DocumentObject *SelectionSingleton::resolveObject(App::DocumentObject *pObject, 
-        const char *subname, App::DocumentObject **parent, const char **subelement)
+App::DocumentObject *SelectionSingleton::resolveObject(
+        App::DocumentObject *pObject, const char *subname, 
+        App::DocumentObject **parent, std::string *elementName)
 {
-    const char *_subelement=0;
-    if(!subelement)
-        subelement = &_subelement;
-
     if(parent) *parent = 0;
     if(!pObject || !subname || *subname==0)
         return pObject;
 
-    auto obj = pObject->getSubObject(subname,subelement);
-    if(!obj || obj == pObject || !parent)
+    auto obj = pObject->getSubObject(subname);
+    if(!obj || obj == pObject)
         return pObject;
+
+    if(!parent)
+        return obj;
+
+    // NOTE, the convension of '.' separated SubName demands a mandatory ending
+    // '.' for each object name in SubName, even if there is no subelement
+    // following it. So finding the last dot will give us the end of the last
+    // object name.
+    const char *dot = strrchr(subname,'.');
+    if(!dot || dot == subname)
+        return obj; // this means no parent object reference in SubName
 
     *parent = pObject;
 
-    const char *end;
-    if(*subelement==0 || (*subelement)[0]==0) {
-        // no non-object subelement, so search the last dot for the last parent
-        // object name
-        end = strrchr(subname,'.');
-        if(!end) 
-            return obj;
-    }else {
-        // has non-object subelement, so subelement-2 will be the end of the
-        // last object's name. Search forward for the last dot.
-        for(end=(*subelement)-2;end>subname&&*end!='.';--end);
-        if(end<subname) // will this happend?
-            return obj;
+    const char *lastDot = dot;
+    for(--dot;dot!=subname;--dot) {
+        // check for the second last dot, which is the end of the last parent object
+        if(*dot == '.') {
+            // We can't get parent object by its name, because the object may be
+            // externally linked (i.e. in a different document). So go through
+            // getSubObject again.
+            *parent = pObject->getSubObject(std::string(subname,dot-subname+1).c_str());
+            break;
+        }
     }
-
-    // We can't get parent object by its name, because the object may be
-    // externally linked (i.e. in a different document). So go through
-    // getSubObject again.
-    *parent = pObject->getSubObject(std::string(subname,end-subname).c_str());
+    if(elementName) {
+        if(dot!=lastDot && *dot == '.')
+            ++dot;
+        *elementName = std::string(dot,lastDot-dot);
+    }
     return obj;
 }
 
@@ -1043,17 +1086,17 @@ void SelectionSingleton::setVisible(int visible) const {
             continue;
         // get parent object
         App::DocumentObject *parent = 0;
-        auto obj = Selection().resolveObject(sel.pObject,sel.SubName.c_str(),&parent);
+        std::string elementName;
+        auto obj = Selection().resolveObject(sel.pObject,sel.SubName.c_str(),&parent,&elementName);
         if(!obj || !obj->getNameInDocument() || (parent && !parent->getNameInDocument()))
             continue;
         // try call parent object's setElementVisibility
-        if(parent && parent->hasChildElement()) {
+        if(parent) {
             // prevent setting the same object visibility more than once
             if(!filter.insert(std::make_pair(obj,parent)).second)
                 continue;
 
-            const char *sub = obj->getNameInDocument();
-            int vis = parent->isElementVisible(sub);
+            int vis = parent->isElementVisible(elementName.c_str());
             if(vis>=0) {
                 if(vis>0) vis = 1;
                 if(visible>=0) {
@@ -1063,7 +1106,7 @@ void SelectionSingleton::setVisible(int visible) const {
                 }else
                     vis = !vis;
 
-                parent->setElementVisible(sub,vis?true:false);
+                parent->setElementVisible(elementName.c_str(),vis?true:false);
                 continue;
             }
 
@@ -1253,12 +1296,11 @@ const char *SelectionSingleton::getSelectedElement(App::DocumentObject *obj, con
 
     for(list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
         if (It->pObject == obj) {
-            if (!pSubName || *pSubName==0 || It->SubName.empty()) {
-                if(It->SubName.empty())
-                    return It->SubName.c_str();
-            }else if(strncmp(pSubName,It->SubName.c_str(),It->SubName.length())==0){
-                char c = pSubName[It->SubName.length()];
-                if(c=='.' || c==0)
+            auto len = It->SubName.length();
+            if(!len)
+                return "";
+            if (pSubName && strncmp(pSubName,It->SubName.c_str(),It->SubName.length())==0){
+                if(pSubName[len]==0 || pSubName[len-1] == '.')
                     return It->SubName.c_str();
             }
         }
@@ -1366,26 +1408,26 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "second argumeht defines the document name. If no document name is given the\n"
      "currently active document is used"},
     {"getSelection",         (PyCFunction) SelectionSingleton::sGetSelection, 1,
-     "getSelection([string],resolve=True) -- Return a list of selected objets\n"
-     "Return a list of selected objects for a given document name. If no\n"
-     "document name is given the selection for the active document is returned."},
+     "getSelection(docName=None,resolve=True,single=False) -- Return a list of selected objets\n"
+     "\ndocName - document name. None means the active document, and '*' means all document"
+     "\nresolve - whether to resolve the subname references"
+     "\nsingle - only return if there is only one selection"},
     {"preselect",            (PyCFunction) SelectionSingleton::sPreselect, 1, 
      "preselect(object,[string,float,float,float]) -- Preselect an object\n"
      "where string is the sub-element name and the three floats represent a 3d point"},
     {"getPickedList",         (PyCFunction) SelectionSingleton::sGetPickedList, 1,
-     "getPickedList([string]) -- Return a list of objets under the last mouse click\n"
-     "Return a list of objects under the last mouse click for a given document name.\n"
-     "If no document name is given the selection for the active document is returned."},
+     "getPickedList(docName=None) -- Return a list of objets under the last mouse click\n"
+     "\ndocName - document name. None means the active document, and '*' means all document"},
     {"enablePickedList",      (PyCFunction) SelectionSingleton::sEnablePickedList, 1,
      "enablePickedList(boolean) -- Enable/disable pick list"},
     {"getCompleteSelection", (PyCFunction) SelectionSingleton::sGetCompleteSelection, 1,
      "getCompleteSelection(resolve=True) -- Return a list of selected objects of all documents."},
     {"getSelectionEx",         (PyCFunction) SelectionSingleton::sGetSelectionEx, 1,
-     "getSelectionEx([string],resolve=True) -- Return a list of SelectionObjects\n"
-     "Return a list of SelectionObjects for a given document name. If no\n"
-     "document is given the selection of the active document is returned.\n"
-     "The SelectionObjects contain a variety of information about the selection,\n"
-     "e.g. sub-element names."},
+     "getSelectionEx(docName=None,resolve=True, single=False) -- Return a list of SelectionObjects\n"
+     "\ndocName - document name. None means the active document, and '*' means all document"
+     "\nresolve - whether to resolve the subname references"
+     "\nsingle - only return if there is only one selection\n"
+     "\nThe SelectionObjects contain a variety of information about the selection, e.g. sub-element names."},
     {"getSelectionObject",  (PyCFunction) SelectionSingleton::sGetSelectionObject, 1,
      "getSelectionObject(doc,obj,sub,(x,y,z)) -- Return a SelectionObject"},
     {"addObserver",         (PyCFunction) SelectionSingleton::sAddSelObserver, 1,
@@ -1414,10 +1456,10 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "removeSelectionGate() -- remove the active selection gate\n"},
     {"resolveObject",            (PyCFunction) SelectionSingleton::sResolveObject, 1, 
      "resolveObject(object, subname) -- resolve the sub object\n"
-     "Returns a tuple (subobject,parent,subelement), where 'subobject' is the last\n"
-     "object referenced in 'subname', and 'parent' is the direct parent of 'subobject'.\n"
-     "'subelement' is the non-object-element referenced in 'subname'. If no parent or\n"
-     "subelement exists, they can be None"},
+     "Returns a tuple (subobj,parent,elementName), where 'subobj' is the last\n"
+     "object referenced in 'subname', and 'parent' is the direct parent of 'subobj',\n"
+     "and elementName is the child name of the subobj, which can be used to call\n"
+     "parent.isElementVisible/setElementVisible()"},
     {"setVisible",            (PyCFunction) SelectionSingleton::sSetVisible, 1, 
      "setVisible(visible=None) -- set visibility of all selection items\n"
      "If 'visible' is None, then toggle visibility"},
@@ -1555,11 +1597,12 @@ PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args,
 {
     char *documentName=0;
     PyObject *resolve=Py_True;
-    if (!PyArg_ParseTuple(args, "|sO", &documentName,&resolve))     // convert args: Python->C 
+    PyObject *single=Py_False;
+    if (!PyArg_ParseTuple(args, "|sOO", &documentName,&resolve,&single))     // convert args: Python->C 
         return NULL;                             // NULL triggers exception
 
     std::vector<SelectionSingleton::SelObj> sel;
-    sel = Selection().getSelection(documentName,PyObject_IsTrue(resolve));
+    sel = Selection().getSelection(documentName,PyObject_IsTrue(resolve),PyObject_IsTrue(single));
 
     try {
         Py::List list;
@@ -1608,12 +1651,13 @@ PyObject *SelectionSingleton::sGetSelectionEx(PyObject * /*self*/, PyObject *arg
 {
     char *documentName=0;
     PyObject *resolve = Py_True;
-    if (!PyArg_ParseTuple(args, "|sO", &documentName,&resolve))     // convert args: Python->C 
+    PyObject *single = Py_False;
+    if (!PyArg_ParseTuple(args, "|sOO", &documentName,&resolve,&single))     // convert args: Python->C 
         return NULL;                             // NULL triggers exception
 
     std::vector<SelectionObject> sel;
     sel = Selection().getSelectionEx(documentName,
-            App::DocumentObject::getClassTypeId(),PyObject_IsTrue(resolve));
+            App::DocumentObject::getClassTypeId(),PyObject_IsTrue(resolve),PyObject_IsTrue(single));
 
     try {
         Py::List list;
@@ -1777,16 +1821,16 @@ PyObject *SelectionSingleton::sResolveObject(PyObject * /*self*/, PyObject *args
         return NULL;                             // NULL triggers exception 
 
     PY_TRY {
-        const char *subelement = 0;
+        std::string elementName;
         App::DocumentObject *parent = 0;
         auto obj = Selection().resolveObject(
             static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr(),
-            subname,&parent,&subelement);
+            subname,&parent,&elementName);
 
         Py::Tuple ret(3);
         ret.setItem(0,Py::Object(obj->getPyObject(),true));
         ret.setItem(1,parent?Py::Object(parent->getPyObject(),true):Py::None());
-        ret.setItem(2,subelement?Py::String(subelement):Py::None());
+        ret.setItem(2,Py::String(elementName.c_str()));
         return Py::new_reference_to(ret);
     } PY_CATCH;
 

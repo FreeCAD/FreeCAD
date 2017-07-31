@@ -72,7 +72,7 @@ public:
      * @return Return turn if handled, the sub object is returned in \c ret
      */
     virtual bool extensionGetSubObject( DocumentObject *&ret, const char *subname, 
-        const char **subelement, PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const;
+        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const;
 
     /** Get the linked object
      *  @sa DocumentObject::getLinkedObject()

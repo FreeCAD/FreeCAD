@@ -115,7 +115,7 @@ Py::Tuple SelectionObjectPy::getSubObjects(void) const
     for(const auto &subname : getSelectionObjectPtr()->getSubNames()) {
         PyObject *pyObj=0;
         Base::Matrix4D mat;
-        getSelectionObjectPtr()->getObject()->getSubObject(subname.c_str(),0,&pyObj,&mat);
+        getSelectionObjectPtr()->getObject()->getSubObject(subname.c_str(),&pyObj,&mat);
         if(pyObj) objs.push_back(pyObj);
     }
 

@@ -51,8 +51,7 @@ public:
     void onDocumentRestored();
     PyObject *getPyObject(void);
 
-    bool getSubObject(App::DocumentObject *&ret, const char *subname, 
-            const char **subelement, PyObject **pyObj, 
+    bool getSubObject(DocumentObject *&ret, const char *subname, PyObject **pyObj, 
             Base::Matrix4D *mat, bool transform, int depth) const;
 
     bool getLinkedObject(App::DocumentObject *&ret, bool recurse, 
@@ -118,13 +117,13 @@ public:
         //return "Gui::ViewProviderPythonFeature";
     }
 
-    virtual App::DocumentObject *getSubObject(const char *subname, const char **subelement, 
-            PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const override 
+    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj, 
+            Base::Matrix4D *mat, bool transform, int depth) const override 
     {
-        App::DocumentObject *ret = 0;
-        if(imp->getSubObject(ret,subname,subelement,pyObj,mat,transform,depth))
+        DocumentObject *ret = 0;
+        if(imp->getSubObject(ret,subname,pyObj,mat,transform,depth))
             return ret;
-        return FeatureT::getSubObject(subname,subelement,pyObj,mat,transform,depth);
+        return FeatureT::getSubObject(subname,pyObj,mat,transform,depth);
     }
 
     virtual App::DocumentObject *getLinkedObject(bool recurse, 

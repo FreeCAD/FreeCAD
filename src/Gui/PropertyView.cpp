@@ -62,7 +62,7 @@ using namespace Gui::PropertyEditor;
  * in two tabs.
  */
 PropertyView::PropertyView(QWidget *parent)
-  : QWidget(parent)
+  : QWidget(parent),SelectionObserver(false) 
 {
     QGridLayout* pLayout = new QGridLayout( this ); 
     pLayout->setSpacing(0);
@@ -120,6 +120,20 @@ PropertyView::~PropertyView()
     this->connectPropAppend.disconnect();
     this->connectPropRemove.disconnect();
     this->connectPropChange.disconnect();
+}
+
+void PropertyView::hideEvent(QHideEvent *ev) {
+    this->detachSelection();
+    PropertyModel::PropertyList props;
+    // clear the properties before hiding.
+    propertyEditorData->buildUp(props);
+    propertyEditorView->buildUp(props);
+    QWidget::hideEvent(ev);
+}
+
+void PropertyView::showEvent(QShowEvent *ev) {
+    this->attachSelection();
+    QWidget::showEvent(ev);
 }
 
 void PropertyView::slotChangePropertyData(const App::DocumentObject&, const App::Property& prop)

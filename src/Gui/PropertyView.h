@@ -71,6 +71,8 @@ public Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
+    void showEvent(QShowEvent *) override;
+    void hideEvent(QHideEvent *) override;
 
 private:
     void onSelectionChanged(const SelectionChanges& msg);
