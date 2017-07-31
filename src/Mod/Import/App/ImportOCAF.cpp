@@ -614,6 +614,10 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
     return(hierarchical_label.size());
 }
 
+// This function is scanning the OCAF doc for Free Shapes and returns the label attached to it
+// If this Free Shapes are regular Part::Feature, we must use absolute coordinate instead of
+// allocating a placement into the hierarchy as it is not attached to a hierarchical node
+
 void ExportOCAF::getFreeLabels(std::vector <TDF_Label>& hierarchical_label,std::vector <TDF_Label>& labels,
 		   std::vector <int>& label_part_id )
 {

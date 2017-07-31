@@ -436,6 +436,7 @@ private:
 
         return Py::None();
     }
+
     int export_app_object(App::DocumentObject* obj, Import::ExportOCAF ocaf, 
                           std::vector <TDF_Label>& hierarchical_label,
                           std::vector <TopLoc_Location>& hierarchical_loc,
