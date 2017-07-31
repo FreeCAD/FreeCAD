@@ -483,6 +483,27 @@ private:
         return(return_label);
     }
 
+    void get_parts_colors(std::vector <App::DocumentObject*> hierarchical_part, std::vector <TDF_Label> FreeLabels,
+                          std::vector <int> part_id, std::vector< std::vector<App::Color> >& Colors)
+    {
+        // I am seeking for the colors of each parts
+        int n = FreeLabels.size();
+        for (int i = 0; i < n; i++)
+        {
+                std::vector<App::Color> colors;
+                Part::Feature * part = static_cast<Part::Feature *>(hierarchical_part.at(part_id.at(i)));
+                Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
+                if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
+                    colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
+                    if (colors.empty())
+                        colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
+                    Colors.push_back(colors);
+                }
+        }
+    }
+
+
+
     Py::Object exporter(const Py::Tuple& args)
     {
         PyObject* object;
@@ -518,7 +539,15 @@ private:
             }
 
 	    // Free Shapes must have absolute placement and not explicit
-	    ocaf.reallocateFreeShape(hierarchical_label, hierarchical_loc,hierarchical_part);
+	    // Free Shapes must have absolute placement and not explicit
+            std::vector <TDF_Label> FreeLabels;
+            std::vector <int> part_id;
+            ocaf.getFreeLabels(hierarchical_label,FreeLabels, part_id);
+            // Got issue with the colors as they are coming from the View Provider they can't be determined into
+            // the App Code.
+            std::vector< std::vector<App::Color> > Colors;
+            get_parts_colors(hierarchical_part,FreeLabels,part_id,Colors);
+            ocaf.reallocateFreeShape(hierarchical_part,FreeLabels,part_id,Colors);
 
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
