@@ -41,7 +41,7 @@ class Ship:
         solids -- Set of solids which will compound the ship hull.
         """
         # Add an unique property to identify the Ship instances
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "Ship",
             "True if it is a valid ship instance, False otherwise",
             None))
@@ -50,7 +50,7 @@ class Ship:
                         "Ship",
                         tooltip).IsShip = True
         # Add the main dimensions
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "Ship",
             "Ship length [m]",
             None))
@@ -58,7 +58,7 @@ class Ship:
                         "Length",
                         "Ship",
                         tooltip).Length = 0.0
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "Ship",
             "Ship breadth [m]",
             None))
@@ -66,7 +66,7 @@ class Ship:
                         "Breadth",
                         "Ship",
                         tooltip).Breadth = 0.0
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "Ship",
             "Ship draft [m]",
             None))
@@ -76,7 +76,7 @@ class Ship:
                         tooltip).Draft = 0.0
         # Add the subshapes
         obj.Shape = Part.makeCompound(solids)
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "Ship",
             "Set of external faces of the ship hull",
             None))
@@ -84,7 +84,7 @@ class Ship:
                         "ExternalFaces",
                         "Ship",
                         tooltip)
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "Ship",
             "Set of weight instances",
             None))
@@ -92,7 +92,7 @@ class Ship:
                         "Weights",
                         "Ship",
                         tooltip).Weights = []
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "Ship",
             "Set of tank instances",
             None))
@@ -100,7 +100,7 @@ class Ship:
                         "Tanks",
                         "Ship",
                         tooltip).Tanks = []
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "Ship",
             "Set of load conditions",
             None))
