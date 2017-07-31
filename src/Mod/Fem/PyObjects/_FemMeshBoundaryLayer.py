@@ -31,18 +31,30 @@ __url__ = "http://www.freecadweb.org"
 class _FemMeshBoundaryLayer:
     "The FemMeshBoundaryLayer object"
     def __init__(self, obj):
-        obj.addProperty("App::PropertyInteger", "NumberOfLayers", "MeshBoundaryLayerProperties", 
+        self.Type = "FemMeshBoundaryLayer"
+        self.Object = obj  # keep a ref to the DocObj for nonGui usage
+        obj.Proxy = self  # link between App::DocumentObject to  this object
+
+        obj.addProperty("App::PropertyInteger", "NumberOfLayers", "MeshBoundaryLayerProperties",
                                 "set number of inflation layers for this boundary")
         obj.NumberOfLayers = 3
-        obj.addProperty("App::PropertyLength", "MinimumThickness", "MeshBoundaryLayerProperties", 
+
+        obj.addProperty("App::PropertyLength", "MinimumThickness", "MeshBoundaryLayerProperties",
                                 "set minimum thickness,usually the first inflation layer")
-        obj.addProperty("App::PropertyFloat", "GrowthRate", "MeshBoundaryLayerProperties", 
+        # default to zero, user must specify a proper value for this property
+
+        obj.addProperty("App::PropertyFloat", "GrowthRate", "MeshBoundaryLayerProperties",
                                 "set growth rate of inflation layers for smooth transition")
-        obj.GrowthRate = 1.0
+        obj.GrowthRate = 1.5
 
         obj.addProperty("App::PropertyLinkSubList", "References", "MeshBoundaryLayerShapes", "List of FEM mesh region shapes")
-        obj.Proxy = self
-        self.Type = "FemMeshBoundaryLayer"
 
     def execute(self, obj):
         return
+
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self, state):
+        if state:
+            self.Type = state

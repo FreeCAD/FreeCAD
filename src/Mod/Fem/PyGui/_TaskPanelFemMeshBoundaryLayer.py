@@ -47,7 +47,7 @@ class _TaskPanelFemMeshBoundaryLayer:
 
         QtCore.QObject.connect(self.form.bl_number_of_layers, QtCore.SIGNAL("valueChanged(int)"), self.bl_number_of_layers_changed)
         QtCore.QObject.connect(self.form.bl_min_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.bl_min_thickness_changed)
-        QtCore.QObject.connect(self.form.bl_growth_rate, QtCore.SIGNAL("valueChanged(float)"), self.bl_growth_rate_changed)
+        QtCore.QObject.connect(self.form.bl_growth_rate, QtCore.SIGNAL("valueChanged(double)"), self.bl_growth_rate_changed)  # becareful of signal signature for QDoubleSpinbox
 
         QtCore.QObject.connect(self.form.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard)
         QtCore.QObject.connect(self.form.rb_solid, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_solid)
@@ -72,19 +72,17 @@ class _TaskPanelFemMeshBoundaryLayer:
         self.obj.MinimumThickness = self.bl_min_thickness
         self.obj.NumberOfLayers = self.bl_number_of_layers
         self.obj.GrowthRate = self.bl_growth_rate
-
         self.obj.References = self.references
 
     def update(self):
-        'fills the widgets with '
+        'fills the widgets with data'
         self.form.bl_min_thickness.setText(self.bl_min_thickness.UserString)
         self.form.bl_number_of_layers.setValue(self.bl_number_of_layers)
         self.form.bl_growth_rate.setValue(self.bl_growth_rate)
-
         self.rebuild_list_References()
 
     def bl_min_thickness_changed(self, base_quantity_value):
-        self.bl_min_thicknes = base_quantity_value
+        self.bl_min_thickness = base_quantity_value
 
     def bl_number_of_layers_changed(self, value):
         self.bl_number_of_layers = value
@@ -100,12 +98,13 @@ class _TaskPanelFemMeshBoundaryLayer:
         FreeCAD.ActiveDocument.recompute()
         return True
 
-    ###############  identical to FemMeshRegion ############
     def reject(self):
         if self.sel_server:
             FreeCADGui.Selection.removeObserver(self.sel_server)
         FreeCADGui.ActiveDocument.resetEdit()
         return True
+
+    ###############  identical to FemMeshRegion ############
 
     def choose_selection_mode_standard(self, state):
         self.selection_mode_solid = not state

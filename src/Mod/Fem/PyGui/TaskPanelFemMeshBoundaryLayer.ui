@@ -46,14 +46,14 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
+          <property name="min_thickness">
            <size>
             <width>80</width>
             <height>20</height>
            </size>
           </property>
           <property name="text">
-           <string>0.0</string>
+           <string>1.0</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -108,7 +108,7 @@
            <double>0.100000000000000</double>
           </property>
           <property name="value">
-           <double>1.000000000000000</double>
+           <double>1.300000000000000</double>
           </property>
          </widget>
         </item>
