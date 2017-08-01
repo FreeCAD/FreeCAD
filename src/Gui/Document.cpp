@@ -893,14 +893,18 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
             signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
         }
     }
+
+    bool isModified = false;
+
     // some post-processing of view providers
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::iterator it;
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
         it->second->finishRestoring();
+        isModified = isModified || it->first->isTouched();
     }
 
     // reset modified flag
-    setModified(false);
+    setModified(isModified);
 }
 
 void Document::slotShowHidden(const App::Document& doc)
