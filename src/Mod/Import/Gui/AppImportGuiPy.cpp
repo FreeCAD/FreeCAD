@@ -439,7 +439,7 @@ private:
     int export_app_object(App::DocumentObject* obj, Import::ExportOCAF ocaf, 
                           std::vector <TDF_Label>& hierarchical_label,
                           std::vector <TopLoc_Location>& hierarchical_loc,
-			  std::vector <App::DocumentObject*>& hierarchical_part)
+                          std::vector <App::DocumentObject*>& hierarchical_part)
     {
         std::vector <int> local_label;
         int root_id;
@@ -477,7 +477,7 @@ private:
                     colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
             }
 
-            return_label=ocaf.saveShape(part, colors,hierarchical_label,hierarchical_loc,hierarchical_part);
+            return_label=ocaf.saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part);
         }
 
         return(return_label);
@@ -488,21 +488,18 @@ private:
     {
         // I am seeking for the colors of each parts
         int n = FreeLabels.size();
-        for (int i = 0; i < n; i++)
-        {
-                std::vector<App::Color> colors;
-                Part::Feature * part = static_cast<Part::Feature *>(hierarchical_part.at(part_id.at(i)));
-                Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-                if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-                    colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
-                    if (colors.empty())
-                        colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
-                    Colors.push_back(colors);
-                }
+        for (int i = 0; i < n; i++) {
+            std::vector<App::Color> colors;
+            Part::Feature * part = static_cast<Part::Feature *>(hierarchical_part.at(part_id.at(i)));
+            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
+            if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
+                colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
+                if (colors.empty())
+                    colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
+                Colors.push_back(colors);
+            }
         }
     }
-
-
 
     Py::Object exporter(const Py::Tuple& args)
     {
@@ -526,7 +523,7 @@ private:
             Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
 
             // That stuff is exporting a list of selected oject into FreeCAD Tree
-	    std::vector <TDF_Label> hierarchical_label;
+            std::vector <TDF_Label> hierarchical_label;
             std::vector <TopLoc_Location> hierarchical_loc;
             std::vector <App::DocumentObject*> hierarchical_part;
 
@@ -538,8 +535,8 @@ private:
                 }
             }
 
-	    // Free Shapes must have absolute placement and not explicit
-	    // Free Shapes must have absolute placement and not explicit
+            // Free Shapes must have absolute placement and not explicit
+            // Free Shapes must have absolute placement and not explicit
             std::vector <TDF_Label> FreeLabels;
             std::vector <int> part_id;
             ocaf.getFreeLabels(hierarchical_label,FreeLabels, part_id);
@@ -561,9 +558,10 @@ private:
                     Interface_Static::SetCVal("write.step.schema", "AP214IS");
                 if (optionScheme_203)
                     Interface_Static::SetCVal("write.step.schema", "AP203");
+
                 STEPCAFControl_Writer writer;
-		Interface_Static::SetIVal("write.step.assembly",1);
-		// writer.SetColorMode(Standard_False);
+                Interface_Static::SetIVal("write.step.assembly",1);
+                // writer.SetColorMode(Standard_False);
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 // edit STEP header

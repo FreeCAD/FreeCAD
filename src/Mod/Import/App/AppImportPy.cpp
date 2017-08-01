@@ -233,7 +233,7 @@ private:
                         std::vector<App::Color> colors;
                         std::vector <TDF_Label> hierarchical_label;
                         std::vector <TopLoc_Location> hierarchical_loc;
-			std::vector <App::DocumentObject*> hierarchical_part;
+                        std::vector <App::DocumentObject*> hierarchical_part;
                         ocaf.saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part);
                     }
                     else {
@@ -252,7 +252,7 @@ private:
                             colors.setPyObject(item1.ptr());
                             std::vector <TDF_Label> hierarchical_label;
                             std::vector <TopLoc_Location> hierarchical_loc;
-			    std::vector <App::DocumentObject*> hierarchical_part;
+                            std::vector <App::DocumentObject*> hierarchical_part;
                             ocaf.saveShape(part, colors.getValues(), hierarchical_label, hierarchical_loc, hierarchical_part);
                         }
                         else {
