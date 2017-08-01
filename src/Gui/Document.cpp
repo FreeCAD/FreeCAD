@@ -1652,3 +1652,24 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
         }
     }
 }
+
+void Document::reorderViewProviders(ViewProvider *vp1, ViewProvider *vp2) {
+    // In case vp is claimed by claimChildren3D, we reorder its parent view
+    // provider instead
+    while(1) {
+        auto it = d->_CliamChildren3DMap.find(vp1);
+        if(it == d->_CliamChildren3DMap.end())
+            break;
+        vp1 = it->second;
+    }
+    while(1) {
+        auto it = d->_CliamChildren3DMap.find(vp2);
+        if(it == d->_CliamChildren3DMap.end())
+            break;
+        vp2 = it->second;
+    }
+    for(auto view : getMDIViewsOfType(View3DInventor::getClassTypeId())) {
+        auto viewer = static_cast<View3DInventor*>(view)->getViewer();
+        viewer->reorderViewProviders(vp1,vp2);
+    }
+}

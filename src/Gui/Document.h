@@ -224,6 +224,11 @@ public:
     void resetEdit(void);
     /// get the in edit ViewProvider or NULL
     ViewProvider *getInEdit(void) const;
+    /// make sure vp1 is root node is before vp2's in all 3D views
+    //
+    /// In case either view provider belongs to a geo group, then reorder using
+    /// its parent's root
+    void reorderViewProviders(ViewProvider *vp1, ViewProvider *vp2);
     //@}
 
     /** @name methods for the UNDO REDO handling */

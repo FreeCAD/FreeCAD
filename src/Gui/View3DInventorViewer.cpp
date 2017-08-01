@@ -2942,3 +2942,16 @@ void View3DInventorViewer::dragLeaveEvent(QDragLeaveEvent *e)
 {
     inherited::dragLeaveEvent(e);
 }
+
+void View3DInventorViewer::reorderViewProviders(ViewProvider *vp1, ViewProvider *vp2) {
+    if(!vp1 || !vp2) return;
+    auto node1 = vp1->getRoot();
+    auto node2 = vp2->getRoot();
+    if(!node1 || !node2) return;
+    auto idx1 = pcViewProviderRoot->findChild(node1);
+    auto idx2 = pcViewProviderRoot->findChild(node2);
+    if(idx1<0 || idx2<0 || idx1<idx2) return;
+    pcViewProviderRoot->replaceChild(idx1,node2);
+    pcViewProviderRoot->replaceChild(idx2,node1);
+}
+    

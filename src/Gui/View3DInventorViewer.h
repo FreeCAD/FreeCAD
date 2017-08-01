@@ -192,6 +192,8 @@ public:
     void setOverrideMode(const std::string &mode);
     void updateOverrideMode(const std::string &mode);
     std::string getOverrideMode() {return overrideMode;}
+    /// make sure vp1's node is before vp2's node
+    void reorderViewProviders(ViewProvider *vp1, ViewProvider *vp2);
     //@}
 
     /** @name Making pictures */
