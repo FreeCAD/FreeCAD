@@ -23,16 +23,19 @@
 # ***************************************************************************
 
 from __future__ import print_function
-import FreeCAD
-import Path
-import PathScripts.PathLog as PathLog
-from PySide import QtCore, QtGui
-from PathScripts import PathUtils
+
 import ArchPanel
+import FreeCAD
 import Part
-from PathScripts.PathUtils import waiting_effects
-from PathScripts.PathUtils import makeWorkplane
+import Path
+import PathScripts.PathAreaOp as PathAreaOp
+import PathScripts.PathLog as PathLog
+
+from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
+from PathScripts.PathUtils import makeWorkplane
+from PathScripts.PathUtils import waiting_effects
+from PySide import QtCore, QtGui
 
 FreeCAD.setLogLevel('Path.Area', 0)
 
@@ -57,26 +60,10 @@ __url__ = "http://www.freecadweb.org"
 """Path Contour object and FreeCAD command"""
 
 
-class ObjectContour:
+class ObjectContour(PathAreaOp.ObjectOp):
 
-    def __init__(self, obj):
+    def initOperation(self, obj):
         PathLog.track()
-        obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"))
-        obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Contour"))
-
-        # Tool Properties
-        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
-
-        # Depth Properties
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
-        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid Safety Height between locations."))
-        obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"))
-        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
-
-        # Start Point Properties
-        obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
-        obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
 
         # Contour Properties
         obj.addProperty("App::PropertyEnumeration", "Direction", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
@@ -90,172 +77,44 @@ class ObjectContour:
         obj.addProperty("App::PropertyFloat", "MiterLimit", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum distance before a miter join is truncated"))
         obj.setEditorMode('MiterLimit', 2)
 
-        # Debug Parameters
-        obj.addProperty("App::PropertyString", "AreaParams", "Path")
-        obj.setEditorMode('AreaParams', 2)  # hide
-        obj.addProperty("App::PropertyString", "PathParams", "Path")
-        obj.setEditorMode('PathParams', 2)  # hide
-        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
-        obj.setEditorMode('removalshape', 2)  # hide
-
         if FreeCAD.GuiUp:
             _ViewProviderContour(obj.ViewObject)
 
-        obj.Proxy = self
         self.endVector = None
 
-    def onChanged(self, obj, prop):
+    def opOnChanged(self, obj, prop):
         PathLog.track('prop: {}  state: {}'.format(prop, obj.State))
-        if prop in ['AreaParams', 'PathParams', 'removalshape']:
-            obj.setEditorMode(prop, 2)
-
         obj.setEditorMode('MiterLimit', 2)
         if obj.JoinType == 'Miter':
             obj.setEditorMode('MiterLimit', 0)
 
-    def __getstate__(self):
-        PathLog.track()
+    def opShapeForDepths(self, obj):
+        job = PathUtils.findParentJob(obj)
+        if job and job.Base:
+            PathLog.info("job=%s base=%s shape=%s" % (job, job.Base, job.Base.Shape))
+            return job.Base.Shape
+        PathLog.warning("No job object found (%s), or job has no Base." % job)
         return None
 
-    def __setstate__(self, state):
-        PathLog.track(state)
-        return None
+    def opSetDefaultValues(self, obj):
+        obj.Direction   = "CW"
+        obj.UseComp     = True
+        obj.OffsetExtra = 0.0
+        obj.JoinType    = "Round"
+        obj.MiterLimit  = 0.1
 
-    def setDepths(self, obj):
-        PathLog.track()
-        parentJob = PathUtils.findParentJob(obj)
-        if parentJob is None:
-            return
-        baseobject = parentJob.Base
-        if baseobject is None:
-            return
 
-        try:
-            bb = baseobject.Shape.BoundBox  # parent boundbox
-            obj.StartDepth = bb.ZMax
-            obj.ClearanceHeight = bb.ZMax + 5.0
-            obj.SafeHeight = bb.ZMax + 3.0
-            obj.FinalDepth = bb.ZMin
-
-        except:
-            obj.StartDepth = 5.0
-            obj.ClearanceHeight = 10.0
-            obj.SafeHeight = 8.0
-
-    @waiting_effects
-    def _buildPathArea(self, obj, baseobject, start=None, getsim=False):
-        PathLog.track()
-        profile = Path.Area()
-        profile.setPlane(makeWorkplane(baseobject))
-        profile.add(baseobject)
-
-        profileparams = {'Fill': 0,
-                         'Coplanar': 2}
-
-        if obj.UseComp is False:
-            profileparams['Offset'] = 0.0
-        else:
-            profileparams['Offset'] = self.radius+obj.OffsetExtra.Value
-
-        jointype = ['Round', 'Square', 'Miter']
-        profileparams['JoinType'] = jointype.index(obj.JoinType)
-
-        if obj.JoinType == 'Miter':
-            profileparams['MiterLimit'] = obj.MiterLimit
-
-        heights = [i for i in self.depthparams]
-        PathLog.debug('depths: {}'.format(heights))
-        profile.setParams(**profileparams)
-        obj.AreaParams = str(profile.getParams())
-
-        PathLog.debug("Contour with params: {}".format(profile.getParams()))
-        sections = profile.makeSections(mode=0, project=True, heights=heights)
-        shapelist = [sec.getShape() for sec in sections]
-
-        params = {'shapes': shapelist,
-                  'feedrate': self.horizFeed,
-                  'feedrate_v': self.vertFeed,
-                  'verbose': True,
-                  'resume_height': obj.StepDown.Value,
-                  'retraction': obj.ClearanceHeight.Value,
-                  'return_end': True}
-
-        if obj.Direction == 'CCW':
-            params['orientation'] = 0
-        else:
-            params['orientation'] = 1
-
-        if self.endVector is not None:
-            params['start'] = self.endVector
-        elif obj.UseStartPoint:
-            params['start'] = obj.StartPoint
-
-        obj.PathParams = str({key: value for key, value in params.items() if key != 'shapes'})
-
-        (pp, end_vector) = Path.fromShapes(**params)
-        PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
-        self.endVector = end_vector
-
-        simobj = None
-        if getsim:
-            profileparams['Thicken'] = True
-            profileparams['ToolRadius'] = self.radius - self.radius * .005
-            profile.setParams(**profileparams)
-            sec = profile.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
-            simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
-
-        return pp, simobj
-
-    def execute(self, obj, getsim=False):
-        PathLog.track()
-        self.endVector = None
-
-        if not obj.Active:
-            path = Path.Path("(inactive operation)")
-            obj.Path = path
-            obj.ViewObject.Visibility = False
-            return
-
-        commandlist = []
-        toolLoad = obj.ToolController
-
-        self.depthparams = depth_params(
-                clearance_height=obj.ClearanceHeight.Value,
-                safe_height=obj.SafeHeight.Value,
-                start_depth=obj.StartDepth.Value,
-                step_down=obj.StepDown.Value,
-                z_finish_step=0.0,
-                final_depth=obj.FinalDepth.Value,
-                user_depths=None)
-
-        if toolLoad is None or toolLoad.ToolNumber == 0:
-
-            FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
-            return
-        else:
-            self.vertFeed = toolLoad.VertFeed.Value
-            self.horizFeed = toolLoad.HorizFeed.Value
-            self.vertRapid = toolLoad.VertRapid.Value
-            self.horizRapid = toolLoad.HorizRapid.Value
-            tool = toolLoad.Proxy.getTool(toolLoad)
-            if not tool or tool.Diameter == 0:
-                FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
-                return
-            else:
-                self.radius = tool.Diameter/2
-
-        commandlist.append(Path.Command("(" + obj.Label + ")"))
-
+    def opShape(self, obj, commandlist):
         if obj.UseComp:
             commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
         else:
             commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
-        parentJob = PathUtils.findParentJob(obj)
+        job = PathUtils.findParentJob(obj)
 
-        if parentJob is None:
+        if job is None:
             return
-        baseobject = parentJob.Base
+        baseobject = job.Base
         if baseobject is None:
             return
 
@@ -268,31 +127,33 @@ class ObjectContour:
                 for shape in shapes:
                     f = Part.makeFace([shape], 'Part::FaceMakerSimple')
                     thickness = baseobject.Group[0].Source.Thickness
-                    contourshape = f.extrude(FreeCAD.Vector(0, 0, thickness))
-                    try:
-                        (pp, sim) = self._buildPathArea(obj, contourshape, start=obj.StartPoint, getsim=getsim)
-                        commandlist.extend(pp.Commands)
-                    except Exception as e:
-                        FreeCAD.Console.PrintError(e)
-                        FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+                    return f.extrude(FreeCAD.Vector(0, 0, thickness))
 
         if hasattr(baseobject, "Shape") and not isPanel:
-            env = PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, depthparams=self.depthparams)
-            try:
-                (pp, sim) = self._buildPathArea(obj, env, start=obj.StartPoint, getsim=getsim)
-                commandlist.extend(pp.Commands)
-            except Exception as e:
-                FreeCAD.Console.PrintError(e)
-                FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
+            return PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, depthparams=self.depthparams)
 
-        # Let's finish by rapid to clearance...just for safety
-        commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+    def opAreaParams(self, obj):
+        params = {'Fill': 0, 'Coplanar': 2}
 
-        PathLog.track()
-        path = Path.Path(commandlist)
-        obj.Path = path
-        return sim
+        if obj.UseComp is False:
+            params['Offset'] = 0.0
+        else:
+            params['Offset'] = self.radius+obj.OffsetExtra.Value
 
+        jointype = ['Round', 'Square', 'Miter']
+        params['JoinType'] = jointype.index(obj.JoinType)
+
+        if obj.JoinType == 'Miter':
+            params['MiterLimit'] = obj.MiterLimit
+        return params
+
+    def opPathParams(self, obj):
+        params = {}
+        if obj.Direction == 'CCW':
+            params['orientation'] = 0
+        else:
+            params['orientation'] = 1
+        return params
 
 class _ViewProviderContour:
 
@@ -349,6 +210,16 @@ class _CommandSetStartPoint:
     def Activated(self):
         FreeCADGui.Snapper.getPoint(callback=self.setpoint)
 
+def Create(name):
+    FreeCAD.ActiveDocument.openTransaction(translate("Path", "Create a Contour"))
+    obj   = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectContour(obj)
+    proxy.setDefaultValues(obj)
+
+    obj.ViewObject.Proxy.deleteOnReject = True
+
+    FreeCAD.ActiveDocument.commitTransaction()
+    obj.ViewObject.startEditing()
 
 class CommandPathContour:
     def GetResources(self):
@@ -365,36 +236,7 @@ class CommandPathContour:
         return False
 
     def Activated(self):
-        ztop = 10.0
-        zbottom = 0.0
-
-        FreeCAD.ActiveDocument.openTransaction(translate("Path", "Create a Contour"))
-        FreeCADGui.addModule("PathScripts.PathContour")
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Contour")')
-        FreeCADGui.doCommand('PathScripts.PathContour.ObjectContour(obj)')
-        FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
-
-        FreeCADGui.doCommand('obj.Active = True')
-
-        FreeCADGui.doCommand('obj.ClearanceHeight = ' + str(ztop + 10.0))
-        FreeCADGui.doCommand('obj.StepDown = 1.0')
-        FreeCADGui.doCommand('obj.StartDepth= ' + str(ztop))
-        FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
-
-        FreeCADGui.doCommand('obj.SafeHeight = ' + str(ztop + 2.0))
-        FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
-        FreeCADGui.doCommand('obj.Direction = "CW"')
-        FreeCADGui.doCommand('obj.UseComp = True')
-        FreeCADGui.doCommand('obj.JoinType = "Round"')
-        FreeCADGui.doCommand('obj.MiterLimit =' + str(0.1))
-
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
-        FreeCADGui.doCommand('PathScripts.PathContour.ObjectContour.setDepths(obj.Proxy, obj)')
-        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
-
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
-
+        return Create("Contour")
 
 class TaskPanel:
     def __init__(self, obj, deleteOnReject):
