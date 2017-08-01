@@ -65,6 +65,7 @@ private:
     void createShape(const TDF_Label& label, const TopLoc_Location&, const std::string&, std::vector<App::DocumentObject*> &, bool);
     void createShape(const TopoDS_Shape& label, const TopLoc_Location&, const std::string&, std::vector<App::DocumentObject*> &);
     virtual void applyColors(Part::Feature*, const std::vector<App::Color>&){}
+
 private:
     Handle(TDocStd_Document) pDoc;
     App::Document* doc;
@@ -79,15 +80,24 @@ private:
 class ImportExport ExportOCAF
 {
 public:
-    void createNode(App::Part* part, int& root_it, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc, std::vector <App::DocumentObject*>& hierarchical_part);
+    void createNode(App::Part* part, int& root_it,
+                    std::vector <TDF_Label>& hierarchical_label,
+                    std::vector <TopLoc_Location>& hierarchical_loc,
+                    std::vector <App::DocumentObject*>& hierarchical_part);
     ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement);
-    int saveShape(Part::Feature* part, const std::vector<App::Color>&, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc,std::vector <App::DocumentObject*>& hierarchical_part);
-    void reallocateFreeShape(std::vector <App::DocumentObject*> hierarchical_part, std::vector <TDF_Label> FreeLabels,
-                          std::vector <int> part_id, std::vector< std::vector<App::Color> >& Colors);
-    void getFreeLabels(std::vector <TDF_Label>& hierarchical_label,std::vector <TDF_Label>& labels, std::vector <int>& label_part_id );
-    void pushNode(int root, int node, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc);
-
-
+    int saveShape(Part::Feature* part, const std::vector<App::Color>&,
+                  std::vector <TDF_Label>& hierarchical_label,
+                  std::vector <TopLoc_Location>& hierarchical_loc,
+                  std::vector <App::DocumentObject*>& hierarchical_part);
+    void reallocateFreeShape(std::vector <App::DocumentObject*> hierarchical_part,
+                             std::vector <TDF_Label> FreeLabels,
+                             std::vector <int> part_id,
+                             std::vector< std::vector<App::Color> >& Colors);
+    void getFreeLabels(std::vector <TDF_Label>& hierarchical_label,
+                       std::vector <TDF_Label>& labels,
+                       std::vector <int>& label_part_id);
+    void pushNode(int root, int node, std::vector <TDF_Label>& hierarchical_label,
+                  std::vector <TopLoc_Location>& hierarchical_loc);
 
 private:
     Handle(TDocStd_Document) pDoc;
