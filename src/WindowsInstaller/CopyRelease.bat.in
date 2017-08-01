@@ -1,4 +1,0 @@
-
-
-copy FreeCAD.msi FreeCAD_0.14.$WCREV$_x86_RC_setup.msi
-copy FreeCAD.7z  FreeCAD_0.14.$WCREV$_x86_RC_bin.7z
