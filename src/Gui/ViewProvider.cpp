@@ -728,10 +728,15 @@ void ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *o
 }
 
 void ViewProvider::Restore(Base::XMLReader& reader) {
-    
-    setStatus(Gui::isRestoring, true);
+    // Because some PropertyLists type properties are stored in a separate file,
+    // and is thus restored outside this function. So we rely on Gui::Document
+    // to set the isRestoring flags for us.
+    //
+    // setStatus(Gui::isRestoring, true);
+
     TransactionalObject::Restore(reader);
-    setStatus(Gui::isRestoring, false);
+
+    // setStatus(Gui::isRestoring, false);
 }
 
 void ViewProvider::updateData(const App::Property* prop) {

@@ -833,6 +833,7 @@ void Document::Restore(Base::XMLReader &reader)
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::iterator it;
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
         it->second->startRestoring();
+        it->second->setStatus(Gui::isRestoring,true);
     }
 }
 
@@ -936,6 +937,7 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
     // some post-processing of view providers
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::iterator it;
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
+        it->second->setStatus(Gui::isRestoring,false);
         it->second->finishRestoring();
         isModified = isModified || it->first->isTouched();
     }
