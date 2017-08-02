@@ -66,8 +66,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     def purge_results(self):
         for m in self.analysis.Member:
             if (m.isDerivedFrom('Fem::FemResultObject')):
+                if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "FemMeshResult":
+                    self.analysis.Document.removeObject(m.Mesh.Name)
                 self.analysis.Document.removeObject(m.Name)
         self.results_present = False
+        FreeCAD.ActiveDocument.recompute()
 
     ## Resets mesh deformation
     #  @param self The python object self

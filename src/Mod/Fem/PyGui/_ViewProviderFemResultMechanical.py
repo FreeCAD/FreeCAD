@@ -70,7 +70,8 @@ class _ViewProviderFemResultMechanical:
             if hasattr(self.Object, "Mesh") and self.Object.Mesh:
                 mem = FemGui.getActiveAnalysis().Member
                 if self.Object in mem:
-                    if self.Object.Mesh in mem:
+                    # if self.Object.Mesh in mem:
+                    if True:
                         hide_femmeshes_postpiplines()
                         # only show the FEM mesh we would like to view results with
                         self.Object.Mesh.ViewObject.show()
@@ -110,6 +111,17 @@ class _ViewProviderFemResultMechanical:
 
     def __setstate__(self, state):
         return None
+
+    def claimChildren(self):
+        return [self.Object.Mesh]  # claimChildren needs to return a list !
+
+    def onDelete(self, feature, subelements):
+        try:
+            for obj in self.claimChildren():
+                obj.ViewObject.show()
+        except Exception as err:
+            FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
+        return True
 
 
 # helper
