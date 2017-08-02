@@ -30,7 +30,6 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-import FemGui
 from PySide import QtGui
 
 
@@ -66,39 +65,19 @@ class _ViewProviderFemResultMechanical:
         return True
 
     def setEdit(self, vobj, mode=0):
-        if FemGui.getActiveAnalysis() is not None:
-            if hasattr(self.Object, "Mesh") and self.Object.Mesh:
-                mem = FemGui.getActiveAnalysis().Member
-                if self.Object in mem:
-                    # if self.Object.Mesh in mem:
-                    if True:
-                        hide_femmeshes_postpiplines()
-                        # only show the FEM mesh we would like to view results with
-                        self.Object.Mesh.ViewObject.show()
-                        import PyGui._TaskPanelFemResultShow
-                        taskd = PyGui._TaskPanelFemResultShow._TaskPanelFemResultShow(self.Object)
-                        taskd.obj = vobj.Object
-                        FreeCADGui.Control.showDialog(taskd)
-                        return True
-                    else:
-                        error_message = 'FEM: Result mesh object is not in active analysis.\n'
-                        FreeCAD.Console.PrintError(error_message)
-                        QtGui.QMessageBox.critical(None, 'Not in activate analysis', error_message)
-                        return False
-                else:
-                    error_message = 'FEM: Result object is not in active analysis.\n'
-                    FreeCAD.Console.PrintError(error_message)
-                    QtGui.QMessageBox.critical(None, 'Not in activate analysis', error_message)
-                    return False
-            else:
-                error_message = 'FEM: Result object has no appropriate FEM mesh.\n'
-                FreeCAD.Console.PrintError(error_message)
-                QtGui.QMessageBox.critical(None, 'No result object', error_message)
-                return False
+        if hasattr(self.Object, "Mesh") and self.Object.Mesh:
+            hide_femmeshes_postpiplines()
+            # only show the FEM result mesh
+            self.Object.Mesh.ViewObject.show()
+            import PyGui._TaskPanelFemResultShow
+            taskd = PyGui._TaskPanelFemResultShow._TaskPanelFemResultShow(self.Object)
+            taskd.obj = vobj.Object
+            FreeCADGui.Control.showDialog(taskd)
+            return True
         else:
-            error_message = 'FEM: No active analysis found! Please activate the analysis you would like to view results for.\n'
+            error_message = 'FEM: Result object has no appropriate FEM mesh.\n'
             FreeCAD.Console.PrintError(error_message)
-            QtGui.QMessageBox.critical(None, 'No activate analysis', error_message)
+            QtGui.QMessageBox.critical(None, 'No result object', error_message)
             return False
 
     def unsetEdit(self, vobj, mode=0):
