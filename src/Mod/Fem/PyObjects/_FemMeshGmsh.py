@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 class _FemMeshGmsh():
-    """The Fem::FemMeshObject's Proxy python type, add GMSH specific properties
+    """A Fem::FemMeshObject python type, add GMSH specific properties
     """
 
     # they will be used from the task panel too, thus they need to be outside of the __init__
