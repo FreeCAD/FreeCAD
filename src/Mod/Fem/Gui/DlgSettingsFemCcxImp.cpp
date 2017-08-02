@@ -61,6 +61,7 @@ void DlgSettingsFemCcxImp::saveSettings()
     dsb_ccx_analysis_time->onSave(); //Analysis time
 
     cb_analysis_type->onSave();
+    cb_BeamShellOutput->onSave();   //Beam shell output 3d or 2d 
     sb_eigenmode_number->onSave();
     dsb_eigenmode_high_limit->onSave();
     dsb_eigenmode_low_limit->onSave();
@@ -85,6 +86,7 @@ void DlgSettingsFemCcxImp::loadSettings()
     dsb_ccx_analysis_time->onRestore(); //Analysis time
 
     cb_analysis_type->onRestore();
+    cb_BeamShellOutput->onRestore(); //Beam shell output 3d or 2d 
     sb_eigenmode_number->onRestore();
     dsb_eigenmode_high_limit->onRestore();
     dsb_eigenmode_low_limit->onRestore();
