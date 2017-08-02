@@ -103,7 +103,11 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     }
 
     // update Axis from ReferenceAxis
-    updateAxis();
+    try {
+        updateAxis();
+    } catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
 
     // get revolve axis
     Base::Vector3d b = Base.getValue();
