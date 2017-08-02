@@ -301,11 +301,20 @@ def read_z88_mesh(z88_mesh_input):
             print(e, '  ', elements_tria6[e])
 
     z88_mesh_file.close()
-    return {'Nodes': nodes,
-            'Hexa8Elem': elements_hexa8, 'Penta6Elem': elements_penta6, 'Tetra4Elem': elements_tetra4, 'Tetra10Elem': elements_tetra10,
-            'Penta15Elem': elements_penta15, 'Hexa20Elem': elements_hexa20, 'Tria3Elem': elements_tria3, 'Tria6Elem': elements_tria6,
-            'Quad4Elem': elements_quad4, 'Quad8Elem': elements_quad8, 'Seg2Elem': elements_seg2,
-            }
+    return {
+        'Nodes': nodes,
+        'Seg2Elem': elements_seg2,
+        'Tria3Elem': elements_tria3,
+        'Tria6Elem': elements_tria6,
+        'Quad4Elem': elements_quad4,
+        'Quad8Elem': elements_quad8,
+        'Tetra4Elem': elements_tetra4,
+        'Tetra10Elem': elements_tetra10,
+        'Hexa8Elem': elements_hexa8,
+        'Hexa20Elem': elements_hexa20,
+        'Penta6Elem': elements_penta6,
+        'Penta15Elem': elements_penta15
+    }
 
 
 # write z88 Mesh
