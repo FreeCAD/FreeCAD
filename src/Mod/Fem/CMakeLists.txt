@@ -60,6 +60,7 @@ INSTALL(
         PyObjects/_FemMeshGmsh.py
         PyObjects/_FemMeshGroup.py
         PyObjects/_FemMeshRegion.py
+        PyObjects/_FemMeshResult.py
         PyObjects/_FemResultMechanical.py
         PyObjects/_FemSolverCalculix.py
         PyObjects/_FemSolverZ88.py
@@ -114,6 +115,7 @@ INSTALL(
         PyGui/_ViewProviderFemMeshGmsh.py
         PyGui/_ViewProviderFemMeshGroup.py
         PyGui/_ViewProviderFemMeshRegion.py
+        PyGui/_ViewProviderFemMeshResult.py
         PyGui/_ViewProviderFemResultMechanical.py
         PyGui/_ViewProviderFemSolverCalculix.py
         PyGui/_ViewProviderFemSolverZ88.py

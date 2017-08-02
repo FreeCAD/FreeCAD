@@ -109,6 +109,7 @@ SET(FemObjectsScripts_SRCS
     PyObjects/_FemMeshBoundaryLayer.py
     PyObjects/_FemMeshGmsh.py
     PyObjects/_FemMeshGroup.py
+    PyObjects/_FemMeshResult.py
     PyObjects/_FemMeshRegion.py
     PyObjects/_FemResultMechanical.py
     PyObjects/_FemSolverCalculix.py
@@ -161,6 +162,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_ViewProviderFemMeshGmsh.py
     PyGui/_ViewProviderFemMeshGroup.py
     PyGui/_ViewProviderFemMeshRegion.py
+    PyGui/_ViewProviderFemMeshResult.py
     PyGui/_ViewProviderFemResultMechanical.py
     PyGui/_ViewProviderFemSolverCalculix.py
     PyGui/_ViewProviderFemSolverZ88.py
