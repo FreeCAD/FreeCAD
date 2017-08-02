@@ -68,11 +68,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
     m = readResult(filename)
     result_mesh_object = None
     if len(m['Nodes']) > 0:
-        if analysis is None:
-            analysis_name = os.path.splitext(os.path.basename(filename))[0]
-            analysis_object = ObjectsFem.makeAnalysis('Analysis')
-            analysis_object.Label = analysis_name
-        else:
+        if analysis:
             analysis_object = analysis
 
         mesh = importToolsFem.make_femmesh(m)
@@ -104,11 +100,13 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
             results = ObjectsFem.makeResultMechanical(results_name)
             results.Mesh = result_mesh_object
             results = importToolsFem.fill_femresult_mechanical(results, result_set, span)
-            analysis_object.Member = analysis_object.Member + [results]
+            if analysis:
+                analysis_object.Member = analysis_object.Member + [results]
 
-        if(FreeCAD.GuiUp):
-            import FemGui
-            FemGui.setActiveAnalysis(analysis_object)
+        if FreeCAD.GuiUp:
+            if analysis:
+                import FemGui
+                FemGui.setActiveAnalysis(analysis_object)
             FreeCAD.ActiveDocument.recompute()
 
     else:
