@@ -228,6 +228,7 @@ def read_fenics_mesh_xml(xmlfilename):
     return {
         'Nodes': nodes,
         'Seg2Elem': element_dict['seg2'],
+        'Seg3Elem': {},
         'Tria3Elem': element_dict['tria3'],
         'Tria6Elem': {},
         'Quad4Elem': element_dict['quad4'],

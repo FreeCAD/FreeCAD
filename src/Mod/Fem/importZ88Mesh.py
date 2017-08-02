@@ -108,6 +108,7 @@ def read_z88_mesh(z88_mesh_input):
     elements_quad4 = {}
     elements_quad8 = {}
     elements_seg2 = {}
+    elements_seg3 = {}
 
     input_continues = False
     # elem = -1
@@ -304,6 +305,7 @@ def read_z88_mesh(z88_mesh_input):
     return {
         'Nodes': nodes,
         'Seg2Elem': elements_seg2,
+        'Seg3Elem': elements_seg3,
         'Tria3Elem': elements_tria3,
         'Tria6Elem': elements_tria6,
         'Quad4Elem': elements_quad4,
