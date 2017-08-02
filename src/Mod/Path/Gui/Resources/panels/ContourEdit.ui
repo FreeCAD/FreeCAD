@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>352</width>
-    <height>400</height>
+    <width>445</width>
+    <height>451</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -23,132 +23,15 @@
    <item row="0" column="0">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
-     <widget class="QWidget" name="Depths">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>108</width>
-        <height>92</height>
-       </rect>
-      </property>
-      <attribute name="icon">
-       <iconset resource="../Path.qrc">
-        <normaloff>:/icons/Path-Depths.svg</normaloff>:/icons/Path-Depths.svg</iconset>
-      </attribute>
-      <attribute name="label">
-       <string>Depths</string>
-      </attribute>
-      <layout class="QFormLayout" name="formLayout_3">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-       </property>
-       <item row="0" column="1">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Start Depth</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="Gui::InputField" name="finalDepth">
-         <property name="unit" stdset="0">
-          <string notr="true">mm</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Final Depth</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Step Down</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="Gui::InputField" name="startDepth">
-         <property name="unit" stdset="0">
-          <string notr="true">mm</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="Gui::InputField" name="stepDown">
-         <property name="minimum" stdset="0">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="unit" stdset="0">
-          <string notr="true">mm</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="Heights">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>141</width>
-        <height>65</height>
-       </rect>
-      </property>
-      <attribute name="icon">
-       <iconset resource="../Path.qrc">
-        <normaloff>:/icons/Path-Heights.svg</normaloff>:/icons/Path-Heights.svg</iconset>
-      </attribute>
-      <attribute name="label">
-       <string>Heights</string>
-      </attribute>
-      <layout class="QFormLayout" name="formLayout">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-       </property>
-       <item row="0" column="0">
-        <widget class="Gui::InputField" name="safeHeight">
-         <property name="unit" stdset="0">
-          <string notr="true">mm</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Safe Height</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="Gui::InputField" name="clearanceHeight">
-         <property name="unit" stdset="0">
-          <string notr="true">mm</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Clearance Height</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="page_3">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>336</width>
-        <height>303</height>
+        <width>427</width>
+        <height>396</height>
        </rect>
       </property>
       <attribute name="icon">
