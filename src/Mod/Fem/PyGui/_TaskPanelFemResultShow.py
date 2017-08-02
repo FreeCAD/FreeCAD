@@ -431,6 +431,9 @@ def hide_parts_constraints():
     fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
     hide_constraints = fem_prefs.GetBool("HideConstraint", False)
     if hide_constraints:
-        for acnstrmesh in FemGui.getActiveAnalysis().Member:
-            if "Constraint" in acnstrmesh.TypeId:
-                acnstrmesh.ViewObject.Visibility = False
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.isDerivedFrom('Fem::FemAnalysis'):
+                for acnstrmesh in FemGui.getActiveAnalysis().Member:
+                    if "Constraint" in acnstrmesh.TypeId:
+                        acnstrmesh.ViewObject.Visibility = False
+                break
