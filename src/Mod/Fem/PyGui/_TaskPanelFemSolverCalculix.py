@@ -165,9 +165,14 @@ class _TaskPanelFemSolverCalculix:
         fea.reset_mesh_purge_results_checked()
         fea.inp_file_name = self.inp_file_name
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        fea.load_results()
-        QApplication.restoreOverrideCursor()
-        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        try:
+            fea.load_results()
+        except:
+            QApplication.restoreOverrideCursor()
+            raise
+        else:
+            QApplication.restoreOverrideCursor()
+            self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
     def choose_working_dir(self):
         current_wd = self.setup_working_dir()
