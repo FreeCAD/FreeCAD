@@ -87,7 +87,7 @@ class TaskPanelPage(object):
         self.isdirty = False
 
     def pageGetFields(self):
-        self.getFields(self, obj)
+        self.getFields(self.obj)
         self.setDirty()
 
     def pageSetFields(self):
@@ -105,20 +105,36 @@ class TaskPanelPage(object):
 class TaskPanelHeightsPage(TaskPanelPage):
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
-
     def getTitle(self, obj):
         return translate("Path_AreaOp", "Heights")
-
     def getFields(self, obj):
         obj.SafeHeight = FreeCAD.Units.Quantity(self.form.safeHeight.text()).Value
         obj.ClearanceHeight = FreeCAD.Units.Quantity(self.form.clearanceHeight.text()).Value
-
     def setFields(self,  obj):
         self.form.safeHeight.setText(FreeCAD.Units.Quantity(obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
         self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
-
     def getSignalsForUpdate(self, obj):
         return [self.form.safeHeight.editingFinished, self.form.clearanceHeight.editingFinished]
+
+class TaskPanelDepthsPage(TaskPanelPage):
+    def getForm(self):
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
+    def getTitle(self, obj):
+        return translate("PathAreaOp", "Depths")
+    def getFields(self, obj):
+        obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
+        obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
+        obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
+    def setFields(self, obj):
+        self.form.startDepth.setText(FreeCAD.Units.Quantity(obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.finalDepth.setText(FreeCAD.Units.Quantity(obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.stepDown.setText(FreeCAD.Units.Quantity(obj.StepDown.Value, FreeCAD.Units.Length).UserString)
+    def getSignalsForUpdate(self, obj):
+        signals = []
+        signals.append(self.form.startDepth.editingFinished)
+        signals.append(self.form.finalDepth.editingFinished)
+        signals.append(self.form.stepDown.editingFinished)
+        return signals
 
 class TaskPanel(object):
 
@@ -127,6 +143,9 @@ class TaskPanel(object):
         self.form = QtGui.QToolBox()
         self.deleteOnReject = deleteOnReject
         self.featurePages = []
+
+        if PathAreaOp.FeatureDepths & obj.Proxy.opFeatures(obj):
+            self.featurePages.append(TaskPanelDepthsPage(obj))
 
         if PathAreaOp.FeatureHeights & obj.Proxy.opFeatures(obj):
             self.featurePages.append(TaskPanelHeightsPage(obj))
@@ -180,8 +199,7 @@ class TaskPanel(object):
     def panelGetFields(self):
         PathLog.track()
         for page in self.featurePages:
-            page.pageGetFields(self.obj)
-        self.opGetFields(self.obj)
+            page.pageGetFields()
 
     def panelSetFields(self):
         PathLog.track()

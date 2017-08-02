@@ -15,7 +15,7 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">
-    <widget class="QLineEdit" name="startDepth"/>
+    <widget class="Gui::InputField" name="startDepth"/>
    </item>
    <item row="0" column="1">
     <widget class="QLabel" name="label">
@@ -25,7 +25,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QLineEdit" name="finalDepth"/>
+    <widget class="Gui::InputField" name="finalDepth"/>
    </item>
    <item row="1" column="1">
     <widget class="QLabel" name="label_2">
@@ -35,7 +35,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QLineEdit" name="steopDown"/>
+    <widget class="Gui::InputField" name="stepDown"/>
    </item>
    <item row="2" column="1">
     <widget class="QLabel" name="label_3">
@@ -46,6 +46,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
