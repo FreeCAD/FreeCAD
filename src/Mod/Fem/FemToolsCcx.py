@@ -202,6 +202,25 @@ class FemToolsCcx(FemTools.FemTools):
             return p.returncode
         return -1
 
+    def get_ccx_version(self):
+        import re
+        import subprocess
+        from platform import system
+        startup_info = None
+        if system() == "Windows":
+            # Windows workaround to avoid blinking terminal window
+            startup_info = subprocess.STARTUPINFO()
+            startup_info.dwFlags = subprocess.STARTF_USESHOWWINDOW
+        ccx_stdout = None
+        ccx_stderr = None
+        # Now extract the version number
+        p = subprocess.Popen([self.ccx_binary, '-v'], stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE, shell=False,
+                             startupinfo=startup_info)
+        ccx_stdout, ccx_stderr = p.communicate()
+        m = re.search(r"(\d+).(\d+)", ccx_stdout)
+        return (int(m.group(1)), int(m.group(2)))
+
     def run(self):
         ret_code = 0
         message = self.check_prerequisites()
