@@ -37,6 +37,10 @@ from platform import system
 
 
 class FemGmshTools():
+    supported_mesh_output_formats = {'Gmsh MSH':1, 'I-Deas universal':2, 'Automatic':10, 'STL surface':27, 
+                                                            'INRIA medit':30, 'CGNS':32 , 'Salome mesh':33, 'Abaqus INP':39, 'Ploy surface':42}
+    output_format_suffix = {'Gmsh MSH':'.msh', 'I-Deas universal':'.unv', 'Automatic':'.msh', 'STL surface':'.stl', 
+                                        'INRIA medit':'.mesh', 'CGNS':'.cgns', 'Salome mesh':'med', 'Abaqus INP':'.inp', 'Ploy surface':'.ply2'}
     def __init__(self, gmsh_mesh_obj, analysis=None):
         self.mesh_obj = gmsh_mesh_obj
         if analysis:
@@ -115,6 +119,35 @@ class FemGmshTools():
         else:
             self.algorithm3D = '1'
 
+    def export_mesh(self, output_format, output_filestring = None):
+        # This function aims to export more mesh formats than FemMesh supported
+        _output_format = self.mesh_obj.OutputFormat  # push back the current OutputFormat
+        output_filename = None
+        try:
+            self.mesh_obj.OutputFormat = output_format
+            # same as create_mesh(), without loading mesh into FreeCAD
+            self.get_dimension()
+            self.get_tmp_file_paths()
+            self.get_gmsh_command()
+            self.get_group_data()
+            self.get_region_data()
+            self.get_boundary_layer_data()
+            self.write_part_file()
+            self.write_geo()
+            error = self.run_gmsh_with_geo()
+            if error:
+                print('Gmsh has error during mesh generation for {}'.format(output_format))
+            else:
+                output_filename = self.temp_file_mesh
+                print('Gmsh has generated mesh format `{}` into file: {}'.format(output_format, output_filename))
+                if output_filestring:
+                    import shutil
+                    shutil.move(output_filename, output_filestring)
+                    output_filename = output_filestring
+        finally:
+            self.mesh_obj.OutputFormat = _output_format
+        return output_filename
+
     def create_mesh(self):
         print("\nWe gone start GMSH FEM mesh run!")
         print('  Part to mesh: Name --> ' + self.part_obj.Name + ',  Label --> ' + self.part_obj.Label + ', ShapeType --> ' + self.part_obj.Shape.ShapeType)
@@ -183,7 +216,8 @@ class FemGmshTools():
         print('  ' + self.temp_file_geometry)
         # mesh file
         self.mesh_name = self.part_obj.Name + '_Mesh_TmpGmsh'
-        self.temp_file_mesh = tmpdir + path_sep + self.mesh_name + '.unv'
+        suffix = FemGmshTools.output_format_suffix[self.mesh_obj.OutputFormat]  # '.unv'
+        self.temp_file_mesh = tmpdir + path_sep + self.mesh_name + suffix
         print('  ' + self.temp_file_mesh)
         # GMSH input file
         self.temp_file_geo = tmpdir + path_sep + 'shape2mesh.geo'
@@ -514,8 +548,10 @@ class FemGmshTools():
         else:
             geo.write("Mesh  " + self.dimension + ";\n")
         geo.write("\n")
-        geo.write("// save\n")
-        geo.write("Mesh.Format = 2;\n")  # unv
+
+        geo.write("// output format 1=msh, 2=unv, 10=automatic, 27=stl, 32=cgns, 33=med, 39=inp, 40=ply2\n")
+        geo.write("Mesh.Format = {};\n".format(FemGmshTools.supported_mesh_output_formats[self.mesh_obj.OutputFormat]))
+
         if self.analysis and self.group_elements:
             geo.write("// For each group save not only the elements but the nodes too.;\n")
             geo.write("Mesh.SaveGroupsOfNodes = 1;\n")
@@ -524,6 +560,7 @@ class FemGmshTools():
         geo.write("Mesh.SaveAll = 1;\n")
         geo.write('Save "' + self.temp_file_mesh + '";\n')
         geo.write("\n\n")
+
         geo.write("//////////////////////////////////////////////////////////////////////\n")
         geo.write("// GMSH documentation:\n")
         geo.write("// http://gmsh.info/doc/texinfo/gmsh.html#Mesh\n")
