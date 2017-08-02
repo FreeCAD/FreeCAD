@@ -287,6 +287,17 @@ def makeMeshRegion(base_mesh, element_length=0.0, name="FEMMeshRegion"):
     return obj
 
 
+def makeMeshResult(name="FEMMeshResult"):
+    '''(name): makes a Fem MeshResult object'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshObjectPython", name)
+    import PyObjects._FemMeshResult
+    PyObjects._FemMeshResult._FemMeshResult(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemMeshResult
+        PyGui._ViewProviderFemMeshResult._ViewProviderFemMeshResult(obj.ViewObject)
+    return obj
+
+
 ########## result objects ##########
 def makeResultMechanical(name="MechanicalResult"):
     '''makeResultMechanical(name): creates an mechanical result object to hold FEM results'''
