@@ -264,8 +264,8 @@ def makeMeshBoundaryLayer(base_mesh, name="MeshBoundaryLayer"):
     return obj
 
 
-def makeMeshShapeNetgenObject(name="MeshShapeNetgenObject"):
-    '''makeMeshShapeNetgenObject(name): makes a Fem MeshShapeNetgenObject object'''
+def makeMeshNetgen(name="FEMMeshNetgen"):
+    '''makeMeshNetgen(name): makes a Fem MeshShapeNetgenObject object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshShapeNetgenObject", name)
     return obj
 
