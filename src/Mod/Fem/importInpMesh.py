@@ -235,8 +235,18 @@ def read_inp(file_name):
         n = elements.seg3[en]
         elements.seg3[en] = [n[0], n[2], n[1]]
 
-    return {'Nodes': nodes,
-            'Hexa8Elem': elements.hexa8, 'Penta6Elem': elements.penta6, 'Tetra4Elem': elements.tetra4,
-            'Tetra10Elem': elements.tetra10, 'Penta15Elem': elements.penta15, 'Hexa20Elem': elements.hexa20,
-            'Tria3Elem': elements.tria3, 'Tria6Elem': elements.tria6, 'Quad4Elem': elements.quad4,
-            'Quad8Elem': elements.quad8, 'Seg2Elem': elements.seg2, 'Seg3Elem': elements.seg3}
+    return {
+        'Nodes': nodes,
+        'Seg2Elem': elements.seg2,
+        'Seg3Elem': elements.seg3,
+        'Tria3Elem': elements.tria3,
+        'Tria6Elem': elements.tria6,
+        'Quad4Elem': elements.quad4,
+        'Quad8Elem': elements.quad8,
+        'Tetra4Elem': elements.tetra4,
+        'Tetra10Elem': elements.tetra10,
+        'Hexa8Elem': elements.hexa8,
+        'Hexa20Elem': elements.hexa20,
+        'Penta6Elem': elements.penta6,
+        'Penta15Elem': elements.penta15
+    }

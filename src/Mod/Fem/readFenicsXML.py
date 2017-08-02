@@ -225,8 +225,17 @@ def read_fenics_mesh_xml(xmlfilename):
     if root.find("data") is not None:
         print("Internal mesh data found")
 
-    return {'Nodes': nodes,
-            'Hexa8Elem': {}, 'Penta6Elem': {}, 'Tetra4Elem': element_dict['tetra4'], 'Tetra10Elem': {},
-            'Penta15Elem': {}, 'Hexa20Elem': {}, 'Tria3Elem': element_dict['tria3'], 'Tria6Elem': {},
-            'Quad4Elem': element_dict['quad4'], 'Quad8Elem': {}, 'Seg2Elem': element_dict['seg2']
-            }
+    return {
+        'Nodes': nodes,
+        'Seg2Elem': element_dict['seg2'],
+        'Tria3Elem': element_dict['tria3'],
+        'Tria6Elem': {},
+        'Quad4Elem': element_dict['quad4'],
+        'Quad8Elem': {},
+        'Tetra4Elem': element_dict['tetra4'],
+        'Tetra10Elem': {},
+        'Hexa8Elem': {},
+        'Hexa20Elem': {},
+        'Penta6Elem': {},
+        'Penta15Elem': {}
+    }
