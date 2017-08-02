@@ -34,7 +34,7 @@ class _ViewProviderFemMeshResult:
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/fem-femmesh-from-shape.svg"
+        return ":/icons/fem-femmesh-result.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
