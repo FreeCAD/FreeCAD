@@ -50,7 +50,6 @@
         <file>icons/Path-Area-View.svg</file>
         <file>icons/Path-Area-Workplane.svg</file>
         <file>icons/preferences-path.svg</file>
-        <file>panels/ContourEdit.ui</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
         <file>panels/DlgSelectPostProcessor.ui</file>
