@@ -31,6 +31,7 @@ from PySide import QtCore, QtGui
 from PathScripts import PathUtils
 from PathScripts.PathUtils import fmt, waiting_effects
 import ArchPanel
+import Part
 
 
 # xrange is not available in python3
@@ -48,6 +49,7 @@ if FreeCAD.GuiUp:
     import FreeCADGui
 
 """Path Drilling object and FreeCAD command"""
+
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -117,7 +119,7 @@ class ObjectDrilling:
 
         output = ""
         if obj.Comment != "":
-            output += '(' + str(obj.Comment)+')\n'
+            output += '(' + str(obj.Comment) + ')\n'
 
         toolLoad = obj.ToolController
         if toolLoad is None or toolLoad.ToolNumber == 0:
@@ -133,7 +135,7 @@ class ObjectDrilling:
                 FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
                 return
             else:
-                self.radius = tool.Diameter/2
+                self.radius = tool.Diameter / 2
 
         tiplength = 0.0
         if obj.AddTipLength:
@@ -165,7 +167,7 @@ class ObjectDrilling:
                                     x = edge.Curve.Center.x
                                     y = edge.Curve.Center.y
                                     diameter = edge.BoundBox.XLength
-                                    holes.append({'x': x, 'y': y, 'featureName': baseobject.Name+'.'+'Drill'+str(i), 'd': diameter})
+                                    holes.append({'x': x, 'y': y, 'featureName': baseobject.Name + '.' + 'Drill' + str(i), 'd': diameter})
                                     i = i + 1
             else:
                 holes = self.findHoles(obj, baseobject.Shape)
@@ -351,7 +353,7 @@ class CommandPathDrilling:
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
-       # FreeCADGui.doCommand('PathScripts.PathDrilling.ObjectDrilling.setDepths(obj.Proxy, obj)')
+        # FreeCADGui.doCommand('PathScripts.PathDrilling.ObjectDrilling.setDepths(obj.Proxy, obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
@@ -382,7 +384,7 @@ class TaskPanel:
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
-    def clicked(self,button):
+    def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
             self.getFields()
             FreeCAD.ActiveDocument.recompute()
@@ -444,10 +446,10 @@ class TaskPanel:
                 item.setCheckState(QtCore.Qt.Checked)
             else:
                 item.setCheckState(QtCore.Qt.Unchecked)
-            self.form.baseList.setItem(self.form.baseList.rowCount()-1, 0, item)
+            self.form.baseList.setItem(self.form.baseList.rowCount() - 1, 0, item)
             item = QtGui.QTableWidgetItem("{:.3f}".format(self.obj.Diameters[i]))
 
-            self.form.baseList.setItem(self.form.baseList.rowCount()-1, 1, item)
+            self.form.baseList.setItem(self.form.baseList.rowCount() - 1, 1, item)
         self.form.baseList.resizeColumnToContents(0)
         self.form.baseList.itemChanged.connect(self.checkedChanged)
 
@@ -527,7 +529,7 @@ class TaskPanel:
                 else:
                     enabledlist[ind] = 0
             except:
-                PathLog.track("Not found:"+self.form.baseList.item(i, 0).text() + " in " + str(self.obj.Names))
+                PathLog.track("Not found:" + self.form.baseList.item(i, 0).text() + " in " + str(self.obj.Names))
 
         self.obj.Enabled = enabledlist
         FreeCAD.ActiveDocument.recompute()
@@ -578,7 +580,7 @@ class TaskPanel:
                 if hasattr(sub, 'ShapeType'):
                     if sub.ShapeType == 'Vertex':
                         PathLog.debug("Selection is a vertex, lets drill that")
-                        names.append(objectname+'.'+sel.SubElementNames[i])
+                        names.append(objectname + '.' + sel.SubElementNames[i])
                         positions.append(FreeCAD.Vector(sub.X, sub.Y, 0))
                         enabled.append(1)
                         diameters.append(0)
@@ -586,14 +588,22 @@ class TaskPanel:
                     elif sub.ShapeType == 'Edge':
                         if PathUtils.isDrillable(sobj, sub):
                             PathLog.debug("Selection is a drillable edge, lets drill that")
-                            names.append(objectname+'.'+sel.SubElementNames[i])
+                            names.append(objectname + '.' + sel.SubElementNames[i])
                             positions.append(FreeCAD.Vector(sub.Curve.Center.x, sub.Curve.Center.y, 0))
                             enabled.append(1)
                             diameters.append(sub.BoundBox.XLength)
+                        # check for arcs - isDrillable ignores them.
+                        elif type(sub.Curve) == Part.Circle:
+                            PathLog.debug("Selection is a drillable arc edge, lets drill that")
+                            names.append(objectname + '.' + sel.SubElementNames[i])
+                            positions.append(FreeCAD.Vector(sub.Curve.Center.x, sub.Curve.Center.y, 0))
+                            enabled.append(1)
+                            diameters.append(sub.BoundBox.XLength)
+
                     elif sub.ShapeType == 'Face':
                         if PathUtils.isDrillable(sobj.Shape, sub):
                             PathLog.debug("Selection is a drillable face, lets drill that")
-                            names.append(objectname+'.'+sel.SubElementNames[i])
+                            names.append(objectname + '.' + sel.SubElementNames[i])
                             positions.append(FreeCAD.Vector(sub.Surface.Center.x, sub.Surface.Center.y, 0))
                             enabled.append(1)
                             diameters.append(sub.BoundBox.XLength)
