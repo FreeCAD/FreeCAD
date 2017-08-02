@@ -23,6 +23,7 @@ SET(PathScripts_SRCS
     PathScripts/PathComment.py
     PathScripts/PathCompoundExtended.py
     PathScripts/PathContour.py
+    PathScripts/PathContourGui.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
     PathScripts/PathDressup.py
