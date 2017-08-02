@@ -143,6 +143,10 @@ class _FemSolverCalculix():
         obj.MatrixSolverType = known_ccx_solver_types
         solver_type = ccx_prefs.GetInt("Solver", 0)
         obj.MatrixSolverType = known_ccx_solver_types[solver_type]
+        
+        obj.addProperty("App::PropertyBool", "BeamShellResultOutput3D", "Fem", "Output 3D results for 1D and 2D anlysis ")
+        dimout = ccx_prefs.GetBool("BeamShellOutput", False)
+        obj.BeamShellResultOutput3D = dimout
 
     def execute(self, obj):
         return
