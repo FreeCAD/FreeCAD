@@ -163,7 +163,7 @@ class TaskPanel(object):
             if TaskPanelLayout == 0:
                 for page in self.featurePages:
                     self.form.addItem(page.form, page.getTitle(obj))
-                self.form.setCurrentIndex(len(self.featurePages))
+                self.form.setCurrentIndex(len(self.featurePages)-1)
             else:
                 for page in reversed(self.featurePages):
                     self.form.addItem(page.form, page.getTitle(obj))
