@@ -44,11 +44,12 @@ PathLog.trackModule()
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+FeatureTool       = 0x01
+FeatureDepths     = 0x02
+FeatureHeights    = 0x04
+FeatureStartPoint = 0x08
+
 class ObjectOp(object):
-    FeatureTool       = 0x01
-    FeatureDepths     = 0x02
-    FeatureHeights    = 0x04
-    FeatureStartPoint = 0x08
 
     def __init__(self, obj):
         PathLog.track()
@@ -56,19 +57,19 @@ class ObjectOp(object):
         obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Contour"))
 
-        if self.FeatureTool & self.opFeatures(obj):
+        if FeatureTool & self.opFeatures(obj):
             obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
-        if self.FeatureDepths & self.opFeatures(obj):
+        if FeatureDepths & self.opFeatures(obj):
             obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"))
             obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
             obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
 
-        if self.FeatureHeights & self.opFeatures(obj):
+        if FeatureHeights & self.opFeatures(obj):
             obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
             obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid Safety Height between locations."))
 
-        if self.FeatureStartPoint & self.opFeatures(obj):
+        if FeatureStartPoint & self.opFeatures(obj):
             obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
             obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
 
@@ -90,7 +91,7 @@ class ObjectOp(object):
         return None
 
     def opFeatures(self, obj):
-        return self.FeatureTool | self.FeatureDepths | self.FeatureHeights | self.FeatureStartPoint
+        return FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint
      
     def onChanged(self, obj, prop):
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
@@ -102,10 +103,10 @@ class ObjectOp(object):
 
         obj.Active = True
 
-        if self.FeatureTool & self.opFeatures(obj):
+        if FeatureTool & self.opFeatures(obj):
             obj.ToolController = PathUtils.findToolController(obj)
 
-        if self.FeatureDepths & self.opFeatures(obj):
+        if FeatureDepths & self.opFeatures(obj):
             try:
                 shape = self.opShapeForDepths(obj)
             except:
@@ -121,7 +122,7 @@ class ObjectOp(object):
                 obj.FinalDepth      =  0.0
                 obj.StepDown        =  1.0
 
-        if self.FeatureHeights & self.opFeatures(obj):
+        if FeatureHeights & self.opFeatures(obj):
             try:
                 shape = self.opShapeForDepths(obj)
             except:
@@ -135,7 +136,7 @@ class ObjectOp(object):
                 obj.ClearanceHeight = 10.0
                 obj.SafeHeight      =  8.0
 
-        if self.FeatureStartPoint & self.opFeatures(obj):
+        if FeatureStartPoint & self.opFeatures(obj):
             obj.UseStartPoint = False
 
         self.opSetDefaultValues(obj)
@@ -233,7 +234,7 @@ class ObjectOp(object):
 
         shape = self.opShape(obj, commandlist)
 
-        if self.FeatureStartPoint and obj.UseStartPoint:
+        if FeatureStartPoint and obj.UseStartPoint:
             start = obj.StartPoint
         else:
             start = FreeCAD.Vector()
