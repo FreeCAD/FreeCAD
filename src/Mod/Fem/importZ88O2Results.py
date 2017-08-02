@@ -69,7 +69,7 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
     if result_name_prefix is None:
         result_name_prefix = ''
     m = read_z88_disp(filename)
-    if(len(m['Nodes']) > 0):
+    if len(m['Nodes']) > 0:
         if analysis is None:
             analysis_name = os.path.splitext(os.path.basename(filename))[0]
             analysis_object = ObjectsFem.makeAnalysis('Analysis')
@@ -90,6 +90,9 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
         if(FreeCAD.GuiUp):
             import FemGui
             FemGui.setActiveAnalysis(analysis_object)
+
+    else:
+        FreeCAD.Console.PrintError('Problem on frd file import. No nodes found in frd file.\n')
 
 
 def read_z88_disp(z88_disp_input):
