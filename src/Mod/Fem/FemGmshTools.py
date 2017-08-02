@@ -310,11 +310,11 @@ class FemGmshTools():
         print('  {}'.format(self.ele_node_map))
 
     def get_boundary_layer_data(self):
-        # mesh boundary layer, 
+        # mesh boundary layer,
         # currently only one boundary layer setting object is allowed, but multiple boundary can be selected
         # Mesh.CharacteristicLengthMin, must be zero, or a value less than first inflation layer height
         self.bl_setting_list = []  # list of dict, each item map to MeshBoundaryLayer object
-        self.bl_boundary_list = [] # to remove duplicated boundary edge or faces
+        self.bl_boundary_list = []  # to remove duplicated boundary edge or faces
 
         if not self.mesh_obj.MeshBoundaryLayerList:
             print ('  No mesh boundary layer setting document object.')
@@ -325,7 +325,7 @@ class FemGmshTools():
                 err = "GMSH could return unexpected meshes for a boolean split tools Compound. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
                 FreeCAD.Console.PrintError(err + "\n")
             for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
-                if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value >0:
+                if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
                     if mr_obj.References:
                         belem_list = []
                         for sub in mr_obj.References:
@@ -342,7 +342,7 @@ class FemGmshTools():
                                     # we try to find the element it in the Shape to mesh and use the found element as elems
                                     ele_shape = FemMeshTools.get_element(sub[0], elems)  # the method getElement(element) does not return Solid elements
                                     found_element = FemMeshTools.find_element_in_shape(self.part_obj.Shape, ele_shape)
-                                    if found_element:  # also 
+                                    if found_element:  # also
                                         elems = found_element
                                     else:
                                         FreeCAD.Console.PrintError("One element of the mesh boudary layer " + mr_obj.Name + " could not be found in the Part to mesh. It will be ignored.\n")
@@ -356,12 +356,12 @@ class FemGmshTools():
                         setting = {}
                         setting['hwall_n'] = Units.Quantity(mr_obj.MinimumThickness).Value
                         setting['ratio'] = mr_obj.GrowthRate
-                        setting['thickness'] = sum([setting['hwall_n'] * setting['ratio']**i for i in range(mr_obj.NumberOfLayers)])
-                        setting['hwall_t'] = setting['thickness']  #setting['hwall_n'] * 5 # tangetial cell dimension
+                        setting['thickness'] = sum([setting['hwall_n'] * setting['ratio'] ** i for i in range(mr_obj.NumberOfLayers)])
+                        setting['hwall_t'] = setting['thickness']  # setting['hwall_n'] * 5 # tangetial cell dimension
 
                         # hfar: cell dimension outside boundary should be set later if some character length is set
                         if self.clmax > setting['thickness'] * 0.8 and self.clmax < setting['thickness'] * 1.6:
-                            setting['hfar']  = self.clmax
+                            setting['hfar'] = self.clmax
                         else:
                             setting['hfar'] = setting['thickness']  # set a value for safety, it may works as background mesh cell size
                         # from face name -> face id is done in geo file write up
@@ -394,7 +394,7 @@ class FemGmshTools():
                         # the element name of FreeCAD which starts with 1 (example: 'Face1'), same as GMSH
                         #el_id = int(el[4:])  # FIXME:  strip `face` or `edge` prefix
                         ele_nodes = (''.join((str(el[4:]) + ', ') for el in v)).rstrip(', ')
-                        line = prefix + '.' + str(k) + ' = {' + ele_nodes +' };\n'
+                        line = prefix + '.' + str(k) + ' = {' + ele_nodes + ' };\n'
                         geo.write(line)
                     else:
                         line = prefix + '.' + str(k) + ' = ' + str(v) + ';\n'
@@ -494,7 +494,7 @@ class FemGmshTools():
         geo.write("// mesh algorithm, only a few algorithms are usable with 3D boundary layer generation\n")
         geo.write("// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)\n")
         if len(self.bl_setting_list) and self.dimension == 3:
-            geo.write("Mesh.Algorithm = " +  'DelQuad' + ";\n")  # Frontal/DelQuad are tested
+            geo.write("Mesh.Algorithm = " + 'DelQuad' + ";\n")  # Frontal/DelQuad are tested
         else:
             geo.write("Mesh.Algorithm = " + self.algorithm2D + ";\n")
         geo.write("// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 5=Frontal Delaunay, 6=Frontal Hex, 7=MMG3D, 9=R-tree)\n")
