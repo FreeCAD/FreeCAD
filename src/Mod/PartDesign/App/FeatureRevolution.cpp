@@ -183,7 +183,12 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
 
 bool Revolution::suggestReversed(void)
 {
-    updateAxis();
+    try {
+        updateAxis();
+    } catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
+
     return ProfileBased::getReversedAngle(Base.getValue(), Axis.getValue()) < 0.0;
 }
 
