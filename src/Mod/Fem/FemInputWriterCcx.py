@@ -1019,7 +1019,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** Outputs --> frd file\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         if self.beamsection_objects or self.shellthickness_objects or self.fluidsection_objects:
-            if self.solver_obj.BeamShellResultOutput3D == False:
+            if self.solver_obj.BeamShellResultOutput3D is False:
                 f.write('*NODE FILE, OUTPUT=2d\n')
             else:
                 f.write('*NODE FILE, OUTPUT=3d\n')
