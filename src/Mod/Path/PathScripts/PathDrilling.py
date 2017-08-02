@@ -594,7 +594,7 @@ class TaskPanel:
                             diameters.append(sub.BoundBox.XLength)
                         # check for arcs - isDrillable ignores them.
                         elif type(sub.Curve) == Part.Circle:
-                            PathLog.debug("Selection is a drillable arc edge, lets drill that")
+                            PathLog.debug("Selection is an arc or circle edge, lets drill the center")
                             names.append(objectname + '.' + sel.SubElementNames[i])
                             positions.append(FreeCAD.Vector(sub.Curve.Center.x, sub.Curve.Center.y, 0))
                             enabled.append(1)
