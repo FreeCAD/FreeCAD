@@ -33,6 +33,12 @@ import PathScripts.PathSelection as PathSelection
 from PathScripts import PathUtils
 from PySide import QtCore, QtGui
 
+# TaskPanelLayout
+#  0 ... existing toolbox layout
+#  1 ... reverse order
+#  2 ... multi panel layout
+TaskPanelLayout = 0
+
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -140,7 +146,6 @@ class TaskPanel(object):
 
     def __init__(self, obj, deleteOnReject, page, selectionFactory):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_AreaOp", "AreaOp Operation"))
-        self.form = QtGui.QToolBox()
         self.deleteOnReject = deleteOnReject
         self.featurePages = []
 
@@ -153,8 +158,21 @@ class TaskPanel(object):
         page.setTitle(translate('PathAreaOp', 'Operation'))
         self.featurePages.append(page)
 
-        for page in self.featurePages:
-            self.form.addItem(page.form, page.getTitle(obj))
+        if TaskPanelLayout < 2:
+            self.form = QtGui.QToolBox()
+            if TaskPanelLayout == 0:
+                for page in self.featurePages:
+                    self.form.addItem(page.form, page.getTitle(obj))
+                self.form.setCurrentIndex(len(self.featurePages))
+            else:
+                for page in reversed(self.featurePages):
+                    self.form.addItem(page.form, page.getTitle(obj))
+        else:
+            forms = []
+            for page in reversed(self.featurePages):
+                page.form.setWindowTitle(page.getTitle(obj))
+                forms.append(page.form)
+            self.form = forms
 
         self.selectionFactory = selectionFactory
         self.obj = obj
