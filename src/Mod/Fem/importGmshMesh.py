@@ -30,9 +30,10 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD gmsh supported format mesh export from FemMeshGmsh object
 
 import os
-import FreeCAD
-import importToolsFem
+import os.path
+import subprocess
 
+import FreeCAD
 import FemGui
 import FemGmshTools
 
@@ -63,3 +64,65 @@ def export(objectslist, fileString):
                     FreeCAD.Console.PrintError("Mesh is written to `{}` by Gmsh\n".format(ret))
                 return
         FreeCAD.Console.PrintError("Export mesh format with suffix `{}` is not supported by Gmsh\n".format(fileExtension.lower()) )
+
+
+def _run_command(comandlist):
+    # print(comandlist)
+    error = None
+    try:
+        p = subprocess.Popen(comandlist, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = p.communicate()
+        # print(output)  # stdout is still cut at some point but the warnings are in stderr and thus printed :-)
+        # print(error)
+    except:
+        error = 'Error executing: {}\n'.format(' '.joint(comandlist))
+        FreeCAD.Console.PrintError(error)
+    return error
+
+def export_fenics_mesh(obj, meshfileString):
+    if not meshfileString[-4:] == ".xml":
+        error = "Error: only xml mesh is supported by gmsh conversion"
+        FreeCAD.Console.PrintError(error)
+        return error
+    meshfileStem = meshfileString[:-4]
+
+    gmsh = FemGmshTools.FemGmshTools(obj, FemGui.getActiveAnalysis())
+    meshfile = gmsh.export_mesh("Gmsh MSH", meshfileStem + ".msh")
+    if not meshfile:
+        error = "Mesh is not written to `{}` by Gmsh\n".format(meshfile)
+        FreeCAD.Console.PrintError(errror)
+        return error
+
+    comandlist = ['dolfin-convert', '-i gmsh', meshfileStem + ".msh", meshfileStem + ".xml"]
+    error = _run_command(comandlist)
+    if error:
+        return error
+
+    if not os.path.exists(meshfileStem+"_physical_region.xml"):
+        FreeCAD.Console.PrintWarning("Warning: Mesh  boundary file `{}` is not exported by Gmsh\n".format(meshfileStem+"_physical_region.xml"))
+
+def show_fenics_mesh(fname):
+    # boundary layer, quad element is not supported
+    from dolfin import Mesh, MeshFunction, plot, interactive
+    mesh = Mesh(fname+".xml")
+    if os.path.exists( fname+"_physical_region.xml"):
+        subdomains = MeshFunction("size_t", mesh, fname+"_physical_region.xml")
+        plot(subdomains)
+    if os.path.exists( fname+"_facet_region.xml"):
+        boundaries = MeshFunction("size_t", mesh, fname+"_facet_region.xml")
+        plot(boundaries)
+
+    plot(mesh)
+    interactive()
+
+def export_foam_mesh(obj, foamCaseFolder):
+    # support only 3D only
+    gmsh = FemGmshTools.FemGmshTools(obj, FemGui.getActiveAnalysis())
+    meshfile = gmsh.export_mesh("Gmsh MSH")
+    if not meshfile:
+        error = "Mesh is NOT written to `{}` by Gmsh\n".format(ret)
+        FreeCAD.Console.PrintError(errror)
+        return error
+
+    comandlist = ['gmshToFoam', '-case', foamCaseFolder, meshfileStem + ".msh"]
+    return _run_command(comandlist)
