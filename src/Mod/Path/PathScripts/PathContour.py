@@ -32,9 +32,6 @@ import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
 
 from PathScripts import PathUtils
-from PathScripts.PathUtils import depth_params
-from PathScripts.PathUtils import makeWorkplane
-from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 
 FreeCAD.setLogLevel('Path.Area', 0)
