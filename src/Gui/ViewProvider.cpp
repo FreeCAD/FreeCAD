@@ -422,6 +422,8 @@ void ViewProvider::setDefaultMode(int val)
 void ViewProvider::onChanged(const App::Property* prop)
 {
     Application::Instance->signalChangedObject(*this, *prop);
+
+    App::TransactionalObject::onChanged(prop);
 }
 
 std::string ViewProvider::toString() const
