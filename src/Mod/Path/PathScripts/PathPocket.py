@@ -23,16 +23,13 @@
 # ***************************************************************************
 
 import FreeCAD
-import Path
-from PySide import QtCore, QtGui
-from PathScripts import PathUtils
-import PathScripts.PathLog as PathLog
-from PathScripts.PathUtils import waiting_effects, depth_params
 import Part
+import Path
+import PathScripts.PathAreaOp as PathAreaOp
+import PathScripts.PathLog as PathLog
 
-FreeCADGui = None
-if FreeCAD.GuiUp:
-    import FreeCADGui
+from PathScripts import PathUtils
+from PySide import QtCore, QtGui
 
 """Path Pocket object and FreeCAD command"""
 
@@ -42,30 +39,17 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+import FreeCADGui
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-class ObjectPocket:
+class ObjectPocket(PathAreaOp.ObjectOp):
 
-    def __init__(self, obj):
-        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base geometry of this object"))
-        obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"))
-        obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this profile"))
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
-
-        # Tool Properties
-        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
-
-        # Depth Properties
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
-        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid Safety Height between locations."))
-        obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"))
-        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
-        obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum material removed on final pass."))
+    def initOperation(self, obj):
+        PathLog.track()
 
         # Pocket Properties
         obj.addProperty("App::PropertyEnumeration", "CutMode", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
@@ -79,52 +63,16 @@ class ObjectPocket:
         obj.OffsetPattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
         obj.addProperty("App::PropertyBool", "MinTravel", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"))
 
-        # Start Point Properties
-        obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
-        obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
-
-        # Debug Parameters
-        obj.addProperty("App::PropertyString", "AreaParams", "Path")
-        obj.setEditorMode('AreaParams', 2)  # hide
-        obj.addProperty("App::PropertyString", "PathParams", "Path")
-        obj.setEditorMode('PathParams', 2)  # hide
-        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
-        obj.setEditorMode('removalshape', 2)  # hide
         if FreeCAD.GuiUp:
             ViewProviderPocket(obj.ViewObject)
 
-        obj.Proxy = self
-
-    def onChanged(self, obj, prop):
-        if prop in ['AreaParams', 'PathParams', 'removalshape']:
-            obj.setEditorMode(prop, 2)
-
-    def __getstate__(self):
+    def opShapeForDepths(self, obj):
+        job = PathUtils.findParentJob(obj)
+        if job and job.Base:
+            PathLog.debug("job=%s base=%s shape=%s" % (job, job.Base, job.Base.Shape))
+            return job.Base.Shape
+        PathLog.warning("No job object found (%s), or job has no Base." % job)
         return None
-
-    def __setstate__(self, state):
-        return None
-
-    def setDepths(proxy, obj):
-        PathLog.track()
-        parentJob = PathUtils.findParentJob(obj)
-        if parentJob is None:
-            return
-        baseobject = parentJob.Base
-        if baseobject is None:
-            return
-
-        try:
-            bb = baseobject.Shape.BoundBox  # parent boundbox
-            obj.StartDepth = bb.ZMax
-            obj.ClearanceHeight = bb.ZMax + 5.0
-            obj.SafeHeight = bb.ZMax + 3.0
-            obj.FinalDepth = bb.ZMin
-
-        except:
-            obj.StartDepth = 5.0
-            obj.ClearanceHeight = 10.0
-            obj.SafeHeight = 8.0
 
     def addpocketbase(self, obj, ss, sub=""):
         PathLog.track()
@@ -158,131 +106,45 @@ class ObjectPocket:
 
         item = (ss, sub)
         if item in baselist:
-            FreeCAD.Console.PrintWarning(translate("Path", "this object already in the list" + "\n"))
+            PathLog.warning(translate("Path", "this object already in the list" + "\n"))
         else:
             baselist.append(item)
         obj.Base = baselist
         self.execute(obj)
 
-    def getStock(self, obj):
-        """find and return a stock object from hosting project if any"""
-        for o in obj.InList:
-            if hasattr(o, "Group"):
-                for g in o.Group:
-                    if hasattr(g, "Height_Allowance"):
-                        return o
-        # not found? search one level up
-        for o in obj.InList:
-            return self.getStock(o)
-        return None
-
-    @waiting_effects
-    def _buildPathArea(self, obj, envelopeshape, getsim=False):
-        PathLog.track()
-        pocket = Path.Area()
-        pocket.setPlane(Part.makeCircle(10))
-        pocket.add(envelopeshape)
-
-        stepover = (self.radius * 2) * (float(obj.StepOver)/100)
-
-        pocketparams = {'Fill': 0,
-                        'Coplanar': 0,
-                        'PocketMode': 1,
-                        'SectionCount': -1,
-                        'Angle': obj.ZigZagAngle,
-                        'FromCenter': (obj.StartAt == "Center"),
-                        'PocketStepover': stepover,
-                        'PocketExtraOffset': obj.MaterialAllowance.Value}
-
-        offsetval = self.radius
-        pocketparams['ToolRadius'] = offsetval
+    def opAreaParams(self, obj):
+        params = {}
+        params['Fill'] = 0
+        params['Coplanar'] = 0
+        params['PocketMode'] = 1
+        params['SectionCount'] = -1
+        params['Angle'] = obj.ZigZagAngle
+        params['FromCenter'] = (obj.StartAt == "Center")
+        params['PocketStepover'] = (self.radius * 2) * (float(obj.StepOver)/100)
+        params['PocketExtraOffset'] = obj.MaterialAllowance.Value
+        params['ToolRadius'] = self.radius
 
         Pattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
-        pocketparams['PocketMode'] = Pattern.index(obj.OffsetPattern) + 1
+        params['PocketMode'] = Pattern.index(obj.OffsetPattern) + 1
+        return params
 
-        pocket.setParams(**pocketparams)
-        obj.AreaParams = str(pocket.getParams())
-        PathLog.debug("Pocketing with params: {}".format(pocket.getParams()))
+    def opPathParams(self, obj):
+        params = {}
 
-        heights = [i for i in self.depthparams]
-        PathLog.debug('pocket section heights: {}'.format(heights))
-        sections = pocket.makeSections(mode=0, project=False, heights=heights)
+        # if MinTravel is turned on, set path sorting to 3DSort
+        # 3DSort shouldn't be used without a valid start point. Can cause
+        # tool crash without it.
+        if obj.MinTravel and obj.UseStartPoint and obj.StartPoint is not None:
+            params['sort_mode'] = 2
+        return params
 
-        shapelist = [sec.getShape() for sec in sections]
-
-        params = {'shapes': shapelist,
-                  'feedrate': self.horizFeed,
-                  'feedrate_v': self.vertFeed,
-                  'verbose': True,
-                  'resume_height': obj.StepDown.Value,
-                  'retraction': obj.ClearanceHeight.Value}
-
-        if obj.UseStartPoint and obj.StartPoint is not None:
-            params['start'] = obj.StartPoint
-
-            # if MinTravel is turned on, set path sorting to 3DSort
-            # 3DSort shouldn't be used without a valid start point. Can cause
-            # tool crash without it.
-            if obj.MinTravel:
-                params['sort_mode'] = 2
-
-        obj.PathParams = str({key: value for key, value in params.items() if key != 'shapes'})
-
-        pp = Path.fromShapes(**params)
-        PathLog.debug("Generating Path with params: {}".format(params))
-        PathLog.debug(pp)
-
-        simobj = None
-        if getsim:
-            pocketparams['Thicken'] = True
-            pocketparams['ToolRadius'] = self.radius - self.radius * .005
-            pocketparams['Stepdown'] = -1
-            pocket.setParams(**pocketparams)
-            simobj = pocket.getShape().extrude(FreeCAD.Vector(0, 0, obj.StepDown.Value))
-
-        return pp, simobj
-
-    def execute(self, obj, getsim=False):
+    def opShape(self, obj, commandlist):
         PathLog.track()
-        commandlist = []
-        simlist = []
-        commandlist.append(Path.Command("(" + obj.Label + ")"))
-        if not obj.Active:
-            path = Path.Path("(inactive operation)")
-            obj.Path = path
-            obj.ViewObject.Visibility = False
-            return
 
-        parentJob = PathUtils.findParentJob(obj)
-        if parentJob is None:
+        job = PathUtils.findParentJob(obj)
+        if not job or not job.Base:
             return
-        baseobject = parentJob.Base
-        if baseobject is None:
-            return
-
-        self.depthparams = depth_params(
-                clearance_height=obj.ClearanceHeight.Value,
-                safe_height=obj.SafeHeight.Value,
-                start_depth=obj.StartDepth.Value,
-                step_down=obj.StepDown.Value,
-                z_finish_step=0.0,
-                final_depth=obj.FinalDepth.Value,
-                user_depths=None)
-
-        toolLoad = obj.ToolController
-        if toolLoad is None or toolLoad.ToolNumber == 0:
-            FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
-        else:
-            self.vertFeed = toolLoad.VertFeed.Value
-            self.horizFeed = toolLoad.HorizFeed.Value
-            self.vertRapid = toolLoad.VertRapid.Value
-            self.horizRapid = toolLoad.HorizRapid.Value
-            tool = toolLoad.Proxy.getTool(toolLoad)
-            if not tool or tool.Diameter == 0:
-                FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
-                return
-            else:
-                self.radius = tool.Diameter/2
+        baseobject = job.Base
 
         if obj.Base:
             PathLog.debug("base items exist.  Processing...")
@@ -297,48 +159,22 @@ class ObjectPocket:
 
                     env = PathUtils.getEnvelope(baseobject.Shape, subshape=shape, depthparams=self.depthparams)
                     obj.removalshape = env.cut(baseobject.Shape)
-
-                    try:
-                        (pp, sim) = self._buildPathArea(obj, obj.removalshape, getsim=getsim)
-                        if sim is not None:
-                            simlist.append(sim)
-                        commandlist.extend(pp.Commands)
-                    except Exception as e:
-                        FreeCAD.Console.PrintError(e)
-                        FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a pocket path. Check project and tool config.")
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
 
             env = PathUtils.getEnvelope(baseobject.Shape, subshape=None, depthparams=self.depthparams)
             obj.removalshape = env.cut(baseobject.Shape)
-            try:
-                (pp, sim) = self._buildPathArea(obj, obj.removalshape, getsim=getsim)
-                commandlist.extend(pp.Commands)
-                if sim is not None:
-                    simlist.append(sim)
+        return obj.removalshape
 
-            except Exception as e:
-                FreeCAD.Console.PrintError(e)
-                FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a pocket path. Check project and tool config.")
+    def opSetDefaultValues(self, obj):
+        obj.StepOver = 100
+        obj.ZigZagAngle = 45
 
-        # Let's finish by rapid to clearance...just for safety
-        commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
-        path = Path.Path(commandlist)
-        obj.Path = path
-
-        PathLog.debug(simlist)
-        simshape = None
-        if len(simlist) > 1:
-            simshape = simlist[0].fuse(simlist[1:])
-        elif len(simlist) == 1:
-            simshape = simlist[0]
-
-        if simshape is not None and PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
-            sim = FreeCAD.ActiveDocument.addObject("Part::Feature", "simshape")
-            sim.Shape = simshape
-        return simshape
-
+def Create(name):
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectPocket(obj)
+    return obj
 
 class _CommandSetPocketStartPoint:
     def GetResources(self):
@@ -407,30 +243,13 @@ class CommandPathPocket:
     def Activated(self):
         PathLog.track()
 
-        zbottom = 0.0
-        ztop = 10.0
-
-        # if everything is ok, execute and register the transaction in the undo/redo stack
         FreeCAD.ActiveDocument.openTransaction(translate("PathPocket", "Create Pocket"))
-        FreeCADGui.addModule("PathScripts.PathPocket")
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Pocket")')
-        FreeCADGui.doCommand('PathScripts.PathPocket.ObjectPocket(obj)')
-        FreeCADGui.doCommand('obj.Active = True')
-        FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
-        FreeCADGui.doCommand('from PathScripts import PathUtils')
-        FreeCADGui.doCommand('obj.StepOver = 100')
-        FreeCADGui.doCommand('obj.ClearanceHeight = 10')  # + str(bb.ZMax + 2.0))
-        FreeCADGui.doCommand('obj.StepDown = 1.0')
-        FreeCADGui.doCommand('obj.StartDepth = ' + str(ztop))
-        FreeCADGui.doCommand('obj.FinalDepth =' + str(zbottom))
-        FreeCADGui.doCommand('obj.ZigZagAngle = 45')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
-        FreeCADGui.doCommand('PathScripts.PathPocket.ObjectPocket.setDepths(obj.Proxy, obj)')
-        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
+        obj = Create("Pocket")
         FreeCAD.ActiveDocument.commitTransaction()
 
         # FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
+        obj.ViewObject.startEditing()
+        return obj
 
 
 class TaskPanel:

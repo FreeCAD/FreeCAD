@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>394</width>
-    <height>403</height>
+    <height>219</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <widget class="Gui::InputField" name="startDepth"/>
    </item>
    <item row="0" column="1">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="startDepthLabel">
      <property name="text">
       <string>Start Depth</string>
      </property>
@@ -28,21 +28,31 @@
     <widget class="Gui::InputField" name="finalDepth"/>
    </item>
    <item row="1" column="1">
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="finalDepthLabel">
      <property name="text">
       <string>Final Depth</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="Gui::InputField" name="stepDown"/>
    </item>
-   <item row="2" column="1">
-    <widget class="QLabel" name="label_3">
+   <item row="3" column="1">
+    <widget class="QLabel" name="stepDownLabel">
      <property name="text">
       <string>Step Down</string>
      </property>
     </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLabel" name="finishDepthLabel">
+     <property name="text">
+      <string>Finish Depth</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="Gui::InputField" name="finishDepth"/>
    </item>
   </layout>
  </widget>
@@ -53,6 +63,12 @@
    <header>Gui/InputField.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>startDepth</tabstop>
+  <tabstop>finalDepth</tabstop>
+  <tabstop>finishDepth</tabstop>
+  <tabstop>stepDown</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
