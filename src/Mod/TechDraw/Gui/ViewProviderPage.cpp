@@ -29,6 +29,9 @@
 # include <QMenu>
 # include <QTimer>
 #include <QPointer>
+#include <boost/signal.hpp>
+#include <boost/bind.hpp>
+
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -76,13 +79,6 @@ ViewProviderPage::ViewProviderPage()
 {
     sPixmap = "TechDraw_Tree_Page";
 
-//    ADD_PROPERTY(HintScale,(10.0));
-//    ADD_PROPERTY(HintOffsetX,(10.0));
-//    ADD_PROPERTY(HintOffsetY,(10.0));
-
-    // do not show this in the property editor
-    //Visibility.StatusBits.set(3, true);
-    //DisplayMode.StatusBits.set(3, true);
     Visibility.setStatus(App::Property::Hidden,true);
     DisplayMode.setStatus(App::Property::Hidden,true);
 }
@@ -94,6 +90,15 @@ ViewProviderPage::~ViewProviderPage()
 void ViewProviderPage::attach(App::DocumentObject *pcFeat)
 {
     ViewProviderDocumentObject::attach(pcFeat);
+
+    auto bnd = boost::bind(&ViewProviderPage::onGuiRepaint, this, _1);
+    auto feature = getDrawPage();
+    if (feature != nullptr) {
+        connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
+    } else {
+        Base::Console().Log("VPP::attach has no Feature!\n");
+    }
+
 }
 
 void ViewProviderPage::setDisplayMode(const char* ModeName)
@@ -138,11 +143,13 @@ void ViewProviderPage::updateData(const App::Property* prop)
        }
     }
 
+    //if a view is added/deleted, rebuild the visual
     if (prop == &(getDrawPage()->Views)) {
         if(!m_mdiView.isNull() &&
            !getDrawPage()->isDeleting()) {
             m_mdiView->updateDrawing();
         }
+    //if the template is changed, rebuild the visual
     } else if (prop == &(getDrawPage()->Template)) {
        if(m_mdiView && 
           !getDrawPage()->isDeleting()) {
@@ -207,7 +214,6 @@ bool ViewProviderPage::showMDIViewPage()
         m_mdiView->setWindowTitle(QObject::tr("Drawing viewer") + QString::fromLatin1("[*]"));
         m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_Tree_Page"));
         m_mdiView->updateDrawing(true);
-     //   m_mdiView->updateTemplate(true);   //TODO: I don't think this is necessary?  Ends up triggering a reload of SVG template, but the MDIViewPage constructor does too.
         Gui::getMainWindow()->addWindow(m_mdiView);
         m_mdiView->viewAll();
     } else {
@@ -221,7 +227,6 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
 {
     std::vector<App::DocumentObject*> temp;
 
-    // Attach the template if it exists
     App::DocumentObject *templateFeat = 0;
     templateFeat = getDrawPage()->Template.getValue();
 
@@ -347,6 +352,17 @@ void ViewProviderPage::finishRestoring()
 bool ViewProviderPage::isShow(void) const
 {
     return Visibility.getValue();
+}
+
+//! Redo the whole visual page
+void ViewProviderPage::onGuiRepaint(const TechDraw::DrawPage* dp) 
+{
+    if (dp == getDrawPage()) {
+        if(!m_mdiView.isNull() &&
+           !getDrawPage()->isDeleting()) {
+            m_mdiView->updateDrawing();
+        }
+    }
 }
 
 TechDraw::DrawPage* ViewProviderPage::getDrawPage() const

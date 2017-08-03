@@ -128,7 +128,6 @@ void DrawPage::onChanged(const App::Property* prop)
         }
     } else if(prop == &Scale) {
         // touch all views in the Page as they may be dependent on this scale
-        // but the views know how to get their own Scale correctly.
         const std::vector<App::DocumentObject*> &vals = Views.getValues();
         for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
             TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
@@ -279,6 +278,11 @@ int DrawPage::removeView(App::DocumentObject *docObj)
     Views.setValues(newViews);
 
     return Views.getSize();
+}
+
+void DrawPage::requestPaint(void)
+{
+    signalGuiPaint(this);
 }
 
 void DrawPage::onDocumentRestored()
