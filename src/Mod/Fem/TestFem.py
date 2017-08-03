@@ -340,6 +340,43 @@ class FemTest(unittest.TestCase):
         self.assertEqual(read_mflow, expected_mflow, "Values of read mflow result data are unexpected")
         self.assertEqual(read_npressure, expected_npressure, "Values of read npressure result data are unexpected")
 
+    def test_pyimport_all_FEM_modules(self):
+        # collect all Python modules in Fem
+        # Mod/Fem/
+        pydir = FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/'
+        fcc_print(pydir)
+        pymodules = []
+        for pyfile in sorted(os.listdir(pydir)):
+            if pyfile.endswith(".py") and not pyfile.startswith('Init'):
+                pymodules.append(os.path.splitext(os.path.basename(pyfile))[0])
+
+        # Mod/Fem/PyObjects/
+        pydir = FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/PyObjects/'
+        fcc_print(pydir)
+        for pyfile in sorted(os.listdir(pydir)):
+            if pyfile.endswith(".py"):
+                pymodules.append('PyObjects.' + os.path.splitext(os.path.basename(pyfile))[0])
+
+        # Mod/Fem/PyOGui/
+        if FreeCAD.GuiUp:
+            pydir = FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/PyGui/'
+            fcc_print(pydir)
+            for pyfile in sorted(os.listdir(pydir)):
+                if pyfile.endswith(".py"):
+                    pymodules.append('PyGui.' + os.path.splitext(os.path.basename(pyfile))[0])
+
+        # import all collected modules
+        # fcc_print(pymodules)
+        for mod in pymodules:
+            fcc_print('Try importing {0} ...'.format(mod))
+            try:
+                im = __import__('{0}'.format(mod))
+            except:
+                im = False
+            if not im:
+                __import__('{0}'.format(mod))  # to get an error message what was going wrong
+            self.assertTrue(im, 'Problem importing {0}'.format(mod))
+
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
         pass
