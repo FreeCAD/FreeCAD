@@ -37,7 +37,7 @@ from PySide import QtCore, QtGui
 #  0 ... existing toolbox layout
 #  1 ... reverse order
 #  2 ... multi panel layout
-TaskPanelLayout = 0
+TaskPanelLayout = 2
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -122,9 +122,16 @@ class TaskPanelHeightsPage(TaskPanelPage):
     def getSignalsForUpdate(self, obj):
         return [self.form.safeHeight.editingFinished, self.form.clearanceHeight.editingFinished]
 
-class TaskPanelDepthsPage(TaskPanelPage):
+class TaskPanelDepthsWoFinishPage(TaskPanelPage):
     def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
+        return self.setupForm(form)
+
+    def setupForm(self, form):
+        form.finishDepth.hide()
+        form.finishDepthLabel.hide()
+        return form
+
     def getTitle(self, obj):
         return translate("PathAreaOp", "Depths")
     def getFields(self, obj):
@@ -142,21 +149,41 @@ class TaskPanelDepthsPage(TaskPanelPage):
         signals.append(self.form.stepDown.editingFinished)
         return signals
 
+class TaskPanelDepthsPage(TaskPanelDepthsWoFinishPage):
+    def setupForm(self, form):
+        form.finishDepth.setEnabled(True)
+        form.finishDepthLabel.setEnabled(True)
+        return form
+    def getFields(self, obj):
+        super(self.__class__, self).getFields(obj)
+        obj.FinishDepth = FreeCAD.Units.Quantity(self.form.finishDepth.text()).Value
+    def setFields(self, obj):
+        super(self.__class__, self).setFields(obj)
+        self.form.finishDepth.setText(FreeCAD.Units.Quantity(obj.FinishDepth.Value, FreeCAD.Units.Length).UserString)
+    def getSignalsForUpdate(self, obj):
+        signals = super(self.__class__, self).getSignalsForUpdate(obj)
+        signals.append(self.form.finishDepth.editingFinished)
+        return signals
+
 class TaskPanel(object):
 
-    def __init__(self, obj, deleteOnReject, page, selectionFactory):
+    def __init__(self, obj, deleteOnReject, opPage, selectionFactory):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_AreaOp", "AreaOp Operation"))
         self.deleteOnReject = deleteOnReject
         self.featurePages = []
 
         if PathAreaOp.FeatureDepths & obj.Proxy.opFeatures(obj):
-            self.featurePages.append(TaskPanelDepthsPage(obj))
+            if PathAreaOp.FeatureFinishDepth & obj.Proxy.opFeatures(obj):
+                depthPage = TaskPanelDepthsPage(obj)
+            else:
+                depthPage = TaskPanelDepthsWoFinishPage(obj)
+            self.featurePages.append(depthPage)
 
         if PathAreaOp.FeatureHeights & obj.Proxy.opFeatures(obj):
             self.featurePages.append(TaskPanelHeightsPage(obj))
 
-        page.setTitle(translate('PathAreaOp', 'Operation'))
-        self.featurePages.append(page)
+        opPage.setTitle(translate('PathAreaOp', 'Operation'))
+        self.featurePages.append(opPage)
 
         if TaskPanelLayout < 2:
             self.form = QtGui.QToolBox()

@@ -55,6 +55,9 @@ __url__ = "http://www.freecadweb.org"
 
 class ObjectContour(PathAreaOp.ObjectOp):
 
+    def opFeatures(self, obj):
+        return PathAreaOp.FeatureTool | PathAreaOp.FeatureDepths | PathAreaOp.FeatureHeights | PathAreaOp.FeatureStartPoint
+
     def initOperation(self, obj):
         PathLog.track()
 
@@ -81,7 +84,7 @@ class ObjectContour(PathAreaOp.ObjectOp):
     def opShapeForDepths(self, obj):
         job = PathUtils.findParentJob(obj)
         if job and job.Base:
-            PathLog.info("job=%s base=%s shape=%s" % (job, job.Base, job.Base.Shape))
+            PathLog.debug("job=%s base=%s shape=%s" % (job, job.Base, job.Base.Shape))
             return job.Base.Shape
         PathLog.warning("No job object found (%s), or job has no Base." % job)
         return None
@@ -128,7 +131,7 @@ class ObjectContour(PathAreaOp.ObjectOp):
         if obj.UseComp is False:
             params['Offset'] = 0.0
         else:
-            params['Offset'] = self.radius+obj.OffsetExtra.Value
+            params['Offset'] = self.radius + obj.OffsetExtra.Value
 
         jointype = ['Round', 'Square', 'Miter']
         params['JoinType'] = jointype.index(obj.JoinType)
@@ -148,5 +151,4 @@ class ObjectContour(PathAreaOp.ObjectOp):
 def Create(name):
     obj   = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectContour(obj)
-    proxy.setDefaultValues(obj)
     return obj
