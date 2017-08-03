@@ -127,13 +127,13 @@ public:
     bool hasExtension(Base::Type, bool derived=true) const; //returns first of type (or derived from if set to true) and throws otherwise
     bool hasExtension(const std::string& name) const; //this version does not check derived classes
     bool hasExtensions() const;
-    App::Extension* getExtension(Base::Type, bool derived = true) const; 
+    App::Extension* getExtension(Base::Type, bool derived = true, bool no_except=false) const; 
     App::Extension* getExtension(const std::string& name) const; //this version does not check derived classes
     
     //returns first of type (or derived from) and throws otherwise
     template<typename ExtensionT>
-    ExtensionT* getExtensionByType() const {
-        return dynamic_cast<ExtensionT*>(getExtension(ExtensionT::getExtensionClassTypeId()));
+    ExtensionT* getExtensionByType(bool no_except=false) const {
+        return dynamic_cast<ExtensionT*>(getExtension(ExtensionT::getExtensionClassTypeId(),true,no_except));
     };
     
     //get all extensions which have the given base class
