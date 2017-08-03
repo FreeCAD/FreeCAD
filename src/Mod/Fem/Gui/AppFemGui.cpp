@@ -120,6 +120,7 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::ViewProviderSetFaces                  ::init();
     FemGui::ViewProviderSetGeometry               ::init();
     FemGui::ViewProviderFemConstraint             ::init();
+    FemGui::ViewProviderFemConstraintPython       ::init();
     FemGui::ViewProviderFemConstraintBearing      ::init();
     FemGui::ViewProviderFemConstraintFixed        ::init();
     FemGui::ViewProviderFemConstraintForce        ::init();
