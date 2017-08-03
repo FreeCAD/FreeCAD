@@ -44,10 +44,12 @@ PathLog.trackModule()
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-FeatureTool       = 0x01
-FeatureDepths     = 0x02
-FeatureHeights    = 0x04
-FeatureStartPoint = 0x08
+FeatureTool         = 0x01
+FeatureDepths       = 0x02
+FeatureHeights      = 0x04
+FeatureStartPoint   = 0x08
+FeatureBaseGeometry = 0x10
+FeatureFinishDepth  = 0x20
 
 class ObjectOp(object):
 
@@ -56,6 +58,10 @@ class ObjectOp(object):
 
         obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Contour"))
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
+
+        if FeatureBaseGeometry & self.opFeatures(obj):
+            obj.addProperty("App::PropertyLinkSubList", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base geometry for this operation"))
 
         if FeatureTool & self.opFeatures(obj):
             obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
@@ -64,6 +70,9 @@ class ObjectOp(object):
             obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"))
             obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
             obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
+
+        if FeatureFinishDepth & self.opFeatures(obj):
+            obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum material removed on final pass."))
 
         if FeatureHeights & self.opFeatures(obj):
             obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
@@ -83,6 +92,7 @@ class ObjectOp(object):
 
         self.initOperation(obj)
         obj.Proxy = self
+        self.setDefaultValues(obj)
 
     def __getstate__(self):
         return None
@@ -91,7 +101,11 @@ class ObjectOp(object):
         return None
 
     def opFeatures(self, obj):
-        return FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint
+        return FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint | FeatureBaseGeometry | FeatureFinishDepth
+    def opOnChanged(self, obj, prop):
+        pass
+    def opSetDefaultValues(self, obj):
+        pass
      
     def onChanged(self, obj, prop):
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
@@ -147,8 +161,6 @@ class ObjectOp(object):
         area = Path.Area()
         area.setPlane(makeWorkplane(baseobject))
         area.add(baseobject)
-
-        areaParams = {'Fill': 0, 'Coplanar': 2}
 
         areaParams = self.opAreaParams(obj)
 
