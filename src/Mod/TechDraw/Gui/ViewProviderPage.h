@@ -80,6 +80,10 @@ public:
     bool isRestoring(void) {return !m_docReady;}
 
     TechDraw::DrawPage* getDrawPage() const;
+    void onGuiRepaint(const TechDraw::DrawPage* dp); 
+    typedef boost::signals::connection Connection;
+    Connection connectGuiRepaint;
+
     void unsetEdit(int ModNum);
     MDIViewPage* getMDIViewPage();
     bool showMDIViewPage();
