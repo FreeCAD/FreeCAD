@@ -81,8 +81,11 @@ class ViewProvider(object):
         return None
 
 class TaskPanelPage(object):
+
+    # task panel interaction framework
     def __init__(self, obj):
         self.obj = obj
+        self.initPage(obj)
         self.form = self.getForm()
         self.setDirty()
         self.setTitle('-')
@@ -102,11 +105,145 @@ class TaskPanelPage(object):
     def pageRegisterSignalHandlers(self):
         for signal in self.getSignalsForUpdate(self.obj):
             signal.connect(self.pageGetFields)
+        self.registerSignalHandlers(self.obj)
 
     def setTitle(self, title):
         self.title = title
     def getTitle(self, obj):
         return self.title
+
+    # subclass interface
+    def initPage(self, obj):
+        pass
+    def getForm(self):
+        pass
+    def getFields(self, obj):
+        pass
+    def setFields(self, obj):
+        pass
+    def getSignalsForUpdate(self, obj):
+        return []
+    def registerSignalHandlers(self, obj):
+        pass
+
+    # helpers
+    def selectInComboBox(self, name, combo):
+        index = combo.findText(name, QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            combo.blockSignals(True)
+            combo.setCurrentIndex(index)
+            combo.blockSignals(False)
+
+    def setupToolController(self, obj, combo):
+        controllers = PathUtils.getToolControllers(self.obj)
+        labels = [c.Label for c in controllers]
+        combo.blockSignals(True)
+        combo.addItems(labels)
+        combo.blockSignals(False)
+
+        if obj.ToolController is None:
+            obj.ToolController = PathUtils.findToolController(obj)
+        if obj.ToolController is not None:
+            self.selectInComboBox(obj.ToolController.Label, combo)
+
+class TaskPanelBaseGeometryPage(TaskPanelPage):
+    DataObject    = QtCore.Qt.ItemDataRole.UserRole
+    DataObjectSub = QtCore.Qt.ItemDataRole.UserRole + 1
+
+    def initPage(self, obj):
+        self.supports = PathAreaOp.FeatureBaseGeometry
+
+    def getForm(self):
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageBaseGeometryEdit.ui")
+    def getFields(self, obj):
+        pass
+    def setFields(self, obj):
+        self.form.baseList.blockSignals(True)
+        self.form.baseList.clear()
+        for base in self.obj.Base:
+            for sub in base[1]:
+                item = QtGui.QListWidgetItem("%s.%s" % (base[0].Label, sub))
+                item.setData(self.DataObject, base[0])
+                item.setData(self.DataObjectSub, sub)
+                self.form.baseList.addItem(item)
+        self.form.baseList.blockSignals(False)
+
+    def itemActivated(self):
+        FreeCADGui.Selection.clearSelection()
+        for item in self.form.baseList.selectedItems():
+            obj = item.data(self.DataObject)
+            sub = item.data(self.DataObjectSub)
+            if sub:
+                FreeCADGui.Selection.addSelection(obj, sub)
+            else:
+                FreeCADGui.Selection.addSelection(obj)
+        #FreeCADGui.updateGui()
+
+    def supportsEdges(self):
+        return self.support & PathAreaOp.FeatureBaseEdges
+    def supportsFaces(self):
+        return self.support & PathAreaOp.FeatureBaseFaces
+    def featureName(self):
+        if self.supportsEdges() and self.supportsFaces():
+            return 'features'
+        if self.supportsFaces():
+            return 'faces'
+        if self.supportsEdges():
+            return 'edges'
+        return 'nothing'
+
+    def addBase(self):
+        selection = FreeCADGui.Selection.getSelectionEx()
+
+        if len(selection) != 1:
+            PahtLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
+            return
+        sel = selection[0]
+        if not sel.HasSubObjects:
+            PahtLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
+            return
+        if not self.supportsEdges() and selection[0].SubObjects[0].ShapeType == "Edge":
+            PahtLog.error(translate("PathProject", "Please select only %s of a solid" % self.featureName()))
+            return
+        if not self.supportsFaces() and selection[0].SubObjects[0].ShapeType == "Face":
+            PahtLog.error(translate("PathProject", "Please select only %s of a solid" % self.featureName()))
+            return
+        for i in sel.SubElementNames:
+            self.obj.Proxy.addBase(self.obj, sel.Object, i)
+
+        self.obj.Proxy.execute(self.obj)
+        self.setFields()
+
+    def deleteBase(self):
+        newlist = []
+        for item in self.form.baseList.selectedItems():
+            obj = item.data(self.DataObject)
+            sub = itme.data(self.DataObjectSub)
+            for base in self.obj.Base:
+                if base[0].Name != obj.Name and base[1] != sub:
+                    newlist.append(base)
+            self.form.baseList.takeItem(self.form.baseList.row(item))
+        self.obj.Base = newlist
+        #self.obj.Proxy.execute(self.obj)
+        #FreeCAD.ActiveDocument.recompute()
+
+    def updateBase(self):
+        newlist = []
+        for i in range(self.form.baseList.count()):
+            item = self.form.baseList.item(i)
+            obj = item.data(self.DataObject)
+            sub = item.data(self.DataObjectSub)
+            newlist.append((obj, sub))
+        self.obj.Base = newlist
+
+        #self.obj.Proxy.execute(self.obj)
+        #FreeCAD.ActiveDocument.recompute()
+
+    def registerSignalHandlers(self, obj):
+        self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
+        self.form.addBase.clicked.connect(self.addBase)
+        self.form.deleteBase.clicked.connect(self.deleteBase)
+        self.form.updateBase.clicked.connect(self.updateBase)
 
 class TaskPanelHeightsPage(TaskPanelPage):
     def getForm(self):
@@ -171,6 +308,11 @@ class TaskPanel(object):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_AreaOp", "AreaOp Operation"))
         self.deleteOnReject = deleteOnReject
         self.featurePages = []
+
+        if PathAreaOp.FeatureBaseGeometry & obj.Proxy.opFeatures(obj):
+            basePage = TaskPanelBaseGeometryPage(obj)
+            basePage.supports = obj.Proxy.opFeatures(obj) & PathAreaOp.FeatureBaseGeometry
+            self.featurePages.append(basePage)
 
         if PathAreaOp.FeatureDepths & obj.Proxy.opFeatures(obj):
             if PathAreaOp.FeatureFinishDepth & obj.Proxy.opFeatures(obj):

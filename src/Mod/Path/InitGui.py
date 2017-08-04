@@ -65,7 +65,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathJob
         from PathScripts import PathMillFace
         from PathScripts import PathPlane
-        from PathScripts import PathPocket
+        from PathScripts import PathPocketGui
         from PathScripts import PathPost
         from PathScripts import PathProfile
         from PathScripts import PathProfileEdges

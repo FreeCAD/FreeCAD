@@ -26,8 +26,8 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts.PathAreaOpGui as PathAreaOpGui
-import PathScripts.PathContour as PathContour
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPocket as PathPocket
 import PathScripts.PathSelection as PathSelection
 
 from PathScripts import PathUtils
@@ -39,52 +39,58 @@ def translate(context, text, disambig=None):
 class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
 
     def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpContourEdit.ui")
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketEdit.ui")
 
     def getFields(self, obj):
-        PathLog.track()
-        self.obj.OffsetExtra = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
-        self.obj.UseComp = self.form.useCompensation.isChecked()
-        self.obj.Direction = str(self.form.direction.currentText())
+        self.obj.MaterialAllowance = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
+        self.obj.CutMode = str(self.form.cutMode.currentText())
+        self.obj.OffsetPattern = str(self.form.offsetPattern.currentText())
+        self.obj.ZigZagAngle = FreeCAD.Units.Quantity(self.form.zigZagAngle.text()).Value
+        self.obj.StepOver = self.form.stepOverPercent.value()
         self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
 
         tc = PathUtils.findToolController(self.obj, self.form.toolController.currentText())
         self.obj.ToolController = tc
 
     def setFields(self, obj):
-        PathLog.track()
-        self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
-        self.form.useCompensation.setChecked(self.obj.UseComp)
+        self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.MaterialAllowance.Value, FreeCAD.Units.Length).UserString)
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
+        self.form.zigZagAngle.setText(FreeCAD.Units.Quantity(self.obj.ZigZagAngle, FreeCAD.Units.Angle).UserString)
+        self.form.stepOverPercent.setValue(self.obj.StepOver)
 
-        self.selectInComboBox(self.obj.Direction, self.form.direction)
+        self.selectInComboBox(self.obj.OffsetPattern, self.form.offsetPattern)
+        self.selectInComboBox(self.obj.CutMode, self.form.cutMode)
         self.setupToolController(self.obj, self.form.toolController)
 
     def getSignalsForUpdate(self, obj):
-        PathLog.track()
         signals = []
-        signals.append(self.form.direction.currentIndexChanged)
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.useCompensation.clicked)
+        # operation
+        signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.useStartPoint.clicked)
+
+        # Pattern
+        signals.append(self.form.offsetPattern.currentIndexChanged)
+        signals.append(self.form.stepOverPercent.editingFinished)
+        signals.append(self.form.zigZagAngle.editingFinished)
         signals.append(self.form.extraOffset.editingFinished)
+        signals.append(self.form.toolController.currentIndexChanged)
         return signals
 
-class ViewProviderContour(PathAreaOpGui.ViewProvider):
+class ViewProviderPocket(PathAreaOpGui.ViewProvider):
 
     def getTaskPanelOpPage(self, obj):
         return TaskPanelOpPage(obj)
 
     def getIcon(self):
-        return ":/icons/Path-Contour.svg"
+        return ":/icons/Path-Pocket.svg"
 
     def getSelectionFactory(self):
-        return PathSelection.contourselect
+        return PathSelection.pocketselect
 
 def Create(name):
-    FreeCAD.ActiveDocument.openTransaction(translate("Path", "Create a Contour"))
-    obj   = PathContour.Create(name)
-    vobj  = ViewProviderContour(obj.ViewObject)
+    FreeCAD.ActiveDocument.openTransaction(translate("PathPocket", "Create Pocket"))
+    obj  = PathPocket.Create(name)
+    vobj = ViewProviderPocket(obj.ViewObject)
 
     obj.ViewObject.Proxy.deleteOnReject = True
 
@@ -92,12 +98,13 @@ def Create(name):
     obj.ViewObject.startEditing()
     return obj
 
-class CommandPathContour:
+class CommandPathPocket:
+
     def GetResources(self):
-        return {'Pixmap': 'Path-Contour',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathContour", "Contour"),
-                'Accel': "P, C",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathContour", "Creates a Contour Path for the Base Object ")}
+        return {'Pixmap': 'Path-Pocket',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathPocket", "Pocket"),
+                'Accel': "P, O",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces")}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -107,9 +114,7 @@ class CommandPathContour:
         return False
 
     def Activated(self):
-        return Create("Contour")
+        return Create("Pocket")
 
-# register the FreeCAD command
-FreeCADGui.addCommand('Path_Contour', CommandPathContour())
-
-FreeCAD.Console.PrintLog("Loading PathContourGui... done\n")
+FreeCADGui.addCommand('Path_Pocket', CommandPathPocket())
+FreeCAD.Console.PrintLog("Loading PathPocketGui... done\n")
