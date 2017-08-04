@@ -33,6 +33,7 @@
 #include "OriginFeature.h"
 #include "Origin.h"
 #include "OriginGroupExtension.h"
+#include <Base/Console.h>
 //#include "GeoFeatureGroupPy.h"
 //#include "FeaturePythonPyImp.h"
 
@@ -49,6 +50,7 @@ EXTENSION_PROPERTY_SOURCE(App::GeoFeatureGroupExtension, App::GroupExtension)
 GeoFeatureGroupExtension::GeoFeatureGroupExtension(void)
 {
     initExtensionType(GeoFeatureGroupExtension::getExtensionClassTypeId());
+    Group.setScope(LinkScope::Child);
 }
 
 GeoFeatureGroupExtension::~GeoFeatureGroupExtension(void)
@@ -367,11 +369,14 @@ void GeoFeatureGroupExtension::getCSRelevantLinks(const DocumentObject* obj, std
 bool GeoFeatureGroupExtension::areLinksValid(const DocumentObject* obj) {
    
     //no cross CS link for local links.
+    //Base::Console().Message("Check object links: %s\n", obj->getNameInDocument());
     std::vector<App::Property*> list;
     obj->getPropertyList(list);
     for(App::Property* prop : list) {
-        if(!isLinkValid(prop)) 
+        if(!isLinkValid(prop)) {
+            //Base::Console().Message("Invalid link: %s\n", prop->getName());
             return false;
+        }
     }
     
     return true;
@@ -386,16 +391,16 @@ bool GeoFeatureGroupExtension::isLinkValid(App::Property* prop) {
    
     //no cross CS link for local links.
     auto result = getScopedObjectsFromLink(prop, LinkScope::Local);
-    auto group = obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()) ? obj : getGroupOfObject(obj);
+    auto group = getGroupOfObject(obj);
     for(auto link : result) {
         if(getGroupOfObject(link) != group) 
             return false;
     }
     
     //for links with scope SubGroup we need to check if all features are part of subgroups
-    if(group) {
+    if(obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
         result = getScopedObjectsFromLink(prop, LinkScope::Child);
-        auto groupExt = group->getExtensionByType<App::GeoFeatureGroupExtension>();
+        auto groupExt = obj->getExtensionByType<App::GeoFeatureGroupExtension>();
         for(auto link : result) {
             if(!groupExt->hasObject(link, true)) 
                 return false;

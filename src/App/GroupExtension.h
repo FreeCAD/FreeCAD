@@ -56,6 +56,11 @@ public:
     /* Adds the objects \a objs to this group. Returns all objects that have been added.
      */
     virtual std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj);
+    
+    /* Sets the objects in this group. Everything contained already will be removed first
+     */
+    virtual std::vector< DocumentObject* > setObjects(std::vector< DocumentObject* > obj);    
+    
     /*override this function if you want only special objects
      */
     virtual bool allowObject(DocumentObject* ) {return true;}

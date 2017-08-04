@@ -104,6 +104,12 @@ std::vector< DocumentObject* > GroupExtension::addObjects(std::vector< DocumentO
     return added;
 }
 
+std::vector< DocumentObject* > GroupExtension::setObjects(std::vector< DocumentObject* > obj) {
+
+    Group.setValues(std::vector< DocumentObject* > ());
+    return addObjects(obj);
+}
+
 std::vector<DocumentObject*> GroupExtension::removeObject(DocumentObject* obj)
 {
     std::vector<DocumentObject*> vec = {obj};
