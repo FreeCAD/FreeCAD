@@ -168,6 +168,31 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         obj.StepOver = 100
         obj.ZigZagAngle = 45
 
+    def opOnChanged(self, obj, prop):
+        if prop == 'Base' and len(obj.Base) == 1:
+            try:
+                bb = base.Shape.BoundBox  # parent boundbox
+                subobj = base.Shape.getElement(sub)
+                fbb = subobj.BoundBox  # feature boundbox
+                obj.StartDepth = bb.ZMax
+                obj.ClearanceHeight = bb.ZMax + 5.0
+                obj.SafeHeight = bb.ZMax + 3.0
+
+                if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
+                    obj.FinalDepth = bb.ZMin
+                elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
+                    obj.FinalDepth = fbb.ZMin
+                elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
+                    obj.FinalDepth = fbb.ZMin
+                elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
+                    obj.FinalDepth = fbb.ZMin
+                else:  # catch all
+                    obj.FinalDepth = bb.ZMin
+            except:
+                obj.StartDepth = 5.0
+                obj.ClearanceHeight = 10.0
+                obj.SafeHeight = 8.0
+
 
 def Create(name):
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
