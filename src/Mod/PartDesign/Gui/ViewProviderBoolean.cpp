@@ -40,11 +40,12 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderBoolean,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderBoolean,PartDesignGui::ViewProvider)
 
 ViewProviderBoolean::ViewProviderBoolean()
 {
     sPixmap = "PartDesign_Boolean.svg";
+    initExtension(this);
 }
 
 ViewProviderBoolean::~ViewProviderBoolean()
@@ -101,17 +102,12 @@ bool ViewProviderBoolean::setEdit(int ModNum)
     }
 }
 
-std::vector<App::DocumentObject*> ViewProviderBoolean::claimChildren(void)const
-{
-    return static_cast<PartDesign::Boolean*>(getObject())->Bodies.getValues();
-}
-
 bool ViewProviderBoolean::onDelete(const std::vector<std::string> &s)
 {
     PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(getObject());
 
     // if abort command deleted the object the bodies are visible again
-    std::vector<App::DocumentObject*> bodies = pcBoolean->Bodies.getValues();
+    std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
         if (*b && Gui::Application::Instance->getViewProvider(*b))
         Gui::Application::Instance->getViewProvider(*b)->show();
