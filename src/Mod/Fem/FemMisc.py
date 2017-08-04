@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,34 +20,41 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemConstraintSelfWeight"
-__author__ = "Bernd Hahnebach"
+
+__title__ = "FemMisc"
+__author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemConstraintSelfWeight
-#  \ingroup FEM
+
+def findAnalysisOfMember(member):
+    if member is None:
+        raise ValueError("Member must not be None")
+    for obj in member.Document.Objects:
+        if obj.isDerivedFrom("Fem::FemAnalysis"):
+            if member in obj.Member:
+                return obj
+    return None
 
 
-class _ViewProviderFemConstraintSelfWeight:
-    "A View Provider for the FemConstraintSelfWeight object"
-    def __init__(self, vobj):
-        vobj.Proxy = self
+def getMember(analysis, baseType, pyType=None):
+    if analysis is None:
+        raise ValueError("Analysis must not be None")
+    matching = []
+    for m in analysis.Member:
+        if isOfType(m, baseType, pyType):
+            matching.append(m)
+    return matching
 
-    def getIcon(self):
-        return ":/icons/fem-constraint-selfweight.svg"
 
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
+def getSingleMember(analysis, baseType, pyType=None):
+    objs = getMember(analysis, baseType, pyType)
+    return objs[0] if objs else None
 
-    def updateData(self, obj, prop):
-        return
 
-    def onChanged(self, vobj, prop):
-        return
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+def isOfType(obj, baseType, pyType=None):
+    if obj.isDerivedFrom(baseType):
+        if pyType is None:
+            return True
+        if hasattr(obj, "Proxy") and obj.Proxy.Type == pyType:
+            return True
+    return False

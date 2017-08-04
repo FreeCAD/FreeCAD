@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,34 +20,41 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemConstraintSelfWeight"
-__author__ = "Bernd Hahnebach"
+
+__title__ = "_CommandFemConstraintBodyHeatFlux"
+__author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemConstraintSelfWeight
-#  \ingroup FEM
+
+from PySide import QtCore
+
+import FreeCAD as App
+import FreeCADGui as Gui
+import FemCommands
 
 
-class _ViewProviderFemConstraintSelfWeight:
-    "A View Provider for the FemConstraintSelfWeight object"
-    def __init__(self, vobj):
-        vobj.Proxy = self
+class _CommandFemConstraintBodyHeatFlux(FemCommands.FemCommands):
+    def __init__(self):
+        super(_CommandFemConstraintBodyHeatFlux, self).__init__()
+        self.resources = {
+            'Pixmap': 'fem-constraint-heatflux',
+            'MenuText': QtCore.QT_TRANSLATE_NOOP(
+                "FEM_ConstraintBodyHeatFlux",
+                "Constraint body heat flux"),
+            'ToolTip': QtCore.QT_TRANSLATE_NOOP(
+                "FEM_ConstraintBodyHeatFlux",
+                "Creates a FEM constraint body heat flux")}
+        self.is_active = 'with_analysis'
 
-    def getIcon(self):
-        return ":/icons/fem-constraint-selfweight.svg"
+    def Activated(self):
+        App.ActiveDocument.openTransaction(
+            "Create FemConstraintBodyHeatFlux")
+        Gui.addModule("ObjectsFem")
+        Gui.doCommand(
+            "FemGui.getActiveAnalysis().Member += "
+            "[ObjectsFem.makeConstraintBodyHeatFlux()]")
 
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
 
-    def updateData(self, obj, prop):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+Gui.addCommand(
+    'FEM_ConstraintBodyHeatFlux',
+    _CommandFemConstraintBodyHeatFlux())

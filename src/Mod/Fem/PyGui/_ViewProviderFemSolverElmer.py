@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,34 +20,40 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemConstraintSelfWeight"
-__author__ = "Bernd Hahnebach"
+
+__title__ = "_ViewProviderFemSolverElmer"
+__author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemConstraintSelfWeight
-#  \ingroup FEM
+
+import FreeCADGui as Gui
+import PyGui._TaskPanelFemSolverControl
+import FemSolve
 
 
-class _ViewProviderFemConstraintSelfWeight:
-    "A View Provider for the FemConstraintSelfWeight object"
+class _ViewProviderFemSolverElmer(object):
+    """Proxy for FemSolverElmers View Provider."""
+
     def __init__(self, vobj):
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/fem-constraint-selfweight.svg"
+        return ":/icons/fem-elmer.png"
+
+    def setEdit(self, vobj, mode=0):
+        machine = FemSolve.getMachine(vobj.Object)
+        task = PyGui._TaskPanelFemSolverControl.ControlTaskPanel(machine)
+        Gui.Control.showDialog(task)
+        return True
+
+    def unsetEdit(self, vobj, mode=0):
+        Gui.Control.closeDialog()
+
+    def doubleClicked(self, vobj):
+        if Gui.Control.activeDialog():
+            Gui.Control.closeDialog()
+        Gui.ActiveDocument.setEdit(vobj.Object.Name)
+        return True
 
     def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
-
-    def updateData(self, obj, prop):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+        pass

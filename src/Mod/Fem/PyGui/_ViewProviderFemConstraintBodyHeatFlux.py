@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,34 +20,35 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemConstraintSelfWeight"
-__author__ = "Bernd Hahnebach"
+
+__title__ = "_ViewProviderFemConstraintBodyHeatFlux"
+__author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemConstraintSelfWeight
-#  \ingroup FEM
+
+from pivy import coin
 
 
-class _ViewProviderFemConstraintSelfWeight:
-    "A View Provider for the FemConstraintSelfWeight object"
+class ViewProxy(object):
+    """Proxy for FemSolverElmers View Provider."""
+
     def __init__(self, vobj):
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/fem-constraint-selfweight.svg"
+        return ":/icons/fem-constraint-heatflux.svg"
 
     def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
+        default = coin.SoGroup()
+        vobj.addDisplayMode(default, "Default")
 
-    def updateData(self, obj, prop):
-        return
+    def getDisplayModes(self, obj):
+        "Return a list of display modes."
+        modes = ["Default"]
+        return modes
 
-    def onChanged(self, vobj, prop):
-        return
+    def getDefaultDisplayMode(self):
+        return "Default"
 
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+    def setDisplayMode(self, mode):
+        return mode

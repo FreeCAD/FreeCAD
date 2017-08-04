@@ -37,6 +37,7 @@
 #include "DlgSettingsFemCcxImp.h"
 #include "DlgSettingsFemGmshImp.h"
 #include "DlgSettingsFemZ88Imp.h"
+#include "DlgSettingsFemElmerImp.h"
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshShape.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
@@ -120,6 +121,7 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::ViewProviderSetFaces                  ::init();
     FemGui::ViewProviderSetGeometry               ::init();
     FemGui::ViewProviderFemConstraint             ::init();
+    FemGui::ViewProviderFemConstraintPython       ::init();
     FemGui::ViewProviderFemConstraintBearing      ::init();
     FemGui::ViewProviderFemConstraintFixed        ::init();
     FemGui::ViewProviderFemConstraintForce        ::init();
@@ -158,6 +160,7 @@ PyMOD_INIT_FUNC(FemGui)
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemCcxImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemGmshImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemElmerImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
 
      // add resources and reloads the translators
     loadFemResource();

@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 - Markus Hovorka <m.hovorka@live.de>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,34 +20,46 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemConstraintSelfWeight"
-__author__ = "Bernd Hahnebach"
+__title__ = "_CommandSolverElmer"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemConstraintSelfWeight
+## @package CommandFemSolverElmer
 #  \ingroup FEM
 
+from PySide import QtCore
 
-class _ViewProviderFemConstraintSelfWeight:
-    "A View Provider for the FemConstraintSelfWeight object"
-    def __init__(self, vobj):
-        vobj.Proxy = self
+import FreeCAD as App
+import FreeCADGui as Gui
+import FemGui
+from FemCommands import FemCommands
 
-    def getIcon(self):
-        return ":/icons/fem-constraint-selfweight.svg"
 
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
+class _CommandFemSolverElmer(FemCommands):
+    """The Fem_SolverElmer command definition."""
 
-    def updateData(self, obj, prop):
-        return
+    def __init__(self):
+        super(_CommandFemSolverElmer, self).__init__()
+        self.resources = {
+                'Pixmap': 'fem-elmer',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP(
+                    "Fem_SolverElmer", "Solver Elmer"),
+                'Accel': "S, E",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP(
+                    "Fem_SolverElmer", "Creates a FEM solver Elmer")
+        }
+        self.is_active = 'with_analysis'
 
-    def onChanged(self, vobj, prop):
-        return
+    def Activated(self):
+        analysis = FemGui.getActiveAnalysis()
+        App.ActiveDocument.openTransaction("Create SolverElmer")
+        Gui.addModule("ObjectsFem")
+        Gui.doCommand(
+                "App.ActiveDocument.{}.Member +="
+                "[ObjectsFem.makeSolverElmer()]"
+                .format(analysis.Name))
+        App.ActiveDocument.commitTransaction()
+        App.ActiveDocument.recompute()
 
-    def __getstate__(self):
-        return None
 
-    def __setstate__(self, state):
-        return None
+Gui.addCommand('FEM_SolverElmer', _CommandFemSolverElmer())

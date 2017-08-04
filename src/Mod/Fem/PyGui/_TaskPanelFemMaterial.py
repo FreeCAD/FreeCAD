@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-import Units
+from FreeCAD import Units
 from PySide import QtCore, QtGui
 from PySide.QtGui import QFileDialog, QMessageBox
 

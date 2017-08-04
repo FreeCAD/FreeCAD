@@ -112,12 +112,22 @@ def makeConstraintPulley(name="ConstraintPulley"):
 
 def makeConstraintSelfWeight(name="ConstraintSelfWeight"):
     '''makeConstraintSelfWeight([name]): creates an self weight object to define a gravity load'''
-    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintPython", name)
     import PyObjects._FemConstraintSelfWeight
     PyObjects._FemConstraintSelfWeight._FemConstraintSelfWeight(obj)
     if FreeCAD.GuiUp:
         import PyGui._ViewProviderFemConstraintSelfWeight
         PyGui._ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight(obj.ViewObject)
+    return obj
+
+
+def makeConstraintBodyHeatFlux(name="ConstraintBodyHeatFlux"):
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    import PyObjects._FemConstraintBodyHeatFlux
+    PyObjects._FemConstraintBodyHeatFlux.DocumentProxy(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemConstraintBodyHeatFlux
+        PyGui._ViewProviderFemConstraintBodyHeatFlux.ViewProxy(obj.ViewObject)
     return obj
 
 
@@ -319,6 +329,17 @@ def makeSolverCalculix(name="CalculiX"):
     if FreeCAD.GuiUp:
         import PyGui._ViewProviderFemSolverCalculix
         PyGui._ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix(obj.ViewObject)
+    return obj
+
+
+def makeSolverElmer(name="Elmer"):
+    '''makeSolverElmer(name): makes a Elmer solver object'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", name)
+    import PyObjects._FemSolverElmer
+    PyObjects._FemSolverElmer._FemSolverElmer(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemSolverElmer
+        PyGui._ViewProviderFemSolverElmer._ViewProviderFemSolverElmer(obj.ViewObject)
     return obj
 
 

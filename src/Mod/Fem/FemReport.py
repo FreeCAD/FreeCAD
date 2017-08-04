@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,34 +20,75 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemConstraintSelfWeight"
-__author__ = "Bernd Hahnebach"
+
+__title__ = "FemReport"
+__author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemConstraintSelfWeight
-#  \ingroup FEM
+
+import FreeCAD as App
 
 
-class _ViewProviderFemConstraintSelfWeight:
-    "A View Provider for the FemConstraintSelfWeight object"
-    def __init__(self, vobj):
-        vobj.Proxy = self
+INFO = 10
+WARNING = 20
+ERROR = 30
 
-    def getIcon(self):
-        return ":/icons/fem-constraint-selfweight.svg"
 
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
+def display(report, title=None, text=None):
+    if App.GuiUp:
+        displayGui(report, title, text)
+    else:
+        displayLog(report)
 
-    def updateData(self, obj, prop):
-        return
 
-    def onChanged(self, vobj, prop):
-        return
+def displayGui(report, title=None, text=None):
+    import FreeCADGui as Gui
+    import FemReportDialog
+    if not report.isEmpty():
+        mw = Gui.getMainWindow()
+        dialog = FemReportDialog.ReportDialog(
+            report, title, text, mw)
+        dialog.exec_()
 
-    def __getstate__(self):
+
+def displayLog(report):
+    for i in report.infos:
+        App.Console.PrintLog("%s\n" % i)
+    for w in report.warnings:
+        App.Console.PrintWarning("%s\n" % w)
+    for e in report.errors:
+        App.Console.PrintError("%s\n" % e)
+
+
+class Report(object):
+
+    def __init__(self):
+        self.infos = []
+        self.warnings = []
+        self.errors = []
+
+    def extend(self, report):
+        self.infos.extend(report.infos)
+        self.warnings.extend(report.warnings)
+        self.errors.extend(report.errors)
+
+    def getLevel(self):
+        if self.errors:
+            return ERROR
+        if self.warnings:
+            return WARNING
+        if self.infos:
+            return INFO
         return None
 
-    def __setstate__(self, state):
-        return None
+    def isEmpty(self):
+        return not (self.infos or self.warnings or self.errors)
+
+    def info(self, msg):
+        self.infos.append(msg)
+
+    def warning(self, msg):
+        self.warnings.append(msg)
+
+    def error(self, msg):
+        self.errors.append(msg)

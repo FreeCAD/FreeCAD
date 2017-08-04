@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,34 +20,28 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemConstraintSelfWeight"
-__author__ = "Bernd Hahnebach"
+
+__title__ = "Elmer Solver Object"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemConstraintSelfWeight
-#  \ingroup FEM
 
+class DocumentProxy(object):
 
-class _ViewProviderFemConstraintSelfWeight:
-    "A View Provider for the FemConstraintSelfWeight object"
-    def __init__(self, vobj):
-        vobj.Proxy = self
+    Type = "FemConstraintBodyHeatFlux"
 
-    def getIcon(self):
-        return ":/icons/fem-constraint-selfweight.svg"
+    def __init__(self, obj):
+        obj.Proxy = self
 
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
+        # Prop_None     = 0
+        # Prop_ReadOnly = 1
+        # Prop_Transient= 2
+        # Prop_Hidden   = 4
+        # Prop_Output   = 8
 
-    def updateData(self, obj, prop):
-        return
+        obj.addProperty(
+                "App::PropertyFloat", "HeatFlux",
+                "Base", "Body heat flux")
 
-    def onChanged(self, vobj, prop):
-        return
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+    def execute(self, obj):
+        return True
