@@ -277,7 +277,6 @@ class _Writer(object):
         sortedSections = sorted(
             self._sections, key=lambda s: s.priority, reverse=True)
         for s in sortedSections:
-        for s in sortedSections:
             self._writeSection(s)
             self._stream.write(_NEWLINE)
 
