@@ -126,7 +126,7 @@ def makeConstraintSelfWeight(doc, name="ConstraintSelfWeight"):
 def makeConstraintBodyHeatFlux(doc, name="ConstraintBodyHeatFlux"):
     obj = doc.addObject("Fem::FeaturePython", name)
     import PyObjects._FemConstraintBodyHeatFlux
-    PyObjects._FemConstraintBodyHeatFlux.DocumentProxy(obj)
+    PyObjects._FemConstraintBodyHeatFlux.Proxy(obj)
     if FreeCAD.GuiUp:
         import PyGui._ViewProviderFemConstraintBodyHeatFlux
         PyGui._ViewProviderFemConstraintBodyHeatFlux.ViewProxy(obj.ViewObject)

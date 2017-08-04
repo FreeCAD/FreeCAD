@@ -87,8 +87,6 @@ SET(FemScripts_SRCS
     FemGmshTools.py
     FemInputWriter.py
     FemInputWriterCcx.py
-    FemElmerWriter.py
-    FemElmerTasks.py
     FemInputWriterZ88.py
     FemMesh2Mesh.py
     FemMeshTools.py
@@ -98,14 +96,16 @@ SET(FemScripts_SRCS
     FemToolsZ88.py
     ObjectsFem.py
     FemDefsElmer.py
-    sifio.py
     FemReport.py
     FemReportDialog.py
     FemMisc.py
     FemSettings.py
     FemTask.py
-    FemSolve.py
+    FemSolverObject.py
+    FemEquation.py
+    FemRun.py
     FemSignal.py
+    FemConstraint.py
     TestFem.py
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
@@ -125,9 +125,26 @@ SET(FemObjectsScripts_SRCS
     PyObjects/_FemMeshRegion.py
     PyObjects/_FemResultMechanical.py
     PyObjects/_FemSolverCalculix.py
-    PyObjects/_FemSolverElmer.py
     PyObjects/_FemSolverZ88.py
     PyObjects/_FemMaterial.py
+)
+
+SET(FemElmer_SRCS
+    FemElmer/__init__.py
+    FemElmer/sifio.py
+    FemElmer/SolverObject.py
+    FemElmer/Tasks.py
+    FemElmer/Writer.py
+    FemElmer/sifio.py
+)
+
+SET(FemEquationsElmer_SRCS
+    FemElmer/Equations/__init__.py
+    FemElmer/Equations/Base.py
+    FemElmer/Equations/Linear.py
+    FemElmer/Equations/Nonlinear.py
+    FemElmer/Equations/Elasticity.py
+    FemElmer/Equations/Heat.py
 )
 
 SET(FemGuiScripts_SRCS
@@ -154,8 +171,9 @@ SET(FemGuiScripts_SRCS
     PyGui/_CommandFemResultShow.py
     PyGui/_CommandFemResultsPurge.py
     PyGui/_CommandFemSolverCalculix.py
-    PyGui/_CommandFemSolverControl.py
     PyGui/_CommandFemSolverElmer.py
+    PyGui/_CommandFemEquation.py
+    PyGui/_CommandFemSolverControl.py
     PyGui/_CommandFemSolverRun.py
     PyGui/_CommandFemSolverZ88.py
     PyGui/_TaskPanelFemElementFluid1D.py
@@ -183,7 +201,6 @@ SET(FemGuiScripts_SRCS
     PyGui/_ViewProviderFemMeshResult.py
     PyGui/_ViewProviderFemResultMechanical.py
     PyGui/_ViewProviderFemSolverCalculix.py
-    PyGui/_ViewProviderFemSolverElmer.py
     PyGui/_ViewProviderFemSolverZ88.py
     PyGui/TaskPanelFemElementFluid1D.ui
     PyGui/TaskPanelFemElementGeometry1D.ui
@@ -336,6 +353,8 @@ fc_target_copy_resource(Fem
     ${FemObjectsScripts_SRCS}
     ${FemGuiScripts_SRCS}
     ${FemTests_SRCS}
+    ${FemElmer_SRCS}
+    ${FemEquationsElmer_SRCS}
     )
 
 SET_BIN_DIR(Fem Fem /Mod/Fem)

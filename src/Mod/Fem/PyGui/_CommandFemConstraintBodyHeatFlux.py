@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "_CommandFemConstraintBodyHeatFlux"
+__title__ = "AddConstraintBodyHeatFlux"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
@@ -30,12 +30,13 @@ from PySide import QtCore
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import FemCommands
+from PyGui import FemCommands
 
 
-class _CommandFemConstraintBodyHeatFlux(FemCommands.FemCommands):
+class Command(FemCommands.FemCommands):
+
     def __init__(self):
-        super(_CommandFemConstraintBodyHeatFlux, self).__init__()
+        super(Command, self).__init__()
         self.resources = {
             'Pixmap': 'fem-constraint-heatflux',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -55,6 +56,4 @@ class _CommandFemConstraintBodyHeatFlux(FemCommands.FemCommands):
             "[ObjectsFem.makeConstraintBodyHeatFlux()]")
 
 
-Gui.addCommand(
-    'FEM_ConstraintBodyHeatFlux',
-    _CommandFemConstraintBodyHeatFlux())
+Gui.addCommand('FEM_AddConstraintBodyHeatFlux', Command())

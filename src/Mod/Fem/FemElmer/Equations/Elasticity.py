@@ -21,41 +21,48 @@
 # ***************************************************************************
 
 
-__title__ = "Elmer"
+__title__ = "Elasticity"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-from PySide import QtCore
-
-import FreeCAD as App
-import FreeCADGui as Gui
-import FemGui
+import FemMisc
+import FemEquation
+import Linear
 
 
-class Command(QtCore.QObject):
-
-    def Activated(self):
-        analysis = FemGui.getActiveAnalysis()
-        App.ActiveDocument.openTransaction("Create Elmer Solver-Object")
-        Gui.addModule("FemElmer.SolverObject")
-        Gui.doCommand(
-                "App.ActiveDocument.%s.Member += "
-                "[FemElmer.SolverObject.create(App.ActiveDocument)]"
-                % analysis.Name)
-        App.ActiveDocument.commitTransaction()
-        App.ActiveDocument.recompute()
-
-    def GetResources(self):
-        return {
-            'Pixmap': 'fem-elmer',
-            'MenuText': "Solver Elmer",
-            'Accel': "S, E",
-            'ToolTip': "Creates a FEM solver Elmer"
-        }
-
-    def IsActive(self):
-        return FemGui.getActiveAnalysis() is not None
+def create(doc, name="Elasticity"):
+    return FemMisc.createObject(
+        doc, name, Proxy, ViewProxy)
 
 
-Gui.addCommand('FEM_AddSolverElmer', Command())
+class Proxy(Linear.Proxy, FemEquation.ElasticityProxy):
+
+    Type = "Fem::FemEquationElmerElasticity"
+
+    def __init__(self, obj):
+        super(Proxy, self).__init__(obj)
+        obj.addProperty(
+                "App::PropertyBool", "DoFrequencyAnalysis",
+                "Elasticity", "Select type of solver for linear system")
+        obj.addProperty(
+                "App::PropertyInteger", "EigenmodesCount",
+                "Elasticity", "Select type of solver for linear system")
+        obj.addProperty(
+                "App::PropertyBool", "CalculateStrains",
+                "Elasticity", "Select type of solver for linear system")
+        obj.addProperty(
+                "App::PropertyBool", "CalculateStresses",
+                "Elasticity", "Select type of solver for linear system")
+        obj.addProperty(
+                "App::PropertyBool", "CalculatePricipal",
+                "Elasticity", "Select type of solver for linear system")
+        obj.addProperty(
+                "App::PropertyBool", "CalculatePangle",
+                "Elasticity", "Select type of solver for linear system")
+        obj.EigenmodesCount = 5
+        obj.Priority = 10
+
+
+class ViewProxy(Linear.ViewProxy, FemEquation.ElasticityViewProxy):
+    pass

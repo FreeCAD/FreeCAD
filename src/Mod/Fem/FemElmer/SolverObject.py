@@ -21,39 +21,71 @@
 # ***************************************************************************
 
 
-__title__ = "_ViewProviderFemSolverElmer"
+__title__ = "Elmer"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import FreeCADGui as Gui
-import PyGui._TaskPanelFemSolverControl
-import FemSolve
+import FreeCAD as App
+import FemSolverObject
+import FemMisc
+import FemRun
+
+import Tasks
+import Equations.Heat
+import Equations.Elasticity
 
 
-class _ViewProviderFemSolverElmer(object):
+def create(doc, name="ElmerSolver"):
+    return FemMisc.createObject(
+        doc, name, Proxy, ViewProxy)
+
+
+class Proxy(FemSolverObject.Proxy):
+    """Proxy for FemSolverElmers Document Object."""
+
+    Type = "Fem::FemSolverObjectElmer"
+
+    _EQUATIONS = {
+        "Heat": Equations.Heat,
+        "Elasticity": Equations.Elasticity,
+    }
+
+    def __init__(self, obj):
+        super(Proxy, self).__init__(obj)
+        obj.addProperty(
+                "App::PropertyInteger", "SteadyStateMaxIterations",
+                "Steady State", "")
+        obj.addProperty(
+                "App::PropertyInteger", "SteadyStateMinIterations",
+                "Steady State", "")
+        obj.addProperty(
+                "App::PropertyLink", "ElmerResult",
+                "Base", "", 4 | 8)
+        obj.addProperty(
+                "App::PropertyLink", "ElmerOutput",
+                "Base", "", 4 | 8)
+
+        obj.SteadyStateMaxIterations = 1
+        obj.SteadyStateMinIterations = 0
+
+    def createMachine(self, obj, directory):
+        return FemRun.Machine(
+            solver=obj, directory=directory,
+            check=Tasks.Check(),
+            prepare=Tasks.Prepare(),
+            solve=Tasks.Solve(),
+            results=Tasks.Results())
+
+    def createEquation(self, doc, eqId):
+        return self._EQUATIONS[eqId].create(doc)
+
+    def isSupported(self, eqId):
+        return eqId in self._EQUATIONS
+
+
+class ViewProxy(FemSolverObject.ViewProxy):
     """Proxy for FemSolverElmers View Provider."""
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
 
     def getIcon(self):
         return ":/icons/fem-elmer.png"
-
-    def setEdit(self, vobj, mode=0):
-        machine = FemSolve.getMachine(vobj.Object)
-        task = PyGui._TaskPanelFemSolverControl.ControlTaskPanel(machine)
-        Gui.Control.showDialog(task)
-        return True
-
-    def unsetEdit(self, vobj, mode=0):
-        Gui.Control.closeDialog()
-
-    def doubleClicked(self, vobj):
-        if Gui.Control.activeDialog():
-            Gui.Control.closeDialog()
-        Gui.ActiveDocument.setEdit(vobj.Object.Name)
-        return True
-
-    def attach(self, vobj):
-        pass

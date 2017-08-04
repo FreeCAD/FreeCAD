@@ -109,7 +109,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
      Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
      solve->setCommand("Solve");
      *solve << "FEM_SolverCalculix"
-           << "FEM_SolverElmer"
+           << "FEM_AddSolverElmer"
+           << "Separator"
+           << "FEM_AddEquationHeat"
+           << "FEM_AddEquationElasticity"
            << "Separator"
            << "FEM_SolverControl"
            << "FEM_SolverRun";
@@ -165,7 +168,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_ConstraintHeatflux"
              << "FEM_ConstraintTemperature"
              << "Separator"
-             << "FEM_ConstraintBodyHeatFlux";
+             << "FEM_AddConstraintBodyHeatFlux";
 
     Gui::MenuItem* fluid = new Gui::MenuItem;
     fluid->setCommand("&Fluid Constraints");
@@ -205,7 +208,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     solve->setCommand("&Solve");
     *solve << "FEM_SolverCalculix"
            << "FEM_SolverZ88"
-           << "FEM_SolverElmer"
+           << "FEM_AddSolverElmer"
+           << "Separator"
+           << "FEM_AddEquationHeat"
+           << "FEM_AddEquationElasticity"
            << "Separator"
            << "FEM_SolverControl"
            << "FEM_SolverRun";

@@ -29,24 +29,24 @@ __url__ = "http://www.freecadweb.org"
 import subprocess
 import os.path
 
-import FemElmerWriter
-import FemSolve
+import FemRun
 import FemSettings
 import FemMisc
 
+import Writer
 
-class Check(FemSolve.Check):
+
+class Check(FemRun.Check):
 
     def run(self):
         self.pushStatus("Checking analysis...\n")
         if (self.checkMesh()):
             self.checkMeshType()
         self.checkMaterial()
-        self.checkSupported(FemElmerWriter.SUPPORTED)
 
     def checkMeshType(self):
         mesh = FemMisc.getSingleMember(self.analysis, "Fem::FemMeshObject")
-        if not FemMisc.isOfType(mesh, "Fem::FemMeshObject", "FemMeshGmsh"):
+        if not FemMisc.isOfType(mesh, "FemMeshGmsh"):
             self.report.error(
                 "Unsupported type of mesh. "
                 "Mesh must be created with gmsh.")
@@ -55,16 +55,15 @@ class Check(FemSolve.Check):
         return True
 
 
-class Prepare(FemSolve.Prepare):
+class Prepare(FemRun.Prepare):
 
     def run(self):
         self.pushStatus("Preparing input files...\n")
-        writer = FemElmerWriter.Writer(
-                self.analysis, self.solver, self.directory)
-        writer.writeInputFiles(self.report)
+        writer = Writer.Writer(self.solver, self.directory)
+        writer.write()
 
 
-class Solve(FemSolve.Solve):
+class Solve(FemRun.Solve):
 
     def run(self):
         self.pushStatus("Executing solver...\n")
@@ -106,7 +105,7 @@ class Solve(FemSolve.Solve):
         self.analysis.Member += [self.solver.ElmerOutput]
 
 
-class Results(FemSolve.Results):
+class Results(FemRun.Results):
 
     def run(self):
         if self.solver.ElmerResult is None:

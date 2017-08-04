@@ -92,7 +92,7 @@ def _createMachine(solver, path):
     elif setting == FemSettings.CUSTOM:
         path = _getCustomDir(solver)
         _dirTypes[path] = FemSettings.CUSTOM
-    m = solver.Proxy.buildMachine(solver, path)
+    m = solver.Proxy.createMachine(solver, path)
     _machines[solver] = m
     return m
 

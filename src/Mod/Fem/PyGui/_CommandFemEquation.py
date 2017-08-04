@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "Elmer"
+__title__ = "_CommandFemConstraintBodyHeatFlux"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
@@ -30,32 +30,59 @@ from PySide import QtCore
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import FemGui
+import FemMisc
 
 
-class Command(QtCore.QObject):
+class _Base(QtCore.QObject):
+
+    def getSpecifier(self):
+        raise NotImplementedError()
 
     def Activated(self):
-        analysis = FemGui.getActiveAnalysis()
-        App.ActiveDocument.openTransaction("Create Elmer Solver-Object")
-        Gui.addModule("FemElmer.SolverObject")
-        Gui.doCommand(
-                "App.ActiveDocument.%s.Member += "
-                "[FemElmer.SolverObject.create(App.ActiveDocument)]"
-                % analysis.Name)
-        App.ActiveDocument.commitTransaction()
-        App.ActiveDocument.recompute()
+        s = Gui.Selection.getSelection()
+        if len(s) == 1 and FemMisc.isDerivedFrom(s[0], "Fem::FemSolverObject"):
+            App.ActiveDocument.openTransaction(
+                "Add %s equation to %s"
+                % (self.getSpecifier(), s[0].Label))
+            Gui.doCommand(
+                "App.ActiveDocument.%(obj)s.Proxy.addEquation("
+                "App.ActiveDocument.%(obj)s, '%(name)s')"
+                % {"obj": s[0].Name, "name": self.getSpecifier()})
+            App.ActiveDocument.commitTransaction()
+            App.ActiveDocument.recompute()
+
+    def IsActive(self):
+        s = Gui.Selection.getSelection()
+        if len(s) == 1 and FemMisc.isDerivedFrom(s[0], "Fem::FemSolverObject"):
+            return s[0].Proxy.isSupported(self.getSpecifier())
+        return False
+
+
+class Heat(_Base):
+
+    def getSpecifier(self):
+        return "Heat"
 
     def GetResources(self):
         return {
-            'Pixmap': 'fem-elmer',
-            'MenuText': "Solver Elmer",
-            'Accel': "S, E",
-            'ToolTip': "Creates a FEM solver Elmer"
+            'Pixmap': 'fem-equation-heat',
+            'MenuText': "Heat Equation",
+            'ToolTip': "Creates a FEM constraint body heat flux"
         }
 
-    def IsActive(self):
-        return FemGui.getActiveAnalysis() is not None
+
+class Elasticity(_Base):
+
+    def getSpecifier(self):
+        return "Elasticity"
+
+    def GetResources(self):
+        return {
+            'Pixmap': 'fem-equation-elasticity',
+            'MenuText': "Elasticity Equation",
+            'ToolTip': "Creates a FEM constraint body heat flux"
+        }
 
 
-Gui.addCommand('FEM_AddSolverElmer', Command())
+Gui.addCommand('FEM_AddEquationHeat', Heat())
+Gui.addCommand('FEM_AddEquationElasticity', Elasticity())

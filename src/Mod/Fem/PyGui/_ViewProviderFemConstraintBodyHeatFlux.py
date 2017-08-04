@@ -21,34 +21,16 @@
 # ***************************************************************************
 
 
-__title__ = "_ViewProviderFemConstraintBodyHeatFlux"
-__author__ = "Markus Hovorka"
+__title__ = "Elmer Solver Object"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
-from pivy import coin
+import FemMisc
+import FemConstraint
 
 
-class ViewProxy(object):
-    """Proxy for FemSolverElmers View Provider."""
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
+class ViewProxy(FemConstraint.ViewProxy):
 
     def getIcon(self):
         return ":/icons/fem-constraint-heatflux.svg"
-
-    def attach(self, vobj):
-        default = coin.SoGroup()
-        vobj.addDisplayMode(default, "Default")
-
-    def getDisplayModes(self, obj):
-        "Return a list of display modes."
-        modes = ["Default"]
-        return modes
-
-    def getDefaultDisplayMode(self):
-        return "Default"
-
-    def setDisplayMode(self, mode):
-        return mode

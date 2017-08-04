@@ -21,41 +21,65 @@
 # ***************************************************************************
 
 
-__title__ = "Elmer"
+__title__ = "Elmer Solver Object"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-from PySide import QtCore
-
 import FreeCAD as App
-import FreeCADGui as Gui
-import FemGui
+if App.GuiUp:
+    import FreeCADGui as Gui
+    import PyGui._TaskPanelFemSolverControl
+
+import FemRun
 
 
-class Command(QtCore.QObject):
+class Proxy(object):
 
-    def Activated(self):
-        analysis = FemGui.getActiveAnalysis()
-        App.ActiveDocument.openTransaction("Create Elmer Solver-Object")
-        Gui.addModule("FemElmer.SolverObject")
-        Gui.doCommand(
-                "App.ActiveDocument.%s.Member += "
-                "[FemElmer.SolverObject.create(App.ActiveDocument)]"
-                % analysis.Name)
-        App.ActiveDocument.commitTransaction()
-        App.ActiveDocument.recompute()
+    BaseType = "Fem::FemSolverObjectPython"
 
-    def GetResources(self):
-        return {
-            'Pixmap': 'fem-elmer',
-            'MenuText': "Solver Elmer",
-            'Accel': "S, E",
-            'ToolTip': "Creates a FEM solver Elmer"
-        }
+    def __init__(self, obj):
+        obj.Proxy = self
+        obj.addExtension("App::GroupExtensionPython", self)
 
-    def IsActive(self):
-        return FemGui.getActiveAnalysis() is not None
+    def createMachine(self, obj, directory):
+        raise NotImplementedError()
+
+    def createEquation(self, obj, eqId):
+        raise NotImplementedError()
+
+    def isSupported(self, equation):
+        raise NotImplementedError()
+
+    def addEquation(self, obj, eqId):
+        obj.addObject(self.createEquation(
+            obj.Document, eqId))
+
+    def execute(self, obj):
+        return True
 
 
-Gui.addCommand('FEM_AddSolverElmer', Command())
+class ViewProxy(object):
+    """Proxy for FemSolverElmers View Provider."""
+
+    def __init__(self, vobj):
+        vobj.Proxy = self
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+
+    def setEdit(self, vobj, mode=0):
+        machine = FemRun.getMachine(vobj.Object)
+        task = PyGui._TaskPanelFemSolverControl.ControlTaskPanel(machine)
+        Gui.Control.showDialog(task)
+        return True
+
+    def unsetEdit(self, vobj, mode=0):
+        Gui.Control.closeDialog()
+
+    def doubleClicked(self, vobj):
+        if Gui.Control.activeDialog():
+            Gui.Control.closeDialog()
+        Gui.ActiveDocument.setEdit(vobj.Object.Name)
+        return True
+
+    def attach(self, vobj):
+        pass

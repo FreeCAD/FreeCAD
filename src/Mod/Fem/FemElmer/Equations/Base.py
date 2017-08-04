@@ -21,41 +21,23 @@
 # ***************************************************************************
 
 
-__title__ = "Elmer"
+__title__ = "_Linear"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-from PySide import QtCore
-
 import FreeCAD as App
-import FreeCADGui as Gui
-import FemGui
+import FemEquation
 
 
-class Command(QtCore.QObject):
+class Proxy(FemEquation.BaseProxy):
 
-    def Activated(self):
-        analysis = FemGui.getActiveAnalysis()
-        App.ActiveDocument.openTransaction("Create Elmer Solver-Object")
-        Gui.addModule("FemElmer.SolverObject")
-        Gui.doCommand(
-                "App.ActiveDocument.%s.Member += "
-                "[FemElmer.SolverObject.create(App.ActiveDocument)]"
-                % analysis.Name)
-        App.ActiveDocument.commitTransaction()
-        App.ActiveDocument.recompute()
-
-    def GetResources(self):
-        return {
-            'Pixmap': 'fem-elmer',
-            'MenuText': "Solver Elmer",
-            'Accel': "S, E",
-            'ToolTip': "Creates a FEM solver Elmer"
-        }
-
-    def IsActive(self):
-        return FemGui.getActiveAnalysis() is not None
+    def __init__(self, obj):
+        super(Proxy, self).__init__(obj)
+        obj.addProperty(
+                "App::PropertyInteger", "Priority",
+                "Base", "Select type of solver for linear system")
 
 
-Gui.addCommand('FEM_AddSolverElmer', Command())
+class ViewProxy(FemEquation.BaseViewProxy):
+    pass

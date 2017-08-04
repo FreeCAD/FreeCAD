@@ -101,6 +101,91 @@ def isValid(section):
     return section.name in _VALID_SECTIONS
 
 
+class Builder(object):
+
+    _ACTIVE_SOLVERS = "Active Solvers"
+
+    def __init__(self):
+        self._customSections = set()
+        self._simulation = createSection(SIMULATION)
+        self._constants = createSection(CONSTANTS)
+        self._bodies = {}
+        self._boundaries = {}
+
+    def getBoundaryNames(self):
+        return self._boundaries.keys()
+
+    def getBodyNames(self):
+        return self._bodies.keys()
+
+    def simulation(self, key, attr):
+        self._simulation[key] = attr
+
+    def constant(self, key, attr):
+        self._constants[key] = attr
+
+    def initial(self, body, key, attr):
+        section = self._getFromBody(body, INITIAL_CONDITION)
+        section[key] = attr
+
+    def material(self, body, key , attr):
+        section = self._getFromBody(body, MATERIAL)
+        section[key] = attr
+
+    def equation(self, body, key , attr):
+        section = self._getFromBody(body, EQUATION)
+        section[key] = attr
+
+    def bodyForce(self, body, key , attr):
+        section = self._getFromBody(body, BODY_FORCE)
+        section[key] = attr
+
+    def addSolver(self, body, solverSection):
+        section = self._getFromBody(body, EQUATION)
+        if self._ACTIVE_SOLVERS not in section:
+            section[self._ACTIVE_SOLVERS] = []
+        section[self._ACTIVE_SOLVERS].append(solverSection)
+        
+    def boundary(self, boundary, key, attr):
+        if boundary not in self._boundaries:
+            self._boundaries[boundary] = createSection(BOUNDARY_CONDITION)
+        self._boundaries[boundary][key] = attr
+
+    def addSection(self, section):
+        self._customSections.add(section)
+
+    def _getFromBody(self, body, key):
+        if body not in self._bodies:
+            self._bodies[body] = createSection(BODY)
+        if key not in self._bodies[body]:
+            self._bodies[body][key] = createSection(key)
+        return self._bodies[body][key]
+
+    def __iter__(self):
+        allSections = set(self._customSections)
+        allSections.add(self._simulation)
+        allSections.add(self._constants)
+        for name, section in self._bodies.iteritems():
+            section["Name"] = name
+            allSections.add(section)
+            if MATERIAL in section:
+                allSections.add(section[MATERIAL])
+            if EQUATION in section:
+                eqSection = section[EQUATION]
+                allSections.add(eqSection)
+                if self._ACTIVE_SOLVERS in eqSection:
+                    for solverSection in eqSection[self._ACTIVE_SOLVERS]:
+                        allSections.add(solverSection)
+            if BODY_FORCE in section:
+                allSections.add(section[BODY_FORCE])
+            if INITIAL_CONDITION in section:
+                allSections.add(section[INITIAL_CONDITION])
+        for name, section in self._boundaries.iteritems():
+            section["Name"] = name
+            allSections.add(section)
+        return iter(allSections)
+
+
 class Sif(object):
 
     _CHECK_KEYWORDS = "Check Keywords"
@@ -152,6 +237,7 @@ class Section(object):
 
     def __init__(self, name):
         self.name = name
+        self.priority = 0
         self._attrs = dict()
 
     def __setitem__(self, key, value):
@@ -166,6 +252,15 @@ class Section(object):
     def __iter__(self):
         return self._attrs.iteritems()
 
+    def __contains__(self, item):
+        return item in self._attrs
+
+    def __str__(self):
+        return str(self._attrs)
+
+    def __repr__(self):
+        return self.name
+
 
 class FileAttr(str):
     pass
@@ -179,7 +274,10 @@ class _Writer(object):
         self._stream = stream
 
     def write(self):
-        for s in self._sections:
+        sortedSections = sorted(
+            self._sections, key=lambda s: s.priority, reverse=True)
+        for s in sortedSections:
+        for s in sortedSections:
             self._writeSection(s)
             self._stream.write(_NEWLINE)
 

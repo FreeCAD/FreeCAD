@@ -67,7 +67,6 @@ class ControlTaskPanel(QtCore.QObject):
         self.form.runClicked.connect(self.run)
         self.form.abortClicked.connect(self.abort)
         self.form.directoryChanged.connect(self.updateMachine)
-        self.form.analysisTypeChanged.connect(self.updateType)
 
         # Seems that the task panel doesn't get destroyed. Disconnect
         # as soon as the widget of the task panel gets destroyed.
@@ -128,15 +127,8 @@ class ControlTaskPanel(QtCore.QObject):
         self.machine.abort()
 
     @QtCore.Slot()
-    def updateType(self):
-        if self.machine.solver.AnalysisType != self.form.analysisType():
-            self.machine.solver.AnalysisType = self.form.analysisType()
-
-    @QtCore.Slot()
     def updateWidget(self):
         self.form.setDirectory(self.machine.directory)
-        self.form.setSupportedTypes(self.machine.solver.SupportedTypes)
-        self.form.setAnalysisType(self.machine.solver.AnalysisType)
         self.form.setStatus(self.machine.status)
         self.form.setTime(self.machine.time)
         self.form.updateState(self.machine)
@@ -206,15 +198,11 @@ class ControlWidget(QtGui.QWidget):
     runClicked = QtCore.Signal()
     abortClicked = QtCore.Signal()
     directoryChanged = QtCore.Signal()
-    analysisTypeChanged = QtCore.Signal()
 
-    def __init__(self, analysisTypes=[], parent=None):
+    def __init__(self, parent=None):
         super(ControlWidget, self).__init__(parent)
         self._setupUi()
-        self._typeRadioButtons = {}
-        self._analysisTypes = []
         self._inputFileName = ""
-        self.setSupportedTypes(analysisTypes)
 
     def _setupUi(self):
         self.setWindowTitle(self.tr("Solver Control"))
@@ -230,13 +218,6 @@ class ControlWidget(QtGui.QWidget):
         self._directoryGrp = QtGui.QGroupBox()
         self._directoryGrp.setTitle(self.tr("Working Directory"))
         self._directoryGrp.setLayout(directoryLyt)
-
-        # Analysis types group box - can be filled with
-        # setSupportedTypes method.
-        self._analysisTypeGrp = QtGui.QGroupBox()
-        self._analysisTypeGrp.setTitle(self.tr("Analysis Type"))
-        self._analysisTypeLyt = QtGui.QVBoxLayout()
-        self._analysisTypeGrp.setLayout(self._analysisTypeLyt)
 
         # Action buttons (Write, Edit, Run)
         self._writeBtt = QtGui.QPushButton(self.tr("Write"))
@@ -267,7 +248,6 @@ class ControlWidget(QtGui.QWidget):
         # Main layout
         layout = QtGui.QVBoxLayout()
         layout.addWidget(self._directoryGrp)
-        layout.addWidget(self._analysisTypeGrp)
         layout.addLayout(actionLyt)
         layout.addWidget(self._statusEdt)
         layout.addWidget(self._timeWid)
@@ -310,25 +290,6 @@ class ControlWidget(QtGui.QWidget):
     def directory(self):
         return self._directoryTxt.text()
 
-    @QtCore.Slot(object)
-    def setSupportedTypes(self, types):
-        for button in self._typeRadioButtons.itervalues():
-            button.deleteLater()
-        self._typeRadioButtons = {}
-        for t in types:
-            button = QtGui.QRadioButton(t)
-
-            def changed(checked):
-                if checked:
-                    self.analysisTypeChanged.emit()
-            button.toggled.connect(changed)
-            self._typeRadioButtons[t] = button
-            self._analysisTypeLyt.addWidget(button)
-        self._analysisTypes = types
-
-    def supportedTypes(self):
-        return self._analysisTypes
-
     @QtCore.Slot(int)
     def updateState(self, machine):
         if machine.state <= FemSolve.PREPARE:
@@ -347,21 +308,10 @@ class ControlWidget(QtGui.QWidget):
             self._runBtt.setText(self.tr("Abort"))
         self.setRunning(machine.running)
 
-    @QtCore.Slot(str)
-    def setAnalysisType(self, value):
-        if value in self._typeRadioButtons:
-            self._typeRadioButtons[value].setChecked(True)
-
     @QtCore.Slot()
     def _selectDirectory(self):
         path = QtGui.QFileDialog.getExistingDirectory(self)
         self.setDirectory(path)
-
-    def analysisType(self):
-        for t, button in self._typeRadioButtons.iteritems():
-            if button.isChecked():
-                return t
-        return None
 
     def setRunning(self, isRunning):
         if isRunning:
@@ -369,7 +319,6 @@ class ControlWidget(QtGui.QWidget):
             self._runBtt.clicked.disconnect()
             self._runBtt.clicked.connect(self.abortClicked)
             self._directoryGrp.setDisabled(True)
-            self._analysisTypeGrp.setDisabled(True)
             self._writeBtt.setDisabled(True)
             self._editBtt.setDisabled(True)
         else:
@@ -377,13 +326,5 @@ class ControlWidget(QtGui.QWidget):
             self._runBtt.clicked.disconnect()
             self._runBtt.clicked.connect(self.runClicked)
             self._directoryGrp.setDisabled(False)
-            self._analysisTypeGrp.setDisabled(False)
             self._writeBtt.setDisabled(False)
             self._editBtt.setDisabled(False)
-
-    def _createRadioParent(self):
-        if self._radioParent is not None:
-            self._radioParent.deleteLater()
-        self._radioParent = QtGui.QWidget(self._analysisTypeGrp)
-        self._radioParent.setLayout(QtGui.QVBoxLayout())
-        return self._radioParent

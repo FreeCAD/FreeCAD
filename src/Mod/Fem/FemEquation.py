@@ -21,41 +21,64 @@
 # ***************************************************************************
 
 
-__title__ = "Elmer"
+__title__ = "_Base"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-from PySide import QtCore
-
-import FreeCAD as App
-import FreeCADGui as Gui
-import FemGui
+from pivy import coin
 
 
-class Command(QtCore.QObject):
+class BaseProxy(object):
 
-    def Activated(self):
-        analysis = FemGui.getActiveAnalysis()
-        App.ActiveDocument.openTransaction("Create Elmer Solver-Object")
-        Gui.addModule("FemElmer.SolverObject")
-        Gui.doCommand(
-                "App.ActiveDocument.%s.Member += "
-                "[FemElmer.SolverObject.create(App.ActiveDocument)]"
-                % analysis.Name)
-        App.ActiveDocument.commitTransaction()
-        App.ActiveDocument.recompute()
+    BaseType = "App::FeaturePython"
 
-    def GetResources(self):
-        return {
-            'Pixmap': 'fem-elmer',
-            'MenuText': "Solver Elmer",
-            'Accel': "S, E",
-            'ToolTip': "Creates a FEM solver Elmer"
-        }
+    def __init__(self, obj):
+        obj.Proxy = self
+        obj.addProperty(
+                "App::PropertyLinkSubList", "References",
+                "Base", "")
 
-    def IsActive(self):
-        return FemGui.getActiveAnalysis() is not None
+    def execute(self, obj):
+        return True
 
 
-Gui.addCommand('FEM_AddSolverElmer', Command())
+class BaseViewProxy(object):
+
+    def __init__(self, vobj):
+        vobj.Proxy = self
+
+    def attach(self, vobj):
+        default = coin.SoGroup()
+        vobj.addDisplayMode(default, "Default")
+
+    def getDisplayModes(self, obj):
+        "Return a list of display modes."
+        modes = ["Default"]
+        return modes
+
+    def getDefaultDisplayMode(self):
+        return "Default"
+
+    def setDisplayMode(self, mode):
+        return mode
+
+
+class HeatProxy(BaseProxy):
+    pass
+
+
+class HeatViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/fem-equation-heat.svg"
+
+
+class ElasticityProxy(BaseProxy):
+    pass
+
+
+class ElasticityViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/fem-equation-elasticity.svg"

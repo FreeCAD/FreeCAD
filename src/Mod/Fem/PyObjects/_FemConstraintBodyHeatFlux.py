@@ -26,22 +26,16 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
-class DocumentProxy(object):
+import FemMisc
+import FemConstraint
 
-    Type = "FemConstraintBodyHeatFlux"
+
+class Proxy(FemConstraint.Proxy):
+
+    Type = "Fem::FemConstraintBodyHeatFlux"
 
     def __init__(self, obj):
-        obj.Proxy = self
-
-        # Prop_None     = 0
-        # Prop_ReadOnly = 1
-        # Prop_Transient= 2
-        # Prop_Hidden   = 4
-        # Prop_Output   = 8
-
+        super(Proxy, self).__init__(obj)
         obj.addProperty(
                 "App::PropertyFloat", "HeatFlux",
                 "Base", "Body heat flux")
-
-    def execute(self, obj):
-        return True

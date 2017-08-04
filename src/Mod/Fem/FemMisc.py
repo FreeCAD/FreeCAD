@@ -26,6 +26,17 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
+import FreeCAD as App
+
+
+def createObject(doc, name, proxy, viewProxy):
+    obj = doc.addObject(proxy.BaseType, name)
+    proxy(obj)
+    if App.GuiUp:
+        viewProxy(obj.ViewObject)
+    return obj
+
+
 def findAnalysisOfMember(member):
     if member is None:
         raise ValueError("Member must not be None")
@@ -36,25 +47,29 @@ def findAnalysisOfMember(member):
     return None
 
 
-def getMember(analysis, baseType, pyType=None):
+def getMember(analysis, t):
     if analysis is None:
         raise ValueError("Analysis must not be None")
     matching = []
     for m in analysis.Member:
-        if isOfType(m, baseType, pyType):
+        if isDerivedFrom(m, t):
             matching.append(m)
     return matching
 
 
-def getSingleMember(analysis, baseType, pyType=None):
-    objs = getMember(analysis, baseType, pyType)
+def getSingleMember(analysis, t):
+    objs = getMember(analysis, t)
     return objs[0] if objs else None
 
 
-def isOfType(obj, baseType, pyType=None):
-    if obj.isDerivedFrom(baseType):
-        if pyType is None:
-            return True
-        if hasattr(obj, "Proxy") and obj.Proxy.Type == pyType:
-            return True
-    return False
+def isOfType(obj, t):
+    if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
+        return obj.Proxy.Type == t
+    return obj.TypeId == t
+
+
+def isDerivedFrom(obj, t):
+    if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type")
+            and obj.Proxy.Type == t):
+        return True
+    return obj.isDerivedFrom(t)

@@ -21,41 +21,29 @@
 # ***************************************************************************
 
 
-__title__ = "Elmer"
+__title__ = "Heat"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-from PySide import QtCore
-
-import FreeCAD as App
-import FreeCADGui as Gui
-import FemGui
+import FemMisc
+import Nonlinear
+import FemEquation
 
 
-class Command(QtCore.QObject):
-
-    def Activated(self):
-        analysis = FemGui.getActiveAnalysis()
-        App.ActiveDocument.openTransaction("Create Elmer Solver-Object")
-        Gui.addModule("FemElmer.SolverObject")
-        Gui.doCommand(
-                "App.ActiveDocument.%s.Member += "
-                "[FemElmer.SolverObject.create(App.ActiveDocument)]"
-                % analysis.Name)
-        App.ActiveDocument.commitTransaction()
-        App.ActiveDocument.recompute()
-
-    def GetResources(self):
-        return {
-            'Pixmap': 'fem-elmer',
-            'MenuText': "Solver Elmer",
-            'Accel': "S, E",
-            'ToolTip': "Creates a FEM solver Elmer"
-        }
-
-    def IsActive(self):
-        return FemGui.getActiveAnalysis() is not None
+def create(doc, name="Heat"):
+    return FemMisc.createObject(
+        doc, name, Proxy, ViewProxy)
 
 
-Gui.addCommand('FEM_AddSolverElmer', Command())
+class Proxy(Nonlinear.Proxy, FemEquation.HeatProxy):
+
+    Type = "Fem::FemEquationElmerHeat"
+
+    def __init__(self, obj):
+        super(Proxy, self).__init__(obj)
+        obj.Priority = 20
+
+
+class ViewProxy(Nonlinear.ViewProxy, FemEquation.HeatViewProxy):
+    pass

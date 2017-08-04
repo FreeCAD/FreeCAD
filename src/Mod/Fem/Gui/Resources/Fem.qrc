@@ -59,6 +59,8 @@
         <file>icons/fem-shell-thickness.svg</file>
         <file>icons/fem-solver.svg</file>
         <file>icons/fem-sphere.svg</file>
+        <file>icons/fem-equation-heat.svg</file>
+        <file>icons/fem-equation-elasticity.svg</file>
         <file>icons/fem-static-analysis.svg</file>
         <file>icons/fem-thermomechanical-analysis.svg</file>
         <file>icons/fem-warp.svg</file>
