@@ -61,9 +61,11 @@
         <file>panels/HoldingTagsEdit.ui</file>
         <file>panels/JobEdit.ui</file>
         <file>panels/MillFaceEdit.ui</file>
-        <file>panels/PageOpContourEdit.ui</file>
-        <file>panels/PageHeightsEdit.ui</file>
+        <file>panels/PageBaseGeometryEdit.ui</file>
         <file>panels/PageDepthsEdit.ui</file>
+        <file>panels/PageHeightsEdit.ui</file>
+        <file>panels/PageOpContourEdit.ui</file>
+        <file>panels/PageOpPocketEdit.ui</file>
         <file>panels/PocketEdit.ui</file>
         <file>panels/PointEdit.ui</file>
         <file>panels/ProfileEdgesEdit.ui</file>
