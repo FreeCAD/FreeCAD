@@ -64,11 +64,11 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
         temp.push_back(sketch);
 
     App::DocumentObject* spine = pcPipe->Spine.getValue();
-    if (spine != NULL)
+    if (spine != NULL && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(spine);
 
     App::DocumentObject* auxspine = pcPipe->AuxillerySpine.getValue();
-    if (auxspine != NULL)
+    if (auxspine != NULL && auxspine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(auxspine);
 
     return temp;
