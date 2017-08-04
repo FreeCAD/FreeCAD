@@ -25,6 +25,7 @@
 #define GUI_VIEWPROVIDERFEMCONSTRAINT_H
 
 #include <Gui/ViewProviderGeometryObject.h>
+#include <Gui/ViewProviderPythonFeature.h>
 #include <QObject>
 #include <QVBoxLayout>
 
@@ -116,6 +117,9 @@ protected:
     void checkForWizard();
     static QObject* findChildByName(const QObject* parent, const QString& name);
 };
+
+typedef Gui::ViewProviderPythonFeatureT<ViewProviderFemConstraint> ViewProviderFemConstraintPython;
+
 
 } //namespace FemGui
 
