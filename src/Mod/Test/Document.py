@@ -933,9 +933,17 @@ class DocumentGroupCases(unittest.TestCase):
     prt1.addObject(prt2)
     grp = prt2.Group
     grp.append(prt1)
-    prt2.Group = grp 
-    prt1.Group = [prt1]
-    prt2.Group = [prt2]
+    prt2.Group = grp
+    self.Doc.recompute()
+    prt2.Group = []
+    try:
+        prt2.Group = [prt2]
+    except:
+        pass
+    else:
+        self.fail("Exception is expected")
+        
+    self.Doc.recompute()
 
   def tearDown(self):
     # closing doc

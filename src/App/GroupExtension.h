@@ -80,10 +80,10 @@ public:
      */
     bool hasObject(const DocumentObject* obj, bool recursive=false) const;
     /**
-     * Checks whether this group object is a child (or sub-child)
+     * Checks whether this group object is a child (or sub-child if enabled)
      * of the given group object.
      */
-    bool isChildOf(const GroupExtension*) const;
+    bool isChildOf(const GroupExtension* group, bool recursive = true) const;
     /** Returns a list of all objects this group does have.
      */
     std::vector<DocumentObject*> getObjects() const;
@@ -110,6 +110,9 @@ public:
 
 private:
     void removeObjectFromDocument(DocumentObject*);
+    //this version if has object stores the already searched objects to prevent infinite recursion
+    //in case of a cyclic group graph
+    bool recursiveHasObject(const DocumentObject* obj, const GroupExtension* group, std::vector<const GroupExtension*> history) const;
 };
 
 
