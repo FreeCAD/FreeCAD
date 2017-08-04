@@ -172,7 +172,7 @@ class _TaskPanelFemSolverCalculix:
             majorVersion, minorVersion = fea.get_ccx_version()
             if majorVersion == 2 and minorVersion <= 10:
                 message = "The used CalculiX version {}.{} creates broken output files.\n" \
-                "Please upgrade to a newer version.".format(majorVersion, minorVersion)
+                    "Please upgrade to a newer version.".format(majorVersion, minorVersion)
                 QtGui.QMessageBox.warning(None, "Upgrade CalculiX", message)
             raise
         else:
