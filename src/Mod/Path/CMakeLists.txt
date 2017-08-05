@@ -19,6 +19,7 @@ INSTALL(
 SET(PathScripts_SRCS
     PathCommands.py
     PathScripts/PathAreaOp.py
+    PathScripts/PathAreaOpGui.py
     PathScripts/PathArray.py
     PathScripts/PathCircularHoleBase.py
     PathScripts/PathCircularHoleBaseGui.py
