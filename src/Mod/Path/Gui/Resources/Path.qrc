@@ -66,6 +66,7 @@
         <file>panels/PageHeightsEdit.ui</file>
         <file>panels/PageOpContourEdit.ui</file>
         <file>panels/PageOpPocketEdit.ui</file>
+        <file>panels/PageOpProfileEdit.ui</file>
         <file>panels/PocketEdit.ui</file>
         <file>panels/PointEdit.ui</file>
         <file>panels/ProfileEdgesEdit.ui</file>

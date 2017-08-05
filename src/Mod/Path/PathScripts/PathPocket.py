@@ -75,7 +75,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         PathLog.warning("No job object found (%s), or job has no Base." % job)
         return None
 
-    def opAreaParams(self, obj):
+    def opAreaParams(self, obj, isHole):
         params = {}
         params['Fill'] = 0
         params['Coplanar'] = 0
@@ -91,7 +91,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         params['PocketMode'] = Pattern.index(obj.OffsetPattern) + 1
         return params
 
-    def opPathParams(self, obj):
+    def opPathParams(self, obj, isHole):
         params = {}
 
         # if MinTravel is turned on, set path sorting to 3DSort
@@ -123,13 +123,13 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
                     env = PathUtils.getEnvelope(baseobject.Shape, subshape=shape, depthparams=self.depthparams)
                     obj.removalshape = env.cut(baseobject.Shape)
-                    removalshapes.append(obj.removalshape)
+                    removalshapes.append((obj.removalshape, False))
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
 
             env = PathUtils.getEnvelope(baseobject.Shape, subshape=None, depthparams=self.depthparams)
             obj.removalshape = env.cut(baseobject.Shape)
-            removalshapes = [obj.removalshape]
+            removalshapes = [(obj.removalshape, False)]
         return removalshapes
 
     def opSetDefaultValues(self, obj):
