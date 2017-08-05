@@ -643,29 +643,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 Gui::ViewProvider* vpp = static_cast<DocumentObjectItem *>(parent)->object();
                 vpp->dragObject(obj);
             }
-
-            //make sure it is not part of a geofeaturegroup anymore. When this has happen we need to handle 
-            //all removed objects
-            std::vector<Gui::ViewProvider*> vps = {vpc};
-            auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
-            if(grp) {
-                auto removed = grp->getExtensionByType<App::GeoFeatureGroupExtension>()->removeObject(obj);
-                for(auto o : removed) {
-                    auto remvp = gui->getViewProvider(o);
-                    if(remvp)
-                        vps.push_back(remvp);
-                }
-            }
-            
-            for(auto vp : vps) {
-                std::list<MDIView*> baseViews = gui->getMDIViews();
-                for (MDIView* view : baseViews) {
-                    View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
-                    if (activeView && !activeView->getViewer()->hasViewProvider(vp)) {
-                        activeView->getViewer()->addViewProvider(vp);
-                    }
-                }
-            }
         }
         gui->commitCommand();
     }

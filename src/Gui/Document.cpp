@@ -1494,6 +1494,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
                     for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
                         View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
                         if (activeView && activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
+
                             // @Note hasViewProvider()
                             // remove the viewprovider serves the purpose of detaching the inventor nodes from the
                             // top level root in the viewer. However, if some of the children were grouped beneath the object
@@ -1506,24 +1507,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
                 }
             }
         }
-    } else if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObjectGroup::getClassTypeId())) {
-
-        if (viewProvider->hasExtension(ViewProviderDocumentObjectGroup::getExtensionClassTypeId())) {
-            std::vector<App::DocumentObject*> children = viewProvider->claimChildren();
-
-            for (auto& child : children) {
-                ViewProvider* ChildViewProvider = getViewProvider(child);
-                if (ChildViewProvider) {
-                    for (BaseView* view : d->baseViews) {
-                        View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
-                        if (activeView && !activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
-                            activeView->getViewer()->addViewProvider(ChildViewProvider);
-                        }
-                    }
-                }
-            }
-        }
-    }
+    } 
     
     //find all unclaimed viewproviders and add them back to the document (this happens if a 
     //viewprovider has been claimed before, but the object droped it. 
