@@ -209,17 +209,20 @@ bool GroupExtension::recursiveHasObject(const DocumentObject* obj, const GroupEx
     //the purpose is to prevent infinite recursion when groups form a cyclic graph. To do this 
     //we store every group we processed on the current leave of the tree, and if we reach an 
     //already processed group we know that it not really is a tree but a cycle.
-    
     history.push_back(this);
     
+    //we use hasObject with out recursion to allow override in derived classes
+    if(group->hasObject(obj, false))
+        return true;
+    
+    //we checked for the searched object already with hasObject and did not find it, now we need to
+    //do the same for all subgroups
     for (auto child : group->Group.getValues()) {
         
         if(!child)
             continue;
         
-        if (child == obj) {
-            return true;
-        } else if ( child->hasExtension(GroupExtension::getExtensionClassTypeId()) ) {
+        if ( child->hasExtension(GroupExtension::getExtensionClassTypeId()) ) {
             
             auto ext = child->getExtensionByType<GroupExtension>();
             
