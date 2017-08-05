@@ -702,6 +702,8 @@ void Application::slotDeleteDocument(const App::Document& Doc)
     if (d->activeDocument == doc->second)
         setActiveDocument(0);
 
+    doc->second->beforeDelete();
+
     // For exception-safety use a smart pointer
     unique_ptr<Document> delDoc (doc->second);
     d->documents.erase(doc);

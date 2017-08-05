@@ -176,6 +176,13 @@ public:
      * @return          true if the deletion is approoved by the view provider.
      */
     virtual bool onDelete(const std::vector<std::string> &subNames);
+
+    /** Called before deletion
+     *
+     * Unlike onDelete(), this function is guaranteed to be called before
+     * deletion, either by Document::remObject(), or on document deletion.
+     */
+    virtual void beforeDelete();
     //@}
 
 

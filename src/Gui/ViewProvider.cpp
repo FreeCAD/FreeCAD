@@ -867,3 +867,9 @@ bool ViewProvider::useNewSelectionModel() const {
     return useNewModel>0;
 }
 
+void ViewProvider::beforeDelete() {
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionBeforeDelete();
+}
+

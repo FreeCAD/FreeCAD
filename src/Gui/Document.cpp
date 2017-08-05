@@ -488,6 +488,7 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
   
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
+    if(!viewProvider) return;
     handleChildren3D(viewProvider,true);
 
 #if 0 // With this we can show child objects again if this method was called by undo
@@ -508,6 +509,13 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
         // removing from tree
         signalDeletedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
     }
+
+    viewProvider->beforeDelete();
+}
+
+void Document::beforeDelete() {
+    for(auto &v : d->_ViewProviderMap)
+        v.second->beforeDelete();
 }
 
 void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)

@@ -255,6 +255,9 @@ public:
     bool canClose();
     bool isLastView(void);
 
+    /// called by Application before being deleted
+    void beforeDelete();
+
     virtual PyObject *getPyObject(void);
 
 protected:

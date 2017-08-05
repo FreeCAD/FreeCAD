@@ -53,6 +53,7 @@ public:
         return std::vector<App::DocumentObject*>(); }
         
     virtual bool extensionOnDelete(const std::vector<std::string> &){ return true;}
+    virtual void extensionBeforeDelete(){}
  
     virtual std::vector<App::DocumentObject*> extensionClaimChildren(void) const { 
         return std::vector<App::DocumentObject*>(); }
