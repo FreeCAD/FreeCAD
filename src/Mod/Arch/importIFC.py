@@ -273,7 +273,7 @@ def explore(filename=None):
                         print("Error in entity ", entity)
                         break
                     else:
-                        if not argname in ["Id", "GlobalId"]:
+                        if argname not in ["Id", "GlobalId"]:
                             colored = False
                             if isinstance(argvalue,ifcopenshell.entity_instance):
                                 if argvalue.id() == 0:
@@ -409,7 +409,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
     for r in ifcfile.by_type("IfcRelDefinesByProperties"):
         for obj in r.RelatedObjects:
-            if not obj.id() in properties :
+            if not obj.id() in properties:
                 properties[obj.id()] = {}
             prop_by_category = {}
             prop = []
@@ -481,7 +481,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     # products
     for product in products:
-        
+
         count += 1
 
         pid = product.id()
@@ -719,31 +719,31 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             # properties
             if pid in properties:
-                if IMPORT_PROPERTIES and hasattr(obj,"IfcProperties") :
+                if IMPORT_PROPERTIES and hasattr(obj,"IfcProperties"):
                     ifc_spreadsheet = Arch.makeIfcSpreadsheet()
                     n=2
                     for c in properties[pid].keys():
                         o = ifcfile[c]
-                        if DEBUG : print("propertyset Name",o.Name,type(o.Name))
+                        if DEBUG: print("propertyset Name",o.Name,type(o.Name))
                         catname = o.Name
                         for p in properties[pid][c]:
                             l = ifcfile[p]
                             if l.is_a("IfcPropertySingleValue"):
-                                if DEBUG :
+                                if DEBUG:
                                     print("property name",l.Name,type(l.Name))
                                 ifc_spreadsheet.set(str('A'+str(n)), catname.encode("utf8"))
                                 ifc_spreadsheet.set(str('B'+str(n)), l.Name.encode("utf8"))
-                                if l.NominalValue :
-                                    if DEBUG :
+                                if l.NominalValue:
+                                    if DEBUG:
                                         print("property NominalValue",l.NominalValue.is_a(),type(l.NominalValue.is_a()))
                                         print("property NominalValue.wrappedValue",l.NominalValue.wrappedValue,type(l.NominalValue.wrappedValue))
                                         #print("l.NominalValue.Unit",l.NominalValue.Unit,type(l.NominalValue.Unit))
                                     ifc_spreadsheet.set(str('C'+str(n)), l.NominalValue.is_a())
                                     if l.NominalValue.is_a() in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
                                         ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue.encode("utf8")))
-                                    else :
+                                    else:
                                         ifc_spreadsheet.set(str('D'+str(n)), str(l.NominalValue.wrappedValue))
-                                    if hasattr(l.NominalValue,'Unit') :
+                                    if hasattr(l.NominalValue,'Unit'):
                                         ifc_spreadsheet.set(str('E'+str(n)), str(l.NominalValue.Unit))
                                 n += 1
                         obj.IfcProperties = ifc_spreadsheet
@@ -895,7 +895,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if host in objects.keys():
                 cobs = [objects[child] for child in children if child in objects.keys()]
                 if cobs:
-                    if DEBUG and (len(cobs) > 10) and ( not(Draft.getType(objects[host]) in ["Site","Building","Floor"])):
+                    if DEBUG and (len(cobs) > 10) and (not(Draft.getType(objects[host]) in ["Site","Building","Floor"])):
                         # avoid huge fusions
                         print("more than 10 shapes to add: skipping.")
                     else:
@@ -928,7 +928,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         name = "Annotation"
         if annotation.Name:
             name = annotation.Name.encode("utf8")
-        if not "annotation" in name.lower():
+        if "annotation" not in name.lower():
             name = "Annotation " + name
         if PREFIX_NUMBERS: name = "ID" + str(aid) + " " + name
         shapes2d = []
@@ -1056,7 +1056,7 @@ def export(exportList,filename):
             if obj.Shape:
                 if obj.Shape.Edges and (not obj.Shape.Faces):
                     annotations.append(obj)
-    objectslist = [obj for obj in objectslist if not obj in annotations]
+    objectslist = [obj for obj in objectslist if obj not in annotations]
     objectslist = Arch.pruneIncluded(objectslist)
     if FULL_PARAMETRIC:
         objectslist = Arch.getAllChildren(objectslist)
@@ -1118,7 +1118,7 @@ def export(exportList,filename):
         ifctypes = []
         for v in typesmap.values():
             ifctypes.extend(v)
-        if not ifctype in ifctypes:
+        if ifctype not in ifctypes:
             ifctype = "IfcBuildingElementProxy"
 
         # getting the "Force BREP" flag
@@ -1187,14 +1187,14 @@ def export(exportList,filename):
         if hasattr(obj,"IfcProperties"):
             if obj.IfcProperties:
                 ifcprop = True
-                if DEBUG : print("      adding ifc properties")
+                if DEBUG: print("      adding ifc properties")
                 if obj.IfcProperties.TypeId == 'Spreadsheet::Sheet':
                     sheet = obj.IfcProperties
                     propertiesDic = {}
                     categories = []
                     n=2
                     cell = True
-                    while cell == True :
+                    while cell is True:
                         if hasattr(sheet,'A'+str(n)):
                             cat = sheet.get('A'+str(n))
                             key = sheet.get('B'+str(n))
@@ -1205,7 +1205,7 @@ def export(exportList,filename):
                                 val = ''
                             if isinstance(key, unicode):
                                 key = key.encode("utf8")
-                            else :
+                            else:
                                 key = str(key)
                             tp = tp.encode("utf8")
                             if tp in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
@@ -1221,7 +1221,7 @@ def export(exportList,filename):
                                 val = float(val)
                             unit = None
                             #unit = sheet.get('E'+str(n))
-                            if cat in categories :
+                            if cat in categories:
                                 propertiesDic[cat].append({"key":key,"tp":tp,"val":val,"unit":unit})
                             else:
                                 propertiesDic[cat] = [{"key":key,"tp":tp,"val":val,"unit":unit}]
@@ -1231,8 +1231,8 @@ def export(exportList,filename):
                             cell = False
                     for cat in propertiesDic:
                         props = []
-                        for prop in propertiesDic[cat] :
-                            if DEBUG :
+                        for prop in propertiesDic[cat]:
+                            if DEBUG:
                                 print("key",prop["key"],type(prop["key"]))
                                 print("tp",prop["tp"],type(prop["tp"]))
                                 print("val",prop["val"],type(prop["val"]))
@@ -1502,7 +1502,7 @@ def export(exportList,filename):
                     for e in w.Edges:
                         ehc.append(e.hashCode())
                 for e in sh.Edges:
-                    if not e.hashCode in ehc:
+                    if e.hashCode not in ehc:
                         reps.append(createCurve(ifcfile,e))
             elif anno.isDerivedFrom("App::Annotation"):
                 l = anno.Position
@@ -1742,7 +1742,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
     # check for clones
     if (not subtraction) and (not forcebrep):
         for k,v in clones.items():
-            if (obj.Name == k ) or (obj.Name in v):
+            if (obj.Name == k) or (obj.Name in v):
                 if k in sharedobjects:
                     # base shape already exists
                     repmap = sharedobjects[k]
