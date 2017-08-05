@@ -39,6 +39,10 @@ from PySide import QtCore, QtGui
 #  2 ... multi panel layout
 TaskPanelLayout = 2
 
+
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.trackModule(PathLog.thisModule())
+
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -48,6 +52,9 @@ class ViewProvider(object):
     def __init__(self, vobj):
         PathLog.track()
         vobj.Proxy = self
+
+        #for sel in FreeCADGui.Selection.getSelectionEx():
+        #    if sel[0].HasSubObjects:
 
     def attach(self, vobj):
         PathLog.track()
@@ -180,9 +187,9 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         #FreeCADGui.updateGui()
 
     def supportsEdges(self):
-        return self.support & PathAreaOp.FeatureBaseEdges
+        return self.supports & PathAreaOp.FeatureBaseEdges
     def supportsFaces(self):
-        return self.support & PathAreaOp.FeatureBaseFaces
+        return self.supports & PathAreaOp.FeatureBaseFaces
     def featureName(self):
         if self.supportsEdges() and self.supportsFaces():
             return 'features'
@@ -192,38 +199,36 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             return 'edges'
         return 'nothing'
 
-    def addBase(self):
-        selection = FreeCADGui.Selection.getSelectionEx()
-
+    def addBaseGeometry(self, selection):
         if len(selection) != 1:
-            PahtLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
-            return
+            PathLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
+            return False
         sel = selection[0]
         if not sel.HasSubObjects:
-            PahtLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
-            return
+            PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
+            return False
         if not self.supportsEdges() and selection[0].SubObjects[0].ShapeType == "Edge":
-            PahtLog.error(translate("PathProject", "Please select only %s of a solid" % self.featureName()))
-            return
+            PathLog.error(translate("PathProject", "Please select only %s of a solid" % self.featureName()))
+            return False
         if not self.supportsFaces() and selection[0].SubObjects[0].ShapeType == "Face":
-            PahtLog.error(translate("PathProject", "Please select only %s of a solid" % self.featureName()))
-            return
-        for i in sel.SubElementNames:
-            self.obj.Proxy.addBase(self.obj, sel.Object, i)
+            PathLog.error(translate("PathProject", "Please select only %s of a solid" % self.featureName()))
+            return False
 
-        self.obj.Proxy.execute(self.obj)
-        self.setFields()
+        for sub in sel.SubElementNames:
+            self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+        return True
+
+    def addBase(self):
+        if self.addBaseGeometry(FreeCADGui.Selection.getSelectionEx()):
+            #self.obj.Proxy.execute(self.obj)
+            self.setFields(self.obj)
 
     def deleteBase(self):
-        newlist = []
-        for item in self.form.baseList.selectedItems():
-            obj = item.data(self.DataObject)
-            sub = itme.data(self.DataObjectSub)
-            for base in self.obj.Base:
-                if base[0].Name != obj.Name and base[1] != sub:
-                    newlist.append(base)
+        PathLog.track()
+        selected = self.form.baseList.selectedItems()
+        for item in selected:
             self.form.baseList.takeItem(self.form.baseList.row(item))
-        self.obj.Base = newlist
+            self.updateBase()
         #self.obj.Proxy.execute(self.obj)
         #FreeCAD.ActiveDocument.recompute()
 
@@ -232,8 +237,10 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         for i in range(self.form.baseList.count()):
             item = self.form.baseList.item(i)
             obj = item.data(self.DataObject)
-            sub = item.data(self.DataObjectSub)
-            newlist.append((obj, sub))
+            sub = str(item.data(self.DataObjectSub))
+            base = (obj, sub)
+            newlist.append(base)
+        PathLog.debug("Setting new base: %s -> %s" % (self.obj.Base, newlist))
         self.obj.Base = newlist
 
         #self.obj.Proxy.execute(self.obj)
@@ -305,6 +312,7 @@ class TaskPanelDepthsPage(TaskPanelDepthsWoFinishPage):
 class TaskPanel(object):
 
     def __init__(self, obj, deleteOnReject, opPage, selectionFactory):
+        PathLog.track(obj.Label, deleteOnReject, opPage, selectionFactory)
         FreeCAD.ActiveDocument.openTransaction(translate("Path_AreaOp", "AreaOp Operation"))
         self.deleteOnReject = deleteOnReject
         self.featurePages = []
@@ -363,8 +371,7 @@ class TaskPanel(object):
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.removeObserver(self.s)
-        if self.isDirty():
-            FreeCAD.ActiveDocument.recompute()
+        FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
@@ -380,8 +387,8 @@ class TaskPanel(object):
     def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
             self.panelGetFields()
-            FreeCAD.ActiveDocument.recompute()
             self.setClean()
+            FreeCAD.ActiveDocument.recompute()
 
     def panelGetFields(self):
         PathLog.track()
@@ -403,6 +410,14 @@ class TaskPanel(object):
 
     def setupUi(self):
         PathLog.track()
+
+        if self.deleteOnReject and PathAreaOp.FeatureBaseGeometry & self.obj.Proxy.opFeatures(self.obj):
+            sel = FreeCADGui.Selection.getSelectionEx()
+            if len(sel) == 1 and sel[0].Object != self.obj:
+                for page in self.featurePages:
+                    if hasattr(page, 'addBase'):
+                        page.addBaseGeometry(sel)
+
         self.panelSetFields()
         for page in self.featurePages:
             page.pageRegisterSignalHandlers()

@@ -33,7 +33,7 @@ from PySide import QtCore
 
 """Path Pocket object and FreeCAD command"""
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -64,6 +64,9 @@ class ObjectPocket(PathAreaOp.ObjectOp):
     def opFeatures(self, obj):
         return PathAreaOp.FeatureTool | PathAreaOp.FeatureDepths | PathAreaOp.FeatureHeights | PathAreaOp.FeatureStartPoint | PathAreaOp.FeatureBaseFaces | PathAreaOp.FeatureFinishDepth
 
+    def opUseProjection(self, obj):
+        return False
+
     def opShapeForDepths(self, obj):
         job = PathUtils.findParentJob(obj)
         if job and job.Base:
@@ -71,44 +74,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             return job.Base.Shape
         PathLog.warning("No job object found (%s), or job has no Base." % job)
         return None
-
-    def addpocketbase(self, obj, ss, sub=""):
-        PathLog.track()
-        baselist = obj.Base
-        if baselist is None:
-            baselist = []
-        if len(baselist) == 0:  # When adding the first base object, guess at heights
-
-            try:
-                bb = ss.Shape.BoundBox  # parent boundbox
-                subobj = ss.Shape.getElement(sub)
-                fbb = subobj.BoundBox  # feature boundbox
-                obj.StartDepth = bb.ZMax
-                obj.ClearanceHeight = bb.ZMax + 5.0
-                obj.SafeHeight = bb.ZMax + 3.0
-
-                if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
-                    obj.FinalDepth = bb.ZMin
-                elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
-                    obj.FinalDepth = fbb.ZMin
-                elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
-                    obj.FinalDepth = fbb.ZMin
-                elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
-                    obj.FinalDepth = fbb.ZMin
-                else:  # catch all
-                    obj.FinalDepth = bb.ZMin
-            except:
-                obj.StartDepth = 5.0
-                obj.ClearanceHeight = 10.0
-                obj.SafeHeight = 8.0
-
-        item = (ss, sub)
-        if item in baselist:
-            PathLog.warning(translate("Path", "this object already in the list" + "\n"))
-        else:
-            baselist.append(item)
-        obj.Base = baselist
-        self.execute(obj)
 
     def opAreaParams(self, obj):
         params = {}
@@ -136,7 +101,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             params['sort_mode'] = 2
         return params
 
-    def opShape(self, obj, commandlist):
+    def opShapes(self, obj, commandlist):
         PathLog.track()
 
         job = PathUtils.findParentJob(obj)
@@ -146,6 +111,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
         if obj.Base:
             PathLog.debug("base items exist.  Processing...")
+            removalshapes = []
             for b in obj.Base:
                 PathLog.debug("Base item: {}".format(b))
                 for sub in b[1]:
@@ -157,22 +123,26 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
                     env = PathUtils.getEnvelope(baseobject.Shape, subshape=shape, depthparams=self.depthparams)
                     obj.removalshape = env.cut(baseobject.Shape)
+                    removalshapes.append(obj.removalshape)
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
 
             env = PathUtils.getEnvelope(baseobject.Shape, subshape=None, depthparams=self.depthparams)
             obj.removalshape = env.cut(baseobject.Shape)
-        return obj.removalshape
+            removalshapes = [obj.removalshape]
+        return removalshapes
 
     def opSetDefaultValues(self, obj):
         obj.StepOver = 100
         obj.ZigZagAngle = 45
 
     def opOnChanged(self, obj, prop):
+        #PathLog.track(obj.Label, prop)
         if prop == 'Base' and len(obj.Base) == 1:
             try:
+                (base, sub) = obj.Base[0]
                 bb = base.Shape.BoundBox  # parent boundbox
-                subobj = base.Shape.getElement(sub)
+                subobj = base.Shape.getElement(sub[0])
                 fbb = subobj.BoundBox  # feature boundbox
                 obj.StartDepth = bb.ZMax
                 obj.ClearanceHeight = bb.ZMax + 5.0
@@ -188,7 +158,8 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                     obj.FinalDepth = fbb.ZMin
                 else:  # catch all
                     obj.FinalDepth = bb.ZMin
-            except:
+            except Exception as e:
+                PathLog.error(translate("PathPocket", "Error in calculating depths: %s" % e))
                 obj.StartDepth = 5.0
                 obj.ClearanceHeight = 10.0
                 obj.SafeHeight = 8.0

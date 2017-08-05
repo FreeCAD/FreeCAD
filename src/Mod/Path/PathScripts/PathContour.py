@@ -58,6 +58,9 @@ class ObjectContour(PathAreaOp.ObjectOp):
     def opFeatures(self, obj):
         return PathAreaOp.FeatureTool | PathAreaOp.FeatureDepths | PathAreaOp.FeatureHeights | PathAreaOp.FeatureStartPoint
 
+    def opUseProjection(self, obj):
+        return True
+
     def initOperation(self, obj):
         PathLog.track()
 
@@ -97,7 +100,7 @@ class ObjectContour(PathAreaOp.ObjectOp):
         obj.MiterLimit  = 0.1
 
 
-    def opShape(self, obj, commandlist):
+    def opShapes(self, obj, commandlist):
         if obj.UseComp:
             commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
         else:
@@ -120,10 +123,10 @@ class ObjectContour(PathAreaOp.ObjectOp):
                 for shape in shapes:
                     f = Part.makeFace([shape], 'Part::FaceMakerSimple')
                     thickness = baseobject.Group[0].Source.Thickness
-                    return f.extrude(FreeCAD.Vector(0, 0, thickness))
+                    return [f.extrude(FreeCAD.Vector(0, 0, thickness))]
 
         if hasattr(baseobject, "Shape") and not isPanel:
-            return PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, depthparams=self.depthparams)
+            return [PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, depthparams=self.depthparams)]
 
     def opAreaParams(self, obj):
         params = {'Fill': 0, 'Coplanar': 2}
