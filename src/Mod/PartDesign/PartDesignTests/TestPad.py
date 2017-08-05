@@ -35,6 +35,20 @@ class TestPad(unittest.TestCase):
         self.Pad.Profile = self.PadSketch
         self.Doc.recompute()
         self.assertEqual(len(self.Pad.Shape.Faces), 6)
+        
+    def testSketchOnPlane(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject','SketchPad')
+        self.PadSketch.Support = (self.Doc.XY_Plane, [''])
+        self.PadSketch.MapMode = 'FlatFace'
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateSlotPlateSet(self.PadSketch)
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
+        self.Pad.Profile = self.PadSketch
+        self.Body.addObject(self.Pad)
+        self.Doc.recompute()
+        self.assertEqual(len(self.Pad.Shape.Faces), 6)
 
     def testPadToFirstCase(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
