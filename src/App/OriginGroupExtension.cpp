@@ -42,7 +42,7 @@ OriginGroupExtension::OriginGroupExtension () {
     initExtensionType(OriginGroupExtension::getExtensionClassTypeId());
     
     EXTENSION_ADD_PROPERTY_TYPE ( Origin, (0), 0, App::Prop_Hidden, "Origin linked to the group" );
-    Origin.setScope(LinkScope::Global);
+    Origin.setScope(LinkScope::Child);
 }
 
 OriginGroupExtension::~OriginGroupExtension ()
@@ -192,6 +192,15 @@ std::vector< DocumentObject* > OriginGroupExtension::addObjects(std::vector<Docu
     
     return App::GeoFeatureGroupExtension::addObjects(objs);
 }
+
+bool OriginGroupExtension::hasObject(const DocumentObject* obj, bool recursive) const {
+    
+    if(obj == getOrigin() || getOrigin()->hasObject(obj))
+        return true;
+    
+    return App::GroupExtension::hasObject(obj, recursive);
+}
+
 
 
 // Python feature ---------------------------------------------------------
