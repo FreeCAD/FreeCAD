@@ -139,7 +139,7 @@ def getPreferences():
     global ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS
     global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
     global FORCE_BREP, IMPORT_PROPERTIES, STORE_UID, SERIALIZE
-    global SPLIT_LAYERS, EXPORT_2D, FULL_PARAMETRIC
+    global SPLIT_LAYERS, EXPORT_2D, FULL_PARAMETRIC, FITVIEW_ONIMPORT
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
@@ -166,6 +166,7 @@ def getPreferences():
     SPLIT_LAYERS = p.GetBool("ifcSplitLayers",False)
     EXPORT_2D = p.GetBool("ifcExport2D",True)
     FULL_PARAMETRIC = p.GetBool("IfcExportFreeCADProperties",False)
+    FITVIEW_ONIMPORT = p.GetBool("ifcFitViewOnImport",False)
 
 
 def explore(filename=None):
@@ -381,6 +382,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     openings = ifcfile.by_type("IfcOpeningElement")
     annotations = ifcfile.by_type("IfcAnnotation")
     materials = ifcfile.by_type("IfcMaterial")
+    overallboundbox = FreeCAD.BoundBox()
 
     if DEBUG: print("Building relationships table...",end="")
 
@@ -473,6 +475,10 @@ def insert(filename,docname,skip=[],only=[],root=None):
     progressbar.start("Importing IFC objects...",len(products))
     if DEBUG: print("Processing objects...")
 
+    if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
+        import FreeCADGui
+        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+
     # products
     for product in products:
         
@@ -562,6 +568,14 @@ def insert(filename,docname,skip=[],only=[],root=None):
             shape.importBrepFromString(brep)
 
             shape.scale(1000.0) # IfcOpenShell always outputs in meters
+
+            if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
+                try:
+                    if not overallboundbox.isInside(shape.BoundBox):
+                        FreeCADGui.SendMsgToActiveView("ViewFit")
+                    overallboundbox.add(shape.BoundBox)
+                except:
+                    pass
 
             if not shape.isNull():
                 if (MERGE_MODE_ARCH > 0 and archobj) or structobj:
