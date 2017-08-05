@@ -94,6 +94,11 @@ bool DocumentObjectExtension::extensionGetSubObject(DocumentObject *&,
     return false;
 }
 
+bool DocumentObjectExtension::extensionGetSubObjects(std::vector<std::string>&) const
+{
+    return false;
+}
+
 bool DocumentObjectExtension::extensionGetLinkedObject(
         DocumentObject *&, bool, Base::Matrix4D *, bool, int) const
 {

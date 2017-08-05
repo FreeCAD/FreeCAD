@@ -437,6 +437,17 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     return Py::new_reference_to(tuple);
 }
 
+PyObject*  DocumentObjectPy::getSubObjects(PyObject *args) {
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    auto names = getDocumentObjectPtr()->getSubObjects();
+    Py::Tuple pyObjs(names.size());
+    for(size_t i=0;i<names.size();++i)
+        pyObjs.setItem(i,Py::String(names[i]));
+    return Py::new_reference_to(pyObjs);
+}
+
 PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
 {
     PyObject *recursive = Py_True;

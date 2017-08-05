@@ -74,6 +74,13 @@ public:
     virtual bool extensionGetSubObject( DocumentObject *&ret, const char *subname, 
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const;
 
+    /** Get name references of all sub objects
+     * @sa DocumentObject::getSubObjects()
+     *
+     * @return Return turn if handled, the sub object is returned in \c ret
+     */
+    virtual bool extensionGetSubObjects(std::vector<std::string> &ret) const;
+
     /** Get the linked object
      *  @sa DocumentObject::getLinkedObject()
      *

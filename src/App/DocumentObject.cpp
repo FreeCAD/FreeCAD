@@ -457,9 +457,112 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
         if(ext->extensionGetSubObject(ret,subname,pyObj,mat,transform, depth))
             return ret;
     }
-    if(!subname || *subname==0)
-        return const_cast<DocumentObject*>(this);
-    return 0;
+
+    if(!mat) 
+        transform = false;
+
+    bool findLabel = false;
+    std::string name;
+    const char *dot=0;
+    if(!subname || !(dot=strchr(subname,'.'))) {
+        ret = const_cast<DocumentObject*>(this);
+        if(!transform)
+            return ret;
+    } else if(subname[0]=='$') {
+        name = std::string(subname+1,dot);
+        findLabel = true;
+    }else
+        name = std::string(subname,dot);
+
+    PropertyPlacement *pla = 0;
+    std::vector<Property*> props;
+    getPropertyList(props);
+    for(auto prop : props) {
+        if(transform && !pla) {
+            if((pla = dynamic_cast<PropertyPlacement*>(prop))) {
+                // Do we have to demand the property name to be named 'Placement'?
+                // Getting property name is kind of inefficient. Why can't we have
+                // something similar as getNameInDocument()?
+                if(ret) break;
+                continue;
+            }
+        }
+        if(ret) 
+            continue;
+        auto links = dynamic_cast<PropertyLinkList*>(prop);
+        if(links) {
+            if(!findLabel)
+                ret = links->find(name.c_str());
+            else{
+                for(auto link : links->getValues()) {
+                    if(name == link->Label.getStrValue()) {
+                        ret = link;
+                        break;
+                    }
+                }
+            }
+            if(ret && (!transform || pla)) 
+                break;
+            continue;
+        }
+        auto link = dynamic_cast<PropertyLink*>(prop);
+        if(link) {
+            auto obj = link->getValue();
+            if(!obj || !obj->getNameInDocument())
+                continue;
+            if((findLabel && name==obj->getNameInDocument()) ||
+               (!findLabel && name==obj->Label.getStrValue()))
+            {
+                ret = obj;
+                if(!transform ||pla) 
+                    break;
+            }
+            continue;
+        }
+        // Shall we support other type of property link?
+    }
+    if(ret) {
+        if(transform && pla) 
+            *mat *= pla->getValue().toMatrix();
+        if(dot) 
+            return ret->getSubObject(dot+1,pyObj,mat,true,depth+1);
+    }
+    return ret;
+}
+
+std::vector<std::string> DocumentObject::getSubObjects() const {
+    std::vector<std::string> ret;
+    auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : exts) {
+        if(ext->extensionGetSubObjects(ret))
+            return ret;
+    }
+
+    std::vector<Property*> props;
+    getPropertyList(props);
+    for(auto prop : props) {
+        auto links = dynamic_cast<PropertyLinkList*>(prop);
+        if(links) {
+            for(auto obj : links->getValues()) {
+                if(obj && obj->getNameInDocument()) {
+                    std::string name(obj->getNameInDocument());
+                    ret.push_back(name+'.');
+                }
+            }
+            continue;
+        }
+        auto link = dynamic_cast<PropertyLink*>(prop);
+        if(link) {
+            auto obj = link->getValue();
+            if(obj && obj->getNameInDocument()) {
+                std::string name(obj->getNameInDocument());
+                ret.push_back(name+'.');
+            }
+            continue;
+        }
+        // Shall we support other type of property link?
+    }
+    return ret;
 }
 
 DocumentObject *DocumentObject::getLinkedObject(

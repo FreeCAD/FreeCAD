@@ -289,6 +289,43 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
     }
 }
 
+bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret) const {
+    Base::PyGILStateLocker lock;
+    try {
+        Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
+            if (feature.hasAttr(std::string("getSubObjects"))) {
+                Py::Callable method(feature.getAttr(std::string("getSubObjects")));
+                Py::Tuple args;
+                if(!feature.hasAttr("__object__")) {
+                    args = Py::Tuple(1);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
+                }
+                Py::Object res(method.apply(args));
+                if(!res.isTrue())
+                    return true;
+                if(!res.isSequence())
+                    throw Base::TypeError("getSubObjects expects return type of tuple");
+                Py::Sequence seq(res);
+                for(size_t i=0;i<seq.length();++i) {
+                    Py::Object name(seq[i].ptr());
+                    if(!name.isString())
+                        throw Base::TypeError("getSubObjects expects string in returned sequence");
+                    ret.push_back(name.as_string());
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+        return true;
+    }
+}
+
 bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse, 
         Base::Matrix4D *_mat, bool transform, int depth) const
 {

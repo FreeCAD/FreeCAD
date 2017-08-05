@@ -258,6 +258,21 @@ public:
     virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
             Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
 
+    /** Return name reference of all sub-objects
+     *
+     * The default implementation returns all object references in
+     * PropertyLink, and PropertyLinkList, if any
+     *
+     * @return Return a vector of subname references for all sub-objects. In
+     * most cases, the name returned will be the object name plus an ending
+     * '.', which can be passed directly to getSubObject() to retrieve the
+     * name. The reason to return the name reference instead of the sub object
+     * itself is because there may be no real sub object, or the sub object
+     * need special transformation. For example, sub objects of an array type
+     * of object.
+     */
+    virtual std::vector<std::string> getSubObjects() const;
+
     /** Return the linked object with optional transformation
      * 
      * @param recurse: If false, return the immediate linked object, or else

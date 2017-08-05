@@ -55,7 +55,7 @@
                 <UserDocu>Recomputes this object</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="getSubObject" ReadOnly="true" Keyword="true">
+        <Methode Name="getSubObject" Keyword="true">
             <Documentation>
                 <UserDocu>
 getSubObject(subname, retType=0, matrix=None, transform=True, depth=0)
@@ -84,7 +84,12 @@ referencing subobject.
                 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="getLinkedObject" ReadOnly="true" Keyword="true">
+        <Methode Name="getSubObjects">
+            <Documentation>
+                <UserDocu>getSubObjects(): Return subname reference of all sub-objects</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getLinkedObject" Keyword="true">
             <Documentation>
                 <UserDocu>
                     getLinkedObject(recursive=True, matrix=None, transform=True, depth=0)

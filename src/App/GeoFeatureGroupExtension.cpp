@@ -309,34 +309,40 @@ void GeoFeatureGroupExtension::getCSRelevantLinks(DocumentObject* obj, std::vect
 bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const 
 {
-    if(!subname || *subname==0) return false;
-
-    std::string _name;
-    const char *name = subname;
-    const char *next = 0;
-    next = strchr(subname,'.');
-    if(next) {
-        _name = std::string(subname,next-subname);
-        name = _name.c_str();
-        ++next;
-    }
-    auto child = Group.find(name);
-    if(child) {
-        if(!mat || !transform) {
-            ret = child->getSubObject(next,pyObj,mat,true,depth);
-            return true;
+    ret = 0;
+    const char *dot;
+    if(!subname || *subname==0) {
+        auto obj = dynamic_cast<const DocumentObject*>(getExtendedContainer());
+        ret = const_cast<DocumentObject*>(obj);
+        if(mat && transform) 
+            *mat *= const_cast<GeoFeatureGroupExtension*>(this)->placement().getValue().toMatrix();
+    }else if((dot=strchr(subname,'.'))) {
+        if(subname[0]!='$')
+            ret = Group.find(std::string(subname,dot).c_str());
+        else{
+            std::string name = std::string(subname+1,dot);
+            for(auto child : Group.getValues()) {
+                if(name == child->Label.getStrValue()){
+                    ret = child;
+                    break;
+                }
+            }
         }
-        // DO NOT change matrix if the sub object is not found, because our caller
-        // may try other alternatives.
-        Base::Matrix4D _mat;
-        _mat = (*mat)*const_cast<GeoFeatureGroupExtension*>(this)->placement().getValue().toMatrix();
-        ret = child->getSubObject(next,pyObj,&_mat,true,depth);
         if(ret) {
-            *mat = _mat;
-            return true;
+            if(mat && transform) 
+                *mat *= const_cast<GeoFeatureGroupExtension*>(this)->placement().getValue().toMatrix();
+            ret = ret->getSubObject(dot?dot+1:"",pyObj,mat,true,depth);
         }
     }
-    return false;
+    return true;
+}
+
+bool GeoFeatureGroupExtension::extensionGetSubObjects(std::vector<std::string>&ret) const {
+    for(auto obj : Group.getValues()) {
+        if(obj && obj->getNameInDocument())
+            ret.push_back(std::string(obj->getNameInDocument())+'.');
+    }
+    return true;
 }
 
 // Python feature ---------------------------------------------------------
