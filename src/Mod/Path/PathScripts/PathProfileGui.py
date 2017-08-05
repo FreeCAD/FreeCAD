@@ -27,7 +27,7 @@ import FreeCADGui
 import Path
 import PathScripts.PathAreaOpGui as PathAreaOpGui
 import PathScripts.PathLog as PathLog
-import PathScripts.PathPocket as PathPocket
+import PathScripts.PathProfile as PathProfile
 import PathScripts.PathSelection as PathSelection
 
 from PathScripts import PathUtils
@@ -39,70 +39,72 @@ def translate(context, text, disambig=None):
 class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
 
     def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketEdit.ui")
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpProfileEdit.ui")
 
     def getFields(self, obj):
-        self.obj.MaterialAllowance = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
-        self.obj.CutMode = str(self.form.cutMode.currentText())
-        self.obj.OffsetPattern = str(self.form.offsetPattern.currentText())
-        self.obj.ZigZagAngle = FreeCAD.Units.Quantity(self.form.zigZagAngle.text()).Value
-        self.obj.StepOver = self.form.stepOverPercent.value()
+        self.obj.OffsetExtra = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
+        self.obj.UseComp = self.form.useCompensation.isChecked()
         self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
+        self.obj.Side = str(self.form.cutSide.currentText())
+        self.obj.Direction = str(self.form.direction.currentText())
+        self.obj.processHoles = self.form.processHoles.isChecked()
+        self.obj.processPerimeter = self.form.processPerimeter.isChecked()
+        self.obj.processCircles = self.form.processCircles.isChecked()
 
         tc = PathUtils.findToolController(self.obj, self.form.toolController.currentText())
         self.obj.ToolController = tc
 
     def setFields(self, obj):
-        self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.MaterialAllowance.Value, FreeCAD.Units.Length).UserString)
+        self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
+        self.form.useCompensation.setChecked(self.obj.UseComp)
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
-        self.form.zigZagAngle.setText(FreeCAD.Units.Quantity(self.obj.ZigZagAngle, FreeCAD.Units.Angle).UserString)
-        self.form.stepOverPercent.setValue(self.obj.StepOver)
+        self.form.processHoles.setChecked(self.obj.processHoles)
+        self.form.processPerimeter.setChecked(self.obj.processPerimeter)
+        self.form.processCircles.setChecked(self.obj.processCircles)
 
-        self.selectInComboBox(self.obj.OffsetPattern, self.form.offsetPattern)
-        self.selectInComboBox(self.obj.CutMode, self.form.cutMode)
+        self.selectInComboBox(self.obj.Side, self.form.cutSide)
+        self.selectInComboBox(self.obj.Direction, self.form.direction)
         self.setupToolController(self.obj, self.form.toolController)
 
     def getSignalsForUpdate(self, obj):
         signals = []
-        # operation
-        signals.append(self.form.cutMode.currentIndexChanged)
+        signals.append(self.form.cutSide.currentIndexChanged)
+        signals.append(self.form.direction.currentIndexChanged)
+        signals.append(self.form.useCompensation.clicked)
         signals.append(self.form.useStartPoint.clicked)
-
-        # Pattern
-        signals.append(self.form.offsetPattern.currentIndexChanged)
-        signals.append(self.form.stepOverPercent.editingFinished)
-        signals.append(self.form.zigZagAngle.editingFinished)
         signals.append(self.form.extraOffset.editingFinished)
-        signals.append(self.form.toolController.currentIndexChanged)
+        signals.append(self.form.processHoles.clicked)
+        signals.append(self.form.processPerimeter.clicked)
+        signals.append(self.form.processCircles.clicked)
         return signals
 
-class ViewProviderPocket(PathAreaOpGui.ViewProvider):
+class ViewProviderProfile(PathAreaOpGui.ViewProvider):
 
     def getTaskPanelOpPage(self, obj):
         return TaskPanelOpPage(obj)
 
     def getIcon(self):
-        return ":/icons/Path-Pocket.svg"
+        return ":/icons/Path-Profile-Face.svg"
 
     def getSelectionFactory(self):
-        return PathSelection.pocketselect
+        return PathSelection.profileselect
+
 
 def Create(name):
-    FreeCAD.ActiveDocument.openTransaction(translate("PathPocket", "Create Pocket"))
-    obj  = PathPocket.Create(name)
-    vobj = ViewProviderPocket(obj.ViewObject)
+    FreeCAD.ActiveDocument.openTransaction(translate("Path", "Create a Profile"))
+    obj = PathProfile.Create(name)
+    vobj = ViewProviderProfile(obj.ViewObject)
 
     FreeCAD.ActiveDocument.commitTransaction()
     obj.ViewObject.startEditing()
     return obj
 
-class CommandPathPocket:
-
+class CommandPathProfile:
     def GetResources(self):
-        return {'Pixmap': 'Path-Pocket',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathPocket", "Pocket"),
-                'Accel': "P, O",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces")}
+        return {'Pixmap': 'Path-Profile-Face',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathProfile", "Face Profile"),
+                'Accel': "P, F",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile based on face or faces")}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -112,7 +114,7 @@ class CommandPathPocket:
         return False
 
     def Activated(self):
-        return Create("Pocket")
+        return Create('Profile')
 
-FreeCADGui.addCommand('Path_Pocket', CommandPathPocket())
-FreeCAD.Console.PrintLog("Loading PathPocketGui... done\n")
+FreeCADGui.addCommand('Path_Profile', CommandPathProfile())
+FreeCAD.Console.PrintLog("Loading PathProfileGui... done\n")

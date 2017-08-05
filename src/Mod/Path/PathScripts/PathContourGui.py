@@ -86,8 +86,6 @@ def Create(name):
     obj   = PathContour.Create(name)
     vobj  = ViewProviderContour(obj.ViewObject)
 
-    obj.ViewObject.Proxy.deleteOnReject = True
-
     FreeCAD.ActiveDocument.commitTransaction()
     obj.ViewObject.startEditing()
     return obj

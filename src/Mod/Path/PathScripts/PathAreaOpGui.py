@@ -52,9 +52,7 @@ class ViewProvider(object):
     def __init__(self, vobj):
         PathLog.track()
         vobj.Proxy = self
-
-        #for sel in FreeCADGui.Selection.getSelectionEx():
-        #    if sel[0].HasSubObjects:
+        self.deleteOnReject = True
 
     def attach(self, vobj):
         PathLog.track()
@@ -190,6 +188,9 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         return self.supports & PathAreaOp.FeatureBaseEdges
     def supportsFaces(self):
         return self.supports & PathAreaOp.FeatureBaseFaces
+    def supportsPanels(self):
+        return self.supports & PathAreaOp.FeatureBasePanels
+
     def featureName(self):
         if self.supportsEdges() and self.supportsFaces():
             return 'features'
@@ -200,19 +201,22 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         return 'nothing'
 
     def addBaseGeometry(self, selection):
+        PathLog.track(selection)
         if len(selection) != 1:
             PathLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
             return False
         sel = selection[0]
-        if not sel.HasSubObjects:
-            PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
-            return False
-        if not self.supportsEdges() and selection[0].SubObjects[0].ShapeType == "Edge":
-            PathLog.error(translate("PathProject", "Please select only %s of a solid" % self.featureName()))
-            return False
-        if not self.supportsFaces() and selection[0].SubObjects[0].ShapeType == "Face":
-            PathLog.error(translate("PathProject", "Please select only %s of a solid" % self.featureName()))
-            return False
+        if sel.HasSubObjects:
+            if not self.supportsEdges() and selection[0].SubObjects[0].ShapeType == "Edge":
+                PathLog.error(translate("PathProject", "Please select only %s of a solid" % self.featureName()))
+                return False
+            if not self.supportsFaces() and selection[0].SubObjects[0].ShapeType == "Face":
+                PathLog.error(translate("PathProject", "Please select only %s of a solid" % self.featureName()))
+                return False
+        else:
+            if not self.supportsPanels() or not 'Panel' in sel.Object.Name:
+                PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
+                return False
 
         for sub in sel.SubElementNames:
             self.obj.Proxy.addBase(self.obj, sel.Object, sub)
@@ -409,7 +413,7 @@ class TaskPanel(object):
         return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
 
     def setupUi(self):
-        PathLog.track()
+        PathLog.track(self.deleteOnReject)
 
         if self.deleteOnReject and PathAreaOp.FeatureBaseGeometry & self.obj.Proxy.opFeatures(self.obj):
             sel = FreeCADGui.Selection.getSelectionEx()
