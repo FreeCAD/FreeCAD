@@ -111,6 +111,7 @@ class ObjectOp(object):
         pass
      
     def onChanged(self, obj, prop):
+        #PathLog.track(obj.Label, prop)
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
             obj.setEditorMode(prop, 2)
         self.opOnChanged(obj, prop)
@@ -174,8 +175,10 @@ class ObjectOp(object):
 
         PathLog.debug("Area with params: {}".format(area.getParams()))
 
-        sections = area.makeSections(mode=0, project=True, heights=heights)
+        sections = area.makeSections(mode=0, project=self.opUseProjection(obj), heights=heights)
+        PathLog.debug("sections = %s" % sections)
         shapelist = [sec.getShape() for sec in sections]
+        PathLog.debug("shapelist = %s" % shapelist)
 
         pathParams = self.opPathParams(obj)
         pathParams['shapes'] = shapelist
@@ -192,6 +195,7 @@ class ObjectOp(object):
             pathParams['start'] = obj.StartPoint
 
         obj.PathParams = str({key: value for key, value in pathParams.items() if key != 'shapes'})
+        PathLog.debug("Path with params: {}".format(obj.PathParams))
 
         (pp, end_vector) = Path.fromShapes(**pathParams)
         PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
@@ -244,23 +248,25 @@ class ObjectOp(object):
             else:
                 self.radius = tool.Diameter/2
 
-        commandlist = []
-        commandlist.append(Path.Command("(" + obj.Label + ")"))
-
-        shape = self.opShape(obj, commandlist)
-
         if FeatureStartPoint and obj.UseStartPoint:
             start = obj.StartPoint
         else:
             start = FreeCAD.Vector()
 
-        try:
-            (pp, sim) = self._buildPathArea(obj, shape, start, getsim)
-            commandlist.extend(pp.Commands)
-        except Exception as e:
-            FreeCAD.Console.PrintError(e)
-            FreeCAD.Console.PrintError("Something unexpected happened. Check project and tool config.")
-            sim = None
+        commandlist = []
+        commandlist.append(Path.Command("(" + obj.Label + ")"))
+
+        shapes = self.opShapes(obj, commandlist)
+
+        sims = []
+        for shape in shapes:
+            try:
+                (pp, sim) = self._buildPathArea(obj, shape, start, getsim)
+                commandlist.extend(pp.Commands)
+                sims.append(sim)
+            except Exception as e:
+                FreeCAD.Console.PrintError(e)
+                FreeCAD.Console.PrintError("Something unexpected happened. Check project and tool config.")
 
 
         # Let's finish by rapid to clearance...just for safety
@@ -269,7 +275,7 @@ class ObjectOp(object):
         PathLog.track()
         path = Path.Path(commandlist)
         obj.Path = path
-        return sim
+        return sims
 
     def addBase(self, obj, base, sub=""):
         PathLog.track()
