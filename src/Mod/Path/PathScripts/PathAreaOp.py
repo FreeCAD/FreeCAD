@@ -44,15 +44,16 @@ PathLog.trackModule()
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-FeatureTool         = 0x01
-FeatureDepths       = 0x02
-FeatureHeights      = 0x04
-FeatureStartPoint   = 0x08
-FeatureBaseFaces    = 0x10
-FeatureBaseEdges    = 0x20
-FeatureFinishDepth  = 0x40
+FeatureTool         = 0x0001
+FeatureDepths       = 0x0002
+FeatureHeights      = 0x0004
+FeatureStartPoint   = 0x0008
+FeatureFinishDepth  = 0x0010
+FeatureBaseFaces    = 0x1001
+FeatureBaseEdges    = 0x1002
+FeatureBasePanels   = 0x1002
 
-FeatureBaseGeometry = FeatureBaseFaces | FeatureBaseEdges
+FeatureBaseGeometry = FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels
 
 class ObjectOp(object):
 
@@ -160,13 +161,13 @@ class ObjectOp(object):
         self.opSetDefaultValues(obj)
 
     @waiting_effects
-    def _buildPathArea(self, obj, baseobject, start=None, getsim=False):
+    def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
         PathLog.track()
         area = Path.Area()
         area.setPlane(makeWorkplane(baseobject))
         area.add(baseobject)
 
-        areaParams = self.opAreaParams(obj)
+        areaParams = self.opAreaParams(obj, isHole)
 
         heights = [i for i in self.depthparams]
         PathLog.debug('depths: {}'.format(heights))
@@ -180,7 +181,7 @@ class ObjectOp(object):
         shapelist = [sec.getShape() for sec in sections]
         PathLog.debug("shapelist = %s" % shapelist)
 
-        pathParams = self.opPathParams(obj)
+        pathParams = self.opPathParams(obj, isHole)
         pathParams['shapes'] = shapelist
         pathParams['feedrate'] = self.horizFeed
         pathParams['feedrate_v'] = self.vertFeed
@@ -259,9 +260,9 @@ class ObjectOp(object):
         shapes = self.opShapes(obj, commandlist)
 
         sims = []
-        for shape in shapes:
+        for (shape, isHole) in shapes:
             try:
-                (pp, sim) = self._buildPathArea(obj, shape, start, getsim)
+                (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
                 commandlist.extend(pp.Commands)
                 sims.append(sim)
             except Exception as e:

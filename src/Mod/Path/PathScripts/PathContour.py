@@ -123,12 +123,12 @@ class ObjectContour(PathAreaOp.ObjectOp):
                 for shape in shapes:
                     f = Part.makeFace([shape], 'Part::FaceMakerSimple')
                     thickness = baseobject.Group[0].Source.Thickness
-                    return [f.extrude(FreeCAD.Vector(0, 0, thickness))]
+                    return [(f.extrude(FreeCAD.Vector(0, 0, thickness)), False)]
 
         if hasattr(baseobject, "Shape") and not isPanel:
-            return [PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, depthparams=self.depthparams)]
+            return [(PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, depthparams=self.depthparams), False)]
 
-    def opAreaParams(self, obj):
+    def opAreaParams(self, obj, isHole):
         params = {'Fill': 0, 'Coplanar': 2}
 
         if obj.UseComp is False:
@@ -143,7 +143,7 @@ class ObjectContour(PathAreaOp.ObjectOp):
             params['MiterLimit'] = obj.MiterLimit
         return params
 
-    def opPathParams(self, obj):
+    def opPathParams(self, obj, isHole):
         params = {}
         if obj.Direction == 'CCW':
             params['orientation'] = 0
