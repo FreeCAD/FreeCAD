@@ -27,6 +27,7 @@ import FreeCAD
 import Part
 import Path
 import PathScripts.PathAreaOp as PathAreaOp
+import PathScripts.PathProfileBase as PathProfileBase
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import numpy
@@ -48,20 +49,13 @@ __url__ = "http://www.freecadweb.org"
 """Path Profile object and FreeCAD command"""
 
 
-class ObjectProfile(PathAreaOp.ObjectOp):
+class ObjectProfile(PathProfileBase.ObjectProfile):
+
+    def baseObject(self):
+        return super(self.__class__, self)
 
     def initOperation(self, obj):
-
-        # Profile Properties
-        obj.addProperty("App::PropertyEnumeration", "Side", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
-        obj.Side = ['Inside', 'Outside']  # side of profile that cutter is on in relation to direction of profile
-        obj.addProperty("App::PropertyEnumeration", "Direction", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
-        obj.Direction = ['CW', 'CCW']  # this is the direction that the profile runs
-        obj.addProperty("App::PropertyBool", "UseComp", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
-        obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final profile- good for roughing toolpath"))
-        obj.addProperty("App::PropertyEnumeration", "JoinType", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool moves around corners. Default=Round"))
-        obj.JoinType = ['Round', 'Square', 'Miter']  # this is the direction that the Contour runs
-        obj.addProperty("App::PropertyFloat", "MiterLimit", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum distance before a miter join is truncated"))
+        self.baseObject().initOperation(obj)
 
         # Face specific Properties
         obj.addProperty("App::PropertyBool", "processHoles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile holes as well as the outline"))
@@ -71,77 +65,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.Proxy = self
 
     def opSetDefaultValues(self, obj):
-        obj.Side = "Outside"
-        obj.OffsetExtra = 0.0
-        obj.Direction = "CW"
-        obj.UseComp = True
-        obj.JoinType = "Round"
-        obj.MiterLimit = 0.1
+        self.baseObject().opSetDefaultValues(obj)
 
         obj.processHoles = False
         obj.processCircles = False
         obj.processPerimeter = True
 
-    def onOpChanged(self, obj, prop):
-        if prop == "UseComp":
-            if not obj.UseComp:
-                obj.setEditorMode('Side', 2)
-            else:
-                obj.setEditorMode('Side', 0)
-
-        if prop == "JoinType":
-            obj.setEditorMode('MiterLimit', 2)
-            if obj.JoinType == 'Miter':
-                obj.setEditorMode('MiterLimit', 0)
-
     def opFeatures(self, obj):
-        return PathAreaOp.FeatureTool | PathAreaOp.FeatureDepths | PathAreaOp.FeatureHeights | PathAreaOp.FeatureStartPoint | PathAreaOp.FeatureBaseFaces
-
-    def opUseProjection(self, obj):
-        return True
-
-    def opAreaParams(self, obj, isHole):
-        params = {}
-        params['Fill'] = 0
-        params['Coplanar'] = 2
-        params['Offset'] = 0.0
-        params['SectionCount'] = -1
-
-        offsetval = 0
-
-        if obj.UseComp:
-            offsetval = self.radius + obj.OffsetExtra.Value
-
-        if obj.Side == 'Inside':
-            offsetval = 0 - offsetval
-
-        if isHole:
-            offsetval = 0 - offsetval
-
-        params['Offset'] = offsetval
-
-        jointype = ['Round', 'Square', 'Miter']
-        params['JoinType'] = jointype.index(obj.JoinType)
-
-        if obj.JoinType == 'Miter':
-            params['MiterLimit'] = obj.MiterLimit
-        return params
-
-    def opPathParams(self, obj, isHole):
-        params = {}
-
-        # Reverse the direction for holes
-        if isHole:
-            direction = "CW" if obj.Direction == "CCW" else "CCW"
-        else:
-            direction = obj.Direction
-
-        if direction == 'CCW':
-            params['orientation'] = 0
-        else:
-            params['orientation'] = 1
-        return params
-
+        return self.baseObject().opFeatures(obj) | PathAreaOp.FeatureBaseFaces 
 
     def opShapes(self, obj, commandlist):
         commandlist.append(Path.Command("(" + obj.Label + ")"))
