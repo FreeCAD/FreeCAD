@@ -87,7 +87,7 @@ CmdPartDesignPart::CmdPartDesignPart()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Create part");
     sToolTipText  = QT_TR_NOOP("Create a new part and make it active");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Part";
     sStatusTip    = sToolTipText;
     sPixmap       = "Tree_Annotation";
 }
@@ -130,7 +130,7 @@ CmdPartDesignBody::CmdPartDesignBody()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Create body");
     sToolTipText  = QT_TR_NOOP("Create a new body and make it active");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Body";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Body_Create_New";
 }
@@ -258,7 +258,7 @@ CmdPartDesignMigrate::CmdPartDesignMigrate()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Migrate");
     sToolTipText  = QT_TR_NOOP("Migrate document to the modern partdesign workflow");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Migrate";
     sStatusTip    = sToolTipText;
 }
 
@@ -472,7 +472,7 @@ CmdPartDesignMoveTip::CmdPartDesignMoveTip()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Set tip");
     sToolTipText  = QT_TR_NOOP("Move the tip of the body");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_MoveTip";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_MoveTip";
 }
@@ -552,7 +552,7 @@ CmdPartDesignDuplicateSelection::CmdPartDesignDuplicateSelection()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Duplicate selected object");
     sToolTipText    = QT_TR_NOOP("Duplicates the selected object and adds it to the active body");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_DuplicateSelection";
     sStatusTip      = sToolTipText;
 }
 
@@ -608,7 +608,7 @@ CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Move object to other body");
     sToolTipText    = QT_TR_NOOP("Moves the selected object to another body");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_MoveFeature";
     sStatusTip      = sToolTipText;
     sPixmap         = "";
 }
@@ -769,7 +769,7 @@ CmdPartDesignMoveFeatureInTree::CmdPartDesignMoveFeatureInTree()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Move object after other object");
     sToolTipText    = QT_TR_NOOP("Moves the selected object and insert it after another object");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_MoveFeatureInTree";
     sStatusTip      = sToolTipText;
     sPixmap         = "";
 }
