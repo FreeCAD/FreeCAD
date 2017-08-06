@@ -76,43 +76,12 @@ class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
         signals.append(self.form.toolController.currentIndexChanged)
         return signals
 
-class ViewProviderPocket(PathAreaOpGui.ViewProvider):
+PathAreaOpGui.SetupOperation('Pocket',
+        PathPocket.Create,
+        TaskPanelOpPage,
+        'Path-Pocket',
+        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Pocket"),
+        "P, O",
+        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces"))
 
-    def getTaskPanelOpPage(self, obj):
-        return TaskPanelOpPage(obj)
-
-    def getIcon(self):
-        return ":/icons/Path-Pocket.svg"
-
-    def getSelectionFactory(self):
-        return PathSelection.pocketselect
-
-def Create(name):
-    FreeCAD.ActiveDocument.openTransaction(translate("PathPocket", "Create Pocket"))
-    obj  = PathPocket.Create(name)
-    vobj = ViewProviderPocket(obj.ViewObject)
-
-    FreeCAD.ActiveDocument.commitTransaction()
-    obj.ViewObject.startEditing()
-    return obj
-
-class CommandPathPocket:
-
-    def GetResources(self):
-        return {'Pixmap': 'Path-Pocket',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathPocket", "Pocket"),
-                'Accel': "P, O",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces")}
-
-    def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                        return True
-        return False
-
-    def Activated(self):
-        return Create("Pocket")
-
-FreeCADGui.addCommand('Path_Pocket', CommandPathPocket())
 FreeCAD.Console.PrintLog("Loading PathPocketGui... done\n")

@@ -78,43 +78,12 @@ class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
         signals.append(self.form.processCircles.clicked)
         return signals
 
-class ViewProviderProfile(PathAreaOpGui.ViewProvider):
+PathAreaOpGui.SetupOperation('Profile',
+        PathProfile.Create,
+        TaskPanelOpPage,
+        'Path-Profile',
+        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Face Profile"),
+        "P, F",
+        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile based on face or faces"))
 
-    def getTaskPanelOpPage(self, obj):
-        return TaskPanelOpPage(obj)
-
-    def getIcon(self):
-        return ":/icons/Path-Profile-Face.svg"
-
-    def getSelectionFactory(self):
-        return PathSelection.profileselect
-
-
-def Create(name):
-    FreeCAD.ActiveDocument.openTransaction(translate("Path", "Create a Profile"))
-    obj = PathProfile.Create(name)
-    vobj = ViewProviderProfile(obj.ViewObject)
-
-    FreeCAD.ActiveDocument.commitTransaction()
-    obj.ViewObject.startEditing()
-    return obj
-
-class CommandPathProfile:
-    def GetResources(self):
-        return {'Pixmap': 'Path-Profile-Face',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathProfile", "Face Profile"),
-                'Accel': "P, F",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile based on face or faces")}
-
-    def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                        return True
-        return False
-
-    def Activated(self):
-        return Create('Profile')
-
-FreeCADGui.addCommand('Path_Profile', CommandPathProfile())
 FreeCAD.Console.PrintLog("Loading PathProfileGui... done\n")
