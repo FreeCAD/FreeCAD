@@ -43,7 +43,9 @@ PROPERTY_SOURCE(Gui::ViewProviderPlane, Gui::ViewProviderOriginFeature)
 
 
 ViewProviderPlane::ViewProviderPlane()
-{ }
+{ 
+    sPixmap = "Std_Plane";
+}
 
 ViewProviderPlane::~ViewProviderPlane()
 { }
