@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>398</width>
-    <height>330</height>
+    <height>454</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,8 +37,48 @@
     </widget>
    </item>
    <item>
+    <widget class="QWidget" name="facingWidget" native="true">
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>Boundary Shape</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="boundaryShape">
+        <item>
+         <property name="text">
+          <string>Perimeter</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Boundbox</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Pass Extension</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::InputField" name="passExtension"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QWidget" name="widget" native="true">
      <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
@@ -139,17 +179,23 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="pocketWidget" native="true">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
          <string>Material Allowance</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="0" column="1">
        <widget class="Gui::InputField" name="extraOffset"/>
       </item>
-      <item row="5" column="0">
+      <item row="1" column="0">
        <widget class="QCheckBox" name="useStartPoint">
         <property name="text">
          <string>Use Start Point</string>
@@ -158,6 +204,19 @@
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
