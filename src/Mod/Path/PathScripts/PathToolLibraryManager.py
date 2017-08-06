@@ -545,14 +545,14 @@ class EditorPanel():
         for toolnum in tools:
             tool = self.TLM.getTool(currList, int(toolnum))
             PathLog.debug('tool: {}, toolnum: {}'.format(tool, toolnum))
-            for i in FreeCAD.ActiveDocument.findObjects("Path::Feature"):
-                if isinstance(i.Proxy, PathScripts.PathJob.ObjectPathJob) and i.Label == targetlist:
+            for job in FreeCAD.ActiveDocument.findObjects("Path::Feature"):
+                if isinstance(job.Proxy, PathScripts.PathJob.ObjectPathJob) and job.Label == targetlist:
 
                     label = "T{}: {}".format(toolnum, tool.Name)
                     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython",label)
                     PathScripts.PathToolController.ToolController(obj)
                     PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
-                    PathUtils.addToJob(obj, targetlist)
+                    PathUtils.addToJob(obj, job.Name)
                     FreeCAD.activeDocument().recompute()
                     obj.Tool = tool.copy()
                     obj.ToolNumber = int(toolnum)
