@@ -23,53 +23,16 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
-import Path
 import PathScripts.PathAreaOpGui as PathAreaOpGui
-import PathScripts.PathLog as PathLog
+import PathScripts.PathProfileBaseGui as PathProfileBaseGui
 import PathScripts.PathProfileEdges as PathProfileEdges
-import PathScripts.PathSelection as PathSelection
 
-from PathScripts import PathUtils
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+class TaskPanelOpPage(PathProfileBaseGui.TaskPanelOpPage):
 
-class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
-
-    def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpProfileEdgesEdit.ui")
-
-    def getFields(self, obj):
-        self.obj.OffsetExtra = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
-        self.obj.UseComp = self.form.useCompensation.isChecked()
-        self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
-        self.obj.Side = str(self.form.cutSide.currentText())
-        self.obj.Direction = str(self.form.direction.currentText())
-
-        tc = PathUtils.findToolController(self.obj, self.form.toolController.currentText())
-        self.obj.ToolController = tc
-
-    def setFields(self, obj):
-        self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
-        self.form.useCompensation.setChecked(self.obj.UseComp)
-        self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
-
-        self.selectInComboBox(self.obj.Side, self.form.cutSide)
-        self.selectInComboBox(self.obj.Direction, self.form.direction)
-        self.setupToolController(self.obj, self.form.toolController)
-
-    def getSignalsForUpdate(self, obj):
-        signals = []
-        signals.append(self.form.cutSide.currentIndexChanged)
-        signals.append(self.form.direction.currentIndexChanged)
-        signals.append(self.form.useCompensation.clicked)
-        signals.append(self.form.useStartPoint.clicked)
-        signals.append(self.form.extraOffset.editingFinished)
-        return signals
-
-
+    def profileFeatures(self):
+        return PathProfileBaseGui.FeatureSide
 
 PathAreaOpGui.SetupOperation('Profile Edges',
         PathProfileEdges.Create,
