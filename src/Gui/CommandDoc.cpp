@@ -1111,12 +1111,10 @@ void StdCmdDelete::activated(int iMsg)
                         // check if the referenced objects are groups or are selected too
                         for (std::vector<App::DocumentObject*>::iterator lt = links.begin(); lt != links.end(); ++lt) {
                             if (
-                                  (!(*lt)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) &&
-                                  (!(*lt)->getTypeId().isDerivedFrom(App::Origin::getClassTypeId())) &&
-                                  (!rSel.isSelected(*lt)) &&
-                                  (!(*lt)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::BodyBase")))
+                                  (!(*lt)->hasExtension(App::GroupExtension::getExtensionClassTypeId())) &&
+                                  (!(*lt)->isDerivedFrom(App::Origin::getClassTypeId())) &&
+                                  (!rSel.isSelected(*lt))
                                 ){
-                                // TODO Do something with this hack of Part::BodyBase (2015-09-09, Fat-Zer)
                                 autoDeletion = false;
                                 affectedLabels.insert(QString::fromUtf8((*lt)->Label.getValue()));
                             }
