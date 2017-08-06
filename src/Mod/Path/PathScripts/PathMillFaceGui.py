@@ -26,7 +26,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts.PathAreaOpGui as PathAreaOpGui
-import PathScripts.PathPocket as PathPocket
+import PathScripts.PathMillFace as PathMillFace
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui
 
 from PySide import QtCore
@@ -34,14 +34,15 @@ from PySide import QtCore
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
 
     def pocketFeatures(self):
-        return PathPocketBaseGui.FeaturePocket
+        return PathPocketBaseGui.FeatureFacing
 
-PathAreaOpGui.SetupOperation('Pocket',
-        PathPocket.Create,
+PathAreaOpGui.SetupOperation('MillFace',
+        PathMillFace.Create,
         TaskPanelOpPage,
-        'Path-Pocket',
-        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Pocket"),
+        'Path-Face',
+        QtCore.QT_TRANSLATE_NOOP("PathFace", "Face"),
         "P, O",
-        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces"))
+        QtCore.QT_TRANSLATE_NOOP("PathFace", "Create a Facing Operation from a model or face"))
 
-FreeCAD.Console.PrintLog("Loading PathPocketGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathMillFaceGui... done\n")
+

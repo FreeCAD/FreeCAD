@@ -46,6 +46,9 @@ def translate(context, text, disambig=None):
 
 class ObjectPocket(PathAreaOp.ObjectOp):
 
+    def opFeatures(self, obj):
+        return PathAreaOp.FeatureTool | PathAreaOp.FeatureDepths | PathAreaOp.FeatureHeights | PathAreaOp.FeatureStartPoint | PathAreaOp.FeatureBaseFaces | PathAreaOp.FeatureFinishDepth
+
     def initOperation(self, obj):
         PathLog.track()
 
@@ -60,9 +63,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         obj.addProperty("App::PropertyEnumeration", "OffsetPattern", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "clearing pattern to use"))
         obj.OffsetPattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
         obj.addProperty("App::PropertyBool", "MinTravel", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"))
-
-    def opFeatures(self, obj):
-        return PathAreaOp.FeatureTool | PathAreaOp.FeatureDepths | PathAreaOp.FeatureHeights | PathAreaOp.FeatureStartPoint | PathAreaOp.FeatureBaseFaces | PathAreaOp.FeatureFinishDepth
 
     def opUseProjection(self, obj):
         return False
