@@ -80,9 +80,11 @@ class ObjectContour(PathAreaOp.ObjectOp):
 
     def opOnChanged(self, obj, prop):
         PathLog.track('prop: {}  state: {}'.format(prop, obj.State))
-        obj.setEditorMode('MiterLimit', 2)
-        if obj.JoinType == 'Miter':
-            obj.setEditorMode('MiterLimit', 0)
+        if prop == 'JoinType':
+            if obj.JoinType == 'Miter':
+                obj.setEditorMode('MiterLimit', 0)
+            else:
+                obj.setEditorMode('MiterLimit', 2)
 
     def opShapeForDepths(self, obj):
         job = PathUtils.findParentJob(obj)

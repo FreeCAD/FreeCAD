@@ -160,6 +160,14 @@ def surfaceselect():
     FreeCADGui.Selection.addSelectionGate(MESHGate())
     FreeCAD.Console.PrintWarning("Surfacing Select Mode\n")
 
+def select(op):
+    opsel = {}
+    opsel['Profile'] = profileselect
+    opsel['Pocket'] = pocketselect
+    opsel['Contour'] = contourselect
+    opsel['Surface'] = surfaceselect
+    return opsel[op]
+
 def clear():
     FreeCADGui.Selection.removeSelectionGate()
     FreeCAD.Console.PrintWarning("Free Select\n")

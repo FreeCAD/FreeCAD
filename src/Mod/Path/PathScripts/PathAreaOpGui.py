@@ -26,9 +26,9 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts.PathAreaOp as PathAreaOp
-import PathScripts.PathContour as PathContour
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSelection as PathSelection
+import importlib
 
 from PathScripts import PathUtils
 from PySide import QtCore, QtGui
@@ -49,10 +49,14 @@ def translate(context, text, disambig=None):
 
 class ViewProvider(object):
 
-    def __init__(self, vobj):
+    def __init__(self, vobj, resources):
         PathLog.track()
         vobj.Proxy = self
         self.deleteOnReject = True
+        self.OpIcon = ":/icons/%s.svg" % resources.pixmap
+        self.OpName = resources.name
+        self.OpPageModule = resources.opPageClass.__module__
+        self.OpPageClass = resources.opPageClass.__name__
 
     def attach(self, vobj):
         PathLog.track()
@@ -74,16 +78,31 @@ class ViewProvider(object):
         self.deleteOnReject = False
         return True
 
-    def getIcon(self):
-        return ":/icons/Path-Contour.svg"
-
     def __getstate__(self):
         PathLog.track()
-        return None
+        state = {}
+        state['OpName'] = self.OpName
+        state['OpIcon'] = self.OpIcon
+        state['OpPageModule'] = self.OpPageModule
+        state['OpPageClass'] = self.OpPageClass
+        return state
 
     def __setstate__(self, state):
-        PathLog.track()
-        return None
+        self.OpName = state['OpName'] 
+        self.OpIcon = state['OpIcon']
+        self.OpPageModule = state['OpPageModule']
+        self.OpPageClass = state['OpPageClass']
+
+    def getIcon(self):
+        return self.OpIcon
+
+    def getTaskPanelOpPage(self, obj):
+        mod = importlib.import_module(self.OpPageModule)
+        cls = getattr(mod, self.OpPageClass)
+        return cls(obj)
+
+    def getSelectionFactory(self):
+        return PathSelection.select(self.OpName)
 
 class TaskPanelPage(object):
 
@@ -461,6 +480,57 @@ class _CommandSetStartPoint:
 
     def Activated(self):
         FreeCADGui.Snapper.getPoint(callback=self.setpoint)
+
+def Create(res):
+    FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
+    obj  = res.objFactory(res.name)
+    vobj = ViewProvider(obj.ViewObject, res)
+
+    FreeCAD.ActiveDocument.commitTransaction()
+    obj.ViewObject.startEditing()
+    return obj
+
+class CommandPathOp:
+    def __init__(self, resources):
+        self.res = resources
+
+    def GetResources(self):
+        return {'Pixmap':   self.res.pixmap,
+                'MenuText': self.res.menuText,
+                'Accel':    self.res.accelKey,
+                'ToolTip':  self.res.toolTip}
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
+
+    def Activated(self):
+        return Create(self.res)
+
+class CommandResources:
+    def __init__(self, name, objFactory, opPageClass, pixmap, menuText, accelKey, toolTip):
+        self.name = name
+        self.objFactory = objFactory
+        self.opPageClass = opPageClass
+        self.pixmap = pixmap
+        self.menuText = menuText
+        self.accelKey = accelKey
+        self.toolTip = toolTip
+
+def SetupOperation(name,
+        objFactory,
+        opPageClass,
+        pixmap,
+        menuText,
+        accelKey,
+        toolTip):
+    res = CommandResources(name, objFactory, opPageClass, pixmap, menuText, accelKey, toolTip)
+
+    FreeCADGui.addCommand("Path_%s" % name, CommandPathOp(res))
+
 
 FreeCADGui.addCommand('Set_StartPoint', _CommandSetStartPoint())
 

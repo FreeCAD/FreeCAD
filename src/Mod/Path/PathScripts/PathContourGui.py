@@ -70,44 +70,12 @@ class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
         signals.append(self.form.extraOffset.editingFinished)
         return signals
 
-class ViewProviderContour(PathAreaOpGui.ViewProvider):
-
-    def getTaskPanelOpPage(self, obj):
-        return TaskPanelOpPage(obj)
-
-    def getIcon(self):
-        return ":/icons/Path-Contour.svg"
-
-    def getSelectionFactory(self):
-        return PathSelection.contourselect
-
-def Create(name):
-    FreeCAD.ActiveDocument.openTransaction(translate("Path", "Create a Contour"))
-    obj   = PathContour.Create(name)
-    vobj  = ViewProviderContour(obj.ViewObject)
-
-    FreeCAD.ActiveDocument.commitTransaction()
-    obj.ViewObject.startEditing()
-    return obj
-
-class CommandPathContour:
-    def GetResources(self):
-        return {'Pixmap': 'Path-Contour',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathContour", "Contour"),
-                'Accel': "P, C",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathContour", "Creates a Contour Path for the Base Object ")}
-
-    def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                        return True
-        return False
-
-    def Activated(self):
-        return Create("Contour")
-
-# register the FreeCAD command
-FreeCADGui.addCommand('Path_Contour', CommandPathContour())
+PathAreaOpGui.SetupOperation('Contour',
+        PathContour.Create,
+        TaskPanelOpPage,
+        'Path-Contour',
+        QtCore.QT_TRANSLATE_NOOP("PathContour", "Contour"),
+        "P, C",
+        QtCore.QT_TRANSLATE_NOOP("PathContour", "Creates a Contour Path for the Base Object "))
 
 FreeCAD.Console.PrintLog("Loading PathContourGui... done\n")
