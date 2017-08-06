@@ -110,11 +110,56 @@ class ObjectOp(object):
         pass
     def opSetDefaultValues(self, obj):
         pass
+    def opShapeForDepths(self, obj):
+        job = PathUtils.findParentJob(obj)
+        if job and job.Base:
+            PathLog.debug("job=%s base=%s shape=%s" % (job, job.Base, job.Base.Shape))
+            return job.Base.Shape
+        PathLog.warning(translate("PathAreaOp", "No job object found (%s), or job has no Base." % job))
+        return None
+
      
     def onChanged(self, obj, prop):
         #PathLog.track(obj.Label, prop)
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
             obj.setEditorMode(prop, 2)
+
+        if FeatureBaseGeometry & self.opFeatures(obj):
+            if prop == 'Base' and len(obj.Base) == 1:
+                try:
+                    (base, sub) = obj.Base[0]
+                    bb = base.Shape.BoundBox  # parent boundbox
+                    subobj = base.Shape.getElement(sub[0])
+                    fbb = subobj.BoundBox  # feature boundbox
+                    obj.StartDepth = bb.ZMax
+                    obj.ClearanceHeight = bb.ZMax + 5.0
+                    obj.SafeHeight = bb.ZMax + 3.0
+
+                    if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
+                        obj.FinalDepth = bb.ZMin
+                    elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
+                        obj.FinalDepth = fbb.ZMin
+                    elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
+                        obj.FinalDepth = fbb.ZMin
+                    elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
+                        obj.FinalDepth = fbb.ZMin
+                    else:  # catch all
+                        obj.FinalDepth = bb.ZMin
+
+                    if hasattr(obj, 'Side'):
+                        if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
+                            obj.Side = "Outside"
+                        else:
+                            obj.Side = "Inside"
+
+                except Exception as e:
+                    PathLog.error(translate("PatArea", "Error in calculating depths: %s" % e))
+                    obj.StartDepth = 5.0
+                    obj.ClearanceHeight = 10.0
+                    obj.SafeHeight = 8.0
+                    if hasattr(obj, 'Side'):
+                        obj.Side = "Outside"
+
         self.opOnChanged(obj, prop)
 
     def setDefaultValues(self, obj):

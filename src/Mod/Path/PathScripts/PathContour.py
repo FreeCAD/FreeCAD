@@ -86,14 +86,6 @@ class ObjectContour(PathAreaOp.ObjectOp):
             else:
                 obj.setEditorMode('MiterLimit', 2)
 
-    def opShapeForDepths(self, obj):
-        job = PathUtils.findParentJob(obj)
-        if job and job.Base:
-            PathLog.debug("job=%s base=%s shape=%s" % (job, job.Base, job.Base.Shape))
-            return job.Base.Shape
-        PathLog.warning("No job object found (%s), or job has no Base." % job)
-        return None
-
     def opSetDefaultValues(self, obj):
         obj.Direction   = "CW"
         obj.UseComp     = True

@@ -67,14 +67,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
     def opUseProjection(self, obj):
         return False
 
-    def opShapeForDepths(self, obj):
-        job = PathUtils.findParentJob(obj)
-        if job and job.Base:
-            PathLog.debug("job=%s base=%s shape=%s" % (job, job.Base, job.Base.Shape))
-            return job.Base.Shape
-        PathLog.warning("No job object found (%s), or job has no Base." % job)
-        return None
-
     def opAreaParams(self, obj, isHole):
         params = {}
         params['Fill'] = 0
@@ -135,34 +127,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
     def opSetDefaultValues(self, obj):
         obj.StepOver = 100
         obj.ZigZagAngle = 45
-
-    def opOnChanged(self, obj, prop):
-        #PathLog.track(obj.Label, prop)
-        if prop == 'Base' and len(obj.Base) == 1:
-            try:
-                (base, sub) = obj.Base[0]
-                bb = base.Shape.BoundBox  # parent boundbox
-                subobj = base.Shape.getElement(sub[0])
-                fbb = subobj.BoundBox  # feature boundbox
-                obj.StartDepth = bb.ZMax
-                obj.ClearanceHeight = bb.ZMax + 5.0
-                obj.SafeHeight = bb.ZMax + 3.0
-
-                if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
-                    obj.FinalDepth = bb.ZMin
-                elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
-                    obj.FinalDepth = fbb.ZMin
-                elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
-                    obj.FinalDepth = fbb.ZMin
-                elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
-                    obj.FinalDepth = fbb.ZMin
-                else:  # catch all
-                    obj.FinalDepth = bb.ZMin
-            except Exception as e:
-                PathLog.error(translate("PathPocket", "Error in calculating depths: %s" % e))
-                obj.StartDepth = 5.0
-                obj.ClearanceHeight = 10.0
-                obj.SafeHeight = 8.0
 
 
 def Create(name):

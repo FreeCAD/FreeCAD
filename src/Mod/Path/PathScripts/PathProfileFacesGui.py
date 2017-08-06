@@ -27,7 +27,7 @@ import FreeCADGui
 import Path
 import PathScripts.PathAreaOpGui as PathAreaOpGui
 import PathScripts.PathLog as PathLog
-import PathScripts.PathProfile as PathProfile
+import PathScripts.PathProfileFaces as PathProfileFaces
 import PathScripts.PathSelection as PathSelection
 
 from PathScripts import PathUtils
@@ -79,7 +79,7 @@ class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
         return signals
 
 PathAreaOpGui.SetupOperation('Profile',
-        PathProfile.Create,
+        PathProfileFaces.Create,
         TaskPanelOpPage,
         'Path-Profile',
         QtCore.QT_TRANSLATE_NOOP("PathProfile", "Face Profile"),
