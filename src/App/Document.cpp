@@ -2173,6 +2173,10 @@ int Document::recompute()
         delete LogEntry;
     _RecomputeLog.clear();
 
+    //do we have anything to do?
+    if(d->objectMap.empty())
+        return 0;
+    
     // get the sorted vector of all objects in the document and go though it from the end
     vector<DocumentObject*> topoSortedObjects = topologicalSort();
 
