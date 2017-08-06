@@ -45,7 +45,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathArray
         from PathScripts import PathComment
         from PathScripts import PathCompoundExtended
-        from PathScripts import PathContourGui
         from PathScripts import PathCopy
         from PathScripts import PathCustom
         from PathScripts import PathDressup
@@ -67,6 +66,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathPlane
         from PathScripts import PathPocketGui
         from PathScripts import PathPost
+        from PathScripts import PathProfileContourGui
         from PathScripts import PathProfileEdgesGui
         from PathScripts import PathProfileFacesGui
         from PathScripts import PathSanity
