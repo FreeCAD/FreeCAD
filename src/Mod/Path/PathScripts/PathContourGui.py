@@ -23,52 +23,17 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
-import Path
 import PathScripts.PathAreaOpGui as PathAreaOpGui
 import PathScripts.PathContour as PathContour
-import PathScripts.PathLog as PathLog
-import PathScripts.PathSelection as PathSelection
+import PathScripts.PathProfileBaseGui as PathProfileBaseGui
 
-from PathScripts import PathUtils
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+class TaskPanelOpPage(PathProfileBaseGui.TaskPanelOpPage):
 
-class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
-
-    def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpContourEdit.ui")
-
-    def getFields(self, obj):
-        PathLog.track()
-        self.obj.OffsetExtra = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
-        self.obj.UseComp = self.form.useCompensation.isChecked()
-        self.obj.Direction = str(self.form.direction.currentText())
-        self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
-
-        tc = PathUtils.findToolController(self.obj, self.form.toolController.currentText())
-        self.obj.ToolController = tc
-
-    def setFields(self, obj):
-        PathLog.track()
-        self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
-        self.form.useCompensation.setChecked(self.obj.UseComp)
-        self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
-
-        self.selectInComboBox(self.obj.Direction, self.form.direction)
-        self.setupToolController(self.obj, self.form.toolController)
-
-    def getSignalsForUpdate(self, obj):
-        PathLog.track()
-        signals = []
-        signals.append(self.form.direction.currentIndexChanged)
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.useCompensation.clicked)
-        signals.append(self.form.useStartPoint.clicked)
-        signals.append(self.form.extraOffset.editingFinished)
-        return signals
+    def profileFeatures(self):
+        # I know this looks bad, contour is just the most basic profile op there is
+        return 0
 
 PathAreaOpGui.SetupOperation('Contour',
         PathContour.Create,
