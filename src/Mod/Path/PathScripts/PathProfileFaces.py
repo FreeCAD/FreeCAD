@@ -59,12 +59,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.Direction = ['CW', 'CCW']  # this is the direction that the profile runs
         obj.addProperty("App::PropertyBool", "UseComp", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final profile- good for roughing toolpath"))
-        obj.addProperty("App::PropertyBool", "processHoles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile holes as well as the outline"))
-        obj.addProperty("App::PropertyBool", "processPerimeter", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the outline"))
-        obj.addProperty("App::PropertyBool", "processCircles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile round holes"))
         obj.addProperty("App::PropertyEnumeration", "JoinType", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool moves around corners. Default=Round"))
         obj.JoinType = ['Round', 'Square', 'Miter']  # this is the direction that the Contour runs
         obj.addProperty("App::PropertyFloat", "MiterLimit", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum distance before a miter join is truncated"))
+
+        # Face specific Properties
+        obj.addProperty("App::PropertyBool", "processHoles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile holes as well as the outline"))
+        obj.addProperty("App::PropertyBool", "processPerimeter", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the outline"))
+        obj.addProperty("App::PropertyBool", "processCircles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile round holes"))
 
         obj.Proxy = self
 
@@ -73,10 +75,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.OffsetExtra = 0.0
         obj.Direction = "CW"
         obj.UseComp = True
-        obj.processHoles = False
-        obj.processPerimeter = True
         obj.JoinType = "Round"
         obj.MiterLimit = 0.1
+
+        obj.processHoles = False
+        obj.processCircles = False
+        obj.processPerimeter = True
 
     def onOpChanged(self, obj, prop):
         if prop == "UseComp":
@@ -90,52 +94,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if obj.JoinType == 'Miter':
                 obj.setEditorMode('MiterLimit', 0)
 
-        if prop == 'Base' and len(obj.Base) == 1:
-            try:
-                (base, sub) = obj.Base[0]
-                bb = base.BoundBox  # parent boundbox
-                subobj = base.getElement(sub)
-                fbb = subobj.BoundBox  # feature boundbox
-                obj.StartDepth = bb.ZMax
-                obj.ClearanceHeight = bb.ZMax + 5.0
-                obj.SafeHeight = bb.ZMax + 3.0
-
-                if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
-                    obj.FinalDepth = bb.ZMin
-                elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
-                    obj.FinalDepth = fbb.ZMin
-                elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
-                    obj.FinalDepth = fbb.ZMin
-                elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
-                    obj.FinalDepth = fbb.ZMin
-                else:  # catch all
-                    obj.FinalDepth = bb.ZMin
-
-                if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
-                    obj.Side = "Outside"
-                else:
-                    obj.Side = "Inside"
-
-            except Exception as e:
-                PathLog.error(translate("PathPocket", "Error in calculating depths: %s" % e))
-                obj.StartDepth = 5.0
-                obj.ClearanceHeight = 10.0
-                obj.SafeHeight = 8.0
-                obj.Side = "Outside"
-
     def opFeatures(self, obj):
         return PathAreaOp.FeatureTool | PathAreaOp.FeatureDepths | PathAreaOp.FeatureHeights | PathAreaOp.FeatureStartPoint | PathAreaOp.FeatureBaseFaces
 
     def opUseProjection(self, obj):
         return True
-
-    def opShapeForDepths(self, obj):
-        job = PathUtils.findParentJob(obj)
-        if job and job.Base:
-            PathLog.debug("job=%s base=%s shape=%s" % (job, job.Base, job.Base.Shape))
-            return job.Base.Shape
-        PathLog.warning("No job object found (%s), or job has no Base." % job)
-        return None
 
     def opAreaParams(self, obj, isHole):
         params = {}
