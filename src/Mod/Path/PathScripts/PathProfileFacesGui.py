@@ -39,7 +39,7 @@ def translate(context, text, disambig=None):
 class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
 
     def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpProfileEdit.ui")
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpProfileFacesEdit.ui")
 
     def getFields(self, obj):
         self.obj.OffsetExtra = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
