@@ -23,8 +23,6 @@ SET(PathScripts_SRCS
     PathScripts/PathArray.py
     PathScripts/PathComment.py
     PathScripts/PathCompoundExtended.py
-    PathScripts/PathContour.py
-    PathScripts/PathContourGui.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
     PathScripts/PathDressup.py
@@ -58,6 +56,8 @@ SET(PathScripts_SRCS
     PathScripts/PathPreferencesPathJob.py
     PathScripts/PathProfileBase.py
     PathScripts/PathProfileBaseGui.py
+    PathScripts/PathProfileContour.py
+    PathScripts/PathProfileContourGui.py
     PathScripts/PathProfileEdges.py
     PathScripts/PathProfileEdgesGui.py
     PathScripts/PathProfileFaces.py

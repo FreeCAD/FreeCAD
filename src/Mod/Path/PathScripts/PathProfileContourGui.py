@@ -24,8 +24,8 @@
 
 import FreeCAD
 import PathScripts.PathAreaOpGui as PathAreaOpGui
-import PathScripts.PathContour as PathContour
 import PathScripts.PathProfileBaseGui as PathProfileBaseGui
+import PathScripts.PathProfileContour as PathProfileContour
 
 from PySide import QtCore
 
@@ -36,11 +36,11 @@ class TaskPanelOpPage(PathProfileBaseGui.TaskPanelOpPage):
         return 0
 
 PathAreaOpGui.SetupOperation('Contour',
-        PathContour.Create,
+        PathProfileContour.Create,
         TaskPanelOpPage,
         'Path-Contour',
-        QtCore.QT_TRANSLATE_NOOP("PathContour", "Contour"),
+        QtCore.QT_TRANSLATE_NOOP("PathProfileContour", "Contour"),
         "P, C",
-        QtCore.QT_TRANSLATE_NOOP("PathContour", "Creates a Contour Path for the Base Object "))
+        QtCore.QT_TRANSLATE_NOOP("PathProfileContour", "Creates a Contour Path for the Base Object "))
 
-FreeCAD.Console.PrintLog("Loading PathContourGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathProfileContourGui... done\n")
