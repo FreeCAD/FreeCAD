@@ -115,7 +115,10 @@ class ObjectOp(object):
         if job and job.Base:
             PathLog.debug("job=%s base=%s shape=%s" % (job, job.Base, job.Base.Shape))
             return job.Base.Shape
-        PathLog.warning(translate("PathAreaOp", "No job object found (%s), or job has no Base." % job))
+        if job:
+            PathLog.warning(translate("PathAreaOp", "job %s has no Base.") % job.Label)
+        else:
+            PathLog.warning(translate("PathAreaOp", "no job for op %s found.") % obj.Label)
         return None
 
      
