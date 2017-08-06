@@ -195,7 +195,7 @@ std::vector< DocumentObject* > OriginGroupExtension::addObjects(std::vector<Docu
 
 bool OriginGroupExtension::hasObject(const DocumentObject* obj, bool recursive) const {
     
-    if(obj == getOrigin() || getOrigin()->hasObject(obj))
+    if(Origin.getValue() && (obj == getOrigin() || getOrigin()->hasObject(obj)))
         return true;
     
     return App::GroupExtension::hasObject(obj, recursive);
