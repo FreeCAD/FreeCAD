@@ -121,8 +121,7 @@ void ViewProviderOriginGroupExtension::slotChangedObjectApp ( const App::Documen
 }
 
 void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& vp) {
-    if ( !vp.hasExtension ( Gui::ViewProviderOrigin::getClassTypeId () ) &&
-         !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () ) ) {
+    if ( !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () )) {
         // Ignore origins to avoid infinite recursion (not likely in a well-formed focument, 
         //          but may happen in documents designed in old versions of assembly branch )
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
@@ -135,6 +134,10 @@ void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewPro
 }
 
 void ViewProviderOriginGroupExtension::updateOriginSize () {
+    
+    if(getExtendedViewProvider()->getObject()->isDeleting())
+        return;
+    
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
     if(!group)
         return;
