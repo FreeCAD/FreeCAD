@@ -465,7 +465,7 @@ def addToJob(obj, jobname=None):
         if len(jobs) == 1:
             job = jobs[0]
         else:
-            FreeCAD.Console.PrintError("Didn't find the job")
+            PathLog.error("Didn't find job %s" % jobname)
             return None
     else:
         jobs = GetJobs()
