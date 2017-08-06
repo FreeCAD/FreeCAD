@@ -96,7 +96,7 @@ class ObjectContour(PathProfileBase.ObjectProfile):
             return [(PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, depthparams=self.depthparams), False)]
 
     def opAreaParams(self, obj, isHole):
-        params = baseObject().opAreaParams(obj, isHole)
+        params = self.baseObject().opAreaParams(obj, isHole)
         params['Coplanar'] = 2
         return params
 
