@@ -67,7 +67,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathPlane
         from PathScripts import PathPocketGui
         from PathScripts import PathPost
-        from PathScripts import PathProfileGui
+        from PathScripts import PathProfileFacesGui
         from PathScripts import PathProfileEdges
         from PathScripts import PathSanity
         from PathScripts import PathSimpleCopy
