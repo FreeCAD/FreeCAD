@@ -56,6 +56,7 @@ SET(PathScripts_SRCS
     PathScripts/PathPreferences.py
     PathScripts/PathPreferencesPathDressup.py
     PathScripts/PathPreferencesPathJob.py
+    PathScripts/PathProfileBase.py
     PathScripts/PathProfileFaces.py
     PathScripts/PathProfileFacesGui.py
     PathScripts/PathProfileEdges.py

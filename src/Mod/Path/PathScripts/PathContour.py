@@ -29,6 +29,7 @@ import FreeCAD
 import Part
 import Path
 import PathScripts.PathAreaOp as PathAreaOp
+import PathScripts.PathProfileBase as PathProfileBase
 import PathScripts.PathLog as PathLog
 
 from PathScripts import PathUtils
@@ -53,46 +54,18 @@ __url__ = "http://www.freecadweb.org"
 """Path Contour object and FreeCAD command"""
 
 
-class ObjectContour(PathAreaOp.ObjectOp):
+class ObjectContour(PathProfileBase.ObjectProfile):
 
-    def opFeatures(self, obj):
-        return PathAreaOp.FeatureTool | PathAreaOp.FeatureDepths | PathAreaOp.FeatureHeights | PathAreaOp.FeatureStartPoint
-
-    def opUseProjection(self, obj):
-        return True
+    def baseObject(self):
+        return super(self.__class__, self)
 
     def initOperation(self, obj):
-        PathLog.track()
-
-        # Contour Properties
-        obj.addProperty("App::PropertyEnumeration", "Direction", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
-        obj.Direction = ['CW', 'CCW']  # this is the direction that the Contour runs
-        obj.addProperty("App::PropertyBool", "UseComp", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
-
-        obj.addProperty("App::PropertyDistance", "OffsetExtra", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final Contour- good for roughing toolpath"))
-
-        obj.addProperty("App::PropertyEnumeration", "JoinType", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool moves around corners. Default=Round"))
-        obj.JoinType = ['Round', 'Square', 'Miter']  # this is the direction that the Contour runs
-        obj.addProperty("App::PropertyFloat", "MiterLimit", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum distance before a miter join is truncated"))
-        obj.setEditorMode('MiterLimit', 2)
-
-        self.endVector = None
-
-    def opOnChanged(self, obj, prop):
-        PathLog.track('prop: {}  state: {}'.format(prop, obj.State))
-        if prop == 'JoinType':
-            if obj.JoinType == 'Miter':
-                obj.setEditorMode('MiterLimit', 0)
-            else:
-                obj.setEditorMode('MiterLimit', 2)
+        self.baseObject().initOperation(obj)
+        obj.setEditorMode('Side', 2) # it's always outside
 
     def opSetDefaultValues(self, obj):
-        obj.Direction   = "CW"
-        obj.UseComp     = True
-        obj.OffsetExtra = 0.0
-        obj.JoinType    = "Round"
-        obj.MiterLimit  = 0.1
-
+        self.baseObject().opSetDefaultValues(obj)
+        obj.Side = 'Outside'
 
     def opShapes(self, obj, commandlist):
         if obj.UseComp:
@@ -123,26 +96,8 @@ class ObjectContour(PathAreaOp.ObjectOp):
             return [(PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, depthparams=self.depthparams), False)]
 
     def opAreaParams(self, obj, isHole):
-        params = {'Fill': 0, 'Coplanar': 2}
-
-        if obj.UseComp is False:
-            params['Offset'] = 0.0
-        else:
-            params['Offset'] = self.radius + obj.OffsetExtra.Value
-
-        jointype = ['Round', 'Square', 'Miter']
-        params['JoinType'] = jointype.index(obj.JoinType)
-
-        if obj.JoinType == 'Miter':
-            params['MiterLimit'] = obj.MiterLimit
-        return params
-
-    def opPathParams(self, obj, isHole):
-        params = {}
-        if obj.Direction == 'CCW':
-            params['orientation'] = 0
-        else:
-            params['orientation'] = 1
+        params = baseObject().opAreaParams(obj, isHole)
+        params['Coplanar'] = 2
         return params
 
 def Create(name):
