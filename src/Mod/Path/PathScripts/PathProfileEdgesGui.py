@@ -27,7 +27,7 @@ import FreeCADGui
 import Path
 import PathScripts.PathAreaOpGui as PathAreaOpGui
 import PathScripts.PathLog as PathLog
-import PathScripts.PathProfileFaces as PathProfileFaces
+import PathScripts.PathProfileEdges as PathProfileEdges
 import PathScripts.PathSelection as PathSelection
 
 from PathScripts import PathUtils
@@ -39,7 +39,7 @@ def translate(context, text, disambig=None):
 class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
 
     def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpProfileFacesEdit.ui")
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpProfileEdgesEdit.ui")
 
     def getFields(self, obj):
         self.obj.OffsetExtra = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
@@ -47,9 +47,6 @@ class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
         self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
         self.obj.Side = str(self.form.cutSide.currentText())
         self.obj.Direction = str(self.form.direction.currentText())
-        self.obj.processHoles = self.form.processHoles.isChecked()
-        self.obj.processPerimeter = self.form.processPerimeter.isChecked()
-        self.obj.processCircles = self.form.processCircles.isChecked()
 
         tc = PathUtils.findToolController(self.obj, self.form.toolController.currentText())
         self.obj.ToolController = tc
@@ -58,9 +55,6 @@ class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
         self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
         self.form.useCompensation.setChecked(self.obj.UseComp)
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
-        self.form.processHoles.setChecked(self.obj.processHoles)
-        self.form.processPerimeter.setChecked(self.obj.processPerimeter)
-        self.form.processCircles.setChecked(self.obj.processCircles)
 
         self.selectInComboBox(self.obj.Side, self.form.cutSide)
         self.selectInComboBox(self.obj.Direction, self.form.direction)
@@ -73,17 +67,16 @@ class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
         signals.append(self.form.useCompensation.clicked)
         signals.append(self.form.useStartPoint.clicked)
         signals.append(self.form.extraOffset.editingFinished)
-        signals.append(self.form.processHoles.clicked)
-        signals.append(self.form.processPerimeter.clicked)
-        signals.append(self.form.processCircles.clicked)
         return signals
 
-PathAreaOpGui.SetupOperation('Profile Faces',
-        PathProfileFaces.Create,
+
+
+PathAreaOpGui.SetupOperation('Profile Edges',
+        PathProfileEdges.Create,
         TaskPanelOpPage,
         'Path-Profile',
-        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Face Profile"),
+        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Edge Profile"),
         "P, F",
         QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile based on face or faces"))
 
-FreeCAD.Console.PrintLog("Loading PathProfileFacesGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathProfileEdgesGui... done\n")
