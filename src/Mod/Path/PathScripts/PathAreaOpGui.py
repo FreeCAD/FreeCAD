@@ -529,7 +529,7 @@ def SetupOperation(name,
         toolTip):
     res = CommandResources(name, objFactory, opPageClass, pixmap, menuText, accelKey, toolTip)
 
-    FreeCADGui.addCommand("Path_%s" % name, CommandPathOp(res))
+    FreeCADGui.addCommand("Path_%s" % name.replace(' ', '_'), CommandPathOp(res))
 
 
 FreeCADGui.addCommand('Set_StartPoint', _CommandSetStartPoint())
