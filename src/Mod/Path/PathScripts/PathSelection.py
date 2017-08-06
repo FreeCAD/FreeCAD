@@ -163,6 +163,7 @@ def surfaceselect():
 def select(op):
     opsel = {}
     opsel['Contour'] = contourselect
+    opsel['MillFace'] = pocketselect
     opsel['Pocket'] = pocketselect
     opsel['Profile Edges'] = eselect
     opsel['Profile Faces'] = profileselect

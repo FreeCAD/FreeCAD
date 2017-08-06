@@ -37,7 +37,7 @@ from PySide import QtCore, QtGui
 #  0 ... existing toolbox layout
 #  1 ... reverse order
 #  2 ... multi panel layout
-TaskPanelLayout = 2
+TaskPanelLayout = 0
 
 
 PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())

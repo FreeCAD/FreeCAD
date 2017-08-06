@@ -62,7 +62,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathHop
         from PathScripts import PathInspect
         from PathScripts import PathJob
-        from PathScripts import PathMillFace
+        from PathScripts import PathMillFaceGui
         from PathScripts import PathPlane
         from PathScripts import PathPocketGui
         from PathScripts import PathPost
