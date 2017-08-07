@@ -24,10 +24,10 @@
 
 import FreeCAD
 import FreeCADGui
-import Path
 import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSelection as PathSelection
+import PathScripts.PathOp as PathOp
 import importlib
 
 from PathScripts import PathUtils
@@ -176,7 +176,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
     DataObjectSub = QtCore.Qt.ItemDataRole.UserRole + 1
 
     def initPage(self, obj):
-        self.supports = PathAreaOp.FeatureBaseGeometry
+        self.supports = PathOp.FeatureBaseGeometry
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageBaseGeometryEdit.ui")
@@ -205,11 +205,11 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         #FreeCADGui.updateGui()
 
     def supportsEdges(self):
-        return self.supports & PathAreaOp.FeatureBaseEdges
+        return self.supports & PathOp.FeatureBaseEdges
     def supportsFaces(self):
-        return self.supports & PathAreaOp.FeatureBaseFaces
+        return self.supports & PathOp.FeatureBaseFaces
     def supportsPanels(self):
-        return self.supports & PathAreaOp.FeatureBasePanels
+        return self.supports & PathOp.FeatureBasePanels
 
     def featureName(self):
         if self.supportsEdges() and self.supportsFaces():
@@ -341,19 +341,19 @@ class TaskPanel(object):
         self.deleteOnReject = deleteOnReject
         self.featurePages = []
 
-        if PathAreaOp.FeatureBaseGeometry & obj.Proxy.opFeatures(obj):
+        if PathOp.FeatureBaseGeometry & obj.Proxy.opFeatures(obj):
             basePage = TaskPanelBaseGeometryPage(obj)
-            basePage.supports = obj.Proxy.opFeatures(obj) & PathAreaOp.FeatureBaseGeometry
+            basePage.supports = obj.Proxy.opFeatures(obj) & PathOp.FeatureBaseGeometry
             self.featurePages.append(basePage)
 
-        if PathAreaOp.FeatureDepths & obj.Proxy.opFeatures(obj):
-            if PathAreaOp.FeatureFinishDepth & obj.Proxy.opFeatures(obj):
+        if PathOp.FeatureDepths & obj.Proxy.opFeatures(obj):
+            if PathOp.FeatureFinishDepth & obj.Proxy.opFeatures(obj):
                 depthPage = TaskPanelDepthsPage(obj)
             else:
                 depthPage = TaskPanelDepthsWoFinishPage(obj)
             self.featurePages.append(depthPage)
 
-        if PathAreaOp.FeatureHeights & obj.Proxy.opFeatures(obj):
+        if PathOp.FeatureHeights & obj.Proxy.opFeatures(obj):
             self.featurePages.append(TaskPanelHeightsPage(obj))
 
         opPage.setTitle(translate('PathAreaOp', 'Operation'))
@@ -441,7 +441,7 @@ class TaskPanel(object):
     def setupUi(self):
         PathLog.track(self.deleteOnReject)
 
-        if self.deleteOnReject and PathAreaOp.FeatureBaseGeometry & self.obj.Proxy.opFeatures(self.obj):
+        if self.deleteOnReject and PathOp.FeatureBaseGeometry & self.obj.Proxy.opFeatures(self.obj):
             sel = FreeCADGui.Selection.getSelectionEx()
             if len(sel) == 1 and sel[0].Object != self.obj:
                 for page in self.featurePages:

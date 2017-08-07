@@ -47,6 +47,7 @@ SET(PathScripts_SRCS
     PathScripts/PathLog.py
     PathScripts/PathMillFace.py
     PathScripts/PathMillFaceGui.py
+    PathScripts/PathOp.py
     PathScripts/PathPlane.py
     PathScripts/PathPocket.py
     PathScripts/PathPocketBaseGui.py

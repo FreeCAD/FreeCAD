@@ -23,11 +23,9 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
-import Path
 import PathScripts.PathAreaOp as PathAreaOp
-import PathScripts.PathUtils as PathUtils
 import PathScripts.PathLog as PathLog
+import PathScripts.PathOp as PathOp
 
 from PySide import QtCore
 
@@ -57,10 +55,7 @@ __url__ = "http://www.freecadweb.org"
 
 class ObjectProfile(PathAreaOp.ObjectOp):
 
-    def opFeatures(self, obj):
-        return PathAreaOp.FeatureTool | PathAreaOp.FeatureDepths | PathAreaOp.FeatureHeights | PathAreaOp.FeatureStartPoint
-
-    def initOperation(self, obj):
+    def initAreaOp(self, obj):
         # Profile Properties
         obj.addProperty("App::PropertyEnumeration", "Side", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
         obj.Side = ['Outside', 'Inside']  # side of profile that cutter is on in relation to direction of profile
@@ -74,9 +69,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.addProperty("App::PropertyFloat", "MiterLimit", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum distance before a miter join is truncated"))
         obj.setEditorMode('MiterLimit', 2)
 
-        obj.Proxy = self
-
-    def onOpChanged(self, obj, prop):
+    def areaOpOnChanged(self, obj, prop):
         if prop == "UseComp":
             if not obj.UseComp:
                 obj.setEditorMode('Side', 2)
@@ -89,19 +82,20 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             else:
                 obj.setEditorMode('MiterLimit', 2)
 
-    def opAreaParams(self, obj, isHole):
+    def areaOpAreaParams(self, obj, isHole):
         params = {}
         params['Fill'] = 0
         params['Coplanar'] = 0
         params['SectionCount'] = -1
 
+        offset = 0.0
         if obj.UseComp:
-            if obj.Side == 'Inside':
-                params['Offset'] = 0 - self.radius+obj.OffsetExtra.Value
-            else:
-                params['Offset'] = self.radius+obj.OffsetExtra.Value
-        else:
-            params['Offset'] = 0.0
+            offset = self.radius + obj.OffsetExtra.Value
+        if obj.Side == 'Inside':
+            offset = 0 - offset
+        if isHole:
+            offset = 0 - offset
+        params['Offset'] = offset
 
         jointype = ['Round', 'Square', 'Miter']
         params['JoinType'] = jointype.index(obj.JoinType)
@@ -111,7 +105,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         return params
 
-    def opPathParams(self, obj, isHole):
+    def areaOpPathParams(self, obj, isHole):
         params = {}
 
         # Reverse the direction for holes
@@ -127,10 +121,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         return params
 
-    def opUseProjection(self, obj):
+    def areaOpUseProjection(self, obj):
         return True
 
-    def opSetDefaultValues(self, obj):
+    def areaOpSetDefaultValues(self, obj):
         obj.Side = "Outside"
         obj.OffsetExtra = 0.0
         obj.Direction = "CW"

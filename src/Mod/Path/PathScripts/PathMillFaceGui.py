@@ -24,7 +24,6 @@
 
 import FreeCAD
 import FreeCADGui
-import Path
 import PathScripts.PathAreaOpGui as PathAreaOpGui
 import PathScripts.PathMillFace as PathMillFace
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui

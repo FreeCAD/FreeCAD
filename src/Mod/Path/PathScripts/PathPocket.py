@@ -24,9 +24,9 @@
 
 import FreeCAD
 import Part
-import Path
 import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
+import PathScripts.PathOp as PathOp
 
 from PathScripts import PathUtils
 from PySide import QtCore
@@ -46,10 +46,10 @@ def translate(context, text, disambig=None):
 
 class ObjectPocket(PathAreaOp.ObjectOp):
 
-    def opFeatures(self, obj):
-        return PathAreaOp.FeatureTool | PathAreaOp.FeatureDepths | PathAreaOp.FeatureHeights | PathAreaOp.FeatureStartPoint | PathAreaOp.FeatureBaseFaces | PathAreaOp.FeatureFinishDepth
+    def areaOpFeatures(self, obj):
+        return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth
 
-    def initOperation(self, obj):
+    def initAreaOp(self, obj):
         PathLog.track()
 
         # Pocket Properties
@@ -64,10 +64,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         obj.OffsetPattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
         obj.addProperty("App::PropertyBool", "MinTravel", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"))
 
-    def opUseProjection(self, obj):
+    def areaOpUseProjection(self, obj):
         return False
 
-    def opAreaParams(self, obj, isHole):
+    def areaOpAreaParams(self, obj, isHole):
         params = {}
         params['Fill'] = 0
         params['Coplanar'] = 0
@@ -83,7 +83,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         params['PocketMode'] = Pattern.index(obj.OffsetPattern) + 1
         return params
 
-    def opPathParams(self, obj, isHole):
+    def areaOpPathParams(self, obj, isHole):
         params = {}
 
         # if MinTravel is turned on, set path sorting to 3DSort
@@ -93,7 +93,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             params['sort_mode'] = 2
         return params
 
-    def opShapes(self, obj, commandlist):
+    def areaOpShapes(self, obj):
         PathLog.track()
 
         job = PathUtils.findParentJob(obj)
@@ -124,7 +124,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             removalshapes = [(obj.removalshape, False)]
         return removalshapes
 
-    def opSetDefaultValues(self, obj):
+    def areaOpSetDefaultValues(self, obj):
         obj.StepOver = 100
         obj.ZigZagAngle = 45
 

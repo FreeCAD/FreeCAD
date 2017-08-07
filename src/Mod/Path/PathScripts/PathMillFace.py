@@ -26,9 +26,9 @@ from __future__ import print_function
 
 import FreeCAD
 import Part
-import Path
 import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
+import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore, QtGui
@@ -56,10 +56,10 @@ __url__ = "http://www.freecadweb.org"
 
 class ObjectFace(PathAreaOp.ObjectOp):
 
-    def opFeatures(self, obj):
-        return PathAreaOp.FeatureTool | PathAreaOp.FeatureDepths | PathAreaOp.FeatureHeights | PathAreaOp.FeatureStartPoint | PathAreaOp.FeatureBaseFaces | PathAreaOp.FeatureFinishDepth
+    def areaOpFeatures(self, obj):
+        return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth
 
-    def initOperation(self, obj):
+    def initAreaOp(self, obj):
 
         # Face Properties
         obj.addProperty("App::PropertyEnumeration", "CutMode", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
@@ -78,7 +78,7 @@ class ObjectFace(PathAreaOp.ObjectOp):
         obj.OffsetPattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
 
 
-    def opOnChanged(self, obj, prop):
+    def areaOpOnChanged(self, obj, prop):
         PathLog.track(prop)
         if prop == "StepOver" and obj.StepOver == 0:
             obj.StepOver = 1
@@ -93,10 +93,10 @@ class ObjectFace(PathAreaOp.ObjectOp):
             obj.StartDepth = d.safe_height
             obj.FinalDepth = d.start_depth
 
-    def opUseProjection(self, obj):
+    def areaOpUseProjection(self, obj):
         return False
 
-    def opAreaParams(self, obj, isHole):
+    def areaOpAreaParams(self, obj, isHole):
         params = {}
         params['Fill'] = 0
         params['Coplanar'] = 0
@@ -114,7 +114,7 @@ class ObjectFace(PathAreaOp.ObjectOp):
 
         return params
 
-    def opPathParams(self, obj, isHole):
+    def areaOpPathParams(self, obj, isHole):
         params = {}
         params['feedrate'] = self.horizFeed
         params['feedrate_v'] = self.vertFeed
@@ -127,9 +127,7 @@ class ObjectFace(PathAreaOp.ObjectOp):
         
         return params
 
-    def opShapes(self, obj, commandlist):
-        commandlist.append(Path.Command("(" + obj.Label + ")"))
-
+    def areaOpShapes(self, obj):
         # Facing is done either against base objects
         if obj.Base:
             PathLog.debug("obj.Base: {}".format(obj.Base))
@@ -165,7 +163,7 @@ class ObjectFace(PathAreaOp.ObjectOp):
 
         return [(env, False)]
 
-    def opSetDefaultValues(self, obj):
+    def areaOpSetDefaultValues(self, obj):
         obj.StepOver = 50
         obj.ZigZagAngle = 45.0
 

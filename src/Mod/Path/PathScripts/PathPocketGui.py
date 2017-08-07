@@ -23,8 +23,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
-import Path
 import PathScripts.PathAreaOpGui as PathAreaOpGui
 import PathScripts.PathPocket as PathPocket
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui
