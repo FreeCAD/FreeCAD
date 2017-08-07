@@ -610,7 +610,7 @@ class TaskPanel:
 
         self.obj.Proxy.execute(self.obj)
 
-        self.updateFeatureList()
+        self.setFields()
         FreeCAD.ActiveDocument.recompute()
 
     def addSelected(self):
@@ -643,7 +643,7 @@ class TaskPanel:
 
             self.obj.Base = baseObjects
             PathLog.debug("baseObjects=%s, obj.Base=%s" % (baseObjects, self.obj.Base))
-            self.updateFeatureList()
+            self.setFields()
 
             FreeCAD.ActiveDocument.recompute()
 
