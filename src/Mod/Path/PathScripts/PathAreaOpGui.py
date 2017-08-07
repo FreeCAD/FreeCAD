@@ -100,7 +100,7 @@ class ViewProvider(object):
     def getTaskPanelOpPage(self, obj):
         mod = importlib.import_module(self.OpPageModule)
         cls = getattr(mod, self.OpPageClass)
-        return cls(obj)
+        return cls(obj, 0)
 
     def getSelectionFactory(self):
         return PathSelection.select(self.OpName)
@@ -108,11 +108,12 @@ class ViewProvider(object):
 class TaskPanelPage(object):
 
     # task panel interaction framework
-    def __init__(self, obj):
+    def __init__(self, obj, features):
         self.obj = obj
         self.form = self.getForm()
         self.setDirty()
         self.setTitle('-')
+        self.features = features
 
     def setDirty(self):
         self.isdirty = True
@@ -333,19 +334,25 @@ class TaskPanel(object):
         self.featurePages = []
 
         features = obj.Proxy.opFeatures(obj)
+        opPage.features = features
 
         if PathOp.FeatureBaseGeometry & features:
-            basePage = TaskPanelBaseGeometryPage(obj)
-            basePage.features = features & PathOp.FeatureBaseGeometry
-            self.featurePages.append(basePage)
+            if hasattr(opPage, 'taskPanelBaseGeometryPage'):
+                self.featurePages.append(opPage.taskPanelBaseGeometryPage(obj, features))
+            else:
+                self.featurePages.append(TaskPanelBaseGeometryPage(obj, features))
 
         if PathOp.FeatureDepths & features:
-            depthPage = TaskPanelDepthsPage(obj)
-            depthPage.features = features & PathOp.FeatureFinishDepth
-            self.featurePages.append(depthPage)
+            if hasattr(opPage, 'taskPanelDepthsPage'):
+                self.featurePages.append(opPage.taskPanelDepthsPage(obj, features))
+            else:
+                self.featurePages.append(TaskPanelDepthsPage(obj, features))
 
         if PathOp.FeatureHeights & features:
-            self.featurePages.append(TaskPanelHeightsPage(obj))
+            if hasattr(opPage, 'taskPanelHeightsPage'):
+                self.featurePages.append(opPage.taskPanelHeightsPage(obj, features))
+            else:
+                self.featurePages.append(TaskPanelHeightsPage(obj, features))
 
         opPage.setTitle(translate('PathAreaOp', 'Operation'))
         self.featurePages.append(opPage)
