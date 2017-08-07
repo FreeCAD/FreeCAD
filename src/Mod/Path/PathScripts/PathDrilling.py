@@ -28,10 +28,11 @@ import ArchPanel
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
+import PathScripts.PathOp as PathOp
+import PathScripts.PathUtils as PathUtils
 import string
 import sys
 
-from PathScripts import PathUtils
 from PathScripts.PathUtils import fmt, waiting_effects
 from PySide import QtCore, QtGui
 
@@ -56,54 +57,31 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-class ObjectDrilling:
+class ObjectDrilling(PathOp.ObjectOp):
 
-    def __init__(self, obj):
-        # Properties of the holes
-        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Base features of the holes"))
+    def opFeatures(self, obj):
+        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureBaseGeometry
+
+    def initOperation(self, obj):
+
         obj.addProperty("App::PropertyStringList", "Disabled", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "List of disabled features"))
-
-        # General Properties
-        obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"))
-        obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this profile"))
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
-
-        # Drilling Properties
         obj.addProperty("App::PropertyLength", "PeckDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Drill depth before retracting to clear chips"))
         obj.addProperty("App::PropertyBool", "PeckEnabled", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable pecking"))
-        obj.addProperty("App::PropertyLength", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
         obj.addProperty("App::PropertyFloat", "DwellTime", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"))
         obj.addProperty("App::PropertyBool", "DwellEnabled", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable dwell"))
         obj.addProperty("App::PropertyBool", "AddTipLength", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate the tip length and subtract from final depth"))
         obj.addProperty("App::PropertyEnumeration", "ReturnLevel", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G98"))
         obj.ReturnLevel = ['G98', 'G99']  # this is the direction that the Contour runs
 
-        # Heights & Depths
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
-        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Height to clear top of material"))
         obj.addProperty("App::PropertyDistance", "RetractHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished"))
-
-        # Tool Properties
-        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
         if FreeCAD.GuiUp:
             _ViewProviderDrill(obj.ViewObject)
 
-        obj.Proxy = self
         self.vertFeed = 0.0
         self.horizFeed = 0.0
         self.vertRapid = 0.0
         self.horizRapid = 0.0
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
-
-    def onChanged(self, obj, prop):
-        pass
 
     def baseIsArchPanel(self, obj, base):
         return hasattr(base, "Proxy") and isinstance(base.Proxy, ArchPanel.PanelSheet)
@@ -156,35 +134,8 @@ class ObjectDrilling:
         name = "%s.%s" % (base.Name, sub)
         return not name in obj.Disabled
 
-    @waiting_effects
-    def execute(self, obj):
+    def opExecute(self, obj):
         PathLog.track()
-
-        if not obj.Active:
-            path = Path.Path("(inactive operation)")
-            obj.Path = path
-            obj.ViewObject.Visibility = False
-            return
-
-        output = ""
-        if obj.Comment != "":
-            output += '(' + str(obj.Comment)+')\n'
-
-        toolLoad = obj.ToolController
-        if toolLoad is None or toolLoad.ToolNumber == 0:
-            FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
-            return
-        else:
-            self.vertFeed = toolLoad.VertFeed.Value
-            self.horizFeed = toolLoad.HorizFeed.Value
-            self.vertRapid = toolLoad.VertRapid.Value
-            self.horizRapid = toolLoad.HorizRapid.Value
-            tool = toolLoad.Proxy.getTool(toolLoad)
-            if not tool or tool.Diameter == 0:
-                FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
-                return
-            else:
-                self.radius = tool.Diameter / 2
 
         tiplength = 0.0
         if obj.AddTipLength:
@@ -198,7 +149,7 @@ class ObjectDrilling:
 
             # Arch PanelSheet
             features = []
-            bb = None
+            fbb = None
             if self.baseIsArchPanel(obj, baseobject):
                 holeshapes = baseobject.Proxy.getHoles(baseobject, transform=True)
                 tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
@@ -210,20 +161,18 @@ class ObjectDrilling:
                             if PathUtils.isDrillable(baseobject, edge, tooldiameter):
                                 PathLog.debug('Found drillable hole edges: {}'.format(edge))
                                 features.append((baseobject, "%d.%d.%d" % (holeNr, wireNr, edgeNr)))
-                                bb = bb.united(edge.BoundBox) if bb else edge.BoundBox
 
             else:
                 features = self.findHoles(obj, baseobject)
                 for base,sub in features:
                     shape = base.Shape.getElement(sub)
-                    bb = bb.united(shape.BoundBox) if bb else shape.BoundBox
+                    fbb = fbb.united(shape.BoundBox) if fbb else shape.BoundBox
             obj.Base = features
-            if bb:
-                self.setDepths(obj, obj.Base[0][0].Shape.BoundBox, bb)
+            self.setDepths(obj, obj.Base[0][0].Shape.BoundBox, fbb)
             obj.Disabled = []
 
         locations = []
-        output = "(Begin Drilling)\n"
+        self.commandlist.append(Path.Command("(Begin Drilling)"))
 
         for base, subs in obj.Base:
             for sub in subs:
@@ -233,40 +182,40 @@ class ObjectDrilling:
 
         if len(locations) > 0:
             locations = PathUtils.sort_jobs(locations, ['x', 'y'])
-            output += "G90 " + obj.ReturnLevel + "\n"
+            self.commandlist.append(Path.Command('G90'))
+            self.commandlist.append(Path.Command(obj.ReturnLevel))
             # rapid to clearance height
-            output += "G0 Z" + str(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
+            self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
             # rapid to first hole location, with spindle still retracted:
 
             p0 = locations[0]
-            output += "G0 X" + fmt(p0['x']) + " Y" + fmt(p0['y']) + "F " + PathUtils.fmt(self.horizRapid) + "\n"
+            self.commandlist.append(Path.Command('G0', {'X': p0['x'], 'Y': p0['y'], 'F': self.horizRapid}))
             # move tool to clearance plane
-            output += "G0 Z" + fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
-            pword = ""
-            qword = ""
-            if obj.PeckDepth.Value > 0 and obj.PeckEnabled:
+            self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
+
+            cmd = "G81"
+            cmdParams = {}
+            cmdParams['Z'] = obj.FinalDepth.Value - tiplength
+            cmdParams['F'] = self.vertFeed
+            cmdParams['R'] = obj.RetractHeight.Value
+            if obj.PeckEnabled and obj.PeckDepth.Value > 0:
                 cmd = "G83"
-                qword = " Q" + fmt(obj.PeckDepth.Value)
-            elif obj.DwellTime > 0 and obj.DwellEnabled:
+                cmdParams['Q'] = obj.PeckDepth.Value
+            elif obj.DwellEnabled and obj.DwellTime > 0:
                 cmd = "G82"
-                pword = " P" + fmt(obj.DwellTime)
-            else:
-                cmd = "G81"
+                cmdParams['P'] = obj.DwellTime
+
             for p in locations:
-                output += cmd + \
-                    " X" + fmt(p['x']) + \
-                    " Y" + fmt(p['y']) + \
-                    " Z" + fmt(obj.FinalDepth.Value - tiplength) + qword + pword + \
-                    " R" + str(obj.RetractHeight.Value) + \
-                    " F" + str(self.vertFeed) + "\n" \
+                params = {}
+                params['X'] = p['x']
+                params['Y'] = p['y']
+                params.update(cmdParams)
+                self.commandlist.append(Path.Command(cmd, params))
 
-            output += "G80\n"
-
-        path = Path.Path(output)
-        obj.Path = path
+            self.commandlist.append(Path.Command('G80'))
 
     def setDepths(self, obj, bb, fbb):
-        try:
+        if bb and fbb:
             obj.StartDepth = bb.ZMax
             obj.ClearanceHeight = bb.ZMax + 5.0
             obj.SafeHeight = bb.ZMax + 3.0
@@ -276,7 +225,7 @@ class ObjectDrilling:
                 obj.FinalDepth = fbb.ZMax
             else:
                 obj.FinalDepth = bb.ZMin
-        except:
+        else:
             obj.StartDepth = 5.0
             obj.ClearanceHeight = 10.0
             obj.SafeHeight = 8.0
@@ -321,6 +270,13 @@ class ObjectDrilling:
         PathLog.debug("holes found: {}".format(holelist))
         return features
 
+    def opSetDefaultValues(self, obj):
+        obj.RetractHeight = 10
+
+def Create(name):
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectDrilling(obj)
+    return obj
 
 class _ViewProviderDrill:
     def __init__(self, obj):
@@ -382,17 +338,8 @@ class CommandPathDrilling:
         # if everything is ok, execute and register the transaction in the undo/redo stack
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Drilling", "Create Drilling"))
         FreeCADGui.addModule("PathScripts.PathDrilling")
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Drilling")')
-        FreeCADGui.doCommand('PathScripts.PathDrilling.ObjectDrilling(obj)')
-        FreeCADGui.doCommand('obj.Active = True')
+        FreeCADGui.doCommand('obj = PathScripts.PathDrilling.Create("Drilling")')
         FreeCADGui.doCommand('obj.ViewObject.Proxy.deleteOnReject = True')
-
-        FreeCADGui.doCommand('obj.ClearanceHeight = ' + str(ztop))
-        FreeCADGui.doCommand('obj.RetractHeight= ' + str(ztop))
-        FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
-        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
-       # FreeCADGui.doCommand('PathScripts.PathDrilling.ObjectDrilling.setDepths(obj.Proxy, obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
