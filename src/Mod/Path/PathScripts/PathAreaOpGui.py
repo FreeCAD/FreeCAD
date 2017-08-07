@@ -110,7 +110,6 @@ class TaskPanelPage(object):
     # task panel interaction framework
     def __init__(self, obj):
         self.obj = obj
-        self.initPage(obj)
         self.form = self.getForm()
         self.setDirty()
         self.setTitle('-')
@@ -175,9 +174,6 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
     DataObject    = QtCore.Qt.ItemDataRole.UserRole
     DataObjectSub = QtCore.Qt.ItemDataRole.UserRole + 1
 
-    def initPage(self, obj):
-        self.supports = PathOp.FeatureBaseGeometry
-
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageBaseGeometryEdit.ui")
     def getFields(self, obj):
@@ -205,11 +201,11 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         #FreeCADGui.updateGui()
 
     def supportsEdges(self):
-        return self.supports & PathOp.FeatureBaseEdges
+        return self.features & PathOp.FeatureBaseEdges
     def supportsFaces(self):
-        return self.supports & PathOp.FeatureBaseFaces
+        return self.features & PathOp.FeatureBaseFaces
     def supportsPanels(self):
-        return self.supports & PathOp.FeatureBasePanels
+        return self.features & PathOp.FeatureBasePanels
 
     def featureName(self):
         if self.supportsEdges() and self.supportsFaces():
@@ -290,47 +286,42 @@ class TaskPanelHeightsPage(TaskPanelPage):
     def getSignalsForUpdate(self, obj):
         return [self.form.safeHeight.editingFinished, self.form.clearanceHeight.editingFinished]
 
-class TaskPanelDepthsWoFinishPage(TaskPanelPage):
-    def getForm(self):
-        form = FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
-        return self.setupForm(form)
+class TaskPanelDepthsPage(TaskPanelPage):
 
-    def setupForm(self, form):
-        form.finishDepth.hide()
-        form.finishDepthLabel.hide()
-        return form
+    def getForm(self):
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
+
+    def initPage(self, obj):
+        if PathOp.FeatureFinishDepth & self.features:
+            self.form.finishDepth.setEnabled(True)
+            self.form.finishDepthLabel.setEnabled(True)
+        else:
+            self.form.finishDepth.hide()
+            self.form.finishDepthLabel.hide()
 
     def getTitle(self, obj):
         return translate("PathAreaOp", "Depths")
+
     def getFields(self, obj):
         obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
         obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
         obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
+        if PathOp.FeatureFinishDepth & self.features:
+            obj.FinishDepth = FreeCAD.Units.Quantity(self.form.finishDepth.text()).Value
     def setFields(self, obj):
         self.form.startDepth.setText(FreeCAD.Units.Quantity(obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.finalDepth.setText(FreeCAD.Units.Quantity(obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.stepDown.setText(FreeCAD.Units.Quantity(obj.StepDown.Value, FreeCAD.Units.Length).UserString)
+        if PathOp.FeatureFinishDepth & self.features:
+            self.form.finishDepth.setText(FreeCAD.Units.Quantity(obj.FinishDepth.Value, FreeCAD.Units.Length).UserString)
     def getSignalsForUpdate(self, obj):
         signals = []
         signals.append(self.form.startDepth.editingFinished)
         signals.append(self.form.finalDepth.editingFinished)
         signals.append(self.form.stepDown.editingFinished)
-        return signals
-
-class TaskPanelDepthsPage(TaskPanelDepthsWoFinishPage):
-    def setupForm(self, form):
-        form.finishDepth.setEnabled(True)
-        form.finishDepthLabel.setEnabled(True)
-        return form
-    def getFields(self, obj):
-        super(self.__class__, self).getFields(obj)
-        obj.FinishDepth = FreeCAD.Units.Quantity(self.form.finishDepth.text()).Value
-    def setFields(self, obj):
-        super(self.__class__, self).setFields(obj)
-        self.form.finishDepth.setText(FreeCAD.Units.Quantity(obj.FinishDepth.Value, FreeCAD.Units.Length).UserString)
-    def getSignalsForUpdate(self, obj):
-        signals = super(self.__class__, self).getSignalsForUpdate(obj)
-        signals.append(self.form.finishDepth.editingFinished)
+        if PathOp.FeatureFinishDepth & self.features:
+            signals = super(self.__class__, self).getSignalsForUpdate(obj)
+            signals.append(self.form.finishDepth.editingFinished)
         return signals
 
 class TaskPanel(object):
@@ -341,23 +332,26 @@ class TaskPanel(object):
         self.deleteOnReject = deleteOnReject
         self.featurePages = []
 
-        if PathOp.FeatureBaseGeometry & obj.Proxy.opFeatures(obj):
+        features = obj.Proxy.opFeatures(obj)
+
+        if PathOp.FeatureBaseGeometry & features:
             basePage = TaskPanelBaseGeometryPage(obj)
-            basePage.supports = obj.Proxy.opFeatures(obj) & PathOp.FeatureBaseGeometry
+            basePage.features = features & PathOp.FeatureBaseGeometry
             self.featurePages.append(basePage)
 
-        if PathOp.FeatureDepths & obj.Proxy.opFeatures(obj):
-            if PathOp.FeatureFinishDepth & obj.Proxy.opFeatures(obj):
-                depthPage = TaskPanelDepthsPage(obj)
-            else:
-                depthPage = TaskPanelDepthsWoFinishPage(obj)
+        if PathOp.FeatureDepths & features:
+            depthPage = TaskPanelDepthsPage(obj)
+            depthPage.features = features & PathOp.FeatureFinishDepth
             self.featurePages.append(depthPage)
 
-        if PathOp.FeatureHeights & obj.Proxy.opFeatures(obj):
+        if PathOp.FeatureHeights & features:
             self.featurePages.append(TaskPanelHeightsPage(obj))
 
         opPage.setTitle(translate('PathAreaOp', 'Operation'))
         self.featurePages.append(opPage)
+
+        for page in self.featurePages:
+            page.initPage(obj)
 
         if TaskPanelLayout < 2:
             self.form = QtGui.QToolBox()
