@@ -138,29 +138,27 @@ class ObjectOp(object):
                 obj.ViewObject.Visibility = False
             return
 
-        tc = obj.ToolController
-        if tc is None or tc.ToolNumber == 0:
-            FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
-            return
-        else:
-            self.vertFeed = tc.VertFeed.Value
-            self.horizFeed = tc.HorizFeed.Value
-            self.vertRapid = tc.VertRapid.Value
-            self.horizRapid = tc.HorizRapid.Value
-            tool = tc.Proxy.getTool(tc)
-            if not tool or tool.Diameter == 0:
-                FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
+        if FeatureTool & self.opFeatures(obj):
+            tc = obj.ToolController
+            if tc is None or tc.ToolNumber == 0:
+                FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
                 return
             else:
-                self.radius = tool.Diameter/2
-
-        if FeatureStartPoint and obj.UseStartPoint:
-            start = obj.StartPoint
-        else:
-            start = FreeCAD.Vector()
+                self.vertFeed = tc.VertFeed.Value
+                self.horizFeed = tc.HorizFeed.Value
+                self.vertRapid = tc.VertRapid.Value
+                self.horizRapid = tc.HorizRapid.Value
+                tool = tc.Proxy.getTool(tc)
+                if not tool or tool.Diameter == 0:
+                    FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
+                    return
+                else:
+                    self.radius = tool.Diameter/2
 
         self.commandlist = []
-        self.commandlist.append(Path.Command("(" + obj.Label + ")"))
+        self.commandlist.append(Path.Command("(%s)" % obj.Label))
+        if obj.Comment:
+            self.commandlist.append(Path.Command("(%s)" % obj.Comment))
 
         result = self.opExecute(obj)
 
