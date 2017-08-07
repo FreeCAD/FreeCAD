@@ -25,8 +25,8 @@
 
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathUtils as PathUtils
 import PathScripts.PathLog as PathLog
+import PathScripts.PathUtils as PathUtils
 
 LOG_MODULE = 'PathSelection'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)

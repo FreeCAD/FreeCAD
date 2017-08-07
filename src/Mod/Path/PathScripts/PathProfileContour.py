@@ -59,19 +59,22 @@ class ObjectContour(PathProfileBase.ObjectProfile):
     def baseObject(self):
         return super(self.__class__, self)
 
-    def initOperation(self, obj):
-        self.baseObject().initOperation(obj)
+    def areaOpFeatures(self, obj):
+        return 0
+
+    def initAreaOp(self, obj):
+        self.baseObject().initAreaOp(obj)
         obj.setEditorMode('Side', 2) # it's always outside
 
-    def opSetDefaultValues(self, obj):
-        self.baseObject().opSetDefaultValues(obj)
+    def areaOpSetDefaultValues(self, obj):
+        self.baseObject().areaOpSetDefaultValues(obj)
         obj.Side = 'Outside'
 
-    def opShapes(self, obj, commandlist):
+    def areaOpShapes(self, obj):
         if obj.UseComp:
-            commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
+            self.commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
         else:
-            commandlist.append(Path.Command("(Uncompensated Tool Path)"))
+            self.commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
         job = PathUtils.findParentJob(obj)
 
@@ -95,8 +98,8 @@ class ObjectContour(PathProfileBase.ObjectProfile):
         if hasattr(baseobject, "Shape") and not isPanel:
             return [(PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, depthparams=self.depthparams), False)]
 
-    def opAreaParams(self, obj, isHole):
-        params = self.baseObject().opAreaParams(obj, isHole)
+    def areaOpAreaParams(self, obj, isHole):
+        params = self.baseObject().areaOpAreaParams(obj, isHole)
         params['Coplanar'] = 2
         return params
 

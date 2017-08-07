@@ -25,6 +25,7 @@
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
+import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
 from PathScripts.PathUtils import depth_params
@@ -43,47 +44,13 @@ PathLog.trackModule()
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-FeatureTool         = 0x0001
-FeatureDepths       = 0x0002
-FeatureHeights      = 0x0004
-FeatureStartPoint   = 0x0008
-FeatureFinishDepth  = 0x0010
-FeatureBaseFaces    = 0x1001
-FeatureBaseEdges    = 0x1002
-FeatureBasePanels   = 0x1002
+class ObjectOp(PathOp.ObjectOp):
 
-FeatureBaseGeometry = FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels
+    def opFeatures(self, obj):
+        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj)
 
-class ObjectOp(object):
-
-    def __init__(self, obj):
+    def initOperation(self, obj):
         PathLog.track()
-
-        obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"))
-        obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Operation"))
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
-
-        if FeatureBaseGeometry & self.opFeatures(obj):
-            obj.addProperty("App::PropertyLinkSubList", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base geometry for this operation"))
-
-        if FeatureTool & self.opFeatures(obj):
-            obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
-
-        if FeatureDepths & self.opFeatures(obj):
-            obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"))
-            obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
-            obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
-
-        if FeatureFinishDepth & self.opFeatures(obj):
-            obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum material removed on final pass."))
-
-        if FeatureHeights & self.opFeatures(obj):
-            obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
-            obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid Safety Height between locations."))
-
-        if FeatureStartPoint & self.opFeatures(obj):
-            obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
-            obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
 
         # Debugging
         obj.addProperty("App::PropertyString", "AreaParams", "Path")
@@ -93,23 +60,9 @@ class ObjectOp(object):
         obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
         obj.setEditorMode('removalshape', 2)  # hide
 
-        self.initOperation(obj)
-        obj.Proxy = self
-        self.setDefaultValues(obj)
+        self.initAreaOp(obj)
 
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
-
-    def opFeatures(self, obj):
-        return FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint | FeatureBaseGeometry | FeatureFinishDepth
-    def opOnChanged(self, obj, prop):
-        pass
-    def opSetDefaultValues(self, obj):
-        pass
-    def opShapeForDepths(self, obj):
+    def areaOpShapeForDepths(self, obj):
         job = PathUtils.findParentJob(obj)
         if job and job.Base:
             PathLog.debug("job=%s base=%s shape=%s" % (job, job.Base, job.Base.Shape))
@@ -120,13 +73,15 @@ class ObjectOp(object):
             PathLog.warning(translate("PathAreaOp", "no job for op %s found.") % obj.Label)
         return None
 
-     
-    def onChanged(self, obj, prop):
+    def areaOpOnChanged(self, obj, prop):
+        pass
+
+    def opOnChanged(self, obj, prop):
         #PathLog.track(obj.Label, prop)
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
             obj.setEditorMode(prop, 2)
 
-        if FeatureBaseGeometry & self.opFeatures(obj):
+        if PathOp.FeatureBaseGeometry & self.opFeatures(obj):
             if prop == 'Base' and len(obj.Base) == 1:
                 try:
                     (base, sub) = obj.Base[0]
@@ -162,19 +117,12 @@ class ObjectOp(object):
                     if hasattr(obj, 'Side'):
                         obj.Side = "Outside"
 
-        self.opOnChanged(obj, prop)
+        self.areaOpOnChanged(obj, prop)
 
-    def setDefaultValues(self, obj):
-        PathUtils.addToJob(obj)
-
-        obj.Active = True
-
-        if FeatureTool & self.opFeatures(obj):
-            obj.ToolController = PathUtils.findToolController(obj)
-
-        if FeatureDepths & self.opFeatures(obj):
+    def opSetDefaultValues(self, obj):
+        if PathOp.FeatureDepths & self.opFeatures(obj):
             try:
-                shape = self.opShapeForDepths(obj)
+                shape = self.areaOpShapeForDepths(obj)
             except:
                 shape = None
 
@@ -188,9 +136,9 @@ class ObjectOp(object):
                 obj.FinalDepth      =  0.0
                 obj.StepDown        =  1.0
 
-        if FeatureHeights & self.opFeatures(obj):
+        if PathOp.FeatureHeights & self.opFeatures(obj):
             try:
-                shape = self.opShapeForDepths(obj)
+                shape = self.areaOpShapeForDepths(obj)
             except:
                 shape = None
 
@@ -202,19 +150,15 @@ class ObjectOp(object):
                 obj.ClearanceHeight = 10.0
                 obj.SafeHeight      =  8.0
 
-        if FeatureStartPoint & self.opFeatures(obj):
-            obj.UseStartPoint = False
+        self.areaOpSetDefaultValues(obj)
 
-        self.opSetDefaultValues(obj)
-
-    @waiting_effects
     def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
         PathLog.track()
         area = Path.Area()
         area.setPlane(makeWorkplane(baseobject))
         area.add(baseobject)
 
-        areaParams = self.opAreaParams(obj, isHole)
+        areaParams = self.areaOpAreaParams(obj, isHole)
 
         heights = [i for i in self.depthparams]
         PathLog.debug('depths: {}'.format(heights))
@@ -223,12 +167,12 @@ class ObjectOp(object):
 
         PathLog.debug("Area with params: {}".format(area.getParams()))
 
-        sections = area.makeSections(mode=0, project=self.opUseProjection(obj), heights=heights)
+        sections = area.makeSections(mode=0, project=self.areaOpUseProjection(obj), heights=heights)
         PathLog.debug("sections = %s" % sections)
         shapelist = [sec.getShape() for sec in sections]
         PathLog.debug("shapelist = %s" % shapelist)
 
-        pathParams = self.opPathParams(obj, isHole)
+        pathParams = self.areaOpPathParams(obj, isHole)
         pathParams['shapes'] = shapelist
         pathParams['feedrate'] = self.horizFeed
         pathParams['feedrate_v'] = self.vertFeed
@@ -259,16 +203,9 @@ class ObjectOp(object):
 
         return pp, simobj
 
-    def execute(self, obj, getsim=False):
+    def opExecute(self, obj, getsim=False):
         PathLog.track()
         self.endVector = None
-
-        if not obj.Active:
-            path = Path.Path("(inactive operation)")
-            obj.Path = path
-            if obj.ViewObject:
-                obj.ViewObject.Visibility = False
-            return
 
         self.depthparams = depth_params(
                 clearance_height=obj.ClearanceHeight.Value,
@@ -279,60 +216,21 @@ class ObjectOp(object):
                 final_depth=obj.FinalDepth.Value,
                 user_depths=None)
 
-        toolLoad = obj.ToolController
-        if toolLoad is None or toolLoad.ToolNumber == 0:
-
-            FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
-            return
-        else:
-            self.vertFeed = toolLoad.VertFeed.Value
-            self.horizFeed = toolLoad.HorizFeed.Value
-            self.vertRapid = toolLoad.VertRapid.Value
-            self.horizRapid = toolLoad.HorizRapid.Value
-            tool = toolLoad.Proxy.getTool(toolLoad)
-            if not tool or tool.Diameter == 0:
-                FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
-                return
-            else:
-                self.radius = tool.Diameter/2
-
-        if FeatureStartPoint and obj.UseStartPoint:
+        if PathOp.FeatureStartPoint and obj.UseStartPoint:
             start = obj.StartPoint
         else:
             start = FreeCAD.Vector()
 
-        commandlist = []
-        commandlist.append(Path.Command("(" + obj.Label + ")"))
-
-        shapes = self.opShapes(obj, commandlist)
+        shapes = self.areaOpShapes(obj)
 
         sims = []
         for (shape, isHole) in shapes:
             try:
                 (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
-                commandlist.extend(pp.Commands)
+                self.commandlist.extend(pp.Commands)
                 sims.append(sim)
             except Exception as e:
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError("Something unexpected happened. Check project and tool config.")
 
-
-        # Let's finish by rapid to clearance...just for safety
-        commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-
-        PathLog.track()
-        path = Path.Path(commandlist)
-        obj.Path = path
         return sims
-
-    def addBase(self, obj, base, sub=""):
-        PathLog.track()
-        baselist = obj.Base
-        if baselist is None:
-            baselist = []
-        item = (base, sub)
-        if item in baselist:
-            PathLog.warning(translate("Path", "this object already in the list" + "\n"))
-        else:
-            baselist.append(item)
-            obj.Base = baselist
