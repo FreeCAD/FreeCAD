@@ -37,7 +37,8 @@ from PySide import QtCore, QtGui
 #  0 ... existing toolbox layout
 #  1 ... reverse order
 #  2 ... multi panel layout
-TaskPanelLayout = 0
+#  3 ... multi panel layout reverse
+TaskPanelLayout = 2
 
 
 PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -367,7 +368,13 @@ class TaskPanel(object):
             else:
                 for page in reversed(self.featurePages):
                     self.form.addItem(page.form, page.getTitle(obj))
-        else:
+        elif TaskPanelLayout == 2:
+            forms = []
+            for page in self.featurePages:
+                page.form.setWindowTitle(page.getTitle(obj))
+                forms.append(page.form)
+            self.form = forms
+        elif TaskPanelLayout == 3:
             forms = []
             for page in reversed(self.featurePages):
                 page.form.setWindowTitle(page.getTitle(obj))

@@ -26,7 +26,6 @@ import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
-import Path
 
 from PathScripts.PathUtils import depth_params
 from PathScripts.PathUtils import makeWorkplane
