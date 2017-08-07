@@ -26,9 +26,10 @@ import FreeCAD
 import Part
 import Path
 import PathScripts.PathAreaOp as PathAreaOp
+import PathScripts.PathLog as PathLog
+import PathScripts.PathOp as PathOp
 import PathScripts.PathProfileBase as PathProfileBase
 import PathScripts.PathUtils as PathUtils
-import PathScripts.PathLog as PathLog
 
 from DraftGeomUtils import findWires
 from PySide import QtCore
@@ -62,10 +63,10 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
     def baseObject(self):
         return super(self.__class__, self)
 
-    def opFeatures(self, obj):
-        return self.baseObject().opFeatures(obj) | PathAreaOp.FeatureBaseEdges
+    def areaOpFeatures(self, obj):
+        return PathOp.FeatureBaseEdges
 
-    def opShapes(self, obj, commandlist):
+    def areaOpShapes(self, obj):
         PathLog.track()
 
         job = PathUtils.findParentJob(obj)
@@ -73,12 +74,10 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
             return
         baseobject = job.Base
 
-        commandlist.append(Path.Command("(" + obj.Label + ")"))
-
         if obj.UseComp:
-            commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
+            self.commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
         else:
-            commandlist.append(Path.Command("(Uncompensated Tool Path)"))
+            self.commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
         shapes = []
         if obj.Base:

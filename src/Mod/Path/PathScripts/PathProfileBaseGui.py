@@ -24,14 +24,13 @@
 
 import FreeCAD
 import FreeCADGui
-import Path
 import PathScripts.PathAreaOpGui as PathAreaOpGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathProfileFaces as PathProfileFaces
 import PathScripts.PathSelection as PathSelection
+import PathScripts.PathUtils as PathUtils
 
-from PathScripts import PathUtils
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)

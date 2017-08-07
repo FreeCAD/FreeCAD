@@ -27,8 +27,9 @@ import FreeCAD
 import Part
 import Path
 import PathScripts.PathAreaOp as PathAreaOp
-import PathScripts.PathProfileBase as PathProfileBase
 import PathScripts.PathLog as PathLog
+import PathScripts.PathOp as PathOp
+import PathScripts.PathProfileBase as PathProfileBase
 import PathScripts.PathUtils as PathUtils
 import numpy
 
@@ -54,33 +55,29 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
     def baseObject(self):
         return super(self.__class__, self)
 
-    def initOperation(self, obj):
-        self.baseObject().initOperation(obj)
-
+    def initAreaOp(self, obj):
         # Face specific Properties
         obj.addProperty("App::PropertyBool", "processHoles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile holes as well as the outline"))
         obj.addProperty("App::PropertyBool", "processPerimeter", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the outline"))
         obj.addProperty("App::PropertyBool", "processCircles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile round holes"))
 
-        obj.Proxy = self
+        self.baseObject().initAreaOp(obj)
 
-    def opSetDefaultValues(self, obj):
-        self.baseObject().opSetDefaultValues(obj)
+    def areaOpSetDefaultValues(self, obj):
+        self.baseObject().areaOpSetDefaultValues(obj)
 
         obj.processHoles = False
         obj.processCircles = False
         obj.processPerimeter = True
 
-    def opFeatures(self, obj):
-        return self.baseObject().opFeatures(obj) | PathAreaOp.FeatureBaseFaces 
+    def areaOpFeatures(self, obj):
+        return PathOp.FeatureBaseFaces 
 
-    def opShapes(self, obj, commandlist):
-        commandlist.append(Path.Command("(" + obj.Label + ")"))
-
+    def areaOpShapes(self, obj):
         if obj.UseComp:
-            commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
+            self.commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
         else:
-            commandlist.append(Path.Command("(Uncompensated Tool Path)"))
+            self.commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
         job = PathUtils.findParentJob(obj)
         if not job or not job.Base:
