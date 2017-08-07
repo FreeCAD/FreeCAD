@@ -23,15 +23,17 @@
 # ***************************************************************************
 
 from __future__ import print_function
-import sys
+
+import ArchPanel
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
-from PySide import QtCore, QtGui
+import string
+import sys
+
 from PathScripts import PathUtils
 from PathScripts.PathUtils import fmt, waiting_effects
-import ArchPanel
-
+from PySide import QtCore, QtGui
 
 # xrange is not available in python3
 if sys.version_info.major >= 3:
@@ -59,7 +61,6 @@ class ObjectDrilling:
     def __init__(self, obj):
         # Properties of the holes
         obj.addProperty("App::PropertyLinkSubList", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Base features of the holes"))
-        obj.addProperty("App::PropertyStringList", "Names", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Names of the holes"))
         obj.addProperty("App::PropertyStringList", "Disabled", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "List of disabled features"))
 
         # General Properties
@@ -104,7 +105,28 @@ class ObjectDrilling:
     def onChanged(self, obj, prop):
         pass
 
+    def baseIsArchPanel(self, obj, base):
+        return hasattr(base, "Proxy") and isinstance(base.Proxy, ArchPanel.PanelSheet)
+
+    def getArchPanelEdge(self, obj, base, sub):
+        ids = string.split(sub, '.')
+        holeId = int(ids[0])
+        wireId = int(ids[1])
+        edgeId = int(ids[2])
+
+        for holeNr, hole in enumerate(base.Proxy.getHoles(base, transform=True)):
+            if holeNr == holeId:
+                for wireNr, wire in enumerate(hole.Wires):
+                    if wireNr == wireId:
+                        for edgeNr, edge in enumerate(wire.Edges):
+                            if edgeNr == edgeId:
+                                return edge
+
     def holeDiameter(self, obj, base, sub):
+        if self.baseIsArchPanel(obj, base):
+            edge = self.getArchPanelEdge(obj, base, sub)
+            return edge.BoundBox.XLength
+
         shape = base.Shape.getElement(sub)
         if shape.ShapeType == 'Vertex':
             return 0
@@ -113,6 +135,11 @@ class ObjectDrilling:
         return shape.BoundBox.XLength
 
     def holePosition(self, obj, base, sub):
+        if self.baseIsArchPanel(obj, base):
+            edge = self.getArchPanelEdge(obj, base, sub)
+            center = edge.Curve.Center
+            return FreeCAD.Vector(center.x, center.y, 0)
+
         shape = base.Shape.getElement(sub)
         if shape.ShapeType == 'Vertex':
             return FreeCAD.Vector(shape.X, shape.Y, 0)
@@ -163,45 +190,36 @@ class ObjectDrilling:
         if obj.AddTipLength:
             tiplength = PathUtils.drillTipLength(tool)
 
-        if len(obj.Names) == 0:
-            parentJob = PathUtils.findParentJob(obj)
-            if parentJob is None:
+        if len(obj.Base) == 0:
+            job = PathUtils.findParentJob(obj)
+            if not job or not job.Base:
                 return
-            baseobject = parentJob.Base
-            if baseobject is None:
-                return
+            baseobject = job.Base
 
             # Arch PanelSheet
-            if hasattr(baseobject, "Proxy"):
-                holes = []
-                if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):
-                    baseobject.Proxy.execute(baseobject)
-                    i = 0
-                    holeshapes = baseobject.Proxy.getHoles(baseobject, transform=True)
-                    tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
-                    for holeshape in holeshapes:
-                        PathLog.debug('Entering new HoleShape')
-                        for wire in holeshape.Wires:
-                            PathLog.debug('Entering new Wire')
-                            for edge in wire.Edges:
-                                if PathUtils.isDrillable(baseobject, edge, tooldiameter):
-                                    PathLog.debug('Found drillable hole edges: {}'.format(edge))
-                                    x = edge.Curve.Center.x
-                                    y = edge.Curve.Center.y
-                                    diameter = edge.BoundBox.XLength
-                                    holes.append({'x': x, 'y': y, 'featureName': baseobject.Name+'.'+'Drill'+str(i), 'd': diameter})
-                                    i = i + 1
+            features = []
+            bb = None
+            if self.baseIsArchPanel(obj, baseobject):
+                holeshapes = baseobject.Proxy.getHoles(baseobject, transform=True)
+                tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
+                for holeNr, hole in enumerate(holeshapes):
+                    PathLog.debug('Entering new HoleShape')
+                    for wireNr, wire in enumerate(hole.Wires):
+                        PathLog.debug('Entering new Wire')
+                        for edgeNr, edge in enumerate(wire.Edges):
+                            if PathUtils.isDrillable(baseobject, edge, tooldiameter):
+                                PathLog.debug('Found drillable hole edges: {}'.format(edge))
+                                features.append((baseobject, "%d.%d.%d" % (holeNr, wireNr, edgeNr)))
+                                bb = bb.united(edge.BoundBox) if bb else edge.BoundBox
+
             else:
-                holes, features = self.findHoles(obj, baseobject)
-                obj.Base = features
-                for i in range(len(holes)):
-                    holes[i]['featureName'] = baseobject.Name + '.' + holes[i]['featureName']
-            names = []
-            for h in holes:
-                if len(names) == 0:
-                    self.setDepths(obj, baseobject, h)
-                names.append(h['featureName'])
-            obj.Names = names
+                features = self.findHoles(obj, baseobject)
+                for base,sub in features:
+                    shape = base.Shape.getElement(sub)
+                    bb = bb.united(shape.BoundBox) if bb else shape.BoundBox
+            obj.Base = features
+            if bb:
+                self.setDepths(obj, obj.Base[0][0].Shape.BoundBox, bb)
             obj.Disabled = []
 
         locations = []
@@ -212,6 +230,7 @@ class ObjectDrilling:
                 if self.isHoleEnabled(obj, base, sub):
                     pos = self.holePosition(obj, base, sub)
                     locations.append({'x': pos.x, 'y': pos.y})
+
         if len(locations) > 0:
             locations = PathUtils.sort_jobs(locations, ['x', 'y'])
             output += "G90 " + obj.ReturnLevel + "\n"
@@ -246,11 +265,8 @@ class ObjectDrilling:
         path = Path.Path(output)
         obj.Path = path
 
-    def setDepths(self, obj, bobj, hole):
+    def setDepths(self, obj, bb, fbb):
         try:
-            bb = bobj.Shape.BoundBox
-            subobj = hole['feature']
-            fbb = subobj.BoundBox
             obj.StartDepth = bb.ZMax
             obj.ClearanceHeight = bb.ZMax + 5.0
             obj.SafeHeight = bb.ZMax + 3.0
@@ -303,7 +319,7 @@ class ObjectDrilling:
                     PathLog.debug("Found hole feature %s.%s" % (baseobject.Label, candidateFaceName))
 
         PathLog.debug("holes found: {}".format(holelist))
-        return (holelist, features)
+        return features
 
 
 class _ViewProviderDrill:
@@ -382,138 +398,12 @@ class CommandPathDrilling:
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
 
-class CustomPoint:
-    def __init__(self, obj, formOrig, formPoint, whenDone):
-        self.formOrig = formOrig
-        self.formPoint = formPoint
-        self.obj = obj
-
-        self.setupUi()
-        self.whenDone = whenDone
-
-    def setupUi(self):
-        self.formPoint.buttonBox.accepted.connect(self.pointAccept)
-        self.formPoint.buttonBox.rejected.connect(self.pointReject)
-
-        self.formPoint.ifValueX.editingFinished.connect(self.updatePoint)
-        self.formPoint.ifValueY.editingFinished.connect(self.updatePoint)
-        self.formPoint.ifValueZ.editingFinished.connect(self.updatePoint)
-
-    def addEscapeShortcut(self):
-        # The only way I could get to intercept the escape key, or really any key was
-        # by creating an action with a shortcut .....
-        self.escape = QtGui.QAction(self.formPoint)
-        self.escape.setText('Done')
-        self.escape.setShortcut(QtGui.QKeySequence.fromString('Esc'))
-        QtCore.QObject.connect(self.escape, QtCore.SIGNAL('triggered()'), self.pointDone)
-        self.formPoint.addAction(self.escape)
-
-    def removeEscapeShortcut(self):
-        if self.escape:
-            self.formPoint.removeAction(self.escape)
-            self.escape = None
-
-    def getPoint(self, whenDone, start=None):
-
-        def displayPoint(p):
-            self.formPoint.ifValueX.setText(FreeCAD.Units.Quantity(p.x, FreeCAD.Units.Length).UserString)
-            self.formPoint.ifValueY.setText(FreeCAD.Units.Quantity(p.y, FreeCAD.Units.Length).UserString)
-            self.formPoint.ifValueZ.setText(FreeCAD.Units.Quantity(p.z, FreeCAD.Units.Length).UserString)
-            self.formPoint.ifValueX.setFocus()
-            self.formPoint.ifValueX.selectAll()
-
-        def mouseMove(cb):
-            event = cb.getEvent()
-            pos = event.getPosition()
-            cntrl = event.wasCtrlDown()
-            shift = event.wasShiftDown()
-            self.pt = FreeCADGui.Snapper.snap(pos, lastpoint=start, active=cntrl, constrain=shift)
-            plane = FreeCAD.DraftWorkingPlane
-            p = plane.getLocalCoords(self.pt)
-            displayPoint(p)
-
-        def click(cb):
-            event = cb.getEvent()
-            if event.getButton() == 1 and event.getState() == coin.SoMouseButtonEvent.DOWN:
-                accept()
-
-        def accept():
-            if start:
-                self.pointAccept()
-            else:
-                self.pointAcceptAndContinue()
-
-        def cancel():
-            self.pointCancel()
-
-        self.pointWhenDone = whenDone
-        self.formOrig.hide()
-        self.formPoint.show()
-        self.addEscapeShortcut()
-        if start:
-            displayPoint(start)
-        else:
-            displayPoint(FreeCAD.Vector(0, 0, 0))
-
-        self.view = Draft.get3DView()
-        self.pointCbClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), click)
-        self.pointCbMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), mouseMove)
-
-        # self.buttonBox.setEnabled(False)
-
-    def addCustom(self):
-        self.getPoint(whenDone=self.whenDone, start=FreeCAD.Vector(0, 0, 0))
-
-    def pointFinish(self, ok, cleanup=True):
-        obj = FreeCADGui.Snapper.lastSnappedObject
-
-        if cleanup:
-            self.removeGlobalCallbacks()
-            FreeCADGui.Snapper.off()
-            #self.buttonBox.setEnabled(True)
-            self.removeEscapeShortcut()
-            self.formPoint.hide()
-            self.formOrig.show()
-            self.formOrig.setFocus()
-
-        if ok:
-            self.pointWhenDone(self.pt, obj)
-        else:
-            self.pointWhenDone(None, None)
-
-    def pointDone(self):
-        self.pointFinish(False)
-
-    def pointReject(self):
-        self.pointFinish(False)
-
-    def pointAccept(self):
-        self.pointFinish(True)
-
-    def pointAcceptAndContinue(self):
-        self.pointFinish(True, False)
-
-    def removeGlobalCallbacks(self):
-        if hasattr(self, 'view') and self.view:
-            if self.pointCbClick:
-                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.pointCbClick)
-                self.pointCbClick = None
-            if self.pointCbMove:
-                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.pointCbMove)
-                self.pointCbMove = None
-            self.view = None
-
-    def updatePoint(self):
-        x = FreeCAD.Units.Quantity(self.formPoint.ifValueX.text()).Value
-        y = FreeCAD.Units.Quantity(self.formPoint.ifValueY.text()).Value
-        z = FreeCAD.Units.Quantity(self.formPoint.ifValueZ.text()).Value
-        self.pt = FreeCAD.Vector(x, y, z)
-
-
 class TaskPanel:
     DataFeatureName = QtCore.Qt.ItemDataRole.UserRole
+
     def __init__(self, obj, deleteOnReject):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Drilling", "Drilling Operation"))
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/DrillingEdit.ui")
         self.form = QtGui.QWidget()
         self.formDrill = FreeCADGui.PySideUic.loadUi(":/panels/DrillingEdit.ui")
         self.formPoint = FreeCADGui.PySideUic.loadUi(":/panels/PointEdit.ui")
@@ -529,7 +419,6 @@ class TaskPanel:
         self.deleteOnReject = deleteOnReject
         self.obj = obj
         self.isDirty = True
-        self.np = CustomPoint(self.obj, self.formDrill, self.formPoint, self.addCustomPoint)
 
     def accept(self):
         FreeCADGui.Control.closeDialog()
@@ -688,13 +577,9 @@ class TaskPanel:
     def checkedChanged(self):
         disabled = []
         for i in xrange(0, self.form.baseList.rowCount()):
-            try:
-                item = self.form.baseList.item(i, 0)
-                if item.checkState() != QtCore.Qt.Checked:
-                    disabled.append(item.data(self.DataFeatureName))
-            except:
-                PathLog.track("Not found:"+self.form.baseList.item(i, 0).text() + " in " + str(self.obj.Names))
-
+            item = self.form.baseList.item(i, 0)
+            if item.checkState() != QtCore.Qt.Checked:
+                disabled.append(item.data(self.DataFeatureName))
         self.obj.Disabled = disabled
         FreeCAD.ActiveDocument.recompute()
 
@@ -720,7 +605,6 @@ class TaskPanel:
 
     def findAll(self):
         """ Reset the list of features by running the findHoles again """
-        self.obj.Names = []
         self.obj.Base = []
         self.obj.Disabled = []
 
@@ -732,31 +616,33 @@ class TaskPanel:
     def addSelected(self):
         for sel in FreeCAD.Gui.Selection.getSelectionEx():
 
-            names = self.obj.Names
+            baseObjects = self.obj.Base
 
             objectname = sel.ObjectName
             sobj = sel.Object
             for i, sub in enumerate(sel.SubObjects):
                 if hasattr(sub, 'ShapeType'):
+                    item = None
                     if sub.ShapeType == 'Vertex':
                         PathLog.debug("Selection is a vertex, lets drill that")
-                        names.append(objectname+'.'+sel.SubElementNames[i])
-
+                        item = (sobj, sel.SubElementNames[i])
                     elif sub.ShapeType == 'Edge':
                         if PathUtils.isDrillable(sobj, sub):
                             PathLog.debug("Selection is a drillable edge, lets drill that")
-                            names.append(objectname+'.'+sel.SubElementNames[i])
+                            item = (sobj, sel.SubElementNames[i])
                         # check for arcs - isDrillable ignores them.
                         elif type(sub.Curve) == Part.Circle:
                             PathLog.debug("Selection is an arc or circle edge, lets drill the center")
-                            names.append(objectname + '.' + sel.SubElementNames[i])
+                            item = (sobj, sel.SubElementNames[i])
                     elif sub.ShapeType == 'Face':
                         if PathUtils.isDrillable(sobj.Shape, sub):
                             PathLog.debug("Selection is a drillable face, lets drill that")
-                            names.append(objectname+'.'+sel.SubElementNames[i])
+                            item = (sobj, sel.SubElementNames[i])
+                    if item and not item in self.obj.Base:
+                        baseObjects.append(item)
 
-            self.obj.Names = names
-
+            self.obj.Base = baseObjects
+            PathLog.debug("baseObjects=%s, obj.Base=%s" % (baseObjects, self.obj.Base))
             self.updateFeatureList()
 
             FreeCAD.ActiveDocument.recompute()
