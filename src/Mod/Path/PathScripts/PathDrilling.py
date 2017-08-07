@@ -37,7 +37,7 @@ import ArchPanel
 if sys.version_info.major >= 3:
     xrange = range
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -58,10 +58,9 @@ class ObjectDrilling:
 
     def __init__(self, obj):
         # Properties of the holes
+        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Base features of the holes"))
         obj.addProperty("App::PropertyStringList", "Names", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Names of the holes"))
-        obj.addProperty("App::PropertyVectorList", "Positions", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Locations of insterted holes"))
-        obj.addProperty("App::PropertyIntegerList", "Enabled", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable/disable status of the holes"))
-        obj.addProperty("App::PropertyFloatList", "Diameters", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Diameters of the holes"))
+        obj.addProperty("App::PropertyStringList", "Disabled", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "List of disabled features"))
 
         # General Properties
         obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"))
@@ -104,6 +103,31 @@ class ObjectDrilling:
 
     def onChanged(self, obj, prop):
         pass
+
+    def holeDiameter(self, obj, base, sub):
+        shape = base.Shape.getElement(sub)
+        if shape.ShapeType == 'Vertex':
+            return 0
+
+        # for all other shapes the diameter is just the dimension in X
+        return shape.BoundBox.XLength
+
+    def holePosition(self, obj, base, sub):
+        shape = base.Shape.getElement(sub)
+        if shape.ShapeType == 'Vertex':
+            return FreeCAD.Vector(shape.X, shape.Y, 0)
+
+        if shape.ShapeType == 'Edge':
+            return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
+
+        if shape.ShapeType == 'Face':
+            return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
+
+        PathLog.error('This is bad')
+
+    def isHoleEnabled(self, obj, base, sub):
+        name = "%s.%s" % (base.Name, sub)
+        return not name in obj.Disabled
 
     @waiting_effects
     def execute(self, obj):
@@ -168,30 +192,26 @@ class ObjectDrilling:
                                     holes.append({'x': x, 'y': y, 'featureName': baseobject.Name+'.'+'Drill'+str(i), 'd': diameter})
                                     i = i + 1
             else:
-                holes = self.findHoles(obj, baseobject.Shape)
+                holes, features = self.findHoles(obj, baseobject)
+                obj.Base = features
                 for i in range(len(holes)):
                     holes[i]['featureName'] = baseobject.Name + '.' + holes[i]['featureName']
             names = []
-            positions = []
-            enabled = []
-            diameters = []
             for h in holes:
                 if len(names) == 0:
                     self.setDepths(obj, baseobject, h)
                 names.append(h['featureName'])
-                positions.append(FreeCAD.Vector(h['x'], h['y'], 0))
-                enabled.append(1)
-                diameters.append(h['d'])
             obj.Names = names
-            obj.Positions = positions
-            obj.Enabled = enabled
+            obj.Disabled = []
 
         locations = []
         output = "(Begin Drilling)\n"
 
-        for i in range(len(obj.Names)):
-            if obj.Enabled[i] > 0:
-                locations.append({'x': obj.Positions[i].x, 'y': obj.Positions[i].y})
+        for base, subs in obj.Base:
+            for sub in subs:
+                if self.isHoleEnabled(obj, base, sub):
+                    pos = self.holePosition(obj, base, sub)
+                    locations.append({'x': pos.x, 'y': pos.y})
         if len(locations) > 0:
             locations = PathUtils.sort_jobs(locations, ['x', 'y'])
             output += "G90 " + obj.ReturnLevel + "\n"
@@ -491,6 +511,7 @@ class CustomPoint:
 
 
 class TaskPanel:
+    DataFeatureName = QtCore.Qt.ItemDataRole.UserRole
     def __init__(self, obj, deleteOnReject):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Drilling", "Drilling Operation"))
         self.form = QtGui.QWidget()
@@ -580,19 +601,22 @@ class TaskPanel:
         self.form.baseList.horizontalHeader().setStretchLastSection(True)
         self.form.baseList.resizeColumnToContents(0)
         self.form.baseList.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        for i in range(len(self.obj.Names)):
-            self.form.baseList.insertRow(self.form.baseList.rowCount())
-            item = QtGui.QTableWidgetItem(self.obj.Names[i])
-            item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+        for i, (base, subs) in enumerate(self.obj.Base):
+            for sub in subs:
+                self.form.baseList.insertRow(self.form.baseList.rowCount())
 
-            if self.obj.Enabled[i] > 0:
-                item.setCheckState(QtCore.Qt.Checked)
-            else:
-                item.setCheckState(QtCore.Qt.Unchecked)
-            self.form.baseList.setItem(self.form.baseList.rowCount()-1, 0, item)
-            item = QtGui.QTableWidgetItem("{:.3f}".format(self.obj.Diameters[i]))
+                item = QtGui.QTableWidgetItem("%s.%s" % (base.Label, sub))
+                item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+                if self.obj.Proxy.isHoleEnabled(self.obj, base, sub):
+                    item.setCheckState(QtCore.Qt.Checked)
+                else:
+                    item.setCheckState(QtCore.Qt.Unchecked)
+                self.form.baseList.setItem(self.form.baseList.rowCount()-1, 0, item)
+                item.setData(self.DataFeatureName, "%s.%s" % (base.Name, sub))
 
-            self.form.baseList.setItem(self.form.baseList.rowCount()-1, 1, item)
+                item = QtGui.QTableWidgetItem("{:.3f}".format(self.obj.Proxy.holeDiameter(self.obj, base, sub)))
+                self.form.baseList.setItem(self.form.baseList.rowCount()-1, 1, item)
+
         self.form.baseList.resizeColumnToContents(0)
         self.form.baseList.itemChanged.connect(self.checkedChanged)
 
@@ -662,19 +686,16 @@ class TaskPanel:
         FreeCADGui.updateGui()
 
     def checkedChanged(self):
-        enabledlist = self.obj.Enabled
-
+        disabled = []
         for i in xrange(0, self.form.baseList.rowCount()):
             try:
-                ind = self.obj.Names.index(self.form.baseList.item(i, 0).text())
-                if self.form.baseList.item(i, 0).checkState() == QtCore.Qt.Checked:
-                    enabledlist[ind] = 1
-                else:
-                    enabledlist[ind] = 0
+                item = self.form.baseList.item(i, 0)
+                if item.checkState() != QtCore.Qt.Checked:
+                    disabled.append(item.data(self.DataFeatureName))
             except:
                 PathLog.track("Not found:"+self.form.baseList.item(i, 0).text() + " in " + str(self.obj.Names))
 
-        self.obj.Enabled = enabledlist
+        self.obj.Disabled = disabled
         FreeCAD.ActiveDocument.recompute()
 
     def enableAll(self):
@@ -700,8 +721,8 @@ class TaskPanel:
     def findAll(self):
         """ Reset the list of features by running the findHoles again """
         self.obj.Names = []
-        self.obj.Enabled = []
-        self.obj.Positions = []
+        self.obj.Base = []
+        self.obj.Disabled = []
 
         self.obj.Proxy.execute(self.obj)
 
@@ -712,8 +733,6 @@ class TaskPanel:
         for sel in FreeCAD.Gui.Selection.getSelectionEx():
 
             names = self.obj.Names
-            positions = self.obj.Positions
-            enabled = self.obj.Enabled
 
             objectname = sel.ObjectName
             sobj = sel.Object
@@ -722,36 +741,21 @@ class TaskPanel:
                     if sub.ShapeType == 'Vertex':
                         PathLog.debug("Selection is a vertex, lets drill that")
                         names.append(objectname+'.'+sel.SubElementNames[i])
-                        positions.append(FreeCAD.Vector(sub.X, sub.Y, 0))
-                        enabled.append(1)
-                        diameters.append(0)
 
                     elif sub.ShapeType == 'Edge':
                         if PathUtils.isDrillable(sobj, sub):
                             PathLog.debug("Selection is a drillable edge, lets drill that")
                             names.append(objectname+'.'+sel.SubElementNames[i])
-                            positions.append(FreeCAD.Vector(sub.Curve.Center.x, sub.Curve.Center.y, 0))
-                            enabled.append(1)
-                            diameters.append(sub.BoundBox.XLength)
                         # check for arcs - isDrillable ignores them.
                         elif type(sub.Curve) == Part.Circle:
                             PathLog.debug("Selection is an arc or circle edge, lets drill the center")
                             names.append(objectname + '.' + sel.SubElementNames[i])
-                            positions.append(FreeCAD.Vector(sub.Curve.Center.x, sub.Curve.Center.y, 0))
-                            enabled.append(1)
-                            diameters.append(sub.BoundBox.XLength)
-
                     elif sub.ShapeType == 'Face':
                         if PathUtils.isDrillable(sobj.Shape, sub):
                             PathLog.debug("Selection is a drillable face, lets drill that")
                             names.append(objectname+'.'+sel.SubElementNames[i])
-                            positions.append(FreeCAD.Vector(sub.Surface.Center.x, sub.Surface.Center.y, 0))
-                            enabled.append(1)
-                            diameters.append(sub.BoundBox.XLength)
 
             self.obj.Names = names
-            self.obj.Positions = positions
-            self.obj.Enabled = enabled
 
             self.updateFeatureList()
 
