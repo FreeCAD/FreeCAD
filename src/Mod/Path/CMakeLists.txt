@@ -20,6 +20,7 @@ SET(PathScripts_SRCS
     PathCommands.py
     PathScripts/PathAreaOp.py
     PathScripts/PathArray.py
+    PathScripts/PathCircularHoleBase.py
     PathScripts/PathComment.py
     PathScripts/PathCompoundExtended.py
     PathScripts/PathCopy.py
