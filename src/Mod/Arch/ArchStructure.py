@@ -540,15 +540,20 @@ class _Structure(ArchComponent.Component):
             baseface = Part.Face(Part.makePolygon([v1,v2,v3,v4,v1]))
             base,placement = self.rebase(baseface)
         if base and placement:
-            if obj.Normal == Vector(0,0,0):
-                if not normal:
-                    normal = Vector(0,0,1)
-            else:
+            if obj.Normal.Length:
                 normal = Vector(obj.Normal)
+                normal = placement.inverse().Rotation.multVec(normal)
+            if not normal:
+                normal = Vector(0,0,1)
+            if not normal.Length:
+                normal = Vector(0,0,1)
+            extrusion = normal
             if (length > height) and (obj.Role != "Slab"):
-                extrusion = normal.multiply(length)
+                if length:
+                    extrusion = normal.multiply(length)
             else:
-                extrusion = normal.multiply(height)
+                if height:
+                    extrusion = normal.multiply(height)
             return (base,extrusion,placement)
         return None
 
