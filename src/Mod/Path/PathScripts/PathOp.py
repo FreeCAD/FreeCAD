@@ -46,12 +46,13 @@ FeatureDepths       = 0x0002
 FeatureHeights      = 0x0004
 FeatureStartPoint   = 0x0008
 FeatureFinishDepth  = 0x0010
-FeatureBaseFeatures = 0x1000
-FeatureBaseFaces    = 0x2000
-FeatureBaseEdges    = 0x4000
+FeatureStepDown     = 0x0020
+FeatureBaseVertexes = 0x1000
+FeatureBaseEdges    = 0x2000
+FeatureBaseFaces    = 0x4000
 FeatureBasePanels   = 0x8000
 
-FeatureBaseGeometry = FeatureBaseFeatures | FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels
+FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels
 
 class ObjectOp(object):
 
@@ -69,9 +70,11 @@ class ObjectOp(object):
             obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
         if FeatureDepths & self.opFeatures(obj):
-            obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"))
             obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
             obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
+
+        if FeatureStepDown & self.opFeatures(obj):
+            obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"))
 
         if FeatureFinishDepth & self.opFeatures(obj):
             obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum material removed on final pass."))
@@ -116,6 +119,8 @@ class ObjectOp(object):
         if FeatureDepths & self.opFeatures(obj):
             obj.StartDepth      =  1.0
             obj.FinalDepth      =  0.0
+
+        if FeatureStepDown & self.opFeatures(obj):
             obj.StepDown        =  1.0
 
         if FeatureHeights & self.opFeatures(obj):

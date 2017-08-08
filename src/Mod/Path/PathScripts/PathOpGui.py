@@ -24,7 +24,6 @@
 
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSelection as PathSelection
 import PathScripts.PathOp as PathOp
@@ -38,11 +37,12 @@ from PySide import QtCore, QtGui
 #  1 ... reverse order
 #  2 ... multi panel layout
 #  3 ... multi panel layout reverse
-TaskPanelLayout = 2
+TaskPanelLayout = 0
 
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -62,6 +62,7 @@ class ViewProvider(object):
     def attach(self, vobj):
         PathLog.track()
         self.Object = vobj.Object
+        self.panel = None
         return
 
     def deleteObjectsOnReject(self):
@@ -70,14 +71,20 @@ class ViewProvider(object):
 
     def setEdit(self, vobj, mode=0):
         PathLog.track()
-        FreeCADGui.Control.closeDialog()
         page = self.getTaskPanelOpPage(vobj.Object)
         selection = self.getSelectionFactory()
-        taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject(), page, selection)
-        FreeCADGui.Control.showDialog(taskd)
-        taskd.setupUi()
+        self.setupTaskPanel(TaskPanel(vobj.Object, self.deleteObjectsOnReject(), page, selection))
         self.deleteOnReject = False
         return True
+
+    def setupTaskPanel(self, panel):
+        self.panel = panel
+        FreeCADGui.Control.closeDialog()
+        FreeCADGui.Control.showDialog(panel)
+        panel.setupUi()
+
+    def clearTaskPanel(self):
+        self.panel = None
 
     def __getstate__(self):
         PathLog.track()
@@ -104,6 +111,11 @@ class ViewProvider(object):
 
     def getSelectionFactory(self):
         return PathSelection.select(self.OpName)
+
+    def updateData(self, obj, prop):
+        # PathLog.track(obj.Label, prop) # Creates a lot of noise
+        if self.panel:
+            self.panel.updateData(obj, prop)
 
 class TaskPanelPage(object):
 
@@ -132,6 +144,9 @@ class TaskPanelPage(object):
             signal.connect(self.pageGetFields)
         self.registerSignalHandlers(self.obj)
 
+    def pageUpdateData(self, obj, prop):
+        self.updateData(obj, prop)
+
     def setTitle(self, title):
         self.title = title
     def getTitle(self, obj):
@@ -149,6 +164,8 @@ class TaskPanelPage(object):
     def getSignalsForUpdate(self, obj):
         return []
     def registerSignalHandlers(self, obj):
+        pass
+    def updateData(self, obj, prop):
         pass
 
     # helpers
@@ -171,14 +188,21 @@ class TaskPanelPage(object):
         if obj.ToolController is not None:
             self.selectInComboBox(obj.ToolController.Label, combo)
 
+    def updateToolController(self, obj, combo):
+        tc = PathUtils.findToolController(obj, combo.currentText())
+        self.obj.ToolController = tc
+
 class TaskPanelBaseGeometryPage(TaskPanelPage):
     DataObject    = QtCore.Qt.ItemDataRole.UserRole
     DataObjectSub = QtCore.Qt.ItemDataRole.UserRole + 1
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageBaseGeometryEdit.ui")
+    def getTitle(self, obj):
+        return translate("PathOp", "Base Geometry")
     def getFields(self, obj):
         pass
+
     def setFields(self, obj):
         self.form.baseList.blockSignals(True)
         self.form.baseList.clear()
@@ -201,6 +225,8 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                 FreeCADGui.Selection.addSelection(obj)
         #FreeCADGui.updateGui()
 
+    def supportsVertexes(self):
+        return self.features & PathOp.FeatureBaseVertexes
     def supportsEdges(self):
         return self.features & PathOp.FeatureBaseEdges
     def supportsFaces(self):
@@ -224,11 +250,14 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             return False
         sel = selection[0]
         if sel.HasSubObjects:
+            if not self.supportsVertexes() and selection[0].SubObjects[0].ShapeType == "Vertex":
+                PathLog.error(translate("PathProject", "Vertexes are not supported"))
+                return False
             if not self.supportsEdges() and selection[0].SubObjects[0].ShapeType == "Edge":
-                PathLog.error(translate("PathProject", "Please select only %s of a solid" % self.featureName()))
+                PathLog.error(translate("PathProject", "Edges are not supported"))
                 return False
             if not self.supportsFaces() and selection[0].SubObjects[0].ShapeType == "Face":
-                PathLog.error(translate("PathProject", "Please select only %s of a solid" % self.featureName()))
+                PathLog.error(translate("PathProject", "Faces are not supported"))
                 return False
         else:
             if not self.supportsPanels() or not 'Panel' in sel.Object.Name:
@@ -249,7 +278,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         selected = self.form.baseList.selectedItems()
         for item in selected:
             self.form.baseList.takeItem(self.form.baseList.row(item))
-            self.updateBase()
+        self.updateBase()
         #self.obj.Proxy.execute(self.obj)
         #FreeCAD.ActiveDocument.recompute()
 
@@ -273,6 +302,11 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         self.form.deleteBase.clicked.connect(self.deleteBase)
         self.form.updateBase.clicked.connect(self.updateBase)
 
+    def pageUpdateData(self, obj, prop):
+        if prop in ['Base']:
+            self.setFields(obj)
+
+
 class TaskPanelHeightsPage(TaskPanelPage):
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
@@ -287,43 +321,56 @@ class TaskPanelHeightsPage(TaskPanelPage):
     def getSignalsForUpdate(self, obj):
         return [self.form.safeHeight.editingFinished, self.form.clearanceHeight.editingFinished]
 
+    def pageUpdateData(self, obj, prop):
+        if prop in ['SafeHeight', 'ClearanceHeight']:
+            self.setFields(obj)
+
+
 class TaskPanelDepthsPage(TaskPanelPage):
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
 
     def initPage(self, obj):
-        if PathOp.FeatureFinishDepth & self.features:
-            self.form.finishDepth.setEnabled(True)
-            self.form.finishDepthLabel.setEnabled(True)
-        else:
+        if not PathOp.FeatureStepDown & self.features:
+            self.form.stepDown.hide()
+            self.form.stepDownLabel.hide()
+
+        if not PathOp.FeatureFinishDepth & self.features:
             self.form.finishDepth.hide()
             self.form.finishDepthLabel.hide()
 
     def getTitle(self, obj):
-        return translate("PathAreaOp", "Depths")
+        return translate("PathOp", "Depths")
 
     def getFields(self, obj):
         obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
         obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
-        obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
+        if PathOp.FeatureStepDown & self.features:
+            obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
         if PathOp.FeatureFinishDepth & self.features:
             obj.FinishDepth = FreeCAD.Units.Quantity(self.form.finishDepth.text()).Value
     def setFields(self, obj):
         self.form.startDepth.setText(FreeCAD.Units.Quantity(obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.finalDepth.setText(FreeCAD.Units.Quantity(obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
-        self.form.stepDown.setText(FreeCAD.Units.Quantity(obj.StepDown.Value, FreeCAD.Units.Length).UserString)
+        if PathOp.FeatureStepDown & self.features:
+            self.form.stepDown.setText(FreeCAD.Units.Quantity(obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         if PathOp.FeatureFinishDepth & self.features:
             self.form.finishDepth.setText(FreeCAD.Units.Quantity(obj.FinishDepth.Value, FreeCAD.Units.Length).UserString)
     def getSignalsForUpdate(self, obj):
         signals = []
         signals.append(self.form.startDepth.editingFinished)
         signals.append(self.form.finalDepth.editingFinished)
-        signals.append(self.form.stepDown.editingFinished)
+        if PathOp.FeatureStepDown & self.features:
+            signals.append(self.form.stepDown.editingFinished)
         if PathOp.FeatureFinishDepth & self.features:
             signals = super(self.__class__, self).getSignalsForUpdate(obj)
             signals.append(self.form.finishDepth.editingFinished)
         return signals
+
+    def pageUpdateData(self, obj, prop):
+        if prop in ['StartDepth', 'FinalDepth', 'StepDown', 'FinishDepth']:
+            self.setFields(obj)
 
 class TaskPanel(object):
 
@@ -354,7 +401,7 @@ class TaskPanel(object):
             else:
                 self.featurePages.append(TaskPanelHeightsPage(obj, features))
 
-        opPage.setTitle(translate('PathAreaOp', 'Operation'))
+        opPage.setTitle(translate('PathOp', 'Operation'))
         self.featurePages.append(opPage)
 
         for page in self.featurePages:
@@ -398,22 +445,26 @@ class TaskPanel(object):
             page.setClean()
 
     def accept(self):
-        FreeCADGui.Control.closeDialog()
-        FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCADGui.Selection.removeObserver(self.s)
+        self.cleanup()
+        if self.isDirty:
+            self.panelGetFields()
         FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
-        FreeCADGui.Control.closeDialog()
-        FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.abortTransaction()
-        FreeCADGui.Selection.removeObserver(self.s)
+        self.cleanup()
         if self.deleteOnReject:
             FreeCAD.ActiveDocument.openTransaction(translate("Path_AreaOp", "Uncreate AreaOp Operation"))
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+
+    def cleanup(self):
+        self.obj.ViewObject.Proxy.clearTaskPanel()
+        FreeCADGui.Control.closeDialog()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Selection.removeObserver(self.s)
 
     def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
@@ -452,6 +503,11 @@ class TaskPanel(object):
         self.panelSetFields()
         for page in self.featurePages:
             page.pageRegisterSignalHandlers()
+
+    def updateData(self, obj, prop):
+        # PathLog.track(obj.Label, prop) # creates a lot of noise
+        for page in self.featurePages:
+            page.pageUpdateData(obj, prop)
 
 class SelObserver:
 

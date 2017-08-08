@@ -28,9 +28,9 @@ import FreeCADGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 
-LOG_MODULE = 'PathSelection'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-PathLog.trackModule('PathSelection')
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
 
 
 class EGate:
@@ -60,10 +60,10 @@ class ENGRAVEGate:
 class DRILLGate:
     def allow(self, doc, obj, sub):
         PathLog.debug('obj: {} sub: {}'.format(obj, sub))
-        if hasattr(obj, "Shape"):
-            obj = obj.Shape
-            subobj = obj.getElement(sub)
-            return PathUtils.isDrillable(obj, subobj)
+        if hasattr(obj, "Shape") and sub:
+            shape = obj.Shape
+            subobj = shape.getElement(sub)
+            return PathUtils.isDrillable(shape, subobj)
         else:
             return False
 
@@ -163,6 +163,7 @@ def surfaceselect():
 def select(op):
     opsel = {}
     opsel['Contour'] = contourselect
+    opsel['Drilling'] = drillselect
     opsel['MillFace'] = pocketselect
     opsel['Pocket'] = pocketselect
     opsel['Profile Edges'] = eselect

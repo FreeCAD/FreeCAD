@@ -29,7 +29,6 @@ import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocket as PathPocket
 import PathScripts.PathSelection as PathSelection
 
-from PathScripts import PathUtils
 from PySide import QtCore, QtGui
 
 def translate(context, text, disambig=None):
@@ -57,8 +56,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.obj.OffsetPattern = str(self.form.offsetPattern.currentText())
         self.obj.ZigZagAngle = FreeCAD.Units.Quantity(self.form.zigZagAngle.text()).Value
 
-        tc = PathUtils.findToolController(self.obj, self.form.toolController.currentText())
-        self.obj.ToolController = tc
+        self.updateToolController(self.obj, self.form.toolController)
 
         if FeaturePocket & self.pocketFeatures():
             self.obj.MaterialAllowance = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value

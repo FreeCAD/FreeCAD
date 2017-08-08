@@ -28,7 +28,6 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathProfileFaces as PathProfileFaces
 import PathScripts.PathSelection as PathSelection
-import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore
 
@@ -60,8 +59,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
         self.obj.Direction = str(self.form.direction.currentText())
 
-        tc = PathUtils.findToolController(self.obj, self.form.toolController.currentText())
-        self.obj.ToolController = tc
+        self.updateToolController(self.obj, self.form.toolController)
 
         if FeatureSide & self.profileFeatures():
             self.obj.Side = str(self.form.cutSide.currentText())
