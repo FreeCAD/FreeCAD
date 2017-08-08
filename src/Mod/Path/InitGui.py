@@ -58,7 +58,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathFaceProfile
         from PathScripts import PathFixture
         from PathScripts import PathFromShape
-        from PathScripts import PathHelix
+        from PathScripts import PathHelixGui
         from PathScripts import PathHop
         from PathScripts import PathInspect
         from PathScripts import PathJob
