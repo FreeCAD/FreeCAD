@@ -509,6 +509,9 @@ class TaskPanel(object):
         for page in self.featurePages:
             page.pageUpdateData(obj, prop)
 
+    def needsFullSpace(self):
+        return True
+
 class SelObserver:
 
     def __init__(self, factory):

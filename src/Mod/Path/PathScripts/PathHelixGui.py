@@ -25,7 +25,7 @@
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathCircularHoleBaseGui as PathCircularHoleBaseGui
-import PathScripts.PathDrilling as PathDrilling
+import PathScripts.PathHelix as PathHelix
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 
@@ -41,63 +41,41 @@ else:
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpDrillingEdit.ui")
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
 
     def getFields(self, obj):
         PathLog.track()
-        self.obj.PeckDepth = FreeCAD.Units.Quantity(self.form.peckDepth.text()).Value
-        self.obj.RetractHeight = FreeCAD.Units.Quantity(self.form.retractHeight.text()).Value
-        self.obj.DwellTime = FreeCAD.Units.Quantity(self.form.dwellTime.text()).Value
-
-        self.obj.DwellEnabled = self.form.dwellEnabled.isChecked()
-        self.obj.PeckEnabled = self.form.peckEnabled.isChecked()
-        self.obj.AddTipLength = self.form.useTipLength.isChecked()
+        self.obj.Direction = str(self.form.direction.currentText())
+        self.obj.StartSide = str(self.form.startSide.currentText())
+        self.obj.StepOver = self.form.stepOverPercent.value()
 
         self.updateToolController(obj, self.form.toolController)
 
     def setFields(self, obj):
         PathLog.track()
 
-        self.form.peckDepth.setText(FreeCAD.Units.Quantity(self.obj.PeckDepth.Value, FreeCAD.Units.Length).UserString)
-        self.form.retractHeight.setText(FreeCAD.Units.Quantity(self.obj.RetractHeight.Value, FreeCAD.Units.Length).UserString)
-        self.form.dwellTime.setText(str(self.obj.DwellTime))
-
-        if self.obj.DwellEnabled:
-            self.form.dwellEnabled.setCheckState(QtCore.Qt.Checked)
-        else:
-            self.form.dwellEnabled.setCheckState(QtCore.Qt.Unchecked)
-
-        if self.obj.PeckEnabled:
-            self.form.peckEnabled.setCheckState(QtCore.Qt.Checked)
-        else:
-            self.form.peckEnabled.setCheckState(QtCore.Qt.Unchecked)
-
-        if self.obj.AddTipLength:
-            self.form.useTipLength.setCheckState(QtCore.Qt.Checked)
-        else:
-            self.form.useTipLength.setCheckState(QtCore.Qt.Unchecked)
+        self.form.stepOverPercent.setValue(self.obj.StepOver)
+        self.selectInComboBox(self.obj.Direction, self.form.direction)
+        self.selectInComboBox(self.obj.StartSide, self.form.startSide)
 
         self.setupToolController(self.obj, self.form.toolController)
 
     def getSignalsForUpdate(self, obj):
         signals = []
 
-        signals.append(self.form.retractHeight.editingFinished)
-        signals.append(self.form.peckDepth.editingFinished)
-        signals.append(self.form.dwellTime.editingFinished)
-        signals.append(self.form.dwellEnabled.stateChanged)
-        signals.append(self.form.peckEnabled.stateChanged)
-        signals.append(self.form.useTipLength.stateChanged)
+        signals.append(self.form.stepOverPercent.editingFinished)
+        signals.append(self.form.direction.currentIndexChanged)
+        signals.append(self.form.startSide.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
 
         return signals
 
-PathOpGui.SetupOperation('Drilling',
-        PathDrilling.Create,
+PathOpGui.SetupOperation('Helix',
+        PathHelix.Create,
         TaskPanelOpPage,
-        'Path-Drilling',
-        QtCore.QT_TRANSLATE_NOOP("PathDrilling", "Drilling"),
+        'Path-Helix',
+        QtCore.QT_TRANSLATE_NOOP("PathHelix", "Helix"),
         "P, O",
-        QtCore.QT_TRANSLATE_NOOP("PathDrilling", "Creates a Path Drilling object from a features of a base object"))
+        QtCore.QT_TRANSLATE_NOOP("PathHelix", "Creates a Path Helix object from a features of a base object"))
 
-FreeCAD.Console.PrintLog("Loading PathDrillingGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathHelixGui... done\n")
