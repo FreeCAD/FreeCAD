@@ -393,10 +393,12 @@ class Writer(object):
             #self._handleFlowInitial(activeIn)
             #self._handleFlowBodyForces(activeIn)
             self._handleFlowMaterial(activeIn)
+            self._handleFlowEquation(activeIn)
 
     def _getFlowSolver(self, equation):
         s = self._createNonlinearSolver(equation)
-        s["Equation"] = equation.Name
+        s["Equation"] = "Navier-Stokes"
+        #s["Equation"] = equation.Name
         s["Procedure"] = sifio.FileAttr("FlowSolve/FlowSolver")
         s["Exec Solver"] = "Always"
         s["Stabilize"] = True
@@ -430,13 +432,18 @@ class Writer(object):
                         name, "Heat Conductivity",
                         convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
                 if "KinematicViscosity" in m:
+                    density = convert(m["Density"], "M/L^3")
+                    kViscosity = convert(m["KinematicViscosity"], "L^2/T")
                     self._material(
-                        name, "Viscosity",
-                        convert(m["KinematicViscosity"], "M/(L*T)"))
+                        name, "Viscosity", kViscosity / density)
                 if "ThermalExpansionCoefficient" in m:
                     self._material(
                         name, "Heat expansion Coefficient",
                         convert(m["ThermalExpansionCoefficient"], "O^-1"))
+
+    def _handleFlowEquation(self, bodies):
+        for b in bodies:
+            self._equation(b, "Convection", "Computed")
 
     def _createLinearSolver(self, equation):
         s = sifio.createSection(sifio.SOLVER)
