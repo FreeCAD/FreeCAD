@@ -44,7 +44,18 @@ def findAnalysisOfMember(member):
         if obj.isDerivedFrom("Fem::FemAnalysis"):
             if member in obj.Member:
                 return obj
+            if _searchGroups(member, obj.Member):
+                return obj
     return None
+
+
+def _searchGroups(member, objs):
+    for o in objs:
+        if o == member:
+            return True
+        if hasattr(o, "Group"):
+            return _searchGroups(member, o.Group)
+    return False
 
 
 def getMember(analysis, t):

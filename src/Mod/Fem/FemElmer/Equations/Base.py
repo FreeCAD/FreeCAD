@@ -28,6 +28,11 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD as App
 import FemEquation
+import FemMisc
+
+if App.GuiUp:
+    import FreeCADGui as Gui
+    import FemSelectionWidgets
 
 
 class Proxy(FemEquation.BaseProxy):
@@ -40,4 +45,65 @@ class Proxy(FemEquation.BaseProxy):
 
 
 class ViewProxy(FemEquation.BaseViewProxy):
-    pass
+
+    def setEdit(self, vobj, mode=0):
+        task = _TaskPanel(vobj.Object)
+        Gui.Control.showDialog(task)
+
+    def unsetEdit(self, vobj, mode=0):
+        Gui.Control.closeDialog()
+
+    def doubleClicked(self, vobj):
+        if Gui.Control.activeDialog():
+            Gui.Control.closeDialog()
+        Gui.ActiveDocument.setEdit(vobj.Object.Name)
+        return True
+
+    def getTaskWidget(self, vobj):
+        return None
+
+
+class _TaskPanel(object):
+
+    def __init__(self, obj):
+        self._obj = obj
+        self._refWidget = FemSelectionWidgets.SolidSelector()
+        self._refWidget.setReferences(obj.References)
+        propWidget = obj.ViewObject.Proxy.getTaskWidget(
+            obj.ViewObject)
+        if propWidget is None:
+            self.form = self._refWidget
+        else:
+            self.form = [self.refWidget, propWidget]
+        analysis = FemMisc.findAnalysisOfMember(obj)
+        self._mesh = FemMisc.getSingleMember(analysis, "Fem::FemMeshObject")
+        self._part = self._mesh.Part
+        self._partVisible = None
+        self._meshVisible = None
+
+    def open(self):
+        self._meshVisible = self._mesh.ViewObject.isVisible()
+        self._partVisible = self._part.ViewObject.isVisible()
+        self._mesh.ViewObject.hide()
+        self._part.ViewObject.show()
+
+    def reject(self):
+        self._restoreVisibility()
+        return True
+
+    def accept(self):
+        if self._obj.References != self._refWidget.references():
+            self._obj.References = self._refWidget.references()
+        self._obj.Document.recompute()
+        self._restoreVisibility()
+        return True
+
+    def _restoreVisibility(self):
+        if self._meshVisible:
+            self._mesh.ViewObject.show()
+        else:
+            self._mesh.ViewObject.hide()
+        if self._partVisible:
+            self._part.ViewObject.show()
+        else:
+            self._part.ViewObject.hide()

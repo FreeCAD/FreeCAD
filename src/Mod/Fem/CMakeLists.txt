@@ -51,6 +51,7 @@ INSTALL(
         FemSolverObject.py
         FemEquation.py
 	FemRun.py
+	FemSelectionWidgets.py
         FemSignal.py
         FemConstraint.py
         TestFem.py
