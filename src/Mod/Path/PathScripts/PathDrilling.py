@@ -54,18 +54,17 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # drilling works on anything
         return PathOp.FeatureBaseGeometry
 
-    def initOperation(self, obj):
+    def initCircularHoleOperation(self, obj):
 
-        obj.addProperty("App::PropertyStringList", "Disabled", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "List of disabled features"))
-        obj.addProperty("App::PropertyLength", "PeckDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Drill depth before retracting to clear chips"))
-        obj.addProperty("App::PropertyBool", "PeckEnabled", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable pecking"))
-        obj.addProperty("App::PropertyFloat", "DwellTime", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"))
-        obj.addProperty("App::PropertyBool", "DwellEnabled", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable dwell"))
-        obj.addProperty("App::PropertyBool", "AddTipLength", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate the tip length and subtract from final depth"))
-        obj.addProperty("App::PropertyEnumeration", "ReturnLevel", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G98"))
+        obj.addProperty("App::PropertyLength", "PeckDepth", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Drill depth before retracting to clear chips"))
+        obj.addProperty("App::PropertyBool", "PeckEnabled", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable pecking"))
+        obj.addProperty("App::PropertyFloat", "DwellTime", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"))
+        obj.addProperty("App::PropertyBool", "DwellEnabled", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable dwell"))
+        obj.addProperty("App::PropertyBool", "AddTipLength", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate the tip length and subtract from final depth"))
+        obj.addProperty("App::PropertyEnumeration", "ReturnLevel", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G98"))
         obj.ReturnLevel = ['G98', 'G99']  # this is the direction that the Contour runs
 
-        obj.addProperty("App::PropertyDistance", "RetractHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished"))
+        obj.addProperty("App::PropertyDistance", "RetractHeight", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished"))
 
     def circularHoleExecute(self, obj, holes):
         PathLog.track()
@@ -108,6 +107,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             self.commandlist.append(Path.Command(cmd, params))
 
         self.commandlist.append(Path.Command('G80'))
+
+    def setDepths(self, obj, zmax, zmin, bb):
+        super(self.__class__, self).setDepths(obj, zmax, zmin, bb)
+        if zmax is not None:
+            obj.RetractHeight = zmax + 1.0
+        else:
+            obj.RetractHeight = 6.0
 
     def opSetDefaultValues(self, obj):
         obj.RetractHeight = 10
