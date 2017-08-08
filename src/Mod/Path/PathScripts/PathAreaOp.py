@@ -47,7 +47,7 @@ def translate(context, text, disambig=None):
 class ObjectOp(PathOp.ObjectOp):
 
     def opFeatures(self, obj):
-        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj)
+        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj)
 
     def initOperation(self, obj):
         PathLog.track()
@@ -130,11 +130,13 @@ class ObjectOp(PathOp.ObjectOp):
                 bb = shape.BoundBox
                 obj.StartDepth      = bb.ZMax
                 obj.FinalDepth      = bb.ZMin
-                obj.StepDown        = 1.0
+                if PathOp.FeatureStepDown & self.opFeatures(obj):
+                    obj.StepDown        = 1.0
             else:
                 obj.StartDepth      =  1.0
                 obj.FinalDepth      =  0.0
-                obj.StepDown        =  1.0
+                if PathOp.FeatureStepDown & self.opFeatures(obj):
+                    obj.StepDown        =  1.0
 
         if PathOp.FeatureHeights & self.opFeatures(obj):
             try:

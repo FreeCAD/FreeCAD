@@ -62,8 +62,10 @@
         <file>panels/JobEdit.ui</file>
         <file>panels/MillFaceEdit.ui</file>
         <file>panels/PageBaseGeometryEdit.ui</file>
+        <file>panels/PageBaseHoleGeometryEdit.ui</file>
         <file>panels/PageDepthsEdit.ui</file>
         <file>panels/PageHeightsEdit.ui</file>
+        <file>panels/PageOpDrillingEdit.ui</file>
         <file>panels/PageOpPocketFullEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
         <file>panels/PocketEdit.ui</file>
