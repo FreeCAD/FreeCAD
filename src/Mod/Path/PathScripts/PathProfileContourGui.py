@@ -23,7 +23,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathAreaOpGui as PathAreaOpGui
+import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathProfileBaseGui as PathProfileBaseGui
 import PathScripts.PathProfileContour as PathProfileContour
 
@@ -35,7 +35,7 @@ class TaskPanelOpPage(PathProfileBaseGui.TaskPanelOpPage):
         # I know this looks bad, contour is just the most basic profile op there is
         return 0
 
-PathAreaOpGui.SetupOperation('Contour',
+PathOpGui.SetupOperation('Contour',
         PathProfileContour.Create,
         TaskPanelOpPage,
         'Path-Contour',
