@@ -24,8 +24,8 @@
 
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathAreaOpGui as PathAreaOpGui
 import PathScripts.PathLog as PathLog
+import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathProfileFaces as PathProfileFaces
 import PathScripts.PathSelection as PathSelection
 import PathScripts.PathUtils as PathUtils
@@ -38,7 +38,7 @@ def translate(context, text, disambig=None):
 FeatureSide       = 0x01
 FeatureProcessing = 0x02
 
-class TaskPanelOpPage(PathAreaOpGui.TaskPanelPage):
+class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getForm(self):
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpProfileFullEdit.ui")

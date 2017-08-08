@@ -23,7 +23,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathAreaOpGui as PathAreaOpGui
+import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocket as PathPocket
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui
 
@@ -34,7 +34,7 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
     def pocketFeatures(self):
         return PathPocketBaseGui.FeaturePocket
 
-PathAreaOpGui.SetupOperation('Pocket',
+PathOpGui.SetupOperation('Pocket',
         PathPocket.Create,
         TaskPanelOpPage,
         'Path-Pocket',

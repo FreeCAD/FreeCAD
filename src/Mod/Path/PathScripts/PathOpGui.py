@@ -542,4 +542,4 @@ def SetupOperation(name,
 
 FreeCADGui.addCommand('Set_StartPoint', _CommandSetStartPoint())
 
-FreeCAD.Console.PrintLog("Loading PathAreaOpGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathOpGui... done\n")

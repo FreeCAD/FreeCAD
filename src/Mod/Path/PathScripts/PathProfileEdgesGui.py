@@ -23,7 +23,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathAreaOpGui as PathAreaOpGui
+import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathProfileBaseGui as PathProfileBaseGui
 import PathScripts.PathProfileEdges as PathProfileEdges
 
@@ -34,7 +34,7 @@ class TaskPanelOpPage(PathProfileBaseGui.TaskPanelOpPage):
     def profileFeatures(self):
         return PathProfileBaseGui.FeatureSide
 
-PathAreaOpGui.SetupOperation('Profile Edges',
+PathOpGui.SetupOperation('Profile Edges',
         PathProfileEdges.Create,
         TaskPanelOpPage,
         'Path-Profile',
