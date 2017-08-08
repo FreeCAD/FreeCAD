@@ -112,7 +112,8 @@ class Results(FemRun.Results):
             self._createResults()
         postPath = os.path.join(self.directory, "case0001.vtu")
         self.solver.ElmerResult.read(postPath)
-        self.solver.ElmerResult.getLastPostObject().recompute()
+        self.solver.ElmerResult.getLastPostObject().touch()
+        self.solver.Document.recompute()
 
     def _createResults(self):
         self.solver.ElmerResult = self.analysis.Document.addObject(
