@@ -52,7 +52,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathDressupDragknife
         from PathScripts import PathDressupRampEntry
         from PathScripts import PathDressupTagGui
-        from PathScripts import PathDrilling
+        from PathScripts import PathDrillingGui
         from PathScripts import PathEngrave
         from PathScripts import PathFacePocket
         from PathScripts import PathFaceProfile
