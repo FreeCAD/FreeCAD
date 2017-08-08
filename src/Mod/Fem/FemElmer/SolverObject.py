@@ -34,6 +34,7 @@ import FemRun
 import Tasks
 import Equations.Heat
 import Equations.Elasticity
+import Equations.Flow
 
 
 def create(doc, name="ElmerSolver"):
@@ -49,6 +50,7 @@ class Proxy(FemSolverObject.Proxy):
     _EQUATIONS = {
         "Heat": Equations.Heat,
         "Elasticity": Equations.Elasticity,
+        "Flow": Equations.Flow,
     }
 
     def __init__(self, obj):

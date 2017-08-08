@@ -145,6 +145,7 @@ SET(FemEquationsElmer_SRCS
     FemElmer/Equations/Nonlinear.py
     FemElmer/Equations/Elasticity.py
     FemElmer/Equations/Heat.py
+    FemElmer/Equations/Flow.py
 )
 
 SET(FemGuiScripts_SRCS
@@ -213,6 +214,7 @@ SET(FemGuiScripts_SRCS
     PyGui/TaskPanelFemMeshRegion.ui
     PyGui/TaskPanelFemResultShow.ui
     PyGui/TaskPanelFemSolverCalculix.ui
+    PyGui/TaskPanelFemFlowVelocity.ui
 )
 
 SET(FemTests_SRCS

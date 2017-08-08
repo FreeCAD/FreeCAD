@@ -103,6 +103,7 @@ class Writer(object):
         self._handleSimulation()
         self._handleHeat()
         self._handleElasticity()
+        self._handleFlow()
         self._addOutputSolver()
 
         self._writeSif()
@@ -373,6 +374,69 @@ class Writer(object):
                 self._material(
                     name, "Heat expansion Coefficient",
                     convert(m["ThermalExpansionCoefficient"], "O^-1"))
+
+
+    def _handleFlow(self):
+        activeIn = []
+        for equation in self.solver.Group:
+            if FemMisc.isOfType(equation, "Fem::FemEquationElmerFlow"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self._getAllSolids()
+                for body in activeIn:
+                    solverSection = self._getFlowSolver(equation)
+                    self._addSolver(body, solverSection)
+        if activeIn:
+            self._handleFlowConstants()
+            #self._handleFlowBndConditions()
+            #self._handleFlowInitial(activeIn)
+            #self._handleFlowBodyForces(activeIn)
+            self._handleFlowMaterial(activeIn)
+
+    def _getFlowSolver(self, equation):
+        s = self._createNonlinearSolver(equation)
+        s["Equation"] = equation.Name
+        s["Procedure"] = sifio.FileAttr("FlowSolve/FlowSolver")
+        s["Exec Solver"] = "Always"
+        s["Stabilize"] = True
+        s["Bubbles"] = False
+        s["Optimize Bandwidth"] = True
+        return s
+        
+    def _handleFlowConstants(self):
+        gravity = getConstant("Gravity", "L/T^2")
+        self._constant("Gravity", (0.0, -1.0, 0.0, gravity))
+
+    def _handleFlowMaterial(self, bodies):
+        tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
+        if tempObj is not None:
+            refTemp = getFromUi(tempObj.initialTemperature, "K", "O")
+            for name in bodies:
+                self._material(name, "Reference Temperature", refTemp)
+        for obj in self._getMember("App::MaterialObject"):
+            m = obj.Material
+            refs = (
+                obj.References[0][1]
+                if obj.References
+                else self._getAllSolids())
+            for name in (n for n in refs if n in bodies):
+                if "Density" in m:
+                    self._material(
+                        name, "Density",
+                        convert(m["Density"], "M/L^3"))
+                if "ThermalConductivity" in m:
+                    self._material(
+                        name, "Heat Conductivity",
+                        convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
+                if "KinematicViscosity" in m:
+                    self._material(
+                        name, "Viscosity",
+                        convert(m["KinematicViscosity"], "M/(L*T)"))
+                if "ThermalExpansionCoefficient" in m:
+                    self._material(
+                        name, "Heat expansion Coefficient",
+                        convert(m["ThermalExpansionCoefficient"], "O^-1"))
 
     def _createLinearSolver(self, equation):
         s = sifio.createSection(sifio.SOLVER)

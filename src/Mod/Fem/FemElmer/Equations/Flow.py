@@ -21,74 +21,29 @@
 # ***************************************************************************
 
 
-__title__ = "_Base"
+__title__ = "Flow"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-from pivy import coin
+import FemMisc
+import Nonlinear
+import FemEquation
 
 
-class BaseProxy(object):
+def create(doc, name="Flow"):
+    return FemMisc.createObject(
+        doc, name, Proxy, ViewProxy)
 
-    BaseType = "App::FeaturePython"
+
+class Proxy(Nonlinear.Proxy, FemEquation.FlowProxy):
+
+    Type = "Fem::FemEquationElmerFlow"
 
     def __init__(self, obj):
-        obj.Proxy = self
-        obj.addProperty(
-                "App::PropertyLinkSubList", "References",
-                "Base", "")
-
-    def execute(self, obj):
-        return True
+        super(Proxy, self).__init__(obj)
+        obj.Priority = 10
 
 
-class BaseViewProxy(object):
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
-
-    def attach(self, vobj):
-        default = coin.SoGroup()
-        vobj.addDisplayMode(default, "Default")
-
-    def getDisplayModes(self, obj):
-        "Return a list of display modes."
-        modes = ["Default"]
-        return modes
-
-    def getDefaultDisplayMode(self):
-        return "Default"
-
-    def setDisplayMode(self, mode):
-        return mode
-
-
-class HeatProxy(BaseProxy):
+class ViewProxy(Nonlinear.ViewProxy, FemEquation.FlowViewProxy):
     pass
-
-
-class HeatViewProxy(BaseViewProxy):
-
-    def getIcon(self):
-        return ":/icons/fem-equation-heat.svg"
-
-
-class ElasticityProxy(BaseProxy):
-    pass
-
-
-class ElasticityViewProxy(BaseViewProxy):
-
-    def getIcon(self):
-        return ":/icons/fem-equation-elasticity.svg"
-
-
-class FlowProxy(BaseProxy):
-    pass
-
-
-class FlowViewProxy(BaseViewProxy):
-
-    def getIcon(self):
-        return ":/icons/fem-equation-flow.svg"

@@ -113,6 +113,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "Separator"
            << "FEM_AddEquationHeat"
            << "FEM_AddEquationElasticity"
+           << "FEM_AddEquationFlow"
            << "Separator"
            << "FEM_SolverControl"
            << "FEM_SolverRun";
@@ -212,6 +213,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
            << "Separator"
            << "FEM_AddEquationHeat"
            << "FEM_AddEquationElasticity"
+           << "FEM_AddEquationFlow"
            << "Separator"
            << "FEM_SolverControl"
            << "FEM_SolverRun";

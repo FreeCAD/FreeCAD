@@ -84,5 +84,19 @@ class Elasticity(_Base):
         }
 
 
+class Flow(_Base):
+
+    def getSpecifier(self):
+        return "Flow"
+
+    def GetResources(self):
+        return {
+            'Pixmap': 'fem-equation-flow',
+            'MenuText': "Flow Equation",
+            'ToolTip': "Creates a FEM constraint body heat flux"
+        }
+
+
 Gui.addCommand('FEM_AddEquationHeat', Heat())
 Gui.addCommand('FEM_AddEquationElasticity', Elasticity())
+Gui.addCommand('FEM_AddEquationFlow', Flow())
