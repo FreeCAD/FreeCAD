@@ -764,6 +764,77 @@ class UndoRedoCases(unittest.TestCase):
     self.assertEqual(self.Doc.RedoNames,[])
     self.assertEqual(self.Doc.RedoCount,0)
 
+  def testUndoInList(self):
+    
+    self.Doc.UndoMode = 1
+      
+    self.Doc.openTransaction("Box")
+    self.Box = self.Doc.addObject('Part::Box')
+    self.Doc.commitTransaction()
+
+    self.Doc.openTransaction("Cylinder")
+    self.Cylinder = self.Doc.addObject('Part::Cylinder')
+    self.Doc.commitTransaction()
+    
+    self.Doc.openTransaction("Fuse")
+    self.Fuse1 = self.Doc.addObject('Part::MultiFuse', 'Fuse')
+    self.Fuse1.Shapes = [self.Box, self.Cylinder]
+    self.Doc.commitTransaction()
+    
+    print self.Box.InList
+    self.Doc.undo()
+    print self.Box.InList
+    self.failUnless(len(self.Box.InList) == 0)
+    self.failUnless(len(self.Cylinder.InList) == 0)      
+    
+    self.Doc.redo()
+    self.failUnless(len(self.Box.InList) == 1)
+    self.failUnless(self.Box.InList[0] == self.Doc.Fuse)
+    self.failUnless(len(self.Cylinder.InList) == 1)  
+    self.failUnless(self.Cylinder.InList[0] == self.Doc.Fuse)
+      
+  def testUndoIssue0003150(self):
+  
+    self.Doc.UndoMode = 1
+  
+    self.Doc.openTransaction("Box")
+    self.Box = self.Doc.addObject('Part::Box')
+    self.Doc.commitTransaction()
+
+    self.Doc.openTransaction("Cylinder")
+    self.Cylinder = self.Doc.addObject('Part::Cylinder')
+    self.Doc.commitTransaction()
+
+    self.Doc.openTransaction("Fuse")
+    self.Fuse1 = self.Doc.addObject('Part::MultiFuse')
+    self.Fuse1.Shapes = [self.Box, self.Cylinder]
+    self.Doc.commitTransaction()
+    self.Doc.recompute()
+
+    self.Doc.openTransaction("Sphere")
+    self.Sphere = self.Doc.addObject('Part::Sphere')
+    self.Doc.commitTransaction()
+
+    self.Doc.openTransaction("Fuse")
+    self.Fuse2 = self.Doc.addObject('Part::MultiFuse')
+    self.Fuse2.Shapes = [self.Fuse1, self.Sphere]
+    self.Doc.commitTransaction()
+    self.Doc.recompute()
+
+    self.Doc.openTransaction("Part")
+    self.Part = self.Doc.addObject('App::Part')
+    self.Doc.commitTransaction()
+
+    self.Doc.openTransaction("Drag")
+    self.Part.addObject(self.Fuse2)
+    self.Doc.commitTransaction()
+
+    #3 undos show the problem of failing recompute
+    self.Doc.undo()
+    self.Doc.undo()
+    self.Doc.undo()
+    self.failUnless(self.Doc.recompute() >= 0)
+
   def tearDown(self):
     # closing doc
     FreeCAD.closeDocument("UndoTest")
