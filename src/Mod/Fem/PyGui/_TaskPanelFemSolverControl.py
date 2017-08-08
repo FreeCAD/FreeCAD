@@ -30,7 +30,7 @@ from PySide import QtCore
 from PySide import QtGui
 
 import FreeCADGui as Gui
-import FemSolve
+import FemRun
 import FemReport
 
 
@@ -109,13 +109,13 @@ class ControlTaskPanel(QtCore.QObject):
     @QtCore.Slot()
     def write(self):
         self.machine.reset()
-        self.machine.target = FemSolve.PREPARE
+        self.machine.target = FemRun.PREPARE
         self.machine.start()
 
     @QtCore.Slot()
     def run(self):
-        self.machine.reset(FemSolve.SOLVE)
-        self.machine.target = FemSolve.RESULTS
+        self.machine.reset(FemRun.SOLVE)
+        self.machine.target = FemRun.RESULTS
         self.machine.start()
 
     @QtCore.Slot()
@@ -136,7 +136,7 @@ class ControlTaskPanel(QtCore.QObject):
     @QtCore.Slot()
     def updateMachine(self):
         path = self.form.directory()
-        self.machine = FemSolve.getMachine(self.machine.solver, path)
+        self.machine = FemRun.getMachine(self.machine.solver, path)
 
     @QtCore.Slot()
     def _updateTimer(self):
@@ -292,11 +292,11 @@ class ControlWidget(QtGui.QWidget):
 
     @QtCore.Slot(int)
     def updateState(self, machine):
-        if machine.state <= FemSolve.PREPARE:
+        if machine.state <= FemRun.PREPARE:
             self._writeBtt.setText(self.tr("Write"))
             self._editBtt.setText(self.tr("Edit"))
             self._runBtt.setText(self.tr("Run"))
-        elif machine.state <= FemSolve.SOLVE:
+        elif machine.state <= FemRun.SOLVE:
             self._writeBtt.setText(self.tr("Re-write"))
             self._editBtt.setText(self.tr("Edit"))
             self._runBtt.setText(self.tr("Run"))
