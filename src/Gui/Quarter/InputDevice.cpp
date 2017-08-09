@@ -53,11 +53,17 @@ InputDevice::InputDevice(void)
   this->mousepos = SbVec2s(0, 0);
 }
 
+InputDevice::InputDevice(QuarterWidget *quarter) : quarter(quarter)
+{
+    this->mousepos = SbVec2s(0, 0);
+}
+
 /*!
   Sets the mouseposition
 
   \param[in] pos position of mouse in pixelcoordinates
 */
+
 void
 InputDevice::setMousePosition(const SbVec2s & pos)
 {

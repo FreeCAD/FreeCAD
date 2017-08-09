@@ -79,7 +79,7 @@ public:
     SbVec2s mousepos(event->pos().x(), this->windowsize[1] - event->pos().y() - 1);
     // the following corrects for high-dpi displays (e.g. mac retina)
 #if QT_VERSION >= 0x050000
-    mousepos *= ((QGuiApplication*)QGuiApplication::instance())->devicePixelRatio();
+    mousepos *= quarterwidget->devicePixelRatio();
 #endif
     foreach(InputDevice * device, this->devices) {
       device->setMousePosition(mousepos);
@@ -98,17 +98,18 @@ EventFilter::EventFilter(QObject * parent)
 {
   PRIVATE(this) = new EventFilterP;
 
-  PRIVATE(this)->quarterwidget = dynamic_cast<QuarterWidget *>(parent);
+  QuarterWidget* quarter = dynamic_cast<QuarterWidget *>(parent);
+  PRIVATE(this)->quarterwidget = quarter;
   assert(PRIVATE(this)->quarterwidget);
 
   PRIVATE(this)->windowsize = SbVec2s(PRIVATE(this)->quarterwidget->width(),
                                       PRIVATE(this)->quarterwidget->height());
 
-  PRIVATE(this)->devices += new Mouse;
-  PRIVATE(this)->devices += new Keyboard;
+  PRIVATE(this)->devices += new Mouse(quarter);
+  PRIVATE(this)->devices += new Keyboard(quarter);
 
 #ifdef HAVE_SPACENAV_LIB
-  PRIVATE(this)->devices += new SpaceNavigatorDevice;
+  PRIVATE(this)->devices += new SpaceNavigatorDevice(quarter);
 #endif // HAVE_SPACENAV_LIB
 
 }
