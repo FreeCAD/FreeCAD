@@ -144,7 +144,7 @@ class SolidSelector(_Selector):
         selection = []
         for selObj in Gui.Selection.getSelectionEx():
             solids = set()
-            for sub in selObj.SubObjects:
+            for sub in self._getObjects(selObj.Object, selObj.SubElementNames):
                 s = self._getSolidOfSub(selObj.Object, sub)
                 if s is not None:
                     solids.add(s)
@@ -153,20 +153,38 @@ class SolidSelector(_Selector):
                 selection.append(item)
         return selection
 
+    def _getObjects(self, obj, names):
+        objects = []
+        shape = obj.Shape
+        for n in names:
+            if n.startswith("Face"):
+                objects.append(shape.Faces[int(n[4:])-1])
+            elif n.startswith("Edge"):
+                objects.append(shape.Edges[int(n[4:])-1])
+            elif n.startswith("Vertex"):
+                objects.append(shape.Vertexes[int(n[6:])-1])
+            elif n.startswith("Solid"):
+                objects.append(shape.Solids[int(n[5:])-1])
+        return objects
+
     def _getSolidOfSub(self, obj, sub):
         foundSolids = set()
-        if sub.ShapeType == "Face":
+        if sub.ShapeType == "Solid":
             for solidId, solid in enumerate(obj.Shape.Solids):
-                index = self._findSub(sub, solid.Faces)
-                foundSolids.add("Solid" + str(solidId+1))
+                if sub.isSame(solid):
+                    foundSolids.add("Solid" + str(solidId+1))
+        elif sub.ShapeType == "Face":
+            for solidId, solid in enumerate(obj.Shape.Solids):
+                if(self._findSub(sub, solid.Faces)):
+                    foundSolids.add("Solid" + str(solidId+1))
         elif sub.ShapeType == "Edge":
             for solidId, solid in enumerate(obj.Shape.Solids):
-                index = self._findSub(sub, solid.Edges)
-                foundSolids.add("Solid" + str(solidId+1))
+                if(self._findSub(sub, solid.Edges)):
+                    foundSolids.add("Solid" + str(solidId+1))
         elif sub.ShapeType == "Vertex":
             for solidId, solid in enumerate(obj.Shape.Solids):
-                index = self._findSub(sub, solid.Vertexes)
-                foundSolids.add("Solid" + str(solidId+1))
+                if(self._findSub(sub, solid.Vertexes)):
+                    foundSolids.add("Solid" + str(solidId+1))
         if len(foundSolids) == 1:
             return iter(foundSolids).next()
         return None
@@ -174,5 +192,5 @@ class SolidSelector(_Selector):
     def _findSub(self, sub, subList):
         for i, s in enumerate(subList):
             if s.isSame(sub):
-                return i+1
+                return True
         return False
