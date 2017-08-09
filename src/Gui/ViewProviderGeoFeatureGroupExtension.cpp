@@ -76,8 +76,16 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
         std::vector<App::DocumentObject*> claim;
         auto objs = ext->Group.getValues();
         
-        for(auto obj : objs) {            
-            if(obj->getInList().size()<=1)
+        for(auto obj : objs) {  
+            
+            auto vin = obj->getInList();
+            
+            //we don't want to count objects that are deleted 
+            vin.erase(std::remove_if(vin.begin(), vin.end(), [](App::DocumentObject* obj)->bool {
+                return obj->isDeleting();
+            }), vin.end());
+            
+            if(vin.size()<=1)
                 claim.push_back(obj);
         }
         return claim;

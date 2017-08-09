@@ -2596,7 +2596,6 @@ void Document::remObject(const char* sName)
     }
 
     signalDeletedObject(*(pos->second));
-    pos->second->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
 
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
@@ -2651,6 +2650,8 @@ void Document::remObject(const char* sName)
     // remove from adjancy list
     //remove_vertex(_DepConMap[pos->second],_DepList);
     //_DepConMap.erase(pos->second);
+    
+    pos->second->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
     d->objectMap.erase(pos);
 }
 
