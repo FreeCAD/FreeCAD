@@ -95,12 +95,15 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
     //like OriginGroup. That is needed as we use this function to get all local coordinate systems. Also there
     //is no reason to distinguish between GeoFeatuerGroups, there is only between group/geofeaturegroup
     auto list = obj->getInList();
-    for (auto obj : list) {
-        if(obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {            
-            
-            //TODO: There may be links to geofeaturegroups to objects not inside that group. We need to 
-            //check that!
-            return obj;
+    for (auto inObj : list) {
+        
+        //There is a chance that a derived geofeaturegroup links with a local link and hence is not 
+        //the parent group even though it links to the object. We use hasObject as one and only truth 
+        //if it has the object within the group
+        if(inObj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()) &&
+           inObj->getExtensionByType<GeoFeatureGroupExtension>()->hasObject(obj)) {            
+
+            return inObj;
         }
     }
 
