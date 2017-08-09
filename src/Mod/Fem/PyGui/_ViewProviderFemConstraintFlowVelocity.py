@@ -21,30 +21,24 @@
 # ***************************************************************************
 
 
-__title__ = "_Linear"
-__author__ = "Markus Hovorka"
+__title__ = "Elmer Solver Object"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD as App
-import FemEquation
 import FemMisc
+import FemConstraint
+import Units
 
-if App.GuiUp:
-    import FreeCADGui as Gui
-    import FemSelectionWidgets
-
-
-class Proxy(FemEquation.BaseProxy):
-
-    def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
-        obj.addProperty(
-                "App::PropertyInteger", "Priority",
-                "Base", "Select type of solver for linear system")
+import FreeCADGui as Gui
+import FemSelectionWidgets
 
 
-class ViewProxy(FemEquation.BaseViewProxy):
+class ViewProxy(FemConstraint.ViewProxy):
+
+    def getIcon(self):
+        return ":/icons/fem-constraint-heatflux.svg"
 
     def setEdit(self, vobj, mode=0):
         task = _TaskPanel(vobj.Object)
@@ -59,22 +53,17 @@ class ViewProxy(FemEquation.BaseViewProxy):
         Gui.ActiveDocument.setEdit(vobj.Object.Name)
         return True
 
-    def getTaskWidget(self, vobj):
-        return None
-
 
 class _TaskPanel(object):
 
     def __init__(self, obj):
         self._obj = obj
-        self._refWidget = FemSelectionWidgets.SolidSelector()
+        self._refWidget = FemSelectionWidgets.BoundarySelector()
         self._refWidget.setReferences(obj.References)
-        propWidget = obj.ViewObject.Proxy.getTaskWidget(
-            obj.ViewObject)
-        if propWidget is None:
-            self.form = self._refWidget
-        else:
-            self.form = [self.refWidget, propWidget]
+        self._paramWidget = Gui.PySideUic.loadUi(
+            App.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemFlowVelocity.ui")
+        self._initParamWidget()
+        self.form = [self._refWidget, self._paramWidget]
         analysis = FemMisc.findAnalysisOfMember(obj)
         self._mesh = FemMisc.getSingleMember(analysis, "Fem::FemMeshObject")
         self._part = self._mesh.Part if self._mesh is not None else None
@@ -95,6 +84,7 @@ class _TaskPanel(object):
     def accept(self):
         if self._obj.References != self._refWidget.references():
             self._obj.References = self._refWidget.references()
+        self._applyWidgetChanges()
         self._obj.Document.recompute()
         self._restoreVisibility()
         return True
@@ -109,3 +99,39 @@ class _TaskPanel(object):
                 self._part.ViewObject.show()
             else:
                 self._part.ViewObject.hide()
+
+    def _initParamWidget(self):
+        unit = "m/s"
+        self._paramWidget.velocityXTxt.setText(
+            str(self._obj.VelocityX) + unit)
+        self._paramWidget.velocityYTxt.setText(
+            str(self._obj.VelocityY) + unit)
+        self._paramWidget.velocityZTxt.setText(
+            str(self._obj.VelocityZ) + unit)
+        self._paramWidget.velocityXBox.setChecked(
+            not self._obj.VelocityXEnabled)
+        self._paramWidget.velocityYBox.setChecked(
+            not self._obj.VelocityYEnabled)
+        self._paramWidget.velocityZBox.setChecked(
+            not self._obj.VelocityZEnabled)
+        self._paramWidget.normalBox.setChecked(
+            self._obj.NormalToBoundary)
+
+    def _applyWidgetChanges(self):
+        unit = "m/s"
+        self._obj.VelocityXEnabled = \
+            not self._paramWidget.velocityXBox.isChecked()
+        if self._obj.VelocityXEnabled:
+            quantity = Units.Quantity(self._paramWidget.velocityXTxt.text())
+            self._obj.VelocityX = float(quantity.getValueAs(unit))
+        self._obj.VelocityYEnabled = \
+            not self._paramWidget.velocityYBox.isChecked()
+        if self._obj.VelocityYEnabled:
+            quantity = Units.Quantity(self._paramWidget.velocityYTxt.text())
+            self._obj.VelocityY = float(quantity.getValueAs(unit))
+        self._obj.VelocityZEnabled = \
+            not self._paramWidget.velocityZBox.isChecked()
+        if self._obj.VelocityZEnabled:
+            quantity = Units.Quantity(self._paramWidget.velocityZTxt.text())
+            self._obj.VelocityZ = float(quantity.getValueAs(unit))
+        self._obj.NormalToBoundary = self._paramWidget.normalBox.isChecked()

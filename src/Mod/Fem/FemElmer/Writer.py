@@ -185,8 +185,8 @@ class Writer(object):
                     activeIn = equation.References[0][1]
                 else:
                     activeIn = self._getAllSolids()
+                solverSection = self._getHeatSolver(equation)
                 for body in activeIn:
-                    solverSection = self._getHeatSolver(equation)
                     self._addSolver(body, solverSection)
         if activeIn:
             self._handleHeatConstants()
@@ -263,8 +263,8 @@ class Writer(object):
                     activeIn = equation.References[0][1]
                 else:
                     activeIn = self._getAllSolids()
+                solverSection = self._getElasticitySolver(equation)
                 for body in activeIn:
-                    solverSection = self._getElasticitySolver(equation)
                     self._addSolver(body, solverSection)
         if activeIn:
             self._handleElasticityConstants()
@@ -384,8 +384,8 @@ class Writer(object):
                     activeIn = equation.References[0][1]
                 else:
                     activeIn = self._getAllSolids()
+                solverSection = self._getFlowSolver(equation)
                 for body in activeIn:
-                    solverSection = self._getFlowSolver(equation)
                     self._addSolver(body, solverSection)
         if activeIn:
             self._handleFlowConstants()

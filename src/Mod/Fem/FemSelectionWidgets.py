@@ -50,7 +50,7 @@ class _Selector(QtGui.QWidget):
         btnLayout.addWidget(delBtn)
 
         self._model = QtGui.QStandardItemModel()
-        self._view = QtGui.QListView()
+        self._view = SmallListView()
         self._view.setModel(self._model)
 
         self._helpTextLbl = QtGui.QLabel()
@@ -121,6 +121,9 @@ class BoundarySelector(_Selector):
     def __init__(self):
         super(BoundarySelector, self).__init__()
         self.setWindowTitle(self.tr("Select Faces/Edges/Vertexes"))
+        self.setHelpText(self.tr(
+            "To add references select them in the 3D view and then"
+            "click \"Add\"."))
 
     def getSelection(self):
         selection = []
@@ -194,3 +197,9 @@ class SolidSelector(_Selector):
             if s.isSame(sub):
                 return True
         return False
+
+
+class SmallListView(QtGui.QListView):
+
+    def sizeHint(self):
+        return QtCore.QSize(50, 50)

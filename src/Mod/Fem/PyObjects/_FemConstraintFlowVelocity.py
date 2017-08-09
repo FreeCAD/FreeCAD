@@ -21,43 +21,36 @@
 # ***************************************************************************
 
 
-__title__ = "_Base"
-__author__ = "Markus Hovorka"
+__title__ = "Elmer Solver Object"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
-from pivy import coin
-
-import FreeCAD as App
-if App.GuiUp:
-    import FreeCADGui as Gui
+import FemConstraint
 
 
-class Proxy(object):
-
-    BaseType = "Fem::ConstraintPython"
+class Proxy(FemConstraint.Proxy):
 
     def __init__(self, obj):
-        obj.Proxy = self
-
-
-class ViewProxy(object):
-    """Proxy for FemSolverElmers View Provider."""
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
-
-    def attach(self, vobj):
-        default = coin.SoGroup()
-        vobj.addDisplayMode(default, "Default")
-
-    def getDisplayModes(self, obj):
-        "Return a list of display modes."
-        modes = ["Default"]
-        return modes
-
-    def getDefaultDisplayMode(self):
-        return "Default"
-
-    def setDisplayMode(self, mode):
-        return mode
+        super(Proxy, self).__init__(obj)
+        obj.addProperty(
+                "App::PropertyFloat", "VelocityX",
+                "Parameter", "Body heat flux")
+        obj.addProperty(
+                "App::PropertyBool", "VelocityXEnabled",
+                "Parameter", "Body heat flux")
+        obj.addProperty(
+                "App::PropertyFloat", "VelocityY",
+                "Parameter", "Body heat flux")
+        obj.addProperty(
+                "App::PropertyBool", "VelocityYEnabled",
+                "Parameter", "Body heat flux")
+        obj.addProperty(
+                "App::PropertyFloat", "VelocityZ",
+                "Parameter", "Body heat flux")
+        obj.addProperty(
+                "App::PropertyBool", "VelocityZEnabled",
+                "Parameter", "Body heat flux")
+        obj.addProperty(
+                "App::PropertyBool", "NormalToBoundary",
+                "Parameter", "Body heat flux")

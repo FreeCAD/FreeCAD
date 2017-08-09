@@ -21,43 +21,39 @@
 # ***************************************************************************
 
 
-__title__ = "_Base"
+__title__ = "AddConstraintFlowVelocity"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-from pivy import coin
+from PySide import QtCore
 
 import FreeCAD as App
-if App.GuiUp:
-    import FreeCADGui as Gui
+import FreeCADGui as Gui
+from PyGui import FemCommands
 
 
-class Proxy(object):
+class Command(FemCommands.FemCommands):
 
-    BaseType = "Fem::ConstraintPython"
+    def __init__(self):
+        super(Command, self).__init__()
+        self.resources = {
+            'Pixmap': 'fem-constraint-heatflux',
+            'MenuText': QtCore.QT_TRANSLATE_NOOP(
+                "FEM_ConstraintFlowVelocity",
+                "Constraint Velocity"),
+            'ToolTip': QtCore.QT_TRANSLATE_NOOP(
+                "FEM_ConstraintFlowVelocity",
+                "Creates a FEM constraint body heat flux")}
+        self.is_active = 'with_analysis'
 
-    def __init__(self, obj):
-        obj.Proxy = self
+    def Activated(self):
+        App.ActiveDocument.openTransaction(
+            "Create FemConstraintFlowVelocity")
+        Gui.addModule("ObjectsFem")
+        Gui.doCommand(
+            "FemGui.getActiveAnalysis().Member += "
+            "[ObjectsFem.makeConstraintFlowVelocity()]")
 
 
-class ViewProxy(object):
-    """Proxy for FemSolverElmers View Provider."""
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
-
-    def attach(self, vobj):
-        default = coin.SoGroup()
-        vobj.addDisplayMode(default, "Default")
-
-    def getDisplayModes(self, obj):
-        "Return a list of display modes."
-        modes = ["Default"]
-        return modes
-
-    def getDefaultDisplayMode(self):
-        return "Default"
-
-    def setDisplayMode(self, mode):
-        return mode
+Gui.addCommand('FEM_AddConstraintFlowVelocity', Command())

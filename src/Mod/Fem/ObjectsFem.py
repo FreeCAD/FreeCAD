@@ -133,6 +133,16 @@ def makeConstraintBodyHeatFlux(doc, name="ConstraintBodyHeatFlux"):
     return obj
 
 
+def makeConstraintFlowVelocity(doc, name="FlowVelocity"):
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    import PyObjects._FemConstraintFlowVelocity
+    PyObjects._FemConstraintFlowVelocity.Proxy(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemConstraintFlowVelocity
+        PyGui._ViewProviderFemConstraintFlowVelocity.ViewProxy(obj.ViewObject)
+    return obj
+
+
 def makeConstraintTemperature(doc, name="ConstraintTemperature"):
     '''makeConstraintTemperature(document, [name]): makes a Fem ConstraintTemperature object'''
     obj = doc.addObject("Fem::ConstraintTemperature", name)

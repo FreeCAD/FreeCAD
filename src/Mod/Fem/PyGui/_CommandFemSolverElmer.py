@@ -55,7 +55,9 @@ class Command(QtCore.QObject):
         }
 
     def IsActive(self):
-        return FemGui.getActiveAnalysis() is not None
+        analysis = FemGui.getActiveAnalysis()
+        return (analysis is not None
+            and analysis.Document == App.ActiveDocument)
 
 
 Gui.addCommand('FEM_AddSolverElmer', Command())
