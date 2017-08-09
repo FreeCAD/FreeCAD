@@ -2405,6 +2405,15 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             if len(f.Edges) == 1:
                 if isinstance(f.Edges[0].Curve,Part.Circle):
                     svg += getCircle(f.Edges[0])
+                    
+    elif getType(obj) == "Rebar":
+        fill = "none"
+        lstyle = getLineStyle()
+        if obj.Proxy:
+            if not hasattr(obj.Proxy,"wires"):
+                obj.Proxy.execute(obj)
+            if hasattr(obj.Proxy,"wires"):
+                svg += getPath(wires=obj.Proxy.wires)
 
     elif getType(obj) == "PipeConnector":
         pass
