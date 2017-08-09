@@ -793,7 +793,7 @@ class UndoRedoCases(unittest.TestCase):
     self.failUnless(len(self.Cylinder.InList) == 1)  
     self.failUnless(self.Cylinder.InList[0] == self.Doc.Fuse)
       
-  def testUndoIssue0003150(self):
+  def testUndoIssue0003150Part1(self):
   
     self.Doc.UndoMode = 1
   
@@ -1015,6 +1015,26 @@ class DocumentGroupCases(unittest.TestCase):
         self.fail("Exception is expected")
         
     self.Doc.recompute()
+    
+  def testIssue0003150Part2(self):
+    self.box = self.Doc.addObject("Part::Box")
+    self.cyl = self.Doc.addObject("Part::Cylinder")
+    self.sph = self.Doc.addObject("Part::Sphere")
+
+    self.fus1 = self.Doc.addObject("Part::MultiFuse")
+    self.fus2 = self.Doc.addObject("Part::MultiFuse")
+
+    self.fus1.Shapes = [self.box, self.cyl];
+    self.fus2.Shapes = [self.sph, self.cyl];
+
+    self.prt = self.Doc.addObject("App::Part")
+    self.prt.addObject(self.fus1)
+    self.failUnless(len(self.prt.Group)==5)
+    self.failUnless(self.fus2.getParentGeoFeatureGroup() == self.prt)
+    self.failUnless(self.prt.hasObject(self.sph))
+    
+    self.prt.removeObject(self.fus1)
+    self.failUnless(len(self.prt.Group)==0)
 
   def tearDown(self):
     # closing doc

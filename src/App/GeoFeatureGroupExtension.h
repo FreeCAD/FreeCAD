@@ -99,18 +99,10 @@ public:
     virtual std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
     virtual std::vector< DocumentObject* > removeObjects(std::vector< DocumentObject* > obj) override;
     
-    /// Collects GeoFeatureGroup relevant objects that are linked from the given one. That means all linked objects
-    /// including their links (recursively) except GeoFeatureGroups, where the recursion stops. Expressions
-    /// links are ignored. An exception is thrown when there are dependency loops.
-    static void getCSOutList(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
-    /// Collects GeoFeatureGroup relevant objects that link to the given one. That means all objects
-    /// including their parents (recursively) except GeoFeatureGroups, where the recursion stops. Expression 
-    /// links are ignored. An exception is thrown when there are dependency loops.
-    static void getCSInList(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
     /// Collects all links that are relevant for the coordinate system, meaning all recursive links to 
     /// obj and from obj excluding expressions and stopping the recursion at other geofeaturegroups. 
     /// The result is the combination of CSOutList and CSInList.
-    static void getCSRelevantLinks(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    static std::vector<App::DocumentObject*> getCSRelevantLinks(const App::DocumentObject* obj);
     /// Checks if the links of the given object comply with all GeoFeatureGroup requrirements, that means
     /// if normal links are only withing the parent GeoFeatureGroup. 
     static bool areLinksValid(const App::DocumentObject* obj);
@@ -126,6 +118,18 @@ private:
     static std::vector<App::DocumentObject*> getScopedObjectsFromLinks(const App::DocumentObject*, LinkScope scope = LinkScope::Local);
     static std::vector<App::DocumentObject*> getScopedObjectsFromLink(App::Property*, LinkScope scope = LinkScope::Local);
 
+    /// Collects GeoFeatureGroup relevant objects that are linked from the given one. That means all linked objects
+    /// except GeoFeatureGroups. Expressions links are ignored. Only local scope links are considered. There is no 
+    /// recursion. An exception is thrown when there are dependency loops.
+    static void getCSOutList(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    /// Collects GeoFeatureGroup relevant objects that link to the given one. That means all objects
+    /// except GeoFeatureGroups. Expression links are ignored. Only local scope links are relevant, and 
+    /// there is no recursion. An exception is thrown when there are dependency loops.
+    static void getCSInList(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    
+    static void recursiveCSRelevantLinks(const App::DocumentObject* obj,
+                                         std::vector<App::DocumentObject*>& vec);
+ 
 };
 
 typedef ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>> GeoFeatureGroupExtensionPython;
