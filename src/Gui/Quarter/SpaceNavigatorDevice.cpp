@@ -101,6 +101,22 @@ SpaceNavigatorDevice::SpaceNavigatorDevice()
 #endif // HAVE_SPACENAV_LIB
 }
 
+SpaceNavigatorDevice::SpaceNavigatorDevice(QuarterWidget *quarter) :
+    InputDevice(quarter)
+{
+    PRIVATE(this) = new SpaceNavigatorDeviceP(this);
+
+#ifdef HAVE_SPACENAV_LIB
+    PRIVATE(this)->hasdevice =
+            spnav_x11_open(QX11Info::display(), PRIVATE(this)->windowid) == -1 ? false : true;
+
+    // FIXME: Use a debugmessage mechanism instead? (20101020 handegar)
+    if (!PRIVATE(this)->hasdevice) {
+        fprintf(stderr, "Quarter:: Could not hook up to Spacenav device.\n");
+    }
+
+#endif // HAVE_SPACENAV_LIB
+}
 
 SpaceNavigatorDevice::~SpaceNavigatorDevice()
 {
