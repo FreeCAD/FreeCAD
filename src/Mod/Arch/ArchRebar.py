@@ -172,13 +172,15 @@ class _Rebar(ArchComponent.Component):
         import DraftGeomUtils
         if wire:
             e = wire.Edges[0]
-            v = DraftGeomUtils.vec(e).normalize()
+            #v = DraftGeomUtils.vec(e).normalize()
+            v = e.tangentAt(e.FirstParameter)
             return e.Vertexes[0].Point,v
         if obj.Base:
             if obj.Base.Shape:
                 if obj.Base.Shape.Wires:
                     e = obj.Base.Shape.Wires[0].Edges[0]
-                    v = DraftGeomUtils.vec(e).normalize()
+                    #v = DraftGeomUtils.vec(e).normalize()
+                    v = e.tangentAt(e.FirstParameter)
                     return e.Vertexes[0].Point,v
         return None,None
 
