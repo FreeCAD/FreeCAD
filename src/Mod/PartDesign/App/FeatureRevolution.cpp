@@ -37,6 +37,7 @@
 #endif
 
 #include <Base/Axis.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
@@ -186,7 +187,7 @@ bool Revolution::suggestReversed(void)
     try {
         updateAxis();
     } catch (const Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
+        return false;
     }
 
     return ProfileBased::getReversedAngle(Base.getValue(), Axis.getValue()) < 0.0;
