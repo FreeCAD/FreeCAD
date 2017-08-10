@@ -781,9 +781,7 @@ class UndoRedoCases(unittest.TestCase):
     self.Fuse1.Shapes = [self.Box, self.Cylinder]
     self.Doc.commitTransaction()
     
-    print self.Box.InList
     self.Doc.undo()
-    print self.Box.InList
     self.failUnless(len(self.Box.InList) == 0)
     self.failUnless(len(self.Cylinder.InList) == 0)      
     
