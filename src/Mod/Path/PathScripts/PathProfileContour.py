@@ -76,27 +76,19 @@ class ObjectContour(PathProfileBase.ObjectProfile):
         else:
             self.commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
-        job = PathUtils.findParentJob(obj)
-
-        if job is None:
-            return
-        baseobject = job.Base
-        if baseobject is None:
-            return
-
         isPanel = False
-        if hasattr(baseobject, "Proxy"):
-            if isinstance(baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+        if hasattr(self.baseobject, "Proxy"):
+            if isinstance(self.baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
                 isPanel = True
-                baseobject.Proxy.execute(baseobject)
-                shapes = baseobject.Proxy.getOutlines(baseobject, transform=True)
+                self.baseobject.Proxy.execute(self.baseobject)
+                shapes = self.baseobject.Proxy.getOutlines(self.baseobject, transform=True)
                 for shape in shapes:
                     f = Part.makeFace([shape], 'Part::FaceMakerSimple')
-                    thickness = baseobject.Group[0].Source.Thickness
+                    thickness = self.baseobject.Group[0].Source.Thickness
                     return [(f.extrude(FreeCAD.Vector(0, 0, thickness)), False)]
 
-        if hasattr(baseobject, "Shape") and not isPanel:
-            return [(PathUtils.getEnvelope(partshape=baseobject.Shape, subshape=None, depthparams=self.depthparams), False)]
+        if hasattr(self.baseobject, "Shape") and not isPanel:
+            return [(PathUtils.getEnvelope(partshape=self.baseobject.Shape, subshape=None, depthparams=self.depthparams), False)]
 
     def areaOpAreaParams(self, obj, isHole):
         params = self.baseObject().areaOpAreaParams(obj, isHole)
