@@ -135,7 +135,8 @@ void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewPro
 
 void ViewProviderOriginGroupExtension::updateOriginSize () {
     
-    if(getExtendedViewProvider()->getObject()->isDeleting())
+    if(getExtendedViewProvider()->getObject()->isDeleting() ||
+       getExtendedViewProvider()->getObject()->getDocument()->testStatus(App::Document::Restoring))
         return;
     
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
