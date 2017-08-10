@@ -96,11 +96,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
     def areaOpShapes(self, obj):
         PathLog.track()
 
-        job = PathUtils.findParentJob(obj)
-        if not job or not job.Base:
-            return
-        baseobject = job.Base
-
         if obj.Base:
             PathLog.debug("base items exist.  Processing...")
             removalshapes = []
@@ -113,14 +108,14 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                         edges = [getattr(b[0].Shape, sub) for sub in b[1]]
                         shape = Part.makeFace(edges, 'Part::FaceMakerSimple')
 
-                    env = PathUtils.getEnvelope(baseobject.Shape, subshape=shape, depthparams=self.depthparams)
-                    obj.removalshape = env.cut(baseobject.Shape)
+                    env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=shape, depthparams=self.depthparams)
+                    obj.removalshape = env.cut(self.baseobject.Shape)
                     removalshapes.append((obj.removalshape, False))
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
 
-            env = PathUtils.getEnvelope(baseobject.Shape, subshape=None, depthparams=self.depthparams)
-            obj.removalshape = env.cut(baseobject.Shape)
+            env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=None, depthparams=self.depthparams)
+            obj.removalshape = env.cut(self.baseobject.Shape)
             removalshapes = [(obj.removalshape, False)]
         return removalshapes
 

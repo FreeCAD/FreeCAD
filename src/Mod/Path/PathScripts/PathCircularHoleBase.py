@@ -104,29 +104,24 @@ class ObjectOp(PathOp.ObjectOp):
         PathLog.track()
 
         if len(obj.Base) == 0:
-            job = PathUtils.findParentJob(obj)
-            if not job or not job.Base:
-                return
-            baseobject = job.Base
-
             # Arch PanelSheet
             features = []
-            if self.baseIsArchPanel(obj, baseobject):
-                holeshapes = baseobject.Proxy.getHoles(baseobject, transform=True)
+            if self.baseIsArchPanel(obj, self.baseobject):
+                holeshapes = self.baseobject.Proxy.getHoles(self.baseobject, transform=True)
                 tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
                 for holeNr, hole in enumerate(holeshapes):
                     PathLog.debug('Entering new HoleShape')
                     for wireNr, wire in enumerate(hole.Wires):
                         PathLog.debug('Entering new Wire')
                         for edgeNr, edge in enumerate(wire.Edges):
-                            if PathUtils.isDrillable(baseobject, edge, tooldiameter):
+                            if PathUtils.isDrillable(self.baseobject, edge, tooldiameter):
                                 PathLog.debug('Found drillable hole edges: {}'.format(edge))
-                                features.append((baseobject, "%d.%d.%d" % (holeNr, wireNr, edgeNr)))
+                                features.append((self.baseobject, "%d.%d.%d" % (holeNr, wireNr, edgeNr)))
 
-                self.setDepths(obj, None, None, baseobject.Shape.BoundBox)
+                self.setDepths(obj, None, None, self.baseobject.Shape.BoundBox)
             else:
-                features = self.findHoles(obj, baseobject)
-                self.setupDepthsFrom(obj, features, baseobject)
+                features = self.findHoles(obj, self.baseobject)
+                self.setupDepthsFrom(obj, features, self.baseobject)
             obj.Base = features
             obj.Disabled = []
 

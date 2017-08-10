@@ -145,12 +145,8 @@ class ObjectFace(PathAreaOp.ObjectOp):
 
         # If no base object, do planing of top surface of entire model
         else:
-            job = PathUtils.findParentJob(obj)
-            if not job or not job.Base:
-                return
-            baseobject = job.Base
-            planeshape = baseobject.Shape
-            PathLog.debug("Working on a shape {}".format(baseobject.Name))
+            planeshape = self.baseobject.Shape
+            PathLog.debug("Working on a shape {}".format(self.baseobject.Name))
 
         # if user wants the boundbox, calculate that
         PathLog.debug("Boundary Shape: {}".format(obj.BoundaryShape))
