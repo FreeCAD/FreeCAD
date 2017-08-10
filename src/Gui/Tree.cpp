@@ -1181,7 +1181,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
 }
 
 void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
-{
+{   
     QString displayName = QString::fromUtf8(view.getObject()->Label.getValue());
     FOREACH_ITEM(item,view)
         item->setText(0, displayName);
