@@ -2186,8 +2186,8 @@ int Document::recompute()
     }
 
     for (auto objIt = topoSortedObjects.rbegin(); objIt != topoSortedObjects.rend(); ++objIt){
-        // ask the object if it should be recomputed
-        if ((*objIt)->mustExecute() == 1){
+        // ask the object if it should be recomputed  
+        if ((*objIt)->isTouched() || (*objIt)->mustExecute() == 1){
             objectCount++;
             if (_recomputeFeature(*objIt)) {
                 // if something happen break execution of recompute
