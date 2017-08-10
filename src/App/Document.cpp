@@ -2674,7 +2674,6 @@ void Document::_remObject(DocumentObject* pcObject)
     }
     signalDeletedObject(*pcObject);
     // TODO Check me if it's needed (2015-09-01, Fat-Zer)
-    pcObject->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
 
     //remove the tip if needed
     if (Tip.getValue() == pcObject) {
@@ -2695,6 +2694,7 @@ void Document::_remObject(DocumentObject* pcObject)
     }
 
     // remove from map
+    pcObject->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
     d->objectMap.erase(pos);
 
     for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {

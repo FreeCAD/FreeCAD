@@ -80,12 +80,17 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
             
             auto vin = obj->getInList();
             
-            //we don't want to count objects that are deleted 
-            vin.erase(std::remove_if(vin.begin(), vin.end(), [](App::DocumentObject* obj)->bool {
-                return obj->isDeleting();
+            //we don't want to count objects that are deleted or part of other geo feature groups. 
+            //Second criteria is actually not possible in normal operation, but only in some error
+            //condition. But then it is needed to understand the problem for the user
+            auto grp = getExtendedViewProvider()->getObject();
+            vin.erase(std::remove_if(vin.begin(), vin.end(), [&](App::DocumentObject* obj)->bool {
+                return obj->isDeleting() || 
+                       obj == grp ||
+                       App::GeoFeatureGroupExtension::getGroupOfObject(obj)!=grp;
             }), vin.end());
             
-            if(vin.size()<=1)
+            if(vin.empty())
                 claim.push_back(obj);
         }
         return claim;
