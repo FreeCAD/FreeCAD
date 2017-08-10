@@ -84,7 +84,7 @@ class _FemMeshGmsh():
         obj.addProperty("App::PropertyBool", "CoherenceMesh", "FEM GMSH Mesh Params", "Removes all duplicate mesh vertices")
         obj.CoherenceMesh = True
 
-        obj.addProperty("App::PropertyLength", "GeometryTolerance", "FEM GMSH Mesh Params", "Gemetrical Tolerance (0.0 = GMSH std = 1e-08 mm)")
+        obj.addProperty("App::PropertyFloat", "GeometryTolerance", "FEM GMSH Mesh Params", "Gemetrical Tolerance (0.0 = GMSH std = 1e-08)")
         obj.GeometryTolerance = 1e-06
 
         obj.addProperty("App::PropertyEnumeration", "Algorithm2D", "FEM GMSH Mesh Params", "mesh algorithm 2D")
