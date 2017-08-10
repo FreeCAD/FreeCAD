@@ -40,7 +40,6 @@ SET(PathScripts_SRCS
     PathScripts/PathFacePocket.py
     PathScripts/PathFaceProfile.py
     PathScripts/PathFixture.py
-    PathScripts/PathFromShape.py
     PathScripts/PathGeom.py
     PathScripts/PathHelix.py
     PathScripts/PathHelixGui.py
