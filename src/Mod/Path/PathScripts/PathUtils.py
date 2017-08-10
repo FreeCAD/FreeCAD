@@ -477,14 +477,14 @@ def addToJob(obj, jobname=None):
         else:
             # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
             form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
-            mylist = [i.Name for i in jobs]
+            mylist = [i.Label for i in jobs]
             form.cboProject.addItems(mylist)
             r = form.exec_()
             if r is False:
                 return None
             else:
                 print(form.cboProject.currentText())
-                job = [i for i in jobs if i.Name == form.cboProject.currentText()][0]
+                job = [i for i in jobs if i.Label == form.cboProject.currentText()][0]
 
     if obj:
         addObjectToJob(obj, job)
