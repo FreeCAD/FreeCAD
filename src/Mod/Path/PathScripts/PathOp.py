@@ -143,6 +143,14 @@ class ObjectOp(object):
                 obj.ViewObject.Visibility = False
             return
 
+        if not job:
+            PathLog.error(translate("Path", "No parent job found for operation."))
+            return
+        if not job.Base:
+            PathLog.error(translate("Path", "Parent job %s doesn't have a base object") % job.Label)
+            return
+        self.baseobject = job.Base
+
         if FeatureTool & self.opFeatures(obj):
             tc = obj.ToolController
             if tc is None or tc.ToolNumber == 0:

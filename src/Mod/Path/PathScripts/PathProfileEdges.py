@@ -69,11 +69,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
     def areaOpShapes(self, obj):
         PathLog.track()
 
-        job = PathUtils.findParentJob(obj)
-        if not job or not job.Base:
-            return
-        baseobject = job.Base
-
         if obj.UseComp:
             self.commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
         else:
@@ -97,7 +92,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                 zShift = b[0].Shape.BoundBox.ZMin - f.BoundBox.ZMin
                 newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), f.Placement.Rotation)
                 f.Placement = newPlace
-                env = PathUtils.getEnvelope(baseobject.Shape, subshape=f, depthparams=self.depthparams)
+                env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=f, depthparams=self.depthparams)
                 shapes.append((env, False))
         return shapes
 
