@@ -40,7 +40,6 @@ PathOpGui.SetupOperation('Contour',
         TaskPanelOpPage,
         'Path-Contour',
         QtCore.QT_TRANSLATE_NOOP("PathProfileContour", "Contour"),
-        "P, C",
         QtCore.QT_TRANSLATE_NOOP("PathProfileContour", "Creates a Contour Path for the Base Object "))
 
 FreeCAD.Console.PrintLog("Loading PathProfileContourGui... done\n")

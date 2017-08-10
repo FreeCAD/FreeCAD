@@ -37,9 +37,8 @@ class TaskPanelOpPage(PathProfileBaseGui.TaskPanelOpPage):
 PathOpGui.SetupOperation('Profile Edges',
         PathProfileEdges.Create,
         TaskPanelOpPage,
-        'Path-Profile',
+        'Path-Profile-Edges',
         QtCore.QT_TRANSLATE_NOOP("PathProfile", "Edge Profile"),
-        "P, F",
-        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile based on face or faces"))
+        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile based on edges"))
 
 FreeCAD.Console.PrintLog("Loading PathProfileEdgesGui... done\n")
