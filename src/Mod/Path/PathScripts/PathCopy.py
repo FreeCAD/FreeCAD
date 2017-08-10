@@ -78,7 +78,6 @@ class CommandPathCopy:
     def GetResources(self):
         return {'Pixmap': 'Path-Copy',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Copy", "Copy"),
-                'Accel': "P, Y",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Copy", "Creates a linked copy of another path")}
 
     def IsActive(self):

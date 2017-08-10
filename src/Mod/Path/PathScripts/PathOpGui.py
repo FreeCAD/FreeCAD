@@ -562,10 +562,12 @@ class CommandPathOp:
         self.res = resources
 
     def GetResources(self):
-        return {'Pixmap':   self.res.pixmap,
+        ress = {'Pixmap':   self.res.pixmap,
                 'MenuText': self.res.menuText,
-                'Accel':    self.res.accelKey,
                 'ToolTip':  self.res.toolTip}
+        if self.res.accelKey:
+                ress['Accel'] = self.res.accelKey
+        return ress
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -592,8 +594,8 @@ def SetupOperation(name,
         opPageClass,
         pixmap,
         menuText,
-        accelKey,
-        toolTip):
+        toolTip,
+        accelKey = None):
     res = CommandResources(name, objFactory, opPageClass, pixmap, menuText, accelKey, toolTip)
 
     FreeCADGui.addCommand("Path_%s" % name.replace(' ', '_'), CommandPathOp(res))
