@@ -25,7 +25,7 @@
 
 # datum tools
 from PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane
-#from PartDesignTests.TestShapeBinder import TestShapeBinder
+from PartDesignTests.TestShapeBinder import TestShapeBinder
 
 # additive/subtractive features & primitives
 from PartDesignTests.TestPad import TestPad
@@ -33,14 +33,14 @@ from PartDesignTests.TestPocket import TestPocket
 from PartDesignTests.TestRevolve import TestRevolve
 from PartDesignTests.TestPipe import TestPipe
 from PartDesignTests.TestLoft import TestLoft
-#from PartDesignTests.TestPrimitive import TestPrimitive
+from PartDesignTests.TestPrimitive import TestPrimitive
 
 # transformations and boolean
 from PartDesignTests.TestMirrored import TestMirrored
 from PartDesignTests.TestLinearPattern import TestLinearPattern
 from PartDesignTests.TestPolarPattern import TestPolarPattern
-#from PartDesignTests.TestMultiTransform import TestMultiTransform
-#from PartDesignTests.TestBoolean import TestBoolean
+from PartDesignTests.TestMultiTransform import TestMultiTransform
+from PartDesignTests.TestBoolean import TestBoolean
 
 # dressup features
 from PartDesignTests.TestFillet import TestFillet

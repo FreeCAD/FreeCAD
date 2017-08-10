@@ -572,7 +572,7 @@ struct id_prop {
 }
 
 namespace boost {
-//access the propertymap needs to be boost visable
+//access the propertymap needs to be boost visible
 template<typename P, typename G>
 typename dcm::property_map<P, G>::value_type	get(const dcm::property_map<P, G>& map,
         typename dcm::property_map<P, G>::key_type key)

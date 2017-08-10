@@ -24,6 +24,7 @@ SET(Arch_SRCS
     ArchRoof.py
     ArchStairs.py
     importWebGL.py
+    importJSON.py
     ArchSpace.py
     ArchRebar.py
     TestArch.py

@@ -66,34 +66,24 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
     if result_name_prefix is None:
         result_name_prefix = ''
     m = readResult(filename)
-    mesh_object = None
-    if(len(m['Nodes']) > 0):
-        if analysis is None:
-            analysis_name = os.path.splitext(os.path.basename(filename))[0]
-            analysis_object = ObjectsFem.makeAnalysis('Analysis')
-            analysis_object.Label = analysis_name
-        else:
-            analysis_object = analysis  # see if statement few lines later, if not analysis -> no FemMesh object is created !
+    result_mesh_object = None
+    if len(m['Nodes']) > 0:
+        if analysis:
+            analysis_object = analysis
 
-        if 'Nodes' in m:
-            positions = []
-            for k, v in m['Nodes'].items():
-                positions.append(v)
-            p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
-            p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
+        mesh = importToolsFem.make_femmesh(m)
+        result_mesh_object = ObjectsFem.makeMeshResult('Result_mesh')
+        result_mesh_object.FemMesh = mesh
 
-            x_span = abs(p_x_max - p_x_min)
-            y_span = abs(p_y_max - p_y_min)
-            z_span = abs(p_z_max - p_z_min)
-            span = max(x_span, y_span, z_span)
-
-        if (not analysis):
-            mesh = importToolsFem.make_femmesh(m)
-
-            if len(m['Nodes']) > 0:
-                mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', 'ResultMesh')
-                mesh_object.FemMesh = mesh
-                analysis_object.Member = analysis_object.Member + [mesh_object]
+        positions = []
+        for k, v in m['Nodes'].items():
+            positions.append(v)
+        p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
+        p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
+        x_span = abs(p_x_max - p_x_min)
+        y_span = abs(p_y_max - p_y_min)
+        z_span = abs(p_z_max - p_z_min)
+        span = max(x_span, y_span, z_span)
 
         number_of_increments = len(m['Results'])
         for result_set in m['Results']:
@@ -108,31 +98,35 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                 results_name = result_name_prefix + 'results'
 
             results = ObjectsFem.makeResultMechanical(results_name)
-            for m in analysis_object.Member:  # TODO analysis could have multiple mesh objects in the future
-                if m.isDerivedFrom("Fem::FemMeshObject"):
-                    results.Mesh = m
-                    break
+            results.Mesh = result_mesh_object
             results = importToolsFem.fill_femresult_mechanical(results, result_set, span)
-            analysis_object.Member = analysis_object.Member + [results]
+            if analysis:
+                analysis_object.Member = analysis_object.Member + [results]
 
-        if(FreeCAD.GuiUp):
-            import FemGui
-            FemGui.setActiveAnalysis(analysis_object)
+        if FreeCAD.GuiUp:
+            if analysis:
+                import FemGui
+                FemGui.setActiveAnalysis(analysis_object)
+            FreeCAD.ActiveDocument.recompute()
+
+    else:
+        FreeCAD.Console.PrintError('Problem on frd file import. No nodes found in frd file.\n')
 
 
 # read a calculix result file and extract the nodes, displacement vectores and stress values.
 def readResult(frd_input):
     print('Read results from: ' + frd_input)
     inout_nodes = []
-    if os.path.exists("inout_nodes.txt"):
-        print('We have found a inout_nodes.txt file. We gone read it and delete it afterwards')
-        f = pyopen("inout_nodes.txt", "r")
+    inout_nodes_file = frd_input.rsplit('.', 1)[0] + '_inout_nodes.txt'
+    if os.path.exists(inout_nodes_file):
+        print('Read special 1DFlow nodes data form: ' + inout_nodes_file)
+        f = pyopen(inout_nodes_file, "r")
         lines = f.readlines()
         for line in lines:
             a = line.split(',')
             inout_nodes.append(a)
         f.close()
-        os.remove("inout_nodes.txt")
+        print(inout_nodes)
     frd_file = pyopen(frd_input, "r")
     nodes = {}
     elements_hexa8 = {}
@@ -534,8 +528,19 @@ def readResult(frd_input):
                 FreeCAD.Console.PrintError('We have mflow or npressure, but no inout_nodes file.\n')
     if not nodes:
         FreeCAD.Console.PrintError('FEM: No nodes found in Frd file.\n')
-    return {'Nodes': nodes,
-            'Hexa8Elem': elements_hexa8, 'Penta6Elem': elements_penta6, 'Tetra4Elem': elements_tetra4, 'Tetra10Elem': elements_tetra10,
-            'Penta15Elem': elements_penta15, 'Hexa20Elem': elements_hexa20, 'Tria3Elem': elements_tria3, 'Tria6Elem': elements_tria6,
-            'Quad4Elem': elements_quad4, 'Quad8Elem': elements_quad8, 'Seg2Elem': elements_seg2, 'Seg3Elem': elements_seg3,
-            'Results': results}
+    return {
+        'Nodes': nodes,
+        'Seg2Elem': elements_seg2,
+        'Seg3Elem': elements_seg3,
+        'Tria3Elem': elements_tria3,
+        'Tria6Elem': elements_tria6,
+        'Quad4Elem': elements_quad4,
+        'Quad8Elem': elements_quad8,
+        'Tetra4Elem': elements_tetra4,
+        'Tetra10Elem': elements_tetra10,
+        'Hexa8Elem': elements_hexa8,
+        'Hexa20Elem': elements_hexa20,
+        'Penta6Elem': elements_penta6,
+        'Penta15Elem': elements_penta15,
+        'Results': results
+    }

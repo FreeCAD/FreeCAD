@@ -112,7 +112,7 @@ def makeConstraintPulley(name="ConstraintPulley"):
 
 def makeConstraintSelfWeight(name="ConstraintSelfWeight"):
     '''makeConstraintSelfWeight([name]): creates an self weight object to define a gravity load'''
-    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintPython", name)
     import PyObjects._FemConstraintSelfWeight
     PyObjects._FemConstraintSelfWeight._FemConstraintSelfWeight(obj)
     if FreeCAD.GuiUp:
@@ -247,8 +247,25 @@ def makeMeshGroup(base_mesh, use_label=False, name="FEMMeshGroup"):
     return obj
 
 
-def makeMeshShapeNetgenObject(name="FEMMeshNetgen"):
-    '''makeMeshShapeNetgenObject(name): makes a Fem MeshShapeNetgenObject object'''
+def makeMeshBoundaryLayer(base_mesh, name="MeshBoundaryLayer"):
+    '''makeMeshBoundaryLayer([length], [name]): creates a  FEM mesh BoundaryLayer object to define boundary layer properties'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
+    import PyObjects._FemMeshBoundaryLayer
+    PyObjects._FemMeshBoundaryLayer._FemMeshBoundaryLayer(obj)
+
+    # obj.BaseMesh = base_mesh
+    # App::PropertyLinkList does not support append, we will use a temporary list to append the mesh BoundaryLayer obj. to the list
+    tmplist = base_mesh.MeshBoundaryLayerList
+    tmplist.append(obj)
+    base_mesh.MeshBoundaryLayerList = tmplist
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemMeshBoundaryLayer
+        PyGui._ViewProviderFemMeshBoundaryLayer._ViewProviderFemMeshBoundaryLayer(obj.ViewObject)
+    return obj
+
+
+def makeMeshNetgen(name="FEMMeshNetgen"):
+    '''makeMeshNetgen(name): makes a Fem MeshShapeNetgenObject object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshShapeNetgenObject", name)
     return obj
 
@@ -267,6 +284,17 @@ def makeMeshRegion(base_mesh, element_length=0.0, name="FEMMeshRegion"):
     if FreeCAD.GuiUp:
         import PyGui._ViewProviderFemMeshRegion
         PyGui._ViewProviderFemMeshRegion._ViewProviderFemMeshRegion(obj.ViewObject)
+    return obj
+
+
+def makeMeshResult(name="FEMMeshResult"):
+    '''(name): makes a Fem MeshResult object'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshObjectPython", name)
+    import PyObjects._FemMeshResult
+    PyObjects._FemMeshResult._FemMeshResult(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemMeshResult
+        PyGui._ViewProviderFemMeshResult._ViewProviderFemMeshResult(obj.ViewObject)
     return obj
 
 

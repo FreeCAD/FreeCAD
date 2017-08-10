@@ -172,13 +172,15 @@ class _Rebar(ArchComponent.Component):
         import DraftGeomUtils
         if wire:
             e = wire.Edges[0]
-            v = DraftGeomUtils.vec(e).normalize()
+            #v = DraftGeomUtils.vec(e).normalize()
+            v = e.tangentAt(e.FirstParameter)
             return e.Vertexes[0].Point,v
         if obj.Base:
             if obj.Base.Shape:
                 if obj.Base.Shape.Wires:
                     e = obj.Base.Shape.Wires[0].Edges[0]
-                    v = DraftGeomUtils.vec(e).normalize()
+                    #v = DraftGeomUtils.vec(e).normalize()
+                    v = e.tangentAt(e.FirstParameter)
                     return e.Vertexes[0].Point,v
         return None,None
 
@@ -314,12 +316,14 @@ class _Rebar(ArchComponent.Component):
         circle = Part.Wire(circle)
         try:
             bar = wire.makePipeShell([circle],True,False,2)
+            basewire = wire.copy()
         except Part.OCCError:
             print("Arch: error sweeping rebar profile along the base sketch")
             return
         # building final shape
         shapes = []
         placementlist = []
+        self.wires = []
         if father:
             rot = father.Placement.Rotation
         else:
@@ -345,9 +349,11 @@ class _Rebar(ArchComponent.Component):
         if spacinglist:
             placementlist[:] = []
             reqInfluenceArea = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
-            if influenceArea > reqInfluenceArea:
+            # Avoid unnecessary checks to pass like. For eg.: when we have values
+            # like influenceArea is 100.00001 and reqInflueneArea is 100
+            if round(influenceArea) > round(reqInfluenceArea):
                 return FreeCAD.Console.PrintError("Influence area of rebars is greater than "+ str(reqInfluenceArea) + ".\n")
-            elif influenceArea < reqInfluenceArea:
+            elif round(influenceArea) < round(reqInfluenceArea):
                 FreeCAD.Console.PrintWarning("Last span is greater that end offset.\n")
             for i in range(len(spacinglist)):
                 if i == 0:
@@ -363,10 +369,15 @@ class _Rebar(ArchComponent.Component):
             if i == 0:
                 bar.Placement = obj.PlacementList[i]
                 shapes.append(bar)
+                basewire.Placement = obj.PlacementList[i]
+                self.wires.append(basewire)
             else:
                 bar = bar.copy()
                 bar.Placement = obj.PlacementList[i]
                 shapes.append(bar)
+                w = basewire.copy()
+                w.Placement = obj.PlacementList[i]
+                self.wires.append(w)
         if shapes:
             obj.Shape = Part.makeCompound(shapes)
             obj.Placement = pl
@@ -394,6 +405,63 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
                     FreeCAD.Console.PrintError("Unable to import RebarShape module\n")
                     return
                 module.editDialog(vobj)
+
+    def updateData(self,obj,prop):
+        if prop == "Shape":
+            if hasattr(self,"centerline"):
+                if self.centerline:
+                    self.centerlinegroup.removeChild(self.centerline)
+            if hasattr(obj.Proxy,"wires"): 
+                if obj.Proxy.wires: 
+                    from pivy import coin
+                    import re,Part
+                    self.centerline = coin.SoSeparator()
+                    comp = Part.makeCompound(obj.Proxy.wires)
+                    pts = re.findall("point \[(.*?)\]",comp.writeInventor().replace("\n",""))
+                    pts = [p.split(",") for p in pts]
+                    for pt in pts:
+                        ps = coin.SoSeparator()
+                        plist = []
+                        for p in pt:
+                            c = []
+                            for pstr in p.split(" "):
+                                if pstr:
+                                    c.append(float(pstr))
+                            plist.append(c)
+                        coords = coin.SoCoordinate3()
+                        coords.point.setValues(plist)
+                        ps.addChild(coords)
+                        ls = coin.SoLineSet()
+                        ls.numVertices = -1
+                        ps.addChild(ls)
+                        self.centerline.addChild(ps)
+                    self.centerlinegroup.addChild(self.centerline)
+        ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
+
+    def attach(self,vobj):
+        from pivy import coin
+        self.centerlinegroup = coin.SoSeparator()
+        self.centerlinegroup.setName("Centerline")
+        self.centerlinecolor = coin.SoBaseColor()
+        self.centerlinestyle = coin.SoDrawStyle()
+        self.centerlinegroup.addChild(self.centerlinecolor)
+        self.centerlinegroup.addChild(self.centerlinestyle)
+        vobj.addDisplayMode(self.centerlinegroup,"Centerline")
+        ArchComponent.ViewProviderComponent.attach(self,vobj)
+        
+    def onChanged(self,vobj,prop):
+        if (prop == "LineColor") and hasattr(vobj,"LineColor"):
+            if hasattr(self,"centerlinecolor"):
+                c = vobj.LineColor
+                self.centerlinecolor.rgb.setValue(c[0],c[1],c[2])
+        elif (prop == "LineWidth") and hasattr(vobj,"LineWidth"):
+            if hasattr(self,"centerlinestyle"):
+                self.centerlinestyle.lineWidth = vobj.LineWidth
+        ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
+
+    def getDisplayModes(self,vobj):
+        modes=["Centerline"]
+        return modes+ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)
 
 def CalculatePlacement(baramount, barnumber, size, axis, rotation, offsetstart, offsetend):
     """ CalculatePlacement([baramount, barnumber, size, axis, rotation, offsetstart, offsetend]):

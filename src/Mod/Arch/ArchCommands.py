@@ -730,6 +730,19 @@ def pruneIncluded(objectslist,strict=False):
             newlist.append(obj)
     return newlist
 
+def getAllChildren(objectlist):
+    "getAllChildren(objectlist): returns all the children of all the object sin the list"
+    obs = []
+    for o in objectlist:
+        if not o in obs:
+            obs.append(o)
+        if o.OutList:
+            l = getAllChildren(o.OutList)
+            for c in l:
+                if not c in obs:
+                    obs.append(c)
+    return obs
+
 class _SurveyObserver:
     "an observer for the survey() function"
     def __init__(self,callback):

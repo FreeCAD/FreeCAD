@@ -366,6 +366,7 @@ void Workbench::activated()
         "PartDesign_NewSketch",
         "PartDesign_Pad",
         "PartDesign_Pocket",
+        "PartDesign_Hole",
         "PartDesign_Revolution",
         "PartDesign_Groove",
         "PartDesign_AdditivePipe",
@@ -456,6 +457,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_CompPrimitiveAdditive"
           << "Separator"
           << "PartDesign_Pocket"
+          << "PartDesign_Hole"
           << "PartDesign_Groove"
           << "PartDesign_SubtractiveLoft"
           << "PartDesign_SubtractivePipe"
@@ -522,6 +524,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_CompPrimitiveAdditive"
           << "Separator"
           << "PartDesign_Pocket"
+          << "PartDesign_Hole"
           << "PartDesign_Groove"
           << "PartDesign_SubtractiveLoft"
           << "PartDesign_SubtractivePipe"

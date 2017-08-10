@@ -69,12 +69,8 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
     if result_name_prefix is None:
         result_name_prefix = ''
     m = read_z88_disp(filename)
-    if(len(m['Nodes']) > 0):
-        if analysis is None:
-            analysis_name = os.path.splitext(os.path.basename(filename))[0]
-            analysis_object = ObjectsFem.makeAnalysis('Analysis')
-            analysis_object.Label = analysis_name
-        else:
+    if len(m['Nodes']) > 0:
+        if analysis:
             analysis_object = analysis  # see if statement few lines later, if not analysis -> no FemMesh object is created !
 
         for result_set in m['Results']:
@@ -85,11 +81,17 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
                     results.Mesh = m
                     break
             results = importToolsFem.fill_femresult_mechanical(results, result_set, 0)
-            analysis_object.Member = analysis_object.Member + [results]
+            if analysis:
+                analysis_object.Member = analysis_object.Member + [results]
 
-        if(FreeCAD.GuiUp):
-            import FemGui
-            FemGui.setActiveAnalysis(analysis_object)
+        if FreeCAD.GuiUp:
+            if analysis:
+                import FemGui
+                FemGui.setActiveAnalysis(analysis_object)
+            FreeCAD.ActiveDocument.recompute()
+
+    else:
+        FreeCAD.Console.PrintError('Problem on frd file import. No nodes found in frd file.\n')
 
 
 def read_z88_disp(z88_disp_input):

@@ -1043,16 +1043,16 @@ class PanelSheet(Draft._DraftObject):
                     w = p.Proxy.getWires(p)
                     if w[0]:
                         w = w[0]
+                        w.scale(obj.Scale, FreeCAD.Vector())
                         if transform:
                             w.Placement = obj.Placement.multiply(w.Placement)
-                        w.scale(obj.Scale, FreeCAD.Vector())
                         outp.append(w)
             if not ispanel:
                 if p.isDerivedFrom("Part::Feature"):
                     for w in p.Shape.Wires:
+                        w.scale(obj.Scale, FreeCAD.Vector())
                         if transform:
                             w.Placement = obj.Placement.multiply(w.Placement)
-                        w.scale(obj.Scale, FreeCAD.Vector())
                         outp.append(w)
         return outp
 
@@ -1068,9 +1068,9 @@ class PanelSheet(Draft._DraftObject):
                     w = p.Proxy.getWires(p)
                     if w[1]:
                         w = w[1]
+                        w.scale(obj.Scale, FreeCAD.Vector())
                         if transform:
                             w.Placement = obj.Placement.multiply(w.Placement)
-                        w.scale(obj.Scale, FreeCAD.Vector())
                         outp.append(w)
         return outp
 
@@ -1088,15 +1088,15 @@ class PanelSheet(Draft._DraftObject):
                     w = p.Proxy.getWires(p)
                     if w[2]:
                         w = w[2]
+                        w.scale(obj.Scale, FreeCAD.Vector())
                         if transform:
                             w.Placement = obj.Placement.multiply(w.Placement)
-                        w.scale(obj.Scale, FreeCAD.Vector())
                         outp.append(w)
         if self.sheettag is not None:
             w = self.sheettag.copy()
+            w.scale(obj.Scale, FreeCAD.Vector())
             if transform:
                 w.Placement = obj.Placement.multiply(w.Placement)
-            w.scale(obj.Scale, FreeCAD.Vector())
             outp.append(w)
 
         return outp
@@ -1302,7 +1302,8 @@ class NestTaskPanel:
         i.setText(obj.Label)
         i.setToolTip(obj.Name)
         if hasattr(obj.ViewObject,"Proxy"):
-            i.setIcon(QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
+            if hasattr(obj.ViewObject.Proxy,"getIcon"):
+                i.setIcon(QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
         else:
             i.setIcon(QtGui.QIcon(":/icons/Tree_Part.svg"))
         form.addItem(i)

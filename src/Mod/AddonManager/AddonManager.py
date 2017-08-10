@@ -735,8 +735,9 @@ class InstallWorker(QtCore.QThread):
                     for wb in depswb:
                         if wb.strip():
                             if not wb.strip() in FreeCADGui.listWorkbenches().keys():
-                                ok = False
-                                message += translate("AddonsInstaller","Missing workbench") + ": " + wb + ", "
+                                if not wb.strip()+"Workbench" in FreeCADGui.listWorkbenches().keys():
+                                    ok = False
+                                    message += translate("AddonsInstaller","Missing workbench") + ": " + wb + ", "
                 elif l.startswith("pylibs="):
                     depspy = l.split("=")[1].split(",")
                     for pl in depspy:

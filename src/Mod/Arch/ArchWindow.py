@@ -393,11 +393,6 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
 class _CommandWindow:
     "the Arch Window command definition"
 
-    def __init__(self):
-        # hack for inputwidgets
-        global setArchWindowParamFunction
-        setArchWindowParamFunction = self.setParams
-
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Window',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Window","Window"),
@@ -424,42 +419,43 @@ class _CommandWindow:
         if FreeCADGui.Selection.getSelectionEx():
             FreeCADGui.draftToolBar.offUi()
             obj = self.sel[0]
-            if obj.isDerivedFrom("Part::Part2DObject"):
-                FreeCADGui.Control.closeDialog()
-                host = None
-                if hasattr(obj,"Support"):
-                    if obj.Support:
-                        if isinstance(obj.Support,tuple):
-                            host = obj.Support[0]
-                        elif isinstance(obj.Support,list):
-                            host = obj.Support[0][0]
-                        else:
-                            host = obj.Support
-                        obj.Support = None # remove
-                elif Draft.isClone(obj,"Window"):
-                    if obj.Objects[0].Inlist:
-                        host = obj.Objects[0].Inlist[0]
-
-                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
-                FreeCADGui.addModule("Arch")
-                FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
-                if host and self.Include:
-                    if self.RemoveExternal:
-                        FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+host.Name+")")
-                    else:
-                        # make a new object to avoid circular references
-                        FreeCADGui.doCommand("host=Arch.make"+Draft.getType(host)+"(FreeCAD.ActiveDocument."+host.Name+")")
-                        FreeCADGui.doCommand("Arch.removeComponents(win,host)")
-                    siblings = host.Proxy.getSiblings(host)
-                    for sibling in siblings:
+            if obj.isDerivedFrom("Part::Feature"):
+                if obj.Shape.Wires and not obj.Shape.Faces:
+                    FreeCADGui.Control.closeDialog()
+                    host = None
+                    if hasattr(obj,"Support"):
+                        if obj.Support:
+                            if isinstance(obj.Support,tuple):
+                                host = obj.Support[0]
+                            elif isinstance(obj.Support,list):
+                                host = obj.Support[0][0]
+                            else:
+                                host = obj.Support
+                            obj.Support = None # remove
+                    elif Draft.isClone(obj,"Window"):
+                        if obj.Objects[0].Inlist:
+                            host = obj.Objects[0].Inlist[0]
+    
+                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
+                    FreeCADGui.addModule("Arch")
+                    FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
+                    if host and self.Include:
                         if self.RemoveExternal:
-                            FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
+                            FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+host.Name+")")
                         else:
-                            FreeCADGui.doCommand("host=Arch.make"+Draft.getType(sibling)+"(FreeCAD.ActiveDocument."+sibling.Name+")")
+                            # make a new object to avoid circular references
+                            FreeCADGui.doCommand("host=Arch.make"+Draft.getType(host)+"(FreeCAD.ActiveDocument."+host.Name+")")
                             FreeCADGui.doCommand("Arch.removeComponents(win,host)")
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
-                return
+                        siblings = host.Proxy.getSiblings(host)
+                        for sibling in siblings:
+                            if self.RemoveExternal:
+                                FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
+                            else:
+                                FreeCADGui.doCommand("host=Arch.make"+Draft.getType(sibling)+"(FreeCAD.ActiveDocument."+sibling.Name+")")
+                                FreeCADGui.doCommand("Arch.removeComponents(win,host)")
+                    FreeCAD.ActiveDocument.commitTransaction()
+                    FreeCAD.ActiveDocument.recompute()
+                    return
         
         # interactive mode
         if hasattr(FreeCAD,"DraftWorkingPlane"):
@@ -586,11 +582,13 @@ class _CommandWindow:
             grid.addWidget(lab,i,0,1,1)
             grid.addWidget(wid,i,1,1,1)
             i += 1
+            valueChanged = self.getValueChanged(param)
             FreeCAD.wid = wid
-            exec("""def valueChanged(d):
-                setArchWindowParamFunction('"""+param+"""',d)""")
-            QtCore.QObject.connect(getattr(self,"val"+param),QtCore.SIGNAL("valueChanged(double)"),valueChanged)
+            QtCore.QObject.connect(getattr(self,"val"+param),QtCore.SIGNAL("valueChanged(double)"), valueChanged)
         return w
+
+    def getValueChanged(self,p):
+      return lambda d : self.setParams(p, d)
 
     def setSill(self,d):
         self.Sill = d
@@ -716,7 +714,7 @@ class _Window(ArchComponent.Component):
                     if obj.WindowParts and (len(obj.WindowParts)%5 == 0):
                         shapes = []
                         rotdata = None
-                        for i in range(len(obj.WindowParts)/5):
+                        for i in range(int(len(obj.WindowParts)/5)):
                             wires = []
                             hinge = None
                             omode = None

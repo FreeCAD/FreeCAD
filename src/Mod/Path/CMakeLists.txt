@@ -29,6 +29,9 @@ SET(PathScripts_SRCS
     PathScripts/PathDressupDragknife.py
     PathScripts/PathDressupHoldingTags.py
     PathScripts/PathDressupRampEntry.py
+    PathScripts/PathDressupTag.py
+    PathScripts/PathDressupTagGui.py
+    PathScripts/PathDressupTagPreferences.py
     PathScripts/PathDrilling.py
     PathScripts/PathEngrave.py
     PathScripts/PathFacePocket.py

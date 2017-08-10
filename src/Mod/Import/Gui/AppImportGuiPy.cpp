@@ -342,7 +342,10 @@ private:
 
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
+            bool optionReadShapeCompoundMode_status;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
+            optionReadShapeCompoundMode_status = hGrp->GetBool("ReadShapeCompoundMode",false);
 
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 try {
@@ -416,6 +419,8 @@ private:
             // purge the document before recomputing it to clear it and settle it in the proper
             // way. This is drastically improving STEP rendering time on complex STEP files.
             pcDoc->recompute();
+            if (file.hasExtension("stp") || file.hasExtension("step"))
+                ocaf.setMerge(optionReadShapeCompoundMode_status);
             ocaf.loadShapes();
             pcDoc->purgeTouched();
             pcDoc->recompute();
@@ -433,7 +438,8 @@ private:
     }
     int export_app_object(App::DocumentObject* obj, Import::ExportOCAF ocaf, 
                           std::vector <TDF_Label>& hierarchical_label,
-                          std::vector <TopLoc_Location>& hierarchical_loc)
+                          std::vector <TopLoc_Location>& hierarchical_loc,
+                          std::vector <App::DocumentObject*>& hierarchical_part)
     {
         std::vector <int> local_label;
         int root_id;
@@ -448,11 +454,11 @@ private:
 
             for ( it = entries.begin(); it != entries.end(); it++ ) {
                 int new_label=0;
-                new_label=export_app_object((*it),ocaf,hierarchical_label,hierarchical_loc);
+                new_label=export_app_object((*it),ocaf,hierarchical_label,hierarchical_loc, hierarchical_part);
                 local_label.push_back(new_label);
             }
 
-            ocaf.createNode(part,root_id,hierarchical_label,hierarchical_loc);
+            ocaf.createNode(part,root_id,hierarchical_label,hierarchical_loc, hierarchical_part);
             std::vector<int>::iterator label_it;
             for (label_it = local_label.begin(); label_it != local_label.end(); ++label_it) {
                 ocaf.pushNode(root_id,(*label_it), hierarchical_label,hierarchical_loc);
@@ -471,10 +477,28 @@ private:
                     colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
             }
 
-            return_label=ocaf.saveShape(part, colors,hierarchical_label,hierarchical_loc);
+            return_label=ocaf.saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part);
         }
 
         return(return_label);
+    }
+
+    void get_parts_colors(std::vector <App::DocumentObject*> hierarchical_part, std::vector <TDF_Label> FreeLabels,
+                          std::vector <int> part_id, std::vector< std::vector<App::Color> >& Colors)
+    {
+        // I am seeking for the colors of each parts
+        int n = FreeLabels.size();
+        for (int i = 0; i < n; i++) {
+            std::vector<App::Color> colors;
+            Part::Feature * part = static_cast<Part::Feature *>(hierarchical_part.at(part_id.at(i)));
+            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
+            if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
+                colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
+                if (colors.empty())
+                    colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
+                Colors.push_back(colors);
+            }
+        }
     }
 
     Py::Object exporter(const Py::Tuple& args)
@@ -499,21 +523,45 @@ private:
             Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
 
             // That stuff is exporting a list of selected oject into FreeCAD Tree
+            std::vector <TDF_Label> hierarchical_label;
+            std::vector <TopLoc_Location> hierarchical_loc;
+            std::vector <App::DocumentObject*> hierarchical_part;
 
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 PyObject* item = (*it).ptr();
                 if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                    std::vector <TDF_Label> hierarchical_label;
-                    std::vector <TopLoc_Location> hierarchical_loc;
-                    export_app_object(obj,ocaf, hierarchical_label, hierarchical_loc);
+                    export_app_object(obj,ocaf, hierarchical_label, hierarchical_loc,hierarchical_part);
                 }
             }
+
+            // Free Shapes must have absolute placement and not explicit
+            // Free Shapes must have absolute placement and not explicit
+            std::vector <TDF_Label> FreeLabels;
+            std::vector <int> part_id;
+            ocaf.getFreeLabels(hierarchical_label,FreeLabels, part_id);
+            // Got issue with the colors as they are coming from the View Provider they can't be determined into
+            // the App Code.
+            std::vector< std::vector<App::Color> > Colors;
+            get_parts_colors(hierarchical_part,FreeLabels,part_id,Colors);
+            ocaf.reallocateFreeShape(hierarchical_part,FreeLabels,part_id,Colors);
 
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 //Interface_Static::SetCVal("write.step.schema", "AP214IS");
+                bool optionScheme_214;
+                bool optionScheme_203;
+                ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
+                optionScheme_214 = hGrp_stp->GetBool("Scheme_214",true);
+                optionScheme_203 = hGrp_stp->GetBool("Scheme_203",false);
+                if (optionScheme_214)
+                    Interface_Static::SetCVal("write.step.schema", "AP214IS");
+                if (optionScheme_203)
+                    Interface_Static::SetCVal("write.step.schema", "AP203");
+
                 STEPCAFControl_Writer writer;
+                Interface_Static::SetIVal("write.step.assembly",1);
+                // writer.SetColorMode(Standard_False);
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 // edit STEP header

@@ -74,6 +74,7 @@
 
 namespace Part {
 extern const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c);
+extern const Py::Object makeTrimmedCurvePy(const Handle(Geom_Curve)& c, double f,double l);
 }
 
 using namespace Part;
@@ -621,6 +622,30 @@ PyObject* GeometryCurvePy::toNurbs(PyObject * args)
                 return 0;
             GeomBSplineCurve* spline = getGeomCurvePtr()->toNurbs(u, v);
             return new BSplineCurvePy(spline);
+        }
+    }
+    catch (Standard_Failure) {
+        Handle(Standard_Failure) e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return 0;
+}
+
+PyObject* GeometryCurvePy::trim(PyObject * args)
+{
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u,v;
+            u=c->FirstParameter();
+            v=c->LastParameter();
+            if (!PyArg_ParseTuple(args, "|dd", &u,&v))
+                return 0;
+            return Py::new_reference_to(makeTrimmedCurvePy(c,u,v));
         }
     }
     catch (Standard_Failure) {

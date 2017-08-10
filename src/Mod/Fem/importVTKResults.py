@@ -77,17 +77,12 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
     import ObjectsFem
     if result_name_prefix is None:
         result_name_prefix = ''
-    if analysis is None:
-        analysis_name = os.path.splitext(os.path.basename(filename))[0]
-        analysis_object = ObjectsFem.makeAnalysis('Analysis')
-        analysis_object.Label = analysis_name
-    else:
+    if analysis:
         analysis_object = analysis
 
     # if properties can be added in FemVTKTools importCfdResult(), this file can be used for CFD workbench
     results_name = result_name_prefix + 'results'
     result_obj = ObjectsFem.makeResultMechanical(results_name)
-    # result_obj = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
     Fem.readResult(filename, result_obj.Name)  # readResult always creates a new femmesh named ResultMesh
 
     # workaround for the DisplacementLengths (They should have been calculated by Fem.readResult)
@@ -95,8 +90,8 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
         import importToolsFem
         result_obj.DisplacementLengths = importToolsFem.calculate_disp_abs(result_obj.DisplacementVectors)
 
-    analysis_object.Member = analysis_object.Member + [result_obj]
-    # FIXME move the ResultMesh in the analysis
+    if analysis:
+        analysis_object.Member = analysis_object.Member + [result_obj]
 
     ''' seams not used at the moment
     filenamebase = '.'.join(filename.split('.')[:-1])  # pattern: filebase_timestamp.vtk

@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 class _FemMeshGmsh():
-    """The Fem::FemMeshObject's Proxy python type, add GMSH specific properties
+    """A Fem::FemMeshObject python type, add GMSH specific properties
     """
 
     # they will be used from the task panel too, thus they need to be outside of the __init__
@@ -42,6 +42,9 @@ class _FemMeshGmsh():
         self.Type = "FemMeshGmsh"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to  this object
+
+        obj.addProperty("App::PropertyLinkList", "MeshBoundaryLayerList", "Base", "Mesh boundaries need inflatoin layers")
+        obj.MeshBoundaryLayerList = []
 
         obj.addProperty("App::PropertyLinkList", "MeshRegionList", "Base", "Mesh regions of the mesh")
         obj.MeshRegionList = []

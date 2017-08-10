@@ -106,8 +106,10 @@ SET(FemObjectsScripts_SRCS
     PyObjects/_FemElementGeometry1D.py
     PyObjects/_FemElementGeometry2D.py
     PyObjects/_FemMaterialMechanicalNonlinear.py
+    PyObjects/_FemMeshBoundaryLayer.py
     PyObjects/_FemMeshGmsh.py
     PyObjects/_FemMeshGroup.py
+    PyObjects/_FemMeshResult.py
     PyObjects/_FemMeshRegion.py
     PyObjects/_FemResultMechanical.py
     PyObjects/_FemSolverCalculix.py
@@ -129,6 +131,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_CommandFemMesh2Mesh.py
     PyGui/_CommandFemMeshGmshFromShape.py
     PyGui/_CommandFemMeshNetgenFromShape.py
+    PyGui/_CommandFemMeshBoundaryLayer.py
     PyGui/_CommandFemMeshClear.py
     PyGui/_CommandFemMeshGroup.py
     PyGui/_CommandFemMeshPrintInfo.py
@@ -143,6 +146,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_TaskPanelFemElementGeometry1D.py
     PyGui/_TaskPanelFemElementGeometry2D.py
     PyGui/_TaskPanelFemMaterial.py
+    PyGui/_TaskPanelFemMeshBoundaryLayer.py
     PyGui/_TaskPanelFemMeshGmsh.py
     PyGui/_TaskPanelFemMeshGroup.py
     PyGui/_TaskPanelFemMeshRegion.py
@@ -154,9 +158,11 @@ SET(FemGuiScripts_SRCS
     PyGui/_ViewProviderFemElementGeometry2D.py
     PyGui/_ViewProviderFemMaterial.py
     PyGui/_ViewProviderFemMaterialMechanicalNonlinear.py
+    PyGui/_ViewProviderFemMeshBoundaryLayer.py
     PyGui/_ViewProviderFemMeshGmsh.py
     PyGui/_ViewProviderFemMeshGroup.py
     PyGui/_ViewProviderFemMeshRegion.py
+    PyGui/_ViewProviderFemMeshResult.py
     PyGui/_ViewProviderFemResultMechanical.py
     PyGui/_ViewProviderFemSolverCalculix.py
     PyGui/_ViewProviderFemSolverZ88.py
@@ -164,6 +170,7 @@ SET(FemGuiScripts_SRCS
     PyGui/TaskPanelFemElementGeometry1D.ui
     PyGui/TaskPanelFemElementGeometry2D.ui
     PyGui/TaskPanelFemMaterial.ui
+    PyGui/TaskPanelFemMeshBoundaryLayer.ui
     PyGui/TaskPanelFemMeshGmsh.ui
     PyGui/TaskPanelFemMeshGroup.ui
     PyGui/TaskPanelFemMeshRegion.ui
@@ -195,6 +202,7 @@ SET(FemTests_SRCS
     test_files/ccx/Flow1D_thermomech.dat
     test_files/ccx/Flow1D_thermomech.frd
     test_files/ccx/Flow1D_thermomech_expected_values
+    test_files/ccx/Flow1D_thermomech_inout_nodes.txt
     test_files/ccx/Flow1D_thermomech.fcstd
 )
 

@@ -54,6 +54,9 @@
 #include "FemConstraint.h"
 #include "FemTools.h"
 
+#include <App/DocumentObjectPy.h>
+#include <App/FeaturePythonPyImp.h>
+
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -390,4 +393,28 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direct
     }
 
     return Fem::Tools::getDirectionFromShape(sh);
+}
+
+// Python feature ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Fem::ConstraintPython, Fem::Constraint)
+template<> const char* Fem::ConstraintPython::getViewProviderName(void) const {
+    return "FemGui::ViewProviderFemConstraintPython";
+}
+
+template<> PyObject* Fem::ConstraintPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+
+// explicit template instantiation
+template class AppFemExport FeaturePythonT<Fem::Constraint>;
+
+/// @endcond
+
 }
