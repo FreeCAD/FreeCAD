@@ -37,9 +37,8 @@ class TaskPanelOpPage(PathProfileBaseGui.TaskPanelOpPage):
 PathOpGui.SetupOperation('Profile Faces',
         PathProfileFaces.Create,
         TaskPanelOpPage,
-        'Path-Profile',
+        'Path-Profile-Face',
         QtCore.QT_TRANSLATE_NOOP("PathProfile", "Face Profile"),
-        "P, F",
         QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile based on face or faces"))
 
 FreeCAD.Console.PrintLog("Loading PathProfileFacesGui... done\n")

@@ -47,6 +47,7 @@ class CommandPathSanity:
     def GetResources(self):
         return {'Pixmap'  : 'Path-Sanity',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Sanity","Check the Path project for common errors"),
+                'Accel': "P, S",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Sanity","Check the Path Project for common errors")}
 
     def IsActive(self):

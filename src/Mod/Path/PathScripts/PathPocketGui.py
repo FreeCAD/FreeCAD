@@ -39,7 +39,6 @@ PathOpGui.SetupOperation('Pocket',
         TaskPanelOpPage,
         'Path-Pocket',
         QtCore.QT_TRANSLATE_NOOP("PathPocket", "Pocket"),
-        "P, O",
         QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces"))
 
 FreeCAD.Console.PrintLog("Loading PathPocketGui... done\n")

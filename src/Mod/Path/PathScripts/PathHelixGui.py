@@ -75,7 +75,6 @@ PathOpGui.SetupOperation('Helix',
         TaskPanelOpPage,
         'Path-Helix',
         QtCore.QT_TRANSLATE_NOOP("PathHelix", "Helix"),
-        "P, O",
         QtCore.QT_TRANSLATE_NOOP("PathHelix", "Creates a Path Helix object from a features of a base object"))
 
 FreeCAD.Console.PrintLog("Loading PathHelixGui... done\n")
