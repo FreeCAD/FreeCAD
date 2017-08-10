@@ -21,11 +21,12 @@
 # ***************************************************************************
 from __future__ import print_function
 
-from importToolsFem import get_FemMeshObjectDimension,\
-                            get_FemMeshObjectElementTypes,\
-                            get_MaxDimElementFromList,\
-                            get_FemMeshObjectOrder,\
-                            get_FemMeshObjectMeshGroups
+from importToolsFem import \
+    get_FemMeshObjectDimension,\
+    get_FemMeshObjectElementTypes,\
+    get_MaxDimElementFromList,\
+    get_FemMeshObjectOrder,\
+    get_FemMeshObjectMeshGroups
 from xml.etree import ElementTree as ET  # parsing xml files and exporting
 import numpy as np
 
@@ -267,7 +268,7 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, group_values_dict={}, encod
         print('group id: %d (label: %s) with element type %s and codim %d'
               % (g, mesh_function_name, mesh_function_type, mesh_function_codim))
 
-        mesh_function_grid = ET.SubElement(domain, "Grid", Name=mesh_function_name+"_mesh", GridType="Uniform")
+        mesh_function_grid = ET.SubElement(domain, "Grid", Name=mesh_function_name + "_mesh", GridType="Uniform")
         mesh_function_topology = ET.SubElement(mesh_function_grid, "Topology")
 
         mesh_function_topology_description = write_fenics_mesh_codim_xdmf(fem_mesh_obj,
