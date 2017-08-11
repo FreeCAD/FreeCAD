@@ -83,6 +83,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>baseList</tabstop>
+  <tabstop>addBase</tabstop>
+  <tabstop>deleteBase</tabstop>
+  <tabstop>resetBase</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
