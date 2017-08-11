@@ -113,3 +113,44 @@ void ViewProviderCompound::updateData(const App::Property* prop)
         }
     }
 }
+
+bool ViewProviderCompound::canDragObjects() const
+{
+    return true;
+}
+
+bool ViewProviderCompound::canDragObject(App::DocumentObject* obj) const
+{
+    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+}
+
+void ViewProviderCompound::dragObject(App::DocumentObject* obj)
+{
+    Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
+    std::vector<App::DocumentObject*> pShapes = pComp->Links.getValues();
+    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
+        if (*it == obj) {
+            pShapes.erase(it);
+            pComp->Links.setValues(pShapes);
+            break;
+        }
+    }
+}
+
+bool ViewProviderCompound::canDropObjects() const
+{
+    return true;
+}
+
+bool ViewProviderCompound::canDropObject(App::DocumentObject* obj) const
+{
+    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+}
+
+void ViewProviderCompound::dropObject(App::DocumentObject* obj)
+{
+    Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
+    std::vector<App::DocumentObject*> pShapes = pComp->Links.getValues();
+    pShapes.push_back(obj);
+    pComp->Links.setValues(pShapes);
+}
