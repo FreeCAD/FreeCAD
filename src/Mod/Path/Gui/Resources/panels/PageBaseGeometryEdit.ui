@@ -18,6 +18,9 @@
     <layout class="QGridLayout" name="gridLayout">
      <item row="1" column="2">
       <widget class="QPushButton" name="updateBase">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Upates the Model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Update</string>
        </property>
@@ -25,6 +28,9 @@
      </item>
      <item row="1" column="1">
       <widget class="QPushButton" name="deleteBase">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove the selected list items from the list of base geometries. The operation will not be applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Remove</string>
        </property>
@@ -32,13 +38,20 @@
      </item>
      <item row="1" column="0">
       <widget class="QPushButton" name="addBase">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected features to the list of base geometries for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Add</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0" colspan="3">
-      <widget class="QListWidget" name="baseList"/>
+      <widget class="QListWidget" name="baseList">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Selected features can be deleted entirely.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
      </item>
      <item row="2" column="0" colspan="3">
       <widget class="QLabel" name="label">
