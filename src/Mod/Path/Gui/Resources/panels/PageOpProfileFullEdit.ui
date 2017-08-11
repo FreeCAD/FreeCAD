@@ -192,6 +192,17 @@
    <header>Gui/InputField.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>toolController</tabstop>
+  <tabstop>cutSide</tabstop>
+  <tabstop>direction</tabstop>
+  <tabstop>extraOffset</tabstop>
+  <tabstop>useStartPoint</tabstop>
+  <tabstop>useCompensation</tabstop>
+  <tabstop>processHoles</tabstop>
+  <tabstop>processCircles</tabstop>
+  <tabstop>processPerimeter</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

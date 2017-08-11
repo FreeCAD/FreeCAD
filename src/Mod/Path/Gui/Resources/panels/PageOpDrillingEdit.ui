@@ -126,6 +126,15 @@
    <header>Gui/InputField.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>toolController</tabstop>
+  <tabstop>retractHeight</tabstop>
+  <tabstop>peckEnabled</tabstop>
+  <tabstop>peckDepth</tabstop>
+  <tabstop>dwellEnabled</tabstop>
+  <tabstop>dwellTime</tabstop>
+  <tabstop>useTipLength</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
