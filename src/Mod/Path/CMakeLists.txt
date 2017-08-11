@@ -82,7 +82,6 @@ SET(PathScripts_SRCS
     PathScripts/PathUtils.py
     PathScripts/PostUtils.py
     PathScripts/__init__.py
-    PathScripts/kdtree.py
 )
 
 SET(PathScripts_post_SRCS

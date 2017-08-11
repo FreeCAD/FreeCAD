@@ -32,86 +32,12 @@ import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
 from PathUtils import fmt
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    #from DraftTools import translate
+from PySide import QtCore
 
 """Helix Drill object and FreeCAD command"""
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
-
-def z_cylinder(cyl):
-    """ Test if cylinder is aligned to z-Axis"""
-    axis = cyl.Surface.Axis
-    if abs(axis.x) > 1e-10 * abs(axis.z):
-        return False
-    if abs(axis.y) > 1e-10 * abs(axis.z):
-        return False
-    return True
-
-
-def connected(edge, face):
-    for otheredge in face.Edges:
-        if edge.isSame(otheredge):
-            return True
-    return False
-
-
-def cylinders_in_selection():
-    selections = FreeCADGui.Selection.getSelectionEx()
-
-    cylinders = []
-
-    for selection in selections:
-        base = selection.Object
-        cylinders.append((base, []))
-        for feature in selection.SubElementNames:
-            subobj = getattr(base.Shape, feature)
-            if subobj.ShapeType == 'Face':
-                if isinstance(subobj.Surface, Part.Cylinder):
-                    if z_cylinder(subobj):
-                        cylinders[-1][1].append(feature)
-
-    return cylinders
-
-
-
-
-def features_by_centers(base, features):
-    try:
-        from scipy.spatial import KDTree
-    except ImportError:
-        from PathScripts.kdtree import KDTree
-
-    features = sorted(features,
-                      key=lambda feature: getattr(base.Shape, feature).Surface.Radius,
-                      reverse=True)
-
-    coordinates = [(cylinder.Surface.Center.x, cylinder.Surface.Center.y) for cylinder in
-                   [getattr(base.Shape, feature) for feature in features]]
-
-    tree = KDTree(coordinates)
-    seen = {}
-
-    by_centers = {}
-    for n, feature in enumerate(features):
-        if n in seen:
-            continue
-        seen[n] = True
-
-        cylinder = getattr(base.Shape, feature)
-        xc, yc, _ = cylinder.Surface.Center
-        by_centers[xc, yc] = {cylinder.Surface.Radius: feature}
-
-        for coord in tree.query_ball_point((xc, yc), cylinder.Surface.Radius):
-            seen[coord] = True
-            cylinder = getattr(base.Shape, features[coord])
-            by_centers[xc, yc][cylinder.Surface.Radius] = features[coord]
-
-    return by_centers
 
 
 class ObjectHelix(PathCircularHoleBase.ObjectOp):
