@@ -164,6 +164,7 @@ def select(op):
     opsel = {}
     opsel['Contour'] = contourselect
     opsel['Drilling'] = drillselect
+    opsel['Engrave'] = engraveselect
     opsel['Helix'] = drillselect
     opsel['MillFace'] = pocketselect
     opsel['Pocket'] = pocketselect

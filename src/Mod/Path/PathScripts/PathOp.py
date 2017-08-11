@@ -143,6 +143,7 @@ class ObjectOp(object):
                 obj.ViewObject.Visibility = False
             return
 
+        job = PathUtils.findParentJob(obj)
         if not job:
             PathLog.error(translate("Path", "No parent job found for operation."))
             return

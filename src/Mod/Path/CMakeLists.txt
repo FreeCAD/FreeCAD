@@ -37,6 +37,7 @@ SET(PathScripts_SRCS
     PathScripts/PathDrilling.py
     PathScripts/PathDrillingGui.py
     PathScripts/PathEngrave.py
+    PathScripts/PathEngraveGui.py
     PathScripts/PathFacePocket.py
     PathScripts/PathFaceProfile.py
     PathScripts/PathFixture.py
