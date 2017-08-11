@@ -81,7 +81,6 @@ void ViewProviderCompound::updateData(const App::Property* prop)
         std::vector<App::Color> compCol;
         compCol.resize(compMap.Extent(), this->ShapeColor.getValue());
 
-        bool setColor=false;
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
             Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
@@ -98,17 +97,14 @@ void ViewProviderCompound::updateData(const App::Property* prop)
             applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(),baseCol);
             if (static_cast<int>(baseCol.size()) == baseMap.Extent()) {
                 applyColor(hist[index], baseCol, compCol);
-                setColor = true;
             }
             else if (!baseCol.empty() && baseCol[0] != this->ShapeColor.getValue()) {
                 baseCol.resize(baseMap.Extent(), baseCol[0]);
                 applyColor(hist[index], baseCol, compCol);
-                setColor = true;
             }
         }
 
-        if (setColor)
-            this->DiffuseColor.setValues(compCol);
+        this->DiffuseColor.setValues(compCol);
     }
     else if (prop->getTypeId() == App::PropertyLinkList::getClassTypeId()) {
         const std::vector<App::DocumentObject *>& pBases = static_cast<const App::PropertyLinkList*>(prop)->getValues();
