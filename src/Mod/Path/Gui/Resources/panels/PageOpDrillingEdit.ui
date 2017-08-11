@@ -37,7 +37,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="toolController"/>
+       <widget class="QComboBox" name="toolController">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -18,6 +18,9 @@
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0" colspan="3">
       <widget class="QTableWidget" name="baseList">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of hole features and the determined radius of the associated hole.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Reset deletes all current items from the list and fills the list with all circular holes elegible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <attribute name="horizontalHeaderStretchLastSection">
         <bool>true</bool>
        </attribute>
@@ -36,7 +39,7 @@
      <item row="1" column="2">
       <widget class="QPushButton" name="resetBase">
        <property name="toolTip">
-        <string>Remove all custom objects and find holes from base object.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all list items and fill list with all elegible features from the job's base object.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Reset</string>
@@ -58,6 +61,9 @@
      </item>
      <item row="1" column="1">
       <widget class="QPushButton" name="deleteBase">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected list items from the list of base geometries. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Remove</string>
        </property>
@@ -66,7 +72,7 @@
      <item row="1" column="0">
       <widget class="QPushButton" name="addBase">
        <property name="toolTip">
-        <string>Add selected items from Gui View to drill</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected items from 3d view to the list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Add</string>
