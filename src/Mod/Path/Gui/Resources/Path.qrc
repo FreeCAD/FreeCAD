@@ -56,11 +56,8 @@
         <file>panels/DlgToolCopy.ui</file>
         <file>panels/DlgTCChooser.ui</file>
         <file>panels/DogboneEdit.ui</file>
-        <file>panels/DrillingEdit.ui</file>
-        <file>panels/EngraveEdit.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
         <file>panels/JobEdit.ui</file>
-        <file>panels/MillFaceEdit.ui</file>
         <file>panels/PageBaseGeometryEdit.ui</file>
         <file>panels/PageBaseHoleGeometryEdit.ui</file>
         <file>panels/PageDepthsEdit.ui</file>
@@ -70,11 +67,7 @@
         <file>panels/PageOpHelixEdit.ui</file>
         <file>panels/PageOpPocketFullEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
-        <file>panels/PocketEdit.ui</file>
         <file>panels/PointEdit.ui</file>
-        <file>panels/ProfileEdgesEdit.ui</file>
-        <file>panels/ProfileEdit.ui</file>
-        <file>panels/RemoteEdit.ui</file>
         <file>panels/SurfaceEdit.ui</file>
         <file>panels/ToolControl.ui</file>
         <file>panels/ToolEdit.ui</file>
