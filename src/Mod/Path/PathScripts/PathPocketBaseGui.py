@@ -51,36 +51,36 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return form
 
     def getFields(self, obj):
-        self.obj.CutMode = str(self.form.cutMode.currentText())
-        self.obj.StepOver = self.form.stepOverPercent.value()
-        self.obj.OffsetPattern = str(self.form.offsetPattern.currentText())
-        self.obj.ZigZagAngle = FreeCAD.Units.Quantity(self.form.zigZagAngle.text()).Value
+        obj.CutMode = str(self.form.cutMode.currentText())
+        obj.StepOver = self.form.stepOverPercent.value()
+        obj.OffsetPattern = str(self.form.offsetPattern.currentText())
+        obj.ZigZagAngle = FreeCAD.Units.Quantity(self.form.zigZagAngle.text()).Value
 
-        self.updateToolController(self.obj, self.form.toolController)
+        self.updateToolController(obj, self.form.toolController)
 
         if FeaturePocket & self.pocketFeatures():
-            self.obj.MaterialAllowance = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
-            self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
+            obj.MaterialAllowance = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
+            obj.UseStartPoint = self.form.useStartPoint.isChecked()
 
         if FeatureFacing & self.pocketFeatures():
-            self.obj.PassExtension = FreeCAD.Units.Quantity(self.form.passExtension.text()).Value
-            self.obj.BoundaryShape = str(self.form.boundaryShape.currentText())
+            obj.PassExtension = FreeCAD.Units.Quantity(self.form.passExtension.text()).Value
+            obj.BoundaryShape = str(self.form.boundaryShape.currentText())
 
     def setFields(self, obj):
-        self.form.zigZagAngle.setText(FreeCAD.Units.Quantity(self.obj.ZigZagAngle, FreeCAD.Units.Angle).UserString)
-        self.form.stepOverPercent.setValue(self.obj.StepOver)
+        self.form.zigZagAngle.setText(FreeCAD.Units.Quantity(obj.ZigZagAngle, FreeCAD.Units.Angle).UserString)
+        self.form.stepOverPercent.setValue(obj.StepOver)
 
-        self.selectInComboBox(self.obj.OffsetPattern, self.form.offsetPattern)
-        self.selectInComboBox(self.obj.CutMode, self.form.cutMode)
-        self.setupToolController(self.obj, self.form.toolController)
+        self.selectInComboBox(obj.OffsetPattern, self.form.offsetPattern)
+        self.selectInComboBox(obj.CutMode, self.form.cutMode)
+        self.setupToolController(obj, self.form.toolController)
 
         if FeaturePocket & self.pocketFeatures():
-            self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
-            self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.MaterialAllowance.Value, FreeCAD.Units.Length).UserString)
+            self.form.useStartPoint.setChecked(obj.UseStartPoint)
+            self.form.extraOffset.setText(FreeCAD.Units.Quantity(obj.MaterialAllowance.Value, FreeCAD.Units.Length).UserString)
 
         if FeatureFacing & self.pocketFeatures():
-            self.form.passExtension.setText(FreeCAD.Units.Quantity(self.obj.PassExtension.Value, FreeCAD.Units.Length).UserString)
-            self.selectInComboBox(self.obj.BoundaryShape, self.form.boundaryShape)
+            self.form.passExtension.setText(FreeCAD.Units.Quantity(obj.PassExtension.Value, FreeCAD.Units.Length).UserString)
+            self.selectInComboBox(obj.BoundaryShape, self.form.boundaryShape)
 
     def getSignalsForUpdate(self, obj):
         signals = []
