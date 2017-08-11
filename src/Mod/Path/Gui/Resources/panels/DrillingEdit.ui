@@ -105,6 +105,16 @@
         </widget>
        </item>
        <item row="4" column="0" colspan="3">
+        <widget class="QPushButton" name="uiAddCustom">
+         <property name="toolTip">
+          <string>Add a custom point by clicking the Gui view or by entering the coordinates</string>
+         </property>
+         <property name="text">
+          <string>Add custom point</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="3">
         <widget class="QLabel" name="label">
          <property name="text">
           <string>All objects will be processed using the same operation properties.</string>
