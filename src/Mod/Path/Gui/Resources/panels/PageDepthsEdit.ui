@@ -15,7 +15,11 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">
-    <widget class="Gui::InputField" name="startDepth"/>
+    <widget class="Gui::InputField" name="startDepth">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Depth of the operation. The highest point in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
    </item>
    <item row="0" column="1">
     <widget class="QLabel" name="startDepthLabel">
@@ -25,7 +29,11 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="Gui::InputField" name="finalDepth"/>
+    <widget class="Gui::InputField" name="finalDepth">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
    </item>
    <item row="1" column="1">
     <widget class="QLabel" name="finalDepthLabel">
@@ -35,7 +43,11 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="Gui::InputField" name="stepDown"/>
+    <widget class="Gui::InputField" name="stepDown">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth in Z-axis the operation moves downwards between layers.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
    </item>
    <item row="3" column="1">
     <widget class="QLabel" name="stepDownLabel">
@@ -52,7 +64,11 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="Gui::InputField" name="finishDepth"/>
+    <widget class="Gui::InputField" name="finishDepth">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth of the final cut of the operation. Can be used to produce a cleaner finish.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
