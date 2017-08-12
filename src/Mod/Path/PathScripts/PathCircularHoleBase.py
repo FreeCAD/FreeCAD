@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import ArchPanel
 import FreeCAD
 import DraftGeomUtils
 import PathScripts.PathLog as PathLog
@@ -152,15 +153,16 @@ class ObjectOp(PathOp.ObjectOp):
     def setupDepthsFrom(self, obj, features, baseobject):
         zmax = None
         zmin = None
-        for base,sub in features:
-            shape = base.Shape.getElement(sub)
-            bb = shape.BoundBox
-            # find the highes zmax and the highes zmin levels, those provide
-            # the safest values for StartDepth and FinalDepth
-            if zmax is None or zmax < bb.ZMax:
-                zmax = bb.ZMax
-            if zmin is None or zmin < bb.ZMin:
-                zmin = bb.ZMin
+        if not self.baseIsArchPanel(obj, baseobject):
+            for base,sub in features:
+                shape = base.Shape.getElement(sub)
+                bb = shape.BoundBox
+                # find the highes zmax and the highes zmin levels, those provide
+                # the safest values for StartDepth and FinalDepth
+                if zmax is None or zmax < bb.ZMax:
+                    zmax = bb.ZMax
+                if zmin is None or zmin < bb.ZMin:
+                    zmin = bb.ZMin
         self.setDepths(obj, zmax, zmin, baseobject.Shape.BoundBox)
 
     def setDepths(self, obj, zmax, zmin, bb):
@@ -176,8 +178,8 @@ class ObjectOp(PathOp.ObjectOp):
         PathLog.debug("setDepths(%s): z=%.2f -> %.2f bb.z=%.2f -> %.2f" % (obj.Label, zmin, zmax, bb.ZMin, bb.ZMax))
 
         obj.StartDepth = zmax
-        obj.ClearanceHeight = bb.ZMax + 5.0
-        obj.SafeHeight = bb.ZMax + 3.0
+        obj.ClearanceHeight = max(bb.ZMax, zmax) + 5.0
+        obj.SafeHeight = max(bb.ZMax, zmax) + 3.0
         obj.FinalDepth = zmin
 
     def findHoles(self, obj, baseobject):

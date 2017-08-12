@@ -54,36 +54,43 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return form
 
     def getFields(self, obj):
-        self.obj.OffsetExtra = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
-        self.obj.UseComp = self.form.useCompensation.isChecked()
-        self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
-        self.obj.Direction = str(self.form.direction.currentText())
+        self.updateInputField(obj, 'OffsetExtra', self.form.extraOffset)
+        if obj.UseComp != self.form.useCompensation.isChecked():
+            obj.UseComp = self.form.useCompensation.isChecked()
+        if obj.UseStartPoint != self.form.useStartPoint.isChecked():
+            obj.UseStartPoint = self.form.useStartPoint.isChecked()
+        if obj.Direction != str(self.form.direction.currentText()):
+            obj.Direction = str(self.form.direction.currentText())
 
-        self.updateToolController(self.obj, self.form.toolController)
+        self.updateToolController(obj, self.form.toolController)
 
         if FeatureSide & self.profileFeatures():
-            self.obj.Side = str(self.form.cutSide.currentText())
+            if obj.Side != str(self.form.cutSide.currentText()):
+                obj.Side = str(self.form.cutSide.currentText())
 
         if FeatureProcessing & self.profileFeatures():
-            self.obj.processHoles = self.form.processHoles.isChecked()
-            self.obj.processPerimeter = self.form.processPerimeter.isChecked()
-            self.obj.processCircles = self.form.processCircles.isChecked()
+            if obj.processHoles != self.form.processHoles.isChecked():
+                obj.processHoles = self.form.processHoles.isChecked()
+            if obj.processPerimeter != self.form.processPerimeter.isChecked():
+                obj.processPerimeter = self.form.processPerimeter.isChecked()
+            if obj.processCircles != self.form.processCircles.isChecked():
+                obj.processCircles = self.form.processCircles.isChecked()
 
     def setFields(self, obj):
-        self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
-        self.form.useCompensation.setChecked(self.obj.UseComp)
-        self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
+        self.form.extraOffset.setText(FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
+        self.form.useCompensation.setChecked(obj.UseComp)
+        self.form.useStartPoint.setChecked(obj.UseStartPoint)
 
-        self.selectInComboBox(self.obj.Direction, self.form.direction)
-        self.setupToolController(self.obj, self.form.toolController)
+        self.selectInComboBox(obj.Direction, self.form.direction)
+        self.setupToolController(obj, self.form.toolController)
 
         if FeatureSide & self.profileFeatures():
-            self.selectInComboBox(self.obj.Side, self.form.cutSide)
+            self.selectInComboBox(obj.Side, self.form.cutSide)
 
         if FeatureProcessing & self.profileFeatures():
-            self.form.processHoles.setChecked(self.obj.processHoles)
-            self.form.processPerimeter.setChecked(self.obj.processPerimeter)
-            self.form.processCircles.setChecked(self.obj.processCircles)
+            self.form.processHoles.setChecked(obj.processHoles)
+            self.form.processPerimeter.setChecked(obj.processPerimeter)
+            self.form.processCircles.setChecked(obj.processCircles)
 
     def getSignalsForUpdate(self, obj):
         signals = []

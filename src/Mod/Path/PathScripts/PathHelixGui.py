@@ -45,20 +45,23 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def getFields(self, obj):
         PathLog.track()
-        self.obj.Direction = str(self.form.direction.currentText())
-        self.obj.StartSide = str(self.form.startSide.currentText())
-        self.obj.StepOver = self.form.stepOverPercent.value()
+        if obj.Direction != str(self.form.direction.currentText()):
+            obj.Direction = str(self.form.direction.currentText())
+        if obj.StartSide != str(self.form.startSide.currentText()):
+            obj.StartSide = str(self.form.startSide.currentText())
+        if obj.StepOver != self.form.stepOverPercent.value():
+            obj.StepOver = self.form.stepOverPercent.value()
 
         self.updateToolController(obj, self.form.toolController)
 
     def setFields(self, obj):
         PathLog.track()
 
-        self.form.stepOverPercent.setValue(self.obj.StepOver)
-        self.selectInComboBox(self.obj.Direction, self.form.direction)
-        self.selectInComboBox(self.obj.StartSide, self.form.startSide)
+        self.form.stepOverPercent.setValue(obj.StepOver)
+        self.selectInComboBox(obj.Direction, self.form.direction)
+        self.selectInComboBox(obj.StartSide, self.form.startSide)
 
-        self.setupToolController(self.obj, self.form.toolController)
+        self.setupToolController(obj, self.form.toolController)
 
     def getSignalsForUpdate(self, obj):
         signals = []
