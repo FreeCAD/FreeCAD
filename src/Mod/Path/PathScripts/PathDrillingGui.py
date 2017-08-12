@@ -45,39 +45,42 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def getFields(self, obj):
         PathLog.track()
-        self.obj.PeckDepth = FreeCAD.Units.Quantity(self.form.peckDepth.text()).Value
-        self.obj.RetractHeight = FreeCAD.Units.Quantity(self.form.retractHeight.text()).Value
-        self.obj.DwellTime = FreeCAD.Units.Quantity(self.form.dwellTime.text()).Value
+        self.updateInputField(obj, 'PeckDepth', self.form.peckDepth)
+        self.updateInputField(obj, 'RetractHeight', self.form.retractHeight)
+        self.updateInputField(obj, 'DwellTime', self.form.dwellTime)
 
-        self.obj.DwellEnabled = self.form.dwellEnabled.isChecked()
-        self.obj.PeckEnabled = self.form.peckEnabled.isChecked()
-        self.obj.AddTipLength = self.form.useTipLength.isChecked()
+        if obj.DwellEnabled != self.form.dwellEnabled.isChecked():
+            obj.DwellEnabled = self.form.dwellEnabled.isChecked()
+        if obj.PeckEnabled != self.form.peckEnabled.isChecked():
+            obj.PeckEnabled = self.form.peckEnabled.isChecked()
+        if obj.AddTipLength != self.form.useTipLength.isChecked():
+            obj.AddTipLength = self.form.useTipLength.isChecked()
 
         self.updateToolController(obj, self.form.toolController)
 
     def setFields(self, obj):
         PathLog.track()
 
-        self.form.peckDepth.setText(FreeCAD.Units.Quantity(self.obj.PeckDepth.Value, FreeCAD.Units.Length).UserString)
-        self.form.retractHeight.setText(FreeCAD.Units.Quantity(self.obj.RetractHeight.Value, FreeCAD.Units.Length).UserString)
-        self.form.dwellTime.setText(str(self.obj.DwellTime))
+        self.form.peckDepth.setText(FreeCAD.Units.Quantity(obj.PeckDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.retractHeight.setText(FreeCAD.Units.Quantity(obj.RetractHeight.Value, FreeCAD.Units.Length).UserString)
+        self.form.dwellTime.setText(str(obj.DwellTime))
 
-        if self.obj.DwellEnabled:
+        if obj.DwellEnabled:
             self.form.dwellEnabled.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.dwellEnabled.setCheckState(QtCore.Qt.Unchecked)
 
-        if self.obj.PeckEnabled:
+        if obj.PeckEnabled:
             self.form.peckEnabled.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.peckEnabled.setCheckState(QtCore.Qt.Unchecked)
 
-        if self.obj.AddTipLength:
+        if obj.AddTipLength:
             self.form.useTipLength.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.useTipLength.setCheckState(QtCore.Qt.Unchecked)
 
-        self.setupToolController(self.obj, self.form.toolController)
+        self.setupToolController(obj, self.form.toolController)
 
     def getSignalsForUpdate(self, obj):
         signals = []

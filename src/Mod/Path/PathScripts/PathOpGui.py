@@ -43,6 +43,8 @@ TaskPanelLayout = 0
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -140,6 +142,7 @@ class TaskPanelPage(object):
         self.setFields(self.obj)
 
     def pageRegisterSignalHandlers(self):
+        PathLog.info("pageRegisterSignalHandlers(%s)" % self.getTitle(self.obj))
         for signal in self.getSignalsForUpdate(self.obj):
             signal.connect(self.pageGetFields)
         self.registerSignalHandlers(self.obj)
@@ -190,7 +193,13 @@ class TaskPanelPage(object):
 
     def updateToolController(self, obj, combo):
         tc = PathUtils.findToolController(obj, combo.currentText())
-        self.obj.ToolController = tc
+        if obj.ToolController != tc:
+            obj.ToolController = tc
+
+    def updateInputField(self, obj, prop, widget):
+        value = FreeCAD.Units.Quantity(widget.text()).Value
+        if getattr(obj, prop) != value:
+            setattr(obj, prop, value)
 
 class TaskPanelBaseGeometryPage(TaskPanelPage):
     DataObject    = QtCore.Qt.ItemDataRole.UserRole
@@ -313,15 +322,20 @@ class TaskPanelHeightsPage(TaskPanelPage):
     def getTitle(self, obj):
         return translate("Path_AreaOp", "Heights")
     def getFields(self, obj):
-        obj.SafeHeight = FreeCAD.Units.Quantity(self.form.safeHeight.text()).Value
-        obj.ClearanceHeight = FreeCAD.Units.Quantity(self.form.clearanceHeight.text()).Value
+        self.updateInputField(obj, 'SafeHeight',      self.form.safeHeight)
+        self.updateInputField(obj, 'ClearanceHeight', self.form.clearanceHeight)
     def setFields(self,  obj):
         self.form.safeHeight.setText(FreeCAD.Units.Quantity(obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
         self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
     def getSignalsForUpdate(self, obj):
-        return [self.form.safeHeight.editingFinished, self.form.clearanceHeight.editingFinished]
+        PathLog.info("getSignalsForUpdate(%s)" % obj.Label)
+        signals = []
+        signals.append(self.form.safeHeight.editingFinished)
+        signals.append(self.form.clearanceHeight.editingFinished)
+        return signals
 
     def pageUpdateData(self, obj, prop):
+        PathLog.info("pageUpdateData(%s)" % prop)
         if prop in ['SafeHeight', 'ClearanceHeight']:
             self.setFields(obj)
 
@@ -344,12 +358,12 @@ class TaskPanelDepthsPage(TaskPanelPage):
         return translate("PathOp", "Depths")
 
     def getFields(self, obj):
-        obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
-        obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
+        self.updateInputField(obj, 'StartDepth', self.form.startDepth)
+        self.updateInputField(obj, 'FinalDepth', self.form.finalDepth)
         if PathOp.FeatureStepDown & self.features:
-            obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
+            self.updateInputField(obj, 'StepDown', self.form.stepDown)
         if PathOp.FeatureFinishDepth & self.features:
-            obj.FinishDepth = FreeCAD.Units.Quantity(self.form.finishDepth.text()).Value
+            self.updateInputField(obj, 'FinishDepht', self.form.finishDepth)
     def setFields(self, obj):
         self.form.startDepth.setText(FreeCAD.Units.Quantity(obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.finalDepth.setText(FreeCAD.Units.Quantity(obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)

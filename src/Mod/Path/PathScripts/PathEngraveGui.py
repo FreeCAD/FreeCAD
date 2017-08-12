@@ -43,11 +43,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpEngraveEdit.ui")
 
     def getFields(self, obj):
-        self.obj.StartVertex = self.form.startVertex.value()
+        if obj.StartVertex != self.form.startVertex.value():
+            obj.StartVertex = self.form.startVertex.value()
         self.updateToolController(obj, self.form.toolController)
 
     def setFields(self, obj):
-        self.form.startVertex.setValue(self.obj.StartVertex)
+        self.form.startVertex.setValue(obj.StartVertex)
         self.setupToolController(obj, self.form.toolController)
 
     def getSignalsForUpdate(self, obj):

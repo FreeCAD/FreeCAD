@@ -51,20 +51,25 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return form
 
     def getFields(self, obj):
-        obj.CutMode = str(self.form.cutMode.currentText())
-        obj.StepOver = self.form.stepOverPercent.value()
-        obj.OffsetPattern = str(self.form.offsetPattern.currentText())
-        obj.ZigZagAngle = FreeCAD.Units.Quantity(self.form.zigZagAngle.text()).Value
+        if obj.CutMode != str(self.form.cutMode.currentText()):
+            obj.CutMode = str(self.form.cutMode.currentText())
+        if obj.StepOver != self.form.stepOverPercent.value():
+            obj.StepOver = self.form.stepOverPercent.value()
+        if obj.OffsetPattern != str(self.form.offsetPattern.currentText()):
+            obj.OffsetPattern = str(self.form.offsetPattern.currentText())
+        self.updateInputField(obj, 'ZigZagAngle', self.form.zigZagAngle)
 
         self.updateToolController(obj, self.form.toolController)
 
         if FeaturePocket & self.pocketFeatures():
-            obj.MaterialAllowance = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
-            obj.UseStartPoint = self.form.useStartPoint.isChecked()
+            self.updateInputField(obj, 'MaterialAllowance', self.form.extraOffset)
+            if obj.UseStartPoint != self.form.useStartPoint.isChecked():
+                obj.UseStartPoint = self.form.useStartPoint.isChecked()
 
         if FeatureFacing & self.pocketFeatures():
-            obj.PassExtension = FreeCAD.Units.Quantity(self.form.passExtension.text()).Value
-            obj.BoundaryShape = str(self.form.boundaryShape.currentText())
+            self.updateInputField(obj, 'PassExtension', self.form.passExtension)
+            if obj.BoundaryShape != str(self.form.boundaryShape.currentText()):
+                obj.BoundaryShape = str(self.form.boundaryShape.currentText())
 
     def setFields(self, obj):
         self.form.zigZagAngle.setText(FreeCAD.Units.Quantity(obj.ZigZagAngle, FreeCAD.Units.Angle).UserString)
