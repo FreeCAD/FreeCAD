@@ -73,7 +73,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         tiplength = 0.0
         if obj.AddTipLength:
-            tiplength = PathUtils.drillTipLength(tool)
+            tiplength = PathUtils.drillTipLength(self.tool)
 
         holes = PathUtils.sort_jobs(holes, ['x', 'y'])
         self.commandlist.append(Path.Command('G90'))

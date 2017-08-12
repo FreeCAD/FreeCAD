@@ -142,7 +142,6 @@ class TaskPanelPage(object):
         self.setFields(self.obj)
 
     def pageRegisterSignalHandlers(self):
-        PathLog.info("pageRegisterSignalHandlers(%s)" % self.getTitle(self.obj))
         for signal in self.getSignalsForUpdate(self.obj):
             signal.connect(self.pageGetFields)
         self.registerSignalHandlers(self.obj)
@@ -328,14 +327,12 @@ class TaskPanelHeightsPage(TaskPanelPage):
         self.form.safeHeight.setText(FreeCAD.Units.Quantity(obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
         self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
     def getSignalsForUpdate(self, obj):
-        PathLog.info("getSignalsForUpdate(%s)" % obj.Label)
         signals = []
         signals.append(self.form.safeHeight.editingFinished)
         signals.append(self.form.clearanceHeight.editingFinished)
         return signals
 
     def pageUpdateData(self, obj, prop):
-        PathLog.info("pageUpdateData(%s)" % prop)
         if prop in ['SafeHeight', 'ClearanceHeight']:
             self.setFields(obj)
 
