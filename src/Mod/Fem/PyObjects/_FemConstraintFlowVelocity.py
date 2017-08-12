@@ -31,6 +31,8 @@ import FemConstraint
 
 class Proxy(FemConstraint.Proxy):
 
+    Type = "Fem::ConstraintFlowVelocity"
+
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(

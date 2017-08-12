@@ -37,15 +37,23 @@ class Proxy(Linear.Proxy):
         obj.addProperty(
                 "App::PropertyFloat", "NonlinearTolerance",
                 "Nonlinear System", "Select type of solver for linear system")
-        obj.NonlinearTolerance = 1e-8
         obj.addProperty(
                 "App::PropertyInteger", "NonlinearIterations",
                 "Nonlinear System", "Select type of solver for linear system")
-        obj.NonlinearIterations = 500
         obj.addProperty(
                 "App::PropertyFloat", "RelaxationFactor",
                 "Nonlinear System", "Select type of solver for linear system")
+        obj.addProperty(
+                "App::PropertyInteger", "NonlinearNewtonAfterIterations",
+                "Nonlinear System", "Select type of solver for linear system")
+        obj.addProperty(
+                "App::PropertyFloat", "NonlinearNewtonAfterTolerance",
+                "Nonlinear System", "Select type of solver for linear system")
+        obj.NonlinearTolerance = 1e-8
+        obj.NonlinearIterations = 500
         obj.RelaxationFactor = 1
+        obj.NonlinearNewtonAfterIterations = 3
+        obj.NonlinearNewtonAfterTolerance = 1e-3
 
 
 class ViewProxy(Linear.ViewProxy):

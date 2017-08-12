@@ -479,6 +479,10 @@ class Writer(object):
             equation.NonlinearTolerance
         s["Nonlinear System Relaxation Factor"] = \
             equation.RelaxationFactor
+        s["Nonlinear System Newton After Iterations"] = \
+            equation.NonlinearNewtonAfterIterations
+        s["Nonlinear System Newton After Tolerance"] = \
+            equation.NonlinearNewtonAfterTolerance
         return s
 
     def _getUniqueVarName(self, varName):
