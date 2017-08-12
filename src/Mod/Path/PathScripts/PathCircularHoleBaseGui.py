@@ -48,13 +48,13 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         self.form.baseList.blockSignals(True)
         self.form.baseList.clearContents()
         self.form.baseList.setRowCount(0)
-        for i, (base, subs) in enumerate(self.obj.Base):
+        for i, (base, subs) in enumerate(obj.Base):
             for sub in subs:
                 self.form.baseList.insertRow(self.form.baseList.rowCount())
 
                 item = QtGui.QTableWidgetItem("%s.%s" % (base.Label, sub))
                 item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
-                if self.obj.Proxy.isHoleEnabled(self.obj, base, sub):
+                if obj.Proxy.isHoleEnabled(obj, base, sub):
                     item.setCheckState(QtCore.Qt.Checked)
                 else:
                     item.setCheckState(QtCore.Qt.Unchecked)
@@ -64,7 +64,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                 item.setData(self.DataObjectSub, sub)
                 self.form.baseList.setItem(self.form.baseList.rowCount()-1, 0, item)
 
-                item = QtGui.QTableWidgetItem("{:.3f}".format(self.obj.Proxy.holeDiameter(self.obj, base, sub)))
+                item = QtGui.QTableWidgetItem("{:.3f}".format(obj.Proxy.holeDiameter(obj, base, sub)))
                 item.setData(self.DataFeatureName, name)
                 item.setData(self.DataObject, base)
                 item.setData(self.DataObjectSub, sub)
@@ -143,7 +143,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 
     def updateData(self, obj, prop):
         if prop in ['Base', 'Disabled']:
-            self.setFields(self.obj)
+            self.setFields(obj)
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
