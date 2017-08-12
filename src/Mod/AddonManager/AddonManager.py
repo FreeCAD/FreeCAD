@@ -550,8 +550,39 @@ class ShowWorker(QtCore.QThread):
                 desc = "Unable to retrieve addon description"
             self.repos[self.idx].append(desc)
             self.addon_repos.emit(self.repos)
-        if self.repos[self.idx][2] == 1 :
-            message = "<strong>" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>" + desc + ' - <a href="' + self.repos[self.idx][1] + '"><span style="word-wrap: break-word;width:15em;text-decoration: underline; color:#0000ff;">' + self.repos[self.idx][1] + '</span></a>'
+        if self.repos[self.idx][2] == 1:
+            upd = False
+            # checking for updates
+            if not NOGIT:
+                try:
+                    import git
+                except:
+                    pass
+                else:
+                    repo = self.repos[self.idx]
+                    clonedir = FreeCAD.ConfigGet("UserAppData") + os.sep + "Mod" + os.sep + repo[0]
+                    if os.path.exists(clonedir):
+                        if not os.path.exists(clonedir + os.sep + '.git'):
+                            # Repair addon installed with raw download
+                            bare_repo = git.Repo.clone_from(repo[1], clonedir + os.sep + '.git', bare=True)
+                            try:
+                                with bare_repo.config_writer() as cw:
+                                    cw.set('core', 'bare', False)
+                            except AttributeError:
+                                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
+                                cw = bare_repo.config_writer()
+                                cw.set('core', 'bare', False)
+                                del cw
+                            repo = git.Repo(clonedir)
+                            repo.head.reset('--hard')
+                        gitrepo = git.Git(clonedir)
+                        gitrepo.fetch()
+                        if "git pull" in gitrepo.status():
+                            upd = True
+            if upd:
+                message = "<strong>" + translate("AddonsInstaller", "An update is available for this addon.") + "</strong><br>" + desc + ' - <a href="' + self.repos[self.idx][1] + '"><span style="word-wrap: break-word;width:15em;text-decoration: underline; color:#0000ff;">' + self.repos[self.idx][1] + '</span></a>'
+            else:
+                message = "<strong>" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>" + desc + ' - <a href="' + self.repos[self.idx][1] + '"><span style="word-wrap: break-word;width:15em;text-decoration: underline; color:#0000ff;">' + self.repos[self.idx][1] + '</span></a>'
         else:
             message = desc + ' - <a href="' + self.repos[self.idx][1] + '"><span style="word-wrap: break-word;width:15em;text-decoration: underline; color:#0000ff;">' + self.repos[self.idx][1] + '</span></a>'
         self.info_label.emit( message )
