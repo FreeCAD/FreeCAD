@@ -254,6 +254,9 @@ class Writer(object):
                 self._material(
                     name, "Heat Conductivity",
                     convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
+                self._material(
+                    name, "Heat Capacity",
+                    convert(m["SpecificHeat"], "L^2/(T^2*O)"))
 
     def _handleElasticity(self):
         activeIn = []
@@ -389,7 +392,7 @@ class Writer(object):
                     self._addSolver(body, solverSection)
         if activeIn:
             self._handleFlowConstants()
-            #self._handleFlowBndConditions()
+            self._handleFlowBndConditions()
             #self._handleFlowInitial(activeIn)
             #self._handleFlowBodyForces(activeIn)
             self._handleFlowMaterial(activeIn)
@@ -435,11 +438,28 @@ class Writer(object):
                     density = convert(m["Density"], "M/L^3")
                     kViscosity = convert(m["KinematicViscosity"], "L^2/T")
                     self._material(
-                        name, "Viscosity", kViscosity / density)
+                        name, "Viscosity", kViscosity * density)
                 if "ThermalExpansionCoefficient" in m:
-                    self._material(
-                        name, "Heat expansion Coefficient",
-                        convert(m["ThermalExpansionCoefficient"], "O^-1"))
+                    value = convert(m["ThermalExpansionCoefficient"], "O^-1")
+                    if value > 0:
+                        self._material(
+                            name, "Heat expansion Coefficient", value)
+
+    def _handleFlowBndConditions(self):
+        for obj in self._getMember("Fem::ConstraintFlowVelocity"):
+            for name in obj.References[0][1]:
+                if obj.VelocityXEnabled:
+                    velocity = getFromUi(obj.VelocityX, "m/s", "L/T")
+                    self._boundary(name, "Velocity 1", velocity)
+                if obj.VelocityYEnabled:
+                    velocity = getFromUi(obj.VelocityY, "m/s", "L/T")
+                    self._boundary(name, "Velocity 2", velocity)
+                if obj.VelocityZEnabled:
+                    velocity = getFromUi(obj.VelocityZ, "m/s", "L/T")
+                    self._boundary(name, "Velocity 3", velocity)
+                if obj.NormalToBoundary:
+                    self._boundary(name, "Normal-Tangential Velocity", True)
+            self._handled(obj)
 
     def _handleFlowEquation(self, bodies):
         for b in bodies:
