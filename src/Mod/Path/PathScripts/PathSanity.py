@@ -77,7 +77,7 @@ class CommandPathSanity:
                 toolcontrolcount += 1
                 self.__checkTC(item)
 
-            if isinstance(item.Proxy, PathScripts.PathContour.ObjectContour):
+            if isinstance(item.Proxy, PathScripts.PathProfileContour.ObjectContour):
                 if item.Active:
                     operationcount +=1
                     # simobj = item.Proxy.execute(item, getsim=True)
@@ -85,7 +85,7 @@ class CommandPathSanity:
                     #     print ('collision detected')
                     #     PC.getCollisionObject(self.baseobj, simobj)
 
-            if isinstance(item.Proxy, PathScripts.PathProfile.ObjectProfile):
+            if isinstance(item.Proxy, PathScripts.PathProfileFaces.ObjectProfile):
                 if item.Active:
                     operationcount +=1
                     # simobj = item.Proxy.execute(item, getsim=True)
@@ -117,7 +117,7 @@ class CommandPathSanity:
                 if item.Active:
                     operationcount +=1
 
-            if isinstance(item.Proxy, PathScripts.PathHelix.ObjectPathHelix):
+            if isinstance(item.Proxy, PathScripts.PathHelix.ObjectHelix):
                 if item.Active:
                     operationcount +=1
 
