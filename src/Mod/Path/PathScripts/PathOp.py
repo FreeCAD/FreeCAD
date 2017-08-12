@@ -34,8 +34,11 @@ __title__ = "Base class for all operations."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule()
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule()
+else:
+    PathLog.setLevel(PathLog.Level.NOTICE, PathLog.thisModule())
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -168,6 +171,7 @@ class ObjectOp(object):
                     return
                 else:
                     self.radius = tool.Diameter/2
+                    self.tool = tool
 
         self.commandlist = []
         self.commandlist.append(Path.Command("(%s)" % obj.Label))
