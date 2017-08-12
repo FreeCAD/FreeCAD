@@ -4906,11 +4906,6 @@ class _Wire(_DraftObject):
                     obj.Start = displayfpstart
                 if obj.End != displayfpend:
                     obj.End = displayfpend
-            if len(obj.Points) > 2:
-                obj.setEditorMode('Start',2)
-                obj.setEditorMode('End',2)
-                if hasattr(obj,"Length"):
-                    obj.setEditorMode('Length',2)
 
 
 class _ViewProviderWire(_ViewProviderDraft):
