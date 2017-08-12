@@ -186,7 +186,7 @@ bool Revolution::suggestReversed(void)
 {
     try {
         updateAxis();
-    } catch (const Base::Exception& e) {
+    } catch (const Base::Exception&) {
         return false;
     }
 
