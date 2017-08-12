@@ -239,7 +239,7 @@ class TaskPanel:
         self.obj.PostProcessor = currentPostProcessor
 
         for o in ObjectPathJob.baseCandidates():
-            self.form.cboBaseObject.addItem(o.Label)
+            self.form.cboBaseObject.addItem(o.Label, o)
 
 
         self.postProcessorDefaultTooltip = self.form.cboPostProcessor.toolTip()
@@ -298,8 +298,7 @@ class TaskPanel:
                         newlist.append(olditem)
             self.obj.Group = newlist
 
-            objName = self.form.cboBaseObject.currentText()
-            selObj = FreeCAD.ActiveDocument.getObject(objName)
+            selObj = self.form.cboBaseObject.itemData(self.form.cboBaseObject.currentIndex())
             if self.form.chkCreateClone.isChecked():
                 selObj = Draft.clone(selObj)
             self.obj.Base = selObj
