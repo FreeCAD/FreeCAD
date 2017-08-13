@@ -63,7 +63,7 @@ class DRILLGate:
         if hasattr(obj, "Shape") and sub:
             shape = obj.Shape
             subobj = shape.getElement(sub)
-            return PathUtils.isDrillable(shape, subobj)
+            return PathUtils.isDrillable(shape, subobj, includePartials = True)
         else:
             return False
 
