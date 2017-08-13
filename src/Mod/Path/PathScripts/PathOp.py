@@ -50,10 +50,11 @@ FeatureHeights      = 0x0004
 FeatureStartPoint   = 0x0008
 FeatureFinishDepth  = 0x0010
 FeatureStepDown     = 0x0020
-FeatureBaseVertexes = 0x1000
-FeatureBaseEdges    = 0x2000
-FeatureBaseFaces    = 0x4000
-FeatureBasePanels   = 0x8000
+FeatureBaseVertexes = 0x0100
+FeatureBaseEdges    = 0x0200
+FeatureBaseFaces    = 0x0400
+FeatureBasePanels   = 0x0800
+FeatureLocations    = 0x1000
 
 FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels
 
@@ -66,27 +67,32 @@ class ObjectOp(object):
         obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Operation"))
         obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
 
-        if FeatureBaseGeometry & self.opFeatures(obj):
+        features = self.opFeatures(obj)
+
+        if FeatureBaseGeometry & features:
             obj.addProperty("App::PropertyLinkSubList", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base geometry for this operation"))
 
-        if FeatureTool & self.opFeatures(obj):
+        if FeatureLocations & features:
+            obj.addProperty("App::PropertyVectorList", "Locations", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Base locations for this operation"))
+
+        if FeatureTool & features:
             obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
-        if FeatureDepths & self.opFeatures(obj):
+        if FeatureDepths & features:
             obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
             obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
 
-        if FeatureStepDown & self.opFeatures(obj):
+        if FeatureStepDown & features:
             obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"))
 
-        if FeatureFinishDepth & self.opFeatures(obj):
+        if FeatureFinishDepth & features:
             obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum material removed on final pass."))
 
-        if FeatureHeights & self.opFeatures(obj):
+        if FeatureHeights & features:
             obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
             obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid Safety Height between locations."))
 
-        if FeatureStartPoint & self.opFeatures(obj):
+        if FeatureStartPoint & features:
             obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
             obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
 
@@ -116,21 +122,23 @@ class ObjectOp(object):
 
         obj.Active = True
 
-        if FeatureTool & self.opFeatures(obj):
+        features = self.opFeatures(obj)
+
+        if FeatureTool & features:
             obj.ToolController = PathUtils.findToolController(obj)
 
-        if FeatureDepths & self.opFeatures(obj):
+        if FeatureDepths & features:
             obj.StartDepth      =  1.0
             obj.FinalDepth      =  0.0
 
-        if FeatureStepDown & self.opFeatures(obj):
+        if FeatureStepDown & features:
             obj.StepDown        =  1.0
 
-        if FeatureHeights & self.opFeatures(obj):
+        if FeatureHeights & features:
             obj.ClearanceHeight = 10.0
             obj.SafeHeight      =  8.0
 
-        if FeatureStartPoint & self.opFeatures(obj):
+        if FeatureStartPoint & features:
             obj.UseStartPoint = False
 
         self.opSetDefaultValues(obj)
