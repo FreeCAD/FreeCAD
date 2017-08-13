@@ -221,7 +221,7 @@ class ObjectDrilling:
                 output += cmd + \
                     " X" + fmt(p['x']) + \
                     " Y" + fmt(p['y']) + \
-                    " Z" + fmt(obj.FinalDepth.Value + tiplength) + qword + pword + \
+                    " Z" + fmt(obj.FinalDepth.Value - tiplength) + qword + pword + \
                     " R" + str(obj.RetractHeight.Value) + \
                     " F" + str(self.vertFeed) + "\n" \
 

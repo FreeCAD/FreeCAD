@@ -42,8 +42,10 @@ if False:
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-FreeCAD.setLogLevel('Path.Area', 0)
+#FreeCAD.setLogLevel('Path.Area', 0)
 
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 def waiting_effects(function):
     def new_function(*args, **kwargs):
@@ -465,7 +467,7 @@ def addToJob(obj, jobname=None):
         if len(jobs) == 1:
             job = jobs[0]
         else:
-            PathLog.error("Didn't find job %s" % jobname)
+            PathLog.error(translate("Path", "Didn't find job %s") % jobname)
             return None
     else:
         jobs = GetJobs()
@@ -750,8 +752,15 @@ def drillTipLength(tool):
     if tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
         return 0.0
     else:
+        if tool.CuttingEdgeAngle < 0 or tool.CuttingEdgeAngle >= 90:
+            PathLog.error(translate("Path", "Invalid Cutting Edge Angle %.2f, must be <90° and >=0°") % tool.CuttingEdgeAngle)
+            return 0.0
         theta = math.radians(tool.CuttingEdgeAngle)
-        return (tool.Diameter/2) / math.tan(theta) 
+        length = (tool.Diameter/2) / math.tan(theta) 
+        if length < 0:
+            PathLog.error(translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length") % tool.CuttingEdgeAngle)
+            return 0.0
+        return length
 
 class depth_params:
     '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters
