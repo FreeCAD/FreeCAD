@@ -198,7 +198,7 @@ class TaskPanelPage(object):
     def updateInputField(self, obj, prop, widget):
         value = FreeCAD.Units.Quantity(widget.text()).Value
         if getattr(obj, prop) != value:
-            setattr(obj, prop, value)
+            PathLog.debug("updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, getattr(obj, prop), value))
 
 class TaskPanelBaseGeometryPage(TaskPanelPage):
     DataObject    = QtCore.Qt.ItemDataRole.UserRole
@@ -360,7 +360,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
         if PathOp.FeatureStepDown & self.features:
             self.updateInputField(obj, 'StepDown', self.form.stepDown)
         if PathOp.FeatureFinishDepth & self.features:
-            self.updateInputField(obj, 'FinishDepht', self.form.finishDepth)
+            self.updateInputField(obj, 'FinishDepth', self.form.finishDepth)
     def setFields(self, obj):
         self.form.startDepth.setText(FreeCAD.Units.Quantity(obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
         self.form.finalDepth.setText(FreeCAD.Units.Quantity(obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
@@ -375,7 +375,6 @@ class TaskPanelDepthsPage(TaskPanelPage):
         if PathOp.FeatureStepDown & self.features:
             signals.append(self.form.stepDown.editingFinished)
         if PathOp.FeatureFinishDepth & self.features:
-            signals = super(self.__class__, self).getSignalsForUpdate(obj)
             signals.append(self.form.finishDepth.editingFinished)
         return signals
 
