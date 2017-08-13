@@ -119,6 +119,8 @@ UnitsSchema* UnitsApi::createSchema(UnitSystem s)
         return new UnitsSchemaImperialBuilding();
     case MmMin:
         return new UnitsSchemaMmMin();
+    default:
+        break;
     }
 
     return 0;
