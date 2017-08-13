@@ -24,6 +24,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSelection as PathSelection
 import PathScripts.PathOp as PathOp
@@ -156,6 +157,8 @@ class TaskPanelPage(object):
 
     # subclass interface
     def initPage(self, obj):
+        pass
+    def modifyStandardButtons(self, buttonBox):
         pass
     def getForm(self):
         pass
@@ -316,6 +319,108 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             self.setFields(obj)
 
 
+class TaskPanelBaseLocationPage(TaskPanelPage):
+
+    DataLocation = QtCore.Qt.ItemDataRole.UserRole
+
+    def getForm(self):
+        self.formLoc = FreeCADGui.PySideUic.loadUi(":/panels/PageBaseLocationEdit.ui")
+        self.formPts = FreeCADGui.PySideUic.loadUi(":/panels/PointEdit.ui")
+        form = QtGui.QWidget()
+        self.layout = QtGui.QVBoxLayout(form)
+        form.setWindowTitle(self.formLoc.windowTitle())
+        form.setSizePolicy(self.formLoc.sizePolicy())
+        self.formLoc.setParent(form)
+        self.formPts.setParent(form)
+        self.layout.addWidget(self.formLoc)
+        self.layout.addWidget(self.formPts)
+        self.formPts.hide()
+        self.getPoint = PathGetPoint.TaskPanel(self.formLoc, self.formPts)
+        return form
+
+    def modifyStandardButtons(self, buttonBox):
+        self.getPoint.buttonBox = buttonBox
+
+    def getTitle(self, obj):
+        return translate("PathOp", "Base Location")
+    def getFields(self, obj):
+        pass
+
+    def setFields(self, obj):
+        self.formLoc.baseList.blockSignals(True)
+        self.formLoc.baseList.clearContents()
+        self.formLoc.baseList.setRowCount(0)
+        for location in self.obj.Locations:
+            self.formLoc.baseList.insertRow(self.formLoc.baseList.rowCount())
+
+            item = QtGui.QTableWidgetItem("%.2f" % location.x)
+            item.setData(self.DataLocation, location.x)
+            self.formLoc.baseList.setItem(self.formLoc.baseList.rowCount()-1, 0, item)
+
+            item = QtGui.QTableWidgetItem("%.2f" % location.y)
+            item.setData(self.DataLocation, location.y)
+            self.formLoc.baseList.setItem(self.formLoc.baseList.rowCount()-1, 1, item)
+        self.formLoc.baseList.resizeColumnToContents(0)
+        self.formLoc.baseList.blockSignals(False)
+
+    def removeLocation(self):
+        deletedRows = []
+        selected = self.formLoc.baseList.selectedItems()
+        for item in selected:
+            row = self.formLoc.baseList.row(item)
+            if not row in deletedRows:
+                deletedRows.append(row)
+                self.formLoc.baseList.removeRow(row)
+        self.updateLocations()
+        FreeCAD.ActiveDocument.recompute()
+
+    def updateLocations(self):
+        PathLog.track()
+        locations = []
+        for i in range(self.formLoc.baseList.rowCount()):
+            x = self.formLoc.baseList.item(i, 0).data(self.DataLocation)
+            y = self.formLoc.baseList.item(i, 1).data(self.DataLocation)
+            location = FreeCAD.Vector(x, y, 0)
+            locations.append(location)
+        self.obj.Locations = locations
+
+    def addLocation(self):
+        self.getPoint.getPoint(self.addLocationAt)
+
+    def addLocationAt(self, point, obj):
+        if point:
+            locations = self.obj.Locations
+            locations.append(point)
+            self.obj.Locations = locations
+            FreeCAD.ActiveDocument.recompute()
+
+    def editLocation(self):
+        selected = self.formLoc.baseList.selectedItems()
+        if selected:
+            row = self.formLoc.baseList.row(item)
+            self.editRow = row
+            x = self.formLoc.baseList.item(row, 0).data(self.DataLocation)
+            y = self.formLoc.baseList.item(row, 1).data(self.DataLocation)
+            start = FreeCAD.Vector(x, y, 0)
+            self.getPoint.getPoint(self.editLocationAt, start)
+
+    def editLocationAt(self, point, obj):
+        if point:
+            self.formLoc.baseList.item(self.editRow, 0).setData(self.DataLocation, point.x)
+            self.formLoc.baseList.item(self.editRow, 1).setData(self.DataLocation, point.y)
+            self.updateLocations()
+            FreeCAD.ActiveDocument.recompute()
+
+    def registerSignalHandlers(self, obj):
+        self.formLoc.addLocation.clicked.connect(self.addLocation)
+        self.formLoc.removeLocation.clicked.connect(self.removeLocation)
+        self.formLoc.editLocation.clicked.connect(self.editLocation)
+
+    def pageUpdateData(self, obj, prop):
+        if prop in ['Locations']:
+            self.setFields(obj)
+
+
 class TaskPanelHeightsPage(TaskPanelPage):
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
@@ -400,6 +505,12 @@ class TaskPanel(object):
             else:
                 self.featurePages.append(TaskPanelBaseGeometryPage(obj, features))
 
+        if PathOp.FeatureLocations & features:
+            if hasattr(opPage, 'taskPanelBaseLocationPage'):
+                self.featurePages.append(opPage.taskPanelBaseLocationPage(obj, features))
+            else:
+                self.featurePages.append(TaskPanelBaseLocationPage(obj, features))
+
         if PathOp.FeatureDepths & features:
             if hasattr(opPage, 'taskPanelDepthsPage'):
                 self.featurePages.append(opPage.taskPanelDepthsPage(obj, features))
@@ -482,6 +593,10 @@ class TaskPanel(object):
             self.panelGetFields()
             self.setClean()
             FreeCAD.ActiveDocument.recompute()
+
+    def modifyStandardButtons(self, buttonBox):
+        for page in self.featurePages:
+            page.modifyStandardButtons(buttonBox)
 
     def panelGetFields(self):
         PathLog.track()
