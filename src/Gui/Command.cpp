@@ -610,17 +610,13 @@ void Command::applyCommandData(const char* context, Action* action)
         context, getMenuText()));
     action->setToolTip(QCoreApplication::translate(
         context, getToolTipText()));
+    action->setWhatsThis(QCoreApplication::translate(
+        context, getWhatsThis()));
     if (sStatusTip)
         action->setStatusTip(QCoreApplication::translate(
             context, getStatusTip()));
     else
         action->setStatusTip(QCoreApplication::translate(
-            context, getToolTipText()));
-    if (sWhatsThis)
-        action->setWhatsThis(QCoreApplication::translate(
-            context, getWhatsThis()));
-    else
-        action->setWhatsThis(QCoreApplication::translate(
             context, getToolTipText()));
     QString accel = action->shortcut().toString(QKeySequence::NativeText);
     if (!accel.isEmpty()) {
