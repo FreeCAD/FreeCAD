@@ -104,7 +104,7 @@ class ObjectOp(PathOp.ObjectOp):
     def opExecute(self, obj):
         PathLog.track()
 
-        if len(obj.Base) == 0:
+        if len(obj.Base) == 0 and len(obj.Locations) == 0:
             # Arch PanelSheet
             features = []
             if self.baseIsArchPanel(obj, self.baseobject):
@@ -133,6 +133,8 @@ class ObjectOp(PathOp.ObjectOp):
                 if self.isHoleEnabled(obj, base, sub):
                     pos = self.holePosition(obj, base, sub)
                     holes.append({'x': pos.x, 'y': pos.y, 'r': self.holeDiameter(obj, base, sub)})
+        for location in obj.Locations:
+            holes.append({'x': location.x, 'y': location.y, 'r': 0})
 
         if len(holes) > 0:
             self.circularHoleExecute(obj, holes)
@@ -168,9 +170,9 @@ class ObjectOp(PathOp.ObjectOp):
     def setDepths(self, obj, zmax, zmin, bb):
         PathLog.track(obj.Label, zmax, zmin, bb)
         if zmax is None:
-            zmax = 5
+            zmax = bb.ZMax
         if zmin is None:
-            zmin = 0
+            zmin = bb.ZMin
 
         if zmin > zmax:
             zmax = zmin

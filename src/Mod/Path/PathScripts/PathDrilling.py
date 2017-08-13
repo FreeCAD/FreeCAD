@@ -52,7 +52,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
     def circularHoleFeatures(self, obj):
         # drilling works on anything
-        return PathOp.FeatureBaseGeometry
+        return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations
 
     def initCircularHoleOperation(self, obj):
 
@@ -71,6 +71,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         self.commandlist.append(Path.Command("(Begin Drilling)"))
 
+        # rapid to clearance height
+        self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
+
         tiplength = 0.0
         if obj.AddTipLength:
             tiplength = PathUtils.drillTipLength(self.tool)
@@ -78,14 +81,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         holes = PathUtils.sort_jobs(holes, ['x', 'y'])
         self.commandlist.append(Path.Command('G90'))
         self.commandlist.append(Path.Command(obj.ReturnLevel))
-        # rapid to clearance height
-        self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-        # rapid to first hole location, with spindle still retracted:
 
-        p0 = holes[0]
-        self.commandlist.append(Path.Command('G0', {'X': p0['x'], 'Y': p0['y'], 'F': self.horizRapid}))
-        # move tool to clearance plane
-        self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
+        # ml: I'm not sure whey these were here, they seem redundant
+        ## rapid to first hole location, with spindle still retracted:
+        #p0 = holes[0]
+        #self.commandlist.append(Path.Command('G0', {'X': p0['x'], 'Y': p0['y'], 'F': self.horizRapid}))
+        ## move tool to clearance plane
+        #self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
         cmd = "G81"
         cmdParams = {}
@@ -117,6 +119,14 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
     def opSetDefaultValues(self, obj):
         obj.RetractHeight = 10
+
+    def opOnChanged(self, obj, prop):
+        super(self.__class__, self).opOnChanged(obj, prop)
+        if prop == 'Locations' and not 'Restore' in obj.State and obj.Locations and not obj.Base:
+            if not hasattr(self, 'baseobject'):
+                job = PathUtils.findParentJob(obj)
+                if job and job.Base:
+                    self.setupDepthsFrom(obj, [], job.Base)
 
 def Create(name):
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
