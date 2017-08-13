@@ -104,7 +104,12 @@ class ObjectOp(PathOp.ObjectOp):
     def opExecute(self, obj):
         PathLog.track()
 
-        if len(obj.Base) == 0 and len(obj.Locations) == 0:
+        def haveLocations(self, obj):
+            if PathOp.FeatureLocations & self.opFeatures(obj):
+                return len(obj.Locations) != 0
+            return False
+
+        if len(obj.Base) == 0 and not haveLocations(self, obj):
             # Arch PanelSheet
             features = []
             if self.baseIsArchPanel(obj, self.baseobject):
@@ -133,8 +138,9 @@ class ObjectOp(PathOp.ObjectOp):
                 if self.isHoleEnabled(obj, base, sub):
                     pos = self.holePosition(obj, base, sub)
                     holes.append({'x': pos.x, 'y': pos.y, 'r': self.holeDiameter(obj, base, sub)})
-        for location in obj.Locations:
-            holes.append({'x': location.x, 'y': location.y, 'r': 0})
+        if haveLocations(self, obj):
+            for location in obj.Locations:
+                holes.append({'x': location.x, 'y': location.y, 'r': 0})
 
         if len(holes) > 0:
             self.circularHoleExecute(obj, holes)
