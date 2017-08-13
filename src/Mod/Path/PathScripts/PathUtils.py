@@ -116,7 +116,7 @@ def curvetowire(obj, steps):
     return edgelist
 
 
-def isDrillable(obj, candidate, tooldiameter=None):
+def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
     """
     Checks candidates to see if they can be drilled.
     Candidates can be either faces - circular or cylindrical or circular edges.
@@ -162,7 +162,7 @@ def isDrillable(obj, candidate, tooldiameter=None):
                                 drillable = True
     else:
         for edge in candidate.Edges:
-            if isinstance(edge.Curve, Part.Circle) and edge.isClosed():
+            if isinstance(edge.Curve, Part.Circle) and (includePartials or edge.isClosed()):
                 PathLog.debug("candidate is a circle or ellipse")
                 if not hasattr(edge.Curve, "Radius"):
                     PathLog.debug("No radius.  Ellipse.")
