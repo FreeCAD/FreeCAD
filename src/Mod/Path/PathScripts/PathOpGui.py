@@ -326,17 +326,12 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
     def getForm(self):
         self.formLoc = FreeCADGui.PySideUic.loadUi(":/panels/PageBaseLocationEdit.ui")
         self.formPts = FreeCADGui.PySideUic.loadUi(":/panels/PointEdit.ui")
-        form = QtGui.QWidget()
-        self.layout = QtGui.QVBoxLayout(form)
-        form.setWindowTitle(self.formLoc.windowTitle())
-        form.setSizePolicy(self.formLoc.sizePolicy())
-        self.formLoc.setParent(form)
-        self.formPts.setParent(form)
-        self.layout.addWidget(self.formLoc)
-        self.layout.addWidget(self.formPts)
+        self.formLoc.baseList.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
+        self.formPts.setParent(self.formLoc.addRemoveEdit.parent())
+        self.formLoc.addRemoveEdit.parent().layout().addWidget(self.formPts)
         self.formPts.hide()
-        self.getPoint = PathGetPoint.TaskPanel(self.formLoc, self.formPts)
-        return form
+        self.getPoint = PathGetPoint.TaskPanel(self.formLoc.addRemoveEdit, self.formPts)
+        return self.formLoc
 
     def modifyStandardButtons(self, buttonBox):
         self.getPoint.buttonBox = buttonBox
@@ -362,6 +357,7 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
             self.formLoc.baseList.setItem(self.formLoc.baseList.rowCount()-1, 1, item)
         self.formLoc.baseList.resizeColumnToContents(0)
         self.formLoc.baseList.blockSignals(False)
+        self.itemActivated()
 
     def removeLocation(self):
         deletedRows = []
@@ -397,7 +393,7 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
     def editLocation(self):
         selected = self.formLoc.baseList.selectedItems()
         if selected:
-            row = self.formLoc.baseList.row(item)
+            row = self.formLoc.baseList.row(selected[0])
             self.editRow = row
             x = self.formLoc.baseList.item(row, 0).data(self.DataLocation)
             y = self.formLoc.baseList.item(row, 1).data(self.DataLocation)
@@ -411,7 +407,16 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
             self.updateLocations()
             FreeCAD.ActiveDocument.recompute()
 
+    def itemActivated(self):
+        if self.formLoc.baseList.selectedItems():
+            self.form.removeLocation.setEnabled(True)
+            self.form.editLocation.setEnabled(True)
+        else:
+            self.form.removeLocation.setEnabled(False)
+            self.form.editLocation.setEnabled(False)
+
     def registerSignalHandlers(self, obj):
+        self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
         self.formLoc.addLocation.clicked.connect(self.addLocation)
         self.formLoc.removeLocation.clicked.connect(self.removeLocation)
         self.formLoc.editLocation.clicked.connect(self.editLocation)
