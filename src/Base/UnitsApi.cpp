@@ -80,6 +80,50 @@ UnitsApi::~UnitsApi()
 {
 }
 
+const char* UnitsApi::getDescription(UnitSystem system)
+{
+    switch (system) {
+    case SI1:
+        return "Standard (mm/kg/s/degree)";
+    case SI2:
+        return "MKS (m/kg/s/degree)";
+    case Imperial1:
+        return "US customary (in/lb)";
+    case ImperialDecimal:
+        return "Imperial decimal (in/lb)";
+    case Centimeters:
+        return "Building Euro (cm/m²/m³)";
+    case ImperialBuilding:
+        return "Building US (ft-in/sqft/cuft)";
+    case MmMin:
+        return "Metric small parts & CNC(mm, mm/min)";
+    default:
+        return "Unknown schema";
+    }
+}
+
+UnitsSchema* UnitsApi::createSchema(UnitSystem s)
+{
+    switch (s) {
+    case SI1:
+        return new UnitsSchemaInternal();
+    case SI2:
+        return new UnitsSchemaMKS();
+    case Imperial1:
+        return new UnitsSchemaImperial1();
+    case ImperialDecimal:
+        return new UnitsSchemaImperialDecimal();
+    case Centimeters:
+        return new UnitsSchemaCentimeters();
+    case ImperialBuilding:
+        return new UnitsSchemaImperialBuilding();
+    case MmMin:
+        return new UnitsSchemaMmMin();
+    }
+
+    return 0;
+}
+
 void UnitsApi::setSchema(UnitSystem s)
 {
     if (UserPrefSystem) {
@@ -87,18 +131,16 @@ void UnitsApi::setSchema(UnitSystem s)
         delete UserPrefSystem;
         UserPrefSystem = 0;
     }
-    switch (s) {
-        case SI1 : UserPrefSystem = new UnitsSchemaInternal(); break;
-        case SI2 : UserPrefSystem = new UnitsSchemaMKS(); break;
-        case Imperial1: UserPrefSystem = new UnitsSchemaImperial1(); break;
-        case ImperialDecimal: UserPrefSystem = new UnitsSchemaImperialDecimal(); break;
-        case Centimeters: UserPrefSystem = new UnitsSchemaCentimeters(); break;
-        case ImperialBuilding: UserPrefSystem = new UnitsSchemaImperialBuilding(); break;
-        case MmMin: UserPrefSystem = new UnitsSchemaMmMin(); break;
-        default  : UserPrefSystem = new UnitsSchemaInternal(); s = SI1; break;
+
+    UserPrefSystem = createSchema(s);
+    actSystem = s;
+
+    // for wrong value fall back to standard schema
+    if (!UserPrefSystem) {
+        UserPrefSystem = new UnitsSchemaInternal();
+        actSystem = SI1;
     }
 
-    actSystem = s;
     UserPrefSystem->setSchemaUnits(); // if necesarry a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).
 }
 
