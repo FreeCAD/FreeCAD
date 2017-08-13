@@ -199,6 +199,7 @@ class TaskPanelPage(object):
         value = FreeCAD.Units.Quantity(widget.text()).Value
         if getattr(obj, prop) != value:
             PathLog.debug("updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, getattr(obj, prop), value))
+            setattr(obj, prop, value)
 
 class TaskPanelBaseGeometryPage(TaskPanelPage):
     DataObject    = QtCore.Qt.ItemDataRole.UserRole
