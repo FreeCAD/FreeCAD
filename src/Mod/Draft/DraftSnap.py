@@ -961,7 +961,7 @@ class Snapper:
         if self.grid:
             self.grid.lowerTracker()
 
-    def off(self):
+    def off(self, hideSnapBar=False):
         "finishes snapping"
         if self.tracker:
             self.tracker.off()
@@ -986,7 +986,7 @@ class Snapper:
         self.unconstrain()
         self.radius = 0
         self.setCursor()
-        if Draft.getParam("hideSnapBar",False):
+        if hideSnapBar or Draft.getParam("hideSnapBar",False):
             self.toolbar.hide()
         self.mask = None
         self.lastArchPoint = None
