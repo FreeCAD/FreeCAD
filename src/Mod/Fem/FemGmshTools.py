@@ -58,7 +58,7 @@ class FemGmshTools():
         self.clmin = Units.Quantity(self.mesh_obj.CharacteristicLengthMin).Value
 
         # geotol, GeometryTolerance: float, 0.0 = 1e-08
-        self.geotol = Units.Quantity(self.mesh_obj.GeometryTolerance).Value
+        self.geotol = self.mesh_obj.GeometryTolerance
         if self.geotol == 0.0:
             self.geotol = 1e-08
 
