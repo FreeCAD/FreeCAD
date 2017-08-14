@@ -119,7 +119,7 @@ class FemGmshTools():
         else:
             self.algorithm3D = '1'
 
-    def export_mesh(self, output_format, output_filestring = None):
+    def export_mesh(self, output_format, output_filestring = None, scaling = False):
         # This function aims to export more mesh formats than FemMesh supported
         _output_format = self.mesh_obj.OutputFormat  # push back the current OutputFormat
         output_filename = None
@@ -133,7 +133,7 @@ class FemGmshTools():
             self.get_region_data()
             self.get_boundary_layer_data()
             self.write_part_file()
-            self.write_geo()
+            self.write_geo(True)
             error = self.run_gmsh_with_geo()
             if error:
                 print('Gmsh has error during mesh generation for {}'.format(output_format))
@@ -447,35 +447,35 @@ class FemGmshTools():
         print('  {}'.format(self.group_elements))
 
     def write_group(self, geo):
+        # print('  We have found elements to make mesh groups  ')
+        boundaries = 0
+        domains = 0
         if self.group_elements:
-            # print('  We gone have found elements to make mesh groups for.')
-            geo.write("// group data\n")
+            geo.write("// group data \n")
             # we use the element name of FreeCAD which starts with 1 (example: 'Face1'), same as GMSH
-            boundaries, domains = 0,0
             for group in self.group_elements:
                 gdata = self.group_elements[group]
-                # print(gdata)
-                # geo.write("// " + group + "\n")
+                print(gdata)
                 ele_nr = ''
                 if gdata[0].startswith('Solid'):
                     physical_type = 'Volume'
                     for ele in gdata:
                         ele_nr += (ele.lstrip('Solid') + ', ')
-                    if self.dimension == 3:
+                    if self.dimension == '3':
                         domains += 1
                 elif gdata[0].startswith('Face'):
                     physical_type = 'Surface'
                     for ele in gdata:
                         ele_nr += (ele.lstrip('Face') + ', ')
-                    if self.dimension == 2:
+                    if self.dimension == '2':
                         domains += 1
-                    if self.dimension == 3:
+                    if self.dimension == '3':
                         boundaries += 1
                 elif gdata[0].startswith('Edge'):
                     physical_type = 'Line'
                     for ele in gdata:
                         ele_nr += (ele.lstrip('Edge') + ', ')
-                    if self.dimension == 2:
+                    if self.dimension == '2':
                         boundaries += 1
                 elif gdata[0].startswith('Vertex'):
                     geo.write("// " + group + " group data not written. Vertexes group data not supported.\n")
@@ -484,37 +484,46 @@ class FemGmshTools():
                     ele_nr = ele_nr.rstrip(', ')
                     # print(ele_nr)
                     geo.write('Physical ' + physical_type + '("' + group + '") = {' + ele_nr + '};\n')
-            # if physical volume for 3D or physical surface for 2D mesh is NOT defined, define a default interior domain for Fenics mesh
-            if domains == 0:
-                if dimension == 3:
-                    geo.write('Physical Volume("Interior") = {1};\n')
-                if dimension == 2:
-                    geo.write('Physical Surface("Interior") = {1};\n')
-            if boundaries == 0:
-                print("Warning: no boundary group data are written, thus boundary mesh will not export")
 
-            if self.analysis and self.mesh_obj.OutputFormat == u"I-Deas universal":
-                geo.write("// For each group save not only the elements but the nodes too.;\n")
-                geo.write("Mesh.SaveGroupsOfNodes = 1;\n")
-                # Mesh.SaveGroupsOfNodes: Save groups of nodes for each physical line and surface (UNV mesh format only)
-                geo.write("// Needed for Group meshing too, because for one material there is no group defined;\n")
-                # belongs to Mesh.SaveAll but anly needed if there are groups
+        # if physical volume for 3D or physical surface for 2D mesh is NOT defined, define a default interior domain for Fenics mesh
+        if domains == 0:
+            if self.dimension == '3':
+                geo.write('Physical Volume("Interior") = {1};\n')
+            if self.dimension == '2':
+                geo.write('Physical Surface("Interior") = {1};\n')
+        else:
+            print("Warning: no subdomain group data are written, thus subdomain nesh will not be exported")
+        if boundaries == 0:
+            print("Warning: no boundary group data are written, thus boundary mesh will not be exported")
+        geo.write("\n\n")
 
-                geo.write("// Ignore Physical definitions and save all elements, if Mesh.SaveAll = 1;\n")
-                geo.write("Mesh.SaveAll = 1;\n")  # ortherwise only surface mesh is written for mesh read back to FreeCAD
+        if self.analysis and self.mesh_obj.OutputFormat == u"I-Deas universal":
+            geo.write("// For each group save not only the elements but the nodes too.;\n")
+            geo.write("Mesh.SaveGroupsOfNodes = 1;\n")
+            # Mesh.SaveGroupsOfNodes: Save groups of nodes for each physical line and surface (UNV mesh format only)
+            geo.write("// Needed for Group meshing too, because for one material there is no group defined;\n")
+            # belongs to Mesh.SaveAll but anly needed if there are groups
 
+            geo.write("// Ignore Physical definitions and save all elements, if Mesh.SaveAll = 1;\n")
+            geo.write("Mesh.SaveAll = 1;\n")  # ortherwise only surface mesh is written for mesh read back to FreeCAD
             geo.write("\n\n")
 
     def write_part_file(self):
         self.part_obj.Shape.exportBrep(self.temp_file_geometry)
 
-    def write_geo(self):
+    def write_geo(self, scaling = False):
         geo = open(self.temp_file_geo, "w")
         geo.write("// geo file for meshing with GMSH meshing software created by FreeCAD\n")
         geo.write("\n")
         geo.write("// open brep geometry\n")
         geo.write('Merge "' + self.temp_file_geometry + '";\n')
         geo.write("\n")
+
+        if scaling:  # from FreeCAD length unit to MKS
+            unit_shema = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units/").GetInt("UserSchema")
+            if unit_shema == 0:  # mm as length unit, default for CAD
+                geo.write("// length scale from current FreeCAD length unit to MKS unit (meter)\n")
+                geo.write("Mesh.ScalingFactor={};\n".format(0.001))
 
         if self.ele_length_map:
             # we use the index FreeCAD which starts with 0, we need to add 1 for the index in GMSH
