@@ -35,13 +35,17 @@ import PathScripts.PathUtils as PathUtils
 from PathScripts.PathUtils import fmt, waiting_effects
 from PySide import QtCore
 
+__title__ = "Path Drilling Operation"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Path Drilling operation."
+
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-"""Path Drilling object and FreeCAD command"""
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -49,13 +53,14 @@ def translate(context, text, disambig=None):
 
 
 class ObjectDrilling(PathCircularHoleBase.ObjectOp):
+    '''Proxy object for Drilling operation.'''
 
     def circularHoleFeatures(self, obj):
-        # drilling works on anything
+        '''circularHoleFeatures(obj) ... drilling works on anything, turn on all Base geometries and Locations.'''
         return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations
 
     def initCircularHoleOperation(self, obj):
-
+        '''initCircularHoleOperation(obj) ... add drilling specific properties to obj.'''
         obj.addProperty("App::PropertyLength", "PeckDepth", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Drill depth before retracting to clear chips"))
         obj.addProperty("App::PropertyBool", "PeckEnabled", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable pecking"))
         obj.addProperty("App::PropertyFloat", "DwellTime", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"))
@@ -67,6 +72,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         obj.addProperty("App::PropertyDistance", "RetractHeight", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished"))
 
     def circularHoleExecute(self, obj, holes):
+        '''circularHoleExecute(obj, holes) ... generate drill operation for each hole in holes.'''
         PathLog.track()
 
         self.commandlist.append(Path.Command("(Begin Drilling)"))
@@ -111,6 +117,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         self.commandlist.append(Path.Command('G80'))
 
     def setDepths(self, obj, zmax, zmin, bb):
+        '''setDepths(obj, zmax, zmin, bb) ... call base implementation and set RetractHeight accordingly.'''
         super(self.__class__, self).setDepths(obj, zmax, zmin, bb)
         if zmax is not None:
             obj.RetractHeight = zmax + 1.0
@@ -118,9 +125,11 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             obj.RetractHeight = 6.0
 
     def opSetDefaultValues(self, obj):
+        '''opSetDefaultValues(obj) ... set default value for RetractHeight'''
         obj.RetractHeight = 10
 
     def opOnChanged(self, obj, prop):
+        '''opOnChanged(obj, prop) ... if Locations changed, check if depths should be calculated.'''
         super(self.__class__, self).opOnChanged(obj, prop)
         if prop == 'Locations' and not 'Restore' in obj.State and obj.Locations and not obj.Base:
             if not hasattr(self, 'baseobject'):
@@ -129,6 +138,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     self.setupDepthsFrom(obj, [], job.Base)
 
 def Create(name):
+    '''Create(name) ... Creates and returns a Drilling operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectDrilling(obj)
     return obj
