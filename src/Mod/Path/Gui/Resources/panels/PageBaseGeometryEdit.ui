@@ -17,12 +17,12 @@
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="1" column="2">
-      <widget class="QPushButton" name="updateBase">
+      <widget class="QPushButton" name="clearBase">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Upates the Model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clears list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Update</string>
+        <string>Clear</string>
        </property>
       </widget>
      </item>
@@ -71,7 +71,7 @@
   <tabstop>baseList</tabstop>
   <tabstop>addBase</tabstop>
   <tabstop>deleteBase</tabstop>
-  <tabstop>updateBase</tabstop>
+  <tabstop>clearBase</tabstop>
  </tabstops>
  <resources/>
  <connections/>
