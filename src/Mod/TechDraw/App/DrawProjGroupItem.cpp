@@ -32,6 +32,7 @@
 
 #include "GeometryObject.h"
 #include "DrawUtil.h"
+#include "DrawPage.h"
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
 
@@ -104,7 +105,7 @@ void DrawProjGroupItem::onDocumentRestored()
     }
 }
 
-DrawProjGroup* DrawProjGroupItem::getGroup() const
+DrawProjGroup* DrawProjGroupItem::getPGroup() const
 {
     DrawProjGroup* result = nullptr;
     std::vector<App::DocumentObject*> parent = getInList();
@@ -134,6 +135,7 @@ gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
      return viewAxis;
 }
 
+//obs??
 //get the angle between the current RotationVector vector and the original X dir angle
 double DrawProjGroupItem::getRotateAngle()
 {
@@ -160,15 +162,23 @@ double DrawProjGroupItem::getRotateAngle()
     return angle;
 }
 
+//TODO: getScale is no longer needed and could revert to Scale.getValue
+double DrawProjGroupItem::getScale(void) const
+{
+    double result = Scale.getValue();
+    return result;
+}
+
+
 void DrawProjGroupItem::unsetupObject()
 {
-    if (getGroup() != nullptr) {
-        if (getGroup()->hasProjection(Type.getValueAsString()) ) {
-            if ((getGroup()->getAnchor() == this) &&
-                 !getGroup()->isDeleting() )         {
+    if (getPGroup() != nullptr) {
+        if (getPGroup()->hasProjection(Type.getValueAsString()) ) {
+            if ((getPGroup()->getAnchor() == this) &&
+                 !getPGroup()->isDeleting() )         {
                    Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
-                                           getGroup()->getNameInDocument(),getGroup()->Label.getValue());
-                   getGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
+                                           getPGroup()->getNameInDocument(),getPGroup()->Label.getValue());
+                   getPGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
              }
         }
     }

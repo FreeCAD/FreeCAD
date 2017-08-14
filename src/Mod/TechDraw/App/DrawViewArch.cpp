@@ -110,7 +110,7 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
                  << ",renderMode=" << RenderMode.getValue()
                  << ",showHidden=" << (ShowHidden.getValue() ? "True" : "False")
                  << ",showFill=" << (ShowFill.getValue() ? "True" : "False")
-                 << ",scale=" << Scale.getValue()
+                 << ",scale=" << getScale()
                  << ",linewidth=" << LineWidth.getValue()
                  << ",fontsize=" << FontSize.getValue()
                  << ",techdraw=True"

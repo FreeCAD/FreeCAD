@@ -619,7 +619,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         sectionLine->setDirection(arrowDir.x,arrowDir.y);
 
         Base::Vector3d org = viewSection->SectionOrigin.getValue();
-        double scale = viewPart->Scale.getValue();
+        double scale = viewPart->getScale();
         Base::Vector3d pOrg = scale * viewPart->projectPoint(org);
         //now project pOrg onto arrowDir
         Base::Vector3d displace;
@@ -730,7 +730,7 @@ void QGIViewPart::drawMatting()
         return;
     }
 
-    double scale = dvd->Scale.getValue();
+    double scale = dvd->getScale();
     double radius = dvd->Radius.getValue() * scale;
     QGIMatting* mat = new QGIMatting();
     addToGroup(mat);

@@ -260,7 +260,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
                                                      Direction.getValue());
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(rawShape,
                                                     inputCenter,
-                                                    Scale.getValue());
+                                                    getScale());
         gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
         geometryObject = buildGeometryObject(mirroredShape,viewAxis);   //this is original shape after cut by section prism
 
@@ -277,7 +277,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         TopoDS_Compound sectionCompound = findSectionPlaneIntersections(rawShape);
         TopoDS_Shape mirroredSection = TechDrawGeometry::mirrorShape(sectionCompound,
                                                                      inputCenter,
-                                                                     Scale.getValue());
+                                                                     getScale());
 
         sectionFaceWires.clear();
         TopoDS_Compound newFaces;

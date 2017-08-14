@@ -172,8 +172,6 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         return new App::DocumentObjectExecReturn("DVP - Linked shape object is empty");
     }
 
-    (void) DrawView::execute();           //make sure Scale is up to date
-
     gp_Pnt inputCenter;
     inputCenter = TechDrawGeometry::findCentroid(shape,
                                                  Direction.getValue());
@@ -182,10 +180,12 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     TopoDS_Shape mirroredShape;
     mirroredShape = TechDrawGeometry::mirrorShape(shape,
                                                   inputCenter,
-                                                  Scale.getValue());
+                                                  getScale());
 
      gp_Ax2 viewAxis = getViewAxis(shapeCentroid,Direction.getValue());
+//     Base::Console().Message("Removing Hidden Lines from %s/%s\n",getNameInDocument(),Label.getValue());
      geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
+//     Base::Console().Message("Finished Removing Hidden Lines\n");
      
      //Base::Console().Message("TRACE - DVP::execute - u: %s v: %s w: %s\n",
      //         DrawUtil::formatVector(getUDir()).c_str(), DrawUtil::formatVector(getVDir()).c_str(), DrawUtil::formatVector(getWDir()).c_str());
@@ -226,7 +226,6 @@ short DrawViewPart::mustExecute() const
 
 void DrawViewPart::onChanged(const App::Property* prop)
 {
-
     DrawView::onChanged(prop);
 
 //TODO: when scale changes, any Dimensions for this View sb recalculated.  DVD should pick this up subject to topological naming issues.

@@ -149,7 +149,7 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
                                                      Direction.getValue());
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(comp,
                                                     inputCenter,
-                                                    Scale.getValue());
+                                                    getScale());
         gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
         geometryObject = buildGeometryObject(mirroredShape,viewAxis);
 
