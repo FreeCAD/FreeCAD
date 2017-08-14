@@ -33,6 +33,7 @@ from PySide import QtCore
 __title__ = "Base class for all operations."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
+__doc__ = "Base class and properties implemenation for all Path operations."
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -44,21 +45,48 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-FeatureTool         = 0x0001
-FeatureDepths       = 0x0002
-FeatureHeights      = 0x0004
-FeatureStartPoint   = 0x0008
-FeatureFinishDepth  = 0x0010
-FeatureStepDown     = 0x0020
-FeatureBaseVertexes = 0x0100
-FeatureBaseEdges    = 0x0200
-FeatureBaseFaces    = 0x0400
-FeatureBasePanels   = 0x0800
-FeatureLocations    = 0x1000
+FeatureTool         = 0x0001     # ToolController
+FeatureDepths       = 0x0002     # FinalDepth, StartDepth
+FeatureHeights      = 0x0004     # ClearanceHeight, SafeHeight
+FeatureStartPoint   = 0x0008     # StartPoint
+FeatureFinishDepth  = 0x0010     # FinishDepth
+FeatureStepDown     = 0x0020     # StepDown
+FeatureBaseVertexes = 0x0100     # Base
+FeatureBaseEdges    = 0x0200     # Base
+FeatureBaseFaces    = 0x0400     # Base
+FeatureBasePanels   = 0x0800     # Base
+FeatureLocations    = 0x1000     # Locations
 
 FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels
 
 class ObjectOp(object):
+    '''
+    Base class for proxy objects of all Path operations.
+
+    Use this class as a base class for new operations. It provides properties
+    and some functionality for the standard properties each operation supports.
+    By OR'ing features from the feature list an operation can select which ones
+    of the standard features it requires and/or supports.
+
+    The currently supported features are:
+        FeatureTool          ... Use of a ToolController
+        FeatureDepths        ... Depths, for start, final
+        FeatureHeights       ... Heights, safe and clearance
+        FeatureStartPoint    ... Supports setting a start point
+        FeatureFinishDepth   ... Operation supports a finish depth
+        FeatureStepDown      ... Support for step down
+        FeatureBaseVertexes  ... Base geometry support for vertexes
+        FeatureBaseEdges     ... Base geometry support for edges
+        FeatureBaseFaces     ... Base geometry support for faces
+        FeatureBasePanels    ... Base geometry support for Arch.Panels
+        FeatureLocations     ... Base location support
+
+    The base class handles all base API and forwards calls to subclasses with
+    an op prefix. For instance, an op is not expected to overwrite onChanged(),
+    but implement the function opOnChanged().
+    If a base class overwrites a base API function it should call the super's
+    implementation - otherwise the base functionality might be broken.
+    '''
 
     def __init__(self, obj):
         PathLog.track()
@@ -102,22 +130,49 @@ class ObjectOp(object):
         self.setDefaultValues(obj)
 
     def __getstate__(self):
+        '''__getstat__(self) ... called when receiver is saved.
+        Can safely be overwritten by subclasses.'''
         return None
 
     def __setstate__(self, state):
+        '''__getstat__(self) ... called when receiver is restored.
+        Can safely be overwritten by subclasses.'''
         return None
 
     def opFeatures(self, obj):
+        '''opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.
+        The default implementation returns "FeatureTool | FeatureDeptsh | FeatureHeights | FeatureStartPoint"
+        Should be overwritten by subclasses.'''
         return FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint | FeatureBaseGeometry | FeatureFinishDepth
-    def opOnChanged(self, obj, prop):
+
+    def initOperation(self, obj):
+        '''initOperation(obj) ... implement to create additional properties.
+        Should be overwritten by subclasses.'''
         pass
+
+    def opOnChanged(self, obj, prop):
+        '''opOnChanged(obj, prop) ... overwrite to process property changes.
+        This is a callback function that is invoked each time a property of the
+        receiver is assigned a value. Note that the FC framework does not
+        distinguish between assigning a different value and assigning the same
+        value again.
+        Can safely be overwritten by subclasses.'''
+        pass
+
     def opSetDefaultValues(self, obj):
+        '''opSetDefaultValues(obj) ... overwrite to set initial default values.
+        Called after the reciever has been fully created with all properties.
+        Can safely be overwritten by subclasses.'''
         pass
      
     def onChanged(self, obj, prop):
+        '''onChanged(obj, prop) ... base implementation of the FC notification framework.
+        Do not overwrite, overwrite opOnChanged() instead.'''
         self.opOnChanged(obj, prop)
 
-    def setDefaultValues(self, obj, callOp = True):
+    def setDefaultValues(self, obj):
+        '''setDefaultValues(obj) ... base implementation.
+        Do not overwrite, overwrite opSetDefaultValues() instead.'''
         PathUtils.addToJob(obj)
 
         obj.Active = True
@@ -145,6 +200,24 @@ class ObjectOp(object):
 
     @waiting_effects
     def execute(self, obj):
+        '''execute(obj) ... base implementation - do not overwrite!
+        Verifies that the operation is assigned to a job and that the job also has a valid Base.
+        It also sets the following instance variables that can and should be safely be used by
+        implementation of opExecute():
+            self.baseobject   ... Base object of the Job itself
+            self.vertFeed     ... vertical feed rate of assigned tool
+            self.vertRapid    ... vertical rapid rate of assigned tool
+            self.horizFeed    ... horizontal feed rate of assigned tool
+            self.horizRapid   ... norizontal rapid rate of assigned tool
+            self.tool         ... the actual tool being used
+            self.radius       ... the main radius of the tool being used
+            self.commandlist  ... a list for collecting all commands produced by the operation
+
+        Once everything is validated and above variables are set the implementation calls
+        opExectue(obj) - which is expected to add the generated commands to self.commandlist
+        Finally the base implementation adds a rapid move to clearance height and assigns
+        the receiver's Path property from the command list.
+        '''
         PathLog.track()
 
         if not obj.Active:
@@ -188,8 +261,9 @@ class ObjectOp(object):
 
         result = self.opExecute(obj)
 
-        # Let's finish by rapid to clearance...just for safety
-        self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+        if FeatureHeights & self.opFeatures(obj):
+            # Let's finish by rapid to clearance...just for safety
+            self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
         path = Path.Path(self.commandlist)
         obj.Path = path

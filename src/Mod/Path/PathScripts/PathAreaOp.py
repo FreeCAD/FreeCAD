@@ -28,14 +28,13 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
-from PathScripts.PathUtils import depth_params
-from PathScripts.PathUtils import makeWorkplane
 from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 
 __title__ = "Base class for PathArea based operations."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
+__doc__ = "Base class and properties for Path.Area based operations."
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -48,11 +47,22 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class ObjectOp(PathOp.ObjectOp):
+    '''Base class for all Path.Area based operations.
+    Provides standard features including debugging properties AreaParams,
+    PathParams and removalshape, all hidding.
+    The main reason for existance is to implement the standard interface
+    to Path.Area so subclasses only have to provide the shapes for the
+    operations.'''
 
     def opFeatures(self, obj):
+        '''opFeatures(obj) ... returns the base features supported by all Path.Area based operations.
+        The standard feature list is OR'ed with the return value of areaOpFeatures().
+        Do not overwrite, implement areaOpFeatures(obj) instead.'''
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj)
 
     def initOperation(self, obj):
+        '''initOperation(obj) ... sets up standard Path.Area properties and calls initAreaOp().
+        Do not overwrite, overwrite initAreaOp(obj) instead.'''
         PathLog.track()
 
         # Debugging
@@ -66,6 +76,8 @@ class ObjectOp(PathOp.ObjectOp):
         self.initAreaOp(obj)
 
     def areaOpShapeForDepths(self, obj):
+        '''areaOpShapeForDepths(obj) ... returns the shape used to make an initial calculation for the depths being used.
+        The default implementation retuns the job's Base.Shape'''
         job = PathUtils.findParentJob(obj)
         if job and job.Base:
             PathLog.debug("job=%s base=%s shape=%s" % (job, job.Base, job.Base.Shape))
@@ -77,9 +89,15 @@ class ObjectOp(PathOp.ObjectOp):
         return None
 
     def areaOpOnChanged(self, obj, prop):
+        '''areaOpOnChanged(obj, porp) ... overwrite to process operation specific changes to properties.
+        Can safely be overwritten by subclasses.'''
         pass
 
     def opOnChanged(self, obj, prop):
+        '''opOnChanged(obj, prop) ... base implemenation of the notification framework - do not overwrite.
+        The base implementation takes a stab at determining Heights and Depths if the operations's Base
+        changes.
+        Do not overwrite, overwrite areaOpOnChanged(obj, prop) instead.'''
         #PathLog.track(obj.Label, prop)
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
             obj.setEditorMode(prop, 2)
@@ -124,6 +142,10 @@ class ObjectOp(PathOp.ObjectOp):
         self.areaOpOnChanged(obj, prop)
 
     def opSetDefaultValues(self, obj):
+        '''opSetDefaultValues(obj) ... base implementation, do not overwrite.
+        The base implementation sets the depths and heights based on the
+        areaOpShapeForDepths() return value.
+        Do not overwrite, overwrite areaOpSetDefaultValues(obj) instead.'''
         PathLog.info("opSetDefaultValues(%s)" % (obj.Label))
         if PathOp.FeatureDepths & self.opFeatures(obj):
             try:
@@ -159,10 +181,16 @@ class ObjectOp(PathOp.ObjectOp):
 
         self.areaOpSetDefaultValues(obj)
 
+    def areaOpSetDefaultValues(self, obj):
+        '''areaOpSetDefaultValues(obj) ... overwrite to set initial values of operation specific properties.
+        Can safely be overwritten by subclasses.'''
+        pass
+
     def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
+        '''_buildPathArea(obj, baseobject, isHole, start, getsim) ... internal function.'''
         PathLog.track()
         area = Path.Area()
-        area.setPlane(makeWorkplane(baseobject))
+        area.setPlane(PathUtils.makeWorkplane(baseobject))
         area.add(baseobject)
 
         areaParams = self.areaOpAreaParams(obj, isHole)
@@ -211,10 +239,18 @@ class ObjectOp(PathOp.ObjectOp):
         return pp, simobj
 
     def opExecute(self, obj, getsim=False):
+        '''opExecute(obj, getsim=False) ... implementation of Path.Area ops.
+        determines the parameters for _buildPathArea().
+        Do not overwrite, implement
+            areaOpAreaParams(obj, isHole) ... op specific area param dictionary
+            areaOpPathParams(obj, isHole) ... op specific path param dictionary
+            areaOpShapes(obj)             ... the shape for path area to process
+            areaOpUseProjection(obj)      ... return true if operation can use projection
+        instead.'''
         PathLog.track()
         self.endVector = None
 
-        self.depthparams = depth_params(
+        self.depthparams = PathUtils.depth_params(
                 clearance_height=obj.ClearanceHeight.Value,
                 safe_height=obj.SafeHeight.Value,
                 start_depth=obj.StartDepth.Value,
@@ -241,3 +277,22 @@ class ObjectOp(PathOp.ObjectOp):
                 FreeCAD.Console.PrintError("Something unexpected happened. Check project and tool config.")
 
         return sims
+
+    def areaOpAreaParams(self, obj, isHole):
+        '''areaOpAreaParams(obj, isHole) ... return operation specific area parameters in a dictionary.
+        Note that the resulting parameters are stored in the property AreaParams.
+        Must be overwritten by subclasses.'''
+        pass
+    def areaOpPathParams(self, obj, isHole):
+        '''areaOpPathParams(obj, isHole) ... return operation specific path parameters in a dictionary.
+        Note that the resulting parameters are stored in the property PathParams.
+        Must be overwritten by subclasses.'''
+        pass
+    def areaOpShapes(self, obj):
+        '''areaOpShapes(obj) ... return all shapes to be processed by Path.Area for this op.
+        Must be overwritten by subclasses.'''
+        pass
+    def areaOpUseProjection(self, obj):
+        '''areaOpUseProcjection(obj) ... return True if the operation can use procjection, defaults to False.
+        Can safely be overwritten by subclasses.'''
+        return False

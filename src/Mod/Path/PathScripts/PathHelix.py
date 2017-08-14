@@ -34,19 +34,21 @@ import PathScripts.PathUtils as PathUtils
 from PathUtils import fmt
 from PySide import QtCore
 
-"""Helix Drill object and FreeCAD command"""
+__doc__ = "Class and implementation of Helix Drill operation"
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class ObjectHelix(PathCircularHoleBase.ObjectOp):
+    '''Proxy class for Helix operations.'''
 
     def circularHoleFeatures(self, obj):
+        '''circularHoleFeatures(obj) ... enable features supported by Helix.'''
         return PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces | PathOp.FeatureBasePanels 
 
     def initCircularHoleOperation(self, obj):
-        # Basic
+        '''initCircularHoleOperation(obj) ... create helix specific properties.'''
         obj.addProperty("App::PropertyEnumeration", "Direction", "Helix Drill", translate("PathHelix", "The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)"))
         obj.Direction = ['CW', 'CCW']
 
@@ -56,6 +58,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.addProperty("App::PropertyLength", "StepOver", "Helix Drill", translate("PathHelix", "Radius increment (must be smaller than tool diameter)"))
 
     def circularHoleExecute(self, obj, holes):
+        '''circularHoleExecute(obj, holes) ... generate helix commands for each hole in holes'''
         PathLog.track()
         self.commandlist.append(Path.Command('(helix cut operation)'))
 
@@ -70,18 +73,10 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         PathLog.debug(output)
 
     def helix_cut(self, obj, x0, y0, r_out, r_in, dr):
-        """
-        x0, y0: 
-          coordinates of center
-        r_out, r_in: floats
-          radial range, cut from outer radius r_out in layers of dr to inner radius r_in
-        zmax, zmin: floats
-          z-range, cut from zmax in layers of dz down to zmin
-        safe_z: float
-          safety layer height
-        tool_diameter: float
-          Width of tool
-        """
+        '''helix_cut(obj, x0, y0, r_out, r_in, dr) ... generate helix commands for specified hole.
+            x0, y0: coordinates of center
+            r_out, r_in: outer and inner radius of the hole
+            dr: step over radius value'''
         from numpy import ceil, linspace
 
         if (obj.StartDepth.Value <= obj.FinalDepth.Value):
@@ -199,6 +194,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.StepOver = 100
 
 def Create(name):
+    '''Create(name) ... Creates and returns a Helix operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectHelix(obj)
     return obj
