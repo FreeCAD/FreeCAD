@@ -54,19 +54,23 @@ def translate(context, text, disambig=None):
 __title__ = "Path Profile Edges Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
-
-"""Path Profile object and FreeCAD command for operating on sets of edges"""
+__doc__ = "Path Profile operation based on edges."
 
 
 class ObjectProfile(PathProfileBase.ObjectProfile):
+    '''Proxy object for Profile operations based on edges.'''
 
     def baseObject(self):
+        '''baseObject() ... returns super of receiver
+        Used to call base implementation in overwritten functions.'''
         return super(self.__class__, self)
 
     def areaOpFeatures(self, obj):
+        '''areaOpFeatures(obj) ... add support for edge base geometry.'''
         return PathOp.FeatureBaseEdges
 
     def areaOpShapes(self, obj):
+        '''areaOpShapes(obj) ... returns envelope for all wires formed by the base edges.'''
         PathLog.track()
 
         if obj.UseComp:
@@ -97,6 +101,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         return shapes
 
 def Create(name):
+    '''Create(name) ... Creates and returns a Profile based on edges operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectProfile(obj)
     return obj

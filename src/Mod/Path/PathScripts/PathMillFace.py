@@ -50,17 +50,18 @@ def translate(context, text, disambig=None):
 __title__ = "Path Mill Face Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
-
-"""Path Face object and FreeCAD command"""
+__doc__ = "Class and implementation of Mill Facing operation."
 
 
 class ObjectFace(PathAreaOp.ObjectOp):
+    '''Proxy object for Mill Facing operation.'''
 
     def areaOpFeatures(self, obj):
+        '''areaOpFeatures(obj) ... mill facing uses FinishDepth and is based on faces.'''
         return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth
 
     def initAreaOp(self, obj):
-
+        '''initAreaOp(obj) ... create operation specific properties'''
         # Face Properties
         obj.addProperty("App::PropertyEnumeration", "CutMode", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.CutMode = ['Climb', 'Conventional']
@@ -79,6 +80,7 @@ class ObjectFace(PathAreaOp.ObjectOp):
 
 
     def areaOpOnChanged(self, obj, prop):
+        '''areaOpOnChanged(obj, prop) ... facing specific depths calculation.'''
         PathLog.track(prop)
         if prop == "StepOver" and obj.StepOver == 0:
             obj.StepOver = 1
@@ -94,9 +96,11 @@ class ObjectFace(PathAreaOp.ObjectOp):
             obj.FinalDepth = d.start_depth
 
     def areaOpUseProjection(self, obj):
+        '''areaOpUseProjection(obj) ... return False'''
         return False
 
     def areaOpAreaParams(self, obj, isHole):
+        '''areaOpAreaPrams(obj, isHole) ... return dictionary with mill facing area parameters'''
         params = {}
         params['Fill'] = 0
         params['Coplanar'] = 0
@@ -115,6 +119,7 @@ class ObjectFace(PathAreaOp.ObjectOp):
         return params
 
     def areaOpPathParams(self, obj, isHole):
+        '''areaOpPathPrams(obj, isHole) ... return dictionary with mill facing path parameters'''
         params = {}
         params['feedrate'] = self.horizFeed
         params['feedrate_v'] = self.vertFeed
@@ -128,6 +133,7 @@ class ObjectFace(PathAreaOp.ObjectOp):
         return params
 
     def areaOpShapes(self, obj):
+        '''areaOpShapes(obj) ... return top face'''
         # Facing is done either against base objects
         if obj.Base:
             PathLog.debug("obj.Base: {}".format(obj.Base))
@@ -160,6 +166,7 @@ class ObjectFace(PathAreaOp.ObjectOp):
         return [(env, False)]
 
     def areaOpSetDefaultValues(self, obj):
+        '''areaOpSetDefaultValues(obj) ... initialize mill facing properties'''
         obj.StepOver = 50
         obj.ZigZagAngle = 45.0
 
@@ -173,6 +180,7 @@ class ObjectFace(PathAreaOp.ObjectOp):
             obj.FinalDepth = d.start_depth
 
 def Create(name):
+    '''Create(name) ... Creates and returns a Mill Facing operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectFace(obj)
     return obj

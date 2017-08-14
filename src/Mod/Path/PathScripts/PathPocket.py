@@ -31,7 +31,7 @@ import PathScripts.PathOp as PathOp
 from PathScripts import PathUtils
 from PySide import QtCore
 
-"""Path Pocket object and FreeCAD command"""
+__doc__ = "Class and implementation of the Pocket operation."
 
 if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -45,11 +45,14 @@ def translate(context, text, disambig=None):
 
 
 class ObjectPocket(PathAreaOp.ObjectOp):
+    '''Proxy object for Pocket operation.'''
 
     def areaOpFeatures(self, obj):
+        '''areaOpFeatures(obj) ... Pockets have a FinishDepth and work on Faces'''
         return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth
 
     def initAreaOp(self, obj):
+        '''initAreaOp(obj) ... create pocket specific properties.'''
         PathLog.track()
 
         # Pocket Properties
@@ -65,9 +68,11 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         obj.addProperty("App::PropertyBool", "MinTravel", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"))
 
     def areaOpUseProjection(self, obj):
+        '''areaOpUseProjection(obj) ... return False'''
         return False
 
     def areaOpAreaParams(self, obj, isHole):
+        '''areaOpAreaParams(obj, isHole) ... return dictionary with pocket's area parameters'''
         params = {}
         params['Fill'] = 0
         params['Coplanar'] = 0
@@ -84,6 +89,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         return params
 
     def areaOpPathParams(self, obj, isHole):
+        '''areaOpAreaParams(obj, isHole) ... return dictionary with pocket's path parameters'''
         params = {}
 
         # if MinTravel is turned on, set path sorting to 3DSort
@@ -94,6 +100,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         return params
 
     def areaOpShapes(self, obj):
+        '''areaOpShapes(obj) ... return shapes representing the solids to be removed.'''
         PathLog.track()
 
         if obj.Base:
@@ -120,11 +127,13 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         return removalshapes
 
     def areaOpSetDefaultValues(self, obj):
+        '''areaOpSetDefaultValues(obj) ... set default values'''
         obj.StepOver = 100
         obj.ZigZagAngle = 45
 
 
 def Create(name):
+    '''Create(name) ... Creates and returns a Pocket operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectPocket(obj)
     return obj

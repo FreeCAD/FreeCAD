@@ -33,6 +33,11 @@ import sys
 
 from PySide import QtCore
 
+__title__ = "Path Circular Holes Base Operation"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Base class an implementation for operations on circular holes."
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -42,18 +47,32 @@ if True:
     PathLog.trackModule(PathLog.thisModule())
 
 class ObjectOp(PathOp.ObjectOp):
+    '''Base class for proxy objects of all operations on circular holes.'''
 
     def opFeatures(self, obj):
+        '''opFeatures(obj) ... calls circularHoleFeatures(obj) and ORs in the standard features required for processing circular holes.
+        Do not overwrite, implement circularHoleFeatures(obj) instead'''
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureBaseFaces | self.circularHoleFeatures(obj)
 
     def initOperation(self, obj):
+        '''initOperation(obj) ... adds Disabled properties and calls initCircularHoleOperation(obj).
+        Do not overwrite, implement initCircularHoleOperation(obj) instead.'''
         obj.addProperty("App::PropertyStringList", "Disabled", "Base", QtCore.QT_TRANSLATE_NOOP("Path", "List of disabled features"))
         self.initCircularHoleOperation(obj)
 
     def baseIsArchPanel(self, obj, base):
+        '''baseIsArchPanel(obj, base) ... return true if op deals with an Arch.Panel.'''
         return hasattr(base, "Proxy") and isinstance(base.Proxy, ArchPanel.PanelSheet)
 
     def getArchPanelEdge(self, obj, base, sub):
+        '''getArchPanelEdge(obj, base, sub) ... helper function to identify a specific edge of an Arch.Panel.
+        Edges are identified by 3 numbers:
+            <holeId>.<wireId>.<edgeId>
+        Let's say the edge is specified as "3.2.7", then the 7th edge of the 2nd wire in the 3rd hole returned
+        by the panel sheet is the edge returned.
+        Obviously this is as fragile as can be, but currently the best we can do while the panel sheets
+        hide the actual features from Path and they can't be referenced directly.
+        '''
         ids = string.split(sub, '.')
         holeId = int(ids[0])
         wireId = int(ids[1])
@@ -68,6 +87,7 @@ class ObjectOp(PathOp.ObjectOp):
                                 return edge
 
     def holeDiameter(self, obj, base, sub):
+        '''holeDiameter(obj, base, sub) ... returns the diameter of the specified hole.'''
         if self.baseIsArchPanel(obj, base):
             edge = self.getArchPanelEdge(obj, base, sub)
             return edge.BoundBox.XLength
@@ -80,6 +100,8 @@ class ObjectOp(PathOp.ObjectOp):
         return shape.BoundBox.XLength
 
     def holePosition(self, obj, base, sub):
+        '''holePosition(obj, base, sub) ... returns a Vector for the position defined by the given features.
+        Note that the value for Z is set to 0.'''
         if self.baseIsArchPanel(obj, base):
             edge = self.getArchPanelEdge(obj, base, sub)
             center = edge.Curve.Center
@@ -98,10 +120,17 @@ class ObjectOp(PathOp.ObjectOp):
         PathLog.error('This is bad')
 
     def isHoleEnabled(self, obj, base, sub):
+        '''isHoleEnabled(obj, base, sub) ... return true if hole is enabled.'''
         name = "%s.%s" % (base.Name, sub)
         return not name in obj.Disabled
 
     def opExecute(self, obj):
+        '''opExecute(obj) ... processes all Base features and Locations and collects
+        them in a list of positions and radii which is then passed to circularHoleExecute(obj, holes).
+        If no Base geometries and no Locations are present, the job's Base is inspected and all
+        drillable features are added to Base. In this case appropriate values for depths are also
+        calculated and assigned.
+        Do not overwrite, implement circularHoleExecute(obj, holes) instead.'''
         PathLog.track()
 
         def haveLocations(self, obj):
@@ -145,7 +174,16 @@ class ObjectOp(PathOp.ObjectOp):
         if len(holes) > 0:
             self.circularHoleExecute(obj, holes)
 
+    def circularHoleExecute(self, obj, holes):
+        '''circularHoleExecute(obj, holes) ... implement processing of holes.
+        holes is a list of dictionaries with 'x', 'y' and 'r' specified for each hole.
+        Note that for Vertexes, non-circular Edges and Locations r=0.
+        Must be overwritten by subclasses.'''
+        pass
+
     def opOnChanged(self, obj, prop):
+        '''opOnChange(obj, prop) ... implements depth calculation if Base changes.
+        Do not overwrite.'''
         if 'Base' == prop and not 'Restore' in obj.State and obj.Base:
             features = []
             for base, subs in obj.Base:
@@ -159,6 +197,12 @@ class ObjectOp(PathOp.ObjectOp):
             self.setupDepthsFrom(obj, features, job.Base)
 
     def setupDepthsFrom(self, obj, features, baseobject):
+        '''setupDepthsFrom(obj, features, baseobject) ... determins the min and max Z values necessary.
+        Note that the algorithm calculates "safe" values,
+          it determines the highest top Z value of all features
+          and it also determines the highest bottom Z value of all features.
+        The result is that all features can be drilled safely and the operation
+        does not drill deeper than any of the features requires.'''
         zmax = None
         zmin = None
         if not self.baseIsArchPanel(obj, baseobject):
@@ -174,6 +218,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.setDepths(obj, zmax, zmin, baseobject.Shape.BoundBox)
 
     def setDepths(self, obj, zmax, zmin, bb):
+        '''setDepths(obj, zmax, zmin, bb) ... set properties according to the provided values.'''
         PathLog.track(obj.Label, zmax, zmin, bb)
         if zmax is None:
             zmax = bb.ZMax
@@ -191,6 +236,7 @@ class ObjectOp(PathOp.ObjectOp):
         obj.FinalDepth = zmin
 
     def findHoles(self, obj, baseobject):
+        '''findHoles(obj, baseobject) ... inspect baseobject and identify all features that resemble a straight cricular hole.'''
         shape = baseobject.Shape
         PathLog.track('obj: {} shape: {}'.format(obj, shape))
         holelist = []

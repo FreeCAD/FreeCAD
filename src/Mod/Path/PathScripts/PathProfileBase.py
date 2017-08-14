@@ -29,7 +29,10 @@ import PathScripts.PathOp as PathOp
 
 from PySide import QtCore
 
-"""Path Profile from base features"""
+__title__ = "Path Contour Operation"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Base class and implementation for Path profile operations."
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -49,13 +52,17 @@ def translate(context, text, disambig=None):
 __title__ = "Path Profile Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
+__doc__ = "Base class and properties for all profile operations."
 
 """Path Profile object and FreeCAD command for operating on sets of features"""
 
 
 class ObjectProfile(PathAreaOp.ObjectOp):
+    '''Base class for proxy objects of all profile operations.'''
 
     def initAreaOp(self, obj):
+        '''initAreaOp(obj) ... creates all profile specific properties.
+        Do not overwrite.'''
         # Profile Properties
         obj.addProperty("App::PropertyEnumeration", "Side", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
         obj.Side = ['Outside', 'Inside']  # side of profile that cutter is on in relation to direction of profile
@@ -70,6 +77,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.setEditorMode('MiterLimit', 2)
 
     def areaOpOnChanged(self, obj, prop):
+        '''areaOpOnChanged(obj, prop) ... updates Side and MiterLimit visibility depending on changed properties.
+        Do not overwrite.'''
         if prop == "UseComp":
             if not obj.UseComp:
                 obj.setEditorMode('Side', 2)
@@ -83,6 +92,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 obj.setEditorMode('MiterLimit', 2)
 
     def areaOpAreaParams(self, obj, isHole):
+        '''areaOpAreaParams(obj, isHole) ... returns dictionary with area parameters.
+        Do not overwrite.'''
         params = {}
         params['Fill'] = 0
         params['Coplanar'] = 0
@@ -106,6 +117,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return params
 
     def areaOpPathParams(self, obj, isHole):
+        '''areaOpPathParams(obj, isHole) ... returns dictionary with path parameters.
+        Do not overwrite.'''
         params = {}
 
         # Reverse the direction for holes
@@ -122,9 +135,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return params
 
     def areaOpUseProjection(self, obj):
+        '''areaOpUseProjection(obj) ... returns True'''
         return True
 
     def areaOpSetDefaultValues(self, obj):
+        '''areaOpSetDefaultValues(obj) ... sets default values.
+        Do not overwrite.'''
         obj.Side = "Outside"
         obj.OffsetExtra = 0.0
         obj.Direction = "CW"

@@ -43,19 +43,27 @@ PathLog.trackModule(PathLog.thisModule())
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-__title__ = "Path Profile Operation"
+__title__ = "Path Profile Faces Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
-
-"""Path Profile object and FreeCAD command"""
+__doc__ = "Path Profile operation based on faces."
 
 
 class ObjectProfile(PathProfileBase.ObjectProfile):
+    '''Proxy object for Profile operations based on faces.'''
 
     def baseObject(self):
+        '''baseObject() ... returns super of receiver
+        Used to call base implementation in overwritten functions.'''
         return super(self.__class__, self)
 
+    def areaOpFeatures(self, obj):
+        '''baseObject() ... returns super of receiver
+        Used to call base implementation in overwritten functions.'''
+        return PathOp.FeatureBaseFaces 
+
     def initAreaOp(self, obj):
+        '''initAreaOp(obj) ... adds properties for hole, circle and perimeter processing.'''
         # Face specific Properties
         obj.addProperty("App::PropertyBool", "processHoles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile holes as well as the outline"))
         obj.addProperty("App::PropertyBool", "processPerimeter", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the outline"))
@@ -63,17 +71,8 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         self.baseObject().initAreaOp(obj)
 
-    def areaOpSetDefaultValues(self, obj):
-        self.baseObject().areaOpSetDefaultValues(obj)
-
-        obj.processHoles = False
-        obj.processCircles = False
-        obj.processPerimeter = True
-
-    def areaOpFeatures(self, obj):
-        return PathOp.FeatureBaseFaces 
-
     def areaOpShapes(self, obj):
+        '''areaOpShapes(obj) ... returns envelope for all base shapes or wires for Arch.Panels.'''
         if obj.UseComp:
             self.commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
         else:
@@ -130,7 +129,16 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         return shapes
 
+    def areaOpSetDefaultValues(self, obj):
+        '''areaOpSetDefaultValues(obj) ... sets default values for hole, circle and perimeter processing.'''
+        self.baseObject().areaOpSetDefaultValues(obj)
+
+        obj.processHoles = False
+        obj.processCircles = False
+        obj.processPerimeter = True
+
 def Create(name):
+    '''Create(name) ... Creates and returns a Profile based on faces operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectProfile(obj)
     return obj

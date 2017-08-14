@@ -33,7 +33,7 @@ import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore
 
-"""Path Engrave object and FreeCAD command"""
+__doc__ = "Class and implementation of Path Engrave operation"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -47,14 +47,18 @@ def translate(context, text, disambig=None):
 
 
 class ObjectEngrave(PathOp.ObjectOp):
+    '''Proxy class for Engrave operation.'''
 
     def opFeatures(self, obj):
+        '''opFeatures(obj) ... return all standard features and edges based geomtries'''
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges;
 
     def initOperation(self, obj):
+        '''initOperation(obj) ... create engraving specific properties.'''
         obj.addProperty("App::PropertyInteger", "StartVertex", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The vertex index to start the path from"))
 
     def opExecute(self, obj):
+        '''opExecute(obj) ... process engraving operation'''
         PathLog.track()
 
         zValues = []
@@ -107,6 +111,7 @@ class ObjectEngrave(PathOp.ObjectOp):
             PathLog.error(translate("Path", "The Job Base Object has no engraveable element.  Engraving operation will produce no output."))
 
     def buildpathocc(self, obj, wires, zValues):
+        '''buildpathocc(obj, wires, zValues) ... internal helper function to generate engraving commands.'''
         PathLog.track()
 
         output = ""
@@ -175,6 +180,7 @@ class ObjectEngrave(PathOp.ObjectOp):
         return output
 
     def opSetDefaultValues(self, obj):
+        '''opSetDefaultValues(obj) ... set depths for engraving'''
         job = PathUtils.findParentJob(obj)
         if job and job.Base:
             bb = job.Base.Shape.BoundBox
@@ -189,6 +195,7 @@ class ObjectEngrave(PathOp.ObjectOp):
             obj.StepDown = obj.StartDepth.Value - obj.FinalDepth.Value
 
 def Create(name):
+    '''Create(name) ... Creates and returns a Engrave operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectEngrave(obj)
     return obj
