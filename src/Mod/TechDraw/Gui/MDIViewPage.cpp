@@ -411,6 +411,7 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
     }
 }
 
+//NOTE: this doesn't add missing views.  see updateDrawing()
 void MDIViewPage::redrawAllViews()
 {
     const std::vector<QGIView *> &upviews = m_view->getViews();
@@ -419,6 +420,7 @@ void MDIViewPage::redrawAllViews()
     }
 }
 
+//NOTE: this doesn't add missing views.   see updateDrawing()
 void MDIViewPage::redraw1View(TechDraw::DrawView* dv)
 {
     std::string dvName = dv->getNameInDocument();

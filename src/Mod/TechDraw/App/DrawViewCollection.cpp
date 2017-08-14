@@ -46,7 +46,6 @@ DrawViewCollection::DrawViewCollection()
 {
     nowDeleting = false;
     static const char *group = "Drawing view";
-    ADD_PROPERTY_TYPE(Source    ,(0), group, App::Prop_None,"Shape to view");
     ADD_PROPERTY_TYPE(Views     ,(0), group, App::Prop_None,"Attached Views");
 
 }
@@ -62,12 +61,6 @@ int DrawViewCollection::addView(DrawView *view)
     newViews.push_back(view);
     Views.setValues(newViews);
 
-    touch();
-//TODO: also have to touch the parent page's views to get repaint??
-    DrawPage* page = findParentPage();
-    if (page) {
-        page->Views.touch();
-    }
     return Views.getSize();
 }
 
@@ -85,11 +78,6 @@ int DrawViewCollection::removeView(DrawView *view)
     }
     Views.setValues(newViews);
 
-//TODO: also have to touch the parent page's views to get repaint??
-    DrawPage* page = findParentPage();
-    if (page) {
-        page->Views.touch();
-    }
     return Views.getSize();
 }
 
@@ -101,7 +89,6 @@ void DrawViewCollection::rebuildViewList()
     std::vector<App::DocumentObject*> children = getOutList();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(DrawView::getClassTypeId())) {
-            //TechDraw::DrawView* view = static_cast<TechDraw::DrawView *>(*it);
             bool found = false;
             for (auto& v:currViews) {
                 if (v == (*it)) {
@@ -121,8 +108,7 @@ void DrawViewCollection::rebuildViewList()
 
 short DrawViewCollection::mustExecute() const
 {
-    if (Views.isTouched() ||
-        Source.isTouched()) {
+    if (Views.isTouched()) {
         return 1;
     } else {
         return TechDraw::DrawView::mustExecute();
@@ -154,17 +140,6 @@ void DrawViewCollection::onDocumentRestored()
 
 void DrawViewCollection::onChanged(const App::Property* prop)
 {
-    if (prop == &Views){
-        if (!isRestoring()) {
-            std::vector<App::DocumentObject*> parent = getInList();
-            for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-                if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-                    TechDraw::DrawPage *page = static_cast<TechDraw::DrawPage *>(*it);
-                    page->Views.touch();                                        //touches page only, not my_views!
-                }
-            }
-        }
-    }
     TechDraw::DrawView::onChanged(prop);
 }
 
@@ -194,34 +169,6 @@ App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-    if (ScaleType.isValue("Page")) {
-        const std::vector<App::DocumentObject *> &views = Views.getValues();
-        for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-            App::DocumentObject *docObj = *it;
-            if(docObj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-                TechDraw::DrawView *view = static_cast<TechDraw::DrawView *>(*it);
-
-                // Set scale factor of each view
-                view->ScaleType.setValue("Page");
-                view->touch();
-            }
-        }
-    } else if(strcmp(ScaleType.getValueAsString(), "Custom") == 0) {
-        // Rebuild the views
-        const std::vector<App::DocumentObject *> &views = Views.getValues();
-        for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-            App::DocumentObject *docObj = *it;
-            if(docObj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-                TechDraw::DrawView *view = static_cast<TechDraw::DrawView *>(*it);
-
-                view->ScaleType.setValue("Custom");
-                // Set scale factor of each view
-                view->Scale.setValue(Scale.getValue());
-                view->touch();
-            }
-        }
-    }
-
     return DrawView::execute();
 }
 
@@ -237,5 +184,5 @@ QRectF DrawViewCollection::getRect() const
 
         result = result.united(view->getRect().translated(view->X.getValue(),view->Y.getValue()));
     }
-    return QRectF(0,0,Scale.getValue() * result.width(),Scale.getValue() * result.height());
+    return QRectF(0,0,getScale() * result.width(),getScale() * result.height());
 }

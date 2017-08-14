@@ -54,6 +54,7 @@ public:
     DrawProjGroup();
     ~DrawProjGroup();
 
+    App::PropertyLink     Source;
     App::PropertyEnumeration ProjectionType;
 
     App::PropertyBool AutoDistribute;
@@ -91,7 +92,6 @@ public:
     int purgeProjections();
     /// Automatically position child views
     bool distributeProjections(void);
-    void resetPositions(void);
 
     short mustExecute() const override;
     /** @name methods overide Feature */

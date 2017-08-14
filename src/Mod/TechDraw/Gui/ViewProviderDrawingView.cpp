@@ -231,14 +231,12 @@ void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
+        } else {                                //we are not part of the Gui page yet. ask page to add us.
+            auto page = dv->findParentPage();
+            if (page != nullptr) {
+                page->requestPaint();
+            }
         }
-//        } else {
-//            auto vo = getViewObject();
-//            auto page = vo->findParentPage();
-//            if (page != nullptr) {
-//                page->requestPaint()        ;
-//            }
-
     }
 }
 

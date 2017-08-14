@@ -299,11 +299,11 @@ double DrawViewDimension::getDimValue()
                 Base::Vector2d end = gen->points[1];
                 Base::Vector2d line = end - start;
                 if (Type.isValue("Distance")) {
-                    result = line.Length() / getViewPart()->Scale.getValue();
+                    result = line.Length() / getViewPart()->getScale();
                 } else if (Type.isValue("DistanceX")) {
-                    return fabs(line.x) / getViewPart()->Scale.getValue();
+                    return fabs(line.x) / getViewPart()->getScale();
                 } else {
-                    result = fabs(line.y) / getViewPart()->Scale.getValue();
+                    result = fabs(line.y) / getViewPart()->getScale();
                 }
             }else if (getRefType() == twoEdge) {
                 //only works for straight line edges
@@ -332,15 +332,15 @@ double DrawViewDimension::getDimValue()
                 Base::Vector2d s1 = gen1->points[0];
                 Base::Vector2d e1 = gen1->points[1];
                 if (Type.isValue("Distance")) {
-                    result = dist2Segs(s0,e0,s1,e1) / getViewPart()->Scale.getValue();
+                    result = dist2Segs(s0,e0,s1,e1) / getViewPart()->getScale();
                 } else if (Type.isValue("DistanceX")) {
                     Base::Vector2d p1 = geom0->nearPoint(geom1);
                     Base::Vector2d p2 = geom1->nearPoint(geom0);
-                    result = fabs(p1.x - p2.x) / getViewPart()->Scale.getValue();
+                    result = fabs(p1.x - p2.x) / getViewPart()->getScale();
                 } else if (Type.isValue("DistanceY")) {
                     Base::Vector2d p1 = geom0->nearPoint(geom1);
                     Base::Vector2d p2 = geom1->nearPoint(geom0);
-                    result = fabs(p1.y - p2.y) / getViewPart()->Scale.getValue();
+                    result = fabs(p1.y - p2.y) / getViewPart()->getScale();
                 }
             } else if (getRefType() == twoVertex) {
                 int idx0 = DrawUtil::getIndexFromName(subElements[0]);
@@ -357,11 +357,11 @@ double DrawViewDimension::getDimValue()
                 Base::Vector2d end = v1->pnt;
                 Base::Vector2d line = end - start;
                 if (Type.isValue("Distance")) {
-                    result = line.Length() / getViewPart()->Scale.getValue();
+                    result = line.Length() / getViewPart()->getScale();
                 } else if (Type.isValue("DistanceX")) {
-                    result = fabs(line.x) / getViewPart()->Scale.getValue();
+                    result = fabs(line.x) / getViewPart()->getScale();
                 } else {
-                    result = fabs(line.y) / getViewPart()->Scale.getValue();
+                    result = fabs(line.y) / getViewPart()->getScale();
                 }
             } else if (getRefType() == vertexEdge) {
                 int idx0 = DrawUtil::getIndexFromName(subElements[0]);
@@ -384,11 +384,11 @@ double DrawViewDimension::getDimValue()
                 Base::Vector2d nearPoint = e->nearPoint(v->pnt);
                 Base::Vector2d line = nearPoint - v->pnt;
                 if (Type.isValue("Distance")) {
-                    result = e->minDist(v->pnt) / getViewPart()->Scale.getValue();
+                    result = e->minDist(v->pnt) / getViewPart()->getScale();
                 } else if (Type.isValue("DistanceX")) {
-                    result = fabs(line.x) / getViewPart()->Scale.getValue();
+                    result = fabs(line.x) / getViewPart()->getScale();
                 } else {
-                    result = fabs(line.y) / getViewPart()->Scale.getValue();
+                    result = fabs(line.y) / getViewPart()->getScale();
                 }
             }  //else tarfu
         } else if(Type.isValue("Radius")){
@@ -404,7 +404,7 @@ double DrawViewDimension::getDimValue()
                     References2D.setValue(nullptr,"");
                     return result;
                 }
-            result = circle->radius / getViewPart()->Scale.getValue();            //Projected BaseGeom is scaled for drawing
+            result = circle->radius / getViewPart()->getScale();            //Projected BaseGeom is scaled for drawing
             
         } else if(Type.isValue("Diameter")){
             //only 1 reference for a Diameter
@@ -417,7 +417,7 @@ double DrawViewDimension::getDimValue()
             } else {
                 return result;
             }
-            result = (circle->radius  * 2.0) / getViewPart()->Scale.getValue();   //Projected BaseGeom is scaled for drawing
+            result = (circle->radius  * 2.0) / getViewPart()->getScale();   //Projected BaseGeom is scaled for drawing
         } else if(Type.isValue("Angle")){
             // Must project lines to 2D so cannot use measurement framework this time
             //Relcalculate the measurement based on references stored.
