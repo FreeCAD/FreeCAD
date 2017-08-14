@@ -308,11 +308,14 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         #self.obj.Proxy.execute(self.obj)
         #FreeCAD.ActiveDocument.recompute()
 
+    def clearBase(self):
+        self.obj.Base = []
+
     def registerSignalHandlers(self, obj):
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
         self.form.addBase.clicked.connect(self.addBase)
         self.form.deleteBase.clicked.connect(self.deleteBase)
-        self.form.updateBase.clicked.connect(self.updateBase)
+        self.form.clearBase.clicked.connect(self.clearBase)
 
     def pageUpdateData(self, obj, prop):
         if prop in ['Base']:
