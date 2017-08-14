@@ -103,7 +103,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
 
         std::stringstream paramStr;
         App::Color col = Color.getValue();
-        paramStr << ",scale=" << Scale.getValue() 
+        paramStr << ",scale=" << getScale() 
                  << ",linewidth=" << LineWidth.getValue() 
                  << ",fontsize=" << FontSize.getValue()
                  // TODO treat fillstyle here

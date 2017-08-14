@@ -39,7 +39,6 @@ class TechDrawExport DrawViewCollection : public DrawView
     PROPERTY_HEADER(TechDraw::DrawViewCollection);
 
 public:
-    App::PropertyLink     Source;
     App::PropertyLinkList Views;
 public:
     /// Constructor

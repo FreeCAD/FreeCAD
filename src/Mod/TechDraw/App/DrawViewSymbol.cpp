@@ -144,7 +144,7 @@ QRectF DrawViewSymbol::getRect() const
 //            std::string hNum  = what[1].str();
 //            h = std::stod(hNum);
 //        }
-//        return (QRectF(0,0,Scale.getValue() * w,Scale.getValue() * h));
+//        return (QRectF(0,0,getScale() * w,getScale() * h));
 //we now have a w x h, but we don't really know what it means - px,mm,in,...
         
 }

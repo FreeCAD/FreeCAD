@@ -137,7 +137,7 @@ void QGIViewImage::drawImage()
     if (!viewImage->ImageFile.isEmpty()) {
         QString fileSpec = QString::fromUtf8(viewImage->ImageFile.getValue(),strlen(viewImage->ImageFile.getValue()));
         m_imageItem->load(fileSpec);
-        m_imageItem->setScale(viewImage->Scale.getValue());
+        m_imageItem->setScale(viewImage->getScale());
         QRectF br = m_cliparea->rect();
         double midX = br.width()/2.0;
         double midY = br.height()/2.0;

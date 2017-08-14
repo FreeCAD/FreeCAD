@@ -271,7 +271,7 @@ void CmdTechDrawNewView::activated(int iMsg)
     if (!selectedProjections.empty()) {
         const auto myView( static_cast<TechDraw::DrawView*>(selectedProjections.front()) );
 
-        newScale = myView->Scale.getValue();
+        newScale = myView->getScale();
         newRotation = myView->Rotation.getValue();
 
         // The "Direction" property does not belong to TechDraw::DrawView, but to one of the
@@ -490,17 +490,12 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     App::DocumentObject *docObj = getDocument()->getObject(multiViewName.c_str());
     auto multiView( static_cast<TechDraw::DrawProjGroup *>(docObj) );
 
-    // set the anchor
-//    std::string anchor = "Front";
-//    doCommand(Doc,"App.activeDocument().%s.addProjection('%s')",multiViewName.c_str(),anchor.c_str());
-    // add the multiView to the page
-//    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
+    //updateActive();    //exec all pending actions, but there's nothing to do here.
+    commitCommand();   //write the undo
 
     // create the rest of the desired views
     Gui::Control().showDialog(new TaskDlgProjGroup(multiView,true));
 
-    updateActive();
-    commitCommand();
 }
 
 bool CmdTechDrawProjGroup::isActive(void)

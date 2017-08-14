@@ -123,7 +123,7 @@ void QGIViewSymbol::drawSvg()
 //due to 1 sceneUnit (1mm) = 1 pixel for some QtSvg functions
 
     double rezfactor = Rez::getRezFactor();
-    double scaling = viewSymbol->Scale.getValue() * rezfactor;
+    double scaling = viewSymbol->getScale() * rezfactor;
     m_svgItem->setScale(scaling);
 
     QByteArray qba(viewSymbol->Symbol.getValue(),strlen(viewSymbol->Symbol.getValue()));

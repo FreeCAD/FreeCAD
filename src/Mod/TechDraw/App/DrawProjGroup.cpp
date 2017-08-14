@@ -63,6 +63,7 @@ DrawProjGroup::DrawProjGroup(void)
     static const char *agroup = "Distribute";
 
 
+    ADD_PROPERTY_TYPE(Source    ,(0), group, App::Prop_None,"Shape to view");
     ADD_PROPERTY_TYPE(Anchor, (0), group, App::Prop_None, "The root view to align projections with");
     ProjectionType.setEnums(ProjectionTypeEnums);
     ADD_PROPERTY(ProjectionType, ((long)0));
@@ -94,30 +95,21 @@ void DrawProjGroup::onChanged(const App::Property* prop)
     //if group hasn't been added to page yet, can't scale or distribute projItems
     TechDraw::DrawPage *page = getPage();
     if (!isRestoring() && page) {
-        if ( prop == &Views ) {
-            if (!isDeleting()) {
-                recompute();  
-            }
-        } else if (prop == &Scale) {
-            updateChildren(Scale.getValue());
-            //resetPositions();
-            distributeProjections();
-        } else if (prop == &Source) {
+        if (prop == &Source) {
             App::DocumentObject* sourceObj = Source.getValue();
             if (sourceObj != nullptr) {
                 if (!hasAnchor()) {
                     // if we have a Source, but no Anchor, make an anchor
                     Anchor.setValue(addProjection("Front"));
+                    Anchor.purgeTouched();                      //don't need to mark this
                 }
             } else {
                 //Source has been changed to null! Why? What to do?
             }
-        } else if (prop == &ScaleType) {
-            recompute();
         } else if (prop == &AutoDistribute  &&
             AutoDistribute.getValue()) {
-            resetPositions();
-            recompute();
+            distributeProjections();
+
         }
     }
     if (isRestoring() && (prop == &CubeDirs)) {
@@ -164,30 +156,31 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
         return DrawViewCollection::execute();
     }
 
-    double newScale = Scale.getValue();
+    double newScale = getScale();
     if (ScaleType.isValue("Automatic")) {
         //Recalculate scale if Group is too big or too small!
         if (!checkFit(page)) {
             newScale = calculateAutomaticScale();
-            if(std::abs(Scale.getValue() - newScale) > FLT_EPSILON) {
-                resetPositions();
+            if(std::abs(getScale() - newScale) > FLT_EPSILON) {
                 Scale.setValue(newScale);
+                updateChildren(newScale);
             }
          }
-    } else if (ScaleType.isValue("Page")) {
+    } else if (ScaleType.isValue("Page")) {                 //don't really need this any more.
         newScale = page->Scale.getValue();
-        if(std::abs(Scale.getValue() - newScale) > FLT_EPSILON) {
-            resetPositions();
+        if(std::abs(getScale() - newScale) > FLT_EPSILON) {
             Scale.setValue(newScale);
+            updateChildren(newScale);
         }
     } else if (ScaleType.isValue("Custom")) {
         //don't have to do anything special
+        updateChildren(newScale);
     }
 
-    // recalculate positions for children
-    if (Views.getSize()) {
-        updateChildren(newScale);
-        distributeProjections();
+    distributeProjections();
+
+    if (page != nullptr) {
+        page->requestPaint();
     }
 
     return DrawViewCollection::execute();
@@ -219,8 +212,8 @@ Base::BoundBox3d DrawProjGroup::getBoundingBox() const
             DrawViewPart *part = static_cast<DrawViewPart *>(*it);
             Base::BoundBox3d  bb = part->getBoundingBox();
 
-            bb.ScaleX(1. / part->Scale.getValue());
-            bb.ScaleY(1. / part->Scale.getValue());
+            bb.ScaleX(1. / part->getScale());
+            bb.ScaleY(1. / part->getScale());
 
             // X and Y of dependent views are relative to the anchorView
             if (part != anchorView) {
@@ -290,10 +283,10 @@ QRectF DrawProjGroup::getRect() const         //this is current rect, not potent
     arrangeViewPointers(viewPtrs);
     double width, height;
     minimumBbViews(viewPtrs, width, height);                           // w,h of just the views at 1:1 scale
-    double xSpace = spacingX.getValue() * 3.0 * std::max(1.0,Scale.getValue());
-    double ySpace = spacingY.getValue() * 2.0 * std::max(1.0,Scale.getValue());
-    double rectW = Scale.getValue() * width + xSpace;                  //scale the 1:1 w,h and add whitespace
-    double rectH = Scale.getValue() * height + ySpace;
+    double xSpace = spacingX.getValue() * 3.0 * std::max(1.0,getScale());
+    double ySpace = spacingY.getValue() * 2.0 * std::max(1.0,getScale());
+    double rectW = getScale() * width + xSpace;                  //scale the 1:1 w,h and add whitespace
+    double rectH = getScale() * height + ySpace;
     return QRectF(0,0,rectW,rectH);
 }
 
@@ -305,7 +298,7 @@ void DrawProjGroup::minimumBbViews(DrawProjGroupItem *viewPtrs[10],
     Base::BoundBox3d bboxes[10];
     makeViewBbs(viewPtrs, bboxes, false);
 
-    //TODO: note that TLF/TRF/BLF,BRF extent a bit farther than a strict row/col arrangement would suggest.
+    //TODO: note that TLF/TRF/BLF,BRF extend a bit farther than a strict row/col arrangement would suggest.
     //get widest view in each row/column
     double col0w = std::max(std::max(bboxes[0].LengthX(), bboxes[3].LengthX()), bboxes[7].LengthX()),
            col1w = std::max(std::max(bboxes[1].LengthX(), bboxes[4].LengthX()), bboxes[8].LengthX()),
@@ -399,15 +392,18 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         } else {
             view->ScaleType.setValue( ScaleType.getValue() );
         }
-        view->Scale.setValue( Scale.getValue() );
+        view->Scale.setValue( getScale() );
         view->Type.setValue( viewProjType );
         view->Label.setValue( viewProjType );
         view->Source.setValue( Source.getValue() );
         view->Direction.setValue(m_cube->getViewDir(viewProjType));
         view->RotationVector.setValue(m_cube->getRotationDir(viewProjType));
-        addView(view);         //from DrawViewCollection - add to ProjGroup Views
+        addView(view);         //from DrawViewCollection
         moveToCentre();
-        view->recomputeFeature();
+        if (view != getAnchor()) {                //anchor is done elsewhere
+            view->recomputeFeature();
+        }
+        distributeProjections();
     }
 
     return view;
@@ -434,6 +430,7 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
                 }
             }
         }
+        distributeProjections();
     }
 
     return -1;
@@ -452,6 +449,11 @@ int DrawProjGroup::purgeProjections()
             removeProjection(itemName.c_str());
         }
     }
+    auto page = findParentPage();
+    if (page != nullptr) {
+        page->requestPaint();
+    }
+
     return Views.getValues().size();
 }
 
@@ -524,7 +526,7 @@ void DrawProjGroup::makeViewBbs(DrawProjGroupItem *viewPtrs[10],
         if (viewPtrs[i]) {
             bboxes[i] = viewPtrs[i]->getBoundingBox();
             if (!documentScale) {
-                double scale = 1.0 / viewPtrs[i]->Scale.getValue();    //convert bbx to 1:1 scale
+                double scale = 1.0 / viewPtrs[i]->getScale();    //convert bbx to 1:1 scale
                 bboxes[i].ScaleX(scale);
                 bboxes[i].ScaleY(scale);
                 bboxes[i].ScaleZ(scale);
@@ -545,7 +547,6 @@ bool DrawProjGroup::distributeProjections()
         return true;
     }
     DrawProjGroupItem *viewPtrs[10];
-
     arrangeViewPointers(viewPtrs);
 
     // TODO: Work on not requiring the front view...
@@ -607,6 +608,7 @@ bool DrawProjGroup::distributeProjections()
     }
     if (viewPtrs[4]) {  // TODO: Move this check above, and figure out a sane bounding box based on other existing views
     }
+
     if (viewPtrs[5] && viewPtrs[5]->allowAutoPos() &&
         bboxes[5].IsValid() &&
         bboxes[4].IsValid()) {
@@ -637,48 +639,22 @@ bool DrawProjGroup::distributeProjections()
         viewPtrs[9]->X.setValue(bigCol + xSpacing);
         viewPtrs[9]->Y.setValue(-bigRow - ySpacing);
     }
-
     return true;
 }
 
-//!allow all child DPGI's to be automatically positioned
-void DrawProjGroup::resetPositions(void)
-{
-    if (AutoDistribute.getValue()) {
-        for( auto it : Views.getValues() ) {
-            auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-            if( view ) {
-                view->setAutoPos(true);
-            }
-         }
-    }
-}
-
-
-
+//! tell children DPGIs that parent DPG has changed ?Scale?
 void DrawProjGroup::updateChildren(double scale)
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
         if( view ) {
-            if (ScaleType.isValue("Automatic")) {
-                view->ScaleType.setValue("Custom");
-                view->Scale.setStatus(App::Property::ReadOnly,true);
-            } else if (ScaleType.isValue("Page")) {
-                view->ScaleType.setValue("Page");
-                view->Scale.setStatus(App::Property::ReadOnly,true);
-            } else if (ScaleType.isValue("Custom")) {
-                view->ScaleType.setValue("Custom");
-                view->Scale.setStatus(App::Property::ReadOnly,true);
-            }
-            if(std::abs(view->Scale.getValue() - scale) > FLT_EPSILON) {
+            if(std::abs(view->getScale() - scale) > FLT_EPSILON) {
                 view->Scale.setValue(scale);
+                view->recomputeFeature();
             }
-            view->recomputeFeature();
         }
     }
 }
-
 
 //!check if ProjectionGroup fits on Page
 bool DrawProjGroup::checkFit(TechDraw::DrawPage* p) const
@@ -733,12 +709,7 @@ TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor(void)
 {
     DrawProjGroupItem* result = nullptr;
     App::DocumentObject* docObj = Anchor.getValue();
-    if (docObj == nullptr) {
-        //explode! DPG w/o anchor
-        if (!isDeleting()) {
-            Base::Console().Error("Error - DPG::getAnchor - DPG has no Anchor!!!\n");
-        }
-    } else {
+    if (docObj != nullptr) {
         result = static_cast<DrawProjGroupItem*>(docObj);
     }
     return result;
@@ -838,9 +809,13 @@ void DrawProjGroup::updateSecondaryDirs()
         }
         v->Direction.setValue(newDir);
         v->RotationVector.setValue(newAxis);
-//        v->recomputeFeature();
     }
     setPropsFromCube();
+
+    auto page = findParentPage();
+    if (page != nullptr) {
+        page->requestPaint();
+    }
 }
 
 

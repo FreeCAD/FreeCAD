@@ -178,7 +178,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);
     double radius = getFudgeRadius();
     Base::Vector3d dirDetail = dvp->Direction.getValue();
-    double scale = Scale.getValue();
+    double scale = getScale();
     gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(0.0,0.0,0.0), dirDetail, false);
 
     Base::BoundBox3d bbxSource = partTopo.getBoundBox();
