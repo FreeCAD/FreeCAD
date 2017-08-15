@@ -29,12 +29,20 @@ import PathScripts.PathProfileEdges as PathProfileEdges
 
 from PySide import QtCore
 
+__title__ = "Path Profile based on edges Operation UI"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Profile based on edges operation page controller and command implementation."
+
 class TaskPanelOpPage(PathProfileBaseGui.TaskPanelOpPage):
+    '''Page controller for profile based on edges operation.'''
 
     def profileFeatures(self):
+        '''profileFeatures() ... return FeatureSide
+        See PathProfileBaseGui.py for details.'''
         return PathProfileBaseGui.FeatureSide
 
-PathOpGui.SetupOperation('Profile Edges',
+Command = PathOpGui.SetupOperation('Profile Edges',
         PathProfileEdges.Create,
         TaskPanelOpPage,
         'Path-Profile-Edges',

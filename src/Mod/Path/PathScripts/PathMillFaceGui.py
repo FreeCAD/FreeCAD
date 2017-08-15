@@ -30,12 +30,19 @@ import PathScripts.PathPocketBaseGui as PathPocketBaseGui
 
 from PySide import QtCore
 
+__title__ = "Path Face Mill Operation UI"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Face Mill operation page controller and command implementation."
+
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
+    '''Page controller class for the face milling operation.'''
 
     def pocketFeatures(self):
+        '''pocketFeatures() ... return FeatureFacing (see PathPocketBaseGui)'''
         return PathPocketBaseGui.FeatureFacing
 
-PathOpGui.SetupOperation('MillFace',
+Command = PathOpGui.SetupOperation('MillFace',
         PathMillFace.Create,
         TaskPanelOpPage,
         'Path-Face',

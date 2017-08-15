@@ -31,6 +31,11 @@ import PathScripts.PathOpGui as PathOpGui
 
 from PySide import QtCore, QtGui
 
+__title__ = "Path Drilling Operation UI."
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "UI and Command for Path Drilling Operation."
+
 if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
@@ -39,11 +44,14 @@ else:
 
 
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
+    '''Controller for the drilling operation's page'''
 
     def getForm(self):
+        '''getForm() ... return UI'''
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpDrillingEdit.ui")
 
     def getFields(self, obj):
+        '''setFields(obj) ... update obj's properties with values from the UI'''
         PathLog.track()
         self.updateInputField(obj, 'PeckDepth', self.form.peckDepth)
         self.updateInputField(obj, 'RetractHeight', self.form.retractHeight)
@@ -59,6 +67,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.updateToolController(obj, self.form.toolController)
 
     def setFields(self, obj):
+        '''setFields(obj) ... update UI with obj properties' values'''
         PathLog.track()
 
         self.form.peckDepth.setText(FreeCAD.Units.Quantity(obj.PeckDepth.Value, FreeCAD.Units.Length).UserString)
@@ -83,6 +92,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.setupToolController(obj, self.form.toolController)
 
     def getSignalsForUpdate(self, obj):
+        '''getSignalsForUpdate(obj) ... return list of signals which cause the receiver to update the model'''
         signals = []
 
         signals.append(self.form.retractHeight.editingFinished)
@@ -95,7 +105,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         return signals
 
-PathOpGui.SetupOperation('Drilling',
+Command = PathOpGui.SetupOperation('Drilling',
         PathDrilling.Create,
         TaskPanelOpPage,
         'Path-Drilling',

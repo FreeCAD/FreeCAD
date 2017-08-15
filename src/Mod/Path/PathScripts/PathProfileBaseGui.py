@@ -31,6 +31,11 @@ import PathScripts.PathSelection as PathSelection
 
 from PySide import QtCore
 
+__title__ = "Path Profile Operation Base UI"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Base page controller for profile operations."
+
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -38,8 +43,21 @@ FeatureSide       = 0x01
 FeatureProcessing = 0x02
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
+    '''Base class for profile operation page controllers. Two sub features are
+    support
+        FeatureSide       ... Is the Side property exposed in the UI
+        FeatureProcessing ... Are the processing check boxes supported by the operation
+    '''
+
+    def profileFeatures(self):
+        '''profileFeatures() ... return which of the optional profile features are supported.
+        Currently two features are supported:
+            FeatureSide       ... Is the Side property exposed in the UI
+            FeatureProcessing ... Are the processing check boxes supported by the operation
+        Must be overwritten by subclasses.'''
 
     def getForm(self):
+        '''getForm() ... returns UI customized according to profileFeatures()'''
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpProfileFullEdit.ui")
 
         if not FeatureSide & self.profileFeatures():
@@ -54,6 +72,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return form
 
     def getFields(self, obj):
+        '''getFields(obj) ... transfers values from UI to obj's proprties'''
         self.updateInputField(obj, 'OffsetExtra', self.form.extraOffset)
         if obj.UseComp != self.form.useCompensation.isChecked():
             obj.UseComp = self.form.useCompensation.isChecked()
@@ -77,6 +96,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
                 obj.processCircles = self.form.processCircles.isChecked()
 
     def setFields(self, obj):
+        '''setFields(obj) ... transfers obj's property values to UI'''
         self.form.extraOffset.setText(FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
         self.form.useCompensation.setChecked(obj.UseComp)
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
@@ -93,6 +113,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.processCircles.setChecked(obj.processCircles)
 
     def getSignalsForUpdate(self, obj):
+        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
         signals.append(self.form.direction.currentIndexChanged)
         signals.append(self.form.useCompensation.clicked)

@@ -29,12 +29,20 @@ import PathScripts.PathProfileFaces as PathProfileFaces
 
 from PySide import QtCore
 
+__title__ = "Path Profile based on faces Operation UI"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Profile based on faces operation page controller and command implementation."
+
 class TaskPanelOpPage(PathProfileBaseGui.TaskPanelOpPage):
+    '''Page controller for profile based on faces operation.'''
 
     def profileFeatures(self):
+        '''profileFeatures() ... return FeatureSide | FeatureProcessing.
+        See PathProfileBaseGui.py for details.'''
         return PathProfileBaseGui.FeatureSide | PathProfileBaseGui.FeatureProcessing
 
-PathOpGui.SetupOperation('Profile Faces',
+Command = PathOpGui.SetupOperation('Profile Faces',
         PathProfileFaces.Create,
         TaskPanelOpPage,
         'Path-Profile-Face',

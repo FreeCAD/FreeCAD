@@ -31,6 +31,8 @@ import PathScripts.PathOpGui as PathOpGui
 
 from PySide import QtCore, QtGui
 
+__doc__ = "Helix operation page controller and command implementation."
+
 if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
@@ -39,11 +41,14 @@ else:
 
 
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
+    '''Page controller class for Helix operations.'''
 
     def getForm(self):
+        '''getForm() ... return UI'''
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
 
     def getFields(self, obj):
+        '''getFields(obj) ... transfers values from UI to obj's proprties'''
         PathLog.track()
         if obj.Direction != str(self.form.direction.currentText()):
             obj.Direction = str(self.form.direction.currentText())
@@ -55,6 +60,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.updateToolController(obj, self.form.toolController)
 
     def setFields(self, obj):
+        '''setFields(obj) ... transfers obj's property values to UI'''
         PathLog.track()
 
         self.form.stepOverPercent.setValue(obj.StepOver)
@@ -64,6 +70,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.setupToolController(obj, self.form.toolController)
 
     def getSignalsForUpdate(self, obj):
+        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
 
         signals.append(self.form.stepOverPercent.editingFinished)
@@ -73,7 +80,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         return signals
 
-PathOpGui.SetupOperation('Helix',
+Command = PathOpGui.SetupOperation('Helix',
         PathHelix.Create,
         TaskPanelOpPage,
         'Path-Helix',
