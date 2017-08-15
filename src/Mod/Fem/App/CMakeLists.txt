@@ -77,6 +77,7 @@ SET(FemScripts_SRCS
     readFenicsXDMF.py
     writeFenicsXDMF.py
     importFenicsMesh.py
+    importGmshMesh.py
     importInpMesh.py
     importToolsFem.py
     importVTKResults.py
