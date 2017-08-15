@@ -29,12 +29,19 @@ import PathScripts.PathPocketBaseGui as PathPocketBaseGui
 
 from PySide import QtCore
 
+__title__ = "Path Pocket Operation UI"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Pocket operation page controller and command implementation."
+
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
+    '''Page controller class for Pocket operation'''
 
     def pocketFeatures(self):
+        '''pocketFeatures() ... return FeaturePocket (see PathPocketBaseGui)'''
         return PathPocketBaseGui.FeaturePocket
 
-PathOpGui.SetupOperation('Pocket',
+Command = PathOpGui.SetupOperation('Pocket',
         PathPocket.Create,
         TaskPanelOpPage,
         'Path-Pocket',

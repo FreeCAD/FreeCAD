@@ -29,16 +29,32 @@ import FreeCADGui
 from PySide import QtCore, QtGui
 from pivy import coin
 
-class TaskPanel:
+__title__ = "Path GetPoint UI"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Helper class to use FreeCADGUi.Snapper to let the user enter arbitray points while the task panel is active."
 
-    def __init__(self, formOrig, formPoint):
-        self.formOrig = formOrig
-        self.formPoint = formPoint
+class TaskPanel:
+    '''Use an instance of this class in another TaskPanel to invoke the snapper.
+    Create the instance in the TaskPanel's constructors and invoke getPoint(whenDone, start) whenever a new point is
+    required or an existing point needs to be edited. The receiver is expected to have the same lifespan as the form
+    provided in the constructor.
+    The (only) public API function other than the constructor is getPoint(whenDone, start).
+    '''
+    def __init__(self, form):
+        '''__init___(form) ... form will be replaced by PointEdit.ui while the Snapper is active.'''
+        self.formOrig = form
+        self.formPoint = FreeCADGui.PySideUic.loadUi(":/panels/PointEdit.ui")
+
+        self.formPoint.setParent(form.parent())
+        form.parent().layout().addWidget(self.formPoint)
+        self.formPoint.hide()
 
         self.setupUi()
         self.buttonBox = None
 
     def setupUi(self):
+        '''setupUi() ... internal function - do not call.'''
         self.formPoint.buttonBox.accepted.connect(self.pointAccept)
         self.formPoint.buttonBox.rejected.connect(self.pointReject)
 
@@ -47,6 +63,7 @@ class TaskPanel:
         self.formPoint.ifValueZ.editingFinished.connect(self.updatePoint)
 
     def addEscapeShortcut(self):
+        '''addEscapeShortcut() ... internal function - do not call.'''
         # The only way I could get to intercept the escape key, or really any key was
         # by creating an action with a shortcut .....
         self.escape = QtGui.QAction(self.formPoint)
@@ -56,11 +73,19 @@ class TaskPanel:
         self.formPoint.addAction(self.escape)
 
     def removeEscapeShortcut(self):
+        '''removeEscapeShortcut() ... internal function - do not call.'''
         if self.escape:
             self.formPoint.removeAction(self.escape)
             self.escape = None
 
     def getPoint(self, whenDone, start=None):
+        '''getPoint(whenDone, start=None) ... invoke Snapper and call whenDone when a point is entered or the user cancels the operation.
+        whenDone(point, obj) is called either with a point and the object on which the point lies if the user set the point,
+        or None and None if the user cancelled the operation.
+        start is an optional Vector indicating from where to start Snapper. This is mostly used when editing existing points. Snapper also
+        creates a dotted line indicating from where the original point started from.
+        If start is specified the Snapper UI is closed on the first point the user enters. If start remains None, then Snapper is kept open
+        until the user explicitly closes Snapper. This lets the user enter multiple points in quick succession.'''
 
         def displayPoint(p):
             self.formPoint.ifValueX.setText(FreeCAD.Units.Quantity(p.x, FreeCAD.Units.Length).UserString)
@@ -111,6 +136,7 @@ class TaskPanel:
         FreeCADGui.Snapper.forceGridOff=True
 
     def pointFinish(self, ok, cleanup = True):
+        '''pointFinish(ok, cleanup=True) ... internal function - do not call.'''
         obj = FreeCADGui.Snapper.lastSnappedObject
 
         if cleanup:
@@ -129,18 +155,23 @@ class TaskPanel:
             self.pointWhenDone(None, None)
 
     def pointDone(self):
+        '''pointDone() ... internal function - do not call.'''
         self.pointFinish(False)
 
     def pointReject(self):
+        '''pointReject() ... internal function - do not call.'''
         self.pointFinish(False)
 
     def pointAccept(self):
+        '''pointAccept() ... internal function - do not call.'''
         self.pointFinish(True)
 
     def pointAcceptAndContinue(self):
+        '''pointAcceptAndContinue() ... internal function - do not call.'''
         self.pointFinish(True, False)
 
     def removeGlobalCallbacks(self):
+        '''removeGlobalCallbacks() ... internal function - do not call.'''
         if hasattr(self, 'view') and self.view:
             if self.pointCbClick:
                 self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.pointCbClick)
@@ -151,6 +182,7 @@ class TaskPanel:
             self.view = None
 
     def updatePoint(self):
+        '''updatePoint() ... internal function - do not call.'''
         x = FreeCAD.Units.Quantity(self.formPoint.ifValueX.text()).Value
         y = FreeCAD.Units.Quantity(self.formPoint.ifValueY.text()).Value
         z = FreeCAD.Units.Quantity(self.formPoint.ifValueZ.text()).Value

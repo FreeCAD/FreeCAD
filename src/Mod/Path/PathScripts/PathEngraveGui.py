@@ -31,33 +31,40 @@ import PathScripts.PathSelection as PathSelection
 
 from PySide import QtCore, QtGui
 
+__title__ = "Path Engrave Operation UI"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Engrave operation page controller and command implementation."
+
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-FeaturePocket = 0x01
-FeatureFacing = 0x02
-
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
+    '''Page controller class for the Engrave operation.'''
 
     def getForm(self):
+        '''getForm() ... returns UI'''
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpEngraveEdit.ui")
 
     def getFields(self, obj):
+        '''getFields(obj) ... transfers values from UI to obj's proprties'''
         if obj.StartVertex != self.form.startVertex.value():
             obj.StartVertex = self.form.startVertex.value()
         self.updateToolController(obj, self.form.toolController)
 
     def setFields(self, obj):
+        '''setFields(obj) ... transfers obj's property values to UI'''
         self.form.startVertex.setValue(obj.StartVertex)
         self.setupToolController(obj, self.form.toolController)
 
     def getSignalsForUpdate(self, obj):
+        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
         signals.append(self.form.startVertex.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
         return signals
 
-PathOpGui.SetupOperation('Engrave',
+Command = PathOpGui.SetupOperation('Engrave',
         PathEngrave.Create,
         TaskPanelOpPage,
         'Path-Engrave',

@@ -31,6 +31,11 @@ import PathScripts.PathSelection as PathSelection
 
 from PySide import QtCore, QtGui
 
+__title__ = "Path Pocket Base Operation UI"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Base page controller and command implementation for path pocket operations."
+
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -38,8 +43,21 @@ FeaturePocket = 0x01
 FeatureFacing = 0x02
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
+    '''Page controller class for pocket operations, supports two different features:
+          FeaturePocket  ... used for pocketing operation
+          FeatureFacing  ... used for face milling operation
+    '''
+
+    def pocketFeatures(self):
+        '''pocketFeatures() ... return which features of the UI are supported by the operation.
+        Typically one of the following is enabled:
+          FeaturePocket  ... used for pocketing operation
+          FeatureFacing  ... used for face milling operation
+        Must be overwritten by subclasses'''
+        pass
 
     def getForm(self):
+        '''getForm() ... returns UI, adapted to the resutls from pocketFeatures()'''
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")
 
         if not FeaturePocket & self.pocketFeatures():
@@ -51,6 +69,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return form
 
     def getFields(self, obj):
+        '''getFields(obj) ... transfers values from UI to obj's proprties'''
         if obj.CutMode != str(self.form.cutMode.currentText()):
             obj.CutMode = str(self.form.cutMode.currentText())
         if obj.StepOver != self.form.stepOverPercent.value():
@@ -72,6 +91,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
                 obj.BoundaryShape = str(self.form.boundaryShape.currentText())
 
     def setFields(self, obj):
+        '''setFields(obj) ... transfers obj's property values to UI'''
         self.form.zigZagAngle.setText(FreeCAD.Units.Quantity(obj.ZigZagAngle, FreeCAD.Units.Angle).UserString)
         self.form.stepOverPercent.setValue(obj.StepOver)
 
@@ -88,6 +108,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.selectInComboBox(obj.BoundaryShape, self.form.boundaryShape)
 
     def getSignalsForUpdate(self, obj):
+        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
 
         signals.append(self.form.cutMode.currentIndexChanged)
