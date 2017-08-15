@@ -50,9 +50,9 @@ def export(objectslist, fileString):
     if not obj.isDerivedFrom("Fem::FemMeshObject"):
         FreeCAD.Console.PrintError("No FEM mesh object selected.\n")
         return
-    #if not obj.Type == 'FemMeshGmsh':
-    #    FreeCAD.Console.PrintError("Object selected is not a FemMeshGmsh type\n")
-    #    return
+    if not obj.Type == 'FemMeshGmsh':
+        FreeCAD.Console.PrintError("Object selected is not a FemMeshGmsh type\n")
+        return
 
     gmsh = FemGmshTools.FemGmshTools(obj, FemGui.getActiveAnalysis())
     if fileString != "":
@@ -63,17 +63,16 @@ def export(objectslist, fileString):
                 if not ret:
                     FreeCAD.Console.PrintError("Mesh is written to `{}` by Gmsh\n".format(ret))
                 return
-        FreeCAD.Console.PrintError("Export mesh format with suffix `{}` is not supported by Gmsh\n".format(fileExtension.lower()) )
+        FreeCAD.Console.PrintError("Export mesh format with suffix `{}` is not supported by Gmsh\n".format(fileExtension.lower()))
 
 
 def _run_command(comandlist):
     print("Run command: " + ' '.join(comandlist))
     error = None
     try:
-        p = subprocess.Popen(comandlist, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        p = subprocess.Popen(comandlist, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = p.communicate()
-        #print(output)  # stdout is still cut at some point but the warnings are in stderr and thus printed :-)
-        #print(error)
+        print(output)  # stdout is still cut at some point but the warnings are in stderr and thus printed :-)
     except Exception as e:
         error = 'Error executing: {}\n'.format(' '.join(comandlist))
         print(e)
@@ -86,7 +85,9 @@ def export_fenics_mesh(obj, meshfileString):
         error = "Error: only xml mesh is supported by gmsh conversion"
         FreeCAD.Console.PrintError(error)
         return error
-    meshfileStem = meshfileString[:-4]  #.encode('ascii')  # FIXME
+    meshfileStem = (meshfileString[:-4])
+    if isinstance(meshfileStem, (unicode,)):
+        meshfileStem = meshfileStem.encode('ascii')
 
     gmsh = FemGmshTools.FemGmshTools(obj, FemGui.getActiveAnalysis())
     meshfile = gmsh.export_mesh(u"Gmsh MSH", meshfileStem + ".msh")
@@ -94,8 +95,9 @@ def export_fenics_mesh(obj, meshfileString):
         msg = "Info: Mesh has been written to `{}` by Gmsh\n".format(meshfile)
         FreeCAD.Console.PrintMessage(msg)
         # once Fenics is installed, dolfin-convert should be in path
-        comandlist = [u'dolfin-convert', u'-i gmsh', meshfileStem + u".msh", meshfileStem + u".xml"]
-        # mixed str and unicode cause error in comandlist
+        #comandlist = [u'dolfin-convert', u'-i gmsh', unicode(meshfileStem) + u".msh", unicode(meshfileStem) + u".xml"]
+        comandlist = ['dolfin-convert {}.msh {}.xml'.format(meshfileStem,meshfileStem)]  # work only with shell = True
+        # mixed str and unicode in comandlist cause error to run in subprocess
         error = _run_command(comandlist)
         if not os.path.exists(meshfileStem+"_physical_region.xml"):
             FreeCAD.Console.PrintWarning("Mesh  boundary file `{}` not generated\n".format(meshfileStem+"_physical_region.xml"))
@@ -103,7 +105,7 @@ def export_fenics_mesh(obj, meshfileString):
             return error
     else:
         error = "Failed to write mesh file `{}` by Gmsh\n".format(meshfileString)
-        FreeCAD.Console.PrintError(errror)
+        FreeCAD.Console.PrintError(error)
         return error
 
 
@@ -111,10 +113,10 @@ def show_fenics_mesh(fname):
     # boundary layer, quad element is not supported
     from dolfin import Mesh, MeshFunction, plot, interactive
     mesh = Mesh(fname+".xml")
-    if os.path.exists( fname+"_physical_region.xml"):
+    if os.path.exists(fname+"_physical_region.xml"):
         subdomains = MeshFunction("size_t", mesh, fname+"_physical_region.xml")
         plot(subdomains)
-    if os.path.exists( fname+"_facet_region.xml"):
+    if os.path.exists(fname+"_facet_region.xml"):
         boundaries = MeshFunction("size_t", mesh, fname+"_facet_region.xml")
         plot(boundaries)
 
@@ -122,16 +124,19 @@ def show_fenics_mesh(fname):
     interactive()
 
 
-def export_foam_mesh(obj, meshfileString):
+def export_foam_mesh(obj, meshfileString, foamCaseFolder=None):
     # support only 3D
     gmsh = FemGmshTools.FemGmshTools(obj, FemGui.getActiveAnalysis())
     meshfile = gmsh.export_mesh(u"Gmsh MSH", meshfileString)
     if meshfile:
         msg = "Info: Mesh is not written to `{}` by Gmsh\n".format(meshfile)
         FreeCAD.Console.PrintMessage(msg)
-        comandlist = ['gmshToFoam', '-case', foamCaseFolder, meshfileStem + ".msh"]
+        if not foamCaseFolder:
+            comandlist = [u'gmshToFoam', u'-case', foamCaseFolder, meshfile]
+        else:
+            comandlist = [u'gmshToFoam', meshfile]
         return _run_command(comandlist)
     else:
         error = "Mesh is NOT written to `{}` by Gmsh\n".format(meshfileString)
-        FreeCAD.Console.PrintError(errror)
+        FreeCAD.Console.PrintError(error)
         return error
