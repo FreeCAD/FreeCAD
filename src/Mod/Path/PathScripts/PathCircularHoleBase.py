@@ -111,13 +111,14 @@ class ObjectOp(PathOp.ObjectOp):
         if shape.ShapeType == 'Vertex':
             return FreeCAD.Vector(shape.X, shape.Y, 0)
 
-        if shape.ShapeType == 'Edge':
+        if shape.ShapeType == 'Edge' and hasattr(shape.Curve, 'Center'):
             return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
 
-        if shape.ShapeType == 'Face':
+        if shape.ShapeType == 'Face' and hasattr(shape.Surface, 'Center'):
             return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
 
-        PathLog.error('This is bad')
+        PathLog.error(translate("Path", "Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.") % (base.Label, sub))
+        return None
 
     def isHoleEnabled(self, obj, base, sub):
         '''isHoleEnabled(obj, base, sub) ... return true if hole is enabled.'''
@@ -166,7 +167,8 @@ class ObjectOp(PathOp.ObjectOp):
             for sub in subs:
                 if self.isHoleEnabled(obj, base, sub):
                     pos = self.holePosition(obj, base, sub)
-                    holes.append({'x': pos.x, 'y': pos.y, 'r': self.holeDiameter(obj, base, sub)})
+                    if pos:
+                        holes.append({'x': pos.x, 'y': pos.y, 'r': self.holeDiameter(obj, base, sub)})
         if haveLocations(self, obj):
             for location in obj.Locations:
                 holes.append({'x': location.x, 'y': location.y, 'r': 0})
