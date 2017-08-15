@@ -114,6 +114,13 @@ protected Q_SLOTS:
     void onSkipRecompute(bool on);
     void onMarkRecompute();
     void onSelectAllInstances();
+    void onMakeLinkGroup();
+    void onMakeLink();
+    void onMakeLinkSub();
+    void onReplaceWithLink();
+    void onImportLink();
+    void onImportAllLink();
+    void onUnlink();
     void onSelectLinked();
     void onSelectLinkedFinal();
     void onSelectAllLinks();
@@ -151,6 +158,12 @@ private:
     QAction* selectLinkedAction;
     QAction* selectLinkedFinalAction;
     QAction* selectAllLinksAction;
+    QAction* makeLinkGroupAction;
+    QAction* makeLinkAction;
+    QAction* replaceWithLinkAction;
+    QAction* unlinkAction;
+    QAction* importLinkAction;
+    QAction* importAllLinkAction;
     QAction* syncSelectionAction;
     QAction* syncViewAction;
     QAction* showHiddenAction;
@@ -162,6 +175,8 @@ private:
     static QPixmap* documentPixmap;
     std::map<const Gui::Document*,DocumentItem*> DocumentMap;
     bool fromOutside;
+
+    std::map<QAction*,DocumentObjectItem*> linkSubActions;
 
     friend class DocumentItem;
 };
@@ -264,11 +279,17 @@ public:
     void setData(int column, int role, const QVariant & value);
     bool isChildOfItem(DocumentObjectItem*);
 
+    // Get the top level parent document item of this item
+    DocumentItem *getParentDocument() const;
+    // Get the document item that is the owner of this object
+    DocumentItem *getOwnerDocument() const;
+
     // check if a new item is required at root
     bool requiredAtRoot(bool excludeSelf=true) const;
     
     // return the owner, and full quanlified subname
-    App::DocumentObject *getFullSubName(std::ostringstream &str) const;
+    App::DocumentObject *getFullSubName(std::ostringstream &str,
+            DocumentObjectItem *parent = 0) const;
 
     // return the top most linked group owner's name, and subname.  This method
     // is necssary despite have getFullSubName above is because native geo group
